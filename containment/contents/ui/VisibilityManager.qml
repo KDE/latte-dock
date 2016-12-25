@@ -6,7 +6,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte.dock 0.1 as Latte
+import org.kde.latte 0.1 as Latte
 
 Item{
     id: manager

@@ -26,7 +26,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import org.kde.latte.dock 0.1 as Latte
+import org.kde.latte 0.1 as Latte
 
 Item{
     id:barLine
