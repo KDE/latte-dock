@@ -11,7 +11,7 @@ include(ECMQtDeclareLoggingCategory)
 include(KDEPackageAppTemplates)
 
 
-set(nowdock-app_SRCS
+set(lattedock-app_SRCS
     ../liblattedock/types.cpp
     abstractinterface.cpp
     xwindowinterface.cpp
@@ -25,10 +25,10 @@ set(nowdock-app_SRCS
 
 #add_subdirectory(packageplugins)
 
-add_executable(nowdock ${nowdock-app_SRCS})
+add_executable(latte-dock ${lattedock-app_SRCS})
 
 target_link_libraries(
-    nowdock
+    latte-dock
     Qt5::Widgets
     Qt5::Quick
     Qt5::Qml
@@ -42,6 +42,6 @@ target_link_libraries(
     KF5::Notifications
 )
 
-install(TARGETS nowdock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 #even if hidden, the desktop file is needed anyways for kdbusservice::unique
-install(FILES nowdock.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES latte-dock.desktop DESTINATION ${KDE_INSTALL_APPDIR})

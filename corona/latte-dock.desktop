@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Now Dock
-Comment=Now Dock Application
-Exec=nowdock %u
+Name=Latte Dock
+Comment=Latte Dock Application
+Exec=latte-dock %u
 Hidden=true
 Icon=plasma
 InitialPreference=1
