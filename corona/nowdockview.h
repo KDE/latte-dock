@@ -108,6 +108,7 @@ public:
 public slots:
     Q_INVOKABLE void addNewDock();
     Q_INVOKABLE void initialize();
+    Q_INVOKABLE void removeDock();
     void resizeWindow();
     void restoreConfig();
     void saveConfig();

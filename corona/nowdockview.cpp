@@ -23,6 +23,7 @@
 #include "nowdockconfigview.h"
 #include "visibilitymanager.h"
 
+#include <QAction>
 #include <QQmlContext>
 #include <QQmlProperty>
 #include <QQuickItem>
@@ -186,6 +187,19 @@ void NowDockView::addNewDock()
 
     if (corona) {
         corona->loadDefaultLayout();
+    }
+}
+
+void NowDockView::removeDock()
+{
+    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_corona);
+
+    if (corona->containments().count() > 1) {
+        QAction *removeAct = containment()->actions()->action(QStringLiteral("remove"));
+
+        if (removeAct) {
+            removeAct->trigger();
+        }
     }
 }
 
