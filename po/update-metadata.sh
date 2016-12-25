@@ -1,17 +1,21 @@
 #!/bin/sh
 
-BASEDIR=".." # root of translatable sources
-PROJECT="plasma_applet_org.kde.store.nowdock.panel" # project name
-PROJECTPATH="../../containment" # project path
-PROJECTPATHPLASMOID="../../plasmoid" # project path
-BUGADDR="https://github.com/psifidotos/nowdock-panel/" # MSGID-Bugs
-WDIR="`pwd`/containment" # working dir
+PROJECTPATHCONTAINMENT="../../containment" # containment path
+PROJECTPATHPLASMOID="../../plasmoid" # plasmoid path
+PROJECTPATHSHELL="../../shell" # shell path
+BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
+
 
 cd containment
-intltool-merge --quiet --desktop-style . ../../containment.metadata.desktop.template "${PROJECTPATH}"/metadata.desktop.cmake
-echo "metadata.desktop files for panel were updated..."
+intltool-merge --quiet --desktop-style . ../../containment.metadata.desktop.template "${PROJECTPATHCONTAINMENT}"/metadata.desktop.cmake
+echo "metadata.desktop files for containment were updated..."
 
 cd ../plasmoid
 intltool-merge --quiet --desktop-style . ../../plasmoid.metadata.desktop.template "${PROJECTPATHPLASMOID}"/metadata.desktop.cmake
 echo "metadata.desktop files for plasmoid were updated..."
+
+cd ../shell
+intltool-merge --quiet --desktop-style . ../../shell.metadata.desktop.template "${PROJECTPATHSHELL}"/metadata.desktop.cmake
+echo "metadata.desktop files for shell were updated..."
+
 

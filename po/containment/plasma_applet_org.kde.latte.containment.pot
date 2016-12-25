@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/nowdock-panel/\n"
-"POT-Creation-Date: 2016-12-22 18:00+0200\n"
+"POT-Creation-Date: 2016-12-25 18:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: rc.cpp:1
-msgid "Now Dock"
+msgid "Latte"
 msgstr ""
 
 #: rc.cpp:2
-msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
-msgstr ""
-
-#: rc.cpp:3
-msgid "Now Dock Default Panel"
-msgstr ""
-
-#: rc.cpp:4
-msgid "Empty Now Dock Panel"
+msgid "Containment provided for the Latte Dock"
 msgstr ""

@@ -1,0 +1,193 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Viorel-Cătălin Răpițeanu <rapiteanu.catalin@gmail.com>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://github.com/psifidotos/nowdock-panel/\n"
+"POT-Creation-Date: 2016-12-25 18:53+0200\n"
+"PO-Revision-Date: 2016-09-25 04:15+0300\n"
+"Last-Translator: Viorel-Cătălin Răpițeanu <rapiteanu DOT catalin AT gmail "
+"DOT com>\n"
+"Language-Team: Romanian <kde-i18n-doc@kde.org>\n"
+"Language: ro_RO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
+"X-Generator: Poedit 1.8.9\n"
+
+#: ../../shell/contents/configuration/config.qml:26
+msgid "General"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:38
+msgid "Applets Alignment"
+msgstr "Alinierea miniaplicațiilor"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:52
+msgid "ver: "
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
+msgid "Top"
+msgstr "Sus"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
+msgid "Left"
+msgstr "Stânga"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:125
+msgid "Center"
+msgstr "Centru"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
+msgid "Bottom"
+msgstr "Jos"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
+msgid "Right"
+msgstr "Dreapta"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:181
+msgid "Visibility"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:237
+msgid "Below Active"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:250
+msgid "Below Maximized"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:263
+msgid "Let Windows Cover"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:277
+msgid "Windows Go Below"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:291
+msgid "Auto Hide"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:304
+msgid "Always Visible"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:324
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:345
+msgid "Applets Size"
+msgstr "Dimensiunea miniaplicațiilor"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:392
+msgid "Zoom On Hover"
+msgstr "Panoramează la trecerea peste"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:411
+msgid "Zoom Factor"
+msgstr "Factor de panoramare"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:460
+msgid "Background"
+msgstr "Fundal"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:466
+msgid "Show Panel Background"
+msgstr "Arată fundalul panoului"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:496
+msgid "Size"
+msgstr "Dimensiune"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:542
+msgid "Shadows"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:580
+msgid "None"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:585
+msgid "Only for locked applets"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:590
+#, fuzzy
+msgid "All applets"
+msgstr "Dimensiunea miniaplicațiilor"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:600
+msgid "Add New Dock"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:606
+msgid "Remove Dock"
+msgstr ""
+
+#: rc.cpp:1
+msgid "Latte Shell"
+msgstr ""
+
+#: rc.cpp:2
+msgid "Shell provided for the Latte Dock"
+msgstr ""
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Top"
+#~ msgstr "Sus"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Bottom"
+#~ msgstr "Jos"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Left"
+#~ msgstr "Stânga"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Right"
+#~ msgstr "Dreapta"
+
+#, fuzzy
+#~ msgctxt "@label:listbox config ui"
+#~ msgid "Alignment:"
+#~ msgstr "Alinierea miniaplicațiilor"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, alignment"
+#~ msgid "Center"
+#~ msgstr "Centru"
+
+#~ msgid "Now Dock Panel"
+#~ msgstr "Panou Now Dock"
+
+#~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
+#~ msgstr ""
+#~ "Un panou plasma care încearcă să animeze miniaplicațiile la trecerea peste"
+
+#, fuzzy
+#~ msgid "Now Dock Default Panel"
+#~ msgstr "Panou Now Dock"
+
+#, fuzzy
+#~ msgid "Empty Now Dock Panel"
+#~ msgstr "Panou Now Dock"
+
+#~ msgid "Automatic"
+#~ msgstr "Automat"
+
+#~ msgid "Small steps for icon sizes in automatic modes"
+#~ msgstr "Pași mici pentru dimensiunea pictogramelor în modurile automate"

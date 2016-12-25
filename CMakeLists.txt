@@ -29,8 +29,8 @@ IF(NOT GETTEXT_MSGFMT_EXECUTABLE)
 ------")
 ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
 
-        SET(catalogname plasma_applet_org.kde.nowdock.containment)
-
+        #containment translations
+        SET(catalogname plasma_applet_org.kde.latte.containment)
         ADD_CUSTOM_TARGET(translations-containment ALL)
 
         FILE(GLOB PO_FILES po/containment/*.po)
@@ -47,18 +47,19 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
                         ADD_CUSTOM_COMMAND(TARGET translations-containment
                                 COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
                                 DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
                 ENDIF( _langCode )
         ENDFOREACH(_poFile ${PO_FILES})
         
-        SET(catalogname2 plasma_applet_org.kde.store.nowdock.plasmoid)
+        #plasmoid translations
+        SET(catalogname-plasmoid plasma_applet_org.kde.store.nowdock.plasmoid)
         ADD_CUSTOM_TARGET(translations-plasmoid ALL)
 
-        FILE(GLOB PO_FILES2 po/plasmoid/*.po)
+        FILE(GLOB PO_FILES_PLASMOID po/plasmoid/*.po)
         
-        FOREACH(_poFile ${PO_FILES2})
+        FOREACH(_poFile ${PO_FILES_PLASMOID})
                 GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
-                STRING(REGEX REPLACE "^${catalogname2}_?" "" _langCode ${_poFileName} )
+                STRING(REGEX REPLACE "^${catalogname-plasmoid}_?" "" _langCode ${_poFileName} )
                 STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
 
                 IF( _langCode )
@@ -68,10 +69,31 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
                         ADD_CUSTOM_COMMAND(TARGET translations-plasmoid
                                 COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
                                 DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${_langCode}/LC_MESSAGES/ RENAME ${catalogname2}.mo)
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-plasmoid}.mo)
                 ENDIF( _langCode )
         ENDFOREACH(_poFile ${PO_FILES})
+        
+        #shell translations
+        SET(catalogname-shell plasma_shell_org.kde.latte.shell)
+        ADD_CUSTOM_TARGET(translations-shell ALL)
 
+        FILE(GLOB PO_FILES_SHELL po/shell/*.po)
+        
+        FOREACH(_poFile ${PO_FILES_SHELL})
+                GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
+                STRING(REGEX REPLACE "^${catalogname-shell}_?" "" _langCode ${_poFileName} )
+                STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
+
+                IF( _langCode )
+                        GET_FILENAME_COMPONENT(_lang ${_poFile} NAME_WE)
+                        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/shell/${_lang}.gmo)
+
+                        ADD_CUSTOM_COMMAND(TARGET translations-shell
+                                COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
+                                DEPENDS ${_poFile})
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-shell}.mo)
+                ENDIF( _langCode )
+        ENDFOREACH(_poFile ${PO_FILES})
 ENDIF(NOT GETTEXT_MSGFMT_EXECUTABLE) 
 
 add_subdirectory(liblattedock)
@@ -80,7 +102,8 @@ plasma_install_package(build/containment/release org.kde.latte.containment)
 add_subdirectory(plasmoid)
 plasma_install_package(build/plasmoid/release org.kde.store.nowdock.plasmoid) 
 
-plasma_install_package(shell org.kde.nowdock.shell shells shell)
+add_subdirectory(shell)
+plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
 
 add_subdirectory(corona)
 

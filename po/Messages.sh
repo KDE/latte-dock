@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BASEDIR="../.." # root of translatable sources
-PROJECT="plasma_applet_org.kde.nowdock.containment" # project name
+PROJECT="plasma_applet_org.kde.latte.containment" # project name
 PROJECTPATH="../../containment" # project path
 BUGADDR="https://github.com/psifidotos/nowdock-panel/" # MSGID-Bugs
 WDIR="`pwd`/containment" # working dir
@@ -9,6 +9,10 @@ WDIR="`pwd`/containment" # working dir
 PROJECTPLASMOID="plasma_applet_org.kde.store.nowdock.plasmoid" # project name
 PROJECTPATHPLASMOID="../../plasmoid" # project path
 WDIRPLASMOID="`pwd`/plasmoid" # working di
+
+PROJECTSHELL="plasma_shell_org.kde.latte.shell" # project name
+PROJECTPATHSHELL="../../shell" # project path
+WDIRSHELL="`pwd`/shell" # working di
 
 echo "Preparing rc files for panel"
 
@@ -18,9 +22,6 @@ cd containment
 find "${PROJECTPATH}" -name '*.rc' -o -name '*.ui' -o -name '*.kcfg' | sort > "${WDIR}/rcfiles.list"
 xargs --arg-file="${WDIR}/rcfiles.list" extractrc > "${WDIR}/rc.cpp"
 
-# additional string for KAboutData
-# echo 'i18nc("NAME OF TRANSLATORS","Your names");' >> "${WDIR}/rc.cpp"
-# echo 'i18nc("EMAIL OF TRANSLATORS","Your emails");' >> "${WDIR}/rc.cpp"
 
 intltool-extract --quiet --type=gettext/ini ../../containment.metadata.desktop.template
 
@@ -60,10 +61,6 @@ rm "${WDIR}/rc.cpp"
 echo "Done translations for panel" 
 
 #---------------------- Plasmoid section ----------------#
-
-#!/bin/sh
-
-#BASEDIR=".." # root of translatable sources
 
 echo "Preparing rc files for plasmoid"
 cd ../plasmoid
@@ -109,5 +106,47 @@ rm "${WDIRPLASMOID}/rc.cpp"
 echo "Done" 
 
 
+#---------------------- Shell Section ----------------#
+echo "Preparing rc files for shell"
+cd ../shell
 
+# we use simple sorting to make sure the lines do not jump around too much from system to system
+find "${PROJECTPATHSHELL}" -name '*.rc' -o -name '*.ui' -o -name '*.kcfg' | sort > "${WDIRSHELL}/rcfiles.list"
+xargs --arg-file="${WDIRSHELL}/rcfiles.list" extractrc > "${WDIRSHELL}/rc.cpp"
+
+intltool-extract --quiet --type=gettext/ini ../../shell.metadata.desktop.template
+cat ../../shell.metadata.desktop.template.h >> ${WDIRSHELL}/rc.cpp
+rm ../../shell.metadata.desktop.template.h
+
+echo "Done preparing rc files for shell"
+echo "Extracting messages for shell"
+
+# see above on sorting
+
+find "${PROJECTPATHSHELL}" -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.qml' -o -name '*.qml.cmake' | sort > "${WDIRSHELL}/infiles.list"
+echo "rc.cpp" >> "${WDIRSHELL}/infiles.list"
+
+xgettext --from-code=UTF-8 -C -kde -ci18n -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3 \
+	-ktr2i18n:1 -kI18N_NOOP:1 -kI18N_NOOP2:1c,2  -kN_:1 -kaliasLocale -kki18n:1 -kki18nc:1c,2 \
+	-kki18np:1,2 -kki18ncp:1c,2,3 --msgid-bugs-address="${BUGADDR}" --files-from=infiles.list \
+	-D "${BASEDIR}" -D "${WDIRSHELL}" -o "${PROJECTSHELL}.pot" || \
+	{ echo "error while calling xgettext. aborting."; exit 1; }
+echo "Done extracting messages for shell"
+
+echo "Merging translations for shell"
+catalogs=`find . -name '*.po'`
+for cat in $catalogs; do
+	echo "$cat"
+	msgmerge -o "$cat.new" "$cat" "${WDIRSHELL}/${PROJECTSHELL}.pot"
+	mv "$cat.new" "$cat"
+done
+
+intltool-merge --quiet --desktop-style . ../../shell.metadata.desktop.template "${PROJECTPATHSHELL}"/metadata.desktop.cmake
+
+echo "Done merging translations for shell"
+echo "Cleaning up for shell"
+rm "${WDIRSHELL}/rcfiles.list"
+rm "${WDIRSHELL}/infiles.list"
+rm "${WDIRSHELL}/rc.cpp"
+echo "Done" 
 

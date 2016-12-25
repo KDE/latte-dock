@@ -111,10 +111,12 @@ Item{
     }
 
     function slotMustBeRaised() {
-        if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType) {
-            slidingAnimationAutoHiddenIn.init();
-        } else {
-            slidingAnimation.init(true,false);
+        if (window) {
+            if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType) {
+                slidingAnimationAutoHiddenIn.init();
+            } else {
+                slidingAnimation.init(true,false);
+            }
         }
     }
 
@@ -123,10 +125,12 @@ Item{
     }
 
     function slotMustBeLowered() {
-        if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType ) {
-            slidingAnimationAutoHiddenOut.init();
-        } else {
-            slidingAnimation.init(false,false);
+        if (window) {
+            if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType ) {
+                slidingAnimationAutoHiddenOut.init();
+            } else {
+                slidingAnimation.init(false,false);
+            }
         }
     }
 
