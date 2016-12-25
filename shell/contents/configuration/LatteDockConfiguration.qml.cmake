@@ -8,7 +8,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.dock 0.1 as Latte
+import org.kde.latte 0.1 as Latte
 
 PlasmaCore.FrameSvgItem {
     imagePath: "dialogs/background"

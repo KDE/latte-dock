@@ -29,7 +29,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.activities 0.1 as Activities
 
-import org.kde.latte.dock 0.1 as Latte
+import org.kde.latte 0.1 as Latte
 
 import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
