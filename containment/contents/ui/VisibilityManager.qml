@@ -6,7 +6,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte.dock 0.1 as LatteDock
+import org.kde.latte.dock 0.1 as Latte
 
 Item{
     id: manager
@@ -90,7 +90,7 @@ Item{
     function slotIsHoveredChanged() {
         if(window.isHovered) {
             //stop parent window timer for auto hiding
-            if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide)|| window.visibility.isDockWindowType) {
+            if ((window.visibility.panelVisibility === Latte.Dock.AutoHide)|| window.visibility.isDockWindowType) {
                 if(hideMagicWindowInAutoHide.forcedDisableHiding) {
                     hideMagicWindowInAutoHide.forcedDisableHiding = false;
                     window.visibility.disableHiding = false;
@@ -112,7 +112,7 @@ Item{
 
     function slotMustBeRaised() {
         if (window) {
-            if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType) {
+            if ((window.visibility.panelVisibility === Latte.Dock.AutoHide) || window.visibility.isDockWindowType) {
                 slidingAnimationAutoHiddenIn.init();
             } else {
                 slidingAnimation.init(true,false);
@@ -126,7 +126,7 @@ Item{
 
     function slotMustBeLowered() {
         if (window) {
-            if ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType ) {
+            if ((window.visibility.panelVisibility === Latte.Dock.AutoHide) || window.visibility.isDockWindowType ) {
                 slidingAnimationAutoHiddenOut.init();
             } else {
                 slidingAnimation.init(false,false);
@@ -135,7 +135,7 @@ Item{
     }
 
     function slotPanelVisibilityChanged() {
-        if (window.visibility.panelVisibility !== LatteDock.Types.AutoHide) {
+        if (window.visibility.panelVisibility !== Latte.Dock.AutoHide) {
             window.visibility.isAutoHidden = false;
         }
     }
@@ -168,9 +168,9 @@ Item{
         if (normalState && plasmoid.immutable) {
             //count panel length
             if(root.isHorizontal) {
-                tempLength = plasmoid.configuration.panelPosition === LatteDock.Types.Double ? layoutsContainer.width + 0.5*space : mainLayout.width + space;
+                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Double ? layoutsContainer.width + 0.5*space : mainLayout.width + space;
             } else {
-                tempLength = plasmoid.configuration.panelPosition === LatteDock.Types.Double ? layoutsContainer.height + 0.5*space : mainLayout.height + space;
+                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Double ? layoutsContainer.height + 0.5*space : mainLayout.height + space;
             }
 
             tempThickness = thicknessNormalOriginal;
@@ -179,7 +179,7 @@ Item{
                 tempThickness = thicknessMidOriginal;
             }
 
-            if (window.visibility.isAutoHidden && ((window.visibility.panelVisibility === LatteDock.Types.AutoHide) || window.visibility.isDockWindowType)) {
+            if (window.visibility.isAutoHidden && ((window.visibility.panelVisibility === Latte.Dock.AutoHide) || window.visibility.isDockWindowType)) {
                 tempThickness = thicknessAutoHidden;
             }
 
@@ -191,13 +191,13 @@ Item{
                     localY = 0;
                 }
 
-                if (plasmoid.configuration.panelPosition === LatteDock.Types.Double) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Double) {
                     localX = (window.width/2) - (layoutsContainer.width/2) - 0.25*space;
-                } else if (root.panelAlignment === LatteDock.Types.Left) {
+                } else if (root.panelAlignment === Latte.Dock.Left) {
                     localX = 0;
-                } else if (root.panelAlignment === LatteDock.Types.Center) {
+                } else if (root.panelAlignment === Latte.Dock.Center) {
                     localX = (window.width/2) - (mainLayout.width/2) - (space/2);
-                } else if (root.panelAlignment === LatteDock.Types.Right) {
+                } else if (root.panelAlignment === Latte.Dock.Right) {
                     localX = window.width - mainLayout.width - (space/2);
                 }
             } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
@@ -207,13 +207,13 @@ Item{
                     localX = window.width - tempThickness;
                 }
 
-                if (plasmoid.configuration.panelPosition === LatteDock.Types.Double) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Double) {
                     localY = (window.height/2) - (layoutsContainer.height/2) - 0.25*space;
-                } else if (root.panelAlignment === LatteDock.Types.Top) {
+                } else if (root.panelAlignment === Latte.Dock.Top) {
                     localY = 0;
-                } else if (root.panelAlignment === LatteDock.Types.Center) {
+                } else if (root.panelAlignment === Latte.Dock.Center) {
                     localY = (window.height/2) - (mainLayout.height/2) - (space/2);
-                } else if (root.panelAlignment === LatteDock.Types.Bottom) {
+                } else if (root.panelAlignment === Latte.Dock.Bottom) {
                     localY = window.height - mainLayout.height - (space/2);
                 }
             }
@@ -439,7 +439,7 @@ Item{
         interval: manager.inStartup ? 1000 : 500
         onTriggered: {
             layoutsContainer.opacity = 1;
-            if ((window.visibility.panelVisibility !== LatteDock.Types.AutoHide) && !window.visibility.isDockWindowType) {
+            if ((window.visibility.panelVisibility !== Latte.Dock.AutoHide) && !window.visibility.isDockWindowType) {
                 slidingAnimation.init(true,false);
             } else {
                 slidingAnimationAutoHiddenIn.init();

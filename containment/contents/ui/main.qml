@@ -26,7 +26,7 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.dock 0.1 as LatteDock
+import org.kde.latte.dock 0.1 as Latte
 
 import "LayoutManager.js" as LayoutManager
 
@@ -74,11 +74,11 @@ DragDrop.DropArea {
     property int themePanelSize: plasmoid.configuration.panelSize
 
     ///FIXME: <delete> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
-    property int mainLayoutPosition: !plasmoid.immutable ? LatteDock.Types.Center : (root.isVertical ? LatteDock.Types.Top : LatteDock.Types.Left)
+    property int mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
     ///FIXME: <delete>
-    //property int panelAlignment: plasmoid.configuration.panelPosition !== LatteDock.Types.Double ? plasmoid.configuration.panelPosition : mainLayoutPosition
+    //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? plasmoid.configuration.panelPosition : mainLayoutPosition
 
-    property int panelAlignment: plasmoid.immutable ? plasmoid.configuration.panelPosition : LatteDock.Types.Center
+    property int panelAlignment: plasmoid.immutable ? plasmoid.configuration.panelPosition : Latte.Dock.Center
     // property int panelAlignment: plasmoid.configuration.panelPosition
 
 
@@ -107,12 +107,12 @@ DragDrop.DropArea {
     ///END properties from nowDock
 
    /* Layout.preferredWidth: plasmoid.immutable ?
-                               (plasmoid.configuration.panelPosition === LatteDock.Types.Double ?
+                               (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
                                     layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin) :
                                Screen.width //on unlocked state use the maximum
 
     Layout.preferredHeight: plasmoid.immutable ?
-                               (plasmoid.configuration.panelPosition === LatteDock.Types.Double ?
+                               (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
                                     layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin) :
                                Screen.height //on unlocked state use the maximum*/
 
@@ -165,7 +165,7 @@ DragDrop.DropArea {
         ///Left Edge
         State {
             name: "leftCenter"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Center)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Center)
 
             AnchorChanges {
                 target: mainLayout
@@ -178,7 +178,7 @@ DragDrop.DropArea {
         },
         State {
             name: "leftTop"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Top)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Top)
 
             AnchorChanges {
                 target: mainLayout
@@ -191,7 +191,7 @@ DragDrop.DropArea {
         },
         State {
             name: "leftBottom"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
 
             AnchorChanges {
                 target: mainLayout
@@ -204,7 +204,7 @@ DragDrop.DropArea {
         },
         State {
             name: "leftDouble"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
             AnchorChanges {
                 target: mainLayout
@@ -218,7 +218,7 @@ DragDrop.DropArea {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Center)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Center)
 
             AnchorChanges {
                 target: mainLayout
@@ -231,7 +231,7 @@ DragDrop.DropArea {
         },
         State {
             name: "rightTop"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Top)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Top)
 
             AnchorChanges {
                 target: mainLayout
@@ -244,7 +244,7 @@ DragDrop.DropArea {
         },
         State {
             name: "rightBottom"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
 
             AnchorChanges {
                 target: mainLayout
@@ -257,7 +257,7 @@ DragDrop.DropArea {
         },
         State {
             name: "rightDouble"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
             AnchorChanges {
                 target: mainLayout
@@ -271,7 +271,7 @@ DragDrop.DropArea {
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Center)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Center)
 
             AnchorChanges {
                 target: mainLayout
@@ -284,7 +284,7 @@ DragDrop.DropArea {
         },
         State {
             name: "bottomLeft"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Left)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Left)
 
             AnchorChanges {
                 target: mainLayout
@@ -297,7 +297,7 @@ DragDrop.DropArea {
         },
         State {
             name: "bottomRight"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Right)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Right)
 
             AnchorChanges {
                 target: mainLayout
@@ -310,7 +310,7 @@ DragDrop.DropArea {
         },
         State {
             name: "bottomDouble"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
             AnchorChanges {
                 target: mainLayout
@@ -324,7 +324,7 @@ DragDrop.DropArea {
         ///Top Edge
         State {
             name: "topCenter"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Center)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Center)
 
             AnchorChanges {
                 target: mainLayout
@@ -337,7 +337,7 @@ DragDrop.DropArea {
         },
         State {
             name: "topLeft"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Left)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Left)
 
             AnchorChanges {
                 target: mainLayout
@@ -350,7 +350,7 @@ DragDrop.DropArea {
         },
         State {
             name: "topRight"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Right)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Right)
 
             AnchorChanges {
                 target: mainLayout
@@ -363,7 +363,7 @@ DragDrop.DropArea {
         },
         State {
             name: "topDouble"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
             AnchorChanges {
                 target: mainLayout
@@ -552,10 +552,10 @@ DragDrop.DropArea {
         ///to add applets
         if (plasmoid.immutable) {
             if(root.isHorizontal) {
-                root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === LatteDock.Types.Double ?
+                root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
                                                layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin);
             } else {
-                root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === LatteDock.Types.Double ?
+                root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
                                                layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin);
             }
         } else {
@@ -864,10 +864,10 @@ DragDrop.DropArea {
             // console.log("------Entered check-----");
 
             if (root.isVertical) {
-                layoutLength = (plasmoid.configuration.panelPosition === LatteDock.Types.Double) ?
+                layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Double) ?
                             mainLayout.height+secondLayout.height : mainLayout.height
             } else {
-                layoutLength = (plasmoid.configuration.panelPosition === LatteDock.Types.Double) ?
+                layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Double) ?
                             mainLayout.width+secondLayout.width : mainLayout.width
             }
 
@@ -951,7 +951,7 @@ DragDrop.DropArea {
 
 
     ////BEGIN interfaces
-    LatteDock.WindowSystem {
+    Latte.WindowSystem {
         id:windowSystem
     }
 
@@ -1018,7 +1018,7 @@ DragDrop.DropArea {
 
         onExited: {
             if (plasmoid.immutable && magicWin && !magicWin.isHovered
-                    && ((magicWin.panelVisibility === LatteDock.Types.AutoHide) || magicWin.isDockWindowType) ) {
+                    && ((magicWin.panelVisibility === Latte.Dock.AutoHide) || magicWin.isDockWindowType) ) {
                 hideMagicWindowInAutoHide.start();
             }
         }
@@ -1029,7 +1029,7 @@ DragDrop.DropArea {
 
         function showWindow() {
             if (plasmoid.immutable && magicWin
-                    && ((magicWin.panelVisibility === LatteDock.Types.AutoHide) || magicWin.isDockWindowType) ) {
+                    && ((magicWin.panelVisibility === Latte.Dock.AutoHide) || magicWin.isDockWindowType) ) {
                 magicWin.updateMaskArea();
                 magicWin.mustBeRaised();
             } else {
@@ -1049,21 +1049,21 @@ DragDrop.DropArea {
 
         signal updateScale(int delegateIndex, real newScale, real step)
       //  property bool parentMagicWinFlag: plasmoid.immutable && magicWin && !root.inStartup && windowSystem.compositingActive
-        //&& !(root.inStartup && magicWin.panelVisibility === LatteDock.Types.AutoHide)
+        //&& !(root.inStartup && magicWin.panelVisibility === Latte.Dock.AutoHide)
 
         property int allCount: root.nowDock ? mainLayout.count-1+nowDock.tasksCount : mainLayout.count
         property int currentSpot: -1000
         property int hoveredIndex: -1
 
-        x: (plasmoid.configuration.panelPosition === LatteDock.Types.Double) && root.isHorizontal
+        x: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal
            && plasmoid.immutable && windowSystem.compositingActive ?
                (dockView.width/2) - (dockView.visibility.maxLength/2): 0
-        y: (plasmoid.configuration.panelPosition === LatteDock.Types.Double) && root.isVertical
+        y: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical
            && plasmoid.immutable && windowSystem.compositingActive ?
                (dockView.height/2) - (dockView.visibility.maxLength/2): 0
-        width: (plasmoid.configuration.panelPosition === LatteDock.Types.Double) && root.isHorizontal && plasmoid.immutable ?
+        width: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal && plasmoid.immutable ?
                    dockView.visibility.maxLength : parent.width
-        height: (plasmoid.configuration.panelPosition === LatteDock.Types.Double) && root.isVertical && plasmoid.immutable ?
+        height: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical && plasmoid.immutable ?
                     dockView.visibility.maxLength : parent.height
 
         Component.onCompleted: {
@@ -1159,7 +1159,7 @@ DragDrop.DropArea {
             states:[
                 State {
                     name: "bottom"
-                    when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+                    when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
                     AnchorChanges {
                         target: secondLayout
@@ -1172,7 +1172,7 @@ DragDrop.DropArea {
                 },
                 State {
                     name: "left"
-                    when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+                    when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
                     AnchorChanges {
                         target: secondLayout
@@ -1185,7 +1185,7 @@ DragDrop.DropArea {
                 },
                 State {
                     name: "right"
-                    when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+                    when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
                     AnchorChanges {
                         target: secondLayout
@@ -1198,7 +1198,7 @@ DragDrop.DropArea {
                 },
                 State {
                     name: "top"
-                    when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Double)
+                    when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Double)
 
                     AnchorChanges {
                         target: secondLayout
@@ -1232,7 +1232,7 @@ DragDrop.DropArea {
             var visibility = dockView.visibility;
 
             if (plasmoid.immutable && !visibility.isHovered //&& !wholeArea.containsMouse
-                    && ((visibility.panelVisibility === LatteDock.Types.AutoHide) || visibility.isDockWindowType) ) {
+                    && ((visibility.panelVisibility === Latte.Dock.AutoHide) || visibility.isDockWindowType) ) {
                 visibility.mustBeLowered();
             }
         }
