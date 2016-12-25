@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/nowdock-panel/\n"
-"POT-Creation-Date: 2016-12-23 15:19+0200\n"
+"POT-Creation-Date: 2016-12-25 15:57+0200\n"
 "PO-Revision-Date: 2016-11-26 17:31+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -18,14 +18,21 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 
 #: rc.cpp:1
-#, fuzzy
-msgid "Now Dock"
-msgstr "Now Dock 面板"
+msgid "Latte"
+msgstr ""
 
 #: rc.cpp:2
+msgid "Containment provided for the Latte Dock"
+msgstr ""
+
 #, fuzzy
-msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
-msgstr "一個嘗試讓滑鼠游標停在上面時會讓它的 plasmoid 產生動畫的 plasma 面板"
+#~ msgid "Now Dock"
+#~ msgstr "Now Dock 面板"
+
+#, fuzzy
+#~ msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
+#~ msgstr ""
+#~ "一個嘗試讓滑鼠游標停在上面時會讓它的 plasmoid 產生動畫的 plasma 面板"
 
 #~ msgid "Applets Alignment"
 #~ msgstr "小程式對齊"

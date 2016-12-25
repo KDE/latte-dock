@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/nowdock-panel/\n"
-"POT-Creation-Date: 2016-12-23 15:19+0200\n"
+"POT-Creation-Date: 2016-12-25 15:57+0200\n"
 "PO-Revision-Date: 2016-09-25 04:15+0300\n"
 "Last-Translator: Viorel-Cătălin Răpițeanu <rapiteanu DOT catalin AT gmail "
 "DOT com>\n"
@@ -20,15 +20,21 @@ msgstr ""
 "X-Generator: Poedit 1.8.9\n"
 
 #: rc.cpp:1
-#, fuzzy
-msgid "Now Dock"
-msgstr "Panou Now Dock"
+msgid "Latte"
+msgstr ""
 
 #: rc.cpp:2
-#, fuzzy
-msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
+msgid "Containment provided for the Latte Dock"
 msgstr ""
-"Un panou plasma care încearcă să animeze miniaplicațiile la trecerea peste"
+
+#, fuzzy
+#~ msgid "Now Dock"
+#~ msgstr "Panou Now Dock"
+
+#, fuzzy
+#~ msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
+#~ msgstr ""
+#~ "Un panou plasma care încearcă să animeze miniaplicațiile la trecerea peste"
 
 #~ msgid "Applets Alignment"
 #~ msgstr "Alinierea miniaplicațiilor"

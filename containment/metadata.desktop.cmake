@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Now Dock
-Comment=A dock for Plasma that tries to animate its plasmoids on hovering
+Name=Latte
+Comment=Containment provided for the Latte Dock
 
 Type=Service
 Keywords=
@@ -9,7 +9,7 @@ NoDisplay=true
 
 X-KDE-PluginInfo-Author=@AUTHOR@
 X-KDE-PluginInfo-Email=@EMAIL@
-X-KDE-PluginInfo-Name=org.kde.nowdock.containment
+X-KDE-PluginInfo-Name=org.kde.latte.containment
 X-KDE-PluginInfo-Version=@VERSION@
 X-KDE-PluginInfo-Website=@WEBSITE@
 X-KDE-PluginInfo-Category=

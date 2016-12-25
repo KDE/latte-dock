@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/nowdock-panel/\n"
-"POT-Creation-Date: 2016-12-23 15:19+0200\n"
+"POT-Creation-Date: 2016-12-25 15:57+0200\n"
 "PO-Revision-Date: 2016-11-25 00:08+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -18,15 +18,21 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 
 #: rc.cpp:1
-#, fuzzy
-msgid "Now Dock"
-msgstr "Now Dock Πίνακας"
+msgid "Latte"
+msgstr ""
 
 #: rc.cpp:2
-#, fuzzy
-msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
+msgid "Containment provided for the Latte Dock"
 msgstr ""
-"Ένας πίνακας του Plasma που χρησιμοποιεί ποικίλα εφέ για τις εφαρμογές του"
+
+#, fuzzy
+#~ msgid "Now Dock"
+#~ msgstr "Now Dock Πίνακας"
+
+#, fuzzy
+#~ msgid "A dock for Plasma that tries to animate its plasmoids on hovering"
+#~ msgstr ""
+#~ "Ένας πίνακας του Plasma που χρησιμοποιεί ποικίλα εφέ για τις εφαρμογές του"
 
 #~ msgid "Applets Alignment"
 #~ msgstr "Στοίχιση Εφαρμογών"

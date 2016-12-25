@@ -76,7 +76,7 @@ ENDIF(NOT GETTEXT_MSGFMT_EXECUTABLE)
 
 add_subdirectory(liblattedock)
 add_subdirectory(containment)
-plasma_install_package(build/containment/release org.kde.nowdock.containment) 
+plasma_install_package(build/containment/release org.kde.latte.containment) 
 add_subdirectory(plasmoid)
 plasma_install_package(build/plasmoid/release org.kde.store.nowdock.plasmoid) 
 
