@@ -12,7 +12,7 @@ include(KDEPackageAppTemplates)
 
 
 set(lattedock-app_SRCS
-    ../liblattedock/types.cpp
+    ../liblattedock/dock.cpp
     abstractinterface.cpp
     xwindowinterface.cpp
     visibilitymanager.cpp
