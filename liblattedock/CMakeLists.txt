@@ -25,6 +25,6 @@ target_link_libraries(lattedockplugin
         KF5::CoreAddons
 )
 
-install(TARGETS lattedockplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/dock)
+install(TARGETS lattedockplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
 
-install(FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/dock)
+install(FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
