@@ -25,6 +25,6 @@ ConfigModel {
     ConfigCategory {
          name: i18n("General")
          icon: "preferences-system-windows"
-         source: "NowDockConfiguration.qml"
+         source: "LatteDockConfiguration.qml"
     }
 }

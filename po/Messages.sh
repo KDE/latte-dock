@@ -3,7 +3,7 @@
 BASEDIR="../.." # root of translatable sources
 PROJECT="plasma_applet_org.kde.latte.containment" # project name
 PROJECTPATH="../../containment" # project path
-BUGADDR="https://github.com/psifidotos/nowdock-panel/" # MSGID-Bugs
+BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
 WDIR="`pwd`/containment" # working dir
 
 PROJECTPLASMOID="plasma_applet_org.kde.store.nowdock.plasmoid" # project name

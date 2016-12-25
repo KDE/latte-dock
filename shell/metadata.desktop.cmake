@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Latte Shell
+Name[el]=Κέλυφος Latte
 Comment=Shell provided for the Latte Dock
+Comment[el]=Κέλυφος που παρέχεται από το Latte
 
 Keywords=shell
 Type=Service
