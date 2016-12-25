@@ -19,7 +19,7 @@ public:
         AutoHide,
         DodgeActive,
         DodgeMaximized,
-        DodgeAllWindows,
+        DodgeAllWindows
     };
     Q_ENUM(Visibility)
     
