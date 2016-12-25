@@ -35,7 +35,7 @@
 #include <KActionCollection>
 
 #include "nowdockcorona.h"
-//using Candil::Dock;
+
 
 NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),

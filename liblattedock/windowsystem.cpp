@@ -2,7 +2,7 @@
 
 #include <KWindowSystem>
 
-namespace NowDock {
+namespace LatteDock {
 
 WindowSystem::WindowSystem(QObject *parent) :
     QObject(parent)
@@ -24,4 +24,4 @@ void WindowSystem::compositingChanged(bool state)
     emit compositingChanged();
 }
 
-}
+} //end of namespace

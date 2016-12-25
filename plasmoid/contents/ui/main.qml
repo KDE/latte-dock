@@ -29,7 +29,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.activities 0.1 as Activities
 
-import org.kde.nowdock 0.1 as NowDock
+import org.kde.latte.dock 0.1 as LatteDock
 
 import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
@@ -217,7 +217,7 @@ Item {
 
     // FIXME: at some point this must be dropped with NowDock plugin
     ////BEGIN interfaces
-    NowDock.WindowSystem{
+    LatteDock.WindowSystem{
         id:windowSystem
     }
 
@@ -994,7 +994,7 @@ Item {
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===NowDock.Types.Center)
+            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1007,7 +1007,7 @@ Item {
         },
         State {
             name: "bottomLeft"
-            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===NowDock.Types.Left)
+            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===LatteDock.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -1020,7 +1020,7 @@ Item {
         },
         State {
             name: "bottomRight"
-            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===NowDock.Types.Right)
+            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===LatteDock.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -1034,7 +1034,7 @@ Item {
         ///Top Edge
         State {
             name: "topCenter"
-            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===NowDock.Types.Center)
+            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1047,7 +1047,7 @@ Item {
         },
         State {
             name: "topLeft"
-            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===NowDock.Types.Left)
+            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===LatteDock.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -1060,7 +1060,7 @@ Item {
         },
         State {
             name: "topRight"
-            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===NowDock.Types.Right)
+            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===LatteDock.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -1074,7 +1074,7 @@ Item {
         ////Left Edge
         State {
             name: "leftCenter"
-            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===NowDock.Types.Center)
+            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1087,7 +1087,7 @@ Item {
         },
         State {
             name: "leftTop"
-            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===NowDock.Types.Top)
+            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===LatteDock.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -1100,7 +1100,7 @@ Item {
         },
         State {
             name: "leftBottom"
-            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===NowDock.Types.Bottom)
+            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===LatteDock.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -1114,7 +1114,7 @@ Item {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===NowDock.Types.Center)
+            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1127,7 +1127,7 @@ Item {
         },
         State {
             name: "rightTop"
-            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===NowDock.Types.Top)
+            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===LatteDock.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -1140,7 +1140,7 @@ Item {
         },
         State {
             name: "rightBottom"
-            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===NowDock.Types.Bottom)
+            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===LatteDock.Types.Bottom)
 
             AnchorChanges {
                 target: barLine

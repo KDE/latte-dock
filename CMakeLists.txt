@@ -1,4 +1,4 @@
-project(nowdock)
+project(lattedock)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 set (CMAKE_CXX_STANDARD 11)
@@ -74,7 +74,7 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
 
 ENDIF(NOT GETTEXT_MSGFMT_EXECUTABLE) 
 
-add_subdirectory(libnowdock)
+add_subdirectory(liblattedock)
 add_subdirectory(containment)
 plasma_install_package(build/containment/release org.kde.nowdock.containment) 
 add_subdirectory(plasmoid)

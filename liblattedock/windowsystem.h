@@ -1,9 +1,9 @@
 #ifndef WINDOWSYSTEM_H
 #define WINDOWSYSTEM_H
 
-#include "abstractinterface.h"
+#include <QObject>
 
-namespace NowDock {
+namespace LatteDock {
 
 class WindowSystem : public QObject {
     Q_OBJECT
@@ -23,6 +23,6 @@ private Q_SLOTS:
     void compositingChanged(bool state);
 };
 
-}//NowDock namespace
+}//LatteDock namespace
 
 #endif

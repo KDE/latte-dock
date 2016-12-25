@@ -1,9 +1,9 @@
-#ifndef NOWDOCKPLUGIN_H
-#define NOWDOCKPLUGIN_H
+#ifndef LATTEDOCKPLUGIN_H
+#define LATTEDOCKPLUGIN_H
 
 #include <QQmlExtensionPlugin>
 
-class NowDockPlugin : public QQmlExtensionPlugin {
+class LatteDockPlugin : public QQmlExtensionPlugin {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
     

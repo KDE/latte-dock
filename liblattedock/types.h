@@ -5,7 +5,7 @@
 #include <QMetaEnum>
 #include <QMetaType>
 
-namespace NowDock {
+namespace LatteDock {
 
 class Types {
     Q_GADGET

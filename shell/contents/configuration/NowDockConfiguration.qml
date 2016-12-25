@@ -8,7 +8,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.nowdock 0.1 as NowDock
+import org.kde.latte.dock 0.1 as LatteDock
 
 PlasmaCore.FrameSvgItem {
     imagePath: "dialogs/background"
@@ -65,28 +65,28 @@ PlasmaCore.FrameSvgItem {
 
 
                 function updatePanelPositionVisual(){
-                    if((panelPosition == NowDock.Types.Left)||(panelPosition == NowDock.Types.Top)){
+                    if((panelPosition == LatteDock.Types.Left)||(panelPosition == LatteDock.Types.Top)){
                         firstPosition.checked = true;
                         centerPosition.checked = false;
                         lastPosition.checked = false;
                         splitTwoPosition.checked = false;
                         removeInternalViewSplitter();
                     }
-                    else if(panelPosition == NowDock.Types.Center){
+                    else if(panelPosition == LatteDock.Types.Center){
                         firstPosition.checked = false;
                         centerPosition.checked = true;
                         lastPosition.checked = false;
                         splitTwoPosition.checked = false;
                         removeInternalViewSplitter();
                     }
-                    else if((panelPosition == NowDock.Types.Right)||(panelPosition == NowDock.Types.Bottom)){
+                    else if((panelPosition == LatteDock.Types.Right)||(panelPosition == LatteDock.Types.Bottom)){
                         firstPosition.checked = false;
                         centerPosition.checked = false;
                         lastPosition.checked = true;
                         splitTwoPosition.checked = false;
                         removeInternalViewSplitter();
                     }
-                    else if (panelPosition == NowDock.Types.Double){
+                    else if (panelPosition == LatteDock.Types.Double){
                         firstPosition.checked = false;
                         centerPosition.checked = false;
                         lastPosition.checked = false;
@@ -112,9 +112,9 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             if(panelIsVertical)
-                                plasmoid.configuration.panelPosition = NowDock.Types.Top
+                                plasmoid.configuration.panelPosition = LatteDock.Types.Top
                             else
-                                plasmoid.configuration.panelPosition = NowDock.Types.Left
+                                plasmoid.configuration.panelPosition = LatteDock.Types.Left
                         }
                     }
                     onClicked: checked=true;
@@ -127,7 +127,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = NowDock.Types.Center
+                            plasmoid.configuration.panelPosition = LatteDock.Types.Center
                         }
                     }
                     onClicked: checked=true;
@@ -141,9 +141,9 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             if(panelIsVertical)
-                                plasmoid.configuration.panelPosition = NowDock.Types.Bottom
+                                plasmoid.configuration.panelPosition = LatteDock.Types.Bottom
                             else
-                                plasmoid.configuration.panelPosition = NowDock.Types.Right
+                                plasmoid.configuration.panelPosition = LatteDock.Types.Right
                         }
                     }
                     onClicked: checked=true;
@@ -157,7 +157,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = NowDock.Types.Double;
+                            plasmoid.configuration.panelPosition = LatteDock.Types.Double;
                         }
                     }
                     onClicked: checked=true;

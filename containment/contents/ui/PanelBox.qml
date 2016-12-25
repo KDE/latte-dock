@@ -26,7 +26,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import org.kde.nowdock 0.1 as NowDock
+import org.kde.latte.dock 0.1 as LatteDock
 
 Item{
     id:barLine
@@ -43,8 +43,8 @@ Item{
     width: root.isHorizontal ? panelWidth : smallSize
     height: root.isVertical ? panelHeight : smallSize
 
-    property int spacing: (root.panelAlignment === NowDock.PanelWindow.Center
-                           || plasmoid.configuration.panelPosition === NowDock.PanelWindow.Double) ?
+    property int spacing: (root.panelAlignment === LatteDock.Types.Center
+                           || plasmoid.configuration.panelPosition === LatteDock.Types.Double) ?
                               root.panelEdgeSpacing : root.panelEdgeSpacing/2
     property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
@@ -133,7 +133,7 @@ Item{
         ///Left
         State {
             name: "leftCenter"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === NowDock.PanelWindow.Center)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -151,7 +151,7 @@ Item{
         ///Left
         State {
             name: "leftTop"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === NowDock.PanelWindow.Top)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -169,7 +169,7 @@ Item{
         ///Left
         State {
             name: "leftBottom"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === NowDock.PanelWindow.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -186,7 +186,7 @@ Item{
         },
         State {
             name: "leftDouble"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === NowDock.PanelWindow.Double)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === LatteDock.Types.Double)
 
             AnchorChanges {
                 target: barLine
@@ -204,7 +204,7 @@ Item{
         ///Right
         State {
             name: "rightCenter"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === NowDock.PanelWindow.Center)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -221,7 +221,7 @@ Item{
         },
         State {
             name: "rightTop"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === NowDock.PanelWindow.Top)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -238,7 +238,7 @@ Item{
         },
         State {
             name: "rightBottom"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === NowDock.PanelWindow.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -255,7 +255,7 @@ Item{
         },
         State {
             name: "rightDouble"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === NowDock.PanelWindow.Double)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === LatteDock.Types.Double)
 
             AnchorChanges {
                 target: barLine
@@ -273,7 +273,7 @@ Item{
         ///Bottom
         State {
             name: "bottomCenter"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === NowDock.PanelWindow.Center)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -290,7 +290,7 @@ Item{
         },
         State {
             name: "bottomLeft"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === NowDock.PanelWindow.Left)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -307,7 +307,7 @@ Item{
         },
         State {
             name: "bottomRight"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === NowDock.PanelWindow.Right)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -324,7 +324,7 @@ Item{
         },
         State {
             name: "bottomDouble"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === NowDock.PanelWindow.Double)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === LatteDock.Types.Double)
 
             AnchorChanges {
                 target: barLine
@@ -342,7 +342,7 @@ Item{
         ///Top
         State {
             name: "topCenter"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === NowDock.PanelWindow.Center)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -359,7 +359,7 @@ Item{
         },
         State {
             name: "topLeft"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === NowDock.PanelWindow.Left)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -376,7 +376,7 @@ Item{
         },
         State {
             name: "topRight"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === NowDock.PanelWindow.Right)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -393,7 +393,7 @@ Item{
         },
         State {
             name: "topDouble"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === NowDock.PanelWindow.Double)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === LatteDock.Types.Double)
 
             AnchorChanges {
                 target: barLine

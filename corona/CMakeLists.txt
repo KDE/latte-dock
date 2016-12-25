@@ -12,7 +12,7 @@ include(KDEPackageAppTemplates)
 
 
 set(nowdock-app_SRCS
-    ../libnowdock/types.cpp
+    ../liblattedock/types.cpp
     abstractinterface.cpp
     xwindowinterface.cpp
     visibilitymanager.cpp
