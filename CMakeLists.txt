@@ -20,6 +20,8 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma PlasmaQuick WindowSystem Declarative
     I18n CoreAddons XmlGui DBusAddons Notifications)
 
+include(FakeTarget.cmake)
+
 FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 
 IF(NOT GETTEXT_MSGFMT_EXECUTABLE)
