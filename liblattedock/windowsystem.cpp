@@ -2,7 +2,7 @@
 
 #include <KWindowSystem>
 
-namespace LatteDock {
+namespace Latte {
 
 WindowSystem::WindowSystem(QObject *parent) :
     QObject(parent)

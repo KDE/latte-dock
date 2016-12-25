@@ -13,7 +13,7 @@ set(CMAKE_AUTOMOC ON)
 set(lattedock_SRCS
     lattedockplugin.cpp
     windowsystem.cpp
-    types.cpp
+    dock.cpp
 )
     
 add_library(lattedockplugin SHARED ${lattedock_SRCS})

@@ -8,7 +8,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte.dock 0.1 as LatteDock
+import org.kde.latte.dock 0.1 as Latte
 
 PlasmaCore.FrameSvgItem {
     imagePath: "dialogs/background"
@@ -65,28 +65,28 @@ PlasmaCore.FrameSvgItem {
 
 
                 function updatePanelPositionVisual(){
-                    if((panelPosition == LatteDock.Types.Left)||(panelPosition == LatteDock.Types.Top)){
+                    if((panelPosition == Latte.Dock.Left)||(panelPosition == Latte.Dock.Top)){
                         firstPosition.checked = true;
                         centerPosition.checked = false;
                         lastPosition.checked = false;
                         splitTwoPosition.checked = false;
                         removeInternalViewSplitter();
                     }
-                    else if(panelPosition == LatteDock.Types.Center){
+                    else if(panelPosition == Latte.Dock.Center){
                         firstPosition.checked = false;
                         centerPosition.checked = true;
                         lastPosition.checked = false;
                         splitTwoPosition.checked = false;
                         removeInternalViewSplitter();
                     }
-                    else if((panelPosition == LatteDock.Types.Right)||(panelPosition == LatteDock.Types.Bottom)){
+                    else if((panelPosition == Latte.Dock.Right)||(panelPosition == Latte.Dock.Bottom)){
                         firstPosition.checked = false;
                         centerPosition.checked = false;
                         lastPosition.checked = true;
                         splitTwoPosition.checked = false;
                         removeInternalViewSplitter();
                     }
-                    else if (panelPosition == LatteDock.Types.Double){
+                    else if (panelPosition == Latte.Dock.Double){
                         firstPosition.checked = false;
                         centerPosition.checked = false;
                         lastPosition.checked = false;
@@ -112,9 +112,9 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             if(panelIsVertical)
-                                plasmoid.configuration.panelPosition = LatteDock.Types.Top
+                                plasmoid.configuration.panelPosition = Latte.Dock.Top
                             else
-                                plasmoid.configuration.panelPosition = LatteDock.Types.Left
+                                plasmoid.configuration.panelPosition = Latte.Dock.Left
                         }
                     }
                     onClicked: checked=true;
@@ -127,7 +127,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = LatteDock.Types.Center
+                            plasmoid.configuration.panelPosition = Latte.Dock.Center
                         }
                     }
                     onClicked: checked=true;
@@ -141,9 +141,9 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             if(panelIsVertical)
-                                plasmoid.configuration.panelPosition = LatteDock.Types.Bottom
+                                plasmoid.configuration.panelPosition = Latte.Dock.Bottom
                             else
-                                plasmoid.configuration.panelPosition = LatteDock.Types.Right
+                                plasmoid.configuration.panelPosition = Latte.Dock.Right
                         }
                     }
                     onClicked: checked=true;
@@ -157,7 +157,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = LatteDock.Types.Double;
+                            plasmoid.configuration.panelPosition = Latte.Dock.Double;
                         }
                     }
                     onClicked: checked=true;
@@ -165,13 +165,11 @@ PlasmaCore.FrameSvgItem {
             }
         }
 
-
-        //  BelowActive = 0, /** always visible except if ovelaps with the active window, no area reserved */
-        //  BelowMaximized, /** always visible except if ovelaps with an active maximize window, no area reserved */
-        //  LetWindowsCover, /** always visible, windows will go over the panel, no area reserved */
-        //  WindowsGoBelow, /** default, always visible, windows will go under the panel, no area reserved */
-        //  AutoHide, /** the panel will be shownn only if the mouse cursor is on screen edges */
-        //  AlwaysVisible,  /** always visible panel, "Normal" plasma panel, accompanies plasma's "Always Visible"  */
+        //AlwaysVisible = 0,
+        //AutoHide,
+        //DodgeActive,
+        //DodgeMaximized,
+        //DodgeAllWindows
         /**********  Panel Visibility ****************/
 
         Column{
@@ -183,7 +181,7 @@ PlasmaCore.FrameSvgItem {
             }
 
             //user set Panel Visibility
-            // 0-BelowActive, 1-BelowMaximized, 2-LetWindowsCover, 3-WindowsGoBelow, 4-AutoHide, 5-AlwaysVisible
+            // 0-AlwaysVisible, 1-AutoHide, 2-DodgeActive, 3-DodgeMaximized, 4-DodgeAllWindows
             Flow{
                 width: parent.width
                 spacing: 2
@@ -218,10 +216,10 @@ PlasmaCore.FrameSvgItem {
                     else
                         fifthState.checked = false;
 
-                    if (panelVisibility === 5)
+                 /*   if (panelVisibility === 5)
                         sixthState.checked = true;
                     else
-                        sixthState.checked = false;
+                        sixthState.checked = false;*/
                 }
 
                 onPanelVisibilityChanged: updatePanelVisibilityVisual();
@@ -234,7 +232,7 @@ PlasmaCore.FrameSvgItem {
                 PlasmaComponents.Button{
                     id: firstState
                     checkable: true
-                    text: i18n("Below Active")
+                    text: i18n("Always Visible")
                     width: (parent.width / 2) - 1
 
                     onCheckedChanged: {
@@ -247,7 +245,7 @@ PlasmaCore.FrameSvgItem {
                 PlasmaComponents.Button{
                     id: secondState
                     checkable: true
-                    text: i18n("Below Maximized")
+                    text: i18n("Auto Hide")
                     width: (parent.width / 2) - 1
 
                     onCheckedChanged: {
@@ -260,7 +258,7 @@ PlasmaCore.FrameSvgItem {
                 PlasmaComponents.Button{
                     id: thirdState
                     checkable: true
-                    text: i18n("Let Windows Cover")
+                    text: i18n("Dodge Active")
                     width: (parent.width / 2) - 1
 
                     onCheckedChanged: {
@@ -274,7 +272,7 @@ PlasmaCore.FrameSvgItem {
                 PlasmaComponents.Button{
                     id: fourthState
                     checkable: true
-                    text: i18n("Windows Go Below")
+                    text: i18n("Dodge Maximized")
                     width: (parent.width/2) - 1
 
                     onCheckedChanged: {
@@ -288,7 +286,7 @@ PlasmaCore.FrameSvgItem {
                 PlasmaComponents.Button{
                     id: fifthState
                     checkable: true
-                    text: i18n("Auto Hide")
+                    text: i18n("Dodge All Windows")
                     width: (parent.width/2) - 1
 
                     onCheckedChanged: {
@@ -298,7 +296,7 @@ PlasmaCore.FrameSvgItem {
                     }
                     onClicked: checked=true;
                 }
-                PlasmaComponents.Button{
+               /* PlasmaComponents.Button{
                     id: sixthState
                     checkable: true
                     text: i18n("Always Visible")
@@ -310,7 +308,7 @@ PlasmaCore.FrameSvgItem {
                         }
                     }
                     onClicked: checked=true;
-                }
+                }*/
             }
         }
 

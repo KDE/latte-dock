@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-namespace LatteDock {
+namespace Latte {
 
 class WindowSystem : public QObject {
     Q_OBJECT

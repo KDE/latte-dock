@@ -24,12 +24,11 @@
     </entry>
     <entry name="panelVisibility" type="Enum">
       <choices>
-            <choice name="BelowActive"/>
-            <choice name="BelowMaximized"/>
-            <choice name="LetWindowsCover"/>
-            <choice name="WindowsGoBelow"/>
-            <choice name="AutoHide"/>
             <choice name="AlwaysVisible"/>
+            <choice name="AutoHide"/>
+            <choice name="DodgeActive"/>
+            <choice name="DodgeMaximized"/>
+            <choice name="DodgeAllWindows"/>
       </choices>
       <default>0</default>
     </entry>

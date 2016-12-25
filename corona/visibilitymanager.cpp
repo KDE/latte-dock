@@ -4,7 +4,7 @@
 #include "xwindowinterface.h"
 #include "plasmaquick/containmentview.h"
 
-#include "../liblattedock/types.h"
+#include "../liblattedock/dock.h"
 
 #include <QDebug>
 
@@ -21,8 +21,8 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view) :
     m_childrenLength(-1),
     m_view(view)
 {
-//    m_windowSystem = new WindowSystem(this);
-//    connect(m_windowSystem, SIGNAL(compositingChanged()), this, SLOT(compositingChanged()));
+    //    m_windowSystem = new WindowSystem(this);
+    //    connect(m_windowSystem, SIGNAL(compositingChanged()), this, SLOT(compositingChanged()));
 
     m_interface = new NowDock::XWindowInterface(m_view);
     connect(m_interface, SIGNAL(windowInAttention(bool)), this, SLOT(setWindowInAttention(bool)));
@@ -31,8 +31,8 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view) :
     //fixes a bug in plasma-framework with wrong popups placement
     m_interface->setDockNumber(2);
     
-//    connect(this, SIGNAL(screenChanged(QScreen *)), this, SLOT(screenChanged(QScreen *)));
-//    setPanelScreen(screen());
+    //    connect(this, SIGNAL(screenChanged(QScreen *)), this, SLOT(screenChanged(QScreen *)));
+    //    setPanelScreen(screen());
 
     m_updateStateTimer.setSingleShot(true);
     m_updateStateTimer.setInterval(900);
@@ -43,10 +43,10 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view) :
     connect(&m_initTimer, &QTimer::timeout, this, &VisibilityManager::initWindow);
     
     connect(this, SIGNAL(panelVisibilityChanged()), this, SLOT(updateVisibilityFlags()));
-    setPanelVisibility(LatteDock::Types::BelowActive);
-//   updateVisibilityFlags();
+    setPanelVisibility(Latte::Dock::DodgeActive);
+    //   updateVisibilityFlags();
 
-//    connect(this, SIGNAL(locationChanged()), this, SLOT(updateWindowPosition()));
+    //    connect(this, SIGNAL(locationChanged()), this, SLOT(updateWindowPosition()));
     connect(this, SIGNAL(windowInAttentionChanged()), this, SLOT(updateState()));
     
     initialize();
@@ -63,16 +63,16 @@ void VisibilityManager::setContainment(Plasma::Containment *containment)
     }
     
     m_containment = containment;
-//    setVisibility(mode);
+    //    setVisibility(mode);
 }
 
 
-LatteDock::Types::Visibility VisibilityManager::panelVisibility() const
+Latte::Dock::Visibility VisibilityManager::panelVisibility() const
 {
     return m_panelVisibility;
 }
 
-void VisibilityManager::setPanelVisibility(LatteDock::Types::Visibility state)
+void VisibilityManager::setPanelVisibility(Latte::Dock::Visibility state)
 {
     if (m_panelVisibility == state) {
         return;
@@ -184,7 +184,7 @@ void VisibilityManager::initWindow()
 {
     updateVisibilityFlags();
     
-//   updateWindowPosition();
+    //   updateWindowPosition();
 
     // The initialization phase makes two passes because
     // changing the window style and type wants a small delay
@@ -249,7 +249,7 @@ void VisibilityManager::updateVisibilityFlags()
     
     m_interface->setDockDefaultFlags(m_isDockWindowType);
     
-//   updateWindowPosition();
+    //   updateWindowPosition();
     if (!m_isDockWindowType) {
         showOnTop();
     }
@@ -268,7 +268,7 @@ void VisibilityManager::updateState()
     
     //update the dock behavior
     switch (m_panelVisibility) {
-        case LatteDock::Types::BelowActive:
+        case Latte::Dock::DodgeActive:
             if (!m_interface->desktopIsActive() && m_interface->dockIntersectsActiveWindow()) {
                 if (m_interface->dockIsOnTop() || (m_isDockWindowType && !m_isAutoHidden)) {
                     // qDebug() << m_isHovered  << " - " << m_windowIsInAttention << " - "<< m_disableHiding;
@@ -294,10 +294,10 @@ void VisibilityManager::updateState()
                     }
                 }
             }
-            
+
             break;
-            
-        case LatteDock::Types::BelowMaximized:
+
+        case Latte::Dock::DodgeMaximized:
             if (!m_interface->desktopIsActive() && m_interface->activeIsMaximized() && m_interface->dockIntersectsActiveWindow()) {
                 if (m_interface->dockIsOnTop() || (m_isDockWindowType && !m_isAutoHidden)) {
                     if (!m_isHovered && !m_windowIsInAttention && !m_disableHiding) {
@@ -318,50 +318,50 @@ void VisibilityManager::updateState()
                     showOnTop();
                 }
             }
-            
+
             break;
-            
-        case LatteDock::Types::LetWindowsCover:
-        
-            //this is not supported in clean Dock Window Types such as in wayland case
-            if (m_isDockWindowType) {
-                return;
-            }
-            
-            if (!m_isHovered && m_interface->dockIsOnTop()) {
-                if (m_interface->dockIsCovering()) {
-                    if (!m_disableHiding) {
-                        emit mustBeLowered();
-                    }
-                } else {
-                    showOnBottom();
+
+        /*    case Latte::Dock::LetWindowsCover:
+
+                //this is not supported in clean Dock Window Types such as in wayland case
+                if (m_isDockWindowType) {
+                    return;
                 }
-            } else if (m_windowIsInAttention) {
-                if (!m_interface->dockIsOnTop()) {
-                    if (m_interface->dockIsCovered()) {
-                        emit mustBeRaised();
+
+                if (!m_isHovered && m_interface->dockIsOnTop()) {
+                    if (m_interface->dockIsCovering()) {
+                        if (!m_disableHiding) {
+                            emit mustBeLowered();
+                        }
                     } else {
-                        showOnTop();
+                        showOnBottom();
+                    }
+                } else if (m_windowIsInAttention) {
+                    if (!m_interface->dockIsOnTop()) {
+                        if (m_interface->dockIsCovered()) {
+                            emit mustBeRaised();
+                        } else {
+                            showOnTop();
+                        }
                     }
                 }
-            }
-            
-            break;
-            
-        case LatteDock::Types::WindowsGoBelow:
-            //Do nothing, the dock is OnTop state in every case
-            break;
-            
-        case LatteDock::Types::AutoHide:
+
+                break;
+
+            case LatteDock::Types::WindowsGoBelow:
+                //Do nothing, the dock is OnTop state in every case
+                break;*/
+
+        case Latte::Dock::AutoHide:
             if (m_windowIsInAttention && m_isAutoHidden) {
                 emit mustBeRaised();
             } else if (!m_isHovered && !m_disableHiding) {
                 emit mustBeLowered();
             }
-            
+
             break;
-            
-        case LatteDock::Types::AlwaysVisible:
+
+        case Latte::Dock::AlwaysVisible:
             //Do nothing, the dock in OnTop state in every case
             break;
     }
@@ -389,9 +389,9 @@ void VisibilityManager::showOnBottom()
 /***************/
 void VisibilityManager::activeWindowChanged()
 {
-    if ((m_panelVisibility == LatteDock::Types::WindowsGoBelow)
-        || (m_panelVisibility == LatteDock::Types::AlwaysVisible)
-        || (m_panelVisibility == LatteDock::Types::AutoHide)) {
+    // if ((m_panelVisibility == LatteDock::Types::WindowsGoBelow)
+    if ((m_panelVisibility == Latte::Dock::AlwaysVisible)
+        || (m_panelVisibility == Latte::Dock::AutoHide)) {
         return;
     }
     
@@ -407,8 +407,8 @@ void VisibilityManager::activeWindowChanged()
 //the dock is totally hidden underneath
 void VisibilityManager::showOnTopCheck()
 {
-    if ((m_panelVisibility == LatteDock::Types::BelowActive) || (m_panelVisibility == LatteDock::Types::BelowMaximized)
-        || (m_panelVisibility == LatteDock::Types::LetWindowsCover)) {
+    if ((m_panelVisibility == Latte::Dock::DodgeActive) || (m_panelVisibility == Latte::Dock::DodgeMaximized)) {
+        //|| (m_panelVisibility == Latte::Dock::LetWindowsCover)) {
         if (m_interface->dockIsCovered(true)) {
             m_updateStateTimer.stop();
             setIsHovered(true);
@@ -430,7 +430,7 @@ bool VisibilityManager::event(QEvent *event)
         m_updateStateTimer.stop();
         setIsHovered(true);
         
-        if ((m_panelVisibility == LatteDock::Types::AutoHide) || (m_isDockWindowType)) {
+        if ((m_panelVisibility == Latte::Dock::AutoHide) || (m_isDockWindowType)) {
             if (m_isAutoHidden) {
                 emit mustBeRaised();
             }
@@ -440,8 +440,8 @@ bool VisibilityManager::event(QEvent *event)
     } else if (event->type() == QEvent::Leave) {
         setIsHovered(false);
         
-        if ((m_panelVisibility != LatteDock::Types::WindowsGoBelow)
-            && (m_panelVisibility != LatteDock::Types::AlwaysVisible)) {
+        // if ((m_panelVisibility != LatteDock::Types::WindowsGoBelow) &&
+        if (m_panelVisibility != Latte::Dock::AlwaysVisible) {
             m_updateStateTimer.start();
         }
     }

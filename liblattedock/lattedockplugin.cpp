@@ -1,6 +1,6 @@
 #include "lattedockplugin.h"
 #include "windowsystem.h"
-#include "types.h"
+#include "dock.h"
 
 #include <qqml.h>
 
@@ -8,7 +8,7 @@ void LatteDockPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.latte.dock"));
     
-    qmlRegisterUncreatableType<LatteDock::Types>(uri, 0, 1, "Types", "LatteDock Types uncreatable");
+    qmlRegisterUncreatableType<Latte::Dock>(uri, 0, 1, "Dock", "Latte Dock Types uncreatable");
     
-    qmlRegisterType<LatteDock::WindowSystem>(uri, 0, 1, "WindowSystem");
+    qmlRegisterType<Latte::WindowSystem>(uri, 0, 1, "WindowSystem");
 }

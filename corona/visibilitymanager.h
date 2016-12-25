@@ -2,7 +2,7 @@
 #define VISIBILITYMANAGER_H
 
 #include <QObject>
-#include "../liblattedock/types.h"
+#include "../liblattedock/dock.h"
 #include "abstractinterface.h"
 #include "plasmaquick/containmentview.h"
 
@@ -20,7 +20,7 @@ class VisibilityManager : public QObject {
     Q_PROPERTY(bool isHovered READ isHovered NOTIFY isHoveredChanged)
     Q_PROPERTY(bool windowInAttention READ windowInAttention WRITE setWindowInAttention NOTIFY windowInAttentionChanged)
     
-    Q_PROPERTY(LatteDock::Types::Visibility panelVisibility READ panelVisibility WRITE setPanelVisibility NOTIFY panelVisibilityChanged)
+    Q_PROPERTY(Latte::Dock::Visibility panelVisibility READ panelVisibility WRITE setPanelVisibility NOTIFY panelVisibilityChanged)
     
 public:
     explicit VisibilityManager(PlasmaQuick::ContainmentView *view);
@@ -39,10 +39,10 @@ public:
     
     bool windowInAttention() const;
     
-    LatteDock::Types::Visibility panelVisibility() const;
+    Latte::Dock::Visibility panelVisibility() const;
     void setContainment(Plasma::Containment *contaiment);
     void setMaskArea(QRect area);
-    void setPanelVisibility(LatteDock::Types::Visibility state);
+    void setPanelVisibility(Latte::Dock::Visibility state);
     
 public slots:
     Q_INVOKABLE void initialize();
@@ -94,10 +94,9 @@ private:
     PlasmaQuick::ContainmentView *m_view;
     
     NowDock::AbstractInterface *m_interface;
-    LatteDock::Types::Visibility m_panelVisibility;
+    Latte::Dock::Visibility m_panelVisibility;
     
 };
 
 
 #endif
-
