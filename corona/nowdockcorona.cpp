@@ -192,15 +192,15 @@ void NowDockCorona::loadDefaultLayout()
     //  config.deleteEntry("wallpaperplugin");
 
     switch (containments().size()) {
-        case 0:
+        case 1:
             defaultContainment->setLocation(Plasma::Types::LeftEdge);
             break;
 
-        case 1:
+        case 2:
             defaultContainment->setLocation(Plasma::Types::RightEdge);
             break;
 
-        case 2:
+        case 3:
             defaultContainment->setLocation(Plasma::Types::TopEdge);
             break;
 
