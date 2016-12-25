@@ -1,4 +1,4 @@
-execute_process(COMMAND find plasmoid containment -name "*.qml" -o -name "*.js"
+execute_process(COMMAND find shell containment plasmoid -name "*.qml" -o -name "*.js"
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE QML_SRCS_STRING)
 
