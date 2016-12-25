@@ -1,0 +1,40 @@
+#BracketStyleOptions
+    --style=stroustrup
+    --keep-one-line-blocks
+    --keep-one-line-statements
+
+#TabOptions
+#   --indent=force-tab=4
+    --indent=spaces=4
+
+#BracketModifyOptions
+    --attach-namespaces
+    --attach-inlines
+
+#FormattingOptions
+    --convert-tabs
+    --max-code-length=80
+    --keep-one-line-blocks
+    --keep-one-line-statements
+    --close-templates
+    --max-code-length=200
+
+#IndentationOptions
+    --indent-switches
+    --indent-preproc-block
+    --indent-preproc-define
+    --min-conditional-indent=1
+    --max-instatement-indent=40
+
+#PaddingOptions
+    --break-blocks
+    --pad-oper
+    --unpad-paren
+    --pad-header
+    --fill-empty-lines
+    --align-pointer=name
+    --align-reference=name
+
+#Others
+    --preserve-date
+    --verbose

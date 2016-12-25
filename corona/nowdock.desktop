@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Now Dock
+Comment=Now Dock Application
+Exec=nowdock %u
+Hidden=true
+Icon=plasma
+InitialPreference=1
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=unique
+X-KDE-SubstituteUID=false
+X-KDE-Username=

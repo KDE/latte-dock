@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="showOnlyCurrentScreen" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentDesktop" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentActivity" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="groupingAppIdBlacklist" type="StringList">
+      <default></default>
+    </entry>
+    <entry name="groupingLauncherUrlBlacklist" type="StringList">
+      <default></default>
+    </entry>
+    <entry name="separateLaunchers" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="wheelEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="launchers" type="String">
+      <default></default>
+    </entry>
+    <entry name="middleClickAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+      </choices>
+      <default>2</default>
+    </entry>
+    <entry name="plasmoidPosition" type="Enum">
+      <choices>
+            <choice name="Center"/>
+            <choice name="Left"/>
+            <choice name="Right"/>
+            <choice name="Top"/>
+            <choice name="Bottom"/>
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="smartLaunchersEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showBarLine" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showShadows" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showGlow" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="zoomLevel" type="Int">
+      <default>14</default>
+    </entry>
+    <entry name="iconSize" type="Int">
+      <default>48</default>
+    </entry>
+    <entry name="zoomHelper" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="threeColorsWindows" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="dotsOnActive" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="useThemePanel" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="panelSize" type="Int">
+      <default>10</default>
+    </entry>
+    <entry name="transparentPanel" type="Bool">
+      <default>false</default>
+    </entry>   
+    <entry name="highlightWindows" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="isInNowDockPanel" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showToolTips" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="durationTime" type="Int">
+      <default>2</default>
+    </entry>
+    <entry name="reverseLinesPosition" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showWindowActions" type="Bool">
+      <default>false</default>
+    </entry>
+  </group>
+</kcfg>
+

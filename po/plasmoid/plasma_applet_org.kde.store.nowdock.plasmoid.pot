@@ -1,0 +1,362 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: https://github.com/psifidotos/nowdock-panel/\n"
+"POT-Creation-Date: 2016-12-23 15:19+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../plasmoid/contents/config/config.qml:26
+msgid "Appearance"
+msgstr ""
+
+#: ../../plasmoid/contents/config/config.qml:31
+msgid "Panel"
+msgstr ""
+
+#: ../../plasmoid/contents/config/config.qml:36
+msgid "Interaction"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:68
+msgid "Icon size: "
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:156
+msgid "ver: "
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:163
+msgid "Enable shadows for icons"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:169
+msgid "Show glow around windows points"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:175
+msgid "Different color for minimized windows"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:181
+msgid "Dots on active window"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:187
+msgid "Reverse position for lines and dots"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:205
+msgid "Animations: "
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:223
+msgid "duration"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:223
+msgid "disabled"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:235
+msgid "Zoom"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:249
+msgid "Level: "
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:293
+msgid "Show a red line on the limit needed for animations"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:323
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:169
+msgid ""
+"For the disabled settings you should use the Now Dock Panel Configuration "
+"Window"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:58
+msgid "Cycle through tasks with mouse wheel"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:65
+msgid "Preview windows on hovering"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:71
+msgid "Highlight windows on hovering"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:77
+msgid "Show window actions in the context menu"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:83
+msgid "Show progress information in task buttons"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:88
+msgid "On middle-click:"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+msgctxt "The click action"
+msgid "None"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+msgid "Close Window or Group"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+msgid "New Instance"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+msgid "Minimize/Restore Window or Group"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:106
+msgid "Filters"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:117
+msgid "Show only tasks from the current screen"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:122
+msgid "Show only tasks from the current desktop"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:127
+msgid "Show only tasks from the current activity"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:58
+msgid "Position: "
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+msgid "Center"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+msgid "Left"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+msgid "Right"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+msgid "Top"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+msgid "Bottom"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:74
+msgid "Show bar line for tasks"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:81
+msgid "Use plasma theme panel"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:88
+msgid "Use transparency in the panel"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:95
+msgid "Size: "
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:115
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:128
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:128
+msgctxt "Start playback"
+msgid "Play"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:139
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:147
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:163
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:178
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:223
+msgid "Move To Desktop"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:245
+msgid "Move To Current Desktop"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:254
+msgid "All Desktops"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:283
+msgid "New Desktop"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:303
+msgid "Move To &Activity"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:324
+msgid "Add To Current Activity"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:334
+msgid "All Activities"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:403
+msgid "Minimize"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:419
+msgid "Maximize"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:434
+msgid "More Actions"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:442
+msgid "Move"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:451
+msgid "Resize"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:460
+msgid "Keep Above Others"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:470
+msgid "Keep Below Others"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:482
+msgid "Fullscreen"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:494
+msgid "Shade"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:509
+msgid "Allow this program to be grouped"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:522
+msgid "Start New Instance"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:544
+#: ../../plasmoid/contents/ui/ContextMenu.qml:577
+msgid "Show Launcher On All Activities"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:561
+msgid "Show Launcher When Not Running"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:588
+msgid "Remove Launcher"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:619
+msgid "Close"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:773
+msgid "On %1"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:782
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:801
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:805
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:356
+msgctxt "Go to previous song"
+msgid "Previous"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:365
+msgctxt "Pause player"
+msgid "Pause"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:365
+msgctxt "Start player"
+msgid "Play"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:373
+msgctxt "Go to next song"
+msgid "Next"
+msgstr ""
+
+#: ../../plasmoid/contents/ui/ToolTipWindowMouseArea.qml:57
+msgctxt "close this window"
+msgid "Close"
+msgstr ""
+
+#: rc.cpp:1
+msgid "Now Dock"
+msgstr ""
+
+#: rc.cpp:2
+msgid "Switch between running applications"
+msgstr ""
