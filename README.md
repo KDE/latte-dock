@@ -33,7 +33,10 @@ Requirements
 * KF5KDELibs4Support >= 5.25.0
 * KF5CoreAddons >= 5.25.0
 
+Contributors
+=============
 
+[Varlesh](https://github.com/varlesh) Logos and Icons.
 
 
 
