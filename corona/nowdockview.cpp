@@ -115,7 +115,8 @@ void NowDockView::init()
     connect(this, SIGNAL(widthChanged(int)), this, SIGNAL(widthChanged()));
     connect(this, SIGNAL(heightChanged(int)), this, SIGNAL(heightChanged()));
     
-    rootContext()->setContextProperty(QStringLiteral("panel"), this);
+    rootContext()->setContextProperty(QStringLiteral("dock"), this);
+    engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("nowdockui"));
     
     
