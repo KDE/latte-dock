@@ -134,16 +134,10 @@ QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
 
 int NowDockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
-    return 0;
-    
-    while (const auto *parentCont = qobject_cast<const Plasma::Applet *>(containment->parent())) {
-        if (parentCont->isContainment())
-            containment = qobject_cast<const Plasma::Containment *>(parentCont);
-    }
-    
     for (auto *view : m_containments) {
-        if (view && view->containment() == containment)
-            return containment->screen();
+        if (view && view->containment() && view->containment()->id() == containment->id())
+            if (view->screen())
+                return qGuiApp->screens().indexOf(view->screen());
     }
     
     return -1;
