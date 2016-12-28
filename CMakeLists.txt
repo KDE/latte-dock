@@ -2,10 +2,10 @@ project(lattedock)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 set (CMAKE_CXX_STANDARD 11)
-set(VERSION 0.5.88)
+set(VERSION 0.5.89)
 set(AUTHOR "Michail Vourlakos")
 set(EMAIL "mvourlakos@gmail.com")
-set(WEBSITE "https://store.kde.org/p/1154578/")
+set(WEBSITE "https://github.com/psifidotos/Latte-Dock")
 
 set(QT_MIN_VERSION "5.6.0")
 set(KF5_MIN_VERSION "5.26.0")
@@ -96,25 +96,25 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
         #        ENDIF( _langCode )
         #ENDFOREACH(_poFile ${PO_FILES})
         
-        #corona translations
-        SET(catalogname-corona latte-dock)
-        ADD_CUSTOM_TARGET(translations-corona ALL)
+        #app translations
+        SET(catalogname-app latte-dock)
+        ADD_CUSTOM_TARGET(translations-app ALL)
 
-        FILE(GLOB PO_FILES_CORONA po/corona/*.po)
+        FILE(GLOB PO_FILES_CORONA po/app/*.po)
         
         FOREACH(_poFile ${PO_FILES_CORONA})
                 GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
-                STRING(REGEX REPLACE "^${catalogname-corona}_?" "" _langCode ${_poFileName} )
+                STRING(REGEX REPLACE "^${catalogname-app}_?" "" _langCode ${_poFileName} )
                 STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
 
                 IF( _langCode )
                         GET_FILENAME_COMPONENT(_lang ${_poFile} NAME_WE)
-                        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/corona/${_lang}.gmo)
+                        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/app/${_lang}.gmo)
 
-                        ADD_CUSTOM_COMMAND(TARGET translations-corona
+                        ADD_CUSTOM_COMMAND(TARGET translations-app
                                 COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
                                 DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-corona}.mo)
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-app}.mo)
                 ENDIF( _langCode )
         ENDFOREACH(_poFile ${PO_FILES})  
         
@@ -129,7 +129,7 @@ plasma_install_package(build/plasmoid/release org.kde.store.nowdock.plasmoid)
 add_subdirectory(shell)
 plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
 
-add_subdirectory(corona)
+add_subdirectory(app)
 
 add_subdirectory(icons)
 
