@@ -11,6 +11,7 @@ set(QT_MIN_VERSION "5.6.0")
 set(KF5_MIN_VERSION "5.26.0")
 
 find_package(ECM 1.8.0 REQUIRED NO_MODULE)
+
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
@@ -106,4 +107,6 @@ add_subdirectory(shell)
 plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
 
 add_subdirectory(corona)
+
+add_subdirectory(icons)
 

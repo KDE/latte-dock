@@ -10,7 +10,7 @@ Comment[zh_TW]=在執行中的應用程式間切換
 
 
 Type=Service
-Icon=preferences-system-windows
+Icon=latte-dock
 X-KDE-ServiceTypes=Plasma/Applet
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml

@@ -1,16 +1,13 @@
 [Desktop Entry]
-Name=Latte Dock
-Comment=Latte Dock Application
+Name=Latte
+Comment=Dock for the masses
+
+Categories=Utility;
+GenericName=Dock
 Exec=latte-dock %u
-Hidden=true
-Icon=plasma
+Icon=latte-dock
 InitialPreference=1
-Path=
 StartupNotify=true
 Terminal=false
-TerminalOptions=
 Type=Application
-X-DBUS-ServiceName=
-X-DBUS-StartupType=unique
-X-KDE-SubstituteUID=false
-X-KDE-Username=
+
