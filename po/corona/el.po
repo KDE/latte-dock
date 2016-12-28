@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2016-12-28 16:37+0200\n"
-"PO-Revision-Date: 2016-12-25 18:54+0200\n"
+"PO-Revision-Date: 2016-12-28 18:07+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -66,18 +66,16 @@ msgid "Auto Hide"
 msgstr "Αυτόματη Απόκρυψη"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:261
-#, fuzzy
 msgid "Dodge Active"
-msgstr "Κάτω από Ενεργό"
+msgstr "Αποφυγή Ενεργό"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:275
-#, fuzzy
 msgid "Dodge Maximized"
-msgstr "Κάτω από Μεγιστοποίηση"
+msgstr "Αποφυγή Μεγιστοποίησης"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:289
 msgid "Dodge All Windows"
-msgstr ""
+msgstr "Αποφυγή Παραθύρων"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
@@ -135,24 +133,23 @@ msgstr "Now Dock Πίνακας"
 
 #: ../../corona/packageplugins/shell/nowdockpackage.cpp:24
 msgid "Dock configuration UI"
-msgstr ""
+msgstr "Παράθυρο ρυθμίσεων"
 
 #: ../../corona/packageplugins/shell/nowdockpackage.cpp:25
 msgid "Config model"
-msgstr ""
+msgstr "Μοντέλο ρυθμίσεων"
 
 #: rc.cpp:1
-#, fuzzy
 msgid "Latte"
-msgstr "Κέλυφος Latte"
+msgstr "Latte"
 
 #: rc.cpp:2
 msgid "Dock for the masses"
-msgstr ""
+msgstr "Πίνακας για όλον τον κόσμο"
 
 #: rc.cpp:3
 msgid "Dock"
-msgstr ""
+msgstr "Πίνακας"
 
 #~ msgid "Let Windows Cover"
 #~ msgstr "Παράθυρα από Πάνω"
