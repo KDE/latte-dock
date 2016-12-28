@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QQmlProperty>
 #include <QQuickItem>
 #include <QMetaEnum>

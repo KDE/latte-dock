@@ -37,30 +37,17 @@ Item{
     property int thicknessZoomOriginal: statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2
 
     Binding{
-        //this is way to avoid warnings for null during initialization phase
-        target: window ? window.visibility : manager
+        target: dock.visibility
         property:"panelVisibility"
-        when: window && window.visibility
         value: plasmoid.configuration.panelVisibility
     }
 
     Binding{
-        target: window
+        target: dock
         property:"maxThickness"
-        when: window
         value: thicknessZoomOriginal
     }
 
-    onWindowChanged: {
-        if(window) {
-            window.visibility.onDisableHidingChanged.connect(slotDisableHidingChanged);
-            window.visibility.onIsHoveredChanged.connect(slotIsHoveredChanged);
-            window.visibility.onMustBeLowered.connect(slotMustBeLowered);
-            window.visibility.onMustBeRaised.connect(slotMustBeRaised);
-            window.visibility.onMustBeRaisedImmediately.connect(slotMustBeRaisedImmediately);
-            window.visibility.onPanelVisibilityChanged.connect(slotPanelVisibilityChanged);
-        }
-    }
 
     onInStartupChanged: {
         if (!inStartup) {
@@ -80,20 +67,29 @@ Item{
 
     onThicknessZoomOriginalChanged: updateMaskArea();
 
+    Component.onCompleted: {
+        dock.visibility.onDisableHidingChanged.connect(slotDisableHidingChanged);
+        dock.visibility.onIsHoveredChanged.connect(slotIsHoveredChanged);
+        dock.visibility.onMustBeLowered.connect(slotMustBeLowered);
+        dock.visibility.onMustBeRaised.connect(slotMustBeRaised);
+        dock.visibility.onMustBeRaisedImmediately.connect(slotMustBeRaisedImmediately);
+        dock.visibility.onPanelVisibilityChanged.connect(slotPanelVisibilityChanged);
+    }
+
 
     function slotDisableHidingChanged() {
-        if (!window.disableHiding) {
+        if (!dock.visibility.disableHiding) {
             checkListHovered.restart();
         }
     }
 
     function slotIsHoveredChanged() {
-        if(window.isHovered) {
+        if(dock.visibility.isHovered) {
             //stop parent window timer for auto hiding
-            if ((window.visibility.panelVisibility === Latte.Dock.AutoHide)|| window.visibility.isDockWindowType) {
+            if ((dock.visibility.panelVisibility === Latte.Dock.AutoHide)|| dock.visibility.isDockWindowType) {
                 if(hideMagicWindowInAutoHide.forcedDisableHiding) {
                     hideMagicWindowInAutoHide.forcedDisableHiding = false;
-                    window.visibility.disableHiding = false;
+                    dock.visibility.disableHiding = false;
                 }
 
                 hideMagicWindowInAutoHide.stop();
@@ -111,12 +107,10 @@ Item{
     }
 
     function slotMustBeRaised() {
-        if (window) {
-            if ((window.visibility.panelVisibility === Latte.Dock.AutoHide) || window.visibility.isDockWindowType) {
-                slidingAnimationAutoHiddenIn.init();
-            } else {
-                slidingAnimation.init(true,false);
-            }
+        if ((dock.visibility.panelVisibility === Latte.Dock.AutoHide) || dock.visibility.isDockWindowType) {
+            slidingAnimationAutoHiddenIn.init();
+        } else {
+            slidingAnimation.init(true,false);
         }
     }
 
@@ -125,24 +119,22 @@ Item{
     }
 
     function slotMustBeLowered() {
-        if (window) {
-            if ((window.visibility.panelVisibility === Latte.Dock.AutoHide) || window.visibility.isDockWindowType ) {
+            if ((dock.visibility.panelVisibility === Latte.Dock.AutoHide) || dock.visibility.isDockWindowType ) {
                 slidingAnimationAutoHiddenOut.init();
             } else {
                 slidingAnimation.init(false,false);
             }
-        }
     }
 
     function slotPanelVisibilityChanged() {
-        if (window.visibility.panelVisibility !== Latte.Dock.AutoHide) {
-            window.visibility.isAutoHidden = false;
+        if (dock.visibility.panelVisibility !== Latte.Dock.AutoHide) {
+            dock.visibility.isAutoHidden = false;
         }
     }
 
     ///test maskArea
     function updateMaskArea() {
-        if (!windowSystem.compositingActive || !window) {
+        if (!windowSystem.compositingActive) {
             return;
         }
 
@@ -179,42 +171,42 @@ Item{
                 tempThickness = thicknessMidOriginal;
             }
 
-            if (window.visibility.isAutoHidden && ((window.visibility.panelVisibility === Latte.Dock.AutoHide) || window.visibility.isDockWindowType)) {
+            if (dock.visibility.isAutoHidden && ((dock.visibility.panelVisibility === Latte.Dock.AutoHide) || dock.visibility.isDockWindowType)) {
                 tempThickness = thicknessAutoHidden;
             }
 
             //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
             if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    localY = window.height - tempThickness;
+                    localY = dock.height - tempThickness;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     localY = 0;
                 }
 
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Double) {
-                    localX = (window.width/2) - (layoutsContainer.width/2) - 0.25*space;
+                    localX = (dock.width/2) - (layoutsContainer.width/2) - 0.25*space;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
                     localX = 0;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localX = (window.width/2) - (mainLayout.width/2) - (space/2);
+                    localX = (dock.width/2) - (mainLayout.width/2) - (space/2);
                 } else if (root.panelAlignment === Latte.Dock.Right) {
-                    localX = window.width - mainLayout.width - (space/2);
+                    localX = dock.width - mainLayout.width - (space/2);
                 }
             } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                 if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
                     localX = 0;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = window.width - tempThickness;
+                    localX = dock.width - tempThickness;
                 }
 
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Double) {
-                    localY = (window.height/2) - (layoutsContainer.height/2) - 0.25*space;
+                    localY = (dock.height/2) - (layoutsContainer.height/2) - 0.25*space;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
                     localY = 0;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localY = (window.height/2) - (mainLayout.height/2) - (space/2);
+                    localY = (dock.height/2) - (mainLayout.height/2) - (space/2);
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    localY = window.height - mainLayout.height - (space/2);
+                    localY = dock.height - mainLayout.height - (space/2);
                 }
             }
         } else {
@@ -233,15 +225,15 @@ Item{
 
                 //configure the x,y position based on thickness
                 if(plasmoid.location === PlasmaCore.Types.RightEdge)
-                    localX = window.width - tempThickness;
+                    localX = dock.width - tempThickness;
                 else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
-                    localY = window.height - tempThickness;
+                    localY = dock.height - tempThickness;
             } else{
                 //use all thickness space
                 tempThickness = thicknessZoomOriginal;
             }
         }
-        var maskArea = window.maskArea;
+        var maskArea = dock.maskArea;
 
         var maskLength = maskArea.width; //in Horizontal
         if (root.isVertical) {
@@ -270,7 +262,7 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            window.maskArea = newMaskArea;
+            dock.maskArea = newMaskArea;
         }
     }
 
@@ -290,10 +282,10 @@ Item{
             }
 
             Rectangle{
-                x: window ? window.maskArea.x : 0
-                y: window ? window.maskArea.y : 0
-                height: window ? window.maskArea.height : -1
-                width: window ? window.maskArea.width : -1
+                x: dock.maskArea.x
+                y: dock.maskArea.y
+                height: dock.maskArea.height
+                width: dock.maskArea.width
 
                 border.color: "green"
                 border.width: 1
@@ -345,9 +337,9 @@ Item{
         onInHalfChanged: {
             if (inHalf) {
                 if (raiseFlag) {
-                    window.visibility.showOnTop();
+                    dock.visibility.showOnTop();
                 } else {
-                    window.visibility.showOnBottom();
+                    dock.visibility.showOnBottom();
                 }
             }
         }
@@ -373,7 +365,7 @@ Item{
         }
 
         onStopped: {
-            window.visibility.isAutoHidden = true;
+            dock.visibility.isAutoHidden = true;
             updateMaskArea();
         }
 
@@ -400,7 +392,7 @@ Item{
         }
 
         function init() {
-            window.visibility.isAutoHidden = false;
+            dock.visibility.isAutoHidden = false;
             updateMaskArea();
             start();
         }
@@ -409,10 +401,10 @@ Item{
     ///////////// External Connections //////
     TaskManager.ActivityInfo {
         onCurrentActivityChanged: {
-            window.visibility.disableHiding = true;
+            dock.visibility.disableHiding = true;
 
-            if (window.visibility.isAutoHidden) {
-                window.visibility.mustBeRaised();
+            if (dock.visibility.isAutoHidden) {
+                dock.visibility.mustBeRaised();
             }
 
             hideMagicWindowInAutoHide.forcedDisableHiding = true;
@@ -439,7 +431,7 @@ Item{
         interval: manager.inStartup ? 1000 : 500
         onTriggered: {
             layoutsContainer.opacity = 1;
-            if ((window.visibility.panelVisibility !== Latte.Dock.AutoHide) && !window.visibility.isDockWindowType) {
+            if ((dock.visibility.panelVisibility !== Latte.Dock.AutoHide) && !dock.visibility.isDockWindowType) {
                 slidingAnimation.init(true,false);
             } else {
                 slidingAnimationAutoHiddenIn.init();
