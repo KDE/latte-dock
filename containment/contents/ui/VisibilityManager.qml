@@ -52,19 +52,6 @@ Item{
         value: thicknessZoomOriginal
     }
 
-    /*Binding{
-        target: dock.visibility
-        property:"panelVisibility"
-        value: plasmoid.configuration.panelVisibility
-    }
-
-    Binding{
-        target: dock
-        property:"maxThickness"
-        value: thicknessZoomOriginal
-    }*/
-
-
     onInStartupChanged: {
         if (!inStartup) {
             delayAnimationTimer.start();
@@ -82,16 +69,6 @@ Item{
     }
 
     onThicknessZoomOriginalChanged: updateMaskArea();
-
-    Component.onCompleted: {
-        /*dock.visibility.onDisableHidingChanged.connect(slotDisableHidingChanged);
-        dock.visibility.onIsHoveredChanged.connect(slotIsHoveredChanged);
-        dock.visibility.onMustBeLowered.connect(slotMustBeLowered);
-        dock.visibility.onMustBeRaised.connect(slotMustBeRaised);
-        dock.visibility.onMustBeRaisedImmediately.connect(slotMustBeRaisedImmediately);
-        dock.visibility.onPanelVisibilityChanged.connect(slotPanelVisibilityChanged);*/
-    }
-
 
     function slotDisableHidingChanged() {
         if (!dock.visibility.disableHiding) {
