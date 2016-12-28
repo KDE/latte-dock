@@ -226,7 +226,7 @@ void NowDockCorona::loadDefaultLayout()
 
     addDock(defaultContainment);
     
-    defaultContainment->createApplet(QStringLiteral("org.kde.store.nowdock.plasmoid"));
+    defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
 

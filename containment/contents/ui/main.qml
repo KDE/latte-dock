@@ -81,8 +81,9 @@ DragDrop.DropArea {
     property int panelAlignment: plasmoid.immutable ? plasmoid.configuration.panelPosition : Latte.Dock.Center
     // property int panelAlignment: plasmoid.configuration.panelPosition
 
-
     property real zoomFactor: windowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+
+    readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
 
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
