@@ -119,6 +119,7 @@ void NowDockView::init()
     
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
+
     // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("nowdockui"));
     
