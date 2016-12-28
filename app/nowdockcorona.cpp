@@ -159,11 +159,11 @@ void NowDockCorona::addDock(Plasma::Containment *containment)
 
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
-    //KPluginMetaData metadata = containment->pluginMetaData();
+    KPluginMetaData metadata = containment->pluginMetaData();
 
-    //if (metadata.pluginId() == "org.kde.plasma.systemtray") {
-    //   return;
-    //}
+    if (metadata.pluginId() == "org.kde.plasma.systemtray") {
+        return;
+    }
 
     foreach (NowDockView *dock, m_containments) {
         if (dock->containment() == containment) {
