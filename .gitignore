@@ -25,6 +25,7 @@ build/
 .*.xml~
 .*~
 *.*.user
+*.*.orig
 
 # locale files
 *.mo
