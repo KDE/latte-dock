@@ -92,7 +92,6 @@ DragDrop.DropArea {
     property Item toolBox
     property Item nowDockContainer
     property Item nowDock
-    property QtObject dockView
 
     // TO BE DELETED, if not needed: property int counter:0;
 
@@ -420,7 +419,7 @@ DragDrop.DropArea {
 
     onIsHoveredChanged: {
         if (isHovered){
-            dockView.visibility.showOnTopCheck();
+            dock.visibility.showOnTopCheck();
         }
     }
 
@@ -502,7 +501,6 @@ DragDrop.DropArea {
     }
 
     Plasmoid.onUserConfiguringChanged: {
-        console.log("user configuring:"+plasmoid.userConfiguring + " immutable:"+plasmoid.immutable);
         if (plasmoid.immutable) {
             if (dragOverlay) {
                 dragOverlay.destroy();
@@ -539,7 +537,6 @@ DragDrop.DropArea {
     Plasmoid.onFormFactorChanged: containmentSizeSyncTimer.restart();
 
     Plasmoid.onImmutableChanged: {
-        console.log("plasmoid immutable state: "+plasmoid.immutable);
         containmentSizeSyncTimer.restart();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
@@ -571,10 +568,10 @@ DragDrop.DropArea {
              //   magicWin.initialize();
             }
 
-            dockView.visibility.disableHiding = false;
+            dock.visibility.disableHiding = false;
         } else {
-            dockView.visibility.disableHiding = true;
-            dockView.visibility.mustBeRaised();
+            dock.visibility.disableHiding = true;
+            dock.visibility.mustBeRaised();
         }
 
 
@@ -731,7 +728,7 @@ DragDrop.DropArea {
             animatedLengthTimer.start();
         }
 
-        if (!dockView.visibility.isHovered && (root.animationsNeedBothAxis === 0)
+        if (!dock.visibility.isHovered && (root.animationsNeedBothAxis === 0)
                 && (root.animationsNeedLength===0) && (root.appletsAnimations === 0)) {
             mainLayout.animatedLength = true;
         } else {
@@ -743,7 +740,7 @@ DragDrop.DropArea {
 
     function clearZoom(){
         //console.log("Panel clear....");
-        if (dockView.visibility.disableHiding) {
+        if (dock.visibility.disableHiding) {
             return;
         }
 
@@ -853,14 +850,14 @@ DragDrop.DropArea {
     }
 
     function slotDisableHiding(value) {
-        dockView.visibility.disableHiding = value;
+        dock.visibility.disableHiding = value;
     }
 
     function updateAutomaticIconSize() {
         if (visibilityManager.normalState && !animatedLengthTimer.running && plasmoid.immutable
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
-            var maxLength = dockView.maxLength;
+            var maxLength = dock.maxLength;
             // console.log("------Entered check-----");
 
             if (root.isVertical) {
@@ -1041,7 +1038,7 @@ DragDrop.DropArea {
     VisibilityManager{
         id: visibilityManager
 
-        window: dockView
+        window: dock
     }
 
     Item{
@@ -1057,14 +1054,14 @@ DragDrop.DropArea {
 
         x: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal
            && plasmoid.immutable && windowSystem.compositingActive ?
-               (dockView.width/2) - (dockView.visibility.maxLength/2): 0
+               (dock.width/2) - (dock.visibility.maxLength/2): 0
         y: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical
            && plasmoid.immutable && windowSystem.compositingActive ?
-               (dockView.height/2) - (dockView.visibility.maxLength/2): 0
+               (dock.height/2) - (dock.visibility.maxLength/2): 0
         width: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal && plasmoid.immutable ?
-                   dockView.visibility.maxLength : parent.width
+                   dock.visibility.maxLength : parent.width
         height: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical && plasmoid.immutable ?
-                    dockView.visibility.maxLength : parent.height
+                    dock.visibility.maxLength : parent.height
 
         Component.onCompleted: {
             if(plasmoid.immutable) {
@@ -1226,10 +1223,10 @@ DragDrop.DropArea {
         onTriggered: {
             if (forcedDisableHiding) {
                 forcedDisableHiding = false;
-                dockView.visibility.disableHiding = false;
+                dock.visibility.disableHiding = false;
             }
 
-            var visibility = dockView.visibility;
+            var visibility = dock.visibility;
 
             if (plasmoid.immutable && !visibility.isHovered //&& !wholeArea.containsMouse
                     && ((visibility.panelVisibility === Latte.Dock.AutoHide) || visibility.isDockWindowType) ) {
