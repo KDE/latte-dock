@@ -92,6 +92,7 @@ DragDrop.DropArea {
     property Item toolBox
     property Item nowDockContainer
     property Item nowDock
+    property QtObject dock
 
     // TO BE DELETED, if not needed: property int counter:0;
 
@@ -385,6 +386,17 @@ DragDrop.DropArea {
 
     //////////////START OF CONNECTIONS
     onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
+
+    onDockChanged: {
+        if (dock) {
+            dock.visibility.onDisableHidingChanged.connect(visibilityManager.slotDisableHidingChanged);
+            dock.visibility.onIsHoveredChanged.connect(visibilityManager.slotIsHoveredChanged);
+            dock.visibility.onMustBeLowered.connect(visibilityManager.slotMustBeLowered);
+            dock.visibility.onMustBeRaised.connect(visibilityManager.slotMustBeRaised);
+            dock.visibility.onMustBeRaisedImmediately.connect(visibilityManager.slotMustBeRaisedImmediately);
+            dock.visibility.onPanelVisibilityChanged.connect(visibilityManager.slotPanelVisibilityChanged);
+        }
+    }
 
     onDragEnter: {
         if (plasmoid.immutable) {
@@ -1037,8 +1049,7 @@ DragDrop.DropArea {
 
     VisibilityManager{
         id: visibilityManager
-
-        window: dock
+     //   window: dock
     }
 
     Item{

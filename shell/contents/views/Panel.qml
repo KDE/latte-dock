@@ -31,6 +31,7 @@ PlasmaCore.FrameSvgItem {
     // onRepaintNeeded: adjustPrefix();
 
     property Item containment
+    property Item dockLayout
 
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
@@ -78,9 +79,16 @@ PlasmaCore.FrameSvgItem {
         containment.anchors.fill = containmentParent;
         containment.locationChanged.connect(adjustPrefix);
         adjustPrefix();
+
+        for(var i=0; i<containment.children.length; ++i){
+            if (containment.children[i].objectName === "dockLayoutView") {
+                dockLayout = containment.children[i];
+                dockLayout.dock = dock;
+            }
+        }
     }
 
-    /*Binding {
+    Binding {
         target: dock
         property: "length"
         when: containment
@@ -94,7 +102,7 @@ PlasmaCore.FrameSvgItem {
                 return containment.Layout.preferredWidth
             }
         }
-    }*/
+    }
 
 
     Item {
