@@ -35,6 +35,7 @@
 #include <KWindowSystem>
 #include <Plasma/Containment>
 #include <KActionCollection>
+#include <KLocalizedContext>
 
 #include "nowdockcorona.h"
 
@@ -117,6 +118,7 @@ void NowDockView::init()
     connect(this, SIGNAL(heightChanged(int)), this, SIGNAL(heightChanged()));
     
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
+    engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("nowdockui"));
     
