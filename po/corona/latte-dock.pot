@@ -1,23 +1,21 @@
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-# Viorel-Cătălin Răpițeanu <rapiteanu.catalin@gmail.com>, 2016.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2016-12-28 16:37+0200\n"
-"PO-Revision-Date: 2016-09-25 04:15+0300\n"
-"Last-Translator: Viorel-Cătălin Răpițeanu <rapiteanu DOT catalin AT gmail "
-"DOT com>\n"
-"Language-Team: Romanian <kde-i18n-doc@kde.org>\n"
-"Language: ro_RO\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
-"2:1));\n"
-"X-Generator: Poedit 1.8.9\n"
 
 #: ../../shell/contents/configuration/config.qml:26
 msgid "General"
@@ -25,7 +23,7 @@ msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:38
 msgid "Applets Alignment"
-msgstr "Alinierea miniaplicațiilor"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:52
 msgid "ver: "
@@ -34,26 +32,26 @@ msgstr ""
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Top"
-msgstr "Sus"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Left"
-msgstr "Stânga"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:125
 msgid "Center"
-msgstr "Centru"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Bottom"
-msgstr "Jos"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Right"
-msgstr "Dreapta"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:179
 msgid "Visibility"
@@ -82,27 +80,27 @@ msgstr ""
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
 msgid "Applets Size"
-msgstr "Dimensiunea miniaplicațiilor"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:390
 msgid "Zoom On Hover"
-msgstr "Panoramează la trecerea peste"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:409
 msgid "Zoom Factor"
-msgstr "Factor de panoramare"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:458
 msgid "Background"
-msgstr "Fundal"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:464
 msgid "Show Panel Background"
-msgstr "Arată fundalul panoului"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:494
 msgid "Size"
-msgstr "Dimensiune"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:540
 msgid "Shadows"
@@ -117,9 +115,8 @@ msgid "Only for locked applets"
 msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:588
-#, fuzzy
 msgid "All applets"
-msgstr "Dimensiunea miniaplicațiilor"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:598
 msgid "Add New Dock"
@@ -129,61 +126,26 @@ msgstr ""
 msgid "Remove Dock"
 msgstr ""
 
+#: ../../corona/packageplugins/shell/nowdockpackage.cpp:22
+msgid "Now Dock panel"
+msgstr ""
+
+#: ../../corona/packageplugins/shell/nowdockpackage.cpp:24
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../corona/packageplugins/shell/nowdockpackage.cpp:25
+msgid "Config model"
+msgstr ""
+
 #: rc.cpp:1
-msgid "Latte Shell"
+msgid "Latte"
 msgstr ""
 
 #: rc.cpp:2
-msgid "Shell provided for the Latte Dock"
+msgid "Dock for the masses"
 msgstr ""
 
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Top"
-#~ msgstr "Sus"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Bottom"
-#~ msgstr "Jos"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Left"
-#~ msgstr "Stânga"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Right"
-#~ msgstr "Dreapta"
-
-#, fuzzy
-#~ msgctxt "@label:listbox config ui"
-#~ msgid "Alignment:"
-#~ msgstr "Alinierea miniaplicațiilor"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, alignment"
-#~ msgid "Center"
-#~ msgstr "Centru"
-
-#~ msgid "Now Dock Panel"
-#~ msgstr "Panou Now Dock"
-
-#~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
-#~ msgstr ""
-#~ "Un panou plasma care încearcă să animeze miniaplicațiile la trecerea peste"
-
-#, fuzzy
-#~ msgid "Now Dock Default Panel"
-#~ msgstr "Panou Now Dock"
-
-#, fuzzy
-#~ msgid "Empty Now Dock Panel"
-#~ msgstr "Panou Now Dock"
-
-#~ msgid "Automatic"
-#~ msgstr "Automat"
-
-#~ msgid "Small steps for icon sizes in automatic modes"
-#~ msgstr "Pași mici pentru dimensiunea pictogramelor în modurile automate"
+#: rc.cpp:3
+msgid "Dock"
+msgstr ""
