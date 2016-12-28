@@ -48,7 +48,7 @@ DragDrop.DropArea {
     property bool isHorizontal: plasmoid.formFactor == PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
     property bool isHovered: nowDock ? ((nowDockHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
-                                     : (layoutsContainer.hoveredIndex !== -1) || wholeArea.containsMouse
+                                     : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     //FIXME: possibly this is going to be the default behavior, this user choice

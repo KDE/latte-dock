@@ -80,8 +80,8 @@ PlasmaCore.FrameSvgItem {
         adjustPrefix();
     }
 
-    Binding {
-        target: panel
+    /*Binding {
+        target: dock
         property: "length"
         when: containment
         value: {
@@ -94,7 +94,7 @@ PlasmaCore.FrameSvgItem {
                 return containment.Layout.preferredWidth
             }
         }
-    }
+    }*/
 
 
     Item {
