@@ -168,8 +168,9 @@ Item {
 
     onShowZoomedChanged: {
         if(showZoomed){
-            var newZ = container.maxHeight / root.iconSize;
-            wrapper.zoomScale = newZ;
+            //var newZ = container.maxHeight / root.iconSize;
+            //wrapper.zoomScale = newZ;
+            wrapper.zoomScale = 1;
         }
         else{
             wrapper.zoomScale = 1;
