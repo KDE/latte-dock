@@ -8,4 +8,7 @@ ecm_install_icons(ICONS
     48-apps-latte-dock.svg
     sc-apps-latte-dock.svg
 THEME hicolor
-DESTINATION ${ICON_INSTALL_DIR} ) 
+DESTINATION ${ICON_INSTALL_DIR} )
+
+install(FILES org.kde.store.nowdock.plasmoid.svg DESTINATION ${ICON_INSTALL_DIR}/breeze/applets/256)
+
