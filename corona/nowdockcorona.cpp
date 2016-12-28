@@ -183,8 +183,7 @@ void NowDockCorona::loadDefaultLayout()
     
     QVariantList args;
     auto defaultContainment = createContainmentDelayed("org.kde.latte.containment", args);
-    //auto defaultContainment = createContainment("org.kde.latte.containment");
-    //auto defaultContainment = createContainmentDelayed("org.kde.panel", args);
+
     defaultContainment->setContainmentType(Plasma::Types::PanelContainment);
     defaultContainment->init();
     
