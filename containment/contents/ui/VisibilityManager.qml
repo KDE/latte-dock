@@ -36,7 +36,23 @@ Item{
     property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + 1
     property int thicknessZoomOriginal: statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2
 
+
     Binding{
+        //this is way to avoid warnings for null during initialization phase
+        target: dock ? dock.visibility : manager
+        property:"panelVisibility"
+        when: dock && dock.visibility
+        value: plasmoid.configuration.panelVisibility
+    }
+
+    Binding{
+        target: dock ? dock : manager
+        property:"maxThickness"
+        when: dock
+        value: thicknessZoomOriginal
+    }
+
+    /*Binding{
         target: dock.visibility
         property:"panelVisibility"
         value: plasmoid.configuration.panelVisibility
@@ -46,7 +62,7 @@ Item{
         target: dock
         property:"maxThickness"
         value: thicknessZoomOriginal
-    }
+    }*/
 
 
     onInStartupChanged: {
@@ -68,12 +84,12 @@ Item{
     onThicknessZoomOriginalChanged: updateMaskArea();
 
     Component.onCompleted: {
-        dock.visibility.onDisableHidingChanged.connect(slotDisableHidingChanged);
+        /*dock.visibility.onDisableHidingChanged.connect(slotDisableHidingChanged);
         dock.visibility.onIsHoveredChanged.connect(slotIsHoveredChanged);
         dock.visibility.onMustBeLowered.connect(slotMustBeLowered);
         dock.visibility.onMustBeRaised.connect(slotMustBeRaised);
         dock.visibility.onMustBeRaisedImmediately.connect(slotMustBeRaisedImmediately);
-        dock.visibility.onPanelVisibilityChanged.connect(slotPanelVisibilityChanged);
+        dock.visibility.onPanelVisibilityChanged.connect(slotPanelVisibilityChanged);*/
     }
 
 
@@ -134,7 +150,7 @@ Item{
 
     ///test maskArea
     function updateMaskArea() {
-        if (!windowSystem.compositingActive) {
+        if (!windowSystem.compositingActive || !dock) {
             return;
         }
 
@@ -282,10 +298,10 @@ Item{
             }
 
             Rectangle{
-                x: dock.maskArea.x
-                y: dock.maskArea.y
-                height: dock.maskArea.height
-                width: dock.maskArea.width
+                x: dock ? dock.maskArea.x : -1
+                y: dock ? dock.maskArea.y : -1
+                height: dock ? dock.maskArea.height : 0
+                width: dock ? dock.maskArea.width : 0
 
                 border.color: "green"
                 border.width: 1
