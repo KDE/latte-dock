@@ -51,12 +51,12 @@ NowDockConfigView::NowDockConfigView(Plasma::Containment *containment, NowDockVi
         syncSlideEffect();
     });
     
-    //containment->setLocation(Plasma::Types::LeftEdge);
-    /*connect(containment, &Plasma::Containment::immutabilityChanged
-    , [&](Plasma::Types::ImmutabilityType type) {
-        if (type != Plasma::Types::Mutable && isVisible())
-            hide();
-    });*/
+    connect(containment, &Plasma::Containment::immutabilityChanged, this, &NowDockConfigView::immutabilityChanged);
+    /*   connect(containment, &Plasma::Containment::immutabilityChanged
+       , [&](Plasma::Types::ImmutabilityType type) {
+           if (type != Plasma::Types::Mutable && this && isVisible())
+               hide();
+       });*/
 }
 
 NowDockConfigView::~NowDockConfigView()
@@ -83,7 +83,7 @@ void NowDockConfigView::syncGeometry()
 {
     if (!m_containment || !rootObject())
         return;
-        
+
     const auto location = m_containment->location();
     const auto sGeometry = screen()->geometry();
     
@@ -93,7 +93,7 @@ void NowDockConfigView::syncGeometry()
             setMaximumSize(size);
             setMinimumSize(size);
             resize(size);
-            
+
             if (location == Plasma::Types::TopEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
                             , m_dockView->currentThickness());
@@ -109,7 +109,7 @@ void NowDockConfigView::syncGeometry()
             setMaximumSize(size);
             setMinimumSize(size);
             resize(size);
-            
+
             if (location == Plasma::Types::LeftEdge) {
                 setPosition(m_dockView->currentThickness()
                             , sGeometry.center().y() - size.height() / 2);
@@ -131,26 +131,26 @@ void NowDockConfigView::syncSlideEffect()
 {
     if (!m_containment)
         return;
-        
+
     KWindowEffects::SlideFromLocation slideLocation{KWindowEffects::NoEdge};
     
     switch (m_containment->location()) {
         case Plasma::Types::TopEdge:
             slideLocation = KWindowEffects::TopEdge;
             break;
-            
+
         case Plasma::Types::RightEdge:
             slideLocation = KWindowEffects::RightEdge;
             break;
-            
+
         case Plasma::Types::BottomEdge:
             slideLocation = KWindowEffects::BottomEdge;
             break;
-            
+
         case Plasma::Types::LeftEdge:
             slideLocation = KWindowEffects::LeftEdge;
             break;
-            
+
         default:
             qDebug() << staticMetaObject.className() << "wrong location";// << qEnumToStr(m_containment->location());
             break;
@@ -172,7 +172,7 @@ void NowDockConfigView::showEvent(QShowEvent *ev)
     
     if (m_containment)
         m_containment->setUserConfiguring(true);
-        
+
     //  m_dockView->visibility()->forceShow(true);
     //  m_dockView->visibility()->showImmediately();
     m_screenSyncTimer.start();
@@ -196,12 +196,22 @@ void NowDockConfigView::hideEvent(QHideEvent *ev)
 
 void NowDockConfigView::focusOutEvent(QFocusEvent *ev)
 {
+    //FIXME: I can understand why we need to hide on focus out
     Q_UNUSED(ev);
     const auto *focusWindow = qGuiApp->focusWindow();
     
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
-        
-    hide();
+
+
+    // hide();
 }
+
+void NowDockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
+{
+    if (type != Plasma::Types::Mutable && isVisible()) {
+        hide();
+    }
+}
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
