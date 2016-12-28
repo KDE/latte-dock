@@ -35,7 +35,7 @@ void NowDockPackage::pathChanged(KPackage::Package *package)
     const QString pluginName = package->metadata().pluginId();
     
     if (!pluginName.isEmpty() && pluginName != "org.kde.latte.shell") {
-        auto fallback = KPackage::PackageLoader::self()->loadPackage("LatteDock/Shell", "org.kde.latte.shell");
+        auto fallback = KPackage::PackageLoader::self()->loadPackage("Latte/Shell", "org.kde.latte.shell");
         package->setFallbackPackage(fallback);
     } else if (pluginName.isEmpty() || pluginName == "org.kde.latte.shell") {
         package->setFallbackPackage(KPackage::Package());

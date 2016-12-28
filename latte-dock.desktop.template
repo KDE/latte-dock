@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Latte
-Comment=Dock for the masses
-GenericName=Dock
+_Name=Latte
+_Comment=Dock for the masses
+_GenericName=Dock
 
 Categories=Utility;
 Exec=latte-dock %u

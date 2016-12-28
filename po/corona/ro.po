@@ -129,12 +129,29 @@ msgstr ""
 msgid "Remove Dock"
 msgstr ""
 
+#: ../../corona/packageplugins/shell/nowdockpackage.cpp:22
+#, fuzzy
+msgid "Now Dock panel"
+msgstr "Panou Now Dock"
+
+#: ../../corona/packageplugins/shell/nowdockpackage.cpp:24
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../corona/packageplugins/shell/nowdockpackage.cpp:25
+msgid "Config model"
+msgstr ""
+
 #: rc.cpp:1
-msgid "Latte Shell"
+msgid "Latte"
 msgstr ""
 
 #: rc.cpp:2
-msgid "Shell provided for the Latte Dock"
+msgid "Dock for the masses"
+msgstr ""
+
+#: rc.cpp:3
+msgid "Dock"
 msgstr ""
 
 #, fuzzy
@@ -166,9 +183,6 @@ msgstr ""
 #~ msgctxt "@item:inlistbox config ui, alignment"
 #~ msgid "Center"
 #~ msgstr "Centru"
-
-#~ msgid "Now Dock Panel"
-#~ msgstr "Panou Now Dock"
 
 #~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
 #~ msgstr ""
