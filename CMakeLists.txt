@@ -53,7 +53,7 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
         ENDFOREACH(_poFile ${PO_FILES})
         
         #plasmoid translations
-        SET(catalogname-plasmoid plasma_applet_org.kde.store.nowdock.plasmoid)
+        SET(catalogname-plasmoid plasma_applet_org.kde.latte.plasmoid)
         ADD_CUSTOM_TARGET(translations-plasmoid ALL)
 
         FILE(GLOB PO_FILES_PLASMOID po/plasmoid/*.po)
@@ -124,7 +124,7 @@ add_subdirectory(liblattedock)
 add_subdirectory(containment)
 plasma_install_package(build/containment/release org.kde.latte.containment) 
 add_subdirectory(plasmoid)
-plasma_install_package(build/plasmoid/release org.kde.store.nowdock.plasmoid) 
+plasma_install_package(build/plasmoid/release org.kde.latte.plasmoid) 
 
 add_subdirectory(shell)
 plasma_install_package(build/shell/release org.kde.latte.shell shells shell)

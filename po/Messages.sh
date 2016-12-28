@@ -6,7 +6,7 @@ PROJECTPATH="../../containment" # project path
 BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
 WDIR="`pwd`/containment" # working dir
 
-PROJECTPLASMOID="plasma_applet_org.kde.store.nowdock.plasmoid" # project name
+PROJECTPLASMOID="plasma_applet_org.kde.latte.plasmoid" # project name
 PROJECTPATHPLASMOID="../../plasmoid" # project path
 WDIRPLASMOID="`pwd`/plasmoid" # working dir
 

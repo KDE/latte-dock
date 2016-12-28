@@ -10,5 +10,5 @@ ecm_install_icons(ICONS
 THEME hicolor
 DESTINATION ${ICON_INSTALL_DIR} )
 
-install(FILES org.kde.store.nowdock.plasmoid.svg DESTINATION ${ICON_INSTALL_DIR}/breeze/applets/256)
+install(FILES org.kde.latte.plasmoid.svg DESTINATION ${ICON_INSTALL_DIR}/breeze/applets/256)
 

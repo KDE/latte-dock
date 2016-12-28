@@ -380,7 +380,7 @@ MouseArea {
             visible: currentApplet &&
                      ((currentApplet.applet &&
                        ((currentApplet.applet.pluginName === "org.kde.plasma.systemtray")
-                        || (currentApplet.applet.pluginName === "org.kde.store.nowdock.plasmoid")) )
+                        || (currentApplet.applet.pluginName === root.plasmoidName)) )
                       || (currentApplet.isInternalViewSplitter))
                      ? false : true
 
