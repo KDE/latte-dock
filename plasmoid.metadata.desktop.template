@@ -4,7 +4,7 @@ _Comment=Switch between running applications
 
 
 Type=Service
-Icon=preferences-system-windows
+Icon=latte-dock
 X-KDE-ServiceTypes=Plasma/Applet
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
