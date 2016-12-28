@@ -22,8 +22,10 @@
 
 #include <QQuickItem>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QScreen>
 
+#include <KLocalizedContext>
 #include <KWindowSystem>
 #include <KWindowEffects>
 
@@ -66,6 +68,7 @@ void NowDockConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
+    engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("nowdockconfigurationui"));
     setSource(source);
     syncSlideEffect();
