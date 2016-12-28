@@ -54,8 +54,8 @@ int main(int argc, char **argv)
     
     QApplication app(argc, argv);
     app.setApplicationVersion(version);
-    app.setOrganizationDomain(QStringLiteral("nowdock"));
-    app.setApplicationName(QStringLiteral("NowDock"));
+    app.setOrganizationDomain(QStringLiteral("lattedock"));
+    app.setApplicationName(QStringLiteral("LatteDock"));
     
     //! set pattern for debug messages
     //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
