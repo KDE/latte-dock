@@ -1,217 +1,216 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Michail Vοurlakos <mvourlakos@gmail.com>, 2016.
+# Jeff Huang <s8321414@gmail.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2016-12-28 16:37+0200\n"
-"PO-Revision-Date: 2016-12-28 18:07+0200\n"
-"Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
-"Language-Team: Greek <kde-i18n-doc@kde.org>\n"
-"Language: el_GR\n"
+"POT-Creation-Date: 2016-12-28 22:42+0200\n"
+"PO-Revision-Date: 2016-11-26 17:31+0800\n"
+"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
+"Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
 #: ../../shell/contents/configuration/config.qml:26
 msgid "General"
-msgstr "Γενικά"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:38
 msgid "Applets Alignment"
-msgstr "Στοίχιση Εφαρμογών"
+msgstr "小程式對齊"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:52
 msgid "ver: "
-msgstr "εκδ: "
+msgstr "版本："
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Top"
-msgstr "Πάνω"
+msgstr "頂部"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Left"
-msgstr "Αριστερά"
+msgstr "左邊"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:125
 msgid "Center"
-msgstr "Κέντρο"
+msgstr "置中"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Bottom"
-msgstr "Κάτω"
+msgstr "底部"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Right"
-msgstr "Δεξιά"
+msgstr "右邊"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:179
 msgid "Visibility"
-msgstr "Ορατότητα"
+msgstr "可見度"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:235
 msgid "Always Visible"
-msgstr "Πάντα Ορατό"
+msgstr "永遠可見"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:248
 msgid "Auto Hide"
-msgstr "Αυτόματη Απόκρυψη"
+msgstr "自動隱藏"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:261
+#, fuzzy
 msgid "Dodge Active"
-msgstr "Αποφυγή Ενεργό"
+msgstr "在作用中的視窗後"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:275
+#, fuzzy
 msgid "Dodge Maximized"
-msgstr "Αποφυγή Μεγιστοποίησης"
+msgstr "在最大化的視窗後"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:289
 msgid "Dodge All Windows"
-msgstr "Αποφυγή Παραθύρων"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
 msgid "Applets Size"
-msgstr "Μέγεθος Εφαρμογών"
+msgstr "小程式大小"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:390
 msgid "Zoom On Hover"
-msgstr "Εστίαση"
+msgstr "滑鼠游標置於其上時縮放"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:409
 msgid "Zoom Factor"
-msgstr "Συντελεστής Εστίασης"
+msgstr "縮放係數"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:458
 msgid "Background"
-msgstr "Παρασκήνιο"
+msgstr "背景"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:464
 msgid "Show Panel Background"
-msgstr "Εμφάνιση Παρασκηνίου"
+msgstr "顯示面板背景"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:494
 msgid "Size"
-msgstr "Μέγεθος"
+msgstr "大小"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:540
 msgid "Shadows"
-msgstr "Σκιές"
+msgstr "陰影"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:578
 msgid "None"
-msgstr "Καμία"
+msgstr "無"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:583
 msgid "Only for locked applets"
-msgstr "Μόνο κλειδωμένες εφαρμογές"
+msgstr "僅鎖定小程式"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:588
 msgid "All applets"
-msgstr "Παντού"
+msgstr "所有小程式"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:598
 msgid "Add New Dock"
-msgstr "Προσθήκη Πίνακα"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:604
 msgid "Remove Dock"
-msgstr "Αφαίρεση Πίνακα"
+msgstr ""
 
-#: ../../corona/packageplugins/shell/nowdockpackage.cpp:22
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:21
 #, fuzzy
 msgid "Now Dock panel"
-msgstr "Now Dock Πίνακας"
+msgstr "Now Dock 面板"
 
-#: ../../corona/packageplugins/shell/nowdockpackage.cpp:24
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:23
 msgid "Dock configuration UI"
-msgstr "Παράθυρο ρυθμίσεων"
+msgstr ""
 
-#: ../../corona/packageplugins/shell/nowdockpackage.cpp:25
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:24
 msgid "Config model"
-msgstr "Μοντέλο ρυθμίσεων"
+msgstr ""
 
 #: rc.cpp:1
 msgid "Latte"
-msgstr "Latte"
+msgstr ""
 
 #: rc.cpp:2
 msgid "Dock for the masses"
-msgstr "Πίνακας για όλον τον κόσμο"
+msgstr ""
 
 #: rc.cpp:3
 msgid "Dock"
-msgstr "Πίνακας"
+msgstr ""
 
 #~ msgid "Let Windows Cover"
-#~ msgstr "Παράθυρα από Πάνω"
+#~ msgstr " 讓視窗蓋過"
 
 #~ msgid "Windows Go Below"
-#~ msgstr "Παράθυρα από Κάτω"
-
-#~ msgid "Shell provided for the Latte Dock"
-#~ msgstr "Κέλυφος που παρέχεται από το Latte"
+#~ msgstr "視窗在下面"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Top"
-#~ msgstr "Πάνω"
+#~ msgstr "頂部"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Bottom"
-#~ msgstr "Κάτω"
+#~ msgstr "底部"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Left"
-#~ msgstr "Αριστερά"
+#~ msgstr "左邊"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Right"
-#~ msgstr "Δεξιά"
+#~ msgstr "右邊"
 
 #, fuzzy
 #~ msgctxt "@label:listbox config ui"
 #~ msgid "Alignment:"
-#~ msgstr "Στοίχιση Εφαρμογών"
+#~ msgstr "小程式對齊"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, alignment"
 #~ msgid "Center"
-#~ msgstr "Κέντρο"
+#~ msgstr "置中"
 
 #, fuzzy
 #~ msgctxt "@label:listbox config ui"
 #~ msgid "Visibility:"
-#~ msgstr "Ορατότητα"
+#~ msgstr "可見度"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, visibility"
 #~ msgid "Auto hide"
-#~ msgstr "Αυτόματη Απόκρυψη"
+#~ msgstr "自動隱藏"
 
 #~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
 #~ msgstr ""
-#~ "Ένας πίνακας του Plasma που χρησιμοποιεί ποικίλα εφέ για τις εφαρμογές του"
+#~ "一個嘗試讓滑鼠游標停在上面時會讓它的 plasmoid 產生動畫的 plasma 面板"
 
 #~ msgid "Now Dock Default Panel"
-#~ msgstr "Προκαθορισμένος Now Dock"
+#~ msgstr "Now Dock 預設面板"
 
 #~ msgid "Empty Now Dock Panel"
-#~ msgstr "Κενός Now Dock"
+#~ msgstr "空的 Now Dock 面板"
 
 #~ msgid "Automatic"
-#~ msgstr "Αυτόματα"
+#~ msgstr "自動"
 
 #~ msgid "Small steps for icon sizes in automatic modes"
-#~ msgstr "Μικρά βήματα στην αυτόματη εναλλαγή μεγέθους"
+#~ msgstr "自動模式中，圖示大小少量步進"

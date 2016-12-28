@@ -3,7 +3,7 @@
 PROJECTPATHCONTAINMENT="../../containment" # containment path
 PROJECTPATHPLASMOID="../../plasmoid" # plasmoid path
 PROJECTPATHSHELL="../../shell" # shell path
-PROJECTPATHCORONA="../../corona" # corona path
+PROJECTPATHAPP="../../app" # app path
 BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
 
 
@@ -19,8 +19,8 @@ cd ../shell
 intltool-merge --quiet --desktop-style . ../../shell.metadata.desktop.template "${PROJECTPATHSHELL}"/metadata.desktop.cmake
 echo "metadata.desktop file for shell was updated..."
 
-cd ../corona
-intltool-merge --quiet --desktop-style . ../../latte-dock.desktop.template "${PROJECTPATHCORONA}"/latte-dock.desktop
-echo "latte-dock.desktop file for corona was updated..."
+cd ../app
+intltool-merge --quiet --desktop-style . ../../latte-dock.desktop.template "${PROJECTPATHAPP}"/latte-dock.desktop
+echo "latte-dock.desktop file for app was updated..."
 
 

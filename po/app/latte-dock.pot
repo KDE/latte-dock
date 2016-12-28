@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2016-12-28 16:37+0200\n"
+"POT-Creation-Date: 2016-12-28 22:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,15 +126,15 @@ msgstr ""
 msgid "Remove Dock"
 msgstr ""
 
-#: ../../corona/packageplugins/shell/nowdockpackage.cpp:22
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:21
 msgid "Now Dock panel"
 msgstr ""
 
-#: ../../corona/packageplugins/shell/nowdockpackage.cpp:24
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:23
 msgid "Dock configuration UI"
 msgstr ""
 
-#: ../../corona/packageplugins/shell/nowdockpackage.cpp:25
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:24
 msgid "Config model"
 msgstr ""
 
