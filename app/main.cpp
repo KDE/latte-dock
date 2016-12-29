@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     
     QApplication app(argc, argv);
     app.setApplicationVersion(version);
-
+    
     app.setOrganizationDomain(QStringLiteral("latte-dock"));
     KLocalizedString::setApplicationDomain("latte-dock");
     app.setApplicationName(QStringLiteral("Latte Dock"));
