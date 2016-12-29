@@ -390,6 +390,9 @@ DragDrop.DropArea {
 
     onDockChanged: {
         if (dock) {
+            dock.onAddInternalViewSplitter.connect(addInternalViewSplitter);
+            dock.onRemoveInternalViewSplitter.connect(removeInternalViewSplitter);
+
             dock.visibility.onDisableHidingChanged.connect(visibilityManager.slotDisableHidingChanged);
             dock.visibility.onIsHoveredChanged.connect(visibilityManager.slotIsHoveredChanged);
             dock.visibility.onMustBeLowered.connect(visibilityManager.slotMustBeLowered);
@@ -1066,14 +1069,14 @@ DragDrop.DropArea {
 
         x: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal
            && plasmoid.immutable && windowSystem.compositingActive ?
-               (dock.width/2) - (dock.visibility.maxLength/2): 0
+               (dock.width/2) - (dock.maxLength/2): 0
         y: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical
            && plasmoid.immutable && windowSystem.compositingActive ?
-               (dock.height/2) - (dock.visibility.maxLength/2): 0
+               (dock.height/2) - (dock.maxLength/2): 0
         width: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal && plasmoid.immutable ?
-                   dock.visibility.maxLength : parent.width
+                   dock.maxLength : parent.width
         height: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical && plasmoid.immutable ?
-                    dock.visibility.maxLength : parent.height
+                    dock.maxLength : parent.height
 
         Component.onCompleted: {
             if(plasmoid.immutable) {

@@ -19,8 +19,6 @@ PlasmaCore.FrameSvgItem {
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
     signal updateThickness();
-    signal removeInternalViewSplitter();
-    signal addInternalViewSplitter();
 
     Column{
         id:mainColumn
@@ -70,21 +68,21 @@ PlasmaCore.FrameSvgItem {
                         centerPosition.checked = false;
                         lastPosition.checked = false;
                         splitTwoPosition.checked = false;
-                        removeInternalViewSplitter();
+                        dock.removeInternalViewSplitter();
                     }
                     else if(panelPosition == Latte.Dock.Center){
                         firstPosition.checked = false;
                         centerPosition.checked = true;
                         lastPosition.checked = false;
                         splitTwoPosition.checked = false;
-                        removeInternalViewSplitter();
+                        dock.removeInternalViewSplitter();
                     }
                     else if((panelPosition == Latte.Dock.Right)||(panelPosition == Latte.Dock.Bottom)){
                         firstPosition.checked = false;
                         centerPosition.checked = false;
                         lastPosition.checked = true;
                         splitTwoPosition.checked = false;
-                        removeInternalViewSplitter();
+                        dock.removeInternalViewSplitter();
                     }
                     else if (panelPosition == Latte.Dock.Double){
                         firstPosition.checked = false;
@@ -92,7 +90,7 @@ PlasmaCore.FrameSvgItem {
                         lastPosition.checked = false;
                         splitTwoPosition.checked = true;
                         //add the splitter visual
-                        addInternalViewSplitter(-1);
+                        dock.addInternalViewSplitter();
                     }
                 }
 
