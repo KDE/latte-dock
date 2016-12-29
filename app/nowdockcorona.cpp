@@ -203,27 +203,13 @@ void NowDockCorona::loadDefaultLayout()
     auto config = defaultContainment->config();
     defaultContainment->restore(config);
 
-    switch (containments().size()) {
-        case 1:
-            defaultContainment->setLocation(Plasma::Types::LeftEdge);
-            break;
+    QList<Plasma::Types::Location> edges = freeEdges(defaultContainment->screen());
 
-        case 2:
-            defaultContainment->setLocation(Plasma::Types::RightEdge);
-            break;
-
-        case 3:
-            defaultContainment->setLocation(Plasma::Types::TopEdge);
-            break;
-
-        default:
-            defaultContainment->setLocation(Plasma::Types::BottomEdge);
-            break;
+    if (edges.count() > 0) {
+        defaultContainment->setLocation(edges.at(0));
+    } else {
+        defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
-    
-    //config.writeEntry("dock", "initial");
-    //config.writeEntry("alignment", (int)Dock::Center);
-    //config.deleteEntry("wallpaperplugin");
 
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
     defaultContainment->save(config);
