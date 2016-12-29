@@ -54,11 +54,11 @@ NowDockCorona::NowDockCorona(QObject *parent)
     
     setKPackage(package);
     qmlRegisterTypes();
-
+    
     connect(this, &Corona::containmentAdded, this, &NowDockCorona::addDock);
-
+    
     loadLayout();
-
+    
     /*QAction *addDock = actions()->add<QAction>(QStringLiteral("add dock"));
     connect(addDock, &QAction::triggered, this, &NowDockCorona::loadDefaultLayout);
     addDock->setText(i18n("Add New Dock"));
@@ -66,7 +66,7 @@ NowDockCorona::NowDockCorona(QObject *parent)
     addDock->setStatusTip(tr("Adds a new dock in the environment"));
     addDock->setVisible(true);
     addDock->setEnabled(true);
-
+    
     addDock->setIcon(QIcon::fromTheme(QStringLiteral("object-locked")));
     addDock->setData(Plasma::Types::ControlAction);
     addDock->setShortcut(QKeySequence(QStringLiteral("alt+d, l")));
@@ -150,21 +150,21 @@ void NowDockCorona::addDock(Plasma::Containment *containment)
         qWarning() << "the requested containment plugin can not be located or loaded";
         return;
     }
-
+    
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
     KPluginMetaData metadata = containment->kPackage().metadata();
-
+    
     if (metadata.pluginId() == "org.kde.plasma.systemtray") {
         return;
     }
-
+    
     foreach (NowDockView *dock, m_containments) {
         if (dock->containment() == containment) {
             return;
         }
     }
-
+    
     qWarning() << "Adding dock for container...";
     
     auto dockView = new NowDockView(this);
@@ -185,7 +185,7 @@ void NowDockCorona::loadDefaultLayout()
     
     QVariantList args;
     auto defaultContainment = createContainmentDelayed("org.kde.latte.containment", args);
-
+    
     defaultContainment->setContainmentType(Plasma::Types::PanelContainment);
     defaultContainment->init();
     
@@ -193,7 +193,7 @@ void NowDockCorona::loadDefaultLayout()
         qWarning() << "the requested containment plugin can not be located or loaded";
         return;
     }
-
+    
     auto config = defaultContainment->config();
     defaultContainment->restore(config);
 
@@ -211,7 +211,7 @@ void NowDockCorona::loadDefaultLayout()
     defaultContainment->flushPendingConstraintsEvents();
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
-
+    
     addDock(defaultContainment);
     
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));

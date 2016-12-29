@@ -91,7 +91,7 @@ void NowDockConfigView::syncGeometry()
 {
     if (!m_containment || !rootObject())
         return;
-
+        
     const auto location = m_containment->location();
     const auto sGeometry = screen()->geometry();
     
@@ -101,7 +101,7 @@ void NowDockConfigView::syncGeometry()
             setMaximumSize(size);
             setMinimumSize(size);
             resize(size);
-
+            
             if (location == Plasma::Types::TopEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
                             , m_dockView->currentThickness());
@@ -117,7 +117,7 @@ void NowDockConfigView::syncGeometry()
             setMaximumSize(size);
             setMinimumSize(size);
             resize(size);
-
+            
             if (location == Plasma::Types::LeftEdge) {
                 setPosition(m_dockView->currentThickness()
                             , sGeometry.center().y() - size.height() / 2);
@@ -139,26 +139,26 @@ void NowDockConfigView::syncSlideEffect()
 {
     if (!m_containment)
         return;
-
+        
     KWindowEffects::SlideFromLocation slideLocation{KWindowEffects::NoEdge};
     
     switch (m_containment->location()) {
         case Plasma::Types::TopEdge:
             slideLocation = KWindowEffects::TopEdge;
             break;
-
+            
         case Plasma::Types::RightEdge:
             slideLocation = KWindowEffects::RightEdge;
             break;
-
+            
         case Plasma::Types::BottomEdge:
             slideLocation = KWindowEffects::BottomEdge;
             break;
-
+            
         case Plasma::Types::LeftEdge:
             slideLocation = KWindowEffects::LeftEdge;
             break;
-
+            
         default:
             qDebug() << staticMetaObject.className() << "wrong location";// << qEnumToStr(m_containment->location());
             break;
@@ -180,7 +180,7 @@ void NowDockConfigView::showEvent(QShowEvent *ev)
     
     if (m_containment)
         m_containment->setUserConfiguring(true);
-
+        
     //  m_dockView->visibility()->forceShow(true);
     //  m_dockView->visibility()->showImmediately();
     m_screenSyncTimer.start();
@@ -219,8 +219,8 @@ void NowDockConfigView::focusOutEvent(QFocusEvent *ev)
     
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
-
-
+        
+        
     // hide();
 }
 

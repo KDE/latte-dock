@@ -119,7 +119,7 @@ void NowDockView::init()
     
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
-
+    
     // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("nowdockui"));
     
@@ -189,7 +189,7 @@ void NowDockView::adaptToScreen(QScreen *screen)
 void NowDockView::addNewDock()
 {
     NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_corona);
-
+    
     if (corona) {
         corona->loadDefaultLayout();
     }
@@ -198,10 +198,10 @@ void NowDockView::addNewDock()
 void NowDockView::removeDock()
 {
     NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_corona);
-
+    
     if (corona->containments().count() > 1) {
         QAction *removeAct = containment()->actions()->action(QStringLiteral("remove"));
-
+        
         if (removeAct) {
             removeAct->trigger();
         }
