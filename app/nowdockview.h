@@ -123,6 +123,7 @@ protected:
 
 signals:
 //   void visibilityChanged();
+    void addInternalViewSplitter();
     void alignmentChanged();
     void compositingChanged();
     void heightChanged();
@@ -131,6 +132,7 @@ signals:
     void maxLengthChanged();
     void maxThicknessChanged();
     void offsetChanged();
+    void removeInternalViewSplitter();
     void visibilityChanged();
     void widthChanged();
     
