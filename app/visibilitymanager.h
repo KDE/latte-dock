@@ -9,6 +9,10 @@
 
 #include <Plasma/Containment>
 
+namespace Latte {
+
+class VisibilityManagerPrivate;
+
 class VisibilityManager : public QObject {
     Q_OBJECT
     
@@ -39,7 +43,7 @@ public:
     /**
      * @brief updateDockGeometry, the window geometry in absolute coordinates.
      */
-    void updateDockGeometry(QRect &geometry);
+    void updateDockGeometry(const QRect &geometry);
     
 signals:
     void mustBeShown();
@@ -54,4 +58,6 @@ signals:
 private:
     VisibilityManagerPrivate *const d;
 };
+
+}
 #endif // VISIBILITYMANAGER_H
