@@ -73,13 +73,13 @@ DragDrop.DropArea {
     property int realPanelSize
     property int themePanelSize: plasmoid.configuration.panelSize
 
-    ///FIXME: <delete> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
-    property int mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
-    ///FIXME: <delete>
+    ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
+    //property int mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
     //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? plasmoid.configuration.panelPosition : mainLayoutPosition
 
-    property int panelAlignment: plasmoid.immutable ? plasmoid.configuration.panelPosition : Latte.Dock.Center
-    // property int panelAlignment: plasmoid.configuration.panelPosition
+    property int panelAlignment: plasmoid.immutable ? plasmoid.configuration.panelPosition :
+                                                      ( plasmoid.configuration.panelPosition === Latte.Dock.Double ?
+                                                           Latte.Dock.Center :plasmoid.configuration.panelPosition )
 
     property real zoomFactor: windowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
@@ -107,7 +107,7 @@ DragDrop.DropArea {
     property int tasksCount: nowDock ? nowDock.tasksCount : 0
     ///END properties from nowDock
 
-   /* Layout.preferredWidth: plasmoid.immutable ?
+    /* Layout.preferredWidth: plasmoid.immutable ?
                                (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
                                     layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin) :
                                Screen.width //on unlocked state use the maximum
@@ -513,7 +513,7 @@ DragDrop.DropArea {
         }
 
         LayoutManager.save();
-     //   magicWin.removeAppletItem(applet);
+        //   magicWin.removeAppletItem(applet);
     }
 
     Plasmoid.onUserConfiguringChanged: {
@@ -566,10 +566,10 @@ DragDrop.DropArea {
         if (plasmoid.immutable) {
             if(root.isHorizontal) {
                 root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
-                                               layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin);
+                                                  layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin);
             } else {
                 root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === Latte.Dock.Double ?
-                                               layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin);
+                                                   layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin);
             }
         } else {
             if (root.isHorizontal) {
@@ -581,7 +581,7 @@ DragDrop.DropArea {
 
         if (plasmoid.immutable) {
             if (windowSystem.compositingActive) {
-             //   magicWin.initialize();
+                //   magicWin.initialize();
             }
 
             dock.visibility.disableHiding = false;
@@ -594,7 +594,7 @@ DragDrop.DropArea {
         visibilityManager.updateMaskArea();
 
         //  console.log(magicWin.visible + " - "+magicWin.x+" - " + magicWin.y+" - "+magicWin.width+" - "+magicWin.height);
-       /* if (magicWin) {
+        /* if (magicWin) {
             if (plasmoid.immutable) {
                 if (windowSystem.compositingActive) {
                     magicWin.initialize();
@@ -632,7 +632,7 @@ DragDrop.DropArea {
 
         // adding the AppletQuickItem to the Now Dock in order to be
         // used for right clicking events
-      //  magicWin.addAppletItem(applet);
+        //  magicWin.addAppletItem(applet);
     }
 
     function addContainerInLayout(container, applet, x, y){
@@ -1021,7 +1021,7 @@ DragDrop.DropArea {
         }
     }
 
-   /* MouseArea{
+    /* MouseArea{
         id: wholeArea
         anchors.fill: parent
         hoverEnabled: true
@@ -1053,14 +1053,14 @@ DragDrop.DropArea {
 
     VisibilityManager{
         id: visibilityManager
-     //   window: dock
+        //   window: dock
     }
 
     Item{
         id: layoutsContainer
 
         signal updateScale(int delegateIndex, real newScale, real step)
-      //  property bool parentMagicWinFlag: plasmoid.immutable && magicWin && !root.inStartup && windowSystem.compositingActive
+        //  property bool parentMagicWinFlag: plasmoid.immutable && magicWin && !root.inStartup && windowSystem.compositingActive
         //&& !(root.inStartup && magicWin.panelVisibility === Latte.Dock.AutoHide)
 
         property int allCount: root.nowDock ? mainLayout.count-1+nowDock.tasksCount : mainLayout.count
@@ -1086,7 +1086,7 @@ DragDrop.DropArea {
             }
         }
 
-      /*  onParentChanged: {
+        /*  onParentChanged: {
             if (magicWin && magicWin.contentItem && (parent === magicWin.contentItem)) {
                 magicWin.updateMaskArea();
             }
@@ -1255,8 +1255,8 @@ DragDrop.DropArea {
         id: animatedLengthTimer
         interval: 150
         onTriggered: {
-         //   if (!magicWin.isHovered && (appletsAnimations === 0)
-         //           && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {
+            //   if (!magicWin.isHovered && (appletsAnimations === 0)
+            //           && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {
             if ((appletsAnimations === 0) && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {
                 mainLayout.animatedLength = false;
                 visibilityManager.updateMaskArea();
