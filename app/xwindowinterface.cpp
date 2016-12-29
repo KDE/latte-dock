@@ -1,5 +1,7 @@
 #include "xwindowinterface.h"
+#include "../liblattedock/extras.h"
 
+#include <QDebug>
 #include <QtX11Extras/QX11Info>
 
 #include <KWindowSystem>
@@ -62,6 +64,54 @@ WId XWindowInterface::activeWindow() const
 const std::list<WId> &XWindowInterface::windows()
 {
     return m_windows;
+}
+
+void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Location location)
+{
+    NETExtendedStrut strut;
+    
+    switch (location) {
+        case Plasma::Types::TopEdge:
+            strut.top_width = dockRect.height();
+            strut.top_start = dockRect.x();
+            strut.top_end = dockRect.x() + dockRect.width() - 1;
+            break;
+            
+        case Plasma::Types::BottomEdge:
+            strut.bottom_width = dockRect.height();
+            strut.bottom_start = dockRect.x();
+            strut.bottom_end = dockRect.x() + dockRect.width() - 1;
+            break;
+            
+        case Plasma::Types::LeftEdge:
+            strut.left_width = dockRect.width();
+            strut.left_start = dockRect.y();
+            strut.left_end = dockRect.y() + dockRect.height() - 1;
+            break;
+            
+        case Plasma::Types::RightEdge:
+            strut.right_width = dockRect.width();
+            strut.right_start = dockRect.y();
+            strut.right_end = dockRect.y() + dockRect.height() - 1;
+            break;
+            
+        default:
+            qWarning() << "wrong location:" << qEnumToStr(location);
+            return;
+    }
+    
+    
+    KWindowSystem::setExtendedStrut(m_view->winId(),
+                                    strut.left_width,   strut.left_start,   strut.left_end,
+                                    strut.right_width,  strut.right_start,  strut.right_end,
+                                    strut.top_width,    strut.top_start,    strut.top_end,
+                                    strut.bottom_width, strut.bottom_start, strut.bottom_end
+                                   );
+}
+
+void XWindowInterface::removeDockStruts()
+{
+    KWindowSystem::setStrut(m_view->winId(), 0, 0, 0, 0);
 }
 
 WindowInfoWrap XWindowInterface::requestInfoActive()
