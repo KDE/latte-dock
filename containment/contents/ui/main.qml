@@ -993,7 +993,7 @@ DragDrop.DropArea {
     Item {
         id: dndSpacer
 
-        property int normalSize: root.statesLineSizeOriginal + plasmoid.configuration.iconSize + root.iconMarginOriginal - 1
+        property int normalSize: visibilityManager.statesLineSizeOriginal + plasmoid.configuration.iconSize + visibilityManager.iconMarginOriginal - 1
 
         width: normalSize
         height: normalSize

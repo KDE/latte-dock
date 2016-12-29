@@ -151,6 +151,7 @@ function insertBefore(item1, item2) {
     for (var j = removed.length - 1; j >= 0; --j) {
         removed[j].parent = layout;
     }
+
     return i;
 }
 
@@ -188,6 +189,7 @@ function insertAfter(item1, item2) {
     for (var j = removed.length - 1; j >= 0; --j) {
         removed[j].parent = layout;
     }
+
     return i;
 }
 
@@ -254,18 +256,26 @@ function insertAtCoordinates(item, x, y) {
             }
         }
     }
+
     //already in position
     if (child === item) {
         return;
     }
-    if (!child) {
-        child = layout.children[0];
-    }
-    item.parent = root;
 
-    //PlasmaCore.Types.Vertical = 3
-    if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
-            (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
+    if (!child) {
+        // check if dragging takes place after the end of the layout
+        if ( ((root.isVertical && y > layout.height)||(root.Horizontal && x > layout.width))
+              && layout.children.length>0  ){
+            child = layout.children[layout.children.length-1];
+        } else {
+            child = layout.children[0];
+        }
+    } else {
+        item.parent = root;
+    }
+
+    if ((root.isVertical && y < child.y + child.height/2) ||
+            (root.isHorizontal && x < child.x + child.width/2)) {
         return insertBefore(child, item);
     } else {
         return insertAfter(child, item);
