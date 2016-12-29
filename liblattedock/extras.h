@@ -64,7 +64,7 @@ inline const char *qEnumToStr(Plasma::Types::FormFactor Enum)
  * @brief machine epsilon
  */
 template<class T>
-typename std::enable_if<!std::is_integral<T>(), bool>::type almost_equal(T x, T y, int ulp)
+typename std::enable_if < !std::is_integral<T>(), bool >::type almost_equal(T x, T y, int ulp)
 {
     return std::abs(x - y) < std::numeric_limits<T>::epsilon() * std::abs(x + y) * ulp
            || std::abs(x - y) < std::numeric_limits<T>::min();
