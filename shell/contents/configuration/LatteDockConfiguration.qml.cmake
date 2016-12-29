@@ -14,26 +14,45 @@ PlasmaCore.FrameSvgItem {
     imagePath: "dialogs/background"
 
     width: Math.max(420,noneShadow.width + lockedAppletsShadow.width + allAppletsShadow.width)
-    height: mainColumn.height+10
+    height: mainColumn.height+2*windowSpace
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+    property int windowSpace:8
 
     signal updateThickness();
 
     Column{
         id:mainColumn
         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
         spacing: 1.5*theme.defaultFont.pointSize
-        width: parent.width - 10
+        width: parent.width - 2*windowSpace
 
         //////////// Location ////////////////
 
         Column{
             width:parent.width
             spacing: 0.8*theme.defaultFont.pointSize
-            PlasmaComponents.Label{
-                text: i18n("Location")
-                font.pointSize: 1.5 * theme.defaultFont.pointSize
+
+            RowLayout{
+                width: parent.width
+                PlasmaComponents.Label{
+                    text: i18n("Location")
+                    font.pointSize: 1.5 * theme.defaultFont.pointSize
+                    Layout.alignment: Qt.AlignLeft
+                }
+
+                PlasmaComponents.Label{
+                    font.pointSize: theme.defaultFont.pointSize
+                    font.italic: true
+                    opacity: 0.6
+
+                    Layout.alignment: Qt.AlignRight
+                    horizontalAlignment: Text.AlignRight
+
+                    text: i18n("ver: ") +"@VERSION@"
+                }
             }
 
             Flow{
@@ -167,26 +186,10 @@ PlasmaCore.FrameSvgItem {
             width:parent.width
             spacing: 0.8*theme.defaultFont.pointSize
 
-            RowLayout{
-                width: parent.width
-                PlasmaComponents.Label{
-                    text: i18n("Applets Alignment")
-                    font.pointSize: 1.5 * theme.defaultFont.pointSize
-                    Layout.alignment: Qt.AlignLeft
-                }
-
-                PlasmaComponents.Label{
-                    font.pointSize: theme.defaultFont.pointSize
-                    font.italic: true
-                    opacity: 0.6
-
-                    Layout.alignment: Qt.AlignRight
-                    horizontalAlignment: Text.AlignRight
-                    // width: parent.width
-
-                    text: i18n("ver: ") +"@VERSION@"
-
-                }
+            PlasmaComponents.Label{
+                text: i18n("Applets Alignment")
+                font.pointSize: 1.5 * theme.defaultFont.pointSize
+                Layout.alignment: Qt.AlignLeft
             }
 
             //user set Panel Positions
