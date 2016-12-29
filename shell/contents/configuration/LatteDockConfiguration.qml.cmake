@@ -733,6 +733,13 @@ PlasmaCore.FrameSvgItem {
                 text: i18n("Add New Dock")
 
                 onClicked: dock.addNewDock();
+
+                Component.onCompleted: {
+                    var edges = dock.freeEdges();
+                    if (edges.length === 0) {
+                        enabled = false;
+                    }
+                }
             }
             PlasmaComponents.Button{
                 enabled: true
