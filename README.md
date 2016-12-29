@@ -11,7 +11,7 @@ Installation
 ####installation script####
 - _sh install.sh_
 
-Latte is now ready to be used by executing latte-dock
+Latte is now ready to be used by executing  ```latte-dock```
 
 Translators
 ============
@@ -22,18 +22,21 @@ Requirements
 * Plasma >= 5.8.0
 
 **development packages for:**
+```bash
+ Qt5Core >= 5.6.0
+ Qt5Qml >= 5.6.0
+ Qt5Quick >= 5.6.0
 
-* Qt5Core >= 5.6.0
-* Qt5Qml >= 5.6.0
-* Qt5Quick >= 5.6.0
+ KF5Plasma >= 5.25.0
+ KF5PlasmaQuick >= 5.25.0
+ KF5WindowSystem >= 5.25.0
+ KF5KDELibs4Support >= 5.25.0
+ KF5CoreAddons >= 5.25.0
+```
 
-* KF5Plasma >= 5.25.0
-* KF5PlasmaQuick >= 5.25.0
-* KF5WindowSystem >= 5.25.0
-* KF5KDELibs4Support >= 5.25.0
-* KF5CoreAddons >= 5.25.0
-
-
+Contributors
+=============
+[Varlesh](https://github.com/varlesh): Logos and Icons.
 
 
 
