@@ -1,11 +1,12 @@
 ﻿#ifndef XWINDOWINTERFACE_H
 #define XWINDOWINTERFACE_H
 
+#include "abstractwindowinterface.h"
+
 #include <QObject>
 
 #include <KWindowInfo>
-
-#include "abstractwindowinterface.h"
+#include <Plasma>
 
 namespace Latte {
 
@@ -14,7 +15,7 @@ class XWindowInterface : public AbstractWindowInterface {
     
 public:
     XWindowInterface(QQuickWindow *const view, QObject *parent);
-    virtual ~XWindowInterface();
+    ~XWindowInterface() override;
     
     void setDockDefaultFlags() override;
     
@@ -22,6 +23,9 @@ public:
     WindowInfoWrap requestInfo(WId wid) override;
     WindowInfoWrap requestInfoActive() override;
     const std::list<WId> &windows() override;
+    
+    void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) override;
+    void removeDockStruts() override;
     
 private:
     bool isValidWindow(const KWindowInfo &winfo);

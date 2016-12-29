@@ -9,7 +9,10 @@
 #include <list>
 
 #include <QObject>
+#include <QRect>
 #include <QQuickWindow>
+
+#include <Plasma>
 
 namespace Latte {
 
@@ -26,6 +29,9 @@ public:
     virtual WindowInfoWrap requestInfo(WId wid) = 0;
     virtual WindowInfoWrap requestInfoActive() = 0;
     virtual const std::list<WId> &windows() = 0;
+    
+    virtual void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) = 0;
+    virtual void removeDockStruts() = 0;
     
 signals:
     void activeWindowChanged(WId wid);
