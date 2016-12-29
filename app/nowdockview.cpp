@@ -527,7 +527,18 @@ QPointF NowDockView::positionAdjustedForContainment(const QPointF &point) const
                    qBound(containmentRect.top() + 2, point.y(), containmentRect.bottom() - 2));
 }
 
+QList<int> NowDockView::freeEdges() const
+{
+    QList<Plasma::Types::Location> edges = m_corona->freeEdges(containment()->screen());
 
+    QList<int> edgesInt;
+
+    foreach (Plasma::Types::Location edge, edges) {
+        edgesInt.append((int)edge);
+    }
+
+    return edgesInt;
+}
 
 void NowDockView::saveConfig()
 {

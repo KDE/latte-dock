@@ -107,6 +107,8 @@ public:
     
 public slots:
     Q_INVOKABLE void addNewDock();
+    //used from the configuration window
+    Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void removeDock();
     void resizeWindow();
