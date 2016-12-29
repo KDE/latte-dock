@@ -393,6 +393,11 @@ DragDrop.DropArea {
             dock.onAddInternalViewSplitter.connect(addInternalViewSplitter);
             dock.onRemoveInternalViewSplitter.connect(removeInternalViewSplitter);
 
+            dock.onXChanged.connect(visibilityManager.updateMaskArea);
+            dock.onYChanged.connect(visibilityManager.updateMaskArea);
+            dock.onWidthChanged.connect(visibilityManager.updateMaskArea);
+            dock.onHeightChanged.connect(visibilityManager.updateMaskArea);
+
             dock.visibility.onDisableHidingChanged.connect(visibilityManager.slotDisableHidingChanged);
             dock.visibility.onIsHoveredChanged.connect(visibilityManager.slotIsHoveredChanged);
             dock.visibility.onMustBeLowered.connect(visibilityManager.slotMustBeLowered);
