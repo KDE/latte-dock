@@ -1,20 +1,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Damian Kopeć <damikope@gmail.com>, 2016.
+# Jeff Huang <s8321414@gmail.com>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2016-12-28 22:51+0200\n"
-"PO-Revision-Date: 2016-10-14 14:20+0100\n"
-"Last-Translator: Damian Kopeć <damikope@gmail.com>\n"
-"Language-Team: Polish <kde-i18n-doc@kde.org>\n"
-"Language: pl\n"
+"PO-Revision-Date: 2016-11-26 17:31+0800\n"
+"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
+"Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
 #: ../../shell/contents/configuration/config.qml:26
@@ -23,55 +23,57 @@ msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:38
 msgid "Applets Alignment"
-msgstr "Wyrównanie Apletów "
+msgstr "小程式對齊"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:52
 msgid "ver: "
-msgstr ""
+msgstr "版本："
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Top"
-msgstr "Góra"
+msgstr "頂部"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Left"
-msgstr "Lewa"
+msgstr "左邊"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:125
 msgid "Center"
-msgstr "Środek"
+msgstr "置中"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Bottom"
-msgstr "Dół"
+msgstr "底部"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Right"
-msgstr "Prawa"
+msgstr "右邊"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:179
 msgid "Visibility"
-msgstr ""
+msgstr "可見度"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:235
 msgid "Always Visible"
-msgstr ""
+msgstr "永遠可見"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:248
 msgid "Auto Hide"
-msgstr ""
+msgstr "自動隱藏"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:261
+#, fuzzy
 msgid "Dodge Active"
-msgstr ""
+msgstr "在作用中的視窗後"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:275
+#, fuzzy
 msgid "Dodge Maximized"
-msgstr ""
+msgstr "在最大化的視窗後"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:289
 msgid "Dodge All Windows"
@@ -80,45 +82,43 @@ msgstr ""
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
 msgid "Applets Size"
-msgstr "Wielkość Apletów"
+msgstr "小程式大小"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:390
 msgid "Zoom On Hover"
-msgstr "Zbliżenie Przy Najechaniu"
+msgstr "滑鼠游標置於其上時縮放"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:409
 msgid "Zoom Factor"
-msgstr "Stopień Zbliżenia"
+msgstr "縮放係數"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:458
 msgid "Background"
-msgstr "Tło"
+msgstr "背景"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:464
 msgid "Show Panel Background"
-msgstr "Pokaż Tło Panelu"
+msgstr "顯示面板背景"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:494
 msgid "Size"
-msgstr "Rozmiar"
+msgstr "大小"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:540
 msgid "Shadows"
-msgstr ""
+msgstr "陰影"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:578
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:583
-#, fuzzy
 msgid "Only for locked applets"
-msgstr "Cień dla zablokowanych apletów"
+msgstr "僅鎖定小程式"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:588
-#, fuzzy
 msgid "All applets"
-msgstr "Wielkość Apletów"
+msgstr "所有小程式"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:598
 msgid "Add New Dock"
@@ -128,58 +128,89 @@ msgstr ""
 msgid "Remove Dock"
 msgstr ""
 
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:21
+#, fuzzy
+msgid "Now Dock panel"
+msgstr "Now Dock 面板"
+
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:23
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:24
+msgid "Config model"
+msgstr ""
+
 #: rc.cpp:1
-msgid "Latte Shell"
+msgid "Latte"
 msgstr ""
 
 #: rc.cpp:2
-msgid "Shell provided for the Latte Dock"
+msgid "Dock for the masses"
 msgstr ""
+
+#: rc.cpp:3
+msgid "Dock"
+msgstr ""
+
+#~ msgid "Let Windows Cover"
+#~ msgstr " 讓視窗蓋過"
+
+#~ msgid "Windows Go Below"
+#~ msgstr "視窗在下面"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Top"
-#~ msgstr "Góra"
+#~ msgstr "頂部"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Bottom"
-#~ msgstr "Dół"
+#~ msgstr "底部"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Left"
-#~ msgstr "Lewa"
+#~ msgstr "左邊"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, location"
 #~ msgid "Right"
-#~ msgstr "Prawa"
+#~ msgstr "右邊"
 
 #, fuzzy
 #~ msgctxt "@label:listbox config ui"
 #~ msgid "Alignment:"
-#~ msgstr "Wyrównanie Apletów "
+#~ msgstr "小程式對齊"
 
 #, fuzzy
 #~ msgctxt "@item:inlistbox config ui, alignment"
 #~ msgid "Center"
-#~ msgstr "Środek"
+#~ msgstr "置中"
 
-#~ msgid "Now Dock Panel"
-#~ msgstr "Panel Now Dock"
+#, fuzzy
+#~ msgctxt "@label:listbox config ui"
+#~ msgid "Visibility:"
+#~ msgstr "可見度"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, visibility"
+#~ msgid "Auto hide"
+#~ msgstr "自動隱藏"
 
 #~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
-#~ msgstr "Panel plazmy próbujący animowac plazmoidy podczas najechania na nie"
+#~ msgstr ""
+#~ "一個嘗試讓滑鼠游標停在上面時會讓它的 plasmoid 產生動畫的 plasma 面板"
 
 #~ msgid "Now Dock Default Panel"
-#~ msgstr "Domyślny Panel Now Dock"
+#~ msgstr "Now Dock 預設面板"
 
 #~ msgid "Empty Now Dock Panel"
-#~ msgstr "Pusty Panel Now Dock"
+#~ msgstr "空的 Now Dock 面板"
 
 #~ msgid "Automatic"
-#~ msgstr "Automatyczna"
+#~ msgstr "自動"
 
 #~ msgid "Small steps for icon sizes in automatic modes"
-#~ msgstr "Mały skok wielkości ikon w tryb automatycznym"
+#~ msgstr "自動模式中，圖示大小少量步進"

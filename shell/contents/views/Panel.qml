@@ -30,8 +30,6 @@ PlasmaCore.FrameSvgItem {
     prefix:""
     // onRepaintNeeded: adjustPrefix();
 
-    //enabledBorders: panel.enabledBorders
-
     property Item containment
     property Item dockLayout
 
@@ -85,13 +83,13 @@ PlasmaCore.FrameSvgItem {
         for(var i=0; i<containment.children.length; ++i){
             if (containment.children[i].objectName === "dockLayoutView") {
                 dockLayout = containment.children[i];
-                dockLayout.dockView = panel;
+                dockLayout.dock = dock;
             }
         }
     }
 
     Binding {
-        target: panel
+        target: dock
         property: "length"
         when: containment
         value: {

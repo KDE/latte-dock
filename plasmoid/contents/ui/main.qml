@@ -753,10 +753,10 @@ Item {
 
         onCountChanged: {
             if(activityInfo.currentActivity != "00000000-0000-0000-0000-000000000000"){
-                console.log("----------- Now Dock Signal: Activities number was changed ---------");
+                console.log("----------- Latte Plasmoid Signal: Activities number was changed ---------");
                 var allActivities = activities();
                 ActivitiesTools.cleanupRecords(allActivities);
-                console.log("----------- Now Dock Signal End ---------");
+                console.log("----------- Latte Plasmoid Signal End ---------");
             }
         }
     }
