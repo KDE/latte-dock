@@ -122,8 +122,8 @@ QRect NowDockCorona::availableScreenRect(int id) const
 QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
-    QList<Types::Location> edges{Types::TopEdge, Types::BottomEdge
-                                 , Types::LeftEdge, Types::RightEdge};
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                 Types::TopEdge, Types::RightEdge};
                                  
     for (const NowDockView *cont : m_containments) {
         if (cont && cont->containment()->screen() == screen)

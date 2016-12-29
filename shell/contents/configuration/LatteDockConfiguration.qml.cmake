@@ -46,12 +46,35 @@ PlasmaCore.FrameSvgItem {
                 onDockLocationChanged: updateDockLocationVisual();
 
                 Component.onCompleted: {
+                    lockReservedEdges();
                     updateDockLocationVisual();
                     inStartup = false;
                 }
 
+                function lockReservedEdges() {
+                    var edges = dock.freeEdges();
+
+                    firstLocation.enabled = false;
+                    secondLocation.enabled = false;
+                    thirdLocation.enabled = false;
+                    fourthLocation.enabled = false;
+
+                    for (var i=0; i<edges.length; ++i){
+                        if (edges[i] === PlasmaCore.Types.BottomEdge){
+                            firstLocation.enabled = true;
+                        } else if (edges[i] === PlasmaCore.Types.LeftEdge){
+                            secondLocation.enabled = true;
+                        } else if (edges[i] === PlasmaCore.Types.TopEdge){
+                            thirdLocation.enabled = true;
+                        } else if (edges[i] === PlasmaCore.Types.RightEdge){
+                            fourthLocation.enabled = true;
+                        }
+                    }
+                }
+
                 function updateDockLocationVisual(){
                     if(dockLocation === PlasmaCore.Types.BottomEdge){
+                        firstLocation.enabled = true;
                         firstLocation.checked = true;
                         secondLocation.checked = false;
                         thirdLocation.checked = false;
@@ -59,6 +82,7 @@ PlasmaCore.FrameSvgItem {
                     }
                     else if(dockLocation === PlasmaCore.Types.LeftEdge){
                         firstLocation.checked = false;
+                        secondLocation.enabled = true;
                         secondLocation.checked = true;
                         thirdLocation.checked = false;
                         fourthLocation.checked = false;
@@ -66,6 +90,7 @@ PlasmaCore.FrameSvgItem {
                     else if(dockLocation === PlasmaCore.Types.TopEdge){
                         firstLocation.checked = false;
                         secondLocation.checked = false;
+                        thirdLocation.enabled = true;
                         thirdLocation.checked = true;
                         fourthLocation.checked = false;
                     }
@@ -73,6 +98,7 @@ PlasmaCore.FrameSvgItem {
                         firstLocation.checked = false;
                         secondLocation.checked = false;
                         thirdLocation.checked = false;
+                        fourthLocation.enabled = true;
                         fourthLocation.checked = true;
                     }
                 }

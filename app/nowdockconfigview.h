@@ -56,6 +56,7 @@ protected:
 
 private Q_SLOTS:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
+    void configurationShown(PlasmaQuick::ConfigView *configView);
     
 private:
     Plasma::Containment *m_containment{nullptr};
