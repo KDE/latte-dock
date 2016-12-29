@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Latte
+Name[el]=Latte
+Comment=Dock for the masses
+Comment[el]=Πίνακας για όλον τον κόσμο
+GenericName=Dock
+GenericName[el]=Πίνακας
+
+Categories=Utility;
+Exec=latte-dock %u
+Icon=latte-dock
+InitialPreference=1
+StartupNotify=true
+Terminal=false
+Type=Application
+

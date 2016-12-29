@@ -1,0 +1,13 @@
+[Desktop Entry]
+_Name=Latte
+_Comment=Dock for the masses
+_GenericName=Dock
+
+Categories=Utility;
+Exec=latte-dock %u
+Icon=latte-dock
+InitialPreference=1
+StartupNotify=true
+Terminal=false
+Type=Application
+

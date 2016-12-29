@@ -1,21 +1,21 @@
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-# Damian Kopeć <damikope@gmail.com>, 2016.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2016-12-28 22:51+0200\n"
-"PO-Revision-Date: 2016-10-14 14:20+0100\n"
-"Last-Translator: Damian Kopeć <damikope@gmail.com>\n"
-"Language-Team: Polish <kde-i18n-doc@kde.org>\n"
-"Language: pl\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
 
 #: ../../shell/contents/configuration/config.qml:26
 msgid "General"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:38
 msgid "Applets Alignment"
-msgstr "Wyrównanie Apletów "
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:52
 msgid "ver: "
@@ -32,26 +32,26 @@ msgstr ""
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Top"
-msgstr "Góra"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Left"
-msgstr "Lewa"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:125
 msgid "Center"
-msgstr "Środek"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Bottom"
-msgstr "Dół"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
 msgid "Right"
-msgstr "Prawa"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:179
 msgid "Visibility"
@@ -80,27 +80,27 @@ msgstr ""
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
 msgid "Applets Size"
-msgstr "Wielkość Apletów"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:390
 msgid "Zoom On Hover"
-msgstr "Zbliżenie Przy Najechaniu"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:409
 msgid "Zoom Factor"
-msgstr "Stopień Zbliżenia"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:458
 msgid "Background"
-msgstr "Tło"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:464
 msgid "Show Panel Background"
-msgstr "Pokaż Tło Panelu"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:494
 msgid "Size"
-msgstr "Rozmiar"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:540
 msgid "Shadows"
@@ -111,14 +111,12 @@ msgid "None"
 msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:583
-#, fuzzy
 msgid "Only for locked applets"
-msgstr "Cień dla zablokowanych apletów"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:588
-#, fuzzy
 msgid "All applets"
-msgstr "Wielkość Apletów"
+msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:598
 msgid "Add New Dock"
@@ -128,58 +126,26 @@ msgstr ""
 msgid "Remove Dock"
 msgstr ""
 
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:21
+msgid "Now Dock panel"
+msgstr ""
+
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:23
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:24
+msgid "Config model"
+msgstr ""
+
 #: rc.cpp:1
-msgid "Latte Shell"
+msgid "Latte"
 msgstr ""
 
 #: rc.cpp:2
-msgid "Shell provided for the Latte Dock"
+msgid "Dock for the masses"
 msgstr ""
 
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Top"
-#~ msgstr "Góra"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Bottom"
-#~ msgstr "Dół"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Left"
-#~ msgstr "Lewa"
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, location"
-#~ msgid "Right"
-#~ msgstr "Prawa"
-
-#, fuzzy
-#~ msgctxt "@label:listbox config ui"
-#~ msgid "Alignment:"
-#~ msgstr "Wyrównanie Apletów "
-
-#, fuzzy
-#~ msgctxt "@item:inlistbox config ui, alignment"
-#~ msgid "Center"
-#~ msgstr "Środek"
-
-#~ msgid "Now Dock Panel"
-#~ msgstr "Panel Now Dock"
-
-#~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
-#~ msgstr "Panel plazmy próbujący animowac plazmoidy podczas najechania na nie"
-
-#~ msgid "Now Dock Default Panel"
-#~ msgstr "Domyślny Panel Now Dock"
-
-#~ msgid "Empty Now Dock Panel"
-#~ msgstr "Pusty Panel Now Dock"
-
-#~ msgid "Automatic"
-#~ msgstr "Automatyczna"
-
-#~ msgid "Small steps for icon sizes in automatic modes"
-#~ msgstr "Mały skok wielkości ikon w tryb automatycznym"
+#: rc.cpp:3
+msgid "Dock"
+msgstr ""

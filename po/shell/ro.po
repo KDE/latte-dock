@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2016-12-25 19:23+0200\n"
+"POT-Creation-Date: 2016-12-28 22:51+0200\n"
 "PO-Revision-Date: 2016-09-25 04:15+0300\n"
 "Last-Translator: Viorel-Cătălin Răpițeanu <rapiteanu DOT catalin AT gmail "
 "DOT com>\n"
@@ -55,81 +55,77 @@ msgstr "Jos"
 msgid "Right"
 msgstr "Dreapta"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:181
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:179
 msgid "Visibility"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:237
-msgid "Below Active"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:250
-msgid "Below Maximized"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:263
-msgid "Let Windows Cover"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:277
-msgid "Windows Go Below"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:291
-msgid "Auto Hide"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:304
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:235
 msgid "Always Visible"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:324
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:345
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:248
+msgid "Auto Hide"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:261
+msgid "Dodge Active"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:275
+msgid "Dodge Maximized"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:289
+msgid "Dodge All Windows"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
 msgid "Applets Size"
 msgstr "Dimensiunea miniaplicațiilor"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:392
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:390
 msgid "Zoom On Hover"
 msgstr "Panoramează la trecerea peste"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:411
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:409
 msgid "Zoom Factor"
 msgstr "Factor de panoramare"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:460
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:458
 msgid "Background"
 msgstr "Fundal"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:466
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:464
 msgid "Show Panel Background"
 msgstr "Arată fundalul panoului"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:496
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:494
 msgid "Size"
 msgstr "Dimensiune"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:542
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:540
 msgid "Shadows"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:580
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:578
 msgid "None"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:585
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:583
 msgid "Only for locked applets"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:590
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:588
 #, fuzzy
 msgid "All applets"
 msgstr "Dimensiunea miniaplicațiilor"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:600
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:598
 msgid "Add New Dock"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:606
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:604
 msgid "Remove Dock"
 msgstr ""
 

@@ -1,3 +1,4 @@
+find_package(KF5I18n NO_MODULE)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
