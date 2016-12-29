@@ -53,7 +53,7 @@ protected:
     
     void syncGeometry();
     void syncSlideEffect();
-
+    
 private Q_SLOTS:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     
