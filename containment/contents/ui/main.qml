@@ -983,6 +983,16 @@ DragDrop.DropArea {
     ///////////////END components
 
     ///////////////BEGIN UI elements
+
+    Loader{
+        anchors.fill: parent
+        active: !plasmoid.immutable
+
+        sourceComponent: EditModeVisual{
+        }
+    }
+
+
     Item {
         id: lastSpacer
         parent: mainLayout
