@@ -21,6 +21,7 @@
 #define NOWDOCKCONFIGVIEW_H
 
 #include "plasmaquick/configview.h"
+#include <plasma/package.h>
 
 #include <QObject>
 #include <QWindow>
@@ -30,6 +31,7 @@
 namespace Plasma {
 class Applet;
 class Containment;
+class Types;
 }
 
 class NowDockView;
@@ -51,6 +53,9 @@ protected:
     
     void syncGeometry();
     void syncSlideEffect();
+
+private Q_SLOTS:
+    void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     
 private:
     Plasma::Containment *m_containment{nullptr};

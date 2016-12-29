@@ -128,12 +128,29 @@ msgstr ""
 msgid "Remove Dock"
 msgstr ""
 
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:21
+#, fuzzy
+msgid "Now Dock panel"
+msgstr "Panel Now Dock"
+
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:23
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../app/packageplugins/shell/nowdockpackage.cpp:24
+msgid "Config model"
+msgstr ""
+
 #: rc.cpp:1
-msgid "Latte Shell"
+msgid "Latte"
 msgstr ""
 
 #: rc.cpp:2
-msgid "Shell provided for the Latte Dock"
+msgid "Dock for the masses"
+msgstr ""
+
+#: rc.cpp:3
+msgid "Dock"
 msgstr ""
 
 #, fuzzy
@@ -165,9 +182,6 @@ msgstr ""
 #~ msgctxt "@item:inlistbox config ui, alignment"
 #~ msgid "Center"
 #~ msgstr "Środek"
-
-#~ msgid "Now Dock Panel"
-#~ msgstr "Panel Now Dock"
 
 #~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
 #~ msgstr "Panel plazmy próbujący animowac plazmoidy podczas najechania na nie"

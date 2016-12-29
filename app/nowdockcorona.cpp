@@ -54,6 +54,7 @@ NowDockCorona::NowDockCorona(QObject *parent)
     
     setKPackage(package);
     qmlRegisterTypes();
+
     connect(this, &Corona::containmentAdded, this, &NowDockCorona::addDock);
 
     loadLayout();
@@ -156,6 +157,20 @@ void NowDockCorona::addDock(Plasma::Containment *containment)
         return;
     }
 
+    // the system tray is a containment that behaves as an applet
+    // so a dockview shouldnt be created for it
+    KPluginMetaData metadata = containment->pluginMetaData();
+
+    if (metadata.pluginId() == "org.kde.plasma.systemtray") {
+        return;
+    }
+
+    foreach (NowDockView *dock, m_containments) {
+        if (dock->containment() == containment) {
+            return;
+        }
+    }
+
     qWarning() << "Adding dock for container...";
     
     auto dockView = new NowDockView(this);
@@ -176,7 +191,7 @@ void NowDockCorona::loadDefaultLayout()
     
     QVariantList args;
     auto defaultContainment = createContainmentDelayed("org.kde.latte.containment", args);
-    //auto defaultContainment = createContainmentDelayed("org.kde.panel", args);
+
     defaultContainment->setContainmentType(Plasma::Types::PanelContainment);
     defaultContainment->init();
     
@@ -184,12 +199,9 @@ void NowDockCorona::loadDefaultLayout()
         qWarning() << "the requested containment plugin can not be located or loaded";
         return;
     }
-    
+
     auto config = defaultContainment->config();
-    
-    config.writeEntry("dock", "initial");
-    // config.writeEntry("alignment", (int)Dock::Center);
-    //  config.deleteEntry("wallpaperplugin");
+    defaultContainment->restore(config);
 
     switch (containments().size()) {
         case 1:
@@ -209,12 +221,20 @@ void NowDockCorona::loadDefaultLayout()
             break;
     }
     
-    auto cfg = defaultContainment->config();
-    defaultContainment->save(cfg);
-    
+    //config.writeEntry("dock", "initial");
+    //config.writeEntry("alignment", (int)Dock::Center);
+    //config.deleteEntry("wallpaperplugin");
+
+    defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
+    defaultContainment->save(config);
+    requestConfigSync();
+    defaultContainment->flushPendingConstraintsEvents();
+    emit containmentAdded(defaultContainment);
+    emit containmentCreated(defaultContainment);
+
     addDock(defaultContainment);
     
-    defaultContainment->createApplet(QStringLiteral("org.kde.store.nowdock.plasmoid"));
+    defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
 

@@ -42,7 +42,7 @@ Item {
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
-    property int appletMargin: (applet && (applet.pluginName === "org.kde.store.nowdock.plasmoid"))
+    property int appletMargin: (applet && (applet.pluginName === root.plasmoidName))
                                || isInternalViewSplitter
                                || root.reverseLinesPosition ? 0 : root.statesLineSize
     property int maxWidth: root.isHorizontal ? root.height : root.width
@@ -61,10 +61,10 @@ Item {
     property string title: isInternalViewSplitter ? "Now Dock Splitter" : ""
 
     property Item applet
-    property Item nowDock: applet && (applet.pluginName === "org.kde.store.nowdock.plasmoid") ?
+    property Item nowDock: applet && (applet.pluginName === root.plasmoidName) ?
                                (applet.children[0] ? applet.children[0] : null) : null
     property Item appletWrapper: applet &&
-                                 ((applet.pluginName === "org.kde.store.nowdock.plasmoid") ||
+                                 ((applet.pluginName === root.plasmoidName) ||
                                   (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapperContainer
 
     property alias containsMouse: appletMouseArea.containsMouse
@@ -168,8 +168,9 @@ Item {
 
     onShowZoomedChanged: {
         if(showZoomed){
-            var newZ = container.maxHeight / root.iconSize;
-            wrapper.zoomScale = newZ;
+            //var newZ = container.maxHeight / root.iconSize;
+            //wrapper.zoomScale = newZ;
+            wrapper.zoomScale = 1;
         }
         else{
             wrapper.zoomScale = 1;
@@ -526,9 +527,9 @@ Item {
 
                 active: container.applet
                         &&((plasmoid.configuration.shadows === 1 /*Locked Applets*/
-                            && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== "org.kde.store.nowdock.plasmoid"))) )
+                            && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
                            || (plasmoid.configuration.shadows === 2 /*All Applets*/
-                               && (applet.pluginName !== "org.kde.store.nowdock.plasmoid")))
+                               && (applet.pluginName !== root.plasmoidName)))
 
                 sourceComponent: DropShadow{
                     anchors.fill: parent

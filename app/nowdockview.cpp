@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QQmlProperty>
 #include <QQuickItem>
 #include <QMetaEnum>
@@ -34,6 +35,7 @@
 #include <KWindowSystem>
 #include <Plasma/Containment>
 #include <KActionCollection>
+#include <KLocalizedContext>
 
 #include "nowdockcorona.h"
 
@@ -115,7 +117,10 @@ void NowDockView::init()
     connect(this, SIGNAL(widthChanged(int)), this, SIGNAL(widthChanged()));
     connect(this, SIGNAL(heightChanged(int)), this, SIGNAL(heightChanged()));
     
-    rootContext()->setContextProperty(QStringLiteral("panel"), this);
+    rootContext()->setContextProperty(QStringLiteral("dock"), this);
+    engine()->rootContext()->setContextObject(new KLocalizedContext(this));
+
+    // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("nowdockui"));
     
     

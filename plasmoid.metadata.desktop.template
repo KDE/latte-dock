@@ -1,17 +1,17 @@
 [Desktop Entry]
-_Name=Now Dock
-_Comment=Switch between running applications
+_Name=Latte Plasmoid
+_Comment=Plasmoid from the Latte Dock
 
 
 Type=Service
-Icon=preferences-system-windows
+Icon=latte-dock
 X-KDE-ServiceTypes=Plasma/Applet
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
 X-Plasma-Provides=org.kde.plasma.multitasking
 X-KDE-PluginInfo-Author=@AUTHOR@
 X-KDE-PluginInfo-Email=@EMAIL@
-X-KDE-PluginInfo-Name=org.kde.store.nowdock.plasmoid
+X-KDE-PluginInfo-Name=org.kde.latte.plasmoid
 X-KDE-PluginInfo-Version=@VERSION@
 X-KDE-PluginInfo-Website=@WEBSITE@
 X-KDE-PluginInfo-Category=Windows and Tasks
