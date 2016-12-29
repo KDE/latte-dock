@@ -14,7 +14,8 @@ include(KDEPackageAppTemplates)
 
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
-    abstractinterface.cpp
+    windowinfowrap.cpp
+    abstractwindowinterface.cpp
     xwindowinterface.cpp
     visibilitymanager.cpp
     nowdockconfigview.cpp

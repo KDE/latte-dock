@@ -1,361 +1,124 @@
 #include "xwindowinterface.h"
 
-#include <QDebug>
+#include <QtX11Extras/QX11Info>
 
-#include <KWindowInfo>
 #include <KWindowSystem>
+#include <NETWM>
 
-namespace NowDock {
+namespace Latte {
 
-XWindowInterface::XWindowInterface(QQuickWindow *parent) :
-    AbstractInterface(parent),
-    m_demandsAttention(0)
+XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
+    : AbstractWindowInterface(view, parent)
 {
-    m_activeWindow = KWindowSystem::activeWindow();
+    Q_ASSERT(view != nullptr);
     
-    connect(KWindowSystem::self(), SIGNAL(activeWindowChanged(WId)), this, SLOT(activeWindowChanged(WId)));
-    connect(KWindowSystem::self(), SIGNAL(windowChanged(WId, NET::Properties, NET::Properties2)), this, SLOT(windowChanged(WId, NET::Properties, NET::Properties2)));
-    connect(KWindowSystem::self(), SIGNAL(windowRemoved(WId)), this, SLOT(windowRemoved(WId)));
+    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
+            , this, &AbstractWindowInterface::activeWindowChanged);
+            
+    connect(KWindowSystem::self()
+            , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
+            (&KWindowSystem::windowChanged)
+            , this, &XWindowInterface::windowChangedProxy);
+            
+    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, [this](WId wid) {
+        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.cend()) {
+            m_windows.push_back(wid);
+        }
+        
+        emit windowAdded(wid);
+    });
     
-    connect(this, SIGNAL(dockNumberChanged(uint)), this, SLOT(dockNumberChanged(uint)));
+    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, [this](WId wid) {
+        m_windows.remove(wid);
+        emit windowRemoved(wid);
+    });
+    
+    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
+            , this, &AbstractWindowInterface::currentDesktopChanged);
 }
 
 XWindowInterface::~XWindowInterface()
 {
+
 }
 
-void XWindowInterface::dockNumberChanged(unsigned int no)
+void XWindowInterface::setDockDefaultFlags()
 {
-    if (no == 1) {
-        m_dockWindow->setFlags(Qt::Tool | Qt::WindowDoesNotAcceptFocus | Qt::FramelessWindowHint);
-    }
+    NETWinInfo winfo(QX11Info::connection()
+                     , static_cast<xcb_window_t>(m_view->winId())
+                     , static_cast<xcb_window_t>(m_view->winId())
+                     , 0, 0);
+                     
+    winfo.setAllowedActions(NET::ActionChangeDesktop);
+    KWindowSystem::setType(m_view->winId(), NET::Dock);
+    KWindowSystem::setOnAllDesktops(m_view->winId(), true);
 }
 
-void XWindowInterface::setDockToAllDesktops()
+WId XWindowInterface::activeWindow() const
 {
-    KWindowSystem::setOnAllDesktops(m_dockWindow->winId(), true);
+    return KWindowSystem::self()->activeWindow();
 }
 
-void XWindowInterface::setDockDefaultFlags(bool dock)
+const std::list<WId> &XWindowInterface::windows()
 {
-    //Notice: the Qt::Tool flag even though it works perfectly for a single Now Dock
-    //it creates a strange situation when there are two and more Now Dock's
-    //in that case it is used only for the first created Now Dock
-    m_isDockWindowType = dock;
+    return m_windows;
+}
+
+WindowInfoWrap XWindowInterface::requestInfoActive()
+{
+    return requestInfo(KWindowSystem::activeWindow());
+}
+
+WindowInfoWrap XWindowInterface::requestInfo(WId wid)
+{
+    const KWindowInfo winfo{wid, NET::WMDesktop | NET::WMFrameExtents | NET::WMWindowType | NET::WMState};
     
-    if ((m_dockNumber == 1) && (!m_isDockWindowType)) {
-        m_dockWindow->setFlags(Qt::Tool | Qt::WindowDoesNotAcceptFocus | Qt::FramelessWindowHint);
-    } else {
-        KWindowSystem::setType(m_dockWindow->winId(), NET::Dock);
-        KWindowSystem::setState(m_dockWindow->winId(), NET::SkipTaskbar | NET::SkipPager);
-    }
+    WindowInfoWrap winfoWrap;
+    
+    if (!winfo.valid() || !isValidWindow(winfo))
+        return winfoWrap;
+        
+    winfoWrap.setIsValid(true);
+    winfoWrap.setWid(wid);
+    winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
+    winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
+    winfoWrap.setIsMaximized(winfo.hasState(NET::Max));
+    winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
+    winfoWrap.setIsOnCurrentDesktop(winfo.isOnCurrentDesktop());
+    winfoWrap.setGeometry(winfo.geometry());
+    
+    return winfoWrap;
 }
 
-void XWindowInterface::showDockOnTop()
+bool XWindowInterface::isValidWindow(const KWindowInfo &winfo)
 {
-    //this is the only way in order to not break the case of two and more NowDocks
-    //there is a small issue that the pop ups from locked plasmoids are opened
-    //on the maximum thickness
+    const auto winType = winfo.windowType(NET::DesktopMask | NET::DockMask
+                                          | NET::MenuMask | NET::SplashMask
+                                          | NET::NormalMask);
+                                          
+    if (winType == -1 || (winType & NET::Desktop) || (winType & NET::Menu)
+        || (winType & NET::Dock) || (winType & NET::Splash)) {
+        return false;
+    }
     
-    //qDebug() << "Docknumber:" << m_dockNumber;
-    if (m_isDockWindowType) {
+    return true;
+}
+
+void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
+{
+    //! if the dock changed is ignored
+    if (wid == m_view->winId())
         return;
-    }
-    
-    if (m_dockNumber != 1) {
-        KWindowSystem::setType(m_dockWindow->winId(), NET::Dock);
-    }
-    
-    KWindowSystem::clearState(m_dockWindow->winId(), NET::KeepBelow);
-    KWindowSystem::setState(m_dockWindow->winId(), NET::KeepAbove);
-}
-
-void XWindowInterface::showDockAsNormal()
-{
-    //    qDebug() << "reached make normal...";
-    if (m_isDockWindowType) {
+        
+    //! ignore when, eg: the user presses a key
+    if (prop1 == 0 && prop2 == NET::WM2UserTime)
         return;
-    }
-    
-    if (m_dockNumber != 1) {
-        m_dockWindow->setFlags(Qt::Tool | Qt::WindowDoesNotAcceptFocus | Qt::FramelessWindowHint);
-    }
-    
-    KWindowSystem::clearState(m_dockWindow->winId(), NET::KeepAbove);
-    KWindowSystem::clearState(m_dockWindow->winId(), NET::KeepBelow);
-}
-
-void XWindowInterface::showDockOnBottom()
-{
-    //    qDebug() << "reached make bottom...";
-    if (m_isDockWindowType) {
+        
+    if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
         return;
-    }
-    
-    if (m_dockNumber != 1) {
-        m_dockWindow->setFlags(Qt::Tool | Qt::WindowDoesNotAcceptFocus | Qt::FramelessWindowHint);
-    }
-    
-    KWindowSystem::clearState(m_dockWindow->winId(), NET::KeepAbove);
-    KWindowSystem::setState(m_dockWindow->winId(), NET::KeepBelow);
-}
-
-
-bool XWindowInterface::isDesktop(WId id) const
-{
-    KWindowInfo info(id, NET::WMWindowType);
-    
-    if (!info.valid()) {
-        return false;
-    }
-    
-    NET::WindowType type = info.windowType(NET::DesktopMask | NET::DockMask | NET::DialogMask);
-    
-    return type == NET::Desktop;
-}
-
-bool XWindowInterface::isDialog(WId id) const
-{
-    KWindowInfo info(id, NET::WMWindowType);
-    
-    if (!info.valid()) {
-        return false;
-    }
-    
-    NET::WindowType type = info.windowType(NET::DesktopMask | NET::DockMask | NET::DialogMask);
-    
-    return type == NET::Dialog;
-}
-
-bool XWindowInterface::isMaximized(WId id) const
-{
-    KWindowInfo info(id, NET::WMState);
-    
-    if (!info.valid()) {
-        return false;
-    }
-    
-    return (info.hasState(NET::Max));
-}
-
-bool XWindowInterface::isNormal(WId id) const
-{
-    return (!isOnBottom(id) && !isOnTop(id));
-}
-
-bool XWindowInterface::isOnBottom(WId id) const
-{
-    KWindowInfo info(id, NET::WMState);
-    
-    if (!info.valid()) {
-        return false;
-    }
-    
-    return (info.hasState(NET::KeepBelow));
-}
-
-bool XWindowInterface::isOnTop(WId id) const
-{
-    KWindowInfo info(id, NET::WMState);
-    
-    if (!info.valid()) {
-        return false;
-    }
-    
-    return (info.hasState(NET::KeepAbove));
-}
-
-bool XWindowInterface::activeIsDialog() const
-{
-    return isDialog(m_activeWindow);
-}
-
-bool XWindowInterface::activeIsMaximized() const
-{
-    return isMaximized(m_activeWindow);
-}
-
-
-bool XWindowInterface::desktopIsActive() const
-{
-    return isDesktop(m_activeWindow);
-}
-
-bool XWindowInterface::dockIsOnTop() const
-{
-    return isOnTop(m_dockWindow->winId());
-    
-}
-
-bool XWindowInterface::dockInNormalState() const
-{
-    return isNormal(m_dockWindow->winId());
-}
-
-bool XWindowInterface::dockIsBelow() const
-{
-    return isOnBottom(m_dockWindow->winId());
-}
-
-bool XWindowInterface::dockIntersectsActiveWindow() const
-{
-    KWindowInfo activeInfo(m_activeWindow, NET::WMGeometry);
-    
-    if (activeInfo.valid()) {
-        QRect maskSize;
         
-        if (!m_maskArea.isNull()) {
-            maskSize = QRect(m_dockWindow->x() + m_maskArea.x(), m_dockWindow->y() + m_maskArea.y(), m_maskArea.width(), m_maskArea.height());
-        } else {
-            maskSize = QRect(m_dockWindow->x(), m_dockWindow->y(), m_dockWindow->width(), m_dockWindow->height());
-        }
-        
-        return maskSize.intersects(activeInfo.geometry());
-    } else {
-        return false;
-    }
-}
-
-
-bool XWindowInterface::dockIsCovered(bool totally) const
-{
-    int currentDockPos = -1;
-    
-    QList<WId> windows = KWindowSystem::stackingOrder();
-    int size = windows.count();
-    
-    for (int i = size - 1; i >= 0; --i) {
-        WId window = windows.at(i);
-        
-        if (window == m_dockWindow->winId()) {
-            currentDockPos = i;
-            break;
-        }
-    }
-    
-    if (currentDockPos >= 0) {
-        QRect maskSize;
-        
-        if (!m_maskArea.isNull()) {
-            maskSize = QRect(m_dockWindow->x() + m_maskArea.x(), m_dockWindow->y() + m_maskArea.y(), m_maskArea.width(), m_maskArea.height());
-        } else {
-            maskSize = QRect(m_dockWindow->x(), m_dockWindow->y(), m_dockWindow->width(), m_dockWindow->height());
-        }
-        
-        WId transient = 0;
-        
-        if (m_dockWindow->transientParent()) {
-            transient = m_dockWindow->transientParent()->winId();
-        }
-        
-        for (int j = size - 1; j > currentDockPos; --j) {
-            WId window = windows.at(j);
-            
-            KWindowInfo info(window, NET::WMState | NET::XAWMState | NET::WMGeometry);
-            
-            if (info.valid() && !isDesktop(window) && transient != window && !info.isMinimized()) {
-                if (totally) {
-                    QRect winGeometry = info.geometry();
-                    
-                    if ((maskSize.left() >= winGeometry.left()) && (maskSize.top() >= winGeometry.top())
-                        && (maskSize.right() <= winGeometry.right()) && (maskSize.bottom() <= winGeometry.bottom())) {
-                        return true;
-                    }
-                } else {
-                    if (maskSize.intersects(info.geometry())) {
-                        return true;
-                    }
-                }
-            }
-        }
-    }
-    
-    return false;
-}
-
-bool XWindowInterface::dockIsCovering() const
-{
-    int currentDockPos = -1;
-    
-    QList<WId> windows = KWindowSystem::stackingOrder();
-    int size = windows.count();
-    
-    for (int i = size - 1; i >= 0; --i) {
-        WId window = windows.at(i);
-        
-        if (window == m_dockWindow->winId()) {
-            currentDockPos = i;
-            break;
-        }
-    }
-    
-    if (currentDockPos >= 0) {
-        QRect maskSize;
-        
-        if (!m_maskArea.isNull()) {
-            maskSize = QRect(m_dockWindow->x() + m_maskArea.x(), m_dockWindow->y() + m_maskArea.y(), m_maskArea.width(), m_maskArea.height());
-        } else {
-            maskSize = QRect(m_dockWindow->x(), m_dockWindow->y(), m_dockWindow->width(), m_dockWindow->height());
-        }
-        
-        WId transient = 0;
-        
-        if (m_dockWindow->transientParent()) {
-            transient = m_dockWindow->transientParent()->winId();
-        }
-        
-        for (int j = currentDockPos - 1; j >= 0; --j) {
-            WId window = windows.at(j);
-            
-            KWindowInfo info(window, NET::WMState | NET::XAWMState | NET::WMGeometry);
-            
-            if (info.valid() && !isDesktop(window) && transient != window && !info.isMinimized() && maskSize.intersects(info.geometry())) {
-                return true;
-            }
-        }
-    }
-    
-    return false;
-}
-
-/*
- * SLOTS
- */
-
-void XWindowInterface::activeWindowChanged(WId win)
-{
-    m_activeWindow = win;
-    
-    emit AbstractInterface::activeWindowChanged();
-}
-
-void XWindowInterface::windowChanged(WId id, NET::Properties properties, NET::Properties2 properties2)
-{
-    KWindowInfo info(id, NET::WMState | NET::CloseWindow);
-    
-    if (info.valid()) {
-        if ((m_demandsAttention == 0) && info.hasState(NET::DemandsAttention)) {
-            m_demandsAttention = id;
-            emit windowInAttention(true);
-        } else if ((m_demandsAttention == id) && !info.hasState(NET::DemandsAttention)) {
-            m_demandsAttention = 0;
-            emit windowInAttention(false);
-        }
-    }
-    
-    //  emit AbstractInterface::windowChanged();
-    
-    if (id == m_activeWindow) {
-        emit AbstractInterface::activeWindowChanged();
-    }
-}
-
-void XWindowInterface::windowRemoved(WId id)
-{
-    if (id == m_demandsAttention) {
-        m_demandsAttention = 0;
-        emit AbstractInterface::windowInAttention(false);
-    }
+    emit windowChanged(requestInfo(wid));
 }
 
 }
+
