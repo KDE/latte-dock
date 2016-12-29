@@ -26,6 +26,117 @@ PlasmaCore.FrameSvgItem {
         spacing: 1.5*theme.defaultFont.pointSize
         width: parent.width - 10
 
+        //////////// Location ////////////////
+
+        Column{
+            width:parent.width
+            spacing: 0.8*theme.defaultFont.pointSize
+            PlasmaComponents.Label{
+                text: i18n("Location")
+                font.pointSize: 1.5 * theme.defaultFont.pointSize
+            }
+
+            Flow{
+                width: parent.width
+                spacing: 2
+
+                property bool inStartup: true
+                property int dockLocation: dock.location
+
+                onDockLocationChanged: updateDockLocationVisual();
+
+                Component.onCompleted: {
+                    updateDockLocationVisual();
+                    inStartup = false;
+                }
+
+                function updateDockLocationVisual(){
+                    if(dockLocation === PlasmaCore.Types.BottomEdge){
+                        firstLocation.checked = true;
+                        secondLocation.checked = false;
+                        thirdLocation.checked = false;
+                        fourthLocation.checked = false;
+                    }
+                    else if(dockLocation === PlasmaCore.Types.LeftEdge){
+                        firstLocation.checked = false;
+                        secondLocation.checked = true;
+                        thirdLocation.checked = false;
+                        fourthLocation.checked = false;
+                    }
+                    else if(dockLocation === PlasmaCore.Types.TopEdge){
+                        firstLocation.checked = false;
+                        secondLocation.checked = false;
+                        thirdLocation.checked = true;
+                        fourthLocation.checked = false;
+                    }
+                    else if(dockLocation === PlasmaCore.Types.RightEdge){
+                        firstLocation.checked = false;
+                        secondLocation.checked = false;
+                        thirdLocation.checked = false;
+                        fourthLocation.checked = true;
+                    }
+                }
+
+
+                PlasmaComponents.Button{
+                    id: firstLocation
+                    checkable: true
+                    text: i18n("Bottom")
+                    width: (parent.width / 4) - 2
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            dock.location = PlasmaCore.Types.BottomEdge
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+                PlasmaComponents.Button{
+                    id: secondLocation
+                    checkable: true
+                    text: i18n("Left")
+                    width: (parent.width / 4) - 2
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            dock.location = PlasmaCore.Types.LeftEdge
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+                PlasmaComponents.Button{
+                    id: thirdLocation
+                    checkable: true
+                    text: i18n("Top")
+                    width: (parent.width / 4) - 2
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            dock.location = PlasmaCore.Types.TopEdge
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+
+                PlasmaComponents.Button{
+                    id: fourthLocation
+                    checkable: true
+                    text: i18n("Right")
+                    width: (parent.width/4) - 1
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            dock.location = PlasmaCore.Types.RightEdge
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+            }
+        }
+
+
+        /////////// Applets Alignment //////////////////
+
         Column{
             width:parent.width
             spacing: 0.8*theme.defaultFont.pointSize
@@ -214,7 +325,7 @@ PlasmaCore.FrameSvgItem {
                     else
                         fifthState.checked = false;
 
-                 /*   if (panelVisibility === 5)
+                    /*   if (panelVisibility === 5)
                         sixthState.checked = true;
                     else
                         sixthState.checked = false;*/
@@ -294,7 +405,7 @@ PlasmaCore.FrameSvgItem {
                     }
                     onClicked: checked=true;
                 }
-               /* PlasmaComponents.Button{
+                /* PlasmaComponents.Button{
                     id: sixthState
                     checkable: true
                     text: i18n("Always Visible")
