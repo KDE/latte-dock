@@ -1,21 +1,21 @@
 #include "visibilitymanager.h"
 #include "visibilitymanager_p.h"
+#include "plasmaquick/containmentview.h"
+#include "abstractwindowinterface.h"
 #include "windowinfowrap.h"
-
+#include "dockview.h"
 #include "../liblattedock/extras.h"
-
-#include "nowdockview.h"
 
 namespace Latte {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
-    : QObject(view), q(q), view(view), wm(AbstractWindowInterface::getInstance(view, nullptr))
+    : QObject(q), q(q), view(view), wm(AbstractWindowInterface::getInstance(view, nullptr))
 {
-    NowDockView *dockView = dynamic_cast<NowDockView *>(view);
+    DockView *dockView = qobject_cast<DockView *>(view);
 
     if (dockView) {
-        connect(dockView, &NowDockView::eventTriggered, q, &VisibilityManager::eventReceived);
+        connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::event);
     }
 
     timerCheckWindows.setInterval(350);
@@ -65,7 +65,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
 
         case Dock::AutoHide: {
-            raiseDock(true);
+            raiseDock(!containsMouse);
         }
         break;
 
@@ -291,7 +291,6 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     : d(new VisibilityManagerPrivate(view, this))
 {
-    d->restoreConfig();
 }
 
 VisibilityManager::~VisibilityManager()
@@ -348,14 +347,7 @@ void VisibilityManager::updateDockGeometry(const QRect &geometry)
 {
     d->setDockRect(geometry);
 }
-
-void VisibilityManager::eventReceived(QEvent *ev)
-{
-    d->event(ev);
-}
 //! END: VisibilityManager implementation
 }
 
-#include "abstractwindowinterface.h"
-#include "xwindowinterface.h"
-#include "plasmaquick/containmentview.h"
+
