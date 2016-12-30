@@ -114,7 +114,7 @@ void IconItem::setSource(const QVariant &source)
                     iconPath = iconTheme->iconPath(sourceString + QLatin1String(".svg")
                                                    , static_cast<int>(qMin(width(), height()))
                                                    , KIconLoader::MatchBest);
-                    
+                                                   
                     if (iconPath.isEmpty()) {
                         iconPath = iconTheme->iconPath(sourceString + QLatin1String(".svgz")
                                                        , static_cast<int>(qMin(width(), height()))
@@ -257,9 +257,9 @@ QSGNode *IconItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *update
     ManagedTextureNode *textureNode = dynamic_cast<ManagedTextureNode *>(oldNode);
     
     if (!textureNode || m_textureChanged) {
-        if (oldNode) 
+        if (oldNode)
             delete oldNode;
-        
+            
         textureNode = new ManagedTextureNode;
         textureNode->setTexture(QSharedPointer<QSGTexture>(window()->createTextureFromImage(m_iconPixmap.toImage())));
         m_sizeChanged = true;
@@ -269,7 +269,7 @@ QSGNode *IconItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *update
     if (m_sizeChanged) {
         const auto iconSize = qMin(boundingRect().size().width(), boundingRect().size().height());
         const QRectF destRect(QPointF(boundingRect().center() - QPointF(iconSize / 2, iconSize / 2)), QSizeF(iconSize, iconSize));
-                              
+        
         textureNode->setRect(destRect);
         m_sizeChanged = false;
     }
@@ -315,9 +315,9 @@ void IconItem::loadPixmap()
                 iconPath = iconTheme->iconPath(m_svgIconName + QLatin1String(".svg")
                                                , static_cast<int>(qMin(width(), height()))
                                                , KIconLoader::MatchBest);
-                
+                                               
                 if (iconPath.isEmpty()) {
-                    iconPath = iconTheme->iconPath(m_svgIconName + QLatin1String(".svgz"), 
+                    iconPath = iconTheme->iconPath(m_svgIconName + QLatin1String(".svgz"),
                                                    static_cast<int>(qMin(width(), height()))
                                                    , KIconLoader::MatchBest);
                 }

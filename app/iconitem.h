@@ -107,7 +107,7 @@ public:
     
     void itemChange(ItemChange change, const ItemChangeData &value) override;
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
-                         
+    
     void componentComplete() Q_DECL_OVERRIDE;
     
 signals:
@@ -141,8 +141,7 @@ private:
     
     bool m_textureChanged;
     bool m_sizeChanged;
-    
-    
 };
+
 }
 #endif // ICONITEM_H
