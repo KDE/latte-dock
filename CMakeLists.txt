@@ -15,11 +15,11 @@ find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
-     Quick QuickWidgets X11Extras)
+     Quick X11Extras)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma PlasmaQuick WindowSystem Declarative
-    I18n CoreAddons XmlGui DBusAddons Notifications)
+    I18n CoreAddons XmlGui DBusAddons IconThemes)
 
 
 FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
