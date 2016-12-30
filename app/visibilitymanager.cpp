@@ -152,7 +152,7 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
     } else {
         timerShow.stop();
 
-        if (!timerHide.isActive())
+        if (!timerHide.isActive() && view->containment()->immutability() != Plasma::Types::Mutable)
             timerHide.start();
     }
 }
