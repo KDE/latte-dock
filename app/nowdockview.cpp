@@ -39,6 +39,7 @@
 
 #include "nowdockcorona.h"
 
+namespace Latte {
 
 NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),
@@ -81,7 +82,6 @@ NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
             m_visibility = new VisibilityManager(this);
         }
         
-        m_visibility->setContainment(containment());
     }, Qt::DirectConnection);
 }
 
@@ -417,7 +417,6 @@ void NowDockView::setMaskArea(QRect area)
     }
     
     m_maskArea = area;
-    m_visibility->setMaskArea(area);
     
     setMask(m_maskArea);
     
@@ -564,6 +563,8 @@ void NowDockView::restoreConfig()
     //  setIconSize(readEntry("iconSize", 32).toInt());
     //  setZoomFactor(readEntry("zoomFactor", 1.0).toFloat());
     //  setAlignment(static_cast<Dock::Alignment>(readEntry("alignment", Dock::Center).toInt()));
+}
+
 }
 
 //!END SLOTS

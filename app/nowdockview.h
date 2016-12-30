@@ -47,12 +47,12 @@ class DockConfigView;
 class VisibilityManager;
 }*/
 
+namespace Latte {
+
 class NowDockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     
-    
     Q_PROPERTY(bool compositing READ compositing NOTIFY compositingChanged)
-    
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
@@ -61,9 +61,7 @@ class NowDockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
-    
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
-    
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
     
 public:
@@ -160,5 +158,7 @@ private:
     QPointF positionAdjustedForContainment(const QPointF &point) const;
     void initWindow();
 };
+
+}
 
 #endif
