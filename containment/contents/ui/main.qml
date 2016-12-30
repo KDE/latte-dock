@@ -386,7 +386,7 @@ DragDrop.DropArea {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
-    onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
+   // onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
 
     onDockChanged: {
         if (dock) {
@@ -752,12 +752,12 @@ DragDrop.DropArea {
             animatedLengthTimer.start();
         }
 
-        if (!dock.visibility.containsMouse && (root.animationsNeedBothAxis === 0)
+     /*   if (!dock.visibility.containsMouse && (root.animationsNeedBothAxis === 0)
                 && (root.animationsNeedLength===0) && (root.appletsAnimations === 0)) {
             mainLayout.animatedLength = true;
         } else {
             mainLayout.animatedLength = false;
-        }
+        }*/
 
         visibilityManager.updateMaskArea();
     }
@@ -1271,7 +1271,7 @@ DragDrop.DropArea {
 
     Timer {
         id: animatedLengthTimer
-        interval: 150
+        interval: 500
         onTriggered: {
             //   if (!magicWin.isHovered && (appletsAnimations === 0)
             //           && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {

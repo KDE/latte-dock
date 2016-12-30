@@ -163,28 +163,42 @@ Item {
         onGroupingLauncherUrlBlacklistChanged: tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
     }
 
-    function setAnimationsNeedBothAxis(value) {
-        if (value === animationsNeedBothAxis) {
+    function setAnimationsNeedBothAxis(step) {
+        if ((step === 0) || (plasmoid.configuration.durationTime ===0)) {
             return;
         }
 
-        animationsNeedBothAxis = value;
+        animationsNeedBothAxis = animationsNeedBothAxis + step;
+        if (animationsNeedBothAxis < 0) {
+            animationsNeedBothAxis = 0;
+        }
+
         signalAnimationsNeedBothAxis(animationsNeedBothAxis);
     }
 
-    function setAnimationsNeedLength(value) {
-        if (value === animationsNeedLength) {
+    function setAnimationsNeedLength(step) {
+        if ((step === 0) || (plasmoid.configuration.durationTime ===0)) {
             return;
         }
-        animationsNeedLength = value;
+
+        animationsNeedLength = animationsNeedLength + step;
+        if (animationsNeedLength < 0) {
+            animationsNeedLength = 0;
+        }
+
         signalAnimationsNeedLength(animationsNeedLength);
     }
 
-    function setAnimationsNeedThickness(value) {
-        if (value === animationsNeedThickness) {
+    function setAnimationsNeedThickness(step) {
+        if ((step === 0) || (plasmoid.configuration.durationTime ===0)) {
             return;
         }
-        animationsNeedThickness = value;
+
+        animationsNeedThickness = animationsNeedThickness + step;
+        if (animationsNeedThickness < 0) {
+            animationsNeedThickness = 0;
+        }
+
         signalAnimationsNeedThickness(animationsNeedThickness);
     }
 

@@ -474,8 +474,8 @@ Item{
                 panel.noTasksInAnimation--;
             }
 
-            if ( launchedAlready && panel.animationsNeedThickness>0 ) {
-                panel.setAnimationsNeedThickness( panel.animationsNeedThickness-1 );
+            if ( launchedAlready ) {
+                panel.setAnimationsNeedThickness(-1);
             }
 
             launchedAlready = false;
@@ -485,7 +485,7 @@ Item{
             //console.log ("Nooo 1 : "+panel.noTasksInAnimation);
             if(!launchedAlready) {
                 launchedAlready = true;
-                panel.setAnimationsNeedThickness( panel.animationsNeedThickness+1 );
+                panel.setAnimationsNeedThickness(1);
                 panel.noTasksInAnimation++;
                 mainItemContainer.setBlockingAnimation(true);
             }
@@ -582,9 +582,7 @@ Item{
         function sendEndOfNeedThicknessAnimation(){
             if (needsThicknessSent) {
                 needsThicknessSent = false;
-                if (panel.animationsNeedThickness > 0) {
-                    panel.setAnimationsNeedThickness( panel.animationsNeedThickness-1 );
-                }
+                panel.setAnimationsNeedThickness(-1);
             }
         }
 
@@ -599,7 +597,7 @@ Item{
 
             if (!needsThicknessSent) {
                 needsThicknessSent = true;
-                panel.setAnimationsNeedThickness( panel.animationsNeedThickness+1 );
+                panel.setAnimationsNeedThickness(1);
             }
 
             // icList.hoveredIndex = -1;
