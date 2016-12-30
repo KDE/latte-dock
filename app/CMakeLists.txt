@@ -29,11 +29,14 @@ set(lattedock-app_SRCS
 
 add_executable(latte-dock ${lattedock-app_SRCS})
 
+include(FakeTarget.cmake)
+
 target_link_libraries(
     latte-dock
     Qt5::Widgets
     Qt5::Quick
     Qt5::Qml
+    Qt5::X11Extras
     KF5::I18n
     KF5::CoreAddons
     KF5::XmlGui
@@ -42,6 +45,7 @@ target_link_libraries(
     KF5::QuickAddons
     KF5::DBusAddons    
     KF5::Notifications
+    KF5::WindowSystem
 )
 
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
