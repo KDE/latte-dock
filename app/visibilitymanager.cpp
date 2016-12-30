@@ -144,10 +144,8 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
     if (raise) {
         timerHide.stop();
         
-        if (!timerShow.isActive() && mode != Dock::AutoHide) {
+        if (!timerShow.isActive()) {
             timerShow.start();
-        } else {
-            emit q->mustBeShown();
         }
     } else {
         timerShow.stop();
@@ -179,7 +177,7 @@ void VisibilityManagerPrivate::dodgeActive(WId wid)
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
 
-    raiseDock(intersects(winfo));
+    raiseDock(!intersects(winfo));
 }
 
 void VisibilityManagerPrivate::dodgeMaximized(WId wid)
@@ -270,9 +268,7 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         containsMouse = true;
         emit q->containsMouseChanged();
         
-        if (mode == Dock::AutoHide)
-            raiseDock(true);
-
+        emit q->mustBeShown();
     } else if (ev->type() == QEvent::Leave && containsMouse) {
         containsMouse = false;
         emit q->containsMouseChanged();

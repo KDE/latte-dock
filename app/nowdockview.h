@@ -109,6 +109,7 @@ public slots:
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void removeDock();
+    Q_INVOKABLE void setLocalDockGeometry(QRect geometry);
     void resizeWindow();
     void restoreConfig();
     void saveConfig();
@@ -129,6 +130,7 @@ signals:
     void compositingChanged();
     void heightChanged();
     void lengthChanged();
+    void localDockGeometryChanged();
     void maskAreaChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
@@ -139,6 +141,7 @@ signals:
     
 public Q_SLOTS:
     void updateDockPositionSlot();
+    void updateAbsDockGeometry();
     
 private:
     bool m_secondInitPass;
@@ -148,7 +151,7 @@ private:
     int m_length{0};
     int m_maxLength{INT_MAX};
     
-    QRect m_dockGeometry;
+    QRect m_localDockGeometry;
     QRect m_maskArea;
     QPointer<PlasmaQuick::ConfigView> m_configView;
     

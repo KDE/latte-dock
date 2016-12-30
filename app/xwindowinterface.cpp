@@ -122,7 +122,7 @@ WindowInfoWrap XWindowInterface::requestInfoActive()
 
 WindowInfoWrap XWindowInterface::requestInfo(WId wid)
 {
-    const KWindowInfo winfo{wid, NET::WMDesktop | NET::WMFrameExtents | NET::WMWindowType | NET::WMState};
+    const KWindowInfo winfo{wid, NET::WMDesktop | NET::WMFrameExtents | NET::WMWindowType | NET::WMGeometry | NET::WMState};
     
     WindowInfoWrap winfoWrap;
     
@@ -172,4 +172,3 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 }
 
 }
-

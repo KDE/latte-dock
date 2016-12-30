@@ -241,6 +241,10 @@ Item{
             }
 
             dock.maskArea = newMaskArea;
+
+            if(normalState && !dock.visibility.isHidden){
+                dock.setLocalDockGeometry(newMaskArea);
+            }
         }
     }
 
