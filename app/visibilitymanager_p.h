@@ -3,9 +3,10 @@
 
 #include "../liblattedock/dock.h"
 #include "windowinfowrap.h"
+#include "abstractwindowinterface.h"
 
-#include <memory>
 #include <unordered_map>
+#include <memory>
 
 #include <QObject>
 #include <QTimer>
@@ -28,6 +29,7 @@ public:
     ~VisibilityManagerPrivate();
     
     void setMode(Dock::Visibility mode);
+    void setIsHidden(bool isHidden);
     void setTimerShow(int msec);
     void setTimerHide(int msec);
     
@@ -37,10 +39,11 @@ public:
     
     void windowAdded(WId id);
     void dodgeActive(WId id);
+    void dodgeMaximized(WId id);
     void dodgeWindows(WId id);
     void checkAllWindows();
     
-    bool intersects(const WindowInfoWrap &info);
+    bool intersects(const WindowInfoWrap &winfo);
     
     void saveConfig();
     void restoreConfig();
@@ -48,9 +51,11 @@ public:
     bool event(QEvent *ev) override;
     
     VisibilityManager *q;
+    PlasmaQuick::ContainmentView *view;
+    std::unique_ptr<AbstractWindowInterface> wm;
     Dock::Visibility mode{Dock::DodgeActive};
     std::array<QMetaObject::Connection, 4> connections;
-    std::unordered_map<WId, std::unique_ptr<WindowInfoWrap>> windows;
+    std::unordered_map<WId, WindowInfoWrap> windows;
     QTimer timerShow;
     QTimer timerHide;
     QTimer timerCheckWindows;
