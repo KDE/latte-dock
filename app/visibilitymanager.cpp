@@ -1,42 +1,135 @@
 #include "visibilitymanager.h"
 #include "visibilitymanager_p.h"
+#include "windowinfowrap.h"
+
+#include "../liblattedock/extras.h"
 
 namespace Latte {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
-    : QObject(view), q(q)
+    : QObject(view), q(q), view(view), wm(AbstractWindowInterface::getInstance(view, nullptr))
 {
-
+    timerCheckWindows.setInterval(350);
+    timerCheckWindows.setSingleShot(true);
+    
+    timerShow.setSingleShot(true);
+    timerHide.setSingleShot(true);
+    
+    restoreConfig();
+    
+    connect(&timerCheckWindows, &QTimer::timeout, this, &VisibilityManagerPrivate::checkAllWindows);
+    connect(&timerShow, &QTimer::timeout, q, &VisibilityManager::mustBeShown);
+    connect(&timerHide, &QTimer::timeout, q, &VisibilityManager::mustBeHide);
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
-
+    wm->removeDockStruts();
 }
 
-void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
+inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 {
-
+    if (this->mode == mode)
+        return;
+    
+    // clear mode
+    if (this->mode == Dock::AlwaysVisible)
+        wm->removeDockStruts();
+        
+    for (auto &c : connections) {
+        disconnect(c);
+    }
+    
+    timerShow.stop();
+    timerHide.stop();
+    timerCheckWindows.stop();
+    
+    this->mode = mode;
+    
+    switch (this->mode) {
+    case Dock::AlwaysVisible:
+    {
+        wm->setDockStruts(dockRect, view->location());
+        raiseDock(true);
+    }
+        break;
+    case Dock::AutoHide:
+    {
+        raiseDock(true);
+    }
+        break;
+    case Dock::DodgeActive:
+    {
+        connections[0] = connect(wm.get(), &AbstractWindowInterface::activeWindowChanged
+                                 , this, &VisibilityManagerPrivate::dodgeActive);
+        connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+                                 , this, &VisibilityManagerPrivate::dodgeActive);
+        
+        dodgeActive(wm->activeWindow());
+    }
+        break;
+    case Dock::DodgeMaximized:
+    {
+        connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+                                 , this, &VisibilityManagerPrivate::dodgeMaximized);
+    }
+        break;
+    case Dock::DodgeAllWindows:
+    {
+        for(const auto & wid : wm->windows()) {
+            windows.insert({wid, wm->requestInfo(wid)}); 
+        }
+        
+        connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+                                 , this, &VisibilityManagerPrivate::dodgeWindows);
+        
+        connections[1] = connect(wm.get(), &AbstractWindowInterface::windowRemoved
+                                 , this, [&](WId wid) {
+                windows.erase(wid);
+                timerCheckWindows.start();
+        });
+        connections[2] = connect(wm.get(), &AbstractWindowInterface::windowAdded
+                                 , this, [&](WId wid) {
+                windows.insert({wid, wm->requestInfo(wid)});
+                timerCheckWindows.start();
+        });
+    }
+    }
+    
+    saveConfig();
 }
 
-void VisibilityManagerPrivate::setIsHidden(bool isHidden)
+inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
 {
-
+    if (this->isHidden == isHidden)
+        return;
+    
+    this->isHidden = isHidden;
+    emit q->isHiddenChanged();
 }
 
-void VisibilityManagerPrivate::setTimerShow(int msec)
+inline void VisibilityManagerPrivate::setTimerShow(int msec)
 {
-
+    timerShow.setInterval(msec);
+    saveConfig();
+    emit q->timerShowChanged();
 }
 
-void VisibilityManagerPrivate::setTimerHide(int msec)
+inline void VisibilityManagerPrivate::setTimerHide(int msec)
 {
-
+    timerHide.setInterval(msec);
+    saveConfig();
+    emit q->timerHideChanged();
 }
 
-void VisibilityManagerPrivate::raiseDock(bool raise)
+inline void VisibilityManagerPrivate::raiseDock(bool raise)
 {
+    // possible optimization
+    /* if (!isHidden == raise) {
+        return;
+    } */
+    
     if (raise) {
         timerHide.stop();
         
@@ -50,44 +143,116 @@ void VisibilityManagerPrivate::raiseDock(bool raise)
     }
 }
 
-void VisibilityManagerPrivate::setDockRect(const QRect &rect)
+inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
 {
-
+    if (!view->containment() || this->dockRect == dockRect) 
+        return;
+        
+    this->dockRect = dockRect;
+    
+    if (mode == Dock::AlwaysVisible) {
+        wm->setDockStruts(this->dockRect, view->containment()->location());
+    }
 }
 
-void VisibilityManagerPrivate::windowAdded(WId id)
+void VisibilityManagerPrivate::dodgeActive(WId wid)
 {
-
+    if (wid != wm->activeWindow())
+        return;
+    
+    auto winfo = wm->requestInfo(wid);
+    
+    if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
+        return;
+    
+    raiseDock(intersects(winfo));
 }
 
-void VisibilityManagerPrivate::dodgeActive(WId id)
+void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 {
-
+    auto winfo = wm->requestInfo(wid);
+    
+    if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
+        return;
+    
+    if (winfo.isMaximized())
+        raiseDock(false);
+    else
+        timerCheckWindows.start();
 }
 
-void VisibilityManagerPrivate::dodgeWindows(WId id)
+void VisibilityManagerPrivate::dodgeWindows(WId wid)
 {
-
+    auto winfo = wm->requestInfo(wid);
+    
+    if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
+        return;
+    
+    if (intersects(winfo))
+        raiseDock(false);
+    else
+        timerCheckWindows.start();
 }
 
 void VisibilityManagerPrivate::checkAllWindows()
 {
-
+    bool raise{true};
+    
+    for (const auto &winfo : windows) {
+        //! std::pair<WId, WindowInfoWrap>
+        if (!std::get<1>(winfo).isValid() || !std::get<1>(winfo).isOnCurrentDesktop())
+            continue;
+            
+        if (std::get<1>(winfo).isFullscreen()) {
+            raise = false;
+            break;
+            
+        } else if (std::get<1>(winfo).isMinimized()) {
+            continue;
+        
+        } else if (mode == Dock::DodgeMaximized) {
+            if (std::get<1>(winfo).isMaximized())
+                raise = false;    
+            
+            continue;
+        } else if (intersects(std::get<1>(winfo))) {
+            raise = false;
+            break;
+        }
+    }
+    
+    raiseDock(raise);
 }
 
-bool VisibilityManagerPrivate::intersects(const WindowInfoWrap &info)
+inline bool VisibilityManagerPrivate::intersects(const WindowInfoWrap &winfo)
 {
-
+    return winfo.geometry().intersects(dockRect);
 }
 
-void VisibilityManagerPrivate::saveConfig()
+inline void VisibilityManagerPrivate::saveConfig()
 {
-
+    if (!view->containment())
+        return;
+        
+    auto config = view->containment()->config();
+    
+    config.writeEntry("visibility", static_cast<int>(mode));
+    config.writeEntry("timerShow", timerShow.interval());
+    config.writeEntry("timerHide", timerHide.interval());
+    
+    view->containment()->configNeedsSaving();
 }
 
-void VisibilityManagerPrivate::restoreConfig()
+inline void VisibilityManagerPrivate::restoreConfig()
 {
-
+    if (!view->containment())
+           return;
+           
+       auto config = view->containment()->config();
+       
+       mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+       timerShow.setInterval(config.readEntry("timerShow", 0));
+       timerHide.setInterval(config.readEntry("timerHide", 0));
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
@@ -139,7 +304,7 @@ bool VisibilityManager::isHidden() const
     return d->isHidden;
 }
 
-void VisibilityManager::setHidden(bool isHidden)
+void VisibilityManager::setIsHidden(bool isHidden)
 {
     d->setIsHidden(isHidden);
 }
