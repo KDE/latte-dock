@@ -398,12 +398,15 @@ DragDrop.DropArea {
             dock.onWidthChanged.connect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.connect(visibilityManager.updateMaskArea);
 
-            dock.visibility.onDisableHidingChanged.connect(visibilityManager.slotDisableHidingChanged);
-            dock.visibility.onIsHoveredChanged.connect(visibilityManager.slotIsHoveredChanged);
-            dock.visibility.onMustBeLowered.connect(visibilityManager.slotMustBeLowered);
-            dock.visibility.onMustBeRaised.connect(visibilityManager.slotMustBeRaised);
-            dock.visibility.onMustBeRaisedImmediately.connect(visibilityManager.slotMustBeRaisedImmediately);
-            dock.visibility.onPanelVisibilityChanged.connect(visibilityManager.slotPanelVisibilityChanged);
+            dock.visibility.timerShow = 1000;
+            dock.visibility.timerHide = 1000;
+
+            //dock.visibility.onDisableHidingChanged.connect(visibilityManager.slotDisableHidingChanged);
+            dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
+            dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
+            dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+            //dock.visibility.onMustBeRaisedImmediately.connect(visibilityManager.slotMustBeRaisedImmediately);
+            dock.visibility.onModeChanged.connect(visibilityManager.slotModeChanged);
         }
     }
 
@@ -439,9 +442,9 @@ DragDrop.DropArea {
     }
 
     onIsHoveredChanged: {
-        if (isHovered){
+        /*if (isHovered){
             dock.visibility.showOnTopCheck();
-        }
+        }*/
     }
 
     onHeightChanged: {
@@ -584,16 +587,16 @@ DragDrop.DropArea {
             }
         }
 
-        if (plasmoid.immutable) {
+      /*  if (plasmoid.immutable) {
             if (windowSystem.compositingActive) {
-                //   magicWin.initialize();
+                   magicWin.initialize();
             }
 
             dock.visibility.disableHiding = false;
         } else {
             dock.visibility.disableHiding = true;
             dock.visibility.mustBeRaised();
-        }
+        }*/
 
 
         visibilityManager.updateMaskArea();
@@ -749,7 +752,7 @@ DragDrop.DropArea {
             animatedLengthTimer.start();
         }
 
-        if (!dock.visibility.isHovered && (root.animationsNeedBothAxis === 0)
+        if (!dock.visibility.containsMouse && (root.animationsNeedBothAxis === 0)
                 && (root.animationsNeedLength===0) && (root.appletsAnimations === 0)) {
             mainLayout.animatedLength = true;
         } else {
@@ -761,9 +764,9 @@ DragDrop.DropArea {
 
     function clearZoom(){
         //console.log("Panel clear....");
-        if (dock.visibility.disableHiding) {
+       /* if (dock.visibility.disableHiding) {
             return;
-        }
+        } */
 
         layoutsContainer.currentSpot = -1000;
         layoutsContainer.hoveredIndex = -1;
@@ -871,7 +874,7 @@ DragDrop.DropArea {
     }
 
     function slotDisableHiding(value) {
-        dock.visibility.disableHiding = value;
+       // dock.visibility.disableHiding = value;
     }
 
     function updateAutomaticIconSize() {
@@ -1251,17 +1254,17 @@ DragDrop.DropArea {
         property bool forcedDisableHiding: false
 
         onTriggered: {
-            if (forcedDisableHiding) {
+         /*   if (forcedDisableHiding) {
                 forcedDisableHiding = false;
                 dock.visibility.disableHiding = false;
             }
 
             var visibility = dock.visibility;
 
-            if (plasmoid.immutable && !visibility.isHovered //&& !wholeArea.containsMouse
-                    && ((visibility.panelVisibility === Latte.Dock.AutoHide) || visibility.isDockWindowType) ) {
-                visibility.mustBeLowered();
-            }
+            if (plasmoid.immutable && !visibility.containsMouse //&& !wholeArea.containsMouse
+                    && (visibility.movde === Latte.Dock.AutoHide) ) {
+                visibility.mustBeHide();
+            }*/
         }
     }
 
