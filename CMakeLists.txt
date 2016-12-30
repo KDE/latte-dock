@@ -1,10 +1,10 @@
 project(lattedock)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 set(VERSION 0.5.89)
-set(AUTHOR "Michail Vourlakos")
-set(EMAIL "mvourlakos@gmail.com")
+set(AUTHOR "Michail Vourlakos, Smith Ar")
+set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
 set(WEBSITE "https://github.com/psifidotos/Latte-Dock")
 
 set(QT_MIN_VERSION "5.6.0")
@@ -15,13 +15,12 @@ find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
-     Quick QuickWidgets)
+     Quick QuickWidgets X11Extras)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma PlasmaQuick WindowSystem Declarative
     I18n CoreAddons XmlGui DBusAddons Notifications)
 
-include(FakeTarget.cmake)
 
 FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 
@@ -122,6 +121,8 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
         
 ENDIF(NOT GETTEXT_MSGFMT_EXECUTABLE) 
 
+add_subdirectory(app)
+
 add_subdirectory(liblattedock)
 add_subdirectory(containment)
 plasma_install_package(build/containment/release org.kde.latte.containment) 
@@ -130,8 +131,6 @@ plasma_install_package(build/plasmoid/release org.kde.latte.plasmoid)
 
 add_subdirectory(shell)
 plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
-
-add_subdirectory(app)
 
 add_subdirectory(icons)
 
