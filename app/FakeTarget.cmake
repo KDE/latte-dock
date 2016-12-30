@@ -1,13 +1,13 @@
-execute_process(COMMAND find shell containment plasmoid -name "*.qml" -o -name "*.js"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+execute_process(COMMAND find ../shell ../containment ../plasmoid -name "*.qml" -o -name "*.js"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     OUTPUT_VARIABLE QML_SRCS_STRING)
 
 string(REPLACE "\n" ";" QML_SRCS ${QML_SRCS_STRING})
 
 # fake target for QtCreator project
 add_custom_target(fake-target
-    SOURCES ${QML_SRCS}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    SOURCES ${QML_SRCS})
 
 # qmllint: qml static syntax checker
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
@@ -15,9 +15,9 @@ if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
 
     if(EXISTS "${QMLLINT}")
         message("-- Found qmllint: ${QMLLINT}")
-        add_custom_command(TARGET candil PRE_BUILD
+        add_custom_command(TARGET latte-dock PRE_BUILD
             COMMAND ${QMLLINT} ${QML_SRCS}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Running qmllint")
     else()
         message("-- qmllint: QML Syntax verifier not found")
