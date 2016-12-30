@@ -33,7 +33,7 @@ public:
     
 public slots:
     void loadDefaultLayout() override;
-
+    
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     

@@ -501,13 +501,13 @@ QPointF DockView::positionAdjustedForContainment(const QPointF &point) const
 QList<int> DockView::freeEdges() const
 {
     QList<Plasma::Types::Location> edges = m_corona->freeEdges(containment()->screen());
-
+    
     QList<int> edgesInt;
-
+    
     foreach (Plasma::Types::Location edge, edges) {
         edgesInt.append((int)edge);
     }
-
+    
     return edgesInt;
 }
 

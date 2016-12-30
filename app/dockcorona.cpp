@@ -122,18 +122,18 @@ QRect DockCorona::availableScreenRect(int id) const
 int DockCorona::primaryScreenId() const
 {
     const auto screens = qGuiApp->screens();
-
+    
     int id = -1;
-
+    
     for (int i = 0; i < screens.size(); ++i) {
         auto *scr = screens.at(i);
-
+        
         if (scr == qGuiApp->primaryScreen()) {
             id = i;
             break;
         }
     }
-
+    
     return id;
 }
 
@@ -142,10 +142,10 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-
+                                 
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
-
+    
     for (const DockView *cont : m_containments) {
         if (cont && cont->containment()->screen() == fixedScreen)
             edges.removeOne(cont->location());
@@ -175,7 +175,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
     KPluginMetaData metadata = containment->kPackage().metadata();
-
+    
     if (metadata.pluginId() == "org.kde.plasma.private.systemtray") {
         return;
     }
@@ -216,15 +216,15 @@ void DockCorona::loadDefaultLayout()
     
     auto config = defaultContainment->config();
     defaultContainment->restore(config);
-
+    
     QList<Plasma::Types::Location> edges = freeEdges(defaultContainment->screen());
-
+    
     if (edges.count() > 0) {
         defaultContainment->setLocation(edges.at(0));
     } else {
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
-
+    
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
     defaultContainment->save(config);
     requestConfigSync();

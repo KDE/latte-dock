@@ -48,10 +48,10 @@ XWindowInterface::~XWindowInterface()
 void XWindowInterface::setDockDefaultFlags()
 {
     m_view->setFlags(Qt::FramelessWindowHint
-               | Qt::WindowStaysOnTopHint
-               | Qt::NoDropShadowWindowHint
-               | Qt::WindowDoesNotAcceptFocus);
-    
+                     | Qt::WindowStaysOnTopHint
+                     | Qt::NoDropShadowWindowHint
+                     | Qt::WindowDoesNotAcceptFocus);
+                     
     NETWinInfo winfo(QX11Info::connection()
                      , static_cast<xcb_window_t>(m_view->winId())
                      , static_cast<xcb_window_t>(m_view->winId())

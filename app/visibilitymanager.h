@@ -44,7 +44,7 @@ public:
      * @brief updateDockGeometry, the window geometry in absolute coordinates.
      */
     void updateDockGeometry(const QRect &geometry);
-
+    
 signals:
     void mustBeShown();
     void mustBeHide();

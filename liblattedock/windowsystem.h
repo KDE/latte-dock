@@ -23,7 +23,7 @@ signals:
     
 private slots:
     void compositingChangedProxy(bool enabled);
-
+    
 private:
     bool m_enabled{false};
 };

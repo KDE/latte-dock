@@ -55,14 +55,14 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     });
     
     connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
-
-
+    
+    
     //! NOTE: This is not necesesary if focusOutEvent is implemented
     /*NowDockCorona *corona = qobject_cast<NowDockCorona *>(m_containment->corona());
     if (corona) {
         connect(corona, &NowDockCorona::configurationShown, this, &DockConfigView::configurationShown);
     }*/
-
+    
     /*   connect(containment, &Plasma::Containment::immutabilityChanged
        , [&](Plasma::Types::ImmutabilityType type) {
            if (type != Plasma::Types::Mutable && this && isVisible())
@@ -186,9 +186,9 @@ void DockConfigView::showEvent(QShowEvent *ev)
         
     m_screenSyncTimer.start();
     m_deleterTimer.stop();
-
+    
     ConfigView::showEvent(ev);
-
+    
     //trigger showing configuration window through corona
     //in order to hide all alternative configuration windows
     //! NOTE: This is not necesesary if focusOutEvent is implemented
