@@ -375,6 +375,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
+                            dock.visibility.mode = Latte.Dock.AlwaysVisible
                             plasmoid.configuration.panelVisibility = 0
                         }
                     }
@@ -388,6 +389,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
+                            dock.visibility.mode = Latte.Dock.AutoHide
                             plasmoid.configuration.panelVisibility = 1
                         }
                     }
@@ -401,6 +403,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
+                            dock.visibility.mode = Latte.Dock.DodgeActive
                             plasmoid.configuration.panelVisibility = 2
                         }
                     }
@@ -415,6 +418,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
+                            dock.visibility.mode = Latte.Dock.DodgeMaximized
                             plasmoid.configuration.panelVisibility = 3
                         }
                     }
@@ -429,6 +433,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
+                            dock.visibility.mode = Latte.Dock.DodgeWindows
                             plasmoid.configuration.panelVisibility = 4
                         }
                     }
@@ -442,6 +447,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
+                            dock.visibility.mode = Latte.Dock.AlwaysVisible
                             plasmoid.configuration.panelVisibility = 5
                         }
                     }

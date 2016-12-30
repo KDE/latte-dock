@@ -475,19 +475,7 @@ VisibilityManager *NowDockView::visibility()
 
 bool NowDockView::event(QEvent *e)
 {
-
-    /* if (ev->type() == QEvent::Enter) {
-         m_visibility->show();
-         emit entered();
-     } else if (ev->type() == QEvent::Leave) {
-         m_visibility->restore();
-         emit exited();
-     } */
-    
-    //return QQuickWindow::event(e);
-    if (m_visibility) {
-        m_visibility->event(e);
-    }
+    emit eventTriggered(e);
     
     return ContainmentView::event(e);
 }

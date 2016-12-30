@@ -124,6 +124,7 @@ protected:
 signals:
 //   void visibilityChanged();
     void addInternalViewSplitter();
+    void eventTriggered(QEvent *ev);
     void alignmentChanged();
     void compositingChanged();
     void heightChanged();

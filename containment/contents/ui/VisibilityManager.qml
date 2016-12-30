@@ -36,15 +36,6 @@ Item{
     property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + 1
     property int thicknessZoomOriginal: statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2
 
-
-    Binding{
-        //this is way to avoid warnings for null during initialization phase
-        target: dock ? dock.visibility : manager
-        property:"panelVisibility"
-        when: dock && dock.visibility
-        value: plasmoid.configuration.panelVisibility
-    }
-
     Binding{
         target: dock ? dock : manager
         property:"maxThickness"
@@ -71,22 +62,22 @@ Item{
     onThicknessZoomOriginalChanged: updateMaskArea();
 
     function slotDisableHidingChanged() {
-        if (!dock.visibility.disableHiding) {
+        /*if (!dock.visibility.disableHiding) {
             checkListHovered.restart();
-        }
+        }*/
     }
 
-    function slotIsHoveredChanged() {
-        if(dock.visibility.isHovered) {
+    function slotContainsMouseChanged() {
+        if(dock.visibility.containsMouse) {
             //stop parent window timer for auto hiding
-            if ((dock.visibility.panelVisibility === Latte.Dock.AutoHide)|| dock.visibility.isDockWindowType) {
+            /*  if (dock.visibility.mode === Latte.Dock.AutoHide) {
                 if(hideMagicWindowInAutoHide.forcedDisableHiding) {
                     hideMagicWindowInAutoHide.forcedDisableHiding = false;
                     dock.visibility.disableHiding = false;
                 }
 
                 hideMagicWindowInAutoHide.stop();
-            }
+            }*/
 
             if (delayerTimer.running) {
                 delayerTimer.stop();
@@ -99,29 +90,23 @@ Item{
         }
     }
 
-    function slotMustBeRaised() {
-        if ((dock.visibility.panelVisibility === Latte.Dock.AutoHide) || dock.visibility.isDockWindowType) {
-            slidingAnimationAutoHiddenIn.init();
-        } else {
-            slidingAnimation.init(true,false);
-        }
+    function slotMustBeShown() {
+        console.log("show...");
+        slidingAnimationAutoHiddenIn.init();
     }
 
     function slotMustBeRaisedImmediately() {
         slidingAnimation.init(true,true);
     }
 
-    function slotMustBeLowered() {
-            if ((dock.visibility.panelVisibility === Latte.Dock.AutoHide) || dock.visibility.isDockWindowType ) {
-                slidingAnimationAutoHiddenOut.init();
-            } else {
-                slidingAnimation.init(false,false);
-            }
+    function slotMustBeHide() {
+        console.log("hide....");
+        slidingAnimationAutoHiddenOut.init();
     }
 
-    function slotPanelVisibilityChanged() {
-        if (dock.visibility.panelVisibility !== Latte.Dock.AutoHide) {
-            dock.visibility.isAutoHidden = false;
+    function slotModeChanged() {
+        if (dock.visibility.mode !== Latte.Dock.AutoHide) {
+            dock.visibility.isHidden = false;
         }
     }
 
@@ -164,7 +149,7 @@ Item{
                 tempThickness = thicknessMidOriginal;
             }
 
-            if (dock.visibility.isAutoHidden && ((dock.visibility.panelVisibility === Latte.Dock.AutoHide) || dock.visibility.isDockWindowType)) {
+            if (dock.visibility.isHidden && (dock.visibility.mode === Latte.Dock.AutoHide)) {
                 tempThickness = thicknessAutoHidden;
             }
 
@@ -358,7 +343,7 @@ Item{
         }
 
         onStopped: {
-            dock.visibility.isAutoHidden = true;
+            dock.visibility.isHidden = true;
             updateMaskArea();
         }
 
@@ -385,7 +370,7 @@ Item{
         }
 
         function init() {
-            dock.visibility.isAutoHidden = false;
+            dock.visibility.isHidden = false;
             updateMaskArea();
             start();
         }
@@ -396,12 +381,12 @@ Item{
         onCurrentActivityChanged: {
             dock.visibility.disableHiding = true;
 
-            if (dock.visibility.isAutoHidden) {
-                dock.visibility.mustBeRaised();
+            if (dock.visibility.isHidden) {
+                dock.visibility.mustBeShown();
             }
 
-            hideMagicWindowInAutoHide.forcedDisableHiding = true;
-            hideMagicWindowInAutoHide.start();
+            //  hideMagicWindowInAutoHide.forcedDisableHiding = true;
+            //    hideMagicWindowInAutoHide.start();
         }
     }
 
@@ -424,9 +409,9 @@ Item{
         interval: manager.inStartup ? 1000 : 500
         onTriggered: {
             layoutsContainer.opacity = 1;
-            if ((dock.visibility.panelVisibility !== Latte.Dock.AutoHide) && !dock.visibility.isDockWindowType) {
-                slidingAnimation.init(true,false);
-            } else {
+            if (dock.visibility.mode !== Latte.Dock.AutoHide) {
+                /*slidingAnimation.init(true,false);
+            } else {*/
                 slidingAnimationAutoHiddenIn.init();
             }
         }
