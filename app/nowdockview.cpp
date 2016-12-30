@@ -72,6 +72,10 @@ NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
     
     m_lockGeometry.setSingleShot(true);
     m_lockGeometry.setInterval(700);
+
+    connect(this, SIGNAL(localDockGeometryChanged()), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateAbsDockGeometry()));
     
     connect(this, &NowDockView::containmentChanged
     , this, [&]() {
@@ -286,6 +290,23 @@ void NowDockView::resizeWindow()
     }
 }
 
+void NowDockView::setLocalDockGeometry(QRect geometry)
+{
+    if (geometry == m_localDockGeometry) {
+        return;
+    }
+
+    m_localDockGeometry = geometry;
+
+    emit localDockGeometryChanged();
+}
+
+void NowDockView::updateAbsDockGeometry()
+{
+    QRect absoluteGeometry = {x() + m_localDockGeometry.x(), y() + m_localDockGeometry.y(), m_localDockGeometry.width(), m_localDockGeometry.height()};
+    m_visibility->updateDockGeometry(absoluteGeometry);
+}
+
 inline void NowDockView::updateDockPosition()
 {
     if (!containment())
@@ -475,19 +496,7 @@ VisibilityManager *NowDockView::visibility()
 
 bool NowDockView::event(QEvent *e)
 {
-
-    /* if (ev->type() == QEvent::Enter) {
-         m_visibility->show();
-         emit entered();
-     } else if (ev->type() == QEvent::Leave) {
-         m_visibility->restore();
-         emit exited();
-     } */
-    
-    //return QQuickWindow::event(e);
-    if (m_visibility) {
-        m_visibility->event(e);
-    }
+    emit eventTriggered(e);
     
     return ContainmentView::event(e);
 }
@@ -526,7 +535,18 @@ QPointF NowDockView::positionAdjustedForContainment(const QPointF &point) const
                    qBound(containmentRect.top() + 2, point.y(), containmentRect.bottom() - 2));
 }
 
+QList<int> NowDockView::freeEdges() const
+{
+    QList<Plasma::Types::Location> edges = m_corona->freeEdges(containment()->screen());
 
+    QList<int> edgesInt;
+
+    foreach (Plasma::Types::Location edge, edges) {
+        edgesInt.append((int)edge);
+    }
+
+    return edgesInt;
+}
 
 void NowDockView::saveConfig()
 {

@@ -4,12 +4,20 @@
 
 #include "../liblattedock/extras.h"
 
+#include "nowdockview.h"
+
 namespace Latte {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
     : QObject(view), q(q), view(view), wm(AbstractWindowInterface::getInstance(view, nullptr))
 {
+    NowDockView *dockView = dynamic_cast<NowDockView *>(view);
+
+    if (dockView) {
+        connect(dockView, &NowDockView::eventTriggered, q, &VisibilityManager::eventReceived);
+    }
+
     timerCheckWindows.setInterval(350);
     timerCheckWindows.setSingleShot(true);
     
@@ -34,11 +42,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 {
     if (this->mode == mode)
         return;
-        
+
     // clear mode
     if (this->mode == Dock::AlwaysVisible)
         wm->removeDockStruts();
-        
+
     for (auto &c : connections) {
         disconnect(c);
     }
@@ -55,36 +63,36 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             raiseDock(true);
         }
         break;
-        
+
         case Dock::AutoHide: {
             raiseDock(true);
         }
         break;
-        
+
         case Dock::DodgeActive: {
             connections[0] = connect(wm.get(), &AbstractWindowInterface::activeWindowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
             connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
-                                     
+
             dodgeActive(wm->activeWindow());
         }
         break;
-        
+
         case Dock::DodgeMaximized: {
             connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeMaximized);
         }
         break;
-        
+
         case Dock::DodgeAllWindows: {
             for (const auto &wid : wm->windows()) {
                 windows.insert({wid, wm->requestInfo(wid)});
             }
-            
+
             connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeWindows);
-                                     
+
             connections[1] = connect(wm.get(), &AbstractWindowInterface::windowRemoved
             , this, [&](WId wid) {
                 windows.erase(wid);
@@ -99,7 +107,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     }
     
     saveConfig();
-    
+
     emit q->modeChanged();
 }
 
@@ -107,7 +115,7 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
 {
     if (this->isHidden == isHidden)
         return;
-        
+
     this->isHidden = isHidden;
     emit q->isHiddenChanged();
 }
@@ -132,16 +140,17 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
     /* if (!isHidden == raise) {
         return;
     } */
-    
+
     if (raise) {
         timerHide.stop();
         
-        if (!timerShow.isActive())
+        if (!timerShow.isActive()) {
             timerShow.start();
+        }
     } else {
         timerShow.stop();
-        
-        if (!timerHide.isActive())
+
+        if (!timerHide.isActive() && view->containment()->immutability() != Plasma::Types::Mutable)
             timerHide.start();
     }
 }
@@ -150,37 +159,39 @@ inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
 {
     if (!view->containment() || this->dockRect == dockRect)
         return;
-        
+
     this->dockRect = dockRect;
     
     if (mode == Dock::AlwaysVisible) {
         wm->setDockStruts(this->dockRect, view->containment()->location());
     }
+    
+    raiseDock(raise);
 }
 
 void VisibilityManagerPrivate::dodgeActive(WId wid)
 {
     if (wid != wm->activeWindow())
         return;
-        
+
     auto winfo = wm->requestInfo(wid);
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-        
-    raiseDock(intersects(winfo));
+
+    raiseDock(!intersects(winfo));
 }
 
 void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 {
     if (wid != wm->activeWindow())
         return;
-    
+
     auto winfo = wm->requestInfo(wid);
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-        
+
     raiseDock(winfo.isMaximized());
 }
 
@@ -190,7 +201,7 @@ void VisibilityManagerPrivate::dodgeWindows(WId wid)
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-        
+
     if (intersects(winfo))
         raiseDock(false);
     else
@@ -205,7 +216,7 @@ void VisibilityManagerPrivate::checkAllWindows()
         //! std::pair<WId, WindowInfoWrap>
         if (!std::get<1>(winfo).isValid() || !std::get<1>(winfo).isOnCurrentDesktop())
             continue;
-            
+
         if (std::get<1>(winfo).isFullscreen()) {
             raise = false;
             break;
@@ -231,7 +242,7 @@ inline void VisibilityManagerPrivate::saveConfig()
 {
     if (!view->containment())
         return;
-        
+
     auto config = view->containment()->config();
     
     config.writeEntry("visibility", static_cast<int>(mode));
@@ -245,14 +256,12 @@ inline void VisibilityManagerPrivate::restoreConfig()
 {
     if (!view->containment())
         return;
-        
+
     auto config = view->containment()->config();
     
-    auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     timerShow.setInterval(config.readEntry("timerShow", 0));
     timerHide.setInterval(config.readEntry("timerHide", 0));
-    
-    setMode(mode);
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
@@ -261,16 +270,13 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         containsMouse = true;
         emit q->containsMouseChanged();
         
-        if (mode == Dock::AutoHide)
-            raiseDock(true);
-            
+        raiseDock(true);
     } else if (ev->type() == QEvent::Leave && containsMouse) {
         containsMouse = false;
         emit q->containsMouseChanged();
-        
+
         if (mode == Dock::AutoHide)
             raiseDock(false);
-        
     } else if (ev->type() == QEvent::Show) {
         wm->setDockDefaultFlags();
     }
@@ -342,13 +348,13 @@ void VisibilityManager::updateDockGeometry(const QRect &geometry)
     d->setDockRect(geometry);
 }
 
+void VisibilityManager::eventReceived(QEvent *ev)
+{
+    d->event(ev);
+}
 //! END: VisibilityManager implementation
 }
 
 #include "abstractwindowinterface.h"
 #include "xwindowinterface.h"
 #include "plasmaquick/containmentview.h"
-
-
-
-

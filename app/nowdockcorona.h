@@ -55,9 +55,13 @@ public:
     
 public slots:
     void loadDefaultLayout() override;
+
+signals:
+    void configurationShown(PlasmaQuick::ConfigView *configView);
     
 private:
     void qmlRegisterTypes() const;
+    int primaryScreenId() const;
     
     std::vector<NowDockView *> m_containments;
 };

@@ -665,10 +665,13 @@ Item {
                                 zoomScale = zoomScale + step;
                         }
                         else{
-                            if(layoutsContainer.hoveredIndex<container.index)
+                            if(layoutsContainer.hoveredIndex<container.index){
                                 nowDock.updateScale(0, nScale, step);
-                            else if(layoutsContainer.hoveredIndex>=container.index)
+                                nowDock.updateScale(1, 1, 0);
+                            } else if(layoutsContainer.hoveredIndex>=container.index) {
                                 nowDock.updateScale(root.tasksCount-1, nScale, step);
+                                nowDock.updateScale(root.tasksCount-2, 1, 0);
+                            }
                         }
                     }  ///if the applet is hidden must forward its scale events to its neighbours
                     else if ((applet && (applet.status === PlasmaCore.Types.HiddenStatus))
@@ -758,30 +761,31 @@ Item {
         }
 
         onPositionChanged: {
-            if(!pressed){
-                if (root.isHorizontal){
-                    var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                    if (step >= container.animationStep){
-                        layoutsContainer.hoveredIndex = index;
-                        layoutsContainer.currentSpot = mouse.x;
+            //  if(!pressed){
+            if (root.isHorizontal){
+                var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
+                if (step >= container.animationStep){
+                    layoutsContainer.hoveredIndex = index;
+                    layoutsContainer.currentSpot = mouse.x;
 
-                        wrapper.calculateScales(mouse.x);
-                    }
-                }
-                else{
-                    var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                    if (step >= container.animationStep){
-                        layoutsContainer.hoveredIndex = index;
-                        layoutsContainer.currentSpot = mouse.y;
-
-                        wrapper.calculateScales(mouse.y);
-                    }
+                    wrapper.calculateScales(mouse.x);
                 }
             }
+            else{
+                var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
+                if (step >= container.animationStep){
+                    layoutsContainer.hoveredIndex = index;
+                    layoutsContainer.currentSpot = mouse.y;
+
+                    wrapper.calculateScales(mouse.y);
+                }
+            }
+            //  }
             mouse.accepted = false;
         }
 
         onPressed: pressed = true;
+        onReleased: pressed = false;
     }
 
     //BEGIN states

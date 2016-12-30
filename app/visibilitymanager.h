@@ -44,7 +44,10 @@ public:
      * @brief updateDockGeometry, the window geometry in absolute coordinates.
      */
     void updateDockGeometry(const QRect &geometry);
-    
+
+public Q_SLOTS:
+    void eventReceived(QEvent *);
+
 signals:
     void mustBeShown();
     void mustBeHide();
