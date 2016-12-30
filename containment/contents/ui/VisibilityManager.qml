@@ -91,7 +91,7 @@ Item{
     }
 
     function slotMustBeShown() {
-        console.log("show...");
+      //  console.log("show...");
         slidingAnimationAutoHiddenIn.init();
     }
 
@@ -100,7 +100,7 @@ Item{
     }
 
     function slotMustBeHide() {
-        console.log("hide....");
+       // console.log("hide....");
         slidingAnimationAutoHiddenOut.init();
     }
 
@@ -125,7 +125,7 @@ Item{
                 && (!mainLayout.animatedLength)
 
         // debug maskArea criteria
-        // console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
+        //console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
         //         + root.appletsAnimations+ ", "
         //         + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness +", "
         //         + mainLayout.animatedLength);
@@ -136,6 +136,7 @@ Item{
         var space = root.panelEdgeSpacing + 10;
 
         if (normalState && plasmoid.immutable) {
+            //console.log("entered normal state...");
             //count panel length
             if(root.isHorizontal) {
                 tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Double ? layoutsContainer.width + 0.5*space : mainLayout.width + space;
@@ -194,7 +195,8 @@ Item{
                 tempLength = Screen.height; //screenGeometry.height;
 
             //grow only on length and not thickness
-            if(mainLayout.animatedLength || !plasmoid.immutable) {
+            if(mainLayout.animatedLength || !plasmoid.immutable
+                    || (root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0)) {
                 tempThickness = thicknessNormalOriginal;
 
                 if (root.animationsNeedThickness > 0) {

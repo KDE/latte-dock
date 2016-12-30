@@ -378,16 +378,14 @@ MouseArea{
             function sendEndOfNeedBothAxisAnimation(){
                 if (mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = false;
-                    if (panel.animationsNeedBothAxis > 0) {
-                        panel.setAnimationsNeedBothAxis(panel.animationsNeedBothAxis - 1);
-                    }
+                    panel.setAnimationsNeedBothAxis(-1);
                 }
             }
 
             onScaleChanged: {
                 if ((scale > 1) && !mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = true;
-                    panel.setAnimationsNeedBothAxis(panel.animationsNeedBothAxis + 1);
+                    panel.setAnimationsNeedBothAxis(1);
                 } else if ((scale == 1) && mainItemContainer.isZoomed) {
                     sendEndOfNeedBothAxisAnimation();
                 }
@@ -918,11 +916,19 @@ MouseArea{
                 }
             }
             mainItemContainer.inAnimation = false;
+
+            if (isWindow || isStartup) {
+                panel.setAnimationsNeedLength(-1);
+            }
         }
 
         function init(){
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
+
+            if (isWindow || isStartup) {
+                panel.setAnimationsNeedLength(1);
+            }
         }
 
         function showWindow(){
@@ -1070,6 +1076,9 @@ MouseArea{
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
         PropertyAction { target: icList; property: "delayingRemoval"; value: false }
+
+        onStarted: panel.setAnimationsNeedLength(+1);
+        onStopped: panel.setAnimationsNeedLength(-1);
     }
 
 }// main Item
