@@ -36,13 +36,13 @@ class Types;
 
 namespace Latte {
 
-class NowDockView;
+class DockView;
 
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
     
 public:
-    DockConfigView(Plasma::Containment *containment, NowDockView *dockView, QWindow *parent = nullptr);
+    DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent = nullptr);
     ~DockConfigView() override;
     
     void init() override;
@@ -56,13 +56,13 @@ protected:
     void syncGeometry();
     void syncSlideEffect();
     
-private Q_SLOTS:
+private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     void configurationShown(PlasmaQuick::ConfigView *configView);
     
 private:
     Plasma::Containment *m_containment{nullptr};
-    QPointer<NowDockView> m_dockView;
+    QPointer<DockView> m_dockView;
     QTimer m_deleterTimer;
     QTimer m_screenSyncTimer;
     

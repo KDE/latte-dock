@@ -17,9 +17,9 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "nowdockconfigview.h"
-#include "nowdockview.h"
-#include "nowdockcorona.h"
+#include "dockconfigview.h"
+#include "dockview.h"
+#include "dockcorona.h"
 
 #include <QQuickItem>
 #include <QQmlContext>
@@ -30,11 +30,11 @@
 #include <KWindowSystem>
 #include <KWindowEffects>
 
-#include <plasma/package.h>
+#include <Plasma/Package>
 
 namespace Latte {
 
-NowDockConfigView::NowDockConfigView(Plasma::Containment *containment, NowDockView *dockView, QWindow *parent)
+DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent), m_containment(containment), m_dockView(dockView)
 {
     m_deleterTimer.setSingleShot(true);
@@ -54,13 +54,14 @@ NowDockConfigView::NowDockConfigView(Plasma::Containment *containment, NowDockVi
         syncSlideEffect();
     });
     
-    connect(containment, &Plasma::Containment::immutabilityChanged, this, &NowDockConfigView::immutabilityChanged);
+    connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
 
-    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_containment->corona());
 
+    //! NOTE: This is not necesesary if focusOutEvent is implemented
+    /*NowDockCorona *corona = qobject_cast<NowDockCorona *>(m_containment->corona());
     if (corona) {
-        connect(corona, &NowDockCorona::configurationShown, this, &NowDockConfigView::configurationShown);
-    }
+        connect(corona, &NowDockCorona::configurationShown, this, &DockConfigView::configurationShown);
+    }*/
 
     /*   connect(containment, &Plasma::Containment::immutabilityChanged
        , [&](Plasma::Types::ImmutabilityType type) {
@@ -69,27 +70,27 @@ NowDockConfigView::NowDockConfigView(Plasma::Containment *containment, NowDockVi
        });*/
 }
 
-NowDockConfigView::~NowDockConfigView()
+DockConfigView::~DockConfigView()
 {
 }
 
-void NowDockConfigView::init()
+void DockConfigView::init()
 {
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
-    auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("nowdockconfigurationui"));
+    auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
     syncSlideEffect();
 }
 
-inline Qt::WindowFlags NowDockConfigView::wFlags() const
+inline Qt::WindowFlags DockConfigView::wFlags() const
 {
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
-void NowDockConfigView::syncGeometry()
+void DockConfigView::syncGeometry()
 {
     if (!m_containment || !rootObject())
         return;
@@ -137,7 +138,7 @@ void NowDockConfigView::syncGeometry()
     }
 }
 
-void NowDockConfigView::syncSlideEffect()
+void DockConfigView::syncSlideEffect()
 {
     if (!m_containment)
         return;
@@ -169,7 +170,7 @@ void NowDockConfigView::syncSlideEffect()
     KWindowEffects::slideWindow(winId(), slideLocation, -1);
 }
 
-void NowDockConfigView::showEvent(QShowEvent *ev)
+void DockConfigView::showEvent(QShowEvent *ev)
 {
     KWindowSystem::setType(winId(), NET::Dock);
     setFlags(wFlags());
@@ -183,8 +184,6 @@ void NowDockConfigView::showEvent(QShowEvent *ev)
     if (m_containment)
         m_containment->setUserConfiguring(true);
         
-    //  m_dockView->visibility()->forceShow(true);
-    //  m_dockView->visibility()->showImmediately();
     m_screenSyncTimer.start();
     m_deleterTimer.stop();
 
@@ -192,17 +191,16 @@ void NowDockConfigView::showEvent(QShowEvent *ev)
 
     //trigger showing configuration window through corona
     //in order to hide all alternative configuration windows
-    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_containment->corona());
+    //! NOTE: This is not necesesary if focusOutEvent is implemented
+//    NowDockCorona *corona = qobject_cast<NowDockCorona *>(m_containment->corona());
 
-    if (corona) {
-        emit corona->configurationShown(this);
-    }
+//    if (corona) {
+//        emit corona->configurationShown(this);
+//    }
 }
 
-void NowDockConfigView::hideEvent(QHideEvent *ev)
+void DockConfigView::hideEvent(QHideEvent *ev)
 {
-    //  m_dockView->visibility()->forceShow(false);
-    //  m_dockView->visibility()->restore();
     m_deleterTimer.start();
     
     if (m_containment) {
@@ -213,27 +211,25 @@ void NowDockConfigView::hideEvent(QHideEvent *ev)
     ConfigView::hideEvent(ev);
 }
 
-void NowDockConfigView::focusOutEvent(QFocusEvent *ev)
+void DockConfigView::focusOutEvent(QFocusEvent *ev)
 {
-    //FIXME: I can understand why we need to hide on focus out
     Q_UNUSED(ev);
     const auto *focusWindow = qGuiApp->focusWindow();
     
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
         
-        
-    // hide();
+    hide();
 }
 
-void NowDockConfigView::configurationShown(PlasmaQuick::ConfigView *configView)
+void DockConfigView::configurationShown(PlasmaQuick::ConfigView *configView)
 {
     if ((configView != this) && isVisible()) {
         hide();
     }
 }
 
-void NowDockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
+void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
     if (type != Plasma::Types::Mutable && isVisible()) {
         hide();
