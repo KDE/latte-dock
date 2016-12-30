@@ -262,6 +262,9 @@ inline void VisibilityManagerPrivate::restoreConfig()
     mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     timerShow.setInterval(config.readEntry("timerShow", 0));
     timerHide.setInterval(config.readEntry("timerHide", 0));
+    
+    emit q->timerShowChanged();
+    emit q->timerHideChanged();
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
