@@ -99,6 +99,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     }
     
     saveConfig();
+    
+    emit q->modeChanged();
 }
 
 inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
@@ -246,9 +248,11 @@ inline void VisibilityManagerPrivate::restoreConfig()
         
     auto config = view->containment()->config();
     
-    mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     timerShow.setInterval(config.readEntry("timerShow", 0));
     timerHide.setInterval(config.readEntry("timerHide", 0));
+    
+    setMode(mode);
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
