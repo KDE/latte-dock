@@ -63,7 +63,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             raiseDock(true);
         }
         break;
-        
+
         case Dock::AutoHide: {
             raiseDock(true);
         }
@@ -268,14 +268,13 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         containsMouse = true;
         emit q->containsMouseChanged();
         
-        emit q->mustBeShown();
+        raiseDock(true);
     } else if (ev->type() == QEvent::Leave && containsMouse) {
         containsMouse = false;
         emit q->containsMouseChanged();
-        
+
         if (mode == Dock::AutoHide)
             raiseDock(false);
-
     } else if (ev->type() == QEvent::Show) {
         wm->setDockDefaultFlags();
     }
