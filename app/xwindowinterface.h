@@ -15,7 +15,7 @@ class XWindowInterface : public AbstractWindowInterface {
     
 public:
     XWindowInterface(QQuickWindow *const view, QObject *parent);
-    ~XWindowInterface() override;
+    virtual ~XWindowInterface();
     
     void setDockDefaultFlags() override;
     
