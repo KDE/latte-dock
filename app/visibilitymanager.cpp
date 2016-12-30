@@ -21,6 +21,8 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     connect(&timerCheckWindows, &QTimer::timeout, this, &VisibilityManagerPrivate::checkAllWindows);
     connect(&timerShow, &QTimer::timeout, q, &VisibilityManager::mustBeShown);
     connect(&timerHide, &QTimer::timeout, q, &VisibilityManager::mustBeHide);
+    
+    wm->setDockDefaultFlags();
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
@@ -169,15 +171,15 @@ void VisibilityManagerPrivate::dodgeActive(WId wid)
 
 void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 {
+    if (wid != wm->activeWindow())
+        return;
+    
     auto winfo = wm->requestInfo(wid);
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
         
-    if (winfo.isMaximized())
-        raiseDock(false);
-    else
-        timerCheckWindows.start();
+    raiseDock(winfo.isMaximized());
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WId wid)
@@ -209,11 +211,6 @@ void VisibilityManagerPrivate::checkAllWindows()
         } else if (std::get<1>(winfo).isMinimized()) {
             continue;
             
-        } else if (mode == Dock::DodgeMaximized) {
-            if (std::get<1>(winfo).isMaximized())
-                raise = false;
-                
-            continue;
         } else if (intersects(std::get<1>(winfo))) {
             raise = false;
             break;
@@ -269,6 +266,9 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         
         if (mode == Dock::AutoHide)
             raiseDock(false);
+        
+    } else if (ev->type() == QEvent::Show) {
+        wm->setDockDefaultFlags();
     }
     
     return QObject::event(ev);
