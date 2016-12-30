@@ -1,5 +1,5 @@
-#ifndef WINDOWINFO_H
-#define WINDOWINFO_H
+#ifndef WINDOWINFOWRAP_H
+#define WINDOWINFOWRAP_H
 
 #include <QObject>
 #include <QWidget>
@@ -56,4 +56,4 @@ private:
 
 }
 
-#endif // WINDOWINFO_H
+#endif // WINDOWINFOWRAP_H
