@@ -758,30 +758,31 @@ Item {
         }
 
         onPositionChanged: {
-            if(!pressed){
-                if (root.isHorizontal){
-                    var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                    if (step >= container.animationStep){
-                        layoutsContainer.hoveredIndex = index;
-                        layoutsContainer.currentSpot = mouse.x;
+            //  if(!pressed){
+            if (root.isHorizontal){
+                var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
+                if (step >= container.animationStep){
+                    layoutsContainer.hoveredIndex = index;
+                    layoutsContainer.currentSpot = mouse.x;
 
-                        wrapper.calculateScales(mouse.x);
-                    }
-                }
-                else{
-                    var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                    if (step >= container.animationStep){
-                        layoutsContainer.hoveredIndex = index;
-                        layoutsContainer.currentSpot = mouse.y;
-
-                        wrapper.calculateScales(mouse.y);
-                    }
+                    wrapper.calculateScales(mouse.x);
                 }
             }
+            else{
+                var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
+                if (step >= container.animationStep){
+                    layoutsContainer.hoveredIndex = index;
+                    layoutsContainer.currentSpot = mouse.y;
+
+                    wrapper.calculateScales(mouse.y);
+                }
+            }
+            //  }
             mouse.accepted = false;
         }
 
         onPressed: pressed = true;
+        onReleased: pressed = false;
     }
 
     //BEGIN states
