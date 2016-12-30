@@ -34,6 +34,8 @@ class Containment;
 class Types;
 }
 
+namespace Latte {
+
 class NowDockView;
 
 class NowDockConfigView : public PlasmaQuick::ConfigView {
@@ -64,5 +66,7 @@ private:
     QTimer m_screenSyncTimer;
     
 };
+
+}
 #endif //DOCKCONFIGVIEW_H
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

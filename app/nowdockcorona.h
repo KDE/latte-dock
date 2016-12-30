@@ -33,6 +33,8 @@ class Containment;
 class Types;
 }
 
+namespace Latte {
+
 class NowDockCorona : public Plasma::Corona {
     Q_OBJECT
     
@@ -60,5 +62,6 @@ private:
     std::vector<NowDockView *> m_containments;
 };
 
+}
 
 #endif
