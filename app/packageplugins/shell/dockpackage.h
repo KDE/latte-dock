@@ -5,14 +5,17 @@
 
 #include <KPackage/PackageStructure>
 
-class NowDockPackage : public KPackage::PackageStructure {
+namespace Latte {
+class DockPackage : public KPackage::PackageStructure {
     Q_OBJECT
 
 public:
-    explicit NowDockPackage(QObject *parent = 0, const QVariantList &args = QVariantList());
+    explicit DockPackage(QObject *parent = 0, const QVariantList &args = QVariantList());
     
-    ~NowDockPackage() override;
+    ~DockPackage() override;
     void initPackage(KPackage::Package *package) override;
     void pathChanged(KPackage::Package *package) override;
 };
+
+}
 #endif // NOWDOCKPACKAGE_H
