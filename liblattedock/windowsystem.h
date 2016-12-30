@@ -11,16 +11,21 @@ class WindowSystem : public QObject {
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged)
     
 public:
-    explicit WindowSystem(QObject *parent = Q_NULLPTR);
+    explicit WindowSystem(QObject *parent = nullptr);
+    
+    static WindowSystem &self();
     ~WindowSystem();
     
     bool compositingActive() const;
     
-Q_SIGNALS:
+signals:
     void compositingChanged();
     
-private Q_SLOTS:
-    void compositingChanged(bool state);
+private slots:
+    void compositingChangedProxy(bool enabled);
+
+private:
+    bool m_enabled{false};
 };
 
 }//LatteDock namespace

@@ -19,9 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include "nowdockview.h"
-#include "nowdockconfigview.h"
+#include "dockview.h"
+#include "dockcorona.h"
+#include "dockconfigview.h"
 #include "visibilitymanager.h"
+#include "../liblattedock/windowsystem.h"
 
 #include <QAction>
 #include <QQmlContext>
@@ -29,38 +31,23 @@
 #include <QQmlProperty>
 #include <QQuickItem>
 #include <QMetaEnum>
-//#include <QtX11Extras/QX11Info>
 
-#include <NETWM>
-#include <KWindowSystem>
 #include <Plasma/Containment>
 #include <KActionCollection>
 #include <KLocalizedContext>
 
-#include "nowdockcorona.h"
-
 namespace Latte {
 
-NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
+DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),
       m_corona(corona)
 {
-    KWindowSystem::setType(winId(), NET::Dock);
-    KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
-    
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
     setIcon(QIcon::fromTheme(corona->kPackage().metadata().iconName()));
     
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
-    /* setFlags(Qt::FramelessWindowHint
-               | Qt::WindowStaysOnTopHint
-               | Qt::NoDropShadowWindowHint
-               | Qt::WindowDoesNotAcceptFocus);*/
-    
-    //    NETWinInfo winfo(QX11Info::connection(), winId(), winId(), 0, 0);
-    //   winfo.setAllowedActions(NET::ActionChangeDesktop);
     
     if (targetScreen)
         adaptToScreen(targetScreen);
@@ -73,7 +60,7 @@ NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
     m_lockGeometry.setSingleShot(true);
     m_lockGeometry.setInterval(700);
     
-    connect(this, &NowDockView::containmentChanged
+    connect(this, &DockView::containmentChanged
     , this, [&]() {
         if (!containment())
             return;
@@ -85,14 +72,14 @@ NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
     }, Qt::DirectConnection);
 }
 
-NowDockView::~NowDockView()
+DockView::~DockView()
 {
 }
 
-void NowDockView::init()
+void DockView::init()
 {
-    connect(this, &NowDockView::screenChanged
-            , this, &NowDockView::adaptToScreen
+    connect(this, &DockView::screenChanged
+            , this, &DockView::adaptToScreen
             , Qt::QueuedConnection);
             
             
@@ -100,18 +87,18 @@ void NowDockView::init()
         initWindow();
     });
     
-    connect(this, &NowDockView::locationChanged, [&]() {
+    connect(this, &DockView::locationChanged, [&]() {
         //! avoid glitches
         m_timerGeometry.start();
     });
     
-    connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
+    connect(&WindowSystem::self(), &WindowSystem::compositingChanged
     , this, [&]() {
         emit compositingChanged();
     } , Qt::QueuedConnection);
     
-    connect(this, &NowDockView::screenGeometryChanged
-            , this, &NowDockView::updateDockPosition
+    connect(this, &DockView::screenGeometryChanged
+            , this, &DockView::updateDockPosition
             , Qt::QueuedConnection);
             
     connect(this, SIGNAL(widthChanged(int)), this, SIGNAL(widthChanged()));
@@ -120,9 +107,9 @@ void NowDockView::init()
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     
+    // FIXME: We need find a better solution
     // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
-    setSource(corona()->kPackage().filePath("nowdockui"));
-    
+    setSource(corona()->kPackage().filePath("lattedockui"));
     
     connect(this, SIGNAL(xChanged(int)), this, SLOT(updateDockPositionSlot()));
     connect(this, SIGNAL(yChanged(int)), this, SLOT(updateDockPositionSlot()));
@@ -133,17 +120,17 @@ void NowDockView::init()
     
     qDebug() << "SOURCE:" << source();
     
-    initialize();
+    //initialize();
 }
 
 
-void NowDockView::initialize()
+void DockView::initialize()
 {
     m_secondInitPass = true;
     m_timerGeometry.start();
 }
 
-void NowDockView::initWindow()
+void DockView::initWindow()
 {
     //  m_visibility->updateVisibilityFlags();
     
@@ -160,7 +147,7 @@ void NowDockView::initWindow()
     }
 }
 
-void NowDockView::updateDockPositionSlot()
+void DockView::updateDockPositionSlot()
 {
     if (!m_lockGeometry.isActive()) {
         m_lockGeometry.start();
@@ -168,7 +155,7 @@ void NowDockView::updateDockPositionSlot()
 }
 
 //!BEGIN SLOTS
-void NowDockView::adaptToScreen(QScreen *screen)
+void DockView::adaptToScreen(QScreen *screen)
 {
     setScreen(screen);
     
@@ -177,27 +164,24 @@ void NowDockView::adaptToScreen(QScreen *screen)
     else
         m_maxLength = screen->size().width();
         
-//   KWindowSystem::setOnAllDesktops(winId(), true);
-//   KWindowSystem::setType(winId(), NET::Dock);
-
     if (containment())
         containment()->reactToScreenChange();
         
     m_timerGeometry.start();
 }
 
-void NowDockView::addNewDock()
+void DockView::addNewDock()
 {
-    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_corona);
+    DockCorona *corona = dynamic_cast<DockCorona *>(m_corona);
     
     if (corona) {
         corona->loadDefaultLayout();
     }
 }
 
-void NowDockView::removeDock()
+void DockView::removeDock()
 {
-    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_corona);
+    DockCorona *corona = dynamic_cast<DockCorona *>(m_corona);
     
     if (corona->containments().count() > 1) {
         QAction *removeAct = containment()->actions()->action(QStringLiteral("remove"));
@@ -208,24 +192,24 @@ void NowDockView::removeDock()
     }
 }
 
-QQmlListProperty<QScreen> NowDockView::screens()
+QQmlListProperty<QScreen> DockView::screens()
 {
     return QQmlListProperty<QScreen>(this, nullptr, &countScreens, &atScreens);
 }
 
-int NowDockView::countScreens(QQmlListProperty<QScreen> *property)
+int DockView::countScreens(QQmlListProperty<QScreen> *property)
 {
     Q_UNUSED(property)
     return qGuiApp->screens().count();
 }
 
-QScreen *NowDockView::atScreens(QQmlListProperty<QScreen> *property, int index)
+QScreen *DockView::atScreens(QQmlListProperty<QScreen> *property, int index)
 {
     Q_UNUSED(property)
     return qGuiApp->screens().at(index);
 }
 
-void NowDockView::showConfigurationInterface(Plasma::Applet *applet)
+void DockView::showConfigurationInterface(Plasma::Applet *applet)
 {
     if (!applet || !applet->containment())
         return;
@@ -263,7 +247,7 @@ void NowDockView::showConfigurationInterface(Plasma::Applet *applet)
     m_configView->requestActivate();
 }
 
-void NowDockView::resizeWindow()
+void DockView::resizeWindow()
 {
     setVisible(true);
     
@@ -286,7 +270,7 @@ void NowDockView::resizeWindow()
     }
 }
 
-inline void NowDockView::updateDockPosition()
+inline void DockView::updateDockPosition()
 {
     if (!containment())
         return;
@@ -337,7 +321,7 @@ inline void NowDockView::updateDockPosition()
     qDebug() << "dock position:" << position;
 }
 
-int NowDockView::currentThickness() const
+int DockView::currentThickness() const
 {
     if (containment()->formFactor() == Plasma::Types::Vertical) {
         return m_maskArea.isNull() ? width() : m_maskArea.width();
@@ -346,9 +330,9 @@ int NowDockView::currentThickness() const
     }
 }
 
-bool NowDockView::compositing() const
+bool DockView::compositing() const
 {
-    return KWindowSystem::compositingActive();
+    return WindowSystem::self().compositingActive();
 }
 
 /*Candil::VisibilityManager *NowDockView::visibility()
@@ -356,12 +340,12 @@ bool NowDockView::compositing() const
     return  m_visibility.data();
 }*/
 
-int NowDockView::maxThickness() const
+int DockView::maxThickness() const
 {
     return m_maxThickness;
 }
 
-void NowDockView::setMaxThickness(int thickness)
+void DockView::setMaxThickness(int thickness)
 {
     if (m_maxThickness == thickness)
         return;
@@ -371,12 +355,12 @@ void NowDockView::setMaxThickness(int thickness)
     emit maxThicknessChanged();
 }
 
-int NowDockView::length() const
+int DockView::length() const
 {
     return m_length;
 }
 
-void NowDockView::setLength(int length)
+void DockView::setLength(int length)
 {
     if (m_length == length)
         return;
@@ -390,12 +374,12 @@ void NowDockView::setLength(int length)
     emit lengthChanged();
 }
 
-int NowDockView::maxLength() const
+int DockView::maxLength() const
 {
     return m_maxLength;
 }
 
-void NowDockView::setMaxLength(int maxLength)
+void DockView::setMaxLength(int maxLength)
 {
     if (m_maxLength == maxLength)
         return;
@@ -405,12 +389,12 @@ void NowDockView::setMaxLength(int maxLength)
 }
 
 
-QRect NowDockView::maskArea() const
+QRect DockView::maskArea() const
 {
     return m_maskArea;
 }
 
-void NowDockView::setMaskArea(QRect area)
+void DockView::setMaskArea(QRect area)
 {
     if (m_maskArea == area) {
         return;
@@ -438,12 +422,12 @@ void NowDockView::setAlignment(Dock::Alignment align)
     emit alignmentChanged();
 }
 */
-int NowDockView::offset() const
+int DockView::offset() const
 {
     return m_offset;
 }
 
-void NowDockView::setOffset(int offset)
+void DockView::setOffset(int offset)
 {
     if (m_offset == offset)
         return;
@@ -453,7 +437,7 @@ void NowDockView::setOffset(int offset)
     emit offsetChanged();
 }
 
-void NowDockView::updateOffset()
+void DockView::updateOffset()
 {
     if (!containment())
         return;
@@ -468,12 +452,12 @@ void NowDockView::updateOffset()
     emit offsetChanged();
 }
 
-VisibilityManager *NowDockView::visibility()
+VisibilityManager *DockView::visibility()
 {
     return m_visibility;
 }
 
-bool NowDockView::event(QEvent *e)
+bool DockView::event(QEvent *e)
 {
     emit eventTriggered(e);
     
@@ -489,7 +473,7 @@ bool NowDockView::event(QEvent *e)
     ContainmentView::showEvent(ev);
 }*/
 
-bool NowDockView::containmentContainsPosition(const QPointF &point) const
+bool DockView::containmentContainsPosition(const QPointF &point) const
 {
     QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
     
@@ -500,7 +484,7 @@ bool NowDockView::containmentContainsPosition(const QPointF &point) const
     return QRectF(containmentItem->mapToScene(QPoint(0, 0)), QSizeF(containmentItem->width(), containmentItem->height())).contains(point);
 }
 
-QPointF NowDockView::positionAdjustedForContainment(const QPointF &point) const
+QPointF DockView::positionAdjustedForContainment(const QPointF &point) const
 {
     QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
     
@@ -514,7 +498,7 @@ QPointF NowDockView::positionAdjustedForContainment(const QPointF &point) const
                    qBound(containmentRect.top() + 2, point.y(), containmentRect.bottom() - 2));
 }
 
-QList<int> NowDockView::freeEdges() const
+QList<int> DockView::freeEdges() const
 {
     QList<Plasma::Types::Location> edges = m_corona->freeEdges(containment()->screen());
 
@@ -527,7 +511,7 @@ QList<int> NowDockView::freeEdges() const
     return edgesInt;
 }
 
-void NowDockView::saveConfig()
+void DockView::saveConfig()
 {
     if (!containment())
         return;
@@ -545,7 +529,7 @@ void NowDockView::saveConfig()
     //  writeEntry("alignment", static_cast<int>(m_alignment));
 }
 
-void NowDockView::restoreConfig()
+void DockView::restoreConfig()
 {
     if (!containment())
         return;

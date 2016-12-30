@@ -7,7 +7,19 @@ namespace Latte {
 WindowSystem::WindowSystem(QObject *parent) :
     QObject(parent)
 {
-    connect(KWindowSystem::self(), SIGNAL(compositingChanged(bool)), this, SLOT(compositingChanged(bool)));
+    if (KWindowSystem::isPlatformWayland()) {
+        //! TODO: Wayland compositing
+    } else {
+        compositingChangedProxy(KWindowSystem::self()->compositingActive());
+        connect(KWindowSystem::self(), SIGNAL(compositingChanged(bool))
+                , this, SLOT(compositingChangedProxy(bool)));
+    }
+}
+
+WindowSystem &WindowSystem::self()
+{
+    static WindowSystem wm;
+    return wm;
 }
 
 WindowSystem::~WindowSystem()
@@ -16,11 +28,12 @@ WindowSystem::~WindowSystem()
 
 bool WindowSystem::compositingActive() const
 {
-    return KWindowSystem::compositingActive();
+    return m_enabled;
 }
 
-void WindowSystem::compositingChanged(bool state)
+void WindowSystem::compositingChangedProxy(bool enabled)
 {
+    m_enabled = enabled;
     emit compositingChanged();
 }
 

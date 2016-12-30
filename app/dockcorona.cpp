@@ -19,31 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include "nowdockcorona.h"
-#include "nowdockview.h"
-//#include "visibilitymanager.h"
-#include "packageplugins/shell/nowdockpackage.h"
+#include "dockcorona.h"
+#include "dockview.h"
+#include "packageplugins/shell/dockpackage.h"
 
 #include <QAction>
 #include <QScreen>
 #include <QDebug>
 
-#include <KActionCollection>
-#include <KPluginMetaData>
-
 #include <Plasma>
 #include <Plasma/Corona>
 #include <Plasma/Containment>
+#include <KActionCollection>
+#include <KPluginMetaData>
 #include <KLocalizedString>
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 
 namespace Latte {
 
-NowDockCorona::NowDockCorona(QObject *parent)
+DockCorona::DockCorona(QObject *parent)
     : Plasma::Corona(parent)
 {
-    KPackage::Package package(new NowDockPackage(this));
+    KPackage::Package package(new DockPackage(this));
     
     if (!package.isValid()) {
         qWarning() << staticMetaObject.className()
@@ -57,7 +55,7 @@ NowDockCorona::NowDockCorona(QObject *parent)
     setKPackage(package);
     qmlRegisterTypes();
     
-    connect(this, &Corona::containmentAdded, this, &NowDockCorona::addDock);
+    connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
     
     loadLayout();
     
@@ -75,7 +73,7 @@ NowDockCorona::NowDockCorona(QObject *parent)
     addDock->setShortcutContext(Qt::ApplicationShortcut);*/
 }
 
-NowDockCorona::~NowDockCorona()
+DockCorona::~DockCorona()
 {
     for (auto c : m_containments)
         c->deleteLater();
@@ -83,12 +81,12 @@ NowDockCorona::~NowDockCorona()
     qDebug() << "deleted" << this;
 }
 
-int NowDockCorona::numScreens() const
+int DockCorona::numScreens() const
 {
     return qGuiApp->screens().count();
 }
 
-QRect NowDockCorona::screenGeometry(int id) const
+QRect DockCorona::screenGeometry(int id) const
 {
     const auto screens = qGuiApp->screens();
     
@@ -99,7 +97,7 @@ QRect NowDockCorona::screenGeometry(int id) const
     return qGuiApp->primaryScreen()->geometry();
 }
 
-QRegion NowDockCorona::availableScreenRegion(int id) const
+QRegion DockCorona::availableScreenRegion(int id) const
 {
     const auto screens = qGuiApp->screens();
     
@@ -110,7 +108,7 @@ QRegion NowDockCorona::availableScreenRegion(int id) const
     return qGuiApp->primaryScreen()->availableGeometry();
 }
 
-QRect NowDockCorona::availableScreenRect(int id) const
+QRect DockCorona::availableScreenRect(int id) const
 {
     const auto screens = qGuiApp->screens();
     
@@ -121,7 +119,7 @@ QRect NowDockCorona::availableScreenRect(int id) const
     return qGuiApp->primaryScreen()->availableGeometry();
 }
 
-int NowDockCorona::primaryScreenId() const
+int DockCorona::primaryScreenId() const
 {
     const auto screens = qGuiApp->screens();
 
@@ -139,7 +137,7 @@ int NowDockCorona::primaryScreenId() const
     return id;
 }
 
-QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
+QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -148,7 +146,7 @@ QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
 
-    for (const NowDockView *cont : m_containments) {
+    for (const DockView *cont : m_containments) {
         if (cont && cont->containment()->screen() == fixedScreen)
             edges.removeOne(cont->location());
     }
@@ -156,7 +154,7 @@ QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
     return edges;
 }
 
-int NowDockCorona::screenForContainment(const Plasma::Containment *containment) const
+int DockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
     for (auto *view : m_containments) {
         if (view && view->containment() && view->containment()->id() == containment->id())
@@ -167,7 +165,7 @@ int NowDockCorona::screenForContainment(const Plasma::Containment *containment) 
     return -1;
 }
 
-void NowDockCorona::addDock(Plasma::Containment *containment)
+void DockCorona::addDock(Plasma::Containment *containment)
 {
     if (!containment || !containment->kPackage().isValid()) {
         qWarning() << "the requested containment plugin can not be located or loaded";
@@ -182,24 +180,23 @@ void NowDockCorona::addDock(Plasma::Containment *containment)
         return;
     }
     
-    foreach (NowDockView *dock, m_containments) {
+    foreach (DockView *dock, m_containments) {
         if (dock->containment() == containment) {
             return;
         }
     }
     
-    qWarning() << "Adding dock for container...";
+    qDebug() << "Adding dock for container...";
     
-    auto dockView = new NowDockView(this);
+    auto dockView = new DockView(this);
     dockView->init();
     dockView->setContainment(containment);
     dockView->show();
-    //dockView->showNormal();
     
     m_containments.push_back(dockView);
 }
 
-void NowDockCorona::loadDefaultLayout()
+void DockCorona::loadDefaultLayout()
 {
 
     qDebug() << "loading default layout";
@@ -241,9 +238,9 @@ void NowDockCorona::loadDefaultLayout()
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
 
-inline void NowDockCorona::qmlRegisterTypes() const
+inline void DockCorona::qmlRegisterTypes() const
 {
-    constexpr auto uri = "org.kde.nowdock.shell";
+    constexpr auto uri = "org.kde.latte.shell";
     constexpr auto vMajor = 0;
     constexpr auto vMinor = 2;
     

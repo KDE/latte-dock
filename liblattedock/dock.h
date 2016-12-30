@@ -33,19 +33,6 @@ public:
     };
     Q_ENUM(Alignment)
     
-    
-    enum VisibilityState {
-        /*!
-         * @brief the dock is visible
-         */
-        Visible = 1,
-        
-        /*!
-         * @brief the dock is hidden
-         */
-        Hidden = 0
-    };
-    Q_ENUM(VisibilityState)
 };
 
 }//end of namespace

@@ -22,8 +22,6 @@
 #ifndef NOWDOCKVIEW_H
 #define NOWDOCKVIEW_H
 
-#include <climits>
-
 #include "plasmaquick/configview.h"
 #include "plasmaquick/containmentview.h"
 #include "visibilitymanager.h"
@@ -49,7 +47,7 @@ class VisibilityManager;
 
 namespace Latte {
 
-class NowDockView : public PlasmaQuick::ContainmentView {
+class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     
     Q_PROPERTY(bool compositing READ compositing NOTIFY compositingChanged)
@@ -65,8 +63,8 @@ class NowDockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
     
 public:
-    NowDockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr);
-    virtual ~NowDockView();
+    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr);
+    virtual ~DockView();
     
     void init();
     
@@ -139,7 +137,7 @@ signals:
     void visibilityChanged();
     void widthChanged();
     
-public Q_SLOTS:
+public slots:
     void updateDockPositionSlot();
     void updateAbsDockGeometry();
     
