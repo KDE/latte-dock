@@ -665,10 +665,13 @@ Item {
                                 zoomScale = zoomScale + step;
                         }
                         else{
-                            if(layoutsContainer.hoveredIndex<container.index)
+                            if(layoutsContainer.hoveredIndex<container.index){
                                 nowDock.updateScale(0, nScale, step);
-                            else if(layoutsContainer.hoveredIndex>=container.index)
+                                nowDock.updateScale(1, 1, 0);
+                            } else if(layoutsContainer.hoveredIndex>=container.index) {
                                 nowDock.updateScale(root.tasksCount-1, nScale, step);
+                                nowDock.updateScale(root.tasksCount-2, 1, 0);
+                            }
                         }
                     }  ///if the applet is hidden must forward its scale events to its neighbours
                     else if ((applet && (applet.status === PlasmaCore.Types.HiddenStatus))
