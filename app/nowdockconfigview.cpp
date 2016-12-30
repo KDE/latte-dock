@@ -19,6 +19,7 @@
 
 #include "nowdockconfigview.h"
 #include "nowdockview.h"
+#include "nowdockcorona.h"
 
 #include <QQuickItem>
 #include <QQmlContext>
@@ -54,6 +55,13 @@ NowDockConfigView::NowDockConfigView(Plasma::Containment *containment, NowDockVi
     });
     
     connect(containment, &Plasma::Containment::immutabilityChanged, this, &NowDockConfigView::immutabilityChanged);
+
+    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_containment->corona());
+
+    if (corona) {
+        connect(corona, &NowDockCorona::configurationShown, this, &NowDockConfigView::configurationShown);
+    }
+
     /*   connect(containment, &Plasma::Containment::immutabilityChanged
        , [&](Plasma::Types::ImmutabilityType type) {
            if (type != Plasma::Types::Mutable && this && isVisible())
@@ -179,7 +187,16 @@ void NowDockConfigView::showEvent(QShowEvent *ev)
     //  m_dockView->visibility()->showImmediately();
     m_screenSyncTimer.start();
     m_deleterTimer.stop();
+
     ConfigView::showEvent(ev);
+
+    //trigger showing configuration window through corona
+    //in order to hide all alternative configuration windows
+    NowDockCorona *corona = dynamic_cast<NowDockCorona *>(m_containment->corona());
+
+    if (corona) {
+        emit corona->configurationShown(this);
+    }
 }
 
 void NowDockConfigView::hideEvent(QHideEvent *ev)
@@ -207,6 +224,13 @@ void NowDockConfigView::focusOutEvent(QFocusEvent *ev)
         
         
     // hide();
+}
+
+void NowDockConfigView::configurationShown(PlasmaQuick::ConfigView *configView)
+{
+    if ((configView != this) && isVisible()) {
+        hide();
+    }
 }
 
 void NowDockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)

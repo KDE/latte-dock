@@ -17,6 +17,7 @@ set(lattedock-app_SRCS
     windowinfowrap.cpp
     abstractwindowinterface.cpp
     xwindowinterface.cpp
+    windowinfowrap.cpp
     visibilitymanager.cpp
     nowdockconfigview.cpp
     nowdockview.cpp

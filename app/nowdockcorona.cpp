@@ -121,14 +121,35 @@ QRect NowDockCorona::availableScreenRect(int id) const
     return qGuiApp->primaryScreen()->availableGeometry();
 }
 
+int NowDockCorona::primaryScreenId() const
+{
+    const auto screens = qGuiApp->screens();
+
+    int id = -1;
+
+    for (int i = 0; i < screens.size(); ++i) {
+        auto *scr = screens.at(i);
+
+        if (scr == qGuiApp->primaryScreen()) {
+            id = i;
+            break;
+        }
+    }
+
+    return id;
+}
+
 QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
-    QList<Types::Location> edges{Types::TopEdge, Types::BottomEdge
-                                 , Types::LeftEdge, Types::RightEdge};
-                                 
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                 Types::TopEdge, Types::RightEdge};
+
+    //when screen=-1 is passed then the primaryScreenid is used
+    int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
+
     for (const NowDockView *cont : m_containments) {
-        if (cont && cont->containment()->screen() == screen)
+        if (cont && cont->containment()->screen() == fixedScreen)
             edges.removeOne(cont->location());
     }
     
@@ -137,16 +158,10 @@ QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
 
 int NowDockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
-    return 0;
-    
-    while (const auto *parentCont = qobject_cast<const Plasma::Applet *>(containment->parent())) {
-        if (parentCont->isContainment())
-            containment = qobject_cast<const Plasma::Containment *>(parentCont);
-    }
-    
     for (auto *view : m_containments) {
-        if (view && view->containment() == containment)
-            return containment->screen();
+        if (view && view->containment() && view->containment()->id() == containment->id())
+            if (view->screen())
+                return qGuiApp->screens().indexOf(view->screen());
     }
     
     return -1;
@@ -162,8 +177,8 @@ void NowDockCorona::addDock(Plasma::Containment *containment)
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
     KPluginMetaData metadata = containment->kPackage().metadata();
-    
-    if (metadata.pluginId() == "org.kde.plasma.systemtray") {
+
+    if (metadata.pluginId() == "org.kde.plasma.private.systemtray") {
         return;
     }
     
@@ -204,29 +219,15 @@ void NowDockCorona::loadDefaultLayout()
     
     auto config = defaultContainment->config();
     defaultContainment->restore(config);
-    
-    switch (containments().size()) {
-        case 1:
-            defaultContainment->setLocation(Plasma::Types::LeftEdge);
-            break;
-            
-        case 2:
-            defaultContainment->setLocation(Plasma::Types::RightEdge);
-            break;
-            
-        case 3:
-            defaultContainment->setLocation(Plasma::Types::TopEdge);
-            break;
-            
-        default:
-            defaultContainment->setLocation(Plasma::Types::BottomEdge);
-            break;
+
+    QList<Plasma::Types::Location> edges = freeEdges(defaultContainment->screen());
+
+    if (edges.count() > 0) {
+        defaultContainment->setLocation(edges.at(0));
+    } else {
+        defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
-    
-    //config.writeEntry("dock", "initial");
-    //config.writeEntry("alignment", (int)Dock::Center);
-    //config.deleteEntry("wallpaperplugin");
-    
+
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
     defaultContainment->save(config);
     requestConfigSync();
