@@ -38,6 +38,8 @@
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 
+namespace Latte {
+
 NowDockCorona::NowDockCorona(QObject *parent)
     : Plasma::Corona(parent)
 {
@@ -228,4 +230,6 @@ inline void NowDockCorona::qmlRegisterTypes() const
 //    qmlRegisterUncreatableType<Candil::VisibilityManager>(uri, vMajor, vMinor, "VisibilityManager", "class VisibilityManager uncreatable");
 //    qmlRegisterUncreatableType<NowDockView>(uri, vMajor, vMinor, "DockView", "class DockView uncreatable");
     qmlRegisterType<QScreen>();
+}
+
 }

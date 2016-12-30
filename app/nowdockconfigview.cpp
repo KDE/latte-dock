@@ -32,6 +32,8 @@
 
 #include <plasma/package.h>
 
+namespace Latte {
+
 NowDockConfigView::NowDockConfigView(Plasma::Containment *containment, NowDockView *dockView, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent), m_containment(containment), m_dockView(dockView)
 {
@@ -238,4 +240,5 @@ void NowDockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type
     }
 }
 
+}
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
