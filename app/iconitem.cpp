@@ -1,0 +1,404 @@
+/*
+*   Copyright 2012 Marco Martin <mart@kde.org>
+*   Copyright 2014 David Edmundson <davidedmudnson@kde.org>
+*
+*   This program is free software; you can redistribute it and/or modify
+*   it under the terms of the GNU Library General Public License as
+*   published by the Free Software Foundation; either version 2, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details
+*
+*   You should have received a copy of the GNU Library General Public
+*   License along with this program; if not, write to the
+*   Free Software Foundation, Inc.,
+*   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+#include "iconitem.h"
+#include "../liblattedock/extras.h"
+
+#include <QDebug>
+#include <QPainter>
+#include <QPaintEngine>
+#include <QQuickWindow>
+#include <QPixmap>
+#include <QSGSimpleTextureNode>
+#include <QuickAddons/ManagedTextureNode>
+
+#include <KIconTheme>
+#include <KIconThemes/KIconLoader>
+#include <KIconThemes/KIconEffect>
+
+namespace Latte {
+
+IconItem::IconItem(QQuickItem *parent)
+    : QQuickItem(parent),
+      m_smooth(false),
+      m_active(false),
+      m_textureChanged(false),
+      m_sizeChanged(false)
+{
+    setFlag(ItemHasContents, true);
+    
+    connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
+            this, SIGNAL(implicitWidthChanged()));
+            
+    connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
+            this, SIGNAL(implicitHeightChanged()));
+            
+    connect(this, &QQuickItem::enabledChanged,
+            this, &IconItem::enabledChanged);
+            
+    connect(this, &QQuickItem::windowChanged,
+            this, &IconItem::schedulePixmapUpdate);
+            
+    connect(this, SIGNAL(overlaysChanged()),
+            this, SLOT(schedulePixmapUpdate()));
+            
+    //initialize implicit size to the Dialog size
+    setImplicitWidth(KIconLoader::global()->currentSize(KIconLoader::Dialog));
+    setImplicitHeight(KIconLoader::global()->currentSize(KIconLoader::Dialog));
+}
+
+IconItem::~IconItem()
+{
+}
+
+void IconItem::setSource(const QVariant &source)
+{
+    if (source == m_source) {
+        return;
+    }
+    
+    m_source = source;
+    QString sourceString = source.toString();
+    
+    // If the QIcon was created with QIcon::fromTheme(), try to load it as svg
+    if (source.canConvert<QIcon>() && !source.value<QIcon>().name().isEmpty()) {
+        sourceString = source.value<QIcon>().name();
+    }
+    
+    if (!sourceString.isEmpty()) {
+        //If a url in the form file:// is passed, take the image pointed by that from disk
+        QUrl url(sourceString);
+        
+        if (url.isLocalFile()) {
+            m_icon = QIcon();
+            m_imageIcon = QImage(url.path());
+            m_svgIconName.clear();
+            m_svgIcon.reset();
+        } else {
+            if (!m_svgIcon) {
+                m_svgIcon = std::make_unique<Plasma::Svg>(this);
+                m_svgIcon->setColorGroup(Plasma::Theme::NormalColorGroup);
+                m_svgIcon->setStatus(Plasma::Svg::Normal);
+                m_svgIcon->setDevicePixelRatio((window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
+                connect(m_svgIcon.get(), &Plasma::Svg::repaintNeeded, this, &IconItem::schedulePixmapUpdate);
+            }
+            
+            //success?
+            if (m_svgIcon->isValid() && m_svgIcon->hasElement(sourceString)) {
+                m_icon = QIcon();
+                m_svgIconName = sourceString;
+                
+                //ok, svg not available from the plasma theme
+            } else {
+                //try to load from iconloader an svg with Plasma::Svg
+                const auto *iconTheme = KIconLoader::global()->theme();
+                QString iconPath;
+                
+                if (iconTheme) {
+                    iconPath = iconTheme->iconPath(sourceString + QLatin1String(".svg")
+                                                   , static_cast<int>(qMin(width(), height()))
+                                                   , KIconLoader::MatchBest);
+                    
+                    if (iconPath.isEmpty()) {
+                        iconPath = iconTheme->iconPath(sourceString + QLatin1String(".svgz")
+                                                       , static_cast<int>(qMin(width(), height()))
+                                                       , KIconLoader::MatchBest);
+                    }
+                } else {
+                    qWarning() << "KIconLoader has no theme set";
+                }
+                
+                if (!iconPath.isEmpty()) {
+                    m_svgIcon->setImagePath(iconPath);
+                    m_svgIconName = sourceString;
+                    //fail, use QIcon
+                } else {
+                    //if we started with a QIcon use that.
+                    m_icon = source.value<QIcon>();
+                    
+                    if (m_icon.isNull()) {
+                        m_icon = QIcon::fromTheme(sourceString);
+                    }
+                    
+                    m_svgIconName.clear();
+                    m_svgIcon.reset();
+                    m_imageIcon = QImage();
+                }
+            }
+        }
+        
+    } else if (source.canConvert<QIcon>()) {
+        m_icon = source.value<QIcon>();
+        m_imageIcon = QImage();
+        m_svgIconName.clear();
+        m_svgIcon.reset();
+    } else if (source.canConvert<QImage>()) {
+        m_icon = QIcon();
+        m_imageIcon = source.value<QImage>();
+        m_svgIconName.clear();
+        m_svgIcon.reset();
+    } else {
+        m_icon = QIcon();
+        m_imageIcon = QImage();
+        m_svgIconName.clear();
+        m_svgIcon.reset();
+    }
+    
+    if (width() > 0 && height() > 0) {
+        schedulePixmapUpdate();
+    }
+    
+    emit sourceChanged();
+    emit validChanged();
+}
+
+QVariant IconItem::source() const
+{
+    return m_source;
+}
+
+void IconItem::setOverlays(const QStringList &overlays)
+{
+    if (overlays == m_overlays) {
+        return;
+    }
+    
+    m_overlays = overlays;
+    emit overlaysChanged();
+}
+
+QStringList IconItem::overlays() const
+{
+    return m_overlays;
+}
+
+
+bool IconItem::isActive() const
+{
+    return m_active;
+}
+
+void IconItem::setActive(bool active)
+{
+    if (m_active == active) {
+        return;
+    }
+    
+    m_active = active;
+    
+    if (isComponentComplete()) {
+        schedulePixmapUpdate();
+    }
+    
+    emit activeChanged();
+}
+
+void IconItem::setSmooth(const bool smooth)
+{
+    if (smooth == m_smooth) {
+        return;
+    }
+    
+    m_smooth = smooth;
+    update();
+}
+
+bool IconItem::smooth() const
+{
+    return m_smooth;
+}
+
+bool IconItem::isValid() const
+{
+    return !m_icon.isNull() || m_svgIcon || !m_imageIcon.isNull();
+}
+
+int IconItem::paintedWidth() const
+{
+    return boundingRect().size().toSize().width();
+}
+
+int IconItem::paintedHeight() const
+{
+    return boundingRect().size().toSize().height();
+}
+
+void IconItem::updatePolish()
+{
+    QQuickItem::updatePolish();
+    loadPixmap();
+}
+
+QSGNode *IconItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData)
+{
+    Q_UNUSED(updatePaintNodeData)
+    
+    if (m_iconPixmap.isNull() || width() < 1.0 || height() < 1.0) {
+        delete oldNode;
+        return nullptr;
+    }
+    
+    ManagedTextureNode *textureNode = dynamic_cast<ManagedTextureNode *>(oldNode);
+    
+    if (!textureNode || m_textureChanged) {
+        if (oldNode) 
+            delete oldNode;
+        
+        textureNode = new ManagedTextureNode;
+        textureNode->setTexture(QSharedPointer<QSGTexture>(window()->createTextureFromImage(m_iconPixmap.toImage())));
+        m_sizeChanged = true;
+        m_textureChanged = false;
+    }
+    
+    if (m_sizeChanged) {
+        const auto iconSize = qMin(boundingRect().size().width(), boundingRect().size().height());
+        const QRectF destRect(QPointF(boundingRect().center() - QPointF(iconSize / 2, iconSize / 2)), QSizeF(iconSize, iconSize));
+                              
+        textureNode->setRect(destRect);
+        m_sizeChanged = false;
+    }
+    
+    return textureNode;
+}
+
+void IconItem::schedulePixmapUpdate()
+{
+    polish();
+}
+
+void IconItem::enabledChanged()
+{
+    schedulePixmapUpdate();
+}
+
+void IconItem::loadPixmap()
+{
+    if (!isComponentComplete()) {
+        return;
+    }
+    
+    const auto size = static_cast<int>(qMin(width(), height()));
+    
+    //final pixmap to paint
+    QPixmap result;
+    
+    if (size <= 0) {
+        m_iconPixmap = QPixmap();
+        update();
+        return;
+    } else if (m_svgIcon) {
+        m_svgIcon->resize(size, size);
+        
+        if (m_svgIcon->hasElement(m_svgIconName)) {
+            result = m_svgIcon->pixmap(m_svgIconName);
+        } else if (!m_svgIconName.isEmpty()) {
+            const auto *iconTheme = KIconLoader::global()->theme();
+            QString iconPath;
+            
+            if (iconTheme) {
+                iconPath = iconTheme->iconPath(m_svgIconName + QLatin1String(".svg")
+                                               , static_cast<int>(qMin(width(), height()))
+                                               , KIconLoader::MatchBest);
+                
+                if (iconPath.isEmpty()) {
+                    iconPath = iconTheme->iconPath(m_svgIconName + QLatin1String(".svgz"), 
+                                                   static_cast<int>(qMin(width(), height()))
+                                                   , KIconLoader::MatchBest);
+                }
+            } else {
+                qWarning() << "KIconLoader has no theme set";
+            }
+            
+            if (!iconPath.isEmpty()) {
+                m_svgIcon->setImagePath(iconPath);
+            }
+            
+            result = m_svgIcon->pixmap();
+        }
+    } else if (!m_icon.isNull()) {
+        result = m_icon.pixmap(QSize(size, size) * (window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
+    } else if (!m_imageIcon.isNull()) {
+        result = QPixmap::fromImage(m_imageIcon);
+    } else {
+        m_iconPixmap = QPixmap();
+        update();
+        return;
+    }
+    
+    // Strangely KFileItem::overlays() returns empty string-values, so
+    // we need to check first whether an overlay must be drawn at all.
+    // It is more efficient to do it here, as KIconLoader::drawOverlays()
+    // assumes that an overlay will be drawn and has some additional
+    // setup time.
+    foreach (const QString &overlay, m_overlays) {
+        if (!overlay.isEmpty()) {
+            // There is at least one overlay, draw all overlays above m_pixmap
+            // and cancel the check
+            KIconLoader::global()->drawOverlays(m_overlays, result, KIconLoader::Desktop);
+            break;
+        }
+    }
+    
+    if (!isEnabled()) {
+        result = KIconLoader::global()->iconEffect()->apply(result, KIconLoader::Desktop, KIconLoader::DisabledState);
+    } else if (m_active) {
+        result = KIconLoader::global()->iconEffect()->apply(result, KIconLoader::Desktop, KIconLoader::ActiveState);
+    }
+    
+    m_iconPixmap = result;
+    m_textureChanged = true;
+    
+    //don't animate initial setting
+    update();
+}
+
+void IconItem::itemChange(ItemChange change, const ItemChangeData &value)
+{
+    QQuickItem::itemChange(change, value);
+}
+
+void IconItem::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    if (newGeometry.size() != oldGeometry.size()) {
+        m_sizeChanged = true;
+        
+        if (newGeometry.width() > 1 && newGeometry.height() > 1) {
+            schedulePixmapUpdate();
+        } else {
+            update();
+        }
+        
+        const auto oldSize = qMin(oldGeometry.size().width(), oldGeometry.size().height());
+        const auto newSize = qMin(newGeometry.size().width(), newGeometry.size().height());
+        
+        if (!almost_equal(oldSize, newSize, 2)) {
+            emit paintedSizeChanged();
+        }
+    }
+    
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+}
+
+void IconItem::componentComplete()
+{
+    QQuickItem::componentComplete();
+    schedulePixmapUpdate();
+}
+
+}
