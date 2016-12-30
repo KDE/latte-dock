@@ -14,15 +14,17 @@ include(KDEPackageAppTemplates)
 
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
+    ../liblattedock/windowsystem.cpp
     windowinfowrap.cpp
     abstractwindowinterface.cpp
     xwindowinterface.cpp
     windowinfowrap.cpp
     visibilitymanager.cpp
-    nowdockconfigview.cpp
-    nowdockview.cpp
-    packageplugins/shell/nowdockpackage.cpp
-    nowdockcorona.cpp
+    dockcorona.cpp
+    dockview.cpp
+    dockconfigview.cpp
+    packageplugins/shell/dockpackage.cpp
+    iconitem.cpp
     main.cpp
 )
 
@@ -34,19 +36,17 @@ include(FakeTarget.cmake)
 
 target_link_libraries(
     latte-dock
-    Qt5::Widgets
     Qt5::Quick
     Qt5::Qml
     Qt5::X11Extras
     KF5::I18n
     KF5::CoreAddons
     KF5::XmlGui
-    KF5::PlasmaQuick
     KF5::Plasma
+    KF5::PlasmaQuick
     KF5::QuickAddons
-    KF5::DBusAddons    
-    KF5::Notifications
     KF5::WindowSystem
+    KF5::IconThemes
 )
 
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
