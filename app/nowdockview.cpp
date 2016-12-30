@@ -72,6 +72,10 @@ NowDockView::NowDockView(Plasma::Corona *corona, QScreen *targetScreen)
     
     m_lockGeometry.setSingleShot(true);
     m_lockGeometry.setInterval(700);
+
+    connect(this, SIGNAL(localDockGeometryChanged()), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateAbsDockGeometry()));
     
     connect(this, &NowDockView::containmentChanged
     , this, [&]() {
@@ -284,6 +288,23 @@ void NowDockView::resizeWindow()
         
         qDebug() << "dock size:" << size;
     }
+}
+
+void NowDockView::setLocalDockGeometry(QRect geometry)
+{
+    if (geometry == m_localDockGeometry) {
+        return;
+    }
+
+    m_localDockGeometry = geometry;
+
+    emit localDockGeometryChanged();
+}
+
+void NowDockView::updateAbsDockGeometry()
+{
+    QRect absoluteGeometry = {x() + m_localDockGeometry.x(), y() + m_localDockGeometry.y(), m_localDockGeometry.width(), m_localDockGeometry.height()};
+    m_visibility->updateDockGeometry(absoluteGeometry);
 }
 
 inline void NowDockView::updateDockPosition()
