@@ -16,6 +16,8 @@
 
 namespace Latte {
 
+class XWindowInterface;
+
 class AbstractWindowInterface : public QObject {
     Q_OBJECT
     
@@ -33,9 +35,11 @@ public:
     virtual void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) = 0;
     virtual void removeDockStruts() = 0;
     
+    static AbstractWindowInterface *getInstance(QQuickWindow *const view, QObject *parent = nullptr);
+    
 signals:
     void activeWindowChanged(WId wid);
-    void windowChanged(const WindowInfoWrap &winfo);
+    void windowChanged(WId winfo);
     void windowAdded(WId wid);
     void windowRemoved(WId wid);
     void currentDesktopChanged(int desktop);
