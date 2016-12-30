@@ -32,7 +32,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 {
     if (this->mode == mode)
         return;
-    
+        
     // clear mode
     if (this->mode == Dock::AlwaysVisible)
         wm->removeDockStruts();
@@ -48,53 +48,52 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     this->mode = mode;
     
     switch (this->mode) {
-    case Dock::AlwaysVisible:
-    {
-        wm->setDockStruts(dockRect, view->location());
-        raiseDock(true);
-    }
-        break;
-    case Dock::AutoHide:
-    {
-        raiseDock(true);
-    }
-        break;
-    case Dock::DodgeActive:
-    {
-        connections[0] = connect(wm.get(), &AbstractWindowInterface::activeWindowChanged
-                                 , this, &VisibilityManagerPrivate::dodgeActive);
-        connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
-                                 , this, &VisibilityManagerPrivate::dodgeActive);
-        
-        dodgeActive(wm->activeWindow());
-    }
-        break;
-    case Dock::DodgeMaximized:
-    {
-        connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
-                                 , this, &VisibilityManagerPrivate::dodgeMaximized);
-    }
-        break;
-    case Dock::DodgeAllWindows:
-    {
-        for(const auto & wid : wm->windows()) {
-            windows.insert({wid, wm->requestInfo(wid)}); 
+        case Dock::AlwaysVisible: {
+            wm->setDockStruts(dockRect, view->location());
+            raiseDock(true);
         }
+        break;
         
-        connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
-                                 , this, &VisibilityManagerPrivate::dodgeWindows);
+        case Dock::AutoHide: {
+            raiseDock(true);
+        }
+        break;
         
-        connections[1] = connect(wm.get(), &AbstractWindowInterface::windowRemoved
-                                 , this, [&](WId wid) {
+        case Dock::DodgeActive: {
+            connections[0] = connect(wm.get(), &AbstractWindowInterface::activeWindowChanged
+                                     , this, &VisibilityManagerPrivate::dodgeActive);
+            connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+                                     , this, &VisibilityManagerPrivate::dodgeActive);
+                                     
+            dodgeActive(wm->activeWindow());
+        }
+        break;
+        
+        case Dock::DodgeMaximized: {
+            connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+                                     , this, &VisibilityManagerPrivate::dodgeMaximized);
+        }
+        break;
+        
+        case Dock::DodgeAllWindows: {
+            for (const auto &wid : wm->windows()) {
+                windows.insert({wid, wm->requestInfo(wid)});
+            }
+            
+            connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+                                     , this, &VisibilityManagerPrivate::dodgeWindows);
+                                     
+            connections[1] = connect(wm.get(), &AbstractWindowInterface::windowRemoved
+            , this, [&](WId wid) {
                 windows.erase(wid);
                 timerCheckWindows.start();
-        });
-        connections[2] = connect(wm.get(), &AbstractWindowInterface::windowAdded
-                                 , this, [&](WId wid) {
+            });
+            connections[2] = connect(wm.get(), &AbstractWindowInterface::windowAdded
+            , this, [&](WId wid) {
                 windows.insert({wid, wm->requestInfo(wid)});
                 timerCheckWindows.start();
-        });
-    }
+            });
+        }
     }
     
     saveConfig();
@@ -104,7 +103,7 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
 {
     if (this->isHidden == isHidden)
         return;
-    
+        
     this->isHidden = isHidden;
     emit q->isHiddenChanged();
 }
@@ -145,7 +144,7 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
 
 inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
 {
-    if (!view->containment() || this->dockRect == dockRect) 
+    if (!view->containment() || this->dockRect == dockRect)
         return;
         
     this->dockRect = dockRect;
@@ -159,12 +158,12 @@ void VisibilityManagerPrivate::dodgeActive(WId wid)
 {
     if (wid != wm->activeWindow())
         return;
-    
+        
     auto winfo = wm->requestInfo(wid);
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-    
+        
     raiseDock(intersects(winfo));
 }
 
@@ -174,7 +173,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-    
+        
     if (winfo.isMaximized())
         raiseDock(false);
     else
@@ -187,7 +186,7 @@ void VisibilityManagerPrivate::dodgeWindows(WId wid)
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-    
+        
     if (intersects(winfo))
         raiseDock(false);
     else
@@ -209,11 +208,11 @@ void VisibilityManagerPrivate::checkAllWindows()
             
         } else if (std::get<1>(winfo).isMinimized()) {
             continue;
-        
+            
         } else if (mode == Dock::DodgeMaximized) {
             if (std::get<1>(winfo).isMaximized())
-                raise = false;    
-            
+                raise = false;
+                
             continue;
         } else if (intersects(std::get<1>(winfo))) {
             raise = false;
@@ -246,13 +245,13 @@ inline void VisibilityManagerPrivate::saveConfig()
 inline void VisibilityManagerPrivate::restoreConfig()
 {
     if (!view->containment())
-           return;
-           
-       auto config = view->containment()->config();
-       
-       mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
-       timerShow.setInterval(config.readEntry("timerShow", 0));
-       timerHide.setInterval(config.readEntry("timerHide", 0));
+        return;
+        
+    auto config = view->containment()->config();
+    
+    mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    timerShow.setInterval(config.readEntry("timerShow", 0));
+    timerHide.setInterval(config.readEntry("timerHide", 0));
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
