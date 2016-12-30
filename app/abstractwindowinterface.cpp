@@ -16,10 +16,10 @@ AbstractWindowInterface::AbstractWindowInterface(QQuickWindow *const view, QObje
 
 AbstractWindowInterface::~AbstractWindowInterface()
 {
-    
+
 }
 
-AbstractWindowInterface *AbstractWindowInterface::getInstance(QQuickWindow * const view, QObject *parent)
+AbstractWindowInterface *AbstractWindowInterface::getInstance(QQuickWindow *const view, QObject *parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: WaylandWindowInterface
