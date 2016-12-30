@@ -121,14 +121,35 @@ QRect NowDockCorona::availableScreenRect(int id) const
     return qGuiApp->primaryScreen()->availableGeometry();
 }
 
+int NowDockCorona::primaryScreenId() const
+{
+    const auto screens = qGuiApp->screens();
+
+    int id = -1;
+
+    for (int i = 0; i < screens.size(); ++i) {
+        auto *scr = screens.at(i);
+
+        if (scr == qGuiApp->primaryScreen()) {
+            id = i;
+            break;
+        }
+    }
+
+    return id;
+}
+
 QList<Plasma::Types::Location> NowDockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-                                 
+
+    //when screen=-1 is passed then the primaryScreenid is used
+    int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
+
     for (const NowDockView *cont : m_containments) {
-        if (cont && cont->containment()->screen() == screen)
+        if (cont && cont->containment()->screen() == fixedScreen)
             edges.removeOne(cont->location());
     }
     
@@ -156,8 +177,8 @@ void NowDockCorona::addDock(Plasma::Containment *containment)
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
     KPluginMetaData metadata = containment->kPackage().metadata();
-    
-    if (metadata.pluginId() == "org.kde.plasma.systemtray") {
+
+    if (metadata.pluginId() == "org.kde.plasma.private.systemtray") {
         return;
     }
     
