@@ -5,6 +5,7 @@
 #include <QtX11Extras/QX11Info>
 
 #include <KWindowSystem>
+#include <KWindowInfo>
 #include <NETWM>
 
 namespace Latte {
@@ -167,7 +168,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
         return;
         
-    emit windowChanged(requestInfo(wid));
+    emit windowChanged(wid);
 }
 
 }
