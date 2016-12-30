@@ -165,8 +165,6 @@ inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
     if (mode == Dock::AlwaysVisible) {
         wm->setDockStruts(this->dockRect, view->containment()->location());
     }
-    
-    raiseDock(raise);
 }
 
 void VisibilityManagerPrivate::dodgeActive(WId wid)
@@ -192,7 +190,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
 
-    raiseDock(winfo.isMaximized());
+    raiseDock(!winfo.isMaximized());
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WId wid)
