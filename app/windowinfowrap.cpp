@@ -1,6 +1,6 @@
 #include "windowinfowrap.h"
 
-using namespace Latte;
+namespace Latte { 
 
 WindowInfoWrap::WindowInfoWrap()
     : m_isValid(false)
@@ -33,98 +33,99 @@ WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     return *this;
 }
 
-inline bool WindowInfoWrap::operator==(const WindowInfoWrap &rhs) const
+ bool WindowInfoWrap::operator==(const WindowInfoWrap &rhs) const
 {
     return m_wid == rhs.m_wid;
 }
 
-inline bool WindowInfoWrap::operator<(const WindowInfoWrap &rhs) const
+ bool WindowInfoWrap::operator<(const WindowInfoWrap &rhs) const
 {
     return m_wid < rhs.m_wid;
 }
 
-inline bool WindowInfoWrap::operator>(const WindowInfoWrap &rhs) const
+ bool WindowInfoWrap::operator>(const WindowInfoWrap &rhs) const
 {
     return m_wid > rhs.m_wid;
 }
 
-inline bool WindowInfoWrap::isValid() const
+ bool WindowInfoWrap::isValid() const
 {
     return m_isValid;
 }
 
-inline void WindowInfoWrap::setIsValid(bool isValid)
+ void WindowInfoWrap::setIsValid(bool isValid)
 {
     m_isValid = isValid;
 }
 
-inline bool WindowInfoWrap::isActive() const
+ bool WindowInfoWrap::isActive() const
 {
     return m_isActive;
 }
 
-inline void WindowInfoWrap::setIsActive(bool isActive)
+ void WindowInfoWrap::setIsActive(bool isActive)
 {
     m_isActive = isActive;
 }
 
-inline bool WindowInfoWrap::isMinimized() const
+ bool WindowInfoWrap::isMinimized() const
 {
     return m_isMinimized;
 }
 
-inline void WindowInfoWrap::setIsMinimized(bool isMinimized)
+ void WindowInfoWrap::setIsMinimized(bool isMinimized)
 {
     m_isMinimized = isMinimized;
 }
 
-inline bool WindowInfoWrap::isMaximized() const
+ bool WindowInfoWrap::isMaximized() const
 {
     return m_isMaximized;
 }
 
-inline void WindowInfoWrap::setIsMaximized(bool isMaximized)
+ void WindowInfoWrap::setIsMaximized(bool isMaximized)
 {
     m_isMaximized = isMaximized;
 }
 
-inline bool WindowInfoWrap::isFullscreen() const
+ bool WindowInfoWrap::isFullscreen() const
 {
     return m_isFullscreen;
 }
 
-inline void WindowInfoWrap::setIsFullscreen(bool isFullscreen)
+ void WindowInfoWrap::setIsFullscreen(bool isFullscreen)
 {
     m_isFullscreen = isFullscreen;
 }
 
-inline bool WindowInfoWrap::isOnCurrentDesktop() const
+ bool WindowInfoWrap::isOnCurrentDesktop() const
 {
     return m_isOnCurrentDesktop;
 }
 
-inline void WindowInfoWrap::setIsOnCurrentDesktop(bool isOnCurrentDesktop)
+ void WindowInfoWrap::setIsOnCurrentDesktop(bool isOnCurrentDesktop)
 {
     m_isOnCurrentDesktop = isOnCurrentDesktop;
 }
 
-inline QRect WindowInfoWrap::geometry() const
+ QRect WindowInfoWrap::geometry() const
 {
     return m_geometry;
 }
 
-inline void WindowInfoWrap::setGeometry(const QRect &geometry)
+ void WindowInfoWrap::setGeometry(const QRect &geometry)
 {
     m_geometry = geometry;
 }
 
-inline WId WindowInfoWrap::wid() const
+ WId WindowInfoWrap::wid() const
 {
     return m_wid;
 }
 
-inline void WindowInfoWrap::setWid(WId wid)
+ void WindowInfoWrap::setWid(WId wid)
 {
     m_wid = wid;
 }
 
+}
