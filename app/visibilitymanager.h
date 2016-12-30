@@ -45,9 +45,6 @@ public:
      */
     void updateDockGeometry(const QRect &geometry);
 
-public Q_SLOTS:
-    void eventReceived(QEvent *);
-
 signals:
     void mustBeShown();
     void mustBeHide();
