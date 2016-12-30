@@ -47,6 +47,11 @@ XWindowInterface::~XWindowInterface()
 
 void XWindowInterface::setDockDefaultFlags()
 {
+    m_view->setFlags(Qt::FramelessWindowHint
+               | Qt::WindowStaysOnTopHint
+               | Qt::NoDropShadowWindowHint
+               | Qt::WindowDoesNotAcceptFocus);
+    
     NETWinInfo winfo(QX11Info::connection()
                      , static_cast<xcb_window_t>(m_view->winId())
                      , static_cast<xcb_window_t>(m_view->winId())
@@ -54,6 +59,7 @@ void XWindowInterface::setDockDefaultFlags()
                      
     winfo.setAllowedActions(NET::ActionChangeDesktop);
     KWindowSystem::setType(m_view->winId(), NET::Dock);
+    KWindowSystem::setState(m_view->winId(), NET::SkipTaskbar | NET::SkipPager);
     KWindowSystem::setOnAllDesktops(m_view->winId(), true);
 }
 
