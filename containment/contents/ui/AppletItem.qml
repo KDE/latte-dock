@@ -114,7 +114,7 @@ Item {
     //outside the NowDock Plasmoid
     //property int debCounter: 0;
     function interceptNowDockUpdateScale(dIndex, newScale, step){
-        if(plasmoid.immutable){
+        if(!root.editMode){
             if(dIndex === -1){
                 layoutsContainer.updateScale(index-1,newScale, step);
             }
@@ -212,13 +212,13 @@ Item {
         width: container.computeWidth
         height: container.computeHeight
 
-        anchors.rightMargin: (nowDock || (showZoomed && !plasmoid.immutable)) ||
+        anchors.rightMargin: (nowDock || (showZoomed && root.editMode)) ||
                              (plasmoid.location !== PlasmaCore.Types.RightEdge) ? 0 : shownAppletMargin
-        anchors.leftMargin: (nowDock || (showZoomed && !plasmoid.immutable)) ||
+        anchors.leftMargin: (nowDock || (showZoomed && root.editMode)) ||
                             (plasmoid.location !== PlasmaCore.Types.LeftEdge) ? 0 : shownAppletMargin
-        anchors.topMargin: (nowDock || (showZoomed && !plasmoid.immutable)) ||
+        anchors.topMargin: (nowDock || (showZoomed && root.editMode)) ||
                            (plasmoid.location !== PlasmaCore.Types.TopEdge)? 0 : shownAppletMargin
-        anchors.bottomMargin: (nowDock || (showZoomed && !plasmoid.immutable)) ||
+        anchors.bottomMargin: (nowDock || (showZoomed && root.editMode)) ||
                               (plasmoid.location !== PlasmaCore.Types.BottomEdge) ? 0 : shownAppletMargin
 
 
@@ -261,7 +261,7 @@ Item {
 
             property bool disableScaleWidth: false
             property bool disableScaleHeight: false
-            property bool immutable: plasmoid.immutable
+            property bool editMode: root.editMode
 
             property int appletMinimumWidth: applet && applet.Layout ?  applet.Layout.minimumWidth : -1
             property int appletMinimumHeight: applet && applet.Layout ? applet.Layout.minimumHeight : -1
@@ -350,7 +350,7 @@ Item {
                 updateLayoutHeight();
             }
 
-            onImmutableChanged: {
+            onEditModeChanged: {
                 updateLayoutWidth();
                 updateLayoutHeight();
             }
@@ -358,13 +358,13 @@ Item {
             onZoomScaleChanged: {
                 if ((zoomScale > 1) && !container.isZoomed) {
                     container.isZoomed = true;
-                    if (plasmoid.immutable && !animationWasSent) {
+                    if (!root.editMode && !animationWasSent) {
                         root.appletsAnimations++;
                         animationWasSent = true;
                     }
                 } else if ((zoomScale == 1) && container.isZoomed) {
                     container.isZoomed = false;
-                    if (plasmoid.immutable && animationWasSent) {
+                    if (!root.editMode && animationWasSent) {
                         root.appletsAnimations--;
                         animationWasSent = false;
                     }
@@ -373,7 +373,7 @@ Item {
 
             function updateLayoutHeight(){
                 if(container.isInternalViewSplitter){
-                    if(plasmoid.immutable)
+                    if(!root.editMode)
                         layoutHeight = 0;
                     else
                         layoutHeight = root.iconSize;// + moreHeight + root.statesLineSize;
@@ -393,7 +393,7 @@ Item {
                             && ( (applet.Layout.maximumHeight < root.iconSize) || (applet.Layout.preferredHeight > root.iconSize))
                             && root.isVertical
                             && !disableScaleWidth
-                            && plasmoid.immutable ){
+                            && !root.editMode ){
                         disableScaleHeight = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
                         if((applet.Layout.maximumHeight < root.iconSize)){
@@ -417,7 +417,7 @@ Item {
 
             function updateLayoutWidth(){
                 if(container.isInternalViewSplitter){
-                    if(plasmoid.immutable)
+                    if(!root.editMode)
                         layoutWidth = 0;
                     else
                         layoutWidth = root.iconSize; //+ moreWidth+ root.statesLineSize;
@@ -436,7 +436,7 @@ Item {
                             && ( (applet.Layout.maximumWidth < root.iconSize) || (applet.Layout.preferredWidth > root.iconSize))
                             && root.isHorizontal
                             && !disableScaleHeight
-                            && plasmoid.immutable){
+                            && !root.editMode){
                         disableScaleWidth = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
                         if((applet.Layout.maximumWidth < root.iconSize)){
@@ -471,7 +471,7 @@ Item {
             //spacer background
             Loader{
                 anchors.fill: wrapperContainer
-                active: applet && (applet.pluginName === "org.kde.plasma.panelspacer") && !plasmoid.immutable
+                active: applet && (applet.pluginName === "org.kde.plasma.panelspacer") && root.editMode
 
                 sourceComponent: Rectangle{
                     anchors.fill: parent
@@ -496,7 +496,7 @@ Item {
             Loader{
                 anchors.fill: wrapperContainer
                 active: container.isInternalViewSplitter
-                        && !plasmoid.immutable
+                        && root.editMode
 
                 rotation: root.isVertical ? 90 : 0
 
@@ -721,8 +721,8 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: (!nowDock)&&(canBeHovered)&&(!lockZoom)&&(plasmoid.immutable)
-        hoverEnabled: plasmoid.immutable && (!nowDock) && canBeHovered ? true : false
+        enabled: (!nowDock)&&(canBeHovered)&&(!lockZoom)&&(!root.editMode)
+        hoverEnabled: !root.editMode && (!nowDock) && canBeHovered ? true : false
         propagateComposedEvents: true
 
         property bool pressed: false

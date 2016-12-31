@@ -739,7 +739,7 @@ Item{
 
         State{
             name: "isDragged"
-            when: ( (mainItemContainer.isDragged) && (plasmoid.immutable) )
+            when: ( (mainItemContainer.isDragged) && (!panel.editMode) )
 
             //    PropertyChanges { target: clickedAnimation; running:false }
             PropertyChanges { target: wrapper; scale:1 + ((panel.zoomFactor - 1) / 2)}

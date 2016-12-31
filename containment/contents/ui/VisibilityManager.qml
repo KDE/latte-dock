@@ -116,7 +116,7 @@ Item{
 
         var space = root.panelEdgeSpacing + 10;
 
-        if (normalState && plasmoid.immutable) {
+        if (normalState && !root.editMode) {
             //console.log("entered normal state...");
             //count panel length
             if(root.isHorizontal) {
@@ -176,7 +176,7 @@ Item{
                 tempLength = Screen.height; //screenGeometry.height;
 
             //grow only on length and not thickness
-            if(mainLayout.animatedLength || !plasmoid.immutable
+            if(mainLayout.animatedLength || root.editMode
                     || (root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0)) {
                 tempThickness = thicknessNormalOriginal;
 
