@@ -1,10 +1,9 @@
 #include "visibilitymanager.h"
 #include "visibilitymanager_p.h"
-#include "plasmaquick/containmentview.h"
-#include "abstractwindowinterface.h"
 #include "windowinfowrap.h"
 #include "dockview.h"
 #include "../liblattedock/extras.h"
+
 
 namespace Latte {
 
@@ -63,7 +62,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             raiseDock(true);
         }
         break;
-
+        
         case Dock::AutoHide: {
             raiseDock(!containsMouse);
         }
@@ -176,7 +175,7 @@ void VisibilityManagerPrivate::dodgeActive(WId wid)
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-
+        
     raiseDock(!intersects(winfo));
 }
 
@@ -189,7 +188,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
     
     if (!winfo.isValid() || !winfo.isOnCurrentDesktop() || winfo.isMinimized())
         return;
-
+        
     raiseDock(!winfo.isMaximized());
 }
 
@@ -271,25 +270,16 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         containsMouse = true;
         emit q->containsMouseChanged();
         
-        <<< <<< < HEAD
-        raiseDock(true);
-        == == == =
-
-            if (mode == Dock::AutoHide)
-                raiseDock(true);
-
-        >>> >>> > code formatted
+        if (mode == Dock::AutoHide)
+            raiseDock(true);
+            
     } else if (ev->type() == QEvent::Leave && containsMouse) {
         containsMouse = false;
         emit q->containsMouseChanged();
-
+        
         if (mode == Dock::AutoHide)
             raiseDock(false);
             
-        <<< <<< <HEAD
-        == == == =
-
-            >>>>>>> code formatted
     } else if (ev->type() == QEvent::Show) {
         wm->setDockDefaultFlags();
     }

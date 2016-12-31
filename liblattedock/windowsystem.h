@@ -14,7 +14,7 @@ public:
     explicit WindowSystem(QObject *parent = Q_NULLPTR);
     ~WindowSystem();
     
-    static WindowSystem &self(); 
+    static WindowSystem &self();
     
     bool compositingActive() const;
     

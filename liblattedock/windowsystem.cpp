@@ -8,7 +8,7 @@ WindowSystem::WindowSystem(QObject *parent) :
     QObject(parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
-        
+    
     } else {
         compositingChangedProxy(KWindowSystem::self()->compositingActive());
         connect(KWindowSystem::self(), SIGNAL(compositingChanged(bool)), this, SLOT(compositingChanged(bool)));
@@ -35,7 +35,7 @@ void WindowSystem::compositingChangedProxy(bool enable)
 {
     if (m_compositing == enable)
         return;
-    
+        
     m_compositing = enable;
     emit compositingChanged();
 }
