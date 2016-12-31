@@ -44,7 +44,7 @@ MouseArea{
                              wrapper.height
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
-    hoverEnabled: (inAnimation !== true)&& (!IsStartup)&&(!panel.taskInAnimation)&&(plasmoid.immutable || panel.debugLocation)
+    hoverEnabled: (inAnimation !== true)&& (!IsStartup)&&(!panel.taskInAnimation)&&(!panel.editMode || panel.debugLocation)
     // hoverEnabled: true
 
     property bool buffersAreReady: false
@@ -296,7 +296,7 @@ MouseArea{
             }//Flow
 
             function calculateScales( currentMousePosition ){
-                if (!plasmoid.immutable) {
+                if (panel.editMode) {
                     return;
                 }
 
@@ -462,7 +462,7 @@ MouseArea{
 
 
     onIsDraggedChanged: {
-        if(isDragged && (plasmoid.immutable)){
+        if(isDragged && (!panel.editMode)){
             panel.dragSource = mainItemContainer;
             dragHelper.startDrag(mainItemContainer, model.MimeType, model.MimeData,
                                  model.LauncherUrlWithoutIcon, model.decoration);
@@ -563,7 +563,7 @@ MouseArea{
             // mouse.button is always 0 here, hence checking with mouse.buttons
             if (pressX != -1 && mouse.buttons == Qt.LeftButton
                     && isDragged
-                    && plasmoid.immutable
+                    && !panel.editMode
                     && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y) ) {
                 panel.dragSource = mainItemContainer;
                 dragHelper.startDrag(mainItemContainer, model.MimeType, model.MimeData,

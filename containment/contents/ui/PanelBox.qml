@@ -35,9 +35,9 @@ Item{
   //  parent: root
     z:0
 
-    property int panelWidth: secondLayout.count > 0 && root.isHorizontal && plasmoid.immutable ?
+    property int panelWidth: secondLayout.count > 0 && root.isHorizontal && !root.editMode ?
                                  layoutsContainer.width + 2*spacing : mainLayout.width + spacing
-    property int panelHeight: secondLayout.count > 0 && root.isVertical && plasmoid.immutable ?
+    property int panelHeight: secondLayout.count > 0 && root.isVertical && !root.editMode ?
                                   layoutsContainer.height + 2*spacing : mainLayout.height + spacing
 
     width: root.isHorizontal ? panelWidth : smallSize

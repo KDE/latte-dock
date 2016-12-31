@@ -50,6 +50,7 @@ Item {
 
     property bool debugLocation: false
 
+    property bool editMode: plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
     property bool enableShadows: plasmoid.configuration.showShadows

@@ -43,6 +43,7 @@ DragDrop.DropArea {
     property bool debugMode: false
 
     property bool automaticSize: plasmoid.configuration.automaticIconSize
+    property bool editMode: plasmoid.userConfiguring
     property bool immutable: plasmoid.immutable
     property bool inStartup: true
     property bool isHorizontal: plasmoid.formFactor == PlasmaCore.Types.Horizontal
@@ -63,8 +64,8 @@ DragDrop.DropArea {
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
     property int appletsAnimations: 0 //zoomed applets it is used basically on masking for magic window
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
-    property int iconSize: (automaticIconSizeBasedSize > 0 && plasmoid.immutable) ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
-                                                                                    plasmoid.configuration.iconSize
+    property int iconSize: (automaticIconSizeBasedSize > 0 && !root.editMode) ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
+                                                                                          plasmoid.configuration.iconSize
     property int iconStep: 8
     property int panelEdgeSpacing: iconSize / 3
     //FIXME: this is not needed any more probably
@@ -77,9 +78,9 @@ DragDrop.DropArea {
     //property int mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
     //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? plasmoid.configuration.panelPosition : mainLayoutPosition
 
-    property int panelAlignment: plasmoid.immutable ? plasmoid.configuration.panelPosition :
-                                                      ( plasmoid.configuration.panelPosition === Latte.Dock.Double ?
-                                                           Latte.Dock.Center :plasmoid.configuration.panelPosition )
+    property int panelAlignment: !root.editMode ? plasmoid.configuration.panelPosition :
+                                                            ( plasmoid.configuration.panelPosition === Latte.Dock.Double ?
+                                                                 Latte.Dock.Center :plasmoid.configuration.panelPosition )
 
     property real zoomFactor: windowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
@@ -386,7 +387,12 @@ DragDrop.DropArea {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
-   // onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
+    //this is used from zoomed applets in that container
+    onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
+
+    onEditModeChanged: {
+        updateLayouts();
+    }
 
     onDockChanged: {
         if (dock) {
@@ -494,6 +500,7 @@ DragDrop.DropArea {
     Containment.onAppletAdded: {
         addApplet(applet, x, y);
         LayoutManager.save();
+        updateIndexes();
     }
 
     Containment.onAppletRemoved: {
@@ -513,6 +520,8 @@ DragDrop.DropArea {
         }
 
         LayoutManager.save();
+
+        updateIndexes();
     }
 
     Plasmoid.onUserConfiguringChanged: {
@@ -555,8 +564,6 @@ DragDrop.DropArea {
         containmentSizeSyncTimer.restart();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
-
-        updateLayouts();
 
         ///Set Preferred Sizes///
         ///Notice: they are set here because if they are set with a binding
@@ -822,11 +829,11 @@ DragDrop.DropArea {
     }
 
     function slotDisableHiding(value) {
-       // dock.visibility.disableHiding = value;
+        // dock.visibility.disableHiding = value;
     }
 
     function updateAutomaticIconSize() {
-        if (visibilityManager.normalState && !animatedLengthTimer.running && plasmoid.immutable
+        if (visibilityManager.normalState && !animatedLengthTimer.running && !root.editMode
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = dock.maxLength;
@@ -887,7 +894,7 @@ DragDrop.DropArea {
     }
 
     function updateLayouts(){
-        if(plasmoid.immutable){
+        if(!root.editMode){
             var splitter = -1;
 
             var totalChildren = mainLayout.children.length;
@@ -937,7 +944,7 @@ DragDrop.DropArea {
 
     Loader{
         anchors.fill: parent
-        active: !plasmoid.immutable
+        active: root.editMode
 
         sourceComponent: EditModeVisual{
         }
@@ -996,31 +1003,21 @@ DragDrop.DropArea {
         id: layoutsContainer
 
         signal updateScale(int delegateIndex, real newScale, real step)
-        //  property bool parentMagicWinFlag: plasmoid.immutable && magicWin && !root.inStartup && windowSystem.compositingActive
-        //&& !(root.inStartup && magicWin.panelVisibility === Latte.Dock.AutoHide)
 
         property int allCount: root.nowDock ? mainLayout.count-1+nowDock.tasksCount : mainLayout.count
         property int currentSpot: -1000
         property int hoveredIndex: -1
 
         x: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal
-           && plasmoid.immutable && windowSystem.compositingActive ?
+           && !root.editMode && windowSystem.compositingActive ?
                (dock.width/2) - (dock.maxLength/2): 0
         y: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical
-           && plasmoid.immutable && windowSystem.compositingActive ?
+           && !root.editMode && windowSystem.compositingActive ?
                (dock.height/2) - (dock.maxLength/2): 0
-        width: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal && plasmoid.immutable ?
+        width: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isHorizontal && !root.editMode ?
                    dock.maxLength : parent.width
-        height: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical && plasmoid.immutable ?
+        height: (plasmoid.configuration.panelPosition === Latte.Dock.Double) && root.isVertical && !root.editMode ?
                     dock.maxLength : parent.height
-
-        Component.onCompleted: {
-            if(plasmoid.immutable) {
-                opacity = 0;
-            } else {
-                opacity = 1;
-            }
-        }
 
         Loader{
             anchors.fill: parent
@@ -1051,13 +1048,13 @@ DragDrop.DropArea {
             property int count: children.length
 
             onHeightChanged: {
-                if (root.isVertical && plasmoid.immutable) {
+                if (root.isVertical && !root.editMode) {
                     checkLayoutsAnimatedLength();
                 }
             }
 
             onWidthChanged: {
-                if (root.isHorizontal && plasmoid.immutable) {
+                if (root.isHorizontal && !root.editMode) {
                     checkLayoutsAnimatedLength();
                 }
             }
