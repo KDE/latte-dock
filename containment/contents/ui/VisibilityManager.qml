@@ -61,24 +61,9 @@ Item{
 
     onThicknessZoomOriginalChanged: updateMaskArea();
 
-    function slotDisableHidingChanged() {
-        /*if (!dock.visibility.disableHiding) {
-            checkListHovered.restart();
-        }*/
-    }
 
     function slotContainsMouseChanged() {
         if(dock.visibility.containsMouse) {
-            //stop parent window timer for auto hiding
-            /*  if (dock.visibility.mode === Latte.Dock.AutoHide) {
-                if(hideMagicWindowInAutoHide.forcedDisableHiding) {
-                    hideMagicWindowInAutoHide.forcedDisableHiding = false;
-                    dock.visibility.disableHiding = false;
-                }
-
-                hideMagicWindowInAutoHide.stop();
-            }*/
-
             if (delayerTimer.running) {
                 delayerTimer.stop();
             }
@@ -93,10 +78,6 @@ Item{
     function slotMustBeShown() {
       //  console.log("show...");
         slidingAnimationAutoHiddenIn.init();
-    }
-
-    function slotMustBeRaisedImmediately() {
-        slidingAnimation.init(true,true);
     }
 
     function slotMustBeHide() {
@@ -280,63 +261,7 @@ Item{
 
     /***Hiding/Showing Animations*****/
 
-    SequentialAnimation{
-        id: slidingAnimation
-
-        property bool inHalf: false
-        property bool raiseFlag: false
-        property bool immediateShow: false
-
-        SequentialAnimation{
-            PropertyAnimation {
-                target: layoutsContainer
-                property: root.isVertical ? "x" : "y"
-                to: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ? -thicknessNormal : thicknessNormal
-                duration: slidingAnimation.immediateShow ? 100 : manager.animationSpeed
-                easing.type: Easing.OutQuad
-            }
-
-            PropertyAnimation {
-                target: slidingAnimation
-                property: "inHalf"
-                to: true
-                duration: 100
-            }
-
-            PropertyAnimation {
-                target: layoutsContainer
-                property: root.isVertical ? "x" : "y"
-                to: 0
-                duration: manager.animationSpeed
-                easing.type: Easing.OutQuad
-            }
-        }
-
-        onStopped: {
-            inHalf = false;
-            raiseFlag = false;
-            immediateShow = false;
-        }
-
-        onInHalfChanged: {
-            if (inHalf) {
-                if (raiseFlag) {
-                    dock.visibility.showOnTop();
-                } else {
-                    dock.visibility.showOnBottom();
-                }
-            }
-        }
-
-        function init(raise, immediate) {
-            //   if(window.visible) {
-            raiseFlag = raise;
-            immediateShow = immediate;
-            start();
-            //  }
-        }
-    }
-    //////////////// Auto Hide Animations - Slide In - Out
+    //////////////// Animations - Slide In - Out
     SequentialAnimation{
         id: slidingAnimationAutoHiddenOut
 
@@ -370,9 +295,6 @@ Item{
         }
 
         onStopped: {
-            if (!plasmoid.immutable) {
-                // updateTransientThickness();
-            }
         }
 
         function init() {
@@ -390,9 +312,6 @@ Item{
             if (dock.visibility.isHidden) {
                 dock.visibility.mustBeShown();
             }
-
-            //  hideMagicWindowInAutoHide.forcedDisableHiding = true;
-            //    hideMagicWindowInAutoHide.start();
         }
     }
 
@@ -416,8 +335,6 @@ Item{
         onTriggered: {
             layoutsContainer.opacity = 1;
             if (dock.visibility.mode !== Latte.Dock.AutoHide) {
-                /*slidingAnimation.init(true,false);
-            } else {*/
                 slidingAnimationAutoHiddenIn.init();
             }
         }
