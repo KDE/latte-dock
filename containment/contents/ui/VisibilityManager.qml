@@ -131,7 +131,7 @@ Item{
                 tempThickness = thicknessMidOriginal;
             }
 
-            if (dock.visibility.isHidden && (dock.visibility.mode === Latte.Dock.AutoHide)) {
+            if (dock.visibility.isHidden) {
                 tempThickness = thicknessAutoHidden;
             }
 
