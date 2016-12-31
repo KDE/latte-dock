@@ -325,45 +325,40 @@ PlasmaCore.FrameSvgItem {
                 spacing: 2
 
                 property bool inStartup: true
-                property int panelVisibility: plasmoid.configuration.panelVisibility
+                property int mode: dock.visibility.mode
 
 
-                function updatePanelVisibilityVisual(){
-                    if (panelVisibility === Latte.Dock.AlwaysVisible)
+                function updateModeVisual(){
+                    if (mode === Latte.Dock.AlwaysVisible)
                         firstState.checked = true;
                     else
                         firstState.checked = false;
 
-                    if (panelVisibility === Latte.Dock.AutoHide)
+                    if (mode === Latte.Dock.AutoHide)
                         secondState.checked = true;
                     else
                         secondState.checked = false;
 
-                    if (panelVisibility === Latte.Dock.DodgeActive)
+                    if (mode === Latte.Dock.DodgeActive)
                         thirdState.checked = true;
                     else
                         thirdState.checked = false;
 
-                    if (panelVisibility === Latte.Dock.DodgeMaximized)
+                    if (mode === Latte.Dock.DodgeMaximized)
                         fourthState.checked = true;
                     else
                         fourthState.checked = false;
 
-                    if (panelVisibility === Latte.Dock.DodgeAllWindows)
+                    if (mode === Latte.Dock.DodgeAllWindows)
                         fifthState.checked = true;
                     else
                         fifthState.checked = false;
-
-                    /*   if (panelVisibility === 5)
-                        sixthState.checked = true;
-                    else
-                        sixthState.checked = false;*/
                 }
 
-                onPanelVisibilityChanged: updatePanelVisibilityVisual();
+                onModeChanged: updateModeVisual();
 
                 Component.onCompleted: {
-                    updatePanelVisibilityVisual();
+                    updateModeVisual();
                     inStartup = false;
                 }
 
@@ -376,7 +371,6 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             dock.visibility.mode = Latte.Dock.AlwaysVisible
-                            plasmoid.configuration.panelVisibility = 0
                         }
                     }
                     onClicked: checked=true;
@@ -390,7 +384,6 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             dock.visibility.mode = Latte.Dock.AutoHide
-                            plasmoid.configuration.panelVisibility = 1
                         }
                     }
                     onClicked: checked=true;
@@ -404,7 +397,6 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             dock.visibility.mode = Latte.Dock.DodgeActive
-                            plasmoid.configuration.panelVisibility = 2
                         }
                     }
                     onClicked: checked=true;
@@ -419,7 +411,6 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             dock.visibility.mode = Latte.Dock.DodgeMaximized
-                            plasmoid.configuration.panelVisibility = 3
                         }
                     }
                     onClicked: checked=true;
@@ -434,25 +425,10 @@ PlasmaCore.FrameSvgItem {
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
                             dock.visibility.mode = Latte.Dock.DodgeAllWindows
-                            plasmoid.configuration.panelVisibility = 4
                         }
                     }
                     onClicked: checked=true;
                 }
-                /* PlasmaComponents.Button{
-                    id: sixthState
-                    checkable: true
-                    text: i18n("Always Visible")
-                    width: (parent.width/2) - 1
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.AlwaysVisible
-                            plasmoid.configuration.panelVisibility = 5
-                        }
-                    }
-                    onClicked: checked=true;
-                }*/
             }
         }
 
