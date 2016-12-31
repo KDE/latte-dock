@@ -178,7 +178,13 @@ Item{
             //grow only on length and not thickness
             if(mainLayout.animatedLength || root.editMode
                     || (root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0)) {
-                tempThickness = thicknessNormalOriginal;
+
+                //this is used to fix a bug with shadow showing when the animation of edit mode
+                //is triggered
+                var editModeThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + editModeVisual.shadowSize :
+                                                                            thicknessNormalOriginal
+
+                tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
 
                 if (root.animationsNeedThickness > 0) {
                     tempThickness = thicknessMidOriginal;
