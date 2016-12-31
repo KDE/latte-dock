@@ -329,27 +329,27 @@ PlasmaCore.FrameSvgItem {
 
 
                 function updatePanelVisibilityVisual(){
-                    if (panelVisibility === 0)
+                    if (panelVisibility === Latte.Dock.AlwaysVisible)
                         firstState.checked = true;
                     else
                         firstState.checked = false;
 
-                    if (panelVisibility === 1)
+                    if (panelVisibility === Latte.Dock.AutoHide)
                         secondState.checked = true;
                     else
                         secondState.checked = false;
 
-                    if (panelVisibility === 2)
+                    if (panelVisibility === Latte.Dock.DodgeActive)
                         thirdState.checked = true;
                     else
                         thirdState.checked = false;
 
-                    if (panelVisibility === 3)
+                    if (panelVisibility === Latte.Dock.DodgeMaximized)
                         fourthState.checked = true;
                     else
                         fourthState.checked = false;
 
-                    if (panelVisibility === 4)
+                    if (panelVisibility === Latte.Dock.DodgeAllWindows)
                         fifthState.checked = true;
                     else
                         fifthState.checked = false;
@@ -433,7 +433,7 @@ PlasmaCore.FrameSvgItem {
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.DodgeWindows
+                            dock.visibility.mode = Latte.Dock.DodgeAllWindows
                             plasmoid.configuration.panelVisibility = 4
                         }
                     }
