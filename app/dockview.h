@@ -107,7 +107,7 @@ public slots:
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void removeDock();
-    Q_INVOKABLE void setLocalDockGeometry(QRect geometry);
+    Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     void resizeWindow();
     void restoreConfig();
     void saveConfig();
@@ -156,7 +156,6 @@ private:
     QTimer m_timerGeometry;
     QTimer m_lockGeometry;
     Plasma::Theme *theme{nullptr};
-    Plasma::Corona *m_corona;
     
     QPointer<VisibilityManager> m_visibility;
     

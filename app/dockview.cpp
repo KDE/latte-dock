@@ -20,8 +20,8 @@
  */
 
 #include "dockview.h"
-#include "dockcorona.h"
 #include "dockconfigview.h"
+#include "dockcorona.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/windowsystem.h"
 
@@ -39,8 +39,7 @@
 namespace Latte {
 
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
-    : PlasmaQuick::ContainmentView(corona),
-      m_corona(corona)
+    : PlasmaQuick::ContainmentView(corona)
 {
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
@@ -59,6 +58,10 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     
     m_lockGeometry.setSingleShot(true);
     m_lockGeometry.setInterval(700);
+    
+    connect(this, SIGNAL(localDockGeometryChanged()), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateAbsDockGeometry()));
     
     connect(this, &DockView::containmentChanged
     , this, [&]() {
@@ -107,7 +110,6 @@ void DockView::init()
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     
-    // FIXME: We need find a better solution
     // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     
@@ -120,7 +122,7 @@ void DockView::init()
     
     qDebug() << "SOURCE:" << source();
     
-    //initialize();
+    initialize();
 }
 
 
@@ -164,6 +166,9 @@ void DockView::adaptToScreen(QScreen *screen)
     else
         m_maxLength = screen->size().width();
         
+//   KWindowSystem::setOnAllDesktops(winId(), true);
+//   KWindowSystem::setType(winId(), NET::Dock);
+
     if (containment())
         containment()->reactToScreenChange();
         
@@ -172,7 +177,7 @@ void DockView::adaptToScreen(QScreen *screen)
 
 void DockView::addNewDock()
 {
-    DockCorona *corona = dynamic_cast<DockCorona *>(m_corona);
+    DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
     
     if (corona) {
         corona->loadDefaultLayout();
@@ -181,7 +186,7 @@ void DockView::addNewDock()
 
 void DockView::removeDock()
 {
-    DockCorona *corona = dynamic_cast<DockCorona *>(m_corona);
+    DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
     
     if (corona->containments().count() > 1) {
         QAction *removeAct = containment()->actions()->action(QStringLiteral("remove"));
@@ -270,6 +275,23 @@ void DockView::resizeWindow()
     }
 }
 
+void DockView::setLocalDockGeometry(const QRect &geometry)
+{
+    if (geometry == m_localDockGeometry) {
+        return;
+    }
+    
+    m_localDockGeometry = geometry;
+    
+    emit localDockGeometryChanged();
+}
+
+void DockView::updateAbsDockGeometry()
+{
+    QRect absoluteGeometry {x() + m_localDockGeometry.x(), y() + m_localDockGeometry.y(), m_localDockGeometry.width(), m_localDockGeometry.height()};
+    m_visibility->updateDockGeometry(absoluteGeometry);
+}
+
 inline void DockView::updateDockPosition()
 {
     if (!containment())
@@ -335,7 +357,7 @@ bool DockView::compositing() const
     return WindowSystem::self().compositingActive();
 }
 
-/*Candil::VisibilityManager *NowDockView::visibility()
+/*Candil::VisibilityManager *DockView::visibility()
 {
     return  m_visibility.data();
 }*/
@@ -408,16 +430,14 @@ void DockView::setMaskArea(QRect area)
     emit maskAreaChanged();
 }
 
-/*Dock::Alignment NowDockView::alignment() const
+/*Dock::Alignment DockView::alignment() const
 {
     return m_alignment;
 }
-
-void NowDockView::setAlignment(Dock::Alignment align)
+void DockView::setAlignment(Dock::Alignment align)
 {
     if (m_alignment == align)
         return;
-
     m_alignment = align;
     emit alignmentChanged();
 }
@@ -464,11 +484,10 @@ bool DockView::event(QEvent *e)
     return ContainmentView::event(e);
 }
 
-/*void NowDockView::showEvent(QShowEvent *ev)
+/*void DockView::showEvent(QShowEvent *ev)
 {
     KWindowSystem::setType(winId(), NET::Dock);
     KWindowSystem::setOnAllDesktops(winId(), true);
-
     //QQuickWindow::showEvent(ev);
     ContainmentView::showEvent(ev);
 }*/
@@ -500,12 +519,12 @@ QPointF DockView::positionAdjustedForContainment(const QPointF &point) const
 
 QList<int> DockView::freeEdges() const
 {
-    QList<Plasma::Types::Location> edges = m_corona->freeEdges(containment()->screen());
+    QList<Plasma::Types::Location> edges = corona()->freeEdges(containment()->screen());
     
     QList<int> edgesInt;
     
     foreach (Plasma::Types::Location edge, edges) {
-        edgesInt.append((int)edge);
+        edgesInt.append(static_cast<int>(edge));
     }
     
     return edgesInt;
@@ -549,8 +568,5 @@ void DockView::restoreConfig()
 }
 
 }
-
 //!END SLOTS
-
-
 //!END namespace
