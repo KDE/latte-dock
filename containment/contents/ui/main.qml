@@ -65,7 +65,7 @@ DragDrop.DropArea {
     property int appletsAnimations: 0 //zoomed applets it is used basically on masking for magic window
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
     property int iconSize: (automaticIconSizeBasedSize > 0 && !root.editMode) ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
-                                                                                          plasmoid.configuration.iconSize
+                                                                                plasmoid.configuration.iconSize
     property int iconStep: 8
     property int panelEdgeSpacing: iconSize / 3
     //FIXME: this is not needed any more probably
@@ -79,8 +79,8 @@ DragDrop.DropArea {
     //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? plasmoid.configuration.panelPosition : mainLayoutPosition
 
     property int panelAlignment: !root.editMode ? plasmoid.configuration.panelPosition :
-                                                            ( plasmoid.configuration.panelPosition === Latte.Dock.Double ?
-                                                                 Latte.Dock.Center :plasmoid.configuration.panelPosition )
+                                                  ( plasmoid.configuration.panelPosition === Latte.Dock.Double ?
+                                                       Latte.Dock.Center :plasmoid.configuration.panelPosition )
 
     property real zoomFactor: windowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
@@ -391,6 +391,9 @@ DragDrop.DropArea {
     onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
 
     onEditModeChanged: {
+        if (editMode) {
+            visibilityManager.updateMaskArea();
+        }
         updateLayouts();
     }
 
@@ -533,9 +536,9 @@ DragDrop.DropArea {
         }
 
         if (plasmoid.userConfiguring) {
-            console.log("applets------");
+          //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
-                console.log("applet:"+i);
+            //    console.log("applet:"+i);
                 plasmoid.applets[i].expanded = false;
             }
             if (!dragOverlay) {
@@ -806,7 +809,8 @@ DragDrop.DropArea {
             return;
         }
 
-        animationsNeedBothAxis = value;
+        animationsNeedBothAxis = Math.max(value, 0);
+
         visibilityManager.updateMaskArea();
     }
 
@@ -815,7 +819,8 @@ DragDrop.DropArea {
             return;
         }
 
-        animationsNeedLength = value;
+        animationsNeedLength = Math.max(value, 0);
+
         visibilityManager.updateMaskArea();
     }
 
@@ -824,7 +829,8 @@ DragDrop.DropArea {
             return;
         }
 
-        animationsNeedThickness = value;
+        animationsNeedThickness = Math.max(value, 0);
+
         visibilityManager.updateMaskArea();
     }
 
@@ -942,14 +948,16 @@ DragDrop.DropArea {
 
     ///////////////BEGIN UI elements
 
-    Loader{
+    /*Loader{
         anchors.fill: parent
         active: root.editMode
 
-        sourceComponent: EditModeVisual{
-        }
-    }
+        sourceComponent:
+    }*/
 
+    EditModeVisual{
+        id:editModeVisual
+    }
 
     Item {
         id: lastSpacer
