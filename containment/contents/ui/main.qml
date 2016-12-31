@@ -401,11 +401,9 @@ DragDrop.DropArea {
             dock.visibility.timerShow = 300;
             dock.visibility.timerHide = 1000;
 
-            //dock.visibility.onDisableHidingChanged.connect(visibilityManager.slotDisableHidingChanged);
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
             dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
-            //dock.visibility.onMustBeRaisedImmediately.connect(visibilityManager.slotMustBeRaisedImmediately);
             dock.visibility.onModeChanged.connect(visibilityManager.slotModeChanged);
         }
     }
@@ -439,12 +437,6 @@ DragDrop.DropArea {
 
         dndSpacer.opacity = 0;
         containmentSizeSyncTimer.restart();
-    }
-
-    onIsHoveredChanged: {
-        /*if (isHovered){
-            dock.visibility.showOnTopCheck();
-        }*/
     }
 
     onHeightChanged: {
@@ -521,7 +513,6 @@ DragDrop.DropArea {
         }
 
         LayoutManager.save();
-        //   magicWin.removeAppletItem(applet);
     }
 
     Plasmoid.onUserConfiguringChanged: {
@@ -587,34 +578,7 @@ DragDrop.DropArea {
             }
         }
 
-      /*  if (plasmoid.immutable) {
-            if (windowSystem.compositingActive) {
-                   magicWin.initialize();
-            }
-
-            dock.visibility.disableHiding = false;
-        } else {
-            dock.visibility.disableHiding = true;
-            dock.visibility.mustBeRaised();
-        }*/
-
-
         visibilityManager.updateMaskArea();
-
-        //  console.log(magicWin.visible + " - "+magicWin.x+" - " + magicWin.y+" - "+magicWin.width+" - "+magicWin.height);
-        /* if (magicWin) {
-            if (plasmoid.immutable) {
-                if (windowSystem.compositingActive) {
-                    magicWin.initialize();
-                } else {
-                    magicWin.updateTransientThickness();
-                }
-                magicWin.disableHiding = false;
-            } else {
-                magicWin.disableHiding = true;
-                magicWin.mustBeRaised();
-            }
-        }*/
     }
     //////////////END OF CONNECTIONS
 
@@ -637,10 +601,6 @@ DragDrop.DropArea {
         })
 
         addContainerInLayout(container, applet, x, y);
-
-        // adding the AppletQuickItem to the Now Dock in order to be
-        // used for right clicking events
-        //  magicWin.addAppletItem(applet);
     }
 
     function addContainerInLayout(container, applet, x, y){
@@ -752,22 +712,10 @@ DragDrop.DropArea {
             animatedLengthTimer.start();
         }
 
-     /*   if (!dock.visibility.containsMouse && (root.animationsNeedBothAxis === 0)
-                && (root.animationsNeedLength===0) && (root.appletsAnimations === 0)) {
-            mainLayout.animatedLength = true;
-        } else {
-            mainLayout.animatedLength = false;
-        }*/
-
         visibilityManager.updateMaskArea();
     }
 
     function clearZoom(){
-        //console.log("Panel clear....");
-       /* if (dock.visibility.disableHiding) {
-            return;
-        } */
-
         layoutsContainer.currentSpot = -1000;
         layoutsContainer.hoveredIndex = -1;
         root.clearZoomSignal();
@@ -1039,36 +987,6 @@ DragDrop.DropArea {
         }
     }
 
-    /* MouseArea{
-        id: wholeArea
-        anchors.fill: parent
-        hoverEnabled: true
-        onEntered: {
-            showWindow();
-        }
-
-        onExited: {
-            if (plasmoid.immutable && magicWin && !magicWin.isHovered
-                    && ((magicWin.panelVisibility === Latte.Dock.AutoHide) || magicWin.isDockWindowType) ) {
-                hideMagicWindowInAutoHide.start();
-            }
-        }
-
-        onPositionChanged: {
-            showWindow();
-        }
-
-        function showWindow() {
-            if (plasmoid.immutable && magicWin
-                    && ((magicWin.panelVisibility === Latte.Dock.AutoHide) || magicWin.isDockWindowType) ) {
-                magicWin.updateMaskArea();
-                magicWin.mustBeRaised();
-            } else {
-                magicWin.showOnTopCheck();
-            }
-        }
-    }*/
-
     VisibilityManager{
         id: visibilityManager
         //   window: dock
@@ -1103,27 +1021,6 @@ DragDrop.DropArea {
                 opacity = 1;
             }
         }
-
-        /*  onParentChanged: {
-            if (magicWin && magicWin.contentItem && (parent === magicWin.contentItem)) {
-                magicWin.updateMaskArea();
-            }
-        }
-
-        onParentMagicWinFlagChanged: {
-            if (parentMagicWinFlag) {
-                opacity = 0;
-                //   magicWin.visible = true;
-                parent = magicWin.contentItem;
-                magicWin.initializeSlidingInAnimation();
-            } else {
-                parent = root;
-                if (!windowSystem.compositingActive) {
-                    // magicWin.visible = false;
-                    magicWin.updateTransientThickness();
-                }
-            }
-        }*/
 
         Loader{
             anchors.fill: parent
@@ -1247,34 +1144,9 @@ DragDrop.DropArea {
 
     ///////////////BEGIN TIMER elements
     Timer {
-        id:hideMagicWindowInAutoHide
-        interval:2500
-
-        //it is used in activity change situation
-        property bool forcedDisableHiding: false
-
-        onTriggered: {
-         /*   if (forcedDisableHiding) {
-                forcedDisableHiding = false;
-                dock.visibility.disableHiding = false;
-            }
-
-            var visibility = dock.visibility;
-
-            if (plasmoid.immutable && !visibility.containsMouse //&& !wholeArea.containsMouse
-                    && (visibility.movde === Latte.Dock.AutoHide) ) {
-                visibility.mustBeHide();
-            }*/
-        }
-    }
-
-
-    Timer {
         id: animatedLengthTimer
         interval: 500
         onTriggered: {
-            //   if (!magicWin.isHovered && (appletsAnimations === 0)
-            //           && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {
             if ((appletsAnimations === 0) && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {
                 mainLayout.animatedLength = false;
                 visibilityManager.updateMaskArea();
@@ -1299,11 +1171,6 @@ DragDrop.DropArea {
         interval: 150
         onTriggered: {
             dndSpacer.parent = root;
-            //    currentLayout.x = (Qt.application.layoutDirection === Qt.RightToLeft && !plasmoid.immutable) ? toolBox.width : 0;
-            //   currentLayout.y = 0
-            /*   currentLayout.width = root.width - (isHorizontal && toolBox && !plasmoid.immutable ? toolBox.width : 0)
-            currentLayout.height = root.height - (!isHorizontal && toolBox && !plasmoid.immutable ? toolBox.height : 0) */
-            //  currentLayout.isLayoutHorizontal = isHorizontal
         }
     }
 
