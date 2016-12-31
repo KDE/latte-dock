@@ -8,32 +8,35 @@ WindowSystem::WindowSystem(QObject *parent) :
     QObject(parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
-        //! TODO: Wayland compositing
+        
     } else {
         compositingChangedProxy(KWindowSystem::self()->compositingActive());
-        connect(KWindowSystem::self(), SIGNAL(compositingChanged(bool))
-                , this, SLOT(compositingChangedProxy(bool)));
+        connect(KWindowSystem::self(), SIGNAL(compositingChanged(bool)), this, SLOT(compositingChanged(bool)));
     }
-}
-
-WindowSystem &WindowSystem::self()
-{
-    static WindowSystem wm;
-    return wm;
 }
 
 WindowSystem::~WindowSystem()
 {
 }
 
-bool WindowSystem::compositingActive() const
+WindowSystem &WindowSystem::self()
 {
-    return m_enabled;
+    static WindowSystem ws;
+    
+    return ws;
 }
 
-void WindowSystem::compositingChangedProxy(bool enabled)
+bool WindowSystem::compositingActive() const
 {
-    m_enabled = enabled;
+    return m_compositing;
+}
+
+void WindowSystem::compositingChangedProxy(bool enable)
+{
+    if (m_compositing == enable)
+        return;
+    
+    m_compositing = enable;
     emit compositingChanged();
 }
 
