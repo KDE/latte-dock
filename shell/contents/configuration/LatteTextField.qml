@@ -61,7 +61,7 @@ PlasmaComponents.TextField{
 
     MouseArea{
         anchors.fill: parent
-        acceptedButtons: Qt.AllButtons
+        acceptedButtons: Qt.MiddleButton
 
         onWheel: {
             var angle = wheel.angleDelta.y / 8
