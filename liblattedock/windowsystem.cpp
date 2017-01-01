@@ -8,10 +8,11 @@ WindowSystem::WindowSystem(QObject *parent) :
     QObject(parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
-    
+        //! TODO: Wayland compositing active
     } else {
         compositingChangedProxy(KWindowSystem::self()->compositingActive());
-        connect(KWindowSystem::self(), SIGNAL(compositingChanged(bool)), this, SLOT(compositingChanged(bool)));
+        connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
+                , this, &WindowSystem::compositingChangedProxy);
     }
 }
 
@@ -22,7 +23,6 @@ WindowSystem::~WindowSystem()
 WindowSystem &WindowSystem::self()
 {
     static WindowSystem ws;
-    
     return ws;
 }
 
