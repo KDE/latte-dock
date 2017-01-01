@@ -18,7 +18,7 @@ PlasmaCore.FrameSvgItem {
 
     //old way to count the dialog width
     //Math.max(420,appearancePage.noneShadow.width + appearancePage.lockedAppletsShadow.width + appearancePage.allAppletsShadow.width)
-    width: 31*theme.defaultFont.pixelSize
+    width: 33*theme.defaultFont.pixelSize
     height: 37*theme.defaultFont.pixelSize
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
@@ -60,16 +60,16 @@ PlasmaCore.FrameSvgItem {
 
             PlasmaComponents.Label{
                 id: verLabel
-                font.family: "serif"
-                font.pointSize: theme.defaultFont.pointSize
-                font.italic: true
-                opacity: 0.6
+                font.family: "monospace"
+                font.pointSize: 0.8 * theme.defaultFont.pointSize
+                font.bold: true
+                opacity: 0.4
 
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignRight | Qt.AlignTop
                 horizontalAlignment: Text.AlignRight
                 Layout.fillWidth: true
 
-                text: i18n("ver: ") +"@VERSION@"
+                text: i18n("ver:") +"@VERSION@"
             }
         }
 
