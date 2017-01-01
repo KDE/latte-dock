@@ -359,13 +359,13 @@ Item {
                 if ((zoomScale > 1) && !container.isZoomed) {
                     container.isZoomed = true;
                     if (!root.editMode && !animationWasSent) {
-                        root.appletsAnimations++;
+                        root.slotAppletsAnimations(1);
                         animationWasSent = true;
                     }
                 } else if ((zoomScale == 1) && container.isZoomed) {
                     container.isZoomed = false;
                     if (!root.editMode && animationWasSent) {
-                        root.appletsAnimations--;
+                        root.slotAppletsAnimations(-1);
                         animationWasSent = false;
                     }
                 }

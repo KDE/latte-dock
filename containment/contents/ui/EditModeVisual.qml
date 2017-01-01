@@ -94,8 +94,7 @@ Image{
 
                         if(!animationSent) {
                             animationSent = true;
-                            var anim = root.animationsNeedLength+1;
-                            root.slotAnimationsNeedLength(anim);
+                            root.slotAnimationsNeedLength(1);
                         }
                     }
                 }
@@ -153,8 +152,7 @@ Image{
                     script:{
                         editVisual.editAnimationEnded = false;
                         if (editVisual.animationSent) {
-                            var anim = root.animationsNeedLength-1;
-                            root.slotAnimationsNeedLength(anim);
+                            root.slotAnimationsNeedLength(-1);
                             editVisual.animationSent = false;
                         }
                     }

@@ -378,14 +378,14 @@ MouseArea{
             function sendEndOfNeedBothAxisAnimation(){
                 if (mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = false;
-                    panel.setAnimationsNeedBothAxis(-1);
+                    panel.signalAnimationsNeedBothAxis(-1);
                 }
             }
 
             onScaleChanged: {
                 if ((scale > 1) && !mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = true;
-                    panel.setAnimationsNeedBothAxis(1);
+                    panel.signalAnimationsNeedBothAxis(1);
                 } else if ((scale == 1) && mainItemContainer.isZoomed) {
                     sendEndOfNeedBothAxisAnimation();
                 }
@@ -918,7 +918,7 @@ MouseArea{
             mainItemContainer.inAnimation = false;
 
             if (isWindow || isStartup) {
-                panel.setAnimationsNeedLength(-1);
+                panel.signalAnimationsNeedLength(-1);
             }
         }
 
@@ -927,7 +927,7 @@ MouseArea{
             wrapper.tempScaleHeight = 0;
 
             if (isWindow || isStartup) {
-                panel.setAnimationsNeedLength(1);
+                panel.signalAnimationsNeedLength(1);
             }
         }
 
@@ -1042,6 +1042,7 @@ MouseArea{
     ///Item's Removal Animation
 
     ListView.onRemove: SequentialAnimation {
+        ScriptAction{script:{panel.signalAnimationsNeedLength(1)}}
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
         PropertyAction { target: icList; property: "delayingRemoval"; value: true }
@@ -1076,9 +1077,7 @@ MouseArea{
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
         PropertyAction { target: icList; property: "delayingRemoval"; value: false }
-
-        onStarted: panel.setAnimationsNeedLength(+1);
-        onStopped: panel.setAnimationsNeedLength(-1);
+        ScriptAction{script:{panel.signalAnimationsNeedLength(-1)}}
     }
 
 }// main Item

@@ -388,7 +388,7 @@ DragDrop.DropArea {
 
     //////////////START OF CONNECTIONS
     //this is used from zoomed applets in that container
-    onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
+    //onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
 
     onEditModeChanged: {
         if (editMode) {
@@ -804,32 +804,42 @@ DragDrop.DropArea {
         return false;
     }
 
-    function slotAnimationsNeedBothAxis(value) {
-        if (animationsNeedBothAxis === value) {
+    function slotAnimationsNeedBothAxis(step) {
+        if (step === 0) {
             return;
         }
 
-        animationsNeedBothAxis = Math.max(value, 0);
+        animationsNeedBothAxis = Math.max(animationsNeedBothAxis + step, 0);
 
         visibilityManager.updateMaskArea();
     }
 
-    function slotAnimationsNeedLength(value) {
-        if (animationsNeedLength === value) {
+    function slotAnimationsNeedLength(step) {
+        if (step === 0) {
             return;
         }
 
-        animationsNeedLength = Math.max(value, 0);
+        animationsNeedLength = Math.max(animationsNeedLength + step, 0);
 
         visibilityManager.updateMaskArea();
     }
 
-    function slotAnimationsNeedThickness(value) {
-        if (animationsNeedThickness === value) {
+    function slotAnimationsNeedThickness(step) {
+        if (step === 0) {
             return;
         }
 
-        animationsNeedThickness = Math.max(value, 0);
+        animationsNeedThickness = Math.max(animationsNeedThickness + step, 0);
+
+        visibilityManager.updateMaskArea();
+    }
+
+    function slotAppletsAnimations(step) {
+        if (step === 0) {
+            return;
+        }
+
+        appletsAnimations = Math.max(appletsAnimations + step, 0);
 
         visibilityManager.updateMaskArea();
     }
