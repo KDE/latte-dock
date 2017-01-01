@@ -29,16 +29,6 @@ PlasmaCore.FrameSvgItem {
         spacing: 1.5*theme.defaultFont.pointSize
         width: parent.width - 2*windowSpace
 
-
-        PlasmaComponents.TabBar{
-            PlasmaComponents.TabButton{
-                text: "Visual"
-            }
-            PlasmaComponents.TabButton{
-                text: "Interaction"
-            }
-        }
-
         //////////// Location ////////////////
 
         Column{
