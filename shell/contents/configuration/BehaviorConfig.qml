@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
@@ -156,7 +156,7 @@ PlasmaComponents.Page{
             spacing: 0.8*theme.defaultFont.pointSize
 
             Header{
-                text: i18n("Applets Alignment")
+                text: i18n("Alignment")
             }
 
             //user set Panel Positions
@@ -394,6 +394,66 @@ PlasmaComponents.Page{
                         }
                     }
                     onClicked: checked=true;
+                }
+            }
+        }
+
+        Column{
+            width:parent.width
+            spacing: 0.8*theme.defaultFont.pointSize
+            Header{
+                text: i18n("Delay")
+            }
+
+            GridLayout{
+                columns: 2
+                columnSpacing: 0.3*theme.defaultFont.pointSize
+                width: parent.width
+
+                Row{
+                    Layout.alignment: Qt.AlignHCenter
+                    PlasmaComponents.Label{
+                        text: i18n("Hide:")
+                    }
+
+                    LatteTextField{
+                        width: 9.5 * theme.defaultFont.pixelSize
+                        property bool inStartup: true
+
+                        Component.onCompleted: {
+                            value = dock.visibility.timerHide
+                            inStartup = false;
+                        }
+
+                        onValueChanged: {
+                            if(!inStartup){
+                                dock.visibility.timerHide = value;
+                            }
+                        }
+                    }
+                }
+
+                Row{
+                    Layout.alignment: Qt.AlignHCenter
+                    PlasmaComponents.Label{
+                        text: i18n("Show:")
+                    }
+
+                    LatteTextField{
+                        width: 9.5 * theme.defaultFont.pixelSize
+                        property bool inStartup: true
+
+                        Component.onCompleted: {
+                            value = dock.visibility.timerShow
+                            inStartup = false;
+                        }
+
+                        onValueChanged: {
+                            if(!inStartup){
+                                dock.visibility.timerShow = value;
+                            }
+                        }
+                    }
                 }
             }
         }

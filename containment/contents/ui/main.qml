@@ -407,9 +407,6 @@ DragDrop.DropArea {
             dock.onWidthChanged.connect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.connect(visibilityManager.updateMaskArea);
 
-            dock.visibility.timerShow = 300;
-            dock.visibility.timerHide = 1000;
-
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
             dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
