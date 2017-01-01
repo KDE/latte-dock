@@ -465,6 +465,10 @@ DragDrop.DropArea {
     }
 
     onToolBoxChanged: {
+        if (toolBox) {
+            toolBox.visible = false;
+        }
+
         containmentSizeSyncTimer.restart();
         if (startupTimer.running) {
             startupTimer.restart();
