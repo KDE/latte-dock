@@ -11,7 +11,7 @@ class WindowSystem : public QObject {
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged)
     
 public:
-    explicit WindowSystem(QObject *parent = Q_NULLPTR);
+    explicit WindowSystem(QObject *parent = nullptr);
     ~WindowSystem();
     
     static WindowSystem &self();
