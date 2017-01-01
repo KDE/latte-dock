@@ -66,9 +66,6 @@ Item {
     property bool vertical: ((panel.position === PlasmaCore.Types.LeftPositioned) ||
                              (panel.position === PlasmaCore.Types.RightPositioned)) ? true : false
 
-    property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
-    property int animationsNeedLength: 0 // animations need length, e.g. adding a task
-    property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
     property int clearWidth
     property int clearHeight
 
@@ -162,45 +159,6 @@ Item {
         // onLaunchersChanged: tasksModel.launcherList = plasmoid.configuration.launchers
         onGroupingAppIdBlacklistChanged: tasksModel.groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
         onGroupingLauncherUrlBlacklistChanged: tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
-    }
-
-    function setAnimationsNeedBothAxis(step) {
-        if ((step === 0) || (plasmoid.configuration.durationTime ===0)) {
-            return;
-        }
-
-        animationsNeedBothAxis = animationsNeedBothAxis + step;
-        if (animationsNeedBothAxis < 0) {
-            animationsNeedBothAxis = 0;
-        }
-
-        signalAnimationsNeedBothAxis(animationsNeedBothAxis);
-    }
-
-    function setAnimationsNeedLength(step) {
-        if ((step === 0) || (plasmoid.configuration.durationTime ===0)) {
-            return;
-        }
-
-        animationsNeedLength = animationsNeedLength + step;
-        if (animationsNeedLength < 0) {
-            animationsNeedLength = 0;
-        }
-
-        signalAnimationsNeedLength(animationsNeedLength);
-    }
-
-    function setAnimationsNeedThickness(step) {
-        if ((step === 0) || (plasmoid.configuration.durationTime ===0)) {
-            return;
-        }
-
-        animationsNeedThickness = animationsNeedThickness + step;
-        if (animationsNeedThickness < 0) {
-            animationsNeedThickness = 0;
-        }
-
-        signalAnimationsNeedThickness(animationsNeedThickness);
     }
 
     /////
