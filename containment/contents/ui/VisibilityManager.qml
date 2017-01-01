@@ -106,10 +106,10 @@ Item{
                 && (!mainLayout.animatedLength)
 
         // debug maskArea criteria
-        console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
-                 + root.appletsAnimations+ ", "
-                 + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness +", "
-                 + mainLayout.animatedLength);
+        //console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
+        //         + root.appletsAnimations+ ", "
+        //         + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness +", "
+        //         + mainLayout.animatedLength);
 
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
