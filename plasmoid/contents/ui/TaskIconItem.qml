@@ -111,7 +111,7 @@ Item{
 
         states: State {
             name: "reparented"
-            ParentChange { target: shadowedImage; parent: panel; }
+            ParentChange { target: shadowedImage; parent: root; }
         }
 
         //Corize to use when a window is removed....
@@ -194,7 +194,7 @@ Item{
                 from: "animating"
                 to: "*"
 
-                AnchorAnimation { duration: 1.5*plasmoid.configuration.durationTime*units.longDuration }
+                AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
             }
         ]
     }
@@ -233,7 +233,7 @@ Item{
         source: iconImageBuffer
 
         Behavior on opacity {
-            NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
+            NumberAnimation { duration: root.durationTime*units.longDuration }
         }
     }
 
@@ -319,7 +319,7 @@ Item{
         id: clickedAnimation
 
         property bool pressed: mainItemContainer.pressed
-        property int speed: plasmoid.configuration.durationTime*units.longDuration
+        property int speed: root.durationTime*units.longDuration
 
         ParallelAnimation{
             PropertyAnimation {
@@ -404,7 +404,7 @@ Item{
         id:launcherAnimation
 
         property bool launchedAlready: false
-        property int speed: plasmoid.configuration.durationTime * 0.8 * units.longDuration
+        property int speed: root.durationTime * 0.8 * units.longDuration
 
         SequentialAnimation{
             ParallelAnimation{
@@ -429,7 +429,7 @@ Item{
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
                 to: 1
-                duration: 3*plasmoid.configuration.durationTime*launcherAnimation.speed
+                duration: 3*root.durationTime*launcherAnimation.speed
                 easing.type: Easing.OutBounce
             }
 
@@ -438,7 +438,7 @@ Item{
                     target: wrapper
                     property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
                     to: 1
-                    duration: plasmoid.configuration.durationTime*launcherAnimation.speed
+                    duration: root.durationTime*launcherAnimation.speed
                     easing.type: Easing.OutBounce
                 }
 
@@ -446,7 +446,7 @@ Item{
                     target: wrapper
                     property: "scale"
                     to: 1
-                    duration: plasmoid.configuration.durationTime*launcherAnimation.speed
+                    duration: root.durationTime*launcherAnimation.speed
                     easing.type: Easing.OutQuad
                 }
             }
@@ -522,7 +522,7 @@ Item{
     SequentialAnimation{
         id:newWindowAnimation
 
-        property int speed: plasmoid.configuration.durationTime*units.longDuration
+        property int speed: root.durationTime*units.longDuration
         property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
         property bool entered: mainItemContainer.mouseEntered
         property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
@@ -550,7 +550,7 @@ Item{
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
                 to: 1
-                duration: 3*plasmoid.configuration.durationTime*newWindowAnimation.speed
+                duration: 3*root.durationTime*newWindowAnimation.speed
                 easing.type: Easing.OutBounce
             }
         }
@@ -680,7 +680,7 @@ Item{
                 ParallelAnimation{
                     id: componentRemoveAnimation
 
-                    property int speed: 2*plasmoid.configuration.durationTime*units.longDuration
+                    property int speed: 2*root.durationTime*units.longDuration
                     property Item removingItem: parent
                     property int toPoint: 0
 
@@ -752,7 +752,7 @@ Item{
         Transition{
             id: isDraggedTransition
             to: "isDragged"
-            property int speed: plasmoid.configuration.durationTime*units.longDuration
+            property int speed: root.durationTime*units.longDuration
 
             SequentialAnimation{
                 ParallelAnimation{
@@ -795,7 +795,7 @@ Item{
             id: defaultTransition
             from: "isDragged"
             to: "*"
-            property int speed: plasmoid.configuration.durationTime*units.longDuration
+            property int speed: root.durationTime*units.longDuration
 
             SequentialAnimation{
                 ParallelAnimation{
