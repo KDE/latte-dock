@@ -98,8 +98,12 @@ DragDrop.DropArea {
 
     // TO BE DELETED, if not needed: property int counter:0;
 
-    ///BEGIN properties from nowDock
-    property bool reverseLinesPosition: nowDock ? nowDock.reverseLinesPosition : false
+    ///BEGIN properties provided to Latte Plasmoid
+    property bool enableShadows: plasmoid.configuration.shadows
+    property bool dotsOnActive: plasmoid.configuration.dotsOnActive
+    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition// nowDock ? nowDock.reverseLinesPosition : false
+    property bool showGlow: plasmoid.configuration.showGlow
+    property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 
     property int durationTime: nowDock ? nowDock.durationTime : 2
     property int nowDockHoveredIndex: nowDock ? nowDock.hoveredIndex : -1
@@ -537,9 +541,9 @@ DragDrop.DropArea {
         }
 
         if (plasmoid.userConfiguring) {
-          //  console.log("applets------");
+            //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
-            //    console.log("applet:"+i);
+                //    console.log("applet:"+i);
                 plasmoid.applets[i].expanded = false;
             }
             if (!dragOverlay) {
