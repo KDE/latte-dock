@@ -20,16 +20,20 @@ public:
     void setDockDefaultFlags() override;
     
     WId activeWindow() const override;
-    WindowInfoWrap requestInfo(WId wid) override;
-    WindowInfoWrap requestInfoActive() override;
-    const std::list<WId> &windows() override;
+    WindowInfoWrap requestInfo(WId wid) const override;
+    WindowInfoWrap requestInfoActive() const override;
+    bool isOnCurrentDesktop(WId wid) const override;
+    const std::list<WId> &windows() const override;
     
-    void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) override;
-    void removeDockStruts() override;
+    void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) const override;
+    void removeDockStruts() const override;
+    
     
 private:
-    bool isValidWindow(const KWindowInfo &winfo);
+    bool isValidWindow(const KWindowInfo &winfo) const;
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
+    
+    WId m_desktopId;
 };
 
 }
