@@ -94,6 +94,8 @@ public:
     
     bool compositing() const;
     int currentThickness() const;
+
+    bool tasksPresent() const;
     
     void adaptToScreen(QScreen *screen);
     
@@ -109,6 +111,7 @@ public slots:
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void removeDock();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
+    Q_INVOKABLE bool tasksPresent();
     void resizeWindow();
     void restoreConfig();
     void saveConfig();
