@@ -53,7 +53,7 @@ public:
     VisibilityManager *q;
     PlasmaQuick::ContainmentView *view;
     std::unique_ptr<AbstractWindowInterface> wm;
-    Dock::Visibility mode{Dock::DodgeActive};
+    Dock::Visibility mode{Dock::None};
     std::array<QMetaObject::Connection, 4> connections;
     std::unordered_map<WId, WindowInfoWrap> windows;
     QTimer timerShow;

@@ -28,12 +28,13 @@ public:
     virtual void setDockDefaultFlags() = 0;
     
     virtual WId activeWindow() const = 0;
-    virtual WindowInfoWrap requestInfo(WId wid) = 0;
-    virtual WindowInfoWrap requestInfoActive() = 0;
-    virtual const std::list<WId> &windows() = 0;
+    virtual WindowInfoWrap requestInfo(WId wid) const = 0;
+    virtual WindowInfoWrap requestInfoActive() const = 0;
+    virtual bool isOnCurrentDesktop(WId wid) const = 0;
+    virtual const std::list<WId> &windows() const = 0;
     
-    virtual void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) = 0;
-    virtual void removeDockStruts() = 0;
+    virtual void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) const = 0;
+    virtual void removeDockStruts() const = 0;
     
     static AbstractWindowInterface *getInstance(QQuickWindow *const view, QObject *parent = nullptr);
     

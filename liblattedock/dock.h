@@ -15,6 +15,7 @@ public:
     ~Dock() {}
     
     enum Visibility {
+        None = -1,
         AlwaysVisible = 0,
         AutoHide,
         DodgeActive,

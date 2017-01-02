@@ -8,7 +8,7 @@ WindowInfoWrap::WindowInfoWrap()
     , m_isMinimized(false)
     , m_isMaximized(false)
     , m_isFullscreen(false)
-    , m_isOnCurrentDesktop(false)
+    , m_isPlasmaDesktop(false)
     , m_wid(0)
 {
 
@@ -26,7 +26,7 @@ WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     m_isMinimized = rhs.m_isMinimized;
     m_isMaximized = rhs.m_isMaximized;
     m_isFullscreen = rhs.m_isFullscreen;
-    m_isOnCurrentDesktop = rhs.m_isOnCurrentDesktop;
+    m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_geometry = rhs.m_geometry;
     m_wid = rhs.m_wid;
     
@@ -98,14 +98,14 @@ void WindowInfoWrap::setIsFullscreen(bool isFullscreen)
     m_isFullscreen = isFullscreen;
 }
 
-bool WindowInfoWrap::isOnCurrentDesktop() const
+bool WindowInfoWrap::isPlasmaDesktop() const
 {
-    return m_isOnCurrentDesktop;
+    return m_isPlasmaDesktop;
 }
 
-void WindowInfoWrap::setIsOnCurrentDesktop(bool isOnCurrentDesktop)
+void WindowInfoWrap::setIsPlasmaDesktop(bool isPlasmaDesktop)
 {
-    m_isOnCurrentDesktop = isOnCurrentDesktop;
+    m_isPlasmaDesktop = isPlasmaDesktop;
 }
 
 QRect WindowInfoWrap::geometry() const
@@ -118,14 +118,14 @@ void WindowInfoWrap::setGeometry(const QRect &geometry)
     m_geometry = geometry;
 }
 
-WId WindowInfoWrap::wid() const
-{
-    return m_wid;
-}
-
 void WindowInfoWrap::setWid(WId wid)
 {
     m_wid = wid;
+}
+
+WId WindowInfoWrap::wid() const
+{
+    return m_wid;
 }
 
 }

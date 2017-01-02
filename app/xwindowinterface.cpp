@@ -23,21 +23,31 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
             (&KWindowSystem::windowChanged)
             , this, &XWindowInterface::windowChangedProxy);
             
-    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, [this](WId wid) {
-        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.cend()) {
-            m_windows.push_back(wid);
+    auto addWindow = [&](WId wid) {
+        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
+            if (isValidWindow(KWindowInfo(wid, NET::WMWindowType))) {
+                m_windows.push_back(wid);
+                emit windowAdded(wid);
+            }
         }
-        
-        emit windowAdded(wid);
-    });
+    };
     
-    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, [this](WId wid) {
-        m_windows.remove(wid);
-        emit windowRemoved(wid);
+    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
+    
+    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WId wid) {
+        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
+            m_windows.remove(wid);
+            emit windowRemoved(wid);
+        }
     });
     
     connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
             , this, &AbstractWindowInterface::currentDesktopChanged);
+            
+    // fill windows list
+    foreach (const auto &wid, KWindowSystem::self()->windows()) {
+        addWindow(wid);
+    }
 }
 
 XWindowInterface::~XWindowInterface()
@@ -68,12 +78,12 @@ WId XWindowInterface::activeWindow() const
     return KWindowSystem::self()->activeWindow();
 }
 
-const std::list<WId> &XWindowInterface::windows()
+const std::list<WId> &XWindowInterface::windows() const
 {
     return m_windows;
 }
 
-void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Location location)
+void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Location location) const
 {
     NETExtendedStrut strut;
     
@@ -116,48 +126,59 @@ void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Locat
                                    );
 }
 
-void XWindowInterface::removeDockStruts()
+void XWindowInterface::removeDockStruts() const
 {
     KWindowSystem::setStrut(m_view->winId(), 0, 0, 0, 0);
 }
-
-WindowInfoWrap XWindowInterface::requestInfoActive()
+WindowInfoWrap XWindowInterface::requestInfoActive() const
 {
     return requestInfo(KWindowSystem::activeWindow());
 }
 
-WindowInfoWrap XWindowInterface::requestInfo(WId wid)
+bool XWindowInterface::isOnCurrentDesktop(WId wid) const
 {
-    const KWindowInfo winfo{wid, NET::WMDesktop | NET::WMFrameExtents | NET::WMWindowType | NET::WMGeometry | NET::WMState};
+    KWindowInfo winfo(wid, NET::WMDesktop);
+    return winfo.valid() && winfo.isOnCurrentDesktop();
+}
+
+WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
+{
+    const KWindowInfo winfo{wid, NET::WMFrameExtents | NET::WMWindowType | NET::WMGeometry | NET::WMState};
     
     WindowInfoWrap winfoWrap;
     
-    if (!winfo.valid() || !isValidWindow(winfo))
+    if (!winfo.valid()) {
         return winfoWrap;
         
-    winfoWrap.setIsValid(true);
-    winfoWrap.setWid(wid);
-    winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
-    winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
-    winfoWrap.setIsMaximized(winfo.hasState(NET::Max));
-    winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
-    winfoWrap.setIsOnCurrentDesktop(winfo.isOnCurrentDesktop());
-    winfoWrap.setGeometry(winfo.geometry());
+    } else if (isValidWindow(winfo)) {
+        winfoWrap.setIsValid(true);
+        winfoWrap.setWid(wid);
+        winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
+        winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
+        winfoWrap.setIsMaximized(winfo.hasState(NET::Max));
+        winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
+        winfoWrap.setGeometry(winfo.geometry());
+        
+    } else if (m_desktopId == wid) {
+        winfoWrap.setIsValid(true);
+        winfoWrap.setIsPlasmaDesktop(true);
+        winfoWrap.setWid(wid);
+    }
+    
     
     return winfoWrap;
 }
 
-bool XWindowInterface::isValidWindow(const KWindowInfo &winfo)
+
+bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 {
-    const auto winType = winfo.windowType(NET::DesktopMask | NET::DockMask
+    const auto winType = winfo.windowType(NET::DockMask
                                           | NET::MenuMask | NET::SplashMask
                                           | NET::NormalMask);
                                           
-    if (winType == -1 || (winType & NET::Desktop) || (winType & NET::Menu)
-        || (winType & NET::Dock) || (winType & NET::Splash)) {
+    if (winType == -1 || (winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash))
         return false;
-    }
-    
+        
     return true;
 }
 
@@ -168,9 +189,19 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         return;
         
     //! ignore when, eg: the user presses a key
-    if (prop1 == 0 && prop2 == NET::WM2UserTime)
+    const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
+    
+    if (winType != -1 && (winType & NET::Desktop)) {
+        m_desktopId = wid;
+        emit windowChanged(wid);
+        qDebug() << "desktop changed" << wid;
         return;
-        
+    }
+    
+    if (prop1 == 0 && prop2 == NET::WM2UserTime) {
+        return;
+    }
+    
     if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
         return;
         

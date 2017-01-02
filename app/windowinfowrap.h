@@ -34,8 +34,8 @@ public:
     bool isFullscreen() const;
     void setIsFullscreen(bool isFullscreen);
     
-    bool isOnCurrentDesktop() const;
-    void setIsOnCurrentDesktop(bool isOnCurrentDesktop);
+    bool isPlasmaDesktop() const;
+    void setIsPlasmaDesktop(bool isPlasmaDesktop);
     
     QRect geometry() const;
     void setGeometry(const QRect &geometry);
@@ -49,9 +49,9 @@ private:
     bool m_isMinimized : 1;
     bool m_isMaximized : 1;
     bool m_isFullscreen : 1;
-    bool m_isOnCurrentDesktop : 1;
+    bool m_isPlasmaDesktop : 1;
     QRect m_geometry;
-    WId m_wid;
+    WId m_wid{0};
 };
 
 }
