@@ -106,6 +106,10 @@ DragDrop.DropArea {
     property bool showGlow: plasmoid.configuration.showGlow
     property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions
+    property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
+    property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
+    property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
+
     property bool smartLaunchersEnabled: plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 

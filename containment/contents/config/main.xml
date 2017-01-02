@@ -87,5 +87,14 @@
     <entry name="showWindowActions" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="showOnlyCurrentScreen" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentDesktop" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showOnlyCurrentActivity" type="Bool">
+      <default>true</default>
+    </entry>
   </group>
 </kcfg>

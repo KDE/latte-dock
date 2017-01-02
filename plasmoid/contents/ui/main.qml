@@ -98,6 +98,9 @@ Item {
     property bool reverseLinesPosition: nowDockPanel ? nowDockPanel.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: nowDockPanel ? nowDockPanel.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: nowDockPanel ? nowDockPanel.showGlow : plasmoid.configuration.showGlow
+    property bool showOnlyCurrentScreen: nowDockPanel ? nowDockPanel.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
+    property bool showOnlyCurrentDesktop: nowDockPanel ? nowDockPanel.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
+    property bool showOnlyCurrentActivity: nowDockPanel ? nowDockPanel.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
     property bool showPreviews:  nowDockPanel ? nowDockPanel.showToolTips : plasmoid.configuration.showToolTips
     property bool showWindowActions: nowDockPanel ? nowDockPanel.showWindowActions : plasmoid.configuration.showWindowActions
     property bool smartLaunchersEnabled: nowDockPanel ? nowDockPanel.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
@@ -266,9 +269,9 @@ Item {
         // screen: plasmoid.screen
         activity: activityInfo.currentActivity
 
-        filterByVirtualDesktop: plasmoid.configuration.showOnlyCurrentDesktop
-        filterByScreen: plasmoid.configuration.showOnlyCurrentScreen
-        filterByActivity: plasmoid.configuration.showOnlyCurrentActivity
+        filterByVirtualDesktop: root.showOnlyCurrentDesktop
+        filterByScreen: root.showOnlyCurrentScreen
+        filterByActivity: root.showOnlyCurrentActivity
 
         launchInPlace: true
         separateLaunchers: false
