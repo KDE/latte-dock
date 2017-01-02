@@ -76,13 +76,15 @@ Item{
     }
 
     function slotMustBeShown() {
-      //  console.log("show...");
+        //  console.log("show...");
         slidingAnimationAutoHiddenIn.init();
     }
 
     function slotMustBeHide() {
-       // console.log("hide....");
-        slidingAnimationAutoHiddenOut.init();
+        // console.log("hide....");
+        if (!plasmoid.userConfiguring) {
+            slidingAnimationAutoHiddenOut.init();
+        }
     }
 
     function slotModeChanged() {
