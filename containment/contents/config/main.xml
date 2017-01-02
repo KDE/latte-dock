@@ -66,5 +66,14 @@
     <entry name="reverseLinesPosition" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="durationTime" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="x1"/>
+            <choice name="x2"/>
+            <choice name="x3"/>
+      </choices>
+      <default>2</default>
+    </entry>
   </group>
 </kcfg>
