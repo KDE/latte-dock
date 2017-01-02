@@ -18,6 +18,7 @@ class VisibilityManager : public QObject {
     
     Q_PROPERTY(Latte::Dock::Visibility mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(bool isHidden READ isHidden WRITE setIsHidden NOTIFY isHiddenChanged)
+    Q_PROPERTY(bool blockHiding READ blockHiding WRITE setBlockHiding NOTIFY blockHidingChanged)
     Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
     Q_PROPERTY(int timerShow READ timerShow WRITE setTimerShow NOTIFY timerShowChanged)
     Q_PROPERTY(int timerHide READ timerHide WRITE setTimerHide NOTIFY timerHideChanged)
@@ -31,6 +32,9 @@ public:
     
     bool isHidden() const;
     void setIsHidden(bool isHidden);
+    
+    bool blockHiding() const;
+    void setBlockHiding(bool blockHiding);
     
     bool containsMouse() const;
     
@@ -51,6 +55,7 @@ signals:
     
     void modeChanged();
     void isHiddenChanged();
+    void blockHidingChanged();
     void containsMouseChanged();
     void timerShowChanged();
     void timerHideChanged();
