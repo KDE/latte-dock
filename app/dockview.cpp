@@ -33,6 +33,7 @@
 #include <QMetaEnum>
 
 #include <Plasma/Containment>
+#include <Plasma/ContainmentActions>
 #include <KActionCollection>
 #include <KLocalizedContext>
 
@@ -565,6 +566,41 @@ void DockView::restoreConfig()
     //  setIconSize(readEntry("iconSize", 32).toInt());
     //  setZoomFactor(readEntry("zoomFactor", 1.0).toFloat());
     //  setAlignment(static_cast<Dock::Alignment>(readEntry("alignment", Dock::Center).toInt()));
+}
+
+QVariantList DockView::containmentActions()
+{
+    QVariantList actions;
+
+    /*if (containment()->corona()->immutability() != Plasma::Types::Mutable) {
+        return actions;
+    }*/
+
+    //FIXME: the trigger string it should be better to be supported this way
+    //const QString trigger = Plasma::ContainmentActions::eventToString(event);
+    const QString trigger = "RightButton;NoModifier";
+
+    Plasma::ContainmentActions *plugin = containment()->containmentActions().value(trigger);
+
+    if (!plugin) {
+        return actions;
+    }
+
+    if (plugin->containment() != containment()) {
+        plugin->setContainment(containment());
+
+        // now configure it
+        KConfigGroup cfg(containment()->corona()->config(), "ActionPlugins");
+        cfg = KConfigGroup(&cfg, QString::number(containment()->containmentType()));
+        KConfigGroup pluginConfig = KConfigGroup(&cfg, trigger);
+        plugin->restore(pluginConfig);
+    }
+
+    foreach (QAction *ac, plugin->contextualActions()) {
+        actions << QVariant::fromValue<QAction *>(ac);
+    }
+
+    return actions;
 }
 
 }
