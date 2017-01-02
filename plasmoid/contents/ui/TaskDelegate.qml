@@ -275,9 +275,9 @@ MouseArea{
                 Loader{
                     id: firstIndicator
                     active:( (((panel.position === PlasmaCore.Types.TopPositioned) || (panel.position === PlasmaCore.Types.LeftPositioned))
-                              && !plasmoid.configuration.reverseLinesPosition)
+                              && !panel.reverseLinesPosition)
                             || (((panel.position === PlasmaCore.Types.BottomPositioned) || (panel.position === PlasmaCore.Types.RightPositioned))
-                                && plasmoid.configuration.reverseLinesPosition) )
+                                && panel.reverseLinesPosition) )
                     sourceComponent: Component{
                         TaskGroupItem{}
                     }

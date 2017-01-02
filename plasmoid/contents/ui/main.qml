@@ -53,8 +53,6 @@ Item {
     property bool editMode: plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
-    property bool enableShadows: plasmoid.configuration.showShadows
-    property bool glow: plasmoid.configuration.showGlow
     property bool initializationStep: true
     property bool initializatedBuffers: noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
@@ -93,10 +91,14 @@ Item {
     property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
 
     //BEGIN Now Dock Panel properties
+    property bool enableShadows: nowDockPanel ? nowDockPanel.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
-    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition
+    property bool reverseLinesPosition: nowDockPanel ? nowDockPanel.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
+    property bool dotsOnActive: nowDockPanel ? nowDockPanel.dotsOnActive : plasmoid.configuration.dotsOnActive
+    property bool showGlow: nowDockPanel ? nowDockPanel.showGlow : plasmoid.configuration.showGlow
+    property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmod.configuration.threeColorsWindows
 
     property int durationTime: plasmoid.configuration.durationTime
     property int iconSize: nowDockPanel ? nowDockPanel.iconSize : Math.max(plasmoid.configuration.iconSize, 16)

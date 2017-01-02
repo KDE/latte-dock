@@ -202,7 +202,7 @@ Item{
     ///Shadow in tasks
     Loader{
         anchors.fill: iconImageBuffer
-        active: plasmoid.configuration.showShadows
+        active: panel.enableShadows
 
         sourceComponent: DropShadow{
             anchors.fill: parent

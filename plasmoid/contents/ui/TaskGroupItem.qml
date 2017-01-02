@@ -35,7 +35,7 @@ Item{
     property color isActiveColor: theme.buttonFocusColor
     //property color isShownColor: plasmoid.configuration.threeColorsWindows ? panel.shownDotColor : isActiveColor
     property color isShownColor: isActiveColor
-    property color minimizedColor: plasmoid.configuration.threeColorsWindows ? panel.minimizedDotColor : isActiveColor
+    property color minimizedColor: panel.threeColorsWindows ? panel.minimizedDotColor : isActiveColor
     property color notActiveColor: mainItemContainer.hasMinimized ? minimizedColor : isShownColor
 
    /* Rectangle{
@@ -157,7 +157,7 @@ Item{
 
                 basicColor: ((mainItemContainer.hasActive)&&(!(mainItemContainer.hasMinimized))) ? state2Color : state1Color
                 roundCorners: true
-                visible:  ( mainItemContainer.isGroupParent && plasmoid.configuration.dotsOnActive )
+                visible:  ( mainItemContainer.isGroupParent && panel.dotsOnActive )
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
 
                 //when there is no active window
