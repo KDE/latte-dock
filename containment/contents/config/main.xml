@@ -75,5 +75,17 @@
       </choices>
       <default>2</default>
     </entry>
+    <entry name="smartLaunchersEnabled" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="highlightWindows" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showToolTips" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="showWindowActions" type="Bool">
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>

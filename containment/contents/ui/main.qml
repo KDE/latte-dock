@@ -101,8 +101,12 @@ DragDrop.DropArea {
     ///BEGIN properties provided to Latte Plasmoid
     property bool enableShadows: plasmoid.configuration.shadows
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
+    property bool highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition// nowDock ? nowDock.reverseLinesPosition : false
     property bool showGlow: plasmoid.configuration.showGlow
+    property bool showToolTips: plasmoid.configuration.showToolTips
+    property bool showWindowActions: plasmoid.configuration.showWindowActions
+    property bool smartLaunchersEnabled: plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 
     property int durationTime: plasmoid.configuration.durationTime

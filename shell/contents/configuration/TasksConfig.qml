@@ -16,6 +16,8 @@ PlasmaComponents.Page{
     Column{
         spacing: 1.5*theme.defaultFont.pointSize
         width: parent.width
+
+        /******Appearance******/
         Column{
             width:parent.width
             spacing: 0.8*theme.defaultFont.pointSize
@@ -23,6 +25,8 @@ PlasmaComponents.Page{
             Header{
                 text: i18n("Appearance")
             }
+
+
 
             PlasmaComponents.CheckBox {
                 id: showGlow
@@ -66,6 +70,61 @@ PlasmaComponents.Page{
                 }
 
                 Component.onCompleted: checked = plasmoid.configuration.reverseLinesPosition;
+            }
+        }
+
+        /*********Behavior************/
+        Column{
+            width:parent.width
+            spacing: 0.8*theme.defaultFont.pointSize
+
+            Header{
+                text: i18n("Behavior")
+            }
+
+
+            PlasmaComponents.CheckBox {
+                id: showPreviewsChk
+                text: i18n("Preview windows on hovering")
+
+                onCheckedChanged: {
+                    plasmoid.configuration.showToolTips = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.showToolTips;
+            }
+
+            PlasmaComponents.CheckBox {
+                id: highlightWindowsChk
+                text: i18n("Highlight windows on hovering")
+
+                onCheckedChanged: {
+                    plasmoid.configuration.highlightWindows = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.highlightWindows;
+            }
+
+            PlasmaComponents.CheckBox {
+                id: windowActionsChk
+                text: i18n("Show window actions in the context menu")
+
+                onCheckedChanged: {
+                    plasmoid.configuration.showWindowActions = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.showWindowActions;
+            }
+
+            PlasmaComponents.CheckBox {
+                id: smartLaunchersChk
+                text: i18n("Show progress information in task buttons")
+
+                onCheckedChanged: {
+                    plasmoid.configuration.smartLaunchersEnabled = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.smartLaunchersEnabled;
             }
         }
     }

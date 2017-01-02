@@ -54,7 +54,7 @@ Item{
 
     property int shadowSize : Math.ceil(root.iconSize / 10)
 
-    readonly property bool smartLauncherEnabled: ((mainItemContainer.isStartup === false) && (plasmoid.configuration.smartLaunchersEnabled))
+    readonly property bool smartLauncherEnabled: ((mainItemContainer.isStartup === false) && (root.smartLaunchersEnabled))
     readonly property variant iconDecoration: decoration
     property QtObject buffers: null
     property QtObject smartLauncherItem: null

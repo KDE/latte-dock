@@ -393,7 +393,7 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && plasmoid.configuration.showWindowActions)
+                  && root.showWindowActions)
 
         enabled: visualParent && visualParent.m.IsMinimizable === true
 
@@ -409,7 +409,7 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && plasmoid.configuration.showWindowActions)
+                  && root.showWindowActions)
 
         enabled: visualParent && visualParent.m.IsMaximizable === true
 
@@ -427,7 +427,7 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && plasmoid.configuration.showWindowActions)
+                  && root.showWindowActions)
 
         enabled: visible
 
@@ -531,7 +531,7 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && plasmoid.configuration.showWindowActions)
+                  && root.showWindowActions)
     }
 
     PlasmaComponents.MenuItem {
