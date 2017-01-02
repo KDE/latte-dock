@@ -28,14 +28,14 @@ Item{
     width: ( icList.orientation === Qt.Horizontal ) ? wrapper.regulatorWidth : size
     height: ( icList.orientation === Qt.Vertical ) ? wrapper.regulatorHeight : size
 
-    //property int size: Math.ceil( panel.iconSize/13 ) //5
-    property int size: panel.statesLineSize
+    //property int size: Math.ceil( root.iconSize/13 ) //5
+    property int size: root.statesLineSize
 
     //SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
     property color isActiveColor: theme.buttonFocusColor
-    //property color isShownColor: plasmoid.configuration.threeColorsWindows ? panel.shownDotColor : isActiveColor
+    //property color isShownColor: plasmoid.configuration.threeColorsWindows ? root.shownDotColor : isActiveColor
     property color isShownColor: isActiveColor
-    property color minimizedColor: panel.threeColorsWindows ? panel.minimizedDotColor : isActiveColor
+    property color minimizedColor: root.threeColorsWindows ? root.minimizedDotColor : isActiveColor
     property color notActiveColor: mainItemContainer.hasMinimized ? minimizedColor : isShownColor
 
    /* Rectangle{
@@ -72,9 +72,9 @@ Item{
                 property int animationTime: plasmoid.configuration.durationTime* (0.7*units.longDuration)
 
                 property bool isActive: mainItemContainer.hasActive
-                                        || (panel.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
+                                        || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
 
-                property bool vertical: panel.vertical
+                property bool vertical: root.vertical
 
                 property real scaleFactor: wrapper.scale
 
@@ -104,10 +104,10 @@ Item{
                 }
 
                 onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !panel.vertical && isActive){
+                    if(!activeAndReverseAnimation.running && !root.vertical && isActive){
                         width = stateWidth;
                     }
-                    else if (!activeAndReverseAnimation.running && panel.vertical && isActive){
+                    else if (!activeAndReverseAnimation.running && root.vertical && isActive){
                         height = stateHeight;
                     }
                 }
@@ -127,16 +127,16 @@ Item{
                 Component.onCompleted: {
                     updateInitialSizes();
 
-                    panel.onIconSizeChanged.connect(updateInitialSizes);
+                    root.onIconSizeChanged.connect(updateInitialSizes);
                 }
 
                 NumberAnimation{
                     id: activeAndReverseAnimation
                     target: firstPoint
-                    property: panel.vertical ? "height" : "width"
+                    property: root.vertical ? "height" : "width"
                     to: mainItemContainer.hasActive
-                        || (panel.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
-                        ? (panel.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
+                        || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
+                        ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
                     duration: firstPoint.animationTime
                     easing.type: Easing.InQuad
 
@@ -157,7 +157,7 @@ Item{
 
                 basicColor: ((mainItemContainer.hasActive)&&(!(mainItemContainer.hasMinimized))) ? state2Color : state1Color
                 roundCorners: true
-                visible:  ( mainItemContainer.isGroupParent && panel.dotsOnActive )
+                visible:  ( mainItemContainer.isGroupParent && root.dotsOnActive )
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
 
                 //when there is no active window

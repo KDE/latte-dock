@@ -24,12 +24,12 @@ Item{
     Rectangle{
         anchors.fill: parent
 
-        anchors.bottom: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.bottom : undefined
-        anchors.top: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.top : undefined
-        anchors.left: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.left : undefined
-        anchors.right: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.right : undefined
+        anchors.bottom: (root.position === PlasmaCore.Types.TopPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.RightPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.right : undefined
 
-        radius: panel.iconSize/10
+        radius: root.iconSize/10
 
         property color tempColor: "#aa222222"
         color: tempColor

@@ -48,11 +48,11 @@ Item{
     // This is done before especially on initialization stage some visuals
     // are not ready and empty buffers are created
 
-    //property int firstDrawedInterval: panel.initializationStep ? 2000 : 1000
+    //property int firstDrawedInterval: root.initializationStep ? 2000 : 1000
     // property int shadowInterval: firstDrawed ? firstDrawedInterval : 250
     property int shadowInterval: firstDrawed ? 1000 : 250
 
-    property int shadowSize : Math.ceil(panel.iconSize / 10)
+    property int shadowSize : Math.ceil(root.iconSize / 10)
 
     readonly property bool smartLauncherEnabled: ((mainItemContainer.isStartup === false) && (plasmoid.configuration.smartLaunchersEnabled))
     readonly property variant iconDecoration: decoration
@@ -67,7 +67,7 @@ Item{
     } */
 
     Connections{
-        target: panel
+        target: root
         onZoomFactorChanged: updateImages()
         onIconSizeChanged: updateImages()
         onEnableShadowsChanged: updateImages()
@@ -145,12 +145,12 @@ Item{
         height: Math.round(width)
         icon: decoration
 
-        property int zoomedSize: panel.zoomFactor * panel.iconSize
+        property int zoomedSize: root.zoomFactor * root.iconSize
 
-        property real basicScalingWidth : wrapper.inTempScaling ? (panel.iconSize * wrapper.scaleWidth) :
-                                                                  panel.iconSize * wrapper.scale
-        property real basicScalingHeight : wrapper.inTempScaling ? (panel.iconSize * wrapper.scaleHeight) :
-                                                                   panel.iconSize * wrapper.scale
+        property real basicScalingWidth : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleWidth) :
+                                                                  root.iconSize * wrapper.scale
+        property real basicScalingHeight : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleHeight) :
+                                                                   root.iconSize * wrapper.scale
 
         property real newTempSize: (wrapper.opacity == 1) ? Math.min(basicScalingWidth, basicScalingHeight) :
                                                             Math.max(basicScalingWidth, basicScalingHeight)
@@ -180,10 +180,10 @@ Item{
                     target:iconImageBuffer;
                     anchors.horizontalCenter: undefined;
                     anchors.verticalCenter: undefined;
-                    anchors.right: panel.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
-                    anchors.left: panel.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
-                    anchors.top: panel.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
-                    anchors.bottom: panel.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
+                    anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
+                    anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
+                    anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
+                    anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
                 }
             }
         ]
@@ -202,7 +202,7 @@ Item{
     ///Shadow in tasks
     Loader{
         anchors.fill: iconImageBuffer
-        active: panel.enableShadows
+        active: root.enableShadows
 
         sourceComponent: DropShadow{
             anchors.fill: parent
@@ -220,8 +220,8 @@ Item{
         anchors.fill: iconImageBuffer
 
         visible: opacity == 0 ? false : true
-        opacity: panel.dropNewLauncher && !mouseHandler.onlyLaunchers
-                 && (panel.dragSource == null) && (mouseHandler.hoveredItem === mainItemContainer) ? 1 : 0
+        opacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
+                 && (root.dragSource == null) && (mouseHandler.hoveredItem === mainItemContainer) ? 1 : 0
     }
 
     BrightnessContrast{
@@ -264,9 +264,9 @@ Item{
     PlasmaCore.IconItem{
         id: iconImageBackground
 
-        //property real relatedSize: panel.iconSize  *  ( (doubleSize  - 7) / doubleSize );
-        //    width: (visible) ? relatedSize * wrapper.scale : panel.iconSize
-        width: (visible) ? panel.iconSize * wrapper.scale : panel.iconSize
+        //property real relatedSize: root.iconSize  *  ( (doubleSize  - 7) / doubleSize );
+        //    width: (visible) ? relatedSize * wrapper.scale : root.iconSize
+        width: (visible) ? root.iconSize * wrapper.scale : root.iconSize
         height: width
         anchors.centerIn: parent
 
@@ -277,7 +277,7 @@ Item{
         source: decoration
         usesPlasmaTheme: false
 
-        visible: ((iconImageBuffer.opacity == 1) && (panel.enableShadows)) ? false : true
+        visible: ((iconImageBuffer.opacity == 1) && (root.enableShadows)) ? false : true
 
         Component{
             id:hideBackTimer
@@ -332,7 +332,7 @@ Item{
             PropertyAnimation {
                 target: wrapper
                 property: "scale"
-                to: panel.taskInAnimation ? 0.9 : wrapper.scale - (panel.zoomFactor - 1) / 2
+                to: root.taskInAnimation ? 0.9 : wrapper.scale - (root.zoomFactor - 1) / 2
                 duration: clickedAnimation.speed
                 easing.type: Easing.OutQuad
             }
@@ -349,7 +349,7 @@ Item{
             PropertyAnimation {
                 target: wrapper
                 property: "scale"
-                to: panel.taskInAnimation ? 1 : panel.zoomFactor
+                to: root.taskInAnimation ? 1 : root.zoomFactor
                 duration: clickedAnimation.speed
                 easing.type: Easing.OutQuad
             }
@@ -411,7 +411,7 @@ Item{
                 PropertyAnimation {
                     target: wrapper
                     property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                    to: panel.zoomFactor
+                    to: root.zoomFactor
                     duration: launcherAnimation.speed
                     easing.type: Easing.OutQuad
                 }
@@ -455,13 +455,13 @@ Item{
 
         onStopped: {
             //wrapper.scale = 1;
-            /*   if ( panel.noTasksInAnimation>0 ) {
-                panel.noTasksInAnimation--;
+            /*   if ( root.noTasksInAnimation>0 ) {
+                root.noTasksInAnimation--;
             }
-            if ( panel.animations>0 ) {
-                panel.animations--;
+            if ( root.animations>0 ) {
+                root.animations--;
             }*/
-            //console.log ("Nooo 2: "+panel.noTasksInAnimation + " - "+panel.animations);
+            //console.log ("Nooo 2: "+root.noTasksInAnimation + " - "+root.animations);
             clearAnimationsSignals();
 
             mainItemContainer.setBlockingAnimation(false);
@@ -470,23 +470,23 @@ Item{
         }
 
         function clearAnimationsSignals() {
-            if ( launchedAlready && panel.noTasksInAnimation>0 ) {
-                panel.noTasksInAnimation--;
+            if ( launchedAlready && root.noTasksInAnimation>0 ) {
+                root.noTasksInAnimation--;
             }
 
             if ( launchedAlready ) {
-                panel.signalAnimationsNeedThickness(-1);
+                root.signalAnimationsNeedThickness(-1);
             }
 
             launchedAlready = false;
         }
 
         function init(){
-            //console.log ("Nooo 1 : "+panel.noTasksInAnimation);
+            //console.log ("Nooo 1 : "+root.noTasksInAnimation);
             if(!launchedAlready) {
                 launchedAlready = true;
-                panel.signalAnimationsNeedThickness(1);
-                panel.noTasksInAnimation++;
+                root.signalAnimationsNeedThickness(1);
+                root.noTasksInAnimation++;
                 mainItemContainer.setBlockingAnimation(true);
             }
 
@@ -497,7 +497,7 @@ Item{
         }
 
         function bounceLauncher(){
-            if(panel.zoomFactor > 1){
+            if(root.zoomFactor > 1){
                 mainItemContainer.animationStarted();
                 init();
                 start();
@@ -532,7 +532,7 @@ Item{
                 PropertyAnimation {
                     target: wrapper
                     property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                    to: 1 + (0.6 * (panel.zoomFactor-1))
+                    to: 1 + (0.6 * (root.zoomFactor-1))
                     duration: newWindowAnimation.speed
                     easing.type: Easing.OutQuad
                 }
@@ -582,7 +582,7 @@ Item{
         function sendEndOfNeedThicknessAnimation(){
             if (needsThicknessSent) {
                 needsThicknessSent = false;
-                panel.signalAnimationsNeedThickness(-1);
+                root.signalAnimationsNeedThickness(-1);
             }
         }
 
@@ -597,7 +597,7 @@ Item{
 
             if (!needsThicknessSent) {
                 needsThicknessSent = true;
-                panel.signalAnimationsNeedThickness(1);
+                root.signalAnimationsNeedThickness(1);
             }
 
             // icList.hoveredIndex = -1;
@@ -625,12 +625,12 @@ Item{
         function init(){
             var relavantPoint
             if(plasmoid.configuration.showShadows)
-                relavantPoint = panel.mapFromItem(shadowedImage,0,0);
+                relavantPoint = root.mapFromItem(shadowedImage,0,0);
             else
-                relavantPoint = panel.mapFromItem(iconImageBuffer,0,0);
+                relavantPoint = root.mapFromItem(iconImageBuffer,0,0);
 
 
-            var removingItem = removeTaskComponent.createObject(panel);
+            var removingItem = removeTaskComponent.createObject(root);
             removingItem.x = relavantPoint.x;
             removingItem.y = relavantPoint.y;
 
@@ -714,12 +714,12 @@ Item{
                     else
                         tempPoint = x;
 
-                    if( (panel.position === PlasmaCore.Types.BottomPositioned) ||
-                            (panel.position === PlasmaCore.Types.RightPositioned) ){
-                        componentRemoveAnimation.toPoint = tempPoint + panel.iconSize;
+                    if( (root.position === PlasmaCore.Types.BottomPositioned) ||
+                            (root.position === PlasmaCore.Types.RightPositioned) ){
+                        componentRemoveAnimation.toPoint = tempPoint + root.iconSize;
                     }
                     else{
-                        componentRemoveAnimation.toPoint = tempPoint - panel.iconSize;
+                        componentRemoveAnimation.toPoint = tempPoint - root.iconSize;
                     }
 
                     visible = true;
@@ -739,10 +739,10 @@ Item{
 
         State{
             name: "isDragged"
-            when: ( (mainItemContainer.isDragged) && (!panel.editMode) )
+            when: ( (mainItemContainer.isDragged) && (!root.editMode) )
 
             //    PropertyChanges { target: clickedAnimation; running:false }
-            PropertyChanges { target: wrapper; scale:1 + ((panel.zoomFactor - 1) / 2)}
+            PropertyChanges { target: wrapper; scale:1 + ((root.zoomFactor - 1) / 2)}
         }
     ]
 
@@ -785,9 +785,9 @@ Item{
             onRunningChanged: {
                 if(running){
                     mainItemContainer.animationStarted();
-                    //panel.animations++;
-                    panel.updateScale(index-1, 1, 0);
-                    panel.updateScale(index+1, 1, 0);
+                    //root.animations++;
+                    root.updateScale(index-1, 1, 0);
+                    root.updateScale(index+1, 1, 0);
                 }
             }
         },
@@ -836,12 +836,12 @@ Item{
 
             onRunningChanged: {
                 if(!running){
-                    var halfZoom = 1 + ((panel.zoomFactor - 1) / 2);
-                    panel.updateScale(index-1, halfZoom, 0);
-                    panel.updateScale(index+1, halfZoom, 0);
+                    var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
+                    root.updateScale(index-1, halfZoom, 0);
+                    root.updateScale(index+1, halfZoom, 0);
 
                     mainItemContainer.animationEnded();
-                    //   panel.animations--;
+                    //   root.animations--;
                 }
             }
         }
@@ -851,7 +851,7 @@ Item{
     //////////////////////////
 
     function updateImages(){
-        if(panel){
+        if(root){
             if(defaultWithShadow.item){
                 defaultWithShadow.item.updateImage();
             }

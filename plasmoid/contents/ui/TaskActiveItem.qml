@@ -37,9 +37,9 @@ Item{
         width: ( icList.orientation === Qt.Horizontal ) ? parent.width : 3
         height: ( icList.orientation === Qt.Vertical ) ? parent.height : 3
 
-        anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
     }
 }// active indicator

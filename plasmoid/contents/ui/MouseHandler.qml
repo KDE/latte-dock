@@ -50,8 +50,7 @@ Item {
     }
 
     Connections {
-        target: panel
-
+        target: root
         onDragSourceChanged: {
             if (!dragSource) {
                 ignoredItem = null;
@@ -73,8 +72,8 @@ Item {
         property Item hoveredItem
 
         onDragEnter:{
-            if(panel.dragSource == null){
-                panel.dropNewLauncher = true;
+            if(root.dragSource == null){
+                root.dropNewLauncher = true;
 
                 var createLaunchers = event.mimeData.urls.every(function (item) {
                     return backend.isApplication(item)
@@ -87,8 +86,8 @@ Item {
         }
 
         onDragMove: {
-            if(panel.dragSource == null){
-                panel.dropNewLauncher = true;
+            if(root.dragSource == null){
+                root.dropNewLauncher = true;
             }
 
             if (target.animating) {
@@ -107,15 +106,15 @@ Item {
             // by tracking the cursor movement vector and allowing the drag if
             // the movement direction has reversed, etablishing user intent to
             // move back.
-          /*  if (panel.dragSource != null
-                 && panel.dragSource.m.IsLauncher === true && above != null
+          /*  if (root.dragSource != null
+                 && root.dragSource.m.IsLauncher === true && above != null
                  && above.m != null
                  && above.m.IsLauncher !== true && above == ignoredItem) {
                 return;
             } else {
                 ignoredItem = null;
             }*/
-            if (panel.dragSource == null
+            if (root.dragSource == null
                && ignoredItem == above)
                 return;
 
@@ -123,21 +122,21 @@ Item {
             //but know not... strange... && above != ignoredItem
             //I use the ignoredItem in order to reduce the move calls as much
             //as possible
-            if (tasksModel.sortMode == TaskManager.TasksModel.SortManual && panel.dragSource && ignoredItem == null) {
+            if (tasksModel.sortMode == TaskManager.TasksModel.SortManual && root.dragSource && ignoredItem == null) {
                 var insertAt = TaskTools.insertIndexAt(above, event.x, event.y);              
 
-                if (panel.dragSource != above && panel.dragSource.itemIndex != insertAt) {
-              //      console.log(panel.dragSource.itemIndex + " - "+insertAt);
-                    tasksModel.move(panel.dragSource.itemIndex, insertAt);
+                if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
+              //      console.log(root.dragSource.itemIndex + " - "+insertAt);
+                    tasksModel.move(root.dragSource.itemIndex, insertAt);
                     ignoredItem = above;
                     ignoreItemTimer.restart();
                 }
-            } else if (!panel.dragSource && above && hoveredItem != above) {
+            } else if (!root.dragSource && above && hoveredItem != above) {
                 hoveredItem = above;
-                panel.dropNewLauncher = true;
+                root.dropNewLauncher = true;
              //   activationTimer.restart();
             } else if (!above) {
-                panel.dropNewLauncher = true;
+                root.dropNewLauncher = true;
                 hoveredItem = null;
               //  activationTimer.stop();
             }
@@ -145,14 +144,14 @@ Item {
 
         onDragLeave: {
             hoveredItem = null;
-            panel.dropNewLauncher = false;
+            root.dropNewLauncher = false;
             onlyLaunchers = false;
             activationTimer.stop();
         }
 
         onDrop: {
             // Reject internal drops.
-            panel.dropNewLauncher = false;
+            root.dropNewLauncher = false;
             onlyLaunchers = false;
 
             if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {

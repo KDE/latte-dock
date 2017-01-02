@@ -58,8 +58,8 @@ PlasmaComponents.ContextMenu {
 
     function show() {
         //trying to use the dragging mechanism in order to not hide the dock
-        panel.disableRestoreZoom = true;
-        panel.signalDraggingState(true);
+        root.disableRestoreZoom = true;
+        root.signalDraggingState(true);
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
         // backend.ungrabMouse(visualParent);
         openRelative();
@@ -194,7 +194,7 @@ PlasmaComponents.ContextMenu {
     }
 
     Component.onCompleted: {
-        ActivitiesTools.launchersOnActivities = panel.launchersOnActivities
+        ActivitiesTools.launchersOnActivities = root.launchersOnActivities
         ActivitiesTools.currentActivity = activityInfo.currentActivity;
         ActivitiesTools.plasmoid = plasmoid;
         //  updateOnAllActivitiesLauncher();
@@ -203,8 +203,8 @@ PlasmaComponents.ContextMenu {
 
     Component.onDestruction: {
         backend.ungrabMouse(visualParent);
-        panel.signalDraggingState(false);
-        panel.disableRestoreZoom = false;
+        root.signalDraggingState(false);
+        root.disableRestoreZoom = false;
         checkListHovered.start();
     }
 

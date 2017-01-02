@@ -41,7 +41,7 @@ MouseArea {
     onContainsMouseChanged: {
         tooltipContentItem.checkMouseInside();
 
-        panel.windowsHovered([winId], containsMouse);
+        root.windowsHovered([winId], containsMouse);
     }
 
     PlasmaComponents.ToolButton {

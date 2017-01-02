@@ -36,7 +36,7 @@ Item {
         states: [
             State {
                 name: "left"
-                when: (panel.position === PlasmaCore.Types.LeftPositioned)
+                when: (root.position === PlasmaCore.Types.LeftPositioned)
 
                 AnchorChanges {
                     target: progressCircle
@@ -45,7 +45,7 @@ Item {
             },
             State {
                 name: "right"
-                when: (panel.position === PlasmaCore.Types.RightPositioned)
+                when: (root.position === PlasmaCore.Types.RightPositioned)
 
                 AnchorChanges {
                     target: progressCircle
@@ -54,7 +54,7 @@ Item {
             },
             State {
                 name: "bottom"
-                when: (panel.position === PlasmaCore.Types.BottomPositioned)
+                when: (root.position === PlasmaCore.Types.BottomPositioned)
 
                 AnchorChanges {
                     target: progressCircle
@@ -63,7 +63,7 @@ Item {
             },
             State {
                 name: "top"
-                when: (panel.position === PlasmaCore.Types.TopPositioned)
+                when: (root.position === PlasmaCore.Types.TopPositioned)
 
                 AnchorChanges {
                     target: progressCircle

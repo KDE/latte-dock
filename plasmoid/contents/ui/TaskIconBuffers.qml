@@ -28,7 +28,7 @@ Component {
         Item{
             id:fixedIcon
 
-            width: panel.iconSize + 2*shadowImageNoActive.radius
+            width: root.iconSize + 2*shadowImageNoActive.radius
             height: width
 
             visible:false
@@ -36,7 +36,7 @@ Component {
             KQuickControlAddons.QIconItem{
                 id: iconImage
 
-                width: panel.iconSize
+                width: root.iconSize
                 height: width
                 anchors.centerIn: parent
 
@@ -53,8 +53,8 @@ Component {
 
                 function updateBuffers(){
                     if((index !== -1) &&(!centralItem.toBeDestroyed) &&(!mainItemContainer.delayingRemove)){
-                        if(panel.initializationStep){
-                            panel.initializationStep = false;
+                        if(root.initializationStep){
+                            root.initializationStep = false;
                         }
 
                         centralItem.firstDrawed = true;
@@ -65,7 +65,7 @@ Component {
                             shadowedImage.source.destroy();
 
 
-                        if(panel.enableShadows == true){
+                        if(root.enableShadows == true){
                             shadowImageNoActive.grabToImage(function(result) {
                                 shadowedImage.source = result.url
                                 result.destroy();
@@ -79,8 +79,8 @@ Component {
                         }
 
                         mainItemContainer.buffersAreReady = true;
-                        if(!panel.initializatedBuffers)
-                            panel.noInitCreatedBuffers++;
+                        if(!root.initializatedBuffers)
+                            root.noInitCreatedBuffers++;
 
                         iconImageBuffer.opacity = 1;
                     }
