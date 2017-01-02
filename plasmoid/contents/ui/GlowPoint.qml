@@ -83,8 +83,8 @@ Item{
             color: smallCircle.color
             //color: "#cc222222"
          //   cornerRadius: smallCircle.radius + glowRadius
-            opacity: panel.showBarLine ? 0.25 : 0.45
-            visible: panel.showGlow
+            opacity: root.showBarLine ? 0.25 : 0.45
+            visible: root.showGlow
         }
 
      /*   BrightnessContrast {
@@ -93,7 +93,7 @@ Item{
             anchors.margins: 1
             brightness: 0.4
             contrast: 0.3
-            visible: panel.glow
+            visible: root.glow
         }*/
     }
 

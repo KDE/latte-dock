@@ -35,7 +35,7 @@ import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
 
 Item {
-    id:panel
+    id:root
 
     Layout.fillHeight: userPanelPosition === 0 ? true : false
     Layout.fillWidth: userPanelPosition === 0 ? true : false
@@ -61,8 +61,8 @@ Item {
     property bool useThemePanel: plasmoid.configuration.useThemePanel
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
-    property bool vertical: ((panel.position === PlasmaCore.Types.LeftPositioned) ||
-                             (panel.position === PlasmaCore.Types.RightPositioned)) ? true : false
+    property bool vertical: ((root.position === PlasmaCore.Types.LeftPositioned) ||
+                             (root.position === PlasmaCore.Types.RightPositioned)) ? true : false
 
     property int clearWidth
     property int clearHeight
@@ -79,7 +79,7 @@ Item {
     property int position : PlasmaCore.Types.BottomPositioned
     property int tasksStarting: 0
     property int realSize: iconSize + iconMargin
-    property int statesLineSize: Math.ceil( panel.iconSize/13 )
+    property int statesLineSize: Math.ceil( root.iconSize/13 )
 
     property real textColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
 
@@ -98,7 +98,7 @@ Item {
     property bool reverseLinesPosition: nowDockPanel ? nowDockPanel.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: nowDockPanel ? nowDockPanel.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: nowDockPanel ? nowDockPanel.showGlow : plasmoid.configuration.showGlow
-    property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmod.configuration.threeColorsWindows
+    property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
     property int durationTime: plasmoid.configuration.durationTime
     property int iconSize: nowDockPanel ? nowDockPanel.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
@@ -150,7 +150,7 @@ Item {
     Connections {
         target: plasmoid
         onLocationChanged: {
-            panel.updatePosition();
+            root.updatePosition();
             iconGeometryTimer.start();
         }
     }
@@ -172,12 +172,12 @@ Item {
 
     onDragSourceChanged: {
         if (dragSource == null) {
-            panel.draggingFinished();
-            panel.signalDraggingState(false);
+            root.draggingFinished();
+            root.signalDraggingState(false);
 
             tasksModel.syncLaunchers();
         } else {
-            panel.signalDraggingState(true);
+            root.signalDraggingState(true);
         }
     }
 
@@ -279,7 +279,7 @@ Item {
             //  console.log("Updated :"+activity);
 
             launcherList = ActivitiesTools.restoreLaunchers();
-            //panel.updateImplicits();
+            //root.updateImplicits();
             //panelGeometryTimer.start();
         }
 
@@ -309,7 +309,7 @@ Item {
 
 
         Component.onCompleted: {
-            ActivitiesTools.launchersOnActivities = panel.launchersOnActivities
+            ActivitiesTools.launchersOnActivities = root.launchersOnActivities
             ActivitiesTools.currentActivity = activityInfo.currentActivity;
             ActivitiesTools.plasmoid = plasmoid;
 
@@ -325,7 +325,7 @@ Item {
     TaskManagerApplet.Backend {
         id: backend
 
-        taskManagerItem: panel
+        taskManagerItem: root
         toolTipItem: toolTipDelegate
         highlightWindows: plasmoid.configuration.highlightWindows
 
@@ -428,8 +428,8 @@ Item {
         interval: 120;
 
         onTriggered: {
-            if (!panel.containsMouse())
-                panel.clearZoom();
+            if (!root.containsMouse())
+                root.clearZoom();
 
             interval = 120;
         }
@@ -444,14 +444,14 @@ Item {
 
     ///Red Liner!!! show the upper needed limit for annimations
     Rectangle{
-        anchors.horizontalCenter: !panel.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: panel.vertical ? parent.verticalCenter : undefined
+        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-        width: panel.vertical ? 1 : 2 * panel.iconSize
-        height: panel.vertical ? 2 * panel.iconSize : 1
+        width: root.vertical ? 1 : 2 * root.iconSize
+        height: root.vertical ? 2 * root.iconSize : 1
         color: "red"
-        x: (panel.position === PlasmaCore.Types.LeftPositioned) ? neededSpace : parent.width - neededSpace
-        y: (panel.position === PlasmaCore.Types.TopPositioned) ? neededSpace : parent.height - neededSpace
+        x: (root.position === PlasmaCore.Types.LeftPositioned) ? neededSpace : parent.width - neededSpace
+        y: (root.position === PlasmaCore.Types.TopPositioned) ? neededSpace : parent.height - neededSpace
 
         visible: plasmoid.configuration.zoomHelper
 
@@ -461,12 +461,12 @@ Item {
     Item{
         id:barLine
 
-        opacity: (tasksModel.count > 0) && panel.initializatedBuffers ? 1 : 0
+        opacity: (tasksModel.count > 0) && root.initializatedBuffers ? 1 : 0
 
-        /*    anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+        /*    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
         anchors.horizontalCenter: !parent.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: parent.vertical ? parent.verticalCenter : undefined */
@@ -474,8 +474,8 @@ Item {
         width: ( icList.orientation === Qt.Horizontal ) ? icList.width + spacing : smallSize
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
-        property int spacing: panel.iconSize / 2
-        property int smallSize: Math.max(3.7*panel.statesLineSize, 16)
+        property int spacing: root.iconSize / 2
+        property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
         Behavior on opacity{
             NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
@@ -487,7 +487,7 @@ Item {
             source: "../images/panel-west.png"
             border { left:8; right:8; top:8; bottom:8 }
 
-            opacity: (plasmoid.configuration.showBarLine && !plasmoid.configuration.useThemePanel && !panel.forceHidePanel) ? 1 : 0
+            opacity: (plasmoid.configuration.showBarLine && !plasmoid.configuration.useThemePanel && !root.forceHidePanel) ? 1 : 0
 
             visible: (opacity == 0) ? false : true
 
@@ -504,13 +504,13 @@ Item {
         Item{
             id:belower
 
-            width: (panel.position === PlasmaCore.Types.LeftPositioned) ? shadowsSvgItem.margins.left : shadowsSvgItem.margins.right
-            height: (panel.position === PlasmaCore.Types.BottomPositioned)? shadowsSvgItem.margins.bottom : shadowsSvgItem.margins.top
+            width: (root.position === PlasmaCore.Types.LeftPositioned) ? shadowsSvgItem.margins.left : shadowsSvgItem.margins.right
+            height: (root.position === PlasmaCore.Types.BottomPositioned)? shadowsSvgItem.margins.bottom : shadowsSvgItem.margins.top
 
-            anchors.top: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-            anchors.bottom: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-            anchors.right: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-            anchors.left: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+            anchors.top: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+            anchors.bottom: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+            anchors.right: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+            anchors.left: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
         }
 
 
@@ -518,25 +518,25 @@ Item {
         PlasmaCore.FrameSvgItem{
             id: shadowsSvgItem
 
-            anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? belower.bottom : undefined
-            anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? belower.top : undefined
-            anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? belower.left : undefined
-            anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? belower.right : undefined
+            anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? belower.bottom : undefined
+            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? belower.top : undefined
+            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? belower.left : undefined
+            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? belower.right : undefined
 
-            anchors.horizontalCenter: !panel.vertical ? parent.horizontalCenter : undefined
-            anchors.verticalCenter: panel.vertical ? parent.verticalCenter : undefined
+            anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+            anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-            width: panel.vertical ? panelSize + margins.left + margins.right: parent.width
-            height: panel.vertical ? parent.height : panelSize + margins.top + margins.bottom
+            width: root.vertical ? panelSize + margins.left + margins.right: parent.width
+            height: root.vertical ? parent.height : panelSize + margins.top + margins.bottom
 
             imagePath: "translucent/widgets/panel-background"
             prefix:"shadow"
 
-            opacity: (plasmoid.configuration.showBarLine && plasmoid.configuration.useThemePanel && !panel.forceHidePanel) ? 1 : 0
+            opacity: (plasmoid.configuration.showBarLine && plasmoid.configuration.useThemePanel && !root.forceHidePanel) ? 1 : 0
             visible: (opacity == 0) ? false : true
 
-            property int panelSize: ((panel.position === PlasmaCore.Types.BottomPositioned) ||
-                                     (panel.position === PlasmaCore.Types.TopPositioned)) ?
+            property int panelSize: ((root.position === PlasmaCore.Types.BottomPositioned) ||
+                                     (root.position === PlasmaCore.Types.TopPositioned)) ?
                                         plasmoid.configuration.panelSize + belower.height:
                                         plasmoid.configuration.panelSize + belower.width
 
@@ -556,20 +556,20 @@ Item {
 
         MouseHandler {
             id: mouseHandler
-            anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? icList.bottom : undefined
-            anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? icList.top : undefined
-            anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? icList.left : undefined
-            anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? icList.right : undefined
+            anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? icList.bottom : undefined
+            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? icList.top : undefined
+            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? icList.left : undefined
+            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? icList.right : undefined
 
-            anchors.horizontalCenter: !panel.vertical ? icList.horizontalCenter : undefined
-            anchors.verticalCenter: panel.vertical ? icList.verticalCenter : undefined
+            anchors.horizontalCenter: !root.vertical ? icList.horizontalCenter : undefined
+            anchors.verticalCenter: root.vertical ? icList.verticalCenter : undefined
 
-            width: panel.vertical ? maxSize : icList.width
-            height: panel.vertical ? icList.height : maxSize
+            width: root.vertical ? maxSize : icList.width
+            height: root.vertical ? icList.height : maxSize
 
             target: icList
 
-            property int maxSize: panel.statesLineSize + panel.iconSize + panel.iconMargin - 1
+            property int maxSize: root.statesLineSize + root.iconSize + root.iconMargin - 1
 
             onUrlsDropped: {
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
@@ -612,13 +612,13 @@ Item {
             onTasksCountChanged: updateImplicits();
 
             //  property int count: children ? children.length : 0
-            /*   anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-            anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-            anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-            anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+            /*   anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+            anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+            anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+            anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
-            anchors.horizontalCenter: !panel.vertical ? parent.horizontalCenter : undefined
-            anchors.verticalCenter: panel.vertical ? parent.verticalCenter : undefined  */
+            anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+            anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined  */
 
             width: contentWidth
             height: contentHeight
@@ -678,7 +678,7 @@ Item {
             anchors.fill: mouseHandler
 
             visible: opacity == 0 ? false : true
-            opacity: panel.dropNewLauncher && mouseHandler.onlyLaunchers && (panel.dragSource == null)? 1 : 0
+            opacity: root.dropNewLauncher && mouseHandler.onlyLaunchers && (root.dragSource == null)? 1 : 0
         }
     }
 
@@ -781,7 +781,7 @@ Item {
         if(icList.previousCount !== icList.count){
             icList.previousCount = icList.count;
 
-            var zoomedLength = Math.floor( 1.2 * (iconSize+iconMargin) * (panel.zoomFactor));
+            var zoomedLength = Math.floor( 1.2 * (iconSize+iconMargin) * (root.zoomFactor));
             var bigAxis = (tasksModel.count-1) * (iconSize+iconMargin) + zoomedLength;
             var smallAxis = zoomedLength + statesLineSize;
 
@@ -792,17 +792,17 @@ Item {
             //     ncounter++;
             //      console.log("Implicits______ "+ncounter+". - "+tasksModel.count);
 
-            if (panel.vertical){
-                panel.implicitWidth = smallAxis;
-                panel.implicitHeight = bigAxis;
-                panel.clearWidth = clearSmallAxis;
-                panel.clearHeight = clearBigAxis;
+            if (root.vertical){
+                root.implicitWidth = smallAxis;
+                root.implicitHeight = bigAxis;
+                root.clearWidth = clearSmallAxis;
+                root.clearHeight = clearBigAxis;
             }
             else{
-                panel.implicitWidth = bigAxis;
-                panel.implicitHeight = smallAxis;
-                panel.clearWidth = clearBigAxis;
-                panel.clearHeight = clearSmallAxis;
+                root.implicitWidth = bigAxis;
+                root.implicitHeight = smallAxis;
+                root.clearWidth = clearBigAxis;
+                root.clearHeight = clearSmallAxis;
             }
 
             iconGeometryTimer.restart();
@@ -814,21 +814,21 @@ Item {
         text:"Orientation"
 
         anchors.centerIn: parent
-        visible: panel.debugLocation
+        visible: root.debugLocation
 
         onClicked:{
-            switch(panel.position){
+            switch(root.position){
             case PlasmaCore.Types.BottomPositioned:
-                panel.newLocationDebugUse = PlasmaCore.Types.LeftEdge;
+                root.newLocationDebugUse = PlasmaCore.Types.LeftEdge;
                 break;
             case PlasmaCore.Types.LeftPositioned:
-                panel.newLocationDebugUse = PlasmaCore.Types.TopEdge;
+                root.newLocationDebugUse = PlasmaCore.Types.TopEdge;
                 break;
             case PlasmaCore.Types.TopPositioned:
-                panel.newLocationDebugUse = PlasmaCore.Types.RightEdge;
+                root.newLocationDebugUse = PlasmaCore.Types.RightEdge;
                 break;
             case PlasmaCore.Types.RightPositioned:
-                panel.newLocationDebugUse = PlasmaCore.Types.BottomEdge;
+                root.newLocationDebugUse = PlasmaCore.Types.BottomEdge;
                 break;
             }
             updatePosition();
@@ -843,8 +843,8 @@ Item {
         var positionUsed;
 
 
-        if (panel.debugLocation)
-            positionUsed = panel.newLocationDebugUse;
+        if (root.debugLocation)
+            positionUsed = root.newLocationDebugUse;
         else
             positionUsed = plasmoid.location;
 
@@ -873,7 +873,7 @@ Item {
         else
             icList.orientation = Qt.Horizontal;
 
-        panel.position = newPosition;
+        root.position = newPosition;
     }
 
     function outsideContainsMouse(){
@@ -903,7 +903,7 @@ Item {
             return;
         }
 
-        var result = panel.outsideContainsMouse();
+        var result = root.outsideContainsMouse();
 
         if ((!result || toolTipDelegate.parentIndex != icList.hoveredIndex) && windowSystem.compositingActive) {
             windowsPreviewDlg.hide();
@@ -929,7 +929,7 @@ Item {
 
         icList.currentSpot = -1000;
         icList.hoveredIndex = -1;
-        panel.clearZoomSignal();
+        root.clearZoomSignal();
     }
 
     function hasLauncher(url) {
@@ -945,7 +945,7 @@ Item {
     }
 
     function createContextMenu(task) {
-        var menu = panel.contextMenuComponent.createObject(task);
+        var menu = root.contextMenuComponent.createObject(task);
         menu.visualParent = task;
         menu.mpris2Source = mpris2Source;
         menu.activitiesCount = activityModelInstance.count;
@@ -955,8 +955,8 @@ Item {
     Component.onCompleted:  {
         updatePosition();
 
-        panel.presentWindows.connect(backend.presentWindows);
-        panel.windowsHovered.connect(backend.windowsHovered);
+        root.presentWindows.connect(backend.presentWindows);
+        root.windowsHovered.connect(backend.windowsHovered);
         //    mouseHandler.urlDropped.connect(backend.urlDropped);
         dragHelper.dropped.connect(resetDragSource);
     }
@@ -969,7 +969,7 @@ Item {
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Center)
 
             AnchorChanges {
                 target: barLine
@@ -982,7 +982,7 @@ Item {
         },
         State {
             name: "bottomLeft"
-            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Left)
+            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Left)
 
             AnchorChanges {
                 target: barLine
@@ -995,7 +995,7 @@ Item {
         },
         State {
             name: "bottomRight"
-            when: (panel.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Right)
+            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Right)
 
             AnchorChanges {
                 target: barLine
@@ -1009,7 +1009,7 @@ Item {
         ///Top Edge
         State {
             name: "topCenter"
-            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1022,7 +1022,7 @@ Item {
         },
         State {
             name: "topLeft"
-            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Left)
+            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Left)
 
             AnchorChanges {
                 target: barLine
@@ -1035,7 +1035,7 @@ Item {
         },
         State {
             name: "topRight"
-            when: (panel.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Right)
+            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Right)
 
             AnchorChanges {
                 target: barLine
@@ -1049,7 +1049,7 @@ Item {
         ////Left Edge
         State {
             name: "leftCenter"
-            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1062,7 +1062,7 @@ Item {
         },
         State {
             name: "leftTop"
-            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Top)
+            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Top)
 
             AnchorChanges {
                 target: barLine
@@ -1075,7 +1075,7 @@ Item {
         },
         State {
             name: "leftBottom"
-            when: (panel.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Bottom)
+            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -1089,7 +1089,7 @@ Item {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1102,7 +1102,7 @@ Item {
         },
         State {
             name: "rightTop"
-            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Top)
+            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Top)
 
             AnchorChanges {
                 target: barLine
@@ -1115,7 +1115,7 @@ Item {
         },
         State {
             name: "rightBottom"
-            when: (panel.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Bottom)
+            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Bottom)
 
             AnchorChanges {
                 target: barLine

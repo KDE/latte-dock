@@ -32,19 +32,19 @@ MouseArea{
 
     visible: (isStartup) ? false : true
 
-    anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-    anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-    anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-    anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+    anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+    anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+    anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
-    width: panel.vertical ? wrapper.width :
+    width: root.vertical ? wrapper.width :
                             hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
 
-    height: panel.vertical ? hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height :
+    height: root.vertical ? hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height :
                              wrapper.height
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
-    hoverEnabled: (inAnimation !== true)&& (!IsStartup)&&(!panel.taskInAnimation)&&(!panel.editMode || panel.debugLocation)
+    hoverEnabled: (inAnimation !== true)&& (!IsStartup)&&(!root.taskInAnimation)&&(!root.editMode || root.debugLocation)
     // hoverEnabled: true
 
     property bool buffersAreReady: false
@@ -78,7 +78,7 @@ MouseArea{
     property int pressY: -1
     property int resistanceDelay: 750
 
-    property real animationStep: panel.iconSize / 8
+    property real animationStep: root.iconSize / 8
 
     property string activity: tasksModel.activity
 
@@ -159,12 +159,12 @@ MouseArea{
 
         onWindowsCountChanged: {
             if ((windowsCount >= 2) && (windowsCount > previousCount)){
-                if(panel.dragSource == null)
+                if(root.dragSource == null)
                     mainItemContainer.groupWindowAdded();
             }
             else if ((windowsCount >=1) &&(windowsCount < previousCount)){
                 //sometimes this is triggered in dragging with no reason
-                if(panel.dragSource == null)
+                if(root.dragSource == null)
                     mainItemContainer.groupWindowRemoved();
             }
 
@@ -182,12 +182,12 @@ MouseArea{
         Item{
             id: hiddenSpacerLeft
             //we add one missing pixel from calculations
-            width: panel.vertical ? wrapper.width : nHiddenSize
-            height: panel.vertical ? nHiddenSize : wrapper.height
+            width: root.vertical ? wrapper.width : nHiddenSize
+            height: root.vertical ? nHiddenSize : wrapper.height
 
             visible: (index === 0)
 
-            property real nHiddenSize: (nScale > 0) ? (panel.realSize * nScale) : 0
+            property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
             property real nScale: 0
 
             Behavior on nScale {
@@ -212,11 +212,11 @@ MouseArea{
             height: (mainItemContainer.isStartup) ? 0 : showDelegateheight
 
             //size needed fom the states below icons
-            //property int statesLineSize: panel.statesLineSize
-            property int addedSpace: panel.statesLineSize //7
-            property real showDelegateWidth: panel.vertical ? basicScalingWidth+addedSpace :
+            //property int statesLineSize: root.statesLineSize
+            property int addedSpace: root.statesLineSize //7
+            property real showDelegateWidth: root.vertical ? basicScalingWidth+addedSpace :
                                                               basicScalingWidth
-            property real showDelegateheight: panel.vertical ? basicScalingHeight :
+            property real showDelegateheight: root.vertical ? basicScalingHeight :
                                                                basicScalingHeight + addedSpace
 
             //scales which are used mainly for activating InLauncher
@@ -231,10 +231,10 @@ MouseArea{
             property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : scale
 
             ///Dont use Math.floor it adds one pixel in animations and creates glitches
-            property real cleanScaling: panel.realSize * scale
+            property real cleanScaling: root.realSize * scale
 
-            property real basicScalingWidth : (inTempScaling == true) ? (panel.realSize * scaleWidth) : cleanScaling
-            property real basicScalingHeight : (inTempScaling == true) ? (panel.realSize * scaleHeight) : cleanScaling
+            property real basicScalingWidth : (inTempScaling == true) ? (root.realSize * scaleWidth) : cleanScaling
+            property real basicScalingHeight : (inTempScaling == true) ? (root.realSize * scaleHeight) : cleanScaling
 
             property real regulatorWidth: basicScalingWidth-2;
             property real regulatorHeight: basicScalingHeight-2;
@@ -259,10 +259,10 @@ MouseArea{
 
 
             Flow{
-                anchors.bottom: (panel.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-                anchors.top: (panel.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-                anchors.left: (panel.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-                anchors.right: (panel.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+                anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+                anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+                anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+                anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
                 anchors.horizontalCenter: !parent.vertical ? parent.horizontalCenter : undefined
                 anchors.verticalCenter: parent.vertical ? parent.verticalCenter : undefined
@@ -270,14 +270,14 @@ MouseArea{
                 width: wrapper.width
                 height: wrapper.height
 
-                flow: panel.vertical ? Flow.TopToBottom : Flow.LeftToRight
+                flow: root.vertical ? Flow.TopToBottom : Flow.LeftToRight
 
                 Loader{
                     id: firstIndicator
-                    active:( (((panel.position === PlasmaCore.Types.TopPositioned) || (panel.position === PlasmaCore.Types.LeftPositioned))
-                              && !panel.reverseLinesPosition)
-                            || (((panel.position === PlasmaCore.Types.BottomPositioned) || (panel.position === PlasmaCore.Types.RightPositioned))
-                                && panel.reverseLinesPosition) )
+                    active:( (((root.position === PlasmaCore.Types.TopPositioned) || (root.position === PlasmaCore.Types.LeftPositioned))
+                              && !root.reverseLinesPosition)
+                            || (((root.position === PlasmaCore.Types.BottomPositioned) || (root.position === PlasmaCore.Types.RightPositioned))
+                                && root.reverseLinesPosition) )
                     sourceComponent: Component{
                         TaskGroupItem{}
                     }
@@ -296,7 +296,7 @@ MouseArea{
             }//Flow
 
             function calculateScales( currentMousePosition ){
-                if (panel.editMode) {
+                if (root.editMode) {
                     return;
                 }
 
@@ -306,7 +306,7 @@ MouseArea{
                 // and at the same time fixing glitches
                 if ((distanceFromHovered == 0)&&
                         (currentMousePosition  > 0)&&
-                        (panel.dragSource == null) ){
+                        (root.dragSource == null) ){
 
                     var rDistance = Math.abs(currentMousePosition  - center);
 
@@ -315,14 +315,14 @@ MouseArea{
 
 
                     //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-                    var zoomCenter = (panel.zoomFactor - 1) / 2
+                    var zoomCenter = (root.zoomFactor - 1) / 2
 
                     //computes the in the scale e.g. 0...0.35 according to the mouse distance
                     //0.35 on the edge and 0 in the center
                     var firstComputation = (rDistance / center) * zoomCenter;
 
                     //calculates the scaling for the neighbour tasks
-                    var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, panel.zoomFactor);
+                    var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
                     var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
 
                     bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(2));
@@ -344,22 +344,22 @@ MouseArea{
 
 
                     //activate messages to update the the neighbour scales
-                    panel.updateScale(index+1, rightScale, 0);
-                    panel.updateScale(index-1, leftScale, 0);
-                    panel.updateScale(index+2, 1, 0);
-                    panel.updateScale(index-2, 1, 0);
+                    root.updateScale(index+1, rightScale, 0);
+                    root.updateScale(index-1, leftScale, 0);
+                    root.updateScale(index+2, 1, 0);
+                    root.updateScale(index-2, 1, 0);
 
                     //Left hiddenSpacer
-                    if(((index === 0 )&&(icList.count > 1)) && !panel.disableLeftSpacer){
+                    if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
                         hiddenSpacerLeft.nScale = leftScale - 1;
                     }
 
                     //Right hiddenSpacer
-                    if(((index === icList.count - 1 )&&(icList.count>1)) && (!panel.disableRightSpacer)){
+                    if(((index === icList.count - 1 )&&(icList.count>1)) && (!root.disableRightSpacer)){
                         hiddenSpacerRight.nScale =  rightScale - 1;
                     }
 
-                    scale = panel.zoomFactor;
+                    scale = root.zoomFactor;
                 }
 
             } //scale
@@ -378,21 +378,21 @@ MouseArea{
             function sendEndOfNeedBothAxisAnimation(){
                 if (mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = false;
-                    panel.signalAnimationsNeedBothAxis(-1);
+                    root.signalAnimationsNeedBothAxis(-1);
                 }
             }
 
             onScaleChanged: {
                 if ((scale > 1) && !mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = true;
-                    panel.signalAnimationsNeedBothAxis(1);
+                    root.signalAnimationsNeedBothAxis(1);
                 } else if ((scale == 1) && mainItemContainer.isZoomed) {
                     sendEndOfNeedBothAxisAnimation();
                 }
             }
 
             Component.onCompleted: {
-                panel.updateScale.connect(signalUpdateScale);
+                root.updateScale.connect(signalUpdateScale);
             }
         }// Main task area // id:wrapper
 
@@ -400,12 +400,12 @@ MouseArea{
         Item{
             id: hiddenSpacerRight
             //we add one missing pixel from calculations
-            width: panel.vertical ? wrapper.width : nHiddenSize
-            height: panel.vertical ? nHiddenSize : wrapper.height
+            width: root.vertical ? wrapper.width : nHiddenSize
+            height: root.vertical ? nHiddenSize : wrapper.height
 
             visible: (index === icList.count - 1)
 
-            property real nHiddenSize: (nScale > 0) ? (panel.realSize * nScale) : 0
+            property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
             property real nScale: 0
 
             Behavior on nScale {
@@ -462,8 +462,8 @@ MouseArea{
 
 
     onIsDraggedChanged: {
-        if(isDragged && (!panel.editMode)){
-            panel.dragSource = mainItemContainer;
+        if(isDragged && (!root.editMode)){
+            root.dragSource = mainItemContainer;
             dragHelper.startDrag(mainItemContainer, model.MimeType, model.MimeData,
                                  model.LauncherUrlWithoutIcon, model.decoration);
             pressX = -1;
@@ -497,13 +497,13 @@ MouseArea{
     onEntered: {
         checkListHovered.stop();
 
-        if((!inAnimation)&&(panel.dragSource == null)&&(!panel.taskInAnimation)){
+        if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation)){
             icList.hoveredIndex = index;
             mouseEntered = true;
-            panel.mouseWasEntered(index-2, false);
-            panel.mouseWasEntered(index+2, false);
-            panel.mouseWasEntered(index-1, true);
-            panel.mouseWasEntered(index+1, true);
+            root.mouseWasEntered(index-2, false);
+            root.mouseWasEntered(index+2, false);
+            root.mouseWasEntered(index-1, true);
+            root.mouseWasEntered(index+1, true);
 
             if (icList.orientation == Qt.Horizontal){
                 icList.currentSpot = mouseX;
@@ -538,8 +538,8 @@ MouseArea{
     onPositionChanged: {
         checkListHovered.stop();
 
-        if((inAnimation == false)&&(!panel.taskInAnimation)&&(!panel.disableRestoreZoom)){
-            if(panel.dragSource == null){
+        if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom)){
+            if(root.dragSource == null){
                 if (icList.orientation == Qt.Horizontal){
                     var step = Math.abs(icList.currentSpot-mouse.x);
                     if (step >= animationStep){
@@ -563,9 +563,9 @@ MouseArea{
             // mouse.button is always 0 here, hence checking with mouse.buttons
             if (pressX != -1 && mouse.buttons == Qt.LeftButton
                     && isDragged
-                    && !panel.editMode
+                    && !root.editMode
                     && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y) ) {
-                panel.dragSource = mainItemContainer;
+                root.dragSource = mainItemContainer;
                 dragHelper.startDrag(mainItemContainer, model.MimeType, model.MimeData,
                                      model.LauncherUrlWithoutIcon, model.decoration);
                 pressX = -1;
@@ -591,13 +591,13 @@ MouseArea{
         }
 
         if (isWindow) {
-            panel.windowsHovered(model.LegacyWinIdList, containsMouse);
+            root.windowsHovered(model.LegacyWinIdList, containsMouse);
         }
 
 
         ////window previews/////////
         if (isWindow) {
-            if(containsMouse && panel.showPreviews && windowSystem.compositingActive){
+            if(containsMouse && root.showPreviews && windowSystem.compositingActive){
                 hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
                 preparePreviewWindow();
             }
@@ -625,7 +625,7 @@ MouseArea{
                 draggingResistaner = resistanerTimerComponent.createObject(mainItemContainer);
         }
         else if (mouse.button == Qt.RightButton){
-            panel.createContextMenu(mainItemContainer).show();
+            root.createContextMenu(mainItemContainer).show();
         }
 
         if (hoveredTimerObj){
@@ -664,7 +664,7 @@ MouseArea{
                 else{
                     if (model.IsGroupParent) {
                         if (windowSystem.compositingActive) {
-                            panel.presentWindows(model.LegacyWinIdList);
+                            root.presentWindows(model.LegacyWinIdList);
                         } else {                           
                             if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
                                 windowsPreviewDlg.hide();
@@ -837,10 +837,10 @@ MouseArea{
     ///// End of Helper functions ////
 
     Component.onCompleted: {
-        panel.mouseWasEntered.connect(signalMouseWasEntered);
-        panel.draggingFinished.connect(handlerDraggingFinished);
-        panel.clearZoomSignal.connect(clearZoom);
-        panel.publishTasksGeometries.connect(slotPublishGeometries);
+        root.mouseWasEntered.connect(signalMouseWasEntered);
+        root.draggingFinished.connect(handlerDraggingFinished);
+        root.clearZoomSignal.connect(clearZoom);
+        root.publishTasksGeometries.connect(slotPublishGeometries);
 
         //fix wrong positioning of launchers....
         for(var i=0; i<tasksModel.launcherList.length; ++i){
@@ -918,7 +918,7 @@ MouseArea{
             mainItemContainer.inAnimation = false;
 
             if (isWindow || isStartup) {
-                panel.signalAnimationsNeedLength(-1);
+                root.signalAnimationsNeedLength(-1);
             }
         }
 
@@ -927,13 +927,13 @@ MouseArea{
             wrapper.tempScaleHeight = 0;
 
             if (isWindow || isStartup) {
-                panel.signalAnimationsNeedLength(1);
+                root.signalAnimationsNeedLength(1);
             }
         }
 
         function showWindow(){
             if(mainItemContainer.isLauncher || mainItemContainer.isStartup
-                    || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !panel.initializatedBuffers)){
+                    || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !root.initializatedBuffers)){
                 delayShowWindow.createObject(mainItemContainer);
             }
             else{
@@ -1027,7 +1027,7 @@ MouseArea{
             onTriggered: {
                 //console.log("I am in here: "+mainItemContainer.windowDelay);
                 // showWindowAnimation.execute();
-                if(!mainItemContainer.buffersAreReady && !panel.initializatedBuffers)
+                if(!mainItemContainer.buffersAreReady && !root.initializatedBuffers)
                     showWindowAnimation.showWindow();
                 else
                     showWindowAnimation.execute();
@@ -1042,7 +1042,7 @@ MouseArea{
     ///Item's Removal Animation
 
     ListView.onRemove: SequentialAnimation {
-        ScriptAction{script:{panel.signalAnimationsNeedLength(1)}}
+        ScriptAction{script:{root.signalAnimationsNeedLength(1)}}
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
         PropertyAction { target: icList; property: "delayingRemoval"; value: true }
@@ -1077,7 +1077,7 @@ MouseArea{
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
         PropertyAction { target: icList; property: "delayingRemoval"; value: false }
-        ScriptAction{script:{panel.signalAnimationsNeedLength(-1)}}
+        ScriptAction{script:{root.signalAnimationsNeedLength(-1)}}
     }
 
 }// main Item
