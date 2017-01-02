@@ -82,7 +82,7 @@ DragDrop.DropArea {
                                                   ( plasmoid.configuration.panelPosition === Latte.Dock.Double ?
                                                        Latte.Dock.Center :plasmoid.configuration.panelPosition )
 
-    property real zoomFactor: windowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real zoomFactor: (windowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -105,7 +105,7 @@ DragDrop.DropArea {
     property bool showGlow: plasmoid.configuration.showGlow
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 
-    property int durationTime: nowDock ? nowDock.durationTime : 2
+    property int durationTime: plasmoid.configuration.durationTime
     property int nowDockHoveredIndex: nowDock ? nowDock.hoveredIndex : -1
     property int iconMargin: nowDock ? nowDock.iconMargin : 0.12 * iconSize
     property int statesLineSize: nowDock ? nowDock.statesLineSize : 0

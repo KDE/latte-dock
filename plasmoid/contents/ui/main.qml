@@ -100,7 +100,7 @@ Item {
     property bool showGlow: nowDockPanel ? nowDockPanel.showGlow : plasmoid.configuration.showGlow
     property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
-    property int durationTime: plasmoid.configuration.durationTime
+    property int durationTime: nowDockPanel ? nowDockPanel.durationTime : plasmoid.configuration.durationTime
     property int iconSize: nowDockPanel ? nowDockPanel.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width

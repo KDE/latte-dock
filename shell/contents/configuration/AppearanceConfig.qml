@@ -90,6 +90,7 @@ PlasmaComponents.Page{
         Column{
             width: parent.width
             spacing: 0.8*theme.defaultFont.pointSize
+            enabled: plasmoid.configuration.durationTime > 0
             Header{
                 text: i18n("Zoom On Hover")
             }
@@ -150,6 +151,114 @@ PlasmaComponents.Page{
                     text: " "+Number(zoomSlider.value).toFixed(2)
                 }
 
+            }
+        }
+
+        /**Animations Speed***/
+
+        Column{
+            width:parent.width
+            spacing: 0.8*theme.defaultFont.pointSize
+
+            Header{
+                text: i18n("Animations")
+            }
+
+            Flow{
+                width: parent.width
+                spacing: 2
+
+                property bool inStartup: true
+                property int duration: plasmoid.configuration.durationTime
+
+                onDurationChanged: updateDurationVisual();
+
+                Component.onCompleted: {
+                    updateDurationVisual();
+                    inStartup = false;
+                }
+
+                function updateDurationVisual(){
+                    if(duration === 0){
+                        firstDuration.checked = true;
+                        secondDuration.checked = false;
+                        thirdDuration.checked = false;
+                        fourthDuration.checked = false;
+                    }
+                    else if(duration === 1){
+                        firstDuration.checked = false;
+                        secondDuration.checked = true;
+                        thirdDuration.checked = false;
+                        fourthDuration.checked = false;
+                    }
+                    else if(duration === 2){
+                        firstDuration.checked = false;
+                        secondDuration.checked = false;
+                        thirdDuration.checked = true;
+                        fourthDuration.checked = false;
+                    }
+                    else if(duration === 3){
+                        firstDuration.checked = false;
+                        secondDuration.checked = false;
+                        thirdDuration.checked = false;
+                        fourthDuration.checked = true;
+                    }
+                }
+
+
+                PlasmaComponents.Button{
+                    id: firstDuration
+                    checkable: true
+                    text: i18n("None")
+                    width: (parent.width / 4) - 2
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            plasmoid.configuration.durationTime = 0;
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+                PlasmaComponents.Button{
+                    id: secondDuration
+                    checkable: true
+                    text: i18n("x1")
+                    width: (parent.width / 4) - 2
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            plasmoid.configuration.durationTime = 1;
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+                PlasmaComponents.Button{
+                    id: thirdDuration
+                    checkable: true
+                    text: i18n("x2")
+                    width: (parent.width / 4) - 2
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            plasmoid.configuration.durationTime = 2;
+                        }
+                    }
+                    onClicked: checked=true;
+                }
+
+                PlasmaComponents.Button{
+                    id: fourthDuration
+                    checkable: true
+                    text: i18n("x3")
+                    width: (parent.width/4) - 1
+
+                    onCheckedChanged: {
+                        if(checked && !parent.inStartup){
+                            plasmoid.configuration.durationTime = 3;
+                        }
+                    }
+                    onClicked: checked=true;
+                }
             }
         }
 
@@ -235,6 +344,7 @@ PlasmaComponents.Page{
             }
         }
 
+        /******Shadows**********/
         Column{
             width: parent.width
             spacing: 0.8*theme.defaultFont.pointSize
