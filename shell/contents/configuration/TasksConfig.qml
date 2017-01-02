@@ -26,8 +26,6 @@ PlasmaComponents.Page{
                 text: i18n("Appearance")
             }
 
-
-
             PlasmaComponents.CheckBox {
                 id: showGlow
                 text: i18n("Show glow around windows points")
@@ -79,9 +77,8 @@ PlasmaComponents.Page{
             spacing: 0.8*theme.defaultFont.pointSize
 
             Header{
-                text: i18n("Behavior")
+                text: i18n("Interaction")
             }
-
 
             PlasmaComponents.CheckBox {
                 id: showPreviewsChk
@@ -126,6 +123,47 @@ PlasmaComponents.Page{
 
                 Component.onCompleted: checked = plasmoid.configuration.smartLaunchersEnabled;
             }
+        }
+
+        /*******Filters*******/
+        Column{
+            width:parent.width
+            spacing: 0.8*theme.defaultFont.pointSize
+
+            Header{
+                text: i18n("Filters")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: showOnlyCurrentScreen
+                text: i18n("Show only tasks from the current screen")
+                onCheckedChanged: {
+                    plasmoid.configuration.showOnlyCurrentScreen = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.showOnlyCurrentScreen;
+            }
+
+            PlasmaComponents.CheckBox {
+                id: showOnlyCurrentDesktop
+                text: i18n("Show only tasks from the current desktop")
+                onCheckedChanged: {
+                    plasmoid.configuration.showOnlyCurrentDesktop = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.showOnlyCurrentDesktop;
+            }
+
+            PlasmaComponents.CheckBox {
+                id: showOnlyCurrentActivity
+                text: i18n("Show only tasks from the current activity")
+                onCheckedChanged: {
+                    plasmoid.configuration.showOnlyCurrentActivity = checked;
+                }
+
+                Component.onCompleted: checked = plasmoid.configuration.showOnlyCurrentActivity;
+            }
+
         }
     }
 }
