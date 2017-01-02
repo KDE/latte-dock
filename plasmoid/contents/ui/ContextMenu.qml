@@ -593,9 +593,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         property QtObject configureAction: null
 
-        //FIXME: when Tasks settings have been included in Latte configuration window
-        //this can be enabled!!!
-        //visible: !nowDockPanel
+        visible: !nowDockPanel
         enabled: configureAction && configureAction.enabled
 
         text: configureAction ? configureAction.text : ""
