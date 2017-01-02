@@ -32,7 +32,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
         }
     });
     connect(&timerHide, &QTimer::timeout, this, [this]() {
-        if (!isHidden) {
+        if (!blockHiding && !isHidden) {
             qDebug() << "must be hide";
             emit this->q->mustBeHide();
         }
@@ -146,8 +146,32 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     if (this->isHidden == isHidden)
         return;
         
+    if (blockHiding) {
+        qWarning() << "isHidden property is blocked, ignoring update";
+        return;
+    }
+    
     this->isHidden = isHidden;
     emit q->isHiddenChanged();
+}
+
+void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
+{
+    if (this->blockHiding == blockHiding)
+        return;
+        
+    this->blockHiding = blockHiding;
+    
+    if (this->blockHiding) {
+        timerHide.stop();
+        
+        if (isHidden)
+            isHidden = false;
+    } else {
+        updateHiddenState();
+    }
+    
+    emit q->blockHidingChanged();
 }
 
 inline void VisibilityManagerPrivate::setTimerShow(int msec)
@@ -172,11 +196,32 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
         if (!timerShow.isActive()) {
             timerShow.start();
         }
-    } else {
+    } else if (!blockHiding) {
         timerShow.stop();
         
         if (!timerHide.isActive())
             timerHide.start();
+    }
+}
+
+void VisibilityManagerPrivate::updateHiddenState()
+{
+    switch (mode) {
+        case Dock::AutoHide:
+            raiseDock(false);
+            break;
+            
+        case Dock::DodgeActive:
+            dodgeActive(wm->activeWindow());
+            break;
+            
+        case Dock::DodgeMaximized:
+            dodgeMaximized(wm->activeWindow());
+            break;
+            
+        case Dock::DodgeAllWindows:
+            dodgeWindows(wm->activeWindow());
+            break;
     }
 }
 
@@ -314,24 +359,7 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         containsMouse = false;
         emit q->containsMouseChanged();
         
-        switch (mode) {
-            case Dock::AutoHide:
-                raiseDock(false);
-                break;
-                
-            case Dock::DodgeActive:
-                dodgeActive(wm->activeWindow());
-                break;
-                
-            case Dock::DodgeMaximized:
-                dodgeMaximized(wm->activeWindow());
-                break;
-                
-            case Dock::DodgeAllWindows:
-                dodgeWindows(wm->activeWindow());
-                break;
-        }
-        
+        updateHiddenState();
     } else if (ev->type() == QEvent::Show) {
         wm->setDockDefaultFlags();
     }
@@ -370,6 +398,16 @@ bool VisibilityManager::isHidden() const
 void VisibilityManager::setIsHidden(bool isHidden)
 {
     d->setIsHidden(isHidden);
+}
+
+bool VisibilityManager::blockHiding() const
+{
+    return d->blockHiding;
+}
+
+void VisibilityManager::setBlockHiding(bool blockHiding)
+{
+    d->setBlockHiding(blockHiding);
 }
 
 bool VisibilityManager::containsMouse() const

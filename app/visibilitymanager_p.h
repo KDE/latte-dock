@@ -30,10 +30,12 @@ public:
     
     void setMode(Dock::Visibility mode);
     void setIsHidden(bool isHidden);
+    void setBlockHiding(bool blockHiding);
     void setTimerShow(int msec);
     void setTimerHide(int msec);
     
     void raiseDock(bool raise);
+    void updateHiddenState();
     
     void setDockRect(const QRect &rect);
     
@@ -61,6 +63,7 @@ public:
     QTimer timerCheckWindows;
     QRect dockRect;
     bool isHidden{false};
+    bool blockHiding{false};
     bool containsMouse{false};
 };
 
