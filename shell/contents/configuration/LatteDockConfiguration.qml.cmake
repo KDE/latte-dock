@@ -88,6 +88,8 @@ PlasmaCore.FrameSvgItem {
             PlasmaComponents.TabButton{
                 text: i18n("Tasks")
                 tab: tasksPage
+
+                visible: dock.tasksPresent();
             }
         }
 
