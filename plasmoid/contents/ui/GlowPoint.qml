@@ -29,7 +29,7 @@ Item{
     property bool roundCorners: true
     property bool showAttention: false
 
-    property int animation: plasmoid.configuration.durationTime*units.longDuration
+    property int animation: root.durationTime*units.longDuration
 
     property color attentionColor: colorScopePalette.negativeTextColor // "#ffff1717"
     property color basicColor: "blue"

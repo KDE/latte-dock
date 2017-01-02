@@ -69,7 +69,7 @@ Item{
                 property int stateWidth: mainItemContainer.isGroupParent ? (wrapper.regulatorWidth - secondPoint.width) : wrapper.regulatorWidth - spacer.width
                 property int stateHeight: mainItemContainer.isGroupParent ? wrapper.regulatorHeight - secondPoint.height : wrapper.regulatorHeight - spacer.height
 
-                property int animationTime: plasmoid.configuration.durationTime* (0.7*units.longDuration)
+                property int animationTime: root.durationTime* (0.7*units.longDuration)
 
                 property bool isActive: mainItemContainer.hasActive
                                         || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))

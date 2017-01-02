@@ -70,7 +70,7 @@ MouseArea{
     property bool mouseEntered: false
     property bool pressed: false
 
-    property int animationTime: plasmoid.configuration.durationTime * 1.2 * units.shortDuration
+    property int animationTime: root.durationTime * 1.2 * units.shortDuration
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
     property int lastButtonClicked: -1;
@@ -127,7 +127,7 @@ MouseArea{
 
     Behavior on opacity {
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
-        NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
+        NumberAnimation { duration: root.durationTime*units.longDuration }
     }
 
 
@@ -877,7 +877,7 @@ MouseArea{
     ///item's added Animation
     SequentialAnimation{
         id:showWindowAnimation
-        property int speed: windowSystem.compositingActive ? plasmoid.configuration.durationTime* (1.2*units.longDuration) : 0
+        property int speed: windowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
 
         PropertyAnimation {
             target: wrapper
@@ -954,7 +954,7 @@ MouseArea{
         Timer {
             id: hoveredTimer
 
-            interval: 2*plasmoid.configuration.durationTime*units.longDuration
+            interval: 2*root.durationTime*units.longDuration
 
             repeat: false
 
@@ -1012,8 +1012,8 @@ MouseArea{
     //launchers delay A LOT to reappear, e.g google-chrome
     //I will blacklist google-chrome as I have not found any other case for this bug
     //to appear, but even this way there are cases that still appears...
-    property int mainDelay: (AppId == "google-chrome") ? 0 : 2*plasmoid.configuration.durationTime*showWindowAnimation.speed
-    property int windowDelay: mainItemContainer.isStartup ? 3*plasmoid.configuration.durationTime*units.longDuration : mainDelay
+    property int mainDelay: (AppId == "google-chrome") ? 0 : 2*root.durationTime*showWindowAnimation.speed
+    property int windowDelay: mainItemContainer.isStartup ? 3*root.durationTime*units.longDuration : mainDelay
 
     Component {
         id: delayShowWindow
