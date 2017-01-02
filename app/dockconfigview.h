@@ -1,14 +1,15 @@
 /*
 *  Copyright 2016  Smith AR <audoban@openmailbox.org>
+*                  Michail Vourlakos <mvourlakos@gmail.com>
 *
-*  This file is part of Candil-Dock
+*  This file is part of Latte-Dock
 *
-*  Candil-Dock is free software; you can redistribute it and/or
+*  Latte-Dock is free software; you can redistribute it and/or
 *  modify it under the terms of the GNU General Public License as
-*  published by the Free Software Foundation; either version 3 of
+*  published by the Free Software Foundation; either version 2 of
 *  the License, or (at your option) any later version.
 *
-*  Candil-Dock is distributed in the hope that it will be useful,
+*  Latte-Dock is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 *  GNU General Public License for more details.
