@@ -590,12 +590,10 @@ PlasmaComponents.ContextMenu {
         onClicked: tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
     }
 
-
-
-
     PlasmaComponents.MenuItem {
         property QtObject configureAction: null
 
+        visible: !nowDockPanel
         enabled: configureAction && configureAction.enabled
 
         text: configureAction ? configureAction.text : ""
@@ -604,6 +602,37 @@ PlasmaComponents.ContextMenu {
         onClicked: configureAction.trigger()
 
         Component.onCompleted: configureAction = plasmoid.action("configure")
+    }
+
+    PlasmaComponents.MenuItem {
+        id: containmentMenuItem
+
+        visible: nowDockPanel
+        enabled: visible
+
+        icon: "latte-dock"
+        text: "Latte"
+
+        PlasmaComponents.ContextMenu {
+            id: containmentSubMenu
+
+            visualParent: containmentMenuItem.action
+
+            function refresh() {
+                clearMenuItems();
+
+                var actionList = nowDockPanel.containmentActions();
+
+                for (var i=0; i<actionList.length; ++i){
+                    var item = menu.newMenuItem(containmentSubMenu);
+                    item.visible = false;
+                    item.action = actionList[i];
+                    containmentSubMenu.addMenuItem(item,containmentMenuItem);
+                }
+            }
+
+            Component.onCompleted: refresh();
+        }
     }
 
     PlasmaComponents.MenuItem {
@@ -621,4 +650,5 @@ PlasmaComponents.ContextMenu {
 
         onClicked: tasksModel.requestClose(visualParent.modelIndex())
     }
+
 }

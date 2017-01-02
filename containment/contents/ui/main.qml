@@ -732,6 +732,10 @@ DragDrop.DropArea {
         root.clearZoomSignal();
     }
 
+    function containmentActions(){
+        return dock.containmentActions();
+    }
+
     function containsMouse(){
         var result = root.outsideContainsMouse();
 

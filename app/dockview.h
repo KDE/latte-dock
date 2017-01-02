@@ -103,6 +103,7 @@ public:
     
 public slots:
     Q_INVOKABLE void addNewDock();
+    Q_INVOKABLE QVariantList containmentActions();
     //used from the configuration window
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE void initialize();
