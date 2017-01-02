@@ -199,7 +199,7 @@ MouseArea{
                         spacing: units.largeSpacing
 
                         Repeater {
-                            model: (plasmoid.configuration.showToolTips && !albumArtImage.available)
+                            model: (root.showPreviews && !albumArtImage.available)
                                    || !windowSystem.compositingActive ? windows : null
 
                             Column{

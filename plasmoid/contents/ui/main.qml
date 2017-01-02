@@ -57,7 +57,6 @@ Item {
     property bool initializatedBuffers: noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
     property bool showBarLine: plasmoid.configuration.showBarLine
-    property bool showPreviews: plasmoid.configuration.showToolTips
     property bool useThemePanel: plasmoid.configuration.useThemePanel
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
@@ -95,9 +94,13 @@ Item {
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
+    property bool highlightWindows: nowDockPanel ? nowDockPanel.highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: nowDockPanel ? nowDockPanel.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: nowDockPanel ? nowDockPanel.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: nowDockPanel ? nowDockPanel.showGlow : plasmoid.configuration.showGlow
+    property bool showPreviews:  nowDockPanel ? nowDockPanel.showToolTips : plasmoid.configuration.showToolTips
+    property bool showWindowActions: nowDockPanel ? nowDockPanel.showWindowActions : plasmoid.configuration.showWindowActions
+    property bool smartLaunchersEnabled: nowDockPanel ? nowDockPanel.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
     property int durationTime: nowDockPanel ? nowDockPanel.durationTime : plasmoid.configuration.durationTime
@@ -327,7 +330,7 @@ Item {
 
         taskManagerItem: root
         toolTipItem: toolTipDelegate
-        highlightWindows: plasmoid.configuration.highlightWindows
+        highlightWindows:root.highlightWindows
 
         onAddLauncher: {
             tasksModel.requestAddLauncher(url);
