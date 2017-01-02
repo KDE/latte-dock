@@ -1,8 +1,10 @@
 /*
+*  Copyright 2012  Marco Martin <mart@kde.org>
+*  Copyright 2014  David Edmundson <davidedmudnson@kde.org>
 *  Copyright 2016  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
 *
-*  This file is part of Latte-Dock
+*  This file is part of Latte-Dock and is a Fork of PlasmaCore::IconItem
 *
 *  Latte-Dock is free software; you can redistribute it and/or
 *  modify it under the terms of the GNU General Public License as
