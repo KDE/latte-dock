@@ -39,12 +39,6 @@
 #define CIRED    "\e[1;31m"
 #define CRED     "\e[0;31m"
 
-#ifdef QT_NO_DEBUG
-    #define DEPTH "1"
-#else
-    #define DEPTH "8"
-#endif
-
 static const char version[] = "0.1";
 
 int main(int argc, char **argv)
@@ -66,9 +60,8 @@ int main(int argc, char **argv)
                            CIRED " [" CCYAN "%{function}" CIRED ":" CCYAN "%{line}" CIRED "]"
 #endif
                            CICYAN " - " CNORMAL "%{message}"
-                           CIRED "%{if-fatal}\n%{backtrace depth=" DEPTH " separator=\"\n\"}%{endif}"
-                           "%{if-warning}\n%{backtrace depth=" DEPTH " separator=\"\n\"}%{endif}"
-                           "%{if-critical}\n%{backtrace depth=" DEPTH " separator=\"\n\"}%{endif}" CNORMAL));
+                           CIRED "%{if-fatal}\n%{backtrace depth=8 separator=\"\n\"}%{endif}"
+                           "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
                            
     //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
     Latte::DockCorona corona;
