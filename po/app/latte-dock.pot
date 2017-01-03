@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2016-12-28 22:51+0200\n"
+"POT-Creation-Date: 2017-01-03 10:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,124 +17,238 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../shell/contents/configuration/config.qml:26
-msgid "General"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:38
-msgid "Applets Alignment"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:52
-msgid "ver: "
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
-msgid "Top"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
-msgid "Left"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:125
-msgid "Center"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
-msgid "Bottom"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:138
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:155
-msgid "Right"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:179
-msgid "Visibility"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:235
-msgid "Always Visible"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:248
-msgid "Auto Hide"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:261
-msgid "Dodge Active"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:275
-msgid "Dodge Maximized"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:289
-msgid "Dodge All Windows"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:322
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:343
+#: ../../shell/contents/configuration/AppearanceConfig.qml:48
+#: ../../shell/contents/configuration/AppearanceConfig.qml:68
 msgid "Applets Size"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:390
+#: ../../shell/contents/configuration/AppearanceConfig.qml:115
 msgid "Zoom On Hover"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:409
+#: ../../shell/contents/configuration/AppearanceConfig.qml:133
 msgid "Zoom Factor"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:458
-msgid "Background"
+#: ../../shell/contents/configuration/AppearanceConfig.qml:184
+msgid "Animations"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:464
-msgid "Show Panel Background"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:494
-msgid "Size"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:540
-msgid "Shadows"
-msgstr ""
-
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:578
+#: ../../shell/contents/configuration/AppearanceConfig.qml:232
+#: ../../shell/contents/configuration/AppearanceConfig.qml:409
 msgid "None"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:583
+#: ../../shell/contents/configuration/AppearanceConfig.qml:245
+msgid "x1"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:258
+msgid "x2"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:272
+msgid "x3"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:290
+msgid "Background"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:295
+msgid "Show Panel Background"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:325
+msgid "Size"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:372
+msgid "Shadows"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:414
 msgid "Only for locked applets"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:588
+#: ../../shell/contents/configuration/AppearanceConfig.qml:419
 msgid "All applets"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:598
+#: ../../shell/contents/configuration/BehaviorConfig.qml:44
+msgid "Location"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:118
+#: ../../shell/contents/configuration/BehaviorConfig.qml:263
+#: ../../shell/contents/configuration/BehaviorConfig.qml:280
+msgid "Bottom"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:131
+#: ../../shell/contents/configuration/BehaviorConfig.qml:234
+#: ../../shell/contents/configuration/BehaviorConfig.qml:280
+msgid "Left"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:144
+#: ../../shell/contents/configuration/BehaviorConfig.qml:234
+#: ../../shell/contents/configuration/BehaviorConfig.qml:280
+msgid "Top"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:158
+#: ../../shell/contents/configuration/BehaviorConfig.qml:263
+#: ../../shell/contents/configuration/BehaviorConfig.qml:280
+msgid "Right"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:179
+msgid "Alignment"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:250
+msgid "Center"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:304
+msgid "Visibility"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:354
+msgid "Always Visible"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:367
+msgid "Auto Hide"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:380
+msgid "Dodge Active"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:394
+msgid "Dodge Maximized"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:408
+msgid "Dodge All Windows"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:425
+msgid "Delay"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:436
+msgid "Hide:"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:459
+msgid "Show:"
+msgstr ""
+
+#: ../../shell/contents/configuration/config.qml:27
+msgid "General"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:74
+msgid "atte"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:92
+msgid "ver:"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:101
+msgid "Behavior"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:105
+#: ../../shell/contents/configuration/TasksConfig.qml:46
+msgid "Appearance"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:109
+msgid "Tasks"
+msgstr ""
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:158
 msgid "Add New Dock"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:604
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:171
 msgid "Remove Dock"
 msgstr ""
 
-#: ../../app/packageplugins/shell/nowdockpackage.cpp:21
-msgid "Now Dock panel"
+#: ../../shell/contents/configuration/LatteTextField.qml:32
+msgid "<none>"
 msgstr ""
 
-#: ../../app/packageplugins/shell/nowdockpackage.cpp:23
+#: ../../shell/contents/configuration/LatteTextField.qml:60
+msgid "ms."
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:55
+msgid "Show glow around windows points"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:68
+msgid "Different color for minimized windows"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:79
+msgid "Dots on active window"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:90
+msgid "Reverse position for lines and dots"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:107
+msgid "Interaction"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:116
+msgid "Preview windows on hovering"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:127
+msgid "Highlight windows on hovering"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:138
+msgid "Show window actions in the context menu"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:149
+msgid "Show progress information in task buttons"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:166
+msgid "Filters"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:175
+msgid "Show only tasks from the current screen"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:185
+msgid "Show only tasks from the current desktop"
+msgstr ""
+
+#: ../../shell/contents/configuration/TasksConfig.qml:195
+msgid "Show only tasks from the current activity"
+msgstr ""
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:44
+msgid "Latte Dock panel"
+msgstr ""
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:46
 msgid "Dock configuration UI"
 msgstr ""
 
-#: ../../app/packageplugins/shell/nowdockpackage.cpp:24
+#: ../../app/packageplugins/shell/dockpackage.cpp:47
 msgid "Config model"
 msgstr ""
 

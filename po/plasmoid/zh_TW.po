@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2016-12-28 22:51+0200\n"
+"POT-Creation-Date: 2017-01-03 10:42+0200\n"
 "PO-Revision-Date: 2016-11-26 17:34+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -17,295 +17,295 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../plasmoid/contents/config/config.qml:26
+#: ../../plasmoid/contents/config/config.qml:27
 msgid "Appearance"
 msgstr "外觀"
 
-#: ../../plasmoid/contents/config/config.qml:31
+#: ../../plasmoid/contents/config/config.qml:32
 msgid "Panel"
 msgstr "面板"
 
-#: ../../plasmoid/contents/config/config.qml:36
+#: ../../plasmoid/contents/config/config.qml:37
 msgid "Interaction"
 msgstr "反應"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:68
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:70
 msgid "Icon size: "
 msgstr "圖示大小："
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:156
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:158
 msgid "ver: "
 msgstr "版本："
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:163
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:165
 msgid "Enable shadows for icons"
 msgstr "啟用圖示陰影"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:169
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:171
 msgid "Show glow around windows points"
 msgstr "在視窗點周圍顯示光暈"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:175
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:177
 msgid "Different color for minimized windows"
 msgstr "最小化視窗使用不同的顏色"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:181
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
 msgid "Dots on active window"
 msgstr "作用中的視窗顯示點"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:187
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
 msgid "Reverse position for lines and dots"
 msgstr "線與點位置反轉"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:205
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:207
 msgid "Animations: "
 msgstr "動畫："
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:223
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:225
 msgid "duration"
 msgstr "期間"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:223
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:225
 msgid "disabled"
 msgstr "已停用"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:235
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:237
 msgid "Zoom"
 msgstr "縮放"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:249
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:251
 msgid "Level: "
 msgstr "等級："
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:293
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:295
 msgid "Show a red line on the limit needed for animations"
 msgstr "在需要限制的動畫上顯示紅線"
 
-#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:323
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:169
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:325
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:171
+#, fuzzy
 msgid ""
-"For the disabled settings you should use the Now Dock Panel Configuration "
-"Window"
+"For the disabled settings you should use the Latte Dock Configuration Window"
 msgstr "為了已停用的設定，您必須使用 Now Dock 面板設定視窗"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:58
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:59
 msgid "Cycle through tasks with mouse wheel"
 msgstr "使用滑鼠滾輪循環切換工作"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:65
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:66
 msgid "Preview windows on hovering"
 msgstr "在滑鼠游標停留其上時預覽視窗"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:71
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:72
 msgid "Highlight windows on hovering"
 msgstr "在滑鼠游標停留其上時突顯視窗"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:77
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:78
 msgid "Show window actions in the context menu"
 msgstr "在右鍵選單中顯示視窗動作"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:83
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
 msgid "Show progress information in task buttons"
 msgstr "在工具按鍵裡顯示進度資訊"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:88
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:89
 msgid "On middle-click:"
 msgstr "點擊滑鼠中鍵："
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgctxt "The click action"
 msgid "None"
 msgstr "無"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "Close Window or Group"
 msgstr "關閉視窗或群組"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "New Instance"
 msgstr "新的實體"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:94
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "Minimize/Restore Window or Group"
 msgstr "最小化/復原視窗"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:106
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:107
 msgid "Filters"
 msgstr "過濾器"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:117
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:118
 msgid "Show only tasks from the current screen"
 msgstr "只顯示目前螢幕上的工作"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:122
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:123
 msgid "Show only tasks from the current desktop"
 msgstr "只顯示目前桌面上的工作"
 
-#: ../../plasmoid/contents/ui/ConfigInteraction.qml:127
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:128
 msgid "Show only tasks from the current activity"
 msgstr "只顯示目前活動裡的工作"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:58
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:60
 msgid "Position: "
 msgstr "位置："
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
 msgid "Center"
 msgstr "置中"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
 msgid "Left"
 msgstr "左邊"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
 msgid "Right"
 msgstr "右邊"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
 msgid "Top"
 msgstr "頂部"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:66
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
 msgid "Bottom"
 msgstr "底部"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:74
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:76
 msgid "Show bar line for tasks"
 msgstr "為工作顯示條狀列"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:81
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:83
 msgid "Use plasma theme panel"
 msgstr "使用 Plasma 主題面板"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:88
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:90
 msgid "Use transparency in the panel"
 msgstr "在面板中使用漸層"
 
-#: ../../plasmoid/contents/ui/ConfigPanel.qml:95
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:97
 msgid "Size: "
 msgstr "大小："
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:115
+#: ../../plasmoid/contents/ui/ContextMenu.qml:118
 msgctxt "Play previous track"
 msgid "Previous Track"
 msgstr "前一軌"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:128
+#: ../../plasmoid/contents/ui/ContextMenu.qml:131
 msgctxt "Pause playback"
 msgid "Pause"
 msgstr "暫停"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:128
+#: ../../plasmoid/contents/ui/ContextMenu.qml:131
 msgctxt "Start playback"
 msgid "Play"
 msgstr "播放"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:139
+#: ../../plasmoid/contents/ui/ContextMenu.qml:142
 msgctxt "Stop playback"
 msgid "Stop"
 msgstr "停止"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:147
+#: ../../plasmoid/contents/ui/ContextMenu.qml:150
 msgctxt "Play next track"
 msgid "Next Track"
 msgstr "下一軌"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:163
+#: ../../plasmoid/contents/ui/ContextMenu.qml:166
 msgctxt "Quit media player app"
 msgid "Quit"
 msgstr "離開"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:178
+#: ../../plasmoid/contents/ui/ContextMenu.qml:181
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
 msgstr "恢復"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:223
+#: ../../plasmoid/contents/ui/ContextMenu.qml:226
 msgid "Move To Desktop"
 msgstr "移動到桌面"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:245
+#: ../../plasmoid/contents/ui/ContextMenu.qml:248
 msgid "Move To Current Desktop"
 msgstr "移到目前桌面"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:254
+#: ../../plasmoid/contents/ui/ContextMenu.qml:257
 msgid "All Desktops"
 msgstr "所有桌面"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:283
+#: ../../plasmoid/contents/ui/ContextMenu.qml:286
 msgid "New Desktop"
 msgstr "新增桌面"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:303
+#: ../../plasmoid/contents/ui/ContextMenu.qml:306
 msgid "Move To &Activity"
 msgstr "移動到活動(&A)"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:324
+#: ../../plasmoid/contents/ui/ContextMenu.qml:327
 msgid "Add To Current Activity"
 msgstr "加入到目前的活動"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:334
+#: ../../plasmoid/contents/ui/ContextMenu.qml:337
 msgid "All Activities"
 msgstr "所有的活動"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:403
+#: ../../plasmoid/contents/ui/ContextMenu.qml:406
 msgid "Minimize"
 msgstr "最小化"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:419
+#: ../../plasmoid/contents/ui/ContextMenu.qml:422
 msgid "Maximize"
 msgstr "最大化"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:434
+#: ../../plasmoid/contents/ui/ContextMenu.qml:437
 msgid "More Actions"
 msgstr "更多動作"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:442
+#: ../../plasmoid/contents/ui/ContextMenu.qml:445
 msgid "Move"
 msgstr "移動"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:451
+#: ../../plasmoid/contents/ui/ContextMenu.qml:454
 msgid "Resize"
 msgstr "調整大小"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:460
+#: ../../plasmoid/contents/ui/ContextMenu.qml:463
 msgid "Keep Above Others"
 msgstr "顯示在最上層"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:470
+#: ../../plasmoid/contents/ui/ContextMenu.qml:473
 msgid "Keep Below Others"
 msgstr "顯示在最下層"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:482
+#: ../../plasmoid/contents/ui/ContextMenu.qml:485
 msgid "Fullscreen"
 msgstr "全螢幕"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:494
+#: ../../plasmoid/contents/ui/ContextMenu.qml:497
 msgid "Shade"
 msgstr "陰影"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:509
+#: ../../plasmoid/contents/ui/ContextMenu.qml:512
 msgid "Allow this program to be grouped"
 msgstr "允許此程式被歸類"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:522
+#: ../../plasmoid/contents/ui/ContextMenu.qml:525
 msgid "Start New Instance"
 msgstr "開啟新的實體"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:544
-#: ../../plasmoid/contents/ui/ContextMenu.qml:577
+#: ../../plasmoid/contents/ui/ContextMenu.qml:547
+#: ../../plasmoid/contents/ui/ContextMenu.qml:580
 msgid "Show Launcher On All Activities"
 msgstr "在所有活動中顯示啟動器"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:561
+#: ../../plasmoid/contents/ui/ContextMenu.qml:564
 msgid "Show Launcher When Not Running"
 msgstr "當未執行時顯示啟動器"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:588
+#: ../../plasmoid/contents/ui/ContextMenu.qml:591
 msgid "Remove Launcher"
 msgstr "移除啟動器"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:619
+#: ../../plasmoid/contents/ui/ContextMenu.qml:651
 msgid "Close"
 msgstr "關閉"
 
@@ -328,27 +328,27 @@ msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "於 %1 上使用"
 
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:356
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:355
 msgctxt "Go to previous song"
 msgid "Previous"
 msgstr "前一個"
 
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:365
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:364
 msgctxt "Pause player"
 msgid "Pause"
 msgstr "暫停"
 
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:365
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:364
 msgctxt "Start player"
 msgid "Play"
 msgstr "啟動"
 
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:373
+#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:372
 msgctxt "Go to next song"
 msgid "Next"
 msgstr "下一個"
 
-#: ../../plasmoid/contents/ui/ToolTipWindowMouseArea.qml:57
+#: ../../plasmoid/contents/ui/ToolTipWindowMouseArea.qml:56
 msgctxt "close this window"
 msgid "Close"
 msgstr "關閉"
