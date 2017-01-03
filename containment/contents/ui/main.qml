@@ -424,6 +424,12 @@ DragDrop.DropArea {
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
             dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+
+            // adding the AppletQuickItem to the Now Dock in order to be
+            // used for right clicking events
+            for(var i=0; i<plasmoid.applets.length; ++i) {
+                dock.addAppletItem(plasmoid.applets[i]);
+            }
         }
     }
 
@@ -527,7 +533,7 @@ DragDrop.DropArea {
         updateIndexes();
     }
 
-    Containment.onAppletRemoved: {
+    Containment.onAppletRemoved: {        
         LayoutManager.removeApplet(applet);
         var flexibleFound = false;
         for (var i = 0; i < mainLayout.children.length; ++i) {
@@ -546,6 +552,8 @@ DragDrop.DropArea {
         LayoutManager.save();
 
         updateIndexes();
+
+        dock.removeAppletItem(applet)
     }
 
     Plasmoid.onUserConfiguringChanged: {

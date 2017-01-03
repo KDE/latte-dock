@@ -626,11 +626,17 @@ PlasmaComponents.ContextMenu {
 
                 var actionList = nowDockPanel.containmentActions();
 
-                for (var i=0; i<actionList.length; ++i){
-                    var item = menu.newMenuItem(containmentSubMenu);
-                    item.visible = false;
-                    item.action = actionList[i];
-                    containmentSubMenu.addMenuItem(item,containmentMenuItem);
+                if (actionList.length > 1) {
+                    for (var i=0; i<actionList.length; ++i){
+                        var item = menu.newMenuItem(containmentSubMenu);
+                        item.visible = false;
+                        item.action = actionList[i];
+                        containmentSubMenu.addMenuItem(item,containmentMenuItem);
+                    }
+                } else if (actionList.length === 1){
+                    var item = menu.newMenuItem(menu);
+                    item.action = actionList[0];
+                    containmentMenuItem.visible = false;
                 }
             }
 
