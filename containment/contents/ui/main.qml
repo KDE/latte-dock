@@ -551,6 +551,8 @@ DragDrop.DropArea {
         }
 
         if (plasmoid.userConfiguring) {
+            dock.visibility.blockHiding = true;
+
             //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
                 //    console.log("applet:"+i);
@@ -569,6 +571,8 @@ DragDrop.DropArea {
                 dragOverlay.visible = true;
             }
         } else {
+            dock.visibility.blockHiding = false;
+
             if (dragOverlay) {
                 dragOverlay.visible = false;
                 dragOverlay.destroy();
@@ -864,7 +868,7 @@ DragDrop.DropArea {
     }
 
     function slotDisableHiding(value) {
-        // dock.visibility.disableHiding = value;
+        dock.visibility.blockHiding = value;
     }
 
     function updateAutomaticIconSize() {
