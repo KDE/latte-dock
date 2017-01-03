@@ -607,6 +607,27 @@ PlasmaComponents.ContextMenu {
         Component.onCompleted: configureAction = plasmoid.action("configure")
     }
 
+
+    PlasmaComponents.MenuItem {
+        separator: true
+    }
+
+    PlasmaComponents.MenuItem {
+        id: closeWindowItem
+        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
+
+        enabled: visualParent && visualParent.m.IsClosable === true
+
+        text: i18n("Close")
+        icon: "window-close"
+
+        onClicked: tasksModel.requestClose(visualParent.modelIndex())
+    }
+
+    PlasmaComponents.MenuItem {
+        separator: true
+    }
+
     PlasmaComponents.MenuItem {
         id: containmentMenuItem
 
@@ -626,16 +647,32 @@ PlasmaComponents.ContextMenu {
 
                 var actionList = nowDockPanel.containmentActions();
 
-                if (actionList.length > 1) {
+                var visibleActions=0;
+
+                for (var i=0; i<actionList.length; ++i){
+                   console.log(i);
+                    if (actionList[i].visible) {
+                        visibleActions++;
+                    }
+                }
+
+                if (visibleActions > 1) {
                     for (var i=0; i<actionList.length; ++i){
                         var item = menu.newMenuItem(containmentSubMenu);
                         item.visible = false;
                         item.action = actionList[i];
                         containmentSubMenu.addMenuItem(item,containmentMenuItem);
                     }
-                } else if (actionList.length === 1){
-                    var item = menu.newMenuItem(menu);
-                    item.action = actionList[0];
+                } else if (visibleActions === 1){
+                    for (var i=0; i<actionList.length; ++i){
+                        if (actionList[i].visible){
+                            var item = menu.newMenuItem(menu);
+                            item.action = actionList[i];
+                        }
+                    }
+                }
+
+                if (visibleActions <= 1) {
                     containmentMenuItem.visible = false;
                 }
             }
@@ -644,20 +681,5 @@ PlasmaComponents.ContextMenu {
         }
     }
 
-    PlasmaComponents.MenuItem {
-        separator: true
-    }
-
-    PlasmaComponents.MenuItem {
-        id: closeWindowItem
-        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
-
-        enabled: visualParent && visualParent.m.IsClosable === true
-
-        text: i18n("Close")
-        icon: "window-close"
-
-        onClicked: tasksModel.requestClose(visualParent.modelIndex())
-    }
 
 }
