@@ -52,7 +52,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
         }
     });
     connect(&timerHide, &QTimer::timeout, this, [this]() {
-        if (!blockHiding && !isHidden) {
+        if (!blockHiding && !isHidden && !dragEnter) {
             qDebug() << "must be hide";
             emit this->q->mustBeHide();
         }
@@ -212,7 +212,7 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
         if (!timerShow.isActive()) {
             timerShow.start();
         }
-    } else if (!blockHiding) {
+    } else if (!blockHiding && !dragEnter) {
         timerShow.stop();
         
         if (!timerHide.isActive())
@@ -222,9 +222,12 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
 
 void VisibilityManagerPrivate::updateHiddenState()
 {
+    if (dragEnter)
+        return;
+
     switch (mode) {
         case Dock::AutoHide:
-            raiseDock(false);
+            raiseDock(containsMouse);
             break;
             
         case Dock::DodgeActive:
@@ -365,21 +368,43 @@ inline void VisibilityManagerPrivate::restoreConfig()
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
 {
-    if (ev->type() == QEvent::Enter && !containsMouse) {
+    switch (ev->type()) {
+    case QEvent::Enter:
+        if (containsMouse)
+            break;
+        
         containsMouse = true;
         emit q->containsMouseChanged();
         
         if (mode != Dock::AlwaysVisible)
             raiseDock(true);
-            
-    } else if (ev->type() == QEvent::Leave && containsMouse) {
+        
+        break;
+    case QEvent::Leave:
+        if (!containsMouse)
+            break;
+        
         containsMouse = false;
         emit q->containsMouseChanged();
-        
         updateHiddenState();
-    } else if (ev->type() == QEvent::Show) {
+        
+        break;
+    case QEvent::DragEnter:
+        dragEnter = true;
+        emit q->mustBeShown();
+        
+        break;
+    case QEvent::DragLeave:
+    case QEvent::Drop:
+        dragEnter = false;
+        updateHiddenState();
+        
+        break;
+    case QEvent::Show:
         wm->setDockDefaultFlags();
         restoreConfig();
+        
+        break;
     }
     
     return QObject::event(ev);
