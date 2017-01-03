@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
@@ -47,7 +47,6 @@ PlasmaComponents.Page{
             }
 
             Column{
-                leftPadding: 2*theme.defaultFont.pixelSize
                 spacing: 0.4*theme.defaultFont.pixelSize
 
                 PlasmaComponents.CheckBox {
@@ -108,7 +107,6 @@ PlasmaComponents.Page{
             }
 
             Column{
-                leftPadding: 2*theme.defaultFont.pixelSize
                 spacing: 0.4*theme.defaultFont.pixelSize
 
                 PlasmaComponents.CheckBox {
@@ -167,7 +165,6 @@ PlasmaComponents.Page{
             }
 
             Column{
-                leftPadding: 2*theme.defaultFont.pixelSize
                 spacing: 0.4*theme.defaultFont.pixelSize
 
                 PlasmaComponents.CheckBox {
