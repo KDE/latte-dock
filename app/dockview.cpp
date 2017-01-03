@@ -694,7 +694,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
         }
 
         if (applet) {
-            KPluginMetaData meta = applet->pluginMetaData();
+            KPluginMetaData meta = applet->kPackage().metadata();
 
             if ((meta.pluginId() != "org.kde.plasma.systemtray") &&
                 (meta.pluginId() != "org.kde.latte.plasmoid")) {
@@ -709,7 +709,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 if (this->mouseGrabberItem()) {
                     //workaround, this fixes for me most of the right click menu behavior
                     if (applet) {
-                        KPluginMetaData meta = applet->pluginMetaData();
+                        KPluginMetaData meta = applet->kPackage().metadata();
 
                         //gives the systemtray direct right click behavior for its applets
                         if (meta.pluginId() != "org.kde.plasma.systemtray") {
