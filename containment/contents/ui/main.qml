@@ -551,6 +551,9 @@ DragDrop.DropArea {
         }
 
         if (plasmoid.userConfiguring) {
+            if (dock.visibility.isHidden) {
+                dock.visibility.mustBeShown();
+            }
             dock.visibility.blockHiding = true;
 
             //  console.log("applets------");
@@ -572,6 +575,10 @@ DragDrop.DropArea {
             }
         } else {
             dock.visibility.blockHiding = false;
+
+            if (dock.visibility.isHidden) {
+                dock.visibility.mustBeShown();
+            }
 
             if (dragOverlay) {
                 dragOverlay.visible = false;
