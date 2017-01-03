@@ -59,8 +59,6 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     });
     
     wm->setDockDefaultFlags();
-    
-    restoreConfig();
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
@@ -73,8 +71,6 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     if (this->mode == mode)
         return;
         
-    qDebug() << "restore config" << mode;
-    
     // clear mode
     if (this->mode == Dock::AlwaysVisible)
         wm->removeDockStruts();
@@ -356,14 +352,15 @@ inline void VisibilityManagerPrivate::restoreConfig()
         
     auto config = view->containment()->config();
     
-    auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
-    setMode(mode);
-    
     timerShow.setInterval(config.readEntry("timerShow", 0));
     timerHide.setInterval(config.readEntry("timerHide", 0));
     
+    auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    
     emit q->timerShowChanged();
     emit q->timerHideChanged();
+    
+    setMode(mode);
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
@@ -382,6 +379,7 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         updateHiddenState();
     } else if (ev->type() == QEvent::Show) {
         wm->setDockDefaultFlags();
+        restoreConfig();
     }
     
     return QObject::event(ev);
