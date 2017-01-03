@@ -434,12 +434,20 @@ DragDrop.DropArea {
             return;
         }
 
+        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
+            return;
+        }
+
         var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
         LayoutManager.insertAtCoordinates(dndSpacer, relevantLayout.x, relevantLayout.y)
         dndSpacer.opacity = 1;
     }
 
     onDragMove: {
+        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
+            return;
+        }
+
         var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
         LayoutManager.insertAtCoordinates(dndSpacer, relevantLayout.x, relevantLayout.y)
         dndSpacer.opacity = 1;
