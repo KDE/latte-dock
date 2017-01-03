@@ -71,6 +71,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
         }
+
+        //QAction *lockWidgetsAction = containment()->actions()->action("lock widgets");
+        //containment()->actions()->removeAction(lockWidgetsAction);
         
     }, Qt::DirectConnection);
 }
