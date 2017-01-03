@@ -36,7 +36,10 @@
 namespace Latte {
 
 DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
-    : PlasmaQuick::ConfigView(containment, parent), m_containment(containment), m_dockView(dockView)
+    : PlasmaQuick::ConfigView(containment, parent),
+      m_containment(containment),
+      m_dockView(dockView),
+      m_blockFocusLost(false)
 {
     m_deleterTimer.setSingleShot(true);
     m_deleterTimer.setInterval(10 * 1000);
@@ -80,6 +83,7 @@ void DockConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
+    rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
@@ -220,7 +224,9 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
         
-    hide();
+    if (!m_blockFocusLost) {
+        hide();
+    }
 }
 
 void DockConfigView::configurationShown(PlasmaQuick::ConfigView *configView)
@@ -236,6 +242,16 @@ void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
         hide();
     }
 }
+
+void DockConfigView::setSticker(bool blockFocusLost)
+{
+    if (m_blockFocusLost == blockFocusLost) {
+        return;
+    }
+
+    m_blockFocusLost = blockFocusLost;
+}
+
 
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -59,8 +59,6 @@ PlasmaComponents.Page{
                         id: showGlow
                         text: i18n("Show glow around windows points")
 
-
-
                         onCheckedChanged: {
                             plasmoid.configuration.showGlow = checked;
                         }
