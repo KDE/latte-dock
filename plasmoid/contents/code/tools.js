@@ -92,9 +92,9 @@ function insertIndexAt(above, x, y) {
     if (above && above.itemIndex) {
         return above.itemIndex;
     } else {
-        var distance = panel.vertical ? y : x;
-        //var step = panel.vertical ? LayoutManager.taskWidth() : LayoutManager.taskHeight();
-        var step = panel.realSize;
+        var distance = root.vertical ? y : x;
+        //var step = root.vertical ? LayoutManager.taskWidth() : LayoutManager.taskHeight();
+        var step = root.realSize;
         var stripe = Math.ceil(distance / step);
 
         /* if (stripe === LayoutManager.calculateStripes()) {
