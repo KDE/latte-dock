@@ -834,6 +834,8 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
             }
         }
 
+        desktopMenu->addSeparator();
+
         if (enabled) {
             //if there is only one, don't create a submenu
             if (enabled < 2) {
