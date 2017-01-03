@@ -102,9 +102,9 @@ Item{
 
     function slotMustBeHide() {
         // console.log("hide....");
-        if (!plasmoid.userConfiguring) {
-            slidingAnimationAutoHiddenOut.init();
-        }
+        //if (!plasmoid.userConfiguring) {
+        slidingAnimationAutoHiddenOut.init();
+        //}
     }
 
     function slotModeChanged() {
