@@ -72,8 +72,11 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
             m_visibility = new VisibilityManager(this);
         }
 
-        //QAction *lockWidgetsAction = containment()->actions()->action("lock widgets");
-        //containment()->actions()->removeAction(lockWidgetsAction);
+        QAction *lockWidgetsAction = containment()->actions()->action("lock widgets");
+        containment()->actions()->removeAction(lockWidgetsAction);
+
+        //QAction *addWidgetsAction = containment()->actions()->action("add widgets");
+        //containment()->actions()->removeAction(addWidgetsAction);
         
     }, Qt::DirectConnection);
 }
