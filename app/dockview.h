@@ -27,22 +27,18 @@
 
 #include <QQuickView>
 #include <QQmlListProperty>
+#include <QMenu>
 #include <QScreen>
 #include <QPointer>
 #include <QTimer>
+
+#include <PlasmaQuick/AppletQuickItem>
 
 namespace Plasma {
 class Types;
 class Corona;
 class Containment;
 }
-
-/*namespace Candil {
-class Dock;
-class DockView;
-class DockConfigView;
-class VisibilityManager;
-}*/
 
 namespace Latte {
 
@@ -103,6 +99,8 @@ public:
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
     
 public slots:
+    Q_INVOKABLE void addAppletItem(QObject *item);
+    Q_INVOKABLE void removeAppletItem(QObject *item);
     Q_INVOKABLE void addNewDock();
     Q_INVOKABLE QVariantList containmentActions();
     //used from the configuration window
@@ -121,7 +119,8 @@ protected slots:
     
 protected:
     bool event(QEvent *ev) override;
-//    void showEvent(QShowEvent *ev) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
 //   void visibilityChanged();
@@ -143,6 +142,9 @@ signals:
 public slots:
     void updateDockPositionSlot();
     void updateAbsDockGeometry();
+
+private slots:
+    void menuAboutToHide();
     
 private:
     bool m_secondInitPass;
@@ -155,6 +157,9 @@ private:
     QRect m_localDockGeometry;
     QRect m_maskArea;
     QPointer<PlasmaQuick::ConfigView> m_configView;
+    QMenu *m_contextMenu;
+
+    QList<PlasmaQuick::AppletQuickItem *> m_appletItems;
     
     QTimer m_timerGeometry;
     QTimer m_lockGeometry;
@@ -162,9 +167,10 @@ private:
     
     QPointer<VisibilityManager> m_visibility;
     
-    bool containmentContainsPosition(const QPointF &point) const;
-    QPointF positionAdjustedForContainment(const QPointF &point) const;
     void initWindow();
+
+    void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
+    void addContainmentActions(QMenu *desktopMenu, QEvent *event);
 };
 
 }

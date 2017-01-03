@@ -29,17 +29,23 @@
 #include <QQmlEngine>
 #include <QQmlProperty>
 #include <QQuickItem>
+#include <QMenu>
 #include <QMetaEnum>
+
+#include <KActionCollection>
+#include <KAuthorized>
+#include <KLocalizedContext>
+#include <KLocalizedString>
 
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
-#include <KActionCollection>
-#include <KLocalizedContext>
+#include <PlasmaQuick/AppletQuickItem>
 
 namespace Latte {
 
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
-    : PlasmaQuick::ContainmentView(corona)
+    : PlasmaQuick::ContainmentView(corona),
+      m_contextMenu(0)
 {
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
@@ -52,7 +58,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         adaptToScreen(targetScreen);
     else
         adaptToScreen(qGuiApp->primaryScreen());
-        
+
     m_timerGeometry.setSingleShot(true);
     m_timerGeometry.setInterval(400);
     
@@ -67,7 +73,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     , this, [&]() {
         if (!containment())
             return;
-            
+
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
         }
@@ -75,8 +81,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         QAction *lockWidgetsAction = containment()->actions()->action("lock widgets");
         containment()->actions()->removeAction(lockWidgetsAction);
 
-        //QAction *addWidgetsAction = containment()->actions()->action("add widgets");
-        //containment()->actions()->removeAction(addWidgetsAction);
+        QAction *addWidgetsAction = containment()->actions()->action("add widgets");
+        containment()->actions()->removeAction(addWidgetsAction);
         
     }, Qt::DirectConnection);
 }
@@ -90,8 +96,8 @@ void DockView::init()
     connect(this, &DockView::screenChanged
             , this, &DockView::adaptToScreen
             , Qt::QueuedConnection);
-            
-            
+
+
     connect(&m_timerGeometry, &QTimer::timeout, [&]() {
         initWindow();
     });
@@ -109,7 +115,7 @@ void DockView::init()
     connect(this, &DockView::screenGeometryChanged
             , this, &DockView::updateDockPosition
             , Qt::QueuedConnection);
-            
+
     connect(this, SIGNAL(widthChanged(int)), this, SIGNAL(widthChanged()));
     connect(this, SIGNAL(heightChanged(int)), this, SIGNAL(heightChanged()));
     
@@ -171,13 +177,13 @@ void DockView::adaptToScreen(QScreen *screen)
         m_maxLength = screen->size().height();
     else
         m_maxLength = screen->size().width();
-        
-//   KWindowSystem::setOnAllDesktops(winId(), true);
-//   KWindowSystem::setType(winId(), NET::Dock);
+
+    //   KWindowSystem::setOnAllDesktops(winId(), true);
+    //   KWindowSystem::setType(winId(), NET::Dock);
 
     if (containment())
         containment()->reactToScreenChange();
-        
+
     m_timerGeometry.start();
 }
 
@@ -224,7 +230,7 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 {
     if (!applet || !applet->containment())
         return;
-        
+
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
     
     if (m_configView && c && c->isContainment() && c == containment()) {
@@ -302,7 +308,7 @@ inline void DockView::updateDockPosition()
 {
     if (!containment())
         return;
-        
+
     const QRect screenGeometry = screen()->geometry();
     QPoint position;
     
@@ -318,25 +324,25 @@ inline void DockView::updateDockPosition()
             position = {screenGeometry.x(), screenGeometry.y()};
             m_maxLength = screenGeometry.width();
             break;
-            
+
         case Plasma::Types::BottomEdge:
             containment()->setFormFactor(Plasma::Types::Horizontal);
             position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
             m_maxLength = screenGeometry.width();
             break;
-            
+
         case Plasma::Types::RightEdge:
             containment()->setFormFactor(Plasma::Types::Vertical);
             position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
             m_maxLength = screenGeometry.height();
             break;
-            
+
         case Plasma::Types::LeftEdge:
             containment()->setFormFactor(Plasma::Types::Vertical);
             position = {screenGeometry.x(), screenGeometry.y()};
             m_maxLength = screenGeometry.height();
             break;
-            
+
         default:
             qWarning() << "wrong location, couldn't update the panel position"
                        << location();
@@ -377,7 +383,7 @@ void DockView::setMaxThickness(int thickness)
 {
     if (m_maxThickness == thickness)
         return;
-        
+
     m_maxThickness = thickness;
     m_timerGeometry.start();
     emit maxThicknessChanged();
@@ -392,12 +398,12 @@ void DockView::setLength(int length)
 {
     if (m_length == length)
         return;
-        
+
     if (length > m_maxLength)
         m_length = m_maxLength;
     else
         m_length = length;
-        
+
     m_timerGeometry.start();
     emit lengthChanged();
 }
@@ -411,7 +417,7 @@ void DockView::setMaxLength(int maxLength)
 {
     if (m_maxLength == maxLength)
         return;
-        
+
     m_maxLength = maxLength;
     emit maxLengthChanged();
 }
@@ -457,7 +463,7 @@ void DockView::setOffset(int offset)
 {
     if (m_offset == offset)
         return;
-        
+
     m_offset = offset;
     m_timerGeometry.start();
     emit offsetChanged();
@@ -480,13 +486,13 @@ void DockView::updateOffset()
 {
     if (!containment())
         return;
-        
+
     const float offsetPercent = containment()->config().readEntry("offset").toFloat();
     const int offset = offsetPercent * (m_maxLength - m_length) / 2;
     
     if (offset == m_offset)
         return;
-        
+
     m_offset = offset;
     emit offsetChanged();
 }
@@ -501,39 +507,6 @@ bool DockView::event(QEvent *e)
     emit eventTriggered(e);
     
     return ContainmentView::event(e);
-}
-
-/*void DockView::showEvent(QShowEvent *ev)
-{
-    KWindowSystem::setType(winId(), NET::Dock);
-    KWindowSystem::setOnAllDesktops(winId(), true);
-    //QQuickWindow::showEvent(ev);
-    ContainmentView::showEvent(ev);
-}*/
-
-bool DockView::containmentContainsPosition(const QPointF &point) const
-{
-    QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
-    
-    if (!containmentItem) {
-        return false;
-    }
-    
-    return QRectF(containmentItem->mapToScene(QPoint(0, 0)), QSizeF(containmentItem->width(), containmentItem->height())).contains(point);
-}
-
-QPointF DockView::positionAdjustedForContainment(const QPointF &point) const
-{
-    QQuickItem *containmentItem = containment()->property("_plasma_graphicObject").value<QQuickItem *>();
-    
-    if (!containmentItem) {
-        return point;
-    }
-    
-    QRectF containmentRect(containmentItem->mapToScene(QPoint(0, 0)), QSizeF(containmentItem->width(), containmentItem->height()));
-    
-    return QPointF(qBound(containmentRect.left() + 2, point.x(), containmentRect.right() - 2),
-                   qBound(containmentRect.top() + 2, point.y(), containmentRect.bottom() - 2));
 }
 
 QList<int> DockView::freeEdges() const
@@ -553,7 +526,7 @@ void DockView::saveConfig()
 {
     if (!containment())
         return;
-        
+
     const auto writeEntry = [&](const char *entry, const QVariant & value) {
         containment()->config().writeEntry(entry, value);
     };
@@ -571,13 +544,13 @@ void DockView::restoreConfig()
 {
     if (!containment())
         return;
-        
+
     const auto readEntry = [&](const char *entry, QVariant defaultValue) -> QVariant {
         return containment()->config().readEntry(entry, defaultValue);
     };
     //! convert offset-percent to pixels
     //! offset = offsetPercent * (maxLength - length) / 2
-//   const float offsetPercent {readEntry("offset", 0).toFloat()};
+    //   const float offsetPercent {readEntry("offset", 0).toFloat()};
     //  const int offset {static_cast<int>(offsetPercent * (m_maxLength - m_length) / 2)};
     //  setOffset(offset);
     
@@ -620,7 +593,325 @@ QVariantList DockView::containmentActions()
 
     return actions;
 }
+//!END SLOTS
+//!BEGIN overriding context menus behavior
+void DockView::addAppletItem(QObject *item)
+{
+    PlasmaQuick::AppletQuickItem *dynItem = qobject_cast<PlasmaQuick::AppletQuickItem *>(item);
+
+    if (!dynItem || m_appletItems.contains(dynItem)) {
+        return;
+    }
+
+    m_appletItems.append(dynItem);
+}
+
+void DockView::removeAppletItem(QObject *item)
+{
+    PlasmaQuick::AppletQuickItem *dynItem = qobject_cast<PlasmaQuick::AppletQuickItem *>(item);
+
+    if (!dynItem) {
+        return;
+    }
+
+    m_appletItems.removeAll(dynItem);
+}
+
+void DockView::menuAboutToHide()
+{
+    m_contextMenu = 0;
+    m_visibility->setBlockHiding(false);
+}
+
+
+void DockView::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (!event || !containment()) {
+        return;
+    }
+
+    PlasmaQuick::ContainmentView::mouseReleaseEvent(event);
+
+    event->setAccepted(containment()->containmentActions().contains(Plasma::ContainmentActions::eventToString(event)));
+}
+
+void DockView::mousePressEvent(QMouseEvent *event)
+{
+    if (!event || !containment()) {
+        return;
+    }
+
+    // PlasmaQuick::ContainmentView::mousePressEvent(event);
+
+    //even if the menu is executed synchronously, other events may be processed
+    //by the qml incubator when plasma is loading, so we need to guard there
+    if (m_contextMenu) {
+        m_contextMenu->close();
+        PlasmaQuick::ContainmentView::mousePressEvent(event);
+        return;
+    }
+
+    //qDebug() << "1...";
+    const QString trigger = Plasma::ContainmentActions::eventToString(event);
+
+    if (trigger == "RightButton;NoModifier") {
+        Plasma::ContainmentActions *plugin = containment()->containmentActions().value(trigger);
+
+        if (!plugin || plugin->contextualActions().isEmpty()) {
+            event->setAccepted(false);
+            return;
+        }
+
+        //qDebug() << "2...";
+
+        //the plugin can be a single action or a context menu
+        //Don't have an action list? execute as single action
+        //and set the event position as action data
+        /*if (plugin->contextualActions().length() == 1) {
+            QAction *action = plugin->contextualActions().at(0);
+            action->setData(event->pos());
+            action->trigger();
+            event->accept();
+            return;
+        }*/
+
+        //qDebug() << "3...";
+
+        //FIXME: very inefficient appletAt() implementation
+        Plasma::Applet *applet = 0;
+
+        foreach (PlasmaQuick::AppletQuickItem *ai, m_appletItems) {
+            if (ai && ai->isVisible() && ai->contains(ai->mapFromItem(contentItem(), event->pos()))) {
+                applet = ai->applet();
+                break;
+            } else {
+                ai = 0;
+            }
+        }
+
+        if (applet) {
+            KPluginMetaData meta = applet->pluginMetaData();
+
+            if ((meta.pluginId() != "org.kde.plasma.systemtray") &&
+                (meta.pluginId() != "org.kde.latte.plasmoid")) {
+
+                //qDebug() << "4...";
+
+                QMenu *desktopMenu = new QMenu;
+                desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
+
+                m_contextMenu = desktopMenu;
+
+                if (this->mouseGrabberItem()) {
+                    //workaround, this fixes for me most of the right click menu behavior
+                    if (applet) {
+                        KPluginMetaData meta = applet->pluginMetaData();
+
+                        //gives the systemtray direct right click behavior for its applets
+                        if (meta.pluginId() != "org.kde.plasma.systemtray") {
+                            this->mouseGrabberItem()->ungrabMouse();
+                        }
+                    }
+
+                    return;
+                }
+
+                //qDebug() << "5...";
+
+                if (applet) {
+                    emit applet->contextualActionsAboutToShow();
+                    addAppletActions(desktopMenu, applet, event);
+                } else {
+                    emit containment()->contextualActionsAboutToShow();
+                    addContainmentActions(desktopMenu, event);
+                }
+
+                //qDebug() << "6...";
+
+                //this is a workaround where Qt now creates the menu widget
+                //in .exec before oxygen can polish it and set the following attribute
+                desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
+                //end workaround
+
+                QPoint pos = event->globalPos();
+
+                if (applet) {
+                    desktopMenu->adjustSize();
+
+                    if (screen()) {
+                        const QRect scr = screen()->geometry();
+
+                        int smallStep = 3;
+
+                        int x = event->globalPos().x() + smallStep;
+                        int y = event->globalPos().y() + smallStep;
+
+                        //qDebug()<<x << " - "<<y;
+
+                        if (event->globalPos().x() > scr.center().x()) {
+                            x = event->globalPos().x() - desktopMenu->width() - smallStep;
+                        }
+
+                        if (event->globalPos().y() > scr.center().y()) {
+                            y = event->globalPos().y() - desktopMenu->height() - smallStep;
+                        }
+
+                        pos = QPoint(x, y);
+                    }
+                }
+
+                //qDebug() << "7...";
+
+                if (desktopMenu->isEmpty()) {
+                    delete desktopMenu;
+                    event->accept();
+                    return;
+                }
+
+                connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
+                m_visibility->setBlockHiding(true);
+                desktopMenu->popup(pos);
+
+                event->setAccepted(true);
+
+                return;
+            }
+        }
+    }
+
+    PlasmaQuick::ContainmentView::mousePressEvent(event);
+}
+
+void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
+{
+    if (!containment()) {
+        return;
+    }
+
+    foreach (QAction *action, applet->contextualActions()) {
+        if (action) {
+            desktopMenu->addAction(action);
+        }
+    }
+
+    if (!applet->failedToLaunch()) {
+        QAction *runAssociatedApplication = applet->actions()->action(QStringLiteral("run associated application"));
+
+        if (runAssociatedApplication && runAssociatedApplication->isEnabled()) {
+            desktopMenu->addAction(runAssociatedApplication);
+        }
+
+        QAction *configureApplet = applet->actions()->action(QStringLiteral("configure"));
+
+        if (configureApplet && configureApplet->isEnabled()) {
+            desktopMenu->addAction(configureApplet);
+        }
+
+        QAction *appletAlternatives = applet->actions()->action(QStringLiteral("alternatives"));
+
+        if (appletAlternatives && appletAlternatives->isEnabled()) {
+            desktopMenu->addAction(appletAlternatives);
+        }
+    }
+
+    QMenu *containmentMenu = new QMenu(i18nc("%1 is the name of the containment", "%1 Options", containment()->title()), desktopMenu);
+    addContainmentActions(containmentMenu, event);
+
+    if (!containmentMenu->isEmpty()) {
+        int enabled = 0;
+        //count number of real actions
+        QListIterator<QAction *> actionsIt(containmentMenu->actions());
+
+        while (enabled < 3 && actionsIt.hasNext()) {
+            QAction *action = actionsIt.next();
+
+            if (action->isVisible() && !action->isSeparator()) {
+                ++enabled;
+            }
+        }
+
+        if (enabled) {
+            //if there is only one, don't create a submenu
+            if (enabled < 2) {
+                foreach (QAction *action, containmentMenu->actions()) {
+                    if (action->isVisible() && !action->isSeparator()) {
+                        desktopMenu->addAction(action);
+                    }
+                }
+            } else {
+                desktopMenu->addMenu(containmentMenu);
+            }
+        }
+    }
+
+    if (containment()->immutability() == Plasma::Types::Mutable &&
+        (containment()->containmentType() != Plasma::Types::PanelContainment || containment()->isUserConfiguring())) {
+        QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
+
+        //qDebug() << "checking for removal" << closeApplet;
+        if (closeApplet) {
+            if (!desktopMenu->isEmpty()) {
+                desktopMenu->addSeparator();
+            }
+
+            //qDebug() << "adding close action" << closeApplet->isEnabled() << closeApplet->isVisible();
+            desktopMenu->addAction(closeApplet);
+        }
+    }
+}
+
+
+void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
+{
+    if (!containment()) {
+        return;
+    }
+
+    if (containment()->corona()->immutability() != Plasma::Types::Mutable &&
+        !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
+        //qDebug() << "immutability";
+        return;
+    }
+
+    //this is what ContainmentPrivate::prepareContainmentActions was
+    const QString trigger = Plasma::ContainmentActions::eventToString(event);
+    //"RightButton;NoModifier"
+    Plasma::ContainmentActions *plugin = containment()->containmentActions().value(trigger);
+
+    if (!plugin) {
+        return;
+    }
+
+    if (plugin->containment() != containment()) {
+        plugin->setContainment(containment());
+
+        // now configure it
+        KConfigGroup cfg(containment()->corona()->config(), "ActionPlugins");
+        cfg = KConfigGroup(&cfg, QString::number(containment()->containmentType()));
+        KConfigGroup pluginConfig = KConfigGroup(&cfg, trigger);
+        plugin->restore(pluginConfig);
+    }
+
+    QList<QAction *> actions = plugin->contextualActions();
+
+    if (actions.isEmpty()) {
+        //it probably didn't bother implementing the function. give the user a chance to set
+        //a better plugin.  note that if the user sets no-plugin this won't happen...
+        if ((containment()->containmentType() != Plasma::Types::PanelContainment &&
+             containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
+            containment()->actions()->action(QStringLiteral("configure"))) {
+            desktopMenu->addAction(containment()->actions()->action(QStringLiteral("configure")));
+        }
+    } else {
+        desktopMenu->addActions(actions);
+    }
+
+    return;
+}
+
+
+
+//!END overriding context menus behavior
 
 }
-//!END SLOTS
 //!END namespace
