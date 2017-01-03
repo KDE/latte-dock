@@ -27,6 +27,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
+import org.kde.latte 0.1 as Latte
+
 Item {
     id: container
 
@@ -243,14 +245,19 @@ Item {
                 NumberAnimation { duration: container.animationTime }
             }
 
-            /*   Rectangle{
-                width: 1
-                height: parent.height
-                x: parent.width/2
-                border.width: 1
-                border.color: "red"
-                color: "transparent"
-            } */
+            Loader{
+                anchors.fill: parent
+                active: root.debugMode
+
+                sourceComponent: Rectangle{
+                    height: 1
+                    width: parent.width
+                    y: parent.width/2
+                    border.width: 1
+                    border.color: "red"
+                    color: "transparent"
+                }
+            }
         }
 
 
@@ -639,13 +646,21 @@ Item {
                     //  currentLayout.updateScale(index-2, 1, 0);
                     //   currentLayout.updateScale(index+2, 1, 0);
 
+
+                    //(container.index === mainLayout.count - 1) || (container.index === secondLayout.beginIndex+secondLayout.count-1)
                     //Left hiddenSpacer
-                    if((index === 0 )&&(layoutsContainer.count > 1)){
+                    var startEdge = index < secondLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
+                                                                      (index === secondLayout.beginIndex)&&(secondLayout.count > 1)
+
+                    if(startEdge){
                         hiddenSpacerLeft.nScale = leftScale - 1;
                     }
 
                     //Right hiddenSpacer  ///there is one more item in the currentLayout ????
-                    if((index === layoutsContainer.count - 1 )&&(layoutsContainer.count>1)){
+                    var endEdge = plasmoid.configuration.panelPosition !== Latte.Dock.Double ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
+                                                                                               ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
+
+                    if(endEdge){
                         hiddenSpacerRight.nScale =  rightScale - 1;
                     }
 
@@ -699,8 +714,8 @@ Item {
             width: root.isHorizontal ? nHiddenSize : wrapper.width
             height: root.isHorizontal ? wrapper.height : nHiddenSize
 
-            visible: (container.index === mainLayout.count - 1) || (container.index === secondLayout.beginIndex+secondLayout.count-1)
-
+            visible: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
+                                                                                  ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
             property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
             property real nScale: 0
 
@@ -708,14 +723,19 @@ Item {
                 NumberAnimation { duration: container.animationTime }
             }
 
-            /*Rectangle{
-                width: 1
-                height: parent.height
-                x:parent.width / 2
-                border.width: 1
-                border.color: "red"
-                color: "transparent"
-            }*/
+            Loader{
+                anchors.fill: parent
+                active: root.debugMode
+
+                sourceComponent: Rectangle{
+                    height: 1
+                    width: parent.width
+                    y: parent.width/2
+                    border.width: 1
+                    border.color: "red"
+                    color: "transparent"
+                }
+            }
         }
 
     }// Flow with hidden spacers inside
