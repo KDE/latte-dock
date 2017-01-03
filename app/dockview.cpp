@@ -463,7 +463,7 @@ void DockView::setOffset(int offset)
 bool DockView::tasksPresent()
 {
     foreach (Plasma::Applet *applet, containment()->applets()) {
-        KPluginMetaData meta = applet->pluginMetaData();
+        KPluginMetaData meta = applet->kPackage().metadata();
 
         if (meta.pluginId() == "org.kde.latte.plasmoid") {
             return true;
