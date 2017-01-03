@@ -47,6 +47,33 @@ PlasmaCore.FrameSvgItem {
 
     FontLoader { id: tangerineFont; name: "Tangerine"; source: "../fonts/tangerine.ttf" }
 
+    PlasmaComponents.ToolButton{
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        checkable: true
+
+        iconSource: "emblem-symbolic-link"
+
+        minimumWidth: units.iconSizes.small
+        minimumHeight: units.iconSizes.small
+
+        property bool inStartup: true
+
+        onCheckedChanged: {
+            if (!inStartup) {
+                plasmoid.configuration.configurationSticker = checked;
+                dockConfig.setSticker(checked);
+            }
+        }
+
+        Component.onCompleted: {
+            checked = plasmoid.configuration.configurationSticker;
+            dockConfig.setSticker(plasmoid.configuration.configurationSticker);
+            inStartup = false;
+        }
+    }
+
     ColumnLayout{
         width: parent.width - 2*windowSpace
         anchors.horizontalCenter: parent.horizontalCenter
@@ -85,6 +112,7 @@ PlasmaCore.FrameSvgItem {
                 font.bold: true
                 opacity: 0.4
 
+                Layout.topMargin: 1.4 * units.iconSizes.small
                 Layout.alignment: Qt.AlignRight | Qt.AlignTop
                 horizontalAlignment: Text.AlignRight
                 Layout.fillWidth: true

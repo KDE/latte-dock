@@ -49,6 +49,9 @@ public:
     void init() override;
     Qt::WindowFlags wFlags() const;
     
+public slots:
+    Q_INVOKABLE void setSticker(bool blockFocusLost);
+
 protected:
     void showEvent(QShowEvent *ev) override;
     void hideEvent(QHideEvent *ev) override;
@@ -62,11 +65,12 @@ private slots:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     
 private:
+    bool m_blockFocusLost;
+
     Plasma::Containment *m_containment{nullptr};
     QPointer<DockView> m_dockView;
     QTimer m_deleterTimer;
     QTimer m_screenSyncTimer;
-    
 };
 
 }
