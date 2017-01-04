@@ -25,6 +25,7 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import org.kde.plasma.plasmoid 2.0
 
@@ -143,6 +144,7 @@ PlasmaCore.FrameSvgItem {
         }
 
         Rectangle{
+            id: pagesBackground
             Layout.fillWidth: true
             height: 28*theme.defaultFont.pixelSize
 
@@ -154,21 +156,28 @@ PlasmaCore.FrameSvgItem {
             border.width: 1
             border.color: theme.backgroundColor
 
-            PlasmaComponents.TabGroup{
+
+            PlasmaExtras.ScrollArea{
                 anchors.fill: parent
                 anchors.margins: 3
 
-                privateContents: [
-                    BehaviorConfig{
-                        id: behaviorPage
-                    },
-                    AppearanceConfig{
-                        id: appearancePage
-                    },
-                    TasksConfig{
-                        id: tasksPage
-                    }
-                ]
+                PlasmaComponents.TabGroup{
+                    width: pagesBackground.width - 6
+                    //FIXME: this creates a binding loop but I havent found any alternative yet
+                    height: currentTab.childrenRect.height
+
+                    privateContents: [
+                        BehaviorConfig{
+                            id: behaviorPage
+                        },
+                        AppearanceConfig{
+                            id: appearancePage
+                        },
+                        TasksConfig{
+                            id: tasksPage
+                        }
+                    ]
+                }
             }
         }
     }
