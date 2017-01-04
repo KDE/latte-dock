@@ -54,6 +54,13 @@ PlasmaComponents.Page{
 
                 onDockLocationChanged: updateDockLocationVisual();
 
+                property int docksCount: dock.docksCount
+
+                onDocksCountChanged: {
+                    lockReservedEdges();
+                    updateDockLocationVisual();
+                }
+
                 Component.onCompleted: {
                     lockReservedEdges();
                     updateDockLocationVisual();

@@ -311,7 +311,7 @@ Item {
         onAnyTaskDemandsAttentionChanged: {
             if (anyTaskDemandsAttention){
                 plasmoid.status = PlasmaCore.Types.RequiresAttentionStatus;
-                attentionTimerComponent.createObject(panel);
+                attentionTimerComponent.createObject(root);
             }
         }
 

@@ -57,26 +57,18 @@ DockCorona::DockCorona(QObject *parent)
     connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
     
     loadLayout();
-    
-    /*QAction *addDock = actions()->add<QAction>(QStringLiteral("add dock"));
-    connect(addDock, &QAction::triggered, this, &NowDockCorona::loadDefaultLayout);
-    addDock->setText(i18n("Add New Dock"));
-    addDock->setAutoRepeat(true);
-    addDock->setStatusTip(tr("Adds a new dock in the environment"));
-    addDock->setVisible(true);
-    addDock->setEnabled(true);
-    
-    addDock->setIcon(QIcon::fromTheme(QStringLiteral("object-locked")));
-    addDock->setData(Plasma::Types::ControlAction);
-    addDock->setShortcut(QKeySequence(QStringLiteral("alt+d, l")));
-    addDock->setShortcutContext(Qt::ApplicationShortcut);*/
 }
 
 DockCorona::~DockCorona()
 {
-    for (auto c : m_containments)
-        c->deleteLater();
-        
+    while (!containments().isEmpty()) {
+        //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
+        delete containments().first();
+    }
+
+    qDeleteAll(m_dockViews);
+    m_dockViews.clear();
+
     qDebug() << "deleted" << this;
 }
 
@@ -136,6 +128,16 @@ int DockCorona::primaryScreenId() const
     return id;
 }
 
+int DockCorona::numDocks()
+{
+    return m_dockViews.size();
+}
+
+void DockCorona::closeApplication()
+{
+    qGuiApp->quit();
+}
+
 QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
@@ -145,7 +147,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
     
-    for (const DockView *cont : m_containments) {
+    for (const DockView *cont : m_dockViews) {
         if (cont && cont->containment()->screen() == fixedScreen)
             edges.removeOne(cont->location());
     }
@@ -155,7 +157,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 
 int DockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
-    for (auto *view : m_containments) {
+    for (auto *view : m_dockViews) {
         if (view && view->containment() && view->containment()->id() == containment->id())
             if (view->screen())
                 return qGuiApp->screens().indexOf(view->screen());
@@ -179,7 +181,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
         return;
     }
     
-    foreach (DockView *dock, m_containments) {
+    foreach (DockView *dock, m_dockViews) {
         if (dock->containment() == containment) {
             return;
         }
@@ -190,9 +192,20 @@ void DockCorona::addDock(Plasma::Containment *containment)
     auto dockView = new DockView(this);
     dockView->init();
     dockView->setContainment(containment);
+    connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
+
     dockView->show();
-    
-    m_containments.push_back(dockView);
+
+    m_dockViews[containment] = dockView;
+
+    emit containmentsNoChanged();
+}
+
+void DockCorona::dockContainmentDestroyed(QObject *cont)
+{
+    auto view = m_dockViews.take(static_cast<Plasma::Containment *>(cont));
+    view->deleteLater();
+    emit containmentsNoChanged();
 }
 
 void DockCorona::loadDefaultLayout()

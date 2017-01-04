@@ -45,7 +45,8 @@ namespace Latte {
 
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),
-      m_contextMenu(0)
+      m_contextMenu(0),
+      m_docksCount(0)
 {
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
@@ -81,6 +82,10 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         QAction *lockWidgetsAction = containment()->actions()->action("lock widgets");
         containment()->actions()->removeAction(lockWidgetsAction);
 
+        QAction *removeAction = containment()->actions()->action("remove");
+        removeAction->setVisible(false);
+        //containment()->actions()->removeAction(removeAction);
+
         //FIX: hide and not delete in order to disable a nasty behavior from
         //ContainmentInterface. If only one action exists for containment the
         //this action is triggered directly
@@ -89,6 +94,12 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         //containment()->actions()->removeAction(addWidgetsAction);
         
     }, Qt::DirectConnection);
+
+    DockCorona *dcorona = qobject_cast<DockCorona *>(this->corona());
+
+    if (dcorona) {
+        connect(dcorona, &DockCorona::containmentsNoChanged, this, &DockView::updateDocksCount);
+    }
 }
 
 DockView::~DockView()
@@ -135,6 +146,8 @@ void DockView::init()
     connect(&m_lockGeometry, &QTimer::timeout, [&]() {
         updateDockPosition();
     });
+
+    updateDocksCount();
     
     qDebug() << "SOURCE:" << source();
     
@@ -373,6 +386,28 @@ bool DockView::compositing() const
     return WindowSystem::self().compositingActive();
 }
 
+int DockView::docksCount() const
+{
+    return m_docksCount;
+}
+
+void DockView::updateDocksCount()
+{
+    DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
+
+    if (corona) {
+        int no = corona->numDocks();
+
+        if (no == m_docksCount) {
+            return;
+        }
+
+        m_docksCount = no;
+
+        emit docksCountChanged();
+    }
+}
+
 /*Candil::VisibilityManager *DockView::visibility()
 {
     return  m_visibility.data();
@@ -525,6 +560,17 @@ QList<int> DockView::freeEdges() const
     
     return edgesInt;
 }
+
+void DockView::closeApplication()
+{
+    DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
+
+    if (corona) {
+        m_configView->hide();
+        corona->closeApplication();
+    }
+}
+
 
 void DockView::saveConfig()
 {

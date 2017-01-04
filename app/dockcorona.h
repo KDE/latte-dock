@@ -48,20 +48,26 @@ public:
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     
     int screenForContainment(const Plasma::Containment *containment) const override;
+    int numDocks();
     
     void addDock(Plasma::Containment *containment);
+
+    void closeApplication();
     
 public slots:
     void loadDefaultLayout() override;
+    void dockContainmentDestroyed(QObject *cont);
     
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
+    void containmentsNoChanged();
     
 private:
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
     
-    std::vector<DockView *> m_containments;
+    //std::vector<DockView *> m_containments;
+    QHash<const Plasma::Containment *, DockView *> m_dockViews;
 };
 
 }
