@@ -104,6 +104,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
 
 DockView::~DockView()
 {
+    if (m_visibility) {
+        m_visibility->deleteLater();
+    }
 }
 
 void DockView::init()
