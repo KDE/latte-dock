@@ -156,7 +156,7 @@ PlasmaComponents.Page{
                     id: fourthLocation
                     checkable: true
                     text: i18n("Right")
-                    width: (parent.width/4) - 1
+                    width: (parent.width/4) - 2
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
