@@ -134,9 +134,9 @@ Item{
             //console.log("entered normal state...");
             //count panel length
             if(root.isHorizontal) {
-                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Double ? layoutsContainer.width + 0.5*space : mainLayout.width + space;
+                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ? layoutsContainer.width + 0.5*space : mainLayout.width + space;
             } else {
-                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Double ? layoutsContainer.height + 0.5*space : mainLayout.height + space;
+                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ? layoutsContainer.height + 0.5*space : mainLayout.height + space;
             }
 
             tempThickness = thicknessNormalOriginal;
@@ -157,7 +157,7 @@ Item{
                     localY = 0;
                 }
 
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Double) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
                     localX = (dock.width/2) - (layoutsContainer.width/2) - 0.25*space;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
                     localX = 0;
@@ -173,7 +173,7 @@ Item{
                     localX = dock.width - tempThickness;
                 }
 
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Double) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
                     localY = (dock.height/2) - (layoutsContainer.height/2) - 0.25*space;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
                     localY = 0;

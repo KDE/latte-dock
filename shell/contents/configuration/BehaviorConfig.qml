@@ -211,7 +211,7 @@ PlasmaComponents.Page{
                         splitTwoPosition.checked = false;
                         dock.removeInternalViewSplitter();
                     }
-                    else if (panelPosition == Latte.Dock.Double){
+                    else if (panelPosition == Latte.Dock.Justify){
                         firstPosition.checked = false;
                         centerPosition.checked = false;
                         lastPosition.checked = false;
@@ -232,7 +232,7 @@ PlasmaComponents.Page{
                     id: firstPosition
                     checkable: true
                     text: panelIsVertical ? i18n("Top") : i18n("Left")
-                    width: (parent.width / 3) - 1
+                    width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -248,7 +248,7 @@ PlasmaComponents.Page{
                     id: centerPosition
                     checkable: true
                     text: i18n("Center")
-                    width: (parent.width / 3) - 1
+                    width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -261,7 +261,7 @@ PlasmaComponents.Page{
                     id: lastPosition
                     checkable: true
                     text: panelIsVertical ? i18n("Bottom") : i18n("Right")
-                    width: (parent.width / 3) - 2
+                    width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -277,12 +277,12 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: splitTwoPosition
                     checkable: true
-                    text: panelIsVertical ? i18n("Top")+ " | "+ i18n("Bottom") : i18n("Left") +" | "+ i18n("Right")
-                    width: parent.width
+                    text: i18n("Justify")
+                    width: (parent.width / 4)
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = Latte.Dock.Double;
+                            plasmoid.configuration.panelPosition = Latte.Dock.Justify;
                         }
                     }
                     onClicked: checked=true;

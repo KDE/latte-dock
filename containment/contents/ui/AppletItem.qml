@@ -48,7 +48,7 @@ Item {
     property bool startEdge: index < secondLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
                                                                (index === secondLayout.beginIndex)&&(secondLayout.count > 1)
     //applet is in ending edge
-    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
+    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
                                                                                         ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
 
 
