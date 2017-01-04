@@ -90,6 +90,7 @@ PlasmaComponents.Page{
 
                 PlasmaComponents.Label{
                     text: appletsSizeSlider.value + " px."
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
         }
@@ -148,6 +149,8 @@ PlasmaComponents.Page{
                 PlasmaComponents.Label{
                     enabled: showBackground.checked
                     text: " "+Number(zoomSlider.value).toFixed(2)
+
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
 
             }
@@ -325,6 +328,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Label{
                     enabled: showBackground.checked
                     text: panelSizeSlider.value + " px."
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
 
             }
