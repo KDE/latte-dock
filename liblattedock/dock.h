@@ -50,7 +50,7 @@ public:
         Right,
         Top,
         Bottom,
-        Double = 10
+        Justify = 10
     };
     Q_ENUM(Alignment)
     

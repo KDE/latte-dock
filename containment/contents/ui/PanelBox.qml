@@ -46,7 +46,7 @@ Item{
     height: root.isVertical ? panelHeight : smallSize
 
     property int spacing: (root.panelAlignment === Latte.Dock.Center
-                           || plasmoid.configuration.panelPosition === Latte.Dock.Double) ?
+                           || plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
                               root.panelEdgeSpacing : root.panelEdgeSpacing/2
     property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
@@ -188,7 +188,7 @@ Item{
         },
         State {
             name: "leftDouble"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Double)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -257,7 +257,7 @@ Item{
         },
         State {
             name: "rightDouble"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Double)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -326,7 +326,7 @@ Item{
         },
         State {
             name: "bottomDouble"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Double)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -395,7 +395,7 @@ Item{
         },
         State {
             name: "topDouble"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Double)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
