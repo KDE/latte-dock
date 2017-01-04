@@ -214,7 +214,6 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
     if (winType != -1 && (winType & NET::Desktop)) {
         m_desktopId = wid;
         emit windowChanged(wid);
-        qDebug() << "desktop changed" << wid;
         return;
     }
     
