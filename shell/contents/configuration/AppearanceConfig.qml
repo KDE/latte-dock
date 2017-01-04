@@ -53,15 +53,6 @@ PlasmaComponents.Page{
 
                 property int step: 8
 
-                PlasmaComponents.Button{
-                    text:"-"
-
-                    Layout.preferredWidth: parent.height
-                    Layout.preferredHeight: parent.height
-
-                    onClicked: appletsSizeSlider.value -= parent.step
-                }
-
                 PlasmaComponents.Slider{
                     id:appletsSizeSlider
 
@@ -77,34 +68,31 @@ PlasmaComponents.Page{
 
                     property bool inStartup:true
 
+                    property int tempValue: value
+
                     Component.onCompleted: {
                         value = plasmoid.configuration.iconSize;
                         inStartup = false;
                     }
 
-                    onValueChanged:{
-                        if(!inStartup){
+                    onPressedChanged: {
+                        if (!pressed) {
+                            plasmoid.configuration.iconSize = value;
+                        }
+                    }
+
+                    onTempValueChanged:{
+                        if(!inStartup && !pressed){
                             plasmoid.configuration.iconSize = value;
                         }
                     }
                 }
 
-                PlasmaComponents.Button{
-                    text:"+"
-
-                    Layout.preferredWidth: parent.height
-                    Layout.preferredHeight: parent.height
-
-                    onClicked: appletsSizeSlider.value += parent.step;
-                }
-
                 PlasmaComponents.Label{
-                    text: plasmoid.configuration.iconSize + " px."
+                    text: appletsSizeSlider.value + " px."
                 }
             }
         }
-
-
 
         /**********  Zoom On Hover ****************/
         Column{
@@ -117,15 +105,6 @@ PlasmaComponents.Page{
 
             RowLayout{
                 width: parent.width
-
-                PlasmaComponents.Button{
-                    text:"-"
-
-                    Layout.preferredWidth: parent.height
-                    Layout.preferredHeight: parent.height
-
-                    onClicked: zoomSlider.value -= 0.05
-                }
 
                 PlasmaComponents.Slider{
                     id:zoomSlider
@@ -142,28 +121,28 @@ PlasmaComponents.Page{
 
                     property bool inStartup:true
 
+                    property real tempValue: value
+
                     Component.onCompleted: {
                         value = Number(1 + plasmoid.configuration.zoomLevel/20).toFixed(2)
                         inStartup = false;
                         //  console.log("Slider:"+value);
                     }
 
-                    onValueChanged:{
-                        if(!inStartup){
+                    onPressedChanged: {
+                        if (!pressed) {
                             var result = Math.round((value - 1)*20)
                             plasmoid.configuration.zoomLevel = result
-                            //    console.log("Store:"+result);
                         }
                     }
-                }
 
-                PlasmaComponents.Button{
-                    text:"+"
+                    onTempValueChanged:{
+                        if(!inStartup && !pressed){
+                            var result = Math.round((value - 1)*20)
+                            plasmoid.configuration.zoomLevel = result
+                        }
+                    }
 
-                    Layout.preferredWidth: parent.height
-                    Layout.preferredHeight: parent.height
-
-                    onClicked: zoomSlider.value += 0.05
                 }
 
                 PlasmaComponents.Label{
@@ -309,16 +288,6 @@ PlasmaComponents.Page{
             RowLayout{
                 width: parent.width
 
-                PlasmaComponents.Button{
-                    enabled: showBackground.checked
-                    text:"-"
-
-                    Layout.preferredWidth: parent.height
-                    Layout.preferredHeight: parent.height
-
-                    onClicked: panelSizeSlider.value -= 2
-                }
-
                 PlasmaComponents.Slider{
                     id:panelSizeSlider
                     enabled: showBackground.checked
@@ -333,28 +302,25 @@ PlasmaComponents.Page{
                     Layout.fillWidth:true
 
                     property bool inStartup: true
+                    property int tempValue: value
 
                     Component.onCompleted: {
                         value = plasmoid.configuration.panelSize
                         inStartup = false;
                     }
 
-                    onValueChanged: {
-                        if(!inStartup)
+                    onPressedChanged: {
+                        if (!pressed) {
                             plasmoid.configuration.panelSize = value;
+                        }
+                    }
+
+                    onTempValueChanged:{
+                        if(!inStartup && !pressed){
+                            plasmoid.configuration.panelSize = value;
+                        }
                     }
                 }
-
-                PlasmaComponents.Button{
-                    enabled: showBackground.checked
-                    text:"+"
-
-                    Layout.preferredWidth: parent.height
-                    Layout.preferredHeight: parent.height
-
-                    onClicked: panelSizeSlider.value += 2
-                }
-
 
                 PlasmaComponents.Label{
                     enabled: showBackground.checked
