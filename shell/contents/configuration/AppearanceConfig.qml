@@ -148,7 +148,8 @@ PlasmaComponents.Page{
 
                 PlasmaComponents.Label{
                     enabled: showBackground.checked
-                    text: " "+Number(zoomSlider.value).toFixed(2)
+                    //text: " "+Number(zoomSlider.value).toFixed(2)
+                    text: " "+Number((zoomSlider.value*100)-100).toFixed(0)+"%"
 
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
