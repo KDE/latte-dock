@@ -32,6 +32,7 @@ import org.kde.latte 0.1 as Latte
 
 PlasmaComponents.Page{
     width: dialog.width - 2*dialog.windowSpace
+
     Column{
         spacing: 1.5*theme.defaultFont.pointSize
         width: parent.width
