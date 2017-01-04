@@ -48,15 +48,16 @@ PlasmaCore.FrameSvgItem {
     FontLoader { id: tangerineFont; name: "Tangerine"; source: "../fonts/tangerine.ttf" }
 
     PlasmaComponents.ToolButton{
+        id: pinButton
         anchors.right: parent.right
         anchors.top: parent.top
 
         checkable: true
 
-        iconSource: "emblem-symbolic-link"
+        iconSource: "window-pin"
 
-        minimumWidth: units.iconSizes.small
-        minimumHeight: units.iconSizes.small
+        width: Math.round(units.gridUnit * 1.25)
+        height: width
 
         property bool inStartup: true
 
