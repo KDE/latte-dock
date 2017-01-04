@@ -59,19 +59,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     });
     
     connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
-    
-    
-    //! NOTE: This is not necesesary if focusOutEvent is implemented
-    /*NowDockCorona *corona = qobject_cast<NowDockCorona *>(m_containment->corona());
-    if (corona) {
-        connect(corona, &NowDockCorona::configurationShown, this, &DockConfigView::configurationShown);
-    }*/
-    
-    /*   connect(containment, &Plasma::Containment::immutabilityChanged
-       , [&](Plasma::Types::ImmutabilityType type) {
-           if (type != Plasma::Types::Mutable && this && isVisible())
-               hide();
-       });*/
 }
 
 DockConfigView::~DockConfigView()
@@ -103,6 +90,8 @@ void DockConfigView::syncGeometry()
     const auto location = m_containment->location();
     const auto sGeometry = screen()->geometry();
     
+    qDebug() << "sync geometry";
+    
     switch (m_containment->formFactor()) {
         case Plasma::Types::Horizontal: {
             const QSize size(rootObject()->width(), rootObject()->height());
@@ -111,11 +100,11 @@ void DockConfigView::syncGeometry()
             resize(size);
             
             if (location == Plasma::Types::TopEdge) {
-                setPosition(sGeometry.center().x() - size.width() / 2
+                setPosition(sGeometry.center().x() - size.width() / 2 - 1
                             , m_dockView->currentThickness());
             } else if (location == Plasma::Types::BottomEdge) {
-                setPosition(sGeometry.center().x() - size.width() / 2
-                            , sGeometry.height() - m_dockView->currentThickness() - size.height());
+                setPosition(sGeometry.center().x() - size.width() / 2 - 1
+                            , sGeometry.height() - m_dockView->currentThickness() - size.height() - 1);
             }
         }
         break;
@@ -130,8 +119,8 @@ void DockConfigView::syncGeometry()
                 setPosition(m_dockView->currentThickness()
                             , sGeometry.center().y() - size.height() / 2);
             } else if (location == Plasma::Types::RightEdge) {
-                setPosition(sGeometry.width() - m_dockView->currentThickness() - size.width()
-                            , sGeometry.center().y() - size.height() / 2);
+                setPosition(sGeometry.width() - m_dockView->currentThickness() - size.width() - 1
+                            , sGeometry.center().y() - size.height() / 2 - 1);
             }
         }
         break;
@@ -193,15 +182,6 @@ void DockConfigView::showEvent(QShowEvent *ev)
     m_deleterTimer.stop();
     
     ConfigView::showEvent(ev);
-    
-    //trigger showing configuration window through corona
-    //in order to hide all alternative configuration windows
-    //! NOTE: This is not necesesary if focusOutEvent is implemented
-//    NowDockCorona *corona = qobject_cast<NowDockCorona *>(m_containment->corona());
-
-//    if (corona) {
-//        emit corona->configurationShown(this);
-//    }
 }
 
 void DockConfigView::hideEvent(QHideEvent *ev)
@@ -225,13 +205,6 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
         return;
         
     if (!m_blockFocusLost) {
-        hide();
-    }
-}
-
-void DockConfigView::configurationShown(PlasmaQuick::ConfigView *configView)
-{
-    if ((configView != this) && isVisible()) {
         hide();
     }
 }

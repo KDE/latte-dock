@@ -102,15 +102,7 @@ Item{
 
     function slotMustBeHide() {
         // console.log("hide....");
-        //if (!plasmoid.userConfiguring) {
         slidingAnimationAutoHiddenOut.init();
-        //}
-    }
-
-    function slotModeChanged() {
-        if (dock.visibility.mode !== Latte.Dock.AutoHide) {
-            dock.visibility.isHidden = false;
-        }
     }
 
     ///test maskArea
@@ -307,7 +299,8 @@ Item{
         }
 
         function init() {
-            start();
+            if (!dock.visibility.blockHiding)
+                start();
         }
     }
 
@@ -326,7 +319,8 @@ Item{
         }
 
         function init() {
-            dock.visibility.isHidden = false;
+            if (!dock.visibility.blockHiding)
+                dock.visibility.isHidden = false;
             updateMaskArea();
             start();
         }

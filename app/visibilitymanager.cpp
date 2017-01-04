@@ -178,11 +178,17 @@ void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
         
     this->blockHiding = blockHiding;
     
+    qDebug() << "blockHiding:" << blockHiding; 
+    
     if (this->blockHiding) {
         timerHide.stop();
         
-        if (isHidden)
+        if (isHidden) {
             isHidden = false;
+            
+            emit q->isHiddenChanged();
+            emit q->mustBeShown();
+        }
     } else {
         updateHiddenState();
     }

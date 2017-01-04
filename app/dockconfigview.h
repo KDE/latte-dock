@@ -62,7 +62,6 @@ protected:
     
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
-    void configurationShown(PlasmaQuick::ConfigView *configView);
     
 private:
     bool m_blockFocusLost;

@@ -424,7 +424,6 @@ DragDrop.DropArea {
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
             dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
-            dock.visibility.onModeChanged.connect(visibilityManager.slotModeChanged);
         }
     }
 
@@ -479,7 +478,6 @@ DragDrop.DropArea {
             nowDock.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
             nowDock.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
             nowDock.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
-            nowDock.signalDraggingState.connect(slotDisableHiding);
         }
     }
 
@@ -557,11 +555,10 @@ DragDrop.DropArea {
             }
             return;
         }
+        
+        console.debug("user configuring", plasmoid.userConfiguring)
 
         if (plasmoid.userConfiguring) {
-            if (dock.visibility.isHidden) {
-                dock.visibility.mustBeShown();
-            }
             dock.visibility.blockHiding = true;
 
             //  console.log("applets------");
@@ -880,10 +877,6 @@ DragDrop.DropArea {
         appletsAnimations = Math.max(appletsAnimations + step, 0);
 
         visibilityManager.updateMaskArea();
-    }
-
-    function slotDisableHiding(value) {
-        dock.visibility.blockHiding = value;
     }
 
     function updateAutomaticIconSize() {
