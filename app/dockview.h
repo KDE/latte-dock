@@ -46,6 +46,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     
     Q_PROPERTY(bool compositing READ compositing NOTIFY compositingChanged)
+    Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
@@ -84,6 +85,8 @@ public:
     void setOffset(int offset);
     
     void updateOffset();
+
+    int docksCount() const;
     
     VisibilityManager *visibility();
     
@@ -109,6 +112,8 @@ public slots:
     Q_INVOKABLE void removeDock();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     Q_INVOKABLE bool tasksPresent();
+    Q_INVOKABLE void closeApplication();
+
     void resizeWindow();
     void restoreConfig();
     void saveConfig();
@@ -130,6 +135,7 @@ signals:
     void compositingChanged();
     void heightChanged();
     void lengthChanged();
+    void docksCountChanged();
     void localDockGeometryChanged();
     void maskAreaChanged();
     void maxLengthChanged();
@@ -145,10 +151,12 @@ public slots:
 
 private slots:
     void menuAboutToHide();
+    void updateDocksCount();
     
 private:
     bool m_secondInitPass;
     
+    int m_docksCount;
     int m_offset{0};
     int m_maxThickness{24};
     int m_length{0};

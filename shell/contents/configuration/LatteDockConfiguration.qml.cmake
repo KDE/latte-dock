@@ -188,12 +188,15 @@ PlasmaCore.FrameSvgItem {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: windowSpace
 
-        spacing: windowSpace
+        spacing: 2
         width: parent.width - 2*windowSpace
 
         PlasmaComponents.Button{
             enabled: true
-            text: i18n("Add New Dock")
+            text: i18n("Add")
+            iconSource: "list-add"
+
+            width: parent.width/4 - 2
 
             onClicked: dock.addNewDock();
 
@@ -206,9 +209,26 @@ PlasmaCore.FrameSvgItem {
         }
         PlasmaComponents.Button{
             enabled: true
-            text: i18n("Remove Dock")
+            text: i18n("Remove")
+            iconSource: "edit-delete"
+            width: parent.width/4 - 2
+            opacity: dock.docksCount > 1 ? 1 : 0
 
             onClicked: dock.removeDock();
+        }
+
+        Item{
+            width: parent.width/4 - 2
+            height: 1
+        }
+
+        PlasmaComponents.Button{
+            enabled: true
+            text: i18n("Quit")
+            iconSource: "window-close"
+            width: parent.width/4 - 2
+
+            onClicked: dock.closeApplication();
         }
     }
 }
