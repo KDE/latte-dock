@@ -44,6 +44,15 @@ Item {
     property bool isInternalViewSplitter: false
     property bool isZoomed: false
 
+    //applet is in starting edge
+    property bool startEdge: index < secondLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
+                                                               (index === secondLayout.beginIndex)&&(secondLayout.count > 1)
+    //applet is in ending edge
+    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
+                                                                                        ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
+
+
+
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
@@ -235,8 +244,8 @@ Item {
             width: root.isHorizontal ? nHiddenSize : wrapper.width
             height: root.isHorizontal ? wrapper.height : nHiddenSize
 
-            ///check also if this is the first plasmoid in secondLayout
-            visible: (container.index === 0) || (container.index === secondLayout.beginIndex)
+            ///check also if this is the first plasmoid in anylayout
+            visible: container.startEdge
 
             property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
             property real nScale: 0
@@ -646,21 +655,13 @@ Item {
                     //  currentLayout.updateScale(index-2, 1, 0);
                     //   currentLayout.updateScale(index+2, 1, 0);
 
-
-                    //(container.index === mainLayout.count - 1) || (container.index === secondLayout.beginIndex+secondLayout.count-1)
                     //Left hiddenSpacer
-                    var startEdge = index < secondLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
-                                                                      (index === secondLayout.beginIndex)&&(secondLayout.count > 1)
-
-                    if(startEdge){
+                    if(container.startEdge){
                         hiddenSpacerLeft.nScale = leftScale - 1;
                     }
 
                     //Right hiddenSpacer  ///there is one more item in the currentLayout ????
-                    var endEdge = plasmoid.configuration.panelPosition !== Latte.Dock.Double ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
-                                                                                               ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
-
-                    if(endEdge){
+                    if(container.endEdge){
                         hiddenSpacerRight.nScale =  rightScale - 1;
                     }
 
@@ -714,8 +715,9 @@ Item {
             width: root.isHorizontal ? nHiddenSize : wrapper.width
             height: root.isHorizontal ? wrapper.height : nHiddenSize
 
-            visible: plasmoid.configuration.panelPosition !== Latte.Dock.Double ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
-                                                                                  ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
+            //check if this last plasmoid in any layout
+            visible: container.endEdge
+
             property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
             property real nScale: 0
 
