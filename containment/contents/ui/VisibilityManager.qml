@@ -102,7 +102,9 @@ Item{
 
     function slotMustBeHide() {
         // console.log("hide....");
-        slidingAnimationAutoHiddenOut.init();
+        if(!dock.visibility.blockHiding && !dock.visibility.containsMouse) {
+            slidingAnimationAutoHiddenOut.init();
+        }
     }
 
     ///test maskArea
