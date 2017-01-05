@@ -484,6 +484,7 @@ DragDrop.DropArea {
             nowDock.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
             nowDock.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
             nowDock.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
+            nowDock.signalDraggingState.connect(slotDisableHiding);
         }
     }
 
@@ -533,7 +534,7 @@ DragDrop.DropArea {
         updateIndexes();
     }
 
-    Containment.onAppletRemoved: {        
+    Containment.onAppletRemoved: {
         LayoutManager.removeApplet(applet);
         var flexibleFound = false;
         for (var i = 0; i < mainLayout.children.length; ++i) {
@@ -885,6 +886,13 @@ DragDrop.DropArea {
         appletsAnimations = Math.max(appletsAnimations + step, 0);
 
         visibilityManager.updateMaskArea();
+    }
+
+    //this is used when dragging a task in order to not hide the dock
+    //and also by the menu appearing from tasks for the same reason
+    function slotDisableHiding(value) {
+        console.log("ui block hiding:"+value);
+        dock.visibility.blockHiding = value;
     }
 
     function updateAutomaticIconSize() {
