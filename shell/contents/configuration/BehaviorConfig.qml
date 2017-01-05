@@ -125,6 +125,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: i18nc("bottom location","Bottom")
                     width: (parent.width / 4) - 2
+                    iconSource: "arrow-down"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -138,6 +139,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: i18nc("left location","Left")
                     width: (parent.width / 4) - 2
+                    iconSource: "arrow-left"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -151,6 +153,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: i18nc("top location","Top")
                     width: (parent.width / 4) - 2
+                    iconSource: "arrow-up"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -165,6 +168,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: i18nc("right location","Right")
                     width: (parent.width/4) - 2
+                    iconSource: "arrow-right"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -241,6 +245,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: panelIsVertical ? i18nc("top alignment","Top") : i18nc("left alignment","Left")
                     width: (parent.width / 4) - 2
+                    iconSource: panelIsVertical ?  "format-align-vertical-top" : "format-justify-left"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -257,6 +262,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: i18nc("center alignment","Center")
                     width: (parent.width / 4) - 2
+                    iconSource: panelIsVertical ?  "format-align-vertical-center" : "format-justify-center"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -270,6 +276,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: panelIsVertical ? i18nc("bottom alignment","Bottom") : i18nc("right alignment","Right")
                     width: (parent.width / 4) - 2
+                    iconSource: panelIsVertical ?  "format-align-vertical-bottom" : "format-justify-right"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
@@ -287,6 +294,7 @@ PlasmaComponents.Page{
                     checkable: true
                     text: i18nc("justify alignment","Justify")
                     width: (parent.width / 4)
+                    iconSource: "format-justify-fill"
 
                     onCheckedChanged: {
                         if(checked && !parent.inStartup){
