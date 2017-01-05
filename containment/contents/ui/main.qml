@@ -74,6 +74,8 @@ DragDrop.DropArea {
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
     property int realSize: iconSize + iconMargin
     property int realPanelSize
+    //this is set by the PanelBox
+    property int shadowsSize: 0
     property int themePanelSize: plasmoid.configuration.panelSize
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
@@ -87,7 +89,6 @@ DragDrop.DropArea {
     property real zoomFactor: (windowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
-
 
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
     property var layoutManager: LayoutManager
@@ -486,6 +487,10 @@ DragDrop.DropArea {
             nowDock.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
             nowDock.signalDraggingState.connect(slotDisableHiding);
         }
+    }
+
+    onShadowsSizeChanged: {
+        visibilityManager.updateMaskArea();
     }
 
     onToolBoxChanged: {

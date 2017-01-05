@@ -128,7 +128,7 @@ Item{
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
 
-        var space = root.panelEdgeSpacing + 10;
+        var space = root.useThemePanel ? root.panelEdgeSpacing + 2*root.shadowsSize : 2;
 
         if (normalState && !root.editMode) {
             //console.log("entered normal state...");
