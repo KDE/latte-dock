@@ -106,6 +106,13 @@ Item{
 
         Binding {
             target: root
+            property: "shadowsSize"
+            when: shadowsSvgItem && root.useThemePanel
+            value: root.isVertical ?  shadowsSvgItem.margins.top : shadowsSvgItem.margins.bottom
+        }
+
+        Binding {
+            target: root
             property: "realPanelSize"
             when: shadowsSvgItem
             value: {
@@ -115,7 +122,6 @@ Item{
 
                 return shadowsSvgItem.panelSize + space;
             }
-
         }
 
 
