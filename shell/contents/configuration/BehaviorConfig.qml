@@ -123,7 +123,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: firstLocation
                     checkable: true
-                    text: i18n("Bottom")
+                    text: i18nc("bottom location","Bottom")
                     width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
@@ -136,7 +136,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: secondLocation
                     checkable: true
-                    text: i18n("Left")
+                    text: i18nc("left location","Left")
                     width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
@@ -149,7 +149,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: thirdLocation
                     checkable: true
-                    text: i18n("Top")
+                    text: i18nc("top location","Top")
                     width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
@@ -163,7 +163,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: fourthLocation
                     checkable: true
-                    text: i18n("Right")
+                    text: i18nc("right location","Right")
                     width: (parent.width/4) - 2
 
                     onCheckedChanged: {
@@ -239,7 +239,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: firstPosition
                     checkable: true
-                    text: panelIsVertical ? i18n("Top") : i18n("Left")
+                    text: panelIsVertical ? i18nc("top alignment","Top") : i18nc("left alignment","Left")
                     width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
@@ -255,7 +255,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: centerPosition
                     checkable: true
-                    text: i18n("Center")
+                    text: i18nc("center alignment","Center")
                     width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
@@ -268,7 +268,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: lastPosition
                     checkable: true
-                    text: panelIsVertical ? i18n("Bottom") : i18n("Right")
+                    text: panelIsVertical ? i18nc("bottom alignment","Bottom") : i18nc("right alignment","Right")
                     width: (parent.width / 4) - 2
 
                     onCheckedChanged: {
@@ -285,7 +285,7 @@ PlasmaComponents.Page{
                 PlasmaComponents.Button{
                     id: splitTwoPosition
                     checkable: true
-                    text: i18n("Justify")
+                    text: i18nc("justify alignment","Justify")
                     width: (parent.width / 4)
 
                     onCheckedChanged: {

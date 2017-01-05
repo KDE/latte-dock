@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-03 10:42+0200\n"
+"POT-Creation-Date: 2017-01-05 18:29+0200\n"
 "PO-Revision-Date: 2016-10-16 13:14+0100\n"
 "Last-Translator: Damian Kopeć <damikope@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -307,7 +307,7 @@ msgstr "Pokaż Skrót Kiedy Aplikacja Nie Jest Uruchomiona"
 msgid "Remove Launcher"
 msgstr "Usuń Skrót"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:651
+#: ../../plasmoid/contents/ui/ContextMenu.qml:621
 msgid "Close"
 msgstr "Zamknij"
 
