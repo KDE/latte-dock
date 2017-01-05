@@ -96,7 +96,6 @@ public:
     bool tasksPresent() const;
     
     void adaptToScreen(QScreen *screen);
-    void unload();
     
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
