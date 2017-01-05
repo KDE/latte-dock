@@ -98,12 +98,20 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     DockCorona *dcorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dcorona) {
-        connect(dcorona, &DockCorona::containmentsNoChanged, this, &DockView::updateDocksCount);
+        connections << connect(dcorona, &DockCorona::containmentsNoChanged, this, &DockView::updateDocksCount);
     }
 }
 
 DockView::~DockView()
 {
+    qDebug() << "dock view deleting...";
+
+    foreach (auto var, connections) {
+        QObject::disconnect(var);
+    }
+
+    qDebug() << "dock view connections deleted...";
+
     if (m_visibility) {
         m_visibility->deleteLater();
     }
@@ -125,7 +133,7 @@ void DockView::init()
         m_timerGeometry.start();
     });
     
-    connect(&WindowSystem::self(), &WindowSystem::compositingChanged
+    connections << connect(&WindowSystem::self(), &WindowSystem::compositingChanged
     , this, [&]() {
         emit compositingChanged();
     } , Qt::QueuedConnection);

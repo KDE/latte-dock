@@ -54,12 +54,13 @@ private:
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
     
     WId m_desktopId;
+
+    QList<QMetaObject::Connection> connections;
 };
 
 }
 
 #endif // XWINDOWINTERFACE_H
-
 
 
 

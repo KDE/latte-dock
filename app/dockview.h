@@ -96,6 +96,7 @@ public:
     bool tasksPresent() const;
     
     void adaptToScreen(QScreen *screen);
+    void unload();
     
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
@@ -174,6 +175,8 @@ private:
     Plasma::Theme *theme{nullptr};
     
     QPointer<VisibilityManager> m_visibility;
+
+    QList<QMetaObject::Connection> connections;
     
     void initWindow();
 

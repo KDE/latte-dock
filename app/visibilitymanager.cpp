@@ -64,6 +64,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
     wm->removeDockStruts();
+    wm->deleteLater();
 }
 
 inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
@@ -178,7 +179,7 @@ void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
         
     this->blockHiding = blockHiding;
     
-    qDebug() << "blockHiding:" << blockHiding; 
+    qDebug() << "blockHiding:" << blockHiding;
     
     if (this->blockHiding) {
         timerHide.stop();
@@ -375,42 +376,46 @@ inline void VisibilityManagerPrivate::restoreConfig()
 bool VisibilityManagerPrivate::event(QEvent *ev)
 {
     switch (ev->type()) {
-    case QEvent::Enter:
-        if (containsMouse)
+        case QEvent::Enter:
+            if (containsMouse)
+                break;
+
+            containsMouse = true;
+            emit q->containsMouseChanged();
+
+            if (mode != Dock::AlwaysVisible)
+                raiseDock(true);
+
             break;
-        
-        containsMouse = true;
-        emit q->containsMouseChanged();
-        
-        if (mode != Dock::AlwaysVisible)
-            raiseDock(true);
-        
-        break;
-    case QEvent::Leave:
-        if (!containsMouse)
+
+        case QEvent::Leave:
+            if (!containsMouse)
+                break;
+
+            containsMouse = false;
+            emit q->containsMouseChanged();
+            updateHiddenState();
+
             break;
-        
-        containsMouse = false;
-        emit q->containsMouseChanged();
-        updateHiddenState();
-        
-        break;
-    case QEvent::DragEnter:
-        dragEnter = true;
-        emit q->mustBeShown();
-        
-        break;
-    case QEvent::DragLeave:
-    case QEvent::Drop:
-        dragEnter = false;
-        updateHiddenState();
-        
-        break;
-    case QEvent::Show:
-        wm->setDockDefaultFlags();
-        restoreConfig();
-        
-        break;
+
+        case QEvent::DragEnter:
+            dragEnter = true;
+            emit q->mustBeShown();
+
+            break;
+
+        case QEvent::DragLeave:
+        case QEvent::Drop:
+            dragEnter = false;
+            updateHiddenState();
+
+            break;
+
+        case QEvent::Show:
+            wm->setDockDefaultFlags();
+            restoreConfig();
+
+            break;
     }
     
     return QObject::event(ev);
@@ -490,4 +495,3 @@ void VisibilityManager::updateDockGeometry(const QRect &geometry)
 }
 //! END: VisibilityManager implementation
 }
-
