@@ -114,9 +114,11 @@ echo "Done"
 echo "Preparing rc files for shell"
 cd ../shell
 
+echo "Disabling shell translations except the metadata file"
+
 # we use simple sorting to make sure the lines do not jump around too much from system to system
-find "${PROJECTPATHSHELL}" -name '*.rc' -o -name '*.ui' -o -name '*.kcfg' | sort > "${WDIRSHELL}/rcfiles.list"
-xargs --arg-file="${WDIRSHELL}/rcfiles.list" extractrc > "${WDIRSHELL}/rc.cpp"
+#find "${PROJECTPATHSHELL}" -name '*.rc' -o -name '*.ui' -o -name '*.kcfg' | sort > "${WDIRSHELL}/rcfiles.list"
+#xargs --arg-file="${WDIRSHELL}/rcfiles.list" extractrc > "${WDIRSHELL}/rc.cpp"
 
 intltool-extract --quiet --type=gettext/ini ../../shell.metadata.desktop.template
 cat ../../shell.metadata.desktop.template.h >> ${WDIRSHELL}/rc.cpp
@@ -127,7 +129,7 @@ echo "Extracting messages for shell"
 
 # see above on sorting
 
-find "${PROJECTPATHSHELL}" -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.qml' -o -name '*.qml.cmake' | sort > "${WDIRSHELL}/infiles.list"
+#find "${PROJECTPATHSHELL}" -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.qml' -o -name '*.qml.cmake' | sort > "${WDIRSHELL}/infiles.list"
 echo "rc.cpp" >> "${WDIRSHELL}/infiles.list"
 
 xgettext --from-code=UTF-8 -C -kde -ci18n -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3 \
@@ -149,7 +151,7 @@ intltool-merge --quiet --desktop-style . ../../shell.metadata.desktop.template "
 
 echo "Done merging translations for shell"
 echo "Cleaning up for shell"
-rm "${WDIRSHELL}/rcfiles.list"
+#rm "${WDIRSHELL}/rcfiles.list"
 rm "${WDIRSHELL}/infiles.list"
 rm "${WDIRSHELL}/rc.cpp"
 echo "Done" 

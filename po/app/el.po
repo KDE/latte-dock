@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-05 18:29+0200\n"
+"POT-Creation-Date: 2017-01-06 11:37+0200\n"
 "PO-Revision-Date: 2017-01-05 18:31+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -84,88 +84,88 @@ msgctxt "bottom location"
 msgid "Bottom"
 msgstr "Κάτω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:139
+#: ../../shell/contents/configuration/BehaviorConfig.qml:140
 msgctxt "left location"
 msgid "Left"
 msgstr "Αριστερά"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:152
+#: ../../shell/contents/configuration/BehaviorConfig.qml:154
 msgctxt "top location"
 msgid "Top"
 msgstr "Πάνω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:166
+#: ../../shell/contents/configuration/BehaviorConfig.qml:169
 msgctxt "right location"
 msgid "Right"
 msgstr "Δεξιά"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:187
+#: ../../shell/contents/configuration/BehaviorConfig.qml:191
 msgid "Alignment"
 msgstr "Στοίχιση"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:242
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
 msgctxt "top alignment"
 msgid "Top"
 msgstr "Πάνω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:242
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
 msgctxt "left alignment"
 msgid "Left"
 msgstr "Αριστερή"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:258
+#: ../../shell/contents/configuration/BehaviorConfig.qml:263
 msgctxt "center alignment"
 msgid "Center"
 msgstr "Κεντρική"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:271
+#: ../../shell/contents/configuration/BehaviorConfig.qml:277
 msgctxt "bottom alignment"
 msgid "Bottom"
 msgstr "Κάτω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:271
+#: ../../shell/contents/configuration/BehaviorConfig.qml:277
 msgctxt "right alignment"
 msgid "Right"
 msgstr "Δεξιά"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:288
+#: ../../shell/contents/configuration/BehaviorConfig.qml:295
 msgctxt "justify alignment"
 msgid "Justify"
 msgstr "Πλήρης"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:312
+#: ../../shell/contents/configuration/BehaviorConfig.qml:320
 msgid "Visibility"
 msgstr "Ορατότητα"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:362
+#: ../../shell/contents/configuration/BehaviorConfig.qml:370
 msgid "Always Visible"
 msgstr "Πάντα Ορατό"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:375
+#: ../../shell/contents/configuration/BehaviorConfig.qml:383
 msgid "Auto Hide"
 msgstr "Αυτόματη Απόκρυψη"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:388
+#: ../../shell/contents/configuration/BehaviorConfig.qml:396
 msgid "Dodge Active"
 msgstr "Αποφυγή Ενεργό"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:402
+#: ../../shell/contents/configuration/BehaviorConfig.qml:410
 msgid "Dodge Maximized"
 msgstr "Αποφυγή Μεγιστοποίησης"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:416
+#: ../../shell/contents/configuration/BehaviorConfig.qml:424
 msgid "Dodge All Windows"
 msgstr "Αποφυγή Παραθύρων"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:433
+#: ../../shell/contents/configuration/BehaviorConfig.qml:441
 msgid "Delay"
 msgstr "Καθυστέρηση"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:444
+#: ../../shell/contents/configuration/BehaviorConfig.qml:452
 msgid "Hide:"
 msgstr "Απόκρυψη:"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:467
+#: ../../shell/contents/configuration/BehaviorConfig.qml:475
 msgid "Show:"
 msgstr "Εμφάνιση:"
 

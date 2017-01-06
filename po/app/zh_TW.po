@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-05 18:29+0200\n"
+"POT-Creation-Date: 2017-01-06 11:37+0200\n"
 "PO-Revision-Date: 2016-11-26 17:31+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -85,99 +85,99 @@ msgctxt "bottom location"
 msgid "Bottom"
 msgstr "底部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:139
+#: ../../shell/contents/configuration/BehaviorConfig.qml:140
 #, fuzzy
 msgctxt "left location"
 msgid "Left"
 msgstr "左邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:152
+#: ../../shell/contents/configuration/BehaviorConfig.qml:154
 #, fuzzy
 msgctxt "top location"
 msgid "Top"
 msgstr "頂部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:166
+#: ../../shell/contents/configuration/BehaviorConfig.qml:169
 #, fuzzy
 msgctxt "right location"
 msgid "Right"
 msgstr "右邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:187
+#: ../../shell/contents/configuration/BehaviorConfig.qml:191
 #, fuzzy
 msgid "Alignment"
 msgstr "小程式對齊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:242
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
 #, fuzzy
 msgctxt "top alignment"
 msgid "Top"
 msgstr "頂部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:242
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
 #, fuzzy
 msgctxt "left alignment"
 msgid "Left"
 msgstr "左邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:258
+#: ../../shell/contents/configuration/BehaviorConfig.qml:263
 #, fuzzy
 msgctxt "center alignment"
 msgid "Center"
 msgstr "置中"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:271
+#: ../../shell/contents/configuration/BehaviorConfig.qml:277
 #, fuzzy
 msgctxt "bottom alignment"
 msgid "Bottom"
 msgstr "底部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:271
+#: ../../shell/contents/configuration/BehaviorConfig.qml:277
 #, fuzzy
 msgctxt "right alignment"
 msgid "Right"
 msgstr "右邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:288
+#: ../../shell/contents/configuration/BehaviorConfig.qml:295
 msgctxt "justify alignment"
 msgid "Justify"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:312
+#: ../../shell/contents/configuration/BehaviorConfig.qml:320
 msgid "Visibility"
 msgstr "可見度"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:362
+#: ../../shell/contents/configuration/BehaviorConfig.qml:370
 msgid "Always Visible"
 msgstr "永遠可見"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:375
+#: ../../shell/contents/configuration/BehaviorConfig.qml:383
 msgid "Auto Hide"
 msgstr "自動隱藏"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:388
+#: ../../shell/contents/configuration/BehaviorConfig.qml:396
 #, fuzzy
 msgid "Dodge Active"
 msgstr "在作用中的視窗後"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:402
+#: ../../shell/contents/configuration/BehaviorConfig.qml:410
 #, fuzzy
 msgid "Dodge Maximized"
 msgstr "在最大化的視窗後"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:416
+#: ../../shell/contents/configuration/BehaviorConfig.qml:424
 msgid "Dodge All Windows"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:433
+#: ../../shell/contents/configuration/BehaviorConfig.qml:441
 msgid "Delay"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:444
+#: ../../shell/contents/configuration/BehaviorConfig.qml:452
 msgid "Hide:"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:467
+#: ../../shell/contents/configuration/BehaviorConfig.qml:475
 msgid "Show:"
 msgstr ""
 
