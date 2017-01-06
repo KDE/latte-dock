@@ -45,13 +45,11 @@ namespace Latte {
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     
-    Q_PROPERTY(bool compositing READ compositing NOTIFY compositingChanged)
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
-    Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
@@ -77,20 +75,11 @@ public:
     
     int maxLength() const;
     void setMaxLength(int maxLength);
-    
-    //  Dock::Alignment alignment() const;
-    //  void setAlignment(Dock::Alignment align);
-    
-    int offset() const;
-    void setOffset(int offset);
-    
-    void updateOffset();
 
     int docksCount() const;
     
     VisibilityManager *visibility();
     
-    bool compositing() const;
     int currentThickness() const;
 
     bool tasksPresent() const;
@@ -131,8 +120,6 @@ signals:
 //   void visibilityChanged();
     void addInternalViewSplitter();
     void eventTriggered(QEvent *ev);
-    void alignmentChanged();
-    void compositingChanged();
     void heightChanged();
     void lengthChanged();
     void docksCountChanged();
@@ -140,7 +127,6 @@ signals:
     void maskAreaChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
-    void offsetChanged();
     void removeInternalViewSplitter();
     void visibilityChanged();
     void widthChanged();
@@ -157,7 +143,6 @@ private:
     bool m_secondInitPass;
     
     int m_docksCount;
-    int m_offset{0};
     int m_maxThickness{24};
     int m_length{0};
     int m_maxLength{INT_MAX};

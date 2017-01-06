@@ -132,12 +132,7 @@ void DockView::init()
         //! avoid glitches
         m_timerGeometry.start();
     });
-    
-    connections << connect(&WindowSystem::self(), &WindowSystem::compositingChanged
-    , this, [&]() {
-        emit compositingChanged();
-    } , Qt::QueuedConnection);
-    
+
     connect(this, &DockView::screenGeometryChanged
             , this, &DockView::updateDockPosition
             , Qt::QueuedConnection);
@@ -392,11 +387,6 @@ int DockView::currentThickness() const
     }
 }
 
-bool DockView::compositing() const
-{
-    return WindowSystem::self().compositingActive();
-}
-
 int DockView::docksCount() const
 {
     return m_docksCount;
@@ -492,33 +482,6 @@ void DockView::setMaskArea(QRect area)
     emit maskAreaChanged();
 }
 
-/*Dock::Alignment DockView::alignment() const
-{
-    return m_alignment;
-}
-void DockView::setAlignment(Dock::Alignment align)
-{
-    if (m_alignment == align)
-        return;
-    m_alignment = align;
-    emit alignmentChanged();
-}
-*/
-int DockView::offset() const
-{
-    return m_offset;
-}
-
-void DockView::setOffset(int offset)
-{
-    if (m_offset == offset)
-        return;
-
-    m_offset = offset;
-    m_timerGeometry.start();
-    emit offsetChanged();
-}
-
 bool DockView::tasksPresent()
 {
     foreach (Plasma::Applet *applet, containment()->applets()) {
@@ -530,21 +493,6 @@ bool DockView::tasksPresent()
     }
 
     return false;
-}
-
-void DockView::updateOffset()
-{
-    if (!containment())
-        return;
-
-    const float offsetPercent = containment()->config().readEntry("offset").toFloat();
-    const int offset = offsetPercent * (m_maxLength - m_length) / 2;
-    
-    if (offset == m_offset)
-        return;
-
-    m_offset = offset;
-    emit offsetChanged();
 }
 
 VisibilityManager *DockView::visibility()
