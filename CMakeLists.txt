@@ -1,7 +1,7 @@
 project(lattedock)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(VERSION 0.5.89)
 set(AUTHOR "Michail Vourlakos, Smith Ar")
 set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
