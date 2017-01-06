@@ -470,14 +470,6 @@ DragDrop.DropArea {
         event.accept(event.proposedAction);
 
         dndSpacer.opacity = 0;
-        containmentSizeSyncTimer.restart();
-    }
-
-    onHeightChanged: {
-        containmentSizeSyncTimer.restart()
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
     }
 
     onNowDockChanged: {
@@ -497,18 +489,6 @@ DragDrop.DropArea {
         if (toolBox) {
             toolBox.visible = false;
         }
-
-        containmentSizeSyncTimer.restart();
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
-    }
-
-    onWidthChanged: {
-        containmentSizeSyncTimer.restart()
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
     }
 
     //  onIconSizeChanged: console.log("Icon Size Changed:"+iconSize);
@@ -520,7 +500,6 @@ DragDrop.DropArea {
         LayoutManager.layout = mainLayout;
         LayoutManager.lastSpacer = lastSpacer;
         LayoutManager.restore();
-        containmentSizeSyncTimer.restart();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
 
@@ -606,10 +585,7 @@ DragDrop.DropArea {
         }
     }
 
-    Plasmoid.onFormFactorChanged: containmentSizeSyncTimer.restart();
-
     Plasmoid.onImmutableChanged: {
-        containmentSizeSyncTimer.restart();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
 
@@ -687,7 +663,7 @@ DragDrop.DropArea {
             // of a specific type, and the containment caring about the applet type. In a better
             // system the containment would be informed of requested launchers, and determine by
             // itself what it wants to do with that information.
-            if (!startupTimer.running && applet.pluginName == "org.kde.plasma.icon") {
+            if (applet.pluginName == "org.kde.plasma.icon") {
                 var middle = mainLayout.childAt(root.width / 2, root.height / 2);
 
                 if (middle) {
@@ -704,9 +680,6 @@ DragDrop.DropArea {
             } else {
                 container.parent = mainLayout;
             }
-
-            //event compress the enable of animations
-            startupTimer.restart();
         }
 
         //Important, removes the first children of the mainLayout after the first
@@ -1230,28 +1203,6 @@ DragDrop.DropArea {
         onTriggered: {
             if(!root.containsMouse())
                 root.clearZoom();
-        }
-    }
-
-    Timer {
-        id: containmentSizeSyncTimer
-        interval: 150
-        onTriggered: {
-            dndSpacer.parent = root;
-        }
-    }
-
-    //FIXME: I don't see other ways at the moment a way to see when the UI is REALLY ready
-    Timer {
-        id: startupTimer
-        interval: 4000
-        onTriggered: {
-            for (var i = 0; i < mainLayout.children.length; ++i) {
-                if ( mainLayout.children[i].hasOwnProperty('animationsEnabled') ) {
-                    mainLayout.children[i].animationsEnabled = true;
-                }
-            }
-            inStartup = false;
         }
     }
 
