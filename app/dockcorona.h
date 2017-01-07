@@ -31,6 +31,10 @@ class Containment;
 class Types;
 }
 
+namespace KActivities {
+class Consumer;
+}
+
 namespace Latte {
 
 class DockCorona : public Plasma::Corona {
@@ -62,12 +66,16 @@ signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void containmentsNoChanged();
     
+private slots:
+    void load();
+
 private:
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
     
-    //std::vector<DockView *> m_containments;
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
+
+    KActivities::Consumer *m_activityConsumer;
 };
 
 }
