@@ -163,8 +163,7 @@ PlasmaCore.FrameSvgItem {
 
                 PlasmaComponents.TabGroup{
                     width: pagesBackground.width - 6
-                    //FIXME: this creates a binding loop but I havent found any alternative yet
-                    height: currentTab.childrenRect.height
+                    height: currentTab.pageHeight
 
                     privateContents: [
                         BehaviorConfig{
