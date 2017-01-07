@@ -102,24 +102,24 @@ Item{
 
     function slotMustBeHide() {
         // console.log("hide....");
-        if(!dock.visibility.blockHiding && !dock.visibility.containsMouse) {
+        if(!dock.visibility.blockHiding && !dock.visibility.containsMouse && windowSystem.compositingActive) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
 
     ///test maskArea
     function updateMaskArea() {
-        if (!windowSystem.compositingActive || !dock) {
+        if (!dock) {
             return;
         }
 
         var localX = 0;
         var localY = 0;
 
-        normalState = (root.nowDockHoveredIndex === -1) && (layoutsContainer.hoveredIndex === -1)
+        normalState = ((root.nowDockHoveredIndex === -1) && (layoutsContainer.hoveredIndex === -1)
                 && (root.appletsAnimations === 0)
                 && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0)
-                && (!mainLayout.animatedLength)
+                && (!mainLayout.animatedLength) ) || !windowSystem.compositingActive
 
         // debug maskArea criteria
         //console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
@@ -144,11 +144,11 @@ Item{
             tempThickness = thicknessNormalOriginal;
 
             if (root.animationsNeedThickness > 0) {
-                tempThickness = thicknessMidOriginal;
+                tempThickness = windowSystem.compositingActive ? thicknessMidOriginal : thicknessNormalOriginal;
             }
 
             if (dock.visibility.isHidden) {
-                tempThickness = thicknessAutoHidden;
+                tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
             }
 
             //configure x,y based on plasmoid position and root.panelAlignment(Alignment)

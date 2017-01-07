@@ -133,7 +133,7 @@ DragDrop.DropArea {
                                     layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin) :
                                Screen.height //on unlocked state use the maximum*/
 
-    Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+    Plasmoid.backgroundHints: windowSystem.compositingActive ? PlasmaCore.Types.NoBackground : PlasmaCore.Types.DefaultBackground
 
     //// BEGIN properties in functions
     property int noApplets: {
@@ -970,6 +970,10 @@ DragDrop.DropArea {
     ////BEGIN interfaces
     Latte.WindowSystem {
         id:windowSystem
+
+        onCompositingActiveChanged:{
+            visibilityManager.updateMaskArea();
+        }
     }
 
     ////END interfaces

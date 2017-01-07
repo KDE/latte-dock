@@ -26,9 +26,9 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 PlasmaCore.FrameSvgItem {
     id: root
 
-    //imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
+    imagePath: containment && containment.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     //imagePath: "widgets/panel-background"
-    imagePath: ""
+    //imagePath: ""
     prefix:""
     // onRepaintNeeded: adjustPrefix();
 
