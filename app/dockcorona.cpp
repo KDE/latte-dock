@@ -35,10 +35,13 @@
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 
+#include <kactivities/consumer.h>
+
 namespace Latte {
 
 DockCorona::DockCorona(QObject *parent)
-    : Plasma::Corona(parent)
+    : Plasma::Corona(parent),
+      m_activityConsumer(new KActivities::Consumer(this))
 {
     KPackage::Package package(new DockPackage(this));
     
@@ -56,7 +59,7 @@ DockCorona::DockCorona(QObject *parent)
     
     connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
     
-    loadLayout();
+    connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 }
 
 DockCorona::~DockCorona()
@@ -69,7 +72,15 @@ DockCorona::~DockCorona()
     qDeleteAll(m_dockViews);
     m_dockViews.clear();
 
+    disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+    delete m_activityConsumer;
+
     qDebug() << "deleted" << this;
+}
+
+void DockCorona::load()
+{
+    loadLayout();
 }
 
 int DockCorona::numScreens() const

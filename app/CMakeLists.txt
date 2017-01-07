@@ -1,5 +1,6 @@
 find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Quick Qml)
 find_package(KF5I18n NO_MODULE)
+find_package(KF5Activities REQUIRED)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -45,6 +46,7 @@ target_link_libraries(
     KF5::XmlGui
     KF5::Plasma
     KF5::PlasmaQuick
+    KF5::Activities
     KF5::QuickAddons
     KF5::WindowSystem
     KF5::IconThemes
