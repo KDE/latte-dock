@@ -49,7 +49,7 @@ Item {
                                                                (index === secondLayout.beginIndex)&&(secondLayout.count > 1)
     //applet is in ending edge
     property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
-                                                                                        ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
+                                                                                         ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
 
 
 
@@ -89,6 +89,12 @@ Item {
         if(index==0)
             console.log(computeHeight);
     }*/
+
+    onIndexChanged: {
+        if (container.nowDock) {
+            root.latteAppletPos = index;
+        }
+    }
 
     /// BEGIN functions
     function checkIndex(){
@@ -174,6 +180,7 @@ Item {
         if(container.nowDock){
             root.nowDock = container.nowDock;
             root.nowDockContainer = container;
+            root.latteAppletPos = index;
             nowDock.nowDockPanel = root;
             nowDock.forceHidePanel = true;
             nowDock.updateScale.connect(interceptNowDockUpdateScale);
@@ -655,6 +662,14 @@ Item {
                     //  currentLayout.updateScale(index-2, 1, 0);
                     //   currentLayout.updateScale(index+2, 1, 0);
 
+                    if (root.nowDock) {
+                        if ((index-1) > root.latteAppletPos ){
+                            root.nowDock.clearZoom();
+                        } else if((index+1)<root.latteAppletPos) {
+                            root.nowDock.clearZoom();
+                        }
+                    }
+
                     //Left hiddenSpacer
                     if(container.startEdge){
                         hiddenSpacerLeft.nScale = leftScale - 1;
@@ -687,7 +702,7 @@ Item {
                             if(layoutsContainer.hoveredIndex<container.index){
                                 nowDock.updateScale(0, nScale, step);
                                 nowDock.updateScale(1, 1, 0);
-                            } else if(layoutsContainer.hoveredIndex>=container.index) {
+                            } else if(layoutsContainer.hoveredIndex>container.index) {
                                 nowDock.updateScale(root.tasksCount-1, nScale, step);
                                 nowDock.updateScale(root.tasksCount-2, 1, 0);
                             }
