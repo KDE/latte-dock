@@ -520,6 +520,8 @@ DragDrop.DropArea {
     }
 
     Containment.onAppletRemoved: {
+        dock.removeAppletItem(applet)
+
         LayoutManager.removeApplet(applet);
         var flexibleFound = false;
         for (var i = 0; i < mainLayout.children.length; ++i) {
@@ -538,8 +540,6 @@ DragDrop.DropArea {
         LayoutManager.save();
 
         updateIndexes();
-
-        dock.removeAppletItem(applet)
     }
 
     Plasmoid.onUserConfiguringChanged: {
@@ -633,6 +633,10 @@ DragDrop.DropArea {
         })
 
         addContainerInLayout(container, applet, x, y);
+
+        if(dock) {
+            dock.addAppletItem(applet);
+        }
     }
 
     function addContainerInLayout(container, applet, x, y){
