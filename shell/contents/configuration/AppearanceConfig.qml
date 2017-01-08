@@ -25,374 +25,281 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
 
-PlasmaComponents.Page{
-    width: dialog.width - 2*dialog.windowSpace
+PlasmaComponents.Page {
+    Layout.maximumWidth: content.width + units.smallSpacing * 2
+    Layout.maximumHeight: content.height + units.smallSpacing * 2
+    
+    ColumnLayout {
+        id: content
 
-    property int pageHeight: mainColumn.height
+        width: dialog.maxWidth
+        spacing: units.largeSpacing
+        anchors.centerIn: parent
 
-    Column{
-        id:mainColumn
-        spacing: 1.5*theme.defaultFont.pointSize
-        width: parent.width
+        //! BEGIN: Applet Size
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
 
-        //////////////// Applets Size
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-
-            Header{
+            Header {
                 text: i18n("Applets Size")
             }
 
-            RowLayout{
-                width: parent.width
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: units.smallSpacing
 
-                property int step: 8
-
-                PlasmaComponents.Slider{
-                    id:appletsSizeSlider
-
-                    valueIndicatorText: i18n("Applets Size")
-                    valueIndicatorVisible: true
-
+                PlasmaComponents.Slider {
+                    id: appletsSizeSlider
+                    Layout.fillWidth: true
+                    value: plasmoid.configuration.iconSize
                     minimumValue: 16
                     maximumValue: 128
-
-                    stepSize: parent.step
-
-                    Layout.fillWidth:true
-
-                    property bool inStartup:true
-
-                    property int tempValue: value
-
-                    Component.onCompleted: {
-                        value = plasmoid.configuration.iconSize;
-                        inStartup = false;
-                    }
-
-                    onPressedChanged: {
+                    stepSize: 8
+                    
+                    function updateIconSize() {
                         if (!pressed) {
-                            plasmoid.configuration.iconSize = value;
+                            if (panelSizeSlider.value > value + 4)
+                                panelSizeSlider.value = value + 4
+                            plasmoid.configuration.iconSize = value
                         }
                     }
-
-                    onTempValueChanged:{
-                        if(!inStartup && !pressed){
-                            plasmoid.configuration.iconSize = value;
-                        }
+                    
+                    onPressedChanged: {
+                        updateIconSize()
+                    }
+                    
+                    Component.onCompleted: { 
+                        valueChanged.connect(updateIconSize) 
                     }
                 }
 
-                PlasmaComponents.Label{
+                PlasmaComponents.Label {
                     text: appletsSizeSlider.value + " px."
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 5
                 }
             }
         }
+        //! END: Applet Size
 
-        /**********  Zoom On Hover ****************/
-        Column{
-            width: parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
+        //! BEGIN: Zoom On Hover
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
             enabled: plasmoid.configuration.durationTime > 0
-            Header{
+
+            Header {
                 text: i18n("Zoom On Hover")
             }
 
-            RowLayout{
-                width: parent.width
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: units.smallSpacing
 
-                PlasmaComponents.Slider{
-                    id:zoomSlider
+                PlasmaComponents.Slider {
+                    Layout.fillWidth: true
+                    id: zoomSlider
 
                     valueIndicatorText: i18n("Zoom Factor")
                     valueIndicatorVisible: true
 
+                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
                     minimumValue: 1
                     maximumValue: 2
-
                     stepSize: 0.05
 
-                    Layout.fillWidth:true
-
-                    property bool inStartup:true
-
-                    property real tempValue: value
-
-                    Component.onCompleted: {
-                        value = Number(1 + plasmoid.configuration.zoomLevel/20).toFixed(2)
-                        inStartup = false;
-                        //  console.log("Slider:"+value);
-                    }
-
-                    onPressedChanged: {
+                    function updateZoomLevel() {
                         if (!pressed) {
-                            var result = Math.round((value - 1)*20)
+                            var result = Math.round((value - 1) * 20)
                             plasmoid.configuration.zoomLevel = result
                         }
                     }
-
-                    onTempValueChanged:{
-                        if(!inStartup && !pressed){
-                            var result = Math.round((value - 1)*20)
-                            plasmoid.configuration.zoomLevel = result
-                        }
+                    
+                    onPressedChanged: {
+                        updateZoomLevel()
                     }
-
+                    
+                    Component.onCompleted: {
+                        valueChanged.connect(updateZoomLevel)       
+                    }
                 }
 
-                PlasmaComponents.Label{
-                    enabled: showBackground.checked
-                    //text: " "+Number(zoomSlider.value).toFixed(2)
-                    text: " "+Number((zoomSlider.value*100)-100).toFixed(0)+"%"
-
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                PlasmaComponents.Label {
+                    text: Number(
+                              (zoomSlider.value * 100) - 100).toFixed(0) + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(
+                                             theme.defaultFont).width * 5
                 }
-
             }
         }
+        //! END: Zoom On Hover
 
-        /**Animations Speed***/
+        //! BEGIN: Animations
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
 
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-
-            Header{
+            Header {
                 text: i18n("Animations")
             }
 
-            Flow{
-                width: parent.width
+            RowLayout {
+                Layout.fillWidth: true
                 spacing: 2
 
-                property bool inStartup: true
                 property int duration: plasmoid.configuration.durationTime
 
-                onDurationChanged: updateDurationVisual();
-
-                Component.onCompleted: {
-                    updateDurationVisual();
-                    inStartup = false;
-                }
-
-                function updateDurationVisual(){
-                    if(duration === 0){
-                        firstDuration.checked = true;
-                        secondDuration.checked = false;
-                        thirdDuration.checked = false;
-                        fourthDuration.checked = false;
-                    }
-                    else if(duration === 1){
-                        firstDuration.checked = false;
-                        secondDuration.checked = true;
-                        thirdDuration.checked = false;
-                        fourthDuration.checked = false;
-                    }
-                    else if(duration === 2){
-                        firstDuration.checked = false;
-                        secondDuration.checked = false;
-                        thirdDuration.checked = true;
-                        fourthDuration.checked = false;
-                    }
-                    else if(duration === 3){
-                        firstDuration.checked = false;
-                        secondDuration.checked = false;
-                        thirdDuration.checked = false;
-                        fourthDuration.checked = true;
+                ExclusiveGroup {
+                    id: animationsGroup
+                    onCurrentChanged: {
+                        if (current.checked)
+                            plasmoid.configuration.durationTime = current.duration
                     }
                 }
 
-
-                PlasmaComponents.Button{
-                    id: firstDuration
-                    checkable: true
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("None")
-                    width: (parent.width / 4) - 2
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            plasmoid.configuration.durationTime = 0;
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: secondDuration
+                    checked: parent.duration === duration
                     checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 0
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("x1")
-                    width: (parent.width / 4) - 2
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            plasmoid.configuration.durationTime = 1;
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: thirdDuration
+                    checked: parent.duration === duration
                     checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 1
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("x2")
-                    width: (parent.width / 4) - 2
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            plasmoid.configuration.durationTime = 2;
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-
-                PlasmaComponents.Button{
-                    id: fourthDuration
+                    checked: parent.duration === duration
                     checkable: true
-                    text: i18n("x3")
-                    width: (parent.width/4) - 1
+                    exclusiveGroup: animationsGroup
 
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            plasmoid.configuration.durationTime = 3;
-                        }
-                    }
-                    onClicked: checked=true;
+                    readonly property int duration: 2
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("x3")
+                    checked: parent.duration === duration
+                    checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 3
                 }
             }
         }
+        //! END: Animations
 
+        //! BEGIN: Background
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
 
-        Column{
-            width: parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-            Header{
+            Header {
                 text: i18n("Background")
             }
 
-            PlasmaComponents.CheckBox{
+            PlasmaComponents.CheckBox {
                 id: showBackground
                 text: i18n("Show Panel Background")
+                checked: plasmoid.configuration.useThemePanel
 
-                property bool inStartup: true
-                onCheckedChanged:{
-                    if(!inStartup)
-                        plasmoid.configuration.useThemePanel = checked;
+                onClicked: {
+                    plasmoid.configuration.useThemePanel = checked
                 }
-
-                Component.onCompleted: {
-                    checked = plasmoid.configuration.useThemePanel;
-                    inStartup = false;
-                }
-            }
-
-            RowLayout{
-                width: parent.width
-
-                PlasmaComponents.Slider{
-                    id:panelSizeSlider
-                    enabled: showBackground.checked
-                    valueIndicatorText: i18n("Size")
-                    valueIndicatorVisible: true
-
-                    minimumValue: 0
-                    maximumValue: 256
-
-                    stepSize: 2
-
-                    Layout.fillWidth:true
-
-                    property bool inStartup: true
-                    property int tempValue: value
-
-                    Component.onCompleted: {
-                        value = plasmoid.configuration.panelSize
-                        inStartup = false;
-                    }
-
-                    onPressedChanged: {
-                        if (!pressed) {
-                            plasmoid.configuration.panelSize = value;
-                        }
-                    }
-
-                    onTempValueChanged:{
-                        if(!inStartup && !pressed){
-                            plasmoid.configuration.panelSize = value;
-                        }
-                    }
-                }
-
-                PlasmaComponents.Label{
-                    enabled: showBackground.checked
-                    text: panelSizeSlider.value + " px."
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-
-            }
-        }
-
-        /******Shadows**********/
-        Column{
-            width: parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-            Header{
-                text: i18n("Shadows")
             }
 
             RowLayout {
-                width: parent.width
+                Layout.fillWidth: true
 
-                ExclusiveGroup {
-                    id: shadowsGroup
-                    property bool inStartup: true
+                PlasmaComponents.Slider {
+                    id: panelSizeSlider
+                    Layout.fillWidth: true
+                    enabled: showBackground.checked
 
-                    onCurrentChanged: {
-                        if (!inStartup) {
-                            if (current === noneShadow){
-                                plasmoid.configuration.shadows = 0; /*No Shadows*/
-                            } else if (current === lockedAppletsShadow){
-                                plasmoid.configuration.shadows = 1; /*Locked Applets Shadows*/
-                            } else if (current === allAppletsShadow){
-                                plasmoid.configuration.shadows = 2; /*All Applets Shadows*/
-                            }
-                        }
+                    value: plasmoid.configuration.panelSize
+                    minimumValue: 0
+                    maximumValue: plasmoid.configuration.iconSize + 4
+                    stepSize: 2
+
+                    function updatePanelSize() {
+                        if (!pressed)
+                            plasmoid.configuration.panelSize = value
                     }
 
+                    onPressedChanged: {
+                        updatePanelSize()
+                    }
+                    
                     Component.onCompleted: {
-                        if (plasmoid.configuration.shadows === 0 /*No Shadows*/){
-                            noneShadow.checked = true;
-                        } else if (plasmoid.configuration.shadows === 1 /*Locked Applets*/) {
-                            lockedAppletsShadow.checked = true;
-                        } else if (plasmoid.configuration.shadows === 2 /*All Applets*/) {
-                            allAppletsShadow.checked = true;
-                        }
-
-                        inStartup = false;
+                        valueChanged.connect(updatePanelSize)
                     }
                 }
 
-                PlasmaComponents.RadioButton {
-                    id: noneShadow
-                    text: i18n("None")
-                    exclusiveGroup: shadowsGroup
+                PlasmaComponents.Label {
+                    enabled: showBackground.checked
+                    text: panelSizeSlider.value + " px."
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 5
                 }
-                PlasmaComponents.RadioButton {
-                    id: lockedAppletsShadow
-                    text: i18n("Only for locked applets")
-                    exclusiveGroup: shadowsGroup
-                }
-                PlasmaComponents.RadioButton {
-                    id: allAppletsShadow
-                    text: i18n("All applets")
-                    exclusiveGroup: shadowsGroup
-                }
-
             }
         }
+        //! END: Background
+
+        //! BEGIN: Shadows
+        Column {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Shadows")
+            }
+
+            PlasmaComponents.ButtonRow {
+                Layout.fillWidth: true
+                spacing: units.smallSpacing
+                exclusive: true
+
+                property int shadows: plasmoid.configuration.shadows
+
+                onCheckedButtonChanged: {
+                    if (checkedButton.checked)
+                        plasmoid.configuration.shadows = checkedButton.shadow
+                }
+
+                PlasmaComponents.RadioButton {
+                    text: i18n("None")
+                    checked: parent.shadows === shadow
+
+                    readonly property int shadow: 0
+                }
+                PlasmaComponents.RadioButton {
+                    text: i18n("Only for locked applets")
+                    checked: parent.shadows === shadow
+
+                    readonly property int shadow: 1
+                }
+                PlasmaComponents.RadioButton {
+                    text: i18n("All applets")
+                    checked: parent.shadows === shadow
+
+                    readonly property int shadow: 2
+                }
+            }
+        }
+        //! END: Shadows
     }
 }

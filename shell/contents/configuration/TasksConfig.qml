@@ -17,7 +17,6 @@
 *  You should have received a copy of the GNU General Public License
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
@@ -25,199 +24,158 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
 
-PlasmaComponents.Page{
-    width: dialog.width - 2*dialog.windowSpace
+PlasmaComponents.Page {
+    Layout.maximumWidth: content.width + units.smallSpacing * 2
+    Layout.maximumHeight: content.height + units.smallSpacing * 2
+    
+    ColumnLayout {
+        id: content
+        width: dialog.maxWidth
+        spacing: units.largeSpacing
+        anchors.centerIn: parent
 
-    property int pageHeight: mainColumn.height
+        //! BEGIN: Tasks Appearance
+        ColumnLayout {
+            spacing: units.smallSpacing
 
-    Column{
-        id: mainColumn
-        spacing: 1.5*theme.defaultFont.pointSize
-        width: parent.width
-
-        /******Appearance******/
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-
-            Header{
+            Header {
                 text: i18n("Appearance")
             }
 
-            Row{
-                Item{
-                    width: 2*theme.defaultFont.pixelSize
-                    height: 1
+            PlasmaComponents.CheckBox {
+                id: showGlow
+                text: i18n("Show glow around windows points")
+                checked: plasmoid.configuration.showGlow
+
+                onClicked: {
+                    plasmoid.configuration.showGlow = checked
                 }
+            }
 
-                Column{
-                    spacing: 0.4*theme.defaultFont.pixelSize
+            PlasmaComponents.CheckBox {
+                id: threeColorsWindows
+                text: i18n("Different color for minimized windows")
+                checked: plasmoid.configuration.threeColorsWindows
 
-                    PlasmaComponents.CheckBox {
-                        id: showGlow
-                        text: i18n("Show glow around windows points")
+                onClicked: {
+                    plasmoid.configuration.threeColorsWindows = checked
+                }
+            }
 
-                        onCheckedChanged: {
-                            plasmoid.configuration.showGlow = checked;
-                        }
+            PlasmaComponents.CheckBox {
+                id: dotsOnActive
+                text: i18n("Dots on active window")
+                checked: plasmoid.configuration.dotsOnActive
 
-                        Component.onCompleted: checked = plasmoid.configuration.showGlow;
-                    }
+                onClicked: {
+                    plasmoid.configuration.dotsOnActive = checked
+                }
+            }
 
-                    PlasmaComponents.CheckBox {
-                        id: threeColorsWindows
-                        text: i18n("Different color for minimized windows")
+            PlasmaComponents.CheckBox {
+                id: reverseLinesPosition
+                text: i18n("Reverse position for lines and dots")
+                checked: plasmoid.configuration.reverseLinesPosition
 
-                        onCheckedChanged: {
-                            plasmoid.configuration.threeColorsWindows = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.threeColorsWindows;
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        id: dotsOnActive
-                        text: i18n("Dots on active window")
-
-                        onCheckedChanged: {
-                            plasmoid.configuration.dotsOnActive = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.dotsOnActive;
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        id: reverseLinesPosition
-                        text: i18n("Reverse position for lines and dots")
-
-                        onCheckedChanged: {
-                            plasmoid.configuration.reverseLinesPosition = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.reverseLinesPosition;
-                    }
+                onClicked: {
+                    plasmoid.configuration.reverseLinesPosition = checked
                 }
             }
         }
+        //! END: Tasks Appearance
 
-        /*********Behavior************/
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
+        //! BEGIN: Tasks Interaction
+        ColumnLayout {
+            spacing: units.smallSpacing
 
-            Header{
+            Header {
                 text: i18n("Interaction")
             }
 
-            Row{
-                Item{
-                    width: 2*theme.defaultFont.pixelSize
-                    height: 1
+            PlasmaComponents.CheckBox {
+                id: showPreviewsChk
+                text: i18n("Preview windows on hovering")
+                checked: plasmoid.configuration.showToolTips
+
+                onClicked: {
+                    plasmoid.configuration.showToolTips = checked
                 }
-                Column{
-                    spacing: 0.4*theme.defaultFont.pixelSize
+            }
 
-                    PlasmaComponents.CheckBox {
-                        id: showPreviewsChk
-                        text: i18n("Preview windows on hovering")
+            PlasmaComponents.CheckBox {
+                id: highlightWindowsChk
+                text: i18n("Highlight windows on hovering")
+                checked: plasmoid.configuration.highlightWindows
 
-                        onCheckedChanged: {
-                            plasmoid.configuration.showToolTips = checked;
-                        }
+                onClicked: {
+                    plasmoid.configuration.highlightWindows = checked
+                }
+            }
 
-                        Component.onCompleted: checked = plasmoid.configuration.showToolTips;
-                    }
+            PlasmaComponents.CheckBox {
+                id: windowActionsChk
+                text: i18n("Show window actions in the context menu")
+                checked: plasmoid.configuration.showWindowActions
 
-                    PlasmaComponents.CheckBox {
-                        id: highlightWindowsChk
-                        text: i18n("Highlight windows on hovering")
+                onClicked: {
+                    plasmoid.configuration.showWindowActions = checked
+                }
+            }
 
-                        onCheckedChanged: {
-                            plasmoid.configuration.highlightWindows = checked;
-                        }
+            PlasmaComponents.CheckBox {
+                id: smartLaunchersChk
+                text: i18n("Show progress information in task buttons")
+                checked: plasmoid.configuration.smartLaunchersEnabled
 
-                        Component.onCompleted: checked = plasmoid.configuration.highlightWindows;
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        id: windowActionsChk
-                        text: i18n("Show window actions in the context menu")
-
-                        onCheckedChanged: {
-                            plasmoid.configuration.showWindowActions = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.showWindowActions;
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        id: smartLaunchersChk
-                        text: i18n("Show progress information in task buttons")
-
-                        onCheckedChanged: {
-                            plasmoid.configuration.smartLaunchersEnabled = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.smartLaunchersEnabled;
-                    }
+                onClicked: {
+                    plasmoid.configuration.smartLaunchersEnabled = checked
                 }
             }
         }
+        //! END: Tasks Interaction
 
-        /*******Filters*******/
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-
-            Header{
+        //! BEGIN: Tasks Filters
+        ColumnLayout {
+            spacing: units.smallSpacing
+            
+            Header {
                 text: i18n("Filters")
             }
 
-            Row{
-                Item{
-                    width: 2*theme.defaultFont.pixelSize
-                    height: 1
+            PlasmaComponents.CheckBox {
+                id: showOnlyCurrentScreen
+                text: i18n("Show only tasks from the current screen")
+                checked: plasmoid.configuration.showOnlyCurrentScreen 
+                    
+                onClicked: {
+                    plasmoid.configuration.showOnlyCurrentScreen = checked
                 }
+            }
 
-                Column{
-                    spacing: 0.4*theme.defaultFont.pixelSize
+            PlasmaComponents.CheckBox {
+                id: showOnlyCurrentDesktop
+                text: i18n("Show only tasks from the current desktop")
+                checked: plasmoid.configuration.showOnlyCurrentDesktop
+                
+                onClicked: {
+                    plasmoid.configuration.showOnlyCurrentDesktop = checked
+                }
+            }
 
-                    PlasmaComponents.CheckBox {
-                        id: showOnlyCurrentScreen
-                        text: i18n("Show only tasks from the current screen")
-                        onCheckedChanged: {
-                            plasmoid.configuration.showOnlyCurrentScreen = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.showOnlyCurrentScreen;
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        id: showOnlyCurrentDesktop
-                        text: i18n("Show only tasks from the current desktop")
-                        onCheckedChanged: {
-                            plasmoid.configuration.showOnlyCurrentDesktop = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.showOnlyCurrentDesktop;
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        id: showOnlyCurrentActivity
-                        text: i18n("Show only tasks from the current activity")
-                        onCheckedChanged: {
-                            plasmoid.configuration.showOnlyCurrentActivity = checked;
-                        }
-
-                        Component.onCompleted: checked = plasmoid.configuration.showOnlyCurrentActivity;
-                    }
+            PlasmaComponents.CheckBox {
+                id: showOnlyCurrentActivity
+                text: i18n("Show only tasks from the current activity")
+                checked: plasmoid.configuration.showOnlyCurrentActivity
+                
+                onClicked: {
+                    plasmoid.configuration.showOnlyCurrentActivity = checked
                 }
             }
         }
+        //! END: Tasks Filters
     }
 }
