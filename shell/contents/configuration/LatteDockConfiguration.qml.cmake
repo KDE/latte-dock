@@ -204,10 +204,16 @@ PlasmaCore.FrameSvgItem {
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignCenter
-
             spacing: units.largeSpacing
+            
+            property int docksCount: dock.docksCount
+            
+            onDocksCountChanged: {
+                addDock.enabled = docksCount < 4 && dock.freeEdges().length > 0
+            }
 
             PlasmaComponents.Button {
+                id: addDock
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
 
@@ -217,24 +223,25 @@ PlasmaCore.FrameSvgItem {
                 onClicked: dock.addNewDock()
 
                 Component.onCompleted: {
-                    var edges = dock.freeEdges()
-                    if (edges.length === 0) {
-                        enabled = false
-                    }
+                    enabled = dock.freeEdges().length > 0
                 }
             }
             PlasmaComponents.Button {
+                id: removeDock
+                
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
 
                 text: i18n("Remove")
                 iconSource: "edit-delete"
-                visible: dock.docksCount > 1 ? true : false
+                visible: dock.docksCount > 1
 
                 onClicked: dock.removeDock()
             }
 
             PlasmaComponents.Button {
+                id: quit
+                
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
 
