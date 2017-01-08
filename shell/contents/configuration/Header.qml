@@ -21,10 +21,9 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-PlasmaComponents.Label{
-    font.pointSize: 1.3 * theme.defaultFont.pointSize
-
+PlasmaExtras.Heading {
     Layout.alignment: Qt.AlignLeft
+    level: 3
 }

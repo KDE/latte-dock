@@ -1,3 +1,4 @@
+
 /*
 *  Copyright 2016  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
@@ -17,7 +18,6 @@
 *  You should have received a copy of the GNU General Public License
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
@@ -37,12 +37,14 @@ PlasmaCore.FrameSvgItem {
     id: dialog
     imagePath: "dialogs/background"
 
-    property int maxWidth: 420 //Math.max(420, behaviorPage.width, appearancePage.width, tasksPage.width)
-    property int maxHeight: 400
-    width: content.width + units.smallSpacing * 2
+    //old way to count the dialog width
+    //Math.max(420,appearancePage.noneShadow.width + appearancePage.lockedAppletsShadow.width + appearancePage.allAppletsShadow.width)
+    width: content.width + units.largeSpacing * 2
     height: content.height + units.smallSpacing * 2
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+    property int windowSpace: 8
 
     FontLoader {
         id: tangerineFont
@@ -55,9 +57,8 @@ PlasmaCore.FrameSvgItem {
 
         Layout.minimumWidth: width
         Layout.minimumHeight: height
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        height: header.height + tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
+        width: implicitWidth
+        height: implicitHeight
 
         anchors.centerIn: parent
         spacing: units.smallSpacing
@@ -87,6 +88,7 @@ PlasmaCore.FrameSvgItem {
                 font.family: tangerineFont.name
                 font.pointSize: 2 * theme.defaultFont.pointSize
                 font.italic: true
+                Layout.alignment: Qt.AlignLeft
             }
 
             PlasmaComponents.Label {
@@ -96,8 +98,8 @@ PlasmaCore.FrameSvgItem {
                 font.bold: true
                 opacity: 0.4
 
-                Layout.rightMargin: units.smallSpacing
-                Layout.alignment: Qt.AlignRight | Qt.AlignHCenter
+                Layout.topMargin: 1.4 * units.iconSizes.small
+                Layout.alignment: Qt.AlignRight | Qt.AlignTop
                 horizontalAlignment: Text.AlignRight
                 Layout.fillWidth: true
 
@@ -108,9 +110,6 @@ PlasmaCore.FrameSvgItem {
                 id: pinButton
     
                 Layout.fillWidth: false
-                Layout.fillHeight: false
-                Layout.preferredWidth: width
-                Layout.preferredHeight: height
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
     
                 iconSource: "window-pin"
@@ -120,15 +119,18 @@ PlasmaCore.FrameSvgItem {
                 height: width
     
                 property bool inStartup: true
-                
-                onClicked: {
-                    plasmoid.configuration.configurationSticker = checked
-                    dockConfig.setSticker(checked)
+    
+                onCheckedChanged: {
+                    if (!inStartup) {
+                        plasmoid.configuration.configurationSticker = checked
+                        dockConfig.setSticker(checked)
+                    }
                 }
     
                 Component.onCompleted: {
                     checked = plasmoid.configuration.configurationSticker
                     dockConfig.setSticker(plasmoid.configuration.configurationSticker)
+                    inStartup = false
                 }
             }
         }
@@ -156,12 +158,8 @@ PlasmaCore.FrameSvgItem {
         Rectangle {
             id: pagesBackground
             Layout.fillWidth: true
-            Layout.fillHeight: false
-            Layout.minimumWidth: maxWidth
-            Layout.maximumHeight: height
-            width: maxWidth + units.smallSpacing * 4
-            height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 2
-            
+            height: childrenRect.height
+
             property color bC: theme.backgroundColor
             property color transparentBack: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
 
@@ -171,29 +169,26 @@ PlasmaCore.FrameSvgItem {
             border.color: theme.backgroundColor
 
             PlasmaExtras.ScrollArea {
-                id: scrollArea
-                
                 anchors.fill: parent
-                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
-                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                
+                anchors.margins: 3
+                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
                 PlasmaComponents.TabGroup {
-                    id: tabGroup
-                    
-                    width: currentTab.Layout.maximumWidth
-                    height: currentTab.Layout.maximumHeight
-                    
-                    BehaviorConfig {
-                        id: behaviorPage
-                    }
-                    
-                    AppearanceConfig {
-                        id: appearancePage
-                    }
-                    
-                    TasksConfig {
-                        id: tasksPage
-                    }
+                    width: pagesBackground.width - 6
+                    //FIXME: this creates a binding loop but I havent found any alternative yet
+                    height: currentTab.childrenRect.height
+
+                    privateContents: [
+                        BehaviorConfig {
+                            id: behaviorPage
+                        },
+                        AppearanceConfig {
+                            id: appearancePage
+                        },
+                        TasksConfig {
+                            id: tasksPage
+                        }
+                    ]
                 }
             }
         }

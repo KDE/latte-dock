@@ -25,476 +25,328 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
+import "../controls" as ExtraControls
 
-PlasmaComponents.Page{
-    width: dialog.width - 2*dialog.windowSpace
+PlasmaComponents.Page {
+    Layout.maximumWidth: content.width + units.smallSpacing * 2
+    Layout.maximumHeight: content.height + units.smallSpacing * 2
+    
+    ColumnLayout {
+        id: content
 
-    property int pageHeight: mainColumn.height
+        width: dialog.maxWidth
+        spacing: units.largeSpacing
+        anchors.centerIn: parent
+        
+        //! BEGIN: Location
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
 
-    Column{
-        id: mainColumn
-        spacing: 1.5*theme.defaultFont.pointSize
-        width: parent.width
-
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-
-            Header{
+            Header {
                 text: i18n("Location")
             }
 
-            Flow{
-                width: parent.width
-                spacing: 2
-
-                property bool inStartup: true
-                property int dockLocation: dock.location
-
-                onDockLocationChanged: updateDockLocationVisual();
+            RowLayout {
+                id: locationLayout
+                Layout.fillWidth: true
+                spacing: 1
 
                 property int docksCount: dock.docksCount
 
                 onDocksCountChanged: {
-                    lockReservedEdges();
-                    updateDockLocationVisual();
+                    lockReservedEdges()
                 }
 
-                Component.onCompleted: {
-                    lockReservedEdges();
-                    updateDockLocationVisual();
-                    inStartup = false;
+                ExclusiveGroup {
+                    id: locationGroup
+                    onCurrentChanged: {
+                        if (current.checked) {
+                            dock.location = current.edge
+                            locationLayout.lockReservedEdges()
+                        }
+                    }
                 }
+
+                Component.onCompleted: lockReservedEdges()
 
                 function lockReservedEdges() {
-                    var edges = dock.freeEdges();
+                    var buttons = visibleChildren
+                    var edges = dock.freeEdges()
 
-                    firstLocation.enabled = false;
-                    secondLocation.enabled = false;
-                    thirdLocation.enabled = false;
-                    fourthLocation.enabled = false;
-
-                    for (var i=0; i<edges.length; ++i){
-                        if (edges[i] === PlasmaCore.Types.BottomEdge){
-                            firstLocation.enabled = true;
-                        } else if (edges[i] === PlasmaCore.Types.LeftEdge){
-                            secondLocation.enabled = true;
-                        } else if (edges[i] === PlasmaCore.Types.TopEdge){
-                            thirdLocation.enabled = true;
-                        } else if (edges[i] === PlasmaCore.Types.RightEdge){
-                            fourthLocation.enabled = true;
-                        }
+                    for (var i = 0; i < buttons.length; i++) {
+                        buttons[i].enabled = buttons[i].checked || freeEdge(
+                                    buttons[i].edge, edges)
                     }
                 }
 
-                function updateDockLocationVisual(){
-                    if(dockLocation === PlasmaCore.Types.BottomEdge){
-                        firstLocation.enabled = true;
-                        firstLocation.checked = true;
-                        secondLocation.checked = false;
-                        thirdLocation.checked = false;
-                        fourthLocation.checked = false;
+                function freeEdge(edge, edges) {
+                    for (var i = 0; i < edges.length; i++) {
+                        if (edges[i] === edge)
+                            return true
                     }
-                    else if(dockLocation === PlasmaCore.Types.LeftEdge){
-                        firstLocation.checked = false;
-                        secondLocation.enabled = true;
-                        secondLocation.checked = true;
-                        thirdLocation.checked = false;
-                        fourthLocation.checked = false;
-                    }
-                    else if(dockLocation === PlasmaCore.Types.TopEdge){
-                        firstLocation.checked = false;
-                        secondLocation.checked = false;
-                        thirdLocation.enabled = true;
-                        thirdLocation.checked = true;
-                        fourthLocation.checked = false;
-                    }
-                    else if(dockLocation === PlasmaCore.Types.RightEdge){
-                        firstLocation.checked = false;
-                        secondLocation.checked = false;
-                        thirdLocation.checked = false;
-                        fourthLocation.enabled = true;
-                        fourthLocation.checked = true;
-                    }
+                    return false
                 }
 
-
-                PlasmaComponents.Button{
-                    id: firstLocation
-                    checkable: true
-                    text: i18nc("bottom location","Bottom")
-                    width: (parent.width / 4) - 2
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("bottom location", "Bottom")
                     iconSource: "arrow-down"
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.location = PlasmaCore.Types.BottomEdge
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: secondLocation
+                    checked: dock.location === edge
                     checkable: true
-                    text: i18nc("left location","Left")
-                    width: (parent.width / 4) - 2
+                    exclusiveGroup: locationGroup
+
+                    readonly property int edge: PlasmaCore.Types.BottomEdge
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("left location", "Left")
                     iconSource: "arrow-left"
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.location = PlasmaCore.Types.LeftEdge
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: thirdLocation
+                    checked: dock.location === edge
                     checkable: true
-                    text: i18nc("top location","Top")
-                    width: (parent.width / 4) - 2
+                    exclusiveGroup: locationGroup
+
+                    readonly property int edge: PlasmaCore.Types.LeftEdge
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("top location", "Top")
                     iconSource: "arrow-up"
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.location = PlasmaCore.Types.TopEdge
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-
-                PlasmaComponents.Button{
-                    id: fourthLocation
+                    checked: dock.location === edge
                     checkable: true
-                    text: i18nc("right location","Right")
-                    width: (parent.width/4) - 2
-                    iconSource: "arrow-right"
+                    exclusiveGroup: locationGroup
 
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.location = PlasmaCore.Types.RightEdge
-                        }
-                    }
-                    onClicked: checked=true;
+                    readonly property int edge: PlasmaCore.Types.TopEdge
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("right location", "Right")
+                    iconSource: "arrow-right"
+                    checked: dock.location === edge
+                    checkable: true
+                    exclusiveGroup: locationGroup
+
+                    readonly property int edge: PlasmaCore.Types.RightEdge
                 }
             }
         }
+        //! END: Location
 
+        //! BEGIN: Alignment
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
 
-        /////////// Applets Alignment //////////////////
-
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-
-            Header{
+            Header {
                 text: i18n("Alignment")
             }
 
-            //user set Panel Positions
-            // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
-            Flow{
-                width: parent.width
-                spacing: 2
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 1
 
-                property bool inStartup: true
                 property int panelPosition: plasmoid.configuration.panelPosition
 
-
-                function updatePanelPositionVisual(){
-                    if((panelPosition == Latte.Dock.Left)||(panelPosition == Latte.Dock.Top)){
-                        firstPosition.checked = true;
-                        centerPosition.checked = false;
-                        lastPosition.checked = false;
-                        splitTwoPosition.checked = false;
-                        dock.removeInternalViewSplitter();
-                    }
-                    else if(panelPosition == Latte.Dock.Center){
-                        firstPosition.checked = false;
-                        centerPosition.checked = true;
-                        lastPosition.checked = false;
-                        splitTwoPosition.checked = false;
-                        dock.removeInternalViewSplitter();
-                    }
-                    else if((panelPosition == Latte.Dock.Right)||(panelPosition == Latte.Dock.Bottom)){
-                        firstPosition.checked = false;
-                        centerPosition.checked = false;
-                        lastPosition.checked = true;
-                        splitTwoPosition.checked = false;
-                        dock.removeInternalViewSplitter();
-                    }
-                    else if (panelPosition == Latte.Dock.Justify){
-                        firstPosition.checked = false;
-                        centerPosition.checked = false;
-                        lastPosition.checked = false;
-                        splitTwoPosition.checked = true;
-                        //add the splitter visual
-                        dock.addInternalViewSplitter();
-                    }
+                onPanelPositionChanged: {
+                    if (panelPosition === Latte.Dock.Justify)
+                        dock.addInternalViewSplitter()
+                    else
+                        dock.removeInternalViewSplitter()
                 }
-
-                onPanelPositionChanged: updatePanelPositionVisual();
 
                 Component.onCompleted: {
-                    updatePanelPositionVisual();
-                    inStartup = false;
+                    if (panelPosition === Latte.Dock.Justify)
+                        dock.addInternalViewSplitter()
+                    else
+                        dock.removeInternalViewSplitter()
                 }
 
-                PlasmaComponents.Button{
-                    id: firstPosition
-                    checkable: true
-                    text: panelIsVertical ? i18nc("top alignment","Top") : i18nc("left alignment","Left")
-                    width: (parent.width / 4) - 2
-                    iconSource: panelIsVertical ?  "format-align-vertical-top" : "format-justify-left"
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            if(panelIsVertical)
-                                plasmoid.configuration.panelPosition = Latte.Dock.Top
-                            else
-                                plasmoid.configuration.panelPosition = Latte.Dock.Left
-                        }
+                ExclusiveGroup {
+                    id: alignmentGroup
+                    onCurrentChanged: {
+                        if (current.checked)
+                            plasmoid.configuration.panelPosition = current.position
                     }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: centerPosition
-                    checkable: true
-                    text: i18nc("center alignment","Center")
-                    width: (parent.width / 4) - 2
-                    iconSource: panelIsVertical ?  "format-align-vertical-center" : "format-justify-center"
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = Latte.Dock.Center
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: lastPosition
-                    checkable: true
-                    text: panelIsVertical ? i18nc("bottom alignment","Bottom") : i18nc("right alignment","Right")
-                    width: (parent.width / 4) - 2
-                    iconSource: panelIsVertical ?  "format-align-vertical-bottom" : "format-justify-right"
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            if(panelIsVertical)
-                                plasmoid.configuration.panelPosition = Latte.Dock.Bottom
-                            else
-                                plasmoid.configuration.panelPosition = Latte.Dock.Right
-                        }
-                    }
-                    onClicked: checked=true;
                 }
 
-                PlasmaComponents.Button{
-                    id: splitTwoPosition
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: panelIsVertical ? i18nc("top alignment", "Top") : i18nc("left alignment", "Left")
+                    iconSource: panelIsVertical ? "format-align-vertical-top" : "format-justify-left"
+                    checked: parent.panelPosition === position
                     checkable: true
-                    text: i18nc("justify alignment","Justify")
-                    width: (parent.width / 4)
+                    exclusiveGroup: alignmentGroup
+
+                    property int position: panelIsVertical ? Latte.Dock.Top : Latte.Dock.Left
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("center alignment", "Center")
+                    iconSource: panelIsVertical ? "format-align-vertical-center" : "format-justify-center"
+                    checked: parent.panelPosition === position
+                    checkable: true
+                    exclusiveGroup: alignmentGroup
+
+                    property int position: Latte.Dock.Center
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: panelIsVertical ? i18nc("bottom alignment", "Bottom") : i18nc("right alignment", "Right")
+                    iconSource: panelIsVertical ? "format-align-vertical-bottom" : "format-justify-right"
+                    checked: parent.panelPosition === position
+                    checkable: true
+                    exclusiveGroup: alignmentGroup
+
+                    property int position: panelIsVertical ? Latte.Dock.Bottom : Latte.Dock.Right
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("justify alignment", "Justify")
                     iconSource: "format-justify-fill"
+                    checked: parent.panelPosition === position
+                    checkable: true
+                    exclusiveGroup: alignmentGroup
 
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            plasmoid.configuration.panelPosition = Latte.Dock.Justify;
-                        }
-                    }
-                    onClicked: checked=true;
+                    property int position: Latte.Dock.Justify
                 }
             }
         }
+        //! END: Alignment
 
-        //AlwaysVisible = 0,
-        //AutoHide,
-        //DodgeActive,
-        //DodgeMaximized,
-        //DodgeAllWindows
-        /**********  Panel Visibility ****************/
+        //! BEGIN: Visibility
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
 
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-            Header{
+            Header {
                 text: i18n("Visibility")
             }
 
-            //user set Panel Visibility
-            // 0-AlwaysVisible, 1-AutoHide, 2-DodgeActive, 3-DodgeMaximized, 4-DodgeAllWindows
-            Flow{
+            GridLayout {
                 width: parent.width
-                spacing: 2
+                rowSpacing: 1
+                columnSpacing: 1
+
+                columns: 3
 
                 property bool inStartup: true
                 property int mode: dock.visibility.mode
 
-
-                function updateModeVisual(){
-                    if (mode === Latte.Dock.AlwaysVisible)
-                        firstState.checked = true;
-                    else
-                        firstState.checked = false;
-
-                    if (mode === Latte.Dock.AutoHide)
-                        secondState.checked = true;
-                    else
-                        secondState.checked = false;
-
-                    if (mode === Latte.Dock.DodgeActive)
-                        thirdState.checked = true;
-                    else
-                        thirdState.checked = false;
-
-                    if (mode === Latte.Dock.DodgeMaximized)
-                        fourthState.checked = true;
-                    else
-                        fourthState.checked = false;
-
-                    if (mode === Latte.Dock.DodgeAllWindows)
-                        fifthState.checked = true;
-                    else
-                        fifthState.checked = false;
+                ExclusiveGroup {
+                    id: visibilityGroup
+                    onCurrentChanged: {
+                        if (current.checked)
+                            dock.visibility.mode = current.mode
+                    }
                 }
 
-                onModeChanged: updateModeVisual();
-
-                Component.onCompleted: {
-                    updateModeVisual();
-                    inStartup = false;
-                }
-
-                PlasmaComponents.Button{
-                    id: firstState
-                    checkable: true
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("Always Visible")
-                    width: (parent.width / 2) - 1
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.AlwaysVisible
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: secondState
+                    checked: dock.visibility.mode === mode
                     checkable: true
+                    exclusiveGroup: visibilityGroup
+
+                    property int mode: Latte.Dock.AlwaysVisible
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("Auto Hide")
-                    width: (parent.width / 2) - 1
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.AutoHide
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-                PlasmaComponents.Button{
-                    id: thirdState
+                    checked: dock.visibility.mode === mode
                     checkable: true
+                    exclusiveGroup: visibilityGroup
+
+                    property int mode: Latte.Dock.AutoHide
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("Dodge Active")
-                    width: (parent.width / 2) - 1
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.DodgeActive
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-
-                PlasmaComponents.Button{
-                    id: fourthState
+                    checked: dock.visibility.mode === mode
                     checkable: true
+                    exclusiveGroup: visibilityGroup
+
+                    property int mode: Latte.Dock.DodgeActive
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     text: i18n("Dodge Maximized")
-                    width: (parent.width/2) - 1
-
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.DodgeMaximized
-                        }
-                    }
-                    onClicked: checked=true;
-                }
-
-                PlasmaComponents.Button{
-                    id: fifthState
+                    checked: dock.visibility.mode === mode
                     checkable: true
-                    text: i18n("Dodge All Windows")
-                    width: (parent.width/2) - 1
+                    exclusiveGroup: visibilityGroup
 
-                    onCheckedChanged: {
-                        if(checked && !parent.inStartup){
-                            dock.visibility.mode = Latte.Dock.DodgeAllWindows
-                        }
-                    }
-                    onClicked: checked=true;
+                    property int mode: Latte.Dock.DodgeMaximized
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Dodge All Windows")
+                    checked: dock.visibility.mode === mode
+                    checkable: true
+                    exclusiveGroup: visibilityGroup
+
+                    property int mode: Latte.Dock.DodgeAllWindows
                 }
             }
         }
+        //! END: Visibility
 
-        Column{
-            width:parent.width
-            spacing: 0.8*theme.defaultFont.pointSize
-            Header{
+        //! BEGIN: Delay
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+
+            Header {
                 text: i18n("Delay")
             }
 
-            GridLayout{
-                columns: 2
-                columnSpacing: 0.3*theme.defaultFont.pointSize
-                width: parent.width
-
-                Row{
-                    Layout.alignment: Qt.AlignHCenter
-                    PlasmaComponents.Label{
-                        text: i18n("Hide:")
-                    }
-
-                    LatteTextField{
-                        width: 9.5 * theme.defaultFont.pixelSize
-                        property bool inStartup: true
-
-                        Component.onCompleted: {
-                            value = dock.visibility.timerHide
-                            inStartup = false;
-                        }
-
-                        onValueChanged: {
-                            if(!inStartup){
-                                dock.visibility.timerHide = value;
-                            }
-                        }
-                    }
+            RowLayout {
+                spacing: units.smallSpacing
+                PlasmaComponents.Label {
+                    Layout.fillWidth: false
+                    horizontalAlignment: Text.AlignRight
+                    text: i18n("Show:")
                 }
+                ExtraControls.SpinBox {
+                    Layout.fillWidth: false
+                    Layout.maximumWidth: implicitWidth
+                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                    maximumValue: 3000
+                    minimumValue: 0
+                    value: dock.visibility.timerShow
+                    stepSize: 100
 
-                Row{
-                    Layout.alignment: Qt.AlignHCenter
-                    PlasmaComponents.Label{
-                        text: i18n("Show:")
+                    onValueChanged: {
+                        dock.visibility.timerShow = value
                     }
 
-                    LatteTextField{
-                        width: 9.5 * theme.defaultFont.pixelSize
-                        property bool inStartup: true
+                    suffix: i18n("ms.")
+                }
+                PlasmaComponents.Label {
+                    Layout.fillWidth: false
+                    Layout.leftMargin: units.largeSpacing
+                    horizontalAlignment: Text.AlignRight
+                    text: i18n("Hide:")
+                }
+                ExtraControls.SpinBox {
+                    Layout.fillWidth: false
+                    Layout.maximumWidth: implicitWidth
+                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                    maximumValue: 3000
+                    minimumValue: 0
+                    value: dock.visibility.timerHide
+                    stepSize: 100
 
-                        Component.onCompleted: {
-                            value = dock.visibility.timerShow
-                            inStartup = false;
-                        }
-
-                        onValueChanged: {
-                            if(!inStartup){
-                                dock.visibility.timerShow = value;
-                            }
-                        }
+                    onValueChanged: {
+                        dock.visibility.timerHide = value
                     }
+
+                    suffix: i18n("ms.")
                 }
             }
         }
+        //! END: Delay
     }
 }
