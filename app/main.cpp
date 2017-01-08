@@ -51,6 +51,7 @@ int main(int argc, char **argv)
     app.setOrganizationDomain(QStringLiteral("latte-dock"));
     KLocalizedString::setApplicationDomain("latte-dock");
     app.setApplicationName(QStringLiteral("Latte Dock"));
+    app.setWindowIcon(QIcon::fromTheme(QStringLiteral("latte-dock")));
     
     //! set pattern for debug messages
     //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
