@@ -13,6 +13,7 @@
 #include <type_traits>
 #include <numeric>
 #include <memory>
+#include <cmath>
 
 #if __GLIBCXX__ <= 20150623
 namespace std {
