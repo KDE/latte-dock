@@ -37,10 +37,11 @@ PlasmaCore.FrameSvgItem {
     id: dialog
     imagePath: "dialogs/background"
 
-    property int maxWidth: 420 //Math.max(420, behaviorPage.width, appearancePage.width, tasksPage.width)
-    property int maxHeight: 400
+    property int maxWidth: 420 
     width: content.width + units.smallSpacing * 2
     height: content.height + units.smallSpacing * 2
+    Layout.minimumWidth: width
+    Layout.minimumHeight: height
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
