@@ -71,15 +71,12 @@ PlasmaComponents.Page {
                     }
                 }
 
-                Component.onCompleted: lockReservedEdges()
-
                 function lockReservedEdges() {
                     var buttons = visibleChildren
                     var edges = dock.freeEdges()
 
                     for (var i = 0; i < buttons.length; i++) {
-                        buttons[i].enabled = buttons[i].checked || freeEdge(
-                                    buttons[i].edge, edges)
+                        buttons[i].enabled = buttons[i].checked || freeEdge(buttons[i].edge, edges)
                     }
                 }
 
@@ -97,6 +94,7 @@ PlasmaComponents.Page {
                     iconSource: "arrow-down"
                     checked: dock.location === edge
                     checkable: true
+                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.BottomEdge
@@ -107,6 +105,7 @@ PlasmaComponents.Page {
                     iconSource: "arrow-left"
                     checked: dock.location === edge
                     checkable: true
+                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.LeftEdge
@@ -117,6 +116,7 @@ PlasmaComponents.Page {
                     iconSource: "arrow-up"
                     checked: dock.location === edge
                     checkable: true
+                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.TopEdge
@@ -127,6 +127,7 @@ PlasmaComponents.Page {
                     iconSource: "arrow-right"
                     checked: dock.location === edge
                     checkable: true
+                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
                     exclusiveGroup: locationGroup
 
                     readonly property int edge: PlasmaCore.Types.RightEdge
