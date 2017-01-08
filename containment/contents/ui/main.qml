@@ -69,6 +69,7 @@ DragDrop.DropArea {
     property int iconSize: (automaticIconSizeBasedSize > 0 && !root.editMode) ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
                                                                                 plasmoid.configuration.iconSize
     property int iconStep: 8
+    property int latteAppletPos: -1
     property int panelEdgeSpacing: iconSize / 3
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
