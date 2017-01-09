@@ -214,6 +214,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showBackground
+                Layout.leftMargin: units.smallSpacing
                 text: i18n("Show Panel Background")
                 checked: plasmoid.configuration.useThemePanel
 
