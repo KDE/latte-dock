@@ -186,6 +186,8 @@ PlasmaCore.FrameSvgItem {
                 verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
                 horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
                 
+                flickableItem.flickableDirection: Flickable.VerticalFlick
+                
                 PlasmaComponents.TabGroup {
                     id: tabGroup
                     
