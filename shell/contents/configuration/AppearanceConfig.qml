@@ -30,16 +30,16 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte 0.1 as Latte
 
 PlasmaComponents.Page {
-    Layout.maximumWidth: content.width + units.smallSpacing * 2
+    Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
-    
+
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth - units.smallSpacing * 5
+        width: dialog.maxWidth - Layout.leftMargin * 2
         spacing: units.largeSpacing
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.centerIn: parent
+        Layout.leftMargin: units.smallSpacing * 2
 
         //! BEGIN: Applet Size
         ColumnLayout {
@@ -52,6 +52,8 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Slider {
@@ -74,15 +76,15 @@ PlasmaComponents.Page {
                         updateIconSize()
                     }
                     
-                    Component.onCompleted: { 
-                        valueChanged.connect(updateIconSize) 
+                    Component.onCompleted: {
+                        valueChanged.connect(updateIconSize)
                     }
                 }
 
                 PlasmaComponents.Label {
                     text: appletsSizeSlider.value + " px."
                     horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 5
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
         }
@@ -100,6 +102,8 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Slider {
@@ -126,7 +130,7 @@ PlasmaComponents.Page {
                     }
                     
                     Component.onCompleted: {
-                        valueChanged.connect(updateZoomLevel)       
+                        valueChanged.connect(updateZoomLevel)
                     }
                 }
 
@@ -134,8 +138,7 @@ PlasmaComponents.Page {
                     text: Number(
                               (zoomSlider.value * 100) - 100).toFixed(0) + "%"
                     horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(
-                                             theme.defaultFont).width * 5
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
         }
@@ -152,6 +155,8 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
 
                 property int duration: plasmoid.configuration.durationTime
@@ -215,7 +220,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showBackground
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show Panel Background")
                 checked: plasmoid.configuration.useThemePanel
 
@@ -226,6 +231,8 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
 
                 PlasmaComponents.Slider {
                     id: panelSizeSlider
@@ -255,7 +262,7 @@ PlasmaComponents.Page {
                     enabled: showBackground.checked
                     text: panelSizeSlider.value + " px."
                     horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 5
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
         }
@@ -270,35 +277,44 @@ PlasmaComponents.Page {
                 text: i18n("Shadows")
             }
 
-            PlasmaComponents.ButtonRow {
+            RowLayout{
                 Layout.fillWidth: true
-                spacing: units.smallSpacing
-                exclusive: true
 
-                property int shadows: plasmoid.configuration.shadows
-
-                onCheckedButtonChanged: {
-                    if (checkedButton.checked)
-                        plasmoid.configuration.shadows = checkedButton.shadow
+                Item{
+                    width: units.smallSpacing / 2
                 }
 
-                PlasmaComponents.RadioButton {
-                    text: i18n("None")
-                    checked: parent.shadows === shadow
+                PlasmaComponents.ButtonRow {
+                    Layout.fillWidth: true
 
-                    readonly property int shadow: 0
-                }
-                PlasmaComponents.RadioButton {
-                    text: i18n("Only for locked applets")
-                    checked: parent.shadows === shadow
+                    spacing: units.smallSpacing
+                    exclusive: true
 
-                    readonly property int shadow: 1
-                }
-                PlasmaComponents.RadioButton {
-                    text: i18n("All applets")
-                    checked: parent.shadows === shadow
+                    property int shadows: plasmoid.configuration.shadows
 
-                    readonly property int shadow: 2
+                    onCheckedButtonChanged: {
+                        if (checkedButton.checked)
+                            plasmoid.configuration.shadows = checkedButton.shadow
+                    }
+
+                    PlasmaComponents.RadioButton {
+                        text: i18n("None")
+                        checked: parent.shadows === shadow
+
+                        readonly property int shadow: 0
+                    }
+                    PlasmaComponents.RadioButton {
+                        text: i18n("Only for locked applets")
+                        checked: parent.shadows === shadow
+
+                        readonly property int shadow: 1
+                    }
+                    PlasmaComponents.RadioButton {
+                        text: i18n("All applets")
+                        checked: parent.shadows === shadow
+
+                        readonly property int shadow: 2
+                    }
                 }
             }
         }

@@ -31,16 +31,16 @@ import org.kde.latte 0.1 as Latte
 import "../controls" as ExtraControls
 
 PlasmaComponents.Page {
-    Layout.maximumWidth: content.width + units.smallSpacing * 2
+    Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
-    
+
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth - units.smallSpacing * 5
+        width: dialog.maxWidth - Layout.leftMargin * 2
         spacing: units.largeSpacing
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.centerIn: parent
+        Layout.leftMargin: units.smallSpacing * 2
 
         //! BEGIN: Location
         ColumnLayout {
@@ -54,6 +54,8 @@ PlasmaComponents.Page {
             RowLayout {
                 id: locationLayout
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 1
 
                 property int docksCount: dock.docksCount
@@ -148,6 +150,8 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 1
 
                 property int panelPosition: plasmoid.configuration.panelPosition
@@ -232,6 +236,8 @@ PlasmaComponents.Page {
                 width: parent.width
                 rowSpacing: 1
                 columnSpacing: 1
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
 
                 columns: 2
 
@@ -308,6 +314,8 @@ PlasmaComponents.Page {
             RowLayout {
 
                 Layout.fillWidth: false
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 Layout.alignment: Qt.AlignHCenter
                 
                 spacing: units.smallSpacing
