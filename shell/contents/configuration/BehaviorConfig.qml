@@ -342,21 +342,6 @@ PlasmaComponents.Page {
                     }
                 }
 
-                /*ExtraControls.SpinBox {
-                    Layout.fillWidth: false
-                    Layout.maximumWidth: implicitWidth
-                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-                    maximumValue: 3000
-                    minimumValue: 0
-                    value: dock.visibility.timerShow
-                    stepSize: 100
-
-                    onValueChanged: {
-                        dock.visibility.timerShow = value
-                    }
-
-                    suffix: i18n("ms.")
-                }*/
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
                     Layout.leftMargin: units.largeSpacing
@@ -364,7 +349,6 @@ PlasmaComponents.Page {
                     text: i18n("Hide:")
                 }
                 LatteTextField{
-
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
                     property bool inStartup: true
@@ -380,21 +364,6 @@ PlasmaComponents.Page {
                         }
                     }
                 }
-                /*ExtraControls.SpinBox {
-                    Layout.fillWidth: false
-                    Layout.maximumWidth: implicitWidth
-                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-                    maximumValue: 3000
-                    minimumValue: 0
-                    value: dock.visibility.timerHide
-                    stepSize: 100
-
-                    onValueChanged: {
-                        dock.visibility.timerHide = value
-                    }
-
-                    suffix: i18n("ms.")
-                }*/
             }
         }
         //! END: Delay

@@ -30,11 +30,11 @@ PlasmaComponents.TextField {
         bottom: minValue
         top: maxValue
     }
-    text: value === 0 ? "" : value
+    text: value === 0 ? "" : value < 1000 ? " " + value : value
     font.italic: true
     placeholderText: i18n("<none>")
 
-    width: internalContent.width + theme.mSize(theme.defaultFont).width * 4
+    width: internalContent.width + theme.mSize(theme.defaultFont).width * 3.5
 
     property int step: 100
     property int value: 0
@@ -73,7 +73,7 @@ PlasmaComponents.TextField {
             Layout.fillHeight: true
             Layout.preferredWidth: height
             Layout.maximumWidth: height
-            Layout.leftMargin: theme.mSize(theme.defaultFont).width
+            Layout.leftMargin: 0.7 * theme.mSize(theme.defaultFont).width
             text: "-"
             onClicked: value = confirmValue(value - step)
         }
