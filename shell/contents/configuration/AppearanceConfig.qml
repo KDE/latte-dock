@@ -36,9 +36,10 @@ PlasmaComponents.Page {
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth
+        width: dialog.maxWidth - units.smallSpacing * 5
         spacing: units.largeSpacing
-        anchors.centerIn: parent
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
 
         //! BEGIN: Applet Size
         ColumnLayout {

@@ -22,6 +22,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.2
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -37,8 +38,8 @@ PlasmaCore.FrameSvgItem {
     id: dialog
     imagePath: "dialogs/background"
 
-    property int maxWidth: 33 * theme.defaultFont.pixelSize
-    width: content.width + units.smallSpacing * 2
+    property int maxWidth: 34 * theme.defaultFont.pixelSize
+    width: maxWidth + units.smallSpacing * 2
     height: content.height + units.smallSpacing * 2
     Layout.minimumWidth: width
     Layout.minimumHeight: height
@@ -51,6 +52,37 @@ PlasmaCore.FrameSvgItem {
         source: "../fonts/tangerine.ttf"
     }
 
+    PlasmaComponents.ToolButton {
+        id: pinButton
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+        Layout.fillWidth: false
+        Layout.fillHeight: false
+        Layout.preferredWidth: width
+        Layout.preferredHeight: height
+        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
+        iconSource: "window-pin"
+        checkable: true
+
+        width: Math.round(units.gridUnit * 1.25)
+        height: width
+
+        property bool inStartup: true
+
+        onClicked: {
+            plasmoid.configuration.configurationSticker = checked
+            dockConfig.setSticker(checked)
+        }
+
+        Component.onCompleted: {
+            checked = plasmoid.configuration.configurationSticker
+            dockConfig.setSticker(plasmoid.configuration.configurationSticker)
+        }
+    }
+
     ColumnLayout {
         id: content
 
@@ -59,8 +91,10 @@ PlasmaCore.FrameSvgItem {
         Layout.preferredWidth: width
         Layout.preferredHeight: height
         height: header.height + tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
+        width: dialog.maxWidth
 
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
         spacing: units.smallSpacing
 
         RowLayout {
@@ -98,39 +132,11 @@ PlasmaCore.FrameSvgItem {
                 opacity: 0.4
 
                 Layout.rightMargin: units.smallSpacing
-                Layout.alignment: Qt.AlignRight | Qt.AlignHCenter
+                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                 horizontalAlignment: Text.AlignRight
                 Layout.fillWidth: true
 
                 text: i18n("ver:") + "@VERSION@"
-            }
-            
-            PlasmaComponents.ToolButton {
-                id: pinButton
-    
-                Layout.fillWidth: false
-                Layout.fillHeight: false
-                Layout.preferredWidth: width
-                Layout.preferredHeight: height
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-    
-                iconSource: "window-pin"
-                checkable: true
-    
-                width: Math.round(units.gridUnit * 1.25)
-                height: width
-    
-                property bool inStartup: true
-                
-                onClicked: {
-                    plasmoid.configuration.configurationSticker = checked
-                    dockConfig.setSticker(checked)
-                }
-    
-                Component.onCompleted: {
-                    checked = plasmoid.configuration.configurationSticker
-                    dockConfig.setSticker(plasmoid.configuration.configurationSticker)
-                }
             }
         }
 
@@ -158,10 +164,12 @@ PlasmaCore.FrameSvgItem {
             id: pagesBackground
             Layout.fillWidth: true
             Layout.fillHeight: false
-            Layout.minimumWidth: maxWidth
+            Layout.minimumWidth: maxWidth - 2*units.smallSpacing
+            Layout.minimumHeight:  height
             Layout.maximumHeight: height
-            width: maxWidth + units.smallSpacing * 4
-            height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 2
+
+            width: maxWidth - units.smallSpacing
+            height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 4
             
             property color bC: theme.backgroundColor
             property color transparentBack: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
@@ -203,7 +211,7 @@ PlasmaCore.FrameSvgItem {
             id: actionButtons
 
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
             spacing: units.largeSpacing
             
             property int docksCount: dock.docksCount

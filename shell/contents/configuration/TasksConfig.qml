@@ -35,9 +35,10 @@ PlasmaComponents.Page {
     ColumnLayout {
         id: content
         
-        width: dialog.maxWidth
+        width: dialog.maxWidth - units.smallSpacing * 5
         spacing: units.largeSpacing
-        anchors.centerIn: parent
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
 
         //! BEGIN: Tasks Appearance
         ColumnLayout {
@@ -49,7 +50,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showGlow
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Show glow around windows points")
                 checked: plasmoid.configuration.showGlow
 
@@ -60,7 +61,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: threeColorsWindows
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Different color for minimized windows")
                 checked: plasmoid.configuration.threeColorsWindows
 
@@ -71,7 +72,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: dotsOnActive
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Dots on active window")
                 checked: plasmoid.configuration.dotsOnActive
 
@@ -82,7 +83,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: reverseLinesPosition
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Reverse position for lines and dots")
                 checked: plasmoid.configuration.reverseLinesPosition
 
@@ -103,7 +104,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showPreviewsChk
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Preview windows on hovering")
                 checked: plasmoid.configuration.showToolTips
 
@@ -114,7 +115,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: highlightWindowsChk
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Highlight windows on hovering")
                 checked: plasmoid.configuration.highlightWindows
 
@@ -125,7 +126,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: windowActionsChk
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Show window actions in the context menu")
                 checked: plasmoid.configuration.showWindowActions
 
@@ -136,7 +137,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: smartLaunchersChk
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Show progress information in task buttons")
                 checked: plasmoid.configuration.smartLaunchersEnabled
 
@@ -157,7 +158,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showOnlyCurrentScreen
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Show only tasks from the current screen")
                 checked: plasmoid.configuration.showOnlyCurrentScreen 
                     
@@ -168,7 +169,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showOnlyCurrentDesktop
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Show only tasks from the current desktop")
                 checked: plasmoid.configuration.showOnlyCurrentDesktop
                 
@@ -179,7 +180,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 id: showOnlyCurrentActivity
-                Layout.leftMargin: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 4
                 text: i18n("Show only tasks from the current activity")
                 checked: plasmoid.configuration.showOnlyCurrentActivity
                 
