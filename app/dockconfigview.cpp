@@ -58,6 +58,10 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         syncSlideEffect();
     });
     
+    connect(dockView, &QQuickView::widthChanged, this, &DockConfigView::syncGeometry);
+    connect(dockView, &QQuickView::heightChanged, this, &DockConfigView::syncGeometry);
+    connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
+    
     connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
 }
 
@@ -100,10 +104,10 @@ void DockConfigView::syncGeometry()
             resize(size);
             
             if (location == Plasma::Types::TopEdge) {
-                setPosition(sGeometry.center().x() - size.width() / 2 - 1
-                            , m_dockView->currentThickness());
+                setPosition(sGeometry.center().x() - size.width() / 2
+                            , m_dockView->currentThickness() + 1);
             } else if (location == Plasma::Types::BottomEdge) {
-                setPosition(sGeometry.center().x() - size.width() / 2 - 1
+                setPosition(sGeometry.center().x() - size.width() / 2
                             , sGeometry.height() - m_dockView->currentThickness() - size.height() - 1);
             }
         }
@@ -117,10 +121,10 @@ void DockConfigView::syncGeometry()
             
             if (location == Plasma::Types::LeftEdge) {
                 setPosition(m_dockView->currentThickness()
-                            , sGeometry.center().y() - size.height() / 2);
+                            , sGeometry.center().y() - size.height() / 2 + 1);
             } else if (location == Plasma::Types::RightEdge) {
                 setPosition(sGeometry.width() - m_dockView->currentThickness() - size.width() - 1
-                            , sGeometry.center().y() - size.height() / 2 - 1);
+                            , sGeometry.center().y() - size.height() / 2);
             }
         }
         break;
@@ -180,6 +184,8 @@ void DockConfigView::showEvent(QShowEvent *ev)
         
     m_screenSyncTimer.start();
     m_deleterTimer.stop();
+    
+    QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
     
     ConfigView::showEvent(ev);
 }
