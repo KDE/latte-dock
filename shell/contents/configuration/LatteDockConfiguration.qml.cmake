@@ -234,7 +234,8 @@ PlasmaCore.FrameSvgItem {
 
                 text: i18n("Remove")
                 iconSource: "edit-delete"
-                visible: dock.docksCount > 1
+                opacity: enabled ? 1 : 0
+                enabled: dock.docksCount > 1
 
                 onClicked: dock.removeDock()
             }
