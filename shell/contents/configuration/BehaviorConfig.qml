@@ -232,7 +232,7 @@ PlasmaComponents.Page {
                 rowSpacing: 1
                 columnSpacing: 1
 
-                columns: 3
+                columns: 2
 
                 property bool inStartup: true
                 property int mode: dock.visibility.mode
