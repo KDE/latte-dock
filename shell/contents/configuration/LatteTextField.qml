@@ -1,4 +1,3 @@
-
 /*
 *  Copyright 2016  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
@@ -18,6 +17,7 @@
 *  You should have received a copy of the GNU General Public License
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
@@ -26,33 +26,38 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 PlasmaComponents.TextField {
     id: textField
+
     validator: IntValidator {
         bottom: minValue
         top: maxValue
     }
-    text: value === 0 ? "" : value < 1000 ? " " + value : value
+
+    onTextChanged: {
+        if (text.trim() === minValue.toString())
+            text = ""
+    }
+
     font.italic: true
-    placeholderText: i18n("<none>")
+    inputMethodHints: Qt.ImhDigitsOnly
+    placeholderText: i18n("none")
 
     width: internalContent.width + theme.mSize(theme.defaultFont).width * 3.5
 
+    readonly property int value: text === "" ? minValue : parseInt(text)
     property int step: 100
-    property int value: 0
-
     property int minValue: 0
     property int maxValue: 3000
 
-    function confirmValue(val) {
-        var fixedVal = Math.min(maxValue, val)
-
-        if (fixedVal < minValue) {
-            return minValue
-        } else {
-            return fixedVal
-        }
+    function increment() {
+        var val = text === "" ? minValue : parseInt(text)
+        text = Math.min(val + step, maxValue).toString()
     }
 
-    onTextChanged: text !== "" ? value = parseInt(text) : value = 0
+    function decrement() {
+        var val = text === "" ? minValue : parseInt(text)
+        val = Math.max(val - step, minValue)
+        text = val === minValue ? "" : val.toString()
+    }
 
     RowLayout {
         id: internalContent
@@ -67,22 +72,47 @@ PlasmaComponents.TextField {
             color: textField.textColor
             text: i18n("ms.")
             font.italic: true
-            opacity: (value === 0) ? 0 : 0.6
+            opacity: value === 0 ? 0 : 0.6
         }
         PlasmaComponents.Button {
+            id: downButton
+
             Layout.fillHeight: true
             Layout.preferredWidth: height
             Layout.maximumWidth: height
             Layout.leftMargin: 0.7 * theme.mSize(theme.defaultFont).width
             text: "-"
-            onClicked: value = confirmValue(value - step)
+            onClicked: decrement()
         }
         PlasmaComponents.Button {
+            id: upButton
+
             Layout.fillHeight: true
             Layout.preferredWidth: height
             Layout.maximumWidth: height
             text: "+"
-            onClicked: value = confirmValue(value + step)
+            onClicked: increment()
+        }
+    }
+
+    Timer {
+        id: holdPressed
+        running: upButton.pressed || downButton.pressed
+        interval: 200
+        repeat: true
+
+        onRunningChanged: {
+            if (!running)
+                interval = 200
+        }
+
+        onTriggered: {
+            if (interval === 200)
+                interval = 150
+            else if (upButton.pressed)
+                increment()
+            else
+                decrement()
         }
     }
 
@@ -94,9 +124,9 @@ PlasmaComponents.TextField {
             var angle = wheel.angleDelta.y / 8
 
             if (angle > 0) {
-                value = confirmValue(value + step)
+                increment()
             } else if (angle < 0) {
-                value = confirmValue(value - step)
+                decrement()
             }
         }
     }

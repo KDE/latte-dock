@@ -329,6 +329,8 @@ PlasmaComponents.Page {
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
                     property bool inStartup: true
+                    
+                    text: dock.visibility.timerShow
 
                     Component.onCompleted: {
                         value = dock.visibility.timerShow
@@ -336,9 +338,7 @@ PlasmaComponents.Page {
                     }
 
                     onValueChanged: {
-                        if(!inStartup){
-                            dock.visibility.timerShow = value;
-                        }
+                        dock.visibility.timerShow = value
                     }
                 }
 
@@ -352,16 +352,11 @@ PlasmaComponents.Page {
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
                     property bool inStartup: true
-
-                    Component.onCompleted: {
-                        value = dock.visibility.timerHide
-                        inStartup = false;
-                    }
+                    
+                    text: dock.visibility.timerHide
 
                     onValueChanged: {
-                        if(!inStartup){
-                            dock.visibility.timerHide = value;
-                        }
+                        dock.visibility.timerHide = value
                     }
                 }
             }
