@@ -24,19 +24,20 @@ import QtQuick.Controls 1.4
 
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-PlasmaComponents.TextField{
+PlasmaComponents.TextField {
     id: textField
     validator: IntValidator {bottom: minValue; top: maxValue;}
     text: value === 0 ? "" : value
     font.italic: true
     placeholderText: i18n("<none>")
+    
+    width: internalContent.width + theme.mSize(theme.defaultFont).width * 4
 
     property int step: 100
     property int value: 0
 
     property int minValue: 0
     property int maxValue: 3000
-
 
     function confirmValue(val){
         var fixedVal = Math.min(maxValue, val);
@@ -50,31 +51,34 @@ PlasmaComponents.TextField{
 
     onTextChanged: text !== "" ? value = parseInt(text) : value = 0;
 
-
-    Row{
-        // width: 4 * theme.defaultFont.pixelSize
+    RowLayout {
+        id: internalContent
+        
+        spacing: 0
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.rightMargin: 2
-        anchors.verticalCenter: parent.verticalCenter
-        PlasmaComponents.Label{
+        anchors.rightMargin: 0
+        
+        PlasmaComponents.Label {
+            Layout.alignment: Qt.AlignVCenter
             color: textField.textColor
             text: i18n("ms.")
             font.italic: true
             opacity: (value === 0) ? 0 : 0.6
-        }
-        PlasmaComponents.Label{
-            text: "  "
-            font.italic: true
-        }
-        PlasmaComponents.Button{
-            width: 2*theme.defaultFont.pixelSize - 4
-            height: width
+        }        
+        PlasmaComponents.Button {
+            Layout.fillHeight: true
+            Layout.preferredWidth: height
+            Layout.maximumWidth: height
+            Layout.leftMargin: theme.mSize(theme.defaultFont).width
             text:"-"
             onClicked: value = confirmValue(value - step);
         }
-        PlasmaComponents.Button{
-            width: 2*theme.defaultFont.pixelSize - 4
-            height: width
+        PlasmaComponents.Button {
+            Layout.fillHeight: true
+            Layout.preferredWidth: height
+            Layout.maximumWidth: height
             text:"+"
             onClicked: value = confirmValue(value + step);
         }

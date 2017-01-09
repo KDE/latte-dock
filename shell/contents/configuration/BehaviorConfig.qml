@@ -325,8 +325,8 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Show:")
                 }
-                LatteTextField{
-                    Layout.preferredWidth: 9.5 * theme.defaultFont.pixelSize
+                LatteTextField {
+                    Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
                     property bool inStartup: true
 
@@ -365,7 +365,7 @@ PlasmaComponents.Page {
                 }
                 LatteTextField{
 
-                    Layout.preferredWidth: 9.5 * theme.defaultFont.pixelSize
+                    Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
                     property bool inStartup: true
 
