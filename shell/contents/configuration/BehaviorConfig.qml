@@ -300,11 +300,16 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             Header {
+                Layout.fillWidth: true
                 text: i18n("Delay")
             }
 
             RowLayout {
+                Layout.fillWidth: false
+                Layout.alignment: Qt.AlignHCenter
+                
                 spacing: units.smallSpacing
+                
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
                     horizontalAlignment: Text.AlignRight
