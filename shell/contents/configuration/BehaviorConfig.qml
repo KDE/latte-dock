@@ -37,10 +37,11 @@ PlasmaComponents.Page {
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth
+        width: dialog.maxWidth - units.smallSpacing * 5
         spacing: units.largeSpacing
-        anchors.centerIn: parent
-        
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+
         //! BEGIN: Location
         ColumnLayout {
             Layout.fillWidth: true
@@ -305,6 +306,7 @@ PlasmaComponents.Page {
             }
 
             RowLayout {
+
                 Layout.fillWidth: false
                 Layout.alignment: Qt.AlignHCenter
                 
@@ -315,7 +317,24 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Show:")
                 }
-                ExtraControls.SpinBox {
+                LatteTextField{
+                    Layout.preferredWidth: 9.5 * theme.defaultFont.pixelSize
+                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                    property bool inStartup: true
+
+                    Component.onCompleted: {
+                        value = dock.visibility.timerShow
+                        inStartup = false;
+                    }
+
+                    onValueChanged: {
+                        if(!inStartup){
+                            dock.visibility.timerShow = value;
+                        }
+                    }
+                }
+
+                /*ExtraControls.SpinBox {
                     Layout.fillWidth: false
                     Layout.maximumWidth: implicitWidth
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
@@ -329,14 +348,31 @@ PlasmaComponents.Page {
                     }
 
                     suffix: i18n("ms.")
-                }
+                }*/
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
                     Layout.leftMargin: units.largeSpacing
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Hide:")
                 }
-                ExtraControls.SpinBox {
+                LatteTextField{
+
+                    Layout.preferredWidth: 9.5 * theme.defaultFont.pixelSize
+                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                    property bool inStartup: true
+
+                    Component.onCompleted: {
+                        value = dock.visibility.timerHide
+                        inStartup = false;
+                    }
+
+                    onValueChanged: {
+                        if(!inStartup){
+                            dock.visibility.timerHide = value;
+                        }
+                    }
+                }
+                /*ExtraControls.SpinBox {
                     Layout.fillWidth: false
                     Layout.maximumWidth: implicitWidth
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
@@ -350,7 +386,7 @@ PlasmaComponents.Page {
                     }
 
                     suffix: i18n("ms.")
-                }
+                }*/
             }
         }
         //! END: Delay
