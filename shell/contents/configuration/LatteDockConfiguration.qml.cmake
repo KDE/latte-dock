@@ -37,7 +37,7 @@ PlasmaCore.FrameSvgItem {
     id: dialog
     imagePath: "dialogs/background"
 
-    property int maxWidth: 420 
+    property int maxWidth: 33 * theme.defaultFont.pixelSize
     width: content.width + units.smallSpacing * 2
     height: content.height + units.smallSpacing * 2
     Layout.minimumWidth: width
@@ -175,7 +175,7 @@ PlasmaCore.FrameSvgItem {
                 id: scrollArea
                 
                 anchors.fill: parent
-                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+                verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
                 horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
                 
                 PlasmaComponents.TabGroup {
