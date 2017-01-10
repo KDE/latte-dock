@@ -471,6 +471,7 @@ DragDrop.DropArea {
         event.accept(event.proposedAction);
 
         dndSpacer.opacity = 0;
+        dndSpacer.parent = root;
     }
 
     onNowDockChanged: {
