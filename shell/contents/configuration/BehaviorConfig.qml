@@ -328,14 +328,8 @@ PlasmaComponents.Page {
                 LatteTextField {
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-                    property bool inStartup: true
                     
                     text: dock.visibility.timerShow
-
-                    Component.onCompleted: {
-                        value = dock.visibility.timerShow
-                        inStartup = false;
-                    }
 
                     onValueChanged: {
                         dock.visibility.timerShow = value
@@ -351,7 +345,6 @@ PlasmaComponents.Page {
                 LatteTextField{
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-                    property bool inStartup: true
                     
                     text: dock.visibility.timerHide
 
