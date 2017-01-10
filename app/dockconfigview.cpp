@@ -53,10 +53,16 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     
     connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_dockView->screen());
+        KWindowSystem::setType(winId(), NET::Dock);
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
     });
+
+    KWindowSystem::setType(winId(), NET::Dock);
+    KWindowSystem::setState(winId(), NET::KeepAbove);
+    setFlags(wFlags());
+    KWindowSystem::forceActiveWindow(winId());
     
     connect(dockView, &QQuickView::widthChanged, this, &DockConfigView::syncGeometry);
     connect(dockView, &QQuickView::heightChanged, this, &DockConfigView::syncGeometry);
@@ -75,7 +81,7 @@ void DockConfigView::init()
     setColor(Qt::transparent);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
-    engine()->rootContext()->setContextObject(new KLocalizedContext(this));
+    rootContext()->setContextObject(new KLocalizedContext(this));
     auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
     syncSlideEffect();
@@ -170,6 +176,8 @@ void DockConfigView::syncSlideEffect()
 
 void DockConfigView::showEvent(QShowEvent *ev)
 {
+    QQuickWindow::showEvent(ev);
+
     KWindowSystem::setType(winId(), NET::Dock);
     setFlags(wFlags());
     KWindowSystem::setState(winId(), NET::KeepAbove | NET::SkipPager | NET::SkipTaskbar);
@@ -186,20 +194,19 @@ void DockConfigView::showEvent(QShowEvent *ev)
     m_deleterTimer.stop();
     
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
-    
-    ConfigView::showEvent(ev);
+
 }
 
 void DockConfigView::hideEvent(QHideEvent *ev)
 {
+    QQuickWindow::hideEvent(ev);
+
     m_deleterTimer.start();
     
     if (m_containment) {
         m_dockView->saveConfig();
         m_containment->setUserConfiguring(false);
     }
-    
-    ConfigView::hideEvent(ev);
 }
 
 void DockConfigView::focusOutEvent(QFocusEvent *ev)

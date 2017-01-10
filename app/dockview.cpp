@@ -261,7 +261,7 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
             m_configView->hide();
         } else {
             m_configView->show();
-            m_configView->requestActivate();
+            //m_configView->requestActivate();
         }
         
         return;
@@ -282,9 +282,8 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
         m_configView = new PlasmaQuick::ConfigView(applet);
     }
     
-    m_configView->init();
-    m_configView->show();
-    m_configView->requestActivate();
+    m_configView.data()->init();
+    m_configView.data()->show();
 }
 
 void DockView::resizeWindow()
