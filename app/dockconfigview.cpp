@@ -67,15 +67,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
-
-    setDefaultAlphaBuffer(true);
-    setColor(Qt::transparent);
-    rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
-    rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
-    rootContext()->setContextObject(new KLocalizedContext(this));
-    auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
-    setSource(source);
-    syncSlideEffect();
 }
 
 DockConfigView::~DockConfigView()
@@ -87,6 +78,14 @@ DockConfigView::~DockConfigView()
 
 void DockConfigView::init()
 {
+    setDefaultAlphaBuffer(true);
+    setColor(Qt::transparent);
+    rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
+    rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
+    rootContext()->setContextObject(new KLocalizedContext(this));
+    auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
+    setSource(source);
+    syncSlideEffect();
 }
 
 inline Qt::WindowFlags DockConfigView::wFlags() const
@@ -179,13 +178,13 @@ void DockConfigView::syncSlideEffect()
 void DockConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
-
+    
     KWindowSystem::setType(winId(), NET::Dock);
     setFlags(wFlags());
     KWindowSystem::setState(winId(), NET::KeepAbove | NET::SkipPager | NET::SkipTaskbar);
     KWindowSystem::forceActiveWindow(winId());
     KWindowEffects::enableBlurBehind(winId(), true);
-    
+
     syncGeometry();
     syncSlideEffect();
     
@@ -195,7 +194,6 @@ void DockConfigView::showEvent(QShowEvent *ev)
     m_screenSyncTimer.start();
     
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
-
 }
 
 void DockConfigView::hideEvent(QHideEvent *ev)
@@ -236,7 +234,6 @@ void DockConfigView::setSticker(bool blockFocusLost)
 
     m_blockFocusLost = blockFocusLost;
 }
-
 
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
