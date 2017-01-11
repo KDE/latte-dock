@@ -25,6 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
+import org.kde.latte 0.1 as Latte
 
 Component {
     id: imageBufferingComponent
@@ -53,15 +54,16 @@ Component {
 
             visible:false
 
-            KQuickControlAddons.QIconItem{
+            //KQuickControlAddons.QIconItem{
+            Latte.IconItem{
                 id: iconImage
 
                 width: root.iconSize
                 height: width
                 anchors.centerIn: parent
 
-                icon: decoration
-                state: KQuickControlAddons.QIconItem.DefaultState
+                source: decoration //icon: decoration
+                //state: KQuickControlAddons.QIconItem.DefaultState
 
                 enabled: true
                 visible: true
