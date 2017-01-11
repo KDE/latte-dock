@@ -290,7 +290,10 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     if (!delayConfigView) {
         m_configView.data()->show();
     } else {
-        QTimer::singleShot(100, m_configView, SLOT(show()));
+        //add a timer for showing the configuration window the first time it is
+        //created in order to give the containmnent's layouts the time to
+        //calculate the window's height
+        QTimer::singleShot(150, m_configView, SLOT(show()));
     }
 }
 
