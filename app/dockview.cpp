@@ -276,14 +276,22 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
         }
     }
     
+    bool delayConfigView = false;
+
     if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
         m_configView = new DockConfigView(c, this);
+        delayConfigView = true;
     } else {
         m_configView = new PlasmaQuick::ConfigView(applet);
     }
     
     m_configView.data()->init();
-    m_configView.data()->show();
+
+    if (!delayConfigView) {
+        m_configView.data()->show();
+    } else {
+        QTimer::singleShot(100, m_configView, SLOT(show()));
+    }
 }
 
 void DockView::resizeWindow()
