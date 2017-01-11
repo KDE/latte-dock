@@ -41,17 +41,14 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_dockView(dockView),
       m_blockFocusLost(false)
 {
-    m_deleterTimer.setSingleShot(true);
-    m_deleterTimer.setInterval(10 * 1000);
-    connect(&m_deleterTimer, &QTimer::timeout, this, &QObject::deleteLater);
-    connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
+    connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
     
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
     
-    connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
+    connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
     
-    connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
+    connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_dockView->screen());
         KWindowSystem::setType(winId(), NET::Dock);
         setFlags(wFlags());
@@ -64,19 +61,13 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     setFlags(wFlags());
     KWindowSystem::forceActiveWindow(winId());
     
-    connect(dockView, &QQuickView::widthChanged, this, &DockConfigView::syncGeometry);
-    connect(dockView, &QQuickView::heightChanged, this, &DockConfigView::syncGeometry);
-    connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
+    connections << connect(dockView, &QQuickView::widthChanged, this, &DockConfigView::syncGeometry);
+    connections << connect(dockView, &QQuickView::heightChanged, this, &DockConfigView::syncGeometry);
+    connections << connect(containment, &Plasma::Containment::locationChanged, this, &DockConfigView::syncGeometry);
+    connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     
-    connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
-}
+    connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
 
-DockConfigView::~DockConfigView()
-{
-}
-
-void DockConfigView::init()
-{
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
@@ -85,6 +76,17 @@ void DockConfigView::init()
     auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
     syncSlideEffect();
+}
+
+DockConfigView::~DockConfigView()
+{
+    foreach (auto var, connections) {
+        QObject::disconnect(var);
+    }
+}
+
+void DockConfigView::init()
+{
 }
 
 inline Qt::WindowFlags DockConfigView::wFlags() const
@@ -191,7 +193,6 @@ void DockConfigView::showEvent(QShowEvent *ev)
         m_containment->setUserConfiguring(true);
         
     m_screenSyncTimer.start();
-    m_deleterTimer.stop();
     
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
 
@@ -199,14 +200,12 @@ void DockConfigView::showEvent(QShowEvent *ev)
 
 void DockConfigView::hideEvent(QHideEvent *ev)
 {
-    QQuickWindow::hideEvent(ev);
-
-    m_deleterTimer.start();
-    
-    if (m_containment) {
+    if (m_containment && m_dockView) {
         m_dockView->saveConfig();
         m_containment->setUserConfiguring(false);
     }
+
+    QQuickWindow::hideEvent(ev);
 }
 
 void DockConfigView::focusOutEvent(QFocusEvent *ev)

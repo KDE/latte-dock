@@ -154,7 +154,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-                                 
+
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
     
@@ -215,7 +215,8 @@ void DockCorona::addDock(Plasma::Containment *containment)
 void DockCorona::dockContainmentDestroyed(QObject *cont)
 {
     auto view = m_dockViews.take(static_cast<Plasma::Containment *>(cont));
-    view->deleteLater();
+    delete view;
+    //view->deleteLater();
     emit containmentsNoChanged();
 }
 
@@ -267,9 +268,9 @@ inline void DockCorona::qmlRegisterTypes() const
     constexpr auto vMajor = 0;
     constexpr auto vMinor = 2;
     
-//    qmlRegisterUncreatableType<Candil::Dock>(uri, vMajor, vMinor, "Dock", "class Dock uncreatable");
-//    qmlRegisterUncreatableType<Candil::VisibilityManager>(uri, vMajor, vMinor, "VisibilityManager", "class VisibilityManager uncreatable");
-//    qmlRegisterUncreatableType<NowDockView>(uri, vMajor, vMinor, "DockView", "class DockView uncreatable");
+    //    qmlRegisterUncreatableType<Candil::Dock>(uri, vMajor, vMinor, "Dock", "class Dock uncreatable");
+    //    qmlRegisterUncreatableType<Candil::VisibilityManager>(uri, vMajor, vMinor, "VisibilityManager", "class VisibilityManager uncreatable");
+    //    qmlRegisterUncreatableType<NowDockView>(uri, vMajor, vMinor, "DockView", "class DockView uncreatable");
     qmlRegisterType<QScreen>();
 }
 

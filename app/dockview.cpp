@@ -113,7 +113,7 @@ DockView::~DockView()
     qDebug() << "dock view connections deleted...";
 
     if (m_visibility) {
-        m_visibility->deleteLater();
+        delete m_visibility;
     }
 }
 
@@ -524,7 +524,11 @@ void DockView::closeApplication()
     DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
 
     if (corona) {
-        m_configView->hide();
+        //m_configView->hide();
+        if (m_configView) {
+            m_configView->deleteLater();
+        }
+
         corona->closeApplication();
     }
 }
