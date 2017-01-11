@@ -26,7 +26,6 @@ set(lattedock-app_SRCS
     dockview.cpp
     dockconfigview.cpp
     packageplugins/shell/dockpackage.cpp
-    iconitem.cpp
     main.cpp
 )
 
@@ -49,7 +48,6 @@ target_link_libraries(
     KF5::Activities
     KF5::QuickAddons
     KF5::WindowSystem
-    KF5::IconThemes
 )
 
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
