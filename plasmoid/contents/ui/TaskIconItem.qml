@@ -27,6 +27,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
+import org.kde.latte 0.1 as Latte
 
 //I am using  KQuickControlAddons.QIconItem even though onExit it triggers the following error
 //QObject::~QObject: Timers cannot be stopped from another thread
@@ -138,14 +139,16 @@ Item{
         color: "transparent"
     }*/
 
-    KQuickControlAddons.QIconItem{
+   // KQuickControlAddons.QIconItem{
+    Latte.IconItem{
         id: iconImageBuffer
 
         //    anchors.centerIn: parent
 
         width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
         height: Math.round(width)
-        icon: decoration
+        //icon: decoration
+        source: decoration
 
         property int zoomedSize: root.zoomFactor * root.iconSize
 
