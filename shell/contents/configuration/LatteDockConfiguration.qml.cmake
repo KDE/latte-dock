@@ -83,10 +83,7 @@ PlasmaCore.FrameSvgItem {
         }
     }
 
-    //! INFO: by changing this layout to just column reduces to minimimum
-    //! the cases for which the config window is not placed correctly
-    //! when is shown
-    Column {
+    ColumnLayout {
         id: content
 
         Layout.minimumWidth: width
@@ -102,10 +99,8 @@ PlasmaCore.FrameSvgItem {
 
         RowLayout {
             id: header
-            Layout.maximumWidth: width
-            Layout.minimumWidth: width
+            Layout.fillWidth: true
 
-            width: pagesBackground.width
             spacing: 0
 
             KQuickControlAddons.QIconItem {
@@ -174,7 +169,7 @@ PlasmaCore.FrameSvgItem {
             Layout.minimumHeight:  height
             Layout.maximumHeight: height
 
-            width: maxWidth //- units.smallSpacing
+            width: maxWidth - units.smallSpacing
             height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 4
             
             property color bC: theme.backgroundColor
@@ -217,12 +212,8 @@ PlasmaCore.FrameSvgItem {
 
         RowLayout {
             id: actionButtons
-
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-            Layout.maximumWidth: width
-            Layout.minimumWidth: width
-
-            width: pagesBackground.width
 
             spacing: units.largeSpacing
             
