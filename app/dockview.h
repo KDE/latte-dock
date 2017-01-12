@@ -46,11 +46,11 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
+    Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(int length READ length WRITE setLength NOTIFY lengthChanged)
     Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
-    Q_PROPERTY(int width READ width NOTIFY widthChanged)
     
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
@@ -62,29 +62,29 @@ public:
     
     void init();
     
-    // Candil::VisibilityManager *visibility();
+    void adaptToScreen(QScreen *screen);
     
-    int maxThickness() const;
-    void setMaxThickness(int thickness);
+    void resizeWindow();
+    void syncGeometry();
+    
+    int currentThickness() const;
+    void updateAbsDockGeometry();
+    
+    int docksCount() const;
     
     int length() const;
     void setLength(int length);
     
+    int maxLength() const;
+    void setMaxLength(int maxLength);
+    
+    int maxThickness() const;
+    void setMaxThickness(int thickness);
+    
     QRect maskArea() const;
     void setMaskArea(QRect area);
     
-    int maxLength() const;
-    void setMaxLength(int maxLength);
-
-    int docksCount() const;
-    
     VisibilityManager *visibility();
-    
-    int currentThickness() const;
-
-    bool tasksPresent() const;
-    
-    void adaptToScreen(QScreen *screen);
     
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
@@ -93,19 +93,17 @@ public:
 public slots:
     Q_INVOKABLE void addAppletItem(QObject *item);
     Q_INVOKABLE void removeAppletItem(QObject *item);
+    
     Q_INVOKABLE void addNewDock();
-    Q_INVOKABLE QVariantList containmentActions();
-    //used from the configuration window
-    Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE void removeDock();
+    
+    Q_INVOKABLE QList<int> freeEdges() const;
+    Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     Q_INVOKABLE bool tasksPresent();
+    
     Q_INVOKABLE void closeApplication();
 
-    void resizeWindow();
-    void restoreConfig();
-    void saveConfig();
-    
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
     
@@ -115,54 +113,47 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
-//   void visibilityChanged();
     void addInternalViewSplitter();
+    void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
+    
+    void docksCountChanged();
+    void widthChanged();
     void heightChanged();
     void lengthChanged();
-    void docksCountChanged();
-    void localDockGeometryChanged();
-    void maskAreaChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
-    void removeInternalViewSplitter();
     void visibilityChanged();
-    void widthChanged();
+    void maskAreaChanged();
     
-public slots:
-    void updateAbsDockGeometry();
-    void syncGeometry();
-
-private slots:
-    void menuAboutToHide();
-    void updateDocksCount();
-
+    void localDockGeometryChanged();
+    
 private:
-    bool m_secondInitPass;
-    
-    int m_docksCount;
-    int m_maxThickness{24};
-    int m_length{0};
-    int m_maxLength{INT_MAX};
-    
-    QRect m_localDockGeometry;
-    QRect m_maskArea;
-    QPointer<PlasmaQuick::ConfigView> m_configView;
-    QMenu *m_contextMenu;
-
-    QList<PlasmaQuick::AppletQuickItem *> m_appletItems;
-    
-    Plasma::Theme *theme{nullptr};
-    
-    QPointer<VisibilityManager> m_visibility;
-
-    QList<QMetaObject::Connection> connections;
-    
     void initWindow();
 
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
-    void syncGeometryImmediately();
+    void updatePosition();
+    
+    void updateDocksCount();
+    void updateFormFactor();
+    void menuAboutToHide();
+private:
+    bool m_secondInitPass;
+    
+    int m_docksCount;
+    int m_length{0};
+    int m_maxLength{INT_MAX};
+    int m_maxThickness{24};
+    
+    QRect m_localDockGeometry;
+    QRect m_maskArea;
+    QMenu *m_contextMenu;
+    QPointer<PlasmaQuick::ConfigView> m_configView;
+    QPointer<VisibilityManager> m_visibility;
+    QList<PlasmaQuick::AppletQuickItem *> m_appletItems;
+    QList<QMetaObject::Connection> connections;
+    QTimer timerSyncGeometry;
 };
 
 }
