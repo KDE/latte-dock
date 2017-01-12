@@ -60,16 +60,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     else
         adaptToScreen(qGuiApp->primaryScreen());
 
-    m_timerGeometry.setSingleShot(true);
-    m_timerGeometry.setInterval(400);
-    
-    m_lockGeometry.setSingleShot(true);
-    m_lockGeometry.setInterval(700);
-    
-    connect(this, SIGNAL(localDockGeometryChanged()), this, SLOT(updateAbsDockGeometry()));
-    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateAbsDockGeometry()));
-    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateAbsDockGeometry()));
-    
+
     connect(this, &DockView::containmentChanged
     , this, [&]() {
         if (!containment())
@@ -123,18 +114,13 @@ void DockView::init()
             , this, &DockView::adaptToScreen
             , Qt::QueuedConnection);
 
-
-    connect(&m_timerGeometry, &QTimer::timeout, [&]() {
-        initWindow();
-    });
-    
     connect(this, &DockView::locationChanged, [&]() {
         //! avoid glitches
-        m_timerGeometry.start();
+        syncGeometry();
     });
 
     connect(this, &DockView::screenGeometryChanged
-            , this, &DockView::updateDockPosition
+            , this, &DockView::syncGeometry
             , Qt::QueuedConnection);
 
     connect(this, SIGNAL(widthChanged(int)), this, SIGNAL(widthChanged()));
@@ -146,50 +132,21 @@ void DockView::init()
     // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     
-    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateDockPositionSlot()));
-    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateDockPositionSlot()));
+    connect(this, SIGNAL(xChanged(int)), this, SLOT(syncGeometry()));
+    connect(this, SIGNAL(yChanged(int)), this, SLOT(syncGeometry()));
+    connect(this, SIGNAL(localDockGeometryChanged()), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateAbsDockGeometry()));
+    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateAbsDockGeometry()));
     
-    connect(&m_lockGeometry, &QTimer::timeout, [&]() {
-        updateDockPosition();
-    });
-
     updateDocksCount();
+
+    syncGeometry();
+
+    setVisible(true);
     
     qDebug() << "SOURCE:" << source();
-    
-    initialize();
 }
 
-
-void DockView::initialize()
-{
-    m_secondInitPass = true;
-    m_timerGeometry.start();
-}
-
-void DockView::initWindow()
-{
-    //  m_visibility->updateVisibilityFlags();
-    
-    updateDockPosition();
-    resizeWindow();
-    
-    // The initialization phase makes two passes because
-    // changing the window style and type wants a small delay
-    // and afterwards the second pass positions them correctly
-    if (m_secondInitPass) {
-        m_timerGeometry.start();
-        m_secondInitPass = false;
-        setVisible(true);
-    }
-}
-
-void DockView::updateDockPositionSlot()
-{
-    if (!m_lockGeometry.isActive()) {
-        m_lockGeometry.start();
-    }
-}
 
 //!BEGIN SLOTS
 void DockView::adaptToScreen(QScreen *screen)
@@ -207,7 +164,7 @@ void DockView::adaptToScreen(QScreen *screen)
     if (containment())
         containment()->reactToScreenChange();
 
-    m_timerGeometry.start();
+    syncGeometry();
 }
 
 void DockView::addNewDock()
@@ -337,20 +294,20 @@ void DockView::updateAbsDockGeometry()
     m_visibility->updateDockGeometry(absoluteGeometry);
 }
 
-inline void DockView::updateDockPosition()
+void DockView::syncGeometryImmediately()
 {
     if (!containment())
         return;
 
     const QRect screenGeometry = screen()->geometry();
     QPoint position;
-    
+
     qDebug() << "current dock geometry: " << geometry();
-    
+
     // containment()->setFormFactor(Plasma::Types::Horizontal);
     position = {0, 0};
     m_maxLength = screenGeometry.width();
-    
+
     switch (location()) {
         case Plasma::Types::TopEdge:
             containment()->setFormFactor(Plasma::Types::Horizontal);
@@ -380,12 +337,21 @@ inline void DockView::updateDockPosition()
             qWarning() << "wrong location, couldn't update the panel position"
                        << location();
     }
-    
+
     emit maxLengthChanged();
     setX(position.x());
     setY(position.y());
+
+    resizeWindow();
     //setPosition(position);
     qDebug() << "dock position:" << position;
+}
+
+inline void DockView::syncGeometry()
+{
+    syncGeometryImmediately();
+
+    QTimer::singleShot(400, this, &DockView::syncGeometryImmediately);
 }
 
 int DockView::currentThickness() const
@@ -435,7 +401,7 @@ void DockView::setMaxThickness(int thickness)
         return;
 
     m_maxThickness = thickness;
-    m_timerGeometry.start();
+    syncGeometry();
     emit maxThicknessChanged();
 }
 
@@ -454,7 +420,7 @@ void DockView::setLength(int length)
     else
         m_length = length;
 
-    m_timerGeometry.start();
+    syncGeometry();
     emit lengthChanged();
 }
 
@@ -933,8 +899,6 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
     return;
 }
-
-
 
 //!END overriding context menus behavior
 
