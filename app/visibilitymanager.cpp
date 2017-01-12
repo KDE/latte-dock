@@ -362,8 +362,8 @@ inline void VisibilityManagerPrivate::restoreConfig()
         
     auto config = view->containment()->config();
     
-    timerShow.setInterval(config.readEntry("timerShow", 0));
-    timerHide.setInterval(config.readEntry("timerHide", 0));
+    timerShow.setInterval(config.readEntry("timerShow", 200));
+    timerHide.setInterval(config.readEntry("timerHide", 700));
     
     auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     
