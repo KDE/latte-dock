@@ -420,8 +420,7 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
     
     return QObject::event(ev);
 }
-
-//! END: VisibilityManager implementation
+//! END: VisibilityManagerPrivate implementation
 
 //! BEGIN: VisiblityManager implementation
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)

@@ -97,6 +97,7 @@ void XWindowInterface::setDockDefaultFlags()
     KWindowSystem::setType(m_view->winId(), NET::Dock);
     KWindowSystem::setState(m_view->winId(), NET::SkipTaskbar | NET::SkipPager);
     KWindowSystem::setOnAllDesktops(m_view->winId(), true);
+    KWindowSystem::setOnActivities(m_view->winId(), {"0"});
 }
 
 WId XWindowInterface::activeWindow() const
