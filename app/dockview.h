@@ -97,7 +97,6 @@ public slots:
     Q_INVOKABLE QVariantList containmentActions();
     //used from the configuration window
     Q_INVOKABLE QList<int> freeEdges() const;
-    Q_INVOKABLE void initialize();
     Q_INVOKABLE void removeDock();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     Q_INVOKABLE bool tasksPresent();
@@ -106,7 +105,6 @@ public slots:
     void resizeWindow();
     void restoreConfig();
     void saveConfig();
-    void updateDockPosition();
     
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
@@ -132,13 +130,13 @@ signals:
     void widthChanged();
     
 public slots:
-    void updateDockPositionSlot();
     void updateAbsDockGeometry();
+    void syncGeometry();
 
 private slots:
     void menuAboutToHide();
     void updateDocksCount();
-    
+
 private:
     bool m_secondInitPass;
     
@@ -154,8 +152,6 @@ private:
 
     QList<PlasmaQuick::AppletQuickItem *> m_appletItems;
     
-    QTimer m_timerGeometry;
-    QTimer m_lockGeometry;
     Plasma::Theme *theme{nullptr};
     
     QPointer<VisibilityManager> m_visibility;
@@ -166,6 +162,7 @@ private:
 
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
+    void syncGeometryImmediately();
 };
 
 }
