@@ -32,10 +32,9 @@ Image{
     source: "../icons/blueprint.jpg"
     opacity: 0
 
-    property int location: plasmoid.location
     property int speed: root.durationTime*4*units.longDuration
     property int thickness: visibilityManager.thicknessNormal + shadowSize
-    property int rootThickness: root.isHorizontal ? root.height : root.width
+    property int rootThickness: visibilityManager.thicknessZoomOriginal
     property int shadowSize : Math.ceil(root.iconSize / 5)
 
     property bool animationSent: false
@@ -49,21 +48,23 @@ Image{
         color: "#ee080808"
     }
 
-    onLocationChanged:{
-        initializeEditPosition();
+    Connections{
+        target: plasmoid
+
+        onLocationChanged: initializeEditPosition();
     }
 
-    function initializeNormalPosition() {
-        if (location === PlasmaCore.Types.BottomEdge) {
+    function initializeNormalPosition() {       
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
             x = 0;
-            y = editVisual.rootThickness;
-        } else if (location === PlasmaCore.Types.RightEdge) {
-            x = editVisual.rootThickness;
+            y = rootThickness;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            x = rootThickness;
             y = 0;
-        } else if (location === PlasmaCore.Types.LeftEdge) {
+        } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
             x = -editVisual.thickness;
             y = 0;
-        } else if (location === PlasmaCore.Types.TopEdge) {
+        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
             x = 0;
             y = -editVisual.thickness;
         }
@@ -71,19 +72,18 @@ Image{
 
     function initializeEditPosition() {
         if (root.editMode) {
-            if ((location === PlasmaCore.Types.LeftEdge) || (location === PlasmaCore.Types.TopEdge)){
+            if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)){
                 x = 0;
                 y = 0;
-            } else if (location === PlasmaCore.Types.BottomEdge) {
+            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                 x = 0;
                 y = rootThickness - thickness + shadowSize;
-            } else if (location === PlasmaCore.Types.RightEdge) {
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                 x = rootThickness - thickness + shadowSize;
                 y = 0;
             }
         }
     }
-
 
     //////////// States ////////////////////
 
