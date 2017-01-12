@@ -37,9 +37,9 @@ namespace Latte {
 
 DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
+      m_blockFocusLost(false),
       m_containment(containment),
-      m_dockView(dockView),
-      m_blockFocusLost(false)
+      m_dockView(dockView)
 {
     connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
     
@@ -138,7 +138,6 @@ void DockConfigView::syncGeometry()
         
         default:
             qWarning() << "no sync geometry, wrong formFactor";
-            //<< qEnumToStr(m_containment->formFactor());
             break;
     }
 }
@@ -199,7 +198,6 @@ void DockConfigView::showEvent(QShowEvent *ev)
 void DockConfigView::hideEvent(QHideEvent *ev)
 {
     if (m_containment && m_dockView) {
-        m_dockView->saveConfig();
         m_containment->setUserConfiguring(false);
     }
 

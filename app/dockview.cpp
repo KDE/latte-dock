@@ -45,8 +45,8 @@ namespace Latte {
 
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),
-      m_contextMenu(0),
-      m_docksCount(0)
+      m_docksCount(0),
+     m_contextMenu(nullptr)
 {
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
@@ -55,11 +55,13 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
     
+    timerSyncGeometry.setSingleShot(true);
+    timerSyncGeometry.setInterval(400);
+    
     if (targetScreen)
         adaptToScreen(targetScreen);
     else
         adaptToScreen(qGuiApp->primaryScreen());
-
 
     connect(this, &DockView::containmentChanged
     , this, [&]() {
@@ -97,58 +99,43 @@ DockView::~DockView()
 {
     qDebug() << "dock view deleting...";
 
-    foreach (auto var, connections) {
+    foreach (auto &var, connections) {
         QObject::disconnect(var);
     }
 
     qDebug() << "dock view connections deleted...";
 
     if (m_visibility) {
-        delete m_visibility;
+        m_visibility.clear();
     }
 }
 
 void DockView::init()
 {
-    connect(this, &DockView::screenChanged
-            , this, &DockView::adaptToScreen
-            , Qt::QueuedConnection);
-
-    connect(this, &DockView::locationChanged, [&]() {
-        //! avoid glitches
-        syncGeometry();
-    });
-
-    connect(this, &DockView::screenGeometryChanged
-            , this, &DockView::syncGeometry
-            , Qt::QueuedConnection);
-
-    connect(this, SIGNAL(widthChanged(int)), this, SIGNAL(widthChanged()));
-    connect(this, SIGNAL(heightChanged(int)), this, SIGNAL(heightChanged()));
+    connect(this, &DockView::screenChanged, this, &DockView::adaptToScreen, Qt::QueuedConnection);
+    connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry, Qt::QueuedConnection);
+    connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
+    connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
+   
+    connect(this, &DockView::locationChanged, this, &DockView::syncGeometry);
+    connect(this, &QQuickWindow::xChanged, this, &DockView::syncGeometry);
+    connect(this, &QQuickWindow::yChanged, this, &DockView::syncGeometry);
+    connect(this, &QQuickWindow::xChanged, this, &DockView::updateAbsDockGeometry);
+    connect(this, &QQuickWindow::yChanged, this, &DockView::updateAbsDockGeometry);
+    connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
+    connect(&timerSyncGeometry, &QTimer::timeout, this, &DockView::updatePosition);
     
-    rootContext()->setContextProperty(QStringLiteral("dock"), this);
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
-    
-    // engine()->rootContext()->setContextProperty(QStringLiteral("dock"), this);
+    rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     
-    connect(this, SIGNAL(xChanged(int)), this, SLOT(syncGeometry()));
-    connect(this, SIGNAL(yChanged(int)), this, SLOT(syncGeometry()));
-    connect(this, SIGNAL(localDockGeometryChanged()), this, SLOT(updateAbsDockGeometry()));
-    connect(this, SIGNAL(xChanged(int)), this, SLOT(updateAbsDockGeometry()));
-    connect(this, SIGNAL(yChanged(int)), this, SLOT(updateAbsDockGeometry()));
-    
-    updateDocksCount();
-
-    syncGeometry();
-
     setVisible(true);
     
+    updateDocksCount();
+    syncGeometry();
     qDebug() << "SOURCE:" << source();
 }
 
-
-//!BEGIN SLOTS
 void DockView::adaptToScreen(QScreen *screen)
 {
     setScreen(screen);
@@ -157,9 +144,6 @@ void DockView::adaptToScreen(QScreen *screen)
         m_maxLength = screen->size().height();
     else
         m_maxLength = screen->size().width();
-
-    //   KWindowSystem::setOnAllDesktops(winId(), true);
-    //   KWindowSystem::setType(winId(), NET::Dock);
 
     if (containment())
         containment()->reactToScreenChange();
@@ -256,8 +240,6 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
 void DockView::resizeWindow()
 {
-    setVisible(true);
-    
     QSize screenSize = screen()->size();
     
     if (formFactor() == Plasma::Types::Vertical) {
@@ -290,11 +272,14 @@ void DockView::setLocalDockGeometry(const QRect &geometry)
 
 void DockView::updateAbsDockGeometry()
 {
+    if (!m_visibility)
+        return;
+    
     QRect absoluteGeometry {x() + m_localDockGeometry.x(), y() + m_localDockGeometry.y(), m_localDockGeometry.width(), m_localDockGeometry.height()};
     m_visibility->updateDockGeometry(absoluteGeometry);
 }
 
-void DockView::syncGeometryImmediately()
+void DockView::updatePosition()
 {
     if (!containment())
         return;
@@ -304,31 +289,26 @@ void DockView::syncGeometryImmediately()
 
     qDebug() << "current dock geometry: " << geometry();
 
-    // containment()->setFormFactor(Plasma::Types::Horizontal);
     position = {0, 0};
     m_maxLength = screenGeometry.width();
 
     switch (location()) {
         case Plasma::Types::TopEdge:
-            containment()->setFormFactor(Plasma::Types::Horizontal);
             position = {screenGeometry.x(), screenGeometry.y()};
             m_maxLength = screenGeometry.width();
             break;
 
         case Plasma::Types::BottomEdge:
-            containment()->setFormFactor(Plasma::Types::Horizontal);
             position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
             m_maxLength = screenGeometry.width();
             break;
 
         case Plasma::Types::RightEdge:
-            containment()->setFormFactor(Plasma::Types::Vertical);
             position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
             m_maxLength = screenGeometry.height();
             break;
 
         case Plasma::Types::LeftEdge:
-            containment()->setFormFactor(Plasma::Types::Vertical);
             position = {screenGeometry.x(), screenGeometry.y()};
             m_maxLength = screenGeometry.height();
             break;
@@ -339,24 +319,22 @@ void DockView::syncGeometryImmediately()
     }
 
     emit maxLengthChanged();
-    setX(position.x());
-    setY(position.y());
-
-    resizeWindow();
-    //setPosition(position);
+    setPosition(position);
+    
     qDebug() << "dock position:" << position;
 }
 
 inline void DockView::syncGeometry()
 {
-    syncGeometryImmediately();
-
-    QTimer::singleShot(400, this, &DockView::syncGeometryImmediately);
+    updateFormFactor();
+    resizeWindow();
+    updatePosition();
+    updateAbsDockGeometry();
 }
 
 int DockView::currentThickness() const
 {
-    if (containment()->formFactor() == Plasma::Types::Vertical) {
+    if (formFactor() == Plasma::Types::Vertical) {
         return m_maskArea.isNull() ? width() : m_maskArea.width();
     } else {
         return m_maskArea.isNull() ? height() : m_maskArea.height();
@@ -385,10 +363,27 @@ void DockView::updateDocksCount()
     }
 }
 
-/*Candil::VisibilityManager *DockView::visibility()
+void DockView::updateFormFactor()
 {
-    return  m_visibility.data();
-}*/
+    if (!containment())
+        return;
+    
+    switch (location()) {
+        case Plasma::Types::TopEdge:
+        case Plasma::Types::BottomEdge:
+            containment()->setFormFactor(Plasma::Types::Horizontal);
+            break;
+
+        case Plasma::Types::LeftEdge:
+        case Plasma::Types::RightEdge:
+            containment()->setFormFactor(Plasma::Types::Vertical);
+            break;
+
+        default:
+            qWarning() << "wrong location, couldn't update the panel position"
+                       << location();
+    }
+}
 
 int DockView::maxThickness() const
 {
@@ -446,9 +441,8 @@ QRect DockView::maskArea() const
 
 void DockView::setMaskArea(QRect area)
 {
-    if (m_maskArea == area) {
+    if (m_maskArea == area)
         return;
-    }
     
     m_maskArea = area;
     
@@ -502,50 +496,11 @@ void DockView::closeApplication()
 
     if (corona) {
         //m_configView->hide();
-        if (m_configView) {
+        if (m_configView)
             m_configView->deleteLater();
-        }
-
+        
         corona->closeApplication();
     }
-}
-
-
-void DockView::saveConfig()
-{
-    if (!containment())
-        return;
-
-    const auto writeEntry = [&](const char *entry, const QVariant & value) {
-        containment()->config().writeEntry(entry, value);
-    };
-    
-    //! convert offset to percent, range [-1,1] 0 is Centered
-    //! offsetPercent = offset * 2 / (maxLength - length)
-    //  const float offsetPercent = m_offset * 2.0f / (m_maxLength - m_length);
-    //  writeEntry("offset", offsetPercent);
-    //  writeEntry("iconSize", m_iconSize);
-    //  writeEntry("zoomFactor", m_zoomFactor);
-    //  writeEntry("alignment", static_cast<int>(m_alignment));
-}
-
-void DockView::restoreConfig()
-{
-    if (!containment())
-        return;
-
-    const auto readEntry = [&](const char *entry, QVariant defaultValue) -> QVariant {
-        return containment()->config().readEntry(entry, defaultValue);
-    };
-    //! convert offset-percent to pixels
-    //! offset = offsetPercent * (maxLength - length) / 2
-    //   const float offsetPercent {readEntry("offset", 0).toFloat()};
-    //  const int offset {static_cast<int>(offsetPercent * (m_maxLength - m_length) / 2)};
-    //  setOffset(offset);
-    
-    //  setIconSize(readEntry("iconSize", 32).toInt());
-    //  setZoomFactor(readEntry("zoomFactor", 1.0).toFloat());
-    //  setAlignment(static_cast<Dock::Alignment>(readEntry("alignment", Dock::Center).toInt()));
 }
 
 QVariantList DockView::containmentActions()
@@ -582,7 +537,8 @@ QVariantList DockView::containmentActions()
 
     return actions;
 }
-//!END SLOTS
+
+
 //!BEGIN overriding context menus behavior
 void DockView::addAppletItem(QObject *item)
 {
