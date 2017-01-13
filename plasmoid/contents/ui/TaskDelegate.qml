@@ -881,6 +881,8 @@ MouseArea{
         id:showWindowAnimation
         property int speed: windowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
 
+        ScriptAction{script:{root.signalAnimationsNeedLength(1)}}
+
         PropertyAnimation {
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
@@ -910,6 +912,8 @@ MouseArea{
             }
         }
 
+        ScriptAction{script:{root.signalAnimationsNeedLength(-1)}}
+
         onStopped: {
             if(mainItemContainer.isWindow || mainItemContainer.isStartup){
                 taskInitComponent.createObject(wrapper);
@@ -918,19 +922,11 @@ MouseArea{
                 }
             }
             mainItemContainer.inAnimation = false;
-
-            if (isWindow || isStartup) {
-                root.signalAnimationsNeedLength(-1);
-            }
         }
 
         function init(){
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
-
-            if (isWindow || isStartup) {
-                root.signalAnimationsNeedLength(1);
-            }
         }
 
         function showWindow(){
