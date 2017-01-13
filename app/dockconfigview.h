@@ -49,15 +49,16 @@ public:
     void init() override;
     Qt::WindowFlags wFlags() const;
     
+    
 public slots:
     Q_INVOKABLE void setSticker(bool blockFocusLost);
-
+    Q_INVOKABLE void syncGeometry();
+    
 protected:
     void showEvent(QShowEvent *ev) override;
     void hideEvent(QHideEvent *ev) override;
     void focusOutEvent(QFocusEvent *ev) override;
     
-    void syncGeometry();
     void syncSlideEffect();
     
 private slots:
@@ -65,11 +66,11 @@ private slots:
     
 private:
     bool m_blockFocusLost;
-
+    
     Plasma::Containment *m_containment{nullptr};
     QPointer<DockView> m_dockView;
     QTimer m_screenSyncTimer;
-
+    
     QList<QMetaObject::Connection> connections;
 };
 
