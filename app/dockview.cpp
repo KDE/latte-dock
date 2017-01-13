@@ -107,6 +107,7 @@ DockView::~DockView()
     qDebug() << "dock view connections deleted...";
     
     if (m_visibility) {
+        delete m_visibility.data();
         m_visibility.clear();
     }
 }
