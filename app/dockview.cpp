@@ -329,9 +329,9 @@ inline void DockView::syncGeometry()
 int DockView::currentThickness() const
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        return m_maskArea.isNull() ? width() : m_maskArea.width();
+        return m_maskArea.isNull() ? width() : m_maskArea.width() - m_shadow;
     } else {
-        return m_maskArea.isNull() ? height() : m_maskArea.height();
+        return m_maskArea.isNull() ? height() : m_maskArea.height() - m_shadow;
     }
 }
 
@@ -443,6 +443,22 @@ void DockView::setMaskArea(QRect area)
     
     //qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
+}
+
+int DockView::shadow() const
+{
+    return m_shadow;
+}
+
+void DockView::setShadow(int shadow)
+{
+    if (m_shadow == shadow) {
+        return;
+    }
+
+    m_shadow = shadow;
+
+    emit shadowChanged();
 }
 
 bool DockView::tasksPresent()

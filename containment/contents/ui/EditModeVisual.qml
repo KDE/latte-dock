@@ -54,7 +54,15 @@ Image{
         onLocationChanged: initializeEditPosition();
     }
 
-    function initializeNormalPosition() {       
+    onEditAnimationEndedChanged: {
+        if (editAnimationEnded) {
+            dock.shadow = shadowSize;
+        } else {
+            dock.shadow = 0;
+        }
+    }
+
+    function initializeNormalPosition() {
         if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
             x = 0;
             y = rootThickness;
