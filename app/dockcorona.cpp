@@ -68,13 +68,13 @@ DockCorona::~DockCorona()
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
         delete containments().first();
     }
-
+    
     qDeleteAll(m_dockViews);
     m_dockViews.clear();
-
+    
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
-
+    
     qDebug() << "deleted" << this;
 }
 
@@ -154,7 +154,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-
+                                 
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
     
@@ -204,11 +204,11 @@ void DockCorona::addDock(Plasma::Containment *containment)
     dockView->init();
     dockView->setContainment(containment);
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
-
+    
     dockView->show();
-
+    
     m_dockViews[containment] = dockView;
-
+    
     emit containmentsNoChanged();
 }
 

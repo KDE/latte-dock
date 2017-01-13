@@ -231,7 +231,7 @@ void VisibilityManagerPrivate::updateHiddenState()
 {
     if (dragEnter)
         return;
-
+        
     switch (mode) {
         case Dock::AutoHide:
             raiseDock(containsMouse);
@@ -379,42 +379,42 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
         case QEvent::Enter:
             if (containsMouse)
                 break;
-
+                
             containsMouse = true;
             emit q->containsMouseChanged();
-
+            
             if (mode != Dock::AlwaysVisible)
                 raiseDock(true);
-
+                
             break;
-
+            
         case QEvent::Leave:
             if (!containsMouse)
                 break;
-
+                
             containsMouse = false;
             emit q->containsMouseChanged();
             updateHiddenState();
-
+            
             break;
-
+            
         case QEvent::DragEnter:
             dragEnter = true;
             emit q->mustBeShown();
-
+            
             break;
-
+            
         case QEvent::DragLeave:
         case QEvent::Drop:
             dragEnter = false;
             updateHiddenState();
-
+            
             break;
-
+            
         case QEvent::Show:
             wm->setDockDefaultFlags();
             restoreConfig();
-
+            
             break;
     }
     
