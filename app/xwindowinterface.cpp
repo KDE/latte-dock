@@ -37,12 +37,12 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
     
     connections << connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
                            , this, &AbstractWindowInterface::activeWindowChanged);
-
+                           
     connections << connect(KWindowSystem::self()
                            , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
                            (&KWindowSystem::windowChanged)
                            , this, &XWindowInterface::windowChangedProxy);
-
+                           
     auto addWindow = [&](WId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
             if (isValidWindow(KWindowInfo(wid, NET::WMWindowType))) {
@@ -63,7 +63,7 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
     
     connections << connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
                            , this, &AbstractWindowInterface::currentDesktopChanged);
-
+                           
     // fill windows list
     foreach (const auto &wid, KWindowSystem::self()->windows()) {
         addWindow(wid);
@@ -73,11 +73,11 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
 XWindowInterface::~XWindowInterface()
 {
     qDebug() << "x window interface deleting...";
-
+    
     foreach (auto var, connections) {
         QObject::disconnect(var);
     }
-
+    
     qDebug() << "x window interface connections removed...";
 }
 

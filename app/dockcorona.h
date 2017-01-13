@@ -55,7 +55,7 @@ public:
     int numDocks();
     
     void addDock(Plasma::Containment *containment);
-
+    
     void closeApplication();
     
 public slots:
@@ -68,13 +68,13 @@ signals:
     
 private slots:
     void load();
-
+    
 private:
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
     
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
-
+    
     KActivities::Consumer *m_activityConsumer;
 };
 
