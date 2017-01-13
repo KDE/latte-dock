@@ -56,9 +56,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
     
-    timerSyncGeometry.setSingleShot(true);
-    timerSyncGeometry.setInterval(400);
-    
     if (targetScreen)
         adaptToScreen(targetScreen);
     else
@@ -118,14 +115,12 @@ void DockView::init()
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry, Qt::QueuedConnection);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
-    
+    connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
     });
     
-    connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
-    connect(&timerSyncGeometry, &QTimer::timeout, this, &DockView::updatePosition);
     
     engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
