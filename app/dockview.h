@@ -135,6 +135,7 @@ signals:
     
 private slots:
     void menuAboutToHide();
+    void statusChanged(Plasma::Types::ItemStatus);
 
 private:
     void initWindow();

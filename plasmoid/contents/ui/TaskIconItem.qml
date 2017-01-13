@@ -24,6 +24,7 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
@@ -529,11 +530,23 @@ Item{
 
 
     ////////////////// new window and needs attention animation
+    //stop the bouncing animation for attention needed when the plasmoid
+    //does not need any more attention
+    Connections{
+        target: plasmoid
+        onStatusChanged:{
+            if ( (plasmoid.status === PlasmaCore.Types.PassiveStatus)
+                && newWindowAnimation.running && (newWindowAnimation.loops > 2) ) {
+                newWindowAnimation.clear();
+            }
+        }
+    }
+
     SequentialAnimation{
         id:newWindowAnimation
 
         property int speed: root.durationTime*units.longDuration
-        property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
+        property bool isDemandingAttention: (IsDemandingAttention === true)
         property bool entered: mainItemContainer.mouseEntered
         property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
 
