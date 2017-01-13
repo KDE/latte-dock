@@ -258,7 +258,7 @@ inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
         
     this->dockRect = dockRect;
     
-    if (mode == Dock::AlwaysVisible) {
+    if ((mode == Dock::AlwaysVisible) && (!view->containment()->isUserConfiguring())) {
         wm->setDockStruts(this->dockRect, view->containment()->location());
     }
 }
