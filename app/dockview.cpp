@@ -22,6 +22,7 @@
 #include "dockconfigview.h"
 #include "dockcorona.h"
 #include "visibilitymanager.h"
+#include "../liblattedock/extras.h"
 #include "../liblattedock/windowsystem.h"
 
 #include <QAction>
@@ -122,7 +123,6 @@ void DockView::init()
         syncGeometry();
     });
     
-    connect(this, &DockView::localDockGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
     connect(&timerSyncGeometry, &QTimer::timeout, this, &DockView::updatePosition);
     
