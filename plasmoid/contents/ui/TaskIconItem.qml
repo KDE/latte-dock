@@ -149,6 +149,11 @@ Item{
         height: Math.round(width)
         //icon: decoration
         source: decoration
+        
+        onValidChanged: {
+            if (!valid && (source === decoration || source === "unknown"))
+                source = "application-x-executable"
+        }
 
         property int zoomedSize: root.zoomFactor * root.iconSize
 
