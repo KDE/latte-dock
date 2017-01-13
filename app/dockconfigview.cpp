@@ -55,18 +55,18 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         syncGeometry();
         syncSlideEffect();
     });
-
+    
     KWindowSystem::setType(winId(), NET::Dock);
     KWindowSystem::setState(winId(), NET::KeepAbove);
     setFlags(wFlags());
     KWindowSystem::forceActiveWindow(winId());
     
-    connections << connect(dockView, &QQuickView::widthChanged, this, &DockConfigView::syncGeometry);
-    connections << connect(dockView, &QQuickView::heightChanged, this, &DockConfigView::syncGeometry);
-    connections << connect(containment, &Plasma::Containment::locationChanged, this, &DockConfigView::syncGeometry);
     connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
-    
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
+    connections << connect(containment, &Plasma::Containment::locationChanged, [&]() {
+        syncSlideEffect();
+        QTimer::singleShot(200, this, &DockConfigView::syncGeometry);
+    });
 }
 
 DockConfigView::~DockConfigView()
@@ -113,9 +113,11 @@ void DockConfigView::syncGeometry()
             if (location == Plasma::Types::TopEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
                             , m_dockView->currentThickness() + 1);
+                            
             } else if (location == Plasma::Types::BottomEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
                             , sGeometry.height() - m_dockView->currentThickness() - size.height() - 1);
+                            
             }
         }
         break;
@@ -129,9 +131,11 @@ void DockConfigView::syncGeometry()
             if (location == Plasma::Types::LeftEdge) {
                 setPosition(m_dockView->currentThickness()
                             , sGeometry.center().y() - size.height() / 2 + 1);
+                            
             } else if (location == Plasma::Types::RightEdge) {
                 setPosition(sGeometry.width() - m_dockView->currentThickness() - size.width() - 1
                             , sGeometry.center().y() - size.height() / 2);
+                            
             }
         }
         break;
@@ -183,7 +187,7 @@ void DockConfigView::showEvent(QShowEvent *ev)
     KWindowSystem::setState(winId(), NET::KeepAbove | NET::SkipPager | NET::SkipTaskbar);
     KWindowSystem::forceActiveWindow(winId());
     KWindowEffects::enableBlurBehind(winId(), true);
-
+    
     syncGeometry();
     syncSlideEffect();
     
@@ -200,7 +204,7 @@ void DockConfigView::hideEvent(QHideEvent *ev)
     if (m_containment && m_dockView) {
         m_containment->setUserConfiguring(false);
     }
-
+    
     QQuickWindow::hideEvent(ev);
 }
 
@@ -229,7 +233,7 @@ void DockConfigView::setSticker(bool blockFocusLost)
     if (m_blockFocusLost == blockFocusLost) {
         return;
     }
-
+    
     m_blockFocusLost = blockFocusLost;
 }
 
