@@ -875,8 +875,10 @@ DragDrop.DropArea {
     //this is used when dragging a task in order to not hide the dock
     //and also by the menu appearing from tasks for the same reason
     function slotDisableHiding(value) {
-        console.log("ui block hiding:"+value);
-        dock.visibility.blockHiding = value;
+        if (plasmoid.userConfiguring)
+            return;
+        
+        dock.visibility.blockHiding = !value;
     }
 
     function updateAutomaticIconSize() {
