@@ -243,7 +243,7 @@ Item{
             dock.maskArea = newMaskArea;
 
             //console.log("update mask area:"+newMaskArea);
-            if(normalState || plasmoid.userConfiguring){
+            if((normalState || plasmoid.userConfiguring) && !dock.visibility.isHidden){
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
                 if (plasmoid.userConfiguring) {
