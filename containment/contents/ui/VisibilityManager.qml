@@ -247,8 +247,26 @@ Item{
 
             dock.maskArea = newMaskArea;
 
-            if(normalState && !dock.visibility.isHidden){
+            //console.log("update mask area:"+newMaskArea);
+            if(normalState || plasmoid.userConfiguring){
+                //the shadows size must be removed from the maskArea
+                //before updating the localDockGeometry
+                if (plasmoid.userConfiguring) {
+                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                        newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize;
+                    } else {
+                        newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize;
+                    }
+
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                        newMaskArea.y = newMaskArea.y + editModeVisual.shadowSize;
+                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                        newMaskArea.x = newMaskArea.x + editModeVisual.shadowSize;
+                    }
+                }
+
                 dock.setLocalDockGeometry(newMaskArea);
+              //  console.log("update dock geometry:"+newMaskArea);
             }
         }
     }
