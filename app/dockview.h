@@ -103,7 +103,7 @@ public slots:
     Q_INVOKABLE bool tasksPresent();
     
     Q_INVOKABLE void closeApplication();
-
+    
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
     
@@ -111,7 +111,7 @@ protected:
     bool event(QEvent *ev) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-
+    
 signals:
     void addInternalViewSplitter();
     void removeInternalViewSplitter();
@@ -130,7 +130,7 @@ signals:
     
 private:
     void initWindow();
-
+    
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void updatePosition();
