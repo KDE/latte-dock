@@ -32,6 +32,15 @@ import org.kde.latte 0.1 as Latte
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
+    
+    Timer {
+        id: syncGeometry
+        
+        running: false
+        repeat: false
+        interval: 400
+        onTriggered: dockConfig.syncGeometry()
+    }
 
     ColumnLayout {
         id: content
@@ -69,6 +78,7 @@ PlasmaComponents.Page {
                             if (panelSizeSlider.value > value + 4)
                                 panelSizeSlider.value = value + 4
                             plasmoid.configuration.iconSize = value
+                            syncGeometry.restart()
                         }
                     }
                     
