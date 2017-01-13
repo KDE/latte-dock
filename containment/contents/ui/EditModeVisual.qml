@@ -50,8 +50,12 @@ Image{
 
     Connections{
         target: plasmoid
-
         onLocationChanged: initializeEditPosition();
+    }
+
+    Connections{
+        target: root
+        onIconSizeChanged: initializeEditPosition();
     }
 
     onEditAnimationEndedChanged: {
