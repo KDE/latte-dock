@@ -75,8 +75,8 @@ PlasmaComponents.Page {
                     
                     function updateIconSize() {
                         if (!pressed) {
-                            if (panelSizeSlider.value > value + 4)
-                                panelSizeSlider.value = value + 4
+                            if (panelSizeSlider.value > value + units.smallSpacing)
+                                panelSizeSlider.value = value + units.smallSpacing
                             plasmoid.configuration.iconSize = value
                             syncGeometry.restart()
                         }
@@ -145,8 +145,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: Number(
-                              (zoomSlider.value * 100) - 100).toFixed(0) + "%"
+                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
@@ -251,7 +250,7 @@ PlasmaComponents.Page {
 
                     value: plasmoid.configuration.panelSize
                     minimumValue: 0
-                    maximumValue: plasmoid.configuration.iconSize + 4
+                    maximumValue: plasmoid.configuration.iconSize + units.smallSpacing
                     stepSize: 2
 
                     function updatePanelSize() {
