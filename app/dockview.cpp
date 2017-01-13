@@ -83,6 +83,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         QAction *addWidgetsAction = containment()->actions()->action("add widgets");
         addWidgetsAction->setVisible(false);
         //containment()->actions()->removeAction(addWidgetsAction);
+
+        connect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
         
     }, Qt::DirectConnection);
     
@@ -321,6 +323,21 @@ inline void DockView::syncGeometry()
     
     qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
+
+void DockView::statusChanged(Plasma::Types::ItemStatus status)
+{
+    if ((status == Plasma::Types::NeedsAttentionStatus) ||
+        (status == Plasma::Types::RequiresAttentionStatus)) {
+        m_visibility->setBlockHiding(true);
+    } else {
+        m_visibility->setBlockHiding(false);
+    }
+
+    /*} else if (status == Plasma::Types::AcceptingInputStatus) {
+             KWindowSystem::forceActiveWindow(winId());*/
+
+}
+
 
 int DockView::currentThickness() const
 {
