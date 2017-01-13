@@ -64,7 +64,7 @@ DragDrop.DropArea {
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
     property int animationsNeedLength: 0 // animations need length, e.g. adding a task
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
-    property int appletsAnimations: 0 //zoomed applets it is used basically on masking for magic window
+
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
     property int iconSize: (automaticIconSizeBasedSize > 0 && !root.editMode) ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
                                                                                 plasmoid.configuration.iconSize
@@ -403,8 +403,6 @@ DragDrop.DropArea {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
-    //this is used from zoomed applets in that container
-    //onAppletsAnimationsChanged: visibilityManager.updateMaskArea();
 
     onEditModeChanged: {
         if (editMode) {
@@ -846,16 +844,6 @@ DragDrop.DropArea {
         }
 
         animationsNeedThickness = Math.max(animationsNeedThickness + step, 0);
-
-        visibilityManager.updateMaskArea();
-    }
-
-    function slotAppletsAnimations(step) {
-        if (step === 0) {
-            return;
-        }
-
-        appletsAnimations = Math.max(appletsAnimations + step, 0);
 
         visibilityManager.updateMaskArea();
     }
