@@ -118,14 +118,12 @@ Item{
 
         normalState = ((root.nowDockHoveredIndex === -1) && (layoutsContainer.hoveredIndex === -1)
                 && (root.appletsAnimations === 0)
-                && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0)
-                && (!mainLayout.animatedLength) ) || !windowSystem.compositingActive
+                && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0)) || !windowSystem.compositingActive;
 
         // debug maskArea criteria
         //console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
         //         + root.appletsAnimations+ ", "
-        //         + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness +", "
-        //         + mainLayout.animatedLength);
+        //         + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness);
 
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
@@ -192,8 +190,7 @@ Item{
                 tempLength = Screen.height; //screenGeometry.height;
 
             //grow only on length and not thickness
-            if(mainLayout.animatedLength || root.editMode
-                    || (root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0)) {
+            if(root.editMode || (root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0)) {
 
                 //this is used to fix a bug with shadow showing when the animation of edit mode
                 //is triggered

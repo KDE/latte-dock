@@ -737,18 +737,6 @@ DragDrop.DropArea {
         }
     }
 
-    function checkLayoutsAnimatedLength() {
-        //After the last animations we must check again after a small delay in order
-        //to disable the automaticSizeUpdate
-        if (animatedLengthTimer.running) {
-            animatedLengthTimer.restart();
-        } else {
-            animatedLengthTimer.start();
-        }
-
-        visibilityManager.updateMaskArea();
-    }
-
     function clearZoom(){
         layoutsContainer.currentSpot = -1000;
         layoutsContainer.hoveredIndex = -1;
@@ -883,7 +871,7 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if (visibilityManager.normalState && !animatedLengthTimer.running && !root.editMode
+        if (visibilityManager.normalState && !root.editMode
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = dock.maxLength;
@@ -1100,21 +1088,7 @@ DragDrop.DropArea {
             Layout.preferredWidth: width
             Layout.preferredHeight: height
 
-            property bool animatedLength: false
             property int count: children.length
-
-            onHeightChanged: {
-                if (root.isVertical && !root.editMode) {
-                    checkLayoutsAnimatedLength();
-                }
-            }
-
-            onWidthChanged: {
-                if (root.isHorizontal && !root.editMode) {
-                    checkLayoutsAnimatedLength();
-                }
-            }
-
         }
 
         Grid{
@@ -1196,16 +1170,6 @@ DragDrop.DropArea {
     ///////////////END UI elements
 
     ///////////////BEGIN TIMER elements
-    Timer {
-        id: animatedLengthTimer
-        interval: 500
-        onTriggered: {
-            if ((appletsAnimations === 0) && (root.animationsNeedLength === 0) && (root.animationsNeedBothAxis === 0)) {
-                mainLayout.animatedLength = false;
-                visibilityManager.updateMaskArea();
-            }
-        }
-    }
 
     //Timer to check if the mouse is still inside the ListView
     Timer{
