@@ -267,12 +267,12 @@ void VisibilityManagerPrivate::updateHiddenState()
 
 inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
 {
-    if (!view->containment() || this->dockRect == dockRect || view->containment()->isUserConfiguring())
+    if (!view->containment() || this->dockRect == dockRect)
         return;
         
     this->dockRect = dockRect;
     
-    if (mode == Dock::AlwaysVisible) {
+    if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring()) {
         wm->setDockStruts(this->dockRect, view->containment()->location());
     }
 }
