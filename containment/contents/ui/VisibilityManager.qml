@@ -117,13 +117,11 @@ Item{
         var localY = 0;
 
         normalState = ((root.nowDockHoveredIndex === -1) && (layoutsContainer.hoveredIndex === -1)
-                && (root.appletsAnimations === 0)
                 && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0)) || !windowSystem.compositingActive;
 
         // debug maskArea criteria
-        //console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
-        //         + root.appletsAnimations+ ", "
-        //         + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness);
+        console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
+                 + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness);
 
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;

@@ -385,13 +385,13 @@ Item {
                 if ((zoomScale > 1) && !container.isZoomed) {
                     container.isZoomed = true;
                     if (!root.editMode && !animationWasSent) {
-                        root.slotAppletsAnimations(1);
+                        root.slotAnimationsNeedBothAxis(1);
                         animationWasSent = true;
                     }
                 } else if ((zoomScale == 1) && container.isZoomed) {
                     container.isZoomed = false;
                     if (!root.editMode && animationWasSent) {
-                        root.slotAppletsAnimations(-1);
+                        root.slotAnimationsNeedBothAxis(-1);
                         animationWasSent = false;
                     }
                 }
