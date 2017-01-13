@@ -88,7 +88,21 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     
     switch (this->mode) {
         case Dock::AlwaysVisible: {
-            wm->setDockStruts(dockRect, view->location());
+            if (view->containment() && !view->containment()->isUserConfiguring())
+                wm->setDockStruts(dockRect, view->location());
+            
+            connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
+                                     , this, [&]() {
+                if (view->containment()->isUserConfiguring())
+                    wm->removeDockStruts();
+            });
+            
+            connections[1] = connect(view->containment(), &Plasma::Containment::userConfiguringChanged
+                                     , this, [&](bool configuring) {
+                if (!configuring)
+                    wm->setDockStruts(dockRect, view->containment()->location());
+            });
+            
             raiseDock(true);
         }
         break;
@@ -253,7 +267,7 @@ void VisibilityManagerPrivate::updateHiddenState()
 
 inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
 {
-    if (!view->containment() || this->dockRect == dockRect)
+    if (!view->containment() || this->dockRect == dockRect || view->containment()->isUserConfiguring())
         return;
         
     this->dockRect = dockRect;
