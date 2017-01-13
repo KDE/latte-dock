@@ -287,6 +287,10 @@ Item{
     SequentialAnimation{
         id: slidingAnimationAutoHiddenOut
 
+        ScriptAction{
+            script: dock.visibility.isHidden = true;
+        }
+
         PropertyAnimation {
             target: layoutsContainer
             property: root.isVertical ? "x" : "y"
@@ -295,10 +299,14 @@ Item{
             easing.type: Easing.OutQuad
         }
 
-        onStopped: {
+        ScriptAction{
+            script: updateMaskArea();
+        }
+
+        /*onStopped: {
             dock.visibility.isHidden = true;
             updateMaskArea();
-        }
+        }*/
 
         function init() {
             if (!dock.visibility.blockHiding)
@@ -317,13 +325,16 @@ Item{
             easing.type: Easing.OutQuad
         }
 
-        onStopped: {
-        }
-
         function init() {
             if (!dock.visibility.blockHiding)
                 dock.visibility.isHidden = false;
+
             updateMaskArea();
+
+            if (slidingAnimationAutoHiddenOut.running) {
+                slidingAnimationAutoHiddenOut.stop();
+            }
+
             start();
         }
     }
