@@ -133,6 +133,9 @@ signals:
     
     void localDockGeometryChanged();
     
+private slots:
+    void menuAboutToHide();
+
 private:
     void initWindow();
     
@@ -142,7 +145,7 @@ private:
     
     void updateDocksCount();
     void updateFormFactor();
-    void menuAboutToHide();
+
 private:
     bool m_secondInitPass;
     
