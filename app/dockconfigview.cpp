@@ -101,8 +101,6 @@ void DockConfigView::syncGeometry()
     const auto location = m_containment->location();
     const auto sGeometry = screen()->geometry();
     
-    qDebug() << "sync geometry";
-    
     switch (m_containment->formFactor()) {
         case Plasma::Types::Horizontal: {
             const QSize size(rootObject()->width(), rootObject()->height());

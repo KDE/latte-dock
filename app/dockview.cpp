@@ -248,15 +248,11 @@ void DockView::resizeWindow()
         setMinimumSize(size);
         setMaximumSize(size);
         resize(size);
-        
-        qDebug() << "dock size:" << size;
     } else {
         const QSize size{screenSize.width(), maxThickness()};
         setMinimumSize(size);
         setMaximumSize(size);
         resize(size);
-        
-        qDebug() << "dock size:" << size;
     }
 }
 
@@ -287,8 +283,6 @@ void DockView::updatePosition()
         
     const QRect screenGeometry = screen()->geometry();
     QPoint position;
-    
-    qDebug() << "current dock geometry: " << geometry();
     
     position = {0, 0};
     m_maxLength = screenGeometry.width();
@@ -321,8 +315,6 @@ void DockView::updatePosition()
     
     emit maxLengthChanged();
     setPosition(position);
-    
-    qDebug() << "dock position:" << position;
 }
 
 inline void DockView::syncGeometry()
@@ -330,6 +322,8 @@ inline void DockView::syncGeometry()
     resizeWindow();
     updatePosition();
     updateAbsDockGeometry();
+    
+    qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
 
 int DockView::currentThickness() const
@@ -380,8 +374,7 @@ void DockView::updateFormFactor()
             break;
             
         default:
-            qWarning() << "wrong location, couldn't update the panel position"
-                       << location();
+            qWarning() << "wrong location, couldn't update the panel position" << location();
     }
 }
 
