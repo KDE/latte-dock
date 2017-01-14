@@ -197,7 +197,9 @@ Item{
 
                 tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
 
-                if (root.animationsNeedThickness > 0) {
+                if (dock.visibility.isHidden) {
+                    tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                } else if (root.animationsNeedThickness > 0) {
                     tempThickness = thicknessMidOriginal;
                 }
 
@@ -208,7 +210,11 @@ Item{
                     localY = dock.height - tempThickness;
             } else{
                 //use all thickness space
-                tempThickness = thicknessZoomOriginal;
+                if (dock.visibility.isHidden) {
+                    tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                } else {
+                    tempThickness = thicknessZoomOriginal;
+                }
             }
         }
         var maskArea = dock.maskArea;
