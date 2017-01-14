@@ -143,7 +143,7 @@ Item{
                 tempThickness = windowSystem.compositingActive ? thicknessMidOriginal : thicknessNormalOriginal;
             }
 
-            if (dock.visibility.isHidden) {
+            if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                 tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
             }
 
@@ -197,7 +197,7 @@ Item{
 
                 tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
 
-                if (dock.visibility.isHidden) {
+                if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                 } else if (root.animationsNeedThickness > 0) {
                     tempThickness = thicknessMidOriginal;
@@ -210,7 +210,7 @@ Item{
                     localY = dock.height - tempThickness;
             } else{
                 //use all thickness space
-                if (dock.visibility.isHidden) {
+                if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                 } else {
                     tempThickness = thicknessZoomOriginal;
@@ -318,14 +318,9 @@ Item{
             easing.type: Easing.OutQuad
         }
 
-        ScriptAction{
-            script: updateMaskArea();
-        }
-
-        /*onStopped: {
-            dock.visibility.isHidden = true;
+        onStopped: {
             updateMaskArea();
-        }*/
+        }
 
         function init() {
             if (!dock.visibility.blockHiding)
