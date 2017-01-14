@@ -7,15 +7,11 @@ Latte is a dock based on plasma frameworks that provides an elegant and intuitiv
 
 Installation
 ============
-
-####installation script####
-please run  ```./install.sh``` script
-
-Latte is now ready to be used by executing  ```latte-dock```
+Please run  ```./install.sh``` script.
+After the installation has completed successfully, you can execute ```latte-dock``` or search *Latte Dock* on your menu of applications.
 
 Translators
 ===========
-
 
 Requirements
 ============
@@ -43,6 +39,3 @@ We recommend that you use at least **Plasma 5.8.0**
 Contributors
 =============
 [Varlesh](https://github.com/varlesh): Logos and Icons.
-
-
-
