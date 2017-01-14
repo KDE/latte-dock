@@ -68,7 +68,7 @@ DragDrop.DropArea {
 
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
     property int iconSize: automaticIconSizeBasedSize > 0 ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
-                                                                                plasmoid.configuration.iconSize
+                                                            plasmoid.configuration.iconSize
     property int iconStep: 8
     property int latteAppletPos: -1
     property int panelEdgeSpacing: iconSize / 3
@@ -1090,6 +1090,18 @@ DragDrop.DropArea {
             Layout.preferredHeight: height
 
             property int count: children.length
+
+            onWidthChanged: {
+                if (root.isHorizontal && dock && (width+secondLayout.width >= dock.maxLength)) {
+                    updateAutomaticIconSize();
+                }
+            }
+
+            onHeightChanged: {
+                if (root.isVertical && dock && (height+secondLayout.height >= dock.maxLength)) {
+                    updateAutomaticIconSize();
+                }
+            }
         }
 
         Grid{
