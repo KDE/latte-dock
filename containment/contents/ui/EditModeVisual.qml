@@ -33,7 +33,7 @@ Image{
     opacity: 0
 
     property int speed: root.durationTime*4*units.longDuration
-    property int thickness: visibilityManager.thicknessNormal + shadowSize
+    property int thickness: visibilityManager.thicknessNormalOriginalValue + shadowSize
     property int rootThickness: visibilityManager.thicknessZoomOriginal
     property int shadowSize : Math.ceil(root.iconSize / 5)
 
