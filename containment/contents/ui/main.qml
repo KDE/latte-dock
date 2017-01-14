@@ -481,6 +481,11 @@ DragDrop.DropArea {
         plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
         event.accept(event.proposedAction);
 
+        if (confirmedDragEntered) {
+            slotAnimationsNeedLength(-1);
+            confirmedDragEntered = false;
+        }
+
         dndSpacer.opacity = 0;
         dndSpacer.parent = root;
     }
@@ -503,6 +508,8 @@ DragDrop.DropArea {
             toolBox.visible = false;
         }
     }
+
+    onIconSizeChanged: visibilityManager.updateMaskArea();
 
     //  onIconSizeChanged: console.log("Icon Size Changed:"+iconSize);
 
@@ -872,11 +879,13 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if (visibilityManager.normalState //&& !root.editMode
+
+        if ((visibilityManager.normalState || root.editMode)
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = dock.maxLength;
-            // console.log("------Entered check-----");
+            //console.log("------Entered check-----");
+            //console.log("max length: "+ maxLength);
 
             if (root.isVertical) {
                 layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
@@ -901,10 +910,10 @@ DragDrop.DropArea {
                 } while ( (nextLength>toShrinkLimit) && (nextIconSize !== 16));
 
                 automaticIconSizeBasedSize = nextIconSize;
-                //   console.log("Step 3 - found:"+automaticIconSizeBasedSize);
+                   console.log("Step 3 - found:"+automaticIconSizeBasedSize);
             } else if ((layoutLength<toGrowLimit
                         && (iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
-                //   console.log("step4");
+                 //  console.log("step4");
                 var nextIconSize2 = automaticIconSizeBasedSize;
                 var foundGoodSize = -1;
 
@@ -924,9 +933,9 @@ DragDrop.DropArea {
                     } else {
                         automaticIconSizeBasedSize = foundGoodSize;
                     }
-                    //      console.log("Step 4 - found:"+automaticIconSizeBasedSize);
+                  //        console.log("Step 4 - found:"+automaticIconSizeBasedSize);
                 } else {
-                    //     console.log("Step 4 - did not found...");
+                  //       console.log("Step 4 - did not found...");
                 }
             }
         }
@@ -1014,7 +1023,8 @@ DragDrop.DropArea {
     Item {
         id: dndSpacer
 
-        property int normalSize: visibilityManager.statesLineSizeOriginal + plasmoid.configuration.iconSize + visibilityManager.iconMarginOriginal - 1
+        property int normalSize: root.statesLineSize + root.iconSize + root.iconMargin - 1
+        //visibilityManager.statesLineSizeOriginal + plasmoid.configuration.iconSize + visibilityManager.iconMarginOriginal - 1
 
         width: normalSize
         height: normalSize
@@ -1092,13 +1102,17 @@ DragDrop.DropArea {
             property int count: children.length
 
             onWidthChanged: {
-                if (root.isHorizontal && dock && (width+secondLayout.width >= dock.maxLength)) {
+                if (root.isHorizontal
+                        && ( (dock && (width+secondLayout.width >= dock.maxLength))
+                            || (root.editMode)) ){
                     updateAutomaticIconSize();
                 }
             }
 
             onHeightChanged: {
-                if (root.isVertical && dock && (height+secondLayout.height >= dock.maxLength)) {
+                if (root.isVertical
+                        && ( (dock && (height+secondLayout.height >= dock.maxLength))
+                            || (root.editMode)) ){
                     updateAutomaticIconSize();
                 }
             }
