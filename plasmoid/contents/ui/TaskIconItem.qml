@@ -627,8 +627,10 @@ Item{
         }
 
         function bounceNewWindow(){
-            newWindowAnimation.init();
-            start();
+            if (isDemandingAttention || !root.dockIsHidden) {
+                newWindowAnimation.init();
+                start();
+            }
         }
 
         Component.onCompleted: {

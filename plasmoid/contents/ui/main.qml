@@ -96,6 +96,7 @@ Item {
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
+    property bool dockIsHidden: nowDockPanel ? nowDockPanel.dockIsHidden : false
     property bool highlightWindows: nowDockPanel ? nowDockPanel.highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: nowDockPanel ? nowDockPanel.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: nowDockPanel ? nowDockPanel.dotsOnActive : plasmoid.configuration.dotsOnActive
