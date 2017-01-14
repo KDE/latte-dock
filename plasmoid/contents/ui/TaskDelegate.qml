@@ -880,8 +880,16 @@ MouseArea{
     SequentialAnimation{
         id:showWindowAnimation
         property int speed: windowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
+        property bool animationSent: false
 
-        ScriptAction{script:{root.signalAnimationsNeedLength(1)}}
+        ScriptAction{
+            script:{
+                if (!showWindowAnimation.animationSent) {
+                    showWindowAnimation.animationSent = true;
+                    root.signalAnimationsNeedLength(1);
+                }
+            }
+        }
 
         PropertyAnimation {
             target: wrapper
@@ -912,8 +920,6 @@ MouseArea{
             }
         }
 
-        ScriptAction{script:{root.signalAnimationsNeedLength(-1)}}
-
         onStopped: {
             if(mainItemContainer.isWindow || mainItemContainer.isStartup){
                 taskInitComponent.createObject(wrapper);
@@ -922,6 +928,11 @@ MouseArea{
                 }
             }
             mainItemContainer.inAnimation = false;
+
+            if (showWindowAnimation.animationSent) {
+                root.signalAnimationsNeedLength(-1);
+                showWindowAnimation.animationSent = false;
+            }
         }
 
         function init(){
