@@ -58,6 +58,10 @@ Image{
         onIconSizeChanged: initializeEditPosition();
     }
 
+    onRootThicknessChanged: {
+        initializeEditPosition();
+    }
+
     onEditAnimationEndedChanged: {
         if (editAnimationEnded) {
             dock.shadow = shadowSize;
