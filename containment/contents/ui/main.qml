@@ -45,6 +45,7 @@ DragDrop.DropArea {
     property bool debugMode: false
 
     property bool automaticSize: plasmoid.configuration.automaticIconSize
+    property bool confirmedDragEntered: false
     property bool editMode: plasmoid.userConfiguring
     property bool immutable: plasmoid.immutable
     property bool inStartup: true
@@ -443,6 +444,11 @@ DragDrop.DropArea {
             return;
         }
 
+        if (!confirmedDragEntered) {
+            confirmedDragEntered = true;
+            slotAnimationsNeedLength(1);
+        }
+
         var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
         LayoutManager.insertAtCoordinates(dndSpacer, relevantLayout.x, relevantLayout.y)
         dndSpacer.opacity = 1;
@@ -459,6 +465,12 @@ DragDrop.DropArea {
     }
 
     onDragLeave: {
+
+        if (confirmedDragEntered) {
+            slotAnimationsNeedLength(-1);
+            confirmedDragEntered = false;
+        }
+
         dndSpacer.opacity = 0;
         dndSpacer.parent = root;
     }
