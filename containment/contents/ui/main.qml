@@ -67,7 +67,7 @@ DragDrop.DropArea {
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
 
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
-    property int iconSize: (automaticIconSizeBasedSize > 0 && !root.editMode) ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
+    property int iconSize: automaticIconSizeBasedSize > 0 ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
                                                                                 plasmoid.configuration.iconSize
     property int iconStep: 8
     property int latteAppletPos: -1
@@ -872,7 +872,7 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if (visibilityManager.normalState && !root.editMode
+        if (visibilityManager.normalState //&& !root.editMode
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = dock.maxLength;

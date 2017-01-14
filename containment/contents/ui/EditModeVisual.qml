@@ -25,8 +25,8 @@ import QtGraphicalEffects 1.0
 
 Image{
     id: editVisual
-    width: root.isHorizontal ? parent.width : visibilityManager.thicknessNormal
-    height: root.isVertical ? parent.height : visibilityManager.thicknessNormal
+    width: root.isHorizontal ? parent.width : visibilityManager.thicknessNormalOriginalValue
+    height: root.isVertical ? parent.height : visibilityManager.thicknessNormalOriginalValue
 
     fillMode: Image.Tile
     source: "../icons/blueprint.jpg"
