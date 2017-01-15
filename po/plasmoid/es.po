@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-06 11:37+0200\n"
-"PO-Revision-Date: 2017-01-14 18:47-0500\n"
+"POT-Creation-Date: 2017-01-14 20:10-0500\n"
+"PO-Revision-Date: 2017-01-14 20:23-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
 "Language: es\n"
@@ -50,7 +50,7 @@ msgid "Different color for minimized windows"
 msgstr "Diferente color para las ventanas minimizadas"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
-msgid "Dots on active window"
+msgid "Indicator for active window group"
 msgstr "Indicador para ventana agrupada activa"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
@@ -104,7 +104,7 @@ msgid "Show window actions in the context menu"
 msgstr "Mostrar acciones de ventana en el menu contextual"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
-msgid "Show progress information in task buttons"
+msgid "Show progress information for tasks"
 msgstr "Mostrar información de progreso en las tareas"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:89
@@ -351,12 +351,4 @@ msgstr "Siguiente"
 msgctxt "close this window"
 msgid "Close"
 msgstr "Cerrar"
-
-#: rc.cpp:1
-msgid "Latte Plasmoid"
-msgstr ""
-
-#: rc.cpp:2
-msgid "Plasmoid from the Latte Dock"
-msgstr ""
 
