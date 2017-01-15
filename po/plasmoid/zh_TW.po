@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-06 11:37+0200\n"
+"POT-Creation-Date: 2017-01-14 20:32-0500\n"
 "PO-Revision-Date: 2016-11-26 17:34+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -50,7 +50,8 @@ msgid "Different color for minimized windows"
 msgstr "最小化視窗使用不同的顏色"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
-msgid "Dots on active window"
+#, fuzzy
+msgid "Indicator for active window group"
 msgstr "作用中的視窗顯示點"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
@@ -105,7 +106,8 @@ msgid "Show window actions in the context menu"
 msgstr "在右鍵選單中顯示視窗動作"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
-msgid "Show progress information in task buttons"
+#, fuzzy
+msgid "Show progress information for tasks"
 msgstr "在工具按鍵裡顯示進度資訊"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:89
@@ -352,14 +354,6 @@ msgstr "下一個"
 msgctxt "close this window"
 msgid "Close"
 msgstr "關閉"
-
-#: rc.cpp:1
-msgid "Latte Plasmoid"
-msgstr ""
-
-#: rc.cpp:2
-msgid "Plasmoid from the Latte Dock"
-msgstr ""
 
 #~ msgid "Now Dock"
 #~ msgstr "Now Dock"
