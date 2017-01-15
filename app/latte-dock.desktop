@@ -1,12 +1,15 @@
 [Desktop Entry]
 Name=Latte
 Name[el]=Latte
+Name[es]=Latte
 Comment=Dock for the masses
 Comment[el]=Πίνακας για όλον τον κόσμο
+Comment[es]=Dock para las masas
 GenericName=Dock
 GenericName[el]=Πίνακας
+GenericName[es]=Dock
 
-Categories=Utility;
+Categories=Utility;X-SuSE-DesktopUtility;
 Exec=latte-dock %u
 Icon=latte-dock
 InitialPreference=1

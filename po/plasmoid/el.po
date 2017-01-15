@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-14 20:32-0500\n"
-"PO-Revision-Date: 2017-01-05 18:20+0200\n"
+"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"PO-Revision-Date: 2017-01-15 10:42+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -50,9 +50,8 @@ msgid "Different color for minimized windows"
 msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
-#, fuzzy
 msgid "Indicator for active window group"
-msgstr "Τελείες στο ενεργό παράθυρο"
+msgstr "Δείκτης ομάδας ενεργού παραθύρου"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
 msgid "Reverse position for lines and dots"
@@ -84,12 +83,11 @@ msgstr "Εμφάνιση κόκκινης γραμμής στο όριο των 
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:325
 #: ../../plasmoid/contents/ui/ConfigPanel.qml:171
-#, fuzzy
 msgid ""
 "For the disabled settings you should use the Latte Dock Configuration Window"
 msgstr ""
 "Για τις ανενεργές ρυθμίσεις πρέπει να χρησιμοποιήσετε το Παράθυρο Ρυθμίσεων "
-"του Πίνακα Now Dock"
+"του Latte Dock"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:59
 msgid "Cycle through tasks with mouse wheel"
@@ -108,7 +106,6 @@ msgid "Show window actions in the context menu"
 msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
-#, fuzzy
 msgid "Show progress information for tasks"
 msgstr "Εμφάνιση προόδου εργασιών"
 
@@ -357,11 +354,13 @@ msgctxt "close this window"
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#~ msgid "Latte Plasmoid"
-#~ msgstr "Latte"
+#: rc.cpp:1
+msgid "Latte Plasmoid"
+msgstr "Latte"
 
-#~ msgid "Plasmoid from the Latte Dock"
-#~ msgstr "Ένα πλασμoϊδές από τη σουίτα Latte"
+#: rc.cpp:2
+msgid "Plasmoid from the Latte Dock"
+msgstr "Ένα πλασμoϊδές από τη σουίτα Latte"
 
 #~ msgid "Now Dock"
 #~ msgstr "Now Dock"

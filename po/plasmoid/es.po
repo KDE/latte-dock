@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-14 20:32-0500\n"
+"POT-Creation-Date: 2017-01-15 10:41+0200\n"
 "PO-Revision-Date: 2017-01-14 20:23-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
@@ -351,3 +351,11 @@ msgstr "Siguiente"
 msgctxt "close this window"
 msgid "Close"
 msgstr "Cerrar"
+
+#: rc.cpp:1
+msgid "Latte Plasmoid"
+msgstr ""
+
+#: rc.cpp:2
+msgid "Plasmoid from the Latte Dock"
+msgstr ""

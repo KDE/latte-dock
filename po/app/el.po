@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-14 20:32-0500\n"
-"PO-Revision-Date: 2017-01-05 18:31+0200\n"
+"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"PO-Revision-Date: 2017-01-15 10:38+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -168,13 +168,7 @@ msgstr "Απόκρυψη:"
 msgid "General"
 msgstr "Γενικά"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:122
-#, fuzzy
-msgid "atte"
-msgstr "Latte"
-
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:140
-#, fuzzy
 msgid "ver:"
 msgstr "εκδ: "
 
@@ -221,9 +215,8 @@ msgid "Different color for minimized windows"
 msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:76
-#, fuzzy
 msgid "Indicator for active window group"
-msgstr "Τελείες στο ενεργό παράθυρο"
+msgstr "Δείκτης ομάδας ενεργού παραθύρου"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:87
 msgid "Reverse position for lines and dots"
@@ -246,7 +239,6 @@ msgid "Show window actions in the context menu"
 msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:141
-#, fuzzy
 msgid "Show progress information for tasks"
 msgstr "Εμφάνιση προόδου εργασιών"
 
@@ -283,17 +275,23 @@ msgstr "Παράθυρο ρυθμίσεων"
 msgid "Config model"
 msgstr "Μοντέλο ρυθμίσεων"
 
+#: rc.cpp:1
+msgid "Latte"
+msgstr "Latte"
+
+#: rc.cpp:2
+msgid "Dock for the masses"
+msgstr "Πίνακας για όλον τον κόσμο"
+
+#: rc.cpp:3
+msgid "Dock"
+msgstr "Πίνακας"
+
+#~ msgid "atte"
+#~ msgstr "atte"
+
 #~ msgid "Size"
 #~ msgstr "Μέγεθος"
-
-#~ msgid "Latte"
-#~ msgstr "Latte"
-
-#~ msgid "Dock for the masses"
-#~ msgstr "Πίνακας για όλον τον κόσμο"
-
-#~ msgid "Dock"
-#~ msgstr "Πίνακας"
 
 #~ msgid "Add New Dock"
 #~ msgstr "Προσθήκη Πίνακα"
