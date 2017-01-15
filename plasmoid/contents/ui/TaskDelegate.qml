@@ -954,6 +954,14 @@ MouseArea{
             init();
             start();
         }
+
+        Component.onDestruction: {
+            if (animationSent){
+                //console.log("SAFETY REMOVAL 2: animation removing ended");
+                animationSent = false;
+                root.signalAnimationsNeedLength(-1);
+            }
+        }
     }
 
     //A Timer to check how much time the task is hovered in order to check if we must
@@ -1084,7 +1092,18 @@ MouseArea{
         }
 
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
-        ScriptAction{script:{root.signalAnimationsNeedLength(-1)}}
+        ScriptAction{
+            script:{
+                if (showWindowAnimation.animationSent){
+                    //console.log("SAFETY REMOVAL 1: animation removing ended");
+                    showWindowAnimation.animationSent = false;
+                    root.signalAnimationsNeedLength(-1);
+                }
+
+                root.signalAnimationsNeedLength(-1)
+            }
+        }
+
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
         PropertyAction { target: icList; property: "delayingRemoval"; value: false }
     }
