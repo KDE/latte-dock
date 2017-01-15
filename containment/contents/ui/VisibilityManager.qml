@@ -35,8 +35,11 @@ Item{
 
     property QtObject window
 
+    property bool debugMagager: false
+
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
+    property bool previoiusNormalState : false // this is only for debugging purposes
 
     property int animationSpeed: root.durationTime * 1.2 * units.longDuration
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
@@ -117,11 +120,20 @@ Item{
         var localY = 0;
 
         normalState = ((root.nowDockHoveredIndex === -1) && (layoutsContainer.hoveredIndex === -1)
-                && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0)) || !windowSystem.compositingActive;
+                       && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0) && (root.animationsNeedThickness === 0))
+                || !windowSystem.compositingActive;
 
         // debug maskArea criteria
-        // console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
-        //          + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness);
+        if (debugMagager) {
+            console.log(root.nowDockHoveredIndex + ", " + layoutsContainer.hoveredIndex + ", "
+                        + root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " + root.animationsNeedThickness +
+                        ", " + dock.visibility.isHidden);
+
+            if (previoiusNormalState !== normalState) {
+                console.log("normal state changed to:" + normalState);
+                previoiusNormalState = normalState;
+            }
+        }
 
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
@@ -267,7 +279,7 @@ Item{
                 }
 
                 dock.setLocalDockGeometry(newMaskArea);
-              //  console.log("update dock geometry:"+newMaskArea);
+                //  console.log("update dock geometry:"+newMaskArea);
             }
         }
     }
@@ -318,7 +330,17 @@ Item{
             easing.type: Easing.OutQuad
         }
 
+        onStarted: {
+            if (manager.debugMagager) {
+                console.log("hiding animation started...");
+            }
+        }
+
         onStopped: {
+            if (manager.debugMagager) {
+                console.log("hiding animation ended...");
+            }
+
             updateMaskArea();
         }
 
@@ -337,6 +359,18 @@ Item{
             to: 0
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
+        }
+
+        onStarted: {
+            if (manager.debugMagager) {
+                console.log("showing animation started...");
+            }
+        }
+
+        onStopped: {
+            if (manager.debugMagager) {
+                console.log("showing animation ended...");
+            }
         }
 
         function init() {
