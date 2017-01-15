@@ -51,9 +51,9 @@ public:
     
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     
+    int docksCount(int screen) const;
     int screenForContainment(const Plasma::Containment *containment) const override;
-    int numDocks();
-    
+
     void addDock(Plasma::Containment *containment);
     
     void closeApplication();
@@ -67,6 +67,7 @@ signals:
     void containmentsNoChanged();
     
 private slots:
+    void destroyedChanged(bool destroyed);
     void load();
     
 private:
@@ -74,6 +75,7 @@ private:
     int primaryScreenId() const;
     
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
+    QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
     
     KActivities::Consumer *m_activityConsumer;
 };
