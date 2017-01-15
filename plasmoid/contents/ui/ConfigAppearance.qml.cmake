@@ -180,7 +180,7 @@ Item {
 
                 CheckBox {
                     id: dotsOnActive
-                    text: i18n("Dots on active window")
+                    text: i18n("Indicator for active window group")
                     enabled: true
                 }
 

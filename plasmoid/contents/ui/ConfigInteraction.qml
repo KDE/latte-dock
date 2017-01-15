@@ -81,7 +81,7 @@ Item {
                 CheckBox {
                     id: smartLaunchersChk
                     Layout.fillWidth: true
-                    text: i18n("Show progress information in task buttons")
+                    text: i18n("Show progress information for tasks")
                 }
 
                 RowLayout {

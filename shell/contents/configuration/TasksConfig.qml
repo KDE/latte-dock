@@ -73,7 +73,7 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: dotsOnActive
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Dots on active window")
+                text: i18n("Indicator for active window group")
                 checked: plasmoid.configuration.dotsOnActive
 
                 onClicked: {
@@ -138,7 +138,7 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: smartLaunchersChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show progress information in task buttons")
+                text: i18n("Show progress information for tasks")
                 checked: plasmoid.configuration.smartLaunchersEnabled
 
                 onClicked: {
