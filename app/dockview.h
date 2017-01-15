@@ -44,7 +44,7 @@ namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
-    
+
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
@@ -52,33 +52,33 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int shadow READ shadow WRITE setShadow NOTIFY shadowChanged)
-    
+
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
-    
+
 public:
     DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr);
     virtual ~DockView();
-    
+
     void init();
-    
+
     void adaptToScreen(QScreen *screen);
-    
+
     void resizeWindow();
     void syncGeometry();
-    
+
     int currentThickness() const;
     void updateAbsDockGeometry();
-    
+
     int docksCount() const;
-    
+
     int length() const;
     void setLength(int length);
-    
+
     int maxLength() const;
     void setMaxLength(int maxLength);
-    
+
     int maxThickness() const;
     void setMaxThickness(int thickness);
 
@@ -87,40 +87,40 @@ public:
 
     QRect maskArea() const;
     void setMaskArea(QRect area);
-    
+
     VisibilityManager *visibility();
-    
+
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
-    
+
 public slots:
     Q_INVOKABLE void addAppletItem(QObject *item);
     Q_INVOKABLE void removeAppletItem(QObject *item);
-    
+
     Q_INVOKABLE void addNewDock();
     Q_INVOKABLE void removeDock();
-    
+
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     Q_INVOKABLE bool tasksPresent();
-    
+
     Q_INVOKABLE void closeApplication();
-    
+
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
-    
+
 protected:
     bool event(QEvent *ev) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-    
+
 signals:
     void addInternalViewSplitter();
     void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
-    
+
     void docksCountChanged();
     void widthChanged();
     void heightChanged();
@@ -130,32 +130,32 @@ signals:
     void visibilityChanged();
     void maskAreaChanged();
     void shadowChanged();
-    
+
     void localDockGeometryChanged();
-    
+
 private slots:
     void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
 
 private:
     void initWindow();
-    
+
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void updatePosition();
-    
+
     void updateDocksCount();
     void updateFormFactor();
 
 private:
     bool m_secondInitPass;
-    
+
     int m_docksCount;
     int m_length{0};
     int m_maxLength{INT_MAX};
     int m_maxThickness{24};
     int m_shadow{0};
-    
+
     QRect m_localDockGeometry;
     QRect m_maskArea;
     QMenu *m_contextMenu;

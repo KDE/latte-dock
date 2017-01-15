@@ -70,7 +70,9 @@ DockCorona::~DockCorona()
     }
     
     qDeleteAll(m_dockViews);
+    qDeleteAll(m_waitingDockViews);
     m_dockViews.clear();
+    m_waitingDockViews.clear();
     
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
@@ -139,9 +141,24 @@ int DockCorona::primaryScreenId() const
     return id;
 }
 
-int DockCorona::numDocks()
+int DockCorona::docksCount(int screen) const
 {
-    return m_dockViews.size();
+    if (screen == -1)
+        return 0;
+
+    int docks{0};
+
+    for (const auto &view : m_dockViews) {
+        if (view && view->containment()
+            && view->containment()->screen() == screen
+            && !view->containment()->destroyed()) {
+            ++docks;
+        }
+    }
+
+    qDebug() << docks << "docks on screen:" << screen;
+
+    return docks;
 }
 
 void DockCorona::closeApplication()
@@ -154,13 +171,15 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-                                 
+
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
     
-    for (const DockView *cont : m_dockViews) {
-        if (cont && cont->containment()->screen() == fixedScreen)
-            edges.removeOne(cont->location());
+    for (const auto &view : m_dockViews) {
+        if (view && view->containment()
+            && view->containment()->screen() == fixedScreen) {
+            edges.removeOne(view->location());
+        }
     }
     
     return edges;
@@ -204,6 +223,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
     dockView->init();
     dockView->setContainment(containment);
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
+    connect(containment, &Plasma::Applet::destroyedChanged, this, &DockCorona::destroyedChanged);
     
     dockView->show();
     
@@ -212,9 +232,26 @@ void DockCorona::addDock(Plasma::Containment *containment)
     emit containmentsNoChanged();
 }
 
+void DockCorona::destroyedChanged(bool destroyed)
+{
+    Plasma::Containment *sender = qobject_cast<Plasma::Containment *>(QObject::sender());
+
+    if (!sender) {
+        return;
+    }
+
+    if (destroyed) {
+        m_waitingDockViews[sender] = m_dockViews.take(static_cast<Plasma::Containment *>(sender));
+    } else {
+        m_dockViews[sender] = m_waitingDockViews.take(static_cast<Plasma::Containment *>(sender));
+    }
+
+    emit containmentsNoChanged();
+}
+
 void DockCorona::dockContainmentDestroyed(QObject *cont)
 {
-    auto view = m_dockViews.take(static_cast<Plasma::Containment *>(cont));
+    auto view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
     delete view;
     //view->deleteLater();
     emit containmentsNoChanged();
@@ -222,7 +259,6 @@ void DockCorona::dockContainmentDestroyed(QObject *cont)
 
 void DockCorona::loadDefaultLayout()
 {
-
     qDebug() << "loading default layout";
     //! Settting mutable for create a containment
     setImmutability(Plasma::Types::Mutable);
