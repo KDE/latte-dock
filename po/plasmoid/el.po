@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-06 11:37+0200\n"
+"POT-Creation-Date: 2017-01-14 20:32-0500\n"
 "PO-Revision-Date: 2017-01-05 18:20+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -50,7 +50,8 @@ msgid "Different color for minimized windows"
 msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
-msgid "Dots on active window"
+#, fuzzy
+msgid "Indicator for active window group"
 msgstr "Τελείες στο ενεργό παράθυρο"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
@@ -107,7 +108,8 @@ msgid "Show window actions in the context menu"
 msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
-msgid "Show progress information in task buttons"
+#, fuzzy
+msgid "Show progress information for tasks"
 msgstr "Εμφάνιση προόδου εργασιών"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:89
@@ -355,13 +357,11 @@ msgctxt "close this window"
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: rc.cpp:1
-msgid "Latte Plasmoid"
-msgstr "Latte"
+#~ msgid "Latte Plasmoid"
+#~ msgstr "Latte"
 
-#: rc.cpp:2
-msgid "Plasmoid from the Latte Dock"
-msgstr "Ένα πλασμoϊδές από τη σουίτα Latte"
+#~ msgid "Plasmoid from the Latte Dock"
+#~ msgstr "Ένα πλασμoϊδές από τη σουίτα Latte"
 
 #~ msgid "Now Dock"
 #~ msgstr "Now Dock"
