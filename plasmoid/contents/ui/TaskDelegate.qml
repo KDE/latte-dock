@@ -1084,9 +1084,9 @@ MouseArea{
         }
 
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
+        ScriptAction{script:{root.signalAnimationsNeedLength(-1)}}
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
         PropertyAction { target: icList; property: "delayingRemoval"; value: false }
-        ScriptAction{script:{root.signalAnimationsNeedLength(-1)}}
     }
 
 }// main Item
