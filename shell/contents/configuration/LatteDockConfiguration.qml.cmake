@@ -119,7 +119,7 @@ PlasmaCore.FrameSvgItem {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignHCenter
                 Layout.fillWidth: false
                 
-                text: i18n("atte")
+                text: "atte"
                 font.family: tangerineFont.name
                 font.pointSize: 2 * theme.defaultFont.pointSize
                 font.italic: true
