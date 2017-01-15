@@ -120,7 +120,7 @@ Item{
         var localY = 0;
 
         normalState = ((root.nowDockHoveredIndex === -1) && (layoutsContainer.hoveredIndex === -1)
-                       && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0) && (root.animationsNeedThickness === 0))
+                       && (root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
                 || !windowSystem.compositingActive;
 
         // debug maskArea criteria
