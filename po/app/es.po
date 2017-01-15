@@ -1,0 +1,298 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Smith Ar <audoban@openmailbox.org>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
+"POT-Creation-Date: 2017-01-06 11:37+0200\n"
+"PO-Revision-Date: 2017-01-14 19:03-0500\n"
+"Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
+"Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:46
+#: ../../shell/contents/configuration/AppearanceConfig.qml:57
+msgid "Applets Size"
+msgstr "Tamaño de los iconos"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:102
+msgid "Zoom On Hover"
+msgstr "Factor de Zoom"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:111
+msgid "Zoom Factor"
+msgstr "Factor de Zoom"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:165
+msgid "Animations"
+msgstr "Animaciones"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:213
+#: ../../shell/contents/configuration/AppearanceConfig.qml:378
+msgid "None"
+msgstr "Ninguno"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:226
+msgid "x1"
+msgstr "x1"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:239
+msgid "x2"
+msgstr "x2"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:253
+msgid "x3"
+msgstr "x3"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:271
+msgid "Background"
+msgstr "Fondo"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:276
+msgid "Show Panel Background"
+msgstr "Mostrar el fondo del panel"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:296
+msgid "Size"
+msgstr "Tamaño"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:341
+msgid "Shadows"
+msgstr "Sombras"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:383
+msgid "Only for locked applets"
+msgstr "Solo para elementos gráficos bloqueados"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:388
+msgid "All applets"
+msgstr "Todos los elementos gráficos"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:45
+msgid "Location"
+msgstr "Posición"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:126
+msgctxt "bottom location"
+msgid "Bottom"
+msgstr "Abajo"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:140
+msgctxt "left location"
+msgid "Left"
+msgstr "Izquierda"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:154
+msgctxt "top location"
+msgid "Top"
+msgstr "Arriba"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:169
+msgctxt "right location"
+msgid "Right"
+msgstr "Derecha"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:191
+msgid "Alignment"
+msgstr "Alineamiento"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
+msgctxt "top alignment"
+msgid "Top"
+msgstr "Arriba"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
+msgctxt "left alignment"
+msgid "Left"
+msgstr "Izquierda"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:263
+msgctxt "center alignment"
+msgid "Center"
+msgstr "Centro"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:277
+msgctxt "bottom alignment"
+msgid "Bottom"
+msgstr "Abajo"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:277
+msgctxt "right alignment"
+msgid "Right"
+msgstr "Derecha"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:295
+msgctxt "justify alignment"
+msgid "Justify"
+msgstr "Justificado"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:320
+msgid "Visibility"
+msgstr "Visibilidad"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:370
+msgid "Always Visible"
+msgstr "Siempre visible"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:383
+msgid "Auto Hide"
+msgstr "Auto ocultar"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:396
+msgid "Dodge Active"
+msgstr "Esquivar ventana activa"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:410
+msgid "Dodge Maximized"
+msgstr "Esquivar ventana maximizada"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:424
+msgid "Dodge All Windows"
+msgstr "Esquivar todas las ventanas"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:441
+msgid "Delay"
+msgstr "Temporizadores"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:452
+msgid "Hide:"
+msgstr "Ocultar:"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:475
+msgid "Show:"
+msgstr "Mostrar:"
+
+#: ../../shell/contents/configuration/config.qml:27
+msgid "General"
+msgstr "General"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:103
+msgid "atte"
+msgstr "atte"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:122
+msgid "ver:"
+msgstr "versión: "
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:131
+msgid "Behavior"
+msgstr "Comportamiento"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:135
+#: ../../shell/contents/configuration/TasksConfig.qml:46
+msgid "Appearance"
+msgstr "Apariencia"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:139
+msgid "Tasks"
+msgstr "Tareas"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:196
+msgid "Add"
+msgstr "Añadir"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:212
+msgid "Remove"
+msgstr "Remover"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:227
+msgid "Quit"
+msgstr "Salir"
+
+#: ../../shell/contents/configuration/LatteTextField.qml:32
+msgid "<none>"
+msgstr "none"
+
+#: ../../shell/contents/configuration/LatteTextField.qml:60
+msgid "ms."
+msgstr "ms"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:60
+msgid "Show glow around windows points"
+msgstr "Mostrar brillo alrededor de los indicadores"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:71
+msgid "Different color for minimized windows"
+msgstr "Diferente color para las ventanas minimizadas"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:82
+msgid "Dots on active window"
+msgstr "Indicador para ventana agrupada activa"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:93
+msgid "Reverse position for lines and dots"
+msgstr "Invertir la posición para los indicadores"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:111
+msgid "Interaction"
+msgstr "Interacción"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:124
+msgid "Preview windows on hovering"
+msgstr "Mostrar ayudas emergentes"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:135
+msgid "Highlight windows on hovering"
+msgstr "Resaltar ventanas activas"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:146
+msgid "Show window actions in the context menu"
+msgstr "Mostrar acciones de ventana en el menu contextual"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:157
+msgid "Show progress information in task buttons"
+msgstr "Mostrar información de progreso en las tareas"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:175
+msgid "Filters"
+msgstr "Filtros"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:189
+msgid "Show only tasks from the current screen"
+msgstr "Mostrar solo las tareas de la pantalla actual"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:199
+msgid "Show only tasks from the current desktop"
+msgstr "Mostrar solo las tareas del escritorio actual"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:209
+msgid "Show only tasks from the current activity"
+msgstr "Mostrar solo las tareas de la actividad actual"
+
+#: ../../app/dockview.cpp:878
+msgctxt "%1 is the name of the containment"
+msgid "%1 Options"
+msgstr "Preferencias de %1"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:44
+msgid "Latte Dock panel"
+msgstr "Latte Dock"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:46
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:47
+msgid "Config model"
+msgstr ""
+
+#: rc.cpp:1
+msgid "Latte"
+msgstr "Latte"
+
+#: rc.cpp:2
+msgid "Dock for the masses"
+msgstr "Dock para las masas"
+
+#: rc.cpp:3
+msgid "Dock"
+msgstr "Dock"
+
+
