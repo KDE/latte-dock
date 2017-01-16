@@ -6,8 +6,9 @@
 * fix #65, stop bouncing animation in hidden state
 * fix #66, many automatic size issues
 * fix #51, protect add task animation more
+* fix #76, Latte should not allow removing all dock
 * The task tooltip now shows all the borders
-* INSTALLATION file added with instructions for Kubuntu
+* INSTALLATION file added with instructions for Kubuntu and Arch Linux
 * Update README.md
 * Added rpm package for openSUSE
 * Added spanish translation
