@@ -23,35 +23,35 @@ class VisibilityManager;
  */
 class VisibilityManagerPrivate : public QObject {
     Q_GADGET
-    
+
 public:
     VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q);
     ~VisibilityManagerPrivate();
-    
+
     void setMode(Dock::Visibility mode);
     void setIsHidden(bool isHidden);
     void setBlockHiding(bool blockHiding);
     void setTimerShow(int msec);
     void setTimerHide(int msec);
-    
+
     void raiseDock(bool raise);
     void updateHiddenState();
-    
+
     void setDockRect(const QRect &rect);
-    
+
     void windowAdded(WId id);
     void dodgeActive(WId id);
     void dodgeMaximized(WId id);
     void dodgeWindows(WId id);
     void checkAllWindows();
-    
+
     bool intersects(const WindowInfoWrap &winfo);
-    
+
     void saveConfig();
     void restoreConfig();
-    
+
     bool event(QEvent *ev) override;
-    
+
     VisibilityManager *q;
     PlasmaQuick::ContainmentView *view;
     std::unique_ptr<AbstractWindowInterface> wm;

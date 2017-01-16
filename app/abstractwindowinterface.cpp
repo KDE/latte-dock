@@ -31,12 +31,10 @@ namespace Latte {
 AbstractWindowInterface::AbstractWindowInterface(QQuickWindow *const view, QObject *parent)
     : QObject(parent), m_view(view)
 {
-
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()
 {
-
 }
 
 AbstractWindowInterface *AbstractWindowInterface::getInstance(QQuickWindow *const view, QObject *parent)
@@ -45,7 +43,7 @@ AbstractWindowInterface *AbstractWindowInterface::getInstance(QQuickWindow *cons
         //! TODO: WaylandWindowInterface
         return nullptr;
     }
-    
+
     /* if(KWindowSystem::isPlatformX11) */
     return new XWindowInterface(view, parent);
 }

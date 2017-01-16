@@ -31,7 +31,6 @@ WindowInfoWrap::WindowInfoWrap()
     , m_isPlasmaDesktop(false)
     , m_wid(0)
 {
-
 }
 
 WindowInfoWrap::WindowInfoWrap(const WindowInfoWrap &other)
@@ -49,7 +48,6 @@ WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_geometry = rhs.m_geometry;
     m_wid = rhs.m_wid;
-    
     return *this;
 }
 

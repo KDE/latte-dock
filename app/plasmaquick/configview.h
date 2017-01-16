@@ -47,7 +47,7 @@ class ConfigView : public QQuickView {
     Q_OBJECT
     Q_PROPERTY(PlasmaQuick::ConfigModel *configModel READ configModel CONSTANT)
     Q_PROPERTY(QString appletGlobalShortcut READ appletGlobalShortcut WRITE setAppletGlobalShortcut NOTIFY appletGlobalShortcutChanged)
-    
+
 public:
     /**
      * @param applet the applet of this ConfigView
@@ -55,29 +55,29 @@ public:
      **/
     ConfigView(Plasma::Applet *applet, QWindow *parent = 0);
     ~ConfigView() override;
-    
+
     virtual void init();
-    
+
     Plasma::Applet *applet();
-    
+
     QString appletGlobalShortcut() const;
     void setAppletGlobalShortcut(const QString &shortcut);
-    
+
     /**
      * @return the ConfigModel of the ConfigView
      **/
     PlasmaQuick::ConfigModel *configModel() const;
-    
+
 Q_SIGNALS:
     void appletGlobalShortcutChanged();
-    
+
 protected:
     void hideEvent(QHideEvent *ev) override;
     void resizeEvent(QResizeEvent *re) override;
-    
+
 private:
     ConfigViewPrivate *const d;
-    
+
     Q_PRIVATE_SLOT(d, void updateMinimumWidth())
     Q_PRIVATE_SLOT(d, void updateMinimumHeight())
     Q_PRIVATE_SLOT(d, void updateMaximumWidth())

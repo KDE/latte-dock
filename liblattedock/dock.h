@@ -29,11 +29,11 @@ namespace Latte {
 
 class Dock {
     Q_GADGET
-    
+
 public:
     Dock() = delete;
     ~Dock() {}
-    
+
     enum Visibility {
         None = -1,
         AlwaysVisible = 0,
@@ -43,7 +43,7 @@ public:
         DodgeAllWindows
     };
     Q_ENUM(Visibility)
-    
+
     enum Alignment {
         Center = 0,
         Left,
@@ -53,7 +53,7 @@ public:
         Justify = 10
     };
     Q_ENUM(Alignment)
-    
+
 };
 
 }//end of namespace
