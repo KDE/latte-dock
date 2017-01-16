@@ -13,11 +13,10 @@
 
 #FormattingOptions
     --convert-tabs
-    --max-code-length=80
+    --max-code-length=200
     --keep-one-line-blocks
     --keep-one-line-statements
     --close-templates
-    --max-code-length=200
 
 #IndentationOptions
     --indent-switches
@@ -31,9 +30,9 @@
     --pad-oper
     --unpad-paren
     --pad-header
-    --fill-empty-lines
     --align-pointer=name
     --align-reference=name
+    --delete-empty-lines
 
 #Others
     --preserve-date

@@ -41,36 +41,36 @@ class DockView;
 
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
-    
+
 public:
     DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent = nullptr);
     ~DockConfigView() override;
-    
+
     void init() override;
     Qt::WindowFlags wFlags() const;
-    
-    
+
+
 public slots:
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
-    
+
 protected:
     void showEvent(QShowEvent *ev) override;
     void hideEvent(QHideEvent *ev) override;
     void focusOutEvent(QFocusEvent *ev) override;
-    
+
     void syncSlideEffect();
-    
+
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
-    
+
 private:
     bool m_blockFocusLost;
-    
+
     Plasma::Containment *m_containment{nullptr};
     QPointer<DockView> m_dockView;
     QTimer m_screenSyncTimer;
-    
+
     QList<QMetaObject::Connection> connections;
 };
 
