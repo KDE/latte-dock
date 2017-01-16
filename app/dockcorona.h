@@ -53,7 +53,7 @@ public:
     
     int docksCount(int screen) const;
     int screenForContainment(const Plasma::Containment *containment) const override;
-
+    
     void addDock(Plasma::Containment *containment);
     
     void closeApplication();
@@ -64,7 +64,7 @@ public slots:
     
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
-    void containmentsNoChanged();
+    void docksCountChanged();
     
 private slots:
     void destroyedChanged(bool destroyed);

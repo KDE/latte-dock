@@ -90,25 +90,8 @@ PlasmaCore.FrameSvgItem {
         }
     }
 
-    Binding {
-        target: dock
-        property: "length"
-        when: containment
-        value: {
-            if (!containment) {
-                return;
-            }
-            if (verticalPanel) {
-                return containment.Layout.preferredHeight
-            } else {
-                return containment.Layout.preferredWidth
-            }
-        }
-    }
-
-
     Item {
         id: containmentParent
         anchors.fill: parent
     }
-} 
+}

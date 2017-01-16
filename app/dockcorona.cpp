@@ -58,7 +58,6 @@ DockCorona::DockCorona(QObject *parent)
     qmlRegisterTypes();
     
     connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
-    
     connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 }
 
@@ -145,9 +144,9 @@ int DockCorona::docksCount(int screen) const
 {
     if (screen == -1)
         return 0;
-
+        
     int docks{0};
-
+    
     for (const auto &view : m_dockViews) {
         if (view && view->containment()
             && view->containment()->screen() == screen
@@ -155,9 +154,9 @@ int DockCorona::docksCount(int screen) const
             ++docks;
         }
     }
-
+    
     qDebug() << docks << "docks on screen:" << screen;
-
+    
     return docks;
 }
 
@@ -171,11 +170,11 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-
+                                 
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
     
-    for (const auto &view : m_dockViews) {
+    for (auto *view : m_dockViews) {
         if (view && view->containment()
             && view->containment()->screen() == fixedScreen) {
             edges.removeOne(view->location());
@@ -203,18 +202,16 @@ void DockCorona::addDock(Plasma::Containment *containment)
         return;
     }
     
+    auto metadata = containment->kPackage().metadata();
+    
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
-    KPluginMetaData metadata = containment->kPackage().metadata();
-    
-    if (metadata.pluginId() == "org.kde.plasma.private.systemtray") {
+    if (metadata.pluginId() != "org.kde.latte.containment")
         return;
-    }
-    
-    foreach (DockView *dock, m_dockViews) {
-        if (dock->containment() == containment) {
+        
+    for (auto *dock : m_dockViews) {
+        if (dock->containment() == containment)
             return;
-        }
     }
     
     qDebug() << "Adding dock for container...";
@@ -229,32 +226,35 @@ void DockCorona::addDock(Plasma::Containment *containment)
     
     m_dockViews[containment] = dockView;
     
-    emit containmentsNoChanged();
+    emit docksCountChanged();
 }
 
 void DockCorona::destroyedChanged(bool destroyed)
 {
     Plasma::Containment *sender = qobject_cast<Plasma::Containment *>(QObject::sender());
-
+    
     if (!sender) {
         return;
     }
-
+    
     if (destroyed) {
         m_waitingDockViews[sender] = m_dockViews.take(static_cast<Plasma::Containment *>(sender));
     } else {
         m_dockViews[sender] = m_waitingDockViews.take(static_cast<Plasma::Containment *>(sender));
     }
-
-    emit containmentsNoChanged();
+    
+    emit docksCountChanged();
 }
 
 void DockCorona::dockContainmentDestroyed(QObject *cont)
 {
     auto view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
-    delete view;
+    
+    if (view)
+        view->destroy();
+        
     //view->deleteLater();
-    emit containmentsNoChanged();
+    emit docksCountChanged();
 }
 
 void DockCorona::loadDefaultLayout()
@@ -300,13 +300,6 @@ void DockCorona::loadDefaultLayout()
 
 inline void DockCorona::qmlRegisterTypes() const
 {
-    constexpr auto uri = "org.kde.latte.shell";
-    constexpr auto vMajor = 0;
-    constexpr auto vMinor = 2;
-    
-    //    qmlRegisterUncreatableType<Candil::Dock>(uri, vMajor, vMinor, "Dock", "class Dock uncreatable");
-    //    qmlRegisterUncreatableType<Candil::VisibilityManager>(uri, vMajor, vMinor, "VisibilityManager", "class VisibilityManager uncreatable");
-    //    qmlRegisterUncreatableType<NowDockView>(uri, vMajor, vMinor, "DockView", "class DockView uncreatable");
     qmlRegisterType<QScreen>();
 }
 
