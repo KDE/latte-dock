@@ -151,7 +151,6 @@ private:
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
     QList<PlasmaQuick::AppletQuickItem *> m_appletItems;
-    QList<QMetaObject::Connection> connections;
 };
 
 }
