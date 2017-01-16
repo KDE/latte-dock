@@ -210,7 +210,8 @@ Item {
         // hideOnWindowDeactivate: false
 
         type: PlasmaCore.Dialog.Tooltip
-        //        flags: Qt.WindowStaysOnTopHint
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus
+
         location: PlasmaCore.Types.Floating
 
         visible: false
@@ -220,6 +221,10 @@ Item {
         property Item activeItem: null
 
         function hide(){
+            if (nowDockPanel) {
+                //it is used to unblock dock hiding
+                root.signalDraggingState(false);
+            }
             visible = false;
             //activeItem = null;
             initializePreviewComponent.createObject(windowsPreviewDlg);
@@ -237,6 +242,10 @@ Item {
                 }
             }
 
+            if (nowDockPanel) {
+                //it is used to block dock hiding
+                root.signalDraggingState(true);
+            }
             visible = true;
         }
     }
