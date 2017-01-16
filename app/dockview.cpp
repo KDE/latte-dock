@@ -46,7 +46,6 @@ namespace Latte {
 
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),
-      m_docksCount(0),
       m_contextMenu(nullptr)
 {
     setVisible(false);
@@ -60,12 +59,12 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         adaptToScreen(targetScreen);
     else
         adaptToScreen(qGuiApp->primaryScreen());
-
+        
     connect(this, &DockView::containmentChanged
     , this, [&]() {
         if (!containment())
             return;
-
+            
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
         }
@@ -83,15 +82,15 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         QAction *addWidgetsAction = containment()->actions()->action("add widgets");
         addWidgetsAction->setVisible(false);
         //containment()->actions()->removeAction(addWidgetsAction);
-
+        
         connect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
         
     }, Qt::DirectConnection);
     
-    DockCorona *dcorona = qobject_cast<DockCorona *>(this->corona());
+    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
     
-    if (dcorona) {
-        connections << connect(dcorona, &DockCorona::containmentsNoChanged, this, &DockView::updateDocksCount);
+    if (dockCorona) {
+        connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
     }
 }
 
@@ -130,7 +129,6 @@ void DockView::init()
     
     setVisible(true);
     
-    updateDocksCount();
     syncGeometry();
     qDebug() << "SOURCE:" << source();
 }
@@ -143,27 +141,27 @@ void DockView::adaptToScreen(QScreen *screen)
         m_maxLength = screen->size().height();
     else
         m_maxLength = screen->size().width();
-
+        
     if (containment())
         containment()->reactToScreenChange();
-
+        
     syncGeometry();
 }
 
 void DockView::addNewDock()
 {
-    DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
+    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
     
-    if (corona) {
-        corona->loadDefaultLayout();
+    if (dockCorona) {
+        dockCorona->loadDefaultLayout();
     }
 }
 
 void DockView::removeDock()
 {
-    if (m_docksCount > 1) {
+    if (docksCount() > 1) {
         QAction *removeAct = containment()->actions()->action(QStringLiteral("remove"));
-
+        
         if (removeAct) {
             removeAct->trigger();
         }
@@ -191,7 +189,7 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 {
     if (!applet || !applet->containment())
         return;
-
+        
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
     
     if (m_configView && c && c->isContainment() && c == containment()) {
@@ -199,7 +197,6 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
             m_configView->hide();
         } else {
             m_configView->show();
-            //m_configView->requestActivate();
         }
         
         return;
@@ -267,7 +264,7 @@ void DockView::updateAbsDockGeometry()
 {
     if (!m_visibility)
         return;
-
+        
     QRect absoluteGeometry {x() + m_localDockGeometry.x(), y() + m_localDockGeometry.y(), m_localDockGeometry.width(), m_localDockGeometry.height()};
     m_visibility->updateDockGeometry(absoluteGeometry);
 }
@@ -276,34 +273,33 @@ void DockView::updatePosition()
 {
     if (!containment())
         return;
-
+        
     const QRect screenGeometry = screen()->geometry();
     QPoint position;
     
     position = {0, 0};
-    m_maxLength = screenGeometry.width();
     
     switch (location()) {
         case Plasma::Types::TopEdge:
             position = {screenGeometry.x(), screenGeometry.y()};
             m_maxLength = screenGeometry.width();
             break;
-
+            
         case Plasma::Types::BottomEdge:
             position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
             m_maxLength = screenGeometry.width();
             break;
-
+            
         case Plasma::Types::RightEdge:
             position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
             m_maxLength = screenGeometry.height();
             break;
-
+            
         case Plasma::Types::LeftEdge:
             position = {screenGeometry.x(), screenGeometry.y()};
             m_maxLength = screenGeometry.height();
             break;
-
+            
         default:
             qWarning() << "wrong location, couldn't update the panel position"
                        << location();
@@ -330,12 +326,7 @@ void DockView::statusChanged(Plasma::Types::ItemStatus status)
     } else {
         m_visibility->setBlockHiding(false);
     }
-
-    /*} else if (status == Plasma::Types::AcceptingInputStatus) {
-             KWindowSystem::forceActiveWindow(winId());*/
-
 }
-
 
 int DockView::currentThickness() const
 {
@@ -349,48 +340,29 @@ int DockView::currentThickness() const
 int DockView::docksCount() const
 {
     auto dockCorona = qobject_cast<DockCorona *>(corona());
-
+    
     if (!dockCorona || !containment())
         return 0;
-
+        
     return dockCorona->docksCount(containment()->screen());
-}
-
-void DockView::updateDocksCount()
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-    
-    if (!dockCorona || !containment()) {
-        return ;
-    }
-
-    int count = dockCorona->docksCount(containment()->screen());
-
-    if (count == m_docksCount) {
-        return;
-    }
-
-    m_docksCount = count;
-
-    emit docksCountChanged();
 }
 
 void DockView::updateFormFactor()
 {
     if (!containment())
         return;
-
+        
     switch (location()) {
         case Plasma::Types::TopEdge:
         case Plasma::Types::BottomEdge:
             containment()->setFormFactor(Plasma::Types::Horizontal);
             break;
-
+            
         case Plasma::Types::LeftEdge:
         case Plasma::Types::RightEdge:
             containment()->setFormFactor(Plasma::Types::Vertical);
             break;
-
+            
         default:
             qWarning() << "wrong location, couldn't update the panel position" << location();
     }
@@ -405,29 +377,10 @@ void DockView::setMaxThickness(int thickness)
 {
     if (m_maxThickness == thickness)
         return;
-
+        
     m_maxThickness = thickness;
     syncGeometry();
     emit maxThicknessChanged();
-}
-
-int DockView::length() const
-{
-    return m_length;
-}
-
-void DockView::setLength(int length)
-{
-    if (m_length == length)
-        return;
-
-    if (length > m_maxLength)
-        m_length = m_maxLength;
-    else
-        m_length = length;
-
-    syncGeometry();
-    emit lengthChanged();
 }
 
 int DockView::maxLength() const
@@ -439,11 +392,10 @@ void DockView::setMaxLength(int maxLength)
 {
     if (m_maxLength == maxLength)
         return;
-
+        
     m_maxLength = maxLength;
     emit maxLengthChanged();
 }
-
 
 QRect DockView::maskArea() const
 {
@@ -454,9 +406,8 @@ void DockView::setMaskArea(QRect area)
 {
     if (m_maskArea == area)
         return;
-
+        
     m_maskArea = area;
-    
     setMask(m_maskArea);
     
     //qDebug() << "dock mask set:" << m_maskArea;
@@ -470,12 +421,10 @@ int DockView::shadow() const
 
 void DockView::setShadow(int shadow)
 {
-    if (m_shadow == shadow) {
+    if (m_shadow == shadow)
         return;
-    }
-
+        
     m_shadow = shadow;
-
     emit shadowChanged();
 }
 
@@ -484,9 +433,8 @@ bool DockView::tasksPresent()
     foreach (Plasma::Applet *applet, containment()->applets()) {
         KPluginMetaData meta = applet->kPackage().metadata();
         
-        if (meta.pluginId() == "org.kde.latte.plasmoid") {
+        if (meta.pluginId() == "org.kde.latte.plasmoid")
             return true;
-        }
     }
     
     return false;
@@ -506,7 +454,7 @@ bool DockView::event(QEvent *e)
 
 QList<int> DockView::freeEdges() const
 {
-    QList<Plasma::Types::Location> edges = corona()->freeEdges(containment()->screen());
+    const auto edges = corona()->freeEdges(containment()->screen());
     
     QList<int> edgesInt;
     
@@ -519,14 +467,14 @@ QList<int> DockView::freeEdges() const
 
 void DockView::closeApplication()
 {
-    DockCorona *corona = qobject_cast<DockCorona *>(this->corona());
+    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
     
-    if (corona) {
+    if (dockCorona) {
         //m_configView->hide();
         if (m_configView)
             m_configView->deleteLater();
-
-        corona->closeApplication();
+            
+        dockCorona->closeApplication();
     }
 }
 
