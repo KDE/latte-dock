@@ -92,15 +92,11 @@ DockView::~DockView()
 {
     qDebug() << "dock view deleting...";
 
-    foreach (auto &var, connections) {
-        QObject::disconnect(var);
-    }
-
+    this->disconnect();
     qDebug() << "dock view connections deleted...";
 
     if (m_visibility) {
-        delete m_visibility.data();
-        m_visibility.clear();
+        delete m_visibility;
     }
 }
 
