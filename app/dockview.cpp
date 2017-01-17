@@ -95,6 +95,11 @@ DockView::~DockView()
     this->disconnect();
     qDebug() << "dock view connections deleted...";
 
+    if (m_configView) {
+        m_configView->hide();
+        m_configView->deleteLater();
+    }
+
     if (m_visibility) {
         delete m_visibility;
     }
@@ -431,6 +436,11 @@ bool DockView::event(QEvent *e)
 
 QList<int> DockView::freeEdges() const
 {
+    if (!corona() || !containment()) {
+        const QList<int> emptyEdges;
+        return emptyEdges;
+    }
+
     const auto edges = corona()->freeEdges(containment()->screen());
     QList<int> edgesInt;
 
@@ -445,13 +455,8 @@ void DockView::closeApplication()
 {
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
-    if (dockCorona) {
-        //m_configView->hide();
-        if (m_configView)
-            m_configView->deleteLater();
-
+    if (dockCorona)
         dockCorona->closeApplication();
-    }
 }
 
 QVariantList DockView::containmentActions()
