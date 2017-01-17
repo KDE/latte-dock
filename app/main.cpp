@@ -44,15 +44,15 @@ static const char version[] = "0.1";
 int main(int argc, char **argv)
 {
     QQuickWindow::setDefaultAlphaBuffer(true);
-    
+
     QApplication app(argc, argv);
     app.setApplicationVersion(version);
-    
+
     app.setOrganizationDomain(QStringLiteral("latte-dock"));
     KLocalizedString::setApplicationDomain("latte-dock");
-    app.setApplicationName(QStringLiteral("Latte Dock"));
+    app.setApplicationName(QStringLiteral("lattedock"));
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("latte-dock")));
-    
+
     //! set pattern for debug messages
     //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
     qSetMessagePattern(QStringLiteral(
@@ -63,9 +63,9 @@ int main(int argc, char **argv)
                            CICYAN " - " CNORMAL "%{message}"
                            CIRED "%{if-fatal}\n%{backtrace depth=8 separator=\"\n\"}%{endif}"
                            "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
-                           
+
     //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
     Latte::DockCorona corona;
-    
+
     return app.exec();
 }
