@@ -38,7 +38,6 @@ namespace Latte {
 DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
       m_blockFocusLost(false),
-      m_containment(containment),
       m_dockView(dockView)
 {
     connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
@@ -78,7 +77,7 @@ void DockConfigView::init()
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
     rootContext()->setContextObject(new KLocalizedContext(this));
-    auto source = QUrl::fromLocalFile(m_containment->corona()->kPackage().filePath("lattedockconfigurationui"));
+    auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
     syncSlideEffect();
 }
@@ -90,13 +89,13 @@ inline Qt::WindowFlags DockConfigView::wFlags() const
 
 void DockConfigView::syncGeometry()
 {
-    if (!m_containment || !rootObject())
+    if (!m_dockView->containment() || !rootObject())
         return;
 
-    const auto location = m_containment->location();
+    const auto location = m_dockView->containment()->location();
     const auto sGeometry = screen()->geometry();
 
-    switch (m_containment->formFactor()) {
+    switch (m_dockView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
             const QSize size(rootObject()->width(), rootObject()->height());
             setMaximumSize(size);
@@ -137,12 +136,12 @@ void DockConfigView::syncGeometry()
 
 void DockConfigView::syncSlideEffect()
 {
-    if (!m_containment)
+    if (!m_dockView->containment())
         return;
 
     KWindowEffects::SlideFromLocation slideLocation{KWindowEffects::NoEdge};
 
-    switch (m_containment->location()) {
+    switch (m_dockView->containment()->location()) {
         case Plasma::Types::TopEdge:
             slideLocation = KWindowEffects::TopEdge;
             break;
@@ -178,8 +177,8 @@ void DockConfigView::showEvent(QShowEvent *ev)
     syncGeometry();
     syncSlideEffect();
 
-    if (m_containment)
-        m_containment->setUserConfiguring(true);
+    if (m_dockView && m_dockView->containment())
+        m_dockView->containment()->setUserConfiguring(true);
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
@@ -187,9 +186,8 @@ void DockConfigView::showEvent(QShowEvent *ev)
 
 void DockConfigView::hideEvent(QHideEvent *ev)
 {
-    if (m_containment && m_dockView) {
-        m_containment->setUserConfiguring(false);
-    }
+    if (m_dockView && m_dockView->containment())
+        m_dockView->containment()->setUserConfiguring(false);
 
     QQuickWindow::hideEvent(ev);
 }

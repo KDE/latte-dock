@@ -67,7 +67,6 @@ private slots:
 private:
     bool m_blockFocusLost;
 
-    Plasma::Containment *m_containment{nullptr};
     QPointer<DockView> m_dockView;
     QTimer m_screenSyncTimer;
 
