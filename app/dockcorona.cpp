@@ -241,9 +241,8 @@ void DockCorona::dockContainmentDestroyed(QObject *cont)
     auto view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
 
     if (view)
-        view->destroy();
+        delete view;
 
-    //view->deleteLater();
     emit docksCountChanged();
 }
 
