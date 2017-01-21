@@ -28,6 +28,7 @@
 #include <QScreen>
 
 #include <KLocalizedContext>
+#include <KDeclarative/KDeclarative>
 #include <KWindowSystem>
 #include <KWindowEffects>
 
@@ -76,7 +77,10 @@ void DockConfigView::init()
     setColor(Qt::transparent);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
-    rootContext()->setContextObject(new KLocalizedContext(this));
+    KDeclarative::KDeclarative kdeclarative;
+    kdeclarative.setDeclarativeEngine(engine());
+    kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
+    kdeclarative.setupBindings();
     auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
     syncSlideEffect();

@@ -41,6 +41,7 @@ target_link_libraries(
     Qt5::Qml
     Qt5::X11Extras
     KF5::I18n
+    KF5::Declarative
     KF5::CoreAddons
     KF5::XmlGui
     KF5::Plasma
