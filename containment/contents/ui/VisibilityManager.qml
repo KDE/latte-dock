@@ -60,7 +60,7 @@ Item{
     property int thicknessZoomOriginal: statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2
 
     Binding{
-        target: dock ? dock : manager
+        target: dock
         property:"maxThickness"
         when: dock
         value: thicknessZoomOriginal
