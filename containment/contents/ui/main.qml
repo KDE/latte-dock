@@ -529,7 +529,7 @@ DragDrop.DropArea {
     }
 
     Component.onDestruction: {
-        console.log("Destroying Now Dock Panel...");
+        console.log("Destroying Latte Dock Containment UI...");
     }
 
     Containment.onAppletAdded: {
@@ -568,7 +568,7 @@ DragDrop.DropArea {
             }
             return;
         }
-        
+
         console.debug("user configuring", plasmoid.userConfiguring)
 
         if (plasmoid.userConfiguring) {

@@ -90,6 +90,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
 DockView::~DockView()
 {
     qDebug() << "dock view deleting...";
+    rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
     this->disconnect();
     qDebug() << "dock view connections deleted...";
 
@@ -114,6 +115,7 @@ void DockView::init()
         updateFormFactor();
         syncGeometry();
     });
+
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     setVisible(true);
