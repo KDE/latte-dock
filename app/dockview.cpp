@@ -91,7 +91,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
 DockView::~DockView()
 {
     qDebug() << "dock view deleting...";
-
     this->disconnect();
     qDebug() << "dock view connections deleted...";
 
