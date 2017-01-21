@@ -71,6 +71,7 @@ private slots:
     void load();
 
 private:
+    bool appletExists(int containmentId, int appletId) const;
     void cleanConfig();
     bool containmentExists(int id) const;
     void qmlRegisterTypes() const;
