@@ -39,44 +39,46 @@ namespace Latte {
 
 class DockCorona : public Plasma::Corona {
     Q_OBJECT
-    
+
 public:
     DockCorona(QObject *parent = nullptr);
     virtual ~DockCorona();
-    
+
     int numScreens() const override;
     QRect screenGeometry(int id) const override;
     QRegion availableScreenRegion(int id) const override;
     QRect availableScreenRect(int id) const override;
-    
+
     QList<Plasma::Types::Location> freeEdges(int screen) const;
-    
+
     int docksCount(int screen) const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 
     void addDock(Plasma::Containment *containment);
-    
+
     void closeApplication();
-    
+
 public slots:
     void loadDefaultLayout() override;
     void dockContainmentDestroyed(QObject *cont);
-    
+
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void containmentsNoChanged();
-    
+
 private slots:
     void destroyedChanged(bool destroyed);
     void load();
-    
+
 private:
+    void cleanConfig();
+    bool containmentExists(int id) const;
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
-    
+
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
-    
+
     KActivities::Consumer *m_activityConsumer;
 };
 
