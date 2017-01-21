@@ -56,12 +56,16 @@ DockCorona::DockCorona(QObject *parent)
 
     setKPackage(package);
     qmlRegisterTypes();
+
     connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
+
     connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 }
 
 DockCorona::~DockCorona()
 {
+    cleanConfig();
+
     while (!containments().isEmpty()) {
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
         delete containments().first();
@@ -71,14 +75,47 @@ DockCorona::~DockCorona()
     qDeleteAll(m_waitingDockViews);
     m_dockViews.clear();
     m_waitingDockViews.clear();
+
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
+
     qDebug() << "deleted" << this;
 }
 
 void DockCorona::load()
 {
     loadLayout();
+}
+
+void DockCorona::cleanConfig()
+{
+    auto containmentsEntries = config()->group("Containments");
+
+    bool changed = false;
+
+    foreach (auto id, containmentsEntries.groupList()) {
+        if (!containmentExists(id.toInt())) {
+            containmentsEntries.group(id).deleteGroup();
+            changed = true;
+            qDebug() << "obsolete containment configuration deleted:" << id;
+        }
+    }
+
+    if (changed) {
+        config()->sync();
+        qDebug() << "configuration file cleaned...";
+    }
+}
+
+bool DockCorona::containmentExists(int id) const
+{
+    foreach (auto containment, containments()) {
+        if (id == containment->id()) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 int DockCorona::numScreens() const
@@ -122,6 +159,7 @@ QRect DockCorona::availableScreenRect(int id) const
 int DockCorona::primaryScreenId() const
 {
     const auto screens = qGuiApp->screens();
+
     int id = -1;
 
     for (int i = 0; i < screens.size(); ++i) {
@@ -196,12 +234,20 @@ void DockCorona::addDock(Plasma::Containment *containment)
         return;
     }
 
+
     auto metadata = containment->kPackage().metadata();
 
     // the system tray is a containment that behaves as an applet
     // so a dockview shouldnt be created for it
+    KPluginMetaData metadata = containment->kPackage().metadata();
+
+    if (metadata.pluginId() == "org.kde.plasma.private.systemtray") {
     if (metadata.pluginId() != "org.kde.latte.containment")
         return;
+    }
+
+    foreach (DockView *dock, m_dockViews) {
+        if (dock->containment() == containment) {
 
     for (auto *dock : m_dockViews) {
         if (dock->containment() == containment)
@@ -209,13 +255,18 @@ void DockCorona::addDock(Plasma::Containment *containment)
     }
 
     qDebug() << "Adding dock for container...";
+
     auto dockView = new DockView(this);
     dockView->init();
     dockView->setContainment(containment);
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &DockCorona::destroyedChanged);
+
     dockView->show();
+
     m_dockViews[containment] = dockView;
+
+    emit containmentsNoChanged();
     emit docksCountChanged();
 }
 
@@ -263,6 +314,7 @@ void DockCorona::loadDefaultLayout()
 
     auto config = defaultContainment->config();
     defaultContainment->restore(config);
+
     QList<Plasma::Types::Location> edges = freeEdges(defaultContainment->screen());
 
     if (edges.count() > 0) {
@@ -277,7 +329,9 @@ void DockCorona::loadDefaultLayout()
     defaultContainment->flushPendingConstraintsEvents();
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
+
     addDock(defaultContainment);
+
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
