@@ -71,6 +71,8 @@ private slots:
     void load();
 
 private:
+    void cleanConfig();
+    bool containmentExists(int id) const;
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
 
