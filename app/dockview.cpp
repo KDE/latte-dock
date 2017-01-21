@@ -83,9 +83,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     }, Qt::DirectConnection);
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
-    if (dockCorona) {
+    if (dockCorona)
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
-    }
 }
 
 DockView::~DockView()
@@ -115,7 +114,6 @@ void DockView::init()
         updateFormFactor();
         syncGeometry();
     });
-    engine()->rootContext()->setContextObject(new KLocalizedContext(this));
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     setVisible(true);

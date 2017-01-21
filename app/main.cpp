@@ -45,9 +45,9 @@ int main(int argc, char **argv)
 {
     QQuickWindow::setDefaultAlphaBuffer(true);
     QApplication app(argc, argv);
+    KLocalizedString::setApplicationDomain("latte-dock");
     app.setApplicationVersion(version);
     app.setOrganizationDomain(QStringLiteral("latte-dock"));
-    KLocalizedString::setApplicationDomain("latte-dock");
     app.setApplicationName(QStringLiteral("lattedock"));
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("latte-dock")));
     //! set pattern for debug messages
