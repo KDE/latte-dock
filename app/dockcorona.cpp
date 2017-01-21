@@ -88,11 +88,23 @@ void DockCorona::cleanConfig()
     auto containmentsEntries = config()->group("Containments");
     bool changed = false;
 
-    foreach (auto id, containmentsEntries.groupList()) {
-        if (!containmentExists(id.toInt())) {
-            containmentsEntries.group(id).deleteGroup();
+    foreach (auto cId, containmentsEntries.groupList()) {
+        if (!containmentExists(cId.toInt())) {
+            //cleanup obsolete containments
+            containmentsEntries.group(cId).deleteGroup();
             changed = true;
-            qDebug() << "obsolete containment configuration deleted:" << id;
+            qDebug() << "obsolete containment configuration deleted:" << cId;
+        } else {
+            //cleanup obsolete applets of running containments
+            auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+            foreach (auto appletId, appletsEntries.groupList()) {
+                if (!appletExists(cId.toInt(), appletId.toInt())) {
+                    appletsEntries.group(appletId).deleteGroup();
+                    changed = true;
+                    qDebug() << "obsolete applet configuration deleted:" << appletId;
+                }
+            }
         }
     }
 
@@ -106,6 +118,30 @@ bool DockCorona::containmentExists(int id) const
 {
     foreach (auto containment, containments()) {
         if (id == containment->id()) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool DockCorona::appletExists(int containmentId, int appletId) const
+{
+    Plasma::Containment *containment = nullptr;
+
+    foreach (auto cont, containments()) {
+        if (containmentId == cont->id()) {
+            containment = cont;
+            break;
+        }
+    }
+
+    if (!containment) {
+        return false;
+    }
+
+    foreach (auto applet, containment->applets()) {
+        if (applet->id() == appletId) {
             return true;
         }
     }

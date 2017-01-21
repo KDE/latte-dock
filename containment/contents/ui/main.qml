@@ -529,7 +529,7 @@ DragDrop.DropArea {
     }
 
     Component.onDestruction: {
-        console.log("Destroying Latte Dock Containment UI...");
+        console.debug("Destroying Latte Dock Containment ui...");
     }
 
     Containment.onAppletAdded: {
