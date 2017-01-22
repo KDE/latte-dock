@@ -83,8 +83,10 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     }, Qt::DirectConnection);
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
-    if (dockCorona)
+    if (dockCorona) {
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
+        connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
+    }
 }
 
 DockView::~DockView()

@@ -282,6 +282,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
     dockView->setContainment(containment);
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &DockCorona::destroyedChanged);
+    connect(containment, &Plasma::Applet::locationChanged, this, &DockCorona::dockLocationChanged);
     dockView->show();
     m_dockViews[containment] = dockView;
     emit docksCountChanged();

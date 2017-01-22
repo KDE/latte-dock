@@ -65,6 +65,7 @@ public slots:
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void docksCountChanged();
+    void dockLocationChanged();
 
 private slots:
     void destroyedChanged(bool destroyed);
