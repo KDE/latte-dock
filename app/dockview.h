@@ -117,6 +117,7 @@ signals:
     void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
 
+    void dockLocationChanged();
     void docksCountChanged();
     void widthChanged();
     void heightChanged();

@@ -58,10 +58,10 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 1
 
-                property int docksCount: dock.docksCount
-
-                onDocksCountChanged: {
-                    lockReservedEdges()
+                Connections{
+                    target: dock
+                    onDockLocationChanged: locationLayout.lockReservedEdges();
+                    onDocksCountChanged: locationLayout.lockReservedEdges();
                 }
 
                 ExclusiveGroup {
@@ -317,9 +317,9 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 Layout.alignment: Qt.AlignHCenter
-                
+
                 spacing: units.smallSpacing
-                
+
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
                     horizontalAlignment: Text.AlignRight
@@ -328,7 +328,7 @@ PlasmaComponents.Page {
                 LatteTextField {
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-                    
+
                     text: dock.visibility.timerShow
 
                     onValueChanged: {
@@ -345,7 +345,7 @@ PlasmaComponents.Page {
                 LatteTextField{
                     Layout.preferredWidth: width
                     enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-                    
+
                     text: dock.visibility.timerHide
 
                     onValueChanged: {
