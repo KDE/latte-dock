@@ -481,7 +481,8 @@ MouseArea {
 
         onVisualParentChanged: {
             if (visualParent && currentApplet && currentApplet.applet) {
-                configureButton.visible = currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
+                configureButton.visible = (currentApplet.applet.pluginName !== root.plasmoidName)
+                        && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled;
                 label.text = currentApplet.applet.title;
             }
@@ -504,7 +505,7 @@ MouseArea {
                     iconSource: "configure"
                     onClicked: {
                         tooltip.visible = false;
-                        currentApplet.applet.action("configure").trigger()
+                        currentApplet.applet.action("configure").trigger();
                     }
                 }
                 PlasmaComponents.Label {
