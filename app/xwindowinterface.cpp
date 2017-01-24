@@ -161,8 +161,7 @@ bool XWindowInterface::isOnCurrentDesktop(WId wid) const
 
 WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
 {
-    const KWindowInfo winfo{wid, NET::WMFrameExtents | NET::WMWindowType | NET::WMGeometry | NET::WMState
-                           , NET::WM2WindowClass};
+    const KWindowInfo winfo{wid, NET::WMFrameExtents | NET::WMWindowType | NET::WMGeometry | NET::WMState};
     WindowInfoWrap winfoWrap;
 
     if (!winfo.valid()) {
