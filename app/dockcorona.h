@@ -78,6 +78,8 @@ private:
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
 
+    bool m_activitiesStarting{true};
+
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
 

@@ -57,6 +57,11 @@ DockCorona::DockCorona(QObject *parent)
     setKPackage(package);
     qmlRegisterTypes();
     connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
+
+    if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running)) {
+        load();
+    }
+
     connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 }
 
@@ -80,7 +85,10 @@ DockCorona::~DockCorona()
 
 void DockCorona::load()
 {
-    loadLayout();
+    if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
+        m_activitiesStarting = false;
+        loadLayout();
+    }
 }
 
 void DockCorona::cleanConfig()
