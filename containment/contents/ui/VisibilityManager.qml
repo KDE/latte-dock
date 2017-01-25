@@ -73,10 +73,6 @@ Item{
     }
 
     onNormalStateChanged: {
-        if(normalState && nowDock) {
-            nowDock.publishTasksGeometries();
-        }
-
         if (normalState) {
             root.updateAutomaticIconSize();
         }
