@@ -10,6 +10,8 @@ set(WEBSITE "https://github.com/psifidotos/Latte-Dock")
 set(QT_MIN_VERSION "5.6.0")
 set(KF5_MIN_VERSION "5.26.0")
 
+set(KF5_LOCALE_PREFIX "kf5/")
+
 find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
@@ -49,7 +51,7 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
                         ADD_CUSTOM_COMMAND(TARGET translations-containment
                                 COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
                                 DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
                 ENDIF( _langCode )
         ENDFOREACH(_poFile ${PO_FILES})
 
@@ -71,7 +73,7 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
                         ADD_CUSTOM_COMMAND(TARGET translations-plasmoid
                                 COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
                                 DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-plasmoid}.mo)
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname-plasmoid}.mo)
                 ENDIF( _langCode )
         ENDFOREACH(_poFile ${PO_FILES})
 
@@ -93,7 +95,7 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
         #                ADD_CUSTOM_COMMAND(TARGET translations-shell
         #                        COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
         #                        DEPENDS ${_poFile})
-        #                INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-shell}.mo)
+        #                INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname-shell}.mo)
         #        ENDIF( _langCode )
         #ENDFOREACH(_poFile ${PO_FILES})
 
@@ -115,7 +117,7 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
                         ADD_CUSTOM_COMMAND(TARGET translations-app
                                 COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
                                 DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/kf5/${_langCode}/LC_MESSAGES/ RENAME ${catalogname-app}.mo)
+                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname-app}.mo)
                 ENDIF( _langCode )
         ENDFOREACH(_poFile ${PO_FILES})
 
