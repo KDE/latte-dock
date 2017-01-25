@@ -170,6 +170,10 @@ MouseArea{
                     mainItemContainer.groupWindowRemoved();
             }
 
+            if (windowsCount>=1) {
+                mainItemContainer.slotPublishGeometries();
+            }
+
             previousCount = windowsCount;
         }
     }
@@ -667,7 +671,7 @@ MouseArea{
                     if (model.IsGroupParent) {
                         if (windowSystem.compositingActive) {
                             root.presentWindows(model.LegacyWinIdList);
-                        } else {                           
+                        } else {
                             if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
                                 windowsPreviewDlg.hide();
                             } else {

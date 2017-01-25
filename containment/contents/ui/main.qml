@@ -855,6 +855,12 @@ DragDrop.DropArea {
 
         animationsNeedLength = Math.max(animationsNeedLength + step, 0);
 
+        //when need length animations are ended it would be a good idea
+        //to update the tasks geometries in the plasmoid
+        if(animationsNeedLength === 0 && nowDock) {
+            nowDock.publishTasksGeometries();
+        }
+
         visibilityManager.updateMaskArea();
     }
 
