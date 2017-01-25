@@ -10,7 +10,7 @@ set(WEBSITE "https://github.com/psifidotos/Latte-Dock")
 set(QT_MIN_VERSION "5.6.0")
 set(KF5_MIN_VERSION "5.26.0")
 
-set(KF5_LOCALE_PREFIX "kf5/")
+set(KF5_LOCALE_PREFIX "")
 
 find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 
