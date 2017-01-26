@@ -567,7 +567,7 @@ PlasmaComponents.ContextMenu {
             if (tasksModel.launcherPosition(visualParent.m.LauncherUrlWithoutIcon) != -1) {
                 tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
             } else {
-                tasksModel.requestAddLauncher(visualParent.m.LauncherUrl);
+                tasksModel.requestAddLauncher(visualParent.m.LauncherUrlWithoutIcon);
             }
         }
     }
