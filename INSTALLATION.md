@@ -21,12 +21,6 @@ sudo pacman -Syy
 sudo pacman -S cmake extra-cmake-modules
 sudo pacman -S qt5-base qt5-declarative qt5-x11extras
 sudo pacman -S kiconthemes kdbusaddons kxmlgui kdeclarative plasma-framework plasma-desktop
-
-access the main CMakeList.txt and change:
-
-set(KF5_LOCALE_PREFIX "kf5/")
-to :
-set(KF5_LOCALE_PREFIX "")
 ```
 
 ## 2. Building and Installing
