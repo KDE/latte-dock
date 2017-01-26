@@ -493,28 +493,6 @@ QVariantList DockView::containmentActions()
 
 
 //!BEGIN overriding context menus behavior
-void DockView::addAppletItem(QObject *item)
-{
-    PlasmaQuick::AppletQuickItem *dynItem = qobject_cast<PlasmaQuick::AppletQuickItem *>(item);
-
-    if (!dynItem || m_appletItems.contains(dynItem)) {
-        return;
-    }
-
-    m_appletItems.append(dynItem);
-}
-
-void DockView::removeAppletItem(QObject *item)
-{
-    PlasmaQuick::AppletQuickItem *dynItem = qobject_cast<PlasmaQuick::AppletQuickItem *>(item);
-
-    if (!dynItem) {
-        return;
-    }
-
-    m_appletItems.removeAll(dynItem);
-}
-
 void DockView::menuAboutToHide()
 {
     m_contextMenu = 0;
@@ -574,7 +552,9 @@ void DockView::mousePressEvent(QMouseEvent *event)
         //FIXME: very inefficient appletAt() implementation
         Plasma::Applet *applet = 0;
 
-        foreach (PlasmaQuick::AppletQuickItem *ai, m_appletItems) {
+        foreach (Plasma::Applet *appletTemp, containment()->applets()) {
+            PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
             if (ai && ai->isVisible() && ai->contains(ai->mapFromItem(contentItem(), event->pos()))) {
                 applet = ai->applet();
                 break;

@@ -32,8 +32,6 @@
 #include <QPointer>
 #include <QTimer>
 
-#include <PlasmaQuick/AppletQuickItem>
-
 namespace Plasma {
 class Types;
 class Corona;
@@ -91,9 +89,6 @@ public:
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
 
 public slots:
-    Q_INVOKABLE void addAppletItem(QObject *item);
-    Q_INVOKABLE void removeAppletItem(QObject *item);
-
     Q_INVOKABLE void addNewDock();
     Q_INVOKABLE void removeDock();
 
@@ -151,7 +146,6 @@ private:
     QMenu *m_contextMenu;
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
-    QList<PlasmaQuick::AppletQuickItem *> m_appletItems;
 };
 
 }
