@@ -426,12 +426,6 @@ DragDrop.DropArea {
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
             dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
-
-            // adding the AppletQuickItem to the Now Dock in order to be
-            // used for right clicking events
-            for(var i=0; i<plasmoid.applets.length; ++i) {
-                dock.addAppletItem(plasmoid.applets[i]);
-            }
         }
     }
 
@@ -539,8 +533,6 @@ DragDrop.DropArea {
     }
 
     Containment.onAppletRemoved: {
-        dock.removeAppletItem(applet)
-
         LayoutManager.removeApplet(applet);
         var flexibleFound = false;
         for (var i = 0; i < mainLayout.children.length; ++i) {
@@ -652,10 +644,6 @@ DragDrop.DropArea {
         })
 
         addContainerInLayout(container, applet, x, y);
-
-        if(dock) {
-            dock.addAppletItem(applet);
-        }
     }
 
     function addContainerInLayout(container, applet, x, y){
