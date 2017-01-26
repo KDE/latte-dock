@@ -349,7 +349,6 @@ Item {
 
         onAddLauncher: {
             tasksModel.requestAddLauncher(url);
-            // tasksModel.move(pos, newDroppedPosition);
         }
     }
 
@@ -957,6 +956,13 @@ Item {
     }
 
     function addLauncher(url) {
+        //workaround to protect in case the launcher contains the iconData
+        var pos = url.indexOf("?iconData=");
+
+        if (pos>0) {
+            url = url.substring( 0, url.indexOf("?iconData=" ) );
+        }
+
         tasksModel.requestAddLauncher(url);
     }
 
