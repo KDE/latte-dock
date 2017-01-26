@@ -258,7 +258,7 @@ Item{
             if((normalState || plasmoid.userConfiguring) && !dock.visibility.isHidden){
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
-                if (plasmoid.userConfiguring) {
+                if (plasmoid.userConfiguring || (dock.visibility.mode === Latte.Dock.AlwaysVisible) ) {
                     if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                         newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize;
                     } else {
