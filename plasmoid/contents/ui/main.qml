@@ -587,7 +587,9 @@ Item {
 
             target: icList
 
-            property int maxSize: root.statesLineSize + root.iconSize + root.iconMargin - 1
+            property int maxSize: (root.hoveredIndex>=0 && !root.dragSource) ?
+                                      root.statesLineSize + root.zoomFactor * (root.iconSize + root.iconMargin) - 1 :
+                                      root.statesLineSize + root.iconSize + root.iconMargin - 1
 
             onUrlsDropped: {
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
