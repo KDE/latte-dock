@@ -557,17 +557,31 @@ void DockView::mousePressEvent(QMouseEvent *event)
 
             if (ai && ai->isVisible() && ai->contains(ai->mapFromItem(contentItem(), event->pos()))) {
                 applet = ai->applet();
-                break;
-            } else {
-                ai = 0;
+
+                //Try to find applets inside a secondary containment e.g. systray
+                if (applet->isContainment()) {
+                    Plasma::Containment *cont = qobject_cast<Plasma::Containment *>(applet);
+
+                    foreach (Plasma::Applet *appletCont, cont->applets()) {
+                        PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+                        if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(contentItem(), event->pos()))) {
+                            applet = ai2->applet();
+                            break;
+                        }
+                    }
+
+                    break;
+                } else {
+                    ai = 0;
+                }
             }
         }
 
         if (applet) {
             KPluginMetaData meta = applet->kPackage().metadata();
 
-            if ((meta.pluginId() != "org.kde.plasma.systemtray") &&
-                (meta.pluginId() != "org.kde.latte.plasmoid")) {
+            if (meta.pluginId() != "org.kde.latte.plasmoid") {
                 //qDebug() << "4...";
                 QMenu *desktopMenu = new QMenu;
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
@@ -575,14 +589,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
 
                 if (this->mouseGrabberItem()) {
                     //workaround, this fixes for me most of the right click menu behavior
-                    if (applet) {
-                        KPluginMetaData meta = applet->kPackage().metadata();
-
-                        //gives the systemtray direct right click behavior for its applets
-                        if (meta.pluginId() != "org.kde.plasma.systemtray") {
-                            this->mouseGrabberItem()->ungrabMouse();
-                        }
-                    }
+                    this->mouseGrabberItem()->ungrabMouse();
 
                     return;
                 }
