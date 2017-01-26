@@ -578,6 +578,10 @@ void DockView::mousePressEvent(QMouseEvent *event)
             }
         }
 
+        if (!applet) {
+            applet = containment();
+        }
+
         if (applet) {
             KPluginMetaData meta = applet->kPackage().metadata();
 
