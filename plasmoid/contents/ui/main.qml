@@ -212,7 +212,7 @@ Item {
         type: PlasmaCore.Dialog.Tooltip
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus
 
-        location: PlasmaCore.Types.Floating
+        location: plasmoid.location
 
         visible: false
 
