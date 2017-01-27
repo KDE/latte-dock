@@ -551,23 +551,31 @@ void DockView::mousePressEvent(QMouseEvent *event)
         //qDebug() << "3...";
         //FIXME: very inefficient appletAt() implementation
         Plasma::Applet *applet = 0;
+        bool inSystray = false;
 
         foreach (Plasma::Applet *appletTemp, containment()->applets()) {
             PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai && ai->isVisible() && ai->contains(ai->mapFromItem(contentItem(), event->pos()))) {
                 applet = ai->applet();
+                KPluginMetaData meta = applet->kPackage().metadata();
 
-                //Try to find applets inside a secondary containment e.g. systray
-                if (applet->isContainment()) {
-                    Plasma::Containment *cont = qobject_cast<Plasma::Containment *>(applet);
+                //Try to find applets inside a systray
+                if (meta.pluginId() == "org.kde.plasma.systemtray") {
+                    auto systrayId = applet->config().readEntry("SystrayContainmentId");
 
-                    foreach (Plasma::Applet *appletCont, cont->applets()) {
-                        PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+                    applet = 0;
+                    inSystray = true;
+                    Plasma::Containment *cont = containmentById(systrayId.toInt());
 
-                        if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(contentItem(), event->pos()))) {
-                            applet = ai2->applet();
-                            break;
+                    if (cont) {
+                        foreach (Plasma::Applet *appletCont, cont->applets()) {
+                            PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+                            if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(contentItem(), event->pos()))) {
+                                applet = ai2->applet();
+                                break;
+                            }
                         }
                     }
 
@@ -578,7 +586,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
             }
         }
 
-        if (!applet) {
+        if (!applet && !inSystray) {
             applet = containment();
         }
 
@@ -785,6 +793,18 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
     return;
 }
+
+Plasma::Containment *DockView::containmentById(int id)
+{
+    foreach (auto containment, corona()->containments()) {
+        if (id == containment->id()) {
+            return containment;
+        }
+    }
+
+    return 0;
+}
+
 //!END overriding context menus behavior
 
 }
