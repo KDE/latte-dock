@@ -66,6 +66,13 @@ Item{
         value: thicknessZoomOriginal
     }
 
+    Binding{
+        target: dock
+        property:"normalThickness"
+        when: dock
+        value: thicknessNormalOriginal
+    }
+
     onInStartupChanged: {
         if (!inStartup) {
             delayAnimationTimer.start();
@@ -79,7 +86,6 @@ Item{
     }
 
     onThicknessZoomOriginalChanged: updateMaskArea();
-
 
     function slotContainsMouseChanged() {
         if(dock.visibility.containsMouse) {
@@ -134,7 +140,7 @@ Item{
 
         var space = root.useThemePanel ? root.panelEdgeSpacing + 2*root.shadowsSize : 2;
 
-        if (normalState && !root.editMode) {
+        if (normalState) {
             //console.log("entered normal state...");
             //count panel length
             if(root.isHorizontal) {
@@ -194,7 +200,7 @@ Item{
                 tempLength = Screen.height; //screenGeometry.height;
 
             //grow only on length and not thickness
-            if(root.editMode || (root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0)) {
+            if(root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0) {
 
                 //this is used to fix a bug with shadow showing when the animation of edit mode
                 //is triggered

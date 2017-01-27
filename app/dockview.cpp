@@ -322,6 +322,22 @@ int DockView::currentThickness() const
     }
 }
 
+int DockView::normalThickness() const
+{
+    return m_normalThickness;
+}
+
+void DockView::setNormalThickness(int thickness)
+{
+    if (m_normalThickness == thickness) {
+        return;
+    }
+
+    m_normalThickness = thickness;
+
+    emit normalThicknessChanged();
+}
+
 int DockView::docksCount() const
 {
     auto dockCorona = qobject_cast<DockCorona *>(corona());

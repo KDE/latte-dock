@@ -108,10 +108,10 @@ void DockConfigView::syncGeometry()
 
             if (location == Plasma::Types::TopEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
-                            , m_dockView->currentThickness());
+                            , m_dockView->normalThickness());
             } else if (location == Plasma::Types::BottomEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
-                            , sGeometry.height() - m_dockView->currentThickness() - size.height());
+                            , sGeometry.height() - m_dockView->normalThickness() - size.height());
             }
         }
         break;
