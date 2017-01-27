@@ -137,6 +137,8 @@ private:
     void updateFormFactor();
 
 private:
+    Plasma::Containment *containmentById(int id);
+
     int m_maxLength{INT_MAX};
     int m_maxThickness{24};
     int m_shadow{0};
