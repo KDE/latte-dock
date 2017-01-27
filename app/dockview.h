@@ -48,6 +48,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
+    Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int shadow READ shadow WRITE setShadow NOTIFY shadowChanged)
 
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
@@ -75,6 +76,9 @@ public:
 
     int maxThickness() const;
     void setMaxThickness(int thickness);
+
+    int normalThickness() const;
+    void setNormalThickness(int thickness);
 
     int shadow() const;
     void setShadow(int shadow);
@@ -118,6 +122,7 @@ signals:
     void heightChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
+    void normalThicknessChanged();
     void visibilityChanged();
     void maskAreaChanged();
     void shadowChanged();
@@ -141,6 +146,7 @@ private:
 
     int m_maxLength{INT_MAX};
     int m_maxThickness{24};
+    int m_normalThickness{24};
     int m_shadow{0};
 
     QRect m_localDockGeometry;
