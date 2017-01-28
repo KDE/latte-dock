@@ -538,6 +538,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
     //by the qml incubator when plasma is loading, so we need to guard there
     if (m_contextMenu) {
         m_contextMenu->close();
+        m_contextMenu = 0;
         PlasmaQuick::ContainmentView::mousePressEvent(event);
         return;
     }
