@@ -564,7 +564,7 @@ DragDrop.DropArea {
             return;
         }
 
-        console.debug("user configuring", plasmoid.userConfiguring)
+       // console.debug("user configuring", plasmoid.userConfiguring)
 
         if (plasmoid.userConfiguring) {
             dock.visibility.blockHiding = true;

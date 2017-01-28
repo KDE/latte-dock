@@ -300,7 +300,7 @@ inline void DockView::syncGeometry()
     resizeWindow();
     updatePosition();
     updateAbsDockGeometry();
-    qDebug() << "dock geometry:" << qRectToStr(geometry());
+    // qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
 
 void DockView::statusChanged(Plasma::Types::ItemStatus status)
