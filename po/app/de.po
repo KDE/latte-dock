@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-24 09:37+0100\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
 "PO-Revision-Date: 2017-01-24 15:58+0100\n"
+"Last-Translator: \n"
 "Language-Team: Jan Neumann <neumdotjaatgmaildotcom>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de_DE\n"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
@@ -35,7 +35,7 @@ msgid "Animations"
 msgstr "Animation"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "None"
 msgstr "Keine"
 
@@ -60,14 +60,19 @@ msgid "Show Panel Background"
 msgstr "Zeige Hintergrund der Leiste"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
+#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+msgid "Length"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Shadows"
 msgstr "Schatten"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:316
+#: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Only for locked applets"
 msgstr "Nur gesperrte Anwendungen"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:322
+#: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All applets"
 msgstr "Alle Anwendungen"
 
@@ -258,7 +263,7 @@ msgstr "Zeige nur Aufgaben dieses Arbeitsplatzes"
 msgid "Show only tasks from the current activity"
 msgstr "Zeige nur Aufgaben dieser Aktivität"
 
-#: ../../app/dockview.cpp:784
+#: ../../app/dockview.cpp:718
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 Optionen"

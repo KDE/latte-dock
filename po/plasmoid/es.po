@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
 "PO-Revision-Date: 2017-01-14 20:23-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
@@ -308,21 +308,21 @@ msgstr "Remover lanzador"
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:773
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:777
 msgid "On %1"
 msgstr "En %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:782
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:786
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Disponible en todas las actividades"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:801
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:805
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "También disponible en %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:805
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:809
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Disponible en %1"
