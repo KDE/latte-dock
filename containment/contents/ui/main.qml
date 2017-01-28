@@ -1089,7 +1089,6 @@ DragDrop.DropArea {
             rows: root.isHorizontal ? 1 : 0
             rowSpacing: 0
 
-
             Layout.preferredWidth: width
             Layout.preferredHeight: height
 
