@@ -1,11 +1,14 @@
 [Desktop Entry]
 Name=Latte
+Name[de]=Latte
 Name[el]=Latte
 Name[es]=Latte
 Comment=Dock for the masses
+Comment[de]=Dock für die Massen
 Comment[el]=Πίνακας για όλον τον κόσμο
 Comment[es]=Dock para las masas
 GenericName=Dock
+GenericName[de]=Leiste
 GenericName[el]=Πίνακας
 GenericName[es]=Dock
 

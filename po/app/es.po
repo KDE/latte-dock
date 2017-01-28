@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
 "PO-Revision-Date: 2017-01-14 20:22-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
@@ -34,7 +34,7 @@ msgid "Animations"
 msgstr "Animaciones"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "None"
 msgstr "Ninguno"
 
@@ -59,14 +59,19 @@ msgid "Show Panel Background"
 msgstr "Mostrar el fondo del panel"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
+#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+msgid "Length"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Shadows"
 msgstr "Sombras"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:316
+#: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Only for locked applets"
 msgstr "Solo para elementos gráficos bloqueados"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:322
+#: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All applets"
 msgstr "Todos los elementos gráficos"
 
@@ -258,7 +263,7 @@ msgstr "Mostrar solo las tareas del escritorio actual"
 msgid "Show only tasks from the current activity"
 msgstr "Mostrar solo las tareas de la actividad actual"
 
-#: ../../app/dockview.cpp:784
+#: ../../app/dockview.cpp:718
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "Preferencias de %1"

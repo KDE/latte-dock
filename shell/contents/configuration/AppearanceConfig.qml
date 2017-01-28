@@ -283,7 +283,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             Header {
-                text: i18n("Maximum Length")
+                text: i18n("Length")
             }
 
             RowLayout {
@@ -296,7 +296,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     id: maxLengthSlider
 
-                    valueIndicatorText: i18n("Maximum Length")
+                    valueIndicatorText: i18n("Length")
                     valueIndicatorVisible: true
 
                     value: plasmoid.configuration.maxLength
