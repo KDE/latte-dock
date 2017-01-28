@@ -261,21 +261,20 @@ Item{
             dock.maskArea = newMaskArea;
 
             //console.log("update mask area:"+newMaskArea);
-            if((normalState || plasmoid.userConfiguring) && !dock.visibility.isHidden){
+            if(normalState && !dock.visibility.isHidden){
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
-                if (plasmoid.userConfiguring || (dock.visibility.mode === Latte.Dock.AlwaysVisible) ) {
-                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize;
-                    } else {
-                        newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize;
-                    }
 
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        newMaskArea.y = newMaskArea.y + editModeVisual.shadowSize;
-                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        newMaskArea.x = newMaskArea.x + editModeVisual.shadowSize;
-                    }
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize;
+                } else {
+                    newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize;
+                }
+
+                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    newMaskArea.y = newMaskArea.y + editModeVisual.shadowSize;
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    newMaskArea.x = newMaskArea.x + editModeVisual.shadowSize;
                 }
 
                 dock.setLocalDockGeometry(newMaskArea);
