@@ -32,10 +32,10 @@ import org.kde.latte 0.1 as Latte
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
-    
+
     Timer {
         id: syncGeometry
-        
+
         running: false
         repeat: false
         interval: 400
@@ -72,7 +72,7 @@ PlasmaComponents.Page {
                     minimumValue: 16
                     maximumValue: 128
                     stepSize: 8
-                    
+
                     function updateIconSize() {
                         if (!pressed) {
                             if (panelSizeSlider.value > value + units.smallSpacing)
@@ -81,11 +81,11 @@ PlasmaComponents.Page {
                             syncGeometry.restart()
                         }
                     }
-                    
+
                     onPressedChanged: {
                         updateIconSize()
                     }
-                    
+
                     Component.onCompleted: {
                         valueChanged.connect(updateIconSize)
                     }
@@ -134,11 +134,11 @@ PlasmaComponents.Page {
                             plasmoid.configuration.zoomLevel = result
                         }
                     }
-                    
+
                     onPressedChanged: {
                         updateZoomLevel()
                     }
-                    
+
                     Component.onCompleted: {
                         valueChanged.connect(updateZoomLevel)
                     }
@@ -261,7 +261,7 @@ PlasmaComponents.Page {
                     onPressedChanged: {
                         updatePanelSize()
                     }
-                    
+
                     Component.onCompleted: {
                         valueChanged.connect(updatePanelSize)
                     }
@@ -293,7 +293,7 @@ PlasmaComponents.Page {
                     width: units.smallSpacing / 2
                 }
 
-                PlasmaComponents.ButtonColumn {
+                PlasmaComponents.ButtonRow {
                     Layout.fillWidth: true
 
                     spacing: units.smallSpacing
@@ -313,6 +313,8 @@ PlasmaComponents.Page {
                         readonly property int shadow: 0
                     }
                     PlasmaComponents.RadioButton {
+                        Layout.fillWidth: true
+
                         text: i18n("Only for locked applets")
                         checked: parent.shadows === shadow
 
