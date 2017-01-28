@@ -266,9 +266,9 @@ Item{
                 //before updating the localDockGeometry
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize;
+                    newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize - 1;
                 } else {
-                    newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize;
+                    newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize - 1;
                 }
 
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
