@@ -71,6 +71,9 @@ DragDrop.DropArea {
                                                             plasmoid.configuration.iconSize
     property int iconStep: 8
     property int latteAppletPos: -1
+    property int maxLength: root.isHorizontal ? width * (plasmoid.configuration.maxLength/100)
+                                              : height * (plasmoid.configuration.maxLength/100)
+
     property int panelEdgeSpacing: iconSize / 3
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
@@ -873,11 +876,10 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-
-        if ((visibilityManager.normalState || root.editMode)
+        if ((visibilityManager.normalState && !root.editMode)
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
-            var maxLength = dock.maxLength;
+            var maxLength = root.maxLength;
             //console.log("------Entered check-----");
             //console.log("max length: "+ maxLength);
 
@@ -1059,14 +1061,14 @@ DragDrop.DropArea {
 
         x: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
            && !root.editMode && windowSystem.compositingActive ?
-               (dock.width/2) - (dock.maxLength/2): 0
+               (dock.width/2) - (root.maxLength/2): 0
         y: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
            && !root.editMode && windowSystem.compositingActive ?
-               (dock.height/2) - (dock.maxLength/2): 0
+               (dock.height/2) - (root.maxLength/2): 0
         width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
-                   dock.maxLength : parent.width
+                   root.maxLength : parent.width
         height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
-                    dock.maxLength : parent.height
+                    root.maxLength : parent.height
 
         Loader{
             anchors.fill: parent
@@ -1096,7 +1098,7 @@ DragDrop.DropArea {
 
             onWidthChanged: {
                 if (root.isHorizontal
-                        && ( (dock && (width+secondLayout.width >= dock.maxLength))
+                        && ( (dock && (width+secondLayout.width >= root.maxLength))
                             || (root.editMode)) ){
                     updateAutomaticIconSize();
                 }
@@ -1104,7 +1106,7 @@ DragDrop.DropArea {
 
             onHeightChanged: {
                 if (root.isVertical
-                        && ( (dock && (height+secondLayout.height >= dock.maxLength))
+                        && ( (dock && (height+secondLayout.height >= root.maxLength))
                             || (root.editMode)) ){
                     updateAutomaticIconSize();
                 }

@@ -277,6 +277,58 @@ PlasmaComponents.Page {
         }
         //! END: Background
 
+        //! BEGIN: Max Length
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Maximum Length")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Slider {
+                    Layout.fillWidth: true
+                    id: maxLengthSlider
+
+                    valueIndicatorText: i18n("Maximum Length")
+                    valueIndicatorVisible: true
+
+                    value: plasmoid.configuration.maxLength
+                    minimumValue: 30
+                    maximumValue: 100
+                    stepSize: 5
+
+                    function updateMaxLength() {
+                        if (!pressed) {
+                            plasmoid.configuration.maxLength = value;
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateMaxLength();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateMaxLength)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: maxLengthSlider.value + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+        }
+        //! END: Zoom On Hover
+
+
         //! BEGIN: Shadows
         Column {
             Layout.fillWidth: true
