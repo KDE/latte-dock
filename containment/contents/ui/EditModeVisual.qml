@@ -25,8 +25,8 @@ import QtGraphicalEffects 1.0
 
 Image{
     id: editVisual
-    width: root.isHorizontal ? parent.width : visibilityManager.thicknessNormalOriginalValue
-    height: root.isVertical ? parent.height : visibilityManager.thicknessNormalOriginalValue
+    width: root.isHorizontal ? root.maxLength : visibilityManager.thicknessNormalOriginalValue
+    height: root.isVertical ? root.maxLength : visibilityManager.thicknessNormalOriginalValue
 
     fillMode: Image.Tile
     source: "../icons/blueprint.jpg"
@@ -47,6 +47,17 @@ Image{
         samples: 2 * radius
         color: "#ee080808"
     }
+
+
+    /*Behavior on width {
+        NumberAnimation { duration: 300 }
+        enabled: root.isHorizontal
+    }
+
+    Behavior on height {
+        NumberAnimation { duration: 300 }
+        enabled: root.isVertical
+    }*/
 
     Connections{
         target: plasmoid
@@ -70,9 +81,21 @@ Image{
         }
     }
 
+    onWidthChanged: {
+        if (root.isHorizontal) {
+            initializeEditPosition();
+        }
+    }
+
+    onHeightChanged: {
+        if (root.isVertical) {
+            initializeEditPosition();
+        }
+    }
+
     function initializeNormalPosition() {
         if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-            x = 0;
+            x = root.width/2 - root.maxLength/2;
             y = rootThickness;
         } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
             x = rootThickness;
@@ -81,22 +104,25 @@ Image{
             x = -editVisual.thickness;
             y = 0;
         } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            x = 0;
+            x = root.width/2 - root.maxLength/2;
             y = -editVisual.thickness;
         }
     }
 
     function initializeEditPosition() {
         if (root.editMode) {
-            if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)){
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge){
                 x = 0;
+                y = root.height/2 - editVisual.height/2;
+            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                x = root.width/2 - editVisual.width/2;
                 y = 0;
             } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                x = 0;
+                x = root.width/2 - editVisual.width/2;
                 y = rootThickness - thickness + shadowSize;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                 x = rootThickness - thickness + shadowSize;
-                y = 0;
+                y = root.height/2 - editVisual.height/2;
             }
         }
     }
