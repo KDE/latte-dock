@@ -227,7 +227,7 @@ int DockCorona::docksCount(int screen) const
         }
     }
 
-    qDebug() << docks << "docks on screen:" << screen;
+    // qDebug() << docks << "docks on screen:" << screen;
     return docks;
 }
 

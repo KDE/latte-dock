@@ -45,13 +45,13 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     connect(&timerCheckWindows, &QTimer::timeout, this, &VisibilityManagerPrivate::checkAllWindows);
     connect(&timerShow, &QTimer::timeout, this, [this]() {
         if (isHidden) {
-            qDebug() << "must be shown";
+            //   qDebug() << "must be shown";
             emit this->q->mustBeShown();
         }
     });
     connect(&timerHide, &QTimer::timeout, this, [this]() {
         if (!blockHiding && !isHidden && !dragEnter) {
-            qDebug() << "must be hide";
+            //   qDebug() << "must be hide";
             emit this->q->mustBeHide();
         }
     });
@@ -181,7 +181,7 @@ void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
         return;
 
     this->blockHiding = blockHiding;
-    qDebug() << "blockHiding:" << blockHiding;
+    // qDebug() << "blockHiding:" << blockHiding;
 
     if (this->blockHiding) {
         timerHide.stop();
