@@ -330,7 +330,7 @@ PlasmaComponents.Page {
 
 
         //! BEGIN: Shadows
-        Column {
+        ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
@@ -340,27 +340,29 @@ PlasmaComponents.Page {
 
             RowLayout{
                 Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing / 2
 
-                Item{
-                    width: units.smallSpacing / 2
-                }
-
-                PlasmaComponents.ButtomRow {
+                RowLayout {
                     Layout.fillWidth: true
 
                     spacing: units.smallSpacing
-                    exclusive: true
 
                     property int shadows: plasmoid.configuration.shadows
 
-                    onCheckedButtonChanged: {
-                        if (checkedButton.checked)
-                            plasmoid.configuration.shadows = checkedButton.shadow
+                    ExclusiveGroup {
+                        id: shadowsGroup
+                        onCurrentChanged: {
+                            if (current.checked)
+                                plasmoid.configuration.shadows = current.shadow
+                        }
                     }
 
                     PlasmaComponents.RadioButton {
+                        Layout.fillWidth: true
+
                         text: i18n("None")
                         checked: parent.shadows === shadow
+                        exclusiveGroup: shadowsGroup
 
                         readonly property int shadow: 0
                     }
@@ -369,12 +371,16 @@ PlasmaComponents.Page {
 
                         text: i18n("Locked")
                         checked: parent.shadows === shadow
+                        exclusiveGroup: shadowsGroup
 
                         readonly property int shadow: 1
                     }
                     PlasmaComponents.RadioButton {
+                        Layout.fillWidth: true
+
                         text: i18n("All")
                         checked: parent.shadows === shadow
+                        exclusiveGroup: shadowsGroup
 
                         readonly property int shadow: 2
                     }
