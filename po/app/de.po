@@ -37,7 +37,7 @@ msgstr "Animation"
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
 #: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "None"
-msgstr "Keine"
+msgstr "Aus"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:192
 msgid "x1"
@@ -62,7 +62,7 @@ msgstr "Zeige Hintergrund der Leiste"
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
 #: ../../shell/contents/configuration/AppearanceConfig.qml:299
 msgid "Length"
-msgstr ""
+msgstr "Länge"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Shadows"
@@ -132,7 +132,7 @@ msgstr "Rechts"
 #: ../../shell/contents/configuration/BehaviorConfig.qml:214
 msgctxt "justify alignment"
 msgid "Justify"
-msgstr "Ausrichten"
+msgstr "Abstandshalter"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:232
 msgid "Visibility"
@@ -144,7 +144,7 @@ msgstr "Immer sichtbar"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:266
 msgid "Auto Hide"
-msgstr "Auto verbergen"
+msgstr "Automatisch ausblenden"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:275
 msgid "Dodge Active"
@@ -274,7 +274,7 @@ msgstr "Latte Dock Leiste"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:46
 msgid "Dock configuration UI"
-msgstr "Leisten Einstellungen"
+msgstr "Dock Einstellungen"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:47
 msgid "Config model"
@@ -290,4 +290,4 @@ msgstr "Dock für die Massen"
 
 #: rc.cpp:3
 msgid "Dock"
-msgstr "Leiste"
+msgstr "Dock"
