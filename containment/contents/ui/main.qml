@@ -83,6 +83,10 @@ DragDrop.DropArea {
     property int shadowsSize: 0
     property int themePanelSize: plasmoid.configuration.panelSize
 
+    property int iconMargin: 0.12 * iconSize
+    property int statesLineSize: nowDock ?  Math.ceil( root.iconSize/13 ) : 0
+
+
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
     //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? plasmoid.configuration.panelPosition : mainLayoutPosition
@@ -124,8 +128,6 @@ DragDrop.DropArea {
 
     property int durationTime: plasmoid.configuration.durationTime
     property int nowDockHoveredIndex: nowDock ? nowDock.hoveredIndex : -1
-    property int iconMargin: nowDock ? nowDock.iconMargin : 0.12 * iconSize
-    property int statesLineSize: nowDock ? nowDock.statesLineSize : 0
     property int tasksCount: nowDock ? nowDock.tasksCount : 0
     ///END properties from nowDock
 
@@ -403,7 +405,15 @@ DragDrop.DropArea {
 
     //// BEGIN OF Behaviors
     Behavior on iconSize {
-        NumberAnimation { duration: 200 }
+        NumberAnimation {
+            duration: 200
+
+            onRunningChanged: {
+                if (!running) {
+                    delayUpdateMaskArea.start();
+                }
+            }
+        }
     }
     //// END OF Behaviors
 
@@ -506,7 +516,21 @@ DragDrop.DropArea {
         }
     }
 
-    onIconSizeChanged: visibilityManager.updateMaskArea();
+    property bool automaticSizeAnimation: false;
+    onAutomaticIconSizeBasedSizeChanged: {
+        if (!automaticSizeAnimation) {
+            automaticSizeAnimation = true;
+            slotAnimationsNeedBothAxis(1);
+        }
+
+    }
+
+    onIconSizeChanged: {
+        if (((iconSize === automaticIconSizeBasedSize) || (iconSize === plasmoid.configuration.iconSize)) && automaticSizeAnimation){
+            slotAnimationsNeedBothAxis(-1);
+            automaticSizeAnimation=false;
+        }
+    }
 
     //  onIconSizeChanged: console.log("Icon Size Changed:"+iconSize);
 
@@ -1202,6 +1226,19 @@ DragDrop.DropArea {
         onTriggered: {
             if(!root.containsMouse())
                 root.clearZoom();
+        }
+    }
+
+    //this is a delayer to update mask area, it is used in cases
+    //that animations can not catch up with animations signals
+    //e.g. the automaicIconSize case
+    Timer{
+        id:delayUpdateMaskArea
+        repeat:false;
+        interval:300;
+
+        onTriggered: {
+            visibilityManager.updateMaskArea();
         }
     }
 

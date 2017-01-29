@@ -51,7 +51,7 @@ Item{
 
     property int thicknessAutoHidden: 2
     property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.iconMargin) //needed in some animations
-    property int thicknessNormal: root.statesLineSize + root.iconSize + root.iconMargin + 1
+    property int thicknessNormal: root.statesLineSize + root.iconSize + root.iconMargin + root.shadowsSize + 1
     property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.iconMargin) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: statesLineSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(plasmoid.configuration.iconSize+iconMarginOriginal) //needed in some animations
@@ -152,7 +152,7 @@ Item{
                             layoutsContainer.height + space : mainLayout.height + space;
             }
 
-            tempThickness = thicknessNormalOriginal;
+            tempThickness = thicknessNormal;
 
             if (root.animationsNeedThickness > 0) {
                 tempThickness = windowSystem.compositingActive ? thicknessMidOriginal : thicknessNormalOriginal;

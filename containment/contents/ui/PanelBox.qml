@@ -100,7 +100,7 @@ Item{
                                     automaticPanelSize + belower.height:
                                     automaticPanelSize + belower.width
 
-        property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + units.smallSpacing)
+        property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + root.statesLineSize)
 
         Behavior on opacity{
             NumberAnimation { duration: 200 }
@@ -109,8 +109,8 @@ Item{
         Binding {
             target: root
             property: "shadowsSize"
-            when: shadowsSvgItem && root.useThemePanel
-            value: root.isVertical ?  shadowsSvgItem.margins.top : shadowsSvgItem.margins.bottom
+            value: shadowsSvgItem && root.useThemePanel ?
+                       (root.isVertical ?  shadowsSvgItem.margins.top : shadowsSvgItem.margins.bottom) : 0
         }
 
         Binding {
