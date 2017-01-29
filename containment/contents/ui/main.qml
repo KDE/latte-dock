@@ -49,7 +49,7 @@ DragDrop.DropArea {
     property bool editMode: plasmoid.userConfiguring
     property bool immutable: plasmoid.immutable
     property bool inStartup: true
-    property bool isHorizontal: plasmoid.formFactor == PlasmaCore.Types.Horizontal
+    property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
     property bool isHovered: nowDock ? ((nowDockHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
                                      : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse

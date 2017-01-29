@@ -37,9 +37,9 @@ Item{
   //  parent: root
     z:0
 
-    property int panelWidth: secondLayout.count > 0 && root.isHorizontal && !root.editMode ?
+    property int panelWidth: (root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
                                  layoutsContainer.width + 2*spacing : mainLayout.width + spacing
-    property int panelHeight: secondLayout.count > 0 && root.isVertical && !root.editMode ?
+    property int panelHeight: (root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
                                   layoutsContainer.height + 2*spacing : mainLayout.height + spacing
 
     width: root.isHorizontal ? panelWidth : smallSize
