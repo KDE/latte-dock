@@ -97,8 +97,10 @@ Item{
 
         property int panelSize: ((plasmoid.location === PlasmaCore.Types.BottomEdge) ||
                                  (plasmoid.location === PlasmaCore.Types.TopEdge)) ?
-                                    root.themePanelSize + belower.height:
-                                    root.themePanelSize + belower.width
+                                    automaticPanelSize + belower.height:
+                                    automaticPanelSize + belower.width
+
+        property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + units.smallSpacing)
 
         Behavior on opacity{
             NumberAnimation { duration: 200 }
