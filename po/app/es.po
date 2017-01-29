@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-01-29 15:48-0500\n"
-"PO-Revision-Date: 2017-01-14 20:22-0500\n"
+"PO-Revision-Date: 2017-01-29 16:42-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
 "Language: es\n"
@@ -61,19 +61,19 @@ msgstr "Mostrar el fondo del panel"
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
 #: ../../shell/contents/configuration/AppearanceConfig.qml:299
 msgid "Length"
-msgstr ""
+msgstr "Longitud"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Applet shadows"
-msgstr ""
+msgstr "Sombras de los elementos gráficos"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Locked"
-msgstr ""
+msgstr "Bloqueados"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All"
-msgstr ""
+msgstr "Todos"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -276,6 +276,10 @@ msgid ""
 "\n"
 "\"Art in Coffee\""
 msgstr ""
+"Latte es un dock basado en plasma frameworks que provee una elegante e"
+" intuitiva experiencia para sus tareas y plasmoides. \n"
+"\n"
+"\"Art in Coffee\""
 
 #: ../../app/main.cpp:99
 msgid "Logo and Icons"
