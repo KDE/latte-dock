@@ -68,7 +68,7 @@ msgstr "Dauer"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:225
 msgid "disabled"
-msgstr "aus"
+msgstr "Aus"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:237
 msgid "Zoom"
@@ -117,7 +117,7 @@ msgstr "Mittlere Maus Taste:"
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgctxt "The click action"
 msgid "None"
-msgstr "Kein"
+msgstr "Nichts"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "Close Window or Group"
@@ -305,7 +305,7 @@ msgstr "Im Dock behalten"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:591
 msgid "Remove Launcher"
-msgstr "Entferne Starter"
+msgstr "Starter entfernen"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:621
 msgid "Close"
