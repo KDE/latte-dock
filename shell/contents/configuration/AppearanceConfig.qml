@@ -32,10 +32,10 @@ import org.kde.latte 0.1 as Latte
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
-    
+
     Timer {
         id: syncGeometry
-        
+
         running: false
         repeat: false
         interval: 400
@@ -72,7 +72,7 @@ PlasmaComponents.Page {
                     minimumValue: 16
                     maximumValue: 128
                     stepSize: 8
-                    
+
                     function updateIconSize() {
                         if (!pressed) {
                             if (panelSizeSlider.value > value + units.smallSpacing)
@@ -81,11 +81,11 @@ PlasmaComponents.Page {
                             syncGeometry.restart()
                         }
                     }
-                    
+
                     onPressedChanged: {
                         updateIconSize()
                     }
-                    
+
                     Component.onCompleted: {
                         valueChanged.connect(updateIconSize)
                     }
@@ -134,11 +134,11 @@ PlasmaComponents.Page {
                             plasmoid.configuration.zoomLevel = result
                         }
                     }
-                    
+
                     onPressedChanged: {
                         updateZoomLevel()
                     }
-                    
+
                     Component.onCompleted: {
                         valueChanged.connect(updateZoomLevel)
                     }
@@ -261,7 +261,7 @@ PlasmaComponents.Page {
                     onPressedChanged: {
                         updatePanelSize()
                     }
-                    
+
                     Component.onCompleted: {
                         valueChanged.connect(updatePanelSize)
                     }
@@ -276,6 +276,58 @@ PlasmaComponents.Page {
             }
         }
         //! END: Background
+
+        //! BEGIN: Max Length
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Length")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Slider {
+                    Layout.fillWidth: true
+                    id: maxLengthSlider
+
+                    valueIndicatorText: i18n("Length")
+                    valueIndicatorVisible: true
+
+                    value: plasmoid.configuration.maxLength
+                    minimumValue: 30
+                    maximumValue: 100
+                    stepSize: 5
+
+                    function updateMaxLength() {
+                        if (!pressed) {
+                            plasmoid.configuration.maxLength = value;
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateMaxLength();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateMaxLength)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: maxLengthSlider.value + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+        }
+        //! END: Zoom On Hover
+
 
         //! BEGIN: Shadows
         Column {
@@ -293,7 +345,7 @@ PlasmaComponents.Page {
                     width: units.smallSpacing / 2
                 }
 
-                PlasmaComponents.ButtonColumn {
+                PlasmaComponents.ButtonRow {
                     Layout.fillWidth: true
 
                     spacing: units.smallSpacing
@@ -313,6 +365,8 @@ PlasmaComponents.Page {
                         readonly property int shadow: 0
                     }
                     PlasmaComponents.RadioButton {
+                        Layout.fillWidth: true
+
                         text: i18n("Only for locked applets")
                         checked: parent.shadows === shadow
 

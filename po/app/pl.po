@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
 "PO-Revision-Date: 2016-10-14 14:20+0100\n"
 "Last-Translator: Damian Kopeć <damikope@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -34,7 +34,7 @@ msgid "Animations"
 msgstr ""
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "None"
 msgstr ""
 
@@ -59,15 +59,20 @@ msgid "Show Panel Background"
 msgstr "Pokaż Tło Panelu"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
+#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+msgid "Length"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Shadows"
 msgstr ""
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:316
+#: ../../shell/contents/configuration/AppearanceConfig.qml:370
 #, fuzzy
 msgid "Only for locked applets"
 msgstr "Cień dla zablokowanych apletów"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:322
+#: ../../shell/contents/configuration/AppearanceConfig.qml:376
 #, fuzzy
 msgid "All applets"
 msgstr "Wielkość Apletów"
@@ -269,7 +274,7 @@ msgstr ""
 msgid "Show only tasks from the current activity"
 msgstr ""
 
-#: ../../app/dockview.cpp:784
+#: ../../app/dockview.cpp:718
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr ""

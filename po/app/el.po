@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-15 10:41+0200\n"
-"PO-Revision-Date: 2017-01-15 10:38+0200\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
+"PO-Revision-Date: 2017-01-28 20:47+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -34,7 +34,7 @@ msgid "Animations"
 msgstr "Γραφικά"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "None"
 msgstr "Καμία"
 
@@ -59,14 +59,19 @@ msgid "Show Panel Background"
 msgstr "Εμφάνιση Παρασκηνίου"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
+#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+msgid "Length"
+msgstr "Μήκος"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Shadows"
 msgstr "Σκιές"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:316
+#: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Only for locked applets"
 msgstr "Μόνο κλειδωμένες εφαρμογές"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:322
+#: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All applets"
 msgstr "Παντού"
 
@@ -258,7 +263,7 @@ msgstr "Εργασίες μόνο της τρέχουσας επιφάνειας
 msgid "Show only tasks from the current activity"
 msgstr "Εργασίες μόνο της τρέχουσας δραστηριότητας"
 
-#: ../../app/dockview.cpp:784
+#: ../../app/dockview.cpp:718
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "Επιλογές του %1"

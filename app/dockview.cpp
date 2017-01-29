@@ -300,7 +300,7 @@ inline void DockView::syncGeometry()
     resizeWindow();
     updatePosition();
     updateAbsDockGeometry();
-    qDebug() << "dock geometry:" << qRectToStr(geometry());
+    // qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
 
 void DockView::statusChanged(Plasma::Types::ItemStatus status)
@@ -538,6 +538,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
     //by the qml incubator when plasma is loading, so we need to guard there
     if (m_contextMenu) {
         m_contextMenu->close();
+        m_contextMenu = 0;
         PlasmaQuick::ContainmentView::mousePressEvent(event);
         return;
     }

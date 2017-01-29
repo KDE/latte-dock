@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
 "PO-Revision-Date: 2016-11-26 17:31+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -34,7 +34,7 @@ msgid "Animations"
 msgstr ""
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "None"
 msgstr "無"
 
@@ -59,14 +59,19 @@ msgid "Show Panel Background"
 msgstr "顯示面板背景"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:286
+#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+msgid "Length"
+msgstr ""
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Shadows"
 msgstr "陰影"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:316
+#: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Only for locked applets"
 msgstr "僅鎖定小程式"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:322
+#: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All applets"
 msgstr "所有小程式"
 
@@ -270,7 +275,7 @@ msgstr ""
 msgid "Show only tasks from the current activity"
 msgstr ""
 
-#: ../../app/dockview.cpp:784
+#: ../../app/dockview.cpp:718
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr ""
