@@ -102,6 +102,8 @@ void DockConfigView::syncGeometry()
     const auto location = m_dockView->containment()->location();
     const auto sGeometry = screen()->geometry();
 
+    int clearThickness = m_dockView->normalThickness();
+
     switch (m_dockView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
             const QSize size(rootObject()->width(), rootObject()->height());
@@ -111,10 +113,10 @@ void DockConfigView::syncGeometry()
 
             if (location == Plasma::Types::TopEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
-                            , m_dockView->normalThickness());
+                            , clearThickness);
             } else if (location == Plasma::Types::BottomEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
-                            , sGeometry.height() - m_dockView->normalThickness() - size.height());
+                            , sGeometry.height() - clearThickness - size.height());
             }
         }
         break;
@@ -126,10 +128,10 @@ void DockConfigView::syncGeometry()
             resize(size);
 
             if (location == Plasma::Types::LeftEdge) {
-                setPosition(m_dockView->currentThickness()
+                setPosition(clearThickness
                             , sGeometry.center().y() - size.height() / 2);
             } else if (location == Plasma::Types::RightEdge) {
-                setPosition(sGeometry.width() - m_dockView->currentThickness() - size.width()
+                setPosition(sGeometry.width() - clearThickness - size.width()
                             , sGeometry.center().y() - size.height() / 2);
             }
         }

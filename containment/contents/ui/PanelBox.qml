@@ -95,12 +95,12 @@ Item{
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
 
-        property int panelSize: ((plasmoid.location === PlasmaCore.Types.BottomEdge) ||
-                                 (plasmoid.location === PlasmaCore.Types.TopEdge)) ?
-                                    automaticPanelSize + belower.height:
-                                    automaticPanelSize + belower.width
+        property int panelSize: automaticPanelSize + root.shadowsSize
 
-        property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + root.statesLineSize)
+        property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + root.iconMargin + root.statesLineSize/2)
+
+        property int shadowsSize: shadowsSvgItem && root.useThemePanel ?
+                                      (root.isVertical ?  shadowsSvgItem.margins.right : shadowsSvgItem.margins.bottom) : 0
 
         Behavior on opacity{
             NumberAnimation { duration: 200 }
@@ -109,8 +109,8 @@ Item{
         Binding {
             target: root
             property: "shadowsSize"
-            value: shadowsSvgItem && root.useThemePanel ?
-                       (root.isVertical ?  shadowsSvgItem.margins.top : shadowsSvgItem.margins.bottom) : 0
+            when: shadowsSvgItem
+            value: shadowsSvgItem.shadowsSize
         }
 
         Binding {

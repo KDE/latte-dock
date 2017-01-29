@@ -27,16 +27,16 @@ import org.kde.latte 0.1 as Latte
 
 Image{
     id: editVisual
-    width: root.isHorizontal ? root.maxLength : visibilityManager.thicknessNormalOriginalValue
-    height: root.isVertical ? root.maxLength : visibilityManager.thicknessNormalOriginalValue
+    width: root.isHorizontal ? root.maxLength : visibilityManager.thicknessNormalOriginal
+    height: root.isVertical ? root.maxLength : visibilityManager.thicknessNormalOriginal
 
     fillMode: Image.Tile
     source: "../icons/blueprint.jpg"
     opacity: 0
 
     property int speed: root.durationTime*4*units.longDuration
-    property int thickness: visibilityManager.thicknessNormalOriginalValue + shadowSize
-    property int rootThickness: visibilityManager.thicknessZoomOriginal
+    property int thickness: visibilityManager.thicknessNormalOriginal + shadowSize
+    property int rootThickness: visibilityManager.thicknessZoomOriginal + shadowSize
     property int shadowSize : Math.ceil(root.iconSize / 5)
 
     property bool animationSent: false
@@ -137,9 +137,9 @@ Image{
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                 y = 0;
             } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                y = rootThickness - thickness + shadowSize;
+                y = rootThickness - thickness;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                x = rootThickness - thickness + shadowSize;
+                x = rootThickness - thickness;
             }
 
             if (root.isHorizontal) {
@@ -190,6 +190,7 @@ Image{
                 ScriptAction{
                     script:{
                         editVisual.opacity = 0
+                        editVisual.editAnimationEnded = false;
 
                         initializeNormalPosition();
 
@@ -212,7 +213,7 @@ Image{
                     PropertyAnimation {
                         target: editVisual
                         property: root.isHorizontal ? "y" : "x"
-                        to: editVisual.farEdge ? editVisual.rootThickness - editVisual.thickness + editVisual.shadowSize : 0
+                        to: editVisual.farEdge ? editVisual.rootThickness - editVisual.thickness : 0
                         duration: editVisual.speed
                         easing.type: Easing.OutBounce
 
