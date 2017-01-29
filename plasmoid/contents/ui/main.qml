@@ -68,9 +68,6 @@ Item {
     property int clearWidth
     property int clearHeight
 
-    //property int iconMargin: 5
-    property int iconMargin: 0.12*iconSize
-
     property int newLocationDebugUse: PlasmaCore.Types.BottomPositioned
     property int newDroppedPosition: -1
     property int noInitCreatedBuffers: 0
@@ -80,7 +77,6 @@ Item {
     property int position : PlasmaCore.Types.BottomPositioned
     property int tasksStarting: 0
     property int realSize: iconSize + iconMargin
-    property int statesLineSize: Math.ceil( root.iconSize/13 )
 
     property real textColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
 
@@ -110,7 +106,9 @@ Item {
     property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
     property int durationTime: nowDockPanel ? nowDockPanel.durationTime : plasmoid.configuration.durationTime
+    property int iconMargin: nowDockPanel ? nowDockPanel.iconMargin : 0.12*iconSize
     property int iconSize: nowDockPanel ? nowDockPanel.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int statesLineSize: nowDockPanel ? nowDockPanel.statesLineSize : Math.ceil( root.iconSize/13 )
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
     property int userPanelPosition: nowDockPanel ? nowDockPanel.panelAlignment : plasmoid.configuration.plasmoidPosition
