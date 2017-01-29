@@ -46,7 +46,6 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
-    Q_PROPERTY(int maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int shadow READ shadow WRITE setShadow NOTIFY shadowChanged)
@@ -70,9 +69,6 @@ public:
     void updateAbsDockGeometry();
 
     int docksCount() const;
-
-    int maxLength() const;
-    void setMaxLength(int maxLength);
 
     int maxThickness() const;
     void setMaxThickness(int thickness);
@@ -120,7 +116,6 @@ signals:
     void docksCountChanged();
     void widthChanged();
     void heightChanged();
-    void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
     void visibilityChanged();
@@ -144,7 +139,6 @@ private:
 private:
     Plasma::Containment *containmentById(int id);
 
-    int m_maxLength{INT_MAX};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_shadow{0};
