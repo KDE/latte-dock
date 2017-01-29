@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-28 20:46+0200\n"
+"POT-Creation-Date: 2017-01-29 15:48-0500\n"
 "PO-Revision-Date: 2017-01-24 15:58+0100\n"
 "Last-Translator: \n"
 "Language-Team: Jan Neumann <neumdotjaatgmaildotcom>\n"
@@ -65,16 +65,16 @@ msgid "Length"
 msgstr "Länge"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
-msgid "Shadows"
-msgstr "Schatten"
+msgid "Applet shadows"
+msgstr ""
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:370
-msgid "Only for locked applets"
-msgstr "Nur gesperrte Anwendungen"
+msgid "Locked"
+msgstr ""
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:376
-msgid "All applets"
-msgstr "Alle Anwendungen"
+msgid "All"
+msgstr ""
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -174,32 +174,32 @@ msgstr "Verbergen:"
 msgid "General"
 msgstr "Allgemein"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:140
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:162
 msgid "ver:"
 msgstr "ver:"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:149
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:172
 msgid "Behavior"
 msgstr "Verhalten"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:153
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:176
 #: ../../shell/contents/configuration/TasksConfig.qml:48
 msgid "Appearance"
 msgstr "Erscheinungsbild"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:157
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:180
 msgid "Tasks"
 msgstr "Funktionen"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:231
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:254
 msgid "Add"
 msgstr "Neue Leiste"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:246
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:269
 msgid "Remove"
 msgstr "Leiste entfernen"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml.cmake:260
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:283
 msgid "Quit"
 msgstr "Beenden"
 
@@ -263,10 +263,31 @@ msgstr "Zeige nur Aufgaben dieses Arbeitsplatzes"
 msgid "Show only tasks from the current activity"
 msgstr "Zeige nur Aufgaben dieser Aktivität"
 
-#: ../../app/dockview.cpp:718
+#: ../../app/dockview.cpp:694
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 Optionen"
+
+#: ../../app/main.cpp:86
+msgid ""
+"Latte is a dock based on plasma frameworks that provides an elegant and "
+"intuitive experience for your tasks and plasmoids. It animates its contents "
+"by using parabolic zoom effect and trys to be there only when it is needed.\n"
+"\n"
+"\"Art in Coffee\""
+msgstr ""
+
+#: ../../app/main.cpp:99
+msgid "Logo and Icons"
+msgstr ""
+
+#: ../../app/main.cpp:101
+msgid "Many bug reports"
+msgstr ""
+
+#: ../../app/main.cpp:103
+msgid "Reviews for Latte Dock, CandilDock and NowDock"
+msgstr ""
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:44
 msgid "Latte Dock panel"
@@ -291,3 +312,12 @@ msgstr "Dock für die Massen"
 #: rc.cpp:3
 msgid "Dock"
 msgstr "Dock"
+
+#~ msgid "Shadows"
+#~ msgstr "Schatten"
+
+#~ msgid "Only for locked applets"
+#~ msgstr "Nur gesperrte Anwendungen"
+
+#~ msgid "All applets"
+#~ msgstr "Alle Anwendungen"
