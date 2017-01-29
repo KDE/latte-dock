@@ -335,7 +335,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             Header {
-                text: i18n("Shadows")
+                text: i18n("Applet shadows")
             }
 
             RowLayout{
@@ -345,7 +345,7 @@ PlasmaComponents.Page {
                     width: units.smallSpacing / 2
                 }
 
-                PlasmaComponents.ButtonColumn {
+                PlasmaComponents.ButtomRow {
                     Layout.fillWidth: true
 
                     spacing: units.smallSpacing
@@ -367,13 +367,13 @@ PlasmaComponents.Page {
                     PlasmaComponents.RadioButton {
                         Layout.fillWidth: true
 
-                        text: i18n("Only for locked applets")
+                        text: i18n("Locked")
                         checked: parent.shadows === shadow
 
                         readonly property int shadow: 1
                     }
                     PlasmaComponents.RadioButton {
-                        text: i18n("All applets")
+                        text: i18n("All")
                         checked: parent.shadows === shadow
 
                         readonly property int shadow: 2
