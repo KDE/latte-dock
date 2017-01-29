@@ -83,7 +83,10 @@ inline void configureAboutData()
     KAboutData about(QStringLiteral("lattedock")
                      , QStringLiteral("Latte Dock")
                      , QStringLiteral(LATTE_VERSION)
-                     , i18n("Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and trys to be there only when it is needed.\n\n\"Art in Coffee\"")
+                     , i18n("Latte is a dock based on plasma frameworks that provides an elegant and "
+                            "intuitive experience for your tasks and plasmoids. It animates its contents "
+                            "by using parabolic zoom effect and trys to be there only when it is needed."
+                            "\n\n\"Art in Coffee\"")
                      , KAboutLicense::GPL_V2
                      , QStringLiteral("\251 2016-2017 Michail Vourlakos, Smith AR"));
 
