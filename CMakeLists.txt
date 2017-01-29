@@ -6,11 +6,14 @@ set(VERSION 0.5.91)
 set(AUTHOR "Michail Vourlakos, Smith Ar")
 set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
 set(WEBSITE "https://github.com/psifidotos/Latte-Dock")
+set(BUG_ADDRESS "https://github.com/psifidotos/Latte-Dock/issues")
 
 set(QT_MIN_VERSION "5.6.0")
 set(KF5_MIN_VERSION "5.26.0")
 
 set(KF5_LOCALE_PREFIX "")
+
+include(Definitions.cmake)
 
 find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 
@@ -22,7 +25,6 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma PlasmaQuick WindowSystem Declarative
     I18n CoreAddons XmlGui DBusAddons IconThemes)
-
 
 FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 

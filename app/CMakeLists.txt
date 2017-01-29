@@ -13,7 +13,6 @@ include(ECMOptionalAddSubdirectory)
 include(ECMQtDeclareLoggingCategory)
 include(KDEPackageAppTemplates)
 
-
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
     ../liblattedock/windowsystem.cpp

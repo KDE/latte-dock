@@ -62,6 +62,9 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         syncSlideEffect();
         QTimer::singleShot(200, this, &DockConfigView::syncGeometry);
     });
+
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+    connections << connect(this, &DockConfigView::aboutApplication, dockCorona, &DockCorona::aboutApplication);
 }
 
 DockConfigView::~DockConfigView()

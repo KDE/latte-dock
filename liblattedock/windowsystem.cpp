@@ -51,11 +51,20 @@ bool WindowSystem::compositingActive() const
     return m_compositing;
 }
 
+void WindowSystem::skipTaskBar(const QDialog &dialog) const
+{
+    if (KWindowSystem::isPlatformWayland()) {
+        //! TODO: Wayland skip task bar
+    } else {
+        KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);
+    }
+}
+
 void WindowSystem::compositingChangedProxy(bool enable)
 {
     if (m_compositing == enable)
         return;
-        
+
     m_compositing = enable;
     emit compositingChanged();
 }
