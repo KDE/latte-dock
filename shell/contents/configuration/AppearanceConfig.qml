@@ -345,7 +345,7 @@ PlasmaComponents.Page {
                     width: units.smallSpacing / 2
                 }
 
-                PlasmaComponents.ButtonRow {
+                PlasmaComponents.ButtonColumn {
                     Layout.fillWidth: true
 
                     spacing: units.smallSpacing
