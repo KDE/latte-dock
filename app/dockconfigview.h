@@ -64,6 +64,9 @@ protected:
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
 
+signals:
+    void aboutApplication();
+
 private:
     bool m_blockFocusLost;
 

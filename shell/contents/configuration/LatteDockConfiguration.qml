@@ -103,41 +103,64 @@ PlasmaCore.FrameSvgItem {
 
             spacing: 0
 
-            KQuickControlAddons.QIconItem {
-                id: logo
-                
+            Item {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignHCenter
                 Layout.fillWidth: false
-                width: 1.5 * latteTxt.font.pixelSize
-                height: width
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
 
-                icon: "latte-dock"
-            }
+                width: logo.width + latteTxt.width + units.smallSpacing
+                height: logo.height
 
-            PlasmaComponents.Label {
-                id: latteTxt
-                Layout.alignment: Qt.AlignLeft | Qt.AlignHCenter
-                Layout.fillWidth: false
-                
-                text: "atte"
-                font.family: tangerineFont.name
-                font.pointSize: 2 * theme.defaultFont.pointSize
-                font.italic: true
+                PlasmaCore.IconItem {
+                    id: logo
+
+                    width: 1.5 * latteTxt.font.pixelSize
+                    height: width
+
+                    source: "latte-dock"
+                    animated: true
+                    usesPlasmaTheme: false
+                    active: aboutMouseArea.containsMouse
+                }
+
+                PlasmaComponents.Label {
+                    id: latteTxt
+
+                    height: logo.height
+                    verticalAlignment: Text.AlignVCenter
+                    text: "atte"
+                    font.family: tangerineFont.name
+                    font.pointSize: 2 * theme.defaultFont.pointSize
+                    font.italic: true
+
+                    anchors.left: logo.right
+                }
+
+                MouseArea {
+                    id: aboutMouseArea
+                    acceptedButtons: Qt.LeftButton
+                    anchors.fill: parent
+                    hoverEnabled: true
+
+                    onClicked: dockConfig.aboutApplication()
+                }
             }
 
             PlasmaComponents.Label {
                 id: verLabel
+
+                Layout.fillWidth: true
+                Layout.rightMargin: units.smallSpacing
+                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+
                 font.family: "monospace"
                 font.pointSize: 0.8 * theme.defaultFont.pointSize
                 font.bold: true
                 opacity: 0.4
 
-                Layout.rightMargin: units.smallSpacing
-                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                text: i18n("ver:") + Qt.application.version
                 horizontalAlignment: Text.AlignRight
-                Layout.fillWidth: true
-
-                text: i18n("ver:") + "@VERSION@"
             }
         }
 
@@ -171,7 +194,7 @@ PlasmaCore.FrameSvgItem {
 
             width: maxWidth - units.smallSpacing
             height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 4
-            
+
             property color bC: theme.backgroundColor
             property color transparentBack: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
 
@@ -182,27 +205,27 @@ PlasmaCore.FrameSvgItem {
 
             PlasmaExtras.ScrollArea {
                 id: scrollArea
-                
+
                 anchors.fill: parent
                 verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
                 horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                
+
                 flickableItem.flickableDirection: Flickable.VerticalFlick
-                
+
                 PlasmaComponents.TabGroup {
                     id: tabGroup
-                    
+
                     width: currentTab.Layout.maximumWidth
                     height: currentTab.Layout.maximumHeight
-                    
+
                     BehaviorConfig {
                         id: behaviorPage
                     }
-                    
+
                     AppearanceConfig {
                         id: appearancePage
                     }
-                    
+
                     TasksConfig {
                         id: tasksPage
                     }
@@ -216,9 +239,9 @@ PlasmaCore.FrameSvgItem {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
 
             spacing: units.largeSpacing
-            
+
             property int docksCount: dock.docksCount
-            
+
             onDocksCountChanged: {
                 addDock.enabled = docksCount < 4 && dock.freeEdges().length > 0
             }
@@ -239,7 +262,7 @@ PlasmaCore.FrameSvgItem {
             }
             PlasmaComponents.Button {
                 id: removeDock
-                
+
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
 
@@ -253,7 +276,7 @@ PlasmaCore.FrameSvgItem {
 
             PlasmaComponents.Button {
                 id: quit
-                
+
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
 

@@ -22,6 +22,7 @@
 #define WINDOWSYSTEM_H
 
 #include <QObject>
+#include <QDialog>
 
 namespace Latte {
 
@@ -37,6 +38,7 @@ public:
     static WindowSystem &self();
 
     bool compositingActive() const;
+    void skipTaskBar(const QDialog &dialog) const;
 
 signals:
     void compositingChanged();
