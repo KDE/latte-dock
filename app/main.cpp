@@ -96,11 +96,11 @@ inline void configureAboutData()
     about.addAuthor(QStringLiteral("Smith AR"), QString(), QStringLiteral("audoban@openmailbox.org"));
 
     // Credits
-    about.addCredit(QStringLiteral("varlesh"), i18n("Logo and Icons")
+    about.addCredit(QStringLiteral("Alexey Varfolomeev (varlesh)"), i18n("Logo and Icons")
                     , QString(), QStringLiteral("https://github.com/varlesh"));
-    about.addCredit(QStringLiteral("JenaPlinsky"), i18n("Many bug reports")
+    about.addCredit(QStringLiteral("Ivan Bordoni"), i18n("Many bug reports")
                     , QString(), QStringLiteral("https://github.com/JenaPlinsky"));
-    about.addCredit(QStringLiteral("elav"), i18n("Reviews for Latte Dock, CandilDock and NowDock")
+    about.addCredit(QStringLiteral("Ernesto Acosta (elav)"), i18n("Reviews for Latte Dock, CandilDock and NowDock")
                     , QString(), QStringLiteral("https://github.com/elav"));
 
     // Translators
