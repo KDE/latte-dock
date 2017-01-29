@@ -129,11 +129,6 @@ void DockView::adaptToScreen(QScreen *screen)
 {
     setScreen(screen);
 
-    if (formFactor() == Plasma::Types::Vertical)
-        m_maxLength = screen->size().height();
-    else
-        m_maxLength = screen->size().width();
-
     if (containment())
         containment()->reactToScreenChange();
 
@@ -272,26 +267,21 @@ void DockView::updatePosition()
     switch (location()) {
         case Plasma::Types::TopEdge:
             position = {screenGeometry.x(), screenGeometry.y()};
-            m_maxLength = screenGeometry.width();
             break;
         case Plasma::Types::BottomEdge:
             position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
-            m_maxLength = screenGeometry.width();
             break;
         case Plasma::Types::RightEdge:
             position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
-            m_maxLength = screenGeometry.height();
             break;
         case Plasma::Types::LeftEdge:
             position = {screenGeometry.x(), screenGeometry.y()};
-            m_maxLength = screenGeometry.height();
             break;
         default:
             qWarning() << "wrong location, couldn't update the panel position"
                        << location();
     }
 
-    emit maxLengthChanged();
     setPosition(position);
 }
 
@@ -382,20 +372,6 @@ void DockView::setMaxThickness(int thickness)
     m_maxThickness = thickness;
     syncGeometry();
     emit maxThicknessChanged();
-}
-
-int DockView::maxLength() const
-{
-    return m_maxLength;
-}
-
-void DockView::setMaxLength(int maxLength)
-{
-    if (m_maxLength == maxLength)
-        return;
-
-    m_maxLength = maxLength;
-    emit maxLengthChanged();
 }
 
 QRect DockView::maskArea() const
