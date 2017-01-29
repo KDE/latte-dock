@@ -23,6 +23,7 @@
 #include <memory>
 
 #include <QApplication>
+#include <QDebug>
 #include <QQuickWindow>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
@@ -40,8 +41,14 @@
 #define CIRED    "\e[1;31m"
 #define CRED     "\e[0;31m"
 
-
 inline void configureAboutData();
+
+void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(type);
+    Q_UNUSED(context);
+    Q_UNUSED(msg);
+}
 
 int main(int argc, char **argv)
 {
@@ -61,7 +68,11 @@ int main(int argc, char **argv)
                            CICYAN " - " CNORMAL "%{message}"
                            CIRED "%{if-fatal}\n%{backtrace depth=8 separator=\"\n\"}%{endif}"
                            "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
+
     //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
+    if (!app.arguments().contains(QLatin1String("--debug"))) {
+        qInstallMessageHandler(noMessageOutput);
+    }
 
     Latte::DockCorona corona;
     return app.exec();

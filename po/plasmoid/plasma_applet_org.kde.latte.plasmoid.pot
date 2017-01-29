@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-15 10:41+0200\n"
+"POT-Creation-Date: 2017-01-28 20:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,21 +308,21 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:773
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:777
 msgid "On %1"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:782
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:786
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:801
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:805
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:805
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:809
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr ""

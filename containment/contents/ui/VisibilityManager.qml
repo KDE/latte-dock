@@ -138,15 +138,18 @@ Item{
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
 
-        var space = root.useThemePanel ? root.panelEdgeSpacing + 2*root.shadowsSize : 2;
+        var space = root.useThemePanel ? (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
+                                             2*root.panelEdgeSpacing + 2*root.shadowsSize : root.panelEdgeSpacing + 2*root.shadowsSize : 2;
 
         if (normalState) {
             //console.log("entered normal state...");
             //count panel length
             if(root.isHorizontal) {
-                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ? layoutsContainer.width + 0.5*space : mainLayout.width + space;
+                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                            layoutsContainer.width + space : mainLayout.width + space;
             } else {
-                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ? layoutsContainer.height + 0.5*space : mainLayout.height + space;
+                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                            layoutsContainer.height + space : mainLayout.height + space;
             }
 
             tempThickness = thicknessNormalOriginal;
@@ -168,11 +171,11 @@ Item{
                 }
 
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    localX = (dock.width/2) - (layoutsContainer.width/2) - 0.25*space;
+                    localX = (dock.width/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
                     localX = 0;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localX = (dock.width/2) - (mainLayout.width/2) - (space/2);
+                    localX = (dock.width/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Right) {
                     localX = dock.width - mainLayout.width - (space/2);
                 }
@@ -184,11 +187,11 @@ Item{
                 }
 
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    localY = (dock.height/2) - (layoutsContainer.height/2) - 0.25*space;
+                    localY = (dock.height/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
                     localY = 0;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localY = (dock.height/2) - (mainLayout.height/2) - (space/2);
+                    localY = (dock.height/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
                     localY = dock.height - mainLayout.height - (space/2);
                 }
@@ -261,21 +264,20 @@ Item{
             dock.maskArea = newMaskArea;
 
             //console.log("update mask area:"+newMaskArea);
-            if((normalState || plasmoid.userConfiguring) && !dock.visibility.isHidden){
+            if(normalState && !dock.visibility.isHidden){
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
-                if (plasmoid.userConfiguring || (dock.visibility.mode === Latte.Dock.AlwaysVisible) ) {
-                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize;
-                    } else {
-                        newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize;
-                    }
 
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        newMaskArea.y = newMaskArea.y + editModeVisual.shadowSize;
-                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        newMaskArea.x = newMaskArea.x + editModeVisual.shadowSize;
-                    }
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    newMaskArea.width = newMaskArea.width - editModeVisual.shadowSize - 1;
+                } else {
+                    newMaskArea.height = newMaskArea.height - editModeVisual.shadowSize - 1;
+                }
+
+                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    newMaskArea.y = newMaskArea.y + editModeVisual.shadowSize;
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    newMaskArea.x = newMaskArea.x + editModeVisual.shadowSize;
                 }
 
                 dock.setLocalDockGeometry(newMaskArea);

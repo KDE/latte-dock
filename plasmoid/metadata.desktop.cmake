@@ -1,7 +1,9 @@
 [Desktop Entry]
 Name=Latte Plasmoid
+Name[de]=Latte Plasmoid
 Name[el]=Latte
 Comment=Plasmoid from the Latte Dock
+Comment[de]=Latte Dock Plasmoid
 Comment[el]=Ένα πλασμoϊδές από τη σουίτα Latte
 
 
