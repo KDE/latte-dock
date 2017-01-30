@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-01-29 15:48-0500\n"
-"PO-Revision-Date: 2017-01-28 20:47+0200\n"
+"PO-Revision-Date: 2017-01-30 19:35+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -65,15 +65,15 @@ msgstr "Μήκος"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Applet shadows"
-msgstr ""
+msgstr "Σκιές συστατικών"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Locked"
-msgstr ""
+msgstr "Κλειδωμένα"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All"
-msgstr ""
+msgstr "Όλα"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -203,9 +203,8 @@ msgid "Quit"
 msgstr "Έξοδος"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:42
-#, fuzzy
 msgid "none"
-msgstr "<καμία>"
+msgstr "Κανένα"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:73
 msgid "ms."
@@ -276,18 +275,25 @@ msgid ""
 "\n"
 "\"Art in Coffee\""
 msgstr ""
+"Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στα plasma frameworks που "
+"εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες "
+"και τα γραφικά συστατικά σας. Χρησιμοποιεί ένα παραβολικό εφέ έτσι ώστε να "
+"απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το "
+"χρειάζεστε.\n"
+"\n"
+"\"Τέχνη στον Καφέ\""
 
 #: ../../app/main.cpp:99
 msgid "Logo and Icons"
-msgstr ""
+msgstr "Εικονίδια και Logo"
 
 #: ../../app/main.cpp:101
 msgid "Many bug reports"
-msgstr ""
+msgstr "Πολλές δηλώσεις προβλημάτων"
 
 #: ../../app/main.cpp:103
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr ""
+msgstr "Αξιολογήσεις των Latte Dock, CandilDock και NowDock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:44
 msgid "Latte Dock panel"
