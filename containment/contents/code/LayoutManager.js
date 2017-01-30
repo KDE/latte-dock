@@ -58,6 +58,7 @@ function restore() {
         root.addApplet(appletsOrder[i], -1, -1)
     }
 
+   // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
     //add the splitters in the correct position if they exist
     if(plasmoid.configuration.splitterPosition !== -1){
         root.addInternalViewSplitter(plasmoid.configuration.splitterPosition);
@@ -67,11 +68,11 @@ function restore() {
         root.addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
     }
 
-    inRestore = false;
-
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
     save();
     restoreLocks();
+
+    inRestore = false;
 
     //update layouts in case there is a splitter in them
     root.updateLayouts();
@@ -116,6 +117,8 @@ function save() {
 
     if(!splitterExists2 && !inRestore)
         plasmoid.configuration.splitterPosition2 = -1;
+
+    //console.log("splitters saved:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
 
     plasmoid.configuration.appletOrder = ids.join(';');
 }
@@ -210,8 +213,11 @@ function insertAfter(item1, item2) {
 }
 
 function insertAtIndex(item, position) {
-    if (position < 0 || (position >= layout.children.length && position !== 0)) {
+    var addToEnd = false;
+    if (position < 0 || (position > layout.children.length)) {
         return;
+    } else if (position === layout.children.length) {
+        addToEnd = true;
     }
 
     //never ever insert after lastSpacer
@@ -221,6 +227,11 @@ function insertAtIndex(item, position) {
     if(firstItem){
         lastSpacer.parent = root;
         position = 0;
+    }
+
+    if (addToEnd){
+        item.parent=layout;
+        return;
     }
 
     if(layout.children.length > 0){
