@@ -33,23 +33,26 @@ Item {
     id: container
 
     visible: false
-    width: root.isHorizontal ? computeWidth : computeWidth + shownAppletMargin
-    height: root.isVertical ?  computeHeight : computeHeight + shownAppletMargin
+    width: isInternalViewSplitter && !root.editMode ? 0 : (root.isHorizontal ? computeWidth : computeWidth + shownAppletMargin)
+    height: isInternalViewSplitter && !root.editMode ? 0 : (root.isVertical ?  computeHeight : computeHeight + shownAppletMargin)
 
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
     property bool canBeHovered: true
     property bool showZoomed: false
     property bool lockZoom: false
-    property bool isInternalViewSplitter: false
+    property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
 
     //applet is in starting edge
-    property bool startEdge: index < secondLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
-                                                               (index === secondLayout.beginIndex)&&(secondLayout.count > 1)
+    /*property bool startEdge: index < endLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
+                                                               (index === endLayout.beginIndex)&&(endLayout.count > 1)*/
+    property bool startEdge: (index === startLayout.beginIndex) || (index === mainLayout.beginIndex) || (index === endLayout.beginIndex)
     //applet is in ending edge
     property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
-                                                                                         ((index === mainLayout.count - 2)&&(mainLayout.count>2))||((index === secondLayout.beginIndex+secondLayout.count-1)&&(secondLayout.count>1))
+                                                                                         (((index === startLayout.beginIndex+startLayout.count-2)&&(startLayout.count>2))
+                                                                                          ||((index === mainLayout.beginIndex+mainLayout.count-2)&&(mainLayout.count>2))
+                                                                                          ||((index === endLayout.beginIndex+endLayout.count-1)&&(endLayout.count>1)))
 
 
 
@@ -62,6 +65,7 @@ Item {
     property int maxWidth: root.isHorizontal ? root.height : root.width
     property int maxHeight: root.isHorizontal ? root.height : root.width
     property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
+    property int internalSplitterId: 0
     property int status: applet ? applet.status : -1
 
     //property real animationStep: root.iconSize / 8
@@ -100,30 +104,39 @@ Item {
     function checkIndex(){
         index = -1;
 
-        for(var i=0; i<mainLayout.count; ++i){
-            if(mainLayout.children[i] == container){
-                index = i;
+        for(var i=0; i<startLayout.count; ++i){
+            if(startLayout.children[i] === container){
+                index = startLayout.beginIndex + i;
                 break;
             }
         }
 
-        for(var i=0; i<secondLayout.count; ++i){
-            if(secondLayout.children[i] == container){
+        for(var i=0; i<mainLayout.count; ++i){
+            if(mainLayout.children[i] === container){
+                index = mainLayout.beginIndex + i;
+                break;
+            }
+        }
+
+        for(var i=0; i<endLayout.count; ++i){
+            if(endLayout.children[i] === container){
                 //create a very high index in order to not need to exchange hovering messages
-                //between mainLayout and secondLayout
-                index = secondLayout.beginIndex + i;
+                //between mainLayout and endLayout
+                index = endLayout.beginIndex + i;
                 break;
             }
         }
 
 
         if(container.nowDock){
-            if(index===0 || index===secondLayout.beginIndex)
+            if(index===startLayout.beginIndex || index===mainLayout.beginIndex || index===endLayout.beginIndex)
                 nowDock.disableLeftSpacer = false;
             else
                 nowDock.disableLeftSpacer = true;
 
-            if(index===mainLayout.count-1 || index === secondLayout.beginIndex + secondLayout.count - 1)
+            if( index === startLayout.beginIndex + startLayout.count - 1
+                    || index===mainLayout.beginIndex + mainLayout.count - 1
+                    || index === endLayout.beginIndex + endLayout.count - 1)
                 nowDock.disableRightSpacer = false;
             else
                 nowDock.disableRightSpacer = true;
@@ -280,10 +293,10 @@ Item {
         Item{
             id: wrapper
 
-            width: Math.round( nowDock ? ((container.showZoomed && root.isVertical) ?
-                                              scaledWidth : nowDock.tasksWidth) : scaledWidth )
-            height: Math.round( nowDock ? ((container.showZoomed && root.isHorizontal) ?
-                                               scaledHeight : nowDock.tasksHeight ): scaledHeight )
+            width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( nowDock ? ((container.showZoomed && root.isVertical) ?
+                                                                                     scaledWidth : nowDock.tasksWidth) : scaledWidth )
+            height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( nowDock ? ((container.showZoomed && root.isHorizontal) ?
+                                                                                      scaledHeight : nowDock.tasksHeight ): scaledHeight )
 
             property bool disableScaleWidth: false
             property bool disableScaleHeight: false
@@ -530,7 +543,7 @@ Item {
                     id:splitterImage
                     anchors.fill: parent
 
-                    source:"../icons/splitter.png"
+                    source: (container.internalSplitterId===1) ? "../icons/splitter.png" : "../icons/splitter2.png"
 
                     layer.enabled: true
                     layer.effect: DropShadow {
@@ -601,12 +614,17 @@ Item {
                 }
             }*/
 
-            /*  Rectangle{
-              anchors.fill: parent
-              color: "transparent"
-              border.color: "red"
-              border.width: 1
-          } */
+            Loader{
+                anchors.fill: parent
+                active: root.debugMode
+
+                sourceComponent: Rectangle{
+                    anchors.fill: parent
+                    color: "transparent"
+                    border.color: "green"
+                    border.width: 1
+                }
+            }
 
             Behavior on zoomScale {
                 NumberAnimation { duration: container.animationTime }
