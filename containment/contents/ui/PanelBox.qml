@@ -38,16 +38,16 @@ Item{
     z:0
 
     property int panelWidth: (root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
-                                 layoutsContainer.width + 2*spacing : mainLayout.width + spacing
+                                 layoutsContainer.width + spacing : mainLayout.width + spacing
     property int panelHeight: (root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
-                                  layoutsContainer.height + 2*spacing : mainLayout.height + spacing
+                                  layoutsContainer.height + spacing : mainLayout.height + spacing
 
     width: root.isHorizontal ? panelWidth : smallSize
     height: root.isVertical ? panelHeight : smallSize
 
     property int spacing: (root.panelAlignment === Latte.Dock.Center
                            || plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                              root.panelEdgeSpacing : root.panelEdgeSpacing/2
+                              root.panelEdgeSpacing/2 : root.panelEdgeSpacing/2
     property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
