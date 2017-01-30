@@ -43,6 +43,9 @@
     <entry name="splitterPosition" type="Int">
       <default>-1</default>
     </entry>
+    <entry name="splitterPosition2" type="Int">
+      <default>-1</default>
+    </entry>
     <entry name="shadows" type="Enum">
       <label>Shadows for the applets</label>
         <choices>

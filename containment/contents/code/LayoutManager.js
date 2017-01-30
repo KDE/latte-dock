@@ -24,7 +24,10 @@ var plasmoid;
 var lastSpacer;
 
 
+var inRestore=false;
+
 function restore() {
+    inRestore = true;
     var configString = String(plasmoid.configuration.appletOrder)
 
     //array, a cell for encoded item order
@@ -55,10 +58,16 @@ function restore() {
         root.addApplet(appletsOrder[i], -1, -1)
     }
 
-    //add the splitter in the correct position if it exists
+    //add the splitters in the correct position if they exist
     if(plasmoid.configuration.splitterPosition !== -1){
         root.addInternalViewSplitter(plasmoid.configuration.splitterPosition);
     }
+
+    if(plasmoid.configuration.splitterPosition2 !== -1){
+        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
+    }
+
+    inRestore = false;
 
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
     save();
@@ -87,20 +96,26 @@ function restoreLocks() {
 function save() {
     var ids = new Array();
     var splitterExists = false;
+    var splitterExists2 = false;
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
 
-        if (child.applet) {
+        if (child.applet && !child.isInternalViewSplitter) {
             ids.push(child.applet.id);
-        }
-        else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10){
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && !splitterExists){
             splitterExists = true;
             plasmoid.configuration.splitterPosition = i;
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
+            splitterExists2 = true;
+            plasmoid.configuration.splitterPosition2 = i;
         }
     }
 
-    if(!splitterExists)
+    if(!splitterExists && !inRestore)
         plasmoid.configuration.splitterPosition = -1;
+
+    if(!splitterExists2 && !inRestore)
+        plasmoid.configuration.splitterPosition2 = -1;
 
     plasmoid.configuration.appletOrder = ids.join(';');
 }
