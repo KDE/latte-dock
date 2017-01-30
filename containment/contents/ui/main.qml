@@ -42,7 +42,7 @@ DragDrop.DropArea {
     ////
 
     ////BEGIN properties
-    property bool debugMode: true
+    property bool debugMode: false
 
     property bool automaticSize: plasmoid.configuration.automaticIconSize
     property bool confirmedDragEntered: false
@@ -885,15 +885,16 @@ DragDrop.DropArea {
                 && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = root.maxLength;
+
             //console.log("------Entered check-----");
             //console.log("max length: "+ maxLength);
 
             if (root.isVertical) {
                 layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                            mainLayout.height+endLayout.height : mainLayout.height
+                            startLayout.height+mainLayout.height+endLayout.height : mainLayout.height
             } else {
                 layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                            mainLayout.width+endLayout.width : mainLayout.width
+                            startLayout.height+mainLayout.width+endLayout.width : mainLayout.width
             }
 
             var toShrinkLimit = maxLength-(zoomFactor*(iconSize+2*iconMargin));
@@ -1100,6 +1101,44 @@ DragDrop.DropArea {
         height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
                     root.maxLength : parent.height
 
+        property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (mainLayout.children>1)
+
+        property int contentsWidth: startLayout.width + mainLayout.width + endLayout.width
+        property int contentsHeight: startLayout.height + mainLayout.height + endLayout.height
+
+        onContentsWidthChanged: {
+            if (root.isHorizontal){
+                var firstHalfExited = false;
+                var secondHalfExited = false;
+
+                if (shouldCheckHalfs){
+                    firstHalfExited = ( (startLayout.width + mainLayout.width/2) >= root.maxLength/2 );
+                    secondHalfExited = ( (endLayout.width + mainLayout.width/2) >= root.maxLength/2 );
+                }
+
+                if (dock && ((contentsWidth >= root.maxLength) || firstHalfExited || secondHalfExited)) {
+                    updateAutomaticIconSize();
+                }
+            }
+        }
+
+        onContentsHeightChanged: {
+            if (root.isVertical){
+                var firstHalfExited = false;
+                var secondHalfExited = false;
+
+                if (shouldCheckHalfs){
+                    firstHalfExited = ( (startLayout.height + mainLayout.height/2) >= root.maxLength/2 );
+                    secondHalfExited = ( (endLayout.height + mainLayout.height/2) >= root.maxLength/2 );
+                }
+
+                if (dock && ((contentsHeight >= root.maxLength) || firstHalfExited || secondHalfExited)) {
+                    updateAutomaticIconSize();
+                }
+            }
+        }
+
+
         Loader{
             anchors.fill: parent
 
@@ -1199,22 +1238,6 @@ DragDrop.DropArea {
 
             property int beginIndex: 100
             property int count: children.length
-
-            onWidthChanged: {
-                if (root.isHorizontal
-                        && ( (dock && (width+endLayout.width >= root.maxLength))
-                            || (root.editMode)) ){
-                    updateAutomaticIconSize();
-                }
-            }
-
-            onHeightChanged: {
-                if (root.isVertical
-                        && ( (dock && (height+endLayout.height >= root.maxLength))
-                            || (root.editMode)) ){
-                    updateAutomaticIconSize();
-                }
-            }
         }
 
         Grid{

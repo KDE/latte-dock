@@ -140,7 +140,7 @@ Item{
         var tempThickness = root.isHorizontal ? height : width;
 
         var space = root.useThemePanel ? (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                                             2*root.panelEdgeSpacing + 2*root.shadowsSize : root.panelEdgeSpacing + 2*root.shadowsSize : 2;
+                                             root.panelEdgeSpacing + 2*root.shadowsSize : root.panelEdgeSpacing + 2*root.shadowsSize : 2;
 
         if (normalState) {
             //console.log("entered normal state...");
