@@ -945,6 +945,7 @@ DragDrop.DropArea {
 
     function updateLayouts(){
         if(!root.editMode){
+        //    console.log("update layout - internal view splitters count:"+internalViewSplittersCount());
             if (internalViewSplittersCount() === 2) {
                 var splitter = -1;
                 var splitter2 = -1;
@@ -960,12 +961,14 @@ DragDrop.DropArea {
                     }
                 }
 
+               // console.log("update layouts 1:"+splitter + " - "+splitter2);
                 for (var i=0; i<=splitter; ++i){
                     var item = mainLayout.children[0];
                     item.parent = startLayout;
                 }
 
                 splitter2 = splitter2 - splitter - 1;
+               // console.log("update layouts 2:"+splitter + " - "+splitter2);
 
                 totalChildren = mainLayout.children.length;
                 for (var i=splitter2+1; i<totalChildren; ++i){
