@@ -40,6 +40,7 @@ Item{
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
+    property bool panelIsBiggerFromIconSize: root.realPanelSize+root.panelShadow > root.statesLineSize + root.iconSize + root.iconMargin + 1
 
     property int animationSpeed: root.durationTime * 1.2 * units.longDuration
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
@@ -51,14 +52,14 @@ Item{
 
     property int thicknessAutoHidden: 2
     property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.iconMargin) //needed in some animations
-    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.iconMargin + root.panelShadow + 1, root.realPanelSize)
+    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.iconMargin + 1, root.realPanelSize + root.panelShadow)
     property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.iconMargin) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: statesLineSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(plasmoid.configuration.iconSize+iconMarginOriginal) //needed in some animations
-    property int thicknessNormalOriginal: Math.max(thicknessNormalOriginalValue, root.realPanelSize)
-    property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + root.panelShadow + 1
-    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + root.panelShadow + 2,
-                                                 root.realPanelSize+root.editShadow)
+    property int thicknessNormalOriginal: Math.max(thicknessNormalOriginalValue, root.realPanelSize + root.panelShadow)
+    property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + 1
+    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2,
+                                                 root.realPanelSize + root.panelShadow)
 
     Binding{
         target: dock
@@ -266,21 +267,24 @@ Item{
 
             //console.log("update mask area:"+newMaskArea);
             if(normalState && !dock.visibility.isHidden){
+
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
 
-                var shadow = root.panelShadow;
+                if(panelIsBiggerFromIconSize) {
+                    var shadow = root.panelShadow;
 
-                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    newMaskArea.width = newMaskArea.width - shadow - 1;
-                } else {
-                    newMaskArea.height = newMaskArea.height - shadow - 1;
-                }
+                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                        newMaskArea.width = newMaskArea.width - shadow;
+                    } else {
+                        newMaskArea.height = newMaskArea.height - shadow;
+                    }
 
-                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    newMaskArea.y = newMaskArea.y + shadow;
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    newMaskArea.x = newMaskArea.x + shadow;
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                        newMaskArea.y = newMaskArea.y + shadow;
+                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                        newMaskArea.x = newMaskArea.x + shadow;
+                    }
                 }
 
                 dock.setLocalDockGeometry(newMaskArea);

@@ -95,9 +95,9 @@ Item{
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
 
-        property int panelSize: automaticPanelSize + root.panelShadow
+        property int panelSize: automaticPanelSize
 
-        property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + root.iconMargin + root.statesLineSize/2)
+        property int automaticPanelSize: Math.min(root.themePanelSize + root.panelShadow, root.statesLineSize + root.iconSize + root.iconMargin)
 
         property int shadowsSize: shadowsSvgItem && root.useThemePanel ?
                                       (root.isVertical ?  shadowsSvgItem.margins.right : shadowsSvgItem.margins.bottom) : 0
@@ -117,13 +117,7 @@ Item{
             target: root
             property: "realPanelSize"
             when: shadowsSvgItem
-            value: {
-                var space = ((plasmoid.location === PlasmaCore.Types.BottomEdge) ||
-                             (plasmoid.location === PlasmaCore.Types.TopEdge)) ?
-                                belower.height : belower.width
-
-                return shadowsSvgItem.panelSize + space;
-            }
+            value: shadowsSvgItem.panelSize
         }
 
 
