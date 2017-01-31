@@ -421,7 +421,7 @@ Item {
                     layoutHeight = root.iconSize + moreHeight;
                 }
                 else if(applet && applet.pluginName === "org.kde.plasma.systemtray" && root.isHorizontal){
-                    layoutHeight = root.iconSize+root.iconMargin+root.statesLineSize/2;
+                    layoutHeight = root.statesLineSize + root.iconSize;
                 }
                 else{
                     if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && (!canBeHovered)){
@@ -465,7 +465,7 @@ Item {
                     layoutWidth = root.iconSize + moreWidth;
                 }
                 else if(applet && applet.pluginName === "org.kde.plasma.systemtray" && root.isVertical){
-                    layoutWidth = root.iconSize+root.iconMargin+root.statesLineSize/2;
+                    layoutWidth = root.statesLineSize + root.iconSize;
                 }
                 else{
                     if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && (!canBeHovered)){
