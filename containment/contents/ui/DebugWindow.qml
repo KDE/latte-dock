@@ -305,5 +305,18 @@ Window{
             text: visibilityManager.panelIsBiggerFromIconSize
         }
 
+        Text{
+            text: "Draw Shadows (external)"+space
+        }
+
+        Text{
+            text: {
+                if (root.drawShadowsExternal)
+                    return "Yes";
+                else
+                    return "No";
+            }
+        }
+
     }
 }

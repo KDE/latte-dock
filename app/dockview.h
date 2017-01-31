@@ -42,6 +42,7 @@ namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
+    Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
 
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
@@ -50,6 +51,10 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int shadow READ shadow WRITE setShadow NOTIFY shadowChanged)
     Q_PROPERTY(QStringList debugFlags READ debugFlags NOTIFY debugFlagsChanged)
+
+    Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
+
+    Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
@@ -71,6 +76,12 @@ public:
 
     int docksCount() const;
 
+    bool drawShadows() const;
+    void setDrawShadows(bool draw);
+
+    float maxLength() const;
+    void setMaxLength(float length);
+
     int maxThickness() const;
     void setMaxThickness(int thickness);
 
@@ -82,6 +93,8 @@ public:
 
     QRect maskArea() const;
     void setMaskArea(QRect area);
+
+    Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QStringList debugFlags() const;
 
@@ -99,6 +112,7 @@ public slots:
     Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     Q_INVOKABLE bool tasksPresent();
+    Q_INVOKABLE void updateEnabledBorders();
 
     Q_INVOKABLE void closeApplication();
 
@@ -118,8 +132,11 @@ signals:
     void debugFlagsChanged();
     void dockLocationChanged();
     void docksCountChanged();
+    void drawShadowsChanged();
+    void enabledBordersChanged();
     void widthChanged();
     void heightChanged();
+    void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
     void visibilityChanged();
@@ -143,15 +160,20 @@ private:
 private:
     Plasma::Containment *containmentById(int id);
 
+    bool m_drawShadows{false};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_shadow{0};
+    float m_maxLength{1};
 
     QRect m_localDockGeometry;
     QRect m_maskArea;
     QMenu *m_contextMenu;
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
+
+    //only for the mask, not to actually paint
+    Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;
 };
 
 }
