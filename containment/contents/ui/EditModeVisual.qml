@@ -35,9 +35,8 @@ Image{
     opacity: 0
 
     property int speed: root.durationTime*4*units.longDuration
-    property int thickness: visibilityManager.thicknessNormalOriginal + shadowSize
-    property int rootThickness: visibilityManager.thicknessZoomOriginal + shadowSize
-    property int shadowSize : Math.ceil(root.iconSize / 5)
+    property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
+    property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
@@ -45,7 +44,7 @@ Image{
 
     layer.enabled: true
     layer.effect: DropShadow {
-        radius: editVisual.shadowSize
+        radius: root.editShadow
         samples: 2 * radius
         color: "#ee080808"
     }
@@ -78,7 +77,7 @@ Image{
 
     onEditAnimationEndedChanged: {
         if (editAnimationEnded) {
-            dock.shadow = shadowSize;
+            dock.shadow = root.editShadow;
         } else {
             dock.shadow = 0;
         }

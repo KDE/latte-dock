@@ -95,7 +95,7 @@ Item{
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
 
-        property int panelSize: automaticPanelSize + root.shadowsSize
+        property int panelSize: automaticPanelSize + root.panelShadow
 
         property int automaticPanelSize: Math.min(root.themePanelSize, root.iconSize + root.iconMargin + root.statesLineSize/2)
 
@@ -108,7 +108,7 @@ Item{
 
         Binding {
             target: root
-            property: "shadowsSize"
+            property: "panelShadow"
             when: shadowsSvgItem
             value: shadowsSvgItem.shadowsSize
         }
