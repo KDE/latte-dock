@@ -24,7 +24,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma PlasmaQuick WindowSystem Declarative
-    I18n CoreAddons XmlGui DBusAddons IconThemes)
+    I18n CoreAddons XmlGui DBusAddons IconThemes Wayland)
 
 FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 

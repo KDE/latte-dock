@@ -46,6 +46,10 @@ DragDrop.DropArea {
 
     property bool automaticSize: plasmoid.configuration.automaticIconSize
     property bool confirmedDragEntered: false
+    property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
+                                       && (dock.visibility.mode === Latte.Dock.AlwaysVisible)
+                                       && (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
+
     property bool editMode: plasmoid.userConfiguring
     property bool immutable: plasmoid.immutable
     property bool inStartup: true
@@ -946,7 +950,7 @@ DragDrop.DropArea {
 
     function updateLayouts(){
         if(!root.editMode){
-        //    console.log("update layout - internal view splitters count:"+internalViewSplittersCount());
+            //    console.log("update layout - internal view splitters count:"+internalViewSplittersCount());
             if (internalViewSplittersCount() === 2) {
                 var splitter = -1;
                 var splitter2 = -1;
@@ -962,14 +966,14 @@ DragDrop.DropArea {
                     }
                 }
 
-               // console.log("update layouts 1:"+splitter + " - "+splitter2);
+                // console.log("update layouts 1:"+splitter + " - "+splitter2);
                 for (var i=0; i<=splitter; ++i){
                     var item = mainLayout.children[0];
                     item.parent = startLayout;
                 }
 
                 splitter2 = splitter2 - splitter - 1;
-               // console.log("update layouts 2:"+splitter + " - "+splitter2);
+                // console.log("update layouts 2:"+splitter + " - "+splitter2);
 
                 totalChildren = mainLayout.children.length;
                 for (var i=splitter2+1; i<totalChildren; ++i){
@@ -1040,6 +1044,19 @@ DragDrop.DropArea {
 
     EditModeVisual{
         id:editModeVisual
+        z: root.drawShadowsExternal ? 1 : 0
+    }
+
+    Loader{
+        anchors.fill: layoutsContainer
+
+        // FIX IT && TEST IT: it is crashing Plasma with two Now Docks one of which has only
+        // task manager (small)
+        //active: root.useThemePanel
+        active: windowSystem.compositingActive
+
+        sourceComponent: PanelBox{}
+        z: root.drawShadowsExternal ? 0 : 1
     }
 
     Item {
@@ -1048,6 +1065,7 @@ DragDrop.DropArea {
 
         Layout.fillWidth: true
         Layout.fillHeight: true
+        z:10
 
         Rectangle{
             anchors.fill: parent
@@ -1069,6 +1087,7 @@ DragDrop.DropArea {
         Layout.preferredWidth: width
         Layout.preferredHeight: height
         opacity: 0
+        z:10
 
         AddWidgetVisual{}
     }
@@ -1076,6 +1095,7 @@ DragDrop.DropArea {
     Loader{
         anchors.fill: parent
         active: root.debugMode
+        z:10
 
         sourceComponent: Item{
             Rectangle{
@@ -1100,15 +1120,16 @@ DragDrop.DropArea {
         property int hoveredIndex: -1
 
         x: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-           && !root.editMode && windowSystem.compositingActive ?
+           && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ?
                (dock.width/2) - (root.maxLength/2): 0
         y: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-           && !root.editMode && windowSystem.compositingActive ?
+           && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ?
                (dock.height/2) - (root.maxLength/2): 0
-        width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
+        width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.drawShadowsExternal ?
                    root.maxLength : parent.width
-        height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
+        height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.drawShadowsExternal ?
                     root.maxLength : parent.height
+        z:10
 
         property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (mainLayout.children>1)
 
@@ -1146,20 +1167,6 @@ DragDrop.DropArea {
                 }
             }
         }
-
-
-        Loader{
-            anchors.fill: parent
-
-            // FIX IT && TEST IT: it is crashing Plasma with two Now Docks one of which has only
-            // task manager (small)
-            //active: root.useThemePanel
-            active: windowSystem.compositingActive
-
-            sourceComponent: PanelBox{}
-        }
-
-
 
         Grid{
             id:startLayout

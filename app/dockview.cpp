@@ -22,6 +22,7 @@
 #include "dockconfigview.h"
 #include "dockcorona.h"
 #include "visibilitymanager.h"
+#include "panelshadows_p.h"
 #include "../liblattedock/extras.h"
 #include "../liblattedock/windowsystem.h"
 
@@ -113,6 +114,8 @@ void DockView::init()
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
     connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
+    connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
+    connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
@@ -232,12 +235,24 @@ void DockView::resizeWindow()
     QSize screenSize = screen()->size();
 
     if (formFactor() == Plasma::Types::Vertical) {
-        const QSize size{maxThickness(), screenSize.height()};
+        QSize size{maxThickness(), screenSize.height()};
+
+        if (m_drawShadows) {
+            size.setWidth(normalThickness());
+            size.setHeight(maxLength() * screenSize.height());
+        }
+
         setMinimumSize(size);
         setMaximumSize(size);
         resize(size);
     } else {
-        const QSize size{screenSize.width(), maxThickness()};
+        QSize size{screenSize.width(), maxThickness()};
+
+        if (m_drawShadows) {
+            size.setWidth(maxLength() * screenSize.width());
+            size.setHeight(normalThickness());
+        }
+
         setMinimumSize(size);
         setMaximumSize(size);
         resize(size);
@@ -251,6 +266,7 @@ void DockView::setLocalDockGeometry(const QRect &geometry)
     }
 
     m_localDockGeometry = geometry;
+
     emit localDockGeometryChanged();
 }
 
@@ -272,19 +288,51 @@ void DockView::updatePosition()
     QPoint position;
     position = {0, 0};
 
+    int maxLengthWidth = maxLength() * screenGeometry.width();
+    int maxLengthHeight = maxLength() * screenGeometry.height();
+    int cleanThickness = normalThickness() - shadow();
+
     switch (location()) {
         case Plasma::Types::TopEdge:
-            position = {screenGeometry.x(), screenGeometry.y()};
+            if (m_drawShadows) {
+                position = {screenGeometry.x() + (screenGeometry.width() / 2 - maxLengthWidth / 2), screenGeometry.y()};
+            } else {
+                position = {screenGeometry.x(), screenGeometry.y()};
+            }
+
             break;
+
         case Plasma::Types::BottomEdge:
-            position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
+            if (m_drawShadows) {
+                position = {screenGeometry.x() + (screenGeometry.width() / 2 - maxLengthWidth / 2),
+                            screenGeometry.y() + screenGeometry.height() - cleanThickness
+                           };
+            } else {
+                position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
+            }
+
             break;
+
         case Plasma::Types::RightEdge:
-            position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
+            if (m_drawShadows && !mask().isNull()) {
+                position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
+                            screenGeometry.y() + (screenGeometry.height() / 2 - maxLengthHeight / 2)
+                           };
+            } else {
+                position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
+            }
+
             break;
+
         case Plasma::Types::LeftEdge:
-            position = {screenGeometry.x(), screenGeometry.y()};
+            if (m_drawShadows && !mask().isNull()) {
+                position = {screenGeometry.x(), screenGeometry.y() + (screenGeometry.height() / 2 - maxLengthHeight / 2)};
+            } else {
+                position = {screenGeometry.x(), screenGeometry.y()};
+            }
+
             break;
+
         default:
             qWarning() << "wrong location, couldn't update the panel position"
                        << location();
@@ -295,6 +343,7 @@ void DockView::updatePosition()
 
 inline void DockView::syncGeometry()
 {
+    updateEnabledBorders();
     resizeWindow();
     updatePosition();
     updateAbsDockGeometry();
@@ -367,6 +416,46 @@ void DockView::updateFormFactor()
     }
 }
 
+bool DockView::drawShadows() const
+{
+    return m_drawShadows;
+}
+
+void DockView::setDrawShadows(bool draw)
+{
+    if (m_drawShadows == draw) {
+        return;
+    }
+
+    m_drawShadows = draw;
+
+    if (m_drawShadows) {
+        PanelShadows::self()->addWindow(this, enabledBorders());
+    } else {
+        PanelShadows::self()->removeWindow(this);
+        m_enabledBorders = Plasma::FrameSvg::AllBorders;
+        emit enabledBordersChanged();
+    }
+
+    emit drawShadowsChanged();
+}
+
+float DockView::maxLength() const
+{
+    return m_maxLength;
+}
+
+void DockView::setMaxLength(float length)
+{
+    if (m_maxLength == length) {
+        return;
+    }
+
+    m_maxLength = length;
+
+    emit maxLengthChanged();
+}
+
 int DockView::maxThickness() const
 {
     return m_maxThickness;
@@ -409,6 +498,11 @@ void DockView::setShadow(int shadow)
         return;
 
     m_shadow = shadow;
+
+    if (m_drawShadows) {
+        syncGeometry();
+    }
+
     emit shadowChanged();
 }
 
@@ -442,6 +536,7 @@ VisibilityManager *DockView::visibility()
 bool DockView::event(QEvent *e)
 {
     emit eventTriggered(e);
+
     return ContainmentView::event(e);
 }
 
@@ -757,7 +852,6 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
     }
 }
 
-
 void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 {
     if (!containment()) {
@@ -817,6 +911,81 @@ Plasma::Containment *DockView::containmentById(int id)
 }
 
 //!END overriding context menus behavior
+
+//!BEGIN draw panel shadows outside the dock window
+Plasma::FrameSvg::EnabledBorders DockView::enabledBorders() const
+{
+    return m_enabledBorders;
+}
+
+void DockView::updateEnabledBorders()
+{
+    // qDebug() << "draw shadow!!!! :" << m_drawShadows;
+
+    if (!screen()) {
+        return;
+    }
+
+    if (!m_drawShadows) {
+        PanelShadows::self()->removeWindow(this);
+        return;
+    }
+
+    Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
+
+    if (!m_drawShadows) {
+        borders = Plasma::FrameSvg::NoBorder;
+    } else {
+        switch (location()) {
+            case Plasma::Types::TopEdge:
+                borders &= ~Plasma::FrameSvg::TopBorder;
+                break;
+
+            case Plasma::Types::LeftEdge:
+                borders &= ~Plasma::FrameSvg::LeftBorder;
+                break;
+
+            case Plasma::Types::RightEdge:
+                borders &= ~Plasma::FrameSvg::RightBorder;
+                break;
+
+            case Plasma::Types::BottomEdge:
+                borders &= ~Plasma::FrameSvg::BottomBorder;
+                break;
+
+            default:
+                break;
+        }
+
+        if (x() <= screen()->geometry().x()) {
+            borders &= ~Plasma::FrameSvg::LeftBorder;
+        }
+
+        if (x() + width() >= screen()->geometry().x() + screen()->geometry().width()) {
+            borders &= ~Plasma::FrameSvg::RightBorder;
+        }
+
+        if (y() <= screen()->geometry().y()) {
+            borders &= ~Plasma::FrameSvg::TopBorder;
+        }
+
+        if (y() + height() >= screen()->geometry().y() + screen()->geometry().height()) {
+            borders &= ~Plasma::FrameSvg::BottomBorder;
+        }
+
+    }
+
+    PanelShadows::self()->setEnabledBorders(this, borders);
+
+    if (m_enabledBorders != borders) {
+        PanelShadows::self()->setEnabledBorders(this, borders);
+
+        m_enabledBorders = borders;
+        emit enabledBordersChanged();
+    }
+}
+
+//!END draw panel shadows outside the dock window
 
 }
 //!END namespace

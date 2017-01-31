@@ -40,7 +40,7 @@ Item{
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.realPanelSize+root.panelShadow > root.statesLineSize + root.iconSize + root.iconMargin + 1
+    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= (root.iconSize + root.iconMargin + 1))
 
     property int animationSpeed: root.durationTime * 1.2 * units.longDuration
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
@@ -73,6 +73,20 @@ Item{
         property:"normalThickness"
         when: dock
         value: thicknessNormalOriginal
+    }
+
+    Binding{
+        target: dock
+        property: "drawShadows"
+        when: dock
+        value: root.drawShadowsExternal
+    }
+
+    Binding{
+        target: dock
+        property: "maxLength"
+        when: dock
+        value: plasmoid.configuration.maxLength/100
     }
 
     onInStartupChanged: {
@@ -263,7 +277,11 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            dock.maskArea = newMaskArea;
+            if (root.drawShadowsExternal) {
+                dock.maskArea = Qt.rect(0,0,root.width,root.height);
+            } else {
+                dock.maskArea = newMaskArea;
+            }
 
             //console.log("update mask area:"+newMaskArea);
             if(normalState && !dock.visibility.isHidden){
@@ -271,7 +289,7 @@ Item{
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
 
-                if(panelIsBiggerFromIconSize) {
+                if(panelIsBiggerFromIconSize && !root.drawShadowsExternal) {
                     var shadow = root.panelShadow;
 
                     if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {

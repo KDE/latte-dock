@@ -250,7 +250,7 @@ PlasmaComponents.Page {
 
                     value: plasmoid.configuration.panelSize
                     minimumValue: 0
-                    maximumValue: Number(1.12 * plasmoid.configuration.iconSize).toFixed(0) //0.12*iconSize is the iconMargin
+                    maximumValue: Number(1.2 * plasmoid.configuration.iconSize).toFixed(0) //0.12*iconSize is the iconMargin, 0.08 for statesLine
                     stepSize: 2
 
                     function updatePanelSize() {

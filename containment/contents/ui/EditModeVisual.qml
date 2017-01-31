@@ -27,8 +27,8 @@ import org.kde.latte 0.1 as Latte
 
 Image{
     id: editVisual
-    width: root.isHorizontal ? root.maxLength : visibilityManager.thicknessNormalOriginal
-    height: root.isVertical ? root.maxLength : visibilityManager.thicknessNormalOriginal
+    width: root.isHorizontal ? editLength : visibilityManager.thicknessNormalOriginal
+    height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal
 
     fillMode: Image.Tile
     source: "../icons/blueprint.jpg"
@@ -37,6 +37,8 @@ Image{
     property int speed: root.durationTime*4*units.longDuration
     property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
+    property int editLength: root.isHorizontal ? (root.drawShadowsExternal ? root.width - plasmoid.configuration.iconSize/4 : root.maxLength) :
+                                               (root.drawShadowsExternal ? root.height - plasmoid.configuration.iconSize/4 : root.maxLength)
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
@@ -48,7 +50,6 @@ Image{
         samples: 2 * radius
         color: "#ee080808"
     }
-
 
     /*Behavior on width {
         NumberAnimation { duration: 300 }
@@ -76,7 +77,7 @@ Image{
     }
 
     onEditAnimationEndedChanged: {
-        if (editAnimationEnded) {
+        if (editAnimationEnded && !root.drawShadowsExternal) {
             dock.shadow = root.editShadow;
         } else {
             dock.shadow = 0;
@@ -108,23 +109,23 @@ Image{
 
         if (root.isHorizontal) {
             if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                x = root.width/2 - root.maxLength/2;
+                x = root.width/2 - editVisual.editLength/2;
             } else if (root.panelAlignment === Latte.Dock.Left) {
                 x = 0;
             } else if (root.panelAlignment === Latte.Dock.Center) {
-                x = root.width/2 - root.maxLength/2;
+                x = root.width/2 - editVisual.editLength/2;
             } else if (root.panelAlignment === Latte.Dock.Right) {
-                x = root.width - root.maxLength;
+                x = root.width - editVisual.editLength;
             }
         } else if (root.isVertical) {
             if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                y = root.height/2 - root.maxLength/2;
+                y = root.height/2 - editVisual.editLength/2;
             } else if (root.panelAlignment === Latte.Dock.Top) {
                 y = 0;
             } else if (root.panelAlignment === Latte.Dock.Center) {
-                y = root.height/2 - root.maxLength/2;
+                y = root.height/2 - editVisual.editLength/2;
             } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                y = root.height - root.maxLength;
+                y = root.height - editVisual.editLength;
             }
         }
     }
@@ -204,7 +205,7 @@ Image{
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
-                        to: 0.6
+                        to: root.drawShadowsExternal ? 0.3 : 0.6
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }

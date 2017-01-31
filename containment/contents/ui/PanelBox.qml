@@ -34,13 +34,14 @@ Item{
     id:barLine
 
     opacity: root.useThemePanel ? 1 : 0
-  //  parent: root
-    z:0
+    //  parent: root
 
-    property int panelWidth: (root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
-                                 layoutsContainer.width + spacing : mainLayout.width + spacing
-    property int panelHeight: (root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
-                                  layoutsContainer.height + spacing : mainLayout.height + spacing
+    property int panelWidth: root.drawShadowsExternal ? root.width :
+                                                        (root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
+                                                            layoutsContainer.width + spacing : mainLayout.width + spacing
+    property int panelHeight: root.drawShadowsExternal ? root.height :
+                                                         (root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
+                                                             layoutsContainer.height + spacing : mainLayout.height + spacing
 
     width: root.isHorizontal ? panelWidth : smallSize
     height: root.isVertical ? panelHeight : smallSize
@@ -86,21 +87,40 @@ Item{
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
 
-        width: root.isVertical ? panelSize + margins.left + margins.right: parent.width + margins.left + margins.right
-        height: root.isVertical ? parent.height + margins.left + margins.right : panelSize + margins.top + margins.bottom
+        width: root.isVertical ? panelSize + marginsWidth: parent.width + marginsWidth
+        height: root.isVertical ? parent.height + marginsHeight : panelSize + marginsHeight
 
-        imagePath: "translucent/widgets/panel-background"
-        prefix:"shadow"
+        imagePath: root.drawShadowsExternal ? "" : "translucent/widgets/panel-background"
+        prefix: root.drawShadowsExternal ? "" : "shadow"
 
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
 
+        property int marginsWidth: root.drawShadowsExternal ? 0 : margins.left + margins.right
+        property int marginsHeight: root.drawShadowsExternal ? 0 : margins.top + margins.bottom
+
         property int panelSize: automaticPanelSize
+        property int automaticPanelSize: root.drawShadowsExternal ? root.themePanelSize + root.panelShadow:
+                                                                    Math.min(root.themePanelSize + root.panelShadow + 1,
+                                                                             root.statesLineSize + root.iconSize + root.iconMargin + 1)
 
-        property int automaticPanelSize: Math.min(root.themePanelSize + root.panelShadow, root.statesLineSize + root.iconSize + root.iconMargin)
-
-        property int shadowsSize: shadowsSvgItem && root.useThemePanel ?
-                                      (root.isVertical ?  shadowsSvgItem.margins.right : shadowsSvgItem.margins.bottom) : 0
+        property int shadowsSize: {
+            if (shadowsSvgItem && root.useThemePanel){
+                if (root.isVertical){
+                    if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                        return shadowsSvgItem.margins.right;
+                    else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                        return shadowsSvgItem.margins.left;
+                } else {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                        return shadowsSvgItem.margins.top;
+                    else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                        return shadowsSvgItem.margins.bottom;
+                }
+            } else {
+                return 0;
+            }
+        }
 
         Behavior on opacity{
             NumberAnimation { duration: 200 }
@@ -122,11 +142,47 @@ Item{
 
 
         PlasmaCore.FrameSvgItem{
-            anchors.margins: belower.width-1
+            anchors.margins: root.drawShadowsExternal ? 0 : belower.width-1
             anchors.fill:parent
             // imagePath: root.transparentPanel ? "translucent/widgets/panel-background" :
             //                                   "widgets/panel-background"
             imagePath: "widgets/panel-background"
+
+            onRepaintNeeded: {
+                if (root.drawShadowsExternal)
+                    adjustPrefix();
+            }
+
+            enabledBorders: dock.enabledBorders
+
+            function adjustPrefix() {
+                if (!plasmoid) {
+                    return "";
+                }
+                var pre;
+                switch (plasmoid.location) {
+                case PlasmaCore.Types.LeftEdge:
+                    pre = "west";
+                    break;
+                case PlasmaCore.Types.TopEdge:
+                    pre = "north";
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    pre = "east";
+                    break;
+                case PlasmaCore.Types.BottomEdge:
+                    pre = "south";
+                    break;
+                default:
+                    prefix = "";
+                }
+                if (hasElementPrefix(pre)) {
+                    prefix = pre;
+                } else {
+                    prefix = "";
+                }
+            }
+
         }
     }
 
