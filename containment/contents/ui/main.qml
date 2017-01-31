@@ -80,10 +80,11 @@ DragDrop.DropArea {
     property int realSize: iconSize + iconMargin
     property int realPanelSize
     //this is set by the PanelBox
-    property int shadowsSize: 0
+    property int panelShadow: 0 //shadowsSize
+    property int editShadow: Math.ceil(iconSize / 5)
     property int themePanelSize: plasmoid.configuration.panelSize
 
-    property int iconMargin: 0.12 * iconSize
+    property int iconMargin: Math.ceil(0.12 * iconSize)
     property int statesLineSize: nowDock ?  Math.ceil( root.iconSize/13 ) : 0
 
 
@@ -454,7 +455,7 @@ DragDrop.DropArea {
         }
     }
 
-    onShadowsSizeChanged: {
+    onPanelShadowChanged: {
         visibilityManager.updateMaskArea();
     }
 

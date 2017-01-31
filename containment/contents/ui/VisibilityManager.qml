@@ -51,14 +51,14 @@ Item{
 
     property int thicknessAutoHidden: 2
     property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.iconMargin) //needed in some animations
-    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.iconMargin + root.shadowsSize + 1, root.realPanelSize)
+    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.iconMargin + root.panelShadow + 1, root.realPanelSize)
     property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.iconMargin) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: statesLineSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(plasmoid.configuration.iconSize+iconMarginOriginal) //needed in some animations
     property int thicknessNormalOriginal: Math.max(thicknessNormalOriginalValue, root.realPanelSize)
-    property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + root.shadowsSize + 1
-    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + root.shadowsSize + 2,
-                                                 root.realPanelSize+editModeVisual.shadowSize)
+    property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + root.panelShadow + 1
+    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + root.panelShadow + 2,
+                                                 root.realPanelSize+root.editShadow)
 
     Binding{
         target: dock
@@ -140,7 +140,7 @@ Item{
         var tempThickness = root.isHorizontal ? height : width;
 
         var space = root.useThemePanel ? (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                                             root.panelEdgeSpacing + 2*root.shadowsSize : root.panelEdgeSpacing + 2*root.shadowsSize : 2;
+                                             root.panelEdgeSpacing + 2*root.panelShadow : root.panelEdgeSpacing + 2*root.panelShadow : 2;
 
         if (normalState) {
             //console.log("entered normal state...");
@@ -208,7 +208,7 @@ Item{
 
                 //this is used to fix a bug with shadow showing when the animation of edit mode
                 //is triggered
-                var editModeThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + editModeVisual.shadowSize :
+                var editModeThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + root.editShadow :
                                                                             thicknessNormalOriginal
 
                 tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
@@ -269,7 +269,7 @@ Item{
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
 
-                var shadow = root.shadowsSize;
+                var shadow = root.panelShadow;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     newMaskArea.width = newMaskArea.width - shadow - 1;
