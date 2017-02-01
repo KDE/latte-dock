@@ -43,7 +43,7 @@ class DockCorona : public Plasma::Corona {
     Q_OBJECT
 
 public:
-    DockCorona(QObject *parent = nullptr);
+    DockCorona(QStringList debugFlags = QStringList(), QObject *parent = nullptr);
     virtual ~DockCorona();
 
     int numScreens() const override;
@@ -52,6 +52,8 @@ public:
     QRect availableScreenRect(int id) const override;
 
     QList<Plasma::Types::Location> freeEdges(int screen) const;
+
+    QStringList debugFlags() const;
 
     int docksCount(int screen) const;
     int screenForContainment(const Plasma::Containment *containment) const override;
@@ -83,6 +85,7 @@ private:
 
     bool m_activitiesStarting{true};
 
+    QStringList m_debugFlags;
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
 

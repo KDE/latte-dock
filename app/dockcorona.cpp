@@ -41,9 +41,10 @@
 
 namespace Latte {
 
-DockCorona::DockCorona(QObject *parent)
+DockCorona::DockCorona(QStringList debugFlags, QObject *parent)
     : Plasma::Corona(parent),
-      m_activityConsumer(new KActivities::Consumer(this))
+      m_activityConsumer(new KActivities::Consumer(this)),
+      m_debugFlags(debugFlags)
 {
     KPackage::Package package(new DockPackage(this));
 
@@ -236,6 +237,11 @@ int DockCorona::docksCount(int screen) const
 void DockCorona::closeApplication()
 {
     qGuiApp->quit();
+}
+
+QStringList DockCorona::debugFlags() const
+{
+    return m_debugFlags;
 }
 
 void DockCorona::aboutApplication()

@@ -70,11 +70,25 @@ int main(int argc, char **argv)
                            "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
 
     //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
+    QStringList debugFlags;
+
     if (!app.arguments().contains(QLatin1String("--debug"))) {
         qInstallMessageHandler(noMessageOutput);
+    } else {
+        if (app.arguments().contains(QLatin1String("--with-window"))) {
+            debugFlags.append("--with-window");
+        }
+
+        if (app.arguments().contains(QLatin1String("--graphics"))) {
+            debugFlags.append("--graphics");
+        }
+
+        if (app.arguments().contains(QLatin1String("--mask"))) {
+            debugFlags.append("--mask");
+        }
     }
 
-    Latte::DockCorona corona;
+    Latte::DockCorona corona(debugFlags);
     return app.exec();
 }
 

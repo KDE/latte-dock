@@ -42,7 +42,7 @@ DragDrop.DropArea {
     ////
 
     ////BEGIN properties
-    property bool debugMode: false
+    property bool debugMode: dock && dock.debugFlags.indexOf("--graphics")>=0
 
     property bool automaticSize: plasmoid.configuration.automaticIconSize
     property bool confirmedDragEntered: false
@@ -1025,6 +1025,11 @@ DragDrop.DropArea {
     ///////////////END components
 
     ///////////////BEGIN UI elements
+
+    Loader{
+        active: dock && dock.debugFlags.indexOf("--with-window")>=0
+        sourceComponent: DebugWindow{}
+    }
 
     /*Loader{
         anchors.fill: parent
