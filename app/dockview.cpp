@@ -404,6 +404,16 @@ void DockView::setShadow(int shadow)
     emit shadowChanged();
 }
 
+QStringList DockView::debugFlags() const
+{
+    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+    if (dockCorona)
+        return dockCorona->debugFlags();
+
+    return QStringList();
+}
+
 bool DockView::tasksPresent()
 {
     foreach (Plasma::Applet *applet, containment()->applets()) {
