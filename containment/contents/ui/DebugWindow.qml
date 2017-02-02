@@ -92,6 +92,19 @@ Window{
         }
 
         Text{
+            text: "Is Hidden (flag)"+space
+        }
+
+        Text{
+            text: {
+                if (dock.visibility.isHidden)
+                    return "Yes";
+                else
+                    return "No";
+            }
+        }
+
+        Text{
             text: "   -----------   "
         }
 
