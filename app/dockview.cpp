@@ -127,6 +127,10 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
+    if (!screen | !containment()) {
+        return;
+    }
+
     setScreen(screen);
 
     if (containment())
@@ -221,6 +225,10 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
 void DockView::resizeWindow()
 {
+    if (!screen()) {
+        return;
+    }
+
     QSize screenSize = screen()->size();
 
     if (formFactor() == Plasma::Types::Vertical) {
@@ -257,7 +265,7 @@ void DockView::updateAbsDockGeometry()
 
 void DockView::updatePosition()
 {
-    if (!containment())
+    if (!screen() || !containment())
         return;
 
     const QRect screenGeometry = screen()->geometry();
