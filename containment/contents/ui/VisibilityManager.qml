@@ -292,16 +292,18 @@ Item{
                 if(panelIsBiggerFromIconSize && !root.drawShadowsExternal) {
                     var shadow = root.panelShadow;
 
+                    var fixedThickness = thicknessNormal - shadow;
+
                     if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        newMaskArea.width = newMaskArea.width - shadow;
+                        newMaskArea.width = fixedThickness;
                     } else {
-                        newMaskArea.height = newMaskArea.height - shadow;
+                        newMaskArea.height = fixedThickness;
                     }
 
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        newMaskArea.y = newMaskArea.y + shadow;
+                        newMaskArea.y = dock.height - fixedThickness;
                     } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        newMaskArea.x = newMaskArea.x + shadow;
+                        newMaskArea.x = dock.width - fixedThickness;
                     }
                 }
 
