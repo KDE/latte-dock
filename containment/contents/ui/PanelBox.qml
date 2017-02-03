@@ -100,9 +100,9 @@ Item{
         property int marginsHeight: root.drawShadowsExternal ? 0 : margins.top + margins.bottom
 
         property int panelSize: automaticPanelSize
-        property int automaticPanelSize: root.drawShadowsExternal ? root.statesLineSize + root.iconSize + root.iconMargin + 1:
-                                                                    Math.min(root.themePanelSize + root.panelShadow + 1,
-                                                                             root.statesLineSize + root.iconSize + root.iconMargin + 1)
+        property int automaticPanelSize: root.drawShadowsExternal ? (root.nowDock ? 1.2*plasmoid.configuration.iconSize + 1 : 1.12 * plasmoid.configuration.iconSize + 1)
+                                                                  : Math.min(root.themePanelSize + root.panelShadow + 1,
+                                                                            root.statesLineSize + root.iconSize + root.iconMargin + 1)
 
         property int shadowsSize: {
             if (shadowsSvgItem && root.useThemePanel){
