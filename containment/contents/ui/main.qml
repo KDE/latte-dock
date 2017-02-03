@@ -1131,6 +1131,7 @@ DragDrop.DropArea {
                     root.maxLength : parent.height
         z:10
 
+        property bool animationSent: false
         property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (mainLayout.children>1)
 
         property int contentsWidth: startLayout.width + mainLayout.width + endLayout.width
@@ -1149,6 +1150,13 @@ DragDrop.DropArea {
                 if (dock && ((contentsWidth >= root.maxLength) || firstHalfExited || secondHalfExited)) {
                     updateAutomaticIconSize();
                 }
+
+                if (!animationSent) {
+                    animationSent = true;
+                    slotAnimationsNeedLength(1);
+                }
+
+                delayUpdateMaskArea.start();
             }
         }
 
@@ -1165,6 +1173,13 @@ DragDrop.DropArea {
                 if (dock && ((contentsHeight >= root.maxLength) || firstHalfExited || secondHalfExited)) {
                     updateAutomaticIconSize();
                 }
+
+                if (!animationSent) {
+                    animationSent = true;
+                    slotAnimationsNeedLength(1);
+                }
+
+                delayUpdateMaskArea.start();
             }
         }
 
@@ -1354,6 +1369,11 @@ DragDrop.DropArea {
         interval:300;
 
         onTriggered: {
+            if (layoutsContainer.animationSent) {
+                root.slotAnimationsNeedLength(-1);
+                layoutsContainer.animationSent = false;
+            }
+
             visibilityManager.updateMaskArea();
         }
     }
