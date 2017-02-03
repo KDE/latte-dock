@@ -19,12 +19,27 @@ find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
-     Quick X11Extras)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS Quick Qml)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-    Plasma PlasmaQuick WindowSystem Declarative
+    Plasma PlasmaQuick WindowSystem Declarative Activities
     I18n CoreAddons XmlGui DBusAddons IconThemes Wayland)
+
+find_package(X11 REQUIRED)
+set_package_properties(X11 PROPERTIES DESCRIPTION "X11 libraries"
+                        URL "http://www.x.org"
+                        TYPE OPTIONAL
+                        PURPOSE "Required for building the X11 based workspace")
+
+if(X11_FOUND)
+  find_package(XCB MODULE REQUIRED COMPONENTS XCB RANDR)
+  set_package_properties(XCB PROPERTIES TYPE REQUIRED)
+  find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS X11Extras)
+endif()
+
+if(X11_FOUND AND XCB_XCB_FOUND)
+  set(HAVE_X11 true)
+endif()
 
 FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 
@@ -126,15 +141,12 @@ ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
 ENDIF(NOT GETTEXT_MSGFMT_EXECUTABLE)
 
 add_subdirectory(app)
-
 add_subdirectory(liblattedock)
-add_subdirectory(containment)
-plasma_install_package(build/containment/release org.kde.latte.containment)
-add_subdirectory(plasmoid)
-plasma_install_package(build/plasmoid/release org.kde.latte.plasmoid)
-
 add_subdirectory(shell)
-plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
-
+add_subdirectory(containment)
+add_subdirectory(plasmoid)
 add_subdirectory(icons)
 
+plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
+plasma_install_package(build/containment/release org.kde.latte.containment)
+plasma_install_package(build/plasmoid/release org.kde.latte.plasmoid)
