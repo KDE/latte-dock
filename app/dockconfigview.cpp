@@ -21,6 +21,7 @@
 #include "dockconfigview.h"
 #include "dockview.h"
 #include "dockcorona.h"
+#include "panelshadows_p.h"
 
 #include <QQuickItem>
 #include <QQmlContext>
@@ -78,6 +79,7 @@ void DockConfigView::init()
 {
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
+    PanelShadows::self()->addWindow(this);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
     KDeclarative::KDeclarative kdeclarative;
