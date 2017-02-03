@@ -58,6 +58,7 @@ IconItem::IconItem(QQuickItem *parent)
     //initialize implicit size to the Dialog size
     setImplicitWidth(KIconLoader::global()->currentSize(KIconLoader::Dialog));
     setImplicitHeight(KIconLoader::global()->currentSize(KIconLoader::Dialog));
+    setSmooth(true);
 }
 
 IconItem::~IconItem()
@@ -92,6 +93,7 @@ void IconItem::setSource(const QVariant &source)
                 m_svgIcon = std::make_unique<Plasma::Svg>(this);
                 m_svgIcon->setColorGroup(Plasma::Theme::NormalColorGroup);
                 m_svgIcon->setStatus(Plasma::Svg::Normal);
+                m_svgIcon->setUsingRenderingCache(false);
                 m_svgIcon->setDevicePixelRatio((window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
                 connect(m_svgIcon.get(), &Plasma::Svg::repaintNeeded, this, &IconItem::schedulePixmapUpdate);
             }
@@ -287,7 +289,7 @@ void IconItem::loadPixmap()
         return;
     }
 
-    const auto size = static_cast<int>(qMin(width(), height()));
+    const auto size = qMin(width(), height());
     //final pixmap to paint
     QPixmap result;
 
@@ -325,7 +327,8 @@ void IconItem::loadPixmap()
             result = m_svgIcon->pixmap();
         }
     } else if (!m_icon.isNull()) {
-        result = m_icon.pixmap(QSize(size, size) * (window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
+        result = m_icon.pixmap(QSize(static_cast<int>(size), static_cast<int>(size))
+                               * (window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
     } else if (!m_imageIcon.isNull()) {
         result = QPixmap::fromImage(m_imageIcon);
     } else {
