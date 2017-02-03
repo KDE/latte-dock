@@ -253,7 +253,7 @@ Window{
                 if (plasmoid.configuration.useThemePanel)
                     return "Yes";
                 else
-                    return "Now";
+                    return "No";
             }
         }
 
@@ -316,6 +316,62 @@ Window{
                 else
                     return "No";
             }
+        }
+
+        Text{
+            text: "   -----------   "
+        }
+
+        Text{
+            text: " -----------   "
+        }
+
+        Text{
+            text: "Applet Hovered"+space
+        }
+
+        Text{
+            text: layoutsContainer.hoveredIndex
+        }
+
+        Text{
+            text: "Task Hovered"+space
+        }
+
+        Text{
+            text: root.nowDockHoveredIndex
+        }
+
+        Text{
+            text: "In Normal State"+space
+        }
+
+        Text{
+            text: visibilityManager.normalState
+        }
+
+        Text{
+            text: "Animations Both Axis"+space
+        }
+
+        Text{
+            text: root.animationsNeedBothAxis
+        }
+
+        Text{
+            text: "Animations Only Length"+space
+        }
+
+        Text{
+            text: root.animationsNeedLength
+        }
+
+        Text{
+            text: "Animations Need Thickness"+space
+        }
+
+        Text{
+            text: root.animationsNeedThickness
         }
 
     }
