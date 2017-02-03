@@ -49,7 +49,6 @@ public:
     void init() override;
     Qt::WindowFlags wFlags() const;
 
-
 public slots:
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
