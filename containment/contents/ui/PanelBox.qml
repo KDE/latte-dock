@@ -153,7 +153,7 @@ Item{
                     adjustPrefix();
             }
 
-            enabledBorders: dock.enabledBorders
+            enabledBorders: dock ? dock.enabledBorders : 0
 
             function adjustPrefix() {
                 if (!plasmoid) {

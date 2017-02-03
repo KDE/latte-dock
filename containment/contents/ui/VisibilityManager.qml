@@ -260,7 +260,7 @@ Item{
             maskThickness = maskArea.width;
         }
 
-        // console.log("Not updating mask...");
+       //  console.log("Not updating mask...");
         if( maskArea.x !== localX || maskArea.y !== localY
                 || maskLength !== tempLength || maskThickness !== tempThickness) {
 
@@ -283,8 +283,8 @@ Item{
                 dock.maskArea = newMaskArea;
             }
 
-            //console.log("update mask area:"+newMaskArea);
-            if(normalState && !dock.visibility.isHidden){
+            // console.log("update mask area:"+newMaskArea);
+            if((normalState && !dock.visibility.isHidden) || root.editMode){
 
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
@@ -308,7 +308,7 @@ Item{
                 }
 
                 dock.setLocalDockGeometry(newMaskArea);
-                //  console.log("update dock geometry:"+newMaskArea);
+                // console.log("update dock geometry:"+newMaskArea);
             }
         }
     }
