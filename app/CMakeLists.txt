@@ -49,7 +49,7 @@ target_link_libraries(
 )
 
 if(HAVE_X11)
-  target_link_libraries(latte-dock ${X11_LIBRARIES} ${XCB_LIBRARIES} )
+  target_link_libraries(latte-dock ${X11_LIBRARIES} ${XCB_LIBRARIES})
 endif()
 
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
