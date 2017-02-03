@@ -150,8 +150,6 @@ private slots:
     void statusChanged(Plasma::Types::ItemStatus);
 
 private:
-    void initWindow();
-
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void updatePosition();
