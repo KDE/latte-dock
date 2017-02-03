@@ -40,7 +40,7 @@ Item{
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= (root.iconSize + root.iconMargin + 1))
+    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= root.iconSize)
 
     property int animationSpeed: root.durationTime * 1.2 * units.longDuration
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
