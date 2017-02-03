@@ -7,6 +7,7 @@ list(GET translators_list 1 translators_email)
 
 add_definitions(
     -DLATTE_VERSION="${VERSION}"
+    -DWEBSITE="${WEBSITE}"
     -DBUG_ADDRESS="${BUG_ADDRESS}"
     -DTRANSLATORS="${translators}"
     -DTRANSLATORS_EMAIL="${translators_email}"
