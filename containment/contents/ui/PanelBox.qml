@@ -47,7 +47,7 @@ Item{
 
     property int spacing: (root.panelAlignment === Latte.Dock.Center
                            || plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                              root.panelEdgeSpacing/2 : root.panelEdgeSpacing/2
+                              root.panelEdgeSpacing/2 : root.panelEdgeSpacing/4
     property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
@@ -82,10 +82,10 @@ Item{
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
 
-        width: root.isVertical ? panelSize + marginsWidth: parent.width + marginsWidth
+        width: root.isVertical ? panelSize + marginsWidth : parent.width + marginsWidth
         height: root.isVertical ? parent.height + marginsHeight : panelSize + marginsHeight
 
-        imagePath: root.drawShadowsExternal ? "" : "translucent/widgets/panel-background"
+        imagePath: root.drawShadowsExternal ? "" : "widgets/panel-background"
         prefix: root.drawShadowsExternal ? "" : "shadow"
 
         opacity: root.useThemePanel ? 1 : 0
@@ -93,8 +93,31 @@ Item{
 
         enabledBorders: dock ? dock.enabledBorders : 0
 
-        property int marginsWidth: root.drawShadowsExternal ? 0 : margins.left + margins.right
-        property int marginsHeight: root.drawShadowsExternal ? 0 : margins.top + margins.bottom
+        property int marginsWidth: {
+            if (root.drawShadowsExternal) {
+                return 0;
+            } else {
+              if (root.panelAlignment === Latte.Dock.Left)
+                return margins.right;
+              else if (root.panelAlignment === Latte.Dock.Right)
+                return margins.left;
+              else
+                return margins.left+margins.right;
+            }
+        }
+
+        property int marginsHeight: {
+            if (root.drawShadowsExternal) {
+                return 0;
+            } else {
+                if (root.panelAlignment === Latte.Dock.Top)
+                  return margins.bottom;
+                else if (root.panelAlignment === Latte.Dock.Bottom)
+                  return margins.top;
+                else
+                  return mmargins.top + margins.bottom;
+            }
+        }
 
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: root.drawShadowsExternal ? 1.2*plasmoid.configuration.iconSize + 1
