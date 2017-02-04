@@ -301,22 +301,22 @@ Item{
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
 
+                var fixedThickness = thicknessNormal;
+
                 if(panelIsBiggerFromIconSize && !root.drawShadowsExternal) {
-                    var shadow = root.panelShadow;
+                    fixedThickness = thicknessNormal - root.panelShadow;
+                }
 
-                    var fixedThickness = thicknessNormal - shadow;
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    newMaskArea.width = fixedThickness;
+                } else {
+                    newMaskArea.height = fixedThickness;
+                }
 
-                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        newMaskArea.width = fixedThickness;
-                    } else {
-                        newMaskArea.height = fixedThickness;
-                    }
-
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        newMaskArea.y = dock.height - fixedThickness;
-                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        newMaskArea.x = dock.width - fixedThickness;
-                    }
+                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    newMaskArea.y = dock.height - fixedThickness;
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    newMaskArea.x = dock.width - fixedThickness;
                 }
 
                 dock.setLocalDockGeometry(newMaskArea);

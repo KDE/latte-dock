@@ -98,8 +98,8 @@ Item{
 
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: root.drawShadowsExternal ? 1.2*plasmoid.configuration.iconSize + 1
-                                                                  : Math.min(root.themePanelSize + root.panelShadow + 1,
-                                                                            root.statesLineSize + root.iconSize + root.iconMargin + 1)
+                                                                  : Math.min(root.themePanelSize + root.panelShadow,
+                                                                            root.statesLineSize + root.iconSize + root.iconMargin + root.panelMargin)
 
         property int shadowsSize: {
             if (shadowsSvgItem && root.useThemePanel){
@@ -139,6 +139,7 @@ Item{
 
 
         PlasmaCore.FrameSvgItem{
+            id: solidBackground
             anchors.leftMargin: shadowsSvgItem.margins.left
             anchors.rightMargin: shadowsSvgItem.margins.right
             anchors.topMargin: shadowsSvgItem.margins.top
@@ -146,6 +147,28 @@ Item{
             anchors.fill:parent
 
             imagePath: "widgets/panel-background"
+
+            Binding {
+                target: root
+                property: "panelMargin"
+                value: {
+                    if (root.useThemePanel){
+                        if (root.isVertical){
+                            if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                                return solidBackground.margins.right;
+                            else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                                return solidBackground.margins.left;
+                        } else {
+                            if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                                return solidBackground.margins.top;
+                            else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                                return solidBackground.margins.bottom;
+                        }
+                    } else {
+                        return 0;
+                    }
+                }
+            }
 
             onRepaintNeeded: {
                 if (root.drawShadowsExternal)

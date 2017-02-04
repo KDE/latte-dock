@@ -290,6 +290,14 @@ Window{
         }
 
         Text{
+            text: "Panel Background Margin"+space
+        }
+
+        Text{
+            text: root.panelMargin
+        }
+
+        Text{
             text: "   -----------   "
         }
 
