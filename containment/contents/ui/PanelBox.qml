@@ -129,13 +129,11 @@ Item{
                 var icons = root.statesLineSize + root.iconSize + root.iconMargin + 1;
                 var panels = root.themePanelSize + root.panelMargin;
 
+                root.realPanelThickness = icons;
                 if (icons > panels) {
-                    root.realPanelThickness = icons;
                     return panels;
                 } else {
-                    var pan = icons;
-                    root.realPanelThickness = pan;
-                    return pan;
+                    return icons;
                 }
             }
         }

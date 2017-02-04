@@ -303,10 +303,6 @@ Item{
 
                 var fixedThickness = root.realPanelThickness;
 
-               // if(panelIsBiggerFromIconSize && !root.drawShadowsExternal) {
-                  //  fixedThickness = thicknessNormal - root.panelShadow;
-              //  }
-
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     newMaskArea.width = fixedThickness;
                 } else {
