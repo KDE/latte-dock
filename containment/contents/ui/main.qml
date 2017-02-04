@@ -1129,7 +1129,7 @@ DragDrop.DropArea {
                     && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ){
                 return ((dock.width/2) - (root.maxLength/2))
             } else {
-                if (visibilityManager.inSlidingIn && root.isVertical){
+                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                     return;
                 }
 
@@ -1146,7 +1146,7 @@ DragDrop.DropArea {
                     && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ) {
                 return ((dock.height/2) - (root.maxLength/2));
             } else {
-                if (visibilityManager.inSlidingIn && root.isHorizontal){
+                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                     return;
                 }
 
