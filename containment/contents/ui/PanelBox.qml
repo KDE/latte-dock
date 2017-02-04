@@ -34,14 +34,13 @@ Item{
     id:barLine
 
     opacity: root.useThemePanel ? 1 : 0
-    //  parent: root
 
     property int panelWidth: root.drawShadowsExternal ? root.width :
                                                         (root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
-                                                            layoutsContainer.width + spacing : mainLayout.width + spacing
+                                                            layoutsContainer.contentWidth + spacing : mainLayout.width + spacing
     property int panelHeight: root.drawShadowsExternal ? root.height :
                                                          (root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
-                                                             layoutsContainer.height + spacing : mainLayout.height + spacing
+                                                             layoutsContainer.contentHeight + spacing : mainLayout.height + spacing
 
     width: root.isHorizontal ? panelWidth : smallSize
     height: root.isVertical ? panelHeight : smallSize
@@ -53,6 +52,12 @@ Item{
 
     Behavior on opacity{
         NumberAnimation { duration: 150 }
+    }
+
+    Binding {
+        target: root
+        property: "realPanelLength"
+        value: root.isVertical ? barLine.height : barLine.width
     }
 
     /// plasmoid's default panel

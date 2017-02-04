@@ -43,7 +43,11 @@ Item{
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= root.iconSize)
 
     property int animationSpeed: root.durationTime * 1.2 * units.longDuration
+    property bool inSlidingIn: false //necessary because of its init structure
+    property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
+
+    property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ? -thicknessNormal : thicknessNormal
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
@@ -138,7 +142,8 @@ Item{
         var localY = 0;
 
         normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
-                || !windowSystem.compositingActive;
+                || !windowSystem.compositingActive
+                || (dock.visibility.isHidden && !dock.visibility.containsMouse && root.animationsNeedThickness == 0);
 
         // debug maskArea criteria
         if (debugMagager) {
@@ -354,7 +359,7 @@ Item{
         PropertyAnimation {
             target: layoutsContainer
             property: root.isVertical ? "x" : "y"
-            to: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ? -thicknessNormal : thicknessNormal
+            to: slidingOutToPos
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
         }
@@ -397,15 +402,16 @@ Item{
         }
 
         onStopped: {
+            inSlidingIn = false;
             if (manager.debugMagager) {
                 console.log("showing animation ended...");
             }
         }
 
         function init() {
-            if (!dock.visibility.blockHiding)
-                dock.visibility.isHidden = false;
-
+           // if (!dock.visibility.blockHiding)
+            inSlidingIn = true;
+            dock.visibility.isHidden = false;
             updateMaskArea();
 
             if (slidingAnimationAutoHiddenOut.running) {

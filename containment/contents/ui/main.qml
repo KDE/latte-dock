@@ -83,6 +83,7 @@ DragDrop.DropArea {
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
     property int realSize: iconSize + iconMargin
     property int realPanelSize
+    property int realPanelLength: 0
     //this is set by the PanelBox
     property int panelShadow: 0 //shadowsSize
     property int editShadow: Math.ceil(iconSize / 5)
@@ -1047,16 +1048,20 @@ DragDrop.DropArea {
         z: root.drawShadowsExternal ? 1 : 0
     }
 
-    Loader{
-        anchors.fill: layoutsContainer
-
-        // FIX IT && TEST IT: it is crashing Plasma with two Now Docks one of which has only
-        // task manager (small)
-        //active: root.useThemePanel
-        active: windowSystem.compositingActive
-
-        sourceComponent: PanelBox{}
+    Item{
+        anchors.fill:layoutsContainer
         z: root.drawShadowsExternal ? 0 : 1
+
+        Loader{
+            width: parent.width
+            height: parent.height
+            // FIX IT && TEST IT: it is crashing Plasma with two Now Docks one of which has only
+            // task manager (small)
+            //active: root.useThemePanel
+            active: windowSystem.compositingActive
+            sourceComponent: PanelBox{}
+
+        }
     }
 
     Item {
@@ -1119,12 +1124,40 @@ DragDrop.DropArea {
         property int currentSpot: -1000
         property int hoveredIndex: -1
 
-        x: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-           && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ?
-               (dock.width/2) - (root.maxLength/2): 0
-        y: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-           && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ?
-               (dock.height/2) - (root.maxLength/2): 0
+        x: {
+            if ( (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
+                    && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ){
+                return ((dock.width/2) - (root.maxLength/2))
+            } else {
+                if (visibilityManager.inSlidingIn && root.isVertical){
+                    return;
+                }
+
+                if (dock.visibility.isHidden && windowSystem.compositingActive) {
+                    return visibilityManager.slidingOutToPos;
+                } else {
+                    return 0;
+                }
+            }
+        }
+
+        y: {
+            if ( (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
+                    && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ) {
+                return ((dock.height/2) - (root.maxLength/2));
+            } else {
+                if (visibilityManager.inSlidingIn && root.isHorizontal){
+                    return;
+                }
+
+                if (dock.visibility.isHidden && windowSystem.compositingActive) {
+                    return visibilityManager.slidingOutToPos;
+                } else {
+                    return 0;
+                }
+            }
+        }
+
         width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.drawShadowsExternal ?
                    root.maxLength : parent.width
         height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.drawShadowsExternal ?

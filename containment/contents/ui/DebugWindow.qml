@@ -258,7 +258,15 @@ Window{
         }
 
         Text{
-            text: "Panel Background Size(user)"+space
+            text: "Panel Background Length"+space
+        }
+
+        Text{
+            text: root.realPanelLength
+        }
+
+        Text{
+            text: "Panel Background Thickness(user)"+space
         }
 
         Text{
@@ -266,7 +274,7 @@ Window{
         }
 
         Text{
-            text: "Panel Background Size(automatic)"+space
+            text: "Panel Background Thickness(automatic)"+space
         }
 
         Text{
