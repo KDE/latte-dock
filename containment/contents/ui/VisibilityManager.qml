@@ -93,6 +93,13 @@ Item{
         value: plasmoid.configuration.maxLength/100
     }
 
+    Binding{
+        target: dock
+        property: "alignment"
+        when: dock
+        value: root.panelAlignment
+    }
+
     onInStartupChanged: {
         if (!inStartup) {
             delayAnimationTimer.start();
