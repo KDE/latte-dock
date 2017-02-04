@@ -115,14 +115,30 @@ Item{
                 else if (root.panelAlignment === Latte.Dock.Bottom)
                   return margins.top;
                 else
-                  return mmargins.top + margins.bottom;
+                  return margins.top + margins.bottom;
             }
         }
 
         property int panelSize: automaticPanelSize
-        property int automaticPanelSize: root.drawShadowsExternal ? 1.2*plasmoid.configuration.iconSize + 1
-                                                                  : Math.min(root.themePanelSize + root.panelShadow,
-                                                                            root.statesLineSize + root.iconSize + root.iconMargin + root.panelMargin)
+        property int automaticPanelSize: {
+            if (root.drawShadowsExternal) {
+                var iconS = 1.2*plasmoid.configuration.iconSize + 1;
+                root.realPanelThickness = iconS;
+                return iconS;
+            } else {
+                var icons = root.statesLineSize + root.iconSize + root.iconMargin + 1;
+                var panels = root.themePanelSize + root.panelMargin;
+
+                if (icons > panels) {
+                    root.realPanelThickness = icons;
+                    return panels;
+                } else {
+                    var pan = icons;
+                    root.realPanelThickness = pan;
+                    return pan;
+                }
+            }
+        }
 
         property int shadowsSize: {
             if (shadowsSvgItem && root.useThemePanel){

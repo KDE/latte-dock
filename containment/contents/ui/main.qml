@@ -82,8 +82,9 @@ DragDrop.DropArea {
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
     property int realSize: iconSize + iconMargin
-    property int realPanelSize
+    property int realPanelSize: 0
     property int realPanelLength: 0
+    property int realPanelThickness: 0
     //this is set by the PanelBox
     property int panelMargin: 0
     property int panelShadow: 0 //shadowsSize
