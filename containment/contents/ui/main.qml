@@ -1129,11 +1129,11 @@ DragDrop.DropArea {
                     && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ){
                 return ((dock.width/2) - (root.maxLength/2))
             } else {
-                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
+                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
                     return;
                 }
 
-                if (dock.visibility.isHidden && windowSystem.compositingActive) {
+                if (dock.visibility.isHidden && windowSystem.compositingActive && root.isVertical) {
                     return visibilityManager.slidingOutToPos;
                 } else {
                     return 0;
@@ -1150,12 +1150,16 @@ DragDrop.DropArea {
                     return;
                 }
 
-                if (dock.visibility.isHidden && windowSystem.compositingActive) {
+                if (dock.visibility.isHidden && windowSystem.compositingActive && root.isHorizontal) {
                     return visibilityManager.slidingOutToPos;
                 } else {
                     return 0;
                 }
             }
+        }
+
+        onXChanged: {
+            console.log("X: "+x);
         }
 
         width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.drawShadowsExternal ?

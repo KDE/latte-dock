@@ -411,12 +411,13 @@ Item{
         function init() {
            // if (!dock.visibility.blockHiding)
             inSlidingIn = true;
-            dock.visibility.isHidden = false;
-            updateMaskArea();
 
             if (slidingAnimationAutoHiddenOut.running) {
                 slidingAnimationAutoHiddenOut.stop();
             }
+
+            dock.visibility.isHidden = false;
+            updateMaskArea();
 
             start();
         }
