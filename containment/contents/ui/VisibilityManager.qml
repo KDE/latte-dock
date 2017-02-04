@@ -59,7 +59,7 @@ Item{
     property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.iconMargin + 1, root.realPanelSize + root.panelShadow)
     property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.iconMargin) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: statesLineSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(plasmoid.configuration.iconSize+iconMarginOriginal) //needed in some animations
+    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, statesLineSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(plasmoid.configuration.iconSize+iconMarginOriginal)) //needed in some animations
     property int thicknessNormalOriginal: Math.max(thicknessNormalOriginalValue, root.realPanelSize + root.panelShadow)
     property int thicknessNormalOriginalValue: statesLineSizeOriginal + plasmoid.configuration.iconSize + iconMarginOriginal + 1
     property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2,
@@ -301,11 +301,11 @@ Item{
                 //the shadows size must be removed from the maskArea
                 //before updating the localDockGeometry
 
-                var fixedThickness = thicknessNormal;
+                var fixedThickness = root.realPanelThickness;
 
-                if(panelIsBiggerFromIconSize && !root.drawShadowsExternal) {
-                    fixedThickness = thicknessNormal - root.panelShadow;
-                }
+               // if(panelIsBiggerFromIconSize && !root.drawShadowsExternal) {
+                  //  fixedThickness = thicknessNormal - root.panelShadow;
+              //  }
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                     newMaskArea.width = fixedThickness;
