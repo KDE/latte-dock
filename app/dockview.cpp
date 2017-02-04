@@ -116,6 +116,8 @@ void DockView::init()
     connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
+    connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
+
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
@@ -469,6 +471,23 @@ void DockView::setMaxThickness(int thickness)
     m_maxThickness = thickness;
     syncGeometry();
     emit maxThicknessChanged();
+}
+
+int DockView::alignment() const
+{
+    return (int)m_alignment;
+}
+
+void DockView::setAlignment(int alignment)
+{
+    Dock::Alignment align = (Dock::Alignment) alignment;
+
+    if (m_alignment == align) {
+        return;
+    }
+
+    m_alignment = align;
+    emit alignmentChanged();
 }
 
 QRect DockView::maskArea() const
@@ -926,62 +945,69 @@ void DockView::updateEnabledBorders()
         return;
     }
 
-    if (!m_drawShadows) {
-        PanelShadows::self()->removeWindow(this);
-        return;
-    }
-
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
-    if (!m_drawShadows) {
-        borders = Plasma::FrameSvg::NoBorder;
-    } else {
-        switch (location()) {
-            case Plasma::Types::TopEdge:
-                borders &= ~Plasma::FrameSvg::TopBorder;
-                break;
+    switch (location()) {
+        case Plasma::Types::TopEdge:
+            borders &= ~Plasma::FrameSvg::TopBorder;
+            break;
 
-            case Plasma::Types::LeftEdge:
-                borders &= ~Plasma::FrameSvg::LeftBorder;
-                break;
-
-            case Plasma::Types::RightEdge:
-                borders &= ~Plasma::FrameSvg::RightBorder;
-                break;
-
-            case Plasma::Types::BottomEdge:
-                borders &= ~Plasma::FrameSvg::BottomBorder;
-                break;
-
-            default:
-                break;
-        }
-
-        if (x() <= screen()->geometry().x()) {
+        case Plasma::Types::LeftEdge:
             borders &= ~Plasma::FrameSvg::LeftBorder;
-        }
+            break;
 
-        if (x() + width() >= screen()->geometry().x() + screen()->geometry().width()) {
+        case Plasma::Types::RightEdge:
             borders &= ~Plasma::FrameSvg::RightBorder;
+            break;
+
+        case Plasma::Types::BottomEdge:
+            borders &= ~Plasma::FrameSvg::BottomBorder;
+            break;
+
+        default:
+            break;
+    }
+
+    if ((location() == Plasma::Types::LeftEdge || location() == Plasma::Types::RightEdge)) {
+        if (maxLength() == 1 && m_alignment == Dock::Justify) {
+            borders &= ~Plasma::FrameSvg::TopBorder;
+            borders &= ~Plasma::FrameSvg::BottomBorder;
         }
 
-        if (y() <= screen()->geometry().y()) {
+        if (m_alignment == Dock::Top) {
             borders &= ~Plasma::FrameSvg::TopBorder;
         }
 
-        if (y() + height() >= screen()->geometry().y() + screen()->geometry().height()) {
+        if (m_alignment == Dock::Bottom) {
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
 
     }
 
-    PanelShadows::self()->setEnabledBorders(this, borders);
+    if (location() == Plasma::Types::TopEdge || location() == Plasma::Types::BottomEdge) {
+        if (maxLength() == 1 && m_alignment == Dock::Justify) {
+            borders &= ~Plasma::FrameSvg::LeftBorder;
+            borders &= ~Plasma::FrameSvg::RightBorder;
+        }
+
+        if (m_alignment == Dock::Left) {
+            borders &= ~Plasma::FrameSvg::LeftBorder;
+        }
+
+        if (m_alignment == Dock::Right) {
+            borders &= ~Plasma::FrameSvg::RightBorder;
+        }
+    }
 
     if (m_enabledBorders != borders) {
-        PanelShadows::self()->setEnabledBorders(this, borders);
-
         m_enabledBorders = borders;
         emit enabledBordersChanged();
+    }
+
+    if (!m_drawShadows) {
+        PanelShadows::self()->removeWindow(this);
+    } else {
+        PanelShadows::self()->setEnabledBorders(this, borders);
     }
 }
 

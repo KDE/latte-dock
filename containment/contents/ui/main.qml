@@ -99,7 +99,7 @@ DragDrop.DropArea {
 
     property int panelAlignment: !root.editMode ? plasmoid.configuration.panelPosition :
                                                   ( plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                                       Latte.Dock.Center :plasmoid.configuration.panelPosition )
+                                                       Latte.Dock.Center : plasmoid.configuration.panelPosition )
 
     property real zoomFactor: (windowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 

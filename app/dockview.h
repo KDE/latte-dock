@@ -24,6 +24,7 @@
 #include "plasmaquick/configview.h"
 #include "plasmaquick/containmentview.h"
 #include "visibilitymanager.h"
+#include "../liblattedock/dock.h"
 
 #include <QQuickView>
 #include <QQmlListProperty>
@@ -44,6 +45,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
 
+    Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
@@ -91,6 +93,9 @@ public:
     int shadow() const;
     void setShadow(int shadow);
 
+    int alignment() const;
+    void setAlignment(int alignment);
+
     QRect maskArea() const;
     void setMaskArea(QRect area);
 
@@ -129,6 +134,7 @@ signals:
     void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
 
+    void alignmentChanged();
     void debugFlagsChanged();
     void dockLocationChanged();
     void docksCountChanged();
@@ -163,6 +169,8 @@ private:
     int m_normalThickness{24};
     int m_shadow{0};
     float m_maxLength{1};
+
+    Dock::Alignment m_alignment{Dock::Center};
 
     QRect m_localDockGeometry;
     QRect m_maskArea;

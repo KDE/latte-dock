@@ -78,16 +78,6 @@ Item{
             }
         }*/
 
-
-    /// item which is used as anchors for the plasma's theme
-    Item{
-        id:belower
-
-        width: (plasmoid.location === PlasmaCore.Types.LeftEdge) ? shadowsSvgItem.margins.left : shadowsSvgItem.margins.right
-        height: (plasmoid.location === PlasmaCore.Types.BottomEdge)? shadowsSvgItem.margins.bottom : shadowsSvgItem.margins.top
-    }
-
-
     /// the current theme's panel
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
@@ -100,6 +90,8 @@ Item{
 
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
+
+        enabledBorders: dock ? dock.enabledBorders : 0
 
         property int marginsWidth: root.drawShadowsExternal ? 0 : margins.left + margins.right
         property int marginsHeight: root.drawShadowsExternal ? 0 : margins.top + margins.bottom
@@ -147,10 +139,12 @@ Item{
 
 
         PlasmaCore.FrameSvgItem{
-            anchors.margins: root.drawShadowsExternal ? 0 : belower.width-1
+            anchors.leftMargin: shadowsSvgItem.margins.left
+            anchors.rightMargin: shadowsSvgItem.margins.right
+            anchors.topMargin: shadowsSvgItem.margins.top
+            anchors.bottomMargin: shadowsSvgItem.margins.bottom
             anchors.fill:parent
-            // imagePath: root.transparentPanel ? "translucent/widgets/panel-background" :
-            //                                   "widgets/panel-background"
+
             imagePath: "widgets/panel-background"
 
             onRepaintNeeded: {
@@ -205,12 +199,8 @@ Item{
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.left; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:undefined; left:belower.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         },
         ///Left
@@ -223,12 +213,8 @@ Item{
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:parent.top; left:undefined; right:parent.left; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:belower.top; bottom:undefined; left:belower.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         ///Left
@@ -241,12 +227,8 @@ Item{
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:parent.bottom; bottom:undefined; left:undefined; right:parent.left; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:belower.bottom; left:belower.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -258,12 +240,8 @@ Item{
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.left; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:undefined; left:belower.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         },
         ///Right
@@ -276,12 +254,8 @@ Item{
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:undefined; left:parent.right; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:belower.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         },
         State {
@@ -293,12 +267,8 @@ Item{
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:parent.top; left:parent.right; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:belower.top; bottom:undefined; left:undefined; right:belower.right; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -310,12 +280,8 @@ Item{
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined }
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:parent.bottom; bottom:undefined; left:parent.right; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:belower.bottom; left:undefined; right:belower.right; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -327,12 +293,8 @@ Item{
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:undefined; left:parent.right; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:belower.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
         },
         ///Bottom
@@ -345,12 +307,8 @@ Item{
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:parent.bottom; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:belower.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
         },
         State {
@@ -362,12 +320,8 @@ Item{
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:parent.bottom; bottom:undefined; left:undefined; right:parent.left; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:belower.bottom; left:belower.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -379,12 +333,8 @@ Item{
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:parent.bottom; bottom:undefined; left:parent.right; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:belower.bottom; left:undefined; right:belower.right; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -396,12 +346,8 @@ Item{
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:parent.bottom; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:undefined; bottom:belower.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
         },
         ///Top
@@ -414,12 +360,8 @@ Item{
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:parent.top; left:undefined; right:undefined;  horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:belower.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
         },
         State {
@@ -431,12 +373,8 @@ Item{
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:parent.top; left:undefined; right:parent.left;  horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:belower.top; bottom:undefined; left:belower.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -448,12 +386,8 @@ Item{
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:parent.top; left:parent.right; right:undefined;  horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:belower.top; bottom:undefined; left:undefined; right:belower.right; horizontalCenter:undefined; verticalCenter:undefined}
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
         },
         State {
@@ -465,12 +399,8 @@ Item{
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
             AnchorChanges {
-                target: belower
-                anchors{ top:undefined; bottom:parent.top; left:undefined; right:undefined;  horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            AnchorChanges {
                 target: shadowsSvgItem
-                anchors{ top:belower.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
         }
     ]
