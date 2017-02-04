@@ -85,6 +85,7 @@ DragDrop.DropArea {
     property int realPanelSize
     property int realPanelLength: 0
     //this is set by the PanelBox
+    property int panelMargin: 0
     property int panelShadow: 0 //shadowsSize
     property int editShadow: Math.ceil(iconSize / 5)
     property int themePanelSize: plasmoid.configuration.panelSize
