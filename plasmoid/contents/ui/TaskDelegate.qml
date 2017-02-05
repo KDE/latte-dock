@@ -857,14 +857,19 @@ MouseArea{
     }
     ///window previews////
 
-
-
     function modelIndex(){
         return tasksModel.makeModelIndex(index);
     }
 
     function setBlockingAnimation(value){
         inBlockingAnimation = value;
+    }
+
+    function slotShowPreviewForTasks(group) {
+        if (group === mainItemContainer) {
+            preparePreviewWindow();
+            windowsPreviewDlg.show();
+        }
     }
 
     function slotPublishGeometries() {
@@ -890,6 +895,7 @@ MouseArea{
         root.draggingFinished.connect(handlerDraggingFinished);
         root.clearZoomSignal.connect(clearZoom);
         root.publishTasksGeometries.connect(slotPublishGeometries);
+        root.showPreviewForTasks.connect(slotShowPreviewForTasks);
 
         //fix wrong positioning of launchers....
         for(var i=0; i<tasksModel.launcherList.length; ++i){

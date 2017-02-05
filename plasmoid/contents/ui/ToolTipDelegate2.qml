@@ -25,6 +25,8 @@ import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.0
 import QtQml.Models 2.2
 
+import org.kde.draganddrop 2.0
+
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
@@ -107,6 +109,31 @@ PlasmaExtras.ScrollArea {
             return singleTask.containsMouse() || groupTask.containsMouse();
         }
 
+        DropArea {
+            id: dropMainArea
+            anchors.fill: contentItem
+            enabled: isGroup
+
+            preventStealing: true
+
+            property bool dragInside: false
+
+            property QtObject currentWindow
+
+            onDragLeave: {
+                windowsPreviewDlg.hide();
+            }
+
+            onDragMove: {
+                var current = groupTask.childAtPos(event.x, event.y);
+
+                if (current && currentWindow !== current && current.submodelIndex) {
+                    currentWindow = current;
+                    tasksModel.requestActivate(current.submodelIndex);
+                }
+            }
+        }
+
         ToolTipInstance {
             id: singleTask
             visible: !isGroup
@@ -137,6 +164,28 @@ PlasmaExtras.ScrollArea {
                 }
 
                 return false;
+            }
+
+            function childAtPos(x, y){
+                var tasks = groupTask.children;
+
+                for(var i=0; i<tasks.length; ++i){
+                    var task = tasks[i];
+
+                    var choords = contentItem.mapFromItem(task,0, 0);
+
+                    if(choords.y < 0)
+                        choords.y = 0;
+                    if(choords.x < 0)
+                        choords.x = 0;
+
+                    if( (x>=choords.x) && (x<=choords.x+task.width)
+                            && (y>=choords.y) && (y<=choords.y+task.height)){
+                        return task;
+                    }
+                }
+
+                return null;
             }
         }
     }
