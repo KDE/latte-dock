@@ -19,6 +19,8 @@
 */
 
 var layout;
+var layoutS;
+var layoutE;
 var root;
 var plasmoid;
 var lastSpacer;
@@ -98,8 +100,9 @@ function save() {
     var ids = new Array();
     var splitterExists = false;
     var splitterExists2 = false;
-    for (var i = 0; i < layout.children.length; ++i) {
-        var child = layout.children[i];
+
+    for (var i = 0; i < layoutS.children.length; ++i) {
+        var child = layoutS.children[i];
 
         if (child.applet && !child.isInternalViewSplitter) {
             ids.push(child.applet.id);
@@ -109,6 +112,34 @@ function save() {
         } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
             splitterExists2 = true;
             plasmoid.configuration.splitterPosition2 = i;
+        }
+    }
+
+    for (var i = 0; i < layout.children.length; ++i) {
+        var child = layout.children[i];
+
+        if (child.applet && !child.isInternalViewSplitter) {
+            ids.push(child.applet.id);
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && !splitterExists){
+            splitterExists = true;
+            plasmoid.configuration.splitterPosition = i + layoutS.children.length;
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
+            splitterExists2 = true;
+            plasmoid.configuration.splitterPosition2 = i + layoutS.children.length;
+        }
+    }
+
+    for (var i = 0; i < layoutE.children.length; ++i) {
+        var child = layoutE.children[i];
+
+        if (child.applet && !child.isInternalViewSplitter) {
+            ids.push(child.applet.id);
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && !splitterExists){
+            splitterExists = true;
+            plasmoid.configuration.splitterPosition = i + layoutS.children.length + layout.children.length;
+        } else if(child.isInternalViewSplitter && plasmoid.configuration.panelPosition === 10 && splitterExists){
+            splitterExists2 = true;
+            plasmoid.configuration.splitterPosition2 = i + layoutS.children.length + layout.children.length;
         }
     }
 

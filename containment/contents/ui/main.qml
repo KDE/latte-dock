@@ -495,6 +495,8 @@ DragDrop.DropArea {
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
         LayoutManager.layout = mainLayout;
+        LayoutManager.layoutS = startLayout;
+        layoutManager.layoutE = endLayout;
         LayoutManager.lastSpacer = lastSpacer;
         LayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
