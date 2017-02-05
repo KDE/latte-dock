@@ -75,6 +75,7 @@ Item {
 
         onDragEnter:{
             if(root.dragSource == null){
+                onlyLaunchers = false;
                 root.dropNewLauncher = true;
 
                 var createLaunchers = event.mimeData.urls.every(function (item) {
@@ -125,7 +126,7 @@ Item {
             //I use the ignoredItem in order to reduce the move calls as much
             //as possible
             if (tasksModel.sortMode == TaskManager.TasksModel.SortManual && root.dragSource && ignoredItem == null) {
-                var insertAt = TaskTools.insertIndexAt(above, event.x, event.y);              
+                var insertAt = TaskTools.insertIndexAt(above, event.x, event.y);
 
                 if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
               //      console.log(root.dragSource.itemIndex + " - "+insertAt);
@@ -136,11 +137,11 @@ Item {
             } else if (!root.dragSource && above && hoveredItem != above) {
                 hoveredItem = above;
                 root.dropNewLauncher = true;
-             //   activationTimer.restart();
+                activationTimer.restart();
             } else if (!above) {
                 root.dropNewLauncher = true;
                 hoveredItem = null;
-              //  activationTimer.stop();
+                activationTimer.stop();
             }
         }
 
@@ -172,12 +173,16 @@ Item {
             repeat: false
 
             onTriggered: {
-             /*   if (parent.hoveredItem.m.IsGroupParent === true) {
-                    groupDialog.visualParent = parent.hoveredItem;
-                    groupDialog.visible = true;
+                if (dropHandler.onlyLaunchers) {
+                    return;
+                }
+
+                if (parent.hoveredItem.m.IsGroupParent === true) {
+                   // groupDialog.visualParent = parent.hoveredItem;
+                   // groupDialog.visible = true;
                 } else if (parent.hoveredItem.m.IsLauncher !== true) {
                     tasksModel.requestActivate(parent.hoveredItem.modelIndex());
-                }*/
+                }
             }
         }
     }
