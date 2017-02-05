@@ -1162,10 +1162,6 @@ DragDrop.DropArea {
             }
         }
 
-        onXChanged: {
-            console.log("X: "+x);
-        }
-
         width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.drawShadowsExternal ?
                    root.maxLength : parent.width
         height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.drawShadowsExternal ?
