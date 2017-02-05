@@ -178,6 +178,7 @@ Item {
                 }
 
                 if (parent.hoveredItem.m.IsGroupParent === true) {
+                    root.showPreviewForTasks(parent.hoveredItem);
                    // groupDialog.visualParent = parent.hoveredItem;
                    // groupDialog.visible = true;
                 } else if (parent.hoveredItem.m.IsLauncher !== true) {
