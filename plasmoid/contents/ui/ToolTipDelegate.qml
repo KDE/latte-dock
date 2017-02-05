@@ -63,6 +63,7 @@ MouseArea{
             toolTipDelegate.currentItem = parentIndex;
         }
         else{
+            root.disableRestoreZoom = false;
             toolTipDelegate.currentItem = -1;
             checkListHovered.restart();
         }
