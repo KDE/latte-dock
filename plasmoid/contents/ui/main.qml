@@ -190,7 +190,7 @@ Item {
 
     /////Winwow previews///////////
 
-    ToolTipDelegate {
+    ToolTipDelegate2 {
         id: toolTipDelegate
         visible: false
 
@@ -265,8 +265,6 @@ Item {
             Component.onCompleted: initializePreviewTimer.start()
         }
     }
-
-
 
     /////Window Previews/////////
 
@@ -900,13 +898,13 @@ Item {
 
         var tasks = icList.contentItem.children;
 
-        if(toolTipDelegate.currentItem != -1)
+        if(toolTipDelegate.currentItem !== -1)
             return true;
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
 
-            //l    console.log("Checking "+i+" - "+task.index+" - "+task.containsMouse);
+            //    console.log("Checking "+i+" - "+task.index+" - "+task.containsMouse);
             if(task && task.containsMouse){
                 return true;
             }
@@ -922,7 +920,7 @@ Item {
 
         var result = root.outsideContainsMouse();
 
-        if ((!result || toolTipDelegate.parentIndex != icList.hoveredIndex) && windowSystem.compositingActive) {
+        if ((!result || toolTipDelegate.parentIndex !== icList.hoveredIndex) && windowSystem.compositingActive) {
             windowsPreviewDlg.hide();
         }
 

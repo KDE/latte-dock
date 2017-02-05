@@ -40,14 +40,14 @@ MouseArea{
     anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
     width: root.vertical ? wrapper.width :
-                            hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
+                           hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
 
     height: root.vertical ? hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height :
-                             wrapper.height
+                            wrapper.height
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
     hoverEnabled: (inAnimation !== true)&& (!IsStartup)&&(!root.taskInAnimation)&&(!root.editMode || root.debugLocation)
-    // hoverEnabled: true
+    // hoverEnabled: false
 
     property bool buffersAreReady: false
     property bool delayingRemove: ListView.delayRemove
@@ -221,9 +221,9 @@ MouseArea{
             //property int statesLineSize: root.statesLineSize
             property int addedSpace: root.statesLineSize //7
             property real showDelegateWidth: root.vertical ? basicScalingWidth+addedSpace :
-                                                              basicScalingWidth
+                                                             basicScalingWidth
             property real showDelegateheight: root.vertical ? basicScalingHeight :
-                                                               basicScalingHeight + addedSpace
+                                                              basicScalingHeight + addedSpace
 
             //scales which are used mainly for activating InLauncher
             ////Scalers///////
@@ -605,7 +605,7 @@ MouseArea{
         if (isWindow) {
             if(containsMouse && root.showPreviews && windowSystem.compositingActive){
                 hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
-                preparePreviewWindow();
+              //  preparePreviewWindow();
             }
             else{
                 if (hoveredTimerObj){
@@ -700,7 +700,6 @@ MouseArea{
         if(!inAnimation)
             checkListHovered.startDuration(3*units.longDuration);
     }
-
     ///////////////// End Of Mouse Area Events ///////////////////
 
     ///// Handlers for Signals /////
@@ -737,6 +736,50 @@ MouseArea{
     function preparePreviewWindow(){
         windowsPreviewDlg.visualParent = mainItemContainer;
 
+        toolTipDelegate.parentTask = mainItemContainer;
+        toolTipDelegate.parentIndex = itemIndex;
+
+        toolTipDelegate.appName = Qt.binding(function() {
+            return model.AppName;
+        });
+        toolTipDelegate.pidParent = Qt.binding(function() {
+            return model.AppPid;
+        });
+        toolTipDelegate.windows = Qt.binding(function() {
+            return model.LegacyWinIdList;
+        });
+        toolTipDelegate.isGroup = Qt.binding(function() {
+            return model.IsGroupParent == true;
+        });
+        toolTipDelegate.icon = Qt.binding(function() {
+            return model.decoration;
+        });
+        toolTipDelegate.launcherUrl = Qt.binding(function() {
+            return model.LauncherUrlWithoutIcon;
+        });
+        toolTipDelegate.isLauncher = Qt.binding(function() {
+            return model.IsLauncher == true;
+        });
+        toolTipDelegate.isMinimizedParent = Qt.binding(function() {
+            return model.IsMinimized == true;
+        });
+        toolTipDelegate.displayParent = Qt.binding(function() {
+            return model.display;
+        });
+        toolTipDelegate.genericName = Qt.binding(function() {
+            return model.GenericName;
+        });
+        toolTipDelegate.virtualDesktopParent = Qt.binding(function() {
+            return model.VirtualDesktop != undefined ? model.VirtualDesktop : 0;
+        });
+        toolTipDelegate.isOnAllVirtualDesktopsParent = Qt.binding(function() {
+            return model.IsOnAllVirtualDesktops == true;
+        });
+        toolTipDelegate.activitiesParent = Qt.binding(function() {
+            return model.Activities;
+        });
+
+        /*
         toolTipDelegate.parentIndex = index;
 
         toolTipDelegate.windows = Qt.binding(function() {
@@ -755,7 +798,7 @@ MouseArea{
             return model.LauncherUrlWithoutIcon;
         });
 
-        toolTipDelegate.titles = tasksWindows.windowsTitles();
+        toolTipDelegate.titles = tasksWindows.windowsTitles();*/
     }
 
 
@@ -825,7 +868,7 @@ MouseArea{
     }
 
     function slotPublishGeometries() {
-        if (isWindow || isStartup || isGroupParent) {
+        if ((isWindow || isStartup || isGroupParent) && tasksModel) {
             tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(),
                                                       backend.globalRect(mainItemContainer), mainItemContainer);
         }
@@ -982,6 +1025,7 @@ MouseArea{
             onTriggered: {
                 if(mainItemContainer.containsMouse){
                     //     console.log("Hovered Timer....");
+                    mainItemContainer.preparePreviewWindow();
                     windowsPreviewDlg.show();
                     //windowsPreviewDlg.visible = true;
                 }
