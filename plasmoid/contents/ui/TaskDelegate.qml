@@ -501,6 +501,11 @@ MouseArea{
 
     ///////////////// Mouse Area Events ///////////////////
     onEntered: {
+        if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
+            windowsPreviewDlg.hide();
+            toolTipDelegate.currentItem = -1;
+        }
+
         checkListHovered.stop();
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation)){

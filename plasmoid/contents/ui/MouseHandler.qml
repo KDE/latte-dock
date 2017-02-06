@@ -143,6 +143,11 @@ Item {
                 hoveredItem = null;
                 activationTimer.stop();
             }
+
+            if (hoveredItem && windowsPreviewDlg.visible && toolTipDelegate.currentItem !== hoveredItem.itemIndex ) {
+                windowsPreviewDlg.hide();
+                toolTipDelegate.currentItem=-1;
+            }
         }
 
         onDragLeave: {
@@ -182,6 +187,11 @@ Item {
                    // groupDialog.visualParent = parent.hoveredItem;
                    // groupDialog.visible = true;
                 } else if (parent.hoveredItem.m.IsLauncher !== true) {
+                    if(windowsPreviewDlg.visible && toolTipDelegate.currentItem !==parent.hoveredItem.itemIndex ) {
+                        windowsPreviewDlg.hide();
+                        toolTipDelegate.currentItem=-1;
+                    }
+
                     tasksModel.requestActivate(parent.hoveredItem.modelIndex());
                 }
             }
