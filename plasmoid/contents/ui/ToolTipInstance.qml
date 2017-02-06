@@ -139,7 +139,7 @@ Column {
             height: units.iconSizes.smallMedium
             width: height
 
-            visible: isWin
+            visible: isWin && !hideCloseButtons
 
             acceptedButtons: Qt.LeftButton
             hoverEnabled: true

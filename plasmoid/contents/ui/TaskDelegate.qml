@@ -675,7 +675,7 @@ MouseArea{
                             if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
                                 windowsPreviewDlg.hide();
                             } else {
-                                preparePreviewWindow();
+                                preparePreviewWindow(false);
                                 windowsPreviewDlg.show();
                             }
                         }
@@ -733,11 +733,13 @@ MouseArea{
 
 
     ///// Helper functions /////
-    function preparePreviewWindow(){
+    function preparePreviewWindow(hideClose){
         windowsPreviewDlg.visualParent = mainItemContainer;
 
         toolTipDelegate.parentTask = mainItemContainer;
         toolTipDelegate.parentIndex = itemIndex;
+
+        toolTipDelegate.hideCloseButtons = hideClose;
 
         toolTipDelegate.appName = Qt.binding(function() {
             return model.AppName;
@@ -867,7 +869,7 @@ MouseArea{
 
     function slotShowPreviewForTasks(group) {
         if (group === mainItemContainer) {
-            preparePreviewWindow();
+            preparePreviewWindow(true);
             windowsPreviewDlg.show();
         }
     }
@@ -1031,7 +1033,7 @@ MouseArea{
             onTriggered: {
                 if(mainItemContainer.containsMouse){
                     //     console.log("Hovered Timer....");
-                    mainItemContainer.preparePreviewWindow();
+                    mainItemContainer.preparePreviewWindow(false);
                     windowsPreviewDlg.show();
                     //windowsPreviewDlg.visible = true;
                 }
