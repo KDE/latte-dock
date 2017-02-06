@@ -80,35 +80,8 @@ PlasmaExtras.ScrollArea {
             return isVerticalPanel ? contentItem.height > viewport.height : contentItem.width > viewport.width
         });
     }
-
-    MouseArea {
-        id: contentItem
-        width: childrenRect.width
-        height: childrenRect.height
-
-        hoverEnabled: true
-
-        onContainsMouseChanged: {
-            checkMouseInside();
-        }
-
-        function checkMouseInside(){
-            var isInside = containsMouse || childrenContainMouse();
-            if (isInside){
-                root.disableRestoreZoom = true;
-                checkListHovered.stop();
-                toolTipDelegate.currentItem = parentIndex;
-            }
-            else{
-                root.disableRestoreZoom = false;
-                toolTipDelegate.currentItem = -1;
-                checkListHovered.restart();
-            }
-        }
-
-        function childrenContainMouse() {
-            return singleTask.containsMouse() || groupTask.containsMouse();
-        }
+    Item{
+        anchors.fill: contentItem
 
         DropArea {
             id: dropMainArea
@@ -135,58 +108,88 @@ PlasmaExtras.ScrollArea {
             }
         }
 
-        ToolTipInstance {
-            id: singleTask
-            visible: !isGroup
-        }
+        MouseArea {
+            id: contentItem
+            width: childrenRect.width
+            height: childrenRect.height
 
-        Grid {
-            id: groupTask
-            rows: !isVerticalPanel
-            columns: isVerticalPanel
-            flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
-            spacing: units.largeSpacing
+            hoverEnabled: true
 
-            visible: isGroup
+            onContainsMouseChanged: {
+                checkMouseInside();
+            }
 
-            Repeater {
-                id: groupRepeater
-                model: DelegateModel {
-                    model: tasksModel
-                    rootIndex: tasksModel.makeModelIndex(parentIndex, -1)
-                    delegate: ToolTipInstance {}
+            function checkMouseInside(){
+                var isInside = containsMouse || childrenContainMouse();
+                if (isInside){
+                    root.disableRestoreZoom = true;
+                    checkListHovered.stop();
+                    toolTipDelegate.currentItem = parentIndex;
+                }
+                else{
+                    root.disableRestoreZoom = false;
+                    toolTipDelegate.currentItem = -1;
+                    checkListHovered.restart();
                 }
             }
 
-            function containsMouse(){
-                for(var i=0; i<children.length-1; ++i){
-                    if(children[i].containsMouse())
-                        return true;
-                }
-
-                return false;
+            function childrenContainMouse() {
+                return singleTask.containsMouse() || groupTask.containsMouse();
             }
 
-            function childAtPos(x, y){
-                var tasks = groupTask.children;
+            ToolTipInstance {
+                id: singleTask
+                visible: !isGroup
+            }
 
-                for(var i=0; i<tasks.length; ++i){
-                    var task = tasks[i];
+            Grid {
+                id: groupTask
+                rows: !isVerticalPanel
+                columns: isVerticalPanel
+                flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
+                spacing: units.largeSpacing
 
-                    var choords = contentItem.mapFromItem(task,0, 0);
+                visible: isGroup
 
-                    if(choords.y < 0)
-                        choords.y = 0;
-                    if(choords.x < 0)
-                        choords.x = 0;
-
-                    if( (x>=choords.x) && (x<=choords.x+task.width)
-                            && (y>=choords.y) && (y<=choords.y+task.height)){
-                        return task;
+                Repeater {
+                    id: groupRepeater
+                    model: DelegateModel {
+                        model: tasksModel
+                        rootIndex: tasksModel.makeModelIndex(parentIndex, -1)
+                        delegate: ToolTipInstance {}
                     }
                 }
 
-                return null;
+                function containsMouse(){
+                    for(var i=0; i<children.length-1; ++i){
+                        if(children[i].containsMouse())
+                            return true;
+                    }
+
+                    return false;
+                }
+
+                function childAtPos(x, y){
+                    var tasks = groupTask.children;
+
+                    for(var i=0; i<tasks.length; ++i){
+                        var task = tasks[i];
+
+                        var choords = contentItem.mapFromItem(task,0, 0);
+
+                        if(choords.y < 0)
+                            choords.y = 0;
+                        if(choords.x < 0)
+                            choords.x = 0;
+
+                        if( (x>=choords.x) && (x<=choords.x+task.width)
+                                && (y>=choords.y) && (y<=choords.y+task.height)){
+                            return task;
+                        }
+                    }
+
+                    return null;
+                }
             }
         }
     }
