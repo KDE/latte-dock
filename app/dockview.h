@@ -162,7 +162,7 @@ private:
     void updateFormFactor();
 
 private:
-    Plasma::Containment *containmentById(int id);
+    Plasma::Containment *containmentById(uint id);
 
     bool m_drawShadows{false};
     int m_maxThickness{24};

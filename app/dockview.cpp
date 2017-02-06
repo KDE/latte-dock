@@ -241,7 +241,7 @@ void DockView::resizeWindow()
 
         if (m_drawShadows) {
             size.setWidth(normalThickness());
-            size.setHeight(maxLength() * screenSize.height());
+            size.setHeight(static_cast<int>(maxLength() * screenSize.height()));
         }
 
         setMinimumSize(size);
@@ -251,7 +251,7 @@ void DockView::resizeWindow()
         QSize size{screenSize.width(), maxThickness()};
 
         if (m_drawShadows) {
-            size.setWidth(maxLength() * screenSize.width());
+            size.setWidth(static_cast<int>(maxLength() * screenSize.width()));
             size.setHeight(normalThickness());
         }
 
@@ -918,7 +918,7 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     return;
 }
 
-Plasma::Containment *DockView::containmentById(int id)
+Plasma::Containment *DockView::containmentById(uint id)
 {
     foreach (auto containment, corona()->containments()) {
         if (id == containment->id()) {

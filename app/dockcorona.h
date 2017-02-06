@@ -77,9 +77,9 @@ private slots:
     void load();
 
 private:
-    bool appletExists(int containmentId, int appletId) const;
+    bool appletExists(uint containmentId, uint appletId) const;
     void cleanConfig();
-    bool containmentExists(int id) const;
+    bool containmentExists(uint id) const;
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
 

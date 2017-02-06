@@ -43,8 +43,8 @@ namespace Latte {
 
 DockCorona::DockCorona(QStringList debugFlags, QObject *parent)
     : Plasma::Corona(parent),
-      m_activityConsumer(new KActivities::Consumer(this)),
-      m_debugFlags(debugFlags)
+      m_debugFlags(debugFlags),
+      m_activityConsumer(new KActivities::Consumer(this))
 {
     KPackage::Package package(new DockPackage(this));
 
@@ -100,7 +100,7 @@ void DockCorona::cleanConfig()
     bool changed = false;
 
     foreach (auto cId, containmentsEntries.groupList()) {
-        if (!containmentExists(cId.toInt())) {
+        if (!containmentExists(cId.toUInt())) {
             //cleanup obsolete containments
             containmentsEntries.group(cId).deleteGroup();
             changed = true;
@@ -110,7 +110,7 @@ void DockCorona::cleanConfig()
             auto appletsEntries = containmentsEntries.group(cId).group("Applets");
 
             foreach (auto appletId, appletsEntries.groupList()) {
-                if (!appletExists(cId.toInt(), appletId.toInt())) {
+                if (!appletExists(cId.toUInt(), appletId.toUInt())) {
                     appletsEntries.group(appletId).deleteGroup();
                     changed = true;
                     qDebug() << "obsolete applet configuration deleted:" << appletId;
@@ -125,7 +125,7 @@ void DockCorona::cleanConfig()
     }
 }
 
-bool DockCorona::containmentExists(int id) const
+bool DockCorona::containmentExists(uint id) const
 {
     foreach (auto containment, containments()) {
         if (id == containment->id()) {
@@ -136,7 +136,7 @@ bool DockCorona::containmentExists(int id) const
     return false;
 }
 
-bool DockCorona::appletExists(int containmentId, int appletId) const
+bool DockCorona::appletExists(uint containmentId, uint appletId) const
 {
     Plasma::Containment *containment = nullptr;
 
