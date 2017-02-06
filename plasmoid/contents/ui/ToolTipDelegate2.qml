@@ -42,6 +42,7 @@ PlasmaExtras.ScrollArea {
     property string appName
     property int pidParent
     property bool isGroup
+    property bool hideCloseButtons
 
     property var windows
     readonly property bool isWin: windows !== undefined
