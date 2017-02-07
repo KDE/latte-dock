@@ -81,6 +81,21 @@ Item{
         updateImages();
     }
 
+    onSmartLauncherEnabledChanged: {
+        if (smartLauncherEnabled && !smartLauncherItem) {
+            var smartLauncher = Qt.createQmlObject(
+                        " import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet; TaskManagerApplet.SmartLauncherItem { }",
+                        centralItem);
+
+            smartLauncher.launcherUrl = Qt.binding(function() { return model.LauncherUrlWithoutIcon; });
+
+            smartLauncherItem = smartLauncher;
+        } else if (!smartLauncherEnabled && smartLauncherItem) {
+            smartLauncherItem.destroy();
+            smartLauncherItem = null;
+        }
+    }
+
     Rectangle{
         id: draggedRectangle
         width: iconImageBuffer.width+1
@@ -150,7 +165,7 @@ Item{
         height: Math.round(width)
         //icon: decoration
         source: decoration
-        
+
         onValidChanged: {
             if (!valid && (source === decoration || source === "unknown"))
                 source = "application-x-executable"
@@ -385,15 +400,6 @@ Item{
 
 
     Component.onCompleted: {
-        if (smartLauncherEnabled && !smartLauncherItem) {
-            var smartLauncher = Qt.createQmlObject(
-                        " import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet; TaskManagerApplet.SmartLauncherItem { }",
-                        centralItem);
-
-            smartLauncher.launcherUrl = Qt.binding(function() { return model.LauncherUrlWithoutIcon; });
-
-            smartLauncherItem = smartLauncher;
-        }
     }
 
     Component.onDestruction: {

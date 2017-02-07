@@ -22,7 +22,9 @@ import QtQuick 2.2
 import QtGraphicalEffects 1.0
 
 Item {
-    property double proportion
+    property double proportion: 0
+
+    property double previousProportion: 0
 
     property string valueLabel
     property string numberValue
@@ -41,7 +43,12 @@ Item {
     property double pi2: Math.PI * 2
 
     onProportionChanged: {
-        repaint()
+        console.log(previousProportion + " - "+proportion);
+        if ((proportion - 0.03 >= previousProportion) || (proportion===1)) {
+            console.log("request repaint...");
+            previousProportion = proportion;
+            repaint();
+        }
     }
 
     function repaint() {
@@ -61,7 +68,6 @@ Item {
 
         width: parent.width
         height: parent.height
-        antialiasing: true
         opacity: 1.0
 
         onPaint: {
@@ -84,12 +90,15 @@ Item {
 
     DropShadow {
         anchors.fill: canvas
-        radius: 4
+        radius: 2
         samples: 8
         spread: 0.5
         fast: true
+        opacity: 0.65
         color: theme.backgroundColor
         source: canvas
+
+        enabled: root.enableShadows
     }
 
     Text {
@@ -103,13 +112,16 @@ Item {
 
     DropShadow {
         anchors.fill: valueText
-        radius: 3
+        radius: 2
         samples: 8
         spread: 0.6
         fast: true
+        opacity: 0.65
         color: theme.backgroundColor
         source: valueText
         visible: showNumber
+
+        enabled: root.enableShadows
     }
 
     Text {
