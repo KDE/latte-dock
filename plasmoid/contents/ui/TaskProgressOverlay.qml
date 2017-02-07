@@ -33,7 +33,7 @@ Item {
         numberValue: centralItem.smartLauncherItem.count
         fullCircle: true
         showNumber: true
-        proportion: centralItem.smartLauncherItem.progress / 100
+        proportion: centralItem.smartLauncherItem ? centralItem.smartLauncherItem.progress / 100 : 0
 
         states: [
             State {
