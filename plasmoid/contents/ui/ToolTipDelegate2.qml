@@ -81,7 +81,8 @@ PlasmaExtras.ScrollArea {
         });
     }
     Item{
-        anchors.fill: contentItem
+        width: contentItem.width
+        height: contentItem.height
 
         DropArea {
             id: dropMainArea
