@@ -24,25 +24,20 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {
     id: background
-    anchors.fill: parent
 
-    CircleText {
-        id: progressCircle
-        width: 0.42 * parent.height
+    Item {
+        id: subRectangle
+        width: parent.width/ 2
         height: width
-        numberValue: centralItem.smartLauncherItem.count
-        fullCircle: true
-        showNumber: true
-        proportion: centralItem.smartLauncherItem ? centralItem.smartLauncherItem.progress / 100 : 0
 
         states: [
             State {
-                name: "left"
-                when: (root.position === PlasmaCore.Types.LeftPositioned)
+                name: "default"
+                when: (root.position !== PlasmaCore.Types.RightPositioned)
 
                 AnchorChanges {
-                    target: progressCircle
-                    anchors{ top:background.top; bottom:undefined; left:undefined; right:background.right;}
+                    target: subRectangle
+                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;}
                 }
             },
             State {
@@ -50,28 +45,21 @@ Item {
                 when: (root.position === PlasmaCore.Types.RightPositioned)
 
                 AnchorChanges {
-                    target: progressCircle
-                    anchors{ top:background.top; bottom:undefined; left:background.left; right:undefined;}
-                }
-            },
-            State {
-                name: "bottom"
-                when: (root.position === PlasmaCore.Types.BottomPositioned)
-
-                AnchorChanges {
-                    target: progressCircle
-                    anchors{ top:background.top; bottom:undefined; left:undefined; right:background.right;}
-                }
-            },
-            State {
-                name: "top"
-                when: (root.position === PlasmaCore.Types.TopPositioned)
-
-                AnchorChanges {
-                    target: progressCircle
-                    anchors{ top:background.top; bottom:undefined; left:undefined; right:background.right;}
+                    target: subRectangle
+                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;}
                 }
             }
         ]
+
+        CircleText {
+            id: progressCircle
+            anchors.centerIn: parent
+            width: 0.8 * parent.width
+            height: width
+            numberValue: centralItem.smartLauncherItem.count
+            fullCircle: true
+            showNumber: true
+            proportion: centralItem.smartLauncherItem ? centralItem.smartLauncherItem.progress / 100 : 0
+        }
     }
 }
