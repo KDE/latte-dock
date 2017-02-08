@@ -110,7 +110,7 @@ DockView::~DockView()
 void DockView::init()
 {
     connect(this, &DockView::screenChanged, this, &DockView::adaptToScreen, Qt::QueuedConnection);
-    connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry, Qt::QueuedConnection);
+    connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
     connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
@@ -132,7 +132,7 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
-    if (!screen | !containment()) {
+    if (!screen || !containment()) {
         return;
     }
 
@@ -230,11 +230,11 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
 void DockView::resizeWindow()
 {
-    if (!screen()) {
+    if (!this->screen()) {
         return;
     }
 
-    QSize screenSize = screen()->size();
+    QSize screenSize = this->screen()->size();
 
     if (formFactor() == Plasma::Types::Vertical) {
         QSize size{maxThickness(), screenSize.height()};
@@ -283,10 +283,10 @@ void DockView::updateAbsDockGeometry()
 
 void DockView::updatePosition()
 {
-    if (!screen() || !containment())
+    if (!this->screen() || !this->containment())
         return;
 
-    const QRect screenGeometry = screen()->geometry();
+    const QRect screenGeometry = this->screen()->geometry();
     QPoint position;
     position = {0, 0};
 
@@ -751,8 +751,8 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 if (applet) {
                     desktopMenu->adjustSize();
 
-                    if (screen()) {
-                        const QRect scr = screen()->geometry();
+                    if (this->screen()) {
+                        const QRect scr = this->screen()->geometry();
                         int smallStep = 3;
                         int x = event->globalPos().x() + smallStep;
                         int y = event->globalPos().y() + smallStep;
@@ -941,7 +941,7 @@ void DockView::updateEnabledBorders()
 {
     // qDebug() << "draw shadow!!!! :" << m_drawShadows;
 
-    if (!screen()) {
+    if (!this->screen()) {
         return;
     }
 
