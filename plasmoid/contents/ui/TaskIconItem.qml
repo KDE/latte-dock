@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.4
 import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.0
 
@@ -100,7 +100,7 @@ Item{
         id: draggedRectangle
         width: iconImageBuffer.width+1
         height: iconImageBuffer.height+1
-        anchors.centerIn: iconImageBuffer
+        anchors.centerIn: iconGraphic
         opacity: 0
         radius: 3
         anchors.margins: 5
@@ -118,7 +118,7 @@ Item{
     //  Image{id:normalImage; visible:false}
     Image{
         id:shadowedImage
-        anchors.centerIn:iconImageBuffer
+        anchors.centerIn:iconGraphic
         // anchors.horizontalCenter: iconImageBuffer.horizontalCenter
         //anchors.verticalCenter: iconImageBuffer.verticalCenter
 
@@ -149,37 +149,17 @@ Item{
     }
 
     /* Rectangle{
-        anchors.fill: iconImageBuffer
+        anchors.fill: parent
         border.width: 1
         border.color: "red"
         color: "transparent"
-    }*/
+    } */
 
-   // KQuickControlAddons.QIconItem{
-    Latte.IconItem{
-        id: iconImageBuffer
-
-        //    anchors.centerIn: parent
-
-        width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
-        height: Math.round(width)
-        //icon: decoration
-        source: decoration
-
-        onValidChanged: {
-            if (!valid && (source === decoration || source === "unknown"))
-                source = "application-x-executable"
-        }
-
-        property int zoomedSize: root.zoomFactor * root.iconSize
-
-        property real basicScalingWidth : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleWidth) :
-                                                                  root.iconSize * wrapper.scale
-        property real basicScalingHeight : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleHeight) :
-                                                                   root.iconSize * wrapper.scale
-
-        property real newTempSize: (wrapper.opacity == 1) ? Math.min(basicScalingWidth, basicScalingHeight) :
-                                                            Math.max(basicScalingWidth, basicScalingHeight)
+    // KQuickControlAddons.QIconItem{
+    Item{
+        id: iconGraphic
+        width: iconImageBuffer.width
+        height: iconImageBuffer.height
 
         ///states for launcher animation
         states: [
@@ -188,7 +168,7 @@ Item{
                 when:  !launcherAnimation.running && !newWindowAnimation.running
 
                 AnchorChanges{
-                    target:iconImageBuffer;
+                    target:iconGraphic;
                     anchors.horizontalCenter: parent.horizontalCenter;
                     anchors.verticalCenter: parent.verticalCenter;
                     anchors.right: undefined;
@@ -203,7 +183,7 @@ Item{
                 when: launcherAnimation.running || newWindowAnimation.running
 
                 AnchorChanges{
-                    target:iconImageBuffer;
+                    target:iconGraphic;
                     anchors.horizontalCenter: undefined;
                     anchors.verticalCenter: undefined;
                     anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
@@ -223,27 +203,158 @@ Item{
                 AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
             }
         ]
+
+        Latte.IconItem{
+            id: iconImageBuffer
+
+            //    anchors.centerIn: parent
+
+            width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
+            height: Math.round(width)
+            //icon: decoration
+            source: decoration
+
+            //visible: !root.enableShadows
+
+            onValidChanged: {
+                if (!valid && (source === decoration || source === "unknown"))
+                    source = "application-x-executable"
+            }
+
+            property int zoomedSize: root.zoomFactor * root.iconSize
+
+            property real basicScalingWidth : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleWidth) :
+                                                                      root.iconSize * wrapper.scale
+            property real basicScalingHeight : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleHeight) :
+                                                                       root.iconSize * wrapper.scale
+
+            property real newTempSize: (wrapper.opacity == 1) ? Math.min(basicScalingWidth, basicScalingHeight) :
+                                                                Math.max(basicScalingWidth, basicScalingHeight)
+
+        }
+
+        //////
+        Loader{
+            anchors.fill: parent
+            active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
+                     && centralItem.smartLauncherItem.progressVisible)
+            asynchronous: true
+
+            sourceComponent: Item{
+                ShaderEffect {
+                    id: iconOverlay
+                    enabled: false
+                    anchors.fill: parent
+                    property var source: ShaderEffectSource {
+                        sourceItem: iconImageBuffer
+                        hideSource: true
+                    }
+                    property var mask: ShaderEffectSource {
+                        sourceItem: Item{
+                            width: iconImageBuffer.width
+                            height: iconImageBuffer.height
+                            Rectangle{
+                                id: maskRect
+                                width: parent.width/2
+                                height: width
+                                radius: width
+
+                                Rectangle{
+                                    id: maskCorner
+                                    width:parent.width/2
+                                    height:parent.height/2
+                                }
+
+                                states: [
+                                    State {
+                                        name: "default"
+                                        when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+
+                                        AnchorChanges {
+                                            target: maskRect
+                                            anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;}
+                                        }
+                                        AnchorChanges {
+                                            target: maskCorner
+                                            anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;}
+                                        }
+                                    },
+                                    State {
+                                        name: "right"
+                                        when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+                                        AnchorChanges {
+                                            target: maskRect
+                                            anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;}
+                                        }
+                                        AnchorChanges {
+                                            target: maskCorner
+                                            anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;}
+                                        }
+                                    }
+                                ]
+
+                                Connections{
+                                    target: plasmoid
+                                    onLocationChanged: iconOverlay.mask.scheduleUpdate();
+                                }
+                            }
+                            //badgeMask
+                        }
+                        hideSource: true
+                        live: false
+                    }
+
+                    //  onWidthChanged: mask.scheduleUpdate();
+                    //  onHeightChanged: mask.scheduleUpdate();
+
+                    supportsAtlasTextures: true
+
+                    fragmentShader: "
+            varying highp vec2 qt_TexCoord0;
+            uniform highp float qt_Opacity;
+            uniform lowp sampler2D source;
+            uniform lowp sampler2D mask;
+            void main() {
+                gl_FragColor = texture2D(source, qt_TexCoord0.st) * (1.0 - (texture2D(mask, qt_TexCoord0.st).a)) * qt_Opacity;
+            }
+        "
+                }
+
+                TaskProgressOverlay{
+                    anchors.fill:parent
+                }
+            }
+        }
+
+        //  Loader {
+        //   anchors.fill: parent
+        ////  asynchronous: true
+        // source: "TaskProgressOverlay.qml"
+        //  active: true
+        //active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
+        //        && centralItem.smartLauncherItem.progressVisible)
+        //}
     }
 
     ///Shadow in tasks
     Loader{
-        anchors.fill: iconImageBuffer
+        anchors.fill: iconGraphic
         active: root.enableShadows
 
         sourceComponent: DropShadow{
             anchors.fill: parent
             color: "#ff080808"
             samples: 2 * radius
-            source: iconImageBuffer
+            source: iconGraphic
             radius: centralItem.shadowSize
             verticalOffset: 2
         }
     }
 
-
     VisualAddItem{
         id: dropFilesVisual
-        anchors.fill: iconImageBuffer
+        anchors.fill: iconGraphic
 
         visible: opacity == 0 ? false : true
         opacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
@@ -253,10 +364,10 @@ Item{
     BrightnessContrast{
         id:hoveredImage
         opacity: mainItemContainer.containsMouse ? 1 : 0
-        anchors.fill: iconImageBuffer
+        anchors.fill: iconGraphic
 
         brightness: 0.25
-        source: iconImageBuffer
+        source: iconGraphic
 
         Behavior on opacity {
             NumberAnimation { duration: root.durationTime*units.longDuration }
@@ -265,16 +376,16 @@ Item{
 
     BrightnessContrast {
         id: brightnessTaskEffect
-        anchors.fill: iconImageBuffer
-        source: iconImageBuffer
+        anchors.fill: iconGraphic
+        source: iconGraphic
 
         visible: clickedAnimation.running
     }
 
     Colorize{
         id: stateColorizer
-        source: iconImageBuffer
-        anchors.fill: iconImageBuffer
+        source: iconGraphic
+        anchors.fill: iconGraphic
         //visible: false
         opacity:0
 
@@ -330,14 +441,6 @@ Item{
         //sourceComponent: imageBufferingComponent
         sourceComponent: TaskIconBuffers{}
         active: mainItemContainer.isStartup ? false : true
-    }
-
-    Loader {
-        anchors.fill: iconImageBuffer
-        asynchronous: true
-        source: "TaskProgressOverlay.qml"
-        active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
-                 && centralItem.smartLauncherItem.progressVisible)
     }
 
     ///////Activate animation/////
@@ -542,7 +645,7 @@ Item{
         target: plasmoid
         onStatusChanged:{
             if ( (plasmoid.status === PlasmaCore.Types.PassiveStatus)
-                && newWindowAnimation.running && (newWindowAnimation.loops > 2) ) {
+                    && newWindowAnimation.running && (newWindowAnimation.loops > 2) ) {
                 newWindowAnimation.clear();
             }
         }

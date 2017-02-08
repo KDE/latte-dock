@@ -1,4 +1,5 @@
 /*
+
 *  Copyright 2016  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
 *
@@ -21,7 +22,7 @@
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
 
-Item {
+Rectangle {
     property double proportion: 0
 
     property double previousProportion: 0
@@ -42,10 +43,17 @@ Item {
     property double partSize: height / 2
     property double pi2: Math.PI * 2
 
+    property color alphaBackColor: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.45)
+    property color alphaBackColor2: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.8)
+    color: alphaBackColor
+    radius: width
+    border.width: Math.max(1,width/64)
+    border.color: alphaBackColor2
+
     onProportionChanged: {
-        console.log(previousProportion + " - "+proportion);
+      //  console.log(previousProportion + " - "+proportion);
         if ((proportion - 0.03 >= previousProportion) || (proportion===1)) {
-            console.log("request repaint...");
+         //   console.log("request repaint...");
             previousProportion = proportion;
             repaint();
         }
@@ -66,39 +74,28 @@ Item {
         // edge bleeding fix
         readonly property double filler: 0.01
 
-        width: parent.width
-        height: parent.height
-        opacity: 1.0
+        width: parent.width - 2 * parent.border.width
+        height: parent.height - 2 * parent.border.width
+        opacity: 0.7
+
+        anchors.centerIn: parent
 
         onPaint: {
-            var ctx = getContext('2d')
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            ctx.fillStyle = theme.highlightColor
+            var ctx = getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = theme.highlightColor;
 
-            var startRadian = - Math.PI / 2
+            var startRadian = - Math.PI / 2;
 
-            var radians = pi2 * proportion
+            var radians = pi2 * proportion;
 
             ctx.beginPath();
-            ctx.arc(width/2, height/2, stdThickness, startRadian, startRadian + radians + filler, false)
-            ctx.arc(width/2, height/2, circleThicknessAttr, startRadian + radians + filler, startRadian, true)
+            ctx.arc(width/2, height/2, stdThickness, startRadian, startRadian + radians + filler, false);
+            ctx.arc(width/2, height/2, circleThicknessAttr, startRadian + radians + filler, startRadian, true);
 
-            ctx.closePath()
-            ctx.fill()
+            ctx.closePath();
+            ctx.fill();
         }
-    }
-
-    DropShadow {
-        anchors.fill: canvas
-        radius: 2
-        samples: 8
-        spread: 0.5
-        fast: true
-        opacity: 0.65
-        color: theme.backgroundColor
-        source: canvas
-
-        enabled: root.enableShadows
     }
 
     Text {
@@ -108,31 +105,6 @@ Item {
         font.pixelSize: fontPixelSize
         color: theme.textColor
         visible: showNumber
-    }
-
-    DropShadow {
-        anchors.fill: valueText
-        radius: 2
-        samples: 8
-        spread: 0.6
-        fast: true
-        opacity: 0.65
-        color: theme.backgroundColor
-        source: valueText
-        visible: showNumber
-
-        enabled: root.enableShadows
-    }
-
-    Text {
-        id: valueTextLabel
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: -2
-        anchors.right: parent.right
-        text: valueLabel
-        font.pixelSize: fontPixelSize * 0.65
-        color: theme.textColor
-        visible: true
     }
 }
 
