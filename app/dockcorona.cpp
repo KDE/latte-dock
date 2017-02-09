@@ -178,6 +178,9 @@ QRect DockCorona::screenGeometry(int id) const
 
 QRegion DockCorona::availableScreenRegion(int id) const
 {
+    //FIXME::: availableGeometry is probably broken
+    // in Qt, so this have to be updated as plasma is doing it
+    // for example the availableScreenRect
     const auto screens = qGuiApp->screens();
 
     if (id >= 0 && id < screens.count()) {
@@ -191,11 +194,42 @@ QRect DockCorona::availableScreenRect(int id) const
 {
     const auto screens = qGuiApp->screens();
 
+    QScreen *mScreen = 0;
+
     if (id >= 0 && id < screens.count()) {
-        return screens[id]->availableGeometry();
+        mScreen = screens[id];
+    } else {
+        mScreen = qGuiApp->primaryScreen();
     }
 
-    return qGuiApp->primaryScreen()->availableGeometry();
+    QRect r = mScreen->geometry();
+
+    foreach (DockView *v, m_dockViews) {
+        if (v->isVisible() && v->screen() && v->containment()
+            && v->screen() == mScreen && v->visibility()->mode() != Latte::Dock::AutoHide) {
+            switch (v->containment()->location()) {
+                case Plasma::Types::LeftEdge:
+                    r.setLeft(r.left() + v->normalThickness());
+                    break;
+
+                case Plasma::Types::RightEdge:
+                    r.setRight(r.right() - v->normalThickness());
+                    break;
+
+                case Plasma::Types::TopEdge:
+                    r.setTop(r.top() + v->normalThickness());
+                    break;
+
+                case Plasma::Types::BottomEdge:
+                    r.setBottom(r.bottom() - v->normalThickness());
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    return r;
 }
 
 int DockCorona::primaryScreenId() const
