@@ -260,7 +260,7 @@ MouseArea{
                 }*/
 
             Behavior on mScale {
-                NumberAnimation { duration: mainItemContainer.animationTime }
+                NumberAnimation { duration: 2 * mainItemContainer.animationTime }
             }
 
 
