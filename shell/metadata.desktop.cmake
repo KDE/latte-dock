@@ -5,6 +5,7 @@ Comment=Shell provided for the Latte Dock
 
 Keywords=shell
 Type=Service
+Icon=latte-dock
 
 X-KDE-ServiceTypes=Plasma/Shell
 X-KDE-ParentApp=latte-dock
