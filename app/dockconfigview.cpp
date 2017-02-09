@@ -42,6 +42,10 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_blockFocusLost(false),
       m_dockView(dockView)
 {
+    if (containment) {
+        setIcon(QIcon::fromTheme(containment->corona()->kPackage().metadata().iconName()));
+    }
+
     connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
