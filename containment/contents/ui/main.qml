@@ -55,7 +55,7 @@ DragDrop.DropArea {
     property bool inStartup: true
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
-    property bool isHovered: nowDock ? ((nowDockHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
+    property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
                                      : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
@@ -92,7 +92,7 @@ DragDrop.DropArea {
     property int themePanelSize: plasmoid.configuration.panelSize
 
     property int iconMargin: Math.ceil(0.12 * iconSize)
-    property int statesLineSize: nowDock ?  Math.ceil( root.iconSize/13 ) : 0
+    property int statesLineSize: latteApplet ?  Math.ceil( root.iconSize/13 ) : 0
 
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
@@ -112,8 +112,8 @@ DragDrop.DropArea {
 
     property Item dragOverlay
     property Item toolBox
-    property Item nowDockContainer
-    property Item nowDock
+    property Item latteAppletContainer
+    property Item latteApplet
     property QtObject dock
 
     // TO BE DELETED, if not needed: property int counter:0;
@@ -123,7 +123,7 @@ DragDrop.DropArea {
     property bool dockIsHidden: dock ? dock.visibility.isHidden : false
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool highlightWindows: plasmoid.configuration.highlightWindows
-    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition// nowDock ? nowDock.reverseLinesPosition : false
+    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition// latteApplet ? latteApplet.reverseLinesPosition : false
     property bool showGlow: plasmoid.configuration.showGlow
     property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions
@@ -135,9 +135,9 @@ DragDrop.DropArea {
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 
     property int durationTime: plasmoid.configuration.durationTime
-    property int nowDockHoveredIndex: nowDock ? nowDock.hoveredIndex : -1
-    property int tasksCount: nowDock ? nowDock.tasksCount : 0
-    ///END properties from nowDock
+    property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
+    property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
+    ///END properties from latteApplet
 
     /* Layout.preferredWidth: plasmoid.immutable ?
                                (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
@@ -453,12 +453,12 @@ DragDrop.DropArea {
         dndSpacer.parent = root;
     }
 
-    onNowDockChanged: {
-        if (nowDock) {
-            nowDock.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
-            nowDock.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
-            nowDock.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
-            nowDock.signalDraggingState.connect(slotDisableHiding);
+    onLatteAppletChanged: {
+        if (latteApplet) {
+            latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
+            latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
+            latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
+            latteApplet.signalDraggingState.connect(slotDisableHiding);
         }
     }
 
@@ -750,13 +750,13 @@ DragDrop.DropArea {
         if(result)
             return true;
 
-        if(!result && nowDock && nowDock.outsideContainsMouse()){
-            layoutsContainer.hoveredIndex = nowDockContainer.index;
+        if(!result && latteApplet && latteApplet.outsideContainsMouse()){
+            layoutsContainer.hoveredIndex = latteAppletContainer.index;
             return true;
         }
 
-        if (nowDock){
-            nowDock.clearZoom();
+        if (latteApplet){
+            latteApplet.clearZoom();
         }
 
         return false;
@@ -863,8 +863,8 @@ DragDrop.DropArea {
 
         //when need length animations are ended it would be a good idea
         //to update the tasks geometries in the plasmoid
-        if(animationsNeedLength === 0 && nowDock) {
-            nowDock.publishTasksGeometries();
+        if(animationsNeedLength === 0 && latteApplet) {
+            latteApplet.publishTasksGeometries();
         }
 
         visibilityManager.updateMaskArea();
@@ -1124,7 +1124,7 @@ DragDrop.DropArea {
 
         signal updateScale(int delegateIndex, real newScale, real step)
 
-        property int allCount: root.nowDock ? mainLayout.count-1+nowDock.tasksCount : mainLayout.count
+        property int allCount: root.latteApplet ? mainLayout.count-1+latteApplet.tasksCount : mainLayout.count
         property int currentSpot: -1000
         property int hoveredIndex: -1
 

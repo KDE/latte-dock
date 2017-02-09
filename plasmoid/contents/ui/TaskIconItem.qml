@@ -235,6 +235,7 @@ Item{
 
         //////
         Loader{
+            id: progressLoader
             anchors.fill: parent
             active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
                      && centralItem.smartLauncherItem.progressVisible)
@@ -384,7 +385,7 @@ Item{
 
     Colorize{
         id: stateColorizer
-        source: iconGraphic
+        source: progressLoader.active ? progressLoader : iconImageBuffer
         anchors.fill: iconGraphic
         //visible: false
         opacity:0

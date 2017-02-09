@@ -52,7 +52,7 @@ Item{
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
     property real iconMarginOriginal: 0.12*plasmoid.configuration.iconSize
-    property int statesLineSizeOriginal: root.nowDock ? Math.ceil( plasmoid.configuration.iconSize/13 ) : 0
+    property int statesLineSizeOriginal: root.latteApplet ? Math.ceil( plasmoid.configuration.iconSize/13 ) : 0
 
     property int thicknessAutoHidden: 2
     property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.iconMargin) //needed in some animations
@@ -444,8 +444,8 @@ Item{
         interval: 400
         onTriggered: {
             root.clearZoom();
-            if (root.nowDock) {
-                nowDock.clearZoom();
+            if (root.latteApplet) {
+                latteApplet.clearZoom();
             }
         }
     }

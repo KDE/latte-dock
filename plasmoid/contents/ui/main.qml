@@ -45,10 +45,10 @@ Item {
     ///IMPORTANT: These values must be tested when the Now Dock Panel support
     ///also the four new anchors. A small issue is shown between the animation
     /// of the now dock plasmoid and the neighbour widgets...
-    Layout.minimumWidth: (userPanelPosition !== 0)&&(!nowDockPanel) ? clearWidth : -1
-    Layout.minimumHeight: (userPanelPosition !== 0)&&(!nowDockPanel) ? clearHeight : -1
-    Layout.preferredWidth: (userPanelPosition !== 0)&&(!nowDockPanel) ? tasksWidth : -1
-    Layout.preferredHeight: (userPanelPosition !== 0)&&(!nowDockPanel) ? tasksHeight : -1
+    Layout.minimumWidth: (userPanelPosition !== 0)&&(!latteDock) ? clearWidth : -1
+    Layout.minimumHeight: (userPanelPosition !== 0)&&(!latteDock) ? clearHeight : -1
+    Layout.preferredWidth: (userPanelPosition !== 0)&&(!latteDock) ? tasksWidth : -1
+    Layout.preferredHeight: (userPanelPosition !== 0)&&(!latteDock) ? tasksHeight : -1
 
     property bool debugLocation: false
 
@@ -88,37 +88,37 @@ Item {
     property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
 
     //BEGIN Now Dock Panel properties
-    property bool enableShadows: nowDockPanel ? nowDockPanel.enableShadows > 0 : plasmoid.configuration.showShadows
+    property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
-    property bool dockIsHidden: nowDockPanel ? nowDockPanel.dockIsHidden : false
-    property bool highlightWindows: nowDockPanel ? nowDockPanel.highlightWindows: plasmoid.configuration.highlightWindows
-    property bool reverseLinesPosition: nowDockPanel ? nowDockPanel.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
-    property bool dotsOnActive: nowDockPanel ? nowDockPanel.dotsOnActive : plasmoid.configuration.dotsOnActive
-    property bool showGlow: nowDockPanel ? nowDockPanel.showGlow : plasmoid.configuration.showGlow
-    property bool showOnlyCurrentScreen: nowDockPanel ? nowDockPanel.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
-    property bool showOnlyCurrentDesktop: nowDockPanel ? nowDockPanel.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
-    property bool showOnlyCurrentActivity: nowDockPanel ? nowDockPanel.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
-    property bool showPreviews:  nowDockPanel ? nowDockPanel.showToolTips : plasmoid.configuration.showToolTips
-    property bool showWindowActions: nowDockPanel ? nowDockPanel.showWindowActions : plasmoid.configuration.showWindowActions
-    property bool smartLaunchersEnabled: nowDockPanel ? nowDockPanel.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
-    property bool threeColorsWindows: nowDockPanel ? nowDockPanel.threeColorsWindows : plasmoid.configuration.threeColorsWindows
+    property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
+    property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
+    property bool reverseLinesPosition: latteDock ? latteDock.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
+    property bool dotsOnActive: latteDock ? latteDock.dotsOnActive : plasmoid.configuration.dotsOnActive
+    property bool showGlow: latteDock ? latteDock.showGlow : plasmoid.configuration.showGlow
+    property bool showOnlyCurrentScreen: latteDock ? latteDock.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
+    property bool showOnlyCurrentDesktop: latteDock ? latteDock.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
+    property bool showOnlyCurrentActivity: latteDock ? latteDock.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
+    property bool showPreviews:  latteDock ? latteDock.showToolTips : plasmoid.configuration.showToolTips
+    property bool showWindowActions: latteDock ? latteDock.showWindowActions : plasmoid.configuration.showWindowActions
+    property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
+    property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
-    property int durationTime: nowDockPanel ? nowDockPanel.durationTime : plasmoid.configuration.durationTime
-    property int iconMargin: nowDockPanel ? nowDockPanel.iconMargin : 0.12*iconSize
-    property int iconSize: nowDockPanel ? nowDockPanel.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
-    property int statesLineSize: nowDockPanel ? nowDockPanel.statesLineSize : Math.ceil( root.iconSize/13 )
+    property int durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
+    property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
+    property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int statesLineSize: latteDock ? latteDock.statesLineSize : Math.ceil( root.iconSize/13 )
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
-    property int userPanelPosition: nowDockPanel ? nowDockPanel.panelAlignment : plasmoid.configuration.plasmoidPosition
+    property int userPanelPosition: latteDock ? latteDock.panelAlignment : plasmoid.configuration.plasmoidPosition
 
-    property real zoomFactor: nowDockPanel ? nowDockPanel.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
+    property real zoomFactor: latteDock ? latteDock.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    property Item nowDockPanel: null
+    property Item latteDock: null
     //END Now Dock Panel properties
 
 
@@ -147,11 +147,11 @@ Item {
                 border.color: "red"
                 color: "white"
             } */
-    onNowDockPanelChanged: {
-        if (nowDockPanel)
-            plasmoid.configuration.isInNowDockPanel = true;
+    onLatteDockChanged: {
+        if (latteDock)
+            plasmoid.configuration.isInLatteDock = true;
         else
-            plasmoid.configuration.isInNowDockPanel = false;
+            plasmoid.configuration.isInLatteDock = false;
     }
 
 
@@ -198,7 +198,6 @@ Item {
         property int currentItem: -1
     }
 
-    // FIXME: at some point this must be dropped with NowDock plugin
     ////BEGIN interfaces
     Latte.WindowSystem{
         id:windowSystem
@@ -220,7 +219,7 @@ Item {
         property Item activeItem: null
 
         function hide(){
-            if (nowDockPanel) {
+            if (latteDock) {
                 //it is used to unblock dock hiding
                 root.signalDraggingState(false);
             }
@@ -241,7 +240,7 @@ Item {
                 }
             }
 
-            if (nowDockPanel) {
+            if (latteDock) {
                 //it is used to block dock hiding
                 root.signalDraggingState(true);
             }
@@ -928,11 +927,11 @@ Item {
         if (result)
             return true;
 
-        if (!result && nowDockPanel && nowDockPanel.outsideContainsMouse())
+        if (!result && latteDock && latteDock.outsideContainsMouse())
             return true;
 
-        if (nowDockPanel)
-            nowDockPanel.clearZoom();
+        if (latteDock)
+            latteDock.clearZoom();
 
         return false;
     }

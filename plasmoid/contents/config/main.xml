@@ -84,11 +84,11 @@
     </entry>
     <entry name="transparentPanel" type="Bool">
       <default>false</default>
-    </entry>   
+    </entry>
     <entry name="highlightWindows" type="Bool">
       <default>false</default>
     </entry>
-    <entry name="isInNowDockPanel" type="Bool">
+    <entry name="isInLatteDock" type="Bool">
       <default>false</default>
     </entry>
     <entry name="showToolTips" type="Bool">
