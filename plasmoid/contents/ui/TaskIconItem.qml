@@ -224,9 +224,9 @@ Item{
             property int zoomedSize: root.zoomFactor * root.iconSize
 
             property real basicScalingWidth : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleWidth) :
-                                                                      root.iconSize * wrapper.scale
+                                                                      root.iconSize * wrapper.mScale
             property real basicScalingHeight : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleHeight) :
-                                                                       root.iconSize * wrapper.scale
+                                                                       root.iconSize * wrapper.mScale
 
             property real newTempSize: (wrapper.opacity == 1) ? Math.min(basicScalingWidth, basicScalingHeight) :
                                                                 Math.max(basicScalingWidth, basicScalingHeight)
@@ -460,8 +460,8 @@ Item{
             }
             PropertyAnimation {
                 target: wrapper
-                property: "scale"
-                to: root.taskInAnimation ? 0.9 : wrapper.scale - (root.zoomFactor - 1) / 2
+                property: "mScale"
+                to: root.taskInAnimation ? 0.9 : wrapper.mScale - (root.zoomFactor - 1) / 2
                 duration: clickedAnimation.speed
                 easing.type: Easing.OutQuad
             }
@@ -477,7 +477,7 @@ Item{
             }
             PropertyAnimation {
                 target: wrapper
-                property: "scale"
+                property: "mScale"
                 to: root.taskInAnimation ? 1 : root.zoomFactor
                 duration: clickedAnimation.speed
                 easing.type: Easing.OutQuad
@@ -564,7 +564,7 @@ Item{
 
                 PropertyAnimation {
                     target: wrapper
-                    property: "scale"
+                    property: "mScale"
                     to: 1
                     duration: root.durationTime*launcherAnimation.speed
                     easing.type: Easing.OutQuad
@@ -574,7 +574,7 @@ Item{
 
 
         onStopped: {
-            //wrapper.scale = 1;
+            //wrapper.mScale = 1;
             /*   if ( root.noTasksInAnimation>0 ) {
                 root.noTasksInAnimation--;
             }
@@ -610,8 +610,8 @@ Item{
                 mainItemContainer.setBlockingAnimation(true);
             }
 
-            wrapper.tempScaleWidth = wrapper.scale;
-            wrapper.tempScaleHeight = wrapper.scale;
+            wrapper.tempScaleWidth = wrapper.mScale;
+            wrapper.tempScaleHeight = wrapper.mScale;
 
             icList.hoveredIndex = -1;
         }
@@ -719,8 +719,8 @@ Item{
         }
 
         function init(){
-            wrapper.tempScaleWidth = wrapper.scale;
-            wrapper.tempScaleHeight = wrapper.scale;
+            wrapper.tempScaleWidth = wrapper.mScale;
+            wrapper.tempScaleHeight = wrapper.mScale;
 
             if(!isDemandingAttention)
                 loops = 2;
@@ -876,7 +876,7 @@ Item{
             when: ( (mainItemContainer.isDragged) && (!root.editMode) )
 
             //    PropertyChanges { target: clickedAnimation; running:false }
-            PropertyChanges { target: wrapper; scale:1 + ((root.zoomFactor - 1) / 2)}
+            PropertyChanges { target: wrapper; mScale:1 + ((root.zoomFactor - 1) / 2)}
         }
     ]
 
@@ -960,7 +960,7 @@ Item{
 
                 PropertyAnimation {
                     target: wrapper
-                    property: "scale"
+                    property: "mScale"
                     to: 1;
                     duration: isDraggedTransition.speed
                     easing.type: Easing.OutQuad

@@ -78,7 +78,7 @@ Item{
 
                 property bool vertical: root.vertical
 
-                property real scaleFactor: wrapper.scale
+                property real scaleFactor: wrapper.mScale
 
                 function updateInitialSizes(){
                     if(glowFrame){

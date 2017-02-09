@@ -229,15 +229,15 @@ MouseArea{
             ////Scalers///////
             property bool inTempScaling: (((tempScaleWidth !== 1) || (tempScaleHeight !== 1) ) && (!mainItemContainer.mouseEntered) )
 
-            property real scale: 1;
+            property real mScale: 1
             property real tempScaleWidth: 0
             property real tempScaleHeight: 0
 
-            property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : scale
-            property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : scale
+            property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
+            property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
 
             ///Dont use Math.floor it adds one pixel in animations and creates glitches
-            property real cleanScaling: root.realSize * scale
+            property real cleanScaling: root.realSize * mScale
 
             property real basicScalingWidth : (inTempScaling == true) ? (root.realSize * scaleWidth) : cleanScaling
             property real basicScalingHeight : (inTempScaling == true) ? (root.realSize * scaleHeight) : cleanScaling
@@ -259,7 +259,7 @@ MouseArea{
                     color: "transparent"
                 }*/
 
-            Behavior on scale {
+            Behavior on mScale {
                 NumberAnimation { duration: mainItemContainer.animationTime }
             }
 
@@ -365,19 +365,19 @@ MouseArea{
                         hiddenSpacerRight.nScale =  rightScale - 1;
                     }
 
-                    scale = root.zoomFactor;
+                    mScale = root.zoomFactor;
                 }
 
-            } //scale
+            } //nScale
 
 
             function signalUpdateScale(nIndex, nScale, step){
                 if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
                     if(nScale >= 0)
-                        scale = nScale + step;
+                        mScale = nScale + step;
                     else
-                        scale = scale + step;
-                    //     console.log(index+ ", "+scale);
+                        mScale = mScale + step;
+                    //     console.log(index+ ", "+mScale);
                 }
             }
 
@@ -388,11 +388,11 @@ MouseArea{
                 }
             }
 
-            onScaleChanged: {
-                if ((scale > 1) && !mainItemContainer.isZoomed) {
+            onMScaleChanged: {
+                if ((mScale > 1) && !mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = true;
                     root.signalAnimationsNeedBothAxis(1);
-                } else if ((scale == 1) && mainItemContainer.isZoomed) {
+                } else if ((mScale == 1) && mainItemContainer.isZoomed) {
                     sendEndOfNeedBothAxisAnimation();
                 }
             }
@@ -460,7 +460,7 @@ MouseArea{
 
         if( (distanceFromHovered > 1) || (hoveredIndex < 0)){
             if(!isDragged)
-                wrapper.scale = 1;
+                wrapper.mScale = 1;
             hiddenSpacerLeft.nScale = 0;
             hiddenSpacerRight.nScale = 0;
         }
@@ -727,7 +727,7 @@ MouseArea{
     function clearZoom(){
         //   console.log("Clear zoom: " + index);
         if (wrapper)
-            wrapper.scale=1;
+            wrapper.mScale=1;
     }
 
     function handlerDraggingFinished(){
