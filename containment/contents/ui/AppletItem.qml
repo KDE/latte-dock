@@ -627,7 +627,7 @@ Item {
             }
 
             Behavior on zoomScale {
-                NumberAnimation { duration: container.animationTime }
+                NumberAnimation { duration: 2 * container.animationTime }
             }
 
             function calculateScales( currentMousePosition ){
