@@ -79,7 +79,7 @@ Item {
     property string title: isInternalViewSplitter ? "Now Dock Splitter" : ""
 
     property Item applet
-    property Item nowDock: applet && (applet.pluginName === root.plasmoidName) ?
+    property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
                                (applet.children[0] ? applet.children[0] : null) : null
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||
@@ -95,7 +95,7 @@ Item {
     }*/
 
     onIndexChanged: {
-        if (container.nowDock) {
+        if (container.latteApplet) {
             root.latteAppletPos = index;
         }
     }
@@ -128,25 +128,25 @@ Item {
         }
 
 
-        if(container.nowDock){
+        if(container.latteApplet){
             if(index===startLayout.beginIndex || index===mainLayout.beginIndex || index===endLayout.beginIndex)
-                nowDock.disableLeftSpacer = false;
+                latteApplet.disableLeftSpacer = false;
             else
-                nowDock.disableLeftSpacer = true;
+                latteApplet.disableLeftSpacer = true;
 
             if( index === startLayout.beginIndex + startLayout.count - 1
                     || index===mainLayout.beginIndex + mainLayout.count - 1
                     || index === endLayout.beginIndex + endLayout.count - 1)
-                nowDock.disableRightSpacer = false;
+                latteApplet.disableRightSpacer = false;
             else
-                nowDock.disableRightSpacer = true;
+                latteApplet.disableRightSpacer = true;
         }
     }
 
     //this functions gets the signal from the plasmoid, it can be used for signal items
-    //outside the NowDock Plasmoid
+    //outside the LatteApplet Plasmoid
     //property int debCounter: 0;
-    function interceptNowDockUpdateScale(dIndex, newScale, step){
+    function interceptLatteAppletUpdateScale(dIndex, newScale, step){
         if(!root.editMode){
             if(dIndex === -1){
                 layoutsContainer.updateScale(index-1,newScale, step);
@@ -189,14 +189,14 @@ Item {
             wrapper.zoomScale = 1;
     }
 
-    onNowDockChanged: {
-        if(container.nowDock){
-            root.nowDock = container.nowDock;
-            root.nowDockContainer = container;
+    onLatteAppletChanged: {
+        if(container.latteApplet){
+            root.latteApplet = container.latteApplet;
+            root.latteAppletContainer = container;
             root.latteAppletPos = index;
-            nowDock.nowDockPanel = root;
-            nowDock.forceHidePanel = true;
-            nowDock.updateScale.connect(interceptNowDockUpdateScale);
+            latteApplet.latteDock = root;
+            latteApplet.forceHidePanel = true;
+            latteApplet.updateScale.connect(interceptLatteAppletUpdateScale);
         }
     }
 
@@ -246,13 +246,13 @@ Item {
         width: container.computeWidth
         height: container.computeHeight
 
-        anchors.rightMargin: (nowDock || (showZoomed && root.editMode)) ||
+        anchors.rightMargin: (latteApplet || (showZoomed && root.editMode)) ||
                              (plasmoid.location !== PlasmaCore.Types.RightEdge) ? 0 : shownAppletMargin
-        anchors.leftMargin: (nowDock || (showZoomed && root.editMode)) ||
+        anchors.leftMargin: (latteApplet || (showZoomed && root.editMode)) ||
                             (plasmoid.location !== PlasmaCore.Types.LeftEdge) ? 0 : shownAppletMargin
-        anchors.topMargin: (nowDock || (showZoomed && root.editMode)) ||
+        anchors.topMargin: (latteApplet || (showZoomed && root.editMode)) ||
                            (plasmoid.location !== PlasmaCore.Types.TopEdge)? 0 : shownAppletMargin
-        anchors.bottomMargin: (nowDock || (showZoomed && root.editMode)) ||
+        anchors.bottomMargin: (latteApplet || (showZoomed && root.editMode)) ||
                               (plasmoid.location !== PlasmaCore.Types.BottomEdge) ? 0 : shownAppletMargin
 
 
@@ -293,10 +293,10 @@ Item {
         Item{
             id: wrapper
 
-            width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( nowDock ? ((container.showZoomed && root.isVertical) ?
-                                                                                     scaledWidth : nowDock.tasksWidth) : scaledWidth )
-            height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( nowDock ? ((container.showZoomed && root.isHorizontal) ?
-                                                                                      scaledHeight : nowDock.tasksHeight ): scaledHeight )
+            width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isVertical) ?
+                                                                                     scaledWidth : latteApplet.tasksWidth) : scaledWidth )
+            height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isHorizontal) ?
+                                                                                      scaledHeight : latteApplet.tasksHeight ): scaledHeight )
 
             property bool disableScaleWidth: false
             property bool disableScaleHeight: false
@@ -680,11 +680,11 @@ Item {
                     //  currentLayout.updateScale(index-2, 1, 0);
                     //   currentLayout.updateScale(index+2, 1, 0);
 
-                    if (root.nowDock) {
+                    if (root.latteApplet) {
                         if ((index-1) > root.latteAppletPos ){
-                            root.nowDock.clearZoom();
+                            root.latteApplet.clearZoom();
                         } else if((index+1)<root.latteAppletPos) {
-                            root.nowDock.clearZoom();
+                            root.latteApplet.clearZoom();
                         }
                     }
 
@@ -706,11 +706,11 @@ Item {
 
             function signalUpdateScale(nIndex, nScale, step){
                 if(container && (container.index === nIndex)){
-                    if ( ((canBeHovered && !lockZoom ) || container.nowDock)
+                    if ( ((canBeHovered && !lockZoom ) || container.latteApplet)
                             && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
                             //&& (index != currentLayout.hoveredIndex)
                             ){
-                        if(!container.nowDock){
+                        if(!container.latteApplet){
                             if(nScale >= 0)
                                 zoomScale = nScale + step;
                             else
@@ -718,11 +718,11 @@ Item {
                         }
                         else{
                             if(layoutsContainer.hoveredIndex<container.index){
-                                nowDock.updateScale(0, nScale, step);
-                                nowDock.updateScale(1, 1, 0);
+                                latteApplet.updateScale(0, nScale, step);
+                                latteApplet.updateScale(1, 1, 0);
                             } else if(layoutsContainer.hoveredIndex>container.index) {
-                                nowDock.updateScale(root.tasksCount-1, nScale, step);
-                                nowDock.updateScale(root.tasksCount-2, 1, 0);
+                                latteApplet.updateScale(root.tasksCount-1, nScale, step);
+                                latteApplet.updateScale(root.tasksCount-2, 1, 0);
                             }
                         }
                     }  ///if the applet is hidden must forward its scale events to its neighbours
@@ -779,8 +779,8 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: (!nowDock)&&(canBeHovered)&&(!lockZoom)&&(!root.editMode)
-        hoverEnabled: !root.editMode && (!nowDock) && canBeHovered ? true : false
+        enabled: (!latteApplet)&&(canBeHovered)&&(!lockZoom)&&(!root.editMode)
+        hoverEnabled: !root.editMode && (!latteApplet) && canBeHovered ? true : false
         propagateComposedEvents: true
 
         property bool pressed: false

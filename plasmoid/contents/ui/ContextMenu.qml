@@ -596,7 +596,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         property QtObject configureAction: null
 
-        visible: !nowDockPanel
+        visible: !latteDock
         enabled: configureAction && configureAction.enabled
 
         text: configureAction ? configureAction.text : ""
@@ -631,7 +631,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: containmentMenuItem
 
-        visible: nowDockPanel
+        visible: latteDock
         enabled: visible
 
         icon: "latte-dock"
@@ -645,7 +645,7 @@ PlasmaComponents.ContextMenu {
             function refresh() {
                 clearMenuItems();
 
-                var actionList = nowDockPanel.containmentActions();
+                var actionList = latteDock.containmentActions();
 
                 var visibleActions=0;
 

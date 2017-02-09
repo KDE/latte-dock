@@ -44,9 +44,9 @@ Item {
     property alias cfg_durationTime : durationTime.value
     property alias cfg_reverseLinesPosition : reverseLinesPosition.checked
 
-    property alias cfg_isInNowDockPanel: mainItem.isInNowDockPanel
+    property alias cfg_isInLatteDock: mainItem.isInLatteDock
 
-    property bool isInNowDockPanel
+    property bool isInLatteDock
 
     ColumnLayout {
         id:mainColumn
@@ -73,7 +73,7 @@ Item {
                     ComboBox {
                         // 16, 22, 32, 48, 64,128, 256
                         id: iconSizeCmb
-                        enabled: !mainItem.isInNowDockPanel
+                        enabled: !mainItem.isInLatteDock
 
                         property int realValue
                         property bool startup: true
@@ -230,7 +230,7 @@ Item {
             Label{Layout.columnSpan: 3}
 
             Item{
-                enabled: !mainItem.isInNowDockPanel
+                enabled: !mainItem.isInLatteDock
                 Layout.columnSpan: 3
                 Layout.fillWidth: true
                 Label {
@@ -244,7 +244,7 @@ Item {
             //////
 
             Label {
-                enabled: !mainItem.isInNowDockPanel
+                enabled: !mainItem.isInLatteDock
                 Layout.alignment: Qt.AlignHCenter
                 horizontalAlignment: Text.AlignHCenter
 
@@ -253,7 +253,7 @@ Item {
 
             Slider {
                 id: zoomLevel
-                enabled: !mainItem.isInNowDockPanel
+                enabled: !mainItem.isInLatteDock
                 Layout.fillWidth: true
                 minimumValue: 0
                 maximumValue: 20
@@ -263,7 +263,7 @@ Item {
 
             Label {
                 id:zoomLevelText
-                enabled: !mainItem.isInNowDockPanel
+                enabled: !mainItem.isInLatteDock
                 Layout.minimumWidth: metricsLabel2.width
                 Layout.maximumWidth: metricsLabel2.width
                 Layout.alignment: Qt.AlignHCenter
@@ -291,7 +291,7 @@ Item {
 
             CheckBox {
                 id: zoomHelper
-                enabled: !mainItem.isInNowDockPanel
+                enabled: !mainItem.isInLatteDock
                 text: i18n("Show a red line on the limit needed for animations")
 
                 Layout.columnSpan: 3
@@ -301,21 +301,21 @@ Item {
 
     DropShadow {
         id:shadowText
-        anchors.fill: inNowDockLabel
-        enabled: isInNowDockPanel
+        anchors.fill: inLatteDockLabel
+        enabled: isInLatteDock
         radius: 3
         samples: 5
         color: "#cc080808"
-        source: inNowDockLabel
+        source: inLatteDockLabel
 
         verticalOffset: 2
         horizontalOffset: -1
-        visible: isInNowDockPanel
+        visible: isInLatteDock
     }
 
 
     Label {
-        id:inNowDockLabel
+        id:inLatteDockLabel
         anchors.horizontalCenter: mainItem.horizontalCenter
         anchors.bottom: mainColumn.bottom
         anchors.bottomMargin: mainColumn.height / 12
@@ -323,7 +323,7 @@ Item {
 
         width: 0.85 * mainItem.width
         text: i18n("For the disabled settings you should use the Latte Dock Configuration Window")
-        visible: mainItem.isInNowDockPanel
+        visible: mainItem.isInLatteDock
 
         horizontalAlignment: Text.AlignHCenter
         //  font.bold: true
