@@ -1129,7 +1129,7 @@ DragDrop.DropArea {
         property int hoveredIndex: -1
 
         x: {
-            if ( (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
+            if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
                     && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ){
                 return ((dock.width/2) - (root.maxLength/2))
             } else {
@@ -1146,7 +1146,7 @@ DragDrop.DropArea {
         }
 
         y: {
-            if ( (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
+            if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
                     && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ) {
                 return ((dock.height/2) - (root.maxLength/2));
             } else {
