@@ -287,15 +287,17 @@ void DockView::updatePosition()
     QPoint position;
     position = {0, 0};
 
-    int maxLengthWidth = maxLength() * screenGeometry.width();
-    int maxLengthHeight = maxLength() * screenGeometry.height();
+    const auto length = [&](int length) -> int {
+        return static_cast<int>(length * (1 - maxLength()) / 2);
+    };
+
     int cleanThickness = normalThickness() - shadow();
 
     switch (location()) {
         case Plasma::Types::TopEdge:
             screenGeometry = screen()->geometry();
             if (m_drawShadows) {
-                position = {screenGeometry.x() + (screenGeometry.width() / 2 - maxLengthWidth / 2), screenGeometry.y()};
+                position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
             } else {
                 position = {screenGeometry.x(), screenGeometry.y()};
             }
@@ -305,7 +307,7 @@ void DockView::updatePosition()
         case Plasma::Types::BottomEdge:
             screenGeometry = screen()->geometry();
             if (m_drawShadows) {
-                position = {screenGeometry.x() + (screenGeometry.width() / 2 - maxLengthWidth / 2),
+                position = {screenGeometry.x() + length(screenGeometry.width()),
                             screenGeometry.y() + screenGeometry.height() - cleanThickness
                            };
             } else {
@@ -318,7 +320,7 @@ void DockView::updatePosition()
             screenGeometry = corona()->availableScreenRect(containment()->screen());
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
-                            screenGeometry.y() + (screenGeometry.height() / 2 - maxLengthHeight / 2)
+                            screenGeometry.y() + length(screenGeometry.height())
                            };
             } else {
                 position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
@@ -329,7 +331,7 @@ void DockView::updatePosition()
         case Plasma::Types::LeftEdge:
             screenGeometry = corona()->availableScreenRect(containment()->screen());
             if (m_drawShadows && !mask().isNull()) {
-                position = {screenGeometry.x(), screenGeometry.y() + (screenGeometry.height() / 2 - maxLengthHeight / 2)};
+                position = {screenGeometry.x(), screenGeometry.y() + length(screenGeometry.height())};
             } else {
                 position = {screenGeometry.x(), screenGeometry.y()};
             }
