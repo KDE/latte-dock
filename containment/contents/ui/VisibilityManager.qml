@@ -65,6 +65,8 @@ Item{
     property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2,
                                                  root.realPanelSize + root.panelShadow)
 
+    property rect localGeometry: Qt.rect(-1,-1,0,0)
+
     Binding{
         target: dock
         property:"maxThickness"
@@ -315,7 +317,10 @@ Item{
                     newMaskArea.x = dock.width - fixedThickness;
                 }
 
-                dock.setLocalDockGeometry(newMaskArea);
+                if (localGeometry !== newMaskArea){
+                    localGeometry = newMaskArea;
+                    dock.setLocalDockGeometry(localGeometry);
+                }
                 // console.log("update dock geometry:"+newMaskArea);
             }
         }
