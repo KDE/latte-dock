@@ -120,7 +120,7 @@ DragDrop.DropArea {
 
     ///BEGIN properties provided to Latte Plasmoid
     property bool enableShadows: plasmoid.configuration.shadows
-    property bool dockIsHidden: dock ? dock.visibility.isHidden : false
+    property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition// latteApplet ? latteApplet.reverseLinesPosition : false
