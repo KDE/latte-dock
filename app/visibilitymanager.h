@@ -64,11 +64,6 @@ public:
     int timerHide() const;
     void setTimerHide(int msec);
 
-    /**
-     * @brief updateDockGeometry, the window geometry in absolute coordinates.
-     */
-    void updateDockGeometry(const QRect &geometry);
-
 signals:
     void mustBeShown();
     void mustBeHide();

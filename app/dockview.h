@@ -74,7 +74,6 @@ public:
     void syncGeometry();
 
     int currentThickness() const;
-    void updateAbsDockGeometry();
 
     int docksCount() const;
 
@@ -99,11 +98,14 @@ public:
     QRect maskArea() const;
     void setMaskArea(QRect area);
 
+    void updateAbsDockGeometry(const QRect &localDockGeometry);
+    QRect absGeometry() const;
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QStringList debugFlags() const;
 
-    VisibilityManager *visibility();
+    VisibilityManager * visibility() const;
 
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
@@ -149,7 +151,7 @@ signals:
     void maskAreaChanged();
     void shadowChanged();
 
-    void localDockGeometryChanged();
+    void absGeometryChanged(const QRect &geometry);
 
 private slots:
     void menuAboutToHide();
@@ -172,7 +174,7 @@ private:
 
     Dock::Alignment m_alignment{Dock::Center};
 
-    QRect m_localDockGeometry;
+    QRect m_absGeometry;
     QRect m_maskArea;
     QMenu *m_contextMenu;
     QPointer<PlasmaQuick::ConfigView> m_configView;
