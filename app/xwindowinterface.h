@@ -54,6 +54,7 @@ private:
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
 
     WId m_desktopId;
+    int m_currentDesktop;
 
     QList<QMetaObject::Connection> connections;
 };

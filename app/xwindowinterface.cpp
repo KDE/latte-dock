@@ -22,6 +22,7 @@
 #include "../liblattedock/extras.h"
 
 #include <QDebug>
+#include <QTimer>
 #include <QtX11Extras/QX11Info>
 
 #include <KWindowSystem>
@@ -34,6 +35,9 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
     : AbstractWindowInterface(view, parent)
 {
     Q_ASSERT(view != nullptr);
+
+    m_currentDesktop = KWindowSystem::currentDesktop();
+
     connections << connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
                            , this, &AbstractWindowInterface::activeWindowChanged);
     connections << connect(KWindowSystem::self()
@@ -56,7 +60,12 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
         }
     });
     connections << connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
-                           , this, &AbstractWindowInterface::currentDesktopChanged);
+                           , this, [&](int desktop) {
+        m_currentDesktop = desktop;
+        QTimer::singleShot(200, this, [&]() {
+            emit currentDesktopChanged(m_currentDesktop);
+        });
+    });
 
     // fill windows list
     foreach (const auto &wid, KWindowSystem::self()->windows()) {
@@ -156,7 +165,7 @@ WindowInfoWrap XWindowInterface::requestInfoActive() const
 bool XWindowInterface::isOnCurrentDesktop(WId wid) const
 {
     KWindowInfo winfo(wid, NET::WMDesktop);
-    return winfo.valid() && winfo.isOnCurrentDesktop();
+    return winfo.valid() && winfo.desktop() == m_currentDesktop;
 }
 
 WindowInfoWrap XWindowInterface::requestInfo(WId wid) const

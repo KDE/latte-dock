@@ -112,7 +112,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
             connections[2] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
-            , this, [&](int) {
+            , this, [&](int desktop) {
+                qDebug() << "desktop" << desktop;
                 dodgeActive(wm->activeWindow());
             });
             dodgeActive(wm->activeWindow());
