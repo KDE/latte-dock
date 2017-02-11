@@ -364,7 +364,14 @@ inline void VisibilityManagerPrivate::restoreConfig()
     auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     emit q->timerShowChanged();
     emit q->timerHideChanged();
-    setMode(mode);
+
+    if (mode != Dock::AlwaysVisible) {
+        QTimer::singleShot(2400, this, [&, mode]() {
+            setMode(mode);
+        });
+    } else {
+        setMode(mode);
+    }
 }
 
 bool VisibilityManagerPrivate::event(QEvent *ev)
