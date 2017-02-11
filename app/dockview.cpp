@@ -113,7 +113,10 @@ void DockView::init()
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
-    connect(this, &DockView::localDockGeometryChanged, this, &DockView::updateAbsDockGeometry);
+    connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&](){
+        if (formFactor() == Plasma::Types::Vertical)
+            syncGeometry();
+    });
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
@@ -230,13 +233,8 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
 void DockView::resizeWindow()
 {
-    if (!this->screen()) {
-        return;
-    }
-
-    QSize screenSize = this->screen()->size();
-
     if (formFactor() == Plasma::Types::Vertical) {
+        QSize screenSize = corona()->availableScreenRect(containment()->screen()).size();
         QSize size{maxThickness(), screenSize.height()};
 
         if (m_drawShadows) {
@@ -248,6 +246,7 @@ void DockView::resizeWindow()
         setMaximumSize(size);
         resize(size);
     } else {
+        QSize screenSize = screen()->size();
         QSize size{screenSize.width(), maxThickness()};
 
         if (m_drawShadows) {
@@ -258,35 +257,33 @@ void DockView::resizeWindow()
         setMinimumSize(size);
         setMaximumSize(size);
         resize(size);
+
+        if (corona())
+            emit corona()->availableScreenRectChanged();
     }
 }
 
 void DockView::setLocalDockGeometry(const QRect &geometry)
 {
-    if (geometry == m_localDockGeometry) {
-        return;
-    }
-
-    m_localDockGeometry = geometry;
-
-    emit localDockGeometryChanged();
+    updateAbsDockGeometry(geometry);
 }
 
-void DockView::updateAbsDockGeometry()
+void DockView::updateAbsDockGeometry(const QRect &localDockGeometry)
 {
-    if (!m_visibility)
+    QRect absGeometry {x() + localDockGeometry.x(), y() + localDockGeometry.y()
+                   , localDockGeometry.width() - 1, localDockGeometry.height() - 1};
+
+    if (m_absGeometry == absGeometry)
         return;
 
-    QRect absoluteGeometry {x() + m_localDockGeometry.x(), y() + m_localDockGeometry.y(), m_localDockGeometry.width(), m_localDockGeometry.height()};
-    m_visibility->updateDockGeometry(absoluteGeometry);
+    m_absGeometry = absGeometry;
+    syncGeometry();
+    emit absGeometryChanged(m_absGeometry);
 }
 
 void DockView::updatePosition()
 {
-    if (!this->screen() || !this->containment())
-        return;
-
-    const QRect screenGeometry = this->screen()->geometry();
+    QRect screenGeometry;
     QPoint position;
     position = {0, 0};
 
@@ -296,6 +293,7 @@ void DockView::updatePosition()
 
     switch (location()) {
         case Plasma::Types::TopEdge:
+            screenGeometry = screen()->geometry();
             if (m_drawShadows) {
                 position = {screenGeometry.x() + (screenGeometry.width() / 2 - maxLengthWidth / 2), screenGeometry.y()};
             } else {
@@ -305,6 +303,7 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::BottomEdge:
+            screenGeometry = screen()->geometry();
             if (m_drawShadows) {
                 position = {screenGeometry.x() + (screenGeometry.width() / 2 - maxLengthWidth / 2),
                             screenGeometry.y() + screenGeometry.height() - cleanThickness
@@ -316,6 +315,7 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::RightEdge:
+            screenGeometry = corona()->availableScreenRect(containment()->screen());
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
                             screenGeometry.y() + (screenGeometry.height() / 2 - maxLengthHeight / 2)
@@ -327,6 +327,7 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::LeftEdge:
+            screenGeometry = corona()->availableScreenRect(containment()->screen());
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x(), screenGeometry.y() + (screenGeometry.height() / 2 - maxLengthHeight / 2)};
             } else {
@@ -345,10 +346,12 @@ void DockView::updatePosition()
 
 inline void DockView::syncGeometry()
 {
+    if (!(screen() && containment()))
+        return;
+
     updateEnabledBorders();
     resizeWindow();
     updatePosition();
-    updateAbsDockGeometry();
     // qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
 
@@ -475,14 +478,14 @@ void DockView::setMaxThickness(int thickness)
 
 int DockView::alignment() const
 {
-    return (int)m_alignment;
+    return m_alignment;
 }
 
 void DockView::setAlignment(int alignment)
 {
-    Dock::Alignment align = (Dock::Alignment) alignment;
+    Dock::Alignment align = static_cast<Dock::Alignment>(alignment);
 
-    if (m_alignment == align) {
+    if (m_alignment == alignment) {
         return;
     }
 
@@ -504,6 +507,11 @@ void DockView::setMaskArea(QRect area)
     setMask(m_maskArea);
     //qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
+}
+
+QRect DockView::absGeometry() const
+{
+    return m_absGeometry;
 }
 
 int DockView::shadow() const
@@ -547,7 +555,7 @@ bool DockView::tasksPresent()
     return false;
 }
 
-VisibilityManager *DockView::visibility()
+VisibilityManager * DockView::visibility() const
 {
     return m_visibility;
 }

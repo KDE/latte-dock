@@ -36,6 +36,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
 
     if (dockView) {
         connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::event);
+        connect(dockView, &DockView::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
     }
 
     timerCheckWindows.setInterval(350);
@@ -85,7 +86,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     switch (this->mode) {
         case Dock::AlwaysVisible: {
             if (view->containment() && !view->containment()->isUserConfiguring())
-                wm->setDockStruts(dockRect, view->location());
+                wm->setDockStruts(dockGeometry, view->location());
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
@@ -95,7 +96,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[1] = connect(view->containment(), &Plasma::Containment::userConfiguringChanged
             , this, [&](bool configuring) {
                 if (!configuring)
-                    wm->setDockStruts(dockRect, view->containment()->location());
+                    wm->setDockStruts(dockGeometry, view->containment()->location());
             });
             raiseDock(true);
         }
@@ -253,15 +254,15 @@ void VisibilityManagerPrivate::updateHiddenState()
     }
 }
 
-inline void VisibilityManagerPrivate::setDockRect(const QRect &dockRect)
+inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 {
-    if (!view->containment() || this->dockRect == dockRect)
+    if (!view->containment() || this->dockGeometry == geometry)
         return;
 
-    this->dockRect = dockRect;
+    this->dockGeometry = geometry;
 
     if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring()) {
-        wm->setDockStruts(this->dockRect, view->containment()->location());
+        wm->setDockStruts(this->dockGeometry, view->containment()->location());
     }
 }
 
@@ -339,7 +340,7 @@ void VisibilityManagerPrivate::checkAllWindows()
 
 inline bool VisibilityManagerPrivate::intersects(const WindowInfoWrap &winfo)
 {
-    return !winfo.isMinimized() && winfo.geometry().intersects(dockRect);
+    return !winfo.isMinimized() && winfo.geometry().intersects(dockGeometry);
 }
 
 inline void VisibilityManagerPrivate::saveConfig()
@@ -485,9 +486,5 @@ void VisibilityManager::setTimerHide(int msec)
     d->setTimerHide(msec);
 }
 
-void VisibilityManager::updateDockGeometry(const QRect &geometry)
-{
-    d->setDockRect(geometry);
-}
 //! END: VisibilityManager implementation
 }

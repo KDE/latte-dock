@@ -178,58 +178,43 @@ QRect DockCorona::screenGeometry(int id) const
 
 QRegion DockCorona::availableScreenRegion(int id) const
 {
+    return availableScreenRect(id);
     //FIXME::: availableGeometry is probably broken
     // in Qt, so this have to be updated as plasma is doing it
     // for example the availableScreenRect
-    const auto screens = qGuiApp->screens();
-
-    if (id >= 0 && id < screens.count()) {
-        return screens[id]->geometry();
-    }
-
-    return qGuiApp->primaryScreen()->availableGeometry();
 }
 
 QRect DockCorona::availableScreenRect(int id) const
 {
     const auto screens = qGuiApp->screens();
+    const QScreen *screen = nullptr;
 
-    QScreen *mScreen = 0;
+    if (id >= 0 && id < screens.count())
+        screen = screens[id];
+    else
+        screen = qGuiApp->primaryScreen();
 
-    if (id >= 0 && id < screens.count()) {
-        mScreen = screens[id];
-    } else {
-        mScreen = qGuiApp->primaryScreen();
-    }
+    if (!screen)
+        return {};
 
-    QRect r = mScreen->geometry();
+    auto available = screen->geometry();
 
-    foreach (DockView *v, m_dockViews) {
-        if (v->isVisible() && v->screen() && v->containment()
-            && v->screen() == mScreen && v->visibility()->mode() != Latte::Dock::AutoHide) {
-            switch (v->containment()->location()) {
-                case Plasma::Types::LeftEdge:
-                    r.setLeft(r.left() + v->normalThickness());
-                    break;
+    for (const auto *view : m_dockViews) {
+        if (view && view->containment() && view->screen() == screen) {
+            auto dockRect = view->absGeometry();
 
-                case Plasma::Types::RightEdge:
-                    r.setRight(r.right() - v->normalThickness());
-                    break;
-
+            switch (view->location()) {
                 case Plasma::Types::TopEdge:
-                    r.setTop(r.top() + v->normalThickness());
-                    break;
-
+                    available.setTopLeft({available.x(), dockRect.bottom()});
+                break;
                 case Plasma::Types::BottomEdge:
-                    r.setBottom(r.bottom() - v->normalThickness());
-
-                default:
-                    break;
+                    available.setBottomLeft({available.x(), dockRect.top()});
+                break;
             }
         }
     }
 
-    return r;
+    return available;
 }
 
 int DockCorona::primaryScreenId() const
@@ -238,9 +223,9 @@ int DockCorona::primaryScreenId() const
     int id = -1;
 
     for (int i = 0; i < screens.size(); ++i) {
-        auto *scr = screens.at(i);
+        auto *screen = screens.at(i);
 
-        if (scr == qGuiApp->primaryScreen()) {
+        if (screen == qGuiApp->primaryScreen()) {
             id = i;
             break;
         }

@@ -37,7 +37,7 @@ public:
     void raiseDock(bool raise);
     void updateHiddenState();
 
-    void setDockRect(const QRect &rect);
+    void setDockGeometry(const QRect &rect);
 
     void windowAdded(WId id);
     void dodgeActive(WId id);
@@ -61,7 +61,7 @@ public:
     QTimer timerShow;
     QTimer timerHide;
     QTimer timerCheckWindows;
-    QRect dockRect;
+    QRect dockGeometry;
     bool isHidden{true};
     bool dragEnter{false};
     bool blockHiding{false};
