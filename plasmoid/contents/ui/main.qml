@@ -206,15 +206,12 @@ Item {
     PlasmaCore.Dialog{
         id: windowsPreviewDlg
         // hideOnWindowDeactivate: false
-
         type: PlasmaCore.Dialog.Tooltip
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
 
         location: plasmoid.location
-
-        visible: false
-
         mainItem: toolTipDelegate
+        visible: false
 
         property Item activeItem: null
 
@@ -229,6 +226,8 @@ Item {
         }
 
         function show(){
+            //used to initialize windows previews buffers
+            visible = false;
             var tasks = icList.contentItem.children;
 
             for(var i=0; i<tasks.length; ++i){
@@ -244,6 +243,7 @@ Item {
                 //it is used to block dock hiding
                 root.signalDraggingState(true);
             }
+
             visible = true;
         }
     }
