@@ -33,17 +33,34 @@ import org.kde.latte 0.1 as Latte
 Item{
     id:barLine
 
-    opacity: root.useThemePanel ? 1 : 0
-
-    property int panelWidth: root.drawShadowsExternal ? root.width :
-                                                        (root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode ?
-                                                            layoutsContainer.contentWidth + spacing : mainLayout.width + spacing
-    property int panelHeight: root.drawShadowsExternal ? root.height :
-                                                         (root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode ?
-                                                             layoutsContainer.contentHeight + spacing : mainLayout.height + spacing
-
     width: root.isHorizontal ? panelWidth : smallSize
     height: root.isVertical ? panelHeight : smallSize
+
+    opacity: root.useThemePanel ? 1 : 0
+
+    property int panelWidth: {
+        if (root.drawShadowsExternal) {
+            return root.width;
+        } else {
+            if ((root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode) {
+                return root.maxLength;
+            } else {
+                return mainLayout.width + spacing;
+            }
+        }
+    }
+
+    property int panelHeight: {
+        if (root.drawShadowsExternal) {
+            return root.height;
+        } else {
+            if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode) {
+                return root.maxLength;
+            } else {
+               return mainLayout.height + spacing;
+            }
+        }
+    }
 
     property int spacing: (root.panelAlignment === Latte.Dock.Center
                            || plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
@@ -82,8 +99,8 @@ Item{
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
 
-        width: root.isVertical ? panelSize + marginsWidth : parent.width + marginsWidth
-        height: root.isVertical ? parent.height + marginsHeight : panelSize + marginsHeight
+        width: root.isVertical ? panelSize + marginsWidth : Math.min(parent.width + marginsWidth, root.width - marginsWidth)
+        height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) : panelSize + marginsHeight
 
         imagePath: root.drawShadowsExternal ? "" : "widgets/panel-background"
         prefix: root.drawShadowsExternal ? "" : "shadow"
