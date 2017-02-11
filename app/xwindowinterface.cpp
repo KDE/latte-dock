@@ -173,7 +173,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
         winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
         winfoWrap.setIsMaximized(winfo.hasState(NET::Max));
         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
-        winfoWrap.setGeometry(winfo.geometry());
+        winfoWrap.setGeometry(winfo.frameGeometry());
     } else if (m_desktopId == wid) {
         winfoWrap.setIsValid(true);
         winfoWrap.setIsPlasmaDesktop(true);
