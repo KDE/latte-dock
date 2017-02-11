@@ -113,7 +113,7 @@ void DockView::init()
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
-    connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&](){
+    connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&]() {
         if (formFactor() == Plasma::Types::Vertical)
             syncGeometry();
     });
@@ -135,12 +135,15 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
-    if (!screen || !containment()) {
+    if (!screen || !containment() || this->screen() == screen) {
         return;
     }
 
     setScreen(screen);
 
+    //FIXME:: This code in a multi-screen environment that
+    //primary screen is not set to 0 it creates an endless
+    //showing loop at startup (catch-up race) between screen:0 and primaryScreen
     if (containment())
         containment()->reactToScreenChange();
 
@@ -271,7 +274,7 @@ void DockView::setLocalDockGeometry(const QRect &geometry)
 void DockView::updateAbsDockGeometry(const QRect &localDockGeometry)
 {
     QRect absGeometry {x() + localDockGeometry.x(), y() + localDockGeometry.y()
-                   , localDockGeometry.width() - 1, localDockGeometry.height() - 1};
+                       , localDockGeometry.width() - 1, localDockGeometry.height() - 1};
 
     if (m_absGeometry == absGeometry)
         return;
@@ -296,6 +299,7 @@ void DockView::updatePosition()
     switch (location()) {
         case Plasma::Types::TopEdge:
             screenGeometry = screen()->geometry();
+
             if (m_drawShadows) {
                 position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
             } else {
@@ -306,6 +310,7 @@ void DockView::updatePosition()
 
         case Plasma::Types::BottomEdge:
             screenGeometry = screen()->geometry();
+
             if (m_drawShadows) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
                             screenGeometry.y() + screenGeometry.height() - cleanThickness
@@ -318,6 +323,7 @@ void DockView::updatePosition()
 
         case Plasma::Types::RightEdge:
             screenGeometry = corona()->availableScreenRect(containment()->screen());
+
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
                             screenGeometry.y() + length(screenGeometry.height())
@@ -330,6 +336,7 @@ void DockView::updatePosition()
 
         case Plasma::Types::LeftEdge:
             screenGeometry = corona()->availableScreenRect(containment()->screen());
+
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x(), screenGeometry.y() + length(screenGeometry.height())};
             } else {
@@ -557,7 +564,7 @@ bool DockView::tasksPresent()
     return false;
 }
 
-VisibilityManager * DockView::visibility() const
+VisibilityManager *DockView::visibility() const
 {
     return m_visibility;
 }

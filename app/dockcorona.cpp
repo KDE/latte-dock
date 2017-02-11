@@ -203,17 +203,18 @@ QRect DockCorona::availableScreenRect(int id) const
         if (view && view->containment() && view->screen() == screen) {
             auto dockRect = view->absGeometry();
 
-             // Usually availableScreenRect is used by the desktop,
-             // but Latte dont have desktop, then here just
-             // need calculate available space for top and bottom location,
-             // because the left and right are those who dodge others docks
+            // Usually availableScreenRect is used by the desktop,
+            // but Latte dont have desktop, then here just
+            // need calculate available space for top and bottom location,
+            // because the left and right are those who dodge others docks
             switch (view->location()) {
                 case Plasma::Types::TopEdge:
                     available.setTopLeft({available.x(), dockRect.bottom()});
-                break;
+                    break;
+
                 case Plasma::Types::BottomEdge:
                     available.setBottomLeft({available.x(), dockRect.top()});
-                break;
+                    break;
             }
         }
     }
@@ -302,7 +303,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 int DockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
     for (auto *view : m_dockViews) {
-        if (view && view->containment() && view->containment()->id() == containment->id())
+        if (view && view->containment() && view->containment() == containment)
             if (view->screen())
                 return qGuiApp->screens().indexOf(view->screen());
     }
