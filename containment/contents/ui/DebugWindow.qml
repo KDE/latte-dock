@@ -355,7 +355,7 @@ Window{
         }
 
         Text{
-            text: root.nowDockHoveredIndex
+            text: root.latteAppletHoveredIndex
         }
 
         Text{
