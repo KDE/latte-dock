@@ -224,19 +224,7 @@ QRect DockCorona::availableScreenRect(int id) const
 
 int DockCorona::primaryScreenId() const
 {
-    const auto screens = qGuiApp->screens();
-    int id = -1;
-
-    for (int i = 0; i < screens.size(); ++i) {
-        auto *screen = screens.at(i);
-
-        if (screen == qGuiApp->primaryScreen()) {
-            id = i;
-            break;
-        }
-    }
-
-    return id;
+    return qGuiApp->screens().indexOf(qGuiApp->primaryScreen());
 }
 
 int DockCorona::docksCount(int screen) const
@@ -302,13 +290,18 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 
 int DockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
-    for (auto *view : m_dockViews) {
-        if (view && view->containment() && view->containment() == containment)
-            if (view->screen())
-                return qGuiApp->screens().indexOf(view->screen());
-    }
+    //FIXME: indexOf is not a proper way to support multi-screen
+    // as for environment to environment the indexes change
+    // also there is the following issue triggered
+    // from dockView adaptToScreen()
+    //
+    // in a multi-screen environment that
+    // primary screen is not set to 0 it was
+    // created an endless showing loop at
+    // startup (catch-up race) between
+    // screen:0 and primaryScreen
 
-    return -1;
+    return primaryScreenId();
 }
 
 void DockCorona::addDock(Plasma::Containment *containment)
