@@ -62,25 +62,25 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
 
     connect(this, &DockView::containmentChanged
     , this, [&]() {
-        if (!containment())
+        if (!this->containment())
             return;
 
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
         }
 
-        QAction *lockWidgetsAction = containment()->actions()->action("lock widgets");
-        containment()->actions()->removeAction(lockWidgetsAction);
+        QAction *lockWidgetsAction = this->containment()->actions()->action("lock widgets");
+        this->containment()->actions()->removeAction(lockWidgetsAction);
         QAction *removeAction = containment()->actions()->action("remove");
         removeAction->setVisible(false);
         //containment()->actions()->removeAction(removeAction);
         //FIX: hide and not delete in order to disable a nasty behavior from
         //ContainmentInterface. If only one action exists for containment the
         //this action is triggered directly
-        QAction *addWidgetsAction = containment()->actions()->action("add widgets");
+        QAction *addWidgetsAction = this->containment()->actions()->action("add widgets");
         addWidgetsAction->setVisible(false);
         //containment()->actions()->removeAction(addWidgetsAction);
-        connect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
+        connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
@@ -135,7 +135,7 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
-    if (!screen || !containment() || this->screen() == screen) {
+    if (!screen || !this->containment() || this->screen() == screen) {
         return;
     }
 
@@ -144,8 +144,8 @@ void DockView::adaptToScreen(QScreen *screen)
     //FIXME:: This code in a multi-screen environment that
     //primary screen is not set to 0 it creates an endless
     //showing loop at startup (catch-up race) between screen:0 and primaryScreen
-    if (containment())
-        containment()->reactToScreenChange();
+    if (this->containment())
+        this->containment()->reactToScreenChange();
 
     syncGeometry();
 }
@@ -162,7 +162,7 @@ void DockView::addNewDock()
 void DockView::removeDock()
 {
     if (docksCount() > 1) {
-        QAction *removeAct = containment()->actions()->action(QStringLiteral("remove"));
+        QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));
 
         if (removeAct) {
             removeAct->trigger();
@@ -194,7 +194,7 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
-    if (m_configView && c && c->isContainment() && c == containment()) {
+    if (m_configView && c && c->isContainment() && c == this->containment()) {
         if (m_configView->isVisible()) {
             m_configView->hide();
         } else {
@@ -215,7 +215,7 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
     bool delayConfigView = false;
 
-    if (c && containment() && c->isContainment() && c->id() == containment()->id()) {
+    if (c && containment() && c->isContainment() && c->id() == this->containment()->id()) {
         m_configView = new DockConfigView(c, this);
         delayConfigView = true;
     } else {
@@ -237,7 +237,7 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 void DockView::resizeWindow()
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        QSize screenSize = corona()->availableScreenRect(containment()->screen()).size();
+        QSize screenSize = corona()->availableScreenRect(this->containment()->screen()).size();
         QSize size{maxThickness(), screenSize.height()};
 
         if (m_drawShadows) {
@@ -322,7 +322,7 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::RightEdge:
-            screenGeometry = corona()->availableScreenRect(containment()->screen());
+            screenGeometry = corona()->availableScreenRect(this->containment()->screen());
 
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
@@ -335,7 +335,7 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::LeftEdge:
-            screenGeometry = corona()->availableScreenRect(containment()->screen());
+            screenGeometry = corona()->availableScreenRect(this->containment()->screen());
 
             if (m_drawShadows && !mask().isNull()) {
                 position = {screenGeometry.x(), screenGeometry.y() + length(screenGeometry.height())};
@@ -355,7 +355,7 @@ void DockView::updatePosition()
 
 inline void DockView::syncGeometry()
 {
-    if (!(screen() && containment()))
+    if (!(screen() && this->containment()))
         return;
 
     updateEnabledBorders();
@@ -403,26 +403,26 @@ int DockView::docksCount() const
 {
     auto dockCorona = qobject_cast<DockCorona *>(corona());
 
-    if (!dockCorona || !containment())
+    if (!dockCorona || !this->containment())
         return 0;
 
-    return dockCorona->docksCount(containment()->screen());
+    return dockCorona->docksCount(this->containment()->screen());
 }
 
 void DockView::updateFormFactor()
 {
-    if (!containment())
+    if (!this->containment())
         return;
 
     switch (location()) {
         case Plasma::Types::TopEdge:
         case Plasma::Types::BottomEdge:
-            containment()->setFormFactor(Plasma::Types::Horizontal);
+            this->containment()->setFormFactor(Plasma::Types::Horizontal);
             break;
 
         case Plasma::Types::LeftEdge:
         case Plasma::Types::RightEdge:
-            containment()->setFormFactor(Plasma::Types::Vertical);
+            this->containment()->setFormFactor(Plasma::Types::Vertical);
             break;
 
         default:
@@ -554,7 +554,7 @@ QStringList DockView::debugFlags() const
 
 bool DockView::tasksPresent()
 {
-    foreach (Plasma::Applet *applet, containment()->applets()) {
+    foreach (Plasma::Applet *applet, this->containment()->applets()) {
         KPluginMetaData meta = applet->kPackage().metadata();
 
         if (meta.pluginId() == "org.kde.latte.plasmoid")
@@ -578,12 +578,12 @@ bool DockView::event(QEvent *e)
 
 QList<int> DockView::freeEdges() const
 {
-    if (!corona() || !containment()) {
+    if (!this->corona() || !this->containment()) {
         const QList<int> emptyEdges;
         return emptyEdges;
     }
 
-    const auto edges = corona()->freeEdges(containment()->screen());
+    const auto edges = corona()->freeEdges(this->containment()->screen());
     QList<int> edgesInt;
 
     foreach (Plasma::Types::Location edge, edges) {
@@ -610,17 +610,17 @@ QVariantList DockView::containmentActions()
     //FIXME: the trigger string it should be better to be supported this way
     //const QString trigger = Plasma::ContainmentActions::eventToString(event);
     const QString trigger = "RightButton;NoModifier";
-    Plasma::ContainmentActions *plugin = containment()->containmentActions().value(trigger);
+    Plasma::ContainmentActions *plugin = this->containment()->containmentActions().value(trigger);
 
     if (!plugin) {
         return actions;
     }
 
-    if (plugin->containment() != containment()) {
-        plugin->setContainment(containment());
+    if (plugin->containment() != this->containment()) {
+        plugin->setContainment(this->containment());
         // now configure it
-        KConfigGroup cfg(containment()->corona()->config(), "ActionPlugins");
-        cfg = KConfigGroup(&cfg, QString::number(containment()->containmentType()));
+        KConfigGroup cfg(this->containment()->corona()->config(), "ActionPlugins");
+        cfg = KConfigGroup(&cfg, QString::number(this->containment()->containmentType()));
         KConfigGroup pluginConfig = KConfigGroup(&cfg, trigger);
         plugin->restore(pluginConfig);
     }
@@ -643,17 +643,17 @@ void DockView::menuAboutToHide()
 
 void DockView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (!event || !containment()) {
+    if (!event || !this->containment()) {
         return;
     }
 
     PlasmaQuick::ContainmentView::mouseReleaseEvent(event);
-    event->setAccepted(containment()->containmentActions().contains(Plasma::ContainmentActions::eventToString(event)));
+    event->setAccepted(this->containment()->containmentActions().contains(Plasma::ContainmentActions::eventToString(event)));
 }
 
 void DockView::mousePressEvent(QMouseEvent *event)
 {
-    if (!event || !containment()) {
+    if (!event || !this->containment()) {
         return;
     }
 
@@ -672,7 +672,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
     const QString trigger = Plasma::ContainmentActions::eventToString(event);
 
     if (trigger == "RightButton;NoModifier") {
-        Plasma::ContainmentActions *plugin = containment()->containmentActions().value(trigger);
+        Plasma::ContainmentActions *plugin = this->containment()->containmentActions().value(trigger);
 
         if (!plugin || plugin->contextualActions().isEmpty()) {
             event->setAccepted(false);
@@ -695,7 +695,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
         Plasma::Applet *applet = 0;
         bool inSystray = false;
 
-        foreach (Plasma::Applet *appletTemp, containment()->applets()) {
+        foreach (Plasma::Applet *appletTemp, this->containment()->applets()) {
             PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai && ai->isVisible() && ai->contains(ai->mapFromItem(contentItem(), event->pos()))) {
@@ -729,7 +729,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
         }
 
         if (!applet && !inSystray) {
-            applet = containment();
+            applet = this->containment();
         }
 
         if (applet) {
@@ -754,7 +754,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
                     emit applet->contextualActionsAboutToShow();
                     addAppletActions(desktopMenu, applet, event);
                 } else {
-                    emit containment()->contextualActionsAboutToShow();
+                    emit this->containment()->contextualActionsAboutToShow();
                     addContainmentActions(desktopMenu, event);
                 }
 
@@ -810,7 +810,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
 
 void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
 {
-    if (!containment()) {
+    if (!this->containment()) {
         return;
     }
 
@@ -840,7 +840,7 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
         }
     }
 
-    QMenu *containmentMenu = new QMenu(i18nc("%1 is the name of the containment", "%1 Options", containment()->title()), desktopMenu);
+    QMenu *containmentMenu = new QMenu(i18nc("%1 is the name of the containment", "%1 Options", this->containment()->title()), desktopMenu);
     addContainmentActions(containmentMenu, event);
 
     if (!containmentMenu->isEmpty()) {
@@ -872,8 +872,8 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
         }
     }
 
-    if (containment()->immutability() == Plasma::Types::Mutable &&
-        (containment()->containmentType() != Plasma::Types::PanelContainment || containment()->isUserConfiguring())) {
+    if (this->containment()->immutability() == Plasma::Types::Mutable &&
+        (this->containment()->containmentType() != Plasma::Types::PanelContainment || this->containment()->isUserConfiguring())) {
         QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
 
         //qDebug() << "checking for removal" << closeApplet;
@@ -890,11 +890,11 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
 
 void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 {
-    if (!containment()) {
+    if (!this->containment()) {
         return;
     }
 
-    if (containment()->corona()->immutability() != Plasma::Types::Mutable &&
+    if (this->containment()->corona()->immutability() != Plasma::Types::Mutable &&
         !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
         //qDebug() << "immutability";
         return;
@@ -903,17 +903,17 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     //this is what ContainmentPrivate::prepareContainmentActions was
     const QString trigger = Plasma::ContainmentActions::eventToString(event);
     //"RightButton;NoModifier"
-    Plasma::ContainmentActions *plugin = containment()->containmentActions().value(trigger);
+    Plasma::ContainmentActions *plugin = this->containment()->containmentActions().value(trigger);
 
     if (!plugin) {
         return;
     }
 
-    if (plugin->containment() != containment()) {
-        plugin->setContainment(containment());
+    if (plugin->containment() != this->containment()) {
+        plugin->setContainment(this->containment());
         // now configure it
-        KConfigGroup cfg(containment()->corona()->config(), "ActionPlugins");
-        cfg = KConfigGroup(&cfg, QString::number(containment()->containmentType()));
+        KConfigGroup cfg(this->containment()->corona()->config(), "ActionPlugins");
+        cfg = KConfigGroup(&cfg, QString::number(this->containment()->containmentType()));
         KConfigGroup pluginConfig = KConfigGroup(&cfg, trigger);
         plugin->restore(pluginConfig);
     }
@@ -923,10 +923,10 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     if (actions.isEmpty()) {
         //it probably didn't bother implementing the function. give the user a chance to set
         //a better plugin.  note that if the user sets no-plugin this won't happen...
-        if ((containment()->containmentType() != Plasma::Types::PanelContainment &&
-             containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
-            containment()->actions()->action(QStringLiteral("configure"))) {
-            desktopMenu->addAction(containment()->actions()->action(QStringLiteral("configure")));
+        if ((this->containment()->containmentType() != Plasma::Types::PanelContainment &&
+             this->containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
+            this->containment()->actions()->action(QStringLiteral("configure"))) {
+            desktopMenu->addAction(this->containment()->actions()->action(QStringLiteral("configure")));
         }
     } else {
         desktopMenu->addActions(actions);
