@@ -315,7 +315,8 @@ Item{
                     newMaskArea.x = dock.width - fixedThickness;
                 }
 
-                if (localGeometry !== newMaskArea){
+                if (localGeometry.x !== newMaskArea.x || localGeometry.y !== newMaskArea.y
+                        || localGeometry.width !== newMaskArea.width || localGeometry.height !== newMaskArea.height) {
                     localGeometry = newMaskArea;
                     dock.setLocalDockGeometry(localGeometry);
                 }
