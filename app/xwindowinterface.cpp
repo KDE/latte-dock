@@ -32,7 +32,7 @@
 namespace Latte {
 
 XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
-    : AbstractWindowInterface(view, parent)
+    : AbstractWindowInterface(view, parent), activities(new KActivities::Consumer(this))
 {
     Q_ASSERT(view != nullptr);
 
@@ -62,10 +62,11 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
     connections << connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
                            , this, [&](int desktop) {
         m_currentDesktop = desktop;
-        QTimer::singleShot(200, this, [&]() {
-            emit currentDesktopChanged(m_currentDesktop);
-        });
+        emit currentDesktopChanged(m_currentDesktop);
     });
+
+    connections << connect(activities.data(), &KActivities::Consumer::currentActivityChanged
+                           , this, &XWindowInterface::currentActivityChanged);
 
     // fill windows list
     foreach (const auto &wid, KWindowSystem::self()->windows()) {
