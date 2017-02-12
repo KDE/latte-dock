@@ -103,6 +103,10 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
 
         case Dock::AutoHide: {
+            connections[0] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
+            connections[1] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
             raiseDock(containsMouse);
         }
         break;
@@ -113,10 +117,9 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
             connections[2] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
-            , this, [&](int desktop) {
-                qDebug() << "desktop" << desktop;
-                dodgeActive(wm->activeWindow());
-            });
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
+            connections[3] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
             dodgeActive(wm->activeWindow());
         }
         break;
@@ -127,9 +130,9 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeMaximized);
             connections[2] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
-            , this, [&](int) {
-                dodgeMaximized(wm->activeWindow());
-            });
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
+            connections[3] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
             dodgeMaximized(wm->activeWindow());
         }
         break;
@@ -152,11 +155,16 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                 timerCheckWindows.start();
             });
             connections[3] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
-            , this, [&](int) {
-                timerCheckWindows.start();
-            });
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
+            connections[4] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+                                     , this, &VisibilityManagerPrivate::raiseDockTemporarily);
+
             timerCheckWindows.start();
         }
+        break;
+
+    case Dock::None:
+        break;
     }
 
     saveConfig();
@@ -225,9 +233,31 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
     } else if (!blockHiding && !dragEnter) {
         timerShow.stop();
 
-        if (!timerHide.isActive())
+        if (hideNow) {
+            hideNow = false;
+            emit q->mustBeHide();
+        } else if (!timerHide.isActive())
             timerHide.start();
     }
+}
+
+void VisibilityManagerPrivate::raiseDockTemporarily()
+{
+    if (raiseTemporarily)
+        return;
+
+    raiseTemporarily = true;
+    timerHide.stop();
+    timerShow.stop();
+
+    if (isHidden)
+        emit q->mustBeShown();
+
+    QTimer::singleShot(1800, this, [&](){
+       raiseTemporarily = false;
+       hideNow = true;
+       updateHiddenState();
+    });
 }
 
 void VisibilityManagerPrivate::updateHiddenState()
@@ -268,6 +298,9 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 
 void VisibilityManagerPrivate::dodgeActive(WId wid)
 {
+    if (raiseTemporarily)
+        return;
+
     auto winfo = wm->requestInfo(wid);
 
     if (!winfo.isValid())
@@ -285,6 +318,9 @@ void VisibilityManagerPrivate::dodgeActive(WId wid)
 
 void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 {
+    if (raiseTemporarily)
+        return;
+
     auto winfo = wm->requestInfo(wid);
 
     if (!winfo.isValid())
@@ -302,6 +338,9 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 
 void VisibilityManagerPrivate::dodgeWindows(WId wid)
 {
+    if (raiseTemporarily)
+        return;
+
     if (windows.find(wid) == std::end(windows))
         return;
 
@@ -319,6 +358,9 @@ void VisibilityManagerPrivate::dodgeWindows(WId wid)
 
 void VisibilityManagerPrivate::checkAllWindows()
 {
+    if (raiseTemporarily)
+        return;
+
     bool raise{true};
 
     for (const auto &winfo : windows) {
@@ -367,12 +409,12 @@ inline void VisibilityManagerPrivate::restoreConfig()
     emit q->timerShowChanged();
     emit q->timerHideChanged();
 
-    if (mode != Dock::AlwaysVisible) {
+    if (mode == Dock::AlwaysVisible) {
+        setMode(mode);
+    } else {
         QTimer::singleShot(2400, this, [&, mode]() {
             setMode(mode);
         });
-    } else {
-        setMode(mode);
     }
 }
 

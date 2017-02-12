@@ -35,6 +35,7 @@ public:
     void setTimerHide(int msec);
 
     void raiseDock(bool raise);
+    void raiseDockTemporarily();
     void updateHiddenState();
 
     void setDockGeometry(const QRect &rect);
@@ -56,7 +57,7 @@ public:
     PlasmaQuick::ContainmentView *view;
     std::unique_ptr<AbstractWindowInterface> wm;
     Dock::Visibility mode{Dock::None};
-    std::array<QMetaObject::Connection, 4> connections;
+    std::array<QMetaObject::Connection, 5> connections;
     std::unordered_map<WId, WindowInfoWrap> windows;
     QTimer timerShow;
     QTimer timerHide;
@@ -66,6 +67,8 @@ public:
     bool dragEnter{false};
     bool blockHiding{false};
     bool containsMouse{false};
+    bool raiseTemporarily{false};
+    bool hideNow{false};
 };
 
 }

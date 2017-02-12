@@ -64,6 +64,7 @@ signals:
     void windowAdded(WId wid);
     void windowRemoved(WId wid);
     void currentDesktopChanged(int desktop);
+    void currentActivityChanged();
 
 protected:
     QQuickWindow *const m_view;

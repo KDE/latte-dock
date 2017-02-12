@@ -24,9 +24,11 @@
 #include "abstractwindowinterface.h"
 
 #include <QObject>
+#include <QPointer>
 
 #include <KWindowInfo>
 #include <Plasma>
+#include <KActivities/Consumer>
 
 namespace Latte {
 
@@ -55,6 +57,7 @@ private:
 
     WId m_desktopId;
     int m_currentDesktop;
+    QPointer<KActivities::Consumer> activities;
 
     QList<QMetaObject::Connection> connections;
 };
