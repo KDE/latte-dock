@@ -224,6 +224,9 @@ QRect DockCorona::availableScreenRect(int id) const
 
 int DockCorona::primaryScreenId() const
 {
+    //this is not the proper way because kwin probably uses a different
+    //index of screens...
+    //This needs a lot of testing...
     return qGuiApp->screens().indexOf(qGuiApp->primaryScreen());
 }
 
