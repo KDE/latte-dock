@@ -36,8 +36,6 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
 {
     Q_ASSERT(view != nullptr);
 
-    m_currentDesktop = KWindowSystem::currentDesktop();
-
     connections << connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
                            , this, &AbstractWindowInterface::activeWindowChanged);
     connections << connect(KWindowSystem::self()
@@ -60,11 +58,7 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
         }
     });
     connections << connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
-                           , this, [&](int desktop) {
-        m_currentDesktop = desktop;
-        emit currentDesktopChanged(m_currentDesktop);
-    });
-
+                           , this, &XWindowInterface::currentDesktopChanged);
     connections << connect(activities.data(), &KActivities::Consumer::currentActivityChanged
                            , this, &XWindowInterface::currentActivityChanged);
 
@@ -166,7 +160,7 @@ WindowInfoWrap XWindowInterface::requestInfoActive() const
 bool XWindowInterface::isOnCurrentDesktop(WId wid) const
 {
     KWindowInfo winfo(wid, NET::WMDesktop);
-    return winfo.valid() && winfo.desktop() == m_currentDesktop;
+    return winfo.valid() && winfo.isOnCurrentDesktop();
 }
 
 WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
