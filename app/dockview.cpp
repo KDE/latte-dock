@@ -109,7 +109,7 @@ DockView::~DockView()
 
 void DockView::init()
 {
-    connect(this, &DockView::screenChanged, this, &DockView::adaptToScreen, Qt::QueuedConnection);
+    connect(this, &DockView::screenChanged, this, &DockView::adaptToScreen);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
@@ -135,7 +135,7 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
-    if (!screen || !this->containment() || this->screen() == screen) {
+    if (!screen) {
         return;
     }
 
@@ -249,7 +249,7 @@ void DockView::resizeWindow()
         setMaximumSize(size);
         resize(size);
     } else {
-        QSize screenSize = screen()->size();
+        QSize screenSize = this->screen()->size();
         QSize size{screenSize.width(), maxThickness()};
 
         if (m_drawShadows) {
@@ -298,7 +298,7 @@ void DockView::updatePosition()
 
     switch (location()) {
         case Plasma::Types::TopEdge:
-            screenGeometry = screen()->geometry();
+            screenGeometry = this->screen()->geometry();
 
             if (m_drawShadows) {
                 position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
@@ -309,7 +309,7 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::BottomEdge:
-            screenGeometry = screen()->geometry();
+            screenGeometry = this->screen()->geometry();
 
             if (m_drawShadows) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
@@ -355,7 +355,7 @@ void DockView::updatePosition()
 
 inline void DockView::syncGeometry()
 {
-    if (!(screen() && this->containment()))
+    if (!(this->screen() && this->containment()))
         return;
 
     updateEnabledBorders();
