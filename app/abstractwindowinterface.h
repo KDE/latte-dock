@@ -63,7 +63,7 @@ signals:
     void windowChanged(WId winfo);
     void windowAdded(WId wid);
     void windowRemoved(WId wid);
-    void currentDesktopChanged(int desktop);
+    void currentDesktopChanged();
     void currentActivityChanged();
 
 protected:
