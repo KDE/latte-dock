@@ -24,6 +24,7 @@ set(lattedock-app_SRCS
     dockconfigview.cpp
     packageplugins/shell/dockpackage.cpp
     panelshadows.cpp
+    alternativeshelper.cpp
     main.cpp
 )
 
