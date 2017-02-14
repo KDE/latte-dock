@@ -105,6 +105,19 @@ Window{
         }
 
         Text{
+            text: "Contains Mouse (flag)"+space
+        }
+
+        Text{
+            text: {
+                if (dock.visibility.containsMouse)
+                    return "Yes";
+                else
+                    return "No";
+            }
+        }
+
+        Text{
             text: "   -----------   "
         }
 
@@ -133,7 +146,7 @@ Window{
                     break;
                 }
 
-                return " <unknown>";
+                return " <unknown> : " + plasmoid.location;
             }
         }
 
@@ -164,7 +177,7 @@ Window{
                     break;
                 }
 
-                return "<unknown>";
+                return "<unknown> : " + plasmoid.configuration.panelPosition;
             }
         }
 
@@ -190,9 +203,12 @@ Window{
                 case Latte.Dock.DodgeAllWindows:
                     return "Dodge All Windows";
                     break;
+                case Latte.Dock.None:
+                    return "None";
+                    break;
                 }
 
-                return "<unknown>";
+                return "<unknown> : " + dock.visibility.mode;
             }
         }
 
