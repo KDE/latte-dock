@@ -92,6 +92,15 @@ Window{
         }
 
         Text{
+            text: "Local Geometry"+space
+        }
+
+        Text{
+            text: visibilityManager.localGeometry.x + ", " + visibilityManager.localGeometry.y + "  " +
+                  visibilityManager.localGeometry.width + "x" + visibilityManager.localGeometry.height
+        }
+
+        Text{
             text: "Is Hidden (flag)"+space
         }
 
@@ -111,6 +120,19 @@ Window{
         Text{
             text: {
                 if (dock.visibility.containsMouse)
+                    return "Yes";
+                else
+                    return "No";
+            }
+        }
+
+        Text{
+            text: "Edit Mode"+space
+        }
+
+        Text{
+            text: {
+                if (root.editMode)
                     return "Yes";
                 else
                     return "No";
