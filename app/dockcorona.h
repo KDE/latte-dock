@@ -18,14 +18,15 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef NOWDOCKCORONA_H
-#define NOWDOCKCORONA_H
+#ifndef DOCKCORONA_H
+#define DOCKCORONA_H
 
 #include "dockview.h"
 
 #include <QObject>
 
 #include <KAboutApplicationDialog>
+#include <KDeclarative/QmlObject>
 
 namespace Plasma {
 class Corona;
@@ -74,6 +75,8 @@ signals:
 
 private slots:
     void destroyedChanged(bool destroyed);
+    void showAlternativesForApplet(Plasma::Applet *applet);
+    void alternativesVisibilityChanged(bool visible);
     void load();
 
 private:
@@ -86,8 +89,10 @@ private:
     bool m_activitiesStarting{true};
 
     QStringList m_debugFlags;
+
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
+    QList<KDeclarative::QmlObject *> m_alternativesObjects;
 
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
@@ -95,4 +100,4 @@ private:
 
 }
 
-#endif
+#endif // DOCKCORONA_H
