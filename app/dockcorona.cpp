@@ -22,10 +22,12 @@
 #include "dockview.h"
 #include "packageplugins/shell/dockpackage.h"
 #include "../liblattedock/windowsystem.h"
+#include "alternativeshelper.h"
 
 #include <QAction>
 #include <QScreen>
 #include <QDebug>
+#include <QQmlContext>
 
 #include <Plasma>
 #include <Plasma/Corona>
@@ -36,8 +38,7 @@
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 #include <KAboutData>
-
-#include <kactivities/consumer.h>
+#include <KActivities/Consumer>
 
 namespace Latte {
 
@@ -333,6 +334,9 @@ void DockCorona::addDock(Plasma::Containment *containment)
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &DockCorona::destroyedChanged);
     connect(containment, &Plasma::Applet::locationChanged, this, &DockCorona::dockLocationChanged);
+    connect(containment, &Plasma::Containment::appletAlternativesRequested
+            , this, &DockCorona::showAlternativesForApplet, Qt::QueuedConnection);
+
     dockView->show();
     m_dockViews[containment] = dockView;
     emit docksCountChanged();
@@ -363,6 +367,58 @@ void DockCorona::dockContainmentDestroyed(QObject *cont)
         delete view;
 
     emit docksCountChanged();
+}
+
+void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
+{
+    const QString alternativesQML = kPackage().filePath("appletalternativesui");
+    if (alternativesQML.isEmpty()) {
+        return;
+    }
+
+    KDeclarative::QmlObject *qmlObj = new KDeclarative::QmlObject(this);
+    qmlObj->setInitializationDelayed(true);
+    qmlObj->setSource(QUrl::fromLocalFile(alternativesQML));
+
+    AlternativesHelper *helper = new AlternativesHelper(applet, qmlObj);
+    qmlObj->rootContext()->setContextProperty(QStringLiteral("alternativesHelper"), helper);
+
+    m_alternativesObjects << qmlObj;
+    qmlObj->completeInitialization();
+    connect(qmlObj->rootObject(), SIGNAL(visibleChanged(bool)),
+            this, SLOT(alternativesVisibilityChanged(bool)));
+
+    connect(applet, &Plasma::Applet::destroyedChanged, this, [this, qmlObj] (bool destroyed) {
+        if (!destroyed) {
+            return;
+        }
+        QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+        while (it.hasNext()) {
+            KDeclarative::QmlObject *obj = it.next();
+            if (obj == qmlObj) {
+                it.remove();
+                obj->deleteLater();
+            }
+        }
+    });
+}
+
+void DockCorona::alternativesVisibilityChanged(bool visible)
+{
+    if (visible) {
+        return;
+    }
+
+    QObject *root = sender();
+
+    QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+    while (it.hasNext()) {
+        KDeclarative::QmlObject *obj = it.next();
+        if (obj->rootObject() == root) {
+            it.remove();
+            obj->deleteLater();
+        }
+    }
 }
 
 void DockCorona::loadDefaultLayout()
