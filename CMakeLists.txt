@@ -39,7 +39,7 @@ endif()
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings NO_POLICY_SCOPE)
+#include(KDECompilerSettings NO_POLICY_SCOPE)
 include(CMakePackageConfigHelpers)
 include(WriteBasicConfigVersionFile)
 include(CheckIncludeFiles)
