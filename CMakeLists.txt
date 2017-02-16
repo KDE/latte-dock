@@ -13,132 +13,42 @@ set(KF5_MIN_VERSION "5.26.0")
 
 set(KF5_LOCALE_PREFIX "")
 
-include(Definitions.cmake)
-
 find_package(ECM 1.8.0 REQUIRED NO_MODULE)
-
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS Quick Qml)
-
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Plasma PlasmaQuick WindowSystem Declarative Activities
     I18n CoreAddons XmlGui DBusAddons IconThemes Wayland)
 
 find_package(X11 REQUIRED)
 set_package_properties(X11 PROPERTIES DESCRIPTION "X11 libraries"
-                        URL "http://www.x.org"
-                        TYPE OPTIONAL
-                        PURPOSE "Required for building the X11 based workspace")
+    URL "http://www.x.org"
+    TYPE OPTIONAL
+    PURPOSE "Required for building the X11 based workspace")
 
 if(X11_FOUND)
-  find_package(XCB MODULE REQUIRED COMPONENTS XCB)
-  set_package_properties(XCB PROPERTIES TYPE REQUIRED)
-  find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS X11Extras)
+    find_package(XCB MODULE REQUIRED COMPONENTS XCB)
+    set_package_properties(XCB PROPERTIES TYPE REQUIRED)
+    find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS X11Extras)
 endif()
 
 if(X11_FOUND AND XCB_XCB_FOUND)
-  set(HAVE_X11 true)
+    set(HAVE_X11 ON)
 endif()
 
-FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(CMakePackageConfigHelpers)
+include(WriteBasicConfigVersionFile)
+include(CheckIncludeFiles)
+include(ECMOptionalAddSubdirectory)
+include(ECMQtDeclareLoggingCategory)
+include(KDEPackageAppTemplates)
 
-IF(NOT GETTEXT_MSGFMT_EXECUTABLE)
-    MESSAGE(
-"------
-                 NOTE: msgfmt not found. Translations will *not* be installed
-------")
-ELSE(NOT GETTEXT_MSGFMT_EXECUTABLE)
-
-        #containment translations
-        SET(catalogname plasma_applet_org.kde.latte.containment)
-        ADD_CUSTOM_TARGET(translations-containment ALL)
-
-        FILE(GLOB PO_FILES po/containment/*.po)
-
-        FOREACH(_poFile ${PO_FILES})
-                GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
-                STRING(REGEX REPLACE "^${catalogname}_?" "" _langCode ${_poFileName} )
-                STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
-
-                IF( _langCode )
-                        GET_FILENAME_COMPONENT(_lang ${_poFile} NAME_WE)
-                        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/containment/${_lang}.gmo)
-
-                        ADD_CUSTOM_COMMAND(TARGET translations-containment
-                                COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
-                                DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname}.mo)
-                ENDIF( _langCode )
-        ENDFOREACH(_poFile ${PO_FILES})
-
-        #plasmoid translations
-        SET(catalogname-plasmoid plasma_applet_org.kde.latte.plasmoid)
-        ADD_CUSTOM_TARGET(translations-plasmoid ALL)
-
-        FILE(GLOB PO_FILES_PLASMOID po/plasmoid/*.po)
-
-        FOREACH(_poFile ${PO_FILES_PLASMOID})
-                GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
-                STRING(REGEX REPLACE "^${catalogname-plasmoid}_?" "" _langCode ${_poFileName} )
-                STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
-
-                IF( _langCode )
-                        GET_FILENAME_COMPONENT(_lang ${_poFile} NAME_WE)
-                        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/plasmoid/${_lang}.gmo)
-
-                        ADD_CUSTOM_COMMAND(TARGET translations-plasmoid
-                                COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
-                                DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname-plasmoid}.mo)
-                ENDIF( _langCode )
-        ENDFOREACH(_poFile ${PO_FILES})
-
-        #shell translations
-        #SET(catalogname-shell plasma_shell_org.kde.latte.shell)
-        #ADD_CUSTOM_TARGET(translations-shell ALL)
-
-        #FILE(GLOB PO_FILES_SHELL po/shell/*.po)
-
-        #FOREACH(_poFile ${PO_FILES_SHELL})
-        #        GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
-        #        STRING(REGEX REPLACE "^${catalogname-shell}_?" "" _langCode ${_poFileName} )
-        #        STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
-
-        #        IF( _langCode )
-        #                GET_FILENAME_COMPONENT(_lang ${_poFile} NAME_WE)
-        #                SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/shell/${_lang}.gmo)
-
-        #                ADD_CUSTOM_COMMAND(TARGET translations-shell
-        #                        COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
-        #                        DEPENDS ${_poFile})
-        #                INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname-shell}.mo)
-        #        ENDIF( _langCode )
-        #ENDFOREACH(_poFile ${PO_FILES})
-
-        #app translations
-        SET(catalogname-app latte-dock)
-        ADD_CUSTOM_TARGET(translations-app ALL)
-
-        FILE(GLOB PO_FILES_CORONA po/app/*.po)
-
-        FOREACH(_poFile ${PO_FILES_CORONA})
-                GET_FILENAME_COMPONENT(_poFileName ${_poFile} NAME)
-                STRING(REGEX REPLACE "^${catalogname-app}_?" "" _langCode ${_poFileName} )
-                STRING(REGEX REPLACE "\\.po$" "" _langCode ${_langCode} )
-
-                IF( _langCode )
-                        GET_FILENAME_COMPONENT(_lang ${_poFile} NAME_WE)
-                        SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/app/${_lang}.gmo)
-
-                        ADD_CUSTOM_COMMAND(TARGET translations-app
-                                COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
-                                DEPENDS ${_poFile})
-                        INSTALL(FILES ${_gmoFile} DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/ RENAME ${catalogname-app}.mo)
-                ENDIF( _langCode )
-        ENDFOREACH(_poFile ${PO_FILES})
-
-ENDIF(NOT GETTEXT_MSGFMT_EXECUTABLE)
+include(Definitions.cmake)
+include(Locale.cmake)
 
 add_subdirectory(app)
 add_subdirectory(liblattedock)

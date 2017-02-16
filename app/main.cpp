@@ -19,6 +19,7 @@
 */
 
 #include "dockcorona.h"
+#include "config-latte.h"
 
 #include <memory>
 
@@ -96,7 +97,7 @@ inline void configureAboutData()
 {
     KAboutData about(QStringLiteral("lattedock")
                      , QStringLiteral("Latte Dock")
-                     , QStringLiteral(LATTE_VERSION)
+                     , QStringLiteral(VERSION)
                      , i18n("Latte is a dock based on plasma frameworks that provides an elegant and "
                             "intuitive experience for your tasks and plasmoids. It animates its contents "
                             "by using parabolic zoom effect and trys to be there only when it is needed."
