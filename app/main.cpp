@@ -63,6 +63,14 @@ int main(int argc, char **argv)
         exit(0); // Exit, already a process running
     }
 
+    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
+    //     - dialog continually expands (347951)
+    //     - Text element text is screwed (QTBUG-42606)
+    //     - Panel struts (350614)
+    //  This variable should possibly be removed when all are fixed
+    qunsetenv("QT_DEVICE_PIXEL_RATIO");
+    QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+
     QQuickWindow::setDefaultAlphaBuffer(true);
     QApplication app(argc, argv);
     KLocalizedString::setApplicationDomain("latte-dock");
