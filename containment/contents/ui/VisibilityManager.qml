@@ -436,9 +436,8 @@ Item{
         id: delayerTimer
         interval: 400
         onTriggered: {
-            root.clearZoom();
-            if (root.latteApplet) {
-                latteApplet.clearZoom();
+            if (!root.containsMouse()) {
+                root.clearZoom();
             }
         }
     }
