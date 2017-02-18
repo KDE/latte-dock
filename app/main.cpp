@@ -29,6 +29,8 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QDebug>
+#include <QDir>
+#include <QLockFile>
 #include <QSharedMemory>
 
 #include <KLocalizedString>
@@ -54,13 +56,12 @@ void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 
 int main(int argc, char **argv)
 {
-    QSharedMemory sharedMemory;
-    sharedMemory.setKey("latte-dock");
+    QString tmpDir = QDir::tempPath();
+    QLockFile lockFile(tmpDir + "/latte-dock.lock");
 
-    if (!sharedMemory.create(1)) {
+    if (!lockFile.tryLock(100)) {
         qDebug() << i18n("Warning: An instance of Latte application is already running!!!");
-
-        exit(0); // Exit, already a process running
+        exit(0);
     }
 
     //    Devive pixel ratio has some problems in latte (plasmashell) currently.
