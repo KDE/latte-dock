@@ -124,7 +124,7 @@ PlasmaExtras.ScrollArea {
             }
 
             function checkMouseInside(){
-                var isInside = containsMouse || childrenContainMouse() || parentTask.containsMouse;
+                var isInside = containsMouse || childrenContainMouse() || (parentTask && parentTask.containsMouse);
                 if (isInside){
                     root.disableRestoreZoom = true;
                     mainToolTip.containsMouse = true;

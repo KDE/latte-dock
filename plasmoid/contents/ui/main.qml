@@ -222,10 +222,15 @@ Item {
             }
 
             windowsPreviewDlg.activeItem = null;
+
+            toolTipDelegate.containsMouse = false;
             toolTipDelegate.parentTask = null;
             toolTipDelegate.parentIndex = -1;
             toolTipDelegate.windows = [];
             toolTipDelegate.isGroup = false;
+
+            root.disableRestoreZoom = false;
+
             visible = false;
         }
 
