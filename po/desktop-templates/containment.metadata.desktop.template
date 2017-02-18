@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-_Name=Latte
-_Comment=Containment provided for the Latte Dock
+Name=Latte
+Comment=Containment provided for the Latte Dock
 
 Type=Service
 Keywords=
