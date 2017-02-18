@@ -66,15 +66,15 @@ msgstr "Lunghezza"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Applet shadows"
-msgstr ""
+msgstr "Ombre degli elementi grafici"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:370
 msgid "Locked"
-msgstr ""
+msgstr "Bloccato"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:376
 msgid "All"
-msgstr ""
+msgstr "Tutto"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -277,6 +277,11 @@ msgid ""
 "\n"
 "\"Art in Coffee\""
 msgstr ""
+"Latte è una dock basata sul plasma frameworks, ed offre un elegante e "
+"intuitiva esperienza per i tuoi task e plasmoidi, che anima facendo uso "
+"di un effetto zoom parabolico,\n"
+"\n"
+"\"Art in Coffee\""
 
 #: ../../app/main.cpp:99
 msgid "Logo and Icons"
@@ -327,4 +332,4 @@ msgstr "Dock"
 #~ msgstr "atte"
 
 #~ msgid "Size"
-#~ msgstr "Tamaño"
+#~ msgstr "Size"
