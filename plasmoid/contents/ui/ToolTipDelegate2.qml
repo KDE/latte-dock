@@ -153,6 +153,9 @@ PlasmaExtras.ScrollArea {
                 flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
                 spacing: units.largeSpacing
 
+                width: isGroup ? childrenRect.width : 0
+                height: isGroup ? childrenRect.height : 0
+
                 visible: isGroup
 
                 Repeater {
