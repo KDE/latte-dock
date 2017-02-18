@@ -96,8 +96,6 @@ private:
 
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
-
-    QPointer<Plasma::Containment> m_alternativesContaiment;
 };
 
 }
