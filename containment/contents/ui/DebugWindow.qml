@@ -115,6 +115,19 @@ Window{
         }
 
         Text{
+            text: "Block Hiding (flag)"+space
+        }
+
+        Text{
+            text: {
+                if (dock.visibility.blockHiding)
+                    return "Yes";
+                else
+                    return "No";
+            }
+        }
+
+        Text{
             text: "Contains Mouse (flag)"+space
         }
 
