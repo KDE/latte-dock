@@ -372,8 +372,18 @@ void DockCorona::dockContainmentDestroyed(QObject *cont)
 void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
 {
     const QString alternativesQML = kPackage().filePath("appletalternativesui");
+
     if (alternativesQML.isEmpty()) {
         return;
+    }
+
+    if (applet->containment()) {
+        DockView *view = m_dockViews[applet->containment()];
+
+        if (view) {
+            view->visibility()->setBlockHiding(true);
+            m_alternativesContaiment = applet->containment();
+        }
     }
 
     KDeclarative::QmlObject *qmlObj = new KDeclarative::QmlObject(this);
@@ -388,13 +398,16 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
     connect(qmlObj->rootObject(), SIGNAL(visibleChanged(bool)),
             this, SLOT(alternativesVisibilityChanged(bool)));
 
-    connect(applet, &Plasma::Applet::destroyedChanged, this, [this, qmlObj] (bool destroyed) {
+    connect(applet, &Plasma::Applet::destroyedChanged, this, [this, qmlObj](bool destroyed) {
         if (!destroyed) {
             return;
         }
+
         QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+
         while (it.hasNext()) {
             KDeclarative::QmlObject *obj = it.next();
+
             if (obj == qmlObj) {
                 it.remove();
                 obj->deleteLater();
@@ -409,11 +422,23 @@ void DockCorona::alternativesVisibilityChanged(bool visible)
         return;
     }
 
+    if (m_alternativesContaiment) {
+        DockView *view = m_dockViews[m_alternativesContaiment];
+
+        if (view) {
+            view->visibility()->setBlockHiding(false);
+        }
+
+        m_alternativesContaiment = nullptr;
+    }
+
     QObject *root = sender();
 
     QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+
     while (it.hasNext()) {
         KDeclarative::QmlObject *obj = it.next();
+
         if (obj->rootObject() == root) {
             it.remove();
             obj->deleteLater();
