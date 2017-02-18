@@ -220,31 +220,38 @@ Item {
                 //it is used to unblock dock hiding
                 root.signalDraggingState(false);
             }
+            //console.log("on hide event called...");
             visible = false;
-            //activeItem = null;
+            activeItem = null;
+
             initializePreviewComponent.createObject(windowsPreviewDlg);
         }
 
         function show(){
-            //used to initialize windows previews buffers
-            visible = false;
-            var tasks = icList.contentItem.children;
+            //console.log("preview show called...");
+            if (activeItem !== toolTipDelegate.parentTask) {
+                //used to initialize windows previews buffers
+                visible = false;
 
-            for(var i=0; i<tasks.length; ++i){
-                var task = tasks[i];
+                var tasks = icList.contentItem.children;
 
-                if(task && task.isActive){
-                    activeItem = task;
-                    break;
+                for(var i=0; i<tasks.length; ++i){
+                    var task = tasks[i];
+
+                    if(task && task.isActive){
+                        activeItem = task;
+                        break;
+                    }
                 }
-            }
 
-            if (latteDock) {
-                //it is used to block dock hiding
-                root.signalDraggingState(true);
-            }
+                if (latteDock) {
+                    //it is used to block dock hiding
+                    root.signalDraggingState(true);
+                }
 
-            visible = true;
+                activeItem = toolTipDelegate.parentTask;
+                visible = true;
+            }
         }
     }
 

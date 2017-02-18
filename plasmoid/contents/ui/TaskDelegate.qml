@@ -1036,8 +1036,8 @@ MouseArea{
             repeat: false
 
             onTriggered: {
-                if(mainItemContainer.containsMouse){
-                    //     console.log("Hovered Timer....");
+                if(mainItemContainer.containsMouse && toolTipDelegate.parentTask !== mainItemContainer){
+                    //console.log("Hovered Timer....");
                     mainItemContainer.preparePreviewWindow(false);
                     windowsPreviewDlg.show();
                     //windowsPreviewDlg.visible = true;
