@@ -29,6 +29,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QDebug>
+#include <QSharedMemory>
 
 #include <KLocalizedString>
 #include <KAboutData>
@@ -53,6 +54,15 @@ void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 
 int main(int argc, char **argv)
 {
+    QSharedMemory sharedMemory;
+    sharedMemory.setKey("latte-dock");
+
+    if (!sharedMemory.create(1)) {
+        qDebug() << i18n("Warning: An instance of Latte application is already running!!!");
+
+        exit(0); // Exit, already a process running
+    }
+
     QQuickWindow::setDefaultAlphaBuffer(true);
     QApplication app(argc, argv);
     KLocalizedString::setApplicationDomain("latte-dock");
