@@ -144,9 +144,8 @@ Item {
                 activationTimer.stop();
             }
 
-            if (hoveredItem && windowsPreviewDlg.visible && toolTipDelegate.currentItem !== hoveredItem.itemIndex ) {
-                windowsPreviewDlg.hide();
-                toolTipDelegate.currentItem=-1;
+            if (hoveredItem && windowsPreviewDlg.visible && toolTipDelegate.parentIndex !== hoveredItem.itemIndex ) {
+                windowsPreviewDlg.hide(6);
             }
         }
 
@@ -188,7 +187,7 @@ Item {
                    // groupDialog.visible = true;
                 } else if (parent.hoveredItem.m.IsLauncher !== true) {
                     if(windowsPreviewDlg.visible && toolTipDelegate.currentItem !==parent.hoveredItem.itemIndex ) {
-                        windowsPreviewDlg.hide();
+                        windowsPreviewDlg.hide(5);
                         toolTipDelegate.currentItem=-1;
                     }
 

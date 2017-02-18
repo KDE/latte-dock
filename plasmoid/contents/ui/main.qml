@@ -194,8 +194,6 @@ Item {
     ToolTipDelegate2 {
         id: toolTipDelegate
         visible: false
-
-        property int currentItem: -1
     }
 
     ////BEGIN interfaces
@@ -215,57 +213,55 @@ Item {
 
         property Item activeItem: null
 
-        function hide(){
+        function hide(debug){
+            //console.log("on hide event called: "+debug);
+
             if (latteDock) {
                 //it is used to unblock dock hiding
                 root.signalDraggingState(false);
             }
-            //console.log("on hide event called...");
-            visible = false;
-            activeItem = null;
 
-            initializePreviewComponent.createObject(windowsPreviewDlg);
+            windowsPreviewDlg.activeItem = null;
+            toolTipDelegate.parentTask = null;
+            toolTipDelegate.parentIndex = -1;
+            toolTipDelegate.windows = [];
+            toolTipDelegate.isGroup = false;
+            visible = false;
         }
 
-        function show(){
+        function show(taskItem){
             //console.log("preview show called...");
-            if (activeItem !== toolTipDelegate.parentTask) {
-                //used to initialize windows previews buffers
+            if (!activeItem || (activeItem !== taskItem)) {
+                //console.log("preview show called: accepted...");
+
+                //used to initialize windows previews buffers from task to task
                 visible = false;
-
-                var tasks = icList.contentItem.children;
-
-                for(var i=0; i<tasks.length; ++i){
-                    var task = tasks[i];
-
-                    if(task && task.isActive){
-                        activeItem = task;
-                        break;
-                    }
-                }
+                activeItem = taskItem;
+                toolTipDelegate.parentTask = taskItem;
 
                 if (latteDock) {
                     //it is used to block dock hiding
                     root.signalDraggingState(true);
                 }
 
-                activeItem = toolTipDelegate.parentTask;
-                visible = true;
+                //small delay to show in order to not mess up with the buffers clearing
+                //from previous visible:false
+                initializePreviewComponent.createObject(windowsPreviewDlg);
             }
         }
     }
 
-    //A Timer to delay the initialization of the active item in order
-    //to not break then active item animation
+    //A Timer to delay to show in order to not mess up with the buffers clearing
+    //from previous visible:false
     Component {
         id: initializePreviewComponent
         Timer {
             id: initializePreviewTimer
-            interval: 300
+            interval: 100
             repeat: false
 
             onTriggered: {
-                windowsPreviewDlg.activeItem = null;
+                windowsPreviewDlg.visible = true;
                 initializePreviewTimer.destroy();
             }
 
@@ -905,7 +901,7 @@ Item {
 
         var tasks = icList.contentItem.children;
 
-        if(toolTipDelegate.currentItem !== -1)
+        if(toolTipDelegate.parentIndex !== -1)
             return true;
 
         for(var i=0; i<tasks.length; ++i){
@@ -927,8 +923,9 @@ Item {
 
         var result = root.outsideContainsMouse();
 
-        if ((!result || toolTipDelegate.parentIndex !== icList.hoveredIndex) && windowSystem.compositingActive) {
-            windowsPreviewDlg.hide();
+        if ((!result || (!toolTipDelegate.parentTask.containsMouse && !toolTipDelegate.containsMouse) ) && windowSystem.compositingActive) {
+            windowsPreviewDlg.hide(4);
+            return false;
         }
 
         if (result)

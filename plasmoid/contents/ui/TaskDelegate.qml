@@ -502,8 +502,7 @@ MouseArea{
     ///////////////// Mouse Area Events ///////////////////
     onEntered: {
         if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
-            windowsPreviewDlg.hide();
-            toolTipDelegate.currentItem = -1;
+            windowsPreviewDlg.hide(1);
         }
 
         checkListHovered.stop();
@@ -623,7 +622,7 @@ MouseArea{
 
     onPressed: {
         if (windowSystem.compositingActive) {
-            windowsPreviewDlg.hide();
+            windowsPreviewDlg.hide(2);
         }
 
         if ((mouse.button == Qt.LeftButton)||(mouse.button == Qt.MidButton)) {
@@ -678,10 +677,10 @@ MouseArea{
                             root.presentWindows(model.LegacyWinIdList);
                         } else {
                             if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
-                                windowsPreviewDlg.hide();
+                                windowsPreviewDlg.hide(3);
                             } else {
                                 preparePreviewWindow(false);
-                                windowsPreviewDlg.show();
+                                windowsPreviewDlg.show(mainItemContainer);
                             }
                         }
                     } else {
@@ -875,7 +874,7 @@ MouseArea{
     function slotShowPreviewForTasks(group) {
         if (group === mainItemContainer) {
             preparePreviewWindow(true);
-            windowsPreviewDlg.show();
+            windowsPreviewDlg.show(mainItemContainer);
         }
     }
 
@@ -1036,11 +1035,10 @@ MouseArea{
             repeat: false
 
             onTriggered: {
-                if(mainItemContainer.containsMouse && toolTipDelegate.parentTask !== mainItemContainer){
+                if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
                     //console.log("Hovered Timer....");
                     mainItemContainer.preparePreviewWindow(false);
-                    windowsPreviewDlg.show();
-                    //windowsPreviewDlg.visible = true;
+                    windowsPreviewDlg.show(mainItemContainer);
                 }
 
                 hoveredTimer.destroy();
