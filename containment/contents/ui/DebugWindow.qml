@@ -26,13 +26,14 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.1 as Latte
 
 Window{
-    width: 370
-    height: 450
+    width: mainGrid.width + 10
+    height: Math.min(mainGrid.height+10, Screen.height-root.realSize)
     visible: true
 
     property string space:" :   "
 
     Grid{
+        id:mainGrid
         columns: 2
 
         Text{
