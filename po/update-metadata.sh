@@ -13,7 +13,7 @@ function generate_desktop_file
 {
     cd "$BASEDIR/$1"
 
-    LINGUAS=$(ls *.po | xargs --no-run-if-empty --max-args=1 basename -s .po)
+    LINGUAS=$(ls | grep ".*.po$" | xargs --no-run-if-empty --max-args=1 basename -s .po)
     echo $LINGUAS > LINGUAS
 
     # msgfmt first reads the ‘LINGUAS’ file under directory,
