@@ -1,7 +1,7 @@
 [Desktop Entry]
-_Name=Latte
-_Comment=Dock for the masses
-_GenericName=Dock
+Name=Latte
+Comment=Dock for the masses
+GenericName=Dock
 
 Categories=Utility;X-SuSE-DesktopUtility;
 Exec=latte-dock %u
@@ -10,4 +10,3 @@ InitialPreference=1
 StartupNotify=true
 Terminal=false
 Type=Application
-

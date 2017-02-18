@@ -1,26 +1,33 @@
 #!/bin/sh
 
-PROJECTPATHCONTAINMENT="../../containment" # containment path
-PROJECTPATHPLASMOID="../../plasmoid" # plasmoid path
-PROJECTPATHSHELL="../../shell" # shell path
-PROJECTPATHAPP="../../app" # app path
-BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
+BASEDIR="$(pwd $(dirname $0))" # root of translatable sources
 
+cd "$BASEDIR/.."
 
-cd containment
-intltool-merge --quiet --desktop-style . ../../containment.metadata.desktop.template "${PROJECTPATHCONTAINMENT}"/metadata.desktop.cmake
-echo "metadata.desktop file for containment was updated..."
+PROJECTCONTAINMENT="$(pwd)/containment/metadata.desktop.cmake" # containment path
+PROJECTPLASMOID="$(pwd)/plasmoid/metadata.desktop.cmake" # plasmoid path
+PROJECTSHELL="$(pwd)/shell/metadata.desktop.cmake" # shell path
+PROJECTAPP="$(pwd)/app/latte-dock.desktop" # app path
 
-cd ../plasmoid
-intltool-merge --quiet --desktop-style . ../../plasmoid.metadata.desktop.template "${PROJECTPATHPLASMOID}"/metadata.desktop.cmake
-echo "metadata.desktop file for plasmoid was updated..."
+function generate_desktop_file
+{
+    cd "$BASEDIR/$1"
 
-cd ../shell
-intltool-merge --quiet --desktop-style . ../../shell.metadata.desktop.template "${PROJECTPATHSHELL}"/metadata.desktop.cmake
-echo "metadata.desktop file for shell was updated..."
+    LINGUAS=$(ls *.po | xargs --no-run-if-empty --max-args=1 basename -s .po)
+    echo $LINGUAS > LINGUAS
 
-cd ../app
-intltool-merge --quiet --desktop-style . ../../latte-dock.desktop.template "${PROJECTPATHAPP}"/latte-dock.desktop
-echo "latte-dock.desktop file for app was updated..."
+    # msgfmt first reads the ‘LINGUAS’ file under directory,
+    # and then processes all ‘.po’ files listed there
+    msgfmt --desktop --template="../desktop-templates/$2" -d . -o "$3"
+    rm "LINGUAS"
 
+    echo -e "metadata.desktop file for \e[0;32m$1\e[0m was updated..."
+}
 
+generate_desktop_file containment containment.metadata.desktop.template "$PROJECTCONTAINMENT"
+
+generate_desktop_file plasmoid plasmoid.metadata.desktop.template "$PROJECTPLASMOID"
+
+generate_desktop_file shell shell.metadata.desktop.template "$PROJECTSHELL"
+
+generate_desktop_file app latte-dock.desktop.template "$PROJECTAPP"
