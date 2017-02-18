@@ -36,6 +36,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 
 
 PlasmaExtras.ScrollArea {
+    id: mainToolTip
     property Item parentTask
     property int parentIndex
 
@@ -51,6 +52,8 @@ PlasmaExtras.ScrollArea {
     property url launcherUrl
     property bool isLauncher
     property bool isMinimizedParent
+
+    property bool containsMouse: false
 
     // Needed for generateSubtext()
     property string displayParent
@@ -121,15 +124,15 @@ PlasmaExtras.ScrollArea {
             }
 
             function checkMouseInside(){
-                var isInside = containsMouse || childrenContainMouse();
+                var isInside = containsMouse || childrenContainMouse() || parentTask.containsMouse;
                 if (isInside){
                     root.disableRestoreZoom = true;
+                    mainToolTip.containsMouse = true;
                     checkListHovered.stop();
-                    toolTipDelegate.currentItem = parentIndex;
                 }
                 else{
                     root.disableRestoreZoom = false;
-                    toolTipDelegate.currentItem = -1;
+                    mainToolTip.containsMouse = false;
                     checkListHovered.restart();
                 }
             }
