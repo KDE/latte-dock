@@ -1,9 +1,9 @@
 #!/bin/sh
 
-BASEDIR="$(pwd $(dirname $0))" # root of translatable sources
-BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
+cd "$(dirname $0)" # root of translatable sources
+BASEDIR="$(pwd)"
 
-cd "$BASEDIR/.."
+BUGADDR="https://github.com/psifidotos/latte-dock/" # MSGID-Bugs
 
 PROJECTCONTAINMENT="plasma_applet_org.kde.latte.containment" # project name
 TEMPLATECONTCONTAINMENT="containment.metadata.desktop.template" # containment desktop template
@@ -83,5 +83,5 @@ ki18n_xgettext app         "$PROJECTAPP"         "$TEMPLATEAPP"  shell
 # ki18n_xgettext shell       "$PROJECTSHELL"       "$TEMPLATESHELL"
 
 
-cd $BASEDIR
+cd "$BASEDIR"
 bash ./update-metadata.sh

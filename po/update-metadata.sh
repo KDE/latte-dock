@@ -1,13 +1,14 @@
 #!/bin/sh
 
-BASEDIR="$(pwd $(dirname $0))" # root of translatable sources
+cd "$(dirname $0)" # root of translatable sources
+BASEDIR="$(pwd)"
 
 cd "$BASEDIR/.."
 
 PROJECTCONTAINMENT="$(pwd)/containment/metadata.desktop.cmake" # containment path
 PROJECTPLASMOID="$(pwd)/plasmoid/metadata.desktop.cmake" # plasmoid path
 PROJECTSHELL="$(pwd)/shell/metadata.desktop.cmake" # shell path
-PROJECTAPP="$(pwd)/app/latte-dock.desktop" # app path
+PROJECTAPP="$(pwd)/app/latte-dock.desktop.cmake" # app path
 
 function generate_desktop_file
 {
