@@ -42,5 +42,6 @@ if(HAVE_X11)
     )
 endif()
 
+configure_file(latte-dock.desktop.cmake latte-dock.desktop)
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES latte-dock.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/latte-dock.desktop DESTINATION ${KDE_INSTALL_APPDIR})
