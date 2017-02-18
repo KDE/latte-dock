@@ -68,6 +68,9 @@ Item{
                 roundCorners: true
                 showAttention: model.IsDemandingAttention ? true : false
 
+                opacity: (!mainItemContainer.hasActive && root.showPreviews
+                          && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
+
                 property int stateWidth: mainItemContainer.isGroupParent ? (wrapper.regulatorWidth - secondPoint.width) : wrapper.regulatorWidth - spacer.width
                 property int stateHeight: mainItemContainer.isGroupParent ? wrapper.regulatorHeight - secondPoint.height : wrapper.regulatorHeight - spacer.height
 
