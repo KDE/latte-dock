@@ -639,8 +639,9 @@ MouseArea{
         }
 
         if (hoveredTimerObj){
-            hoveredTimerObj.stop();
-            hoveredTimerObj.destroy();
+            hoveredTimerObj.restart();
+            /*hoveredTimerObj.stop();
+            hoveredTimerObj.destroy();*/
         }
     }
 

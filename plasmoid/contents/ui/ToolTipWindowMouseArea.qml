@@ -78,6 +78,7 @@ MouseArea {
         } else {
             root.createContextMenu(rootTask, modelIndex).show();
         }
+        icList.hoveredIndex = -1;
         windowsPreviewDlg.hide();
         //rootTask.hideToolTipTemporarily();
     }
