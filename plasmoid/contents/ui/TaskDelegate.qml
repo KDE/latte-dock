@@ -534,7 +534,7 @@ MouseArea{
         }
         else{
             if(!inAnimation){
-                checkListHovered.start();
+                checkListHovered.startNormal();
             }
         }
 
