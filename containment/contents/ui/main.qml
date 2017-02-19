@@ -56,7 +56,7 @@ DragDrop.DropArea {
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
     property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
-                                     : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
+                                         : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     //FIXME: possibly this is going to be the default behavior, this user choice
@@ -1380,6 +1380,56 @@ DragDrop.DropArea {
             ]
         }
     }
+
+    ///Buffers to paint areas outside the maskArea///
+    Loader{
+        anchors.fill: parent
+        active: dock & !drawShadowsExternal && windowSystem.compositingActive
+        z: 1000
+
+        sourceComponent: Item{
+            anchors.fill: parent
+
+            Rectangle{
+                x:0
+                y:0
+                width: root.width
+                height: dock.maskArea.y - 1
+
+                color: "red"
+            }
+
+            Rectangle{
+                x: 0
+                y: dock.maskArea.y
+                width: dock.maskArea.x - 1
+                height: dock.maskArea.height
+
+                color: "red"
+            }
+
+            Rectangle{
+                x: dock.maskArea.x + dock.maskArea.width + 1
+                y: dock.maskArea.y
+                width: dock.width - x
+                height: dock.maskArea.height
+
+                color: "red"
+            }
+
+            Rectangle{
+                x: 0
+                y: dock.maskArea.y + dock.maskArea.height + 1
+                width: root.width
+                height: root.height - y
+
+                color: "red"
+            }
+        }
+    }
+
+    ///Buffers///
+
 
     ///////////////END UI elements
 
