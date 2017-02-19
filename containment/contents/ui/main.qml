@@ -1382,6 +1382,7 @@ DragDrop.DropArea {
     }
 
     ///Buffers to paint areas outside the maskArea///
+    ///this is an approach to try to solve #132 issue///
     Loader{
         anchors.fill: parent
         active: dock & !drawShadowsExternal && windowSystem.compositingActive

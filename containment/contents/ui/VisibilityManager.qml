@@ -272,7 +272,7 @@ Item{
             maskThickness = maskArea.width;
         }
 
-       //  console.log("Not updating mask...");
+        //  console.log("Not updating mask...");
         if( maskArea.x !== localX || maskArea.y !== localY
                 || maskLength !== tempLength || maskThickness !== tempThickness) {
 
@@ -416,7 +416,7 @@ Item{
         }
 
         function init() {
-           // if (!dock.visibility.blockHiding)
+            // if (!dock.visibility.blockHiding)
             inSlidingIn = true;
 
             if (slidingAnimationAutoHiddenOut.running) {
