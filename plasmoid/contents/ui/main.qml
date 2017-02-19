@@ -446,7 +446,9 @@ Item {
     Timer{
         id:checkListHovered
         repeat:false;
-        interval: Math.max(120, 2 * (root.durationTime * 1.2 * units.shortDuration) + 50)
+        interval: 120
+
+        property int normalInterval: Math.max(120, 2 * (root.durationTime * 1.2 * units.shortDuration) + 50)
 
         onTriggered: {
             if (!root.containsMouse()) {
@@ -455,7 +457,13 @@ Item {
                     latteDock.clearZoom();
             }
 
-            interval = 120;
+            interval = normalInterval;
+        }
+
+        function startNormal(){
+            interval = normalInterval;
+
+            start();
         }
 
         function startDuration( duration){

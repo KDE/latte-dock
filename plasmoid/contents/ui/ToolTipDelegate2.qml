@@ -133,7 +133,7 @@ PlasmaExtras.ScrollArea {
                 else{
                     root.disableRestoreZoom = false;
                     mainToolTip.containsMouse = false;
-                    checkListHovered.restart();
+                    checkListHovered.startDuration(100);
                 }
             }
 

@@ -54,7 +54,7 @@ PlasmaComponents.ContextMenu {
             launcherToggleAction.checked = (tasksModel.launcherPosition(visualParent.m.LauncherUrlWithoutIcon) != -1);
             updateOnAllActivitiesLauncher();
         } else if (status == PlasmaComponents.DialogStatus.Closed) {
-            checkListHovered.start();
+            checkListHovered.startDuration(100);
             menu.destroy();
         }
     }
@@ -208,7 +208,7 @@ PlasmaComponents.ContextMenu {
         backend.ungrabMouse(visualParent);
         root.signalDraggingState(false);
         root.disableRestoreZoom = false;
-        checkListHovered.start();
+        checkListHovered.startDuration(100);
     }
 
     /// Sub Items
