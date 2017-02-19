@@ -903,14 +903,18 @@ Item {
     }
 
     function outsideContainsMouse(){
+        //console.log("disable restore zoom:"+disableRestoreZoom);
         if (disableRestoreZoom) {
             return true;
         }
 
         var tasks = icList.contentItem.children;
 
-        if(toolTipDelegate.parentIndex !== -1)
+        if(toolTipDelegate && toolTipDelegate.containsMouse && toolTipDelegate.parentTask) {
             return true;
+        } else {
+            windowsPreviewDlg.hide(4);
+        }
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
@@ -930,23 +934,17 @@ Item {
             return;
         }
 
-        //console.log("s2...");
         var result = root.outsideContainsMouse();
+        //console.log("s2... outsideContainsMouse:"+result);
 
-        if ((!result || (toolTipDelegate.parentTask && !toolTipDelegate.parentTask.containsMouse && !toolTipDelegate.containsMouse) ) && windowSystem.compositingActive) {
-            windowsPreviewDlg.hide(4);
-            return false;
-        }
-
-        //console.log("s3...");
         if (result)
             return true;
 
-        //console.log("s4...");
+        //console.log("s3...");
         if (!result && latteDock && latteDock.outsideContainsMouse())
             return true;
 
-        //console.log("s5...");
+        //console.log("s4...");
 
         return false;
     }
