@@ -659,18 +659,20 @@ void DockView::mousePressEvent(QMouseEvent *event)
         return;
     }
 
+    qDebug() << "Step 0...";
     // PlasmaQuick::ContainmentView::mousePressEvent(event);
 
     //even if the menu is executed synchronously, other events may be processed
     //by the qml incubator when plasma is loading, so we need to guard there
     if (m_contextMenu) {
+        qDebug() << "Step 0.5 ...";
         m_contextMenu->close();
         m_contextMenu = 0;
         PlasmaQuick::ContainmentView::mousePressEvent(event);
         return;
     }
 
-    //qDebug() << "1...";
+    qDebug() << "1 ...";
     const QString trigger = Plasma::ContainmentActions::eventToString(event);
 
     if (trigger == "RightButton;NoModifier") {
@@ -681,7 +683,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
             return;
         }
 
-        //qDebug() << "2...";
+        qDebug() << "2 ...";
         //the plugin can be a single action or a context menu
         //Don't have an action list? execute as single action
         //and set the event position as action data
@@ -692,7 +694,6 @@ void DockView::mousePressEvent(QMouseEvent *event)
             event->accept();
             return;
         }*/
-        //qDebug() << "3...";
         //FIXME: very inefficient appletAt() implementation
         Plasma::Applet *applet = 0;
         bool inSystray = false;
@@ -734,11 +735,15 @@ void DockView::mousePressEvent(QMouseEvent *event)
             applet = this->containment();
         }
 
+        qDebug() << "3 ...";
+
         if (applet) {
             KPluginMetaData meta = applet->kPackage().metadata();
 
+            qDebug() << "3.5 ...";
+
             if (meta.pluginId() != "org.kde.latte.plasmoid") {
-                //qDebug() << "4...";
+                qDebug() << "4...";
                 QMenu *desktopMenu = new QMenu;
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
                 m_contextMenu = desktopMenu;
@@ -750,17 +755,18 @@ void DockView::mousePressEvent(QMouseEvent *event)
                     return;
                 }
 
-                //qDebug() << "5...";
+                qDebug() << "5 ...";
 
                 if (applet) {
+                    qDebug() << "5.3 ...";
                     emit applet->contextualActionsAboutToShow();
                     addAppletActions(desktopMenu, applet, event);
                 } else {
+                    qDebug() << "5.6 ...";
                     emit this->containment()->contextualActionsAboutToShow();
                     addContainmentActions(desktopMenu, event);
                 }
 
-                //qDebug() << "6...";
                 //this is a workaround where Qt now creates the menu widget
                 //in .exec before oxygen can polish it and set the following attribute
                 desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
@@ -768,6 +774,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 QPoint pos = event->globalPos();
 
                 if (applet) {
+                    qDebug() << "6 ...";
                     desktopMenu->adjustSize();
 
                     if (this->screen()) {
@@ -790,9 +797,10 @@ void DockView::mousePressEvent(QMouseEvent *event)
                     }
                 }
 
-                //qDebug() << "7...";
+                qDebug() << "7...";
 
                 if (desktopMenu->isEmpty()) {
+                    qDebug() << "7.5 ...";
                     delete desktopMenu;
                     event->accept();
                     return;
@@ -804,9 +812,14 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 event->setAccepted(true);
                 return;
             }
+
+            qDebug() << "8 ...";
         }
+
+        qDebug() << "9 ...";
     }
 
+    qDebug() << "10 ...";
     PlasmaQuick::ContainmentView::mousePressEvent(event);
 }
 
