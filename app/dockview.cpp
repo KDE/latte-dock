@@ -666,7 +666,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
     //even if the menu is executed synchronously, other events may be processed
     //by the qml incubator when plasma is loading, so we need to guard there
     if (m_contextMenu) {
-        qDebug() << "Step 0.5 ...";
+        //qDebug() << "Step 0.5 ...";
         m_contextMenu->close();
         m_contextMenu = 0;
         PlasmaQuick::ContainmentView::mousePressEvent(event);
