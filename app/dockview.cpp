@@ -744,7 +744,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
             //qDebug() << "3.5 ...";
 
             if (meta.pluginId() != "org.kde.latte.plasmoid") {
-                qDebug() << "4...";
+                //qDebug() << "4...";
                 QMenu *desktopMenu = new QMenu;
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
                 m_contextMenu = desktopMenu;
