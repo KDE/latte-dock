@@ -245,12 +245,6 @@ Item{
                 } else if (root.animationsNeedThickness > 0) {
                     tempThickness = thicknessMidOriginal;
                 }
-
-                //configure the x,y position based on thickness
-                if(plasmoid.location === PlasmaCore.Types.RightEdge)
-                    localX = dock.width - tempThickness;
-                else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
-                    localY = dock.height - tempThickness;
             } else{
                 //use all thickness space
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
@@ -259,6 +253,12 @@ Item{
                     tempThickness = thicknessZoomOriginal;
                 }
             }
+
+            //configure the x,y position based on thickness
+            if(plasmoid.location === PlasmaCore.Types.RightEdge)
+                localX = dock.width - tempThickness;
+            else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
+                localY = dock.height - tempThickness;
         }
         var maskArea = dock.maskArea;
 

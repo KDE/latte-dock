@@ -655,12 +655,13 @@ void DockView::mouseReleaseEvent(QMouseEvent *event)
 
 void DockView::mousePressEvent(QMouseEvent *event)
 {
+    //qDebug() << "Step -1 ...";
+
     if (!event || !this->containment()) {
         return;
     }
 
-    qDebug() << "Step 0...";
-    // PlasmaQuick::ContainmentView::mousePressEvent(event);
+    //qDebug() << "Step 0...";
 
     //even if the menu is executed synchronously, other events may be processed
     //by the qml incubator when plasma is loading, so we need to guard there
@@ -672,7 +673,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    qDebug() << "1 ...";
+    //qDebug() << "1 ...";
     const QString trigger = Plasma::ContainmentActions::eventToString(event);
 
     if (trigger == "RightButton;NoModifier") {
@@ -683,7 +684,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
             return;
         }
 
-        qDebug() << "2 ...";
+        //qDebug() << "2 ...";
         //the plugin can be a single action or a context menu
         //Don't have an action list? execute as single action
         //and set the event position as action data
@@ -735,12 +736,12 @@ void DockView::mousePressEvent(QMouseEvent *event)
             applet = this->containment();
         }
 
-        qDebug() << "3 ...";
+        //qDebug() << "3 ...";
 
         if (applet) {
             KPluginMetaData meta = applet->kPackage().metadata();
 
-            qDebug() << "3.5 ...";
+            //qDebug() << "3.5 ...";
 
             if (meta.pluginId() != "org.kde.latte.plasmoid") {
                 qDebug() << "4...";
@@ -755,14 +756,14 @@ void DockView::mousePressEvent(QMouseEvent *event)
                     return;
                 }
 
-                qDebug() << "5 ...";
+                //qDebug() << "5 ...";
 
                 if (applet) {
-                    qDebug() << "5.3 ...";
+                    //qDebug() << "5.3 ...";
                     emit applet->contextualActionsAboutToShow();
                     addAppletActions(desktopMenu, applet, event);
                 } else {
-                    qDebug() << "5.6 ...";
+                    //qDebug() << "5.6 ...";
                     emit this->containment()->contextualActionsAboutToShow();
                     addContainmentActions(desktopMenu, event);
                 }
@@ -774,7 +775,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 QPoint pos = event->globalPos();
 
                 if (applet) {
-                    qDebug() << "6 ...";
+                    //qDebug() << "6 ...";
                     desktopMenu->adjustSize();
 
                     if (this->screen()) {
@@ -797,10 +798,10 @@ void DockView::mousePressEvent(QMouseEvent *event)
                     }
                 }
 
-                qDebug() << "7...";
+                //qDebug() << "7...";
 
                 if (desktopMenu->isEmpty()) {
-                    qDebug() << "7.5 ...";
+                    //qDebug() << "7.5 ...";
                     delete desktopMenu;
                     event->accept();
                     return;
@@ -813,13 +814,13 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 return;
             }
 
-            qDebug() << "8 ...";
+            //qDebug() << "8 ...";
         }
 
-        qDebug() << "9 ...";
+        //qDebug() << "9 ...";
     }
 
-    qDebug() << "10 ...";
+    //qDebug() << "10 ...";
     PlasmaQuick::ContainmentView::mousePressEvent(event);
 }
 
