@@ -446,7 +446,7 @@ Item {
     Timer{
         id:checkListHovered
         repeat:false;
-        interval: 2 * (root.durationTime * 1.2 * units.shortDuration) + 50;
+        interval: Math.max(120, 2 * (root.durationTime * 1.2 * units.shortDuration) + 50)
 
         onTriggered: {
             if (!root.containsMouse()) {
