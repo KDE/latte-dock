@@ -236,7 +236,7 @@ Item {
 
         function show(taskItem){
             //console.log("preview show called...");
-            if (!activeItem || (activeItem !== taskItem)) {
+            if (!activeItem || (activeItem !== taskItem) && !taskItem.contextMenu) {
                 //console.log("preview show called: accepted...");
 
                 //used to initialize windows previews buffers from task to task
@@ -449,8 +449,11 @@ Item {
         interval: 120;
 
         onTriggered: {
-            if (!root.containsMouse())
+            if (!root.containsMouse()) {
                 root.clearZoom();
+                if (latteDock && !root.disableRestoreZoom)
+                    latteDock.clearZoom();
+            }
 
             interval = 120;
         }
@@ -922,25 +925,28 @@ Item {
     }
 
     function containsMouse(){
+        //console.log("s1...");
         if (disableRestoreZoom) {
             return;
         }
 
+        //console.log("s2...");
         var result = root.outsideContainsMouse();
 
-        if ((!result || (!toolTipDelegate.parentTask.containsMouse && !toolTipDelegate.containsMouse) ) && windowSystem.compositingActive) {
+        if ((!result || (toolTipDelegate.parentTask && !toolTipDelegate.parentTask.containsMouse && !toolTipDelegate.containsMouse) ) && windowSystem.compositingActive) {
             windowsPreviewDlg.hide(4);
             return false;
         }
 
+        //console.log("s3...");
         if (result)
             return true;
 
+        //console.log("s4...");
         if (!result && latteDock && latteDock.outsideContainsMouse())
             return true;
 
-        if (latteDock)
-            latteDock.clearZoom();
+        //console.log("s5...");
 
         return false;
     }
