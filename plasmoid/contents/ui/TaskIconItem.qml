@@ -70,17 +70,6 @@ Item{
         color: "transparent"
     } */
 
-    /*Connections{
-        target: root
-        onZoomFactorChanged: updateImages()
-        onIconSizeChanged: updateImages()
-        onEnableShadowsChanged: updateImages()
-    }
-
-    onIconDecorationChanged: {
-        updateImages();
-    }*/
-
     onSmartLauncherEnabledChanged: {
         if (smartLauncherEnabled && !smartLauncherItem) {
             var smartLauncher = Qt.createQmlObject(
@@ -111,41 +100,6 @@ Item{
         border.color: theme.highlightColor
 
         onTempColorChanged: tempColor.a = 0.35;
-    }
-
-    //temporary buffers containing the normal Image icon and the zoomed Image icon
-    // Image{id:zoomedImage; visible:false}
-    //  Image{id:normalImage; visible:false}
-    Image{
-        id:shadowedImage
-        anchors.centerIn:iconGraphic
-        // anchors.horizontalCenter: iconImageBuffer.horizontalCenter
-        //anchors.verticalCenter: iconImageBuffer.verticalCenter
-
-        width:iconImageBuffer.width+2*shadowSize
-        height:iconImageBuffer.height+2*shadowSize
-
-        //visible: plasmoid.configuration.showShadows
-        visible: false
-
-        states: State {
-            name: "reparented"
-            ParentChange { target: shadowedImage; parent: root; }
-        }
-
-        //Corize to use when a window is removed....
-        /*    Colorize{
-            id: removeImageColorizer
-            source: parent
-            anchors.fill: parent
-
-            enabled: false
-            visible: false
-
-            hue: 0
-            saturation: 0
-            lightness: 0
-        }*/
     }
 
     /* Rectangle{
@@ -340,6 +294,7 @@ Item{
 
     ///Shadow in tasks
     Loader{
+        id: taskWithShadow
         anchors.fill: iconGraphic
         active: root.enableShadows
 
@@ -394,55 +349,6 @@ Item{
         saturation:0
         lightness:0
     }
-
-    //Something to show until the buffers are updated
-
-    //KQuickControlAddons.QIconItem{
-    /*
-    PlasmaCore.IconItem{
-        id: iconImageBackground
-
-        //property real relatedSize: root.iconSize  *  ( (doubleSize  - 7) / doubleSize );
-        //    width: (visible) ? relatedSize * wrapper.scale : root.iconSize
-        width: (visible) ? root.iconSize * wrapper.scale : root.iconSize
-        height: width
-        anchors.centerIn: parent
-
-        //        state: wrapper.containsMouse ? KQuickControlAddons.QIconItem.ActiveState : KQuickControlAddons.QIconItem.DefaultState
-        //       icon: decoration
-        active: wrapper.containsMouse
-        enabled: true
-        source: decoration
-        usesPlasmaTheme: false
-
-        visible: ((iconImageBuffer.opacity == 1) && (root.enableShadows)) ? false : true
-
-        Component{
-            id:hideBackTimer
-
-            Timer{
-                id:hideBackgroundTimer
-                repeat:false
-                interval: centralItem.shadowInterval
-
-                onTriggered: {
-                    // iconImageBackground.visible = false;
-                    iconImageBuffer.opacity = 1;
-                    hideBackgroundTimer.destroy();
-                    //   iconImageBuffer.visible = false;
-                }
-
-                Component.onCompleted: hideBackgroundTimer.start();
-            }
-        }
-    }*/
-
-    //Loader{
-      //  id:defaultWithShadow
-        //sourceComponent: imageBufferingComponent
-     //   sourceComponent: TaskIconBuffers{}
-      //  active: mainItemContainer.isStartup ? false : true
-    //}
 
     ///////Activate animation/////
     SequentialAnimation{
@@ -509,9 +415,6 @@ Item{
     Component.onDestruction: {
         centralItem.toBeDestroyed = true;
 
-        if(shadowedImage && shadowedImage.source)
-            shadowedImage.source.destroy();
-
         if(removingAnimation.removingItem)
             removingAnimation.removingItem.destroy();
 
@@ -572,7 +475,6 @@ Item{
                 }
             }
         }
-
 
         onStopped: {
             //wrapper.mScale = 1;
@@ -758,12 +660,7 @@ Item{
         id:removingAnimation
 
         function init(){
-            var relavantPoint
-            if(plasmoid.configuration.showShadows)
-                relavantPoint = root.mapFromItem(shadowedImage,0,0);
-            else
-                relavantPoint = root.mapFromItem(iconImageBuffer,0,0);
-
+            var relavantPoint = root.mapFromItem(iconImageBuffer,0,0);
 
             var removingItem = removeTaskComponent.createObject(root);
             removingItem.x = relavantPoint.x;
@@ -773,9 +670,7 @@ Item{
         }
 
         function removeTask(){
-            if(centralItem.firstDrawed && !centralItem.toBeDestroyed
-                    && mainItemContainer.buffersAreReady && plasmoid.configuration.showShadows
-                    && windowSystem.compositingActive){
+            if(!centralItem.toBeDestroyed && plasmoid.configuration.showShadows && windowSystem.compositingActive){
                 removingAnimation.init();
             }
         }
@@ -791,16 +686,20 @@ Item{
             id: removeTaskComponent
             Item{
                 id: removeTask
-                width: plasmoid.configuration.showShadows ? shadowedImage.width : iconImageBuffer.width
-                height: plasmoid.configuration.showShadows ? shadowedImage.height : iconImageBuffer.height
+                width: iconImageBuffer.width
+                height: iconImageBuffer.height
                 //parent: panel
 
                 visible: false
 
-                Image {
+                Latte.IconItem{
                     id: tempRemoveIcon
-                    source: plasmoid.configuration.showShadows ? shadowedImage.source : iconImageBuffer.source
-                    anchors.fill: parent
+                    anchors.centerIn: parent
+
+                    width: iconImageBuffer.width
+                    height: width
+
+                    source: decoration
                 }
 
                 Colorize{
@@ -981,16 +880,5 @@ Item{
             }
         }
     ]
-
-
-    //////////////////////////
-
-   /* function updateImages(){
-        if(root){
-            if(defaultWithShadow.item){
-                defaultWithShadow.item.updateImage();
-            }
-        }
-    }*/
 
 }// Icon Item
