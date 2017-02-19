@@ -621,6 +621,7 @@ MouseArea{
     }
 
     onPressed: {
+        console.log("Pressed Task Delegate..");
         if (windowSystem.compositingActive) {
             windowsPreviewDlg.hide(2);
         }
@@ -646,6 +647,7 @@ MouseArea{
     }
 
     onReleased: {
+        console.log("Released Task Delegate...");
         if (draggingResistaner != null){
             draggingResistaner.destroy();
             draggingResistaner = null;
