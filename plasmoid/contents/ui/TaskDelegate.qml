@@ -1125,7 +1125,7 @@ MouseArea{
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
         PropertyAction { target: icList; property: "delayingRemoval"; value: true }
-        PropertyAction { target: wrapper; property: "opacity"; value: isWindow ? 0 : 1 }
+        //PropertyAction { target: wrapper; property: "opacity"; value: isWindow ? 0 : 1 }
         //animation mainly for launchers removal and startups
         ParallelAnimation{
             id: removalAnimation
