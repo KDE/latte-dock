@@ -55,8 +55,8 @@ Item {
     property bool editMode: plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
-    property bool initializationStep: true
-    property bool initializatedBuffers: noInitCreatedBuffers >= tasksStarting ? true : false
+    property bool initializationStep: false //true
+    property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
     property bool showBarLine: plasmoid.configuration.showBarLine
     property bool useThemePanel: plasmoid.configuration.useThemePanel

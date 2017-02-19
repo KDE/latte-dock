@@ -70,7 +70,7 @@ Item{
         color: "transparent"
     } */
 
-    Connections{
+    /*Connections{
         target: root
         onZoomFactorChanged: updateImages()
         onIconSizeChanged: updateImages()
@@ -79,7 +79,7 @@ Item{
 
     onIconDecorationChanged: {
         updateImages();
-    }
+    }*/
 
     onSmartLauncherEnabledChanged: {
         if (smartLauncherEnabled && !smartLauncherItem) {
@@ -437,12 +437,12 @@ Item{
         }
     }*/
 
-    Loader{
-        id:defaultWithShadow
+    //Loader{
+      //  id:defaultWithShadow
         //sourceComponent: imageBufferingComponent
-        sourceComponent: TaskIconBuffers{}
-        active: mainItemContainer.isStartup ? false : true
-    }
+     //   sourceComponent: TaskIconBuffers{}
+      //  active: mainItemContainer.isStartup ? false : true
+    //}
 
     ///////Activate animation/////
     SequentialAnimation{
@@ -985,13 +985,12 @@ Item{
 
     //////////////////////////
 
-    function updateImages(){
+   /* function updateImages(){
         if(root){
             if(defaultWithShadow.item){
                 defaultWithShadow.item.updateImage();
             }
         }
-    }
-
+    }*/
 
 }// Icon Item
