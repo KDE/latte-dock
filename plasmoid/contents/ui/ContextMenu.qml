@@ -62,7 +62,8 @@ PlasmaComponents.ContextMenu {
     function show() {
         //trying to use the dragging mechanism in order to not hide the dock
         root.disableRestoreZoom = true;
-        root.signalDraggingState(true);
+        root.signalActionsBlockHiding(1);
+        //root.signalDraggingState(true);
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
         // backend.ungrabMouse(visualParent);
         openRelative();
@@ -206,7 +207,8 @@ PlasmaComponents.ContextMenu {
 
     Component.onDestruction: {
         backend.ungrabMouse(visualParent);
-        root.signalDraggingState(false);
+        root.signalActionsBlockHiding(-1);
+        //root.signalDraggingState(false);
         root.disableRestoreZoom = false;
         checkListHovered.startDuration(100);
     }

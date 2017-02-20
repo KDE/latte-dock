@@ -65,6 +65,7 @@ DragDrop.DropArea {
     property bool smallAutomaticIconJumps: true
     property bool useThemePanel: noApplets === 0 ? true : plasmoid.configuration.useThemePanel
 
+    property int actionsBlockHiding: 0 //actions that block hiding
 
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
     property int animationsNeedLength: 0 // animations need length, e.g. adding a task
@@ -458,7 +459,7 @@ DragDrop.DropArea {
             latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
             latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
             latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
-            latteApplet.signalDraggingState.connect(slotDisableHiding);
+            latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
         }
     }
 
@@ -882,12 +883,23 @@ DragDrop.DropArea {
 
     //this is used when dragging a task in order to not hide the dock
     //and also by the menu appearing from tasks for the same reason
-    function slotDisableHiding(value) {
-        if (root.editMode) {
+    function slotActionsBlockHiding(step) {
+        //if (root.editMode) {
+        //    return;
+        // }
+
+        if ((step === 0) || (!dock)) {
             return;
         }
 
-        dock.visibility.blockHiding = value;
+        actionsBlockHiding = Math.max(actionsBlockHiding + step, 0);
+
+        if (actionsBlockHiding > 0){
+            dock.visibility.blockHiding = true;
+        } else {
+            if (!root.editMode)
+                dock.visibility.blockHiding = false;
+        }
     }
 
     function updateAutomaticIconSize() {

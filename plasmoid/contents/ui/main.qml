@@ -130,10 +130,11 @@ Item {
     signal mouseWasEntered(int delegateIndex, bool value);
     signal presentWindows(variant winIds);
     signal requestLayout;
+    signal signalActionsBlockHiding(int value);
     signal signalAnimationsNeedBothAxis(int value);
     signal signalAnimationsNeedLength(int value);
     signal signalAnimationsNeedThickness(int value);
-    signal signalDraggingState(bool value);
+    //signal signalDraggingState(bool value);
     signal showPreviewForTasks(QtObject group);
     //trigger updating scaling of neighbour delegates of zoomed delegate
     signal updateScale(int delegateIndex, real newScale, real step)
@@ -181,11 +182,13 @@ Item {
     onDragSourceChanged: {
         if (dragSource == null) {
             root.draggingFinished();
-            root.signalDraggingState(false);
+            root.signalActionsBlockHiding(-1);
+            //root.signalDraggingState(false);
 
             tasksModel.syncLaunchers();
         } else {
-            root.signalDraggingState(true);
+            root.signalActionsBlockHiding(1);
+            //root.signalDraggingState(true);
         }
     }
 
@@ -211,14 +214,17 @@ Item {
         mainItem: toolTipDelegate
         visible: false
 
+        property bool signalSent: false
         property Item activeItem: null
 
         function hide(debug){
             //console.log("on hide event called: "+debug);
 
-            if (latteDock) {
+            if (latteDock && signalSent) {
                 //it is used to unblock dock hiding
-                root.signalDraggingState(false);
+                root.signalActionsBlockHiding(-1);
+                signalSent = false;
+                //root.signalDraggingState(false);
             }
 
             windowsPreviewDlg.activeItem = null;
@@ -244,9 +250,11 @@ Item {
                 activeItem = taskItem;
                 toolTipDelegate.parentTask = taskItem;
 
-                if (latteDock) {
+                if (latteDock && !signalSent) {
                     //it is used to block dock hiding
-                    root.signalDraggingState(true);
+                    root.signalActionsBlockHiding(1);
+                    signalSent = true;
+                    //root.signalDraggingState(true);
                 }
 
                 //small delay to show in order to not mess up with the buffers clearing

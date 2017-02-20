@@ -115,16 +115,11 @@ Window{
         }
 
         Text{
-            text: "Block Hiding (flag)"+space
+            text: "Actions Block Hiding "+space
         }
 
         Text{
-            text: {
-                if (dock.visibility.blockHiding)
-                    return "Yes";
-                else
-                    return "No";
-            }
+            text: root.actionsBlockHiding
         }
 
         Text{
