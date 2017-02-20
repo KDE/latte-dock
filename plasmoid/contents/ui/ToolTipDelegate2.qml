@@ -38,7 +38,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 PlasmaExtras.ScrollArea {
     id: mainToolTip
     property Item parentTask
-    property int parentIndex
+    property int parentIndex: -1
 
     property string appName
     property int pidParent
