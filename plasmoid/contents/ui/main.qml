@@ -52,6 +52,8 @@ Item {
 
     property bool debugLocation: false
 
+    property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
+
     property bool editMode: plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
@@ -88,6 +90,8 @@ Item {
     property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
 
     //BEGIN Now Dock Panel properties
+    property bool directRender: icList.directRender
+
     property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
@@ -170,6 +174,20 @@ Item {
         // onLaunchersChanged: tasksModel.launcherList = plasmoid.configuration.launchers
         onGroupingAppIdBlacklistChanged: tasksModel.groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
         onGroupingLauncherUrlBlacklistChanged: tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
+    }
+
+    Connections {
+        target: latteDock
+        onDirectRenderChanged: {
+            root.globalDirectRender = latteDock.directRender || icList.directRender;
+        }
+    }
+
+    Connections {
+        target: icList
+        onDirectRenderChanged: {
+            root.globalDirectRender = latteDock ? latteDock.directRender || icList.directRender : icList.directRender;
+        }
     }
 
     /////
@@ -650,6 +668,7 @@ Item {
             property int tasksCount: contentItem.children.length
 
             property bool delayingRemoval: false
+            property bool directRender: false
 
             onTasksCountChanged: updateImplicits();
 
@@ -736,6 +755,15 @@ Item {
             //    console.debug("Found children: "+icList.contentItem.children.length);
             TaskTools.publishIconGeometries(icList.contentItem.children);
         }
+    }
+
+    //this timer adds a delay into enabling direct rendering...
+    //it gives the time to neighbour tasks to complete their animation
+    //during first hovering phase
+    Timer {
+        id: enableDirectRenderTimer
+        interval: 4 * root.durationTime * units.shortDuration
+        onTriggered: icList.directRender = true;
     }
 
     ////Activities List
@@ -971,6 +999,10 @@ Item {
             return;
         }
 
+        if (enableDirectRenderTimer.running)
+            enableDirectRenderTimer.stop();
+
+        icList.directRender = false;
         icList.currentSpot = -1000;
         icList.hoveredIndex = -1;
         root.clearZoomSignal();

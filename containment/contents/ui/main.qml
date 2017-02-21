@@ -44,6 +44,8 @@ DragDrop.DropArea {
     ////BEGIN properties
     property bool debugMode: dock && dock.debugFlags.indexOf("--graphics")>=0
 
+    property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
+
     property bool automaticSize: plasmoid.configuration.automaticIconSize
     property bool confirmedDragEntered: false
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
@@ -120,6 +122,8 @@ DragDrop.DropArea {
     // TO BE DELETED, if not needed: property int counter:0;
 
     ///BEGIN properties provided to Latte Plasmoid
+    property bool directRender: layoutsContainer.directRender
+
     property bool enableShadows: plasmoid.configuration.shadows
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
@@ -375,6 +379,19 @@ DragDrop.DropArea {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
+    Connections {
+        target: latteApplet
+        onDirectRenderChanged: {
+            root.globalDirectRender = latteApplet.directRender || layoutsContainer.directRender;
+        }
+    }
+
+    Connections {
+        target: layoutsContainer
+        onDirectRenderChanged: {
+            root.globalDirectRender = latteApplet ? latteApplet.directRender || layoutsContainer.directRender : layoutsContainer.directRender;
+        }
+    }
 
     onEditModeChanged: {
         if (editMode) {
@@ -736,6 +753,10 @@ DragDrop.DropArea {
     }
 
     function clearZoom(){
+        if (enableDirectRenderTimer.running)
+            enableDirectRenderTimer.stop();
+
+        layoutsContainer.directRender = false;
         layoutsContainer.currentSpot = -1000;
         layoutsContainer.hoveredIndex = -1;
         root.clearZoomSignal();
@@ -1140,6 +1161,8 @@ DragDrop.DropArea {
         property int currentSpot: -1000
         property int hoveredIndex: -1
 
+        property bool directRender: false
+
         x: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
                     && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ){
@@ -1452,11 +1475,12 @@ DragDrop.DropArea {
     Timer{
         id:checkListHovered
         repeat:false;
-        interval:120;
+        interval: 150;
 
         onTriggered: {
-            if(!root.containsMouse())
+            if(!root.containsMouse()) {
                 root.clearZoom();
+            }
         }
     }
 
@@ -1476,6 +1500,15 @@ DragDrop.DropArea {
 
             visibilityManager.updateMaskArea();
         }
+    }
+
+    //this timer adds a delay into enabling direct rendering...
+    //it gives the time to neighbour tasks to complete their animation
+    //during first hovering phase
+    Timer {
+        id: enableDirectRenderTimer
+        interval: 4 * root.durationTime * units.shortDuration
+        onTriggered: layoutsContainer.directRender = true;
     }
 
     ///////////////END TIMER elements

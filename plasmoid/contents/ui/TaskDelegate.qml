@@ -73,6 +73,7 @@ MouseArea{
     property bool pressed: false
 
     property int animationTime: root.durationTime * 1.2 * units.shortDuration
+    property int directAnimationTime: 0
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
     property int lastButtonClicked: -1;
@@ -80,7 +81,7 @@ MouseArea{
     property int pressY: -1
     property int resistanceDelay: 750
 
-    property real animationStep: root.iconSize / 8
+    property real animationStep: 1 //root.iconSize / 12
 
     property string activity: tasksModel.activity
 
@@ -197,7 +198,13 @@ MouseArea{
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: mainItemContainer.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: mainItemContainer.directAnimationTime }
             }
 
             /*   Rectangle{
@@ -260,9 +267,14 @@ MouseArea{
                 }*/
 
             Behavior on mScale {
-                NumberAnimation { duration: 2 * mainItemContainer.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
+            Behavior on mScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: mainItemContainer.directAnimationTime }
+            }
 
             Flow{
                 anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
@@ -331,8 +343,8 @@ MouseArea{
                     var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
                     var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
 
-                    bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(2));
-                    smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(2));
+                    bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
+                    smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
 
                     var leftScale;
                     var rightScale;
@@ -373,10 +385,11 @@ MouseArea{
 
             function signalUpdateScale(nIndex, nScale, step){
                 if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
-                    if(nScale >= 0)
+                    if(nScale >= 0) {
                         mScale = nScale + step;
-                    else
+                    } else {
                         mScale = mScale + step;
+                    }
                     //     console.log(index+ ", "+mScale);
                 }
             }
@@ -389,6 +402,10 @@ MouseArea{
             }
 
             onMScaleChanged: {
+                if ((mScale === root.zoomFactor) && !enableDirectRenderTimer.running && !icList.directRender) {
+                        enableDirectRenderTimer.start();
+                }
+
                 if ((mScale > 1) && !mainItemContainer.isZoomed) {
                     mainItemContainer.isZoomed = true;
                     root.signalAnimationsNeedBothAxis(1);
@@ -415,7 +432,13 @@ MouseArea{
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: mainItemContainer.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: mainItemContainer.directAnimationTime }
             }
 
             /*     Rectangle{
@@ -458,9 +481,12 @@ MouseArea{
     onHoveredIndexChanged: {
         var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
 
-        if( (distanceFromHovered > 1) || (hoveredIndex < 0)){
+        if( (distanceFromHovered > 1) && (hoveredIndex !== -1)){
             if(!isDragged)
                 wrapper.mScale = 1;
+        }
+
+        if (distanceFromHovered >= 1) {
             hiddenSpacerLeft.nScale = 0;
             hiddenSpacerRight.nScale = 0;
         }
@@ -593,8 +619,8 @@ MouseArea{
 
     onContainsMouseChanged:{
         if(!containsMouse){
-            hiddenSpacerLeft.nScale = 0;
-            hiddenSpacerRight.nScale = 0;
+          //  hiddenSpacerLeft.nScale = 0;
+          //  hiddenSpacerRight.nScale = 0;
 
             if(!inAnimation)
                 pressed=false;
@@ -609,7 +635,7 @@ MouseArea{
         if (isWindow) {
             if(containsMouse && root.showPreviews && windowSystem.compositingActive){
                 hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
-              //  preparePreviewWindow();
+                //  preparePreviewWindow();
             }
             else{
                 if (hoveredTimerObj){
@@ -727,9 +753,10 @@ MouseArea{
     }
 
     function clearZoom(){
-        //   console.log("Clear zoom: " + index);
-        if (wrapper)
-            wrapper.mScale=1;
+        if (restoreAnimation)
+            restoreAnimation.start();
+        //if (wrapper)
+        //    wrapper.mScale=1;
     }
 
     function handlerDraggingFinished(){
@@ -1023,6 +1050,35 @@ MouseArea{
                 animationSent = false;
                 root.signalAnimationsNeedLength(-1);
             }
+        }
+    }
+
+    ///////Restore Zoom Animation/////
+    ParallelAnimation{
+        id: restoreAnimation
+
+        PropertyAnimation {
+            target: wrapper
+            property: "mScale"
+            to: 1
+            duration: 3 * mainItemContainer.animationTime
+            easing.type: Easing.Linear
+        }
+
+        PropertyAnimation {
+            target: hiddenSpacerLeft
+            property: "nScale"
+            to: 0
+            duration: 3 * mainItemContainer.animationTime
+            easing.type: Easing.Linear
+        }
+
+        PropertyAnimation {
+            target: hiddenSpacerRight
+            property: "nScale"
+            to: 0
+            duration: 3 * mainItemContainer.animationTime
+            easing.type: Easing.Linear
         }
     }
 
