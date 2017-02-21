@@ -49,7 +49,7 @@ Item {
                                                                (index === endLayout.beginIndex)&&(endLayout.count > 1)*/
     property bool startEdge: (index === startLayout.beginIndex) || (index === mainLayout.beginIndex) || (index === endLayout.beginIndex)
     //applet is in ending edge
-    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === mainLayout.count - 1)&&(mainLayout.count>1) :
+    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === mainLayout.beginIndex + mainLayout.count - 1)&&(mainLayout.count>1) :
                                                                                          (((index === startLayout.beginIndex+startLayout.count-2)&&(startLayout.count>2))
                                                                                           ||((index === mainLayout.beginIndex+mainLayout.count-2)&&(mainLayout.count>2))
                                                                                           ||((index === endLayout.beginIndex+endLayout.count-1)&&(endLayout.count>1)))
@@ -57,6 +57,7 @@ Item {
 
 
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
+    property int directAnimationTime: 0
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int appletMargin: (applet && (applet.pluginName === root.plasmoidName))
@@ -69,7 +70,7 @@ Item {
     property int status: applet ? applet.status : -1
 
     //property real animationStep: root.iconSize / 8
-    property real animationStep: 6
+    property real animationStep: 2 //6
     property real computeWidth: root.isVertical ? wrapper.width :
                                                   hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
 
@@ -160,8 +161,10 @@ Item {
     }
 
     function clearZoom(){
-        if(wrapper)
-            wrapper.zoomScale = 1;
+       if (restoreAnimation)
+           restoreAnimation.start();
+       // if(wrapper)
+       //     wrapper.zoomScale = 1;
     }
 
     function checkCanBeHovered(){
@@ -185,8 +188,14 @@ Item {
     }
 
     onHoveredIndexChanged:{
-        if ( (Math.abs(hoveredIndex-index) > 1)||(hoveredIndex == -1) )
+        if ( (Math.abs(hoveredIndex-index) > 1) && (hoveredIndex !== -1) ) {
             wrapper.zoomScale = 1;
+        }
+
+        if (Math.abs(hoveredIndex-index) >= 1) {
+            hiddenSpacerLeft.nScale = 0;
+            hiddenSpacerRight.nScale = 0;
+        }
     }
 
     onLatteAppletChanged: {
@@ -271,7 +280,13 @@ Item {
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: container.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3*container.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: container.directAnimationTime }
             }
 
             Loader{
@@ -395,6 +410,10 @@ Item {
             }
 
             onZoomScaleChanged: {
+                if ((zoomScale === root.zoomFactor) && !enableDirectRenderTimer.running && !layoutsContainer.directRender) {
+                        enableDirectRenderTimer.start();
+                }
+
                 if ((zoomScale > 1) && !container.isZoomed) {
                     container.isZoomed = true;
                     if (!root.editMode && !animationWasSent) {
@@ -504,7 +523,51 @@ Item {
                 width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
                 height: Math.round( container.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
 
-                anchors.centerIn: parent
+                anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? (root.iconMargin / 2) : 0
+                anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? (root.iconMargin / 2) : 0
+                anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? (root.iconMargin / 2) : 0
+                anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? (root.iconMargin / 2) : 0
+
+                //BEGIN states
+                states: [
+                    State {
+                        name: "left"
+                        when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
+
+                        AnchorChanges {
+                            target: wrapperContainer
+                            anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;}
+                        }
+                    },
+                    State {
+                        name: "right"
+                        when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+                        AnchorChanges {
+                            target: wrapperContainer
+                            anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+                        }
+                    },
+                    State {
+                        name: "bottom"
+                        when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
+
+                        AnchorChanges {
+                            target: wrapperContainer
+                            anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
+                        }
+                    },
+                    State {
+                        name: "top"
+                        when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+
+                        AnchorChanges {
+                            target: wrapperContainer
+                            anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;}
+                        }
+                    }
+                ]
+                //END states
             }
 
             //spacer background
@@ -627,8 +690,15 @@ Item {
             }
 
             Behavior on zoomScale {
-                NumberAnimation { duration: 2 * container.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3*container.animationTime }
             }
+
+            Behavior on zoomScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: container.directAnimationTime }
+            }
+
 
             function calculateScales( currentMousePosition ){
                 var distanceFromHovered = Math.abs(index - layoutsContainer.hoveredIndex);
@@ -655,8 +725,8 @@ Item {
                     var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
                     var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
 
-                    bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(2));
-                    smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(2));
+                    bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
+                    smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
 
                     var leftScale;
                     var rightScale;
@@ -682,9 +752,9 @@ Item {
 
                     if (root.latteApplet) {
                         if ((index-1) > root.latteAppletPos ){
-                            root.latteApplet.clearZoom();
+                            root.latteApplet.updateScale(root.tasksCount-1, 1 ,0);
                         } else if((index+1)<root.latteAppletPos) {
-                            root.latteApplet.clearZoom();
+                            root.latteApplet.updateScale(0, 1, 0);
                         }
                     }
 
@@ -755,7 +825,13 @@ Item {
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: container.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3*container.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: container.directAnimationTime }
             }
 
             Loader{
@@ -791,10 +867,10 @@ Item {
         }
 
         onContainsMouseChanged: {
-            if(!containsMouse){
-                hiddenSpacerLeft.nScale = 0;
-                hiddenSpacerRight.nScale = 0;
-            }
+          //  if(!containsMouse){
+          //      hiddenSpacerLeft.nScale = 0;
+          //      hiddenSpacerRight.nScale = 0;
+          //  }
         }
 
         onEntered: {
@@ -889,6 +965,37 @@ Item {
 
 
     //BEGIN animations
+    ///////Restore Zoom Animation/////
+    ParallelAnimation{
+        id: restoreAnimation
+
+        PropertyAnimation {
+            target: wrapper
+            property: "zoomScale"
+            to: 1
+            duration: 3 * container.animationTime
+            easing.type: Easing.Linear
+        }
+
+        PropertyAnimation {
+            target: hiddenSpacerLeft
+            property: "nScale"
+            to: 0
+            duration: 3 * container.animationTime
+            easing.type: Easing.Linear
+        }
+
+        PropertyAnimation {
+            target: hiddenSpacerRight
+            property: "nScale"
+            to: 0
+            duration: 3 * container.animationTime
+            easing.type: Easing.Linear
+        }
+    }
+
+
+    /////Clicked Animation/////
     SequentialAnimation{
         id: clickedAnimation
         alwaysRunToEnd: true

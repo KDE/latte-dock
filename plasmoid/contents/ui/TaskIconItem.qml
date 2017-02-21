@@ -112,56 +112,18 @@ Item{
     // KQuickControlAddons.QIconItem{
     Item{
         id: iconGraphic
-        width: iconImageBuffer.width
-        height: iconImageBuffer.height
-
-        ///states for launcher animation
-        states: [
-            State{
-                name: "*"
-                when:  !launcherAnimation.running && !newWindowAnimation.running
-
-                AnchorChanges{
-                    target:iconGraphic;
-                    anchors.horizontalCenter: parent.horizontalCenter;
-                    anchors.verticalCenter: parent.verticalCenter;
-                    anchors.right: undefined;
-                    anchors.left: undefined;
-                    anchors.top: undefined;
-                    anchors.bottom: undefined;
-                }
-            },
-
-            State{
-                name: "animating"
-                when: launcherAnimation.running || newWindowAnimation.running
-
-                AnchorChanges{
-                    target:iconGraphic;
-                    anchors.horizontalCenter: undefined;
-                    anchors.verticalCenter: undefined;
-                    anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
-                    anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
-                    anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
-                    anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
-                }
-            }
-        ]
-
-        ///transitions, basic for the anchor changes
-        transitions: [
-            Transition{
-                from: "animating"
-                to: "*"
-
-                AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
-            }
-        ]
+        //width: iconImageBuffer.width
+        //height: iconImageBuffer.height
+        width: parent.width
+        height: parent.height
 
         Latte.IconItem{
             id: iconImageBuffer
 
-            //    anchors.centerIn: parent
+            anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? (root.iconMargin / 2) : 0
+            anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? (root.iconMargin / 2) : 0
+            anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? (root.iconMargin / 2) : 0
+            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? (root.iconMargin / 2) : 0
 
             width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
             height: Math.round(width)
@@ -185,6 +147,49 @@ Item{
             property real newTempSize: (wrapper.opacity == 1) ? Math.min(basicScalingWidth, basicScalingHeight) :
                                                                 Math.max(basicScalingWidth, basicScalingHeight)
 
+
+            ///states for launcher animation
+            states: [
+                State{
+                    name: "*"
+                    when:  !launcherAnimation.running && !newWindowAnimation.running
+
+                    AnchorChanges{
+                        target:iconImageBuffer;
+                        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
+                        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
+                        anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
+                        anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
+                        anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
+                        anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
+                    }
+                },
+
+                State{
+                    name: "animating"
+                    when: launcherAnimation.running || newWindowAnimation.running
+
+                    AnchorChanges{
+                        target:iconImageBuffer;
+                        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
+                        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
+                        anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
+                        anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
+                        anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
+                        anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
+                    }
+                }
+            ]
+
+            ///transitions, basic for the anchor changes
+            transitions: [
+                Transition{
+                    from: "animating"
+                    to: "*"
+
+                    AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
+                }
+            ]
         }
 
         //////
