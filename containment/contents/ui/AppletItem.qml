@@ -352,7 +352,6 @@ Item {
             property alias index: container.index
             // property int pHeight: applet ? applet.Layout.preferredHeight : -10
 
-
             /*function debugLayouts(){
                 if(applet){
                     console.log("---------- "+ applet.pluginName +" ----------");
@@ -450,8 +449,8 @@ Item {
                     else if(applet
                             && ( (applet.Layout.maximumHeight < root.iconSize) || (applet.Layout.preferredHeight > root.iconSize))
                             && root.isVertical
-                            && !disableScaleWidth
-                            && !root.editMode ){
+                            && !disableScaleWidth ) {
+                            //&& !root.editMode ){
                         disableScaleHeight = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
                         if((applet.Layout.maximumHeight < root.iconSize)){
@@ -493,8 +492,8 @@ Item {
                     else if(applet
                             && ( (applet.Layout.maximumWidth < root.iconSize) || (applet.Layout.preferredWidth > root.iconSize))
                             && root.isHorizontal
-                            && !disableScaleHeight
-                            && !root.editMode){
+                            && !disableScaleHeight ){
+                          //  && !root.editMode){
                         disableScaleWidth = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
                         if((applet.Layout.maximumWidth < root.iconSize)){
@@ -536,7 +535,8 @@ Item {
 
                         AnchorChanges {
                             target: wrapperContainer
-                            anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;}
+                            anchors{ verticalCenter:wrapper.verticalCenter; horizontalCenter:undefined;
+                                top:undefined; bottom:undefined; left:parent.left; right:undefined;}
                         }
                     },
                     State {
@@ -545,7 +545,8 @@ Item {
 
                         AnchorChanges {
                             target: wrapperContainer
-                            anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+                            anchors{ verticalCenter:wrapper.verticalCenter; horizontalCenter:undefined;
+                                top:undefined; bottom:undefined; left:undefined; right:parent.right;}
                         }
                     },
                     State {
@@ -554,7 +555,8 @@ Item {
 
                         AnchorChanges {
                             target: wrapperContainer
-                            anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
+                            anchors{ verticalCenter:undefined; horizontalCenter:wrapper.horizontalCenter;
+                                top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
                         }
                     },
                     State {
@@ -563,7 +565,8 @@ Item {
 
                         AnchorChanges {
                             target: wrapperContainer
-                            anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;}
+                            anchors{  verticalCenter:undefined; horizontalCenter:wrapper.horizontalCenter;
+                                top:parent.top; bottom:undefined; left:undefined; right:undefined;}
                         }
                     }
                 ]
