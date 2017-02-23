@@ -232,6 +232,7 @@ Item {
         mainItem: toolTipDelegate
         visible: false
 
+        property bool contextMenu: false
         property bool signalSent: false
         property Item activeItem: null
 
@@ -253,7 +254,8 @@ Item {
             toolTipDelegate.windows = [];
             toolTipDelegate.isGroup = false;
 
-            root.disableRestoreZoom = false;
+            if (!contextMenu)
+                root.disableRestoreZoom = false;
 
             visible = false;
         }
