@@ -120,16 +120,29 @@ Item{
         Latte.IconItem{
             id: iconImageBuffer
 
-            anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? (root.iconMargin / 2) : 0
-            anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? (root.iconMargin / 2) : 0
-            anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? (root.iconMargin / 2) : 0
-            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? (root.iconMargin / 2) : 0
+            anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned
+                                 || (root.position === PlasmaCore.Types.LeftPositioned
+                                     && mainItemContainer.inAddRemoveAnimation)
+                                 ? margin : 0
+            anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned
+                                || (root.position === PlasmaCore.Types.RightPositioned
+                                    && mainItemContainer.inAddRemoveAnimation)
+                                ? margin : 0
+            anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned
+                               || (root.position === PlasmaCore.Types.BottomPositioned
+                                   && mainItemContainer.inAddRemoveAnimation)
+                               ? margin : 0
+            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned
+                                  || (root.position === PlasmaCore.Types.TopPositioned
+                                      && mainItemContainer.inAddRemoveAnimation)
+                                  ? margin : 0
 
             width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
             height: Math.round(width)
             //icon: decoration
             source: decoration
 
+            property int margin: root.iconMargin/2
             //visible: !root.enableShadows
 
             onValidChanged: {
@@ -150,9 +163,10 @@ Item{
 
             ///states for launcher animation
             states: [
+
                 State{
                     name: "*"
-                    when:  !launcherAnimation.running && !newWindowAnimation.running
+                    when:  !launcherAnimation.running && !newWindowAnimation.running && !mainItemContainer.inAddRemoveAnimation
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -166,8 +180,23 @@ Item{
                 },
 
                 State{
+                    name: "inAddRemoveAnimation"
+                    when:  mainItemContainer.inAddRemoveAnimation
+
+                    AnchorChanges{
+                        target:iconImageBuffer;
+                        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
+                        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
+                        anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
+                        anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
+                        anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
+                        anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
+                    }
+                },
+
+                State{
                     name: "animating"
-                    when: launcherAnimation.running || newWindowAnimation.running
+                    when: (launcherAnimation.running || newWindowAnimation.running) && !mainItemContainer.inAddRemoveAnimation
 
                     AnchorChanges{
                         target:iconImageBuffer;

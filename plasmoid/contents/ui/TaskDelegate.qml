@@ -55,6 +55,7 @@ MouseArea{
     property bool hasActive: isActive
     property bool hasMinimized: (IsGroupParent === true) ? tasksWindows.hasMinimized : isMinimized
     property bool hasShown: (IsGroupParent === true) ? tasksWindows.hasShown : !isMinimized
+    property bool inAddRemoveAnimation: true
     property bool inAnimation: true
     property bool inBlockingAnimation: false
     property bool inPopup: false
@@ -909,7 +910,7 @@ MouseArea{
     }
 
     function slotPublishGeometries() {
-        if ((isWindow || isStartup || isGroupParent) && tasksModel) {
+        if ((isWindow || isStartup || isGroupParent) && !icList.delayingRemoval) {
             tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(),
                                                       backend.globalRect(mainItemContainer), mainItemContainer);
         }
@@ -1010,6 +1011,8 @@ MouseArea{
         }
 
         onStopped: {
+            mainItemContainer.inAddRemoveAnimation = false;
+
             if(mainItemContainer.isWindow || mainItemContainer.isStartup){
                 taskInitComponent.createObject(wrapper);
                 if (mainItemContainer.isDemandingAttention){
@@ -1177,7 +1180,13 @@ MouseArea{
     ///Item's Removal Animation
 
     ListView.onRemove: SequentialAnimation {
-        ScriptAction{script:{root.signalAnimationsNeedLength(1)}}
+        ScriptAction{
+            script:{
+                mainItemContainer.inAddRemoveAnimation = true;
+                root.signalAnimationsNeedLength(1)
+            }
+        }
+
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
         PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
         PropertyAction { target: icList; property: "delayingRemoval"; value: true }
