@@ -67,6 +67,8 @@ PlasmaComponents.ContextMenu {
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
         // backend.ungrabMouse(visualParent);
         openRelative();
+        windowsPreviewDlg.contextMenu = true;
+        windowsPreviewDlg.hide();
     }
 
     function newMenuItem(parent) {
@@ -206,6 +208,7 @@ PlasmaComponents.ContextMenu {
 
 
     Component.onDestruction: {
+        windowsPreviewDlg.contextMenu = false;
         backend.ungrabMouse(visualParent);
         root.signalActionsBlockHiding(-1);
         //root.signalDraggingState(false);
