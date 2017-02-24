@@ -11,6 +11,7 @@ set(lattedock-app_SRCS
     packageplugins/shell/dockpackage.cpp
     panelshadows.cpp
     alternativeshelper.cpp
+    screenpool.cpp
     main.cpp
 )
 
