@@ -112,7 +112,8 @@ DockView::~DockView()
 
 void DockView::init()
 {
-    connect(this, &DockView::screenChanged, this, &DockView::adaptToScreen);
+    //connect(this, &DockView::screenChanged, this, &DockView::syncGeometry);
+    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::syncGeometry, Qt::UniqueConnection);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
@@ -141,6 +142,8 @@ void DockView::adaptToScreen(QScreen *screen)
     if (!screen) {
         return;
     }
+
+    qDebug() << "adapting to screen...";
 
     setScreen(screen);
 
@@ -313,6 +316,7 @@ void DockView::updatePosition()
 
         case Plasma::Types::BottomEdge:
             screenGeometry = this->screen()->geometry();
+            qDebug() << "screen geometry: "<<screenGeometry;
 
             if (m_drawShadows) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
@@ -360,6 +364,10 @@ inline void DockView::syncGeometry()
 {
     if (!(this->screen() && this->containment()))
         return;
+
+    if (qGuiApp->primaryScreen() && screen() != qGuiApp->primaryScreen()){
+        setScreen(qGuiApp->primaryScreen());
+    }
 
     updateEnabledBorders();
     resizeWindow();
