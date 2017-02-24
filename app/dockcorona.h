@@ -34,6 +34,8 @@ class Containment;
 class Types;
 }
 
+class ScreenPool;
+
 namespace KActivities {
 class Consumer;
 }
@@ -62,6 +64,8 @@ public:
     void aboutApplication();
     void closeApplication();
 
+    ScreenPool *screenPool() const;
+
 public slots:
     void loadDefaultLayout() override;
     void dockContainmentDestroyed(QObject *cont);
@@ -76,6 +80,10 @@ private slots:
     void showAlternativesForApplet(Plasma::Applet *applet);
     void alternativesVisibilityChanged(bool visible);
     void load();
+
+    void addOutput(QScreen *screen);
+    void primaryOutputChanged();
+    void screenRemoved(QScreen *screen);
 
 private:
     bool appletExists(uint containmentId, uint appletId) const;
@@ -92,6 +100,8 @@ private:
 
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
+
+    ScreenPool *m_screenPool;
 };
 
 }

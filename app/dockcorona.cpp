@@ -23,6 +23,7 @@
 #include "packageplugins/shell/dockpackage.h"
 #include "abstractwindowinterface.h"
 #include "alternativeshelper.h"
+#include "screenpool.h"
 
 #include <QAction>
 #include <QScreen>
@@ -44,6 +45,7 @@ namespace Latte {
 
 DockCorona::DockCorona(QObject *parent)
     : Plasma::Corona(parent),
+      m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_activityConsumer(new KActivities::Consumer(this))
 {
     KPackage::Package package(new DockPackage(this));
@@ -89,7 +91,15 @@ DockCorona::~DockCorona()
 void DockCorona::load()
 {
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
+        disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+        m_screenPool->load();
+
         m_activitiesStarting = false;
+
+        connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
+        connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockCorona::primaryOutputChanged, Qt::UniqueConnection);
+        connect(qGuiApp, &QGuiApplication::screenRemoved, this, &DockCorona::screenRemoved, Qt::UniqueConnection);
+
         loadLayout();
     }
 }
@@ -160,6 +170,11 @@ bool DockCorona::appletExists(uint containmentId, uint appletId) const
     return false;
 }
 
+ScreenPool *DockCorona::screenPool() const
+{
+    return m_screenPool;
+}
+
 int DockCorona::numScreens() const
 {
     return qGuiApp->screens().count();
@@ -222,12 +237,26 @@ QRect DockCorona::availableScreenRect(int id) const
     return available;
 }
 
+void DockCorona::addOutput(QScreen *screen)
+{
+    Q_ASSERT(screen);
+}
+
+void DockCorona::primaryOutputChanged()
+{
+}
+
+void DockCorona::screenRemoved(QScreen *screen)
+{
+    Q_ASSERT(screen);
+}
+
 int DockCorona::primaryScreenId() const
 {
     //this is not the proper way because kwin probably uses a different
     //index of screens...
     //This needs a lot of testing...
-    return qGuiApp->screens().indexOf(qGuiApp->primaryScreen());
+    return m_screenPool->id(qGuiApp->primaryScreen()->name());
 }
 
 int DockCorona::docksCount(int screen) const
@@ -299,7 +328,39 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     // startup (catch-up race) between
     // screen:0 and primaryScreen
 
-    return primaryScreenId();
+    //case in which this containment is child of an applet, hello systray :)
+    if (Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent())) {
+        if (Plasma::Containment *cont = parentApplet->containment()) {
+            return screenForContainment(cont);
+        } else {
+            return -1;
+        }
+    }
+
+    //if the panel views already exist, base upon them
+    DockView *view = m_dockViews.value(containment);
+
+    if (view && view->screen()) {
+        return m_screenPool->id(view->screen()->name());
+    }
+
+    //Failed? fallback on lastScreen()
+    //lastScreen() is the correct screen for panels
+    //It is also correct for desktops *that have the correct activity()*
+    //a containment with lastScreen() == 0 but another activity,
+    //won't be associated to a screen
+//     qDebug() << "ShellCorona screenForContainment: " << containment << " Last screen is " << containment->lastScreen();
+
+    for (auto screen : qGuiApp->screens()) {
+        // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
+        if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
+            (containment->activity() == m_activityConsumer->currentActivity() ||
+             containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
+            return containment->lastScreen();
+        }
+    }
+
+    return -1;
 }
 
 void DockCorona::addDock(Plasma::Containment *containment)
@@ -366,6 +427,7 @@ void DockCorona::dockContainmentDestroyed(QObject *cont)
 void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
 {
     const QString alternativesQML = kPackage().filePath("appletalternativesui");
+
     if (alternativesQML.isEmpty()) {
         return;
     }
@@ -382,13 +444,16 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
     connect(qmlObj->rootObject(), SIGNAL(visibleChanged(bool)),
             this, SLOT(alternativesVisibilityChanged(bool)));
 
-    connect(applet, &Plasma::Applet::destroyedChanged, this, [this, qmlObj] (bool destroyed) {
+    connect(applet, &Plasma::Applet::destroyedChanged, this, [this, qmlObj](bool destroyed) {
         if (!destroyed) {
             return;
         }
+
         QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+
         while (it.hasNext()) {
             KDeclarative::QmlObject *obj = it.next();
+
             if (obj == qmlObj) {
                 it.remove();
                 obj->deleteLater();
@@ -406,8 +471,10 @@ void DockCorona::alternativesVisibilityChanged(bool visible)
     QObject *root = sender();
 
     QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+
     while (it.hasNext()) {
         KDeclarative::QmlObject *obj = it.next();
+
         if (obj->rootObject() == root) {
             it.remove();
             obj->deleteLater();
