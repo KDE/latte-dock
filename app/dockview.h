@@ -53,6 +53,8 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int shadow READ shadow WRITE setShadow NOTIFY shadowChanged)
 
+    Q_PROPERTY(QString currentScreen READ currentScreen NOTIFY currentScreenChanged)
+
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
@@ -68,6 +70,7 @@ public:
     void init();
 
     void adaptToScreen(QScreen *screen);
+    void setScreenToFollow(QScreen *screen);
 
     void resizeWindow();
     void syncGeometry();
@@ -102,6 +105,8 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
+    QString currentScreen() const;
+
     VisibilityManager * visibility() const;
 
     QQmlListProperty<QScreen> screens();
@@ -115,6 +120,7 @@ public slots:
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
+    Q_INVOKABLE void setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE void updateEnabledBorders();
 
@@ -134,6 +140,7 @@ signals:
     void eventTriggered(QEvent *ev);
 
     void alignmentChanged();
+    void currentScreenChanged();
     void dockLocationChanged();
     void docksCountChanged();
     void drawShadowsChanged();
@@ -152,6 +159,7 @@ signals:
 private slots:
     void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
+    void screenChanged(QScreen *screen);
 
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
@@ -175,6 +183,7 @@ private:
     QMenu *m_contextMenu;
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
+    QPointer<QScreen> m_screenToFollow;
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;
