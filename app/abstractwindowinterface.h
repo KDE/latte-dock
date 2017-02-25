@@ -88,7 +88,7 @@ protected:
     std::list<WId> m_docks;
     QPointer<KActivities::Consumer> m_activities;
 
-    static QPointer<AbstractWindowInterface> m_wm;
+    static std::unique_ptr<AbstractWindowInterface> m_wm;
 };
 
 // namespace alias

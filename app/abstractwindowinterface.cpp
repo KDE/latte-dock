@@ -58,7 +58,7 @@ AbstractWindowInterface &AbstractWindowInterface::self()
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: WaylandWindowInterface
     } else /* if(KWindowSystem::isPlatformX11) */ {
-        m_wm = new XWindowInterface;
+        m_wm = std::make_unique<XWindowInterface>();
     }
 
     return *m_wm;
@@ -66,4 +66,4 @@ AbstractWindowInterface &AbstractWindowInterface::self()
 
 }
 
-QPointer<Latte::AbstractWindowInterface> Latte::AbstractWindowInterface::m_wm;
+std::unique_ptr<Latte::AbstractWindowInterface> Latte::AbstractWindowInterface::m_wm;
