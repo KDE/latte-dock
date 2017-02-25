@@ -134,7 +134,7 @@ Item{
 
     function slotMustBeHide() {
         // console.log("hide....");
-        if(!dock.visibility.blockHiding && !dock.visibility.containsMouse && windowSystem.compositingActive) {
+        if(!dock.visibility.blockHiding && !dock.visibility.containsMouse && Latte.WindowSystem.compositingActive) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
@@ -149,7 +149,7 @@ Item{
         var localY = 0;
 
         normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
-                || !windowSystem.compositingActive
+                || !Latte.WindowSystem.compositingActive
                 || (dock.visibility.isHidden && !dock.visibility.containsMouse && root.animationsNeedThickness == 0);
 
         // debug maskArea criteria
@@ -183,11 +183,11 @@ Item{
             tempThickness = thicknessNormal;
 
             if (root.animationsNeedThickness > 0) {
-                tempThickness = windowSystem.compositingActive ? thicknessMidOriginal : thicknessNormalOriginal;
+                tempThickness = Latte.WindowSystem.compositingActive ? thicknessMidOriginal : thicknessNormalOriginal;
             }
 
             if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
             }
 
             //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
@@ -241,14 +241,14 @@ Item{
                 tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
 
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                    tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                    tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                 } else if (root.animationsNeedThickness > 0) {
                     tempThickness = thicknessMidOriginal;
                 }
             } else{
                 //use all thickness space
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                    tempThickness = windowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                    tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                 } else {
                     tempThickness = thicknessZoomOriginal;
                 }

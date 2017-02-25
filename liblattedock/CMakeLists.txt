@@ -1,6 +1,6 @@
 set(lattedock_SRCS
     lattedockplugin.cpp
-    windowsystem.cpp
+    quickwindowsystem.cpp
     dock.cpp
     iconitem.cpp
 )

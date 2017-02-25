@@ -106,7 +106,7 @@ DragDrop.DropArea {
                                                   ( plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
                                                        Latte.Dock.Center : plasmoid.configuration.panelPosition )
 
-    property real zoomFactor: (windowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real zoomFactor: (Latte.WindowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -154,7 +154,7 @@ DragDrop.DropArea {
                                     layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin) :
                                Screen.height //on unlocked state use the maximum*/
 
-    Plasmoid.backgroundHints: windowSystem.compositingActive ? PlasmaCore.Types.NoBackground : PlasmaCore.Types.DefaultBackground
+    Plasmoid.backgroundHints: Latte.WindowSystem.compositingActive ? PlasmaCore.Types.NoBackground : PlasmaCore.Types.DefaultBackground
 
     //// BEGIN properties in functions
     property int noApplets: {
@@ -1049,13 +1049,15 @@ DragDrop.DropArea {
 
 
     ////BEGIN interfaces
-    Latte.WindowSystem {
-        id:windowSystem
 
-        onCompositingActiveChanged:{
+    Connections {
+        target: Latte.WindowSystem
+
+        onCompositingActiveChanged: {
             visibilityManager.updateMaskArea();
         }
     }
+
 
     ////END interfaces
 
@@ -1095,7 +1097,7 @@ DragDrop.DropArea {
             // FIX IT && TEST IT: it is crashing Plasma with two Now Docks one of which has only
             // task manager (small)
             //active: root.useThemePanel
-            active: windowSystem.compositingActive
+            active: Latte.WindowSystem.compositingActive
             sourceComponent: PanelBox{}
 
         }
@@ -1165,14 +1167,14 @@ DragDrop.DropArea {
 
         x: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-                    && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ){
+                    && !root.editMode && Latte.WindowSystem.compositingActive && !root.drawShadowsExternal ){
                 return ((dock.width/2) - (root.maxLength/2))
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
                     return;
                 }
 
-                if (dock.visibility.isHidden && windowSystem.compositingActive && root.isVertical) {
+                if (dock.visibility.isHidden && Latte.WindowSystem.compositingActive && root.isVertical) {
                     return visibilityManager.slidingOutToPos;
                 } else {
                     return 0;
@@ -1182,14 +1184,14 @@ DragDrop.DropArea {
 
         y: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-                    && !root.editMode && windowSystem.compositingActive && !root.drawShadowsExternal ) {
+                    && !root.editMode && Latte.WindowSystem.compositingActive && !root.drawShadowsExternal ) {
                 return ((dock.height/2) - (root.maxLength/2));
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                     return;
                 }
 
-                if (dock.visibility.isHidden && windowSystem.compositingActive && root.isHorizontal) {
+                if (dock.visibility.isHidden && Latte.WindowSystem.compositingActive && root.isHorizontal) {
                     return visibilityManager.slidingOutToPos;
                 } else {
                     return 0;
@@ -1420,7 +1422,7 @@ DragDrop.DropArea {
     ///this is an approach to try to solve #132 issue///
     Loader{
         anchors.fill: parent
-        active: dock & !drawShadowsExternal && windowSystem.compositingActive
+        active: dock & !drawShadowsExternal && Latte.WindowSystem.compositingActive
         z: 1000
 
         sourceComponent: Item{

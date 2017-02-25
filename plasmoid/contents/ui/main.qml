@@ -218,9 +218,6 @@ Item {
     }
 
     ////BEGIN interfaces
-    Latte.WindowSystem{
-        id:windowSystem
-    }
 
     PlasmaCore.Dialog{
         id: windowsPreviewDlg

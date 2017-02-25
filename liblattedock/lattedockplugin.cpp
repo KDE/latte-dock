@@ -19,16 +19,16 @@
 */
 
 #include "lattedockplugin.h"
-#include "windowsystem.h"
+#include "quickwindowsystem.h"
 #include "dock.h"
 #include "iconitem.h"
 
-#include <qqml.h>
+#include <QtQml>
 
 void LatteDockPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.latte"));
     qmlRegisterUncreatableType<Latte::Dock>(uri, 0, 1, "Dock", "Latte Dock Types uncreatable");
-    qmlRegisterType<Latte::WindowSystem>(uri, 0, 1, "WindowSystem");
     qmlRegisterType<Latte::IconItem>(uri, 0, 1, "IconItem");
+    qmlRegisterSingletonType<Latte::QuickWindowSystem>(uri, 0, 1, "WindowSystem", &Latte::windowsystem_qobject_singletontype_provider);
 }
