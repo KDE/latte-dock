@@ -1,6 +1,5 @@
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
-    ../liblattedock/windowsystem.cpp
     windowinfowrap.cpp
     abstractwindowinterface.cpp
     xwindowinterface.cpp

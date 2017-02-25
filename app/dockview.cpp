@@ -24,7 +24,6 @@
 #include "visibilitymanager.h"
 #include "panelshadows_p.h"
 #include "../liblattedock/extras.h"
-#include "../liblattedock/windowsystem.h"
 
 #include <QAction>
 #include <QQmlContext>
@@ -54,6 +53,10 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     setIcon(QIcon::fromTheme(corona->kPackage().metadata().iconName()));
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
+    setFlags(Qt::FramelessWindowHint
+                     | Qt::WindowStaysOnTopHint
+                     | Qt::NoDropShadowWindowHint
+                     | Qt::WindowDoesNotAcceptFocus);
 
     if (targetScreen)
         adaptToScreen(targetScreen);

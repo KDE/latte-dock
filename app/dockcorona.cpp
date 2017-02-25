@@ -21,7 +21,7 @@
 #include "dockcorona.h"
 #include "dockview.h"
 #include "packageplugins/shell/dockpackage.h"
-#include "../liblattedock/windowsystem.h"
+#include "abstractwindowinterface.h"
 #include "alternativeshelper.h"
 
 #include <QAction>

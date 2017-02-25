@@ -28,8 +28,8 @@
 
 namespace Latte {
 
-AbstractWindowInterface::AbstractWindowInterface(QQuickWindow *const view, QObject *parent)
-    : QObject(parent), m_view(view)
+AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
+    : QObject(parent)
 {
 }
 
@@ -37,15 +37,33 @@ AbstractWindowInterface::~AbstractWindowInterface()
 {
 }
 
-AbstractWindowInterface *AbstractWindowInterface::getInstance(QQuickWindow *const view, QObject *parent)
+void AbstractWindowInterface::addDock(WId wid)
 {
+    m_docks.push_back(wid);
+}
+
+void AbstractWindowInterface::removeDock(WId wid)
+{
+   auto it = std::find(m_docks.begin(), m_docks.end(), wid);
+
+   if (it != m_docks.end())
+       m_docks.erase(it);
+}
+
+AbstractWindowInterface &AbstractWindowInterface::self()
+{
+    if (m_wm)
+        return *m_wm;
+
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: WaylandWindowInterface
-        return nullptr;
+    } else /* if(KWindowSystem::isPlatformX11) */ {
+        m_wm = new XWindowInterface;
     }
 
-    /* if(KWindowSystem::isPlatformX11) */
-    return new XWindowInterface(view, parent);
+    return *m_wm;
 }
 
 }
+
+QPointer<Latte::AbstractWindowInterface> Latte::AbstractWindowInterface::m_wm;

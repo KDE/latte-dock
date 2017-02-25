@@ -22,6 +22,7 @@
 #include "dockview.h"
 #include "dockcorona.h"
 #include "panelshadows_p.h"
+#include "abstractwindowinterface.h"
 
 #include <QQuickItem>
 #include <QQmlContext>
@@ -30,8 +31,6 @@
 
 #include <KLocalizedContext>
 #include <KDeclarative/KDeclarative>
-#include <KWindowSystem>
-#include <KWindowEffects>
 
 #include <Plasma/Package>
 
@@ -52,15 +51,11 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_dockView->screen());
-        KWindowSystem::setType(winId(), NET::Dock);
+        WindowSystem::self().setDockExtraFlags(*this);
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
     });
-    KWindowSystem::setType(winId(), NET::Dock);
-    KWindowSystem::setState(winId(), NET::KeepAbove);
-    setFlags(wFlags());
-    KWindowSystem::forceActiveWindow(winId());
     connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
     connections << connect(containment, &Plasma::Containment::locationChanged, [&]() {
@@ -154,23 +149,23 @@ void DockConfigView::syncSlideEffect()
     if (!m_dockView->containment())
         return;
 
-    KWindowEffects::SlideFromLocation slideLocation{KWindowEffects::NoEdge};
+    auto slideLocation = WindowSystem::Slide::None;
 
     switch (m_dockView->containment()->location()) {
         case Plasma::Types::TopEdge:
-            slideLocation = KWindowEffects::TopEdge;
+            slideLocation = WindowSystem::Slide::Top;
             break;
 
         case Plasma::Types::RightEdge:
-            slideLocation = KWindowEffects::RightEdge;
+            slideLocation = WindowSystem::Slide::Right;
             break;
 
         case Plasma::Types::BottomEdge:
-            slideLocation = KWindowEffects::BottomEdge;
+            slideLocation = WindowSystem::Slide::Bottom;
             break;
 
         case Plasma::Types::LeftEdge:
-            slideLocation = KWindowEffects::LeftEdge;
+            slideLocation = WindowSystem::Slide::Left;
             break;
 
         default:
@@ -178,17 +173,18 @@ void DockConfigView::syncSlideEffect()
             break;
     }
 
-    KWindowEffects::slideWindow(winId(), slideLocation, -1);
+    WindowSystem::self().slideWindow(*this, slideLocation);
 }
 
 void DockConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
-    KWindowSystem::setType(winId(), NET::Dock);
+
+    WindowSystem::self().setDockExtraFlags(*this);
     setFlags(wFlags());
-    KWindowSystem::setState(winId(), NET::KeepAbove | NET::SkipPager | NET::SkipTaskbar);
-    KWindowSystem::forceActiveWindow(winId());
-    KWindowEffects::enableBlurBehind(winId(), true);
+
+    WindowSystem::self().enableBlurBehind(*this);
+
     syncGeometry();
     syncSlideEffect();
 

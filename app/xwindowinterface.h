@@ -22,13 +22,12 @@
 #define XWINDOWINTERFACE_H
 
 #include "abstractwindowinterface.h"
+#include "windowinfowrap.h"
 
 #include <QObject>
-#include <QPointer>
 
 #include <KWindowInfo>
-#include <Plasma>
-#include <KActivities/Consumer>
+#include <KWindowEffects>
 
 namespace Latte {
 
@@ -36,10 +35,12 @@ class XWindowInterface : public AbstractWindowInterface {
     Q_OBJECT
 
 public:
-    XWindowInterface(QQuickWindow *const view, QObject *parent);
-    virtual ~XWindowInterface();
+    explicit XWindowInterface(QObject *parent = nullptr);
+    ~XWindowInterface() override;
 
-    void setDockDefaultFlags() override;
+    void setDockExtraFlags(QQuickWindow &view) override;
+    void setDockStruts(WId dockId, const QRect &dockRect, Plasma::Types::Location location) const override;
+    void removeDockStruts(WId dockId) const override;
 
     WId activeWindow() const override;
     WindowInfoWrap requestInfo(WId wid) const override;
@@ -47,18 +48,15 @@ public:
     bool isOnCurrentDesktop(WId wid) const override;
     const std::list<WId> &windows() const override;
 
-    void setDockStruts(const QRect &dockRect, Plasma::Types::Location location) const override;
-    void removeDockStruts() const override;
-
+    void skipTaskBar(const QDialog &dialog) const override;
+    void slideWindow(QQuickWindow &view, Slide location) const override;
+    void enableBlurBehind(QQuickWindow &view) const override;
 
 private:
     bool isValidWindow(const KWindowInfo &winfo) const;
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
 
     WId m_desktopId;
-    QPointer<KActivities::Consumer> activities;
-
-    QList<QMetaObject::Connection> connections;
 };
 
 }
