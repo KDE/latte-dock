@@ -30,7 +30,7 @@ namespace Latte {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
-    : QObject(q), q(q), view(view), wm(AbstractWindowInterface::getInstance(view, nullptr))
+    : QObject(q), q(q), view(view), wm(&AbstractWindowInterface::self())
 {
     DockView *dockView = qobject_cast<DockView *>(view);
 
@@ -56,13 +56,14 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
             emit this->q->mustBeHide();
         }
     });
-    wm->setDockDefaultFlags();
+    wm->setDockExtraFlags(*view);
+    wm->addDock(view->winId());
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
-    wm->removeDockStruts();
-    wm->deleteLater();
+    wm->removeDockStruts(view->winId());
+    wm->removeDock(view->winId());
 }
 
 inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
@@ -72,7 +73,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
     // clear mode
     if (this->mode == Dock::AlwaysVisible)
-        wm->removeDockStruts();
+        wm->removeDockStruts(view->winId());
 
     for (auto &c : connections) {
         disconnect(c);
@@ -86,52 +87,52 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     switch (this->mode) {
         case Dock::AlwaysVisible: {
             if (view->containment() && !view->containment()->isUserConfiguring())
-                wm->setDockStruts(dockGeometry, view->location());
+                wm->setDockStruts(view->winId(), dockGeometry, view->location());
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
                 if (view->containment()->isUserConfiguring())
-                    wm->removeDockStruts();
+                    wm->removeDockStruts(view->winId());
             });
             connections[1] = connect(view->containment(), &Plasma::Containment::userConfiguringChanged
             , this, [&](bool configuring) {
                 if (!configuring)
-                    wm->setDockStruts(dockGeometry, view->containment()->location());
+                    wm->setDockStruts(view->winId(), dockGeometry, view->containment()->location());
             });
             raiseDock(true);
         }
         break;
 
         case Dock::AutoHide: {
-            connections[0] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
+            connections[0] = connect(wm, &AbstractWindowInterface::currentDesktopChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
-            connections[1] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+            connections[1] = connect(wm, &AbstractWindowInterface::currentActivityChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
             raiseDock(containsMouse);
         }
         break;
 
         case Dock::DodgeActive: {
-            connections[0] = connect(wm.get(), &AbstractWindowInterface::activeWindowChanged
+            connections[0] = connect(wm, &AbstractWindowInterface::activeWindowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
-            connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+            connections[1] = connect(wm, &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
-            connections[2] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
+            connections[2] = connect(wm, &AbstractWindowInterface::currentDesktopChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
-            connections[3] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+            connections[3] = connect(wm, &AbstractWindowInterface::currentActivityChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
             dodgeActive(wm->activeWindow());
         }
         break;
 
         case Dock::DodgeMaximized: {
-            connections[0] = connect(wm.get(), &AbstractWindowInterface::activeWindowChanged
+            connections[0] = connect(wm, &AbstractWindowInterface::activeWindowChanged
                                      , this, &VisibilityManagerPrivate::dodgeMaximized);
-            connections[1] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+            connections[1] = connect(wm, &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeMaximized);
-            connections[2] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
+            connections[2] = connect(wm, &AbstractWindowInterface::currentDesktopChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
-            connections[3] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+            connections[3] = connect(wm, &AbstractWindowInterface::currentActivityChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
             dodgeMaximized(wm->activeWindow());
         }
@@ -142,21 +143,21 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                 windows.insert({wid, wm->requestInfo(wid)});
             }
 
-            connections[0] = connect(wm.get(), &AbstractWindowInterface::windowChanged
+            connections[0] = connect(wm, &AbstractWindowInterface::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeWindows);
-            connections[1] = connect(wm.get(), &AbstractWindowInterface::windowRemoved
+            connections[1] = connect(wm, &AbstractWindowInterface::windowRemoved
             , this, [&](WId wid) {
                 windows.erase(wid);
                 timerCheckWindows.start();
             });
-            connections[2] = connect(wm.get(), &AbstractWindowInterface::windowAdded
+            connections[2] = connect(wm, &AbstractWindowInterface::windowAdded
             , this, [&](WId wid) {
                 windows.insert({wid, wm->requestInfo(wid)});
                 timerCheckWindows.start();
             });
-            connections[3] = connect(wm.get(), &AbstractWindowInterface::currentDesktopChanged
+            connections[3] = connect(wm, &AbstractWindowInterface::currentDesktopChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
-            connections[4] = connect(wm.get(), &AbstractWindowInterface::currentActivityChanged
+            connections[4] = connect(wm, &AbstractWindowInterface::currentActivityChanged
                                      , this, &VisibilityManagerPrivate::raiseDockTemporarily);
 
             timerCheckWindows.start();
@@ -292,7 +293,7 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
     this->dockGeometry = geometry;
 
     if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring()) {
-        wm->setDockStruts(this->dockGeometry, view->containment()->location());
+        wm->setDockStruts(view->winId(), this->dockGeometry, view->containment()->location());
     }
 }
 
@@ -454,7 +455,7 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
             break;
 
         case QEvent::Show:
-            wm->setDockDefaultFlags();
+            wm->setDockExtraFlags(*view);
             restoreConfig();
             break;
     }

@@ -31,17 +31,17 @@
 
 namespace Latte {
 
-XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
-    : AbstractWindowInterface(view, parent), activities(new KActivities::Consumer(this))
+XWindowInterface::XWindowInterface(QObject *parent)
+    : AbstractWindowInterface(parent)
 {
-    Q_ASSERT(view != nullptr);
-
-    connections << connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
+    m_activities = new KActivities::Consumer(this);
+    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
                            , this, &AbstractWindowInterface::activeWindowChanged);
-    connections << connect(KWindowSystem::self()
+    connect(KWindowSystem::self()
                            , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
                            (&KWindowSystem::windowChanged)
                            , this, &XWindowInterface::windowChangedProxy);
+
     auto addWindow = [&](WId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
             if (isValidWindow(KWindowInfo(wid, NET::WMWindowType))) {
@@ -50,16 +50,17 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
             }
         }
     };
-    connections << connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
-    connections << connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WId wid) {
+
+    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
+    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
             m_windows.remove(wid);
             emit windowRemoved(wid);
         }
     });
-    connections << connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
+    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
                            , this, &XWindowInterface::currentDesktopChanged);
-    connections << connect(activities.data(), &KActivities::Consumer::currentActivityChanged
+    connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged
                            , this, &XWindowInterface::currentActivityChanged);
 
     // fill windows list
@@ -71,42 +72,23 @@ XWindowInterface::XWindowInterface(QQuickWindow *const view, QObject *parent)
 XWindowInterface::~XWindowInterface()
 {
     qDebug() << "x window interface deleting...";
-
-    foreach (auto var, connections) {
-        QObject::disconnect(var);
-    }
-
-    qDebug() << "x window interface connections removed...";
 }
 
-void XWindowInterface::setDockDefaultFlags()
+void XWindowInterface::setDockExtraFlags(QQuickWindow &view)
 {
-    m_view->setFlags(Qt::FramelessWindowHint
-                     | Qt::WindowStaysOnTopHint
-                     | Qt::NoDropShadowWindowHint
-                     | Qt::WindowDoesNotAcceptFocus);
     NETWinInfo winfo(QX11Info::connection()
-                     , static_cast<xcb_window_t>(m_view->winId())
-                     , static_cast<xcb_window_t>(m_view->winId())
+                     , static_cast<xcb_window_t>(view.winId())
+                     , static_cast<xcb_window_t>(view.winId())
                      , 0, 0);
+
     winfo.setAllowedActions(NET::ActionChangeDesktop);
-    KWindowSystem::setType(m_view->winId(), NET::Dock);
-    KWindowSystem::setState(m_view->winId(), NET::SkipTaskbar | NET::SkipPager);
-    KWindowSystem::setOnAllDesktops(m_view->winId(), true);
-    KWindowSystem::setOnActivities(m_view->winId(), {"0"});
+    KWindowSystem::setType(view.winId(), NET::Dock);
+    KWindowSystem::setState(view.winId(), NET::SkipTaskbar | NET::SkipPager);
+    KWindowSystem::setOnAllDesktops(view.winId(), true);
+    KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
-WId XWindowInterface::activeWindow() const
-{
-    return KWindowSystem::self()->activeWindow();
-}
-
-const std::list<WId> &XWindowInterface::windows() const
-{
-    return m_windows;
-}
-
-void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Location location) const
+void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect, Plasma::Types::Location location) const
 {
     NETExtendedStrut strut;
 
@@ -123,7 +105,7 @@ void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Locat
             strut.bottom_end = dockRect.x() + dockRect.width() - 1;
             break;
 
-        case Plasma::Types::LeftEdge:
+        case Plasma::Types::Left:
             strut.left_width = dockRect.width();
             strut.left_start = dockRect.y();
             strut.left_end = dockRect.y() + dockRect.height() - 1;
@@ -140,7 +122,7 @@ void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Locat
             return;
     }
 
-    KWindowSystem::setExtendedStrut(m_view->winId(),
+    KWindowSystem::setExtendedStrut(dockId,
                                     strut.left_width,   strut.left_start,   strut.left_end,
                                     strut.right_width,  strut.right_start,  strut.right_end,
                                     strut.top_width,    strut.top_start,    strut.top_end,
@@ -148,10 +130,59 @@ void XWindowInterface::setDockStruts(const QRect &dockRect, Plasma::Types::Locat
                                    );
 }
 
-void XWindowInterface::removeDockStruts() const
+void XWindowInterface::removeDockStruts(WId dockId) const
 {
-    KWindowSystem::setStrut(m_view->winId(), 0, 0, 0, 0);
+    KWindowSystem::setStrut(dockId, 0, 0, 0, 0);
 }
+
+WId XWindowInterface::activeWindow() const
+{
+    return KWindowSystem::self()->activeWindow();
+}
+
+const std::list<WId> &XWindowInterface::windows() const
+{
+    return m_windows;
+}
+
+void XWindowInterface::skipTaskBar(const QDialog &dialog) const
+{
+    KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);
+}
+
+void XWindowInterface::slideWindow(QQuickWindow &view, AbstractWindowInterface::Slide location) const
+{
+    auto slideLocation = KWindowEffects::NoEdge;
+
+    switch (location) {
+        case Slide::Top:
+            slideLocation = KWindowEffects::TopEdge;
+            break;
+
+        case Slide::Bottom:
+            slideLocation = KWindowEffects::BottomEdge;
+            break;
+
+        case Slide::Left:
+            slideLocation = KWindowEffects::LeftEdge;
+            break;
+
+        case Slide::Right:
+            slideLocation = KWindowEffects::RightEdge;
+            break;
+
+        default:
+        break;
+    }
+
+    KWindowEffects::slideWindow(view.winId(), slideLocation, -1);
+}
+
+void XWindowInterface::enableBlurBehind(QQuickWindow &view) const
+{
+    KWindowEffects::enableBlurBehind(view.winId());
+}
+
 WindowInfoWrap XWindowInterface::requestInfoActive() const
 {
     return requestInfo(KWindowSystem::activeWindow());
@@ -211,10 +242,9 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
     //! if the dock changed is ignored
-    if (wid == m_view->winId())
+    if (std::find(m_docks.cbegin(), m_docks.cend(), wid) != m_docks.cend())
         return;
 
-    //! ignore when, eg: the user presses a key
     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
 
     if (winType != -1 && (winType & NET::Desktop)) {
@@ -223,6 +253,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         return;
     }
 
+    //! ignore when, eg: the user presses a key
     if (prop1 == 0 && prop2 == NET::WM2UserTime) {
         return;
     }

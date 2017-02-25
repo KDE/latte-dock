@@ -21,8 +21,7 @@
 #ifndef WINDOWINFOWRAP_H
 #define WINDOWINFOWRAP_H
 
-#include <QObject>
-#include <QWidget>
+#include <QWindow>
 #include <QRect>
 
 namespace Latte {
@@ -30,38 +29,56 @@ namespace Latte {
 class WindowInfoWrap {
 
 public:
-    explicit WindowInfoWrap();
-    WindowInfoWrap(const WindowInfoWrap &other);
+    constexpr WindowInfoWrap()
+        : m_isValid(false)
+        , m_isActive(false)
+        , m_isMinimized(false)
+        , m_isMaximized(false)
+        , m_isFullscreen(false)
+        , m_isPlasmaDesktop(false)
+        , m_wid(0)
+    {
+    }
 
-    WindowInfoWrap &operator=(const WindowInfoWrap &rhs);
+    constexpr WindowInfoWrap(const WindowInfoWrap &other)
+        : m_isValid(other.m_isValid)
+        , m_isActive(other.m_isActive)
+        , m_isMinimized(other.m_isMinimized)
+        , m_isMaximized(other.m_isMaximized)
+        , m_isFullscreen(other.m_isFullscreen)
+        , m_isPlasmaDesktop(other.m_isPlasmaDesktop)
+        , m_wid(other.m_wid)
+    {
+    }
 
-    bool operator==(const WindowInfoWrap &rhs) const;
-    bool operator<(const WindowInfoWrap &rhs) const;
-    bool operator>(const WindowInfoWrap &rhs) const;
+    inline WindowInfoWrap &operator=(const WindowInfoWrap &rhs);
+    constexpr bool operator==(const WindowInfoWrap &rhs) const;
+    constexpr bool operator<(const WindowInfoWrap &rhs) const;
+    constexpr bool operator>(const WindowInfoWrap &rhs) const;
 
-    bool isValid() const;
-    void setIsValid(bool isValid);
+    constexpr bool isValid() const;
+    inline void setIsValid(bool isValid);
 
-    bool isActive() const;
-    void setIsActive(bool isActive);
+    constexpr bool isActive() const;
+    inline void setIsActive(bool isActive);
 
-    bool isMinimized() const;
-    void setIsMinimized(bool isMinimized);
+    constexpr bool isMinimized() const;
+    inline void setIsMinimized(bool isMinimized);
 
-    bool isMaximized() const;
-    void setIsMaximized(bool isMaximized);
+    constexpr bool isMaximized() const;
+    inline void setIsMaximized(bool isMaximized);
 
-    bool isFullscreen() const;
-    void setIsFullscreen(bool isFullscreen);
+    constexpr bool isFullscreen() const;
+    inline void setIsFullscreen(bool isFullscreen);
 
-    bool isPlasmaDesktop() const;
-    void setIsPlasmaDesktop(bool isPlasmaDesktop);
+    constexpr bool isPlasmaDesktop() const;
+    inline void setIsPlasmaDesktop(bool isPlasmaDesktop);
 
-    QRect geometry() const;
-    void setGeometry(const QRect &geometry);
+    constexpr QRect geometry() const;
+    inline void setGeometry(const QRect &geometry);
 
-    WId wid() const;
-    void setWid(WId wid);
+    constexpr WId wid() const;
+    inline void setWid(WId wid);
 
 private:
     bool m_isValid : 1;
@@ -70,10 +87,121 @@ private:
     bool m_isMaximized : 1;
     bool m_isFullscreen : 1;
     bool m_isPlasmaDesktop : 1;
+    WId m_wid;
     QRect m_geometry;
-    WId m_wid{0};
 };
 
+// BEGIN: definitions
+
+inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
+{
+    m_isValid = rhs.m_isValid;
+    m_isActive = rhs.m_isActive;
+    m_isMinimized = rhs.m_isMinimized;
+    m_isMaximized = rhs.m_isMaximized;
+    m_isFullscreen = rhs.m_isFullscreen;
+    m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
+    m_wid = rhs.m_wid;
+    m_geometry = rhs.m_geometry;
+    return *this;
+}
+
+constexpr bool WindowInfoWrap::operator==(const WindowInfoWrap &rhs) const
+{
+    return m_wid == rhs.m_wid;
+}
+
+constexpr bool WindowInfoWrap::operator<(const WindowInfoWrap &rhs) const
+{
+    return m_wid < rhs.m_wid;
+}
+
+constexpr bool WindowInfoWrap::operator>(const WindowInfoWrap &rhs) const
+{
+    return m_wid > rhs.m_wid;
+}
+
+constexpr bool WindowInfoWrap::isValid() const
+{
+    return m_isValid;
+}
+
+inline void WindowInfoWrap::setIsValid(bool isValid)
+{
+    m_isValid = isValid;
+}
+
+constexpr bool WindowInfoWrap::isActive() const
+{
+    return m_isActive;
+}
+
+inline void WindowInfoWrap::setIsActive(bool isActive)
+{
+    m_isActive = isActive;
+}
+
+constexpr bool WindowInfoWrap::isMinimized() const
+{
+    return m_isMinimized;
+}
+
+inline void WindowInfoWrap::setIsMinimized(bool isMinimized)
+{
+    m_isMinimized = isMinimized;
+}
+
+constexpr bool WindowInfoWrap::isMaximized() const
+{
+    return m_isMaximized;
+}
+
+inline void WindowInfoWrap::setIsMaximized(bool isMaximized)
+{
+    m_isMaximized = isMaximized;
+}
+
+constexpr bool WindowInfoWrap::isFullscreen() const
+{
+    return m_isFullscreen;
+}
+
+inline void WindowInfoWrap::setIsFullscreen(bool isFullscreen)
+{
+    m_isFullscreen = isFullscreen;
+}
+
+constexpr bool WindowInfoWrap::isPlasmaDesktop() const
+{
+    return m_isPlasmaDesktop;
+}
+
+inline void WindowInfoWrap::setIsPlasmaDesktop(bool isPlasmaDesktop)
+{
+    m_isPlasmaDesktop = isPlasmaDesktop;
+}
+
+constexpr QRect WindowInfoWrap::geometry() const
+{
+    return m_geometry;
+}
+
+inline void WindowInfoWrap::setGeometry(const QRect &geometry)
+{
+    m_geometry = geometry;
+}
+
+constexpr WId WindowInfoWrap::wid() const
+{
+    return m_wid;
+}
+
+inline void WindowInfoWrap::setWid(WId wid)
+{
+    m_wid = wid;
+}
+
+// END: definitions
 }
 
 #endif // WINDOWINFOWRAP_H
