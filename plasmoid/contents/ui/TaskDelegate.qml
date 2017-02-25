@@ -28,6 +28,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
+import org.kde.latte 0.1 as Latte
 
 MouseArea{
     id: mainItemContainer
@@ -634,7 +635,7 @@ MouseArea{
 
         ////window previews/////////
         if (isWindow) {
-            if(containsMouse && root.showPreviews && windowSystem.compositingActive){
+            if(containsMouse && root.showPreviews && Latte.WindowSystem.compositingActive){
                 hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
                 //  preparePreviewWindow();
             }
@@ -649,7 +650,7 @@ MouseArea{
 
     onPressed: {
         //console.log("Pressed Task Delegate..");
-        if (windowSystem.compositingActive) {
+        if (Latte.WindowSystem.compositingActive) {
             windowsPreviewDlg.hide(2);
         }
 
@@ -703,7 +704,7 @@ MouseArea{
                 }
                 else{
                     if (model.IsGroupParent) {
-                        if (windowSystem.compositingActive) {
+                        if (Latte.WindowSystem.compositingActive) {
                             root.presentWindows(model.LegacyWinIdList);
                         } else {
                             if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
@@ -969,7 +970,7 @@ MouseArea{
     ///item's added Animation
     SequentialAnimation{
         id:showWindowAnimation
-        property int speed: windowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
+        property int speed: Latte.WindowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
         property bool animationSent: false
 
         ScriptAction{

@@ -18,38 +18,46 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef WINDOWSYSTEM_H
-#define WINDOWSYSTEM_H
+#ifndef QUICKWINDOWSYSTEM_H
+#define QUICKWINDOWSYSTEM_H
 
 #include <QObject>
-#include <QDialog>
+#include <QQmlEngine>
+#include <QJSEngine>
 
 namespace Latte {
 
-class WindowSystem : public QObject {
+/**
+ * @brief The QuickWindowSystem class,
+ * is a tiny class that provide basic information of WindowSystem
+ */
+class QuickWindowSystem final : public QObject {
     Q_OBJECT
 
-    Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged)
+    Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged FINAL)
 
 public:
-    explicit WindowSystem(QObject *parent = nullptr);
-    ~WindowSystem();
-
-    static WindowSystem &self();
+    explicit QuickWindowSystem(QObject *parent = nullptr);
+    virtual ~QuickWindowSystem();
 
     bool compositingActive() const;
-    void skipTaskBar(const QDialog &dialog) const;
 
 signals:
     void compositingChanged();
 
-private slots:
-    void compositingChangedProxy(bool state);
-
 private:
-    bool m_compositing{false};
+   bool m_compositing : 1;
 };
 
-}//LatteDock namespace
+static QObject *windowsystem_qobject_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
 
-#endif
+// NOTE: QML engine is the owner of this resource
+    return new QuickWindowSystem;
+}
+
+}
+
+#endif // QUICKWINDOWSYSTEM_H

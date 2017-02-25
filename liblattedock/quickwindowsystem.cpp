@@ -18,55 +18,41 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "windowsystem.h"
+#include "quickwindowsystem.h"
+
+#include <QDebug>
 
 #include <KWindowSystem>
 
 namespace Latte {
 
-WindowSystem::WindowSystem(QObject *parent) :
+QuickWindowSystem::QuickWindowSystem(QObject *parent) :
     QObject(parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: Wayland compositing active
     } else {
-        compositingChangedProxy(KWindowSystem::self()->compositingActive());
         connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
-                , this, &WindowSystem::compositingChangedProxy);
+                , this, [&](bool enabled){
+            if (m_compositing == enabled)
+                return;
+
+            m_compositing = enabled;
+            emit compositingChanged();
+        });
+
+        m_compositing = KWindowSystem::compositingActive();
     }
 }
 
-WindowSystem::~WindowSystem()
+QuickWindowSystem::~QuickWindowSystem()
 {
+    qDebug() << staticMetaObject.className() << "destructed";
 }
 
-WindowSystem &WindowSystem::self()
-{
-    static WindowSystem ws;
-    return ws;
-}
-
-bool WindowSystem::compositingActive() const
+bool QuickWindowSystem::compositingActive() const
 {
     return m_compositing;
-}
-
-void WindowSystem::skipTaskBar(const QDialog &dialog) const
-{
-    if (KWindowSystem::isPlatformWayland()) {
-        //! TODO: Wayland skip task bar
-    } else {
-        KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);
-    }
-}
-
-void WindowSystem::compositingChangedProxy(bool enable)
-{
-    if (m_compositing == enable)
-        return;
-
-    m_compositing = enable;
-    emit compositingChanged();
 }
 
 } //end of namespace

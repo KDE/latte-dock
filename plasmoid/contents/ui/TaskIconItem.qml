@@ -704,7 +704,7 @@ Item{
         }
 
         function removeTask(){
-            if(!centralItem.toBeDestroyed && plasmoid.configuration.showShadows && windowSystem.compositingActive){
+            if(!centralItem.toBeDestroyed && plasmoid.configuration.showShadows && Latte.WindowSystem.compositingActive){
                 removingAnimation.init();
             }
         }
