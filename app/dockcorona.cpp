@@ -382,8 +382,26 @@ void DockCorona::addDock(Plasma::Containment *containment)
             return;
     }
 
+    QScreen *nextScreen{qGuiApp->primaryScreen()};
+
+    if (containment->screen() >= 0) {
+        QString connector = m_screenPool->connector(containment->screen());
+        bool found{false};
+        foreach(auto scr, qGuiApp->screens()){
+            if (scr && scr->name() == connector){
+                found=true;
+                nextScreen = scr;
+                break;
+            }
+        }
+
+        if (!found)
+            return;
+    }
+
     qDebug() << "Adding dock for container...";
-    auto dockView = new DockView(this);
+    qDebug() << "screen!!! :" << containment->screen() << " - "<<m_screenPool->connector(containment->screen());
+    auto dockView = new DockView(this, nextScreen);
     dockView->init();
     dockView->setContainment(containment);
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);

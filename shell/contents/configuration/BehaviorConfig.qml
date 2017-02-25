@@ -45,10 +45,56 @@ PlasmaComponents.Page {
         //! BEGIN: Location
         ColumnLayout {
             Layout.fillWidth: true
-            spacing: units.smallSpacing
+            spacing: units.largeSpacing
 
             Header {
                 text: i18n("Location")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 1
+
+                Component.onCompleted: {
+                    if (dock.screens.length > 1)
+                        visible = true;
+                    else
+                        visible = false;
+                }
+
+                PlasmaComponents.Label {
+                    text: i18n("Screen:")
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                PlasmaComponents.ComboBox {
+                    id: screenCmb
+                    Layout.fillWidth: true
+                    Component.onCompleted: {
+                        var screens = []
+
+                       // screens.push(i18n("On Primary"));
+
+                        for (var i = 0; i < dock.screens.length; i++) {
+                            screens.push(dock.screens[i].name)
+                        }
+
+                        model = screens;
+
+                        currentIndex = find(dock.currentScreen);
+                        console.log(dock.currentScreen);
+                    }
+
+                    onCurrentIndexChanged: {
+                        console.log("current index changed!!! :"+ currentIndex);
+                        if (currentIndex !== find(dock.currentScreen)) {
+                            console.log("screen must be changed...");
+                            dock.setCurrentScreen(currentText);
+                        }
+                    }
+                }
             }
 
             RowLayout {

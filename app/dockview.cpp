@@ -59,9 +59,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
                      | Qt::WindowDoesNotAcceptFocus);
 
     if (targetScreen)
-        adaptToScreen(targetScreen);
+        setScreenToFollow(targetScreen);
     else
-        adaptToScreen(qGuiApp->primaryScreen());
+        setScreenToFollow(qGuiApp->primaryScreen());
 
     connect(this, &DockView::containmentChanged
     , this, [&]() {
@@ -112,7 +112,8 @@ DockView::~DockView()
 
 void DockView::init()
 {
-    //connect(this, &DockView::screenChanged, this, &DockView::syncGeometry);
+    connect(this, &QQuickWindow::screenChanged, this, &DockView::screenChanged);
+
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::syncGeometry, Qt::UniqueConnection);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
@@ -139,7 +140,7 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
-    if (!screen) {
+/*    if (!screen) {
         return;
     }
 
@@ -153,7 +154,58 @@ void DockView::adaptToScreen(QScreen *screen)
     if (this->containment())
         this->containment()->reactToScreenChange();
 
+    syncGeometry(); */
+}
+
+void DockView::setCurrentScreen(const QString id)
+{
+    if (!m_screenToFollow || m_screenToFollow->name() == id){
+        return;
+    }
+
+    QScreen *nextScreen{nullptr};
+
+    foreach(auto scr, qGuiApp->screens()){
+        if (scr && scr->name() == id){
+            nextScreen = scr;
+            break;
+        }
+    }
+
+    if (nextScreen)
+        setScreenToFollow(nextScreen);
+}
+
+void DockView::setScreenToFollow(QScreen *screen)
+{
+    if (!screen || m_screenToFollow == screen) {
+        return;
+    }
+
+    m_screenToFollow = screen;
+
+    qDebug() << "adapting to screen...";
+
+    setScreen(screen);
+
+    if (this->containment())
+        this->containment()->reactToScreenChange();
+
     syncGeometry();
+}
+
+void DockView::screenChanged(QScreen *scr)
+{
+    if (!scr || m_screenToFollow == scr) {
+        return;
+    }
+
+    emit docksCountChanged();
+
+   //IMPORTAT!!! this code creates crashes when changing plasma
+   //layouts it needs inverstigation!!!
+   // setScreen(m_screenToFollow);
+   // syncGeometry();
 }
 
 void DockView::addNewDock()
@@ -191,6 +243,14 @@ QScreen *DockView::atScreens(QQmlListProperty<QScreen> *property, int index)
 {
     Q_UNUSED(property)
     return qGuiApp->screens().at(index);
+}
+
+QString DockView::currentScreen() const
+{
+    if (m_screenToFollow)
+        return m_screenToFollow->name();
+
+    return "";
 }
 
 void DockView::showConfigurationInterface(Plasma::Applet *applet)
@@ -365,8 +425,11 @@ inline void DockView::syncGeometry()
     if (!(this->screen() && this->containment()))
         return;
 
-    if (qGuiApp->primaryScreen() && screen() != qGuiApp->primaryScreen()){
-        setScreen(qGuiApp->primaryScreen());
+    //if (qGuiApp->primaryScreen() && screen() != qGuiApp->primaryScreen()){
+    //    setScreen(qGuiApp->primaryScreen());
+    //}
+    if (screen() != m_screenToFollow) {
+        setScreenToFollow(m_screenToFollow);
     }
 
     updateEnabledBorders();
