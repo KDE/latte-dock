@@ -37,19 +37,35 @@ Window{
         columns: 2
 
         Text{
-            text: "Window Width"+space
+            text: "Screen id"+space
         }
 
         Text{
-            text: dock.width
+            text: dock.currentScreen
         }
 
         Text{
-            text: "Window Height"+space
+            text: "Screen Geometry"+space
         }
 
         Text{
-            text: dock.height
+            text: dock.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height
+        }
+
+        Text{
+            text: "Window Geometry"+space
+        }
+
+        Text{
+            text: dock.x + "," + dock.y + " "+dock.width+ "x"+dock.height
+        }
+
+        Text{
+            text: "   -----------   "
+        }
+
+        Text{
+            text: " -----------   "
         }
 
         Text{
