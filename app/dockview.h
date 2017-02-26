@@ -197,6 +197,8 @@ private:
     QPointer<QScreen> m_screenToFollow;
     QString m_screenToFollowId;
 
+    QTimer m_screenSyncTimer;
+
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;
 };

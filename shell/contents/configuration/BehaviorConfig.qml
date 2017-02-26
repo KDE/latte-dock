@@ -57,6 +57,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 1
+                visible: false
 
                 function updateScreens() {
                     if (dock.screens.length > 1)
