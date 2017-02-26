@@ -24,11 +24,13 @@
 #include <QHash>
 #include <QString>
 #include <QTimer>
+#include <QAbstractNativeEventFilter>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-class ScreenPool : public QObject {
+class ScreenPool : public QObject, public QAbstractNativeEventFilter
+{
     Q_OBJECT
 
 public:
@@ -49,6 +51,12 @@ public:
 
     //all ids that are known, included screens not enabled at the moment
     QList <int> knownIds() const;
+
+signals:
+    void primaryPoolChanged();
+
+protected:
+    bool nativeEventFilter(const QByteArray & eventType, void * message, long * result) Q_DECL_OVERRIDE;
 
 private:
     void save();

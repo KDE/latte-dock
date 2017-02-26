@@ -26,8 +26,10 @@
 #include "screenpool.h"
 
 #include <QAction>
+#include <QApplication>
 #include <QScreen>
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QQmlContext>
 
 #include <Plasma>
@@ -96,9 +98,11 @@ void DockCorona::load()
 
         m_activitiesStarting = false;
 
-        connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
+        //  connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockCorona::primaryOutputChanged, Qt::UniqueConnection);
-        connect(qGuiApp, &QGuiApplication::screenRemoved, this, &DockCorona::screenRemoved, Qt::UniqueConnection);
+        //  connect(qGuiApp, &QGuiApplication::screenRemoved, this, &DockCorona::screenRemoved, Qt::UniqueConnection);
+        connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &DockCorona::screenCountChanged);
+        connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
 
         loadLayout();
     }
@@ -223,13 +227,13 @@ QRect DockCorona::availableScreenRect(int id) const
             // need calculate available space for top and bottom location,
             // because the left and right are those who dodge others docks
             switch (view->location()) {
-                case Plasma::Types::TopEdge:
-                    available.setTopLeft({available.x(), dockRect.bottom()});
-                    break;
+            case Plasma::Types::TopEdge:
+                available.setTopLeft({available.x(), dockRect.bottom()});
+                break;
 
-                case Plasma::Types::BottomEdge:
-                    available.setBottomLeft({available.x(), dockRect.top()});
-                    break;
+            case Plasma::Types::BottomEdge:
+                available.setBottomLeft({available.x(), dockRect.top()});
+                break;
             }
         }
     }
@@ -240,15 +244,110 @@ QRect DockCorona::availableScreenRect(int id) const
 void DockCorona::addOutput(QScreen *screen)
 {
     Q_ASSERT(screen);
+
+    /* qDebug() << "screen added +++ "<<screen->name();
+    foreach(auto scr, qGuiApp->screens()){
+        qDebug() << "Found screen: "<<scr->name();
+    }*/
+
+    /* foreach(auto cont, containments()) {
+        if (m_screenPool->connector(cont->screen()) == screen->name()) {
+            auto view =  m_dockViews.take(cont);
+            if (!view) {
+                addDock(cont);
+            }
+        }
+    } */
 }
 
 void DockCorona::primaryOutputChanged()
 {
+    qDebug() << "primary changed ### "<< qGuiApp->primaryScreen()->name();
+    foreach(auto scr, qGuiApp->screens()){
+        qDebug() << "Found screen: "<<scr->name();
+    }
+
+    if (m_dockViews.count()==1 && qGuiApp->screens().size()==1) {
+        foreach(auto view, m_dockViews) {
+            view->setScreenToFollow(qGuiApp->primaryScreen());
+        }
+    }
 }
 
 void DockCorona::screenRemoved(QScreen *screen)
 {
     Q_ASSERT(screen);
+    /* qDebug() << "screen removed --- "<<screen->name();
+    foreach(auto scr, qGuiApp->screens()){
+        qDebug() << "Found screen: "<<scr->name();
+    }*/
+
+    /*   if (m_dockViews.size() > 1) {
+        foreach(auto cont, containments()) {
+            if (m_screenPool->connector(cont->screen()) == screen->name()) {
+                auto view =  m_dockViews.take(cont);
+                if (view) {
+                    view->deleteLater();
+                }
+            }
+        }
+    } */
+}
+
+void DockCorona::screenCountChanged()
+{
+    QTimer::singleShot(2500, this, &DockCorona::screenCountChangedTimer);
+}
+
+void DockCorona::screenCountChangedTimer()
+{
+    qDebug() << "screen count changed -+-+ "<< qGuiApp->screens().size();
+
+    qDebug() << "adding consideration....";
+    foreach(auto scr, qGuiApp->screens()){
+        qDebug() << "Found screen: "<<scr->name();
+
+        foreach(auto cont, containments()) {
+            int id = cont->screen();
+
+            if (id == -1){
+                id = cont->lastScreen();
+            }
+
+            if ((m_screenPool->connector(id) == scr->name()) && (!m_dockViews.contains(cont))) {
+                qDebug() << "screen Count signal: view must be added... for:"<< scr->name();
+                addDock(cont);
+            }
+        }
+    }
+
+    qDebug() << "removing consideration....";
+
+    foreach(auto view, m_dockViews){
+        bool found{false};
+        foreach(auto scr, qGuiApp->screens()){
+            int id = view->containment()->screen();
+
+            if (id == -1){
+                id = view->containment()->lastScreen();
+            }
+
+            if(scr->name() == view->currentScreen()){
+                found = true;
+                break;
+            }
+        }
+
+        if (!found && (m_dockViews.size()>1) && m_dockViews.contains(view->containment())) {
+            qDebug() << "screen Count signal: view must be deleted... for:"<<view->currentScreen();
+            auto viewToDelete = m_dockViews.take(view->containment());
+            viewToDelete->deleteLater();
+        } else {
+            view->reconsiderScreen();
+        }
+    }
+
+    qDebug() << "end of screens count change....";
 }
 
 int DockCorona::primaryScreenId() const
@@ -268,8 +367,8 @@ int DockCorona::docksCount(int screen) const
 
     for (const auto &view : m_dockViews) {
         if (view && view->containment()
-            && view->containment()->screen() == screen
-            && !view->containment()->destroyed()) {
+                && view->containment()->screen() == screen
+                && !view->containment()->destroyed()) {
             ++docks;
         }
     }
@@ -301,13 +400,13 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
 
     for (auto *view : m_dockViews) {
         if (view && view->containment()
-            && view->containment()->screen() == fixedScreen) {
+                && view->containment()->screen() == fixedScreen) {
             edges.removeOne(view->location());
         }
     }
@@ -349,13 +448,13 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     //It is also correct for desktops *that have the correct activity()*
     //a containment with lastScreen() == 0 but another activity,
     //won't be associated to a screen
-//     qDebug() << "ShellCorona screenForContainment: " << containment << " Last screen is " << containment->lastScreen();
+    //     qDebug() << "ShellCorona screenForContainment: " << containment << " Last screen is " << containment->lastScreen();
 
     for (auto screen : qGuiApp->screens()) {
         // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
         if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
-            (containment->activity() == m_activityConsumer->currentActivity() ||
-             containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
+                (containment->activity() == m_activityConsumer->currentActivity() ||
+                 containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
             return containment->lastScreen();
         }
     }
@@ -384,8 +483,14 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
     QScreen *nextScreen{qGuiApp->primaryScreen()};
 
-    if (containment->screen() >= 0) {
-        QString connector = m_screenPool->connector(containment->screen());
+    int id = containment->screen();
+
+    if (id == -1) {
+        id = containment->lastScreen();
+    }
+
+    if (id >= 0) {
+        QString connector = m_screenPool->connector(id);
         bool found{false};
         foreach(auto scr, qGuiApp->screens()){
             if (scr && scr->name() == connector){
@@ -417,6 +522,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
 void DockCorona::destroyedChanged(bool destroyed)
 {
+    qDebug() << "dock containment destroyed changed!!!!";
     Plasma::Containment *sender = qobject_cast<Plasma::Containment *>(QObject::sender());
 
     if (!sender) {
@@ -434,6 +540,7 @@ void DockCorona::destroyedChanged(bool destroyed)
 
 void DockCorona::dockContainmentDestroyed(QObject *cont)
 {
+    qDebug() << "dock containment destroyed!!!!";
     auto view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
 
     if (view)

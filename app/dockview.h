@@ -112,6 +112,7 @@ public:
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
+    void reconsiderScreen();
 
 public slots:
     Q_INVOKABLE void addNewDock();
@@ -184,6 +185,7 @@ private:
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
     QPointer<QScreen> m_screenToFollow;
+    QString m_screenToFollowId;
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;

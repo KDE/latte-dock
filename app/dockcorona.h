@@ -84,6 +84,8 @@ private slots:
     void addOutput(QScreen *screen);
     void primaryOutputChanged();
     void screenRemoved(QScreen *screen);
+    void screenCountChanged();
+    void screenCountChangedTimer();
 
 private:
     bool appletExists(uint containmentId, uint appletId) const;
