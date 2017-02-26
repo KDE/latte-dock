@@ -195,6 +195,8 @@ void DockConfigView::showEvent(QShowEvent *ev)
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
+
+    emit showSignal();
 }
 
 void DockConfigView::hideEvent(QHideEvent *ev)
