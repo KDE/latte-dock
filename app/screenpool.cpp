@@ -53,14 +53,15 @@ void ScreenPool::load()
     if (primary) {
         m_primaryConnector = primary->name();
         if (!m_primaryConnector.isEmpty()) {
-            m_connectorForId[0] = m_primaryConnector;
-            m_idForConnector[m_primaryConnector] = 0;
+            //m_connectorForId[0] = m_primaryConnector;
+            //m_idForConnector[m_primaryConnector] = 0;
         }
     }
 
     //restore the known ids to connector mappings
     foreach (const QString &key, m_configGroup.keyList()) {
         QString connector = m_configGroup.readEntry(key, QString());
+        qDebug() << "connector :" << connector << " - " <<key;
         if (!key.isEmpty() && !connector.isEmpty() &&
             !m_connectorForId.contains(key.toInt()) &&
             !m_idForConnector.contains(connector)) {
@@ -142,10 +143,11 @@ void ScreenPool::insertScreenMapping(int id, const QString &connector)
 
     if (id == 0) {
         m_primaryConnector = connector;
+    } else {
+        m_connectorForId[id] = connector;
+        m_idForConnector[connector] = id;
     }
 
-    m_connectorForId[id] = connector;
-    m_idForConnector[connector] = id;
     save();
 }
 
@@ -167,7 +169,10 @@ QString ScreenPool::connector(int id) const
 
 int ScreenPool::firstAvailableId() const
 {
-    int i = 0;
+    //start counting from 10, first numbers will
+    //be used for special cases.
+    //e.g primaryScreen, id=0
+    int i = 10;
     //find the first integer not stored in m_connectorForId
     //m_connectorForId is the only map, so the ids are sorted
     foreach (int existingId, m_connectorForId.keys()) {
