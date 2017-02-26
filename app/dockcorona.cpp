@@ -51,6 +51,7 @@ DockCorona::DockCorona(QObject *parent)
       m_activityConsumer(new KActivities::Consumer(this))
 {
     KPackage::Package package(new DockPackage(this));
+    m_screenPool->load();
 
     if (!package.isValid()) {
         qWarning() << staticMetaObject.className()
@@ -94,7 +95,6 @@ void DockCorona::load()
 {
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
         disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
-        m_screenPool->load();
 
         m_activitiesStarting = false;
 
@@ -245,6 +245,12 @@ void DockCorona::addOutput(QScreen *screen)
 {
     Q_ASSERT(screen);
 
+    int id = m_screenPool->id(screen->name());
+    if (id==-1){
+        int newId = m_screenPool->firstAvailableId();
+        m_screenPool->insertScreenMapping(newId, screen->name());
+    }
+
     /* qDebug() << "screen added +++ "<<screen->name();
     foreach(auto scr, qGuiApp->screens()){
         qDebug() << "Found screen: "<<scr->name();
@@ -304,6 +310,7 @@ void DockCorona::screenCountChangedTimer()
     qDebug() << "screen count changed -+-+ "<< qGuiApp->screens().size();
 
     qDebug() << "adding consideration....";
+    qDebug() << "dock view running : " << m_dockViews.count();
     foreach(auto scr, qGuiApp->screens()){
         qDebug() << "Found screen: "<<scr->name();
 
@@ -489,8 +496,11 @@ void DockCorona::addDock(Plasma::Containment *containment)
         id = containment->lastScreen();
     }
 
+    qDebug() << "add dock - containment id : "<< id;
+
     if (id >= 0) {
         QString connector = m_screenPool->connector(id);
+        qDebug() << "add dock - connector : "<< connector;
         bool found{false};
         foreach(auto scr, qGuiApp->screens()){
             if (scr && scr->name() == connector){
