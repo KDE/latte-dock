@@ -44,6 +44,7 @@ namespace Latte {
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
+    Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
@@ -67,7 +68,6 @@ class DockView : public PlasmaQuick::ContainmentView {
 
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
-
 public:
     DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr);
     virtual ~DockView();
@@ -79,6 +79,9 @@ public:
 
     void resizeWindow();
     void syncGeometry();
+
+    bool onPrimary() const;
+    void setOnPrimary(bool flag);
 
     int currentThickness() const;
 
@@ -158,6 +161,7 @@ signals:
     void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
+    void onPrimaryChanged();
     void visibilityChanged();
     void maskAreaChanged();
     void screenGeometryChanged();
@@ -172,6 +176,9 @@ private slots:
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
 
+    void restoreConfig();
+    void saveConfig();
+
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
@@ -182,6 +189,7 @@ private:
     Plasma::Containment *containmentById(uint id);
 
     bool m_drawShadows{false};
+    bool m_onPrimary{true};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_shadow{0};

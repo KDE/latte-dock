@@ -61,6 +61,19 @@ Window{
         }
 
         Text{
+            text: "On Primary"+space
+        }
+
+        Text{
+            text: {
+                if (dock.onPrimary)
+                    return "Yes";
+                else
+                    return "No";
+            }
+        }
+
+        Text{
             text: "   -----------   "
         }
 

@@ -67,7 +67,7 @@ PlasmaComponents.Page {
 
                     var screens = []
 
-                   // screens.push(i18n("On Primary"));
+                    screens.push(i18n("On Primary"));
 
                     for (var i = 0; i < dock.screens.length; i++) {
                         screens.push(dock.screens[i].name)
@@ -75,7 +75,12 @@ PlasmaComponents.Page {
 
                     screenCmb.model = screens;
 
-                    screenCmb.currentIndex = screenCmb.find(dock.currentScreen);
+                    if (dock.onPrimary) {
+                        screenCmb.currentIndex = 0;
+                    } else {
+                        screenCmb.currentIndex = screenCmb.find(dock.currentScreen);
+                    }
+
                     console.log(dock.currentScreen);
                 }
 
@@ -95,9 +100,12 @@ PlasmaComponents.Page {
                     Component.onCompleted: screenRow.updateScreens();
 
                     onActivated: {
-                        if (index !== find(dock.currentScreen)) {
+                        if (index === 0) {
+                            dock.onPrimary = true;
+                        } else if (index>0 && (index !== find(dock.currentScreen) || dock.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
+                            dock.onPrimary = false;
                             dock.setCurrentScreen(textAt(index));
                         }
                     }
