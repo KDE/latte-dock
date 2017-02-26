@@ -64,9 +64,11 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         setScreenToFollow(qGuiApp->primaryScreen());
 
     connect(this, &DockView::containmentChanged
-    , this, [&]() {
+            , this, [&]() {
+        qDebug() << "entered creating step 1...";
         if (!this->containment())
             return;
+        qDebug() << "entered creating step 2...";
 
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
@@ -114,7 +116,8 @@ void DockView::init()
 {
     connect(this, &QQuickWindow::screenChanged, this, &DockView::screenChanged);
 
-    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::syncGeometry, Qt::UniqueConnection);
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::reconsiderScreen);
+    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::reconsiderScreen);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
@@ -140,7 +143,7 @@ void DockView::init()
 
 void DockView::adaptToScreen(QScreen *screen)
 {
-/*    if (!screen) {
+    /*    if (!screen) {
         return;
     }
 
@@ -183,6 +186,7 @@ void DockView::setScreenToFollow(QScreen *screen)
     }
 
     m_screenToFollow = screen;
+    m_screenToFollowId = screen->name();
 
     qDebug() << "adapting to screen...";
 
@@ -194,18 +198,51 @@ void DockView::setScreenToFollow(QScreen *screen)
     syncGeometry();
 }
 
+void DockView::reconsiderScreen()
+{
+    qDebug() << "  Delayer  ";
+    foreach(auto scr, qGuiApp->screens()){
+        qDebug() << "      D, found screen: "<<scr->name();
+    }
+
+    foreach(auto scr, qGuiApp->screens()){
+        if (scr && scr->name() == m_screenToFollowId){
+            setScreenToFollow(scr);
+            syncGeometry();
+        }
+    }
+
+    emit docksCountChanged();
+}
+
 void DockView::screenChanged(QScreen *scr)
 {
     if (!scr || m_screenToFollow == scr) {
         return;
     }
 
-    emit docksCountChanged();
+    qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
+    QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
 
-   //IMPORTAT!!! this code creates crashes when changing plasma
-   //layouts it needs inverstigation!!!
-   // setScreen(m_screenToFollow);
-   // syncGeometry();
+    /*bool found{false};
+    foreach(auto scr, qGuiApp->screens()){
+        qDebug() << "Found screen: "<<scr->name();
+        if (scr && scr == m_screenToFollow){
+            found=true;
+            //break;
+        }
+    }
+
+
+
+    if (found) {
+        //IMPORTAT!!! this code creates crashes when changing plasma
+        //layouts it needs inverstigation!!!
+        setScreen(m_screenToFollow);
+        syncGeometry();
+    }*/
+  //  emit docksCountChanged();
+
 }
 
 void DockView::addNewDock()
@@ -247,10 +284,7 @@ QScreen *DockView::atScreens(QQmlListProperty<QScreen> *property, int index)
 
 QString DockView::currentScreen() const
 {
-    if (m_screenToFollow)
-        return m_screenToFollow->name();
-
-    return "";
+    return m_screenToFollowId;
 }
 
 void DockView::showConfigurationInterface(Plasma::Applet *applet)
@@ -340,7 +374,7 @@ void DockView::setLocalDockGeometry(const QRect &geometry)
 void DockView::updateAbsDockGeometry(const QRect &localDockGeometry)
 {
     QRect absGeometry {x() + localDockGeometry.x(), y() + localDockGeometry.y()
-                       , localDockGeometry.width() - 1, localDockGeometry.height() - 1};
+                , localDockGeometry.width() - 1, localDockGeometry.height() - 1};
 
     if (m_absGeometry == absGeometry)
         return;
@@ -363,58 +397,58 @@ void DockView::updatePosition()
     int cleanThickness = normalThickness() - shadow();
 
     switch (location()) {
-        case Plasma::Types::TopEdge:
-            screenGeometry = this->screen()->geometry();
+    case Plasma::Types::TopEdge:
+        screenGeometry = this->screen()->geometry();
 
-            if (m_drawShadows) {
-                position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
-            } else {
-                position = {screenGeometry.x(), screenGeometry.y()};
-            }
+        if (m_drawShadows) {
+            position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
+        } else {
+            position = {screenGeometry.x(), screenGeometry.y()};
+        }
 
-            break;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            screenGeometry = this->screen()->geometry();
-            qDebug() << "screen geometry: "<<screenGeometry;
+    case Plasma::Types::BottomEdge:
+        screenGeometry = this->screen()->geometry();
+        qDebug() << "screen geometry: "<<screenGeometry;
 
-            if (m_drawShadows) {
-                position = {screenGeometry.x() + length(screenGeometry.width()),
-                            screenGeometry.y() + screenGeometry.height() - cleanThickness
-                           };
-            } else {
-                position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
-            }
+        if (m_drawShadows) {
+            position = {screenGeometry.x() + length(screenGeometry.width()),
+                        screenGeometry.y() + screenGeometry.height() - cleanThickness
+                       };
+        } else {
+            position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
+        }
 
-            break;
+        break;
 
-        case Plasma::Types::RightEdge:
-            screenGeometry = corona()->availableScreenRect(this->containment()->screen());
+    case Plasma::Types::RightEdge:
+        screenGeometry = corona()->availableScreenRect(this->containment()->screen());
 
-            if (m_drawShadows && !mask().isNull()) {
-                position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
-                            screenGeometry.y() + length(screenGeometry.height())
-                           };
-            } else {
-                position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
-            }
+        if (m_drawShadows && !mask().isNull()) {
+            position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
+                        screenGeometry.y() + length(screenGeometry.height())
+                       };
+        } else {
+            position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
+        }
 
-            break;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            screenGeometry = corona()->availableScreenRect(this->containment()->screen());
+    case Plasma::Types::LeftEdge:
+        screenGeometry = corona()->availableScreenRect(this->containment()->screen());
 
-            if (m_drawShadows && !mask().isNull()) {
-                position = {screenGeometry.x(), screenGeometry.y() + length(screenGeometry.height())};
-            } else {
-                position = {screenGeometry.x(), screenGeometry.y()};
-            }
+        if (m_drawShadows && !mask().isNull()) {
+            position = {screenGeometry.x(), screenGeometry.y() + length(screenGeometry.height())};
+        } else {
+            position = {screenGeometry.x(), screenGeometry.y()};
+        }
 
-            break;
+        break;
 
-        default:
-            qWarning() << "wrong location, couldn't update the panel position"
-                       << location();
+    default:
+        qWarning() << "wrong location, couldn't update the panel position"
+                   << location();
     }
 
     setPosition(position);
@@ -428,13 +462,30 @@ inline void DockView::syncGeometry()
     //if (qGuiApp->primaryScreen() && screen() != qGuiApp->primaryScreen()){
     //    setScreen(qGuiApp->primaryScreen());
     //}
-    if (screen() != m_screenToFollow) {
-        setScreenToFollow(m_screenToFollow);
+    bool found{false};
+    if (this->screen() != m_screenToFollow) {
+        qDebug() << "Sync Geometry screens incosistent!!!!";
+        foreach(auto scr, qGuiApp->screens()){
+            qDebug() << "Found screen: "<<scr->name();
+            if (scr && scr->name() == m_screenToFollowId){
+                qDebug() << " found ... ";
+                //setScreenToFollow(scr);
+              //  found=true;
+            }
+        }
+        QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
+
+        //if (found)
+           // setScreenToFollow(m_screenToFollow);
+    } else {
+        found = true;
     }
 
-    updateEnabledBorders();
-    resizeWindow();
-    updatePosition();
+    if (found) {
+        updateEnabledBorders();
+        resizeWindow();
+        updatePosition();
+    }
     // qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
 
@@ -442,7 +493,7 @@ void DockView::statusChanged(Plasma::Types::ItemStatus status)
 {
     if (containment()) {
         if (containment()->status() >= Plasma::Types::NeedsAttentionStatus &&
-            containment()->status() != Plasma::Types::HiddenStatus) {
+                containment()->status() != Plasma::Types::HiddenStatus) {
             m_visibility->setBlockHiding(true);
         } else {
             m_visibility->setBlockHiding(false);
@@ -491,18 +542,18 @@ void DockView::updateFormFactor()
         return;
 
     switch (location()) {
-        case Plasma::Types::TopEdge:
-        case Plasma::Types::BottomEdge:
-            this->containment()->setFormFactor(Plasma::Types::Horizontal);
-            break;
+    case Plasma::Types::TopEdge:
+    case Plasma::Types::BottomEdge:
+        this->containment()->setFormFactor(Plasma::Types::Horizontal);
+        break;
 
-        case Plasma::Types::LeftEdge:
-        case Plasma::Types::RightEdge:
-            this->containment()->setFormFactor(Plasma::Types::Vertical);
-            break;
+    case Plasma::Types::LeftEdge:
+    case Plasma::Types::RightEdge:
+        this->containment()->setFormFactor(Plasma::Types::Vertical);
+        break;
 
-        default:
-            qWarning() << "wrong location, couldn't update the panel position" << location();
+    default:
+        qWarning() << "wrong location, couldn't update the panel position" << location();
     }
 }
 
@@ -958,7 +1009,7 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
     }
 
     if (this->containment()->immutability() == Plasma::Types::Mutable &&
-        (this->containment()->containmentType() != Plasma::Types::PanelContainment || this->containment()->isUserConfiguring())) {
+            (this->containment()->containmentType() != Plasma::Types::PanelContainment || this->containment()->isUserConfiguring())) {
         QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
 
         //qDebug() << "checking for removal" << closeApplet;
@@ -980,7 +1031,7 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     }
 
     if (this->containment()->corona()->immutability() != Plasma::Types::Mutable &&
-        !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
+            !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
         //qDebug() << "immutability";
         return;
     }
@@ -1010,7 +1061,7 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
         //a better plugin.  note that if the user sets no-plugin this won't happen...
         if ((this->containment()->containmentType() != Plasma::Types::PanelContainment &&
              this->containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
-            this->containment()->actions()->action(QStringLiteral("configure"))) {
+                this->containment()->actions()->action(QStringLiteral("configure"))) {
             desktopMenu->addAction(this->containment()->actions()->action(QStringLiteral("configure")));
         }
     } else {
@@ -1050,24 +1101,24 @@ void DockView::updateEnabledBorders()
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
     switch (location()) {
-        case Plasma::Types::TopEdge:
-            borders &= ~Plasma::FrameSvg::TopBorder;
-            break;
+    case Plasma::Types::TopEdge:
+        borders &= ~Plasma::FrameSvg::TopBorder;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            break;
+    case Plasma::Types::LeftEdge:
+        borders &= ~Plasma::FrameSvg::LeftBorder;
+        break;
 
-        case Plasma::Types::RightEdge:
-            borders &= ~Plasma::FrameSvg::RightBorder;
-            break;
+    case Plasma::Types::RightEdge:
+        borders &= ~Plasma::FrameSvg::RightBorder;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            borders &= ~Plasma::FrameSvg::BottomBorder;
-            break;
+    case Plasma::Types::BottomEdge:
+        borders &= ~Plasma::FrameSvg::BottomBorder;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if ((location() == Plasma::Types::LeftEdge || location() == Plasma::Types::RightEdge)) {

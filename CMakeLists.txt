@@ -28,7 +28,7 @@ set_package_properties(X11 PROPERTIES DESCRIPTION "X11 libraries"
     PURPOSE "Required for building the X11 based workspace")
 
 if(X11_FOUND)
-    find_package(XCB MODULE REQUIRED COMPONENTS XCB)
+    find_package(XCB MODULE REQUIRED COMPONENTS XCB RANDR)
     set_package_properties(XCB PROPERTIES TYPE REQUIRED)
     find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS X11Extras)
 endif()
