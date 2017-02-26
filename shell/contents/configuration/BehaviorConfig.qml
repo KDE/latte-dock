@@ -95,10 +95,10 @@ PlasmaComponents.Page {
                     Component.onCompleted: screenRow.updateScreens();
 
                     onActivated: {
-                        if (currentIndex !== find(dock.currentScreen)) {
-                            console.log("current index changed!!! :"+ currentIndex);
+                        if (index !== find(dock.currentScreen)) {
+                            console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
-                            dock.setCurrentScreen(currentText);
+                            dock.setCurrentScreen(textAt(index));
                         }
                     }
                 }
