@@ -48,7 +48,6 @@
 #define CRED     "\e[0;31m"
 
 inline void configureAboutData();
-inline void commandLineOptions();
 
 int main(int argc, char **argv)
 {    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
@@ -159,9 +158,3 @@ inline void configureAboutData()
 
     KAboutData::setApplicationData(about);
 }
-
-inline void commandLineOptions()
-{
-
-}
-
