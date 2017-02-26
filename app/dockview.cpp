@@ -93,6 +93,10 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
     }
+
+    m_screenSyncTimer.setSingleShot(true);
+    m_screenSyncTimer.setInterval(3000);
+    connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
 }
 
 DockView::~DockView()
@@ -226,7 +230,8 @@ void DockView::screenChanged(QScreen *scr)
    // }
 
   //  qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
-    QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
+    m_screenSyncTimer.start();
+    //QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
 
     /*bool found{false};
     foreach(auto scr, qGuiApp->screens()){
@@ -477,7 +482,8 @@ inline void DockView::syncGeometry()
               //  found=true;
             }
         }
-        QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
+        m_screenSyncTimer.start();
+        //QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
 
         //if (found)
            // setScreenToFollow(m_screenToFollow);
