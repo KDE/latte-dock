@@ -41,6 +41,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_blockFocusLost(false),
       m_dockView(dockView)
 {
+    setScreen(m_dockView->screen());
     if (containment) {
         setIcon(QIcon::fromTheme(containment->corona()->kPackage().metadata().iconName()));
     }
@@ -87,6 +88,7 @@ void DockConfigView::init()
     kdeclarative.setupBindings();
     auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
+    syncGeometry();
     syncSlideEffect();
 }
 
@@ -114,10 +116,10 @@ void DockConfigView::syncGeometry()
 
             if (location == Plasma::Types::TopEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
-                            , clearThickness);
+                            , sGeometry.y() + clearThickness);
             } else if (location == Plasma::Types::BottomEdge) {
                 setPosition(sGeometry.center().x() - size.width() / 2
-                            , sGeometry.height() - clearThickness - size.height());
+                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height());
             }
         }
         break;
@@ -129,10 +131,10 @@ void DockConfigView::syncGeometry()
             resize(size);
 
             if (location == Plasma::Types::LeftEdge) {
-                setPosition(clearThickness
+                setPosition(sGeometry.x() + clearThickness
                             , sGeometry.center().y() - size.height() / 2);
             } else if (location == Plasma::Types::RightEdge) {
-                setPosition(sGeometry.width() - clearThickness - size.width()
+                setPosition(sGeometry.x() + sGeometry.width() - clearThickness - size.width()
                             , sGeometry.center().y() - size.height() / 2);
             }
         }
