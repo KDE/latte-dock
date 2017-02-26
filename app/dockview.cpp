@@ -47,16 +47,16 @@ namespace Latte {
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
-{
+{   
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
     setIcon(QIcon::fromTheme(corona->kPackage().metadata().iconName()));
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
     setFlags(Qt::FramelessWindowHint
-                     | Qt::WindowStaysOnTopHint
-                     | Qt::NoDropShadowWindowHint
-                     | Qt::WindowDoesNotAcceptFocus);
+             | Qt::WindowStaysOnTopHint
+             | Qt::NoDropShadowWindowHint
+             | Qt::WindowDoesNotAcceptFocus);
 
     if (targetScreen)
         setScreenToFollow(targetScreen);
@@ -65,10 +65,12 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
 
     connect(this, &DockView::containmentChanged
             , this, [&]() {
-        qDebug() << "entered creating step 1...";
+
         if (!this->containment())
             return;
-        qDebug() << "entered creating step 2...";
+
+        restoreConfig();
+        reconsiderScreen();
 
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
@@ -135,6 +137,9 @@ void DockView::init()
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
+
+    connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
+    connect(this, &DockView::onPrimaryChanged, this, &DockView::reconsiderScreen);
 
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
@@ -212,11 +217,17 @@ void DockView::reconsiderScreen()
         qDebug() << "      D, found screen: "<<scr->name();
     }
 
-    foreach(auto scr, qGuiApp->screens()){
-        if (scr && scr->name() == m_screenToFollowId){
-            connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
-            setScreenToFollow(scr);
-            syncGeometry();
+    if (m_onPrimary && screen()!=qGuiApp->primaryScreen()) {
+        connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
+        setScreenToFollow(qGuiApp->primaryScreen());
+        syncGeometry();
+    } else {
+        foreach(auto scr, qGuiApp->screens()){
+            if (scr && scr->name() == m_screenToFollowId){
+                connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
+                setScreenToFollow(scr);
+                syncGeometry();
+            }
         }
     }
 
@@ -225,11 +236,11 @@ void DockView::reconsiderScreen()
 
 void DockView::screenChanged(QScreen *scr)
 {
-  //  if (!scr || m_screenToFollow == scr) {
+    //  if (!scr || m_screenToFollow == scr) {
     //    return;
-   // }
+    // }
 
-  //  qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
+    //  qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
     m_screenSyncTimer.start();
     //QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
 
@@ -250,7 +261,7 @@ void DockView::screenChanged(QScreen *scr)
         setScreen(m_screenToFollow);
         syncGeometry();
     }*/
-  //  emit docksCountChanged();
+    //  emit docksCountChanged();
 
 }
 
@@ -474,19 +485,19 @@ inline void DockView::syncGeometry()
     bool found{false};
     if (this->screen() != m_screenToFollow) {
         qDebug() << "Sync Geometry screens incosistent!!!!";
-        foreach(auto scr, qGuiApp->screens()){
+        /*foreach(auto scr, qGuiApp->screens()){
             qDebug() << "Found screen: "<<scr->name();
             if (scr && scr->name() == m_screenToFollowId){
                 qDebug() << " found ... ";
                 //setScreenToFollow(scr);
-              //  found=true;
+                //  found=true;
             }
-        }
+        }*/
         m_screenSyncTimer.start();
         //QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
 
         //if (found)
-           // setScreenToFollow(m_screenToFollow);
+        // setScreenToFollow(m_screenToFollow);
     } else {
         found = true;
     }
@@ -589,6 +600,21 @@ void DockView::setDrawShadows(bool draw)
     }
 
     emit drawShadowsChanged();
+}
+
+bool DockView::onPrimary() const
+{
+    return m_onPrimary;
+}
+
+void DockView::setOnPrimary(bool flag)
+{
+    if (m_onPrimary == flag){
+        return;
+    }
+
+    m_onPrimary = flag;
+    emit onPrimaryChanged();
 }
 
 float DockView::maxLength() const
@@ -1185,6 +1211,27 @@ void DockView::updateEnabledBorders()
 }
 
 //!END draw panel shadows outside the dock window
+
+//!BEGIN configuration functions
+void DockView::saveConfig()
+{
+    if (!this->containment())
+        return;
+
+    auto config = this->containment()->config();
+    config.writeEntry("onPrimary", m_onPrimary);
+    this->containment()->configNeedsSaving();
+}
+
+void DockView::restoreConfig()
+{
+    if (!this->containment())
+        return;
+
+    auto config = this->containment()->config();
+    setOnPrimary(config.readEntry("onPrimary", true));
+}
+//!END configuration functions
 
 }
 //!END namespace
