@@ -552,9 +552,9 @@ QStringList DockView::debugFlags() const
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona)
-        return dockCorona->debugFlags();
+        return qGuiApp->arguments();
 
-    return QStringList();
+    return {};
 }
 
 bool DockView::tasksPresent()
@@ -578,6 +578,11 @@ bool DockView::event(QEvent *e)
 {
     emit eventTriggered(e);
 
+    if (e->type() == QEvent::Leave) {
+        engine()->collectGarbage();
+        engine()->clearComponentCache();
+        engine()->trimComponentCache();
+    }
     return ContainmentView::event(e);
 }
 

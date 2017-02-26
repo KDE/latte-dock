@@ -22,6 +22,7 @@
 #include "config-latte.h"
 
 #include <memory>
+#include <csignal>
 
 #include <QApplication>
 #include <QDebug>
@@ -36,6 +37,7 @@
 #include <KLocalizedString>
 #include <KAboutData>
 
+
 //! COLORS
 #define CNORMAL  "\e[0m"
 #define CIGREEN  "\e[1;32m"
@@ -46,25 +48,10 @@
 #define CRED     "\e[0;31m"
 
 inline void configureAboutData();
-
-void noMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    Q_UNUSED(type);
-    Q_UNUSED(context);
-    Q_UNUSED(msg);
-}
+inline void commandLineOptions();
 
 int main(int argc, char **argv)
-{
-    QString tmpDir = QDir::tempPath();
-    QLockFile lockFile(tmpDir + "/latte-dock.lock");
-
-    if (!lockFile.tryLock(100)) {
-        qDebug() << i18n("Warning: An instance of Latte application is already running!!!");
-        exit(0);
-    }
-
-    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
+{    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
     //     - dialog continually expands (347951)
     //     - Text element text is screwed (QTBUG-42606)
     //     - Panel struts (350614)
@@ -76,39 +63,65 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     KLocalizedString::setApplicationDomain("latte-dock");
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("latte-dock")));
+
     configureAboutData();
 
-    //! set pattern for debug messages
-    //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
-    qSetMessagePattern(QStringLiteral(
-                           CIGREEN "[%{type} " CGREEN "%{time h:mm:ss.zz}" CIGREEN "]" CNORMAL
-#ifndef QT_NO_DEBUG
-                           CIRED " [" CCYAN "%{function}" CIRED ":" CCYAN "%{line}" CIRED "]"
-#endif
-                           CICYAN " - " CNORMAL "%{message}"
-                           CIRED "%{if-fatal}\n%{backtrace depth=8 separator=\"\n\"}%{endif}"
-                           "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addOptions({
+       {{"r", "replace"}, i18nc("command line", "Replace the current dock instance")}
+     , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout")}
+     , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs)")}
+     , {"graphics", i18nc("command line", "Draw boxes around of the applets")}
+     , {"with-window", i18nc("command line", "Open a window with much debug information")}
+    });
 
-    //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
-    QStringList debugFlags;
+    parser.process(app);
 
-    if (!app.arguments().contains(QLatin1String("--debug"))) {
-        qInstallMessageHandler(noMessageOutput);
-    } else {
-        if (app.arguments().contains(QLatin1String("--with-window"))) {
-            debugFlags.append("--with-window");
-        }
+    QLockFile lockFile {QDir::tempPath() + "/latte-dock.lock"};
 
-        if (app.arguments().contains(QLatin1String("--graphics"))) {
-            debugFlags.append("--graphics");
-        }
-
-        if (app.arguments().contains(QLatin1String("--mask"))) {
-            debugFlags.append("--mask");
+    int timeout {100};
+    if (parser.isSet(QStringLiteral("replace"))) {
+        qint64 pid{-1};
+        if (lockFile.getLockInfo(&pid, nullptr, nullptr)) {
+            kill(static_cast<__pid_t>(pid), SIGINT);
+            timeout = 3000;
         }
     }
 
-    Latte::DockCorona corona(debugFlags);
+    if (!lockFile.tryLock(timeout)) {
+        qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
+        qGuiApp->exit();
+    }
+
+    if (parser.isSet(QStringLiteral("d")) || parser.isSet(QStringLiteral("m"))) {
+    //! set pattern for debug messages
+    //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
+
+        qSetMessagePattern(QStringLiteral(
+                               CIGREEN "[%{type} " CGREEN "%{time h:mm:ss.zz}" CIGREEN "]" CNORMAL
+    #ifndef QT_NO_DEBUG
+                               CIRED " [" CCYAN "%{function}" CIRED ":" CCYAN "%{line}" CIRED "]"
+    #endif
+                               CICYAN " - " CNORMAL "%{message}"
+                               CIRED "%{if-fatal}\n%{backtrace depth=8 separator=\"\n\"}%{endif}"
+                               "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
+    } else {
+        const auto noMessageOutput = [](QtMsgType, const QMessageLogContext&, const QString&){};
+        qInstallMessageHandler(noMessageOutput);
+    }
+
+    //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
+
+    auto signal_handler = [](int) {
+        qGuiApp->exit();
+    };
+
+    std::signal(SIGKILL, signal_handler);
+    std::signal(SIGINT, signal_handler);
+
+    Latte::DockCorona corona;
     return app.exec();
 }
 
@@ -146,3 +159,9 @@ inline void configureAboutData()
 
     KAboutData::setApplicationData(about);
 }
+
+inline void commandLineOptions()
+{
+
+}
+
