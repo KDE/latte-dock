@@ -116,11 +116,14 @@ void DockView::init()
 {
     connect(this, &QQuickWindow::screenChanged, this, &DockView::screenChanged);
 
-    connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::reconsiderScreen);
-    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::reconsiderScreen);
+    connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::screenChanged);
+    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::screenChanged);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
+    connect(this, &QQuickWindow::xChanged, this, &DockView::xChanged);
+    connect(this, &QQuickWindow::yChanged, this, &DockView::yChanged);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
+
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&]() {
         if (formFactor() == Plasma::Types::Vertical)
             syncGeometry();
@@ -207,6 +210,7 @@ void DockView::reconsiderScreen()
 
     foreach(auto scr, qGuiApp->screens()){
         if (scr && scr->name() == m_screenToFollowId){
+            connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
             setScreenToFollow(scr);
             syncGeometry();
         }
@@ -217,11 +221,11 @@ void DockView::reconsiderScreen()
 
 void DockView::screenChanged(QScreen *scr)
 {
-    if (!scr || m_screenToFollow == scr) {
-        return;
-    }
+  //  if (!scr || m_screenToFollow == scr) {
+    //    return;
+   // }
 
-    qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
+  //  qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
     QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
 
     /*bool found{false};
@@ -648,6 +652,16 @@ void DockView::setMaskArea(QRect area)
 QRect DockView::absGeometry() const
 {
     return m_absGeometry;
+}
+
+QRect DockView::screenGeometry() const
+{
+    if (this->screen()) {
+        QRect geom = this->screen()->geometry();
+        return geom;
+    }
+
+    return QRect();
 }
 
 int DockView::shadow() const

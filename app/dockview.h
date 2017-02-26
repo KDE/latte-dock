@@ -47,6 +47,8 @@ class DockView : public PlasmaQuick::ContainmentView {
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
+    Q_PROPERTY(int x READ x NOTIFY xChanged)
+    Q_PROPERTY(int y READ y NOTIFY yChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
@@ -62,6 +64,9 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
+
+    Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
+
 
 public:
     DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr);
@@ -102,6 +107,8 @@ public:
 
     void updateAbsDockGeometry(const QRect &localDockGeometry);
     QRect absGeometry() const;
+
+    QRect screenGeometry() const;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
@@ -153,7 +160,10 @@ signals:
     void normalThicknessChanged();
     void visibilityChanged();
     void maskAreaChanged();
+    void screenGeometryChanged();
     void shadowChanged();
+    void xChanged();
+    void yChanged();
 
     void absGeometryChanged(const QRect &geometry);
 
