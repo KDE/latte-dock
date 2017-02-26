@@ -42,7 +42,7 @@ DragDrop.DropArea {
     ////
 
     ////BEGIN properties
-    property bool debugMode: dock && dock.debugFlags.indexOf("--graphics")>=0
+    property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
 
     property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
 
@@ -1071,7 +1071,7 @@ DragDrop.DropArea {
     ///////////////BEGIN UI elements
 
     Loader{
-        active: dock && dock.debugFlags.indexOf("--with-window")>=0
+        active: Qt.application.arguments.indexOf("--with-window") >= 0
         sourceComponent: DebugWindow{}
     }
 

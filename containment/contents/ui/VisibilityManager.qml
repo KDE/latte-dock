@@ -33,7 +33,7 @@ Item{
 
     property QtObject window
 
-    property bool debugMagager: dock && dock.debugFlags.indexOf("--mask")>=0
+    property bool debugMagager: Qt.application.arguments.indexOf("--mask") >= 0
 
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea

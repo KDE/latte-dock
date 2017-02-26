@@ -56,6 +56,7 @@ int main(int argc, char **argv)
     //     - Panel struts (350614)
     //  This variable should possibly be removed when all are fixed
     qunsetenv("QT_DEVICE_PIXEL_RATIO");
+    //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
     QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 
     QQuickWindow::setDefaultAlphaBuffer(true);
@@ -94,7 +95,7 @@ int main(int argc, char **argv)
         qGuiApp->exit();
     }
 
-    if (parser.isSet(QStringLiteral("d")) || parser.isSet(QStringLiteral("m"))) {
+    if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {
     //! set pattern for debug messages
     //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
 
@@ -111,7 +112,6 @@ int main(int argc, char **argv)
         qInstallMessageHandler(noMessageOutput);
     }
 
-    //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
 
     auto signal_handler = [](int) {
         qGuiApp->exit();

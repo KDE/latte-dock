@@ -52,7 +52,6 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int shadow READ shadow WRITE setShadow NOTIFY shadowChanged)
-    Q_PROPERTY(QStringList debugFlags READ debugFlags NOTIFY debugFlagsChanged)
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
@@ -103,8 +102,6 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
-    QStringList debugFlags() const;
-
     VisibilityManager * visibility() const;
 
     QQmlListProperty<QScreen> screens();
@@ -137,7 +134,6 @@ signals:
     void eventTriggered(QEvent *ev);
 
     void alignmentChanged();
-    void debugFlagsChanged();
     void dockLocationChanged();
     void docksCountChanged();
     void drawShadowsChanged();
