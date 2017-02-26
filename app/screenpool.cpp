@@ -20,6 +20,7 @@
 #include "screenpool.h"
 #include <config-latte.h>
 
+#include <QDebug>
 #include <QGuiApplication>
 #include <QScreen>
 
@@ -65,6 +66,7 @@ void ScreenPool::load()
             !m_idForConnector.contains(connector)) {
             m_connectorForId[key.toInt()] = connector;
             m_idForConnector[connector] = key.toInt();
+            qDebug() << "Known Screen - " << connector << " - " << key.toInt();
         } else if (m_idForConnector.value(connector) != key.toInt()) {
             m_configGroup.deleteEntry(key);
         }
@@ -94,7 +96,11 @@ QString ScreenPool::primaryConnector() const
 
 void ScreenPool::setPrimaryConnector(const QString &primary)
 {
-    if (m_primaryConnector == primary) {
+    //the ":" check fixes the strange plasma/qt issues when changing layouts
+    //there are case that the QScreen instead of the correct screen name
+    //returns "0:0", this check prevents from breaking the screens database
+    //from garbage ids
+    if ((m_primaryConnector == primary)|| primary.startsWith(":")) {
         return;
     }
     Q_ASSERT(m_idForConnector.contains(primary));
@@ -106,6 +112,7 @@ void ScreenPool::setPrimaryConnector(const QString &primary)
     m_idForConnector[m_primaryConnector] = oldIdForPrimary;
     m_connectorForId[oldIdForPrimary] = m_primaryConnector;
     m_primaryConnector = primary;
+
     save();
 }
 
@@ -123,6 +130,15 @@ void ScreenPool::insertScreenMapping(int id, const QString &connector)
 {
     Q_ASSERT(!m_connectorForId.contains(id) || m_connectorForId.value(id) == connector);
     Q_ASSERT(!m_idForConnector.contains(connector) || m_idForConnector.value(connector) == id);
+
+    //the ":" check fixes the strange plasma/qt issues when changing layouts
+    //there are case that the QScreen instead of the correct screen name
+    //returns "0:0", this check prevents from breaking the screens database
+    //from garbage ids
+    if (connector.startsWith(":"))
+        return;
+
+    qDebug() << "add connector..." << connector;
 
     if (id == 0) {
         m_primaryConnector = connector;
