@@ -58,6 +58,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     });
     wm->setDockExtraFlags(*view);
     wm->addDock(view->winId());
+    restoreConfig();
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
@@ -70,6 +71,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 {
     if (this->mode == mode)
         return;
+
+    Q_ASSERT_X(mode != Dock::None, q->staticMetaObject.className(), "set visibility to Dock::None");
 
     // clear mode
     if (this->mode == Dock::AlwaysVisible)
@@ -163,13 +166,10 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             timerCheckWindows.start();
         }
         break;
-
-    case Dock::None:
-        break;
     }
 
-    saveConfig();
     emit q->modeChanged();
+    saveConfig();
 }
 
 inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
@@ -413,7 +413,7 @@ inline void VisibilityManagerPrivate::restoreConfig()
     if (mode == Dock::AlwaysVisible) {
         setMode(mode);
     } else {
-        QTimer::singleShot(2400, this, [&, mode]() {
+        QTimer::singleShot(3000, this, [&, mode]() {
             setMode(mode);
         });
     }
