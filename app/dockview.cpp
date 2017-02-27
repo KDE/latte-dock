@@ -153,25 +153,6 @@ void DockView::init()
     qDebug() << "SOURCE:" << source();
 }
 
-void DockView::adaptToScreen(QScreen *screen)
-{
-    /*    if (!screen) {
-        return;
-    }
-
-    qDebug() << "adapting to screen...";
-
-    setScreen(screen);
-
-    //FIXME:: This code in a multi-screen environment that
-    //primary screen is not set to 0 it creates an endless
-    //showing loop at startup (catch-up race) between screen:0 and primaryScreen
-    if (this->containment())
-        this->containment()->reactToScreenChange();
-
-    syncGeometry(); */
-}
-
 void DockView::setCurrentScreen(const QString id)
 {
     if (!m_screenToFollow || m_screenToFollow->name() == id){
@@ -236,33 +217,7 @@ void DockView::reconsiderScreen()
 
 void DockView::screenChanged(QScreen *scr)
 {
-    //  if (!scr || m_screenToFollow == scr) {
-    //    return;
-    // }
-
-    //  qDebug() << "Screen inconsistency!!! :" << scr->name() << " - " <<m_screenToFollow->name();
     m_screenSyncTimer.start();
-    //QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
-
-    /*bool found{false};
-    foreach(auto scr, qGuiApp->screens()){
-        qDebug() << "Found screen: "<<scr->name();
-        if (scr && scr == m_screenToFollow){
-            found=true;
-            //break;
-        }
-    }
-
-
-
-    if (found) {
-        //IMPORTAT!!! this code creates crashes when changing plasma
-        //layouts it needs inverstigation!!!
-        setScreen(m_screenToFollow);
-        syncGeometry();
-    }*/
-    //  emit docksCountChanged();
-
 }
 
 void DockView::addNewDock()
