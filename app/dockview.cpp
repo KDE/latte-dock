@@ -110,6 +110,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
 
 DockView::~DockView()
 {
+    m_screenSyncTimer.stop();
+
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
     this->disconnect();
