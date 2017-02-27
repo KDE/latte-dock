@@ -155,10 +155,6 @@ void DockView::init()
 
 bool DockView::setCurrentScreen(const QString id)
 {
-    if (!m_screenToFollow || m_screenToFollow->name() == id) {
-        return false;
-    }
-
     QScreen *nextScreen{qGuiApp->primaryScreen()};
 
     if (id != "primary") {
@@ -168,6 +164,10 @@ bool DockView::setCurrentScreen(const QString id)
                 break;
             }
         }
+    }
+
+    if (m_screenToFollow == nextScreen) {
+        return true;
     }
 
     if (nextScreen) {
@@ -184,7 +184,7 @@ bool DockView::setCurrentScreen(const QString id)
         }
     }
 
-    return false;
+    return true;
 }
 
 void DockView::setScreenToFollow(QScreen *screen)
