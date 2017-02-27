@@ -116,7 +116,7 @@ public:
 
     QString currentScreen() const;
 
-    VisibilityManager * visibility() const;
+    VisibilityManager *visibility() const;
 
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
@@ -130,7 +130,7 @@ public slots:
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
-    Q_INVOKABLE void setCurrentScreen(const QString id);
+    Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE void updateEnabledBorders();
 

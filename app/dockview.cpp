@@ -153,23 +153,38 @@ void DockView::init()
     qDebug() << "SOURCE:" << source();
 }
 
-void DockView::setCurrentScreen(const QString id)
+bool DockView::setCurrentScreen(const QString id)
 {
     if (!m_screenToFollow || m_screenToFollow->name() == id) {
-        return;
+        return false;
     }
 
-    QScreen *nextScreen{nullptr};
+    QScreen *nextScreen{qGuiApp->primaryScreen()};
 
-    foreach (auto scr, qGuiApp->screens()) {
-        if (scr && scr->name() == id) {
-            nextScreen = scr;
-            break;
+    if (id != "primary") {
+        foreach (auto scr, qGuiApp->screens()) {
+            if (scr && scr->name() == id) {
+                nextScreen = scr;
+                break;
+            }
         }
     }
 
-    if (nextScreen)
-        setScreenToFollow(nextScreen);
+    if (nextScreen) {
+        auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+        if (dockCorona) {
+            auto freeEdges = dockCorona->freeEdges(nextScreen);
+
+            if (!freeEdges.contains(location())) {
+                return false;
+            } else {
+                setScreenToFollow(nextScreen);
+            }
+        }
+    }
+
+    return false;
 }
 
 void DockView::setScreenToFollow(QScreen *screen)

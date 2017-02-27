@@ -55,6 +55,7 @@ public:
     QRect availableScreenRect(int id) const override;
 
     QList<Plasma::Types::Location> freeEdges(int screen) const;
+    QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
     int docksCount(int screen) const;
     int screenForContainment(const Plasma::Containment *containment) const override;
