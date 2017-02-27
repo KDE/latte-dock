@@ -54,7 +54,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
     setFlags(Qt::FramelessWindowHint
-             | Qt::BypassWindowManagerHint
              | Qt::WindowStaysOnTopHint
              | Qt::NoDropShadowWindowHint
              | Qt::WindowDoesNotAcceptFocus);
