@@ -215,9 +215,14 @@ void DockView::reconsiderScreen()
     }
 
     if (m_onPrimary && screen() != qGuiApp->primaryScreen()) {
-        connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
-        setScreenToFollow(qGuiApp->primaryScreen());
-        syncGeometry();
+        auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+        //change to primary screen only if the specific edge is free
+        if (dockCorona->freeEdges(qGuiApp->primaryScreen()).contains(location())) {
+            connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
+            setScreenToFollow(qGuiApp->primaryScreen());
+            syncGeometry();
+        }
     } else {
         foreach (auto scr, qGuiApp->screens()) {
             if (scr && scr->name() == m_screenToFollowId) {
@@ -450,26 +455,11 @@ inline void DockView::syncGeometry()
     if (!(this->screen() && this->containment()))
         return;
 
-    //if (qGuiApp->primaryScreen() && screen() != qGuiApp->primaryScreen()){
-    //    setScreen(qGuiApp->primaryScreen());
-    //}
     bool found{false};
 
     if (this->screen() != m_screenToFollow) {
         qDebug() << "Sync Geometry screens incosistent!!!!";
-        /*foreach(auto scr, qGuiApp->screens()){
-            qDebug() << "Found screen: "<<scr->name();
-            if (scr && scr->name() == m_screenToFollowId){
-                qDebug() << " found ... ";
-                //setScreenToFollow(scr);
-                //  found=true;
-            }
-        }*/
         m_screenSyncTimer.start();
-        //QTimer::singleShot(2500, this, &DockView::reconsiderScreen);
-
-        //if (found)
-        // setScreenToFollow(m_screenToFollow);
     } else {
         found = true;
     }
