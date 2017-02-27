@@ -99,14 +99,43 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     Component.onCompleted: screenRow.updateScreens();
 
+                    //they are used to restore the index when the screen edge
+                    //is occuppied
+                    property bool acceptedIndex: true
+                    property int previousIndex: -1
+
+                    onCurrentIndexChanged: {
+                        //it is used to restore the index when the screen edge
+                        //is occuppied
+                        if (!acceptedIndex) {
+                            acceptedIndex = true;
+                            currentIndex = previousIndex;
+                        }
+                    }
+
                     onActivated: {
+                        previousIndex = currentIndex;
                         if (index === 0) {
-                            dock.onPrimary = true;
+                            var succeed = dock.setCurrentScreen("primary");
+
+                            if (succeed) {
+                                dock.onPrimary = true;
+                            } else {
+                                console.log("the edge is already occupied!!!");
+                                acceptedIndex = false;
+                            }
                         } else if (index>0 && (index !== find(dock.currentScreen) || dock.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
-                            dock.onPrimary = false;
-                            dock.setCurrentScreen(textAt(index));
+
+                            var succeed = dock.setCurrentScreen(textAt(index));
+
+                            if(succeed) {
+                               dock.onPrimary = false;
+                            } else {
+                               console.log("the edge is already occupied!!!");
+                               acceptedIndex = false;
+                            }
                         }
                     }
                 }
