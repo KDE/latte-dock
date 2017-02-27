@@ -274,10 +274,10 @@ void DockCorona::screenRemoved(QScreen *screen)
 
 void DockCorona::screenCountChanged()
 {
-    QTimer::singleShot(2500, this, &DockCorona::screenCountChangedTimer);
+    QTimer::singleShot(2500, this, &DockCorona::syncDockViews);
 }
 
-void DockCorona::screenCountChangedTimer()
+void DockCorona::syncDockViews()
 {
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
