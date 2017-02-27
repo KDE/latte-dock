@@ -74,7 +74,6 @@ public:
 
     void init();
 
-    void adaptToScreen(QScreen *screen);
     void setScreenToFollow(QScreen *screen);
 
     void resizeWindow();
