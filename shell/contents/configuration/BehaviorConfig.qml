@@ -45,7 +45,7 @@ PlasmaComponents.Page {
         //! BEGIN: Location
         ColumnLayout {
             Layout.fillWidth: true
-            spacing: units.largeSpacing
+            spacing: units.smallSpacing
 
             Header {
                 text: i18n("Location")
