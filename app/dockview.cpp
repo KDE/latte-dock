@@ -94,6 +94,13 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     if (dockCorona) {
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
+        connect(dockCorona, &DockCorona::dockLocationChanged, this, [&]() {
+            //check if an edge has been freed for a primary dock
+            //from another screen
+            if(m_onPrimary) {
+                m_screenSyncTimer.start();
+            }
+        });
     }
 
     m_screenSyncTimer.setSingleShot(true);
