@@ -86,7 +86,7 @@ private slots:
     void primaryOutputChanged();
     void screenRemoved(QScreen *screen);
     void screenCountChanged();
-    void screenCountChangedTimer();
+    void syncDockViews();
 
 private:
     bool appletExists(uint containmentId, uint appletId) const;
