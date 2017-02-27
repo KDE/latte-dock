@@ -42,6 +42,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_dockView(dockView)
 {
     setScreen(m_dockView->screen());
+
     if (containment) {
         setIcon(QIcon::fromTheme(containment->corona()->kPackage().metadata().iconName()));
     }
@@ -205,6 +206,8 @@ void DockConfigView::hideEvent(QHideEvent *ev)
         m_dockView->containment()->setUserConfiguring(false);
 
     QQuickWindow::hideEvent(ev);
+
+    deleteLater();
 }
 
 void DockConfigView::focusOutEvent(QFocusEvent *ev)
