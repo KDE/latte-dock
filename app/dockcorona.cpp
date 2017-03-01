@@ -311,8 +311,10 @@ void DockCorona::syncDockViews()
             }
 
             bool onPrimary = cont->config().readEntry("onPrimary", true);
+            Plasma::Types::Location location = (Plasma::Types::Location)((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
 
-            if ((onPrimary || (m_screenPool->connector(id) == scr->name())) && (!m_dockViews.contains(cont))) {
+            if (( (onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (m_screenPool->connector(id) == scr->name()))
+                    && (!m_dockViews.contains(cont))) {
                 qDebug() << "screen Count signal: view must be added... for:" << scr->name();
                 addDock(cont);
             }
@@ -359,12 +361,6 @@ void DockCorona::syncDockViews()
         bool found{false};
 
         foreach (auto scr, qGuiApp->screens()) {
-            int id = view->containment()->screen();
-
-            if (id == -1) {
-                id = view->containment()->lastScreen();
-            }
-
             if (scr->name() == view->currentScreen()) {
                 found = true;
                 break;
@@ -379,6 +375,11 @@ void DockCorona::syncDockViews()
                 auto viewToDelete = m_dockViews.take(view->containment());
                 viewToDelete->deleteLater();
             }
+        } else if (view->onPrimary() && !found
+                   && !freeEdges(qGuiApp->primaryScreen()).contains(view->location())){
+            qDebug() << "screen Count signal: primary view must be deleted... for:" << view->currentScreen();
+            auto viewToDelete = m_dockViews.take(view->containment());
+            viewToDelete->deleteLater();
         } else {
             view->reconsiderScreen();
         }
