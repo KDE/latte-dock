@@ -98,6 +98,9 @@ void DockCorona::load()
 
         m_activitiesStarting = false;
 
+        m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
+        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
+
         //  connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockCorona::primaryOutputChanged, Qt::UniqueConnection);
         //  connect(qGuiApp, &QGuiApplication::screenRemoved, this, &DockCorona::screenRemoved, Qt::UniqueConnection);
@@ -227,18 +230,31 @@ QRect DockCorona::availableScreenRect(int id) const
             // need calculate available space for top and bottom location,
             // because the left and right are those who dodge others docks
             switch (view->location()) {
-                case Plasma::Types::TopEdge:
-                    available.setTopLeft({available.x(), dockRect.bottom()});
-                    break;
+            case Plasma::Types::TopEdge:
+                available.setTopLeft({available.x(), dockRect.bottom()});
+                break;
 
-                case Plasma::Types::BottomEdge:
-                    available.setBottomLeft({available.x(), dockRect.top()});
-                    break;
+            case Plasma::Types::BottomEdge:
+                available.setBottomLeft({available.x(), dockRect.top()});
+                break;
             }
         }
     }
 
     return available;
+}
+
+int DockCorona::noDocksWithTasks() const
+{
+    int result = 0;
+
+    foreach (auto view, m_dockViews) {
+        if (view->tasksPresent()) {
+            result++;
+        }
+    }
+
+    return result;
 }
 
 void DockCorona::addOutput(QScreen *screen)
@@ -305,6 +321,40 @@ void DockCorona::syncDockViews()
 
     qDebug() << "removing consideration & updating screen for always on primary docks....";
 
+    //this code trys to find a containment that must not be deleted by
+    //automatic algorithm. Currently the containment with the minimum id
+    //has higher priority
+    int preserveContainmentId{-1};
+    bool dockWithTasksWillBeShown{false};
+
+    foreach (auto view, m_dockViews) {
+        bool found{false};
+        foreach (auto scr, qGuiApp->screens()) {
+            int id = view->containment()->screen();
+            if (id == -1) {
+                id = view->containment()->lastScreen();
+            }
+            if (scr->name() == view->currentScreen()) {
+                found = true;
+                break;
+            }
+        }
+
+        if(found && view->tasksPresent()){
+             dockWithTasksWillBeShown = true;
+        }
+
+        if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
+                && !(view->tasksPresent() && noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
+            if (view->tasksPresent()) {
+                if (preserveContainmentId==-1)
+                    preserveContainmentId = view->containment()->id();
+                else if(view->containment()->id() < preserveContainmentId)
+                    preserveContainmentId = view->containment()->id();
+            }
+        }
+    }
+
     foreach (auto view, m_dockViews) {
         bool found{false};
 
@@ -321,10 +371,14 @@ void DockCorona::syncDockViews()
             }
         }
 
-        if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())) {
-            qDebug() << "screen Count signal: view must be deleted... for:" << view->currentScreen();
-            auto viewToDelete = m_dockViews.take(view->containment());
-            viewToDelete->deleteLater();
+        if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
+                && !(view->tasksPresent() && noDocksWithTasks() == 1)) {
+            //do not delete last dock containing tasks
+            if (dockWithTasksWillBeShown || preserveContainmentId != view->containment()->id()) {
+                qDebug() << "screen Count signal: view must be deleted... for:" << view->currentScreen();
+                auto viewToDelete = m_dockViews.take(view->containment());
+                viewToDelete->deleteLater();
+            }
         } else {
             view->reconsiderScreen();
         }
@@ -350,8 +404,8 @@ int DockCorona::docksCount(int screen) const
 
     for (const auto &view : m_dockViews) {
         if (view && view->containment()
-            && view->containment()->screen() == screen
-            && !view->containment()->destroyed()) {
+                && view->containment()->screen() == screen
+                && !view->containment()->destroyed()) {
             ++docks;
         }
     }
@@ -383,7 +437,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     for (auto *view : m_dockViews) {
         if (view && view->currentScreen() == screen->name()) {
@@ -398,13 +452,13 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
     //when screen=-1 is passed then the primaryScreenid is used
     int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
 
     for (auto *view : m_dockViews) {
         if (view && view->containment()
-            && view->containment()->screen() == fixedScreen) {
+                && view->containment()->screen() == fixedScreen) {
             edges.removeOne(view->location());
         }
     }
@@ -451,8 +505,8 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     for (auto screen : qGuiApp->screens()) {
         // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
         if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
-            (containment->activity() == m_activityConsumer->currentActivity() ||
-             containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
+                (containment->activity() == m_activityConsumer->currentActivity() ||
+                 containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
             return containment->lastScreen();
         }
     }
@@ -469,10 +523,8 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
     auto metadata = containment->kPackage().metadata();
 
-    if (metadata.pluginId() == "org.kde.plasma.private.systemtray") {
-        if (metadata.pluginId() != "org.kde.latte.containment")
-            return;
-    }
+    if (metadata.pluginId() != "org.kde.latte.containment")
+        return;
 
     for (auto *dock : m_dockViews) {
         if (dock->containment() == containment)
@@ -480,6 +532,13 @@ void DockCorona::addDock(Plasma::Containment *containment)
     }
 
     QScreen *nextScreen{qGuiApp->primaryScreen()};
+
+    bool forceDockLoading = false;
+
+    if (!m_tasksWillBeLoaded && m_firstContainmentWithTasks == containment->id()) {
+        m_tasksWillBeLoaded = true; //this protects by loading more than one dock at startup
+        forceDockLoading = true;
+    }
 
     bool onPrimary = containment->config().readEntry("onPrimary", true);
     int id = containment->screen();
@@ -490,7 +549,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
     qDebug() << "add dock - containment id : " << id;
 
-    if (id >= 0 && !onPrimary) {
+    if (id >= 0 && !onPrimary && !forceDockLoading) {
         QString connector = m_screenPool->connector(id);
         qDebug() << "add dock - connector : " << connector;
         bool found{false};
@@ -512,6 +571,11 @@ void DockCorona::addDock(Plasma::Containment *containment)
     auto dockView = new DockView(this, nextScreen);
     dockView->init();
     dockView->setContainment(containment);
+
+    if (forceDockLoading) {
+        dockView->setOnPrimary(true);
+    }
+
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &DockCorona::destroyedChanged);
     connect(containment, &Plasma::Applet::locationChanged, this, &DockCorona::dockLocationChanged);
@@ -644,6 +708,81 @@ void DockCorona::loadDefaultLayout()
     addDock(defaultContainment);
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
+}
+
+//! This function figures in the beginning if a dock with tasks
+//! in it will be loaded, if it doesnt then the first dock
+//! availabe with tasks will be loaded not depending on the
+//! screen on which is associated
+bool DockCorona::heuresticForLoadingDockWithTasks()
+{
+    auto containmentsEntries = config()->group("Containments");
+
+    foreach (auto cId, containmentsEntries.groupList()) {
+        QString plugin = containmentsEntries.group(cId).readEntry("plugin");
+
+        if (plugin == "org.kde.latte.containment") {
+            bool onPrimary = containmentsEntries.group(cId).readEntry("onPrimary", true);
+            int lastScreen = containmentsEntries.group(cId).readEntry("lastScreen", -1);
+
+            qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
+
+            auto appletEntries = containmentsEntries.group(cId).group("Applets");
+
+            bool containsTasks = false;
+
+            foreach (auto appId, appletEntries.groupList()) {
+                if (appletEntries.group(appId).readEntry("plugin") == "org.kde.latte.plasmoid") {
+                    containsTasks = true;
+                    break;
+                }
+            }
+
+            if (containsTasks) {
+                m_firstContainmentWithTasks = cId.toInt();
+                if (onPrimary) {
+                    return true;
+                } else {
+                    if (lastScreen >= 0) {
+                        QString connector = m_screenPool->connector(lastScreen);
+
+                        foreach (auto scr, qGuiApp->screens()) {
+                            if (scr && scr->name() == connector) {
+                                return true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+//! This function figures if a latte containment contains a
+//! latte tasks plasmoid
+bool DockCorona::containmentContainsTasks(Plasma::Containment *cont)
+{
+    auto containmentsEntries = config()->group("Containments");
+
+    foreach (auto cId, containmentsEntries.groupList()) {
+        QString plugin = containmentsEntries.group(cId).readEntry("plugin");
+
+        if ((plugin == "org.kde.latte.containment") && (cId.toUInt() == cont->id())) {
+            auto appletEntries = containmentsEntries.group(cId).group("Applets");
+
+            foreach (auto appId, appletEntries.groupList()) {
+                if (appletEntries.group(appId).readEntry("plugin") == "org.kde.latte.plasmoid") {
+                    return true;
+                    break;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 inline void DockCorona::qmlRegisterTypes() const

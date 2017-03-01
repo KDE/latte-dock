@@ -74,7 +74,7 @@ public:
 
     void init();
 
-    void setScreenToFollow(QScreen *screen);
+    void setScreenToFollow(QScreen *screen, bool updateScreenId = true);
 
     void resizeWindow();
     void syncGeometry();

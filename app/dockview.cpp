@@ -97,7 +97,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         connect(dockCorona, &DockCorona::dockLocationChanged, this, [&]() {
             //check if an edge has been freed for a primary dock
             //from another screen
-            if(m_onPrimary) {
+            if (m_onPrimary) {
                 m_screenSyncTimer.start();
             }
         });
@@ -196,14 +196,17 @@ bool DockView::setCurrentScreen(const QString id)
     return true;
 }
 
-void DockView::setScreenToFollow(QScreen *screen)
+void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
 {
     if (!screen || m_screenToFollow == screen) {
         return;
     }
 
     m_screenToFollow = screen;
-    m_screenToFollowId = screen->name();
+
+    if (updateScreenId) {
+        m_screenToFollowId = screen->name();
+    }
 
     qDebug() << "adapting to screen...";
 
@@ -223,13 +226,29 @@ void DockView::reconsiderScreen()
         qDebug() << "      D, found screen: " << scr->name();
     }
 
-    if (m_onPrimary && screen() != qGuiApp->primaryScreen()) {
-        auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
+    bool screenExists{false};
+    foreach(auto scr, qGuiApp->screens()){
+        if (m_screenToFollowId == scr->name())
+            screenExists = true;
+    }
+
+    qDebug() << "dock screen exists  ::: "<< screenExists;
+
+    if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1) && !screenExists)
+            && m_screenToFollowId != qGuiApp->primaryScreen()->name()
+            && m_screenToFollow != qGuiApp->primaryScreen()) {
         //change to primary screen only if the specific edge is free
         if (dockCorona->freeEdges(qGuiApp->primaryScreen()).contains(location())) {
             connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
-            setScreenToFollow(qGuiApp->primaryScreen());
+
+            if (!m_onPrimary && !screenExists && tasksPresent() && (dockCorona->noDocksWithTasks() == 1)) {
+                setScreenToFollow(qGuiApp->primaryScreen(), false);
+            } else {
+                setScreenToFollow(qGuiApp->primaryScreen());
+            }
+
             syncGeometry();
         }
     } else {
