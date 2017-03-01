@@ -71,10 +71,15 @@ DockCorona::DockCorona(QObject *parent)
     }
 
     connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+
+    m_docksScreenSyncTimer.setSingleShot(true);
+    m_docksScreenSyncTimer.setInterval(2500);
+    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViews);
 }
 
 DockCorona::~DockCorona()
 {
+    m_docksScreenSyncTimer.stop();
     cleanConfig();
 
     while (!containments().isEmpty()) {
@@ -293,7 +298,7 @@ void DockCorona::screenRemoved(QScreen *screen)
 
 void DockCorona::screenCountChanged()
 {
-    QTimer::singleShot(2500, this, &DockCorona::syncDockViews);
+    m_docksScreenSyncTimer.start();
 }
 
 void DockCorona::syncDockViews()
@@ -566,8 +571,10 @@ void DockCorona::addDock(Plasma::Containment *containment)
             }
         }
 
-        if (!found)
+        if (!found) {
+            qDebug() << "adding dock rejected, screen not available : " << connector;
             return;
+        }
     }
 
     qDebug() << "Adding dock for container...";
