@@ -130,12 +130,8 @@ PlasmaComponents.Page {
                         if (index === 0) {
                             var succeed = dock.setCurrentScreen("primary");
 
-                            if (succeed) {
-                                dock.onPrimary = true;
-                            } else {
-                                console.log("the edge is already occupied!!!");
-                                acceptedIndex = false;
-                            }
+                            dock.onPrimary = true;
+                            acceptedIndex = true;
                         } else if (index>0 && (index !== find(dock.currentScreen) || dock.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
