@@ -104,7 +104,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     }
 
     m_screenSyncTimer.setSingleShot(true);
-    m_screenSyncTimer.setInterval(3000);
+    m_screenSyncTimer.setInterval(2000);
     connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
 }
 

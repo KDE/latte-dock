@@ -107,6 +107,8 @@ private:
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
     QList<KDeclarative::QmlObject *> m_alternativesObjects;
 
+    QTimer m_docksScreenSyncTimer;
+
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
 
