@@ -36,11 +36,11 @@ XWindowInterface::XWindowInterface(QObject *parent)
 {
     m_activities = new KActivities::Consumer(this);
     connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
-                           , this, &AbstractWindowInterface::activeWindowChanged);
+            , this, &AbstractWindowInterface::activeWindowChanged);
     connect(KWindowSystem::self()
-                           , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
-                           (&KWindowSystem::windowChanged)
-                           , this, &XWindowInterface::windowChangedProxy);
+            , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
+            (&KWindowSystem::windowChanged)
+            , this, &XWindowInterface::windowChangedProxy);
 
     auto addWindow = [&](WId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
@@ -59,9 +59,9 @@ XWindowInterface::XWindowInterface(QObject *parent)
         }
     });
     connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
-                           , this, &XWindowInterface::currentDesktopChanged);
+            , this, &XWindowInterface::currentDesktopChanged);
     connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged
-                           , this, &XWindowInterface::currentActivityChanged);
+            , this, &XWindowInterface::currentActivityChanged);
 
     // fill windows list
     foreach (const auto &wid, KWindowSystem::self()->windows()) {
@@ -105,7 +105,7 @@ void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect, Plasma::
             strut.bottom_end = dockRect.x() + dockRect.width() - 1;
             break;
 
-        case Plasma::Types::Left:
+        case Plasma::Types::LeftEdge:
             strut.left_width = dockRect.width();
             strut.left_start = dockRect.y();
             strut.left_end = dockRect.y() + dockRect.height() - 1;
@@ -172,7 +172,7 @@ void XWindowInterface::slideWindow(QQuickWindow &view, AbstractWindowInterface::
             break;
 
         default:
-        break;
+            break;
     }
 
     KWindowEffects::slideWindow(view.winId(), slideLocation, -1);
