@@ -209,12 +209,15 @@ QRegion DockCorona::availableScreenRegion(int id) const
 QRect DockCorona::availableScreenRect(int id) const
 {
     const auto screens = qGuiApp->screens();
-    const QScreen *screen = nullptr;
+    const QScreen *screen{qGuiApp->primaryScreen()};
+    QString scrName = m_screenPool->connector(id);
 
-    if (id >= 0 && id < screens.count())
-        screen = screens[id];
-    else
-        screen = qGuiApp->primaryScreen();
+    foreach(auto scr, screens){
+         if (scr->name() == scrName){
+             screen = scr;
+             break;
+         }
+    }
 
     if (!screen)
         return {};
@@ -313,7 +316,7 @@ void DockCorona::syncDockViews()
             bool onPrimary = cont->config().readEntry("onPrimary", true);
             Plasma::Types::Location location = (Plasma::Types::Location)((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
 
-            if (( (onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (m_screenPool->connector(id) == scr->name()))
+            if (( (onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary &&(m_screenPool->connector(id) == scr->name())))
                     && (!m_dockViews.contains(cont))) {
                 qDebug() << "screen Count signal: view must be added... for:" << scr->name();
                 addDock(cont);
