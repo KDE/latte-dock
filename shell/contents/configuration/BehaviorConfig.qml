@@ -69,6 +69,18 @@ PlasmaComponents.Page {
 
                     screens.push(i18n("On Primary"));
 
+                    //check if the screen exists, it is used in cases Latte is moving
+                    //the dock automatically to primaryScreen in order for the user
+                    //to has always a dock with tasks shown
+                    var screenExists = false
+                    for (var i = 0; i < dock.screens.length; i++) {
+                        if (dock.screens[i].name === dock.currentScreen)
+                            screenExists = true;
+                    }
+
+                    if (!screenExists && !dock.onPrimary)
+                        screens.push(dock.currentScreen);
+
                     for (var i = 0; i < dock.screens.length; i++) {
                         screens.push(dock.screens[i].name)
                     }

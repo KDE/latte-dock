@@ -58,6 +58,7 @@ public:
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
     int docksCount(int screen) const;
+    int noDocksWithTasks() const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 
     void addDock(Plasma::Containment *containment);
@@ -91,11 +92,16 @@ private slots:
 private:
     bool appletExists(uint containmentId, uint appletId) const;
     void cleanConfig();
+    bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
+    bool heuresticForLoadingDockWithTasks();
     void qmlRegisterTypes() const;
     int primaryScreenId() const;
 
     bool m_activitiesStarting{true};
+    //this is used to check if a dock with tasks in it will be loaded on startup
+    bool m_tasksWillBeLoaded{false};
+    int m_firstContainmentWithTasks{-1};
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
