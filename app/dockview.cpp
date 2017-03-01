@@ -229,16 +229,17 @@ void DockView::reconsiderScreen()
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     bool screenExists{false};
-    foreach(auto scr, qGuiApp->screens()){
+
+    foreach (auto scr, qGuiApp->screens()) {
         if (m_screenToFollowId == scr->name())
             screenExists = true;
     }
 
-    qDebug() << "dock screen exists  ::: "<< screenExists;
+    qDebug() << "dock screen exists  ::: " << screenExists;
 
     if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1) && !screenExists)
-            && m_screenToFollowId != qGuiApp->primaryScreen()->name()
-            && m_screenToFollow != qGuiApp->primaryScreen()) {
+        && m_screenToFollowId != qGuiApp->primaryScreen()->name()
+        && m_screenToFollow != qGuiApp->primaryScreen()) {
         //change to primary screen only if the specific edge is free
         if (dockCorona->freeEdges(qGuiApp->primaryScreen()).contains(location())) {
             connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
@@ -434,7 +435,6 @@ void DockView::updatePosition()
 
         case Plasma::Types::BottomEdge:
             screenGeometry = this->screen()->geometry();
-            qDebug() << "screen geometry: " << screenGeometry;
 
             if (m_drawShadows) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
