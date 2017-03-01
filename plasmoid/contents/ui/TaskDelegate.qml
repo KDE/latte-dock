@@ -33,7 +33,7 @@ import org.kde.latte 0.1 as Latte
 MouseArea{
     id: mainItemContainer
 
-    visible: (isStartup) ? false : true
+    visible: (isStartup && root.durationTime !== 0) ? false : true
 
     anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
     anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
@@ -223,8 +223,8 @@ MouseArea{
             id: wrapper
 
             opacity: 0
-            width: (mainItemContainer.isStartup) ? 0 : showDelegateWidth
-            height: (mainItemContainer.isStartup) ? 0 : showDelegateheight
+            width: (mainItemContainer.isStartup && root.durationTime !==0 ) ? 0 : showDelegateWidth
+            height: (mainItemContainer.isStartup && root.durationTime !==0) ? 0 : showDelegateheight
 
             //size needed fom the states below icons
             //property int statesLineSize: root.statesLineSize
@@ -1029,13 +1029,18 @@ MouseArea{
         }
 
         function init(){
-            wrapper.tempScaleWidth = 0;
-            wrapper.tempScaleHeight = 0;
+            if (root.durationTime !== 0) {
+                wrapper.tempScaleWidth = 0;
+                wrapper.tempScaleHeight = 0;
+            } else {
+                wrapper.tempScaleWidth = 1;
+                wrapper.tempScaleHeight = 1;
+            }
         }
 
         function showWindow(){
-            if(mainItemContainer.isLauncher || mainItemContainer.isStartup
-                    || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !root.initializatedBuffers)){
+            if((mainItemContainer.isLauncher || mainItemContainer.isStartup
+                    || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !root.initializatedBuffers)) && root.durationTime !== 0){
                 delayShowWindow.createObject(mainItemContainer);
             }
             else{
