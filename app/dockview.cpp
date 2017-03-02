@@ -751,15 +751,15 @@ bool DockView::event(QEvent *e)
 {
     emit eventTriggered(e);
 
-    //Important! this code creates a crash when there are two docks
-    //running and the user clicks the Quit button, it is also
-    //suspicious for some rare cases when removing a dock and the
-    //dock is deleted after the 1min time limit of plasma
-    /*if (e->type() == QEvent::Leave) {
+    if (e->type() == QEvent::Leave) {
         engine()->collectGarbage();
-        engine()->clearComponentCache();
         engine()->trimComponentCache();
-    }*/
+        //! Important! this code creates a crash when there are two docks
+        //! running and the user clicks the Quit button, it is also
+        //! suspicious for some rare cases when removing a dock and the
+        //! dock is deleted after the 1min time limit of plasma
+        //!     engine()->clearComponentCache();
+    }
 
     return ContainmentView::event(e);
 }
