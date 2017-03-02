@@ -95,8 +95,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, [&]() {
-            //check if an edge has been freed for a primary dock
-            //from another screen
+            //! check if an edge has been freed for a primary dock
+            //! from another screen
             if (m_onPrimary) {
                 m_screenSyncTimer.start();
             }
@@ -196,6 +196,14 @@ bool DockView::setCurrentScreen(const QString id)
     return true;
 }
 
+//! this function updates the dock's associated screen.
+//! updateScreenId = true, update also the m_screenToFollowId
+//! updateScreenId = false, do not update the m_screenToFollowId
+//! that way an explicit dock can be shown in another screen when
+//! there isnt a tasks dock running in the system and for that
+//! dock its first origin screen is stored and that way when
+//! that screen is reconnected the dock will return to its original
+//! place
 void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
 {
     if (!screen || m_screenToFollow == screen) {
@@ -218,6 +226,8 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
     syncGeometry();
 }
 
+//! the main function which decides if this dock is at the
+//! correct screen
 void DockView::reconsiderScreen()
 {
     qDebug() << "  Delayer  ";
@@ -230,6 +240,7 @@ void DockView::reconsiderScreen()
 
     bool screenExists{false};
 
+    //!check if the associated screen is running
     foreach (auto scr, qGuiApp->screens()) {
         if (m_screenToFollowId == scr->name())
             screenExists = true;
@@ -237,6 +248,9 @@ void DockView::reconsiderScreen()
 
     qDebug() << "dock screen exists  ::: " << screenExists;
 
+    //! 1.a primary dock must be always on the primary screen
+    //! 2.the last tasks dock must also always on the primary screen
+    //! even though it has been configured as an explicit
     if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1) && !screenExists)
         && m_screenToFollowId != qGuiApp->primaryScreen()->name()
         && m_screenToFollow != qGuiApp->primaryScreen()) {
@@ -244,15 +258,20 @@ void DockView::reconsiderScreen()
         if (dockCorona->freeEdges(qGuiApp->primaryScreen()).contains(location())) {
             connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
 
+            //! case 2
             if (!m_onPrimary && !screenExists && tasksPresent() && (dockCorona->noDocksWithTasks() == 1)) {
                 setScreenToFollow(qGuiApp->primaryScreen(), false);
             } else {
+                //! case 1
                 setScreenToFollow(qGuiApp->primaryScreen());
             }
 
             syncGeometry();
         }
     } else {
+        //! 3.an explicit dock must be always on the correct associated screen
+        //! there are cases that window manager misplaces the dock, this function
+        //! ensures that this dock will return at its correct screen
         foreach (auto scr, qGuiApp->screens()) {
             if (scr && scr->name() == m_screenToFollowId) {
                 connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
@@ -485,6 +504,8 @@ inline void DockView::syncGeometry()
 
     bool found{false};
 
+    //! before updating the positioning and geometry of the dock
+    //! we make sure that the dock is at the correct screen
     if (this->screen() != m_screenToFollow) {
         qDebug() << "Sync Geometry screens incosistent!!!!";
         m_screenSyncTimer.start();
@@ -492,6 +513,8 @@ inline void DockView::syncGeometry()
         found = true;
     }
 
+    //! if the dock isnt at the correct screen the calculations
+    //! are not executed
     if (found) {
         updateEnabledBorders();
         resizeWindow();
@@ -706,6 +729,7 @@ void DockView::setShadow(int shadow)
     emit shadowChanged();
 }
 
+//! check if the tasks plasmoid exist in the dock
 bool DockView::tasksPresent()
 {
     foreach (Plasma::Applet *applet, this->containment()->applets()) {
