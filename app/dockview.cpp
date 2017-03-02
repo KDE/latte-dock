@@ -383,10 +383,6 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 //! based on their alignment type and the location dock
 QRect DockView::maximumNormalGeometry()
 {
-    if (!this->screen()) {
-        return;
-    }
-
     int xPos = 0;
     int yPos = 0;
     int maxHeight = maxLength() * screen()->geometry().height();
