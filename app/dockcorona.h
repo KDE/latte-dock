@@ -99,9 +99,12 @@ private:
     int primaryScreenId() const;
 
     bool m_activitiesStarting{true};
-    //this is used to check if a dock with tasks in it will be loaded on startup
+    //! this is used to check if a dock with tasks in it will be loaded on startup
     bool m_tasksWillBeLoaded{false};
-    int m_firstContainmentWithTasks{-1};
+    //! this is used to record the first dock having tasks in it. It is used
+    //! to specify which dock will be loaded on startup if a case that no "dock
+    //! with tasks" will be loaded otherwise. Currently the older one dock wins
+    int m_firstContainmentWithTasks{ -1};
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
