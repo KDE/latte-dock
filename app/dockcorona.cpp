@@ -205,10 +205,102 @@ QRect DockCorona::screenGeometry(int id) const
 
 QRegion DockCorona::availableScreenRegion(int id) const
 {
-    return availableScreenRect(id);
-    //FIXME::: availableGeometry is probably broken
-    // in Qt, so this have to be updated as plasma is doing it
-    // for example the availableScreenRect
+    const auto screens = qGuiApp->screens();
+    const QScreen *screen{qGuiApp->primaryScreen()};
+    QString scrName = m_screenPool->connector(id);
+
+    foreach (auto scr, screens) {
+        if (scr->name() == scrName) {
+            screen = scr;
+            break;
+        }
+    }
+
+    if (!screen)
+        return QRegion();
+
+    QRegion available(screen->geometry());
+
+    for (const auto *view : m_dockViews) {
+        if (view && view->containment() && view->screen() == screen) {
+            int realThickness = view->normalThickness() - view->shadow();
+
+            // Usually availableScreenRect is used by the desktop,
+            // but Latte dont have desktop, then here just
+            // need calculate available space for top and bottom location,
+            // because the left and right are those who dodge others docks
+            switch (view->location()) {
+                case Plasma::Types::TopEdge:
+                    if (view->drawShadows()) {
+                        available -= view->geometry();
+                    } else {
+                        QRect realGeometry;
+                        int realWidth = view->maxLength() * view->width();
+
+                        switch (view->alignment()) {
+                            case Latte::Dock::Left:
+                                realGeometry = QRect(view->x(), view->y(),
+                                                     realWidth, realThickness);
+                                break;
+
+                            case Latte::Dock::Center:
+                            case Latte::Dock::Justify:
+                                realGeometry = QRect(view->geometry().center().x() - realWidth / 2 , view->y(),
+                                                     realWidth , realThickness);
+                                break;
+
+                            case Latte::Dock::Right:
+                                realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
+                                                     realWidth, realThickness);
+                                break;
+                        }
+
+                        available -= realGeometry;
+                    }
+
+                    break;
+
+                case Plasma::Types::BottomEdge:
+                    if (view->drawShadows()) {
+                        available -= view->geometry();
+                    } else {
+                        QRect realGeometry;
+                        int realWidth = view->maxLength() * view->width();
+                        int realY = view->geometry().bottom() - realThickness + 1;
+
+                        switch (view->alignment()) {
+                            case Latte::Dock::Left:
+                                realGeometry = QRect(view->x(), realY,
+                                                     realWidth, realThickness);
+                                break;
+
+                            case Latte::Dock::Center:
+                            case Latte::Dock::Justify:
+                                realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
+                                                     realY, realWidth, realThickness);
+                                break;
+
+                            case Latte::Dock::Right:
+                                realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
+                                                     realWidth, realThickness);
+                                break;
+                        }
+
+                        available -= realGeometry;
+                    }
+
+                    break;
+            }
+        }
+    }
+
+    /*qDebug() << "::::: FREE AREAS :::::";
+    for (int i = 0; i < available.rectCount(); ++i) {
+        qDebug() << available.rects().at(i);
+    }
+    qDebug() << "::::: END OF FREE AREAS :::::";*/
+
+    return available;
 }
 
 QRect DockCorona::availableScreenRect(int id) const
