@@ -184,6 +184,8 @@ private:
     void updatePosition();
     void updateFormFactor();
 
+    QRect maximumNormalGeometry();
+
 private:
     Plasma::Containment *containmentById(uint id);
 

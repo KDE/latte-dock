@@ -378,15 +378,86 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     }
 }
 
+//! this is used mainly from vertical panels in order to
+//! to get the maximum geometry that can be used from the dock
+//! based on their alignment type and the location dock
+QRect DockView::maximumNormalGeometry()
+{
+    if (!this->screen()) {
+        return;
+    }
+
+    int xPos = 0;
+    int yPos = 0;
+    int maxHeight = maxLength() * screen()->geometry().height();
+    int maxWidth = normalThickness();
+
+    QRect maxGeometry;
+
+    maxGeometry.setRect(0, 0, maxWidth, maxHeight);
+
+    switch (location()) {
+        case Plasma::Types::LeftEdge:
+            xPos = screen()->geometry().x();
+
+            switch (alignment()) {
+                case Latte::Dock::Top:
+                    yPos = screen()->geometry().y();
+                    break;
+
+                case Latte::Dock::Center:
+                case Latte::Dock::Justify:
+                    yPos = qMax(screen()->geometry().center().y() - maxHeight / 2, screen()->geometry().y());
+                    break;
+
+                case Latte::Dock::Bottom:
+                    yPos = screen()->geometry().bottom() - maxHeight + 1;
+                    break;
+            }
+
+            maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
+
+            break;
+
+        case Plasma::Types::RightEdge:
+            xPos = screen()->geometry().right() - maxWidth + 1;
+
+            switch (alignment()) {
+                case Latte::Dock::Top:
+                    yPos = screen()->geometry().y();
+                    break;
+
+                case Latte::Dock::Center:
+                case Latte::Dock::Justify:
+                    yPos = qMax(screen()->geometry().center().y() - maxHeight / 2, screen()->geometry().y());
+                    break;
+
+                case Latte::Dock::Bottom:
+                    yPos = screen()->geometry().bottom() - maxHeight + 1;
+                    break;
+            }
+
+            maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
+
+            break;
+    }
+
+    return maxGeometry;
+}
+
 void DockView::resizeWindow()
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        QSize screenSize = corona()->availableScreenRect(this->containment()->screen()).size();
-        QSize size{maxThickness(), screenSize.height()};
+        QRegion freeRegion = corona()->availableScreenRegion(this->containment()->screen());
+        QRect maximumRect = maximumNormalGeometry();
+        QRect availableRect = freeRegion.intersected(maximumRect).boundingRect();
+
+        //qDebug() << "MAXIMUM RECT :: " << maximumRect << " - AVAILABLE RECT :: " << availableRect;
+        QSize size{maxThickness(), availableRect.height()};
 
         if (m_drawShadows) {
             size.setWidth(normalThickness());
-            size.setHeight(static_cast<int>(maxLength() * screenSize.height()));
+            size.setHeight(static_cast<int>(maxLength() * availableRect.height()));
         }
 
         setMinimumSize(size);
@@ -432,6 +503,10 @@ void DockView::updatePosition()
 {
     QRect screenGeometry;
     QPoint position;
+    QRegion freeRegion;
+    QRect maximumRect;
+    QRect availableRect;
+
     position = {0, 0};
 
     const auto length = [&](int length) -> int {
@@ -466,25 +541,31 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::RightEdge:
-            screenGeometry = corona()->availableScreenRect(this->containment()->screen());
+            //screenGeometry = corona()->availableScreenRect(this->containment()->screen());
+            freeRegion = corona()->availableScreenRegion(this->containment()->screen());
+            maximumRect = maximumNormalGeometry();
+            availableRect = freeRegion.intersected(maximumRect).boundingRect();
 
             if (m_drawShadows && !mask().isNull()) {
-                position = {screenGeometry.x() + screenGeometry.width() - cleanThickness,
-                            screenGeometry.y() + length(screenGeometry.height())
+                position = {availableRect.right() - cleanThickness + 1,
+                            availableRect.y() + length(availableRect.height())
                            };
             } else {
-                position = {screenGeometry.x() + screenGeometry.width() - width(), screenGeometry.y()};
+                position = {availableRect.right() - width() + 1, availableRect.y()};
             }
 
             break;
 
         case Plasma::Types::LeftEdge:
-            screenGeometry = corona()->availableScreenRect(this->containment()->screen());
+            //screenGeometry = corona()->availableScreenRect(this->containment()->screen());
+            freeRegion = corona()->availableScreenRegion(this->containment()->screen());
+            maximumRect = maximumNormalGeometry();
+            availableRect = freeRegion.intersected(maximumRect).boundingRect();
 
             if (m_drawShadows && !mask().isNull()) {
-                position = {screenGeometry.x(), screenGeometry.y() + length(screenGeometry.height())};
+                position = {availableRect.x(), availableRect.y() + length(availableRect.height())};
             } else {
-                position = {screenGeometry.x(), screenGeometry.y()};
+                position = {availableRect.x(), availableRect.y()};
             }
 
             break;
