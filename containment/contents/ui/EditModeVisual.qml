@@ -80,7 +80,7 @@ Image{
         if (editAnimationEnded && !root.drawShadowsExternal) {
             dock.shadow = root.editShadow;
         } else {
-            dock.shadow = 0;
+            dock.shadow = root.panelShadow;
         }
     }
 

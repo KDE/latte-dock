@@ -88,6 +88,13 @@ Item{
 
     Binding{
         target: dock
+        property:"shadow"
+        when: dock
+        value: root.panelShadow
+    }
+
+    Binding{
+        target: dock
         property: "maxLength"
         when: dock
         value: plasmoid.configuration.maxLength/100
