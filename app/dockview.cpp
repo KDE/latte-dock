@@ -441,19 +441,15 @@ QRect DockView::maximumNormalGeometry()
     return maxGeometry;
 }
 
-void DockView::resizeWindow()
+void DockView::resizeWindow(QRect availableScreenRect)
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        QRegion freeRegion = corona()->availableScreenRegion(this->containment()->screen());
-        QRect maximumRect = maximumNormalGeometry();
-        QRect availableRect = freeRegion.intersected(maximumRect).boundingRect();
-
         //qDebug() << "MAXIMUM RECT :: " << maximumRect << " - AVAILABLE RECT :: " << availableRect;
-        QSize size{maxThickness(), availableRect.height()};
+        QSize size{maxThickness(), availableScreenRect.height()};
 
         if (m_drawShadows) {
             size.setWidth(normalThickness());
-            size.setHeight(static_cast<int>(maxLength() * availableRect.height()));
+            size.setHeight(static_cast<int>(maxLength() * availableScreenRect.height()));
         }
 
         setMinimumSize(size);
@@ -495,13 +491,10 @@ void DockView::updateAbsDockGeometry(const QRect &localDockGeometry)
     emit absGeometryChanged(m_absGeometry);
 }
 
-void DockView::updatePosition()
+void DockView::updatePosition(QRect availableScreenRect)
 {
     QRect screenGeometry;
     QPoint position;
-    QRegion freeRegion;
-    QRect maximumRect;
-    QRect availableRect;
 
     position = {0, 0};
 
@@ -537,31 +530,21 @@ void DockView::updatePosition()
             break;
 
         case Plasma::Types::RightEdge:
-            //screenGeometry = corona()->availableScreenRect(this->containment()->screen());
-            freeRegion = corona()->availableScreenRegion(this->containment()->screen());
-            maximumRect = maximumNormalGeometry();
-            availableRect = freeRegion.intersected(maximumRect).boundingRect();
-
             if (m_drawShadows && !mask().isNull()) {
-                position = {availableRect.right() - cleanThickness + 1,
-                            availableRect.y() + length(availableRect.height())
+                position = {availableScreenRect.right() - cleanThickness + 1,
+                            availableScreenRect.y() + length(availableScreenRect.height())
                            };
             } else {
-                position = {availableRect.right() - width() + 1, availableRect.y()};
+                position = {availableScreenRect.right() - width() + 1, availableScreenRect.y()};
             }
 
             break;
 
         case Plasma::Types::LeftEdge:
-            //screenGeometry = corona()->availableScreenRect(this->containment()->screen());
-            freeRegion = corona()->availableScreenRegion(this->containment()->screen());
-            maximumRect = maximumNormalGeometry();
-            availableRect = freeRegion.intersected(maximumRect).boundingRect();
-
             if (m_drawShadows && !mask().isNull()) {
-                position = {availableRect.x(), availableRect.y() + length(availableRect.height())};
+                position = {availableScreenRect.x(), availableScreenRect.y() + length(availableScreenRect.height())};
             } else {
-                position = {availableRect.x(), availableRect.y()};
+                position = {availableScreenRect.x(), availableScreenRect.y()};
             }
 
             break;
@@ -593,9 +576,22 @@ inline void DockView::syncGeometry()
     //! if the dock isnt at the correct screen the calculations
     //! are not executed
     if (found) {
+        //! compute the free screen rectangle for vertical panels only once
+        //! this way the costly QRegion computations are calculated only once
+        //! instead of two times (both inside the resizeWindow and the updatePosition)
+        QRegion freeRegion;;
+        QRect maximumRect;
+        QRect availableScreenRect;
+
+        if (formFactor() == Plasma::Types::Vertical) {
+            freeRegion = corona()->availableScreenRegion(this->containment()->screen());
+            maximumRect = maximumNormalGeometry();
+            availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
+        }
+
         updateEnabledBorders();
-        resizeWindow();
-        updatePosition();
+        resizeWindow(availableScreenRect);
+        updatePosition(availableScreenRect);
     }
 
     // qDebug() << "dock geometry:" << qRectToStr(geometry());
