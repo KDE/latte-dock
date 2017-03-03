@@ -19,6 +19,7 @@
 */
 
 #include "quickwindowsystem.h"
+#include <plasma/version.h>
 
 #include <QDebug>
 
@@ -33,7 +34,7 @@ QuickWindowSystem::QuickWindowSystem(QObject *parent) :
         //! TODO: Wayland compositing active
     } else {
         connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
-                , this, [&](bool enabled){
+        , this, [&](bool enabled) {
             if (m_compositing == enabled)
                 return;
 
@@ -53,6 +54,11 @@ QuickWindowSystem::~QuickWindowSystem()
 bool QuickWindowSystem::compositingActive() const
 {
     return m_compositing;
+}
+
+uint QuickWindowSystem::frameworksVersion() const
+{
+    return Plasma::version();
 }
 
 } //end of namespace

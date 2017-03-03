@@ -197,12 +197,42 @@ Item {
 
     /////
 
+    function updateLaunchersNewArchitecture(){
+        ///frameworks 5.29.0 provide id 335104
+
+        //work only after Plasma 5.9 and frameworks 5.29
+        if (Latte.WindowSystem.frameworksVersion < 335104) {
+            return;
+        }
+
+        var launchers = [];
+        var tasks = icList.contentItem.children;
+
+        var len = tasks.length
+        for(var i=0; i<len; ++i){
+            var task;
+            for (var j=0; j<len; ++j){
+                if (tasks && tasks[j] && tasks[j].itemIndex === i) {
+                    task = tasks[j];
+                    break;
+                }
+            }
+
+            if (task && task.m && task.m.LauncherUrlWithoutIcon
+                    && ActivitiesTools.getIndex(task.m.LauncherUrlWithoutIcon, tasksModel.launcherList)>=0) {
+                launchers.push(task.m.LauncherUrlWithoutIcon);
+            }
+        }
+        ActivitiesTools.updateLaunchers(launchers);
+    }
+
     onDragSourceChanged: {
         if (dragSource == null) {
             root.draggingFinished();
             root.signalActionsBlockHiding(-1);
             //root.signalDraggingState(false);
 
+            updateLaunchersNewArchitecture();
             tasksModel.syncLaunchers();
         } else {
             root.signalActionsBlockHiding(1);
