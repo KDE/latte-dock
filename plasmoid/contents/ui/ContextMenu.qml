@@ -571,8 +571,10 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             if (tasksModel.launcherPosition(visualParent.m.LauncherUrlWithoutIcon) != -1) {
                 tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
+                root.updateLaunchersNewArchitecture();
             } else {
                 tasksModel.requestAddLauncher(visualParent.m.LauncherUrlWithoutIcon);
+                root.updateLaunchersNewArchitecture();
             }
         }
     }
@@ -595,7 +597,10 @@ PlasmaComponents.ContextMenu {
 
         text: i18n("Remove Launcher")
 
-        onClicked: tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
+        onClicked: {
+            tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
+            root.updateLaunchersNewArchitecture();
+        }
     }
 
     PlasmaComponents.MenuItem {

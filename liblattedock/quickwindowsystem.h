@@ -35,18 +35,21 @@ class QuickWindowSystem final : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged FINAL)
+    Q_PROPERTY(uint frameworksVersion READ frameworksVersion NOTIFY frameworksVersionChanged)
 
 public:
     explicit QuickWindowSystem(QObject *parent = nullptr);
     virtual ~QuickWindowSystem();
 
     bool compositingActive() const;
+    uint frameworksVersion() const;
 
 signals:
     void compositingChanged();
+    void frameworksVersionChanged();
 
 private:
-   bool m_compositing : 1;
+    bool m_compositing : 1;
 };
 
 static QObject *windowsystem_qobject_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
