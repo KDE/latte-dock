@@ -76,7 +76,7 @@ public:
 
     void setScreenToFollow(QScreen *screen, bool updateScreenId = true);
 
-    void resizeWindow();
+    void resizeWindow(QRect availableScreenRect = QRect());
     void syncGeometry();
 
     bool onPrimary() const;
@@ -182,7 +182,7 @@ private slots:
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
-    void updatePosition();
+    void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
 
     QRect maximumNormalGeometry();
