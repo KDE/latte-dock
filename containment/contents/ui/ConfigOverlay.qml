@@ -483,7 +483,8 @@ MouseArea {
             if (visualParent && currentApplet && currentApplet.applet) {
                 configureButton.visible = (currentApplet.applet.pluginName !== root.plasmoidName)
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
-                closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled;
+                closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
+                        && !(currentApplet.applet.pluginName===root.plasmoidName && dock && dock.docksWithTasks()===1 && dock.tasksPresent());
                 label.text = currentApplet.applet.title;
             }
         }

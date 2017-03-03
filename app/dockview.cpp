@@ -645,7 +645,17 @@ int DockView::docksCount() const
     if (!dockCorona || !this->containment())
         return 0;
 
-    return dockCorona->docksCount(this->containment()->screen());
+    return dockCorona->docksCount();
+}
+
+int DockView::docksWithTasks()
+{
+    auto dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (!dockCorona)
+        return 0;
+
+    return dockCorona->noDocksWithTasks();
 }
 
 void DockView::updateFormFactor()
