@@ -296,40 +296,50 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            if (root.drawShadowsExternal) {
+            if (dock.drawShadows) {
                 dock.maskArea = Qt.rect(0,0,root.width,root.height);
             } else {
                 dock.maskArea = newMaskArea;
             }
+        }
 
-            // console.log("update mask area:"+newMaskArea);
-            if((normalState && !dock.visibility.isHidden) || root.editMode){
+        // console.log("update mask area:"+newMaskArea);
+        if((normalState && !dock.visibility.isHidden) || root.editMode){
+            var tempGeometry = Qt.rect(dock.maskArea.x, dock.maskArea.y, dock.maskArea.width, dock.maskArea.height);
 
-                //the shadows size must be removed from the maskArea
-                //before updating the localDockGeometry
-
+            //the shadows size must be removed from the maskArea
+            //before updating the localDockGeometry
+            if (!dock.drawShadows) {
                 var fixedThickness = root.realPanelThickness;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    newMaskArea.width = fixedThickness;
+                    tempGeometry.width = fixedThickness;
                 } else {
-                    newMaskArea.height = fixedThickness;
+                    tempGeometry.height = fixedThickness;
                 }
 
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    newMaskArea.y = dock.height - fixedThickness;
+                    tempGeometry.y = dock.height - fixedThickness;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    newMaskArea.x = dock.width - fixedThickness;
+                    tempGeometry.x = dock.width - fixedThickness;
                 }
 
-                if (localGeometry.x !== newMaskArea.x || localGeometry.y !== newMaskArea.y
-                        || localGeometry.width !== newMaskArea.width || localGeometry.height !== newMaskArea.height) {
-                    localGeometry = newMaskArea;
-                    dock.setLocalDockGeometry(localGeometry);
-                }
-                // console.log("update dock geometry:"+newMaskArea);
+                //set the boundaries for dock local geometry
+                //qBound = qMax(min, qMin(value, max)).
+                tempGeometry.x = Math.max(0, Math.min(tempGeometry.x, dock.width));
+                tempGeometry.y = Math.max(0, Math.min(tempGeometry.y, dock.height));
+                tempGeometry.width = Math.min(tempGeometry.width, dock.width);
+                tempGeometry.height = Math.min(tempGeometry.height, dock.height);
             }
+
+            if (localGeometry.x !== tempGeometry.x || localGeometry.y !== tempGeometry.y
+                    || localGeometry.width !== tempGeometry.width || localGeometry.height !== tempGeometry.height) {
+                localGeometry = tempGeometry;
+                dock.setLocalDockGeometry(localGeometry);
+            }
+            // console.log("update dock geometry:"+newMaskArea);
         }
+
     }
 
     Loader{
