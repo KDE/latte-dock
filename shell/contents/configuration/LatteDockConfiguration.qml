@@ -244,6 +244,7 @@ PlasmaCore.FrameSvgItem {
 
             onDocksCountChanged: {
                 addDock.enabled = docksCount < 4 && dock.freeEdges().length > 0
+                removeDock.enabled = (docksCount>1) && !(dock.docksWithTasks()===1 && dock.tasksPresent())
             }
 
             PlasmaComponents.Button {
@@ -269,7 +270,7 @@ PlasmaCore.FrameSvgItem {
                 text: i18n("Remove")
                 iconSource: "edit-delete"
                 opacity: enabled ? 1 : 0
-                enabled: dock.docksCount > 1
+                //enabled: dock.docksCount > 1
 
                 onClicked: dock.removeDock()
             }
