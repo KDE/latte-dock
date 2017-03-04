@@ -250,8 +250,8 @@ PlasmaComponents.Page {
 
                     value: plasmoid.configuration.panelSize
                     minimumValue: 0
-                    maximumValue: Number(1.2 * plasmoid.configuration.iconSize).toFixed(0) //0.12*iconSize is the iconMargin, 0.08 for statesLine
-                    stepSize: 2
+                    maximumValue: 100
+                    stepSize: 5
 
                     function updatePanelSize() {
                         if (!pressed)
@@ -259,7 +259,7 @@ PlasmaComponents.Page {
                     }
 
                     onPressedChanged: {
-                        updatePanelSize()
+                        updatePanelSize();
                     }
 
                     Component.onCompleted: {
@@ -269,7 +269,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     enabled: showBackground.checked
-                    text: panelSizeSlider.value + " px."
+                    text: panelSizeSlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
