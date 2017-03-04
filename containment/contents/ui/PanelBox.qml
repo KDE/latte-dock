@@ -57,7 +57,7 @@ Item{
             if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode) {
                 return root.maxLength;
             } else {
-               return mainLayout.height + spacing;
+                return mainLayout.height + spacing;
             }
         }
     }
@@ -99,8 +99,10 @@ Item{
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
 
-        width: root.isVertical ? panelSize + marginsWidth : Math.min(parent.width + marginsWidth, root.width - marginsWidth)
-        height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) : panelSize + marginsHeight
+        width: root.isVertical ? panelSize + marginsWidth - (solidBackground.leftIncreaser + solidBackground.rightIncreaser) :
+                                 Math.min(parent.width + marginsWidth, root.width - marginsWidth)
+        height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
+                                  panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
         imagePath: root.drawShadowsExternal ? "" : "widgets/panel-background"
         prefix: root.drawShadowsExternal ? "" : "shadow"
@@ -114,12 +116,12 @@ Item{
             if (root.drawShadowsExternal) {
                 return 0;
             } else {
-              if (root.panelAlignment === Latte.Dock.Left)
-                return margins.right;
-              else if (root.panelAlignment === Latte.Dock.Right)
-                return margins.left;
-              else
-                return margins.left+margins.right;
+                if (root.panelAlignment === Latte.Dock.Left)
+                    return margins.right;
+                else if (root.panelAlignment === Latte.Dock.Right)
+                    return margins.left;
+                else
+                    return margins.left+margins.right;
             }
         }
 
@@ -128,11 +130,11 @@ Item{
                 return 0;
             } else {
                 if (root.panelAlignment === Latte.Dock.Top)
-                  return margins.bottom;
+                    return margins.bottom;
                 else if (root.panelAlignment === Latte.Dock.Bottom)
-                  return margins.top;
+                    return margins.top;
                 else
-                  return margins.top + margins.bottom;
+                    return margins.top + margins.bottom;
             }
         }
 
@@ -194,13 +196,44 @@ Item{
 
         PlasmaCore.FrameSvgItem{
             id: solidBackground
-            anchors.leftMargin: shadowsSvgItem.margins.left
-            anchors.rightMargin: shadowsSvgItem.margins.right
-            anchors.topMargin: shadowsSvgItem.margins.top
-            anchors.bottomMargin: shadowsSvgItem.margins.bottom
+            anchors.leftMargin: shadowsSvgItem.margins.left - leftIncreaser
+            anchors.rightMargin: shadowsSvgItem.margins.right - rightIncreaser
+            anchors.topMargin: shadowsSvgItem.margins.top - topIncreaser
+            anchors.bottomMargin: shadowsSvgItem.margins.bottom - bottomIncreaser
             anchors.fill:parent
 
-            imagePath: "widgets/panel-background"
+            imagePath: root.solidPanel ? "opaque/dialogs/background" : "widgets/panel-background"
+
+            //! the increases used when the user forces a solid background and the background
+            //! must be increased in order to look ok in the corners
+            property int rightIncreaser: {
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.LeftEdge))
+                    return 0;
+                else
+                    return hiddenPanelBackground.margins.right;
+            }
+
+            property int leftIncreaser: {
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.RightEdge))
+                    return 0;
+                else
+                    return hiddenPanelBackground.margins.left;
+            }
+
+            property int topIncreaser: {
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.BottomEdge))
+                    return 0;
+                else
+                    return hiddenPanelBackground.margins.top;
+            }
+
+            property int bottomIncreaser: {
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.TopEdge))
+                    return 0;
+                else
+                    return hiddenPanelBackground.margins.bottom;
+            }
+
 
             Binding {
                 target: root
@@ -258,7 +291,12 @@ Item{
                     prefix = "";
                 }
             }
+        }
 
+        PlasmaCore.FrameSvgItem{
+            id: hiddenPanelBackground
+            imagePath: "widgets/panel-background"
+            visible: false
         }
     }
 
@@ -483,4 +521,5 @@ Item{
     ]
     //END states
 }
+
 
