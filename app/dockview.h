@@ -33,6 +33,8 @@
 #include <QPointer>
 #include <QTimer>
 
+#include <Plasma/Theme>
+
 namespace Plasma {
 class Types;
 class Corona;
@@ -175,6 +177,7 @@ private slots:
     void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
+    void themeChanged();
 
     void restoreConfig();
     void saveConfig();
@@ -208,6 +211,8 @@ private:
     QString m_screenToFollowId;
 
     QTimer m_screenSyncTimer;
+
+    Plasma::Theme m_theme;
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;

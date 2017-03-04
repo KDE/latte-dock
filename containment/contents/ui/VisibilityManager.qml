@@ -107,6 +107,12 @@ Item{
         value: root.panelAlignment
     }
 
+    Connections{
+        target:root
+        onPanelShadowChanged: updateMaskArea();
+        onPanelMarginChanged: updateMaskArea();
+    }
+
     onInStartupChanged: {
         if (!inStartup) {
             delayAnimationTimer.start();

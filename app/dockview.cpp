@@ -37,6 +37,7 @@
 #include <KAuthorized>
 #include <KLocalizedContext>
 #include <KLocalizedString>
+#include <KWindowEffects>
 
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
@@ -154,6 +155,8 @@ void DockView::init()
         updateFormFactor();
         syncGeometry();
     });
+
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
 
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
@@ -696,6 +699,8 @@ void DockView::setDrawShadows(bool draw)
         emit enabledBordersChanged();
     }
 
+    themeChanged();
+
     emit drawShadowsChanged();
 }
 
@@ -810,6 +815,21 @@ void DockView::setShadow(int shadow)
     }
 
     emit shadowChanged();
+}
+
+
+void DockView::themeChanged()
+{
+    if (!m_drawShadows) {
+        KWindowEffects::enableBlurBehind(winId(), false);
+        KWindowEffects::enableBackgroundContrast(winId(), false);
+    } else {
+        KWindowEffects::enableBlurBehind(winId(), true);
+        KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
+                m_theme.backgroundContrast(),
+                m_theme.backgroundIntensity(),
+                m_theme.backgroundSaturation());
+    }
 }
 
 //! check if the tasks plasmoid exist in the dock
