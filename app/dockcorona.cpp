@@ -245,7 +245,7 @@ QRegion DockCorona::availableScreenRegion(int id) const
 
                             case Latte::Dock::Center:
                             case Latte::Dock::Justify:
-                                realGeometry = QRect(view->geometry().center().x() - realWidth / 2 , view->y(),
+                                realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2) , view->y(),
                                                      realWidth , realThickness);
                                 break;
 
@@ -295,9 +295,11 @@ QRegion DockCorona::availableScreenRegion(int id) const
     }
 
     /*qDebug() << "::::: FREE AREAS :::::";
+
     for (int i = 0; i < available.rectCount(); ++i) {
         qDebug() << available.rects().at(i);
     }
+
     qDebug() << "::::: END OF FREE AREAS :::::";*/
 
     return available;

@@ -34,6 +34,9 @@
     <entry name="panelSize" type="Int">
       <default>58</default>
     </entry>
+    <entry name="solidPanel" type="Bool">
+      <default>false</default>
+    </entry>
     <entry name="automaticIconSize" type="Bool">
       <default>false</default>
     </entry>

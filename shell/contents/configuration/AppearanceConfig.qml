@@ -227,14 +227,38 @@ PlasmaComponents.Page {
                 text: i18n("Background")
             }
 
-            PlasmaComponents.CheckBox {
-                id: showBackground
+            GridLayout {
+                width: parent.width
+                rowSpacing: 1
+                columnSpacing: 1
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show Panel Background")
-                checked: plasmoid.configuration.useThemePanel
+                Layout.rightMargin: units.smallSpacing * 2
 
-                onClicked: {
-                    plasmoid.configuration.useThemePanel = checked
+                columns: 2
+
+                PlasmaComponents.CheckBox {
+                    id: showBackground
+                    Layout.fillWidth: true
+                    text: i18n("Show Panel Background")
+                    checked: plasmoid.configuration.useThemePanel
+
+                    onClicked: {
+                        plasmoid.configuration.useThemePanel = checked
+                    }
+                }
+
+                PlasmaComponents.CheckBox {
+                    id: solidBackground
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+
+                    text: i18n("Solid Background")
+                    checked: plasmoid.configuration.solidPanel
+                    enabled: showBackground.checked
+
+                    onClicked: {
+                        plasmoid.configuration.solidPanel = checked
+                    }
                 }
             }
 

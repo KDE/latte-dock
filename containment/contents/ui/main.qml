@@ -50,7 +50,7 @@ DragDrop.DropArea {
     property bool confirmedDragEntered: false
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                                        && (dock.visibility.mode === Latte.Dock.AlwaysVisible)
-                                       && (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
+                                       && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
 
     property bool editMode: plasmoid.userConfiguring
     property bool immutable: plasmoid.immutable
@@ -61,6 +61,7 @@ DragDrop.DropArea {
                                          : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
+    property bool solidPanel: plasmoid.configuration.solidPanel
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
     //property bool smallAutomaticIconJumps: plasmoid.configuration.smallAutomaticIconJumps
