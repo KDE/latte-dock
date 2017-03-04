@@ -487,10 +487,6 @@ DragDrop.DropArea {
         }
     }
 
-    onPanelShadowChanged: {
-        visibilityManager.updateMaskArea();
-    }
-
     onToolBoxChanged: {
         if (toolBox) {
             toolBox.visible = false;
