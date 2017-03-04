@@ -92,7 +92,14 @@ DragDrop.DropArea {
     property int panelMargin: 0
     property int panelShadow: 0 //shadowsSize
     property int editShadow: Math.ceil(iconSize / 5)
-    property int themePanelSize: plasmoid.configuration.panelSize
+    property int themePanelSize: {
+        //root.statesLineSize + root.iconSize + root.iconMargin + 1
+        var panelBase = root.statesLineSize + root.panelMargin;
+        var iconMarginUsed = latteApplet ? root.iconMargin : 0;
+        var maxPanelSize = (root.statesLineSize + root.iconSize + iconMarginUsed + 1) - panelBase;
+        var percentage = plasmoid.configuration.panelSize/100;
+        return Math.max(panelBase, panelBase + percentage*maxPanelSize);
+    }
 
     property int iconMargin: Math.ceil(0.12 * iconSize)
     property int statesLineSize: latteApplet ?  Math.ceil( root.iconSize/13 ) : 0
