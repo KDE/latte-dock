@@ -346,7 +346,7 @@ Window{
         }
 
         Text{
-            text: plasmoid.configuration.panelSize
+            text: plasmoid.configuration.panelSize + "%"
         }
 
         Text{
