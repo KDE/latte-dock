@@ -29,10 +29,10 @@
       <default>64</default>
     </entry>
     <entry name="useThemePanel" type="Bool">
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="panelSize" type="Int">
-      <default>58</default>
+      <default>0</default>
     </entry>
     <entry name="solidPanel" type="Bool">
       <default>false</default>
