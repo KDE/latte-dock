@@ -835,6 +835,10 @@ void DockView::themeChanged()
 //! check if the tasks plasmoid exist in the dock
 bool DockView::tasksPresent()
 {
+    if (!this->containment()) {
+        return false;
+    }
+
     foreach (Plasma::Applet *applet, this->containment()->applets()) {
         KPluginMetaData meta = applet->kPackage().metadata();
 
