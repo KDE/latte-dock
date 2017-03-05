@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-29 15:48-0500\n"
+"POT-Creation-Date: 2017-03-05 14:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: rc.cpp:1
+#: rc.cpp:1 ../desktop-templates/containment.metadata.desktop.template:4
 msgid "Latte"
 msgstr ""
 
-#: rc.cpp:2
+#: rc.cpp:2 ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
 msgstr ""

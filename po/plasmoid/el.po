@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-29 15:48-0500\n"
+"POT-Creation-Date: 2017-03-05 14:08+0200\n"
 "PO-Revision-Date: 2017-01-15 10:42+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -186,181 +186,180 @@ msgstr "Πίνακας με διαφάνεια"
 msgid "Size: "
 msgstr "Μέγεθος: "
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:118
+#: ../../plasmoid/contents/ui/ContextMenu.qml:121
 msgctxt "Play previous track"
 msgid "Previous Track"
 msgstr "Προηγούμενο"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:131
+#: ../../plasmoid/contents/ui/ContextMenu.qml:134
 msgctxt "Pause playback"
 msgid "Pause"
 msgstr "Παύση"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:131
+#: ../../plasmoid/contents/ui/ContextMenu.qml:134
 msgctxt "Start playback"
 msgid "Play"
 msgstr "Έναρξη"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:142
+#: ../../plasmoid/contents/ui/ContextMenu.qml:145
 msgctxt "Stop playback"
 msgid "Stop"
 msgstr "Διακοπή"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:150
+#: ../../plasmoid/contents/ui/ContextMenu.qml:153
 msgctxt "Play next track"
 msgid "Next Track"
 msgstr "Επόμενο"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:166
+#: ../../plasmoid/contents/ui/ContextMenu.qml:169
 msgctxt "Quit media player app"
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:181
+#: ../../plasmoid/contents/ui/ContextMenu.qml:184
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
 msgstr "Επαναφορά"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:226
+#: ../../plasmoid/contents/ui/ContextMenu.qml:231
 msgid "Move To Desktop"
 msgstr "Στην Επιφάνεια Εργασίας"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:248
+#: ../../plasmoid/contents/ui/ContextMenu.qml:253
 msgid "Move To Current Desktop"
 msgstr "Στην Τρέχουσα Επιφάνεια Εργασίας"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:257
+#: ../../plasmoid/contents/ui/ContextMenu.qml:262
 msgid "All Desktops"
 msgstr "Όλες οι Επιφάνειες Εργασίας"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:286
+#: ../../plasmoid/contents/ui/ContextMenu.qml:291
 msgid "New Desktop"
 msgstr "Νέα Επιφάνεια Εργασίας"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:306
+#: ../../plasmoid/contents/ui/ContextMenu.qml:311
 msgid "Move To &Activity"
 msgstr "Δραστηριότητες"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:327
+#: ../../plasmoid/contents/ui/ContextMenu.qml:332
 msgid "Add To Current Activity"
 msgstr "Στην Τρέχουσα Δραστηριότητα"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:337
+#: ../../plasmoid/contents/ui/ContextMenu.qml:342
 msgid "All Activities"
 msgstr "Όλες τις Δραστηριότητες"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:406
+#: ../../plasmoid/contents/ui/ContextMenu.qml:411
 msgid "Minimize"
 msgstr "Ελαχιστοποίηση"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:422
+#: ../../plasmoid/contents/ui/ContextMenu.qml:427
 msgid "Maximize"
 msgstr "Μεγιστοποίηση"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:437
+#: ../../plasmoid/contents/ui/ContextMenu.qml:442
 msgid "More Actions"
 msgstr "Περισσότερες ενέργειες"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:445
+#: ../../plasmoid/contents/ui/ContextMenu.qml:450
 msgid "Move"
 msgstr "Μετακίνηση"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:454
+#: ../../plasmoid/contents/ui/ContextMenu.qml:459
 msgid "Resize"
 msgstr "Αλλαγή μεγέθους"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:463
+#: ../../plasmoid/contents/ui/ContextMenu.qml:468
 msgid "Keep Above Others"
 msgstr "Διατήρηση πάνω από τα άλλα"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:473
+#: ../../plasmoid/contents/ui/ContextMenu.qml:478
 msgid "Keep Below Others"
 msgstr "Διατήρηση κάτω από τα άλλα"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:485
+#: ../../plasmoid/contents/ui/ContextMenu.qml:490
 msgid "Fullscreen"
 msgstr "Πλήρης οθόνη"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:497
+#: ../../plasmoid/contents/ui/ContextMenu.qml:502
 msgid "Shade"
 msgstr "Τύλιγμα"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:512
+#: ../../plasmoid/contents/ui/ContextMenu.qml:517
 msgid "Allow this program to be grouped"
 msgstr "Να επιτρέπεται η ομαδοποίηση του προγράμματος"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:525
+#: ../../plasmoid/contents/ui/ContextMenu.qml:530
 msgid "Start New Instance"
 msgstr "Νέο Στιγμιότυπο"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:547
-#: ../../plasmoid/contents/ui/ContextMenu.qml:580
+#: ../../plasmoid/contents/ui/ContextMenu.qml:552
+#: ../../plasmoid/contents/ui/ContextMenu.qml:587
 msgid "Show Launcher On All Activities"
 msgstr "Εκκινητής σε Όλες τις Δραστηριότητες"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:564
+#: ../../plasmoid/contents/ui/ContextMenu.qml:569
 msgid "Show Launcher When Not Running"
 msgstr "Εκκινητής όταν δεν είναι Ενεργό"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:591
+#: ../../plasmoid/contents/ui/ContextMenu.qml:598
 msgid "Remove Launcher"
 msgstr "Αφαίρεση Εκκινητή"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:621
+#: ../../plasmoid/contents/ui/ContextMenu.qml:631
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:777
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:858
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:448
 msgid "On %1"
 msgstr "Σε %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:786
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:867
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:458
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Σε όλες τις δραστηριότητες"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:805
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:886
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:480
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Διαθέσιμο επίσης σε %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:809
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:890
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:484
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Διαθέσιμο σε %1"
 
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:355
-msgctxt "Go to previous song"
-msgid "Previous"
-msgstr "Προηγούμενο"
-
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:364
-msgctxt "Pause player"
-msgid "Pause"
-msgstr "Παύση"
-
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:364
-msgctxt "Start player"
-msgid "Play"
-msgstr "Έναρξη"
-
-#: ../../plasmoid/contents/ui/ToolTipDelegate.qml:372
-msgctxt "Go to next song"
-msgid "Next"
-msgstr "Επόμενο"
-
-#: ../../plasmoid/contents/ui/ToolTipWindowMouseArea.qml:56
-msgctxt "close this window"
-msgid "Close"
-msgstr "Κλείσιμο"
-
-#: rc.cpp:1
+#: ../desktop-templates/plasmoid.metadata.desktop.template:3
 msgid "Latte Plasmoid"
 msgstr "Latte"
 
-#: rc.cpp:2
+#: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
 msgstr "Ένα πλασμoϊδές από τη σουίτα Latte"
+
+#~ msgctxt "Go to previous song"
+#~ msgid "Previous"
+#~ msgstr "Προηγούμενο"
+
+#~ msgctxt "Pause player"
+#~ msgid "Pause"
+#~ msgstr "Παύση"
+
+#~ msgctxt "Start player"
+#~ msgid "Play"
+#~ msgstr "Έναρξη"
+
+#~ msgctxt "Go to next song"
+#~ msgid "Next"
+#~ msgstr "Επόμενο"
+
+#~ msgctxt "close this window"
+#~ msgid "Close"
+#~ msgstr "Κλείσιμο"
 
 #~ msgid "Now Dock"
 #~ msgstr "Now Dock"

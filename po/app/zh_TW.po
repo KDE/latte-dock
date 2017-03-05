@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-29 15:48-0500\n"
+"POT-Creation-Date: 2017-03-05 14:08+0200\n"
 "PO-Revision-Date: 2016-11-26 17:31+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -16,6 +16,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
+
+#: ../../app/dockview.cpp:1148
+msgctxt "%1 is the name of the containment"
+msgid "%1 Options"
+msgstr ""
+
+#: ../../app/main.cpp:73
+msgctxt "command line"
+msgid "Replace the current dock instance."
+msgstr ""
+
+#: ../../app/main.cpp:74
+msgctxt "command line"
+msgid "Show the debugging messages on stdout."
+msgstr ""
+
+#: ../../app/main.cpp:75
+msgctxt "command line"
+msgid "Show messages of debugging for the mask (Only useful to devs)."
+msgstr ""
+
+#: ../../app/main.cpp:76
+msgctxt "command line"
+msgid "Draw boxes around of the applets."
+msgstr ""
+
+#: ../../app/main.cpp:77
+msgctxt "command line"
+msgid "Open a window with much debug information."
+msgstr ""
+
+#: ../../app/main.cpp:94
+msgid "An instance is already running!, use --replace to restart Latte"
+msgstr ""
+
+#: ../../app/main.cpp:132
+msgid ""
+"Latte is a dock based on plasma frameworks that provides an elegant and "
+"intuitive experience for your tasks and plasmoids. It animates its contents "
+"by using parabolic zoom effect and trys to be there only when it is needed.\n"
+"\n"
+"\"Art in Coffee\""
+msgstr ""
+
+#: ../../app/main.cpp:149
+msgid "Logo and Icons"
+msgstr ""
+
+#: ../../app/main.cpp:151
+msgid "Many bug reports"
+msgstr ""
+
+#: ../../app/main.cpp:153
+msgid "Reviews for Latte Dock, CandilDock and NowDock"
+msgstr ""
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:44
+#, fuzzy
+msgid "Latte Dock panel"
+msgstr "Now Dock 面板"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:46
+msgid "Dock configuration UI"
+msgstr ""
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:47
+msgid "Config model"
+msgstr ""
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
@@ -34,7 +102,7 @@ msgid "Animations"
 msgstr ""
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:362
+#: ../../shell/contents/configuration/AppearanceConfig.qml:387
 msgid "None"
 msgstr "無"
 
@@ -54,24 +122,29 @@ msgstr ""
 msgid "Background"
 msgstr "背景"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:233
+#: ../../shell/contents/configuration/AppearanceConfig.qml:242
 msgid "Show Panel Background"
 msgstr "顯示面板背景"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:286
-#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+#: ../../shell/contents/configuration/AppearanceConfig.qml:255
+#, fuzzy
+msgid "Solid Background"
+msgstr "背景"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:323
 msgid "Length"
 msgstr ""
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:338
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "Applet shadows"
 msgstr ""
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:370
+#: ../../shell/contents/configuration/AppearanceConfig.qml:396
 msgid "Locked"
 msgstr ""
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:376
+#: ../../shell/contents/configuration/AppearanceConfig.qml:405
 msgid "All"
 msgstr ""
 
@@ -79,105 +152,113 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:96
+#: ../../shell/contents/configuration/BehaviorConfig.qml:70
+msgid "On Primary"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:105
+msgid "Screen:"
+msgstr ""
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:194
 #, fuzzy
 msgctxt "bottom location"
 msgid "Bottom"
 msgstr "底部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:107
+#: ../../shell/contents/configuration/BehaviorConfig.qml:205
 #, fuzzy
 msgctxt "left location"
 msgid "Left"
 msgstr "左邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:118
+#: ../../shell/contents/configuration/BehaviorConfig.qml:216
 #, fuzzy
 msgctxt "top location"
 msgid "Top"
 msgstr "頂部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:129
+#: ../../shell/contents/configuration/BehaviorConfig.qml:227
 #, fuzzy
 msgctxt "right location"
 msgid "Right"
 msgstr "右邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:148
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
 #, fuzzy
 msgid "Alignment"
 msgstr "小程式對齊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:183
+#: ../../shell/contents/configuration/BehaviorConfig.qml:281
 #, fuzzy
 msgctxt "top alignment"
 msgid "Top"
 msgstr "頂部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:183
+#: ../../shell/contents/configuration/BehaviorConfig.qml:281
 #, fuzzy
 msgctxt "left alignment"
 msgid "Left"
 msgstr "左邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:193
+#: ../../shell/contents/configuration/BehaviorConfig.qml:291
 #, fuzzy
 msgctxt "center alignment"
 msgid "Center"
 msgstr "置中"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:203
+#: ../../shell/contents/configuration/BehaviorConfig.qml:301
 #, fuzzy
 msgctxt "bottom alignment"
 msgid "Bottom"
 msgstr "底部"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:203
+#: ../../shell/contents/configuration/BehaviorConfig.qml:301
 #, fuzzy
 msgctxt "right alignment"
 msgid "Right"
 msgstr "右邊"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:214
+#: ../../shell/contents/configuration/BehaviorConfig.qml:312
 msgctxt "justify alignment"
 msgid "Justify"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:232
+#: ../../shell/contents/configuration/BehaviorConfig.qml:330
 msgid "Visibility"
 msgstr "可見度"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:257
+#: ../../shell/contents/configuration/BehaviorConfig.qml:355
 msgid "Always Visible"
 msgstr "永遠可見"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:266
+#: ../../shell/contents/configuration/BehaviorConfig.qml:364
 msgid "Auto Hide"
 msgstr "自動隱藏"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:275
+#: ../../shell/contents/configuration/BehaviorConfig.qml:373
 #, fuzzy
 msgid "Dodge Active"
 msgstr "在作用中的視窗後"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:284
+#: ../../shell/contents/configuration/BehaviorConfig.qml:382
 #, fuzzy
 msgid "Dodge Maximized"
 msgstr "在最大化的視窗後"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:293
+#: ../../shell/contents/configuration/BehaviorConfig.qml:391
 msgid "Dodge All Windows"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:311
+#: ../../shell/contents/configuration/BehaviorConfig.qml:409
 msgid "Delay"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:326
+#: ../../shell/contents/configuration/BehaviorConfig.qml:424
 msgid "Show:"
 msgstr ""
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:343
+#: ../../shell/contents/configuration/BehaviorConfig.qml:441
 msgid "Hide:"
 msgstr ""
 
@@ -203,15 +284,15 @@ msgstr ""
 msgid "Tasks"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:254
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:255
 msgid "Add"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:269
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:270
 msgid "Remove"
 msgstr ""
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:283
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:284
 msgid "Quit"
 msgstr ""
 
@@ -275,54 +356,15 @@ msgstr ""
 msgid "Show only tasks from the current activity"
 msgstr ""
 
-#: ../../app/dockview.cpp:694
-msgctxt "%1 is the name of the containment"
-msgid "%1 Options"
-msgstr ""
-
-#: ../../app/main.cpp:86
-msgid ""
-"Latte is a dock based on plasma frameworks that provides an elegant and "
-"intuitive experience for your tasks and plasmoids. It animates its contents "
-"by using parabolic zoom effect and trys to be there only when it is needed.\n"
-"\n"
-"\"Art in Coffee\""
-msgstr ""
-
-#: ../../app/main.cpp:99
-msgid "Logo and Icons"
-msgstr ""
-
-#: ../../app/main.cpp:101
-msgid "Many bug reports"
-msgstr ""
-
-#: ../../app/main.cpp:103
-msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr ""
-
-#: ../../app/packageplugins/shell/dockpackage.cpp:44
-#, fuzzy
-msgid "Latte Dock panel"
-msgstr "Now Dock 面板"
-
-#: ../../app/packageplugins/shell/dockpackage.cpp:46
-msgid "Dock configuration UI"
-msgstr ""
-
-#: ../../app/packageplugins/shell/dockpackage.cpp:47
-msgid "Config model"
-msgstr ""
-
-#: rc.cpp:1
+#: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
 msgstr ""
 
-#: rc.cpp:2
+#: ../desktop-templates/latte-dock.desktop.template:4
 msgid "Dock for the masses"
 msgstr ""
 
-#: rc.cpp:3
+#: ../desktop-templates/latte-dock.desktop.template:5
 msgid "Dock"
 msgstr ""
 
