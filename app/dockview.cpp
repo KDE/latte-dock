@@ -158,6 +158,9 @@ void DockView::init()
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
 
+    connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
+    connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
+
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     setVisible(true);
