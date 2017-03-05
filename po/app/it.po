@@ -68,15 +68,15 @@ msgstr ""
 
 #: ../../app/main.cpp:149
 msgid "Logo and Icons"
-msgstr ""
+msgstr "Logo and Icone"
 
 #: ../../app/main.cpp:151
 msgid "Many bug reports"
-msgstr ""
+msgstr "Molte segnalazioni di bug"
 
 #: ../../app/main.cpp:153
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr ""
+msgstr "Recensioni per Latte Dock, CandilDock e NowDock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:44
 msgid "Latte Dock panel"
@@ -134,7 +134,7 @@ msgstr "Mostra lo sfondo del pannello"
 #: ../../shell/contents/configuration/AppearanceConfig.qml:255
 #, fuzzy
 msgid "Solid Background"
-msgstr "Sfondo"
+msgstr "Sfondo solido"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:310
 #: ../../shell/contents/configuration/AppearanceConfig.qml:323
@@ -291,7 +291,7 @@ msgstr "Esci"
 #: ../../shell/contents/configuration/LatteTextField.qml:42
 #, fuzzy
 msgid "none"
-msgstr "none"
+msgstr "nessuno"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:73
 msgid "ms."
