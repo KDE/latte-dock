@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-01-29 15:48-0500\n"
-"PO-Revision-Date: 2017-01-30 19:35+0200\n"
+"POT-Creation-Date: 2017-03-05 14:08+0200\n"
+"PO-Revision-Date: 2017-03-05 14:19+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -16,6 +16,84 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
+
+#: ../../app/dockview.cpp:1148
+msgctxt "%1 is the name of the containment"
+msgid "%1 Options"
+msgstr "Επιλογές του %1"
+
+#: ../../app/main.cpp:73
+msgctxt "command line"
+msgid "Replace the current dock instance."
+msgstr "Αντικατάσταση του τρέχοντα πίνακα"
+
+#: ../../app/main.cpp:74
+msgctxt "command line"
+msgid "Show the debugging messages on stdout."
+msgstr "Εμφάνιση των μηνυμάτων αποσφαλμάτωσης στην τρέχουσα έξοδο."
+
+#: ../../app/main.cpp:75
+msgctxt "command line"
+msgid "Show messages of debugging for the mask (Only useful to devs)."
+msgstr ""
+"Εμφάνιση μηνυμάτων αποσφαλμάτωσης της μάσκας (χρήση κυρίως από τους"
+" προγραμματιστές)"
+
+#: ../../app/main.cpp:76
+msgctxt "command line"
+msgid "Draw boxes around of the applets."
+msgstr "Εμφάνιση τετραγώνων γύρο από τις εφαρμογές. "
+
+#: ../../app/main.cpp:77
+msgctxt "command line"
+msgid "Open a window with much debug information."
+msgstr "Εμφάνιση παραθύρου με πληροφορίες αποσφαλμάτωσης."
+
+#: ../../app/main.cpp:94
+msgid "An instance is already running!, use --replace to restart Latte"
+msgstr ""
+"Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του"
+" Latte"
+
+#: ../../app/main.cpp:132
+msgid ""
+"Latte is a dock based on plasma frameworks that provides an elegant and "
+"intuitive experience for your tasks and plasmoids. It animates its contents "
+"by using parabolic zoom effect and trys to be there only when it is needed.\n"
+"\n"
+"\"Art in Coffee\""
+msgstr ""
+"Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στα plasma frameworks που "
+"εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες "
+"και τα γραφικά συστατικά σας. Χρησιμοποιεί ένα παραβολικό εφέ έτσι ώστε να "
+"απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το "
+"χρειάζεστε.\n"
+"\n"
+"\"Τέχνη στον Καφέ\""
+
+#: ../../app/main.cpp:149
+msgid "Logo and Icons"
+msgstr "Εικονίδια και Logo"
+
+#: ../../app/main.cpp:151
+msgid "Many bug reports"
+msgstr "Πολλές δηλώσεις προβλημάτων"
+
+#: ../../app/main.cpp:153
+msgid "Reviews for Latte Dock, CandilDock and NowDock"
+msgstr "Αξιολογήσεις των Latte Dock, CandilDock και NowDock"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:44
+msgid "Latte Dock panel"
+msgstr "Πίνακας Latte"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:46
+msgid "Dock configuration UI"
+msgstr "Παράθυρο ρυθμίσεων"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:47
+msgid "Config model"
+msgstr "Μοντέλο ρυθμίσεων"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
@@ -34,7 +112,7 @@ msgid "Animations"
 msgstr "Γραφικά"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:362
+#: ../../shell/contents/configuration/AppearanceConfig.qml:387
 msgid "None"
 msgstr "Καμία"
 
@@ -54,118 +132,130 @@ msgstr "x3"
 msgid "Background"
 msgstr "Παρασκήνιο"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:233
+#: ../../shell/contents/configuration/AppearanceConfig.qml:242
 msgid "Show Panel Background"
 msgstr "Εμφάνιση Παρασκηνίου"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:286
-#: ../../shell/contents/configuration/AppearanceConfig.qml:299
+#: ../../shell/contents/configuration/AppearanceConfig.qml:255
+msgid "Solid Background"
+msgstr "Συμπαγές Παρασκήνιο"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:310
+#: ../../shell/contents/configuration/AppearanceConfig.qml:323
 msgid "Length"
 msgstr "Μήκος"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:338
+#: ../../shell/contents/configuration/AppearanceConfig.qml:362
 msgid "Applet shadows"
-msgstr "Σκιές συστατικών"
+msgstr "Σκιές Συστατικών"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:370
+#: ../../shell/contents/configuration/AppearanceConfig.qml:396
 msgid "Locked"
 msgstr "Κλειδωμένα"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:376
+#: ../../shell/contents/configuration/AppearanceConfig.qml:405
 msgid "All"
-msgstr "Όλα"
+msgstr "Παντού"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
 msgstr "Τοποθεσία"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:96
+#: ../../shell/contents/configuration/BehaviorConfig.qml:70
+msgid "On Primary"
+msgstr "Κύρια Οθόνη"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:105
+msgid "Screen:"
+msgstr "Οθόνη:"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:194
 msgctxt "bottom location"
 msgid "Bottom"
 msgstr "Κάτω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:107
+#: ../../shell/contents/configuration/BehaviorConfig.qml:205
 msgctxt "left location"
 msgid "Left"
 msgstr "Αριστερά"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:118
+#: ../../shell/contents/configuration/BehaviorConfig.qml:216
 msgctxt "top location"
 msgid "Top"
 msgstr "Πάνω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:129
+#: ../../shell/contents/configuration/BehaviorConfig.qml:227
 msgctxt "right location"
 msgid "Right"
 msgstr "Δεξιά"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:148
+#: ../../shell/contents/configuration/BehaviorConfig.qml:246
 msgid "Alignment"
 msgstr "Στοίχιση"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:183
+#: ../../shell/contents/configuration/BehaviorConfig.qml:281
 msgctxt "top alignment"
 msgid "Top"
 msgstr "Πάνω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:183
+#: ../../shell/contents/configuration/BehaviorConfig.qml:281
 msgctxt "left alignment"
 msgid "Left"
 msgstr "Αριστερή"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:193
+#: ../../shell/contents/configuration/BehaviorConfig.qml:291
 msgctxt "center alignment"
 msgid "Center"
 msgstr "Κεντρική"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:203
+#: ../../shell/contents/configuration/BehaviorConfig.qml:301
 msgctxt "bottom alignment"
 msgid "Bottom"
 msgstr "Κάτω"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:203
+#: ../../shell/contents/configuration/BehaviorConfig.qml:301
 msgctxt "right alignment"
 msgid "Right"
 msgstr "Δεξιά"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:214
+#: ../../shell/contents/configuration/BehaviorConfig.qml:312
 msgctxt "justify alignment"
 msgid "Justify"
 msgstr "Πλήρης"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:232
+#: ../../shell/contents/configuration/BehaviorConfig.qml:330
 msgid "Visibility"
 msgstr "Ορατότητα"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:257
+#: ../../shell/contents/configuration/BehaviorConfig.qml:355
 msgid "Always Visible"
 msgstr "Πάντα Ορατό"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:266
+#: ../../shell/contents/configuration/BehaviorConfig.qml:364
 msgid "Auto Hide"
 msgstr "Αυτόματη Απόκρυψη"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:275
+#: ../../shell/contents/configuration/BehaviorConfig.qml:373
 msgid "Dodge Active"
 msgstr "Αποφυγή Ενεργό"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:284
+#: ../../shell/contents/configuration/BehaviorConfig.qml:382
 msgid "Dodge Maximized"
 msgstr "Αποφυγή Μεγιστοποίησης"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:293
+#: ../../shell/contents/configuration/BehaviorConfig.qml:391
 msgid "Dodge All Windows"
 msgstr "Αποφυγή Παραθύρων"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:311
+#: ../../shell/contents/configuration/BehaviorConfig.qml:409
 msgid "Delay"
 msgstr "Καθυστέρηση"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:326
+#: ../../shell/contents/configuration/BehaviorConfig.qml:424
 msgid "Show:"
 msgstr "Εμφάνιση:"
 
-#: ../../shell/contents/configuration/BehaviorConfig.qml:343
+#: ../../shell/contents/configuration/BehaviorConfig.qml:441
 msgid "Hide:"
 msgstr "Απόκρυψη:"
 
@@ -190,15 +280,15 @@ msgstr "Εμφάνιση"
 msgid "Tasks"
 msgstr "Εργασίες"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:254
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:255
 msgid "Add"
 msgstr "Προσθήκη"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:269
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:270
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:283
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:284
 msgid "Quit"
 msgstr "Έξοδος"
 
@@ -262,60 +352,15 @@ msgstr "Εργασίες μόνο της τρέχουσας επιφάνειας
 msgid "Show only tasks from the current activity"
 msgstr "Εργασίες μόνο της τρέχουσας δραστηριότητας"
 
-#: ../../app/dockview.cpp:694
-msgctxt "%1 is the name of the containment"
-msgid "%1 Options"
-msgstr "Επιλογές του %1"
-
-#: ../../app/main.cpp:86
-msgid ""
-"Latte is a dock based on plasma frameworks that provides an elegant and "
-"intuitive experience for your tasks and plasmoids. It animates its contents "
-"by using parabolic zoom effect and trys to be there only when it is needed.\n"
-"\n"
-"\"Art in Coffee\""
-msgstr ""
-"Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στα plasma frameworks που "
-"εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες "
-"και τα γραφικά συστατικά σας. Χρησιμοποιεί ένα παραβολικό εφέ έτσι ώστε να "
-"απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το "
-"χρειάζεστε.\n"
-"\n"
-"\"Τέχνη στον Καφέ\""
-
-#: ../../app/main.cpp:99
-msgid "Logo and Icons"
-msgstr "Εικονίδια και Logo"
-
-#: ../../app/main.cpp:101
-msgid "Many bug reports"
-msgstr "Πολλές δηλώσεις προβλημάτων"
-
-#: ../../app/main.cpp:103
-msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr "Αξιολογήσεις των Latte Dock, CandilDock και NowDock"
-
-#: ../../app/packageplugins/shell/dockpackage.cpp:44
-msgid "Latte Dock panel"
-msgstr "Πίνακας Latte"
-
-#: ../../app/packageplugins/shell/dockpackage.cpp:46
-msgid "Dock configuration UI"
-msgstr "Παράθυρο ρυθμίσεων"
-
-#: ../../app/packageplugins/shell/dockpackage.cpp:47
-msgid "Config model"
-msgstr "Μοντέλο ρυθμίσεων"
-
-#: rc.cpp:1
+#: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
 msgstr "Latte"
 
-#: rc.cpp:2
+#: ../desktop-templates/latte-dock.desktop.template:4
 msgid "Dock for the masses"
 msgstr "Πίνακας για όλον τον κόσμο"
 
-#: rc.cpp:3
+#: ../desktop-templates/latte-dock.desktop.template:5
 msgid "Dock"
 msgstr "Πίνακας"
 

@@ -1,11 +1,10 @@
 [Desktop Entry]
-Name=Latte Plasmoid
 Name[de]=Latte Plasmoid
 Name[el]=Latte
-Comment=Plasmoid from the Latte Dock
+Name=Latte Plasmoid
 Comment[de]=Latte Dock Plasmoid
 Comment[el]=Ένα πλασμoϊδές από τη σουίτα Latte
-
+Comment=Plasmoid from the Latte Dock
 
 Type=Service
 Icon=latte-dock
@@ -22,6 +21,3 @@ X-KDE-PluginInfo-Category=Windows and Tasks
 X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL v2+
 X-KDE-PluginInfo-EnabledByDefault=true
-
-
-
