@@ -439,8 +439,9 @@ DragDrop.DropArea {
             slotAnimationsNeedLength(1);
         }
 
-        var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
-        LayoutManager.insertAtCoordinates(dndSpacer, relevantLayout.x, relevantLayout.y)
+        //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
+        //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
+        LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
         dndSpacer.opacity = 1;
     }
 
@@ -449,8 +450,9 @@ DragDrop.DropArea {
             return;
         }
 
-        var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
-        LayoutManager.insertAtCoordinates(dndSpacer, relevantLayout.x, relevantLayout.y)
+        //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
+        //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
+        LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
         dndSpacer.opacity = 1;
     }
 
@@ -466,8 +468,9 @@ DragDrop.DropArea {
     }
 
     onDrop: {
-        var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
-        plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
+        //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
+        //plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
+        plasmoid.processMimeData(event.mimeData, event.x, event.y);
         event.accept(event.proposedAction);
 
         if (confirmedDragEntered) {
@@ -476,7 +479,7 @@ DragDrop.DropArea {
         }
 
         dndSpacer.opacity = 0;
-        dndSpacer.parent = root;
+      //  dndSpacer.parent = root;
     }
 
     onLatteAppletChanged: {
@@ -655,13 +658,15 @@ DragDrop.DropArea {
 
     function addContainerInLayout(container, applet, x, y){
         // Is there a DND placeholder? Replace it!
-        if (dndSpacer.parent === mainLayout) {
-            LayoutManager.insertBefore(dndSpacer, container);
+        if ( (dndSpacer.parent === mainLayout)
+                || (dndSpacer.parent === startLayout)
+                || (dndSpacer.parent===endLayout)) {
+            LayoutManager.insertBeforeForLayout(dndSpacer.parent, dndSpacer, container);
             dndSpacer.parent = root;
             return;
             // If the provided position is valid, use it.
         } else if (x >= 0 && y >= 0) {
-            var index = LayoutManager.insertAtCoordinates(container, x , y);
+            var index = LayoutManager.insertAtCoordinates2(container, x , y);
 
             // Fall through to determining an appropriate insert position.
         } else {

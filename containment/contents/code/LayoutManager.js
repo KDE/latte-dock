@@ -25,7 +25,7 @@ var root;
 var plasmoid;
 var lastSpacer;
 
-
+var childFoundId = 11;
 var inRestore=false;
 
 function restore() {
@@ -178,16 +178,21 @@ function removeApplet (applet) {
 
 //insert item2 before item1
 function insertBefore(item1, item2) {
+    return insertBeforeForLayout(layout, item1, item2);
+}
+
+//insert item2 before item1
+function insertBeforeForLayout(tLayout, item1, item2) {
     if (item1 === item2) {
-        return;
+        return -1;
     }
     var removed = new Array();
 
     var child;
 
     var i;
-    for (i = layout.children.length - 1; i >= 0; --i) {
-        child = layout.children[i];
+    for (i = tLayout.children.length - 1; i >= 0; --i) {
+        child = tLayout.children[i];
         removed.push(child);
         child.parent = root;
 
@@ -196,27 +201,33 @@ function insertBefore(item1, item2) {
         }
     }
 
-    item2.parent = layout;
+    item2.parent = tLayout;
 
     for (var j = removed.length - 1; j >= 0; --j) {
-        removed[j].parent = layout;
+        removed[j].parent = tLayout;
     }
 
     return i;
 }
 
+
 //insert item2 after item1
 function insertAfter(item1, item2) {
+    return insertAfterForLayout(layout, item1, item2);
+}
+
+//insert item2 after item1
+function insertAfterForLayout(tLayout, item1, item2) {
     if (item1 === item2) {
-        return;
+        return -1;
     }
     var removed = new Array();
 
     var child;
 
     var i;
-    for (i = layout.children.length - 1; i >= 0; --i) {
-        child = layout.children[i];
+    for (i = tLayout.children.length - 1; i >= 0; --i) {
+        child = tLayout.children[i];
         //never ever insert after lastSpacer
         if (child === lastSpacer && item1 === lastSpacer) {
             removed.push(child);
@@ -224,8 +235,8 @@ function insertAfter(item1, item2) {
             break;
         } else if (child === item1) {
             //Already in position, do nothing
-            if (layout.children[i+1] === item2) {
-                return;
+            if (tLayout.children[i+1] === item2) {
+                return -1;
             }
             break;
         }
@@ -234,14 +245,15 @@ function insertAfter(item1, item2) {
         child.parent = root;
     }
 
-    item2.parent = layout;
+    item2.parent = tLayout;
 
     for (var j = removed.length - 1; j >= 0; --j) {
-        removed[j].parent = layout;
+        removed[j].parent = tLayout;
     }
 
     return i;
 }
+
 
 function insertAtIndex(item, position) {
     var addToEnd = false;
@@ -337,5 +349,88 @@ function insertAtCoordinates(item, x, y) {
         return insertBefore(child, item);
     } else {
         return insertAfter(child, item);
+    }
+}
+
+//this is used only for the start and end layouts
+function insertAtLayoutCoordinates(tLayout, item, x, y) {
+    if (root.isHorizontal) {
+        y = tLayout.height / 2;
+    } else {
+        x = tLayout.width / 2;
+    }
+    var child = tLayout.childAt(x, y);
+
+    //if we got a place inside the space between 2 applets, we have to find it manually
+    if (!child) {
+        if (root.isHorizontal) {
+            for (var i = 0; i < tLayout.children.length; ++i) {
+                var candidate = tLayout.children[i];
+                if (x >= candidate.x && x < candidate.x + candidate.width + tLayout.rowSpacing) {
+                    child = candidate;
+                    break;
+                }
+            }
+        } else {
+            for (var i = 0; i < tLayout.children.length; ++i) {
+                var candidate = tLayout.children[i];
+                if (y >= candidate.x && y < candidate.y + candidate.height + tLayout.columnSpacing) {
+                    child = candidate;
+                    break;
+                }
+            }
+        }
+    }
+
+    //already in position
+    if (child === item) {
+        //
+        return childFoundId;
+    }
+
+    if (!child) {
+        // check if dragging takes place after the end of the layout
+        var neededSpace = 1.5 * root.realSize;
+        if ( (((root.isVertical && (y - neededSpace) <= tLayout.height) && y>=0)
+              ||(root.Horizontal && (x - neededSpace) <= tLayout.width) && x>=0)
+              && tLayout.children.length>0  ){
+            child = tLayout.children[layout.children.length-1];
+        // check if dragging takes place before the start of the layout
+        } else if ( ((root.isVertical && (y >= -neededSpace) && (y<=neededSpace))
+                  ||(root.Horizontal && (x >= -neededSpace)  && (x<=neededSpace)))
+                  && tLayout.children.length>0  ){
+                child = tLayout.children[0];
+        } else {
+            return -1;
+            //child = tLayout.children[0];
+        }
+    } else {
+        item.parent = root;
+    }
+
+    if ((root.isVertical && y < child.y + child.height/2) ||
+            (root.isHorizontal && x < child.x + child.width/2)) {
+        return insertBeforeForLayout(tLayout, child, item);
+    } else {
+        return insertAfterForLayout(tLayout, child, item);
+    }
+}
+
+function insertAtCoordinates2(item, x, y) {
+    var pos = -1;
+
+    if (!root.editMode) {
+        var layoutPosS = layoutS.mapFromItem(root, x, y);
+        pos = insertAtLayoutCoordinates(layoutS, item, layoutPosS.x, layoutPosS.y);
+
+        if (pos === -1){
+            var layoutPosE = layoutE.mapFromItem(root, x, y);
+            pos = insertAtLayoutCoordinates(layoutE, item, layoutPosE.x, layoutPosE.y);
+        }
+    }
+
+    if (pos!==childFoundId && pos === -1) {
+        var layoutPos = layout.mapFromItem(root, x, y);
+        insertAtCoordinates(item, layoutPos.x, layoutPos.y);
     }
 }
