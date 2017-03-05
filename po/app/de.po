@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-05 14:08+0200\n"
-"PO-Revision-Date: 2017-01-30 09:20+0100\n"
+"PO-Revision-Date: 2017-03-05 20:26+0100\n"
 "Last-Translator: Jan Neumann <neumdotjaatgmaildotcom>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -26,52 +26,59 @@ msgstr "%1 Optionen"
 #: ../../app/main.cpp:73
 msgctxt "command line"
 msgid "Replace the current dock instance."
-msgstr ""
+msgstr "Ersetzt laufenden Prozess"
 
 #: ../../app/main.cpp:74
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
-msgstr ""
+msgstr "Sende Debug Informationen zu stdout."
 
 #: ../../app/main.cpp:75
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
-msgstr ""
+msgstr "Debug Informationen der Maske (Nur sinnvoll für Devs)."
 
 #: ../../app/main.cpp:76
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
-msgstr ""
+msgstr "Zeigt Kästen um die Leiste."
 
 #: ../../app/main.cpp:77
 msgctxt "command line"
 msgid "Open a window with much debug information."
-msgstr ""
+msgstr "Öffnet Fenster mit vielen Debug Informationen."
 
 #: ../../app/main.cpp:94
 msgid "An instance is already running!, use --replace to restart Latte"
-msgstr ""
+msgstr "Latte Dock läuft bereits! Benutze --replace zum Neustarten."
 
 #: ../../app/main.cpp:132
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "
 "intuitive experience for your tasks and plasmoids. It animates its contents "
-"by using parabolic zoom effect and trys to be there only when it is needed.\n"
+"by using parabolic zoom effect and trys to be there only when it is "
+"needed.\n"
 "\n"
 "\"Art in Coffee\""
 msgstr ""
+"Latte Dock basiert auf Plasma Framework Technologie und bietet einen "
+"eleganten, intuitiven Umgang mit Plasmoiden und Tasks. Es animiert mithilfe "
+"parabolischer Zoom Effekte und versucht nur da zu sein wenn man es "
+"braucht.\n"
+"\n"
+"\"Art in Coffee\""
 
 #: ../../app/main.cpp:149
 msgid "Logo and Icons"
-msgstr ""
+msgstr "Logo und Icons"
 
 #: ../../app/main.cpp:151
 msgid "Many bug reports"
-msgstr ""
+msgstr "Viele Bug Reports"
 
 #: ../../app/main.cpp:153
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr ""
+msgstr "Überprüfungen von Latte Dock, CandilDock und Nowdock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:44
 msgid "Latte Dock panel"
@@ -127,7 +134,6 @@ msgid "Show Panel Background"
 msgstr "Zeige Hintergrund der Leiste"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:255
-#, fuzzy
 msgid "Solid Background"
 msgstr "Hintergrund"
 
@@ -154,11 +160,11 @@ msgstr "Position"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:70
 msgid "On Primary"
-msgstr ""
+msgstr "Primäre Anzeige"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:105
 msgid "Screen:"
-msgstr ""
+msgstr "Bildschirm:"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:194
 msgctxt "bottom location"
@@ -212,7 +218,7 @@ msgstr "Rechts"
 #: ../../shell/contents/configuration/BehaviorConfig.qml:312
 msgctxt "justify alignment"
 msgid "Justify"
-msgstr "Abstandshalter"
+msgstr "Gleiter"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:330
 msgid "Visibility"
