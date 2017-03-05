@@ -282,7 +282,7 @@ msgstr "Pieno schermo"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:502
 msgid "Shade"
-msgstr "Recoger"
+msgstr "Shade"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:517
 msgid "Allow this program to be grouped"
