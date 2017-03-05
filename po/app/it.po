@@ -26,31 +26,31 @@ msgstr "%1 Opzioni"
 #: ../../app/main.cpp:73
 msgctxt "command line"
 msgid "Replace the current dock instance."
-msgstr ""
+msgstr "Sostituisce l'istanza della dock corrente."
 
 #: ../../app/main.cpp:74
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
-msgstr ""
+msgstr "Mostra i messaggi di debug sullo stdout"
 
 #: ../../app/main.cpp:75
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
-msgstr ""
+msgstr "Mostra i messaggi di debug per la maschera (utile solo per gli sviluppatori)"
 
 #: ../../app/main.cpp:76
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
-msgstr ""
+msgstr "Disegna cornice intorno alle applet"
 
 #: ../../app/main.cpp:77
 msgctxt "command line"
 msgid "Open a window with much debug information."
-msgstr ""
+msgstr "Apre una finestra di debug con molte informazioni"
 
 #: ../../app/main.cpp:94
 msgid "An instance is already running!, use --replace to restart Latte"
-msgstr ""
+msgstr "Un istanza è gia in esecuzione!, usa --replace per far rieseguire Latte"
 
 #: ../../app/main.cpp:132
 msgid ""
@@ -84,11 +84,11 @@ msgstr "Latte Dock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:46
 msgid "Dock configuration UI"
-msgstr ""
+msgstr "Dock configurazione UI"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:47
 msgid "Config model"
-msgstr ""
+msgstr "modello di configurazione"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
@@ -159,11 +159,11 @@ msgstr "Posizione"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:70
 msgid "On Primary"
-msgstr ""
+msgstr "Primario"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:105
 msgid "Screen:"
-msgstr ""
+msgstr "Schermo:"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:194
 msgctxt "bottom location"
