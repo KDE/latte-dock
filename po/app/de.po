@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-05 14:08+0200\n"
-"PO-Revision-Date: 2017-03-05 20:26+0100\n"
+"PO-Revision-Date: 2017-03-06 20:45+0100\n"
 "Last-Translator: Jan Neumann <neumdotjaatgmaildotcom>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -135,7 +135,7 @@ msgstr "Zeige Hintergrund der Leiste"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:255
 msgid "Solid Background"
-msgstr "Hintergrund"
+msgstr "Umrandung"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:310
 #: ../../shell/contents/configuration/AppearanceConfig.qml:323
