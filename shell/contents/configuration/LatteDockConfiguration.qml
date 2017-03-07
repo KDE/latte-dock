@@ -182,6 +182,10 @@ PlasmaCore.FrameSvgItem {
 
                 visible: dock.tasksPresent()
             }
+            PlasmaComponents.TabButton {
+                text: i18n("Tweaks")
+                tab: tweaksPage
+            }
         }
 
         Rectangle {
@@ -228,6 +232,10 @@ PlasmaCore.FrameSvgItem {
 
                     TasksConfig {
                         id: tasksPage
+                    }
+
+                    TweaksConfig {
+                        id: tweaksPage
                     }
                 }
             }
