@@ -592,8 +592,34 @@ inline void DockView::syncGeometry()
         if (formFactor() == Plasma::Types::Vertical) {
             freeRegion = corona()->availableScreenRegion(this->containment()->screen());
             maximumRect = maximumNormalGeometry();
+            QRegion availableRegion = freeRegion.intersected(maximumRect);
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
+
+            float area = 0;
+
+            //! it is used to choose which or the availableRegion rectangles will
+            //! be the one representing dock geometry
+            for (int i = 0; i < availableRegion.rectCount(); ++i) {
+                QRect rect = availableRegion.rects().at(i);
+
+                //! the area of each rectangle in calculated in squares of 50x50
+                //! this is a way to avoid enourmous numbers for area value
+                float tempArea = (float)(rect.width() * rect.height()) / 2500;
+
+                if (tempArea > area) {
+                    availableScreenRect = rect;
+                    area = tempArea;
+                }
+            }
+
+            if (availableRegion.rectCount() > 1 && m_drawShadows)
+                m_forceDrawCenteredBorders = true;
+            else
+                m_forceDrawCenteredBorders = false;
+        } else {
+            m_forceDrawCenteredBorders = false;
         }
+
 
         updateEnabledBorders();
         resizeWindow(availableScreenRect);
@@ -699,6 +725,7 @@ void DockView::setDrawShadows(bool draw)
     } else {
         PanelShadows::self()->removeWindow(this);
         m_enabledBorders = Plasma::FrameSvg::AllBorders;
+
         emit enabledBordersChanged();
     }
 
@@ -1298,16 +1325,16 @@ void DockView::updateEnabledBorders()
     }
 
     if ((location() == Plasma::Types::LeftEdge || location() == Plasma::Types::RightEdge)) {
-        if (maxLength() == 1 && m_alignment == Dock::Justify) {
+        if (maxLength() == 1 && m_alignment == Dock::Justify && !m_forceDrawCenteredBorders) {
             borders &= ~Plasma::FrameSvg::TopBorder;
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
 
-        if (m_alignment == Dock::Top) {
+        if (m_alignment == Dock::Top && !m_forceDrawCenteredBorders) {
             borders &= ~Plasma::FrameSvg::TopBorder;
         }
 
-        if (m_alignment == Dock::Bottom) {
+        if (m_alignment == Dock::Bottom && !m_forceDrawCenteredBorders) {
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
 

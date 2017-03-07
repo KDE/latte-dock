@@ -193,6 +193,7 @@ private:
 private:
     Plasma::Containment *containmentById(uint id);
 
+    bool m_forceDrawCenteredBorders{false};
     bool m_drawShadows{false};
     bool m_onPrimary{true};
     int m_maxThickness{24};
