@@ -43,6 +43,7 @@ class DockView;
 
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
+    Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
 
 public:
     DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent = nullptr);
@@ -51,11 +52,15 @@ public:
     void init() override;
     Qt::WindowFlags wFlags() const;
 
+    void setAutostart(bool state);
+    bool autostart() const;
+
 public slots:
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
 
 signals:
+    void autostartChanged();
     void showSignal();
 
 protected:

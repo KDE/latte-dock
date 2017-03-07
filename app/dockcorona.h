@@ -65,6 +65,9 @@ public:
     void addDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
 
+    void setAutostart(bool state);
+    bool autostart() const;
+
     void aboutApplication();
     void closeApplication();
 
@@ -75,6 +78,7 @@ public slots:
     void dockContainmentDestroyed(QObject *cont);
 
 signals:
+    void autostartChanged();
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void docksCountChanged();
     void dockLocationChanged();
