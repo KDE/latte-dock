@@ -70,6 +70,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     if (dockCorona) {
         connections << connect(this, &DockConfigView::aboutApplication, dockCorona, &DockCorona::aboutApplication);
         connections << connect(dockCorona, SIGNAL(autostartChanged()), this, SIGNAL(autostartChanged()));
+        connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
     }
 }
 
@@ -273,6 +274,26 @@ void DockConfigView::setAutostart(bool state)
 
     if (dockCorona) {
         dockCorona->setAutostart(state);
+    }
+}
+
+bool DockConfigView::raiseDocksTemporary() const
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    if (dockCorona) {
+        return dockCorona->raiseDocksTemporary();
+    }
+
+    return false;
+}
+
+void DockConfigView::setRaiseDocksTemporary(bool state)
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    if (dockCorona) {
+        dockCorona->setRaiseDocksTemporary(state);
     }
 }
 
