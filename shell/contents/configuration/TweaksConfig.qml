@@ -49,16 +49,16 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                id: showGlow
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Enable autostart during startup")
+                checked: dockConfig.autostart
 
                 onClicked: {
+                    dockConfig.autostart = checked;
                 }
             }
 
             PlasmaComponents.CheckBox {
-                id: threeColorsWindows
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show dock on desktop or actitivy change")
 
