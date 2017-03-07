@@ -65,8 +65,11 @@ public:
     void addDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
 
-    void setAutostart(bool state);
     bool autostart() const;
+    void setAutostart(bool state);
+
+    bool raiseDocksTemporary() const;
+    void setRaiseDocksTemporary(bool flag);
 
     void aboutApplication();
     void closeApplication();
@@ -82,6 +85,7 @@ signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void docksCountChanged();
     void dockLocationChanged();
+    void raiseDocksTemporaryChanged();
 
 private slots:
     void destroyedChanged(bool destroyed);
@@ -96,15 +100,18 @@ private slots:
     void syncDockViews();
 
 private:
-    bool appletExists(uint containmentId, uint appletId) const;
     void cleanConfig();
+    void loadConfig();
+    void saveConfig();
+    void qmlRegisterTypes() const;
+    bool appletExists(uint containmentId, uint appletId) const;
     bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
     bool heuresticForLoadingDockWithTasks();
-    void qmlRegisterTypes() const;
     int primaryScreenId() const;
 
     bool m_activitiesStarting{true};
+    bool m_raiseDocksTemporary{false};
     //! this is used to check if a dock with tasks in it will be loaded on startup
     bool m_tasksWillBeLoaded{false};
     //! this is used to record the first dock having tasks in it. It is used

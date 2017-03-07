@@ -60,9 +60,11 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show dock on desktop or actitivy change")
+                text: i18n("Raise docks on desktop or actitivy change")
+                checked: dockConfig.raiseDocksTemporary
 
                 onClicked: {
+                    dockConfig.raiseDocksTemporary = checked;
                 }
             }
         }

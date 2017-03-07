@@ -22,6 +22,7 @@
 #include "visibilitymanager_p.h"
 #include "windowinfowrap.h"
 #include "dockview.h"
+#include "dockcorona.h"
 #include "../liblattedock/extras.h"
 
 #include <QDebug>
@@ -244,7 +245,9 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
 
 void VisibilityManagerPrivate::raiseDockTemporarily()
 {
-    if (raiseTemporarily)
+    auto dockCorona = qobject_cast<DockCorona *>(view->corona());
+
+    if (raiseTemporarily || (dockCorona && !dockCorona->raiseDocksTemporary()))
         return;
 
     raiseTemporarily = true;
@@ -254,10 +257,10 @@ void VisibilityManagerPrivate::raiseDockTemporarily()
     if (isHidden)
         emit q->mustBeShown();
 
-    QTimer::singleShot(1800, this, [&](){
-       raiseTemporarily = false;
-       hideNow = true;
-       updateHiddenState();
+    QTimer::singleShot(1800, this, [&]() {
+        raiseTemporarily = false;
+        hideNow = true;
+        updateHiddenState();
     });
 }
 
@@ -413,7 +416,7 @@ inline void VisibilityManagerPrivate::restoreConfig()
     if (mode == Dock::AlwaysVisible) {
         setMode(mode);
     } else {
-        QTimer::singleShot(3000, this, [&, mode]() {
+        QTimer::singleShot(3000, this, [ &, mode]() {
             setMode(mode);
         });
     }

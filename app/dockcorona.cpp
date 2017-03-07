@@ -1,5 +1,5 @@
 /*
-*  Copyright 2016  Smith AR <audoban@openmailbox.org>
+*  Copyright 2016  Smith AR <audoban@openmaibox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
@@ -104,6 +104,7 @@ void DockCorona::load()
         disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 
         m_activitiesStarting = false;
+        loadConfig();
 
         m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
         qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
@@ -147,6 +148,19 @@ void DockCorona::cleanConfig()
         config()->sync();
         qDebug() << "configuration file cleaned...";
     }
+}
+
+void DockCorona::loadConfig()
+{
+    auto general = config()->group("General");
+    setRaiseDocksTemporary(general.readEntry("raiseDocksTemporary", false));
+}
+
+void DockCorona::saveConfig()
+{
+    auto general = config()->group("General");
+    general.writeEntry("raiseDocksTemporary", m_raiseDocksTemporary);
+    general.sync();
 }
 
 bool DockCorona::containmentExists(uint id) const
@@ -599,6 +613,24 @@ bool DockCorona::autostart() const
 {
     QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
     return autostartFile.exists();
+}
+
+
+bool DockCorona::raiseDocksTemporary() const
+{
+    return m_raiseDocksTemporary;
+}
+
+void DockCorona::setRaiseDocksTemporary(bool flag)
+{
+    if (m_raiseDocksTemporary == flag) {
+        return;
+    }
+
+    m_raiseDocksTemporary = flag;
+    saveConfig();
+
+    emit raiseDocksTemporaryChanged();
 }
 
 
