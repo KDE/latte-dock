@@ -22,6 +22,8 @@
 #define NOWDOCKCONFIGVIEW_H
 
 #include "plasmaquick/configview.h"
+#include "../liblattedock/dock.h"
+
 #include <plasma/package.h>
 
 #include <QObject>
@@ -76,6 +78,8 @@ private:
     QTimer m_screenSyncTimer;
 
     QList<QMetaObject::Connection> connections;
+
+    Dock::Visibility m_previousMode{Dock::None};
 };
 
 }

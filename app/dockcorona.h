@@ -63,6 +63,7 @@ public:
     int screenForContainment(const Plasma::Containment *containment) const override;
 
     void addDock(Plasma::Containment *containment);
+    void recreateDock(Plasma::Containment *containment);
 
     void aboutApplication();
     void closeApplication();

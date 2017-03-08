@@ -71,7 +71,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
 public:
-    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr);
+    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool alwaysVisible = false);
     virtual ~DockView();
 
     void init();
@@ -109,7 +109,6 @@ public:
     QRect maskArea() const;
     void setMaskArea(QRect area);
 
-    void updateAbsDockGeometry(const QRect &localDockGeometry);
     QRect absGeometry() const;
 
     QRect screenGeometry() const;
@@ -138,6 +137,8 @@ public slots:
     Q_INVOKABLE void updateEnabledBorders();
 
     Q_INVOKABLE void closeApplication();
+
+    void updateAbsDockGeometry();
 
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
@@ -203,6 +204,7 @@ private:
 
     Dock::Alignment m_alignment{Dock::Center};
 
+    QRect m_localGeometry;
     QRect m_absGeometry;
     QRect m_maskArea;
     QMenu *m_contextMenu;
