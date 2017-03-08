@@ -45,7 +45,7 @@
 
 namespace Latte {
 
-DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
+DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVisible)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
 {
@@ -54,10 +54,19 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen)
     setIcon(QIcon::fromTheme(corona->kPackage().metadata().iconName()));
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
-    setFlags(Qt::FramelessWindowHint
-             | Qt::WindowStaysOnTopHint
-             | Qt::NoDropShadowWindowHint
-             | Qt::WindowDoesNotAcceptFocus);
+
+    if (!alwaysVisible) {
+        setFlags(Qt::BypassWindowManagerHint
+                 | Qt::FramelessWindowHint
+                 | Qt::WindowStaysOnTopHint
+                 | Qt::NoDropShadowWindowHint
+                 | Qt::WindowDoesNotAcceptFocus);
+    } else {
+        setFlags(Qt::FramelessWindowHint
+                 | Qt::WindowStaysOnTopHint
+                 | Qt::NoDropShadowWindowHint
+                 | Qt::WindowDoesNotAcceptFocus);
+    }
 
     if (targetScreen)
         setScreenToFollow(targetScreen);
@@ -136,9 +145,13 @@ void DockView::init()
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::screenChanged);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
     connect(this, &QQuickWindow::xChanged, this, &DockView::xChanged);
+    connect(this, &QQuickWindow::xChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::yChanged, this, &DockView::yChanged);
+    connect(this, &QQuickWindow::yChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
+    connect(this, &QQuickWindow::widthChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
+    connect(this, &QQuickWindow::heightChanged, this, &DockView::updateAbsDockGeometry);
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&]() {
         if (formFactor() == Plasma::Types::Vertical)
@@ -481,13 +494,19 @@ void DockView::resizeWindow(QRect availableScreenRect)
 
 void DockView::setLocalDockGeometry(const QRect &geometry)
 {
-    updateAbsDockGeometry(geometry);
+    if (m_localGeometry == geometry) {
+        return;
+    }
+
+    m_localGeometry = geometry;
+
+    updateAbsDockGeometry();
 }
 
-void DockView::updateAbsDockGeometry(const QRect &localDockGeometry)
+void DockView::updateAbsDockGeometry()
 {
-    QRect absGeometry {x() + localDockGeometry.x(), y() + localDockGeometry.y()
-                       , localDockGeometry.width() - 1, localDockGeometry.height() - 1};
+    QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
+                       , m_localGeometry.width() - 1, m_localGeometry.height() - 1};
 
     if (m_absGeometry == absGeometry)
         return;

@@ -197,6 +197,8 @@ void DockConfigView::showEvent(QShowEvent *ev)
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
 
+    m_previousMode = m_dockView->visibility()->mode();
+
     emit showSignal();
 }
 
@@ -206,6 +208,17 @@ void DockConfigView::hideEvent(QHideEvent *ev)
         m_dockView->containment()->setUserConfiguring(false);
 
     QQuickWindow::hideEvent(ev);
+
+    if (m_dockView->visibility()->mode() != m_previousMode
+        && ((m_dockView->visibility()->mode() == Dock::AlwaysVisible)
+            || (m_previousMode == Dock::AlwaysVisible))) {
+
+        auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+        if (dockCorona) {
+            dockCorona->recreateDock(m_dockView->containment());
+        }
+    }
 
     deleteLater();
 }

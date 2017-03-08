@@ -63,8 +63,6 @@ Item{
     property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((plasmoid.configuration.iconSize+iconMarginOriginal) * root.zoomFactor) + 2,
                                                  root.realPanelSize + root.panelShadow)
 
-    property rect localGeometry: Qt.rect(-1,-1,0,0)
-
     Binding{
         target: dock
         property:"maxThickness"
@@ -309,7 +307,7 @@ Item{
             }
         }
 
-        // console.log("update mask area:"+newMaskArea);
+        //console.log("reached updating geometry ::: "+dock.maskArea);
         if((normalState && !dock.visibility.isHidden) || root.editMode){
             var tempGeometry = Qt.rect(dock.maskArea.x, dock.maskArea.y, dock.maskArea.width, dock.maskArea.height);
 
@@ -338,12 +336,8 @@ Item{
                 tempGeometry.height = Math.min(tempGeometry.height, dock.height);
             }
 
-            if (localGeometry.x !== tempGeometry.x || localGeometry.y !== tempGeometry.y
-                    || localGeometry.width !== tempGeometry.width || localGeometry.height !== tempGeometry.height) {
-                localGeometry = tempGeometry;
-                dock.setLocalDockGeometry(localGeometry);
-            }
-            // console.log("update dock geometry:"+newMaskArea);
+            //console.log("update geometry ::: "+tempGeometry);
+            dock.setLocalDockGeometry(tempGeometry);
         }
 
     }

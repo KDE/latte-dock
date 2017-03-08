@@ -717,7 +717,18 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
     qDebug() << "Adding dock for container...";
     qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << containment->screen() << " - " << m_screenPool->connector(containment->screen());
-    auto dockView = new DockView(this, nextScreen);
+
+    //! it is used to set the correct flag during the creation
+    //! of the window... This of course is also used during
+    //! recreations of the window between different visibility modes
+    auto mode = static_cast<Dock::Visibility>(containment->config().readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    bool alwaysVisible{false};
+
+    if (mode == Latte::Dock::AlwaysVisible) {
+        alwaysVisible = true;
+    }
+
+    auto dockView = new DockView(this, nextScreen, alwaysVisible);
     dockView->init();
     dockView->setContainment(containment);
 
@@ -736,6 +747,17 @@ void DockCorona::addDock(Plasma::Containment *containment)
     dockView->show();
     m_dockViews[containment] = dockView;
     emit docksCountChanged();
+}
+
+void DockCorona::recreateDock(Plasma::Containment *containment)
+{
+    auto view = m_dockViews.take(containment);
+
+    if (view) {
+        view->setVisible(false);
+        view->deleteLater();
+        addDock(view->containment());
+    }
 }
 
 void DockCorona::destroyedChanged(bool destroyed)
