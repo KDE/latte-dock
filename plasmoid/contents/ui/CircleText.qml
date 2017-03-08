@@ -106,5 +106,13 @@ Rectangle {
         color: theme.textColor
         visible: showNumber
     }
+
+    Rectangle{
+        anchors.fill: parent
+        border.width: parent.border.width
+        border.color: parent.border.color
+        color: "transparent"
+        radius: parent.radius
+    }
 }
 
