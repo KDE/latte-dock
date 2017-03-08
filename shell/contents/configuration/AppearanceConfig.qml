@@ -75,8 +75,6 @@ PlasmaComponents.Page {
 
                     function updateIconSize() {
                         if (!pressed) {
-                            if (panelSizeSlider.value > value + units.smallSpacing)
-                                panelSizeSlider.value = value + units.smallSpacing
                             plasmoid.configuration.iconSize = value
                             syncGeometry.restart()
                         }
