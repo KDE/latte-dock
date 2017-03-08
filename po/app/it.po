@@ -132,7 +132,6 @@ msgid "Show Panel Background"
 msgstr "Mostra lo sfondo del pannello"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:255
-#, fuzzy
 msgid "Solid Background"
 msgstr "Sfondo solido"
 
@@ -289,7 +288,6 @@ msgid "Quit"
 msgstr "Esci"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:42
-#, fuzzy
 msgid "none"
 msgstr "nessuno"
 
