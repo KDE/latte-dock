@@ -114,7 +114,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     value: plasmoid.configuration.proportionIconSize
                     minimumValue: 2.5
-                    maximumValue: 8
+                    maximumValue: 10
                     stepSize: 0.5
                     property real realMinimum: minimumValue + 0.5
 

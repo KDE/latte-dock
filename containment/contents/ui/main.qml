@@ -75,10 +75,13 @@ DragDrop.DropArea {
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
 
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
-    property int iconSize: automaticIconSizeBasedSize > 0 ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
-                                                            plasmoid.configuration.iconSize
 
-    property int proportionIconSize: {
+    //what is the highest icon size based on what icon size is used, screen calculated or user specified
+    property int maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
+    property int iconSize: automaticIconSizeBasedSize > 0 ? Math.min(automaticIconSizeBasedSize, root.maxIconSize) :
+                                                            root.maxIconSize
+
+    property int proportionIconSize: { //icon size based on screen height
         return (plasmoid.configuration.proportionIconSize===-1) ? -1 : Math.round(Screen.height * plasmoid.configuration.proportionIconSize/100/8)*8;
     }
 
@@ -512,7 +515,7 @@ DragDrop.DropArea {
     }
 
     onIconSizeChanged: {
-        if (((iconSize === automaticIconSizeBasedSize) || (iconSize === plasmoid.configuration.iconSize)) && automaticSizeAnimation){
+        if (((iconSize === automaticIconSizeBasedSize) || (iconSize === root.maxIconSize)) && automaticSizeAnimation){
             slotAnimationsNeedBothAxis(-1);
             automaticSizeAnimation=false;
         }
@@ -939,7 +942,7 @@ DragDrop.DropArea {
 
     function updateAutomaticIconSize() {
         if ((visibilityManager.normalState && !root.editMode)
-                && (iconSize===plasmoid.configuration.iconSize || iconSize === automaticIconSizeBasedSize) ) {
+                && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = root.maxLength;
 
@@ -959,7 +962,7 @@ DragDrop.DropArea {
 
             if (layoutLength > toShrinkLimit) { //must shrink
                 //  console.log("step3");
-                var nextIconSize = plasmoid.configuration.iconSize;
+                var nextIconSize = root.maxIconSize;
 
                 do {
                     nextIconSize = nextIconSize - iconStep;
@@ -984,10 +987,10 @@ DragDrop.DropArea {
                     if (nextLength2 < toGrowLimit) {
                         foundGoodSize = nextIconSize2;
                     }
-                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== plasmoid.configuration.iconSize ));
+                } while ( (nextLength2<toGrowLimit) && (nextIconSize2 !== root.maxIconSize ));
 
                 if (foundGoodSize > 0) {
-                    if (foundGoodSize === plasmoid.configuration.iconSize) {
+                    if (foundGoodSize === root.maxIconSize) {
                         automaticIconSizeBasedSize = -1;
                     } else {
                         automaticIconSizeBasedSize = foundGoodSize;
@@ -1137,7 +1140,7 @@ DragDrop.DropArea {
         id: dndSpacer
 
         property int normalSize: root.statesLineSize + root.iconSize + root.iconMargin - 1
-        //visibilityManager.statesLineSizeOriginal + plasmoid.configuration.iconSize + visibilityManager.iconMarginOriginal - 1
+        //visibilityManager.statesLineSizeOriginal + root.maxIconSize + visibilityManager.iconMarginOriginal - 1
 
         width: normalSize
         height: normalSize

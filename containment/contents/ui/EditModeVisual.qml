@@ -37,8 +37,8 @@ Image{
     property int speed: root.durationTime*4*units.longDuration
     property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
-    property int editLength: root.isHorizontal ? (root.drawShadowsExternal ? root.width - plasmoid.configuration.iconSize/4 : root.maxLength) :
-                                               (root.drawShadowsExternal ? root.height - plasmoid.configuration.iconSize/4 : root.maxLength)
+    property int editLength: root.isHorizontal ? (root.drawShadowsExternal ? root.width - root.maxIconSize/4 : root.maxLength) :
+                                               (root.drawShadowsExternal ? root.height - root.maxIconSize/4 : root.maxLength)
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
