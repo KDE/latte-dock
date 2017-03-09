@@ -82,8 +82,10 @@ DragDrop.DropArea {
                                                             root.maxIconSize
 
     property int proportionIconSize: { //icon size based on screen height
-        return (plasmoid.configuration.proportionIconSize===-1) || !dock ?
-                    -1 : Math.round(dock.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8;
+        if ((plasmoid.configuration.proportionIconSize===-1) || !dock)
+            return -1;
+
+        return Math.max(16,Math.round(dock.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
     }
 
     property int iconStep: 8
