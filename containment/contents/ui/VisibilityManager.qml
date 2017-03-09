@@ -337,7 +337,7 @@ Item{
             }
 
             //console.log("update geometry ::: "+tempGeometry);
-            dock.setLocalDockGeometry(tempGeometry);
+            dock.localGeometry = tempGeometry;
         }
 
     }

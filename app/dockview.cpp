@@ -492,13 +492,20 @@ void DockView::resizeWindow(QRect availableScreenRect)
     }
 }
 
-void DockView::setLocalDockGeometry(const QRect &geometry)
+QRect DockView::localGeometry() const
+{
+    return m_localGeometry;
+}
+
+void DockView::setLocalGeometry(const QRect &geometry)
 {
     if (m_localGeometry == geometry) {
         return;
     }
 
     m_localGeometry = geometry;
+
+    emit localGeometryChanged();
 
     updateAbsDockGeometry();
 }
