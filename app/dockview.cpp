@@ -243,6 +243,8 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
         this->containment()->reactToScreenChange();
 
     syncGeometry();
+
+    emit screenGeometryChanged();
 }
 
 //! the main function which decides if this dock is at the

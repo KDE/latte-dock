@@ -82,7 +82,8 @@ DragDrop.DropArea {
                                                             root.maxIconSize
 
     property int proportionIconSize: { //icon size based on screen height
-        return (plasmoid.configuration.proportionIconSize===-1) ? -1 : Math.round(Screen.height * plasmoid.configuration.proportionIconSize/100/8)*8;
+        return (plasmoid.configuration.proportionIconSize===-1) || !dock ?
+                    -1 : Math.round(dock.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8;
     }
 
     property int iconStep: 8
@@ -519,6 +520,11 @@ DragDrop.DropArea {
             slotAnimationsNeedBothAxis(-1);
             automaticSizeAnimation=false;
         }
+    }
+
+    onProportionIconSizeChanged: {
+        if (proportionIconSize!==-1)
+            updateAutomaticIconSize();
     }
 
     //  onIconSizeChanged: console.log("Icon Size Changed:"+iconSize);
@@ -1072,6 +1078,19 @@ DragDrop.DropArea {
 
         onCompositingActiveChanged: {
             visibilityManager.updateMaskArea();
+        }
+    }
+
+    Connections {
+        target: dock
+        onWidthChanged:{
+            if (root.isHorizontal && proportionIconSize!==-1)
+                updateAutomaticIconSize();
+        }
+
+        onHeightChanged:{
+            if (root.isVertical && proportionIconSize!==-1)
+                updateAutomaticIconSize();
         }
     }
 

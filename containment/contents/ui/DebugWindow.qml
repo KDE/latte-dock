@@ -297,7 +297,7 @@ Window{
         }
 
         Text{
-            text: "Proportion Icon Size "+space
+            text: "Icon Size (proportion)"+space
         }
 
         Text{
