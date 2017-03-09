@@ -126,8 +126,8 @@ Window{
         }
 
         Text{
-            text: visibilityManager.localGeometry.x + ", " + visibilityManager.localGeometry.y + "  " +
-                  visibilityManager.localGeometry.width + "x" + visibilityManager.localGeometry.height
+            text: dock.localGeometry.x + ", " + dock.localGeometry.y + "  " +
+                  dock.localGeometry.width + "x" + dock.localGeometry.height
         }
 
         Text{

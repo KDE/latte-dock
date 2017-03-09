@@ -68,6 +68,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
+    Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
 public:
@@ -117,6 +118,9 @@ public:
 
     QString currentScreen() const;
 
+    QRect localGeometry() const;
+    void setLocalGeometry(const QRect &geometry);
+
     VisibilityManager *visibility() const;
 
     QQmlListProperty<QScreen> screens();
@@ -131,7 +135,6 @@ public slots:
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE int docksWithTasks();
-    Q_INVOKABLE void setLocalDockGeometry(const QRect &geometry);
     Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE void updateEnabledBorders();
@@ -161,6 +164,7 @@ signals:
     void enabledBordersChanged();
     void widthChanged();
     void heightChanged();
+    void localGeometryChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
