@@ -141,7 +141,7 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.drawShadowsExternal) {
-                var iconS = 1.2*plasmoid.configuration.iconSize + 1;
+                var iconS = 1.2*root.maxIconSize + 1;
                 root.realPanelThickness = iconS;
                 return iconS;
             } else {
