@@ -28,6 +28,9 @@
     <entry name="iconSize" type="Int">
       <default>64</default>
     </entry>
+    <entry name="proportionIconSize" type="Double">
+      <default>-1</default>
+    </entry>
     <entry name="useThemePanel" type="Bool">
       <default>true</default>
     </entry>

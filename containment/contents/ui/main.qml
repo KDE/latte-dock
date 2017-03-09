@@ -77,6 +77,11 @@ DragDrop.DropArea {
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
     property int iconSize: automaticIconSizeBasedSize > 0 ? Math.min(automaticIconSizeBasedSize, plasmoid.configuration.iconSize) :
                                                             plasmoid.configuration.iconSize
+
+    property int proportionIconSize: {
+        return (plasmoid.configuration.proportionIconSize===-1) ? -1 : Math.round(Screen.height * plasmoid.configuration.proportionIconSize/100/8)*8;
+    }
+
     property int iconStep: 8
     property int latteAppletPos: -1
     property int maxLength: root.isHorizontal ? width * (plasmoid.configuration.maxLength/100)
