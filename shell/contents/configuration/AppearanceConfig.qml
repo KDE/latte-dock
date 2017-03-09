@@ -64,6 +64,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                enabled: plasmoid.configuration.proportionIconSize === -1
 
                 PlasmaComponents.Slider {
                     id: appletsSizeSlider
@@ -93,6 +94,55 @@ PlasmaComponents.Page {
                     text: appletsSizeSlider.value + " px."
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Label {
+                    text: i18n("Screen Height Proportion:")
+                    horizontalAlignment: Text.AlignLeft
+                    enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
+                }
+
+                PlasmaComponents.Slider {
+                    id: proportionSizeSlider
+                    Layout.fillWidth: true
+                    value: plasmoid.configuration.proportionIconSize
+                    minimumValue: 2.5
+                    maximumValue: 8
+                    stepSize: 0.5
+                    property real realMinimum: minimumValue + 0.5
+
+                    function updateProportionIconSize() {
+                        if (!pressed) {
+                            if(value<realMinimum) {
+                                plasmoid.configuration.proportionIconSize = -1;
+                            } else {
+                                plasmoid.configuration.proportionIconSize = value;
+                            }
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateProportionIconSize();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateProportionIconSize)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: proportionSizeSlider.value>=proportionSizeSlider.realMinimum ?
+                             proportionSizeSlider.value.toFixed(1) + "%" : "---%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
                 }
             }
         }

@@ -297,6 +297,14 @@ Window{
         }
 
         Text{
+            text: "Proportion Icon Size "+space
+        }
+
+        Text{
+            text: root.proportionIconSize
+        }
+
+        Text{
             text: "Icon Size (automatic)"+space
         }
 
