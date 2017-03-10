@@ -369,7 +369,7 @@ int DockCorona::noDocksWithTasks() const
     int result = 0;
 
     foreach (auto view, m_dockViews) {
-        if (view->tasksPresent()) {
+        if (view->tasksPresent() && view->session() == m_session) {
             result++;
         }
     }
@@ -434,13 +434,14 @@ void DockCorona::syncDockViews()
 
             bool onPrimary = cont->config().readEntry("onPrimary", true);
             Plasma::Types::Location location = (Plasma::Types::Location)((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+            Dock::SessionType session = (Dock::SessionType)((int)cont->config().readEntry("session", (int)Dock::DefaultSession));
 
             //! two main situations that a dock must be added when it is not already running
             //! 1. when a dock is primary, not running and the edge for which is associated is free
             //! 2. when a dock in explicit, not running and the associated screen currently exists
             //! e.g. the screen has just been added
             if (((onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary && (m_screenPool->connector(id) == scr->name())))
-                && (!m_dockViews.contains(cont))) {
+                && (!m_dockViews.contains(cont)) && session == currentSession()) {
                 qDebug() << "screen Count signal: view must be added... for:" << scr->name();
                 addDock(cont);
             }
@@ -505,9 +506,13 @@ void DockCorona::syncDockViews()
             }
         }
 
-        //! which explicit docks can be deleted
-        if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
-            && !(view->tasksPresent() && noDocksWithTasks() == 1)) {
+        if (view->session() != currentSession()) {
+            qDebug() << "deleting view that does not belong in this session...";
+            auto viewToDelete = m_dockViews.take(view->containment());
+            viewToDelete->deleteLater();
+            //! which explicit docks can be deleted
+        } else if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
+                   && !(view->tasksPresent() && noDocksWithTasks() == 1)) {
             //do not delete last dock containing tasks
             if (dockWithTasksWillBeShown || preserveContainmentId != view->containment()->id()) {
                 qDebug() << "screen Count signal: view must be deleted... for:" << view->currentScreen();
@@ -615,7 +620,6 @@ bool DockCorona::autostart() const
     return autostartFile.exists();
 }
 
-
 bool DockCorona::raiseDocksTemporary() const
 {
     return m_raiseDocksTemporary;
@@ -633,6 +637,50 @@ void DockCorona::setRaiseDocksTemporary(bool flag)
     emit raiseDocksTemporaryChanged();
 }
 
+Dock::SessionType DockCorona::currentSession()
+{
+    return m_session;
+}
+
+void DockCorona::setCurrentSession(Dock::SessionType session)
+{
+    if (m_session == session) {
+        return;
+    }
+
+    m_session = session;
+}
+
+void DockCorona::switchToSession(Dock::SessionType session)
+{
+    if (currentSession() == session) {
+        return;
+    }
+
+    setCurrentSession(session);
+
+    if (noDocksForSession(session) == 0) {
+        m_waitingSessionDocksCreation = true;
+        loadDefaultLayout();
+    } else {
+        m_waitingSessionDocksCreation = false;
+        syncDockViews();
+    }
+}
+
+int DockCorona::noDocksForSession(Dock::SessionType session)
+{
+    int count{0};
+
+    foreach (auto cont, containments()) {
+        Dock::SessionType ses = (Dock::SessionType)((int)cont->config().readEntry("session", (int)Dock::DefaultSession));
+
+        if (session == ses)
+            count++;
+    }
+
+    return count;
+}
 
 QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
 {
@@ -641,7 +689,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
                                  Types::TopEdge, Types::RightEdge};
 
     for (auto *view : m_dockViews) {
-        if (view && view->currentScreen() == screen->name()) {
+        if (view && view->currentScreen() == screen->name() && view->session() == m_session) {
             edges.removeOne(view->location());
         }
     }
@@ -659,7 +707,8 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 
     for (auto *view : m_dockViews) {
         if (view && view->containment()
-            && view->containment()->screen() == fixedScreen) {
+            && view->containment()->screen() == fixedScreen
+            && view->session() == m_session) {
             edges.removeOne(view->location());
         }
     }
@@ -726,6 +775,14 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
     if (metadata.pluginId() != "org.kde.latte.containment")
         return;
+
+
+    int session = containment->config().readEntry("session", (int)Dock::DefaultSession);
+
+    //! when this containment does not belong to this session
+    if (session != currentSession() && !m_waitingSessionDocksCreation) {
+        return;
+    }
 
     for (auto *dock : m_dockViews) {
         if (dock->containment() == containment)
@@ -796,6 +853,8 @@ void DockCorona::addDock(Plasma::Containment *containment)
         dockView->setOnPrimary(true);
     }
 
+    dockView->setSession(currentSession());
+
     connect(containment, &QObject::destroyed, this, &DockCorona::dockContainmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &DockCorona::destroyedChanged);
     connect(containment, &Plasma::Applet::locationChanged, this, &DockCorona::dockLocationChanged);
@@ -804,6 +863,15 @@ void DockCorona::addDock(Plasma::Containment *containment)
 
     dockView->show();
     m_dockViews[containment] = dockView;
+
+    if (m_waitingSessionDocksCreation) {
+        m_waitingSessionDocksCreation = false;
+
+        if (noDocksForSession(currentSession()) == 1) {
+            syncDockViews();
+        }
+    }
+
     emit docksCountChanged();
 }
 
@@ -924,18 +992,22 @@ void DockCorona::loadDefaultLayout()
     defaultContainment->restore(config);
     QList<Plasma::Types::Location> edges = freeEdges(defaultContainment->screen());
 
-    if (edges.count() > 0) {
+    if ((edges.count() > 0) && !m_waitingSessionDocksCreation) {
         defaultContainment->setLocation(edges.at(0));
     } else {
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
 
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
+
     defaultContainment->save(config);
     requestConfigSync();
+
     defaultContainment->flushPendingConstraintsEvents();
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
+
+    m_waitingSessionDocksCreation = true;
     addDock(defaultContainment);
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
@@ -953,6 +1025,7 @@ bool DockCorona::heuresticForLoadingDockWithTasks()
         if (plugin == "org.kde.latte.containment") {
             bool onPrimary = containmentsEntries.group(cId).readEntry("onPrimary", true);
             int lastScreen = containmentsEntries.group(cId).readEntry("lastScreen", -1);
+            Dock::SessionType session = (Dock::SessionType)containmentsEntries.group(cId).readEntry("session", (int)Dock::DefaultSession);
 
             qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
 
@@ -967,7 +1040,7 @@ bool DockCorona::heuresticForLoadingDockWithTasks()
                 }
             }
 
-            if (containsTasks) {
+            if (containsTasks && session == Dock::DefaultSession) {
                 m_firstContainmentWithTasks = cId.toInt();
 
                 if (onPrimary) {

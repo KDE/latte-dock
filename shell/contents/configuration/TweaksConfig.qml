@@ -40,7 +40,7 @@ PlasmaComponents.Page {
         anchors.centerIn: parent
         Layout.leftMargin: units.smallSpacing * 2
 
-        //! BEGIN: Tasks Appearance
+        //! BEGIN: Behavior
         ColumnLayout {
             spacing: units.smallSpacing
 
@@ -69,11 +69,37 @@ PlasmaComponents.Page {
             }
         }
 
-
+        //! BEGIN: Session
         ColumnLayout {
             spacing: units.smallSpacing
 
             Header {
+                text: i18n("Session")
+            }
+
+            PlasmaComponents.Button {
+                Layout.fillWidth: true
+                text: i18n("On The Road")
+                checked: dockConfig.currentSession === Latte.Dock.OnTheRoadSession
+                checkable: true
+
+                onClicked: {
+                    if (dockConfig.currentSession === Latte.Dock.DefaultSession){
+                        dockConfig.currentSession = Latte.Dock.OnTheRoadSession;
+                    } else {
+                        dockConfig.currentSession = Latte.Dock.DefaultSession;
+                    }
+                }
+
+            }
+        }
+
+        //! BEGIN: Extra Actions
+        ColumnLayout {
+            spacing: units.smallSpacing
+
+            Header {
+
                 text: i18n("Extra Actions")
             }
 
@@ -97,7 +123,6 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label{}
             }
-
         }
     }
 }

@@ -22,6 +22,7 @@
 #define DOCKCORONA_H
 
 #include "dockview.h"
+#include "../liblattedock/dock.h"
 
 #include <QObject>
 
@@ -71,6 +72,10 @@ public:
     bool raiseDocksTemporary() const;
     void setRaiseDocksTemporary(bool flag);
 
+    Dock::SessionType currentSession();
+    void setCurrentSession(Dock::SessionType session);
+    void switchToSession(Dock::SessionType session);
+
     void aboutApplication();
     void closeApplication();
 
@@ -108,9 +113,13 @@ private:
     bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
     bool heuresticForLoadingDockWithTasks();
+    int noDocksForSession(Dock::SessionType session);
     int primaryScreenId() const;
 
     bool m_activitiesStarting{true};
+    //! used to initialize the docks when changing sessions
+    bool m_waitingSessionDocksCreation{false};
+    //! used to enable/disable raise on activity/desktop changed
     bool m_raiseDocksTemporary{false};
     //! this is used to check if a dock with tasks in it will be loaded on startup
     bool m_tasksWillBeLoaded{false};
@@ -118,6 +127,8 @@ private:
     //! to specify which dock will be loaded on startup if a case that no "dock
     //! with tasks" will be loaded otherwise. Currently the older one dock wins
     int m_firstContainmentWithTasks{ -1};
+
+    Dock::SessionType m_session{Dock::DefaultSession};
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
