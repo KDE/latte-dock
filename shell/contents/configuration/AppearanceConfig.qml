@@ -113,7 +113,7 @@ PlasmaComponents.Page {
                     id: proportionSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.proportionIconSize
-                    minimumValue: 2.5
+                    minimumValue: 1.0
                     maximumValue: 10
                     stepSize: 0.5
                     property real realMinimum: minimumValue + 0.5
