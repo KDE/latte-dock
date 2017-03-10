@@ -79,13 +79,13 @@ PlasmaComponents.Page {
 
             PlasmaComponents.Button {
                 Layout.fillWidth: true
-                text: i18n("On The Road")
-                checked: dockConfig.currentSession === Latte.Dock.OnTheRoadSession
+                text: i18n("Alternative Session")
+                checked: dockConfig.currentSession === Latte.Dock.AlternativeSession
                 checkable: true
 
                 onClicked: {
                     if (dockConfig.currentSession === Latte.Dock.DefaultSession){
-                        dockConfig.currentSession = Latte.Dock.OnTheRoadSession;
+                        dockConfig.currentSession = Latte.Dock.AlternativeSession;
                     } else {
                         dockConfig.currentSession = Latte.Dock.DefaultSession;
                     }

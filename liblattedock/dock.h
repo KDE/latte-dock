@@ -56,7 +56,7 @@ public:
 
     enum SessionType {
         DefaultSession = 0,
-        OnTheRoadSession
+        AlternativeSession
     };
     Q_ENUM(SessionType)
 
