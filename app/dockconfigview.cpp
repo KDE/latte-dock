@@ -257,6 +257,13 @@ void DockConfigView::setSticker(bool blockFocusLost)
     m_blockFocusLost = blockFocusLost;
 }
 
+void DockConfigView::addPanelSpacer()
+{
+    if (m_dockView && m_dockView->containment()) {
+        m_dockView->containment()->createApplet(QStringLiteral("org.kde.plasma.panelspacer"));
+    }
+}
+
 bool DockConfigView::autostart() const
 {
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
