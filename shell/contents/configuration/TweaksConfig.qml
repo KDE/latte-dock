@@ -78,6 +78,8 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.Button {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
                 Layout.fillWidth: true
                 text: i18n("Alternative Session")
                 checked: dockConfig.currentSession === Latte.Dock.AlternativeSession
@@ -99,7 +101,6 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             Header {
-
                 text: i18n("Extra Actions")
             }
 
