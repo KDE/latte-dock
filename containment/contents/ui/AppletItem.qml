@@ -869,20 +869,9 @@ Item {
             mouse.accepted = false;
         }
 
-        onContainsMouseChanged: {
-          //  if(!containsMouse){
-          //      hiddenSpacerLeft.nScale = 0;
-          //      hiddenSpacerRight.nScale = 0;
-          //  }
-        }
-
         onEntered: {
             layoutsContainer.hoveredIndex = index;
-            //            mouseEntered = true;
-            /*       icList.mouseWasEntered(index-2, false);
-                icList.mouseWasEntered(index+2, false);
-                icList.mouseWasEntered(index-1, true);
-                icList.mouseWasEntered(index+1, true); */
+
             if (root.isHorizontal){
                 layoutsContainer.currentSpot = mouseX;
                 wrapper.calculateScales(mouseX);
@@ -921,7 +910,11 @@ Item {
             mouse.accepted = false;
         }
 
-        onPressed: pressed = true;
+        onPressed: {
+            pressed = true;
+            mouse.accepted = false;
+        }
+
         onReleased: pressed = false;
     }
 
@@ -1003,6 +996,8 @@ Item {
         id: clickedAnimation
         alwaysRunToEnd: true
         running: appletMouseArea.pressed
+
+        onStopped: appletMouseArea.pressed = false;
 
         ParallelAnimation{
             PropertyAnimation {
