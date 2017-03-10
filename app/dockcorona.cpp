@@ -433,8 +433,8 @@ void DockCorona::syncDockViews()
             }
 
             bool onPrimary = cont->config().readEntry("onPrimary", true);
-            Plasma::Types::Location location = (Plasma::Types::Location)((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
-            Dock::SessionType session = (Dock::SessionType)((int)cont->config().readEntry("session", (int)Dock::DefaultSession));
+            Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+            Dock::SessionType session = static_cast<Dock::SessionType>((int)cont->config().readEntry("session", (int)Dock::DefaultSession));
 
             //! two main situations that a dock must be added when it is not already running
             //! 1. when a dock is primary, not running and the edge for which is associated is free
@@ -673,7 +673,7 @@ int DockCorona::noDocksForSession(Dock::SessionType session)
     int count{0};
 
     foreach (auto cont, containments()) {
-        Dock::SessionType ses = (Dock::SessionType)((int)cont->config().readEntry("session", (int)Dock::DefaultSession));
+        Dock::SessionType ses = static_cast<Dock::SessionType>(cont->config().readEntry("session", (int)Dock::DefaultSession));
 
         if (session == ses)
             count++;
@@ -1025,7 +1025,7 @@ bool DockCorona::heuresticForLoadingDockWithTasks()
         if (plugin == "org.kde.latte.containment") {
             bool onPrimary = containmentsEntries.group(cId).readEntry("onPrimary", true);
             int lastScreen = containmentsEntries.group(cId).readEntry("lastScreen", -1);
-            Dock::SessionType session = (Dock::SessionType)containmentsEntries.group(cId).readEntry("session", (int)Dock::DefaultSession);
+            Dock::SessionType session = static_cast<Dock::SessionType>(containmentsEntries.group(cId).readEntry("session", (int)Dock::DefaultSession));
 
             qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
 
