@@ -68,5 +68,36 @@ PlasmaComponents.Page {
                 }
             }
         }
+
+
+        ColumnLayout {
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Extra Actions")
+            }
+
+            GridLayout {
+                width: parent.width
+                rowSpacing: 1
+                columnSpacing: 1
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+
+                columns: 2
+
+                PlasmaComponents.Button {
+                    iconSource: "distribute-horizontal-x"
+                    text: i18n("Add Spacer")
+                    Layout.alignment: Qt.AlignLeft
+                    onClicked: {
+                        dockConfig.addPanelSpacer();
+                    }
+                }
+
+                PlasmaComponents.Label{}
+            }
+
+        }
     }
 }

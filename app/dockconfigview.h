@@ -60,6 +60,7 @@ public:
     void setRaiseDocksTemporary(bool state);
 
 public slots:
+    Q_INVOKABLE void addPanelSpacer();
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
 
