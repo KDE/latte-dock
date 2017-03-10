@@ -121,6 +121,9 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
+    Dock::SessionType session() const;
+    void setSession(Dock::SessionType type);
+
     VisibilityManager *visibility() const;
 
     QQmlListProperty<QScreen> screens();
@@ -172,6 +175,7 @@ signals:
     void visibilityChanged();
     void maskAreaChanged();
     void screenGeometryChanged();
+    void sessionChanged();
     void shadowChanged();
     void xChanged();
     void yChanged();
@@ -207,6 +211,7 @@ private:
     float m_maxLength{1};
 
     Dock::Alignment m_alignment{Dock::Center};
+    Dock::SessionType m_session{Dock::DefaultSession};
 
     QRect m_localGeometry;
     QRect m_absGeometry;

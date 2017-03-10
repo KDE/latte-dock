@@ -127,13 +127,13 @@ DockView::~DockView()
     this->disconnect();
     qDebug() << "dock view connections deleted...";
 
-    if (m_configView) {
+    /*if (m_configView) {
         m_configView->hide();
         m_configView->deleteLater();
-    }
+    }*/
 
     if (m_visibility) {
-        delete m_visibility;
+        m_visibility->deleteLater();
     }
 }
 
@@ -163,6 +163,8 @@ void DockView::init()
 
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::reconsiderScreen);
+
+    connect(this, &DockView::sessionChanged, this, &DockView::saveConfig);
 
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
@@ -775,6 +777,21 @@ void DockView::setOnPrimary(bool flag)
 
     m_onPrimary = flag;
     emit onPrimaryChanged();
+}
+
+Dock::SessionType DockView::session() const
+{
+    return m_session;
+}
+
+void DockView::setSession(Dock::SessionType type)
+{
+    if (m_session == type) {
+        return;
+    }
+
+    m_session = type;
+    emit sessionChanged();
 }
 
 float DockView::maxLength() const
@@ -1405,6 +1422,7 @@ void DockView::saveConfig()
 
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", m_onPrimary);
+    config.writeEntry("session", (int)m_session);
     this->containment()->configNeedsSaving();
 }
 
@@ -1415,6 +1433,7 @@ void DockView::restoreConfig()
 
     auto config = this->containment()->config();
     setOnPrimary(config.readEntry("onPrimary", true));
+    setSession((Dock::SessionType)config.readEntry("session", (int)Dock::DefaultSession));
 }
 //!END configuration functions
 

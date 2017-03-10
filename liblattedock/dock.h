@@ -54,6 +54,12 @@ public:
     };
     Q_ENUM(Alignment)
 
+    enum SessionType {
+        DefaultSession = 0,
+        OnTheRoadSession
+    };
+    Q_ENUM(SessionType)
+
 };
 
 }//end of namespace

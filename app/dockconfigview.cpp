@@ -23,6 +23,7 @@
 #include "dockcorona.h"
 #include "panelshadows_p.h"
 #include "abstractwindowinterface.h"
+#include "../liblattedock/dock.h"
 
 #include <QQuickItem>
 #include <QQmlContext>
@@ -214,7 +215,7 @@ void DockConfigView::hideEvent(QHideEvent *ev)
 
     QQuickWindow::hideEvent(ev);
 
-    if (m_dockView->visibility()->mode() != m_previousMode
+    if (m_dockView && m_dockView->visibility()->mode() != m_previousMode
         && ((m_dockView->visibility()->mode() == Dock::AlwaysVisible)
             || (m_previousMode == Dock::AlwaysVisible))) {
 
@@ -301,6 +302,27 @@ void DockConfigView::setRaiseDocksTemporary(bool state)
 
     if (dockCorona) {
         dockCorona->setRaiseDocksTemporary(state);
+    }
+}
+
+Dock::SessionType DockConfigView::currentSession() const
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    if (dockCorona) {
+        return dockCorona->currentSession();
+    }
+
+    return Dock::DefaultSession;
+}
+
+void DockConfigView::setCurrentSession(Dock::SessionType session)
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    if (dockCorona && dockCorona->currentSession() != session) {
+        dockCorona->switchToSession(session);
+        hide();
     }
 }
 
