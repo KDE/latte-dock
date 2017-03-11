@@ -31,7 +31,7 @@ Image{
     height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal
 
     fillMode: Image.Tile
-    source: "../icons/blueprint.jpg"
+    source: !dock || dock.session===Latte.Dock.DefaultSession ? "../icons/blueprint.jpg":"../icons/purpleprint.jpg"
     opacity: 0
 
     property int speed: root.durationTime*4*units.longDuration
@@ -205,7 +205,7 @@ Image{
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
-                        to: root.drawShadowsExternal ? 0.3 : 0.6
+                        to: root.drawShadowsExternal && dock.session===Latte.Dock.DefaultSession  ? 0.3 : 0.6
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }
