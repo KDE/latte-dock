@@ -45,6 +45,7 @@ namespace Latte {
 
 class DockCorona : public Plasma::Corona {
     Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.LatteDock")
 
 public:
     DockCorona(QObject *parent = nullptr);
@@ -82,6 +83,7 @@ public:
     ScreenPool *screenPool() const;
 
 public slots:
+    void activateLauncherMenu();
     void loadDefaultLayout() override;
     void dockContainmentDestroyed(QObject *cont);
 
