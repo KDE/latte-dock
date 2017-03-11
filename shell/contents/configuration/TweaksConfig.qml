@@ -40,6 +40,26 @@ PlasmaComponents.Page {
         anchors.centerIn: parent
         Layout.leftMargin: units.smallSpacing * 2
 
+        //! BEGIN: Appearance
+        ColumnLayout {
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Appearance")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: shrinkThickness
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Shrink thickness margins to minimum")
+                checked: plasmoid.configuration.shrinkThickMargins
+
+                onClicked: {
+                    plasmoid.configuration.shrinkThickMargins = checked
+                }
+            }
+        }
+
         //! BEGIN: Behavior
         ColumnLayout {
             spacing: units.smallSpacing

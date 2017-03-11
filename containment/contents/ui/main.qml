@@ -61,6 +61,7 @@ DragDrop.DropArea {
                                          : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
+    property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
     property bool solidPanel: plasmoid.configuration.solidPanel
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
@@ -115,8 +116,8 @@ DragDrop.DropArea {
 
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
-    property int thickMarginBase: Math.ceil(iconMargin/2)
-    property int thickMarginHigh: Math.ceil(iconMargin/2)
+    property int thickMarginBase: shrinkThickMargins ? 1 : Math.ceil(iconMargin/2)
+    property int thickMarginHigh: shrinkThickMargins ? 1 : Math.ceil(iconMargin/2)
     property int thickMargin: thickMarginBase + thickMarginHigh
 
     //it is used in order to not break the calculations for the thickness placement

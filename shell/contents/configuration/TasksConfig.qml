@@ -151,7 +151,7 @@ PlasmaComponents.Page {
         //! BEGIN: Tasks Filters
         ColumnLayout {
             spacing: units.smallSpacing
-            
+
             Header {
                 text: i18n("Filters")
             }
@@ -160,8 +160,8 @@ PlasmaComponents.Page {
                 id: showOnlyCurrentScreen
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show only tasks from the current screen")
-                checked: plasmoid.configuration.showOnlyCurrentScreen 
-                    
+                checked: plasmoid.configuration.showOnlyCurrentScreen
+
                 onClicked: {
                     plasmoid.configuration.showOnlyCurrentScreen = checked
                 }
@@ -172,7 +172,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show only tasks from the current desktop")
                 checked: plasmoid.configuration.showOnlyCurrentDesktop
-                
+
                 onClicked: {
                     plasmoid.configuration.showOnlyCurrentDesktop = checked
                 }
@@ -183,7 +183,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show only tasks from the current activity")
                 checked: plasmoid.configuration.showOnlyCurrentActivity
-                
+
                 onClicked: {
                     plasmoid.configuration.showOnlyCurrentActivity = checked
                 }
