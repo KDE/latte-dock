@@ -321,6 +321,30 @@ Window{
         }
 
         Text{
+            text: "Icon Margin"+space
+        }
+
+        Text{
+            text: root.iconMargin
+        }
+
+        Text{
+            text: "Thick Margin Base"+space
+        }
+
+        Text{
+            text: root.thickMarginBase
+        }
+
+        Text{
+            text: "Thick Margin High"+space
+        }
+
+        Text{
+            text: root.thickMarginHigh
+        }
+
+        Text{
             text: "   -----------   "
         }
 

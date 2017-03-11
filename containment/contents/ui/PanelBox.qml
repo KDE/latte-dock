@@ -145,7 +145,7 @@ Item{
                 root.realPanelThickness = iconS;
                 return iconS;
             } else {
-                var icons = root.statesLineSize + root.iconSize + root.iconMargin + 1;
+                var icons = root.statesLineSize + root.iconSize + root.thickMargin + 1;
                 var panels = root.themePanelSize + root.panelMargin;
 
                 root.realPanelThickness = icons;

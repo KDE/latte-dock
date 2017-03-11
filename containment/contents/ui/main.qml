@@ -107,11 +107,21 @@ DragDrop.DropArea {
     property int themePanelSize: {
         //root.statesLineSize + root.iconSize + root.iconMargin + 1
         var panelBase = root.statesLineSize + root.panelMargin;
-        var iconMarginUsed = latteApplet ? root.iconMargin : 0;
-        var maxPanelSize = (root.statesLineSize + root.iconSize + iconMarginUsed + 1) - panelBase;
+        var margin = latteApplet ? thickMargin : 0;
+        var maxPanelSize = (root.statesLineSize + iconSize + margin + 1) - panelBase;
         var percentage = plasmoid.configuration.panelSize/100;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
+
+    //decouple iconMargin which now is used only for length calculations with thickMargins
+    //which are used for thickness calculations
+    property int thickMarginBase: Math.ceil(iconMargin/2)
+    property int thickMarginHigh: Math.ceil(iconMargin/2)
+    property int thickMargin: thickMarginBase + thickMarginHigh
+
+    //it is used in order to not break the calculations for the thickness placement
+    //especially in automatic icon sizes calculations
+    property int thickMarginOriginal: Math.ceil(0.12 * maxIconSize)
 
     property int iconMargin: Math.ceil(0.12 * iconSize)
     property int statesLineSize: latteApplet ?  Math.ceil( root.iconSize/13 ) : 0
@@ -1160,7 +1170,7 @@ DragDrop.DropArea {
     Item {
         id: dndSpacer
 
-        property int normalSize: root.statesLineSize + root.iconSize + root.iconMargin - 1
+        property int normalSize: root.statesLineSize + root.iconSize + root.thickMargin - 1
         //visibilityManager.statesLineSizeOriginal + root.maxIconSize + visibilityManager.iconMarginOriginal - 1
 
         width: normalSize

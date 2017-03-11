@@ -246,13 +246,17 @@ MouseArea{
             property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
 
             ///Dont use Math.floor it adds one pixel in animations and creates glitches
-            property real cleanScaling: root.realSize * mScale
+            property int widthMargins: root.vertical ? root.thickMargin : root.iconMargin
+            property int heightMargins: !root.vertical ? root.thickMargin : root.iconMargin
 
-            property real basicScalingWidth : (inTempScaling == true) ? (root.realSize * scaleWidth) : cleanScaling
-            property real basicScalingHeight : (inTempScaling == true) ? (root.realSize * scaleHeight) : cleanScaling
+            property real cleanScalingWidth: (root.iconSize + widthMargins) * mScale
+            property real cleanScalingHeight: (root.iconSize + heightMargins) * mScale
 
-            property real regulatorWidth: basicScalingWidth-2;
-            property real regulatorHeight: basicScalingHeight-2;
+            property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + widthMargins) * scaleWidth) : cleanScalingWidth
+            property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + heightMargins) * scaleHeight) : cleanScalingHeight
+
+            property real regulatorWidth: basicScalingWidth;//-2;
+            property real regulatorHeight: basicScalingHeight;//-2;
             /// end of Scalers///////
 
             //property int curIndex: icList.hoveredIndex

@@ -112,6 +112,12 @@ Item {
     property int durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    //decouple iconMargin which now is used only for length calculations with thickMargins
+    //which are used for thickness calculations
+    property int thickMarginBase: latteDock ? latteDock.thickMarginBase : Math.ceil(iconMargin/2)
+    property int thickMarginHigh: latteDock ? latteDock.thickMarginHigh : Math.ceil(iconMargin/2)
+    property int thickMargin: thickMarginBase + thickMarginHigh
+
     property int statesLineSize: latteDock ? latteDock.statesLineSize : Math.ceil( root.iconSize/13 )
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
@@ -657,8 +663,8 @@ Item {
             target: icList
 
             property int maxSize: (root.hoveredIndex>=0 && !root.dragSource) ?
-                                      root.statesLineSize + root.zoomFactor * (root.iconSize + root.iconMargin) - 1 :
-                                      root.statesLineSize + root.iconSize + root.iconMargin - 1
+                                      root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) - 1 :
+                                      root.statesLineSize + root.iconSize + root.thickMargin - 1
 
             onUrlsDropped: {
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
@@ -880,12 +886,12 @@ Item {
         if(icList.previousCount !== icList.count){
             icList.previousCount = icList.count;
 
-            var zoomedLength = Math.floor( 1.2 * (iconSize+iconMargin) * (root.zoomFactor));
-            var bigAxis = (tasksModel.count-1) * (iconSize+iconMargin) + zoomedLength;
+            var zoomedLength = Math.floor( 1.2 * (iconSize+thickMargin) * (root.zoomFactor));
+            var bigAxis = (tasksModel.count-1) * (iconSize+thickMargin) + zoomedLength;
             var smallAxis = zoomedLength + statesLineSize;
 
-            var clearBigAxis = tasksModel.count * (iconSize+iconMargin) + (barLine.spacing/2);
-            var clearSmallAxis = (iconSize+iconMargin)+statesLineSize;
+            var clearBigAxis = tasksModel.count * (iconSize+thickMargin) + (barLine.spacing/2);
+            var clearSmallAxis = (iconSize+thickMargin)+statesLineSize;
 
             //  debugging code
             //     ncounter++;
