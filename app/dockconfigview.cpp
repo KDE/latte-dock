@@ -45,7 +45,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     setScreen(m_dockView->screen());
 
     if (containment) {
-        setIcon(QIcon::fromTheme(containment->corona()->kPackage().metadata().iconName()));
+        setIcon(qGuiApp->windowIcon());
     }
 
     connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
