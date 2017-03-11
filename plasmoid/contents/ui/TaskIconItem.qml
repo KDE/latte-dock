@@ -123,26 +123,25 @@ Item{
             anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned
                                  || (root.position === PlasmaCore.Types.LeftPositioned
                                      && mainItemContainer.inAddRemoveAnimation)
-                                 ? margin : 0
+                                 ? root.thickMarginBase : 0
             anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned
                                 || (root.position === PlasmaCore.Types.RightPositioned
                                     && mainItemContainer.inAddRemoveAnimation)
-                                ? margin : 0
+                                ? root.thickMarginBase : 0
             anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned
                                || (root.position === PlasmaCore.Types.BottomPositioned
                                    && mainItemContainer.inAddRemoveAnimation)
-                               ? margin : 0
+                               ? root.thickMarginBase : 0
             anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned
                                   || (root.position === PlasmaCore.Types.TopPositioned
                                       && mainItemContainer.inAddRemoveAnimation)
-                                  ? margin : 0
+                                  ? root.thickMarginBase : 0
 
             width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
             height: Math.round(width)
             //icon: decoration
             source: decoration
 
-            property int margin: root.iconMargin/2
             //visible: !root.enableShadows
 
             onValidChanged: {

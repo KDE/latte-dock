@@ -328,8 +328,11 @@ Item {
 
             property int iconSize: root.iconSize
 
-            property real scaledWidth: zoomScaleWidth * (layoutWidth + root.iconMargin)
-            property real scaledHeight: zoomScaleHeight * (layoutHeight + root.iconMargin)
+            property int marginWidth: root.isVertical ? root.thickMargin : root.iconMargin
+            property int marginHeight: root.isHorizontal ? root.thickMargin : root.iconMargin
+
+            property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
+            property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
             property real zoomScaleWidth: disableScaleWidth ? 1 : zoomScale
             property real zoomScaleHeight: disableScaleHeight ? 1 : zoomScale
 
@@ -522,10 +525,10 @@ Item {
                 width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
                 height: Math.round( container.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
 
-                anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? (root.iconMargin / 2) : 0
-                anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? (root.iconMargin / 2) : 0
-                anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? (root.iconMargin / 2) : 0
-                anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? (root.iconMargin / 2) : 0
+                anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? root.thickMarginBase : 0
+                anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? root.thickMarginBase : 0
+                anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? root.thickMarginBase : 0
+                anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? root.thickMarginBase : 0
 
                 //BEGIN states
                 states: [
