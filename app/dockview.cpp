@@ -51,7 +51,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
 {
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
-    setIcon(QIcon::fromTheme(corona->kPackage().metadata().iconName()));
+    setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setClearBeforeRendering(true);
 
