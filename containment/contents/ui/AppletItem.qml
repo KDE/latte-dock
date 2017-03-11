@@ -85,6 +85,7 @@ Item {
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||
                                   (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapperContainer
+    property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
 
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
@@ -178,12 +179,42 @@ Item {
         }
     }
 
+    function reconsiderAppletItem(){
+        if (appletIconItem)
+            return;
+
+        //! searching to find for that applet the first IconItem
+        //! which is going to be used in order to deactivate its active
+        //! from our MouseArea
+        for(var i=0; i<applet.children.length; ++i){
+            for(var j=0; j<applet.children[i].children.length; ++j){
+                if (typeOf(applet.children[i].children[j], "IconItem")) {
+                    appletIconItem = applet.children[i].children[j];
+                    return;
+                } else if (typeOf(applet.children[i].children[j], "CompactRepresentation")) {
+                    for(var k=0; k<applet.children[i].children[j].children.length; ++k){
+                        if (typeOf(applet.children[i].children[j].children[k], "IconItem")) {
+                            appletIconItem = applet.children[i].children[j].children[k];
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function typeOf(obj, className){
+        var name = obj.toString();
+        return ((name.indexOf(className + "(") === 0) || (name.indexOf(className + "_QML") === 0));
+    }
     ///END functions
 
     //BEGIN connections
     onAppletChanged: {
         if (!applet) {
             destroy();
+        } else {
+            reconsiderAppletItem()
         }
     }
 
@@ -864,6 +895,7 @@ Item {
         enabled: (!latteApplet)&&(canBeHovered)&&(!lockZoom)&&(!root.editMode)
         hoverEnabled: !root.editMode && (!latteApplet) && canBeHovered ? true : false
         propagateComposedEvents: true
+        visible: enabled
 
         property bool pressed: false
 
@@ -883,10 +915,17 @@ Item {
                 layoutsContainer.currentSpot = mouseY;
                 wrapper.calculateScales(mouseY);
             }
+
+            reconsiderAppletItem();
+
+            if (appletIconItem)
+                appletIconItem.active = true;
         }
 
         onExited:{
             checkListHovered.start();
+            if (appletIconItem)
+                appletIconItem.active = false;
         }
 
         onPositionChanged: {
@@ -1010,13 +1049,6 @@ Item {
                 duration: units.longDuration
                 easing.type: Easing.OutQuad
             }
-            /*   PropertyAnimation {
-                target: wrapper
-                property: "zoomScale"
-                to: wrapper.zoomScale - (root.zoomFactor - 1) / 10
-                duration: units.longDuration
-                easing.type: Easing.OutQuad
-            }*/
         }
         ParallelAnimation{
             PropertyAnimation {
@@ -1026,13 +1058,6 @@ Item {
                 duration: units.longDuration
                 easing.type: Easing.OutQuad
             }
-            /*     PropertyAnimation {
-                target: wrapper
-                property: "zoomScale"
-                to: root.zoomFactor
-                duration: units.longDuration
-                easing.type: Easing.OutQuad
-            }*/
         }
     }
     //END animations
