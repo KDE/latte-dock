@@ -36,6 +36,7 @@
 
 #include <KLocalizedString>
 #include <KAboutData>
+#include <KDBusService>
 
 
 //! COLORS
@@ -50,7 +51,8 @@
 inline void configureAboutData();
 
 int main(int argc, char **argv)
-{    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
+{
+    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
     //     - dialog continually expands (347951)
     //     - Text element text is screwed (QTBUG-42606)
     //     - Panel struts (350614)
@@ -70,11 +72,11 @@ int main(int argc, char **argv)
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOptions({
-       {{"r", "replace"}, i18nc("command line", "Replace the current dock instance.")}
-     , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
-     , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
-     , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
-     , {"with-window", i18nc("command line", "Open a window with much debug information.")}
+        {{"r", "replace"}, i18nc("command line", "Replace the current dock instance.")}
+        , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
+        , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
+        , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
+        , {"with-window", i18nc("command line", "Open a window with much debug information.")}
     });
 
     parser.process(app);
@@ -82,8 +84,10 @@ int main(int argc, char **argv)
     QLockFile lockFile {QDir::tempPath() + "/latte-dock.lock"};
 
     int timeout {100};
+
     if (parser.isSet(QStringLiteral("replace"))) {
-        qint64 pid{-1};
+        qint64 pid{ -1};
+
         if (lockFile.getLockInfo(&pid, nullptr, nullptr)) {
             kill(static_cast<__pid_t>(pid), SIGINT);
             timeout = 3000;
@@ -96,19 +100,19 @@ int main(int argc, char **argv)
     }
 
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {
-    //! set pattern for debug messages
-    //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
+        //! set pattern for debug messages
+        //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
 
         qSetMessagePattern(QStringLiteral(
                                CIGREEN "[%{type} " CGREEN "%{time h:mm:ss.zz}" CIGREEN "]" CNORMAL
-    #ifndef QT_NO_DEBUG
+#ifndef QT_NO_DEBUG
                                CIRED " [" CCYAN "%{function}" CIRED ":" CCYAN "%{line}" CIRED "]"
-    #endif
+#endif
                                CICYAN " - " CNORMAL "%{message}"
                                CIRED "%{if-fatal}\n%{backtrace depth=8 separator=\"\n\"}%{endif}"
                                "%{if-critical}\n%{backtrace depth=8 separator=\"\n\"}%{endif}" CNORMAL));
     } else {
-        const auto noMessageOutput = [](QtMsgType, const QMessageLogContext&, const QString&){};
+        const auto noMessageOutput = [](QtMsgType, const QMessageLogContext &, const QString &) {};
         qInstallMessageHandler(noMessageOutput);
     }
 
@@ -121,6 +125,8 @@ int main(int argc, char **argv)
     std::signal(SIGINT, signal_handler);
 
     Latte::DockCorona corona;
+    KDBusService service(KDBusService::Unique);
+
     return app.exec();
 }
 

@@ -24,10 +24,13 @@
 #include "abstractwindowinterface.h"
 #include "alternativeshelper.h"
 #include "screenpool.h"
+//dbus adaptor
+#include "lattedockadaptor.h"
 
 #include <QAction>
 #include <QApplication>
 #include <QScreen>
+#include <QDBusConnection>
 #include <QDebug>
 #include <QDesktopWidget>
 #include <QDir>
@@ -77,6 +80,11 @@ DockCorona::DockCorona(QObject *parent)
     m_docksScreenSyncTimer.setSingleShot(true);
     m_docksScreenSyncTimer.setInterval(2500);
     connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViews);
+
+    //! Dbus adaptor initialization
+    new LatteDockAdaptor(this);
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.registerObject(QStringLiteral("/Latte"), this);
 }
 
 DockCorona::~DockCorona()
@@ -1086,6 +1094,25 @@ bool DockCorona::containmentContainsTasks(Plasma::Containment *cont)
     }
 
     return false;
+}
+
+//! Activate launcher menu through dbus interface
+void DockCorona::activateLauncherMenu()
+{
+    for (auto it = m_dockViews.constBegin(), end = m_dockViews.constEnd(); it != end; ++it) {
+        const auto applets = it.key()->applets();
+
+        for (auto applet : applets) {
+            const auto provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+
+            if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
+                // if (!applet->globalShortcut().isEmpty()) {
+                emit applet->activated();
+                return;
+                //  }
+            }
+        }
+    }
 }
 
 inline void DockCorona::qmlRegisterTypes() const
