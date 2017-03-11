@@ -71,6 +71,8 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
+    Q_PROPERTY(Latte::Dock::SessionType session READ session WRITE setSession NOTIFY sessionChanged)
+
 public:
     DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool alwaysVisible = false);
     virtual ~DockView();
