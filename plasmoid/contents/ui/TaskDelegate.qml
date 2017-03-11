@@ -298,10 +298,13 @@ MouseArea{
 
                 Loader{
                     id: firstIndicator
+
                     active:( (((root.position === PlasmaCore.Types.TopPositioned) || (root.position === PlasmaCore.Types.LeftPositioned))
                               && !root.reverseLinesPosition)
                             || (((root.position === PlasmaCore.Types.BottomPositioned) || (root.position === PlasmaCore.Types.RightPositioned))
                                 && root.reverseLinesPosition) )
+                    visible: active
+
                     sourceComponent: Component{
                         TaskGroupItem{}
                     }
@@ -312,6 +315,8 @@ MouseArea{
                 Loader{
                     id: secondIndicator
                     active: !firstIndicator.active
+                    visible: active
+
                     sourceComponent: Component{
                         TaskGroupItem{}
                     }
