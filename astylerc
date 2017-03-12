@@ -32,7 +32,6 @@
     --pad-header
     --align-pointer=name
     --align-reference=name
-    --delete-empty-lines
 
 #Others
     --preserve-date
