@@ -182,27 +182,29 @@ Item{
 
         if (Latte.WindowSystem.compositingActive) {
             if (root.useThemePanel){
-                space = root.panelEdgeSpacing + 2*root.panelShadow;
+                space = root.totalPanelEdgeSpacing + root.panelMarginLength + 1;
             } else {
                 space = 2;
             }
         } else {
-            if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                space = root.panelEdgeSpacing/2;
-            } else {
-                space = root.panelEdgeSpacing/4;
-            }
+            space = root.totalPanelEdgeSpacing + root.panelMarginLength;
         }
 
         if (normalState) {
             //console.log("entered normal state...");
             //count panel length
-            if(root.isHorizontal) {
-                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                            layoutsContainer.width + space : mainLayout.width + space;
+
+            //used when !compositing and in editMode
+            if (!Latte.WindowSystem.compositingActive && root.editMode) {
+                tempLength = root.isHorizontal ? root.width : root.height;
             } else {
-                tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                            layoutsContainer.height + space : mainLayout.height + space;
+                if(root.isHorizontal) {
+                    tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                                layoutsContainer.width + space : mainLayout.width + space;
+                } else {
+                    tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                                layoutsContainer.height + space : mainLayout.height + space;
+                }
             }
 
             tempThickness = thicknessNormal;
@@ -230,7 +232,7 @@ Item{
                 } else if (root.panelAlignment === Latte.Dock.Center) {
                     localX = (dock.width/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Right) {
-                    localX = dock.width - mainLayout.width - (space/2);
+                    localX = dock.width - mainLayout.width - space;
                 }
             } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                 if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -246,7 +248,7 @@ Item{
                 } else if (root.panelAlignment === Latte.Dock.Center) {
                     localY = (dock.height/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    localY = dock.height - mainLayout.height - (space/2);
+                    localY = dock.height - mainLayout.height - space;
                 }
             }
         } else {
