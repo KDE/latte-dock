@@ -1070,13 +1070,11 @@ void DockCorona::activateLauncherMenu()
         const auto applets = it.key()->applets();
 
         for (auto applet : applets) {
-            const auto provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+            const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
 
             if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
-                // if (!applet->globalShortcut().isEmpty()) {
                 emit applet->activated();
                 return;
-                //  }
             }
         }
     }
