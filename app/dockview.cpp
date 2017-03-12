@@ -24,6 +24,7 @@
 #include "visibilitymanager.h"
 #include "panelshadows_p.h"
 #include "../liblattedock/extras.h"
+#include "../liblattedock/quickwindowsystem.h"
 
 #include <QAction>
 #include <QQmlContext>
@@ -38,6 +39,7 @@
 #include <KLocalizedContext>
 #include <KLocalizedString>
 #include <KWindowEffects>
+#include <KWindowSystem>
 
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
@@ -53,6 +55,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
+    setColor(QColor(Qt::transparent));
     setClearBeforeRendering(true);
 
     if (!alwaysVisible) {
@@ -75,7 +78,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
 
     connect(this, &DockView::containmentChanged
     , this, [&]() {
-
         if (!this->containment())
             return;
 
@@ -121,7 +123,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
 DockView::~DockView()
 {
     m_screenSyncTimer.stop();
-
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
     this->disconnect();
@@ -139,7 +140,6 @@ DockView::~DockView()
 void DockView::init()
 {
     connect(this, &QQuickWindow::screenChanged, this, &DockView::screenChanged);
-
     connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::screenChanged);
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::screenChanged);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
@@ -151,7 +151,6 @@ void DockView::init()
     connect(this, &QQuickWindow::widthChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::updateAbsDockGeometry);
-
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&]() {
         if (formFactor() == Plasma::Types::Vertical)
             syncGeometry();
@@ -159,22 +158,16 @@ void DockView::init()
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
-
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::reconsiderScreen);
-
     connect(this, &DockView::sessionChanged, this, &DockView::saveConfig);
-
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
     });
-
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
-
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
-
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
     setSource(corona()->kPackage().filePath("lattedockui"));
     setVisible(true);
@@ -237,14 +230,12 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
     }
 
     qDebug() << "adapting to screen...";
-
     setScreen(screen);
 
     if (this->containment())
         this->containment()->reactToScreenChange();
 
     syncGeometry();
-
     emit screenGeometryChanged();
 }
 
@@ -259,7 +250,6 @@ void DockView::reconsiderScreen()
     }
 
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
     bool screenExists{false};
 
     //!check if the associated screen is running
@@ -409,9 +399,7 @@ QRect DockView::maximumNormalGeometry()
     int yPos = 0;
     int maxHeight = maxLength() * screen()->geometry().height();
     int maxWidth = normalThickness();
-
     QRect maxGeometry;
-
     maxGeometry.setRect(0, 0, maxWidth, maxHeight);
 
     switch (location()) {
@@ -434,7 +422,6 @@ QRect DockView::maximumNormalGeometry()
             }
 
             maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
-
             break;
 
         case Plasma::Types::RightEdge:
@@ -456,7 +443,6 @@ QRect DockView::maximumNormalGeometry()
             }
 
             maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
-
             break;
     }
 
@@ -507,9 +493,7 @@ void DockView::setLocalGeometry(const QRect &geometry)
     }
 
     m_localGeometry = geometry;
-
     emit localGeometryChanged();
-
     updateAbsDockGeometry();
 }
 
@@ -530,13 +514,10 @@ void DockView::updatePosition(QRect availableScreenRect)
 {
     QRect screenGeometry;
     QPoint position;
-
     position = {0, 0};
-
     const auto length = [&](int length) -> int {
         return static_cast<int>(length * (1 - maxLength()) / 2);
     };
-
     int cleanThickness = normalThickness() - shadow();
 
     switch (location()) {
@@ -623,14 +604,12 @@ inline void DockView::syncGeometry()
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
-
             float area = 0;
 
             //! it is used to choose which or the availableRegion rectangles will
             //! be the one representing dock geometry
             for (int i = 0; i < availableRegion.rectCount(); ++i) {
                 QRect rect = availableRegion.rects().at(i);
-
                 //! the area of each rectangle in calculated in squares of 50x50
                 //! this is a way to avoid enourmous numbers for area value
                 float tempArea = (float)(rect.width() * rect.height()) / 2500;
@@ -648,7 +627,6 @@ inline void DockView::syncGeometry()
         } else {
             m_forceDrawCenteredBorders = false;
         }
-
 
         updateEnabledBorders();
         resizeWindow(availableScreenRect);
@@ -691,7 +669,6 @@ void DockView::setNormalThickness(int thickness)
     }
 
     m_normalThickness = thickness;
-
     emit normalThicknessChanged();
 }
 
@@ -754,12 +731,10 @@ void DockView::setDrawShadows(bool draw)
     } else {
         PanelShadows::self()->removeWindow(this);
         m_enabledBorders = Plasma::FrameSvg::AllBorders;
-
         emit enabledBordersChanged();
     }
 
     themeChanged();
-
     emit drawShadowsChanged();
 }
 
@@ -805,7 +780,6 @@ void DockView::setMaxLength(float length)
     }
 
     m_maxLength = length;
-
     emit maxLengthChanged();
 }
 
@@ -852,7 +826,25 @@ void DockView::setMaskArea(QRect area)
         return;
 
     m_maskArea = area;
-    setMask(m_maskArea);
+
+    if (KWindowSystem::compositingActive()) {
+        setMask(m_maskArea);
+    } else {
+        //! this is used when compositing is disabled and provides
+        //! the correct way for the mask to be painted in order for
+        //! rounded corners to be shown correctly
+        if (!m_background) {
+            m_background = new Plasma::FrameSvg(this);
+            m_background->setImagePath(QStringLiteral("opaque/dialogs/background"));
+        }
+
+        m_background->setEnabledBorders(enabledBorders());
+        m_background->resizeFrame(area.size());
+        QRegion fixedMask = m_background->mask();
+        fixedMask.translate(area.x(), area.y());
+        setMask(fixedMask);
+    }
+
     //qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
 }
@@ -1026,7 +1018,6 @@ void DockView::mouseReleaseEvent(QMouseEvent *event)
 void DockView::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "Step -1 ...";
-
     if (!event || !this->containment()) {
         return;
     }
@@ -1079,7 +1070,6 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 //Try to find applets inside a systray
                 if (meta.pluginId() == "org.kde.plasma.systemtray") {
                     auto systrayId = applet->config().readEntry("SystrayContainmentId");
-
                     applet = 0;
                     inSystray = true;
                     Plasma::Containment *cont = containmentById(systrayId.toInt());
@@ -1122,7 +1112,6 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 if (this->mouseGrabberItem()) {
                     //workaround, this fixes for me most of the right click menu behavior
                     this->mouseGrabberItem()->ungrabMouse();
-
                     return;
                 }
 
@@ -1343,7 +1332,6 @@ Plasma::FrameSvg::EnabledBorders DockView::enabledBorders() const
 void DockView::updateEnabledBorders()
 {
     // qDebug() << "draw shadow!!!! :" << m_drawShadows;
-
     if (!this->screen()) {
         return;
     }
@@ -1384,7 +1372,6 @@ void DockView::updateEnabledBorders()
         if (m_alignment == Dock::Bottom && !m_forceDrawCenteredBorders) {
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
-
     }
 
     if (location() == Plasma::Types::TopEdge || location() == Plasma::Types::BottomEdge) {

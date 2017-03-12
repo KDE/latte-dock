@@ -62,7 +62,7 @@ DragDrop.DropArea {
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
-    property bool solidPanel: plasmoid.configuration.solidPanel
+    property bool solidPanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
     //property bool smallAutomaticIconJumps: plasmoid.configuration.smallAutomaticIconJumps
@@ -110,7 +110,7 @@ DragDrop.DropArea {
         var panelBase = root.statesLineSize + root.panelMargin;
         var margin = latteApplet ? thickMargin : 0;
         var maxPanelSize = (root.statesLineSize + iconSize + margin + 1) - panelBase;
-        var percentage = plasmoid.configuration.panelSize/100;
+        var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
@@ -184,7 +184,7 @@ DragDrop.DropArea {
                                     layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin) :
                                Screen.height //on unlocked state use the maximum*/
 
-    Plasmoid.backgroundHints: Latte.WindowSystem.compositingActive ? PlasmaCore.Types.NoBackground : PlasmaCore.Types.DefaultBackground
+    Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
     //// BEGIN properties in functions
     property int noApplets: {
@@ -1133,23 +1133,14 @@ DragDrop.DropArea {
 
     EditModeVisual{
         id:editModeVisual
-        z: root.drawShadowsExternal ? 1 : 0
+        z: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? 1 : 0
     }
 
     Item{
         anchors.fill:layoutsContainer
-        z: root.drawShadowsExternal ? 0 : 1
+        z: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? 0 : 1
 
-        Loader{
-            width: parent.width
-            height: parent.height
-            // FIX IT && TEST IT: it is crashing Plasma with two Now Docks one of which has only
-            // task manager (small)
-            //active: root.useThemePanel
-            active: Latte.WindowSystem.compositingActive
-            sourceComponent: PanelBox{}
-
-        }
+        PanelBox{}
     }
 
     Item {
