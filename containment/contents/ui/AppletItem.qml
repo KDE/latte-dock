@@ -179,7 +179,7 @@ Item {
         }
     }
 
-    function reconsiderAppletItem(){
+    function reconsiderAppletIconItem(){
         if (appletIconItem)
             return;
 
@@ -214,7 +214,7 @@ Item {
         if (!applet) {
             destroy();
         } else {
-            reconsiderAppletItem()
+            reconsiderAppletIconItem()
         }
     }
 
@@ -685,14 +685,15 @@ Item {
             BrightnessContrast{
                 id:hoveredImage
                 anchors.fill: wrapperContainer
-                enabled: opacity != 0 ? true : false
-                opacity: appletMouseArea.containsMouse ? 1 : 0
-
-                brightness: 0.25
                 source: wrapperContainer
 
+                enabled: opacity != 0 ? true : false
+                opacity: appletMouseArea.containsMouse ? 1 : 0
+                brightness: 0.25
+                contrast: 0.15
+
                 Behavior on opacity {
-                    NumberAnimation { duration: 300 }
+                    NumberAnimation { duration: root.durationTime*units.longDuration }
                 }
             }
 
@@ -700,6 +701,8 @@ Item {
                 id: clickedEffect
                 anchors.fill: wrapperContainer
                 source: wrapperContainer
+
+                visible: clickedAnimation.running
             }
 
             /*   onHeightChanged: {
@@ -892,10 +895,13 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: (!latteApplet)&&(canBeHovered)&&(!lockZoom)&&(!root.editMode)
-        hoverEnabled: !root.editMode && (!latteApplet) && canBeHovered ? true : false
+        enabled: (!latteApplet)&&(canBeHovered)&&(!root.editMode)//&&(!lockZoom)
+        hoverEnabled: !root.editMode && (!latteApplet) ? true : false
         propagateComposedEvents: true
-        visible: enabled
+
+        //! a way must be found in order for this be enabled
+        //! only to support springloading for plasma 5.10
+        //visible: enabled
 
         property bool pressed: false
 
@@ -905,6 +911,12 @@ Item {
         }
 
         onEntered: {
+            reconsiderAppletIconItem();
+
+            if (lockZoom || !canBeHovered) {
+                return;
+            }
+
             layoutsContainer.hoveredIndex = index;
 
             if (root.isHorizontal){
@@ -915,11 +927,6 @@ Item {
                 layoutsContainer.currentSpot = mouseY;
                 wrapper.calculateScales(mouseY);
             }
-
-            reconsiderAppletItem();
-
-            if (appletIconItem)
-                appletIconItem.active = true;
         }
 
         onExited:{
@@ -930,6 +937,11 @@ Item {
 
         onPositionChanged: {
             //  if(!pressed){
+            if (lockZoom || !canBeHovered) {
+                mouse.accepted = false;
+                return;
+            }
+
             if (root.isHorizontal){
                 var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
                 if (step >= container.animationStep){

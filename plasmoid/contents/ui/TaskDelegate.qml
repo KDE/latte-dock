@@ -920,7 +920,7 @@ MouseArea{
     }
 
     function slotPublishGeometries() {
-        if ((isWindow || isStartup || isGroupParent) && !icList.delayingRemoval) {
+        if ((isWindow || isStartup || isGroupParent) && icList && !icList.delayingRemoval) {
             tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(),
                                                       backend.globalRect(mainItemContainer), mainItemContainer);
         }
