@@ -805,7 +805,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
     //! and it forcefully becomes primary dock
     bool forceDockLoading = false;
 
-    if (!m_tasksWillBeLoaded && m_firstContainmentWithTasks == containment->id()) {
+    if (!m_tasksWillBeLoaded && m_firstContainmentWithTasks == static_cast<int>(containment->id())) {
         m_tasksWillBeLoaded = true; //this protects by loading more than one dock at startup
         forceDockLoading = true;
     }
