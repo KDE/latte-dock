@@ -966,6 +966,9 @@ void DockView::closeApplication()
 {
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
+    if (m_configView)
+        m_configView->close();
+
     if (dockCorona)
         dockCorona->closeApplication();
 }

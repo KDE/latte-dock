@@ -66,7 +66,6 @@ VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
     wm->removeDockStruts(view->winId());
     wm->removeDock(view->winId());
-    saveConfig();
 }
 
 inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
@@ -447,10 +446,8 @@ inline void VisibilityManagerPrivate::restoreConfig()
     qDebug() << config.entryMap();
     connect(view->containment(), &Plasma::Containment::userConfiguringChanged
             , this, [&](bool configuring) {
-        if (configuring)
-            return;
-
-        saveConfig();
+        if (!configuring)
+            saveConfig();
     });
 }
 
