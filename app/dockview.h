@@ -227,6 +227,8 @@ private:
     QTimer m_screenSyncTimer;
 
     Plasma::Theme m_theme;
+    //only for the mask on disabled compositing, not to actually paint
+    Plasma::FrameSvg *m_background{nullptr};
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;
