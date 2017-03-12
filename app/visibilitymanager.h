@@ -73,8 +73,8 @@ public:
     void setTimerHide(int msec);
 
 signals:
-    void mustBeShown();
-    void mustBeHide();
+    void mustBeShown(QPrivateSignal);
+    void mustBeHide(QPrivateSignal);
 
     void modeChanged();
     void raiseOnDesktopChanged();
@@ -87,6 +87,8 @@ signals:
 
 private:
     VisibilityManagerPrivate *const d;
+
+    friend class VisibilityManagerPrivate;
 };
 
 }

@@ -66,7 +66,7 @@ public:
     QTimer timerHide;
     QTimer timerCheckWindows;
     QRect dockGeometry;
-    bool isHidden{true};
+    bool isHidden{false};
     bool dragEnter{false};
     bool blockHiding{false};
     bool containsMouse{false};
