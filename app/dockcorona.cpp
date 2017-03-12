@@ -806,7 +806,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
     }
 
     qDebug() << "Adding dock for container...";
-    qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << containment->screen() << " - " << m_screenPool->connector(containment->screen());
+    qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << containment->screen();
 
     //! it is used to set the correct flag during the creation
     //! of the window... This of course is also used during
