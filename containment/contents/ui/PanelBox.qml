@@ -62,9 +62,13 @@ Item{
         }
     }
 
-    property int spacing: (root.panelAlignment === Latte.Dock.Center
-                           || plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                              root.panelEdgeSpacing/2 : root.panelEdgeSpacing/4
+    property int spacing: {
+        if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+            return root.panelEdgeSpacing/2;
+        } else {
+            return root.panelEdgeSpacing/4;
+        }
+    }
     property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
@@ -104,8 +108,8 @@ Item{
         height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
-        imagePath: root.drawShadowsExternal ? "" : "widgets/panel-background"
-        prefix: root.drawShadowsExternal ? "" : "shadow"
+        imagePath: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? "" : "widgets/panel-background"
+        prefix: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? "" : "shadow"
 
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
@@ -113,7 +117,7 @@ Item{
         enabledBorders: dock ? dock.enabledBorders : 0
 
         property int marginsWidth: {
-            if (root.drawShadowsExternal) {
+            if (root.drawShadowsExternal || !Latte.WindowSystem.compositingActive) {
                 return 0;
             } else {
                 if (root.panelAlignment === Latte.Dock.Left)
@@ -126,7 +130,7 @@ Item{
         }
 
         property int marginsHeight: {
-            if (root.drawShadowsExternal) {
+            if (root.drawShadowsExternal || !Latte.WindowSystem.compositingActive) {
                 return 0;
             } else {
                 if (root.panelAlignment === Latte.Dock.Top)
@@ -196,10 +200,10 @@ Item{
 
         PlasmaCore.FrameSvgItem{
             id: solidBackground
-            anchors.leftMargin: shadowsSvgItem.margins.left - leftIncreaser
-            anchors.rightMargin: shadowsSvgItem.margins.right - rightIncreaser
-            anchors.topMargin: shadowsSvgItem.margins.top - topIncreaser
-            anchors.bottomMargin: shadowsSvgItem.margins.bottom - bottomIncreaser
+            anchors.leftMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.left - leftIncreaser : 0
+            anchors.rightMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.right - rightIncreaser : 0
+            anchors.topMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.top - topIncreaser : 0
+            anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
             imagePath: root.solidPanel ? "opaque/dialogs/background" : "widgets/panel-background"
@@ -251,8 +255,6 @@ Item{
                             else if (plasmoid.location === PlasmaCore.Types.TopEdge)
                                 return solidBackground.margins.bottom;
                         }
-                    } else {
-                        return 0;
                     }
                 }
             }

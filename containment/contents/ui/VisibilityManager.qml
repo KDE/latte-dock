@@ -178,8 +178,21 @@ Item{
         var tempLength = root.isHorizontal ? width : height;
         var tempThickness = root.isHorizontal ? height : width;
 
-        var space = root.useThemePanel ? (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                                             root.panelEdgeSpacing + 2*root.panelShadow : root.panelEdgeSpacing + 2*root.panelShadow : 2;
+        var space = 0;
+
+        if (Latte.WindowSystem.compositingActive) {
+            if (root.useThemePanel){
+                space = root.panelEdgeSpacing + 2*root.panelShadow;
+            } else {
+                space = 2;
+            }
+        } else {
+            if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                space = root.panelEdgeSpacing/2;
+            } else {
+                space = root.panelEdgeSpacing/4;
+            }
+        }
 
         if (normalState) {
             //console.log("entered normal state...");
