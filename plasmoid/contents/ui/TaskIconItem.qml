@@ -355,7 +355,8 @@ Item{
         opacity: mainItemContainer.containsMouse ? 1 : 0
         anchors.fill: iconGraphic
 
-        brightness: 0.25
+        brightness: 0.30
+        contrast: 0.1
         source: iconGraphic
 
         Behavior on opacity {
