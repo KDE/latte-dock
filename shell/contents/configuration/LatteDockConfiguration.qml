@@ -167,6 +167,7 @@ PlasmaCore.FrameSvgItem {
         PlasmaComponents.TabBar {
             id: tabBar
             Layout.fillWidth: true
+            Layout.maximumWidth: maxWidth
 
             PlasmaComponents.TabButton {
                 text: i18n("Behavior")
@@ -193,7 +194,7 @@ PlasmaCore.FrameSvgItem {
             Layout.fillWidth: true
             Layout.fillHeight: false
             Layout.minimumWidth: maxWidth - 2*units.smallSpacing
-            Layout.minimumHeight:  height
+            Layout.minimumHeight: height
             Layout.maximumHeight: height
 
             width: maxWidth - units.smallSpacing
