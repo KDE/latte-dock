@@ -138,12 +138,15 @@ Item{
 
     function slotMustBeShown() {
         //  console.log("show...");
-        slidingAnimationAutoHiddenIn.init();
+        if (!slidingAnimationAutoHiddenIn.running){
+            slidingAnimationAutoHiddenIn.init();
+        }
     }
 
     function slotMustBeHide() {
         // console.log("hide....");
-        if(!dock.visibility.blockHiding && !dock.visibility.containsMouse && Latte.WindowSystem.compositingActive) {
+        if(!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
+                && !dock.visibility.containsMouse && Latte.WindowSystem.compositingActive) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
