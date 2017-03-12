@@ -114,12 +114,5 @@
     <entry name="showOnlyCurrentActivity" type="Bool">
       <default>true</default>
     </entry>
-    <entry name="raiseOnDesktopChange" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="raiseOnActivityChange" type="Bool">
-      <default>false</default>
-    </entry>
-
   </group>
 </kcfg>

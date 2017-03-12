@@ -66,6 +66,7 @@ VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
     wm->removeDockStruts(view->winId());
     wm->removeDock(view->winId());
+    saveConfig();
 }
 
 inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
@@ -229,14 +230,12 @@ void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
 inline void VisibilityManagerPrivate::setTimerShow(int msec)
 {
     timerShow.setInterval(msec);
-    saveConfig();
     emit q->timerShowChanged();
 }
 
 inline void VisibilityManagerPrivate::setTimerHide(int msec)
 {
     timerHide.setInterval(msec);
-    saveConfig();
     emit q->timerHideChanged();
 }
 
@@ -415,8 +414,8 @@ inline void VisibilityManagerPrivate::saveConfig()
     config.writeEntry("visibility", static_cast<int>(mode));
     config.writeEntry("timerShow", timerShow.interval());
     config.writeEntry("timerHide", timerHide.interval());
-    config.writeEntry("raiseOnDesktopChange", false);
-    config.writeEntry("raiseOnActivityChange", false);
+    config.writeEntry("raiseOnDesktopChange", raiseOnDesktopChange);
+    config.writeEntry("raiseOnActivityChange", raiseOnActivityChange);
     view->containment()->configNeedsSaving();
 }
 
@@ -504,6 +503,8 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
 VisibilityManager::~VisibilityManager()
 {
+    qDebug() << "VisibilityManager deleting...";
+    delete d;
 }
 
 Dock::Visibility VisibilityManager::mode() const

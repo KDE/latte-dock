@@ -132,9 +132,8 @@ DockView::~DockView()
         m_configView->deleteLater();
     }*/
 
-    if (m_visibility) {
-        m_visibility->deleteLater();
-    }
+    if (m_visibility)
+        delete m_visibility;
 }
 
 void DockView::init()
