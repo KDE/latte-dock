@@ -37,8 +37,7 @@ public:
         , m_isMaxHorz(false)
         , m_isFullscreen(false)
         , m_isPlasmaDesktop(false)
-        , m_wid(0)
-    {
+        , m_wid(0) {
     }
 
     constexpr WindowInfoWrap(const WindowInfoWrap &other)
@@ -49,8 +48,7 @@ public:
         , m_isMaxHorz(other.m_isMaxHorz)
         , m_isFullscreen(other.m_isFullscreen)
         , m_isPlasmaDesktop(other.m_isPlasmaDesktop)
-        , m_wid(other.m_wid)
-    {
+        , m_wid(other.m_wid) {
     }
 
     inline WindowInfoWrap &operator=(const WindowInfoWrap &rhs);

@@ -29,8 +29,7 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-class ScreenPool : public QObject, public QAbstractNativeEventFilter
-{
+class ScreenPool : public QObject, public QAbstractNativeEventFilter {
     Q_OBJECT
 
 public:
@@ -56,7 +55,7 @@ signals:
     void primaryPoolChanged();
 
 protected:
-    bool nativeEventFilter(const QByteArray & eventType, void * message, long * result) Q_DECL_OVERRIDE;
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) Q_DECL_OVERRIDE;
 
 private:
     void save();

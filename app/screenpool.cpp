@@ -25,10 +25,10 @@
 #include <QScreen>
 
 #if HAVE_X11
-#include <QtX11Extras/QX11Info>
-#include <xcb/xcb.h>
-#include <xcb/randr.h>
-#include <xcb/xcb_event.h>
+    #include <QtX11Extras/QX11Info>
+    #include <xcb/xcb.h>
+    #include <xcb/randr.h>
+    #include <xcb/xcb_event.h>
 #endif
 
 ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
@@ -38,7 +38,7 @@ ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
     qApp->installNativeEventFilter(this);
 
     m_configSaveTimer.setSingleShot(true);
-    connect(&m_configSaveTimer, &QTimer::timeout, this, [this](){
+    connect(&m_configSaveTimer, &QTimer::timeout, this, [this]() {
         m_configGroup.sync();
     });
 }
@@ -50,8 +50,10 @@ void ScreenPool::load()
     m_idForConnector.clear();
 
     QScreen *primary = qGuiApp->primaryScreen();
+
     if (primary) {
         m_primaryConnector = primary->name();
+
         if (!m_primaryConnector.isEmpty()) {
             //m_connectorForId[0] = m_primaryConnector;
             //m_idForConnector[m_primaryConnector] = 0;
@@ -61,7 +63,8 @@ void ScreenPool::load()
     //restore the known ids to connector mappings
     foreach (const QString &key, m_configGroup.keyList()) {
         QString connector = m_configGroup.readEntry(key, QString());
-        qDebug() << "connector :" << connector << " - " <<key;
+        qDebug() << "connector :" << connector << " - " << key;
+
         if (!key.isEmpty() && !connector.isEmpty() &&
             !m_connectorForId.contains(key.toInt()) &&
             !m_idForConnector.contains(connector)) {
@@ -78,7 +81,7 @@ void ScreenPool::load()
     // containment->screen() will return an incorrect -1
     // at startup, if it' asked before corona::addOutput()
     // is performed, driving to the creation of a new containment
-    for (QScreen* screen : qGuiApp->screens()) {
+    for (QScreen *screen : qGuiApp->screens()) {
         if (!m_idForConnector.contains(screen->name())) {
             insertScreenMapping(firstAvailableId(), screen->name());
         }
@@ -101,28 +104,31 @@ void ScreenPool::setPrimaryConnector(const QString &primary)
     //there are case that the QScreen instead of the correct screen name
     //returns "0:0", this check prevents from breaking the screens database
     //from garbage ids
-    if ((m_primaryConnector == primary)|| primary.startsWith(":")) {
+    if ((m_primaryConnector == primary) || primary.startsWith(":")) {
         return;
     }
+
     Q_ASSERT(m_idForConnector.contains(primary));
 
-   /* int oldIdForPrimary = m_idForConnector.value(primary);
+    /* int oldIdForPrimary = m_idForConnector.value(primary);
 
-    m_idForConnector[primary] = 0;
-    m_connectorForId[0] = primary;
-    m_idForConnector[m_primaryConnector] = oldIdForPrimary;
-    m_connectorForId[oldIdForPrimary] = m_primaryConnector;
-    m_primaryConnector = primary;
-*/
+     m_idForConnector[primary] = 0;
+     m_connectorForId[0] = primary;
+     m_idForConnector[m_primaryConnector] = oldIdForPrimary;
+     m_connectorForId[oldIdForPrimary] = m_primaryConnector;
+     m_primaryConnector = primary;
+    */
     save();
 }
 
 void ScreenPool::save()
 {
     QMap<int, QString>::const_iterator i;
+
     for (i = m_connectorForId.constBegin(); i != m_connectorForId.constEnd(); ++i) {
         m_configGroup.writeEntry(QString::number(i.key()), i.value());
     }
+
     //write to disck every 30 seconds at most
     m_configSaveTimer.start(30000);
 }
@@ -173,12 +179,14 @@ int ScreenPool::firstAvailableId() const
     //be used for special cases.
     //e.g primaryScreen, id=0
     int i = 10;
+
     //find the first integer not stored in m_connectorForId
     //m_connectorForId is the only map, so the ids are sorted
     foreach (int existingId, m_connectorForId.keys()) {
         if (i != existingId) {
             return i;
         }
+
         ++i;
     }
 
@@ -190,10 +198,11 @@ QList <int> ScreenPool::knownIds() const
     return m_connectorForId.keys();
 }
 
-bool ScreenPool::nativeEventFilter(const QByteArray& eventType, void* message, long int* result)
+bool ScreenPool::nativeEventFilter(const QByteArray &eventType, void *message, long int *result)
 {
     Q_UNUSED(result);
 #if HAVE_X11
+
     // a particular edge case: when we switch the only enabled screen
     // we don't have any signal about it, the primary screen changes but we have the same old QScreen* getting recycled
     // see https://bugs.kde.org/show_bug.cgi?id=373880
@@ -206,7 +215,7 @@ bool ScreenPool::nativeEventFilter(const QByteArray& eventType, void* message, l
 
     const auto responseType = XCB_EVENT_RESPONSE_TYPE(ev);
 
-    const xcb_query_extension_reply_t* reply = xcb_get_extension_data(QX11Info::connection(), &xcb_randr_id);
+    const xcb_query_extension_reply_t *reply = xcb_get_extension_data(QX11Info::connection(), &xcb_randr_id);
 
     if (responseType == reply->first_event + XCB_RANDR_SCREEN_CHANGE_NOTIFY) {
         if (qGuiApp->primaryScreen()->name() != primaryConnector()) {
@@ -214,12 +223,14 @@ bool ScreenPool::nativeEventFilter(const QByteArray& eventType, void* message, l
             if (id(qGuiApp->primaryScreen()->name()) < 0) {
                 insertScreenMapping(firstAvailableId(), qGuiApp->primaryScreen()->name());
             }
+
             //switch the primary screen in the pool
             setPrimaryConnector(qGuiApp->primaryScreen()->name());
 
             emit primaryPoolChanged();
         }
     }
+
 #endif
     return false;
 }

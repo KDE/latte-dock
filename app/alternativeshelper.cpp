@@ -68,12 +68,14 @@ void AlternativesHelper::loadAlternative(const QString &plugin)
     }
 
     Plasma::Containment *cont = m_applet->containment();
+
     if (!cont) {
         return;
     }
 
     QQuickItem *appletItem = m_applet->property("_plasma_graphicObject").value<QQuickItem *>();
     QQuickItem *contItem = cont->property("_plasma_graphicObject").value<QQuickItem *>();
+
     if (!appletItem || !contItem) {
         return;
     }
@@ -82,11 +84,11 @@ void AlternativesHelper::loadAlternative(const QString &plugin)
     const QKeySequence &shortcut = m_applet->globalShortcut();
     m_applet->setGlobalShortcut(QKeySequence()); // need to unmap the old one first
 
-    const QPoint newPos = appletItem->mapToItem(contItem, QPointF(0,0)).toPoint();
+    const QPoint newPos = appletItem->mapToItem(contItem, QPointF(0, 0)).toPoint();
 
     m_applet->destroy();
 
-    connect(m_applet, &QObject::destroyed, [=]() {
+    connect(m_applet, &QObject::destroyed, [ = ]() {
         Plasma::Applet *newApplet = Q_NULLPTR;
         QMetaObject::invokeMethod(contItem, "createApplet", Q_RETURN_ARG(Plasma::Applet *, newApplet), Q_ARG(QString, plugin), Q_ARG(QVariantList, QVariantList()), Q_ARG(QPoint, newPos));
 
