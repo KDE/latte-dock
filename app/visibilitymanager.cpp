@@ -84,16 +84,16 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         wm->removeDockStruts(view->winId());
     } else {
         connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
-                                 , this, [&]{
+        , this, [&] {
             if (raiseOnDesktopChange)
                 raiseDockTemporarily();
         });
         connections[4] = connect(wm, &WindowSystem::currentActivityChanged
-                                 , this, [&]() {
-                if (raiseOnActivityChange)
-                    raiseDockTemporarily();
-                else
-                    updateHiddenState();
+        , this, [&]() {
+            if (raiseOnActivityChange)
+                raiseDockTemporarily();
+            else
+                updateHiddenState();
         });
     }
 
@@ -139,7 +139,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
                                      , this, &VisibilityManagerPrivate::dodgeMaximized);
             connections[1] = connect(wm, &WindowSystem::windowChanged
-                                 , this, &VisibilityManagerPrivate::dodgeMaximized);
+                                     , this, &VisibilityManagerPrivate::dodgeMaximized);
             dodgeMaximized(wm->activeWindow());
         }
         break;
@@ -355,7 +355,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 
     if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized())
         raiseDock(!(view->formFactor() == Plasma::Types::Vertical
-                   ? winfo.isMaxHoriz() : winfo.isMaxVert()));
+                    ? winfo.isMaxHoriz() : winfo.isMaxVert()));
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WId wid)
@@ -434,9 +434,9 @@ inline void VisibilityManagerPrivate::restoreConfig()
     emit q->timerHideChanged();
 
     if (mode == Dock::AlwaysVisible) {
-       setMode(mode);
+        setMode(mode);
     } else {
-        QTimer::singleShot(5000, this, [&, mode]() {
+        QTimer::singleShot(5000, this, [ &, mode]() {
             setMode(mode);
         });
         setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
@@ -445,7 +445,7 @@ inline void VisibilityManagerPrivate::restoreConfig()
 
     qDebug() << config.entryMap();
     connect(view->containment(), &Plasma::Containment::userConfiguringChanged
-            , this, [&](bool configuring) {
+    , this, [&](bool configuring) {
         if (!configuring)
             saveConfig();
     });
@@ -477,6 +477,7 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
 
         case QEvent::DragEnter:
             dragEnter = true;
+
             if (isHidden)
                 emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
 

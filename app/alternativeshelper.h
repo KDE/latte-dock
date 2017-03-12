@@ -24,8 +24,7 @@
 
 #include <QQuickItem>
 
-class AlternativesHelper : public QObject
-{
+class AlternativesHelper : public QObject {
     Q_OBJECT
     Q_PROPERTY(QStringList appletProvides READ appletProvides CONSTANT)
     Q_PROPERTY(QString currentPlugin READ currentPlugin CONSTANT)

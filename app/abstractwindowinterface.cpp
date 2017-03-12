@@ -44,10 +44,10 @@ void AbstractWindowInterface::addDock(WId wid)
 
 void AbstractWindowInterface::removeDock(WId wid)
 {
-   auto it = std::find(m_docks.begin(), m_docks.end(), wid);
+    auto it = std::find(m_docks.begin(), m_docks.end(), wid);
 
-   if (it != m_docks.end())
-       m_docks.erase(it);
+    if (it != m_docks.end())
+        m_docks.erase(it);
 }
 
 AbstractWindowInterface &AbstractWindowInterface::self()
@@ -57,7 +57,7 @@ AbstractWindowInterface &AbstractWindowInterface::self()
 
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: WaylandWindowInterface
-    } else /* if(KWindowSystem::isPlatformX11) */ {
+    } else { /* if(KWindowSystem::isPlatformX11) */
         m_wm = std::make_unique<XWindowInterface>();
     }
 
