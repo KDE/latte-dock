@@ -48,13 +48,13 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     connect(&timerShow, &QTimer::timeout, this, [this]() {
         if (isHidden) {
             //   qDebug() << "must be shown";
-            emit this->q->mustBeShown();
+            emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
         }
     });
     connect(&timerHide, &QTimer::timeout, this, [this]() {
         if (!blockHiding && !isHidden && !dragEnter) {
             //   qDebug() << "must be hide";
-            emit this->q->mustBeHide();
+            emit this->q->mustBeHide(VisibilityManager::QPrivateSignal{});
         }
     });
     wm->setDockExtraFlags(*view);
@@ -218,7 +218,7 @@ void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
         if (isHidden) {
             isHidden = false;
             emit q->isHiddenChanged();
-            emit q->mustBeShown();
+            emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
         }
     } else {
         updateHiddenState();
@@ -255,7 +255,7 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
 
         if (hideNow) {
             hideNow = false;
-            emit q->mustBeHide();
+            emit q->mustBeHide(VisibilityManager::QPrivateSignal{});
         } else if (!timerHide.isActive())
             timerHide.start();
     }
@@ -271,7 +271,7 @@ void VisibilityManagerPrivate::raiseDockTemporarily()
     timerShow.stop();
 
     if (isHidden)
-        emit q->mustBeShown();
+        emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
 
     QTimer::singleShot(qBound(1800, 2 * timerHide.interval(), 3000), this, [&]() {
         raiseTemporarily = false;
@@ -435,9 +435,9 @@ inline void VisibilityManagerPrivate::restoreConfig()
     emit q->timerHideChanged();
 
     if (mode == Dock::AlwaysVisible) {
-        setMode(mode);
+       setMode(mode);
     } else {
-        QTimer::singleShot(3000, this, [&, mode]() {
+        QTimer::singleShot(5000, this, [&, mode]() {
             setMode(mode);
         });
         setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
@@ -480,7 +480,9 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
 
         case QEvent::DragEnter:
             dragEnter = true;
-            emit q->mustBeShown();
+            if (isHidden)
+                emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
+
             break;
 
         case QEvent::DragLeave:
