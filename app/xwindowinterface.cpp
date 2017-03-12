@@ -206,7 +206,8 @@ WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
         winfoWrap.setWid(wid);
         winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
         winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
-        winfoWrap.setIsMaximized(winfo.hasState(NET::Max));
+        winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
+        winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));
         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
         winfoWrap.setGeometry(winfo.frameGeometry());
     } else if (m_desktopId == wid) {

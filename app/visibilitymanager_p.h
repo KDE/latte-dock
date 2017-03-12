@@ -29,6 +29,9 @@ public:
     ~VisibilityManagerPrivate();
 
     void setMode(Dock::Visibility mode);
+    void setRaiseOnDesktop(bool enable);
+    void setRaiseOnActivity(bool enable);
+
     void setIsHidden(bool isHidden);
     void setBlockHiding(bool blockHiding);
     void setTimerShow(int msec);
@@ -68,6 +71,8 @@ public:
     bool blockHiding{false};
     bool containsMouse{false};
     bool raiseTemporarily{false};
+    bool raiseOnDesktopChange{false};
+    bool raiseOnActivityChange{false};
     bool hideNow{false};
 };
 

@@ -285,25 +285,6 @@ void DockConfigView::setAutostart(bool state)
     }
 }
 
-bool DockConfigView::raiseDocksTemporary() const
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona) {
-        return dockCorona->raiseDocksTemporary();
-    }
-
-    return false;
-}
-
-void DockConfigView::setRaiseDocksTemporary(bool state)
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona) {
-        dockCorona->setRaiseDocksTemporary(state);
-    }
-}
 
 Dock::SessionType DockConfigView::currentSession() const
 {

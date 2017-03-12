@@ -80,11 +80,21 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Raise docks on desktop or actitivy change")
-                checked: dockConfig.raiseDocksTemporary
+                text: i18n("Raise dock on desktop change")
+                checked: dock.visibility.raiseOnDesktop
 
                 onClicked: {
-                    dockConfig.raiseDocksTemporary = checked;
+                    dock.visibility.raiseOnDesktop = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Raise dock on activity change")
+                checked: dock.visibility.raiseOnActivity
+
+                onClicked: {
+                    dock.visibility.raiseOnActivity = checked
                 }
             }
         }

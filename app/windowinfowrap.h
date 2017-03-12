@@ -33,7 +33,8 @@ public:
         : m_isValid(false)
         , m_isActive(false)
         , m_isMinimized(false)
-        , m_isMaximized(false)
+        , m_isMaxVert(false)
+        , m_isMaxHorz(false)
         , m_isFullscreen(false)
         , m_isPlasmaDesktop(false)
         , m_wid(0)
@@ -44,7 +45,8 @@ public:
         : m_isValid(other.m_isValid)
         , m_isActive(other.m_isActive)
         , m_isMinimized(other.m_isMinimized)
-        , m_isMaximized(other.m_isMaximized)
+        , m_isMaxVert(other.m_isMaxVert)
+        , m_isMaxHorz(other.m_isMaxHorz)
         , m_isFullscreen(other.m_isFullscreen)
         , m_isPlasmaDesktop(other.m_isPlasmaDesktop)
         , m_wid(other.m_wid)
@@ -66,7 +68,12 @@ public:
     inline void setIsMinimized(bool isMinimized);
 
     constexpr bool isMaximized() const;
-    inline void setIsMaximized(bool isMaximized);
+
+    constexpr bool isMaxVert() const;
+    inline void setIsMaxVert(bool isMaxVert);
+
+    constexpr bool isMaxHoriz() const;
+    inline void setIsMaxHoriz(bool isMaxHoriz);
 
     constexpr bool isFullscreen() const;
     inline void setIsFullscreen(bool isFullscreen);
@@ -84,7 +91,8 @@ private:
     bool m_isValid : 1;
     bool m_isActive : 1;
     bool m_isMinimized : 1;
-    bool m_isMaximized : 1;
+    bool m_isMaxVert : 1;
+    bool m_isMaxHorz : 1;
     bool m_isFullscreen : 1;
     bool m_isPlasmaDesktop : 1;
     WId m_wid;
@@ -98,7 +106,8 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     m_isValid = rhs.m_isValid;
     m_isActive = rhs.m_isActive;
     m_isMinimized = rhs.m_isMinimized;
-    m_isMaximized = rhs.m_isMaximized;
+    m_isMaxVert = rhs.m_isMaxVert;
+    m_isMaxHorz = rhs.m_isMaxHorz;
     m_isFullscreen = rhs.m_isFullscreen;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_wid = rhs.m_wid;
@@ -153,12 +162,27 @@ inline void WindowInfoWrap::setIsMinimized(bool isMinimized)
 
 constexpr bool WindowInfoWrap::isMaximized() const
 {
-    return m_isMaximized;
+    return m_isMaxVert || m_isMaxHorz;
 }
 
-inline void WindowInfoWrap::setIsMaximized(bool isMaximized)
+constexpr bool WindowInfoWrap::isMaxVert() const
 {
-    m_isMaximized = isMaximized;
+    return m_isMaxVert;
+}
+
+inline void WindowInfoWrap::setIsMaxVert(bool isMaxVert)
+{
+    m_isMaxVert = isMaxVert;
+}
+
+constexpr bool WindowInfoWrap::isMaxHoriz() const
+{
+    return m_isMaxHorz;
+}
+
+inline void WindowInfoWrap::setIsMaxHoriz(bool isMaxHoriz)
+{
+    m_isMaxHorz = isMaxHoriz;
 }
 
 constexpr bool WindowInfoWrap::isFullscreen() const
