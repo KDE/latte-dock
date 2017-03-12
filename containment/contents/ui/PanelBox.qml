@@ -63,7 +63,9 @@ Item{
     }
 
     property int spacing: {
-        if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+        if (!Latte.WindowSystem.compositingActive) {
+            return 0;
+        } else if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
             return root.panelEdgeSpacing/2;
         } else {
             return root.panelEdgeSpacing/4;
@@ -79,6 +81,12 @@ Item{
         target: root
         property: "realPanelLength"
         value: root.isVertical ? barLine.height : barLine.width
+    }
+
+    Binding {
+        target: root
+        property: "totalPanelEdgeSpacing"
+        value: spacing
     }
 
     /// plasmoid's default panel
@@ -195,6 +203,13 @@ Item{
             property: "realPanelSize"
             when: shadowsSvgItem
             value: shadowsSvgItem.panelSize
+        }
+
+        Binding {
+            target: root
+            property: "panelMarginLength"
+            when: shadowsSvgItem
+            value: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
         }
 
 

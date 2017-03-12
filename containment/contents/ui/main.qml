@@ -95,6 +95,7 @@ DragDrop.DropArea {
                                               : height * (plasmoid.configuration.maxLength/100)
 
     property int panelEdgeSpacing: iconSize / 3
+    property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
     property int realSize: iconSize + iconMargin
@@ -103,6 +104,7 @@ DragDrop.DropArea {
     property int realPanelThickness: 0
     //this is set by the PanelBox
     property int panelMargin: 0
+    property int panelMarginLength: 0
     property int panelShadow: 0 //shadowsSize
     property int editShadow: Math.ceil(iconSize / 5)
     property int themePanelSize: {
@@ -501,7 +503,7 @@ DragDrop.DropArea {
         }
 
         dndSpacer.opacity = 0;
-      //  dndSpacer.parent = root;
+        //  dndSpacer.parent = root;
     }
 
     onLatteAppletChanged: {
@@ -1124,21 +1126,26 @@ DragDrop.DropArea {
         sourceComponent: DebugWindow{}
     }
 
-    /*Loader{
+    //! Load a sepia background in order to avoid black background
+    Loader{
         anchors.fill: parent
-        active: root.editMode
+        active: !Latte.WindowSystem.compositingActive && root.editMode
+        sourceComponent: Image{
+            anchors.fill: parent
+            fillMode: Image.Tile
+            source: "../icons/sepiaprint.jpg"
+        }
+    }
 
-        sourceComponent:
-    }*/
 
     EditModeVisual{
         id:editModeVisual
-        z: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? 1 : 0
+        z: root.drawShadowsExternal ? 1 : 0
     }
 
     Item{
         anchors.fill:layoutsContainer
-        z: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? 0 : 1
+        z: root.drawShadowsExternal ? 0 : 1
 
         PanelBox{}
     }
@@ -1207,7 +1214,7 @@ DragDrop.DropArea {
 
         x: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-                    && !root.editMode && Latte.WindowSystem.compositingActive && !root.drawShadowsExternal ){
+                    && !root.editMode && !root.drawShadowsExternal ){
                 return ((dock.width/2) - (root.maxLength/2))
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
@@ -1224,7 +1231,7 @@ DragDrop.DropArea {
 
         y: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-                    && !root.editMode && Latte.WindowSystem.compositingActive && !root.drawShadowsExternal ) {
+                    && !root.editMode && !root.drawShadowsExternal ) {
                 return ((dock.height/2) - (root.maxLength/2));
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
