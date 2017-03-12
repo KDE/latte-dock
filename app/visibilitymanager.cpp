@@ -241,13 +241,16 @@ inline void VisibilityManagerPrivate::setTimerHide(int msec)
 
 inline void VisibilityManagerPrivate::raiseDock(bool raise)
 {
+    if (blockHiding)
+        return;
+
     if (raise) {
         timerHide.stop();
 
         if (!timerShow.isActive()) {
             timerShow.start();
         }
-    } else if (!blockHiding && !dragEnter) {
+    } else if (!dragEnter) {
         timerShow.stop();
 
         if (hideNow) {
