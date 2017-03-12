@@ -271,7 +271,7 @@ void VisibilityManagerPrivate::raiseDockTemporarily()
     if (isHidden)
         emit q->mustBeShown();
 
-    QTimer::singleShot(1800, this, [&]() {
+    QTimer::singleShot(qBound(1800, 2 * timerHide.interval(), 3000), this, [&]() {
         raiseTemporarily = false;
         hideNow = true;
         updateHiddenState();
