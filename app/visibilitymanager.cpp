@@ -90,8 +90,10 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         });
         connections[4] = connect(wm, &WindowSystem::currentActivityChanged
                                  , this, [&]() {
-            if (raiseOnActivityChange)
-                raiseDockTemporarily();
+                if (raiseOnActivityChange)
+                    raiseDockTemporarily();
+                else
+                    updateHiddenState();
         });
     }
 
