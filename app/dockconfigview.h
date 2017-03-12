@@ -44,7 +44,6 @@ class DockView;
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
-    Q_PROPERTY(bool raiseDocksTemporary READ raiseDocksTemporary WRITE setRaiseDocksTemporary NOTIFY raiseDocksTemporaryChanged)
     Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
 
 public:
@@ -56,9 +55,6 @@ public:
 
     bool autostart() const;
     void setAutostart(bool state);
-
-    bool raiseDocksTemporary() const;
-    void setRaiseDocksTemporary(bool state);
 
     Latte::Dock::SessionType currentSession() const;
     void setCurrentSession(Latte::Dock::SessionType session);

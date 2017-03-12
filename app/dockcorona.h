@@ -70,9 +70,6 @@ public:
     bool autostart() const;
     void setAutostart(bool state);
 
-    bool raiseDocksTemporary() const;
-    void setRaiseDocksTemporary(bool flag);
-
     Dock::SessionType currentSession();
     void setCurrentSession(Dock::SessionType session);
     void switchToSession(Dock::SessionType session);

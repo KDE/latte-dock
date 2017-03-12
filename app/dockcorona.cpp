@@ -112,8 +112,6 @@ void DockCorona::load()
         disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 
         m_activitiesStarting = false;
-        loadConfig();
-
         m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
         qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
 
@@ -156,19 +154,6 @@ void DockCorona::cleanConfig()
         config()->sync();
         qDebug() << "configuration file cleaned...";
     }
-}
-
-void DockCorona::loadConfig()
-{
-    auto general = config()->group("General");
-    setRaiseDocksTemporary(general.readEntry("raiseDocksTemporary", false));
-}
-
-void DockCorona::saveConfig()
-{
-    auto general = config()->group("General");
-    general.writeEntry("raiseDocksTemporary", m_raiseDocksTemporary);
-    general.sync();
 }
 
 bool DockCorona::containmentExists(uint id) const
@@ -628,22 +613,6 @@ bool DockCorona::autostart() const
     return autostartFile.exists();
 }
 
-bool DockCorona::raiseDocksTemporary() const
-{
-    return m_raiseDocksTemporary;
-}
-
-void DockCorona::setRaiseDocksTemporary(bool flag)
-{
-    if (m_raiseDocksTemporary == flag) {
-        return;
-    }
-
-    m_raiseDocksTemporary = flag;
-    saveConfig();
-
-    emit raiseDocksTemporaryChanged();
-}
 
 Dock::SessionType DockCorona::currentSession()
 {
@@ -658,7 +627,6 @@ void DockCorona::setCurrentSession(Dock::SessionType session)
 
     m_session = session;
 }
-
 void DockCorona::switchToSession(Dock::SessionType session)
 {
     if (currentSession() == session) {
@@ -675,7 +643,6 @@ void DockCorona::switchToSession(Dock::SessionType session)
         syncDockViews();
     }
 }
-
 int DockCorona::noDocksForSession(Dock::SessionType session)
 {
     int count{0};
