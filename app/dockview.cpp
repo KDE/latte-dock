@@ -24,7 +24,6 @@
 #include "visibilitymanager.h"
 #include "panelshadows_p.h"
 #include "../liblattedock/extras.h"
-#include "../liblattedock/quickwindowsystem.h"
 
 #include <QAction>
 #include <QQmlContext>
