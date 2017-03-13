@@ -31,7 +31,7 @@ namespace Latte {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
-    : QObject(q), q(q), view(view), wm(&WindowSystem::self())
+    : QObject(nullptr), q(q), view(view), wm(&WindowSystem::self())
 {
     DockView *dockView = qobject_cast<DockView *>(view);
 
@@ -64,6 +64,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
+    qDebug() << "VisibilityManagerPrivate deleting...";
     wm->removeDockStruts(view->winId());
     wm->removeDock(view->winId());
 }
@@ -494,7 +495,6 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
             break;
     }
 
-    return QObject::event(ev);
 }
 //! END: VisibilityManagerPrivate implementation
 
