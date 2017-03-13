@@ -537,6 +537,20 @@ DragDrop.DropArea {
         }
     }
 
+    onIsVerticalChanged: {
+        if (isVertical) {
+            if (plasmoid.configuration.panelPosition === Latte.Dock.Left)
+                plasmoid.configuration.panelPosition = Latte.Dock.Top;
+            else if (plasmoid.configuration.panelPosition === Latte.Dock.Right)
+                plasmoid.configuration.panelPosition = Latte.Dock.Bottom;
+        } else {
+            if (plasmoid.configuration.panelPosition === Latte.Dock.Top)
+                plasmoid.configuration.panelPosition = Latte.Dock.Left;
+            else if (plasmoid.configuration.panelPosition === Latte.Dock.Bottom)
+                plasmoid.configuration.panelPosition = Latte.Dock.Right;
+        }
+    }
+
     onProportionIconSizeChanged: {
         if (proportionIconSize!==-1)
             updateAutomaticIconSize();
