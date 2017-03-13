@@ -316,17 +316,17 @@ QRegion DockCorona::availableScreenRegion(int id) const
 
 QRect DockCorona::availableScreenRect(int id) const
 {
-    if (!m_screenPool->knownIds().contains(id))
-        return {};
-
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
-    QString scrName = m_screenPool->connector(id);
 
-    foreach (auto scr, screens) {
-        if (scr->name() == scrName) {
-            screen = scr;
-            break;
+    if (m_screenPool->knownIds().contains(id)) {
+        QString scrName = m_screenPool->connector(id);
+
+        foreach (auto scr, screens) {
+            if (scr->name() == scrName) {
+                screen = scr;
+                break;
+            }
         }
     }
 
