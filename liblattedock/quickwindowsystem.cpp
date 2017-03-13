@@ -19,16 +19,20 @@
 */
 
 #include "quickwindowsystem.h"
-#include <plasma/version.h>
+#include "../app/config-latte.h"
 
 #include <QDebug>
 
-#include <KWindowSystem>
+#include <plasma/version.h>
+
+#if HAVE_X11
+    #include <KWindowSystem>
+#endif
 
 namespace Latte {
 
-QuickWindowSystem::QuickWindowSystem(QObject *parent) :
-    QObject(parent)
+QuickWindowSystem::QuickWindowSystem(QObject *parent)
+    : QObject(parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: Wayland compositing active
