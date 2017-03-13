@@ -1129,7 +1129,7 @@ DragDrop.DropArea {
     //! Load a sepia background in order to avoid black background
     Loader{
         anchors.fill: parent
-        active: !Latte.WindowSystem.compositingActive && root.editMode
+        active: !Latte.WindowSystem.compositingActive
         sourceComponent: Image{
             anchors.fill: parent
             fillMode: Image.Tile
@@ -1221,8 +1221,16 @@ DragDrop.DropArea {
                     return;
                 }
 
-                if (dock.visibility.isHidden && Latte.WindowSystem.compositingActive && root.isVertical) {
-                    return visibilityManager.slidingOutToPos;
+                if (dock.visibility.isHidden && root.isVertical) {
+                    if (Latte.WindowSystem.compositingActive) {
+                        return slidingOutToPos;
+                    } else {
+                        if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
+                            return slidingOutToPos + 1;
+                        } else {
+                            return slidingOutToPos - 1;
+                        }
+                    }
                 } else {
                     return 0;
                 }
@@ -1238,8 +1246,16 @@ DragDrop.DropArea {
                     return;
                 }
 
-                if (dock.visibility.isHidden && Latte.WindowSystem.compositingActive && root.isHorizontal) {
-                    return visibilityManager.slidingOutToPos;
+                if (dock.visibility.isHidden && root.isHorizontal) {
+                    if (Latte.WindowSystem.compositingActive) {
+                        return slidingOutToPos;
+                    } else {
+                        if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
+                            return slidingOutToPos + 1;
+                        } else {
+                            return slidingOutToPos - 1;
+                        }
+                    }
                 } else {
                     return 0;
                 }
