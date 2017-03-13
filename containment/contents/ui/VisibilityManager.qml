@@ -40,17 +40,17 @@ Item{
     property bool previousNormalState : false // this is only for debugging purposes
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= root.iconSize)
 
-    property int animationSpeed: root.durationTime * 1.2 * units.longDuration
+    property int animationSpeed: Latte.WindowSystem.compositingActive ? root.durationTime * 1.2 * units.longDuration : 0
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
-    property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ? -thicknessNormal : thicknessNormal
-
+    property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ?
+                    -thicknessNormal : thicknessNormal;
 
     property int statesLineSizeOriginal: root.latteApplet ? Math.ceil( root.maxIconSize/13 ) : 0
 
-    property int thicknessAutoHidden: 2
+    property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ? 2 : 1
     property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargin) //needed in some animations
     property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.thickMargin + 1, root.realPanelSize + root.panelShadow)
     property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.thickMargin) * root.zoomFactor) + 2
@@ -146,7 +146,7 @@ Item{
     function slotMustBeHide() {
         // console.log("hide....");
         if(!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
-                && !dock.visibility.containsMouse && Latte.WindowSystem.compositingActive) {
+                && !dock.visibility.containsMouse) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
@@ -214,7 +214,7 @@ Item{
             }
 
             if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                tempThickness = thicknessAutoHidden;
             }
 
             //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
@@ -268,7 +268,7 @@ Item{
                 tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
 
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                    tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                    tempThickness = thicknessAutoHidden;
                 } else if (root.animationsNeedThickness > 0) {
                     tempThickness = thicknessMidOriginal;
                 }
@@ -399,7 +399,17 @@ Item{
         PropertyAnimation {
             target: layoutsContainer
             property: root.isVertical ? "x" : "y"
-            to: slidingOutToPos
+            to: {
+                if (Latte.WindowSystem.compositingActive) {
+                    return slidingOutToPos;
+                } else {
+                    if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
+                        return slidingOutToPos + 1;
+                    } else {
+                        return slidingOutToPos - 1;
+                    }
+                }
+            }
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
         }

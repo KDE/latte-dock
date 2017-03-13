@@ -77,6 +77,10 @@ Image{
     }
 
     onEditAnimationEndedChanged: {
+        if (!dock) {
+            return;
+        }
+
         if (editAnimationEnded && !root.drawShadowsExternal) {
             dock.shadow = root.editShadow;
         } else {
