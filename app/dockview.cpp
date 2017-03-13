@@ -124,13 +124,13 @@ DockView::~DockView()
     m_screenSyncTimer.stop();
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
-    this->disconnect();
-    qDebug() << "dock view connections deleted...";
 
-    /*if (m_configView) {
-        m_configView->hide();
-        m_configView->deleteLater();
-    }*/
+    //! this disconnect does not free up connections correctly when
+    //! dockView is deleted. A crash for this example is the following:
+    //! switch to Alternative Session and disable compositing,
+    //! the signal creating the crash was probably from deleted
+    //! windows.
+    //! this->disconnect();
 
     if (m_visibility)
         delete m_visibility;
