@@ -145,6 +145,41 @@ PlasmaComponents.Page {
                     enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
                 }
             }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Label {
+                    text: i18n("Applets Distance:")
+                    horizontalAlignment: Text.AlignLeft
+                    enabled: iconMarginSlider.value > 0
+                }
+
+                PlasmaComponents.Slider {
+                    id: iconMarginSlider
+                    Layout.fillWidth: true
+                    value: plasmoid.configuration.iconMargin
+                    minimumValue: 0
+                    maximumValue: 100
+                    stepSize: 5
+
+                    onPressedChanged: {
+                        if (!pressed) {
+                             plasmoid.configuration.iconMargin = value;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: iconMarginSlider.value.toFixed(1) + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    enabled: iconMarginSlider.value > 0
+                }
+            }
         }
         //! END: Applet Size
 

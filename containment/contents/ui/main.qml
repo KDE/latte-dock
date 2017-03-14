@@ -118,15 +118,18 @@ DragDrop.DropArea {
 
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
-    property int thickMarginBase: shrinkThickMargins ? 1 : Math.ceil(iconMargin/2)
-    property int thickMarginHigh: shrinkThickMargins ? 1 : Math.ceil(iconMargin/2)
+    property int thickMarginBase: shrinkThickMargins ? 1 : Math.ceil(0.06 * iconSize)
+    property int thickMarginHigh: shrinkThickMargins ? 1 : Math.ceil(0.06 * iconSize)
     property int thickMargin: thickMarginBase + thickMarginHigh
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
     property int thickMarginOriginal: Math.ceil(0.12 * maxIconSize)
 
-    property int iconMargin: Math.ceil(0.12 * iconSize)
+    //! iconMargin from configuration is a percentage. The calculation provides a length
+    //! for that value between 0.12 - 0.5 of iconSize, this way 100% iconMargin means
+    //! equal to the iconSize
+    property int iconMargin: Math.ceil( (0.12 + (0.38 * (plasmoid.configuration.iconMargin)/100)) * iconSize)
     property int statesLineSize: latteApplet ?  Math.ceil( root.iconSize/13 ) : 0
 
 
