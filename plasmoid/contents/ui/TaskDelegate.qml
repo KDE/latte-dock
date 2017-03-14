@@ -82,6 +82,7 @@ MouseArea{
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 750
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
 
     property real animationStep: 1 //root.iconSize / 12
 
@@ -196,7 +197,7 @@ MouseArea{
 
             visible: (index === 0)
 
-            property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
+            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) : 0
             property real nScale: 0
 
             Behavior on nScale {
@@ -439,7 +440,7 @@ MouseArea{
 
             visible: (index === icList.count - 1)
 
-            property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
+            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) : 0
             property real nScale: 0
 
             Behavior on nScale {

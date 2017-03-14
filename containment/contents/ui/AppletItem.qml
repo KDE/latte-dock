@@ -67,6 +67,7 @@ Item {
     property int maxHeight: root.isHorizontal ? root.height : root.width
     property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
     property int internalSplitterId: 0
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
     property int status: applet ? applet.status : -1
 
     //property real animationStep: root.iconSize / 8
@@ -307,7 +308,7 @@ Item {
             ///check also if this is the first plasmoid in anylayout
             visible: container.startEdge
 
-            property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
+            property real nHiddenSize: (nScale > 0) ? container.spacersMaxSize * nScale : 0
             property real nScale: 0
 
             Behavior on nScale {
@@ -861,7 +862,7 @@ Item {
             //check if this last plasmoid in any layout
             visible: container.endEdge
 
-            property real nHiddenSize: (nScale > 0) ? (root.realSize * nScale) : 0
+            property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) : 0
             property real nScale: 0
 
             Behavior on nScale {
