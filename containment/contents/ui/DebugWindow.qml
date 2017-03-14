@@ -331,11 +331,19 @@ Window{
             }
 
             Text{
-                text: "Icon Margin"+space
+                text: "Icon Margin (pixels)"+space
             }
 
             Text{
                 text: root.iconMargin
+            }
+
+            Text{
+                text: "Icon Margin (user set)"+space
+            }
+
+            Text{
+                text: plasmoid.configuration.iconMargin+"%"
             }
 
             Text{
