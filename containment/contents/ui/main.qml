@@ -431,7 +431,10 @@ DragDrop.DropArea {
     onEditModeChanged: {
         if (editMode) {
             visibilityManager.updateMaskArea();
+        } else {
+            updateAutomaticIconSize();
         }
+
         updateLayouts();
     }
 
@@ -992,11 +995,11 @@ DragDrop.DropArea {
                             startLayout.height+mainLayout.height+endLayout.height : mainLayout.height
             } else {
                 layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                            startLayout.height+mainLayout.width+endLayout.width : mainLayout.width
+                            startLayout.width+mainLayout.width+endLayout.width : mainLayout.width
             }
 
-            var toShrinkLimit = maxLength-(zoomFactor*(iconSize+2*iconMargin));
-            var toGrowLimit = maxLength-1.5*(zoomFactor*(iconSize+2*iconMargin));
+            var toShrinkLimit = maxLength-(root.zoomFactor*(iconSize+2*iconMargin));
+            var toGrowLimit = maxLength-1.5*(root.zoomFactor*(iconSize+2*iconMargin));
 
             if (layoutLength > toShrinkLimit) { //must shrink
                 //  console.log("step3");
