@@ -673,7 +673,7 @@ Item{
         }
 
         function bounceNewWindow(){
-            if (isDemandingAttention || !root.dockIsHidden) {
+            if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
                 newWindowAnimation.init();
                 start();
             }
