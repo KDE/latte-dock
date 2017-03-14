@@ -226,28 +226,32 @@ Item{
             //! the increases used when the user forces a solid background and the background
             //! must be increased in order to look ok in the corners
             property int rightIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.LeftEdge))
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.LeftEdge)
+                        || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
                     return hiddenPanelBackground.margins.right;
             }
 
             property int leftIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.RightEdge))
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.RightEdge)
+                        || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
                     return hiddenPanelBackground.margins.left;
             }
 
             property int topIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.BottomEdge))
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.BottomEdge)
+                        || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
                     return hiddenPanelBackground.margins.top;
             }
 
             property int bottomIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.TopEdge))
+                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.TopEdge)
+                        || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
                     return hiddenPanelBackground.margins.bottom;
