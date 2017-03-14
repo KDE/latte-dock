@@ -211,7 +211,7 @@ Item{
             tempThickness = thicknessNormal;
 
             if (root.animationsNeedThickness > 0) {
-                tempThickness = Latte.WindowSystem.compositingActive ? thicknessMidOriginal : thicknessNormalOriginal;
+                tempThickness = Latte.WindowSystem.compositingActive ? thicknessMid : thicknessNormal;
             }
 
             if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
