@@ -161,7 +161,7 @@ Item{
         var localY = 0;
 
         normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
-                || !Latte.WindowSystem.compositingActive
+                || !Latte.WindowSystem.compositingActive //in no compositing we must try to avoid showing full window mask
                 || (dock.visibility.isHidden && !dock.visibility.containsMouse && root.animationsNeedThickness == 0);
 
         // debug maskArea criteria
@@ -194,8 +194,9 @@ Item{
             //console.log("entered normal state...");
             //count panel length
 
+           var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
             //used when !compositing and in editMode
-            if (!Latte.WindowSystem.compositingActive && root.editMode) {
+            if (noCompositingEdit) {
                 tempLength = root.isHorizontal ? root.width : root.height;
             } else {
                 if(root.isHorizontal) {
@@ -225,7 +226,9 @@ Item{
                     localY = 0;
                 }
 
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                if (noCompositingEdit) {
+                    localX = 0;
+                } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
                     localX = (dock.width/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
                     localX = 0;
@@ -241,7 +244,9 @@ Item{
                     localX = dock.width - tempThickness;
                 }
 
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                if (noCompositingEdit) {
+                    localY = 0;
+                } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
                     localY = (dock.height/2) - tempLength/2;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
                     localY = 0;
