@@ -22,6 +22,7 @@ import QtQuick 2.1
 import QtQuick.Window 2.2
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import org.kde.latte 0.1 as Latte
 
@@ -32,470 +33,480 @@ Window{
 
     property string space:" :   "
 
-    Grid{
-        id:mainGrid
-        columns: 2
+    PlasmaExtras.ScrollArea {
+        id: scrollArea
 
-        Text{
-            text: "Screen id"+space
-        }
+        anchors.fill: parent
+        verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
+        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-        Text{
-            text: dock.currentScreen
-        }
+        flickableItem.flickableDirection: Flickable.VerticalFlick
 
-        Text{
-            text: "Screen Geometry"+space
-        }
+        Grid{
+            id:mainGrid
+            columns: 2
 
-        Text{
-            text: dock.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height
-        }
-
-        Text{
-            text: "Window Geometry"+space
-        }
-
-        Text{
-            text: dock.x + "," + dock.y + " "+dock.width+ "x"+dock.height
-        }
-
-        Text{
-            text: "On Primary"+space
-        }
-
-        Text{
-            text: {
-                if (dock.onPrimary)
-                    return "Yes";
-                else
-                    return "No";
+            Text{
+                text: "Screen id"+space
             }
-        }
 
-        Text{
-            text: "   -----------   "
-        }
-
-        Text{
-            text: " -----------   "
-        }
-
-        Text{
-            text: "Contents Width"+space
-        }
-
-        Text{
-            text: layoutsContainer.contentsWidth
-        }
-
-        Text{
-            text: "Contents Height"+space
-        }
-
-        Text{
-            text: layoutsContainer.contentsHeight
-        }
-
-        Text{
-            text: "Max Length (user)"+space
-        }
-
-        Text{
-            text: plasmoid.configuration.maxLength +"%"
-        }
-
-        Text{
-            text: "Max Length (pixels)"+space
-        }
-
-        Text{
-            text: root.maxLength
-        }
-
-        Text{
-            text: "Mask"+space
-        }
-
-        Text{
-            text: dock.maskArea.x +", "+ dock.maskArea.y+"  "+dock.maskArea.width+"x"+dock.maskArea.height
-        }
-
-        Text{
-            text: "Local Geometry"+space
-        }
-
-        Text{
-            text: dock.localGeometry.x + ", " + dock.localGeometry.y + "  " +
-                  dock.localGeometry.width + "x" + dock.localGeometry.height
-        }
-
-        Text{
-            text: "Is Hidden (flag)"+space
-        }
-
-        Text{
-            text: {
-                if (dock.visibility.isHidden)
-                    return "Yes";
-                else
-                    return "No";
+            Text{
+                text: dock.currentScreen
             }
-        }
 
-        Text{
-            text: "Actions Block Hiding "+space
-        }
-
-        Text{
-            text: root.actionsBlockHiding
-        }
-
-        Text{
-            text: "Contains Mouse (flag)"+space
-        }
-
-        Text{
-            text: {
-                if (dock.visibility.containsMouse)
-                    return "Yes";
-                else
-                    return "No";
+            Text{
+                text: "Screen Geometry"+space
             }
-        }
 
-        Text{
-            text: "Edit Mode"+space
-        }
-
-        Text{
-            text: {
-                if (root.editMode)
-                    return "Yes";
-                else
-                    return "No";
+            Text{
+                text: dock.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height
             }
-        }
 
-        Text{
-            text: "   -----------   "
-        }
+            Text{
+                text: "Window Geometry"+space
+            }
 
-        Text{
-            text: " -----------   "
-        }
+            Text{
+                text: dock.x + "," + dock.y + " "+dock.width+ "x"+dock.height
+            }
 
-        Text{
-            text: "Location"+space
-        }
+            Text{
+                text: "On Primary"+space
+            }
 
-        Text{
-            text: {
-                switch(plasmoid.location){
-                case PlasmaCore.Types.LeftEdge:
-                    return "Left Edge";
-                    break;
-                case PlasmaCore.Types.RightEdge:
-                    return "Right Edge";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    return "Top Edge";
-                    break;
-                case PlasmaCore.Types.BottomEdge:
-                    return "Bottom Edge";
-                    break;
+            Text{
+                text: {
+                    if (dock.onPrimary)
+                        return "Yes";
+                    else
+                        return "No";
                 }
-
-                return " <unknown> : " + plasmoid.location;
             }
-        }
 
-        Text{
-            text: "Alignment"+space
-        }
+            Text{
+                text: "   -----------   "
+            }
 
-        Text{
-            text: {
-                switch(plasmoid.configuration.panelPosition){
-                case Latte.Dock.Left:
-                    return "Left";
-                    break;
-                case Latte.Dock.Right:
-                    return "Right";
-                    break;
-                case Latte.Dock.Center:
-                    return "Center";
-                    break;
-                case Latte.Dock.Top:
-                    return "Top";
-                    break;
-                case Latte.Dock.Bottom:
-                    return "Bottom";
-                    break;
-                case Latte.Dock.Justify:
-                    return "Justify";
-                    break;
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Contents Width"+space
+            }
+
+            Text{
+                text: layoutsContainer.contentsWidth
+            }
+
+            Text{
+                text: "Contents Height"+space
+            }
+
+            Text{
+                text: layoutsContainer.contentsHeight
+            }
+
+            Text{
+                text: "Max Length (user)"+space
+            }
+
+            Text{
+                text: plasmoid.configuration.maxLength +"%"
+            }
+
+            Text{
+                text: "Max Length (pixels)"+space
+            }
+
+            Text{
+                text: root.maxLength
+            }
+
+            Text{
+                text: "Mask"+space
+            }
+
+            Text{
+                text: dock.maskArea.x +", "+ dock.maskArea.y+"  "+dock.maskArea.width+"x"+dock.maskArea.height
+            }
+
+            Text{
+                text: "Local Geometry"+space
+            }
+
+            Text{
+                text: dock.localGeometry.x + ", " + dock.localGeometry.y + "  " +
+                      dock.localGeometry.width + "x" + dock.localGeometry.height
+            }
+
+            Text{
+                text: "Is Hidden (flag)"+space
+            }
+
+            Text{
+                text: {
+                    if (dock.visibility.isHidden)
+                        return "Yes";
+                    else
+                        return "No";
                 }
-
-                return "<unknown> : " + plasmoid.configuration.panelPosition;
             }
-        }
 
-        Text{
-            text: "Visibility"+space
-        }
+            Text{
+                text: "Actions Block Hiding "+space
+            }
 
-        Text{
-            text: {
-                switch(dock.visibility.mode){
-                case Latte.Dock.AlwaysVisible:
-                    return "Always Visible";
-                    break;
-                case Latte.Dock.AutoHide:
-                    return "Auto Hide";
-                    break;
-                case Latte.Dock.DodgeActive:
-                    return "Dodge Active";
-                    break;
-                case Latte.Dock.DodgeMaximized:
-                    return "Dodge Maximized";
-                    break;
-                case Latte.Dock.DodgeAllWindows:
-                    return "Dodge All Windows";
-                    break;
-                case Latte.Dock.None:
-                    return "None";
-                    break;
+            Text{
+                text: root.actionsBlockHiding
+            }
+
+            Text{
+                text: "Contains Mouse (flag)"+space
+            }
+
+            Text{
+                text: {
+                    if (dock.visibility.containsMouse)
+                        return "Yes";
+                    else
+                        return "No";
                 }
-
-                return "<unknown> : " + dock.visibility.mode;
             }
-        }
 
-        Text{
-            text: "Zoom Factor"+space
-        }
-
-        Text{
-            text: root.zoomFactor
-        }
-
-        Text{
-            text: "   -----------   "
-        }
-
-        Text{
-            text: " -----------   "
-        }
-
-        Text{
-            text: "Icon Size (user)"+space
-        }
-
-        Text{
-            text: plasmoid.configuration.iconSize
-        }
-
-        Text{
-            text: "Icon Size (proportion)"+space
-        }
-
-        Text{
-            text: root.proportionIconSize
-        }
-
-        Text{
-            text: "Icon Size (automatic)"+space
-        }
-
-        Text{
-            text: root.automaticIconSizeBasedSize
-        }
-
-        Text{
-            text: "Icon Size (current)"+space
-        }
-
-        Text{
-            text: root.iconSize
-        }
-
-        Text{
-            text: "Icon Margin"+space
-        }
-
-        Text{
-            text: root.iconMargin
-        }
-
-        Text{
-            text: "Thick Margin Base"+space
-        }
-
-        Text{
-            text: root.thickMarginBase
-        }
-
-        Text{
-            text: "Thick Margin High"+space
-        }
-
-        Text{
-            text: root.thickMarginHigh
-        }
-
-        Text{
-            text: "   -----------   "
-        }
-
-        Text{
-            text: " -----------   "
-        }
-
-        Text{
-            text: "Show Panel Background (user)"+space
-        }
-
-        Text{
-            text: {
-                if (plasmoid.configuration.useThemePanel)
-                    return "Yes";
-                else
-                    return "No";
+            Text{
+                text: "Edit Mode"+space
             }
-        }
 
-        Text{
-            text: "Panel Background Length"+space
-        }
-
-        Text{
-            text: root.realPanelLength
-        }
-
-        Text{
-            text: "Panel Background Thickness(user)"+space
-        }
-
-        Text{
-            text: plasmoid.configuration.panelSize + "%"
-        }
-
-        Text{
-            text: "Panel Background Thickness(automatic)"+space
-        }
-
-        Text{
-            text: root.realPanelSize
-        }
-
-        Text{
-            text: "Panel Background Shadow"+space
-        }
-
-        Text{
-            text: root.panelShadow
-        }
-
-        Text{
-            text: "Panel Background Margin"+space
-        }
-
-        Text{
-            text: root.panelMargin
-        }
-
-        Text{
-            text: "   -----------   "
-        }
-
-        Text{
-            text: " -----------   "
-        }
-
-        Text{
-            text: "Mask - Normal Thickness"+space
-        }
-
-        Text{
-            text: visibilityManager.thicknessNormal
-        }
-
-        Text{
-            text: "Thickness Uses Panel Size"+space
-        }
-
-        Text{
-            text: visibilityManager.panelIsBiggerFromIconSize
-        }
-
-        Text{
-            text: "Draw Shadows (external)"+space
-        }
-
-        Text{
-            text: {
-                if (root.drawShadowsExternal)
-                    return "Yes";
-                else
-                    return "No";
+            Text{
+                text: {
+                    if (root.editMode)
+                        return "Yes";
+                    else
+                        return "No";
+                }
             }
-        }
 
-        Text{
-            text: "   -----------   "
-        }
+            Text{
+                text: "   -----------   "
+            }
 
-        Text{
-            text: " -----------   "
-        }
+            Text{
+                text: " -----------   "
+            }
 
-        Text{
-            text: "Applet Hovered"+space
-        }
+            Text{
+                text: "Location"+space
+            }
 
-        Text{
-            text: layoutsContainer.hoveredIndex
-        }
+            Text{
+                text: {
+                    switch(plasmoid.location){
+                    case PlasmaCore.Types.LeftEdge:
+                        return "Left Edge";
+                        break;
+                    case PlasmaCore.Types.RightEdge:
+                        return "Right Edge";
+                        break;
+                    case PlasmaCore.Types.TopEdge:
+                        return "Top Edge";
+                        break;
+                    case PlasmaCore.Types.BottomEdge:
+                        return "Bottom Edge";
+                        break;
+                    }
 
-        Text{
-            text: "Task Hovered"+space
-        }
+                    return " <unknown> : " + plasmoid.location;
+                }
+            }
 
-        Text{
-            text: root.latteAppletHoveredIndex
-        }
+            Text{
+                text: "Alignment"+space
+            }
 
-        Text{
-            text: "In Normal State"+space
-        }
+            Text{
+                text: {
+                    switch(plasmoid.configuration.panelPosition){
+                    case Latte.Dock.Left:
+                        return "Left";
+                        break;
+                    case Latte.Dock.Right:
+                        return "Right";
+                        break;
+                    case Latte.Dock.Center:
+                        return "Center";
+                        break;
+                    case Latte.Dock.Top:
+                        return "Top";
+                        break;
+                    case Latte.Dock.Bottom:
+                        return "Bottom";
+                        break;
+                    case Latte.Dock.Justify:
+                        return "Justify";
+                        break;
+                    }
 
-        Text{
-            text: visibilityManager.normalState
-        }
+                    return "<unknown> : " + plasmoid.configuration.panelPosition;
+                }
+            }
 
-        Text{
-            text: "Animations Both Axis"+space
-        }
+            Text{
+                text: "Visibility"+space
+            }
 
-        Text{
-            text: root.animationsNeedBothAxis
-        }
+            Text{
+                text: {
+                    switch(dock.visibility.mode){
+                    case Latte.Dock.AlwaysVisible:
+                        return "Always Visible";
+                        break;
+                    case Latte.Dock.AutoHide:
+                        return "Auto Hide";
+                        break;
+                    case Latte.Dock.DodgeActive:
+                        return "Dodge Active";
+                        break;
+                    case Latte.Dock.DodgeMaximized:
+                        return "Dodge Maximized";
+                        break;
+                    case Latte.Dock.DodgeAllWindows:
+                        return "Dodge All Windows";
+                        break;
+                    case Latte.Dock.None:
+                        return "None";
+                        break;
+                    }
 
-        Text{
-            text: "Animations Only Length"+space
-        }
+                    return "<unknown> : " + dock.visibility.mode;
+                }
+            }
 
-        Text{
-            text: root.animationsNeedLength
-        }
+            Text{
+                text: "Zoom Factor"+space
+            }
 
-        Text{
-            text: "Animations Need Thickness"+space
-        }
+            Text{
+                text: root.zoomFactor
+            }
 
-        Text{
-            text: root.animationsNeedThickness
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Icon Size (user)"+space
+            }
+
+            Text{
+                text: plasmoid.configuration.iconSize
+            }
+
+            Text{
+                text: "Icon Size (proportion)"+space
+            }
+
+            Text{
+                text: root.proportionIconSize
+            }
+
+            Text{
+                text: "Icon Size (automatic)"+space
+            }
+
+            Text{
+                text: root.automaticIconSizeBasedSize
+            }
+
+            Text{
+                text: "Icon Size (current)"+space
+            }
+
+            Text{
+                text: root.iconSize
+            }
+
+            Text{
+                text: "Icon Margin"+space
+            }
+
+            Text{
+                text: root.iconMargin
+            }
+
+            Text{
+                text: "Thick Margin Base"+space
+            }
+
+            Text{
+                text: root.thickMarginBase
+            }
+
+            Text{
+                text: "Thick Margin High"+space
+            }
+
+            Text{
+                text: root.thickMarginHigh
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Show Panel Background (user)"+space
+            }
+
+            Text{
+                text: {
+                    if (plasmoid.configuration.useThemePanel)
+                        return "Yes";
+                    else
+                        return "No";
+                }
+            }
+
+            Text{
+                text: "Panel Background Length"+space
+            }
+
+            Text{
+                text: root.realPanelLength
+            }
+
+            Text{
+                text: "Panel Background Thickness(user)"+space
+            }
+
+            Text{
+                text: plasmoid.configuration.panelSize + "%"
+            }
+
+            Text{
+                text: "Panel Background Thickness(automatic)"+space
+            }
+
+            Text{
+                text: root.realPanelSize
+            }
+
+            Text{
+                text: "Panel Background Shadow"+space
+            }
+
+            Text{
+                text: root.panelShadow
+            }
+
+            Text{
+                text: "Panel Background Margin"+space
+            }
+
+            Text{
+                text: root.panelMargin
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Mask - Normal Thickness"+space
+            }
+
+            Text{
+                text: visibilityManager.thicknessNormal
+            }
+
+            Text{
+                text: "Thickness Uses Panel Size"+space
+            }
+
+            Text{
+                text: visibilityManager.panelIsBiggerFromIconSize
+            }
+
+            Text{
+                text: "Draw Shadows (external)"+space
+            }
+
+            Text{
+                text: {
+                    if (root.drawShadowsExternal)
+                        return "Yes";
+                    else
+                        return "No";
+                }
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Applet Hovered"+space
+            }
+
+            Text{
+                text: layoutsContainer.hoveredIndex
+            }
+
+            Text{
+                text: "Task Hovered"+space
+            }
+
+            Text{
+                text: root.latteAppletHoveredIndex
+            }
+
+            Text{
+                text: "In Normal State"+space
+            }
+
+            Text{
+                text: visibilityManager.normalState
+            }
+
+            Text{
+                text: "Animations Both Axis"+space
+            }
+
+            Text{
+                text: root.animationsNeedBothAxis
+            }
+
+            Text{
+                text: "Animations Only Length"+space
+            }
+
+            Text{
+                text: root.animationsNeedLength
+            }
+
+            Text{
+                text: "Animations Need Thickness"+space
+            }
+
+            Text{
+                text: root.animationsNeedThickness
+            }
         }
 
     }
