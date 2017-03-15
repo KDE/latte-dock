@@ -142,8 +142,6 @@ Item{
             //icon: decoration
             source: decoration
 
-            onLastValidSourceNameChanged: console.log(lastValidSourceName);
-
             //visible: !root.enableShadows
 
             onValidChanged: {
