@@ -83,6 +83,11 @@ class IconItem : public QQuickItem {
      */
     Q_PROPERTY(int paintedHeight READ paintedHeight NOTIFY paintedSizeChanged)
 
+    /**
+     * Contains the last valid icon name
+     */
+    Q_PROPERTY(QString lastValidSourceName READ lastValidSourceName NOTIFY lastValidSourceNameChanged)
+
 public:
     IconItem(QQuickItem *parent = nullptr);
     virtual ~IconItem();
@@ -104,6 +109,8 @@ public:
     int paintedWidth() const;
     int paintedHeight() const;
 
+    QString lastValidSourceName();
+
     void updatePolish() Q_DECL_OVERRIDE;
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData) override;
 
@@ -115,6 +122,7 @@ public:
 signals:
     void overlaysChanged();
     void activeChanged();
+    void lastValidSourceNameChanged();
     void sourceChanged();
     void smoothChanged();
     void validChanged();
@@ -126,11 +134,13 @@ private slots:
 
 private:
     void loadPixmap();
+    void setLastValidSourceName(QString name);
 
     QIcon m_icon;
     QPixmap m_iconPixmap;
     QImage m_imageIcon;
     std::unique_ptr<Plasma::Svg> m_svgIcon;
+    QString m_lastValidSourceName;
     QString m_svgIconName;
     QStringList m_overlays;
     //this contains the raw variant it was passed

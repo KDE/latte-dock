@@ -142,11 +142,14 @@ Item{
             //icon: decoration
             source: decoration
 
+            onLastValidSourceNameChanged: console.log(lastValidSourceName);
+
             //visible: !root.enableShadows
 
             onValidChanged: {
-                if (!valid && (source === decoration || source === "unknown"))
-                    source = "application-x-executable"
+                if (!valid && (source === decoration || source === "unknown")) {
+                        source = "application-x-executable";
+                }
             }
 
             property int zoomedSize: root.zoomFactor * root.iconSize
@@ -694,7 +697,7 @@ Item{
         id:removingAnimation
 
         function init(){
-            var relavantPoint = root.mapFromItem(iconImageBuffer,0,0);
+            var relavantPoint = root.mapFromItem(centralItem,0,0);
 
             var removingItem = removeTaskComponent.createObject(root);
             removingItem.x = relavantPoint.x;
@@ -720,20 +723,45 @@ Item{
             id: removeTaskComponent
             Item{
                 id: removeTask
-                width: iconImageBuffer.width
-                height: iconImageBuffer.height
-                //parent: panel
+                width: centralItem.width
+                height: centralItem.height
 
                 visible: false
 
                 Latte.IconItem{
                     id: tempRemoveIcon
-                    anchors.centerIn: parent
+                    anchors.rightMargin: root.position === PlasmaCore.Types.LeftPositioned ? root.thickMarginBase : 0
+                    anchors.leftMargin: root.position === PlasmaCore.Types.RightPositioned ? root.thickMarginBase : 0
+                    anchors.topMargin: root.position === PlasmaCore.Types.BottomPositioned ? root.thickMarginBase : 0
+                    anchors.bottomMargin: root.position === PlasmaCore.Types.TopPositioned ? root.thickMarginBase : 0
+
+                    anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
+                    anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;
+                    anchors.right: root.position === PlasmaCore.Types.LeftPositioned ? parent.right : undefined;
+                    anchors.left: root.position === PlasmaCore.Types.RightPositioned ? parent.left : undefined;
+                    anchors.top: root.position === PlasmaCore.Types.BottomPositioned ? parent.top : undefined;
+                    anchors.bottom: root.position === PlasmaCore.Types.TopPositioned ? parent.bottom : undefined;
 
                     width: iconImageBuffer.width
                     height: width
+                    visible: root.enableShadows ? false : true
 
-                    source: decoration
+                    source: iconImageBuffer.lastValidSourceName
+                }
+
+                Loader{
+                    id: tempTaskShadow
+                    anchors.fill: tempRemoveIcon
+                    active: root.enableShadows
+
+                    sourceComponent: DropShadow{
+                        anchors.fill: parent
+                        color: "#ff080808"
+                        samples: 2 * radius
+                        source: tempRemoveIcon
+                        radius: centralItem.shadowSize
+                        verticalOffset: 2
+                    }
                 }
 
                 Colorize{
@@ -791,6 +819,12 @@ Item{
                     }
 
                     visible = true;
+
+                    if (mainItemContainer.isWindow && !mainItemContainer.isGroupParent) {
+                        iconImageBuffer.visible = false;
+                        taskWithShadow.visible = false;
+                    }
+
                     componentRemoveAnimation.start();
                 }
 
