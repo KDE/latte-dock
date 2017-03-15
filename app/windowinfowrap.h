@@ -27,6 +27,7 @@
 namespace Latte {
 
 class WindowInfoWrap {
+    Q_DISABLE_COPY(WindowInfoWrap)
 
 public:
     constexpr WindowInfoWrap()
@@ -40,7 +41,7 @@ public:
         , m_wid(0) {
     }
 
-    constexpr WindowInfoWrap(const WindowInfoWrap &other)
+    constexpr WindowInfoWrap(WindowInfoWrap &&other)
         : m_isValid(other.m_isValid)
         , m_isActive(other.m_isActive)
         , m_isMinimized(other.m_isMinimized)
@@ -48,10 +49,10 @@ public:
         , m_isMaxHorz(other.m_isMaxHorz)
         , m_isFullscreen(other.m_isFullscreen)
         , m_isPlasmaDesktop(other.m_isPlasmaDesktop)
-        , m_wid(other.m_wid) {
+        , m_wid(std::move(other.m_wid)) {
     }
 
-    inline WindowInfoWrap &operator=(const WindowInfoWrap &rhs);
+    inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs);
     constexpr bool operator==(const WindowInfoWrap &rhs) const;
     constexpr bool operator<(const WindowInfoWrap &rhs) const;
     constexpr bool operator>(const WindowInfoWrap &rhs) const;
@@ -95,11 +96,11 @@ private:
     bool m_isPlasmaDesktop : 1;
     WId m_wid;
     QRect m_geometry;
+
 };
 
 // BEGIN: definitions
-
-inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
+inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs)
 {
     m_isValid = rhs.m_isValid;
     m_isActive = rhs.m_isActive;
@@ -109,7 +110,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs)
     m_isFullscreen = rhs.m_isFullscreen;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_wid = rhs.m_wid;
-    m_geometry = rhs.m_geometry;
+    m_geometry = std::move(rhs.m_geometry);
     return *this;
 }
 

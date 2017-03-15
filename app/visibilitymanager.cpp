@@ -147,7 +147,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
         case Dock::DodgeAllWindows: {
             for (const auto &wid : wm->windows()) {
-                windows.insert({wid, wm->requestInfo(wid)});
+                windows.insert(std::make_pair(wid, wm->requestInfo(wid)));
             }
 
             connections[0] = connect(wm, &WindowSystem::windowChanged
@@ -159,7 +159,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             });
             connections[2] = connect(wm, &WindowSystem::windowAdded
             , this, [&](WId wid) {
-                windows.insert({wid, wm->requestInfo(wid)});
+                windows.insert(std::make_pair(wid, wm->requestInfo(wid)));
                 timerCheckWindows.start();
             });
 
@@ -367,8 +367,8 @@ void VisibilityManagerPrivate::dodgeWindows(WId wid)
     if (windows.find(wid) == std::end(windows))
         return;
 
-    auto winfo = wm->requestInfo(wid);
-    windows[wid] = winfo;
+    windows[wid] = wm->requestInfo(wid);
+    auto &winfo = windows[wid];
 
     if (!winfo.isValid() || !wm->isOnCurrentDesktop(wid))
         return;
