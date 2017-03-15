@@ -196,6 +196,15 @@ Item {
         }
     }
 
+    Connections{
+        target: latteDock
+        onDockIsHiddenChanged:{
+            if (latteDock.dockIsHidden) {
+                windowsPreviewDlg.hide();
+            }
+        }
+    }
+
     /////
     PlasmaCore.ColorScope{
         id: colorScopePalette
