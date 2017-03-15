@@ -196,12 +196,14 @@ bool XWindowInterface::isOnCurrentDesktop(WId wid) const
 
 WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
 {
-    const KWindowInfo winfo{wid, NET::WMFrameExtents | NET::WMWindowType | NET::WMGeometry | NET::WMState};
+    const KWindowInfo winfo{wid, NET::WMFrameExtents
+        | NET::WMWindowType
+        | NET::WMGeometry
+        | NET::WMState};
+
     WindowInfoWrap winfoWrap;
 
-    if (!winfo.valid()) {
-        return winfoWrap;
-    } else if (isValidWindow(winfo)) {
+    if (isValidWindow(winfo)) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
@@ -222,19 +224,18 @@ WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
 
 bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 {
-    const auto winType = winfo.windowType(NET::DockMask
-                                          | NET::MenuMask | NET::SplashMask
-                                          | NET::NormalMask);
+    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::NormalMask;
+    auto winType = winfo.windowType(types);
 
     if (winType == -1) {
-        const KWindowInfo win{winfo.win(), 0, NET::WM2WindowClass};
+        // Trying to get more types for verify if the window have any other type
+        winType = winfo.windowType(~types & NET::AllTypesMask);
 
-        // NOTE: Impossible to get type information from the spotify, then I need add a exception
-        // maybe is a bug of spotify.
-        if (win.windowClassName() == "spotify")
+        if (winType == -1) {
+            qWarning() << KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName()
+                       << "doesn't have any WindowType, assuming as NET::Normal";
             return true;
-        else
-            return false;
+        }
     }
 
     return !((winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash));
