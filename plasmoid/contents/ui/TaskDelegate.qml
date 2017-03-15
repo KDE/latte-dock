@@ -415,7 +415,7 @@ MouseArea{
 
             onMScaleChanged: {
                 if ((mScale === root.zoomFactor) && !enableDirectRenderTimer.running && !icList.directRender) {
-                        enableDirectRenderTimer.start();
+                    enableDirectRenderTimer.start();
                 }
 
                 if ((mScale > 1) && !mainItemContainer.isZoomed) {
@@ -631,8 +631,8 @@ MouseArea{
 
     onContainsMouseChanged:{
         if(!containsMouse){
-          //  hiddenSpacerLeft.nScale = 0;
-          //  hiddenSpacerRight.nScale = 0;
+            //  hiddenSpacerLeft.nScale = 0;
+            //  hiddenSpacerRight.nScale = 0;
 
             if(!inAnimation)
                 pressed=false;
@@ -998,7 +998,6 @@ MouseArea{
         }
     }
 
-
     /////Animations
 
     ///item's added Animation
@@ -1074,7 +1073,7 @@ MouseArea{
 
         function showWindow(){
             if((mainItemContainer.isLauncher || mainItemContainer.isStartup
-                    || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !root.initializatedBuffers)) && root.durationTime !== 0){
+                || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !root.initializatedBuffers)) && root.durationTime !== 0){
                 delayShowWindow.createObject(mainItemContainer);
             }
             else{
@@ -1218,18 +1217,26 @@ MouseArea{
     }
 
     ///Item's Removal Animation
-
     ListView.onRemove: SequentialAnimation {
+        PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
+
         ScriptAction{
             script:{
+                root.mouseWasEntered.disconnect(signalMouseWasEntered);
+                root.draggingFinished.disconnect(handlerDraggingFinished);
+                root.clearZoomSignal.disconnect(clearZoom);
+                root.publishTasksGeometries.disconnect(slotPublishGeometries);
+                root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
+                root.updateScale.disconnect(wrapper.signalUpdateScale);
+
+                mainItemContainer.inAnimation = true;
+                icList.delayingRemoval = true;
                 mainItemContainer.inAddRemoveAnimation = true;
-                root.signalAnimationsNeedLength(1)
+
+                root.signalAnimationsNeedLength(1);
             }
         }
 
-        PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
-        PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
-        PropertyAction { target: icList; property: "delayingRemoval"; value: true }
         //PropertyAction { target: wrapper; property: "opacity"; value: isWindow ? 0 : 1 }
         //animation mainly for launchers removal and startups
         ParallelAnimation{
@@ -1237,7 +1244,6 @@ MouseArea{
 
             // property int speed: (IsStartup && !mainItemContainer.visible)? 0 : 400
             //property int speed: 400
-
             NumberAnimation { target: wrapper; property: "opacity"; to: 0; duration: showWindowAnimation.speed; easing.type: Easing.InQuad }
 
             PropertyAnimation {
@@ -1258,7 +1264,6 @@ MouseArea{
             easing.type: Easing.InQuad
         }
 
-        PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
         ScriptAction{
             script:{
                 if (showWindowAnimation.animationSent){
@@ -1267,12 +1272,14 @@ MouseArea{
                     root.signalAnimationsNeedLength(-1);
                 }
 
-                root.signalAnimationsNeedLength(-1)
+                root.signalAnimationsNeedLength(-1);
+
+                mainItemContainer.inAnimation = false;
+                icList.delayingRemoval = false;
             }
         }
 
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
-        PropertyAction { target: icList; property: "delayingRemoval"; value: false }
     }
 
 }// main Item
