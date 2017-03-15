@@ -49,7 +49,9 @@ public:
         , m_isMaxHorz(other.m_isMaxHorz)
         , m_isFullscreen(other.m_isFullscreen)
         , m_isPlasmaDesktop(other.m_isPlasmaDesktop)
-        , m_wid(std::move(other.m_wid)) {
+        , m_wid(std::move(other.m_wid))
+        , m_geometry(std::move(other.m_geometry))
+    {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs);
