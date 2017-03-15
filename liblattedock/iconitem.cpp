@@ -39,6 +39,7 @@ namespace Latte {
 
 IconItem::IconItem(QQuickItem *parent)
     : QQuickItem(parent),
+      m_lastValidSourceName(QString()),
       m_smooth(false),
       m_active(false),
       m_textureChanged(false),
@@ -77,6 +78,7 @@ void IconItem::setSource(const QVariant &source)
     // If the QIcon was created with QIcon::fromTheme(), try to load it as svg
     if (source.canConvert<QIcon>() && !source.value<QIcon>().name().isEmpty()) {
         sourceString = source.value<QIcon>().name();
+        setLastValidSourceName(sourceString);
     }
 
     if (!sourceString.isEmpty()) {
@@ -168,6 +170,22 @@ void IconItem::setSource(const QVariant &source)
 QVariant IconItem::source() const
 {
     return m_source;
+}
+
+QString IconItem::lastValidSourceName()
+{
+    return m_lastValidSourceName;
+}
+
+void IconItem::setLastValidSourceName(QString name)
+{
+    if (m_lastValidSourceName == name || name == "" || name == "application-x-executable") {
+        return;
+    }
+
+    m_lastValidSourceName = name;
+
+    emit lastValidSourceNameChanged();
 }
 
 void IconItem::setOverlays(const QStringList &overlays)
