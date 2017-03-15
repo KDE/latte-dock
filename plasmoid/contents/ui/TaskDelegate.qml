@@ -694,11 +694,11 @@ MouseArea{
         if(pressed && !inBlockingAnimation){
             if (mouse.button == Qt.MidButton){
                 if( !mainItemContainer.isLauncher){
-                    if (plasmoid.configuration.middleClickAction == TaskManagerApplet.Backend.NewInstance) {
+                    if (root.middleClickAction == TaskManagerApplet.Backend.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (plasmoid.configuration.middleClickAction == TaskManagerApplet.Backend.Close) {
+                    } else if (root.middleClickAction == TaskManagerApplet.Backend.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (plasmoid.configuration.middleClickAction == TaskManagerApplet.Backend.ToggleMinimized) {
+                    } else if (root.middleClickAction == TaskManagerApplet.Backend.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
                     }
                 }
