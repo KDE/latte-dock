@@ -112,6 +112,7 @@ Item {
     property int durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
     property int thickMarginBase: latteDock ? latteDock.thickMarginBase : Math.ceil(iconMargin/2)
