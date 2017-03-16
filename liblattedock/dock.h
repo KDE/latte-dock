@@ -60,6 +60,20 @@ public:
     };
     Q_ENUM(SessionType)
 
+    enum Modifier {
+        Shift = 0,
+        Ctrl,
+        Alt,
+        Meta
+    };
+    Q_ENUM(Modifier)
+
+    enum ClickAction {
+        LeftClick = 0,
+        MiddleClick,
+        RightClick
+    };
+    Q_ENUM(ClickAction)
 };
 
 }//end of namespace

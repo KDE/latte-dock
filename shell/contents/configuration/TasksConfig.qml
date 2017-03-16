@@ -163,6 +163,46 @@ PlasmaComponents.Page {
                     onCurrentIndexChanged: plasmoid.configuration.middleClickAction = currentIndex
                 }
             }
+
+            RowLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.ComboBox {
+                    id: modifier
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 5
+                    model: ["Shift", "Ctrl", "Alt", "Meta"]
+
+                    currentIndex: plasmoid.configuration.modifier
+                    onCurrentIndexChanged: plasmoid.configuration.modifier = currentIndex
+                }
+
+                PlasmaComponents.Label {
+                    text: "+"
+                }
+
+                PlasmaComponents.ComboBox {
+                    id: modifierClick
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 8
+                    model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
+
+                    currentIndex: plasmoid.configuration.modifierClick
+                    onCurrentIndexChanged: plasmoid.configuration.modifierClick = currentIndex
+                }
+
+                PlasmaComponents.Label {
+                    text: "="
+                }
+
+                PlasmaComponents.ComboBox {
+                    id: modifierClickAction
+                    Layout.fillWidth: true
+                    model: [i18nc("The click action", "None"), i18n("Close Window or Group"), i18n("New Instance"), i18n("Minimize/Restore Window or Group")]
+
+                    currentIndex: plasmoid.configuration.modifierClickAction
+                    onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
+                }
+            }
         }
         //! END: Tasks Interaction
 

@@ -95,6 +95,10 @@ DragDrop.DropArea {
                                               : height * (plasmoid.configuration.maxLength/100)
 
     property int middleClickAction: plasmoid.configuration.middleClickAction
+    property int modifier: plasmoid.configuration.modifier
+    property int modifierClickAction: plasmoid.configuration.modifierClickAction
+    property int modifierClick: plasmoid.configuration.modifierClick
+
     property int panelEdgeSpacing: iconSize / 3
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
