@@ -113,6 +113,21 @@ Item {
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
+    property int modifier: latteDock ? latteDock.modifier : -1
+    property int modifierClickAction: latteDock ? latteDock.modifierClickAction : -1
+    property int modifierClick: latteDock ? latteDock.modifierClick : -1
+    property int modifierQt:{
+        if (modifier === Latte.Dock.Shift)
+            return Qt.ShiftModifier;
+        else if (modifier === Latte.Dock.Ctrl)
+            return Qt.ControlModifier;
+        else if (modifier === Latte.Dock.Alt)
+            return Qt.AltModifier;
+        else if (modifier === Latte.Dock.Meta)
+            return Qt.MetaModifier;
+        else return -1;
+    }
+
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
     property int thickMarginBase: latteDock ? latteDock.thickMarginBase : Math.ceil(iconMargin/2)

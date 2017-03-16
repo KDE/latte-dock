@@ -81,6 +81,32 @@
       </choices>
       <default>2</default>
     </entry>
+    <entry name="modifierClickAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+      </choices>
+      <default>0</default>
+    </entry>
+    <entry name="modifier" type="Enum">
+      <choices>
+            <choice name="Shift"/>
+            <choice name="Control"/>
+            <choice name="Alt"/>
+            <choice name="Meta"/>
+      </choices>
+      <default>1</default>
+    </entry>
+    <entry name="modifierClick" type="Enum">
+      <choices>
+            <choice name="LeftClick"/>
+            <choice name="MiddleClick"/>
+            <choice name="RightClick"/>
+      </choices>
+      <default>0</default>
+    </entry>
 <!-- Config properties  -->
     <entry name="configurationSticker" type="Bool">
         <default>false</default>

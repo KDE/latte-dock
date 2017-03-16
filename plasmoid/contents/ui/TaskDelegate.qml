@@ -664,16 +664,18 @@ MouseArea{
             windowsPreviewDlg.hide(2);
         }
 
-        if ((mouse.button == Qt.LeftButton)||(mouse.button == Qt.MidButton)) {
+        var modAccepted = modifierAccepted(mouse);
+
+        if ((mouse.button == Qt.LeftButton)||(mouse.button == Qt.MidButton) || modAccepted) {
             lastButtonClicked = mouse.button;
             pressed = true;
             pressX = mouse.x;
             pressY = mouse.y;
 
-            if(draggingResistaner == null)
+            if(draggingResistaner == null && !modAccepted)
                 draggingResistaner = resistanerTimerComponent.createObject(mainItemContainer);
         }
-        else if (mouse.button == Qt.RightButton){
+        else if (mouse.button == Qt.RightButton && !modAccepted){
             root.createContextMenu(mainItemContainer).show();
         }
 
@@ -692,7 +694,18 @@ MouseArea{
         }
 
         if(pressed && !inBlockingAnimation){
-            if (mouse.button == Qt.MidButton){
+
+            if (modifierAccepted(mouse)){
+                if( !mainItemContainer.isLauncher){
+                    if (root.modifierClickAction == TaskManagerApplet.Backend.NewInstance) {
+                        tasksModel.requestNewInstance(modelIndex());
+                    } else if (root.modifierClickAction == TaskManagerApplet.Backend.Close) {
+                        tasksModel.requestClose(modelIndex());
+                    } else if (root.modifierClickAction == TaskManagerApplet.Backend.ToggleMinimized) {
+                        tasksModel.requestToggleMinimized(modelIndex());
+                    }
+                }
+            }else if (mouse.button == Qt.MidButton){
                 if( !mainItemContainer.isLauncher){
                     if (root.middleClickAction == TaskManagerApplet.Backend.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
@@ -907,6 +920,17 @@ MouseArea{
 
     function modelIndex(){
         return tasksModel.makeModelIndex(index);
+    }
+
+    function modifierAccepted(mouse){
+        if (mouse.modifiers & root.modifierQt){
+            if ((mouse.button === Qt.LeftButton && root.modifierClick === Latte.Dock.LeftClick)
+                    || (mouse.button === Qt.MiddleButton && root.modifierClick === Latte.Dock.MiddleClick)
+                    || (mouse.button === Qt.RightButton && root.modifierClick === Latte.Dock.RightClick))
+                return true;
+        }
+
+        return false;
     }
 
     function setBlockingAnimation(value){
