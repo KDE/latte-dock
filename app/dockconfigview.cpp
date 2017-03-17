@@ -285,26 +285,9 @@ void DockConfigView::setAutostart(bool state)
     }
 }
 
-
-Dock::SessionType DockConfigView::currentSession() const
+void DockConfigView::hideConfigWindow()
 {
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona) {
-        return dockCorona->currentSession();
-    }
-
-    return Dock::DefaultSession;
-}
-
-void DockConfigView::setCurrentSession(Dock::SessionType session)
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona && dockCorona->currentSession() != session) {
-        dockCorona->switchToSession(session);
-        hide();
-    }
+    hide();
 }
 
 }

@@ -55,6 +55,7 @@ DockCorona::DockCorona(QObject *parent)
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_activityConsumer(new KActivities::Consumer(this))
 {
+    restoreConfig();
     KPackage::Package package(new DockPackage(this));
     m_screenPool->load();
 
@@ -97,6 +98,7 @@ DockCorona::~DockCorona()
         delete containments().first();
     }
 
+    m_altSessionAction->deleteLater();
     qDeleteAll(m_dockViews);
     qDeleteAll(m_waitingDockViews);
     m_dockViews.clear();
@@ -120,6 +122,13 @@ void DockCorona::load()
         //  connect(qGuiApp, &QGuiApplication::screenRemoved, this, &DockCorona::screenRemoved, Qt::UniqueConnection);
         connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &DockCorona::screenCountChanged);
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
+
+        //! create the alternative session action
+        const QIcon altIcon = QIcon::fromTheme("user-identity");
+        m_altSessionAction = new QAction(altIcon, i18n("Alternative Session"), this);
+        m_altSessionAction->setStatusTip(tr("Enable/Disable Alternative Session"));
+        m_altSessionAction->setCheckable(true);
+        connect(m_altSessionAction, &QAction::triggered, this, &DockCorona::enableAltSession);
 
         loadLayout();
     }
@@ -616,6 +625,34 @@ bool DockCorona::autostart() const
     return autostartFile.exists();
 }
 
+QAction *DockCorona::altSessionAction()
+{
+    return m_altSessionAction;
+}
+
+void DockCorona::enableAltSession(bool flag)
+{
+    if (flag) {
+        switchToSession(Dock::AlternativeSession);
+    } else {
+        switchToSession(Dock::DefaultSession);
+    }
+}
+
+bool DockCorona::exposeAltSession() const
+{
+    return m_exposeAltSession;
+}
+void DockCorona::setExposeAltSession(bool state)
+{
+    if (m_exposeAltSession == state) {
+        return;
+    }
+
+    m_exposeAltSession = state;
+    saveConfig();
+    emit exposeAltSessionChanged();
+}
 
 Dock::SessionType DockCorona::currentSession()
 {
@@ -629,6 +666,11 @@ void DockCorona::setCurrentSession(Dock::SessionType session)
     }
 
     m_session = session;
+
+    if (m_session == Dock::DefaultSession)
+        m_altSessionAction->setChecked(false);
+    else
+        m_altSessionAction->setChecked(true);
 }
 void DockCorona::switchToSession(Dock::SessionType session)
 {
@@ -1082,6 +1124,21 @@ void DockCorona::activateLauncherMenu()
         }
     }
 }
+
+//!BEGIN configuration functions
+void DockCorona::saveConfig()
+{
+    auto conf = config()->group("General");
+    conf.writeEntry("exposeAltSession", m_exposeAltSession);
+    conf.sync();
+}
+
+void DockCorona::restoreConfig()
+{
+    auto conf = config()->group("General");;
+    setExposeAltSession(conf.readEntry("exposeAltSession", false));
+}
+//!END configuration functions
 
 inline void DockCorona::qmlRegisterTypes() const
 {

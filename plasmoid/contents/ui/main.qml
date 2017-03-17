@@ -97,6 +97,7 @@ Item {
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
+    property bool exposeAltSession: latteDock ? latteDock.exposeAltSession : false
     property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: latteDock ? latteDock.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: latteDock ? latteDock.dotsOnActive : plasmoid.configuration.dotsOnActive
@@ -143,6 +144,8 @@ Item {
 
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
+
+    property QtObject altSessionAction : latteDock ? latteDock.altSessionAction : 0
 
     property Item latteDock: null
     //END Now Dock Panel properties

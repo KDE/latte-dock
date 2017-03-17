@@ -70,6 +70,11 @@ public:
     bool autostart() const;
     void setAutostart(bool state);
 
+    bool exposeAltSession() const;
+    void setExposeAltSession(bool state);
+
+    QAction *altSessionAction();
+
     Dock::SessionType currentSession();
     void setCurrentSession(Dock::SessionType session);
     void switchToSession(Dock::SessionType session);
@@ -89,6 +94,7 @@ signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void docksCountChanged();
     void dockLocationChanged();
+    void exposeAltSessionChanged();
     void raiseDocksTemporaryChanged();
 
 private slots:
@@ -98,6 +104,7 @@ private slots:
     void load();
 
     void addOutput(QScreen *screen);
+    void enableAltSession(bool flag);
     void primaryOutputChanged();
     void screenRemoved(QScreen *screen);
     void screenCountChanged();
@@ -105,7 +112,7 @@ private slots:
 
 private:
     void cleanConfig();
-    void loadConfig();
+    void restoreConfig();
     void saveConfig();
     void qmlRegisterTypes() const;
     bool appletExists(uint containmentId, uint appletId) const;
@@ -127,7 +134,11 @@ private:
     //! with tasks" will be loaded otherwise. Currently the older one dock wins
     int m_firstContainmentWithTasks{ -1};
 
+    bool m_exposeAltSession{false};
+
     Dock::SessionType m_session{Dock::DefaultSession};
+
+    QAction *m_altSessionAction{nullptr};
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
