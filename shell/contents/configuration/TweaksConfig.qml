@@ -49,6 +49,17 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: blurPanel
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Blur for panel background")
+                checked: plasmoid.configuration.blurEnabled
+
+                onClicked: {
+                    plasmoid.configuration.blurEnabled = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: shrinkThickness
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Shrink thickness margins to minimum")

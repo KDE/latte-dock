@@ -164,7 +164,10 @@ void DockView::init()
         updateFormFactor();
         syncGeometry();
     });
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
+    connect(this, &DockView::drawEffectsChanged, this, &DockView::updateEffects);
+    connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
+
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::updateEffects);
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
@@ -733,8 +736,24 @@ void DockView::setDrawShadows(bool draw)
         emit enabledBordersChanged();
     }
 
-    themeChanged();
+    updateEffects();
     emit drawShadowsChanged();
+}
+
+bool DockView::drawEffects() const
+{
+    return m_drawShadows;
+}
+
+void DockView::setDrawEffects(bool draw)
+{
+    if (m_drawEffects == draw) {
+        return;
+    }
+
+    m_drawEffects = draw;
+
+    emit drawEffectsChanged();
 }
 
 bool DockView::onPrimary() const
@@ -834,6 +853,9 @@ void DockView::setMaskArea(QRect area)
         //! rounded corners to be shown correctly
         if (!m_background) {
             m_background = new Plasma::FrameSvg(this);
+        }
+
+        if (m_background->imagePath() != "opaque/dialogs/background") {
             m_background->setImagePath(QStringLiteral("opaque/dialogs/background"));
         }
 
@@ -846,6 +868,22 @@ void DockView::setMaskArea(QRect area)
 
     //qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
+}
+
+
+QRect DockView::effectsArea() const
+{
+    return m_effectsArea;
+}
+
+void DockView::setEffectsArea(QRect area)
+{
+    if (m_effectsArea == area) {
+        return;
+    }
+
+    m_effectsArea = area;
+    emit effectsAreaChanged();
 }
 
 QRect DockView::absGeometry() const
@@ -882,18 +920,45 @@ void DockView::setShadow(int shadow)
     emit shadowChanged();
 }
 
-
-void DockView::themeChanged()
+void DockView::updateEffects()
 {
     if (!m_drawShadows) {
-        KWindowEffects::enableBlurBehind(winId(), false);
-        KWindowEffects::enableBackgroundContrast(winId(), false);
-    } else {
+        if (m_drawEffects && !m_effectsArea.isNull() && !m_effectsArea.isEmpty()) {
+            //! this is used when compositing is disabled and provides
+            //! the correct way for the mask to be painted in order for
+            //! rounded corners to be shown correctly
+            if (!m_background) {
+                m_background = new Plasma::FrameSvg(this);
+            }
+
+            if (m_background->imagePath() != "widgets/panel-background") {
+                m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+            }
+
+            m_background->setEnabledBorders(enabledBorders());
+            m_background->resizeFrame(m_effectsArea.size());
+            QRegion fixedMask = m_background->mask();
+            fixedMask.translate(m_effectsArea.x(), m_effectsArea.y());
+
+            KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
+            KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
+                    m_theme.backgroundContrast(),
+                    m_theme.backgroundIntensity(),
+                    m_theme.backgroundSaturation(),
+                    fixedMask);
+        } else {
+            KWindowEffects::enableBlurBehind(winId(), false);
+            KWindowEffects::enableBackgroundContrast(winId(), false);
+        }
+    } else if (m_drawShadows && m_drawEffects) {
         KWindowEffects::enableBlurBehind(winId(), true);
         KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
                 m_theme.backgroundContrast(),
                 m_theme.backgroundIntensity(),
                 m_theme.backgroundSaturation());
+    } else {
+        KWindowEffects::enableBlurBehind(winId(), false);
+        KWindowEffects::enableBackgroundContrast(winId(), false);
     }
 }
 

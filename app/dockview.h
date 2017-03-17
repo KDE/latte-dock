@@ -46,6 +46,7 @@ namespace Latte {
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
+    Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
@@ -64,11 +65,13 @@ class DockView : public PlasmaQuick::ContainmentView {
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
-    Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
+
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
+    Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
+    Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
     Q_PROPERTY(Latte::Dock::SessionType session READ session WRITE setSession NOTIFY sessionChanged)
@@ -94,6 +97,9 @@ public:
     bool drawShadows() const;
     void setDrawShadows(bool draw);
 
+    bool drawEffects() const;
+    void setDrawEffects(bool draw);
+
     float maxLength() const;
     void setMaxLength(float length);
 
@@ -112,8 +118,10 @@ public:
     QRect maskArea() const;
     void setMaskArea(QRect area);
 
-    QRect absGeometry() const;
+    QRect effectsArea() const;
+    void setEffectsArea(QRect area);
 
+    QRect absGeometry() const;
     QRect screenGeometry() const;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
@@ -166,6 +174,8 @@ signals:
     void dockLocationChanged();
     void docksCountChanged();
     void drawShadowsChanged();
+    void drawEffectsChanged();
+    void effectsAreaChanged();
     void enabledBordersChanged();
     void widthChanged();
     void heightChanged();
@@ -188,7 +198,7 @@ private slots:
     void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
-    void themeChanged();
+    void updateEffects();
 
     void restoreConfig();
     void saveConfig();
@@ -206,6 +216,7 @@ private:
 
     bool m_forceDrawCenteredBorders{false};
     bool m_drawShadows{false};
+    bool m_drawEffects{false};
     bool m_onPrimary{true};
     int m_maxThickness{24};
     int m_normalThickness{24};
@@ -215,6 +226,7 @@ private:
     Dock::Alignment m_alignment{Dock::Center};
     Dock::SessionType m_session{Dock::DefaultSession};
 
+    QRect m_effectsArea;
     QRect m_localGeometry;
     QRect m_absGeometry;
     QRect m_maskArea;

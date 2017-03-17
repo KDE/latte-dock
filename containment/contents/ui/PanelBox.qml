@@ -221,7 +221,38 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
+            property rect efGeometry: Qt.rect(-1,-1,0,0)
+
             imagePath: root.solidPanel ? "opaque/dialogs/background" : "widgets/panel-background"
+
+            onWidthChanged: updateEffectsArea();
+            onHeightChanged: updateEffectsArea();
+
+            Component.onCompleted: root.updateEffectsArea.connect(updateEffectsArea);
+
+            Connections{
+                target: root
+
+                onEditModeChanged: {
+                    if (!root.editMode){
+                        solidBackground.updateEffectsArea();
+                    }
+                }
+            }
+
+            function updateEffectsArea(){
+                if (!dock || root.editMode)
+                    return;
+
+                var rootGeometry = mapToItem(root, 0, 0);
+
+                efGeometry.x = rootGeometry.x;
+                efGeometry.y = rootGeometry.y;
+                efGeometry.width = width;
+                efGeometry.height = height;
+
+                dock.effectsArea = efGeometry;
+            }
 
             //! the increases used when the user forces a solid background and the background
             //! must be increased in order to look ok in the corners

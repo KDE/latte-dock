@@ -84,6 +84,13 @@ Item{
 
     Binding{
         target: dock
+        property: "drawEffects"
+        when: dock
+        value: root.blurEnabled && !root.solidPanel
+    }
+
+    Binding{
+        target: dock
         property:"shadow"
         when: dock
         value: root.panelShadow
