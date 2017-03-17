@@ -86,7 +86,7 @@ Item{
         target: dock
         property: "drawEffects"
         when: dock
-        value: root.blurEnabled && !root.solidPanel
+        value: root.blurEnabled && root.useThemePanel && !root.solidPanel
     }
 
     Binding{
