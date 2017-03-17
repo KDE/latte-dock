@@ -742,7 +742,7 @@ void DockView::setDrawShadows(bool draw)
 
 bool DockView::drawEffects() const
 {
-    return m_drawShadows;
+    return m_drawEffects;
 }
 
 void DockView::setDrawEffects(bool draw)

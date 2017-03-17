@@ -141,6 +141,36 @@ Window{
             }
 
             Text{
+                text: "Draw Effects"+space
+            }
+
+            Text{
+                text: {
+                    if (dock.drawEffects)
+                        return "Yes";
+                    else
+                        return "No";
+                }
+            }
+
+            Text{
+                text: "Effects Area"+space
+            }
+
+            Text{
+                text: dock.effectsArea.x + ", " + dock.effectsArea.y + "  " +
+                      dock.effectsArea.width + "x" + dock.effectsArea.height
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
                 text: "Is Hidden (flag)"+space
             }
 
