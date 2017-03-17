@@ -38,6 +38,7 @@ DragDrop.DropArea {
 
     //// BEGIN SIGNALS
     signal clearZoomSignal();
+    signal updateEffectsArea();
     signal updateIndexes();
     ////
 
@@ -47,6 +48,7 @@ DragDrop.DropArea {
     property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
 
     property bool automaticSize: plasmoid.configuration.automaticIconSize
+    property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                                        && (dock.visibility.mode === Latte.Dock.AlwaysVisible)
@@ -1344,6 +1346,9 @@ DragDrop.DropArea {
                 delayUpdateMaskArea.start();
             }
         }
+
+        onXChanged: root.updateEffectsArea();
+        onYChanged: root.updateEffectsArea();
 
         Grid{
             id:startLayout

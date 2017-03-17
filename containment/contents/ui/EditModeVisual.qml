@@ -44,6 +44,8 @@ Image{
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
     property bool editAnimationEnded: false
 
+    property rect efGeometry
+
     layer.enabled: true
     layer.effect: DropShadow {
         radius: root.editShadow
@@ -88,17 +90,39 @@ Image{
         }
     }
 
+    onXChanged: updateEffectsArea();
+    onYChanged: updateEffectsArea();
+
     onWidthChanged: {
         if (root.isHorizontal) {
             initializeEditPosition();
         }
+
+        updateEffectsArea();
     }
 
     onHeightChanged: {
         if (root.isVertical) {
             initializeEditPosition();
         }
+
+        updateEffectsArea();
     }
+
+    function updateEffectsArea(){
+        if (!dock || state !== "edit" || !editAnimationEnded)
+            return;
+
+        var rootGeometry = mapToItem(root, 0, 0);
+
+        efGeometry.x = rootGeometry.x;
+        efGeometry.y = rootGeometry.y;
+        efGeometry.width = width;
+        efGeometry.height = height;
+
+        dock.effectsArea = efGeometry;
+    }
+
 
     function initializeNormalPosition() {
         if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
@@ -228,6 +252,7 @@ Image{
                 ScriptAction{
                     script:{
                         editVisual.editAnimationEnded = true;
+                        updateEffectsArea();
                         visibilityManager.updateMaskArea();
                     }
                 }

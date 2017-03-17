@@ -48,6 +48,9 @@
     <entry name="solidPanel" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="blurEnabled" type="Bool">
+      <default>true</default>
+    </entry>
     <entry name="automaticIconSize" type="Bool">
       <default>false</default>
     </entry>
