@@ -91,6 +91,16 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Expose Alternative Session in the context menu")
+                checked: dock.exposeAltSession
+
+                onClicked: {
+                    dock.exposeAltSession = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise dock on desktop change")
                 checked: dock.visibility.raiseOnDesktop
 
@@ -123,15 +133,16 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 Layout.fillWidth: true
                 text: i18n("Alternative Session")
-                checked: dockConfig.currentSession === Latte.Dock.AlternativeSession
+                checked: dock.runningSession === Latte.Dock.AlternativeSession
                 checkable: true
 
                 onClicked: {
-                    if (dockConfig.currentSession === Latte.Dock.DefaultSession){
-                        dockConfig.currentSession = Latte.Dock.AlternativeSession;
+                    if (dock.runningSession === Latte.Dock.DefaultSession){
+                        dock.runningSession = Latte.Dock.AlternativeSession;
                     } else {
-                        dockConfig.currentSession = Latte.Dock.DefaultSession;
+                        dock.runningSession = Latte.Dock.DefaultSession;
                     }
+                    dockConfig.hideConfigWindow();
                 }
 
             }

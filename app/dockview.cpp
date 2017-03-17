@@ -112,6 +112,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
                 m_screenSyncTimer.start();
             }
         });
+        connect(dockCorona, SIGNAL(exposeAltSessionChanged()), this, SIGNAL(exposeAltSessionChanged()));
+        connect(dockCorona, SIGNAL(exposeAltSessionChanged()), this, SIGNAL(altSessionActionChanged()));
     }
 
     m_screenSyncTimer.setSingleShot(true);
@@ -122,6 +124,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
 DockView::~DockView()
 {
     m_screenSyncTimer.stop();
+
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
 
@@ -694,6 +697,16 @@ int DockView::docksWithTasks()
     return dockCorona->noDocksWithTasks();
 }
 
+QAction *DockView::altSessionAction() const
+{
+    auto dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (!dockCorona)
+        return 0;
+
+    return dockCorona->altSessionAction();
+}
+
 void DockView::updateFormFactor()
 {
     if (!this->containment())
@@ -784,6 +797,46 @@ void DockView::setSession(Dock::SessionType type)
 
     m_session = type;
     emit sessionChanged();
+}
+
+Dock::SessionType DockView::runningSession() const
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (dockCorona) {
+        return dockCorona->currentSession();
+    }
+
+    return Dock::DefaultSession;
+}
+
+void DockView::setRunningSession(Dock::SessionType session)
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (dockCorona && dockCorona->currentSession() != session) {
+        dockCorona->switchToSession(session);
+    }
+}
+
+bool DockView::exposeAltSession() const
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (dockCorona) {
+        return dockCorona->exposeAltSession();
+    }
+
+    return false;
+}
+
+void DockView::setExposeAltSession(bool state)
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (dockCorona && dockCorona->exposeAltSession() != state) {
+        dockCorona->setExposeAltSession(state);
+    }
 }
 
 float DockView::maxLength() const
@@ -1299,15 +1352,16 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
 
         if (enabled) {
             //if there is only one, don't create a submenu
-            if (enabled < 2) {
-                foreach (QAction *action, containmentMenu->actions()) {
-                    if (action->isVisible() && !action->isSeparator()) {
-                        desktopMenu->addAction(action);
-                    }
+            // if (enabled < 2) {
+            foreach (QAction *action, containmentMenu->actions()) {
+                if (action->isVisible()) {
+                    desktopMenu->addAction(action);
                 }
-            } else {
-                desktopMenu->addMenu(containmentMenu);
             }
+
+            // } else {
+            //     desktopMenu->addMenu(containmentMenu);
+            // }
         }
     }
 
@@ -1368,6 +1422,13 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             desktopMenu->addAction(this->containment()->actions()->action(QStringLiteral("configure")));
         }
     } else {
+        auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+        if (dockCorona && exposeAltSession()) {
+            desktopMenu->addSeparator();
+            desktopMenu->addAction(dockCorona->altSessionAction());
+        }
+
         desktopMenu->addActions(actions);
     }
 

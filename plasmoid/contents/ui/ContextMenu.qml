@@ -639,6 +639,21 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: altSession
+        visible: root.exposeAltSession
+
+        icon: "user-identity"
+        text: "Alternative Session"
+        checkable: true
+
+        Component.onCompleted: {
+            checked = root.altSessionAction.checked;
+        }
+
+        onClicked: root.altSessionAction.trigger();
+    }
+
+    PlasmaComponents.MenuItem {
         id: containmentMenuItem
 
         visible: latteDock

@@ -44,7 +44,6 @@ class DockView;
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
-    Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
 
 public:
     DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent = nullptr);
@@ -56,17 +55,14 @@ public:
     bool autostart() const;
     void setAutostart(bool state);
 
-    Latte::Dock::SessionType currentSession() const;
-    void setCurrentSession(Latte::Dock::SessionType session);
-
 public slots:
     Q_INVOKABLE void addPanelSpacer();
+    Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
 
 signals:
     void autostartChanged();
-    void currentSessionChanged();
     void raiseDocksTemporaryChanged();
     void showSignal();
 
