@@ -89,6 +89,12 @@ void DockConfigView::init()
     PanelShadows::self()->addWindow(this);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    if (dockCorona) {
+        rootContext()->setContextProperty(QStringLiteral("globalSettings"), dockCorona->globalSettings());
+    }
+
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));

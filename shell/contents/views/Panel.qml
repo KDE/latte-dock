@@ -86,6 +86,7 @@ PlasmaCore.FrameSvgItem {
             if (containment.children[i].objectName === "dockLayoutView") {
                 dockLayout = containment.children[i];
                 dockLayout.dock = dock;
+                dockLayout.globalSettings = globalSettings;
             }
         }
     }

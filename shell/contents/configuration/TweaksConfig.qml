@@ -92,10 +92,10 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Expose Alternative Session in the context menu")
-                checked: dock.exposeAltSession
+                checked: globalSettings.exposeAltSession
 
                 onClicked: {
-                    dock.exposeAltSession = checked;
+                    globalSettings.exposeAltSession = checked;
                 }
             }
 
