@@ -36,6 +36,8 @@ class GlobalSettings : public QObject {
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool exposeAltSession READ exposeAltSession WRITE setExposeAltSession NOTIFY exposeAltSessionChanged)
 
+    Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
+
     Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
 
 public:
@@ -49,16 +51,19 @@ public:
 
     bool exposeAltSession() const;
     void setExposeAltSession(bool state);
-
     QAction *altSessionAction() const;
+
+    Latte::Dock::SessionType currentSession() const;
+    void setCurrentSession(Latte::Dock::SessionType session);
 
 signals:
     void altSessionActionChanged();
+    void currentSessionChanged();
     void autostartChanged();
     void exposeAltSessionChanged();
 
 private slots:
-    void currentSessionChanged(Dock::SessionType type);
+    void currentSessionChangedSlot(Dock::SessionType type);
     void enableAltSession(bool enabled);
 
 private:

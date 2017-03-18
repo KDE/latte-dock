@@ -24,7 +24,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
         m_altSessionAction->setCheckable(true);
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
 
-        connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChanged);
+        connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
     }
 }
 
@@ -59,18 +59,25 @@ void GlobalSettings::setExposeAltSession(bool state)
     emit exposeAltSessionChanged();
 }
 
-void GlobalSettings::currentSessionChanged(Dock::SessionType type)
+void GlobalSettings::currentSessionChangedSlot(Dock::SessionType type)
 {
     if (m_corona->currentSession() == Dock::DefaultSession)
         m_altSessionAction->setChecked(false);
     else
         m_altSessionAction->setChecked(true);
 
+    emit currentSessionChanged();
 }
 
 QAction *GlobalSettings::altSessionAction() const
 {
     return m_altSessionAction;
+}
+
+bool GlobalSettings::autostart() const
+{
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+    return autostartFile.exists();
 }
 
 void GlobalSettings::setAutostart(bool state)
@@ -90,12 +97,17 @@ void GlobalSettings::setAutostart(bool state)
     }
 }
 
-bool GlobalSettings::autostart() const
+Dock::SessionType GlobalSettings::currentSession() const
 {
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
-    return autostartFile.exists();
+    return m_corona->currentSession();
 }
 
+void GlobalSettings::setCurrentSession(Dock::SessionType session)
+{
+    if (currentSession() != session) {
+        m_corona->switchToSession(session);
+    }
+}
 
 
 //!BEGIN configuration functions
