@@ -33,6 +33,7 @@ namespace Latte {
 
 class GlobalSettings : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool exposeAltSession READ exposeAltSession WRITE setExposeAltSession NOTIFY exposeAltSessionChanged)
 
     Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
@@ -43,6 +44,9 @@ public:
 
     void load();
 
+    bool autostart() const;
+    void setAutostart(bool state);
+
     bool exposeAltSession() const;
     void setExposeAltSession(bool state);
 
@@ -50,6 +54,7 @@ public:
 
 signals:
     void altSessionActionChanged();
+    void autostartChanged();
     void exposeAltSessionChanged();
 
 private slots:

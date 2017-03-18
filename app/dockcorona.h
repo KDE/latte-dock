@@ -69,9 +69,6 @@ public:
     void addDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
 
-    bool autostart() const;
-    void setAutostart(bool state);
-
     Dock::SessionType currentSession();
     void setCurrentSession(Dock::SessionType session);
     void switchToSession(Dock::SessionType session);
@@ -88,7 +85,6 @@ public slots:
     void dockContainmentDestroyed(QObject *cont);
 
 signals:
-    void autostartChanged();
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void currentSessionChanged(Dock::SessionType type);
     void docksCountChanged();

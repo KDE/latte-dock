@@ -70,7 +70,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 
     if (dockCorona) {
         connections << connect(this, &DockConfigView::aboutApplication, dockCorona, &DockCorona::aboutApplication);
-        connections << connect(dockCorona, SIGNAL(autostartChanged()), this, SIGNAL(autostartChanged()));
         connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
     }
 }
@@ -268,26 +267,6 @@ void DockConfigView::addPanelSpacer()
 {
     if (m_dockView && m_dockView->containment()) {
         m_dockView->containment()->createApplet(QStringLiteral("org.kde.plasma.panelspacer"));
-    }
-}
-
-bool DockConfigView::autostart() const
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona) {
-        return dockCorona->autostart();
-    }
-
-    return false;
-}
-
-void DockConfigView::setAutostart(bool state)
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona) {
-        dockCorona->setAutostart(state);
     }
 }
 
