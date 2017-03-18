@@ -457,6 +457,15 @@ QRect DockView::maximumNormalGeometry()
             break;
     }
 
+    //! this is needed in order to preserve that the top dock will be above
+    //! the others in case flag bypasswindowmanagerhint hasnt be set,
+    //! such a case is the AlwaysVisible mode
+    if (location() == Plasma::Types::TopEdge) {
+        KWindowSystem::setState(winId(), NET::KeepAbove);
+    } else {
+        KWindowSystem::clearState(winId(), NET::KeepAbove);
+    }
+
     return maxGeometry;
 }
 
