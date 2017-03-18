@@ -133,14 +133,14 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 Layout.fillWidth: true
                 text: i18n("Alternative Session")
-                checked: dock.runningSession === Latte.Dock.AlternativeSession
+                checked: globalSettings.currentSession === Latte.Dock.AlternativeSession
                 checkable: true
 
                 onClicked: {
-                    if (dock.runningSession === Latte.Dock.DefaultSession){
-                        dock.runningSession = Latte.Dock.AlternativeSession;
+                    if (globalSettings.currentSession === Latte.Dock.DefaultSession){
+                        globalSettings.currentSession = Latte.Dock.AlternativeSession;
                     } else {
-                        dock.runningSession = Latte.Dock.DefaultSession;
+                        globalSettings.currentSession = Latte.Dock.DefaultSession;
                     }
                     dockConfig.hideConfigWindow();
                 }

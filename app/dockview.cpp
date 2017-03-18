@@ -795,26 +795,6 @@ void DockView::setSession(Dock::SessionType type)
     emit sessionChanged();
 }
 
-Dock::SessionType DockView::runningSession() const
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(corona());
-
-    if (dockCorona) {
-        return dockCorona->currentSession();
-    }
-
-    return Dock::DefaultSession;
-}
-
-void DockView::setRunningSession(Dock::SessionType session)
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(corona());
-
-    if (dockCorona && dockCorona->currentSession() != session) {
-        dockCorona->switchToSession(session);
-    }
-}
-
 float DockView::maxLength() const
 {
     return m_maxLength;
