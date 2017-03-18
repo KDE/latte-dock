@@ -48,6 +48,8 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         setIcon(qGuiApp->windowIcon());
     }
 
+    m_previousDockWinBehavior = m_dockView->dockWinBehavior();
+
     connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
@@ -220,9 +222,10 @@ void DockConfigView::hideEvent(QHideEvent *ev)
 
     QQuickWindow::hideEvent(ev);
 
-    if (m_dockView && m_dockView->visibility()->mode() != m_previousMode
-        && ((m_dockView->visibility()->mode() == Dock::AlwaysVisible)
-            || (m_previousMode == Dock::AlwaysVisible))) {
+    if ((m_dockView && m_dockView->visibility()->mode() != m_previousMode
+         && ((m_dockView->visibility()->mode() == Dock::AlwaysVisible)
+             || (m_previousMode == Dock::AlwaysVisible)))
+        || (m_previousDockWinBehavior != m_dockView->dockWinBehavior())) {
 
         auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 

@@ -47,7 +47,10 @@
 
 namespace Latte {
 
-DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVisible)
+//! both alwaysVisible and dockWinBehavior are passed through corona because
+//! during the dock window creation containment hasnt been set, but these variables
+//! are needed in order for window flags to be set correctly
+DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVisible, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
 {
@@ -58,7 +61,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
     setColor(QColor(Qt::transparent));
     setClearBeforeRendering(true);
 
-    if (!alwaysVisible) {
+    if (!alwaysVisible && !dockWindowBehavior) {
         setFlags(Qt::BypassWindowManagerHint
                  | Qt::FramelessWindowHint
                  | Qt::WindowStaysOnTopHint
@@ -159,6 +162,7 @@ void DockView::init()
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
+    connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::reconsiderScreen);
     connect(this, &DockView::sessionChanged, this, &DockView::saveConfig);
@@ -731,6 +735,21 @@ void DockView::updateFormFactor()
         default:
             qWarning() << "wrong location, couldn't update the panel position" << location();
     }
+}
+
+bool DockView::dockWinBehavior() const
+{
+    return m_dockWinBehavior;
+}
+
+void DockView::setDockWinBehavior(bool dock)
+{
+    if (m_dockWinBehavior == dock) {
+        return;
+    }
+
+    m_dockWinBehavior = dock;
+    emit dockWinBehaviorChanged();
 }
 
 bool DockView::drawShadows() const
@@ -1502,6 +1521,7 @@ void DockView::saveConfig()
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", m_onPrimary);
     config.writeEntry("session", (int)m_session);
+    config.writeEntry("dockWindowBehavior", m_dockWinBehavior);
     this->containment()->configNeedsSaving();
 }
 
@@ -1513,6 +1533,7 @@ void DockView::restoreConfig()
     auto config = this->containment()->config();
     setOnPrimary(config.readEntry("onPrimary", true));
     setSession((Dock::SessionType)config.readEntry("session", (int)Dock::DefaultSession));
+    setDockWinBehavior(config.readEntry("dockWindowBehavior", false));
 }
 //!END configuration functions
 

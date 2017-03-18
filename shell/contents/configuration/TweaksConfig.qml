@@ -91,6 +91,17 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Behave as a normal dock window")
+                checked: dock.dockWinBehavior
+                tooltip: i18n("Removes the BypassWindowManagerHint flag from the window")
+
+                onClicked: {
+                    dock.dockWinBehavior = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Expose Alternative Session in the context menu")
                 checked: globalSettings.exposeAltSession
 
