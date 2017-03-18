@@ -45,6 +45,7 @@ namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
+    Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
@@ -76,7 +77,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(Latte::Dock::SessionType session READ session WRITE setSession NOTIFY sessionChanged)
 
 public:
-    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool alwaysVisible = false);
+    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool alwaysVisible = false, bool dockWindowBehavior = false);
     virtual ~DockView();
 
     void init();
@@ -92,6 +93,9 @@ public:
     int currentThickness() const;
 
     int docksCount() const;
+
+    bool dockWinBehavior() const;
+    void setDockWinBehavior(bool dock);
 
     bool drawShadows() const;
     void setDrawShadows(bool draw);
@@ -172,6 +176,7 @@ signals:
     void currentScreenChanged();
     void dockLocationChanged();
     void docksCountChanged();
+    void dockWinBehaviorChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
     void effectsAreaChanged();
@@ -214,6 +219,7 @@ private:
     Plasma::Containment *containmentById(uint id);
 
     bool m_forceDrawCenteredBorders{false};
+    bool m_dockWinBehavior{false};
     bool m_drawShadows{false};
     bool m_drawEffects{false};
     bool m_onPrimary{true};

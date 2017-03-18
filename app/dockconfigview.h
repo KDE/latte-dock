@@ -76,6 +76,9 @@ signals:
 
 private:
     bool m_blockFocusLost;
+    //! it is used to check if we need to recreate the dock window
+    //! after the configuration window gets closed
+    bool m_previousDockWinBehavior;
 
     QPointer<DockView> m_dockView;
     QTimer m_screenSyncTimer;
