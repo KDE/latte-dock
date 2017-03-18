@@ -33,8 +33,6 @@
 #include <QDBusConnection>
 #include <QDebug>
 #include <QDesktopWidget>
-#include <QDir>
-#include <QFile>
 #include <QQmlContext>
 
 #include <Plasma>
@@ -599,29 +597,6 @@ void DockCorona::aboutApplication()
     WindowSystem::self().skipTaskBar(*aboutDialog);
 
     aboutDialog->show();
-}
-
-void DockCorona::setAutostart(bool state)
-{
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
-    QFile metaFile("/usr/share/applications/latte-dock.desktop");
-
-    if (!state && autostartFile.exists()) {
-        autostartFile.remove();
-        emit autostartChanged();
-    } else if (state && metaFile.exists()) {
-        metaFile.copy(autostartFile.fileName());
-        //! I havent added the flag "OnlyShowIn=KDE;" into the autostart file
-        //! because I fall onto a Plasma 5.8 case that this flag
-        //! didnt let the plasma desktop to start
-        emit autostartChanged();
-    }
-}
-
-bool DockCorona::autostart() const
-{
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
-    return autostartFile.exists();
 }
 
 Dock::SessionType DockCorona::currentSession()

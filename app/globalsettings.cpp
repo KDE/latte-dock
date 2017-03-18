@@ -2,6 +2,8 @@
 
 #include <QIcon>
 #include <QDebug>
+#include <QDir>
+#include <QFile>
 
 #include <KLocalizedString>
 
@@ -70,6 +72,31 @@ QAction *GlobalSettings::altSessionAction() const
 {
     return m_altSessionAction;
 }
+
+void GlobalSettings::setAutostart(bool state)
+{
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+    QFile metaFile("/usr/share/applications/latte-dock.desktop");
+
+    if (!state && autostartFile.exists()) {
+        autostartFile.remove();
+        emit autostartChanged();
+    } else if (state && metaFile.exists()) {
+        metaFile.copy(autostartFile.fileName());
+        //! I havent added the flag "OnlyShowIn=KDE;" into the autostart file
+        //! because I fall onto a Plasma 5.8 case that this flag
+        //! didnt let the plasma desktop to start
+        emit autostartChanged();
+    }
+}
+
+bool GlobalSettings::autostart() const
+{
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+    return autostartFile.exists();
+}
+
+
 
 //!BEGIN configuration functions
 void GlobalSettings::load()

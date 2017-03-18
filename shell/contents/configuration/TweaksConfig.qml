@@ -82,10 +82,10 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Enable autostart during startup")
-                checked: dockConfig.autostart
+                checked: globalSettings.autostart
 
                 onClicked: {
-                    dockConfig.autostart = checked;
+                    globalSettings.autostart = checked;
                 }
             }
 
