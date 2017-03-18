@@ -47,7 +47,6 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
-    Q_PROPERTY(bool exposeAltSession READ exposeAltSession WRITE setExposeAltSession NOTIFY exposeAltSessionChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
@@ -68,8 +67,6 @@ class DockView : public PlasmaQuick::ContainmentView {
 
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
-
-    Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
 
     Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
@@ -103,9 +100,6 @@ public:
     bool drawEffects() const;
     void setDrawEffects(bool draw);
 
-    bool exposeAltSession() const;
-    void setExposeAltSession(bool state);
-
     float maxLength() const;
     void setMaxLength(float length);
 
@@ -130,7 +124,6 @@ public:
     QRect absGeometry() const;
     QRect screenGeometry() const;
 
-    QAction *altSessionAction() const;
 
     Latte::Dock::SessionType runningSession() const;
     void setRunningSession(Latte::Dock::SessionType session);
@@ -181,7 +174,6 @@ signals:
     void eventTriggered(QEvent *ev);
 
     void alignmentChanged();
-    void altSessionActionChanged();
     void currentScreenChanged();
     void dockLocationChanged();
     void docksCountChanged();
@@ -189,7 +181,6 @@ signals:
     void drawEffectsChanged();
     void effectsAreaChanged();
     void enabledBordersChanged();
-    void exposeAltSessionChanged();
     void widthChanged();
     void heightChanged();
     void localGeometryChanged();

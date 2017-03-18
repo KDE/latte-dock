@@ -55,7 +55,8 @@ DragDrop.DropArea {
                                        && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
 
     property bool editMode: plasmoid.userConfiguring
-    property bool exposeAltSession: dock ? dock.exposeAltSession : false
+    property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
+
     property bool immutable: plasmoid.immutable
     property bool inStartup: true
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
@@ -161,8 +162,9 @@ DragDrop.DropArea {
     property Item latteAppletContainer
     property Item latteApplet
     property QtObject dock
+    property QtObject globalSettings
 
-    property QtObject altSessionAction: dock ? dock.altSessionAction : 0
+    property QtObject altSessionAction: globalSettings ? globalSettings.altSessionAction : 0
 
     // TO BE DELETED, if not needed: property int counter:0;
 
