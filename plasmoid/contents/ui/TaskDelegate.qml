@@ -89,6 +89,13 @@ MouseArea{
     property string activity: tasksModel.activity
 
     readonly property var m: model
+    property string modelLauncherUrl: (LauncherUrlWithoutIcon !== null) ? LauncherUrlWithoutIcon : ""
+    property string launcherUrl: ""
+
+    onModelLauncherUrlChanged: {
+        if (modelLauncherUrl !== "")
+            launcherUrl = modelLauncherUrl;
+    }
 
     property QtObject contextMenu: null
     property QtObject draggingResistaner: null
@@ -1061,29 +1068,25 @@ MouseArea{
             }
         }
 
-        function init(){
-            if (root.durationTime !== 0) {
+        function execute(){
+            //Animation Add/Remove (2) - when is window with no launcher, animations enabled
+            //Animation Add/Remove (3) - when is launcher with no window, animations enabled
+            if (( (!root.launcherExists(mainItemContainer.launcherUrl) && mainItemContainer.isWindow)
+                 || ( (!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher)))
+                    && (root.durationTime !== 0)){
                 wrapper.tempScaleWidth = 0;
                 wrapper.tempScaleHeight = 0;
+                start();
             } else {
                 wrapper.tempScaleWidth = 1;
                 wrapper.tempScaleHeight = 1;
+                wrapper.opacity = 1;
+                mainItemContainer.inAnimation = false;
             }
         }
 
         function showWindow(){
-            if((mainItemContainer.isLauncher || mainItemContainer.isStartup
-                || icList.delayingRemoval || (!mainItemContainer.buffersAreReady && !root.initializatedBuffers)) && root.durationTime !== 0){
-                delayShowWindow.createObject(mainItemContainer);
-            }
-            else{
-                execute();
-            }
-        }
-
-        function execute(){
-            init();
-            start();
+            execute();
         }
 
         Component.onDestruction: {
@@ -1218,7 +1221,14 @@ MouseArea{
 
     ///Item's Removal Animation
     ListView.onRemove: SequentialAnimation {
+        id: taskRealRemovalAnimation
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
+
+        //Animation Add/Remove (1) - when is window with no launcher, animations enabled
+        //Animation Add/Remove (4) - the user removes a launcher, animation enabled
+        property bool enabledAnimation: ((!root.launcherExists(mainItemContainer.launcherUrl) && mainItemContainer.isWindow)
+                                         ||(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher))
+                                        && (root.durationTime !== 0);
 
         ScriptAction{
             script:{
@@ -1233,6 +1243,9 @@ MouseArea{
                 icList.delayingRemoval = true;
                 mainItemContainer.inAddRemoveAnimation = true;
 
+                // console.log("1." + mainItemContainer.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
+                // console.log("2." + root.launcherForRemoval + " - " + mainItemContainer.isLauncher);
+
                 root.signalAnimationsNeedLength(1);
             }
         }
@@ -1244,13 +1257,18 @@ MouseArea{
 
             // property int speed: (IsStartup && !mainItemContainer.visible)? 0 : 400
             //property int speed: 400
-            NumberAnimation { target: wrapper; property: "opacity"; to: 0; duration: showWindowAnimation.speed; easing.type: Easing.InQuad }
+            NumberAnimation {
+                target: wrapper;
+                property: "opacity";
+                to: 0;
+                duration: taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
+                easing.type: Easing.InQuad }
 
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
                 to: 0
-                duration: showWindowAnimation.speed
+                duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
                 easing.type: Easing.InQuad
             }
         }
@@ -1260,7 +1278,7 @@ MouseArea{
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
             to: 0
-            duration: showWindowAnimation.speed
+            duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
             easing.type: Easing.InQuad
         }
 
@@ -1276,6 +1294,9 @@ MouseArea{
 
                 mainItemContainer.inAnimation = false;
                 icList.delayingRemoval = false;
+
+                if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
+                    root.launcherForRemoval="";
             }
         }
 

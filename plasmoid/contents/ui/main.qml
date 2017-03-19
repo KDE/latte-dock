@@ -89,6 +89,9 @@ Item {
 
     property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
 
+    //! it is used to play the animation correct when the user removes a launcher
+    property string launcherForRemoval: ""
+
     //BEGIN Now Dock Panel properties
     property bool directRender: icList.directRender
 
@@ -230,6 +233,21 @@ Item {
     }
 
     /////
+    function launcherExists(url) {
+        return (ActivitiesTools.getIndex(url, tasksModel.launcherList)>=0);
+    }
+
+    function taskExists(url) {
+        var tasks = icList.contentItem.children;
+        for(var i=0; i<tasks.length; ++i){
+            var task = tasks[i];
+
+            if (task.launcherUrl===url && task.isWindow) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function updateLaunchersNewArchitecture(){
         ///frameworks 5.29.0 provide id 335104
@@ -765,13 +783,13 @@ Item {
 
             //more of a trouble
             moveDisplaced: Transition {
-                NumberAnimation { properties: "x,y"; duration: root.durationTime*units.shortDuration; easing.type: Easing.Linear }
+                NumberAnimation { properties: "x,y"; duration: root.durationTime*units.longDuration; easing.type: Easing.Linear }
             }
 
             ///this transition can not be used with dragging !!!! I breaks
             ///the lists indexes !!!!!
-            /*  move:  Transition {
-                NumberAnimation { properties: "x,y"; duration: units.longDuration; easing.type: Easing.Linear }
+           /* move:  Transition {
+                NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.Linear }
             } */
 
             function childAtPos(x, y){

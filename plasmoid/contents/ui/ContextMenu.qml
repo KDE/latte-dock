@@ -598,6 +598,7 @@ PlasmaComponents.ContextMenu {
         text: i18n("Remove Launcher")
 
         onClicked: {
+            root.launcherForRemoval = visualParent.m.LauncherUrlWithoutIcon;
             tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
             root.updateLaunchersNewArchitecture();
         }
