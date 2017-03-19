@@ -544,13 +544,16 @@ Item{
             if(!launchedAlready) {
                 launchedAlready = true;
                 root.signalAnimationsNeedThickness(1);
+                root.globalDirectRender=false;
+                icList.directRender=false;
+                root.updateScale(index+1, 1, 0);
+                root.updateScale(index-1, 1, 0);
                 root.noTasksInAnimation++;
                 mainItemContainer.setBlockingAnimation(true);
             }
 
             wrapper.tempScaleWidth = wrapper.mScale;
             wrapper.tempScaleHeight = wrapper.mScale;
-
             icList.hoveredIndex = -1;
         }
 
