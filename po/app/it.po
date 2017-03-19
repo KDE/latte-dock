@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 12:54+0200\n"
+"POT-Creation-Date: 2017-03-19 13:12-0500\n"
 "PO-Revision-Date: 2017-01-29 14:48+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -329,12 +329,6 @@ msgstr "Colori differenti per le finestre minimizzate"
 msgid "Indicator for active window group"
 msgstr "Indicatore per il gruppo finestra attivo"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:78
-msgid ""
-"Grouped windows show both a line and a dot when \n"
-"one of them is active"
-msgstr ""
-
 #: ../../shell/contents/configuration/TasksConfig.qml:88
 msgid "Reverse position for lines and dots"
 msgstr "Inverte la posizione degli indicatori"
@@ -358,12 +352,6 @@ msgstr "Mostra azioni del task nel menu contestuale"
 #: ../../shell/contents/configuration/TasksConfig.qml:142
 msgid "Show progress information for tasks"
 msgstr "Mostra informazioni di progresso dei task"
-
-#: ../../shell/contents/configuration/TasksConfig.qml:144
-msgid ""
-"Show a beautiful progress animation e.g. when copying \n"
-"files with Dolphin"
-msgstr ""
 
 #: ../../shell/contents/configuration/TasksConfig.qml:156
 msgid "On middle-click:"
@@ -437,18 +425,8 @@ msgstr ""
 msgid "Decrease applets size when it is needed"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:96
-msgid ""
-"Applets size is decreased automatically when the contents \n"
-"exceed the maximum length"
-msgstr ""
-
 #: ../../shell/contents/configuration/TweaksConfig.qml:105
 msgid "Behave as a normal dock window"
-msgstr ""
-
-#: ../../shell/contents/configuration/TweaksConfig.qml:107
-msgid "Remove the BypassWindowManagerHint flag from the window"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:116
@@ -468,13 +446,6 @@ msgstr ""
 msgid "Session"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:160
-msgid ""
-"Sometimes the current layout of your panels is not sufficient \n"
-"for example when you are travelling. Latte provides you with a full \n"
-"alternative sessionn to work on."
-msgstr ""
-
 #: ../../shell/contents/configuration/TweaksConfig.qml:179
 #, fuzzy
 msgid "Extra Actions"
@@ -482,10 +453,6 @@ msgstr "Interazione"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:193
 msgid "Add Spacer"
-msgstr ""
-
-#: ../../shell/contents/configuration/TweaksConfig.qml:195
-msgid "Add a spacer to separate applets"
 msgstr ""
 
 #: ../desktop-templates/latte-dock.desktop.template:3
