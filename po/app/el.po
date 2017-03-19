@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-05 14:08+0200\n"
-"PO-Revision-Date: 2017-03-05 14:19+0200\n"
+"POT-Creation-Date: 2017-03-19 12:54+0200\n"
+"PO-Revision-Date: 2017-03-19 13:14+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -17,45 +17,50 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../app/dockview.cpp:1148
+#: ../../app/dockview.cpp:1319
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "Επιλογές του %1"
 
-#: ../../app/main.cpp:73
+#: ../../app/globalsettings.cpp:22
+#: ../../shell/contents/configuration/TweaksConfig.qml:157
+msgid "Alternative Session"
+msgstr "Εναλλακτική Συνεδρία"
+
+#: ../../app/main.cpp:75
 msgctxt "command line"
 msgid "Replace the current dock instance."
 msgstr "Αντικατάσταση του τρέχοντα πίνακα"
 
-#: ../../app/main.cpp:74
+#: ../../app/main.cpp:76
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Εμφάνιση των μηνυμάτων αποσφαλμάτωσης στην τρέχουσα έξοδο."
 
-#: ../../app/main.cpp:75
+#: ../../app/main.cpp:77
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
 msgstr ""
-"Εμφάνιση μηνυμάτων αποσφαλμάτωσης της μάσκας (χρήση κυρίως από τους"
-" προγραμματιστές)"
+"Εμφάνιση μηνυμάτων αποσφαλμάτωσης της μάσκας (χρήση κυρίως από τους "
+"προγραμματιστές)"
 
-#: ../../app/main.cpp:76
+#: ../../app/main.cpp:78
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
 msgstr "Εμφάνιση τετραγώνων γύρο από τις εφαρμογές. "
 
-#: ../../app/main.cpp:77
+#: ../../app/main.cpp:79
 msgctxt "command line"
 msgid "Open a window with much debug information."
 msgstr "Εμφάνιση παραθύρου με πληροφορίες αποσφαλμάτωσης."
 
-#: ../../app/main.cpp:94
+#: ../../app/main.cpp:98
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
-"Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του"
-" Latte"
+"Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του "
+"Latte"
 
-#: ../../app/main.cpp:132
+#: ../../app/main.cpp:138
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "
 "intuitive experience for your tasks and plasmoids. It animates its contents "
@@ -71,15 +76,15 @@ msgstr ""
 "\n"
 "\"Τέχνη στον Καφέ\""
 
-#: ../../app/main.cpp:149
+#: ../../app/main.cpp:155
 msgid "Logo and Icons"
 msgstr "Εικονίδια και Logo"
 
-#: ../../app/main.cpp:151
+#: ../../app/main.cpp:157
 msgid "Many bug reports"
 msgstr "Πολλές δηλώσεις προβλημάτων"
 
-#: ../../app/main.cpp:153
+#: ../../app/main.cpp:159
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
 msgstr "Αξιολογήσεις των Latte Dock, CandilDock και NowDock"
 
@@ -99,61 +104,69 @@ msgstr "Μοντέλο ρυθμίσεων"
 msgid "Applets Size"
 msgstr "Μέγεθος Εφαρμογών"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:110
+#: ../../shell/contents/configuration/AppearanceConfig.qml:107
+msgid "Screen Height Proportion:"
+msgstr "Με βάση το ύψος της οθόνης:"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:156
+msgid "Applets Distance:"
+msgstr "Απόσταση Εφαρμογών:"
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:193
 msgid "Zoom On Hover"
 msgstr "Εστίαση"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:123
+#: ../../shell/contents/configuration/AppearanceConfig.qml:206
 msgid "Zoom Factor"
 msgstr "Συντελεστής Εστίασης"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:162
+#: ../../shell/contents/configuration/AppearanceConfig.qml:245
 msgid "Animations"
 msgstr "Γραφικά"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:183
-#: ../../shell/contents/configuration/AppearanceConfig.qml:387
+#: ../../shell/contents/configuration/AppearanceConfig.qml:266
+#: ../../shell/contents/configuration/AppearanceConfig.qml:470
 msgid "None"
 msgstr "Καμία"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:192
+#: ../../shell/contents/configuration/AppearanceConfig.qml:275
 msgid "x1"
 msgstr "x1"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:201
+#: ../../shell/contents/configuration/AppearanceConfig.qml:284
 msgid "x2"
 msgstr "x2"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:210
+#: ../../shell/contents/configuration/AppearanceConfig.qml:293
 msgid "x3"
 msgstr "x3"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:227
+#: ../../shell/contents/configuration/AppearanceConfig.qml:310
 msgid "Background"
 msgstr "Παρασκήνιο"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:242
+#: ../../shell/contents/configuration/AppearanceConfig.qml:325
 msgid "Show Panel Background"
 msgstr "Εμφάνιση Παρασκηνίου"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:255
+#: ../../shell/contents/configuration/AppearanceConfig.qml:338
 msgid "Solid Background"
 msgstr "Συμπαγές Παρασκήνιο"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:310
-#: ../../shell/contents/configuration/AppearanceConfig.qml:323
+#: ../../shell/contents/configuration/AppearanceConfig.qml:393
+#: ../../shell/contents/configuration/AppearanceConfig.qml:406
 msgid "Length"
 msgstr "Μήκος"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:362
+#: ../../shell/contents/configuration/AppearanceConfig.qml:445
 msgid "Applet shadows"
 msgstr "Σκιές Συστατικών"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:396
+#: ../../shell/contents/configuration/AppearanceConfig.qml:479
 msgid "Locked"
 msgstr "Κλειδωμένα"
 
-#: ../../shell/contents/configuration/AppearanceConfig.qml:405
+#: ../../shell/contents/configuration/AppearanceConfig.qml:488
 msgid "All"
 msgstr "Παντού"
 
@@ -267,28 +280,34 @@ msgstr "Γενικά"
 msgid "ver:"
 msgstr "εκδ: "
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:172
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:173
+#: ../../shell/contents/configuration/TweaksConfig.qml:79
 msgid "Behavior"
 msgstr "Συμπεριφορά"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:176
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:177
 #: ../../shell/contents/configuration/TasksConfig.qml:48
+#: ../../shell/contents/configuration/TweaksConfig.qml:48
 msgid "Appearance"
 msgstr "Εμφάνιση"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:180
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:181
 msgid "Tasks"
 msgstr "Εργασίες"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:255
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:187
+msgid "Tweaks"
+msgstr "Προχωρημένα"
+
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:264
 msgid "Add"
 msgstr "Προσθήκη"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:270
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:279
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: ../../shell/contents/configuration/LatteDockConfiguration.qml:284
+#: ../../shell/contents/configuration/LatteDockConfiguration.qml:293
 msgid "Quit"
 msgstr "Έξοδος"
 
@@ -312,45 +331,170 @@ msgstr "Διαφορετικό χρώμα για ελαχιστοποιημέν�
 msgid "Indicator for active window group"
 msgstr "Δείκτης ομάδας ενεργού παραθύρου"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:87
+#: ../../shell/contents/configuration/TasksConfig.qml:78
+msgid ""
+"Grouped windows show both a line and a dot when \n"
+"one of them is active"
+msgstr ""
+"Τα ομαδοποιημένα παράθυρα εμφανίζουν μία γραμμή και \n"
+"και μία τελεία όταν κάποιο είναι ενεργό"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:88
 msgid "Reverse position for lines and dots"
 msgstr "Αντίστροφη θέση για γραμμές και τελείες"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:102
+#: ../../shell/contents/configuration/TasksConfig.qml:103
 msgid "Interaction"
 msgstr "Αλληλεπίδραση"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:108
+#: ../../shell/contents/configuration/TasksConfig.qml:109
 msgid "Preview windows on hovering"
 msgstr "Προεπισκοπήσεις παραθύρων"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:119
+#: ../../shell/contents/configuration/TasksConfig.qml:120
 msgid "Highlight windows on hovering"
 msgstr "Τονισμός παραθύρων"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:130
+#: ../../shell/contents/configuration/TasksConfig.qml:131
 msgid "Show window actions in the context menu"
 msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:141
+#: ../../shell/contents/configuration/TasksConfig.qml:142
 msgid "Show progress information for tasks"
 msgstr "Εμφάνιση προόδου εργασιών"
 
+#: ../../shell/contents/configuration/TasksConfig.qml:144
+msgid ""
+"Show a beautiful progress animation e.g. when copying \n"
+"files with Dolphin"
+msgstr ""
+"Εμφανίζει ένα όμορφο εφέ προόδου π.χ. όταν αντιγράφουμε \n"
+"αρχεία με το πρόγραμμα Dolphin"
+
 #: ../../shell/contents/configuration/TasksConfig.qml:156
+msgid "On middle-click:"
+msgstr "Στο μεσαίο κλικ:"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:163
+#: ../../shell/contents/configuration/TasksConfig.qml:203
+msgctxt "The click action"
+msgid "None"
+msgstr "Καμία"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:163
+#: ../../shell/contents/configuration/TasksConfig.qml:203
+msgid "Close Window or Group"
+msgstr "Κλείσιμο Παραθύρου ή Ομάδας"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:163
+#: ../../shell/contents/configuration/TasksConfig.qml:203
+msgid "New Instance"
+msgstr "Νέο Στιγμιότυπο"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:163
+#: ../../shell/contents/configuration/TasksConfig.qml:203
+msgid "Minimize/Restore Window or Group"
+msgstr "Απόκρυψη/Επαναφορά Παραθύρου ή Ομάδας"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:190
+msgid "Left Click"
+msgstr "Αριστερό κλικ"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:190
+msgid "Middle Click"
+msgstr "Μεσαίο κλικ"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:190
+msgid "Right Click"
+msgstr "Δεξί κλικ"
+
+#: ../../shell/contents/configuration/TasksConfig.qml:217
 msgid "Filters"
 msgstr "Φίλτρα"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:162
+#: ../../shell/contents/configuration/TasksConfig.qml:223
 msgid "Show only tasks from the current screen"
 msgstr "Εργασίες μόνο της τρέχουσας οθόνης"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:173
+#: ../../shell/contents/configuration/TasksConfig.qml:234
 msgid "Show only tasks from the current desktop"
 msgstr "Εργασίες μόνο της τρέχουσας επιφάνειας εργασίας"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:184
+#: ../../shell/contents/configuration/TasksConfig.qml:245
 msgid "Show only tasks from the current activity"
 msgstr "Εργασίες μόνο της τρέχουσας δραστηριότητας"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:54
+msgid "Blur for panel background"
+msgstr "Θόλωμα στο υπόβαθρο"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:65
+msgid "Shrink thickness margins to minimum"
+msgstr "Ελαχιστοποίηση περιθωρίων πλάτους"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:84
+msgid "Enable autostart during startup"
+msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:94
+msgid "Decrease applets size when it is needed"
+msgstr "Μείωση μεγέθους εφαρμογών όταν χρειάζεται"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:96
+msgid ""
+"Applets size is decreased automatically when the contents \n"
+"exceed the maximum length"
+msgstr ""
+"Το μέγεθος των εφαρμογών μειώνεται αυτόματα όταν τα περιεχόμενα \n"
+"υπερκαλύπτουν το μέγιστο μήκος"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:105
+msgid "Behave as a normal dock window"
+msgstr "Λειτουργία ως παράθυρο κανονικού πίνακα"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:107
+msgid "Remove the BypassWindowManagerHint flag from the window"
+msgstr ""
+"Αφαίρεση της σήμανσης BypassWindowManagerHint από τα \n"
+"χαρακτηριστικά του παραθύρου"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:116
+msgid "Expose Alternative Session in the context menu"
+msgstr "Εμφάνιση Εναλλακτικής Συνεδρίας στο μενού επιλογών"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:126
+msgid "Raise dock on desktop change"
+msgstr "Ανύψωση σε κάθε αλλαγή επιφάνειας εργασίας"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:136
+msgid "Raise dock on activity change"
+msgstr "Ανύψωση σε κάθε αλλαγή Δραστηριότητας"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:150
+msgid "Session"
+msgstr "Συνεδρία"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:160
+msgid ""
+"Sometimes the current layout of your panels is not sufficient \n"
+"for example when you are travelling. Latte provides you with a full \n"
+"alternative sessionn to work on."
+msgstr ""
+"Μερικές φορές η ταξινόμηση των πινάκων σας δεν είναι επαρκής \n"
+"για παράδειγμα όταν ταξιδεύετε. Σε μία τέτοια περίπτωση το Latte \n"
+"σας προσφέρει μία πλήρη εναλλακτική συνεδρία για να εργαστείτε."
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:179
+msgid "Extra Actions"
+msgstr "Πρόσθετες Ενέργειες"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:193
+msgid "Add Spacer"
+msgstr "Προσθήκη Κενού"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:195
+msgid "Add a spacer to separate applets"
+msgstr "Προσθήκη κενού για να διαχωρίσετε τις εφαρμογές"
 
 #: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"

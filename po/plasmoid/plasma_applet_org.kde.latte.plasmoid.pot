@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-05 14:08+0200\n"
+"POT-Creation-Date: 2017-03-19 12:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,24 +308,24 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:858
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:881
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:448
 msgid "On %1"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:867
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:890
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:458
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:886
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:909
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:480
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr ""
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:890
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:913
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:484
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
