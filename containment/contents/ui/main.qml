@@ -47,7 +47,7 @@ DragDrop.DropArea {
 
     property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
 
-    property bool automaticSize: plasmoid.configuration.automaticIconSize
+    property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
     property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
@@ -83,8 +83,9 @@ DragDrop.DropArea {
 
     //what is the highest icon size based on what icon size is used, screen calculated or user specified
     property int maxIconSize: proportionIconSize!==-1 ? proportionIconSize : plasmoid.configuration.iconSize
-    property int iconSize: automaticIconSizeBasedSize > 0 ? Math.min(automaticIconSizeBasedSize, root.maxIconSize) :
-                                                            root.maxIconSize
+    property int iconSize: automaticIconSizeBasedSize > 0 && autoDecreaseIconSize ?
+                               Math.min(automaticIconSizeBasedSize, root.maxIconSize) :
+                               root.maxIconSize
 
     property int proportionIconSize: { //icon size based on screen height
         if ((plasmoid.configuration.proportionIconSize===-1) || !dock)

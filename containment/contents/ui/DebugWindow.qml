@@ -329,6 +329,14 @@ Window{
             }
 
             Text{
+                text: "Icon Size (current)"+space
+            }
+
+            Text{
+                text: root.iconSize
+            }
+
+            Text{
                 text: "Icon Size (user)"+space
             }
 
@@ -345,19 +353,19 @@ Window{
             }
 
             Text{
-                text: "Icon Size (automatic)"+space
+                text: "Icon Size (auto decrease), Enabled"+space
+            }
+
+            Text{
+                text: root.autoDecreaseIconSize
+            }
+
+            Text{
+                text: "Icon Size (auto decrease)"+space
             }
 
             Text{
                 text: root.automaticIconSizeBasedSize
-            }
-
-            Text{
-                text: "Icon Size (current)"+space
-            }
-
-            Text{
-                text: root.iconSize
             }
 
             Text{
