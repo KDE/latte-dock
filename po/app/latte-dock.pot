@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 12:54+0200\n"
+"POT-Creation-Date: 2017-03-19 13:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -320,12 +320,6 @@ msgstr ""
 msgid "Indicator for active window group"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:78
-msgid ""
-"Grouped windows show both a line and a dot when \n"
-"one of them is active"
-msgstr ""
-
 #: ../../shell/contents/configuration/TasksConfig.qml:88
 msgid "Reverse position for lines and dots"
 msgstr ""
@@ -348,12 +342,6 @@ msgstr ""
 
 #: ../../shell/contents/configuration/TasksConfig.qml:142
 msgid "Show progress information for tasks"
-msgstr ""
-
-#: ../../shell/contents/configuration/TasksConfig.qml:144
-msgid ""
-"Show a beautiful progress animation e.g. when copying \n"
-"files with Dolphin"
 msgstr ""
 
 #: ../../shell/contents/configuration/TasksConfig.qml:156
@@ -425,18 +413,8 @@ msgstr ""
 msgid "Decrease applets size when it is needed"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:96
-msgid ""
-"Applets size is decreased automatically when the contents \n"
-"exceed the maximum length"
-msgstr ""
-
 #: ../../shell/contents/configuration/TweaksConfig.qml:105
 msgid "Behave as a normal dock window"
-msgstr ""
-
-#: ../../shell/contents/configuration/TweaksConfig.qml:107
-msgid "Remove the BypassWindowManagerHint flag from the window"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:116
@@ -455,23 +433,12 @@ msgstr ""
 msgid "Session"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:160
-msgid ""
-"Sometimes the current layout of your panels is not sufficient \n"
-"for example when you are travelling. Latte provides you with a full \n"
-"alternative sessionn to work on."
-msgstr ""
-
 #: ../../shell/contents/configuration/TweaksConfig.qml:179
 msgid "Extra Actions"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:193
 msgid "Add Spacer"
-msgstr ""
-
-#: ../../shell/contents/configuration/TweaksConfig.qml:195
-msgid "Add a spacer to separate applets"
 msgstr ""
 
 #: ../desktop-templates/latte-dock.desktop.template:3

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 12:54+0200\n"
+"POT-Creation-Date: 2017-03-19 13:12-0500\n"
 "PO-Revision-Date: 2017-03-19 13:14+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -331,14 +331,6 @@ msgstr "Διαφορετικό χρώμα για ελαχιστοποιημέν�
 msgid "Indicator for active window group"
 msgstr "Δείκτης ομάδας ενεργού παραθύρου"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:78
-msgid ""
-"Grouped windows show both a line and a dot when \n"
-"one of them is active"
-msgstr ""
-"Τα ομαδοποιημένα παράθυρα εμφανίζουν μία γραμμή και \n"
-"και μία τελεία όταν κάποιο είναι ενεργό"
-
 #: ../../shell/contents/configuration/TasksConfig.qml:88
 msgid "Reverse position for lines and dots"
 msgstr "Αντίστροφη θέση για γραμμές και τελείες"
@@ -362,14 +354,6 @@ msgstr "Ενέργειες παραθύρου στο μενού επιλογών
 #: ../../shell/contents/configuration/TasksConfig.qml:142
 msgid "Show progress information for tasks"
 msgstr "Εμφάνιση προόδου εργασιών"
-
-#: ../../shell/contents/configuration/TasksConfig.qml:144
-msgid ""
-"Show a beautiful progress animation e.g. when copying \n"
-"files with Dolphin"
-msgstr ""
-"Εμφανίζει ένα όμορφο εφέ προόδου π.χ. όταν αντιγράφουμε \n"
-"αρχεία με το πρόγραμμα Dolphin"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:156
 msgid "On middle-click:"
@@ -440,23 +424,9 @@ msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
 msgid "Decrease applets size when it is needed"
 msgstr "Μείωση μεγέθους εφαρμογών όταν χρειάζεται"
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:96
-msgid ""
-"Applets size is decreased automatically when the contents \n"
-"exceed the maximum length"
-msgstr ""
-"Το μέγεθος των εφαρμογών μειώνεται αυτόματα όταν τα περιεχόμενα \n"
-"υπερκαλύπτουν το μέγιστο μήκος"
-
 #: ../../shell/contents/configuration/TweaksConfig.qml:105
 msgid "Behave as a normal dock window"
 msgstr "Λειτουργία ως παράθυρο κανονικού πίνακα"
-
-#: ../../shell/contents/configuration/TweaksConfig.qml:107
-msgid "Remove the BypassWindowManagerHint flag from the window"
-msgstr ""
-"Αφαίρεση της σήμανσης BypassWindowManagerHint από τα \n"
-"χαρακτηριστικά του παραθύρου"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:116
 msgid "Expose Alternative Session in the context menu"
@@ -474,16 +444,6 @@ msgstr "Ανύψωση σε κάθε αλλαγή Δραστηριότητας"
 msgid "Session"
 msgstr "Συνεδρία"
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:160
-msgid ""
-"Sometimes the current layout of your panels is not sufficient \n"
-"for example when you are travelling. Latte provides you with a full \n"
-"alternative sessionn to work on."
-msgstr ""
-"Μερικές φορές η ταξινόμηση των πινάκων σας δεν είναι επαρκής \n"
-"για παράδειγμα όταν ταξιδεύετε. Σε μία τέτοια περίπτωση το Latte \n"
-"σας προσφέρει μία πλήρη εναλλακτική συνεδρία για να εργαστείτε."
-
 #: ../../shell/contents/configuration/TweaksConfig.qml:179
 msgid "Extra Actions"
 msgstr "Πρόσθετες Ενέργειες"
@@ -491,10 +451,6 @@ msgstr "Πρόσθετες Ενέργειες"
 #: ../../shell/contents/configuration/TweaksConfig.qml:193
 msgid "Add Spacer"
 msgstr "Προσθήκη Κενού"
-
-#: ../../shell/contents/configuration/TweaksConfig.qml:195
-msgid "Add a spacer to separate applets"
-msgstr "Προσθήκη κενού για να διαχωρίσετε τις εφαρμογές"
 
 #: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
@@ -507,6 +463,44 @@ msgstr "Πίνακας για όλον τον κόσμο"
 #: ../desktop-templates/latte-dock.desktop.template:5
 msgid "Dock"
 msgstr "Πίνακας"
+
+#~ msgid ""
+#~ "Grouped windows show both a line and a dot when \n"
+#~ "one of them is active"
+#~ msgstr ""
+#~ "Τα ομαδοποιημένα παράθυρα εμφανίζουν μία γραμμή και \n"
+#~ "και μία τελεία όταν κάποιο είναι ενεργό"
+
+#~ msgid ""
+#~ "Show a beautiful progress animation e.g. when copying \n"
+#~ "files with Dolphin"
+#~ msgstr ""
+#~ "Εμφανίζει ένα όμορφο εφέ προόδου π.χ. όταν αντιγράφουμε \n"
+#~ "αρχεία με το πρόγραμμα Dolphin"
+
+#~ msgid ""
+#~ "Applets size is decreased automatically when the contents \n"
+#~ "exceed the maximum length"
+#~ msgstr ""
+#~ "Το μέγεθος των εφαρμογών μειώνεται αυτόματα όταν τα περιεχόμενα \n"
+#~ "υπερκαλύπτουν το μέγιστο μήκος"
+
+#~ msgid "Remove the BypassWindowManagerHint flag from the window"
+#~ msgstr ""
+#~ "Αφαίρεση της σήμανσης BypassWindowManagerHint από τα \n"
+#~ "χαρακτηριστικά του παραθύρου"
+
+#~ msgid ""
+#~ "Sometimes the current layout of your panels is not sufficient \n"
+#~ "for example when you are travelling. Latte provides you with a full \n"
+#~ "alternative sessionn to work on."
+#~ msgstr ""
+#~ "Μερικές φορές η ταξινόμηση των πινάκων σας δεν είναι επαρκής \n"
+#~ "για παράδειγμα όταν ταξιδεύετε. Σε μία τέτοια περίπτωση το Latte \n"
+#~ "σας προσφέρει μία πλήρη εναλλακτική συνεδρία για να εργαστείτε."
+
+#~ msgid "Add a spacer to separate applets"
+#~ msgstr "Προσθήκη κενού για να διαχωρίσετε τις εφαρμογές"
 
 #~ msgid "Shadows"
 #~ msgstr "Σκιές"
