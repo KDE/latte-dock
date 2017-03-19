@@ -523,7 +523,7 @@ MouseArea{
     }
 
     onDelayingRemoveChanged: {
-        if(delayingRemove && isWindow)
+        if(delayingRemove && (!root.launcherExists(mainItemContainer.launcherUrl) && mainItemContainer.isWindow))
             groupWindowRemoved();
     }
 
