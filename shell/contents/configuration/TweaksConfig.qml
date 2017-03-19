@@ -91,6 +91,17 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Decrease applets size when it is needed")
+                checked: plasmoid.configuration.autoDecreaseIconSize
+                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
+
+                onClicked: {
+                    plasmoid.configuration.autoDecreaseIconSize = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Behave as a normal dock window")
                 checked: dock.dockWinBehavior
                 tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")

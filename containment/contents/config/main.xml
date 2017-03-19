@@ -51,8 +51,8 @@
     <entry name="blurEnabled" type="Bool">
       <default>true</default>
     </entry>
-    <entry name="automaticIconSize" type="Bool">
-      <default>false</default>
+    <entry name="autoDecreaseIconSize" type="Bool">
+      <default>true</default>
     </entry>
     <entry name="smallAutomaticIconJumps" type="Bool">
       <default>true</default>
