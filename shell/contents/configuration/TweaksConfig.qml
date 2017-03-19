@@ -157,6 +157,7 @@ PlasmaComponents.Page {
                 text: i18n("Alternative Session")
                 checked: globalSettings.currentSession === Latte.Dock.AlternativeSession
                 checkable: true
+                tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
 
                 onClicked: {
                     if (globalSettings.currentSession === Latte.Dock.DefaultSession){
@@ -191,6 +192,8 @@ PlasmaComponents.Page {
                     iconSource: "distribute-horizontal-x"
                     text: i18n("Add Spacer")
                     Layout.alignment: Qt.AlignLeft
+                    tooltip: i18n("Add a spacer to separate applets")
+
                     onClicked: {
                         dockConfig.addPanelSpacer();
                     }
