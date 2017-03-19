@@ -1250,6 +1250,14 @@ MouseArea{
             }
         }
 
+        PropertyAnimation {
+            target: wrapper
+            property: "mScale"
+            to: 1
+            duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
+            easing.type: Easing.InQuad
+        }
+
         //PropertyAction { target: wrapper; property: "opacity"; value: isWindow ? 0 : 1 }
         //animation mainly for launchers removal and startups
         ParallelAnimation{
