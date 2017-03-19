@@ -75,6 +75,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Indicator for active window group")
                 checked: plasmoid.configuration.dotsOnActive
+                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active")
 
                 onClicked: {
                     plasmoid.configuration.dotsOnActive = checked
@@ -140,6 +141,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show progress information for tasks")
                 checked: plasmoid.configuration.smartLaunchersEnabled
+                tooltip: i18n("Show a beautiful progress animation e.g. when copying \nfiles with Dolphin")
+
 
                 onClicked: {
                     plasmoid.configuration.smartLaunchersEnabled = checked

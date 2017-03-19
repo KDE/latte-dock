@@ -139,7 +139,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     text: proportionSizeSlider.value>=proportionSizeSlider.realMinimum ?
-                             proportionSizeSlider.value.toFixed(1) + "%" : "---%"
+                              proportionSizeSlider.value.toFixed(1) + "%" : "---%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
@@ -168,7 +168,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (!pressed) {
-                             plasmoid.configuration.iconMargin = value;
+                            plasmoid.configuration.iconMargin = value;
                         }
                     }
                 }
