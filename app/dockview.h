@@ -139,6 +139,8 @@ public:
 
     VisibilityManager *visibility() const;
 
+    void deactivateApplets();
+
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);

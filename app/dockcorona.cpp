@@ -511,6 +511,7 @@ void DockCorona::syncDockViews()
         if (view->session() != currentSession()) {
             qDebug() << "deleting view that does not belong in this session...";
             auto viewToDelete = m_dockViews.take(view->containment());
+            viewToDelete->deactivateApplets();
             viewToDelete->deleteLater();
             //! which explicit docks can be deleted
         } else if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())

@@ -1066,6 +1066,21 @@ void DockView::closeApplication()
         dockCorona->closeApplication();
 }
 
+void DockView::deactivateApplets()
+{
+    if (!containment()) {
+        return;
+    }
+
+    foreach (auto applet, containment()->applets()) {
+        PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+        if (ai) {
+            ai->setExpanded(false);
+        }
+    }
+}
+
 QVariantList DockView::containmentActions()
 {
     QVariantList actions;
