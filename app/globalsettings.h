@@ -24,6 +24,9 @@
 #include "dockcorona.h"
 #include "../liblattedock/dock.h"
 
+#include <QFileDialog>
+#include <QPointer>
+
 #include <KConfigGroup>
 #include <KSharedConfig>
 
@@ -56,6 +59,10 @@ public:
     Latte::Dock::SessionType currentSession() const;
     void setCurrentSession(Latte::Dock::SessionType session);
 
+    static bool importHelper(const QString& fileName);
+    Q_INVOKABLE void importConfiguration();
+    Q_INVOKABLE void exportConfiguration();
+
 signals:
     void altSessionActionChanged();
     void currentSessionChanged();
@@ -72,6 +79,7 @@ private:
     bool m_exposeAltSession{false};
     QAction *m_altSessionAction{nullptr};
     DockCorona *m_corona{nullptr};
+    QPointer<QFileDialog> m_fileDialog;
 
     KConfigGroup m_configGroup;
 };
