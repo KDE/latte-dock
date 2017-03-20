@@ -20,6 +20,7 @@
 
 #include "dockcorona.h"
 #include "config-latte.h"
+#include "globalsettings.h"
 
 #include <memory>
 #include <csignal>
@@ -77,6 +78,7 @@ int main(int argc, char **argv)
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
+        , {"import", i18nc("command line", "Import configuration."), i18nc("command line: import", "file_name")}
     });
 
     parser.process(app);
@@ -84,12 +86,10 @@ int main(int argc, char **argv)
     QLockFile lockFile {QDir::tempPath() + "/latte-dock.lock"};
 
     int timeout {100};
-
-    if (parser.isSet(QStringLiteral("replace"))) {
-        qint64 pid{ -1};
-
+    if (parser.isSet(QStringLiteral("replace")) || parser.isSet(QStringLiteral("import"))) {
+        qint64 pid{-1};
         if (lockFile.getLockInfo(&pid, nullptr, nullptr)) {
-            kill(static_cast<__pid_t>(pid), SIGINT);
+            kill(static_cast<pid_t>(pid), SIGINT);
             timeout = 3000;
         }
     }
@@ -98,6 +98,16 @@ int main(int argc, char **argv)
         qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
         qGuiApp->exit();
     }
+
+    if (parser.isSet(QStringLiteral("import"))) {
+        bool imported = Latte::GlobalSettings::importHelper(parser.value(QStringLiteral("import")));
+
+        if (!imported) {
+            qInfo() << i18n("The configuration cannot be imported");
+            app.quit();
+        }
+    }
+
 
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {
         //! set pattern for debug messages
