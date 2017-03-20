@@ -116,8 +116,6 @@ private:
     bool m_activitiesStarting{true};
     //! used to initialize the docks when changing sessions
     bool m_waitingSessionDocksCreation{false};
-    //! used to enable/disable raise on activity/desktop changed
-    bool m_raiseDocksTemporary{false};
     //! this is used to check if a dock with tasks in it will be loaded on startup
     bool m_tasksWillBeLoaded{false};
     //! this is used to record the first dock having tasks in it. It is used
