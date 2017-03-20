@@ -345,7 +345,7 @@ Item {
                 //console.log("preview show called: accepted...");
 
                 //used to initialize windows previews buffers from task to task
-                visible = false;
+                visible = true;
                 activeItem = taskItem;
                 toolTipDelegate.parentTask = taskItem;
 
@@ -355,29 +355,7 @@ Item {
                     signalSent = true;
                     //root.signalDraggingState(true);
                 }
-
-                //small delay to show in order to not mess up with the buffers clearing
-                //from previous visible:false
-                initializePreviewComponent.createObject(windowsPreviewDlg);
             }
-        }
-    }
-
-    //A Timer to delay to show in order to not mess up with the buffers clearing
-    //from previous visible:false
-    Component {
-        id: initializePreviewComponent
-        Timer {
-            id: initializePreviewTimer
-            interval: 100
-            repeat: false
-
-            onTriggered: {
-                windowsPreviewDlg.visible = true;
-                initializePreviewTimer.destroy();
-            }
-
-            Component.onCompleted: initializePreviewTimer.start()
         }
     }
 
