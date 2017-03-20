@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Jeff Huang <s8321414@gmail.com>, 2016.
+# Jeff Huang <s8321414@gmail.com>, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-19 13:12-0500\n"
-"PO-Revision-Date: 2016-11-26 17:34+0800\n"
+"PO-Revision-Date: 2017-03-20 21:01+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -50,9 +50,8 @@ msgid "Different color for minimized windows"
 msgstr "最小化視窗使用不同的顏色"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
-#, fuzzy
 msgid "Indicator for active window group"
-msgstr "作用中的視窗顯示點"
+msgstr "作用中視窗群組的指示器"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
 msgid "Reverse position for lines and dots"
@@ -84,10 +83,9 @@ msgstr "在需要限制的動畫上顯示紅線"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:325
 #: ../../plasmoid/contents/ui/ConfigPanel.qml:171
-#, fuzzy
 msgid ""
 "For the disabled settings you should use the Latte Dock Configuration Window"
-msgstr "為了已停用的設定，您必須使用 Now Dock 面板設定視窗"
+msgstr "為了已停用的設定，您必須使用 Latte Dock 設定視窗"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:59
 msgid "Cycle through tasks with mouse wheel"
@@ -106,9 +104,8 @@ msgid "Show window actions in the context menu"
 msgstr "在右鍵選單中顯示視窗動作"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
-#, fuzzy
 msgid "Show progress information for tasks"
-msgstr "在工具按鍵裡顯示進度資訊"
+msgstr "顯示工作的進度資訊"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:89
 msgid "On middle-click:"
@@ -336,11 +333,11 @@ msgstr "於 %1 上使用"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:3
 msgid "Latte Plasmoid"
-msgstr ""
+msgstr "Latte Plasmoid"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
-msgstr ""
+msgstr "從 Latte Dock 而來的 Plasmoid"
 
 #~ msgctxt "Go to previous song"
 #~ msgid "Previous"

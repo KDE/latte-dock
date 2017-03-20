@@ -1,13 +1,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Jeff Huang <s8321414@gmail.com>, 2016.
+# Jeff Huang <s8321414@gmail.com>, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-19 13:12-0500\n"
-"PO-Revision-Date: 2016-11-26 17:31+0800\n"
+"PO-Revision-Date: 2017-03-20 20:57+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -20,41 +20,41 @@ msgstr ""
 #: ../../app/dockview.cpp:1319
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
-msgstr ""
+msgstr "%1 選項"
 
 #: ../../app/globalsettings.cpp:22
 #: ../../shell/contents/configuration/TweaksConfig.qml:157
 msgid "Alternative Session"
-msgstr ""
+msgstr "替代工作階段"
 
 #: ../../app/main.cpp:75
 msgctxt "command line"
 msgid "Replace the current dock instance."
-msgstr ""
+msgstr "取代目前的 dock 實體。"
 
 #: ../../app/main.cpp:76
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
-msgstr ""
+msgstr "在 stdout 顯示除錯資訊。"
 
 #: ../../app/main.cpp:77
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
-msgstr ""
+msgstr "顯示遮罩的除錯用資訊（僅對開發者有用）。"
 
 #: ../../app/main.cpp:78
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
-msgstr ""
+msgstr "在小工具旁繪製框線。"
 
 #: ../../app/main.cpp:79
 msgctxt "command line"
 msgid "Open a window with much debug information."
-msgstr ""
+msgstr "開啟包含除錯資訊的視窗。"
 
 #: ../../app/main.cpp:98
 msgid "An instance is already running!, use --replace to restart Latte"
-msgstr ""
+msgstr "已有執行中的實體！使用 --replace 重新啟動 Latte"
 
 #: ../../app/main.cpp:138
 msgid ""
@@ -64,31 +64,35 @@ msgid ""
 "\n"
 "\"Art in Coffee\""
 msgstr ""
+"Latte 是一個基於 plasma 框架編寫的 dock，其提供了優雅且"
+"直觀的工作列與 plasmoid 新體驗。它以拋物線縮放特效來讓"
+"其內容動畫化，並嘗試在您需要時才會出現。\n"
+"\n"
+"「咖啡中的藝術」"
 
 #: ../../app/main.cpp:155
 msgid "Logo and Icons"
-msgstr ""
+msgstr "標誌與圖示"
 
 #: ../../app/main.cpp:157
 msgid "Many bug reports"
-msgstr ""
+msgstr "許多的錯誤回報"
 
 #: ../../app/main.cpp:159
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr ""
+msgstr "審閱 Latte Dock、CandilDock 與 NowDock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:44
-#, fuzzy
 msgid "Latte Dock panel"
-msgstr "Now Dock 面板"
+msgstr "Latte Dock 面板"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:46
 msgid "Dock configuration UI"
-msgstr ""
+msgstr "Dock 設定使用者介面"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:47
 msgid "Config model"
-msgstr ""
+msgstr "設定模型"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
@@ -96,12 +100,11 @@ msgstr "小程式大小"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:107
 msgid "Screen Height Proportion:"
-msgstr ""
+msgstr "螢幕高度比例："
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:156
-#, fuzzy
 msgid "Applets Distance:"
-msgstr "小程式大小"
+msgstr "小程式拒離："
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:193
 msgid "Zoom On Hover"
@@ -113,7 +116,7 @@ msgstr "縮放係數"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:245
 msgid "Animations"
-msgstr ""
+msgstr "動畫"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:266
 #: ../../shell/contents/configuration/AppearanceConfig.qml:470
@@ -122,15 +125,15 @@ msgstr "無"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:275
 msgid "x1"
-msgstr ""
+msgstr "x1"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:284
 msgid "x2"
-msgstr ""
+msgstr "x2"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:293
 msgid "x3"
-msgstr ""
+msgstr "x3"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:310
 msgid "Background"
@@ -141,102 +144,91 @@ msgid "Show Panel Background"
 msgstr "顯示面板背景"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
-#, fuzzy
 msgid "Solid Background"
-msgstr "背景"
+msgstr "單色背景"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:393
 #: ../../shell/contents/configuration/AppearanceConfig.qml:406
 msgid "Length"
-msgstr ""
+msgstr "長度"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:445
 msgid "Applet shadows"
-msgstr ""
+msgstr "小工具陰影"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:479
 msgid "Locked"
-msgstr ""
+msgstr "鎖定"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:488
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
-msgstr ""
+msgstr "位置"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:70
 msgid "On Primary"
-msgstr ""
+msgstr "主螢幕"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:105
 msgid "Screen:"
-msgstr ""
+msgstr "螢幕："
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:194
-#, fuzzy
 msgctxt "bottom location"
 msgid "Bottom"
-msgstr "底部"
+msgstr "底端"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:205
-#, fuzzy
 msgctxt "left location"
 msgid "Left"
-msgstr "左邊"
+msgstr "左"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:216
-#, fuzzy
 msgctxt "top location"
 msgid "Top"
-msgstr "頂部"
+msgstr "頂端"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:227
-#, fuzzy
 msgctxt "right location"
 msgid "Right"
-msgstr "右邊"
+msgstr "右"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:246
-#, fuzzy
 msgid "Alignment"
-msgstr "小程式對齊"
+msgstr "對齊"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:281
-#, fuzzy
 msgctxt "top alignment"
 msgid "Top"
-msgstr "頂部"
+msgstr "頂端"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:281
-#, fuzzy
 msgctxt "left alignment"
 msgid "Left"
-msgstr "左邊"
+msgstr "左"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:291
-#, fuzzy
 msgctxt "center alignment"
 msgid "Center"
 msgstr "置中"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:301
-#, fuzzy
 msgctxt "bottom alignment"
 msgid "Bottom"
-msgstr "底部"
+msgstr "底端"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:301
-#, fuzzy
 msgctxt "right alignment"
 msgid "Right"
-msgstr "右邊"
+msgstr "右"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:312
 msgctxt "justify alignment"
 msgid "Justify"
-msgstr ""
+msgstr "兩邊對齊"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:330
 msgid "Visibility"
@@ -251,122 +243,118 @@ msgid "Auto Hide"
 msgstr "自動隱藏"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:373
-#, fuzzy
 msgid "Dodge Active"
-msgstr "在作用中的視窗後"
+msgstr "躲避作用中的視窗"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:382
-#, fuzzy
 msgid "Dodge Maximized"
-msgstr "在最大化的視窗後"
+msgstr "躲避最大化的視窗"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:391
 msgid "Dodge All Windows"
-msgstr ""
+msgstr "躲避所有視窗"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:409
 msgid "Delay"
-msgstr ""
+msgstr "延遲"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:424
 msgid "Show:"
-msgstr ""
+msgstr "顯示："
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:441
 msgid "Hide:"
-msgstr ""
+msgstr "隱藏："
 
 #: ../../shell/contents/configuration/config.qml:27
 msgid "General"
-msgstr ""
+msgstr "一般"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:162
-#, fuzzy
 msgid "ver:"
 msgstr "版本："
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:173
 #: ../../shell/contents/configuration/TweaksConfig.qml:79
 msgid "Behavior"
-msgstr ""
+msgstr "行為"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:177
 #: ../../shell/contents/configuration/TasksConfig.qml:48
 #: ../../shell/contents/configuration/TweaksConfig.qml:48
 msgid "Appearance"
-msgstr ""
+msgstr "外觀"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:181
 msgid "Tasks"
-msgstr ""
+msgstr "工作"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:187
 msgid "Tweaks"
-msgstr ""
+msgstr "調整"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:264
 msgid "Add"
-msgstr ""
+msgstr "新增"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:279
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:293
 msgid "Quit"
-msgstr ""
+msgstr "離開"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:42
 msgid "none"
-msgstr ""
+msgstr "無"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:73
 msgid "ms."
-msgstr ""
+msgstr "毫秒"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:54
 msgid "Show glow around windows points"
-msgstr ""
+msgstr "在焦點視窗旁顯示光澤"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:65
 msgid "Different color for minimized windows"
-msgstr ""
+msgstr "最小化視窗使用不同的顏色"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:76
 msgid "Indicator for active window group"
-msgstr ""
+msgstr "作用中視窗群組的指示器"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:88
 msgid "Reverse position for lines and dots"
-msgstr ""
+msgstr "線與點位置反轉"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:103
 msgid "Interaction"
-msgstr ""
+msgstr "反應"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:109
 msgid "Preview windows on hovering"
-msgstr ""
+msgstr "在滑鼠游標停留其上時預覽視窗"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:120
 msgid "Highlight windows on hovering"
-msgstr ""
+msgstr "在滑鼠游標停留其上時突顯視窗"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:131
 msgid "Show window actions in the context menu"
-msgstr ""
+msgstr "在右鍵選單中顯示視窗動作"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:142
 msgid "Show progress information for tasks"
-msgstr ""
+msgstr "顯示工作的進度資訊"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:156
 msgid "On middle-click:"
-msgstr ""
+msgstr "點擊滑鼠中鍵："
 
 #: ../../shell/contents/configuration/TasksConfig.qml:163
 #: ../../shell/contents/configuration/TasksConfig.qml:203
-#, fuzzy
 msgctxt "The click action"
 msgid "None"
 msgstr "無"
@@ -374,103 +362,101 @@ msgstr "無"
 #: ../../shell/contents/configuration/TasksConfig.qml:163
 #: ../../shell/contents/configuration/TasksConfig.qml:203
 msgid "Close Window or Group"
-msgstr ""
+msgstr "關閉視窗或群組"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:163
 #: ../../shell/contents/configuration/TasksConfig.qml:203
 msgid "New Instance"
-msgstr ""
+msgstr "新的實體"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:163
 #: ../../shell/contents/configuration/TasksConfig.qml:203
 msgid "Minimize/Restore Window or Group"
-msgstr ""
+msgstr "最小化/復原視窗"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:190
 msgid "Left Click"
-msgstr ""
+msgstr "點擊滑鼠左鍵"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:190
 msgid "Middle Click"
-msgstr ""
+msgstr "點擊滑鼠中鍵"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:190
-#, fuzzy
 msgid "Right Click"
-msgstr "右邊"
+msgstr "點擊滑鼠右鍵"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:217
 msgid "Filters"
-msgstr ""
+msgstr "過濾器"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:223
 msgid "Show only tasks from the current screen"
-msgstr ""
+msgstr "只顯示目前螢幕上的工作"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:234
 msgid "Show only tasks from the current desktop"
-msgstr ""
+msgstr "只顯示目前桌面上的工作"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:245
 msgid "Show only tasks from the current activity"
-msgstr ""
+msgstr "只顯示目前活動裡的工作"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:54
-#, fuzzy
 msgid "Blur for panel background"
-msgstr "顯示面板背景"
+msgstr "面版背景模糊"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:65
 msgid "Shrink thickness margins to minimum"
-msgstr ""
+msgstr "將邊框厚度縮到最小"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:84
 msgid "Enable autostart during startup"
-msgstr ""
+msgstr "在開機時啟用自動啟動"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:94
 msgid "Decrease applets size when it is needed"
-msgstr ""
+msgstr "當小工具被需要時減小其大小"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:105
 msgid "Behave as a normal dock window"
-msgstr ""
+msgstr "如同正常 dock 視窗般的行為"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:116
 msgid "Expose Alternative Session in the context menu"
-msgstr ""
+msgstr "將替代工作階段放到右鍵選單中"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:126
 msgid "Raise dock on desktop change"
-msgstr ""
+msgstr "在桌面變更時提升 dock"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:136
 msgid "Raise dock on activity change"
-msgstr ""
+msgstr "在活動變更時提升 dock"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:150
 msgid "Session"
-msgstr ""
+msgstr "工作階段"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:179
 msgid "Extra Actions"
-msgstr ""
+msgstr "更多動作"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:193
 msgid "Add Spacer"
-msgstr ""
+msgstr "新增空白"
 
 #: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
-msgstr ""
+msgstr "Latte"
 
 #: ../desktop-templates/latte-dock.desktop.template:4
 msgid "Dock for the masses"
-msgstr ""
+msgstr "給大眾使用的 dock"
 
 #: ../desktop-templates/latte-dock.desktop.template:5
 msgid "Dock"
-msgstr ""
+msgstr "Dock"
 
 #~ msgid "Shadows"
 #~ msgstr "陰影"
