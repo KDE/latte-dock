@@ -70,6 +70,7 @@ PlasmaComponents.Page {
                 }
             }
         }
+        //! END: Appearance
 
         //! BEGIN: Behavior
         ColumnLayout {
@@ -85,7 +86,7 @@ PlasmaComponents.Page {
                 checked: globalSettings.autostart
 
                 onClicked: {
-                    globalSettings.autostart = checked;
+                    globalSettings.autostart = checked
                 }
             }
 
@@ -96,7 +97,7 @@ PlasmaComponents.Page {
 //                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
 
                 onClicked: {
-                    plasmoid.configuration.autoDecreaseIconSize = checked;
+                    plasmoid.configuration.autoDecreaseIconSize = checked
                 }
             }
 
@@ -118,7 +119,7 @@ PlasmaComponents.Page {
 //                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")
 
                 onClicked: {
-                    dock.dockWinBehavior = checked;
+                    dock.dockWinBehavior = checked
                 }
             }
 
@@ -128,7 +129,7 @@ PlasmaComponents.Page {
                 checked: globalSettings.exposeAltSession
 
                 onClicked: {
-                    globalSettings.exposeAltSession = checked;
+                    globalSettings.exposeAltSession = checked
                 }
             }
 
@@ -152,6 +153,42 @@ PlasmaComponents.Page {
                 }
             }
         }
+        //! END: Behavior
+
+        //! BEGIN: Backup
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Backup")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: units.smallSpacing
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    iconSource: "document-import"
+                    text: i18n("Import configuration")
+                    onClicked: {
+                        globalSettings.importConfiguration()
+                    }
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    iconSource: "document-export"
+                    text: i18n("Export configuration")
+                    onClicked: {
+                        globalSettings.exportConfiguration()
+                    }
+                }
+            }
+        }
+        //! END: Backup
 
         //! BEGIN: Session
         ColumnLayout {
@@ -171,33 +208,30 @@ PlasmaComponents.Page {
 //                tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
 
                 onClicked: {
-                    if (globalSettings.currentSession === Latte.Dock.DefaultSession){
-                        globalSettings.currentSession = Latte.Dock.AlternativeSession;
+                    if (globalSettings.currentSession === Latte.Dock.DefaultSession) {
+                        globalSettings.currentSession = Latte.Dock.AlternativeSession
                     } else {
-                        globalSettings.currentSession = Latte.Dock.DefaultSession;
+                        globalSettings.currentSession = Latte.Dock.DefaultSession
                     }
-                    dockConfig.hideConfigWindow();
+                    dockConfig.hideConfigWindow()
                 }
-
             }
         }
+        //! END: Session
 
         //! BEGIN: Extra Actions
         ColumnLayout {
+            Layout.fillWidth: false
             spacing: units.smallSpacing
 
             Header {
                 text: i18n("Extra Actions")
             }
 
-            GridLayout {
-                width: parent.width
-                rowSpacing: 1
-                columnSpacing: 1
+            RowLayout {
+                Layout.fillWidth: false
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-
-                columns: 2
 
                 PlasmaComponents.Button {
                     iconSource: "distribute-horizontal-x"
@@ -206,12 +240,11 @@ PlasmaComponents.Page {
 //                    tooltip: i18n("Add a spacer to separate applets")
 
                     onClicked: {
-                        dockConfig.addPanelSpacer();
+                        dockConfig.addPanelSpacer()
                     }
                 }
-
-                PlasmaComponents.Label{}
             }
         }
+        //! END: Extra Actions
     }
 }
