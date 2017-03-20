@@ -592,6 +592,15 @@ Item{
         }
     }
 
+    Connections{
+        target: mainItemContainer
+        onContainsMouseChanged: {
+            if (mainItemContainer.containsMouse && newWindowAnimation.running) {
+                newWindowAnimation.stop();
+            }
+        }
+    }
+
     SequentialAnimation{
         id:newWindowAnimation
 
