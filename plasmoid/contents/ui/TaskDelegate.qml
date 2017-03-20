@@ -653,7 +653,12 @@ MouseArea{
         ////window previews/////////
         if (isWindow) {
             if(containsMouse && root.showPreviews && Latte.WindowSystem.compositingActive){
-                hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+               // if (!windowsPreviewDlg.visible) {
+                    hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+               // } else {
+               //     mainItemContainer.preparePreviewWindow(false);
+               // }
+
                 //  preparePreviewWindow();
             }
             else{
@@ -1134,7 +1139,7 @@ MouseArea{
         Timer {
             id: hoveredTimer
 
-            interval: 2*root.durationTime*units.longDuration
+            interval: 600
 
             repeat: false
 
