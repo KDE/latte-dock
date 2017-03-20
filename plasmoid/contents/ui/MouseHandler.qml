@@ -44,7 +44,7 @@ Item {
         id: ignoreItemTimer
 
         repeat: false
-        interval: 120
+        interval: 750
 
         onTriggered: {
             ignoredItem = null;
@@ -92,7 +92,7 @@ Item {
         }
 
         onDragMove: {
-           /* if(root.dragSource == null){
+            /* if(root.dragSource == null){
                 root.dropNewLauncher = true;
             } */
 
@@ -112,17 +112,18 @@ Item {
             // by tracking the cursor movement vector and allowing the drag if
             // the movement direction has reversed, etablishing user intent to
             // move back.
-            /*  if (root.dragSource != null
-                 && root.dragSource.m.IsLauncher === true && above != null
-                 && above.m != null
-                 && above.m.IsLauncher !== true && above == ignoredItem) {
-                return;
-            } else {
-                ignoredItem = null;
-            }*/
             if (root.dragSource == null
                     && ignoredItem == above)
                 return;
+
+            if (root.dragSource != null
+                    && root.dragSource.m.IsLauncher === true && above != null
+                    && above.m != null
+                    && above.m.IsLauncher !== true && above == ignoredItem) {
+                return;
+            } else {
+                ignoredItem = null;
+            }
 
             //at some point it was needed the following  && above != ignoredItem
             //but know not... strange... && above != ignoredItem
@@ -139,7 +140,6 @@ Item {
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
                 hoveredItem = above;
-                if (event)
                 //root.dropNewLauncher = true;
                 activationTimer.restart();
             } else if (!above) {
