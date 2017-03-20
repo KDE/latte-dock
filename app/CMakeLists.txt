@@ -31,10 +31,12 @@ target_link_libraries(latte-dock
     KF5::DBusAddons
     KF5::Declarative
     KF5::CoreAddons
+    KF5::Archive
     KF5::XmlGui
     KF5::Plasma
     KF5::PlasmaQuick
     KF5::Activities
+    KF5::Notifications
     KF5::QuickAddons
     KF5::WaylandClient
 )
