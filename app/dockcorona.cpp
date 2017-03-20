@@ -222,10 +222,14 @@ QRegion DockCorona::availableScreenRegion(int id) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
-    QString scrName = m_screenPool->connector(id);
+
+    QString screenName;
+
+    if (m_screenPool->knownIds().contains(id))
+        screenName = m_screenPool->connector(id);
 
     foreach (auto scr, screens) {
-        if (scr->name() == scrName) {
+        if (scr->name() == screenName) {
             screen = scr;
             break;
         }
