@@ -25,6 +25,7 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.latte 0.1 as Latte
@@ -891,6 +892,38 @@ Item {
         }
 
     }// Flow with hidden spacers inside
+
+    Rectangle{
+        anchors.fill: parent
+
+        radius: root.iconSize/10
+
+        property color tempColor: "#aa222222"
+        color: tempColor
+        border.width: 1
+        border.color: "#ff656565"
+
+        opacity: latteApplet && root.addLaunchersMessage ? 1 : 0
+
+        Behavior on opacity{
+            NumberAnimation { duration: 3*container.animationTime }
+        }
+
+        PlasmaExtras.Heading {
+            text: i18n("Launchers Area")
+            anchors.centerIn: parent
+            level: 3
+            font.bold: true
+            rotation: {
+                if (root.isHorizontal)
+                    return 0;
+                else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                    return -90;
+                else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                    return 90;
+            }
+        }
+    }
 
     MouseArea{
         id: appletMouseArea

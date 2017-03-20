@@ -29,7 +29,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 import "../code/tools.js" as TaskTools
 
 Item {
-   // signal urlDropped(url url)
+    // signal urlDropped(url url)
     signal urlsDropped(var urls)
 
     property Item target
@@ -76,12 +76,15 @@ Item {
         onDragEnter:{
             if(root.dragSource == null){
                 onlyLaunchers = false;
-                root.dropNewLauncher = true;
+                root.dropNewLauncher = false;
+                var createLaunchers = false;
 
-                var createLaunchers = event.mimeData.urls.every(function (item) {
-                    return backend.isApplication(item)
-                });
-
+                if (event.mimeData.hasUrls) {
+                    root.dropNewLauncher = true;
+                    createLaunchers = event.mimeData.urls.every(function (item) {
+                        return backend.isApplication(item)
+                    });
+                }
 
                 if (createLaunchers)
                     onlyLaunchers = true;
@@ -89,9 +92,9 @@ Item {
         }
 
         onDragMove: {
-            if(root.dragSource == null){
+           /* if(root.dragSource == null){
                 root.dropNewLauncher = true;
-            }
+            } */
 
             if (target.animating) {
                 return;
@@ -109,7 +112,7 @@ Item {
             // by tracking the cursor movement vector and allowing the drag if
             // the movement direction has reversed, etablishing user intent to
             // move back.
-          /*  if (root.dragSource != null
+            /*  if (root.dragSource != null
                  && root.dragSource.m.IsLauncher === true && above != null
                  && above.m != null
                  && above.m.IsLauncher !== true && above == ignoredItem) {
@@ -118,7 +121,7 @@ Item {
                 ignoredItem = null;
             }*/
             if (root.dragSource == null
-               && ignoredItem == above)
+                    && ignoredItem == above)
                 return;
 
             //at some point it was needed the following  && above != ignoredItem
@@ -129,17 +132,18 @@ Item {
                 var insertAt = TaskTools.insertIndexAt(above, event.x, event.y);
 
                 if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
-              //      console.log(root.dragSource.itemIndex + " - "+insertAt);
+                    //      console.log(root.dragSource.itemIndex + " - "+insertAt);
                     tasksModel.move(root.dragSource.itemIndex, insertAt);
                     ignoredItem = above;
                     ignoreItemTimer.restart();
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
                 hoveredItem = above;
-                root.dropNewLauncher = true;
+                if (event)
+                //root.dropNewLauncher = true;
                 activationTimer.restart();
             } else if (!above) {
-                root.dropNewLauncher = true;
+                //root.dropNewLauncher = true;
                 hoveredItem = null;
                 activationTimer.stop();
             }
@@ -177,14 +181,14 @@ Item {
             repeat: false
 
             onTriggered: {
-                if (dropHandler.onlyLaunchers) {
+                if (dropHandler.onlyLaunchers || !root.dropNewLauncher) {
                     return;
                 }
 
                 if (parent.hoveredItem.m.IsGroupParent === true) {
                     root.showPreviewForTasks(parent.hoveredItem);
-                   // groupDialog.visualParent = parent.hoveredItem;
-                   // groupDialog.visible = true;
+                    // groupDialog.visualParent = parent.hoveredItem;
+                    // groupDialog.visible = true;
                 } else if (parent.hoveredItem.m.IsLauncher !== true) {
                     if(windowsPreviewDlg.visible && toolTipDelegate.currentItem !==parent.hoveredItem.itemIndex ) {
                         windowsPreviewDlg.hide(5);
@@ -196,7 +200,7 @@ Item {
             }
         }
     }
-/*
+    /*
     MouseArea {
         id: wheelHandler
 

@@ -249,6 +249,18 @@ Item {
         return false;
     }
 
+    function launchersDrop(event) {
+        var createLaunchers = false;
+
+        if (event.mimeData.hasUrls) {
+            createLaunchers = event.mimeData.urls.every(function (item) {
+                return backend.isApplication(item)
+            });
+        }
+
+        return createLaunchers;
+    }
+
     function updateLaunchersNewArchitecture(){
         ///frameworks 5.29.0 provide id 335104
 
@@ -766,7 +778,7 @@ Item {
 
             ///this transition can not be used with dragging !!!! I breaks
             ///the lists indexes !!!!!
-           /* move:  Transition {
+            /* move:  Transition {
                 NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.Linear }
             } */
 

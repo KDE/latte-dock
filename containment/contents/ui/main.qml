@@ -47,6 +47,7 @@ DragDrop.DropArea {
 
     property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
 
+    property bool addLaunchersMessage: false
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
     property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
@@ -477,6 +478,12 @@ DragDrop.DropArea {
             return;
         }
 
+        if (latteApplet) {
+            if (latteApplet.launchersDrop(event)) {
+                root.addLaunchersMessage = true;
+            }
+        }
+
         if (!confirmedDragEntered) {
             confirmedDragEntered = true;
             slotAnimationsNeedLength(1);
@@ -493,6 +500,12 @@ DragDrop.DropArea {
             return;
         }
 
+        if (latteApplet) {
+            if (latteApplet.launchersDrop(event)) {
+                root.addLaunchersMessage = true;
+            }
+        }
+
         //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
         //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
         LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
@@ -506,6 +519,7 @@ DragDrop.DropArea {
             confirmedDragEntered = false;
         }
 
+        root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
         dndSpacer.parent = root;
     }
@@ -521,6 +535,7 @@ DragDrop.DropArea {
             confirmedDragEntered = false;
         }
 
+        root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
         //  dndSpacer.parent = root;
     }
