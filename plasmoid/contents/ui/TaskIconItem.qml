@@ -821,7 +821,7 @@ Item{
 
                     visible = true;
 
-                    if (mainItemContainer.isWindow && !mainItemContainer.isGroupParent) {
+                    if (mainItemContainer.isWindow && !mainItemContainer.isGroupParent && mainItemContainer.delayingRemove) {
                         iconImageBuffer.visible = false;
                         taskWithShadow.visible = false;
                     }
