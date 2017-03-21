@@ -893,9 +893,9 @@ Item {
 
     }// Flow with hidden spacers inside
 
+    //! The Launchers Area Indicator
     Rectangle{
         anchors.fill: parent
-
         radius: root.iconSize/10
 
         property color tempColor: "#aa222222"
@@ -906,14 +906,21 @@ Item {
         opacity: latteApplet && root.addLaunchersMessage ? 1 : 0
 
         Behavior on opacity{
-            NumberAnimation { duration: 3*container.animationTime }
+            NumberAnimation { duration: 2*root.durationTime*container.animationTime }
         }
 
         PlasmaExtras.Heading {
-            text: i18n("Launchers Area")
+            anchors.fill: parent
             anchors.centerIn: parent
+
+            text: i18n("Launchers Area")
             level: 3
             font.bold: true
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.WordWrap
+            elide: Text.ElideRight
+
             rotation: {
                 if (root.isHorizontal)
                     return 0;
@@ -924,6 +931,7 @@ Item {
             }
         }
     }
+
 
     MouseArea{
         id: appletMouseArea
