@@ -17,6 +17,8 @@ TEMPLATESHELL="shell.metadata.desktop.template" # shell desktop template
 PROJECTAPP="latte-dock" # project name
 TEMPLATEAPP="latte-dock.desktop.template" # app desktop template
 
+NOTIFYRC="lattedock.notifyrc.template" # notifyrc template
+
 function ki18n_xgettext
 {
     cd "$BASEDIR/$1"
@@ -56,6 +58,13 @@ function ki18n_xgettext
     "${WDIR}/../desktop-templates/${TEMPLATE}" -o "${WDIR}/${PROJECTNAME}.pot" || \
     { echo "error while calling xgettext. aborting."; exit 1; }
 
+    if [[ $1 == "app" ]] ; then
+        xgettext --from-code=UTF-8 --language=Desktop --join-existing --msgid-bugs-address="${BUGADDR}" \
+        -k -kName -kGenericName -kComment \
+        "${WDIR}/../desktop-templates/${NOTIFYRC}" -o "${WDIR}/${PROJECTNAME}.pot" || \
+        { echo "error while calling xgettext. aborting."; exit 1; }
+    fi
+
     echo -e "-- Merging translations for $TARGET"
     catalogs=$(find "${WDIR}" -name '*.po')
     for cat in $catalogs; do
@@ -78,6 +87,7 @@ ki18n_xgettext containment "$PROJECTCONTAINMENT" "$TEMPLATECONTCONTAINMENT"
 ki18n_xgettext plasmoid    "$PROJECTPLASMOID"    "$TEMPLATEPLASMOID"
 
 ki18n_xgettext app         "$PROJECTAPP"         "$TEMPLATEAPP"  shell
+
 
 # The msg of shell package is merged with app
 # ki18n_xgettext shell       "$PROJECTSHELL"       "$TEMPLATESHELL"
