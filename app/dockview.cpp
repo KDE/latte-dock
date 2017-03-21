@@ -899,7 +899,13 @@ void DockView::setMaskArea(QRect area)
         m_background->setEnabledBorders(enabledBorders());
         m_background->resizeFrame(area.size());
         QRegion fixedMask = m_background->mask();
-        fixedMask.translate(area.x(), area.y());
+        fixedMask.translate(m_maskArea.x(), m_maskArea.y());
+
+        //! fix for KF5.32 that return empty QRegion's for the mask
+        if (fixedMask.isEmpty()) {
+            fixedMask = QRegion(m_maskArea);
+        }
+
         setMask(fixedMask);
     }
 
@@ -976,6 +982,11 @@ void DockView::updateEffects()
             m_background->resizeFrame(m_effectsArea.size());
             QRegion fixedMask = m_background->mask();
             fixedMask.translate(m_effectsArea.x(), m_effectsArea.y());
+
+            //! fix for KF5.32 that return empty QRegion's for the mask
+            if (fixedMask.isEmpty()) {
+                fixedMask = QRegion(m_effectsArea);
+            }
 
             KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
             KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
