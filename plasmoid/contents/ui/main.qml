@@ -233,6 +233,11 @@ Item {
     }
 
     /////
+
+    function launchersDropped(urls){
+        mouseHandler.urlsDroppedOnArea(urls);
+    }
+
     function launcherExists(url) {
         return (ActivitiesTools.getIndex(url, tasksModel.launcherList)>=0);
     }
@@ -702,7 +707,7 @@ Item {
                                       root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) - 1 :
                                       root.statesLineSize + root.iconSize + root.thickMargin - 1
 
-            onUrlsDropped: {
+            function urlsDroppedOnArea(urls){
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
                 var createLaunchers = urls.every(function (item) {
                     return backend.isApplication(item)
@@ -725,6 +730,10 @@ Item {
                 // Otherwise we'll just start a new instance of the application with the URLs as argument,
                 // as you probably don't expect some of your files to open in the app and others to spawn launchers.
                 tasksModel.requestOpenUrls(hoveredItem.modelIndex(), urlsList);
+            }
+
+            onUrlsDropped: {
+                urlsDroppedOnArea(urls);
             }
         }
 
