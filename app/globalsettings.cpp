@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QProcess>
 #include <QMessageBox>
+#include <QDesktopServices>
+#include <QtConcurrent/QtConcurrent>
 
 #include <KLocalizedString>
 #include <KConfig>
@@ -27,7 +29,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
         //! create the alternative session action
         const QIcon altIcon = QIcon::fromTheme("user-identity");
         m_altSessionAction = new QAction(altIcon, i18n("Alternative Session"), this);
-        m_altSessionAction->setStatusTip(tr("Enable/Disable Alternative Session"));
+        m_altSessionAction->setStatusTip(i18n("Enable/Disable Alternative Session"));
         m_altSessionAction->setCheckable(true);
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
@@ -115,6 +117,20 @@ void GlobalSettings::setCurrentSession(Dock::SessionType session)
     }
 }
 
+
+//!BEGIN configuration functions
+void GlobalSettings::load()
+{
+    setExposeAltSession(m_configGroup.readEntry("exposeAltSession", false));
+}
+
+void GlobalSettings::save()
+{
+    m_configGroup.writeEntry("exposeAltSession", m_exposeAltSession);
+    m_configGroup.sync();
+}
+//!END configuration functions
+
 bool GlobalSettings::importHelper(const QString &fileName)
 {
     if (!QFile::exists(fileName))
@@ -133,10 +149,16 @@ bool GlobalSettings::importHelper(const QString &fileName)
         if (tempDir.exists()) {
             tempDir.removeRecursively();
         }
+        archive.close();
+    };
+
+    auto showNotificationErr = []() {
+        auto notification = new KNotification("import-fail", KNotification::CloseOnTimeout);
+        notification->setText(i18nc("import/export config", "Failed to import configuration"));
+        notification->sendEvent();
     };
 
     if (rootDir) {
-
         if (!tempDir.exists())
             tempDir.mkpath(tempDir.absolutePath());
 
@@ -148,21 +170,13 @@ bool GlobalSettings::importHelper(const QString &fileName)
             {
                 if (!fileEntry->copyTo(tempDir.absolutePath())) {
                     clean();
+                    showNotificationErr();
                     return false;
                 }
             } else {
-                qInfo() << i18nc("The file has a wrong format!!!", "import/export config");
-                auto showMsgError = [&]() {
-                    auto msg = new QMessageBox;
-                    msg->setText(i18nc("The file has a wrong format", "import/export config"));
-                    msg->setDetailedText(i18nc("Do you want to open other file?", "import/export config"));
-                    msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-
-                    connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
-
-                    msg->open();
-                };
-                showMsgError();
+                qInfo() << i18nc("import/export config", "The file has a wrong format!!!");
+                clean();
+                showNotificationErr();
                 return false;
             }
         }
@@ -181,25 +195,18 @@ bool GlobalSettings::importHelper(const QString &fileName)
     if (QFile::remove(latterc) && QFile::remove(appletsrc)) {
         QFile::copy(tempDir.absolutePath() + "/lattedockrc" , latterc);
         QFile::copy(tempDir.absolutePath() + "/lattedock-appletsrc", appletsrc);
+    } else {
+        showNotificationErr();
+        return false;
     }
 
-    archive.close();
+    clean();
+    auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
+    notification->setText(i18nc("import/export config", "Configuration imported successfully"));
+    notification->sendEvent();
+
     return true;
 }
-
-//!BEGIN configuration functions
-void GlobalSettings::load()
-{
-    setExposeAltSession(m_configGroup.readEntry("exposeAltSession", false));
-}
-
-void GlobalSettings::save()
-{
-    m_configGroup.writeEntry("exposeAltSession", m_exposeAltSession);
-    m_configGroup.sync();
-}
-//!END configuration functions
-
 void GlobalSettings::importConfiguration()
 {
     if (m_fileDialog) {
@@ -207,14 +214,15 @@ void GlobalSettings::importConfiguration()
         m_fileDialog->deleteLater();
     }
 
-    m_fileDialog = new QFileDialog(nullptr, i18n("Import configuration")
+    m_fileDialog = new QFileDialog(nullptr, i18nc("import/export config", "Import configuration")
                                    , QDir::homePath()
                                    , QStringLiteral("latteconf"));
 
     m_fileDialog->setFileMode(QFileDialog::AnyFile);
     m_fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
     m_fileDialog->setDefaultSuffix("latteconf");
-    m_fileDialog->setNameFilter(i18n("Latte Dock configuration file").append("(*.latterc)"));
+    m_fileDialog->setNameFilter(i18nc("import/export config", "Latte Dock configuration file")
+                                + "(*.latterc)");
 
     connect(m_fileDialog.data(), &QFileDialog::finished
     , m_fileDialog.data(), &QFileDialog::deleteLater);
@@ -222,16 +230,10 @@ void GlobalSettings::importConfiguration()
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
     , this, [&](const QString &file) {
 
-        if (!QFile::exists(file))
-            return;
-
-        KTar archive(file, QStringLiteral("application/x-tar"));
-        archive.open(QIODevice::ReadOnly);
-
         auto showMsgError = [&]() {
             auto msg = new QMessageBox;
-            msg->setText(i18nc("The file has a wrong format", "import/export config"));
-            msg->setDetailedText(i18nc("Do you want to open other file?", "import/export config"));
+            msg->setText(i18nc("import/export config", "The file has a wrong format"));
+            msg->setDetailedText(i18nc("import/export config", "Do you want to open other file?"));
             msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
             connect(msg, &QMessageBox::accepted, this, &GlobalSettings::importConfiguration);
@@ -239,6 +241,14 @@ void GlobalSettings::importConfiguration()
 
             msg->open();
         };
+
+        if (!QFile::exists(file)) {
+            showMsgError();
+            return;
+        }
+
+        KTar archive(file, QStringLiteral("application/x-tar"));
+        archive.open(QIODevice::ReadOnly);
 
         if (!archive.isOpen()) {
             showMsgError();
@@ -256,6 +266,7 @@ void GlobalSettings::importConfiguration()
                 {
                     continue;
                 } else {
+                    archive.close();
                     showMsgError();
                     return;
                 }
@@ -279,25 +290,37 @@ void GlobalSettings::exportConfiguration()
         m_fileDialog->deleteLater();
     }
 
-    m_fileDialog = new QFileDialog(nullptr, i18n("Export configuration")
+    m_fileDialog = new QFileDialog(nullptr, i18nc("import/export config", "Export configuration")
                                    , QDir::homePath()
                                    , QStringLiteral("latterc"));
     m_fileDialog->setFileMode(QFileDialog::AnyFile);
     m_fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     m_fileDialog->setDefaultSuffix("latterc");
-    m_fileDialog->setNameFilter(i18n("Latte Dock configuration file").append("(*.latterc)"));
+    m_fileDialog->setNameFilter(i18nc("import/export config", "Latte Dock configuration file")
+                                + "(*.latterc)");
 
     connect(m_fileDialog.data(), &QFileDialog::finished
     , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
     , this, [&](const QString &file) {
+        auto showNotificationError = []() {
+            auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
+            notification->setText(i18nc("import/export config", "Failed to export configuration"));
+            notification->sendEvent();
+        };
+
         if (QFile::exists(file) && !QFile::remove(file)) {
+            showNotificationError();
             return;
         }
 
         KTar archive(file, QStringLiteral("application/x-tar"));
-        archive.open(QIODevice::WriteOnly);
+
+        if (!archive.open(QIODevice::WriteOnly)) {
+            showNotificationError();
+            return;
+        }
 
         std::unique_ptr<KConfig> config {m_corona->config()->copyTo(QDir::tempPath() + "/lattedock-appletsrc")};
         std::unique_ptr<KConfig> configApp {KSharedConfig::openConfig()->copyTo(QDir::tempPath() + "/lattedockrc")};
@@ -311,6 +334,20 @@ void GlobalSettings::exportConfiguration()
 
         QFile::remove(config->name());
         QFile::remove(configApp->name());
+
+        //NOTE: The pointer is automatically deleted when the event is closed
+        auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
+        notification->setActions({i18nc("import/export config", "Open location")});
+        notification->setText(i18nc("import/export config", "Configuration exported successfully"));
+
+        connect(notification, &KNotification::action1Activated
+        , this, [&file]() {
+            QDir path(file);
+            path.cdUp();
+            QDesktopServices::openUrl({path.absolutePath()});
+        });
+
+        notification->sendEvent();
     });
 
     m_fileDialog->open();
