@@ -451,7 +451,10 @@ Item {
 
         taskManagerItem: root
         toolTipItem: toolTipDelegate
-        highlightWindows:root.highlightWindows
+        //! there is a conflict between preview windows and highlight effect, it creates
+        //! a crash when both are activated during hovering. So we enable in each case
+        //! only one of both
+        highlightWindows: root.highlightWindows && !root.showPreviews
 
         onAddLauncher: {
             tasksModel.requestAddLauncher(url);
