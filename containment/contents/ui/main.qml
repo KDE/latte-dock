@@ -48,6 +48,7 @@ DragDrop.DropArea {
     property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
 
     property bool addLaunchersMessage: false
+    property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
     property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
@@ -481,6 +482,9 @@ DragDrop.DropArea {
         if (latteApplet) {
             if (latteApplet.launchersDrop(event)) {
                 root.addLaunchersMessage = true;
+                if (root.addLaunchersInTaskManager) {
+                    return;
+                }
             }
         }
 
@@ -503,6 +507,9 @@ DragDrop.DropArea {
         if (latteApplet) {
             if (latteApplet.launchersDrop(event)) {
                 root.addLaunchersMessage = true;
+            }
+            if (root.addLaunchersInTaskManager) {
+                return;
             }
         }
 
@@ -527,8 +534,14 @@ DragDrop.DropArea {
     onDrop: {
         //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
         //plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
-        plasmoid.processMimeData(event.mimeData, event.x, event.y);
-        event.accept(event.proposedAction);
+        //launchersDropped
+
+        if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
+            latteApplet.launchersDropped(event.mimeData.urls);
+        } else {
+            plasmoid.processMimeData(event.mimeData, event.x, event.y);
+            event.accept(event.proposedAction);
+        }
 
         if (confirmedDragEntered) {
             slotAnimationsNeedLength(-1);
