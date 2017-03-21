@@ -54,4 +54,5 @@ configure_file(latte-dock.desktop.cmake latte-dock.desktop)
 
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/latte-dock.desktop DESTINATION ${KDE_INSTALL_APPDIR})
-install(FILES dbus/org.kde.LatteDock.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR} )
+install(FILES dbus/org.kde.LatteDock.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
+install(FILES lattedock.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
