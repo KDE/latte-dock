@@ -1,0 +1,20 @@
+[Global]
+Name=Latte Dock
+Comment=Latte Dock
+IconName=latte-dock
+
+[Event/import-done]
+Name=Configuration imported successfully
+Action=Popup
+
+[Event/import-fail]
+Name=Failed to import configuration
+Action=Popup
+
+[Event/export-done]
+Name=Configuration exported successfully
+Action=Popup
+
+[Event/export-fail]
+Name=Failed to export configuration
+Action=Popup
