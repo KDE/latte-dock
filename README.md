@@ -20,6 +20,8 @@ We recommend that you use at least **Plasma 5.8.0**
 **development packages for:**
 ```bash
  Qt5Core >= 5.6.0
+ Qt5Gui >= 5.6.0
+ Qt5Dbus >= 5.6.0
 
  KF5Plasma >= 5.26.0
  KF5PlasmaQuick >= 5.26.0
@@ -32,6 +34,7 @@ We recommend that you use at least **Plasma 5.8.0**
  KF5XmlGui >= 5.26.0
  KF5IconThemes >= 5.26.0
  KF5I18n >= 5.26.0
+ KNotifications >= 5.26.0
 
  For X11 support:
     KF5WindowSystem >= 5.26.0
