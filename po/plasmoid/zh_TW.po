@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 13:08+0200\n"
+"POT-Creation-Date: 2017-03-22 20:53+0200\n"
 "PO-Revision-Date: 2017-03-20 21:01+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -307,6 +307,10 @@ msgstr "移除啟動器"
 #: ../../plasmoid/contents/ui/ContextMenu.qml:632
 msgid "Close"
 msgstr "關閉"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:647
+msgid "Alternative Session"
+msgstr ""
 
 #: ../../plasmoid/contents/ui/TaskDelegate.qml:893
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:460

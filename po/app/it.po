@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 13:08+0200\n"
+"POT-Creation-Date: 2017-03-22 20:53+0200\n"
 "PO-Revision-Date: 2017-01-29 14:48+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -504,7 +504,7 @@ msgid "Decrease applets size when it is needed"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
-msgid "Add launchers only in the taskmanager"
+msgid "Add launchers only in the corresponding area"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
@@ -513,7 +513,7 @@ msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
 #, fuzzy
-msgid "Expose Alternative Session in the context menu"
+msgid "Show Alternative Session in the context menu"
 msgstr "Mostra azioni del task nel menu contestuale"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:138

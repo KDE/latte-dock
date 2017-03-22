@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 13:08+0200\n"
+"POT-Creation-Date: 2017-03-22 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -487,7 +487,7 @@ msgid "Decrease applets size when it is needed"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
-msgid "Add launchers only in the taskmanager"
+msgid "Add launchers only in the corresponding area"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
@@ -495,7 +495,7 @@ msgid "Behave as a normal dock window"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
-msgid "Expose Alternative Session in the context menu"
+msgid "Show Alternative Session in the context menu"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:138

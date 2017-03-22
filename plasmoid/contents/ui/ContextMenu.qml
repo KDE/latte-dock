@@ -644,7 +644,7 @@ PlasmaComponents.ContextMenu {
         visible: root.exposeAltSession
 
         icon: "user-identity"
-        text: "Alternative Session"
+        text: i18n("Alternative Session")
         checkable: true
 
         Component.onCompleted: {
