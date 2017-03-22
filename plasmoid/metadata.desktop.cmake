@@ -1,9 +1,11 @@
 [Desktop Entry]
 Name[de]=Latte Plasmoid
 Name[el]=Latte
+Name[zh_TW]=Latte Plasmoid
 Name=Latte Plasmoid
 Comment[de]=Latte Dock Plasmoid
 Comment[el]=Ένα πλασμoϊδές από τη σουίτα Latte
+Comment[zh_TW]=從 Latte Dock 而來的 Plasmoid
 Comment=Plasmoid from the Latte Dock
 
 Type=Service

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 13:12-0500\n"
+"POT-Creation-Date: 2017-03-22 13:08+0200\n"
 "PO-Revision-Date: 2016-10-16 13:14+0100\n"
 "Last-Translator: Damian Kopeć <damikope@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -309,29 +309,29 @@ msgstr "Pokaż Skrót Kiedy Aplikacja Nie Jest Uruchomiona"
 msgid "Remove Launcher"
 msgstr "Usuń Skrót"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:631
+#: ../../plasmoid/contents/ui/ContextMenu.qml:632
 msgid "Close"
 msgstr "Zamknij"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:881
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:448
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:893
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
 msgid "On %1"
 msgstr "Na %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:890
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:458
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:902
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:470
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Dostępne We Wszystkich Aktywnościach"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:909
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:480
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:921
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:492
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Dostępne Także na %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:913
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:484
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:925
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:496
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Dostępne na %1"

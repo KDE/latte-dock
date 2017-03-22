@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 13:12-0500\n"
+"POT-Creation-Date: 2017-03-22 13:08+0200\n"
 "PO-Revision-Date: 2017-01-29 14:57+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -305,29 +305,29 @@ msgstr "Mostra il lanciatore quando non in esecuzione"
 msgid "Remove Launcher"
 msgstr "Rimuovi lanciatore"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:631
+#: ../../plasmoid/contents/ui/ContextMenu.qml:632
 msgid "Close"
 msgstr "Chiudi"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:881
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:448
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:893
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
 msgid "On %1"
 msgstr "Su %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:890
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:458
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:902
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:470
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Disponibile in tutte le attività"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:909
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:480
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:921
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:492
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Disponibile anche su %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:913
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:484
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:925
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:496
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Disponibile su %1"
