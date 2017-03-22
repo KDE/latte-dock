@@ -103,7 +103,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Add launchers only in the taskmanager")
+                text: i18n("Add launchers only in the corresponding area")
                 checked: plasmoid.configuration.addLaunchersInTaskManager
 //                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
 
@@ -125,7 +125,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Expose Alternative Session in the context menu")
+                text: i18n("Show Alternative Session in the context menu")
                 checked: globalSettings.exposeAltSession
 
                 onClicked: {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 13:08+0200\n"
+"POT-Creation-Date: 2017-03-22 20:53+0200\n"
 "PO-Revision-Date: 2017-01-30 09:14+0100\n"
 "Last-Translator: Jan Neumann <neumdotjaatgmaildotcom>\n"
 "Language-Team: German <kde-i18n-doc@kde.org>\n"
@@ -310,6 +310,10 @@ msgstr "Starter entfernen"
 #: ../../plasmoid/contents/ui/ContextMenu.qml:632
 msgid "Close"
 msgstr "Schließen"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:647
+msgid "Alternative Session"
+msgstr ""
 
 #: ../../plasmoid/contents/ui/TaskDelegate.qml:893
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:460

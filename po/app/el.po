@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 13:08+0200\n"
-"PO-Revision-Date: 2017-03-22 20:30+0200\n"
+"POT-Creation-Date: 2017-03-22 20:53+0200\n"
+"PO-Revision-Date: 2017-03-22 20:50+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -126,8 +126,8 @@ msgstr "όνομα_αρχείου"
 #: ../../app/main.cpp:98
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
-"Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του"
-" Latte"
+"Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του "
+"Latte"
 
 #: ../../app/main.cpp:106
 msgid "The configuration cannot be imported"
@@ -498,7 +498,8 @@ msgid "Decrease applets size when it is needed"
 msgstr "Μείωση μεγέθους εφαρμογών όταν χρειάζεται"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
-msgid "Add launchers only in the taskmanager"
+#, fuzzy
+msgid "Add launchers only in the corresponding area"
 msgstr "Προσθήκη εκκινητών μόνο στην Περιοχή Εκκινητών"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
@@ -506,7 +507,7 @@ msgid "Behave as a normal dock window"
 msgstr "Λειτουργία ως παράθυρο κανονικού πίνακα"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
-msgid "Expose Alternative Session in the context menu"
+msgid "Show Alternative Session in the context menu"
 msgstr "Εμφάνιση Εναλλακτικής Συνεδρίας στο μενού επιλογών"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:138

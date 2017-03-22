@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 13:08+0200\n"
+"POT-Creation-Date: 2017-03-22 20:53+0200\n"
 "PO-Revision-Date: 2017-03-20 20:57+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -498,7 +498,7 @@ msgid "Decrease applets size when it is needed"
 msgstr "當小工具被需要時減小其大小"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
-msgid "Add launchers only in the taskmanager"
+msgid "Add launchers only in the corresponding area"
 msgstr ""
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
@@ -506,7 +506,8 @@ msgid "Behave as a normal dock window"
 msgstr "如同正常 dock 視窗般的行為"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
-msgid "Expose Alternative Session in the context menu"
+#, fuzzy
+msgid "Show Alternative Session in the context menu"
 msgstr "將替代工作階段放到右鍵選單中"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:138
