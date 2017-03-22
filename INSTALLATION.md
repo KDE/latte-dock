@@ -5,6 +5,13 @@ Installation
 
 **Before running the installation script you have to install the dependencies needed for compiling.**
 
+
+### Debian 9.0 (Stretch)
+
+```
+sudo apt install g++ cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extras5-dev libkf5iconthemes-dev libkf5plasma-dev libkf5windowsystem-dev libkf5declarative-dev libkf5xmlgui-dev libkf5activities-dev gettext libkf5wayland-dev libxcb-util0-dev
+```
+
 ### Kubuntu only
 
 ```
@@ -16,7 +23,7 @@ sudo apt dist-upgrade
 ### Kubuntu and KDE Neon
 
 ```
-sudo apt install cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extras5-dev libkf5iconthemes-dev libkf5plasma-dev libkf5windowsystem-dev libkf5declarative-dev libkf5xmlgui-dev libkf5activities-dev build-essential libxcb-util-dev libkf5wayland-dev git gettext libkf5archive-dev libkf5notifications-dev
+sudo apt install cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extras5-dev libkf5iconthemes-dev libkf5plasma-dev libkf5windowsystem-dev libkf5declarative-dev libkf5xmlgui-dev libkf5activities-dev build-essential libxcb-util-dev libkf5wayland-dev git gettext libkf5archive-dev libkf5notifications-dev libxcb-util0-dev
 ```
 
 ### Arch Linux
