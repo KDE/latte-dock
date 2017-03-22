@@ -1,0 +1,26 @@
+[Global]
+Name[el]=Πίνακας Latte
+Name=Latte Dock
+Comment[el]=Πίνακας Latte
+Comment=Latte Dock
+IconName=latte-dock
+
+[Event/import-done]
+Name[el]=Επιτυχής εισαγωγή ρυθμίσεων
+Name=Configuration imported successfully
+Action=Popup
+
+[Event/import-fail]
+Name[el]=Αποτυχία εισαγωγής ρυθμίσεων
+Name=Failed to import configuration
+Action=Popup
+
+[Event/export-done]
+Name[el]=Επιτυχής εξαγωγή ρυθμίσεων
+Name=Configuration exported successfully
+Action=Popup
+
+[Event/export-fail]
+Name[el]=Αποτυχία εξαγωγής ρυθμίσεων
+Name=Failed to export configuration
+Action=Popup
