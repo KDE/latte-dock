@@ -1,21 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <neumdotjaatgmaildotcom>, 2017.
 #
+# FIRST AUTHOR <neumdotjaatgmaildotcom>, 2017.
+# Jan Neumann <neum dot ja at gmail dot com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-01-30 09:14+0100\n"
-"Last-Translator: Jan Neumann <neumdotjaatgmaildotcom>\n"
-"Language-Team: German <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2017-03-22 22:18+0100\n"
+"Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../plasmoid/contents/config/config.qml:27
@@ -44,11 +44,11 @@ msgstr "Schatten für Icons"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:171
 msgid "Show glow around windows points"
-msgstr "Glühende Punkte für Fenster"
+msgstr "Zeige glühende Punkte für Fenster"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:177
 msgid "Different color for minimized windows"
-msgstr "Verschiedene Farben für minimierte Fenster"
+msgstr "Andere Farbe für minimierte Fenster"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
 msgid "Indicator for active window group"
@@ -56,7 +56,7 @@ msgstr "Anzeiger für aktive Fenstergruppe"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
 msgid "Reverse position for lines and dots"
-msgstr "Umgekehrte Postition für Linien und Punkte"
+msgstr "Umgekehrte Position für Linien und Punkte"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:207
 msgid "Animations: "
@@ -88,7 +88,7 @@ msgid ""
 "For the disabled settings you should use the Latte Dock Configuration Window"
 msgstr ""
 "Für die Ausgeblendeten Einstellungen bitte das Latte Dock "
-"Kofigurationsfenster benutzen."
+"Konfigurationsfenster benutzen."
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:59
 msgid "Cycle through tasks with mouse wheel"
@@ -100,7 +100,7 @@ msgstr "Vorschau beim Überfahren"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:72
 msgid "Highlight windows on hovering"
-msgstr "Hervorhebung von Fenstern beim Überfahren"
+msgstr "Hervorheben von Fenstern beim Überfahren"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:78
 msgid "Show window actions in the context menu"
@@ -313,7 +313,7 @@ msgstr "Schließen"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:647
 msgid "Alternative Session"
-msgstr ""
+msgstr "Alternative Sitzung"
 
 #: ../../plasmoid/contents/ui/TaskDelegate.qml:893
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
