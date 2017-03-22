@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 13:12-0500\n"
+"POT-Creation-Date: 2017-03-22 13:08+0200\n"
 "PO-Revision-Date: 2017-01-15 10:42+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -306,29 +306,29 @@ msgstr "Εκκινητής όταν δεν είναι Ενεργό"
 msgid "Remove Launcher"
 msgstr "Αφαίρεση Εκκινητή"
 
-#: ../../plasmoid/contents/ui/ContextMenu.qml:631
+#: ../../plasmoid/contents/ui/ContextMenu.qml:632
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:881
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:448
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:893
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
 msgid "On %1"
 msgstr "Σε %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:890
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:458
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:902
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:470
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Σε όλες τις δραστηριότητες"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:909
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:480
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:921
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:492
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Διαθέσιμο επίσης σε %1"
 
-#: ../../plasmoid/contents/ui/TaskDelegate.qml:913
-#: ../../plasmoid/contents/ui/ToolTipInstance.qml:484
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:925
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:496
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Διαθέσιμο σε %1"

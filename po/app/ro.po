@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-19 13:12-0500\n"
+"POT-Creation-Date: 2017-03-22 13:08+0200\n"
 "PO-Revision-Date: 2016-09-25 04:15+0300\n"
 "Last-Translator: Viorel-Cătălin Răpițeanu <rapiteanu DOT catalin AT gmail "
 "DOT com>\n"
@@ -19,46 +19,120 @@ msgstr ""
 "2:1));\n"
 "X-Generator: Poedit 1.8.9\n"
 
-#: ../../app/dockview.cpp:1319
+#: ../../app/dockview.cpp:1345
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr ""
 
-#: ../../app/globalsettings.cpp:22
-#: ../../shell/contents/configuration/TweaksConfig.qml:157
+#: ../../app/globalsettings.cpp:31
+#: ../../shell/contents/configuration/TweaksConfig.qml:205
 msgid "Alternative Session"
 msgstr ""
 
-#: ../../app/main.cpp:75
-msgctxt "command line"
-msgid "Replace the current dock instance."
+#: ../../app/globalsettings.cpp:32
+msgid "Enable/Disable Alternative Session"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:157
+msgctxt "import/export config"
+msgid "Failed to import configuration"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:177
+msgctxt "import/export config"
+msgid "The file has a wrong format!!!"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:205
+msgctxt "import/export config"
+msgid "Configuration imported successfully"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:217
+msgctxt "import/export config"
+msgid "Import configuration"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:224 ../../app/globalsettings.cpp:299
+#, fuzzy
+msgctxt "import/export config"
+msgid "Latte Dock configuration file"
+msgstr "Panou Now Dock"
+
+#: ../../app/globalsettings.cpp:235
+msgctxt "import/export config"
+msgid "The file has a wrong format"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:236
+msgctxt "import/export config"
+msgid "Do you want to open other file?"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:293
+msgctxt "import/export config"
+msgid "Export configuration"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:309
+msgctxt "import/export config"
+msgid "Failed to export configuration"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:340
+msgctxt "import/export config"
+msgid "Open location"
+msgstr ""
+
+#: ../../app/globalsettings.cpp:341
+msgctxt "import/export config"
+msgid "Configuration exported successfully"
 msgstr ""
 
 #: ../../app/main.cpp:76
 msgctxt "command line"
-msgid "Show the debugging messages on stdout."
+msgid "Replace the current dock instance."
 msgstr ""
 
 #: ../../app/main.cpp:77
 msgctxt "command line"
-msgid "Show messages of debugging for the mask (Only useful to devs)."
+msgid "Show the debugging messages on stdout."
 msgstr ""
 
 #: ../../app/main.cpp:78
 msgctxt "command line"
-msgid "Draw boxes around of the applets."
+msgid "Show messages of debugging for the mask (Only useful to devs)."
 msgstr ""
 
 #: ../../app/main.cpp:79
 msgctxt "command line"
+msgid "Draw boxes around of the applets."
+msgstr ""
+
+#: ../../app/main.cpp:80
+msgctxt "command line"
 msgid "Open a window with much debug information."
+msgstr ""
+
+#: ../../app/main.cpp:81
+msgctxt "command line"
+msgid "Import configuration."
+msgstr ""
+
+#: ../../app/main.cpp:81
+msgctxt "command line: import"
+msgid "file_name"
 msgstr ""
 
 #: ../../app/main.cpp:98
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 
-#: ../../app/main.cpp:138
+#: ../../app/main.cpp:106
+msgid "The configuration cannot be imported"
+msgstr ""
+
+#: ../../app/main.cpp:148
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "
 "intuitive experience for your tasks and plasmoids. It animates its contents "
@@ -67,15 +141,15 @@ msgid ""
 "\"Art in Coffee\""
 msgstr ""
 
-#: ../../app/main.cpp:155
+#: ../../app/main.cpp:165
 msgid "Logo and Icons"
 msgstr ""
 
-#: ../../app/main.cpp:157
+#: ../../app/main.cpp:167
 msgid "Many bug reports"
 msgstr ""
 
-#: ../../app/main.cpp:159
+#: ../../app/main.cpp:169
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
 msgstr ""
 
@@ -285,7 +359,7 @@ msgid "ver:"
 msgstr ""
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:173
-#: ../../shell/contents/configuration/TweaksConfig.qml:79
+#: ../../shell/contents/configuration/TweaksConfig.qml:80
 msgid "Behavior"
 msgstr ""
 
@@ -347,69 +421,69 @@ msgstr ""
 msgid "Preview windows on hovering"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:120
+#: ../../shell/contents/configuration/TasksConfig.qml:121
 msgid "Highlight windows on hovering"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:131
+#: ../../shell/contents/configuration/TasksConfig.qml:133
 msgid "Show window actions in the context menu"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:142
+#: ../../shell/contents/configuration/TasksConfig.qml:144
 msgid "Show progress information for tasks"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:156
+#: ../../shell/contents/configuration/TasksConfig.qml:158
 msgid "On middle-click:"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:163
-#: ../../shell/contents/configuration/TasksConfig.qml:203
+#: ../../shell/contents/configuration/TasksConfig.qml:165
+#: ../../shell/contents/configuration/TasksConfig.qml:205
 msgctxt "The click action"
 msgid "None"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:163
-#: ../../shell/contents/configuration/TasksConfig.qml:203
+#: ../../shell/contents/configuration/TasksConfig.qml:165
+#: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "Close Window or Group"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:163
-#: ../../shell/contents/configuration/TasksConfig.qml:203
+#: ../../shell/contents/configuration/TasksConfig.qml:165
+#: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "New Instance"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:163
-#: ../../shell/contents/configuration/TasksConfig.qml:203
+#: ../../shell/contents/configuration/TasksConfig.qml:165
+#: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "Minimize/Restore Window or Group"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:190
+#: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Left Click"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:190
+#: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Middle Click"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:190
+#: ../../shell/contents/configuration/TasksConfig.qml:192
 #, fuzzy
 msgid "Right Click"
 msgstr "Dreapta"
 
-#: ../../shell/contents/configuration/TasksConfig.qml:217
+#: ../../shell/contents/configuration/TasksConfig.qml:219
 msgid "Filters"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:223
+#: ../../shell/contents/configuration/TasksConfig.qml:225
 msgid "Show only tasks from the current screen"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:234
+#: ../../shell/contents/configuration/TasksConfig.qml:236
 msgid "Show only tasks from the current desktop"
 msgstr ""
 
-#: ../../shell/contents/configuration/TasksConfig.qml:245
+#: ../../shell/contents/configuration/TasksConfig.qml:247
 msgid "Show only tasks from the current activity"
 msgstr ""
 
@@ -422,39 +496,56 @@ msgstr "Arată fundalul panoului"
 msgid "Shrink thickness margins to minimum"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:84
+#: ../../shell/contents/configuration/TweaksConfig.qml:85
 msgid "Enable autostart during startup"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:94
+#: ../../shell/contents/configuration/TweaksConfig.qml:95
 msgid "Decrease applets size when it is needed"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:105
+#: ../../shell/contents/configuration/TweaksConfig.qml:106
+msgid "Add launchers only in the taskmanager"
+msgstr ""
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:116
+#: ../../shell/contents/configuration/TweaksConfig.qml:128
 msgid "Expose Alternative Session in the context menu"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:126
+#: ../../shell/contents/configuration/TweaksConfig.qml:138
 msgid "Raise dock on desktop change"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:136
+#: ../../shell/contents/configuration/TweaksConfig.qml:148
 msgid "Raise dock on activity change"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:150
+#: ../../shell/contents/configuration/TweaksConfig.qml:164
+#, fuzzy
+msgid "Backup"
+msgstr "Fundal"
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:176
+msgid "Import configuration"
+msgstr ""
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:184
+msgid "Export configuration"
+msgstr ""
+
+#: ../../shell/contents/configuration/TweaksConfig.qml:198
 msgid "Session"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:179
+#: ../../shell/contents/configuration/TweaksConfig.qml:228
 msgid "Extra Actions"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:193
+#: ../../shell/contents/configuration/TweaksConfig.qml:238
 msgid "Add Spacer"
 msgstr ""
 
@@ -468,6 +559,28 @@ msgstr ""
 
 #: ../desktop-templates/latte-dock.desktop.template:5
 msgid "Dock"
+msgstr ""
+
+#: ../desktop-templates/lattedock.notifyrc.template:3
+#: ../desktop-templates/lattedock.notifyrc.template:4
+#, fuzzy
+msgid "Latte Dock"
+msgstr "Panou Now Dock"
+
+#: ../desktop-templates/lattedock.notifyrc.template:8
+msgid "Configuration imported successfully"
+msgstr ""
+
+#: ../desktop-templates/lattedock.notifyrc.template:12
+msgid "Failed to import configuration"
+msgstr ""
+
+#: ../desktop-templates/lattedock.notifyrc.template:16
+msgid "Configuration exported successfully"
+msgstr ""
+
+#: ../desktop-templates/lattedock.notifyrc.template:20
+msgid "Failed to export configuration"
 msgstr ""
 
 #, fuzzy
