@@ -23,7 +23,7 @@ function generate_desktop_file
     msgfmt --desktop --template="../desktop-templates/$2" -d . -o "$3"
     rm "LINGUAS"
 
-    echo -e "metadata.desktop file for \e[0;32m$1\e[0m was updated..."
+    echo -e "$(basename $2 .template) file for \e[0;32m$1\e[0m was updated..."
 }
 
 generate_desktop_file containment containment.metadata.desktop.template "$PROJECTCONTAINMENT"
@@ -34,4 +34,4 @@ generate_desktop_file shell shell.metadata.desktop.template "$PROJECTSHELL"
 
 generate_desktop_file app latte-dock.desktop.template "$PROJECTAPP"
 
-generate_desktop_file app lattedock.notifyrc "$NOTIFYRC"
+generate_desktop_file app lattedock.notifyrc.template "$NOTIFYRC"
