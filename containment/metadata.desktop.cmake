@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
+Name[el]=Latte
 Name[zh_TW]=Latte
 Name=Latte
+Comment[el]=Containment που παρέχεται από το Latte
 Comment[zh_TW]=提供 Latte Dock 使用的容器
 Comment=Containment provided for the Latte Dock
 
