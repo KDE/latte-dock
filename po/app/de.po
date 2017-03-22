@@ -1,21 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <neumdotjaatgmaildotcom>, 2017.
 #
+# FIRST AUTHOR <neumdotjaatgmaildotcom>, 2017.
+# Jan Neumann <neum dot ja at gmail dot com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-03-16 18:51+0100\n"
-"Last-Translator: Jan Neumann <neumdotjaatgmaildotcom>\n"
-"Language-Team: German <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2017-03-22 20:50+0100\n"
+"Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../app/dockview.cpp:1345
@@ -26,70 +26,66 @@ msgstr "%1 Optionen"
 #: ../../app/globalsettings.cpp:31
 #: ../../shell/contents/configuration/TweaksConfig.qml:205
 msgid "Alternative Session"
-msgstr ""
+msgstr "Alternative Sitzung"
 
 #: ../../app/globalsettings.cpp:32
 msgid "Enable/Disable Alternative Session"
-msgstr ""
+msgstr "Alternative Sitzung an/aus"
 
 #: ../../app/globalsettings.cpp:157
 msgctxt "import/export config"
 msgid "Failed to import configuration"
-msgstr ""
+msgstr "Importieren fehlgeschlagen"
 
 #: ../../app/globalsettings.cpp:177
 msgctxt "import/export config"
 msgid "The file has a wrong format!!!"
-msgstr ""
+msgstr "Die Datei hat das falsche Format!!!"
 
 #: ../../app/globalsettings.cpp:205
 msgctxt "import/export config"
 msgid "Configuration imported successfully"
-msgstr ""
+msgstr "Importieren erfolgreich"
 
 #: ../../app/globalsettings.cpp:217
-#, fuzzy
 msgctxt "import/export config"
 msgid "Import configuration"
-msgstr "Dock Einstellungen"
+msgstr "Konfiguration importieren"
 
 #: ../../app/globalsettings.cpp:224 ../../app/globalsettings.cpp:299
-#, fuzzy
 msgctxt "import/export config"
 msgid "Latte Dock configuration file"
-msgstr "Dock Einstellungen"
+msgstr "Latte Dock Konfigurationsdatei"
 
 #: ../../app/globalsettings.cpp:235
 msgctxt "import/export config"
 msgid "The file has a wrong format"
-msgstr ""
+msgstr "Die Datei hat das falsche Format"
 
 #: ../../app/globalsettings.cpp:236
 msgctxt "import/export config"
 msgid "Do you want to open other file?"
-msgstr ""
+msgstr "Eine andere Datei öffnen?"
 
 #: ../../app/globalsettings.cpp:293
-#, fuzzy
 msgctxt "import/export config"
 msgid "Export configuration"
-msgstr "Dock Einstellungen"
+msgstr "Konfiguration exportieren"
 
 #: ../../app/globalsettings.cpp:309
 msgctxt "import/export config"
 msgid "Failed to export configuration"
-msgstr ""
+msgstr "Exportieren fehlgeschlagen"
 
 #: ../../app/globalsettings.cpp:340
-#, fuzzy
 msgctxt "import/export config"
 msgid "Open location"
-msgstr "Position"
+msgstr "Öffnen ..."
 
 #: ../../app/globalsettings.cpp:341
 msgctxt "import/export config"
 msgid "Configuration exported successfully"
-msgstr ""
+msgstr "Exportieren erfolgreich"
 
 #: ../../app/main.cpp:76
 msgctxt "command line"
@@ -104,12 +100,12 @@ msgstr "Sende Debug Informationen zu stdout."
 #: ../../app/main.cpp:78
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
-msgstr "Debug Informationen der Maske (Nur sinnvoll für Devs)."
+msgstr "Debug Informationen für die Maske (Nur sinnvoll für Devs)."
 
 #: ../../app/main.cpp:79
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
-msgstr "Zeigt Kästen um die Leiste."
+msgstr "Zeichnet Kästen um Applets."
 
 #: ../../app/main.cpp:80
 msgctxt "command line"
@@ -117,15 +113,14 @@ msgid "Open a window with much debug information."
 msgstr "Öffnet Fenster mit vielen Debug Informationen."
 
 #: ../../app/main.cpp:81
-#, fuzzy
 msgctxt "command line"
 msgid "Import configuration."
-msgstr "Dock Einstellungen"
+msgstr "Konfiguration importieren."
 
 #: ../../app/main.cpp:81
 msgctxt "command line: import"
 msgid "file_name"
-msgstr ""
+msgstr "Dateiname"
 
 #: ../../app/main.cpp:98
 msgid "An instance is already running!, use --replace to restart Latte"
@@ -133,7 +128,7 @@ msgstr "Latte Dock läuft bereits! Benutze --replace zum Neustarten."
 
 #: ../../app/main.cpp:106
 msgid "The configuration cannot be imported"
-msgstr ""
+msgstr "Konfiguration konnte nicht importiert werden"
 
 #: ../../app/main.cpp:148
 msgid ""
@@ -144,8 +139,9 @@ msgid ""
 "\"Art in Coffee\""
 msgstr ""
 "Latte Dock basiert auf Plasma Framework Technologie und bietet einen "
-"eleganten, intuitiven Umgang mit Plasmoiden und Tasks. Es animiert mithilfe "
-"parabolischer Zoom Effekte und versucht nur da zu sein wenn man es braucht.\n"
+"eleganten, intuitiven Umgang mit Plasmoiden und Tasks.\n"
+"Es animiert mithilfe parabolischer Zoom Effekte und versucht nur da zu sein"
+" wenn man es braucht.\n"
 "\n"
 "\"Art in Coffee\""
 
@@ -175,16 +171,15 @@ msgstr "Konfigurationsmodell"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
-msgstr "Größe"
+msgstr "Applets Größe"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:107
 msgid "Screen Height Proportion:"
-msgstr ""
+msgstr "Proportional zur Bildschirmhöhe:"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:156
-#, fuzzy
 msgid "Applets Distance:"
-msgstr "Größe"
+msgstr "Applets Abstand:"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:193
 msgid "Zoom On Hover"
@@ -324,15 +319,15 @@ msgstr "Automatisch ausblenden"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:373
 msgid "Dodge Active"
-msgstr "Aktive Fenster umgehen"
+msgstr "Aktivem Fenster ausweichen"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:382
 msgid "Dodge Maximized"
-msgstr "Maximierte Fenster umgehen"
+msgstr "Maximierten Fenstern ausweichen"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:391
 msgid "Dodge All Windows"
-msgstr "Alle Fenster umgehen"
+msgstr "Allen Fenstern ausweichen"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:409
 msgid "Delay"
@@ -371,7 +366,7 @@ msgstr "Funktionen"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:187
 msgid "Tweaks"
-msgstr ""
+msgstr "Tweaks"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:264
 msgid "Add"
@@ -395,11 +390,11 @@ msgstr "ms."
 
 #: ../../shell/contents/configuration/TasksConfig.qml:54
 msgid "Show glow around windows points"
-msgstr "Glühende Punkte für Fenster"
+msgstr "Zeige glühende Punkte für Fenster"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:65
 msgid "Different color for minimized windows"
-msgstr "Verschiedene Farben für minimierte Fenster"
+msgstr "Andere Farbe für minimierte Fenster"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:76
 msgid "Indicator for active window group"
@@ -419,7 +414,7 @@ msgstr "Vorschau beim Überfahren"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:121
 msgid "Highlight windows on hovering"
-msgstr "Hervorhebung von Fenstern beim Überfahren"
+msgstr "Hervorheben von Fenstern beim Überfahren"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:133
 msgid "Show window actions in the context menu"
@@ -431,42 +426,40 @@ msgstr "Zeige Fortschrittsanzeige für Aufgaben"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:158
 msgid "On middle-click:"
-msgstr ""
+msgstr "Mittlere Maustaste:"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
-#, fuzzy
 msgctxt "The click action"
 msgid "None"
-msgstr "Aus"
+msgstr "Nichts"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "Close Window or Group"
-msgstr ""
+msgstr "Fenster oder Gruppe schließen"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "New Instance"
-msgstr ""
+msgstr "Neue Instanz"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "Minimize/Restore Window or Group"
-msgstr ""
+msgstr "Fenster oder Gruppe minimieren/maximieren"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Left Click"
-msgstr ""
+msgstr "Linke Maustaste"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Middle Click"
-msgstr ""
+msgstr "Mittlere Maustaste"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
-#, fuzzy
 msgid "Right Click"
-msgstr "Rechts"
+msgstr "Rechte Maustaste"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:219
 msgid "Filters"
@@ -485,70 +478,64 @@ msgid "Show only tasks from the current activity"
 msgstr "Zeige nur Aufgaben dieser Aktivität"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:54
-#, fuzzy
 msgid "Blur for panel background"
-msgstr "Zeige Hintergrund"
+msgstr "Leistenhintergrund verwischen (Blur)"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:65
 msgid "Shrink thickness margins to minimum"
-msgstr ""
+msgstr "Minimaler Abstand zum Bildschirmrand"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:85
 msgid "Enable autostart during startup"
-msgstr ""
+msgstr "Autostart bei Login"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:95
 msgid "Decrease applets size when it is needed"
-msgstr ""
+msgstr "Verkleinere Applets wenn notwendig"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
 msgid "Add launchers only in the corresponding area"
-msgstr ""
+msgstr "Starter nur im entsprechendem Bereich ablegen"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
-msgstr ""
+msgstr "Verhalte wie normales Dock Fenster"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
-#, fuzzy
 msgid "Show Alternative Session in the context menu"
-msgstr "Zeige Fenster Aktionen im Kontextmenü"
+msgstr "Zeige Alternative Sitzung im Kontextmenü"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:138
 msgid "Raise dock on desktop change"
-msgstr ""
+msgstr "Hebe das Dock bei Wechsel der Arbeitsfläche"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:148
 msgid "Raise dock on activity change"
-msgstr ""
+msgstr "Hebe das Dock bei Wechsel der Aktivität"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:164
-#, fuzzy
 msgid "Backup"
-msgstr "Hintergrund"
+msgstr "Backup"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:176
-#, fuzzy
 msgid "Import configuration"
-msgstr "Dock Einstellungen"
+msgstr "Konfiguration importieren"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:184
-#, fuzzy
 msgid "Export configuration"
-msgstr "Dock Einstellungen"
+msgstr "Konfiguration exportieren"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:198
 msgid "Session"
-msgstr ""
+msgstr "Sitzung"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:228
-#, fuzzy
 msgid "Extra Actions"
-msgstr "Dialoge"
+msgstr "Extras"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:238
 msgid "Add Spacer"
-msgstr ""
+msgstr "Abstandshalter"
 
 #: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
@@ -564,25 +551,24 @@ msgstr "Dock"
 
 #: ../desktop-templates/lattedock.notifyrc.template:3
 #: ../desktop-templates/lattedock.notifyrc.template:4
-#, fuzzy
 msgid "Latte Dock"
-msgstr "Latte Dock Leiste"
+msgstr "Latte Dock"
 
 #: ../desktop-templates/lattedock.notifyrc.template:8
 msgid "Configuration imported successfully"
-msgstr ""
+msgstr "Importieren erfolgreich"
 
 #: ../desktop-templates/lattedock.notifyrc.template:12
 msgid "Failed to import configuration"
-msgstr ""
+msgstr "Importieren fehlgeschlagen"
 
 #: ../desktop-templates/lattedock.notifyrc.template:16
 msgid "Configuration exported successfully"
-msgstr ""
+msgstr "Exportieren erfolgreich"
 
 #: ../desktop-templates/lattedock.notifyrc.template:20
 msgid "Failed to export configuration"
-msgstr ""
+msgstr "Exportieren fehlgeschlagen"
 
 #~ msgid "Shadows"
 #~ msgstr "Schatten"
