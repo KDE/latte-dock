@@ -8,7 +8,6 @@
 #include <QProcess>
 #include <QMessageBox>
 #include <QDesktopServices>
-#include <QtConcurrent/QtConcurrent>
 
 #include <KLocalizedString>
 #include <KConfig>
