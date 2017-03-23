@@ -340,10 +340,8 @@ void GlobalSettings::exportConfiguration()
         notification->setText(i18nc("import/export config", "Configuration exported successfully"));
 
         connect(notification, &KNotification::action1Activated
-        , this, [&file]() {
-            QDir path(file);
-            path.cdUp();
-            QDesktopServices::openUrl({path.absolutePath()});
+        , this, [file]() {
+            QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
         });
 
         notification->sendEvent();
