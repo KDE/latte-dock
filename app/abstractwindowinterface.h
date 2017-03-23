@@ -33,6 +33,7 @@
 #include <QRect>
 #include <QQuickView>
 #include <QDialog>
+#include <QScreen>
 
 #include <Plasma>
 #include <KActivities/Consumer>
@@ -57,7 +58,9 @@ public:
     virtual ~AbstractWindowInterface();
 
     virtual void setDockExtraFlags(QQuickWindow &view) = 0;
-    virtual void setDockStruts(WId dockId, const QRect &dockRect, Plasma::Types::Location location) const = 0;
+    virtual void setDockStruts(WId dockId, const QRect &dockRect
+                               , const QScreen &screen, Plasma::Types::Location location) const = 0;
+
     virtual void removeDockStruts(WId dockId) const = 0;
 
     virtual WId activeWindow() const = 0;

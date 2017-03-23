@@ -39,7 +39,9 @@ public:
     ~XWindowInterface() override;
 
     void setDockExtraFlags(QQuickWindow &view) override;
-    void setDockStruts(WId dockId, const QRect &dockRect, Plasma::Types::Location location) const override;
+    void setDockStruts(WId dockId, const QRect &dockRect
+                       , const QScreen &screen, Plasma::Types::Location location) const override;
+
     void removeDockStruts(WId dockId) const override;
 
     WId activeWindow() const override;

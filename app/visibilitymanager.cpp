@@ -105,8 +105,9 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
     switch (this->mode) {
         case Dock::AlwaysVisible: {
-            if (view->containment() && !view->containment()->isUserConfiguring())
-                wm->setDockStruts(view->winId(), dockGeometry, view->location());
+            if (view->containment() && !view->containment()->isUserConfiguring() && view->screen()) {
+                wm->setDockStruts(view->winId(), dockGeometry, *view->screen(), view->location());
+            }
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
@@ -115,8 +116,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             });
             connections[1] = connect(view->containment(), &Plasma::Containment::userConfiguringChanged
             , this, [&](bool configuring) {
-                if (!configuring)
-                    wm->setDockStruts(view->winId(), dockGeometry, view->containment()->location());
+                if (!configuring && view->screen())
+                    wm->setDockStruts(view->winId(), dockGeometry, *view->screen(), view->containment()->location());
             });
             raiseDock(true);
         }
@@ -311,8 +312,8 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 
     this->dockGeometry = geometry;
 
-    if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring()) {
-        wm->setDockStruts(view->winId(), this->dockGeometry, view->containment()->location());
+    if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring() && view->screen()) {
+        wm->setDockStruts(view->winId(), this->dockGeometry, *view->screen(), view->containment()->location());
     }
 }
 
