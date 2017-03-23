@@ -88,35 +88,44 @@ void XWindowInterface::setDockExtraFlags(QQuickWindow &view)
     KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
-void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect, Plasma::Types::Location location) const
+void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect
+                                     , const QScreen &screen, Plasma::Types::Location location) const
 {
     NETExtendedStrut strut;
 
+    const QRect currentScreen {screen.geometry()};
+    const QRect wholeScreen {{0, 0}, screen.virtualSize()};
+
     switch (location) {
-        case Plasma::Types::TopEdge:
-            strut.top_width = dockRect.height();
+        case Plasma::Types::TopEdge: {
+            const int topOffset {screen.geometry().top()};
+            strut.top_width = dockRect.height() + topOffset;
             strut.top_start = dockRect.x();
             strut.top_end = dockRect.x() + dockRect.width() - 1;
             break;
+        }
 
-        case Plasma::Types::BottomEdge:
-            strut.bottom_width = dockRect.height();
+        case Plasma::Types::BottomEdge: {
+            const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
+            strut.bottom_width = dockRect.height() + bottomOffset;
             strut.bottom_start = dockRect.x();
             strut.bottom_end = dockRect.x() + dockRect.width() - 1;
             break;
-
-        case Plasma::Types::LeftEdge:
-            strut.left_width = dockRect.width();
+        }
+        case Plasma::Types::LeftEdge: {
+            const int leftOffset = {screen.geometry().left()};
+            strut.left_width = dockRect.width() + leftOffset;
             strut.left_start = dockRect.y();
             strut.left_end = dockRect.y() + dockRect.height() - 1;
             break;
-
-        case Plasma::Types::RightEdge:
-            strut.right_width = dockRect.width();
+        }
+        case Plasma::Types::RightEdge: {
+            const int rightOffset = {wholeScreen.right() - currentScreen.right()};
+            strut.right_width = dockRect.width() + rightOffset;
             strut.right_start = dockRect.y();
             strut.right_end = dockRect.y() + dockRect.height() - 1;
             break;
-
+        }
         default:
             qWarning() << "wrong location:" << qEnumToStr(location);
             return;
