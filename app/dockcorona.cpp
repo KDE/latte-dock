@@ -976,7 +976,6 @@ void DockCorona::loadDefaultLayout()
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
 
-    m_waitingSessionDocksCreation = true;
     addDock(defaultContainment);
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
