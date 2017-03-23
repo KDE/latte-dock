@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-03-20 21:00+0800\n"
+"PO-Revision-Date: 2017-03-23 11:13+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../containment/contents/ui/AppletItem.qml:916
 msgid "Launchers Area"
-msgstr ""
+msgstr "啟動器區域"
 
 #: ../desktop-templates/containment.metadata.desktop.template:4
 msgid "Latte"
@@ -28,3 +28,4 @@ msgstr "Latte"
 #: ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
 msgstr "提供 Latte Dock 使用的容器"
+
