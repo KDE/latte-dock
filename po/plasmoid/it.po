@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-01-29 14:57+0100\n"
+"PO-Revision-Date: 2017-03-24 07:12+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -36,7 +36,7 @@ msgstr "Dimensione icone: "
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:158
 msgid "ver: "
-msgstr "versione: "
+msgstr "ver: "
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:165
 msgid "Enable shadows for icons"
@@ -123,7 +123,7 @@ msgstr "Chiudi Finestra o Gruppo"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "New Instance"
-msgstr "Nuova Instanza"
+msgstr "Nuova Istanza"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "Minimize/Restore Window or Group"
@@ -179,7 +179,7 @@ msgstr "Usa tema pannello di plasma"
 
 #: ../../plasmoid/contents/ui/ConfigPanel.qml:90
 msgid "Use transparency in the panel"
-msgstr "Usa transparenza nel pannello"
+msgstr "Usa la trasparenza nel pannello"
 
 #: ../../plasmoid/contents/ui/ConfigPanel.qml:97
 msgid "Size: "
@@ -222,15 +222,15 @@ msgstr "Ripristina"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:231
 msgid "Move To Desktop"
-msgstr "Muovi al Desktop"
+msgstr "Sposta al Desktop"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:253
 msgid "Move To Current Desktop"
-msgstr "Muovi al Desktop Corrente"
+msgstr "Sposta al Desktop Corrente"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:262
 msgid "All Desktops"
-msgstr "Tutti i Desktops"
+msgstr "Tutti i Desktop"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:291
 msgid "New Desktop"
@@ -290,12 +290,12 @@ msgstr "Permetti a questo task di essere raggruppato"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:530
 msgid "Start New Instance"
-msgstr "Inizia nuova instanza"
+msgstr "Inizia nuova istanza"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:552
 #: ../../plasmoid/contents/ui/ContextMenu.qml:587
 msgid "Show Launcher On All Activities"
-msgstr "Mostra il lanciatore su tutte le actività"
+msgstr "Mostra il lanciatore su tutte le attività"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:569
 msgid "Show Launcher When Not Running"
@@ -311,7 +311,7 @@ msgstr "Chiudi"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:647
 msgid "Alternative Session"
-msgstr ""
+msgstr "Sessione Alternativa"
 
 #: ../../plasmoid/contents/ui/TaskDelegate.qml:893
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
@@ -338,11 +338,11 @@ msgstr "Disponibile su %1"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:3
 msgid "Latte Plasmoid"
-msgstr ""
+msgstr "Latte Plasmoide"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
-msgstr ""
+msgstr "Plasmoide da Latte Dock"
 
 #~ msgctxt "Go to previous song"
 #~ msgid "Previous"
