@@ -220,6 +220,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
         winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
         winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));
         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
+        winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
         winfoWrap.setGeometry(winfo.frameGeometry());
     } else if (m_desktopId == wid) {
         winfoWrap.setIsValid(true);

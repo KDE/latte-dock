@@ -406,7 +406,9 @@ void VisibilityManagerPrivate::checkAllWindows()
 
 inline bool VisibilityManagerPrivate::intersects(const WindowInfoWrap &winfo)
 {
-    return (!winfo.isMinimized() && winfo.geometry().intersects(dockGeometry));
+    return (!winfo.isMinimized()
+            && winfo.geometry().intersects(dockGeometry)
+            && !winfo.isShaded());
 }
 
 inline void VisibilityManagerPrivate::saveConfig()
