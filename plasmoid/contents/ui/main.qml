@@ -774,7 +774,7 @@ Item {
             property bool delayingRemoval: false
             property bool directRender: false
 
-            onTasksCountChanged: updateImplicits();
+         //   onTasksCountChanged: updateImplicits();
 
             //  property int count: children ? children.length : 0
             /*   anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
@@ -785,19 +785,19 @@ Item {
             anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
             anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined  */
 
-            width: contentWidth
-            height: contentHeight
+            width: !root.vertical ? contentWidth : mouseHandler.maxSize
+            height: root.vertical ? contentHeight : mouseHandler.maxSize
 
             orientation: Qt.Horizontal
 
             delegate: TaskDelegate{}
 
-            /*Rectangle{
+            /* Rectangle{
                 anchors.fill: parent
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            }*/
+            } */
 
             //the duration of this animation should be as small as possible
             //it fixes a small issue with the dragging an item to change it's
@@ -1128,6 +1128,7 @@ Item {
     }
 
     function resetDragSource() {
+        dragSource.z = 0;
         dragSource = null;
     }
 
