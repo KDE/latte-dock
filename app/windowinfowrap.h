@@ -35,7 +35,7 @@ public:
         , m_isActive(false)
         , m_isMinimized(false)
         , m_isMaxVert(false)
-        , m_isMaxHorz(false)
+        , m_isMaxHoriz(false)
         , m_isFullscreen(false)
         , m_isShaded(false)
         , m_isPlasmaDesktop(false)
@@ -49,7 +49,7 @@ public:
         , m_isActive(o.m_isActive)
         , m_isMinimized(o.m_isMinimized)
         , m_isMaxVert(o.m_isMaxVert)
-        , m_isMaxHorz(o.m_isMaxHorz)
+        , m_isMaxHoriz(o.m_isMaxHoriz)
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
@@ -101,7 +101,7 @@ private:
     bool m_isActive : 1;
     bool m_isMinimized : 1;
     bool m_isMaxVert : 1;
-    bool m_isMaxHorz : 1;
+    bool m_isMaxHoriz : 1;
     bool m_isFullscreen : 1;
     bool m_isShaded : 1;
     bool m_isPlasmaDesktop : 1;
@@ -116,7 +116,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isActive = rhs.m_isActive;
     m_isMinimized = rhs.m_isMinimized;
     m_isMaxVert = rhs.m_isMaxVert;
-    m_isMaxHorz = rhs.m_isMaxHorz;
+    m_isMaxHoriz = rhs.m_isMaxHoriz;
     m_isFullscreen = rhs.m_isFullscreen;
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
@@ -170,7 +170,7 @@ inline void WindowInfoWrap::setIsMinimized(bool isMinimized) noexcept
 
 constexpr bool WindowInfoWrap::isMaximized() const noexcept
 {
-    return m_isMaxVert || m_isMaxHorz;
+    return m_isMaxVert || m_isMaxHoriz;
 }
 
 constexpr bool WindowInfoWrap::isMaxVert() const noexcept
@@ -185,12 +185,12 @@ inline void WindowInfoWrap::setIsMaxVert(bool isMaxVert) noexcept
 
 constexpr bool WindowInfoWrap::isMaxHoriz() const noexcept
 {
-    return m_isMaxHorz;
+    return m_isMaxHoriz;
 }
 
 inline void WindowInfoWrap::setIsMaxHoriz(bool isMaxHoriz) noexcept
 {
-    m_isMaxHorz = isMaxHoriz;
+    m_isMaxHoriz = isMaxHoriz;
 }
 
 constexpr bool WindowInfoWrap::isFullscreen() const noexcept
