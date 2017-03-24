@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-03-24 20:52+0100\n"
+"PO-Revision-Date: 2017-03-24 22:54+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -430,7 +430,6 @@ msgstr "Azione mouse click-centrale:"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
-#, fuzzy
 msgctxt "The click action"
 msgid "None"
 msgstr "Nessuna"
@@ -492,12 +491,11 @@ msgstr "Abilita avvio automatico durante la fase di avvio"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:95
 msgid "Decrease applets size when it is needed"
-msgstr "Diminuzione dimensione delle icone quando è necessario"
+msgstr "Ridimensiona icone quando è necessario"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
-#, fuzzy
 msgid "Add launchers only in the corresponding area"
-msgstr "Aggiunge i lanciatori solo nel task manager"
+msgstr "Aggiunge i lanciatori solo nella corrispondente area"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
@@ -553,7 +551,6 @@ msgstr "Dock"
 
 #: ../desktop-templates/lattedock.notifyrc.template:3
 #: ../desktop-templates/lattedock.notifyrc.template:4
-#, fuzzy
 msgid "Latte Dock"
 msgstr "Latte Dock"
 
