@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 13:08+0200\n"
-"PO-Revision-Date: 2017-03-22 20:52+0100\n"
+"PO-Revision-Date: 2017-03-24 20:52+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -426,7 +426,7 @@ msgstr "Mostra informazioni di progresso dei task"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:158
 msgid "On middle-click:"
-msgstr "Su middle-click:"
+msgstr "Azione mouse click-centrale:"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
@@ -452,15 +452,15 @@ msgstr "Minimizza/Ripristina Finestra o Gruppo"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Left Click"
-msgstr "Left Click"
+msgstr "Click sinistro"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Middle Click"
-msgstr "Middle Click"
+msgstr "Click centrale"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Right Click"
-msgstr "Right Click"
+msgstr "Click destro"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:219
 msgid "Filters"
@@ -480,7 +480,7 @@ msgstr "Mostra solo i task della attività attuale"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:54
 msgid "Blur for panel background"
-msgstr "Sfuocatura per lo sfondo del pannello"
+msgstr "Sfondo del pannello sfuocato"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:65
 msgid "Shrink thickness margins to minimum"
@@ -488,7 +488,7 @@ msgstr "Restringi lo spessore dei margini al  minimo"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:85
 msgid "Enable autostart during startup"
-msgstr "Abilita avvio automatico durante l'avvio"
+msgstr "Abilita avvio automatico durante la fase di avvio"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:95
 msgid "Decrease applets size when it is needed"
@@ -500,7 +500,7 @@ msgstr "Aggiunge i lanciatori solo nel task manager"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
-msgstr "Si comporta come una normale finestra dock"
+msgstr "Imita una normale finestra dock"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
 msgid "Show Alternative Session in the context menu"
