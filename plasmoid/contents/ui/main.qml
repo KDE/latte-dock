@@ -446,15 +446,29 @@ Item {
         }
     }
 
+    //! TaskManagerBackend required a groupDialog setting otherwise it crashes. This patch
+    //! sets one just in order not to crash TaskManagerBackend
+    PlasmaCore.Dialog {
+        //ghost group Dialog to not crash TaskManagerBackend
+        id: groupDialog
+        visible: false
+
+        type: PlasmaCore.Dialog.PopupMenu
+        flags: Qt.WindowStaysOnTopHint
+        hideOnWindowDeactivate: true
+        location: plasmoid.location
+    }
+
     TaskManagerApplet.Backend {
         id: backend
 
         taskManagerItem: root
         toolTipItem: toolTipDelegate
+        groupDialog: groupDialog
         //! there is a conflict between preview windows and highlight effect, it creates
         //! a crash when both are activated during hovering. So we enable in each case
         //! only one of both
-        highlightWindows: root.highlightWindows && !root.showPreviews
+        highlightWindows: root.highlightWindows
 
         onAddLauncher: {
             tasksModel.requestAddLauncher(url);

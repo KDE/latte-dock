@@ -108,7 +108,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Preview windows on hovering")
                 checked: plasmoid.configuration.showToolTips
-                enabled: !highlightWindowsChk.checked
 
                 onClicked: {
                     plasmoid.configuration.showToolTips = checked
@@ -120,7 +119,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Highlight windows on hovering")
                 checked: plasmoid.configuration.highlightWindows
-                enabled: !showPreviewsChk.checked
 
                 onClicked: {
                     plasmoid.configuration.highlightWindows = checked
