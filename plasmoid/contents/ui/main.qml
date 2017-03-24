@@ -446,6 +446,20 @@ Item {
         }
     }
 
+    //! TaskManagerBackend required a groupDialog setting otherwise it crashes. This patch
+    //! sets one just in order not to crash TaskManagerBackend
+    PlasmaCore.Dialog {
+        //ghost group Dialog to not crash TaskManagerBackend
+        id: groupDialogGhost
+        visible: false
+
+        type: PlasmaCore.Dialog.PopupMenu
+        flags: Qt.WindowStaysOnTopHint
+        hideOnWindowDeactivate: true
+        location: plasmoid.location
+    }
+
+
     TaskManagerApplet.Backend {
         id: backend
 
@@ -460,8 +474,10 @@ Item {
         Component.onCompleted: {
             //! In Plasma 5.9 TaskManagerBackend required a groupDialog setting
             //! otherwise it crashes.
-            if (groupDialog) {
-                groupDialog = undefined;
+            //! frameworks 5.29.0 provide id 335104
+            //! work only after Plasma 5.9 and frameworks 5.29
+            if (Latte.WindowSystem.frameworksVersion >= 335104) {
+                groupDialog = groupDialogGhost;
             }
         }
     }
