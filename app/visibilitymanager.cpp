@@ -60,6 +60,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     wm->setDockExtraFlags(*view);
     wm->addDock(view->winId());
     restoreConfig();
+
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
@@ -355,9 +356,19 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
         winfo = wm->requestInfo(wm->activeWindow());
     }
 
+    auto isMaxVert = [&]() noexcept -> bool {
+        return winfo.isMaxVert()
+                || (view->screen() && view->screen()->size().height() <= winfo.geometry().height());
+    };
+
+    auto isMaxHoriz = [&]() noexcept -> bool {
+        return winfo.isMaxHoriz()
+                || (view->screen() && view->screen()->size().width() <= winfo.geometry().width());
+    };
+
     if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized())
-        raiseDock(!(view->formFactor() == Plasma::Types::Vertical
-                    ? winfo.isMaxHoriz() : winfo.isMaxVert()));
+        raiseDock(view->formFactor() == Plasma::Types::Vertical
+                    ? !isMaxHoriz() : !isMaxVert());
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WId wid)
