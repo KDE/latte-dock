@@ -23,7 +23,6 @@
 
 #include <QWindow>
 #include <QRect>
-#include <QDebug>
 
 namespace Latte {
 
@@ -43,7 +42,7 @@ public:
     {
     }
 
-     WindowInfoWrap(WindowInfoWrap &&o) noexcept
+     constexpr WindowInfoWrap(WindowInfoWrap &&o) noexcept
         : m_wid(std::move(o.m_wid))
         , m_geometry(std::move(o.m_geometry))
         , m_isValid(o.m_isValid)
@@ -119,6 +118,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isMaxVert = rhs.m_isMaxVert;
     m_isMaxHorz = rhs.m_isMaxHorz;
     m_isFullscreen = rhs.m_isFullscreen;
+    m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     return *this;
 }
