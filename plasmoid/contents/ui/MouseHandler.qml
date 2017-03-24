@@ -44,7 +44,7 @@ Item {
         id: ignoreItemTimer
 
         repeat: false
-        interval: 750
+        interval: 200
 
         onTriggered: {
             ignoredItem = null;
@@ -122,7 +122,7 @@ Item {
                     && above.m.IsLauncher !== true && above == ignoredItem) {
                 return;
             } else {
-                ignoredItem = null;
+                //ignoredItem = null;
             }
 
             //at some point it was needed the following  && above != ignoredItem
@@ -134,6 +134,7 @@ Item {
 
                 if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
                     //      console.log(root.dragSource.itemIndex + " - "+insertAt);
+                    root.dragSource.z = 100;
                     tasksModel.move(root.dragSource.itemIndex, insertAt);
                     ignoredItem = above;
                     ignoreItemTimer.restart();
