@@ -186,7 +186,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.ComboBox {
                     id: modifierClick
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 8
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 10
                     model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
 
                     currentIndex: plasmoid.configuration.modifierClick
