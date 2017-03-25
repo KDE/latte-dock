@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-03-24 22:54+0100\n"
+"PO-Revision-Date: 2017-03-25 08:01+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -179,7 +179,7 @@ msgstr "Proporzione Altezza Schermo:"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:156
 msgid "Applets Distance:"
-msgstr "Distanza delle icone:"
+msgstr "Spaziatura:"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:193
 msgid "Zoom On Hover"
@@ -245,7 +245,7 @@ msgstr "Posizione"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:70
 msgid "On Primary"
-msgstr "Primario"
+msgstr "Uscita Primaria"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:105
 msgid "Screen:"
@@ -491,7 +491,7 @@ msgstr "Abilita avvio automatico durante la fase di avvio"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:95
 msgid "Decrease applets size when it is needed"
-msgstr "Ridimensiona icone quando è necessario"
+msgstr "Ridimensiona icone quando necessario"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
 msgid "Add launchers only in the corresponding area"
@@ -499,7 +499,7 @@ msgstr "Aggiunge i lanciatori solo nella corrispondente area"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
-msgstr "Imita una normale finestra dock"
+msgstr "Si comporta come una normale finestra dock"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
 msgid "Show Alternative Session in the context menu"
