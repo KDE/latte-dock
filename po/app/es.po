@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-01-29 16:42-0500\n"
+"PO-Revision-Date: 2017-03-24 19:40-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
 "Language: es\n"
@@ -25,111 +25,112 @@ msgstr "Preferencias de %1"
 #: ../../app/globalsettings.cpp:31
 #: ../../shell/contents/configuration/TweaksConfig.qml:205
 msgid "Alternative Session"
-msgstr ""
+msgstr "Sesión alternativa"
 
 #: ../../app/globalsettings.cpp:32
 msgid "Enable/Disable Alternative Session"
-msgstr ""
+msgstr "Habilitar/Deshabilitar sesión alternativa"
 
 #: ../../app/globalsettings.cpp:157
 msgctxt "import/export config"
 msgid "Failed to import configuration"
-msgstr ""
+msgstr "Fallo al importar la configuración"
 
 #: ../../app/globalsettings.cpp:177
 msgctxt "import/export config"
 msgid "The file has a wrong format!!!"
-msgstr ""
+msgstr "¡El archivo tiene un formato erróneo!"
 
 #: ../../app/globalsettings.cpp:205
 msgctxt "import/export config"
 msgid "Configuration imported successfully"
-msgstr ""
+msgstr "Configuración importada satisfactoriamente"
 
 #: ../../app/globalsettings.cpp:217
 msgctxt "import/export config"
 msgid "Import configuration"
-msgstr ""
+msgstr "Importar configuración"
 
 #: ../../app/globalsettings.cpp:224 ../../app/globalsettings.cpp:299
-#, fuzzy
 msgctxt "import/export config"
 msgid "Latte Dock configuration file"
-msgstr "Latte Dock"
+msgstr "Archivos de configuración de Latte Dock"
 
 #: ../../app/globalsettings.cpp:235
 msgctxt "import/export config"
 msgid "The file has a wrong format"
-msgstr ""
+msgstr "¡El archivo tiene un formato erróneo!"
 
 #: ../../app/globalsettings.cpp:236
 msgctxt "import/export config"
 msgid "Do you want to open other file?"
-msgstr ""
+msgstr "¿Desea abrir otro archivo?"
 
 #: ../../app/globalsettings.cpp:293
 msgctxt "import/export config"
 msgid "Export configuration"
-msgstr ""
+msgstr "Exportar configuración"
 
 #: ../../app/globalsettings.cpp:309
 msgctxt "import/export config"
 msgid "Failed to export configuration"
-msgstr ""
+msgstr "Fallo al exportar la configuración"
 
 #: ../../app/globalsettings.cpp:340
-#, fuzzy
 msgctxt "import/export config"
 msgid "Open location"
-msgstr "Posición"
+msgstr "Abrir ubicación"
 
 #: ../../app/globalsettings.cpp:341
 msgctxt "import/export config"
 msgid "Configuration exported successfully"
-msgstr ""
+msgstr "Configuración exportada satisfactoriamente"
 
 #: ../../app/main.cpp:76
 msgctxt "command line"
 msgid "Replace the current dock instance."
-msgstr ""
+msgstr "Remplazar la instancia del dock actual."
 
 #: ../../app/main.cpp:77
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
-msgstr ""
+msgstr "Mostrar mensajes de depuración en la salida estándar."
 
 #: ../../app/main.cpp:78
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
 msgstr ""
+"Mostrar mensajes de depuración para la mascara (Útil para los"
+" desarrolladores)."
 
 #: ../../app/main.cpp:79
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
-msgstr ""
+msgstr "Dibujar cajas alrededor de los elementos gráficos."
 
 #: ../../app/main.cpp:80
 msgctxt "command line"
 msgid "Open a window with much debug information."
-msgstr ""
+msgstr "Abrir una ventana con mas información de depuración."
 
 #: ../../app/main.cpp:81
 msgctxt "command line"
 msgid "Import configuration."
-msgstr ""
+msgstr "Importar configuración."
 
 #: ../../app/main.cpp:81
 msgctxt "command line: import"
 msgid "file_name"
-msgstr ""
+msgstr "file_name"
 
 #: ../../app/main.cpp:98
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
+"¡Una instancia esta actualmente corriendo! use --replace para reiniciar Latte"
 
 #: ../../app/main.cpp:106
 msgid "The configuration cannot be imported"
-msgstr ""
+msgstr "La configuración no pudo ser importada"
 
 #: ../../app/main.cpp:148
 msgid ""
@@ -146,15 +147,15 @@ msgstr ""
 
 #: ../../app/main.cpp:165
 msgid "Logo and Icons"
-msgstr ""
+msgstr "Logo y iconos"
 
 #: ../../app/main.cpp:167
 msgid "Many bug reports"
-msgstr ""
+msgstr "Muchos reportes de bugs."
 
 #: ../../app/main.cpp:169
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
-msgstr ""
+msgstr "Reseña para Latte Dock, CandilDock y NowDock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:44
 msgid "Latte Dock panel"
@@ -162,24 +163,23 @@ msgstr "Latte Dock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:46
 msgid "Dock configuration UI"
-msgstr ""
+msgstr "Interfaz de configuración del dock"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:47
 msgid "Config model"
-msgstr ""
+msgstr "Modelo de configuración"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:59
 msgid "Applets Size"
-msgstr "Tamaño de los iconos"
+msgstr "Tamaño de los elementos gráficos"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:107
 msgid "Screen Height Proportion:"
-msgstr ""
+msgstr "Proporcional a la pantalla:"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:156
-#, fuzzy
 msgid "Applets Distance:"
-msgstr "Tamaño de los iconos"
+msgstr "Espaciado:"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:193
 msgid "Zoom On Hover"
@@ -219,9 +219,8 @@ msgid "Show Panel Background"
 msgstr "Mostrar el fondo del panel"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:338
-#, fuzzy
 msgid "Solid Background"
-msgstr "Fondo"
+msgstr "Fondo solido"
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:393
 #: ../../shell/contents/configuration/AppearanceConfig.qml:406
@@ -246,11 +245,11 @@ msgstr "Posición"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:70
 msgid "On Primary"
-msgstr ""
+msgstr "En salida primaria"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:105
 msgid "Screen:"
-msgstr ""
+msgstr "Pantalla:"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:194
 msgctxt "bottom location"
@@ -367,7 +366,7 @@ msgstr "Tareas"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:187
 msgid "Tweaks"
-msgstr ""
+msgstr "Ajustes"
 
 #: ../../shell/contents/configuration/LatteDockConfiguration.qml:264
 msgid "Add"
@@ -382,7 +381,6 @@ msgid "Quit"
 msgstr "Salir"
 
 #: ../../shell/contents/configuration/LatteTextField.qml:42
-#, fuzzy
 msgid "none"
 msgstr "none"
 
@@ -428,11 +426,10 @@ msgstr "Mostrar información de progreso en las tareas"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:158
 msgid "On middle-click:"
-msgstr ""
+msgstr "Botón central:"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
-#, fuzzy
 msgctxt "The click action"
 msgid "None"
 msgstr "Ninguno"
@@ -440,30 +437,29 @@ msgstr "Ninguno"
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "Close Window or Group"
-msgstr ""
+msgstr "Cerrar ventana o grupo"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "New Instance"
-msgstr ""
+msgstr "Nueva instancia"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:165
 #: ../../shell/contents/configuration/TasksConfig.qml:205
 msgid "Minimize/Restore Window or Group"
-msgstr ""
+msgstr "Minimizar/Restaurar ventana o grupo"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Left Click"
-msgstr ""
+msgstr "Click izquierdo"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
 msgid "Middle Click"
-msgstr ""
+msgstr "Click central"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:192
-#, fuzzy
 msgid "Right Click"
-msgstr "Derecha"
+msgstr "Click derecho"
 
 #: ../../shell/contents/configuration/TasksConfig.qml:219
 msgid "Filters"
@@ -482,68 +478,64 @@ msgid "Show only tasks from the current activity"
 msgstr "Mostrar solo las tareas de la actividad actual"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:54
-#, fuzzy
 msgid "Blur for panel background"
-msgstr "Mostrar el fondo del panel"
+msgstr "Desenfoque para el fondo del panel"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:65
 msgid "Shrink thickness margins to minimum"
-msgstr ""
+msgstr "Reducir los márgenes de espesor al mínimo"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:85
 msgid "Enable autostart during startup"
-msgstr ""
+msgstr "Lanzar el dock en el inicio de sesión"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:95
 msgid "Decrease applets size when it is needed"
-msgstr ""
+msgstr "Disminuir el tamaño de los elementos automáticamente"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:106
 msgid "Add launchers only in the corresponding area"
-msgstr ""
+msgstr "Añadir lanzadores solo en el area correspondiente"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
-msgstr ""
+msgstr "Comportamiento normal como ventana de dock"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:128
-#, fuzzy
 msgid "Show Alternative Session in the context menu"
-msgstr "Mostrar acciones de ventana en el menu contextual"
+msgstr "Mostrar sesión alternativa en el menu contextual"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:138
 msgid "Raise dock on desktop change"
-msgstr ""
+msgstr "Mostrar dock en cambio de escritorio"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:148
 msgid "Raise dock on activity change"
-msgstr ""
+msgstr "Mostrar dock en cambio de actividad"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:164
-#, fuzzy
 msgid "Backup"
-msgstr "Fondo"
+msgstr "Copia de seguridad"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:176
 msgid "Import configuration"
-msgstr ""
+msgstr "Importar configuración"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:184
 msgid "Export configuration"
-msgstr ""
+msgstr "Exportar configuración"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:198
 msgid "Session"
-msgstr ""
+msgstr "Sesión"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:228
-#, fuzzy
 msgid "Extra Actions"
-msgstr "Interacción"
+msgstr "Acciones extras"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:238
 msgid "Add Spacer"
-msgstr ""
+msgstr "Añadir espaciador"
 
 #: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
@@ -559,25 +551,24 @@ msgstr "Dock"
 
 #: ../desktop-templates/lattedock.notifyrc.template:3
 #: ../desktop-templates/lattedock.notifyrc.template:4
-#, fuzzy
 msgid "Latte Dock"
 msgstr "Latte Dock"
 
 #: ../desktop-templates/lattedock.notifyrc.template:8
 msgid "Configuration imported successfully"
-msgstr ""
+msgstr "Configuración importada satisfactoriamente"
 
 #: ../desktop-templates/lattedock.notifyrc.template:12
 msgid "Failed to import configuration"
-msgstr ""
+msgstr "Fallo al importar la configuración"
 
 #: ../desktop-templates/lattedock.notifyrc.template:16
 msgid "Configuration exported successfully"
-msgstr ""
+msgstr "Configuración exportada satisfactoriamente"
 
 #: ../desktop-templates/lattedock.notifyrc.template:20
 msgid "Failed to export configuration"
-msgstr ""
+msgstr "Fallo al exportar la configuración"
 
 #~ msgid "Shadows"
 #~ msgstr "Sombras"

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-01-14 20:23-0500\n"
+"PO-Revision-Date: 2017-03-24 19:12-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
 "Language: es\n"
@@ -75,7 +75,7 @@ msgstr "Zoom"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:251
 msgid "Level: "
-msgstr "Nivel: "
+msgstr "Nivel:"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:295
 msgid "Show a red line on the limit needed for animations"
@@ -310,7 +310,7 @@ msgstr "Cerrar"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:647
 msgid "Alternative Session"
-msgstr ""
+msgstr "Sesión alternativa"
 
 #: ../../plasmoid/contents/ui/TaskDelegate.qml:893
 #: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
@@ -337,11 +337,11 @@ msgstr "Disponible en %1"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:3
 msgid "Latte Plasmoid"
-msgstr ""
+msgstr "Latte plasmoide"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
-msgstr ""
+msgstr "Plasmoide proveído por Latte Dock"
 
 #~ msgctxt "Go to previous song"
 #~ msgid "Previous"
