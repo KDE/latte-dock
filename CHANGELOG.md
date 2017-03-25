@@ -1,6 +1,6 @@
 #**CHANGELOG**#
 
-#### Version 0.5.99 Beta
+#### Version 0.5.98 Beta
 
 * fix #323, a better fix for hover effect crashes
 * fix #323, preserve compatibility with plasma 5.8
