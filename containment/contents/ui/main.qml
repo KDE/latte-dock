@@ -507,9 +507,9 @@ DragDrop.DropArea {
         if (latteApplet) {
             if (latteApplet.launchersDrop(event)) {
                 root.addLaunchersMessage = true;
-            }
-            if (root.addLaunchersInTaskManager) {
-                return;
+                if (root.addLaunchersInTaskManager) {
+                    return;
+                }
             }
         }
 
