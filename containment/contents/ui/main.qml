@@ -535,12 +535,13 @@ DragDrop.DropArea {
         //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
         //plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
         //launchersDropped
-
-        if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
-            latteApplet.launchersDropped(event.mimeData.urls);
-        } else {
-            plasmoid.processMimeData(event.mimeData, event.x, event.y);
-            event.accept(event.proposedAction);
+        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") < 0) {
+            if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
+                latteApplet.launchersDropped(event.mimeData.urls);
+            } else {
+                plasmoid.processMimeData(event.mimeData, event.x, event.y);
+                event.accept(event.proposedAction);
+            }
         }
 
         if (confirmedDragEntered) {
