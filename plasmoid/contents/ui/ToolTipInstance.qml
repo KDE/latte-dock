@@ -178,23 +178,12 @@ Column {
             // TODO: this causes XCB error message when being visible the first time
             property int winId: isWin && windows[flatIndex] != undefined ? windows[flatIndex] : 0
 
-            onWinIdChanged: {
-                if (winId !== previewThumb.prevWinId){
-                    previewThumb.visible = false;
-                    previewThumb.prevWinId = winId;
-                    previewThumb.visible = true;
-                }
-
-            }
-
             PlasmaCore.WindowThumbnail {
                 id: previewThumb
                 anchors.fill: parent
 
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
-                winId: prevWinId //thumbnailSourceItem.winId
-
-                property int prevWinId: 0
+                winId: thumbnailSourceItem.winId
 
                 ToolTipWindowMouseArea {
                     id: area2
