@@ -448,14 +448,15 @@ inline void VisibilityManagerPrivate::restoreConfig()
     emit q->timerShowChanged();
     emit q->timerHideChanged();
 
+    setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
+    setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
+
     if (mode == Dock::AlwaysVisible) {
         setMode(mode);
     } else {
         QTimer::singleShot(5000, this, [ &, mode]() {
             setMode(mode);
         });
-        setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
-        setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
     }
 
     qDebug() << config.entryMap();
