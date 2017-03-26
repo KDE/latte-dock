@@ -492,6 +492,10 @@ Item{
                 easing.type: Easing.OutBounce
             }
 
+            ScriptAction {
+                script: mainItemContainer.launcherAction();
+            }
+
             ParallelAnimation{
                 PropertyAnimation {
                     target: wrapper
@@ -524,7 +528,6 @@ Item{
 
             mainItemContainer.setBlockingAnimation(false);
             mainItemContainer.animationEnded();
-            mainItemContainer.launcherAction();
         }
 
         function clearAnimationsSignals() {
@@ -563,8 +566,10 @@ Item{
                 init();
                 start();
             }
-            else
+            else{
                 stopped();
+                mainItemContainer.launcherAction();
+            }
         }
 
 
