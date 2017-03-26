@@ -967,6 +967,10 @@ void DockCorona::loadDefaultLayout()
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
 
+    if (currentSession() != Dock::DefaultSession) {
+        config.writeEntry("session", (int)currentSession());
+    }
+
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
 
     defaultContainment->save(config);
