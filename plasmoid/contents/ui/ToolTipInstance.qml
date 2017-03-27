@@ -144,8 +144,11 @@ Column {
             acceptedButtons: Qt.LeftButton
             hoverEnabled: true
             onClicked: {
-                backend.cancelHighlightWindows();
-                tasksModel.requestClose(submodelIndex);
+                //NOTE: compatibility with plasma 5.8
+                if (backend.cancelHighlightWindows)
+                    backend.cancelHighlightWindows()
+
+                tasksModel.requestClose(submodelIndex)
             }
             onContainsMouseChanged: contentItem.checkMouseInside();
 
