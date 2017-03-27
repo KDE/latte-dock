@@ -156,19 +156,32 @@ PlasmaExtras.ScrollArea {
                 width: isGroup ? childrenRect.width : 0
                 height: isGroup ? childrenRect.height : 0
 
-                visible: isGroup
+                visible: isGroup && parentIndex !== -1
 
-                Repeater {
-                    id: groupRepeater
-                    model: DelegateModel {
-                        model: tasksModel
-                        rootIndex: tasksModel.makeModelIndex(parentIndex, -1)
-                        delegate: ToolTipInstance {}
+                Loader {
+                    id: modelLoader
+                    active: groupTask.visible
+
+                    sourceComponent: Repeater {
+                        id: groupRepeater
+
+                        model: DelegateModel {
+                            id: delegateModel
+
+                            model: parentIndex !== -1 && isGroup ? tasksModel : undefined
+                            rootIndex: tasksModel.makeModelIndex(parentIndex, -1)
+                            delegate: ToolTipInstance {}
+                        }
+
+                        Component.onCompleted: {
+                            parent = groupTask
+                        }
                     }
                 }
 
+
                 function containsMouse(){
-                    for(var i=0; i<children.length-1; ++i){
+                    for(var i=1; i<children.length-1; ++i) {
                         if(children[i].containsMouse())
                             return true;
                     }
