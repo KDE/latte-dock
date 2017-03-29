@@ -574,7 +574,7 @@ PlasmaComponents.ContextMenu {
                 root.updateLaunchersNewArchitecture();
             } else {
                 tasksModel.requestAddLauncher(visualParent.m.LauncherUrlWithoutIcon);
-                root.updateLaunchersNewArchitecture();
+                // root.updateLaunchersNewArchitecture();
             }
         }
     }
