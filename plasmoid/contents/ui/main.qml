@@ -454,6 +454,11 @@ Item {
 
             icList.model = tasksModel;
             tasksStarting = count;
+
+            ///Plasma 5.9 enforce grouping at all cases
+            if (Latte.WindowSystem.frameworksVersion >= 335104) {
+                groupingWindowTasksThreshold = -1;
+            }
         }
     }
 
