@@ -116,6 +116,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Behave as a normal dock window")
                 checked: dock.dockWinBehavior
+                enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
 //                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")
 
                 onClicked: {
