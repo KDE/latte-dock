@@ -74,6 +74,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
                  | Qt::WindowDoesNotAcceptFocus);
     }
 
+    KWindowSystem::setOnAllDesktops(winId(), true);
+
     if (targetScreen)
         setScreenToFollow(targetScreen);
     else
