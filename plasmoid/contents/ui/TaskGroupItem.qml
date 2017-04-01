@@ -160,7 +160,7 @@ Item{
                 width: visible ? glowFrame.size : 0
                 height: width
 
-                basicColor: ((mainItemContainer.hasActive)&&(!(mainItemContainer.hasMinimized))) ? state2Color : state1Color
+                basicColor: mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
                 visible:  ( mainItemContainer.isGroupParent && root.dotsOnActive )
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
