@@ -36,9 +36,9 @@ Item{
     //SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
     property color isActiveColor: theme.buttonFocusColor
     //property color isShownColor: plasmoid.configuration.threeColorsWindows ? root.shownDotColor : isActiveColor
-    property color isShownColor: isActiveColor
+    //property color isShownColor: isActiveColor
     property color minimizedColor: root.threeColorsWindows ? root.minimizedDotColor : isActiveColor
-    property color notActiveColor: mainItemContainer.hasMinimized ? minimizedColor : isShownColor
+    property color notActiveColor: mainItemContainer.hasMinimized ? minimizedColor : isActiveColor
 
    /* Rectangle{
         anchors.fill: parent
@@ -166,9 +166,9 @@ Item{
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
 
                 //when there is no active window
-                property color state1Color: mainItemContainer.hasShown ? glowFrame.isShownColor : glowFrame.minimizedColor
+                property color state1Color: mainItemContainer.hasShown ? glowFrame.isActiveColor : glowFrame.minimizedColor
                 //when there is active window
-                property color state2Color: mainItemContainer.hasMinimized ? glowFrame.minimizedColor : glowFrame.isShownColor
+                property color state2Color: mainItemContainer.hasMinimized ? glowFrame.minimizedColor : glowFrame.isActiveColor
             }
         }
     }
