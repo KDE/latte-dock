@@ -532,9 +532,6 @@ VisibilityManager::~VisibilityManager()
 
 Dock::Visibility VisibilityManager::mode() const
 {
-    if (d->mode == Dock::None)
-        return static_cast<Dock::Visibility>(d->view->containment()->config().readEntry("visibility", -1));
-
     return d->mode;
 }
 
