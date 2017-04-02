@@ -50,7 +50,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 
     m_previousDockWinBehavior = m_dockView->dockWinBehavior();
 
-    connections << connect(dockView, &QObject::destroyed, this, &QObject::deleteLater);
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
     connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
