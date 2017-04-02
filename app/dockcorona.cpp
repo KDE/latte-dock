@@ -50,9 +50,9 @@ namespace Latte {
 
 DockCorona::DockCorona(QObject *parent)
     : Plasma::Corona(parent),
+      m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
-      m_globalSettings(new GlobalSettings(this)),
-      m_activityConsumer(new KActivities::Consumer(this))
+      m_globalSettings(new GlobalSettings(this))
 {
     KPackage::Package package(new DockPackage(this));
     m_screenPool->load();
