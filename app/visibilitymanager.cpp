@@ -170,6 +170,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
     }
 
+    view->containment()->config().writeEntry("visibility", static_cast<int>(mode));
 
     emit q->modeChanged();
 }
@@ -428,7 +429,7 @@ inline void VisibilityManagerPrivate::saveConfig()
         return;
 
     auto config = view->containment()->config();
-    config.writeEntry("visibility", static_cast<int>(mode));
+
     config.writeEntry("timerShow", timerShow.interval());
     config.writeEntry("timerHide", timerHide.interval());
     config.writeEntry("raiseOnDesktopChange", raiseOnDesktopChange);
@@ -444,18 +445,22 @@ inline void VisibilityManagerPrivate::restoreConfig()
     auto config = view->containment()->config();
     timerShow.setInterval(config.readEntry("timerShow", 200));
     timerHide.setInterval(config.readEntry("timerHide", 700));
-    auto mode = static_cast<Dock::Visibility>(config.readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     emit q->timerShowChanged();
     emit q->timerHideChanged();
 
     setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
 
-    if (mode == Dock::AlwaysVisible) {
-        setMode(mode);
+    auto mode = [&]() {
+          return static_cast<Dock::Visibility>(view->containment()->config()
+                    .readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    };
+
+    if (mode() == Dock::AlwaysVisible) {
+        setMode(Dock::AlwaysVisible);
     } else {
-        QTimer::singleShot(5000, this, [ &, mode]() {
-            setMode(mode);
+        QTimer::singleShot(5000, this, [&, mode]() {
+            setMode(mode());
         });
     }
 
@@ -527,6 +532,9 @@ VisibilityManager::~VisibilityManager()
 
 Dock::Visibility VisibilityManager::mode() const
 {
+    if (d->mode == Dock::None)
+        return static_cast<Dock::Visibility>(d->view->containment()->config().readEntry("visibility", -1));
+
     return d->mode;
 }
 
