@@ -339,7 +339,6 @@ PlasmaComponents.Page {
 
                 columns: 2
 
-                property bool inStartup: true
                 property int mode: dock.visibility.mode
 
                 ExclusiveGroup {
