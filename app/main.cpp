@@ -166,6 +166,8 @@ inline void configureAboutData()
                     , QString(), QStringLiteral("https://github.com/varlesh"));
     about.addCredit(QStringLiteral("Ivan Bordoni"), i18n("Many bug reports")
                     , QString(), QStringLiteral("https://github.com/JenaPlinsky"));
+    about.addCredit(QStringLiteral("Kupiqu"), i18n("Many bug reports")
+                    , QString(), QStringLiteral("https://github.com/kupiqu"));
     about.addCredit(QStringLiteral("Ernesto Acosta (elav)"), i18n("Reviews for Latte Dock, CandilDock and NowDock")
                     , QString(), QStringLiteral("https://github.com/elav"));
 
