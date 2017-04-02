@@ -139,6 +139,9 @@ DockView::~DockView()
     //! windows.
     //! this->disconnect();
 
+    if (m_configView)
+        m_configView->hide();
+
     if (m_visibility)
         delete m_visibility;
 }
