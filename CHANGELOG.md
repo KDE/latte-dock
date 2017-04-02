@@ -1,5 +1,18 @@
 #**CHANGELOG**#
 
+#### Version 0.6.0
+
+* fix #344, edit mode still active when I change the session
+* fix #330, Visibility doesn't load when switch to session
+* fix coloring for tasks group indicator
+* fix #331, set onAllDesktops early in the process
+* fix #336, launcher action a bit earlier
+* fix #334, block dropping internal launchers on dock
+* fix #333, restore previous functionality
+
+* update list of contributors
+* various improvements for task tooltips
+
 #### Version 0.5.98 Beta
 
 * fix #323, a better fix for hover effect crashes
