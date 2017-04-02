@@ -65,6 +65,7 @@ public:
     QTimer timerShow;
     QTimer timerHide;
     QTimer timerCheckWindows;
+    QTimer timerStartUp;
     QRect dockGeometry;
     bool isHidden{false};
     bool dragEnter{false};

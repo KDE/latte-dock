@@ -40,6 +40,8 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
         connect(dockView, &DockView::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
     }
 
+    timerStartUp.setInterval(5000);
+    timerStartUp.setSingleShot(true);
     timerCheckWindows.setInterval(350);
     timerCheckWindows.setSingleShot(true);
     timerShow.setSingleShot(true);
@@ -459,12 +461,18 @@ inline void VisibilityManagerPrivate::restoreConfig()
     if (mode() == Dock::AlwaysVisible) {
         setMode(Dock::AlwaysVisible);
     } else {
-        QTimer::singleShot(5000, this, [&, mode]() {
+        connect(&timerStartUp, &QTimer::timeout, this, [&, mode]() {
             setMode(mode());
         });
+        connect(view->containment(), &Plasma::Containment::userConfiguringChanged
+                ,this, [&](bool configuring) {
+            if (configuring && timerStartUp.isActive())
+                timerStartUp.start(100);
+        });
+
+        timerStartUp.start();
     }
 
-    qDebug() << config.entryMap();
     connect(view->containment(), &Plasma::Containment::userConfiguringChanged
     , this, [&](bool configuring) {
         if (!configuring)
