@@ -523,6 +523,8 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
             break;
     }
 
+    // Make sure the rest of events are handled
+    return QObject::event(ev);
 }
 //! END: VisibilityManagerPrivate implementation
 
