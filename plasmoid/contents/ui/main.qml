@@ -393,7 +393,7 @@ Item {
         id: tasksModel
 
         virtualDesktop: virtualDesktopInfo.currentDesktop
-        screenGeometry: plasmoid.screenGeometry
+        screenGeometry: latteDock ? latteDock.screenGeometry : plasmoid.screenGeometry
         // comment in order to support LTS Plasma 5.8
         // screen: plasmoid.screen
         activity: activityInfo.currentActivity

@@ -192,6 +192,8 @@ DragDrop.DropArea {
     property int durationTime: plasmoid.configuration.durationTime
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
+
+    property rect screenGeometry: dock ? dock.screenGeometry : plasmoid.screenGeometry
     ///END properties from latteApplet
 
     /* Layout.preferredWidth: plasmoid.immutable ?
