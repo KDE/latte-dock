@@ -10,8 +10,11 @@ Installation
 Please run  ```./install.sh``` script.
 After the installation has completed successfully, you can execute ```latte-dock``` or search *Latte Dock* on your menu of applications.
 
-Translators
+Repositories
 ===========
+
+[openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Aaudoban&package=latte-dock)
+[ArchLinux AUR](https://aur.archlinux.org/packages/?O=0&SeB=nd&K=latte-dock&outdated=&SB=n&SO=a&PP=50&do_Search=Go)
 
 Requirements
 ============
