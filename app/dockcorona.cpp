@@ -210,12 +210,21 @@ int DockCorona::numScreens() const
 QRect DockCorona::screenGeometry(int id) const
 {
     const auto screens = qGuiApp->screens();
+    const QScreen *screen{qGuiApp->primaryScreen()};
 
-    if (id >= 0 && id < screens.count()) {
-        return screens[id]->geometry();
+    QString screenName;
+
+    if (m_screenPool->knownIds().contains(id))
+        screenName = m_screenPool->connector(id);
+
+    foreach (auto scr, screens) {
+        if (scr->name() == screenName) {
+            screen = scr;
+            break;
+        }
     }
 
-    return qGuiApp->primaryScreen()->geometry();
+    return screen->geometry();
 }
 
 QRegion DockCorona::availableScreenRegion(int id) const
