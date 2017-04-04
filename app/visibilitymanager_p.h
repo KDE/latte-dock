@@ -54,7 +54,7 @@ public:
     void saveConfig();
     void restoreConfig();
 
-    bool event(QEvent *ev) override;
+    void viewEventManager(QEvent *ev);
 
     VisibilityManager *q;
     PlasmaQuick::ContainmentView *view;

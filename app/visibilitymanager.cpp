@@ -36,7 +36,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     DockView *dockView = qobject_cast<DockView *>(view);
 
     if (dockView) {
-        connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::event);
+        connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
         connect(dockView, &DockView::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
     }
 
@@ -480,7 +480,7 @@ inline void VisibilityManagerPrivate::restoreConfig()
     });
 }
 
-bool VisibilityManagerPrivate::event(QEvent *ev)
+void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
 {
     switch (ev->type()) {
         case QEvent::Enter:
@@ -522,9 +522,6 @@ bool VisibilityManagerPrivate::event(QEvent *ev)
             wm->setDockExtraFlags(*view);
             break;
     }
-
-    // Make sure the rest of events are handled
-    return QObject::event(ev);
 }
 //! END: VisibilityManagerPrivate implementation
 
