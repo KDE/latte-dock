@@ -790,7 +790,7 @@ Item {
             property bool delayingRemoval: false
             property bool directRender: false
 
-         //   onTasksCountChanged: updateImplicits();
+            //   onTasksCountChanged: updateImplicits();
 
             //  property int count: children ? children.length : 0
             /*   anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
@@ -1022,6 +1022,43 @@ Item {
                 break;
             }
             updatePosition();
+        }
+    }
+
+
+    // This is called by dockcorona in response to a Meta+number shortcut.
+    function activateTaskAtIndex(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        var tasks = icList.contentItem.children;
+
+        for(var i=0; i<tasks.length; ++i){
+            var task = tasks[i];
+
+            if (task.itemIndex === index) {
+                TaskTools.activateTask(task.modelIndex(), task.m, null, task);
+                break;
+            }
+        }
+    }
+
+    // This is called by dockcorona in response to a Meta+Alt+number shortcut.
+    function newInstanceForTaskAtIndex(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        var tasks = icList.contentItem.children;
+
+        for(var i=0; i<tasks.length; ++i){
+            var task = tasks[i];
+
+            if (task.itemIndex === index) {
+                TaskTools.activateTask(task.modelIndex(), task.m, Qt.ControlModifier , task);
+                break;
+            }
         }
     }
 

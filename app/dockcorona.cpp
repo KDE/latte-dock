@@ -38,8 +38,10 @@
 #include <Plasma>
 #include <Plasma/Corona>
 #include <Plasma/Containment>
+
 #include <KActionCollection>
 #include <KPluginMetaData>
+#include <KGlobalAccel>
 #include <KLocalizedString>
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
@@ -80,6 +82,36 @@ DockCorona::DockCorona(QObject *parent)
     m_docksScreenSyncTimer.setSingleShot(true);
     m_docksScreenSyncTimer.setInterval(2500);
     connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViews);
+
+    KActionCollection *taskbarActions = new KActionCollection(this);
+
+    //activate actions
+    for (int i = 0; i < 10; ++i) {
+        const int entryNumber = i + 1;
+        const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + (entryNumber % 10));
+
+        QAction *action = taskbarActions->addAction(QStringLiteral("activate task manager entry %1").arg(QString::number(entryNumber)));
+        action->setText(i18n("Activate Task Manager Entry %1", entryNumber));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + key));
+        connect(action, &QAction::triggered, this, [this, i] {
+            // qDebug() << "meta action...";
+            activateTaskManagerEntry(i, static_cast<Qt::Key>(Qt::META));
+        });
+    }
+
+    //new instance actions
+    for (int i = 0; i < 10; ++i) {
+        const int entryNumber = i + 1;
+        const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + (entryNumber % 10));
+
+        QAction *action = taskbarActions->addAction(QStringLiteral("new instance for task manager entry %1").arg(QString::number(entryNumber)));
+        action->setText(i18n("New Instance for Task Manager Entry %1", entryNumber));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + key));
+        connect(action, &QAction::triggered, this, [this, i] {
+            // qDebug() << "meta + ctrl + action...";
+            activateTaskManagerEntry(i, static_cast<Qt::Key>(Qt::CTRL));
+        });
+    }
 
     //! Dbus adaptor initialization
     new LatteDockAdaptor(this);
@@ -1086,6 +1118,73 @@ void DockCorona::activateLauncherMenu()
         }
     }
 }
+
+//! Activate launcher menu through dbus interface
+void DockCorona::activateTaskManagerEntry(int index, Qt::Key modifier)
+{
+    auto activateTaskManagerEntryOnContainment = [this](const Plasma::Containment * c, int index, Qt::Key modifier) {
+        const auto &applets = c->applets();
+
+        for (auto *applet : applets) {
+            const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+
+            if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
+                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                    const auto &childItems = appletInterface->childItems();
+
+                    if (childItems.isEmpty()) {
+                        continue;
+                    }
+
+                    for (QQuickItem *item : childItems) {
+                        if (auto *metaObject = item->metaObject()) {
+                            // not using QMetaObject::invokeMethod to avoid warnings when calling
+                            // this on applets that don't have it or other child items since this
+                            // is pretty much trial and error.
+
+                            // Also, "var" arguments are treated as QVariant in QMetaObject
+                            int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
+                                              metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
+                                              metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
+
+                            if (methodIndex == -1) {
+                                continue;
+                            }
+
+                            QMetaMethod method = metaObject->method(methodIndex);
+
+                            if (method.invoke(item, Q_ARG(QVariant, index))) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    };
+
+    // To avoid overly complex configuration, we'll try to get the 90% usecase to work
+    // which is activating a task on the task manager on a panel on the primary screen.
+    for (auto it = m_dockViews.constBegin(), end = m_dockViews.constEnd(); it != end; ++it) {
+        if (it.value()->screen() != qGuiApp->primaryScreen()) {
+            continue;
+        }
+
+        if (activateTaskManagerEntryOnContainment(it.key(), index, modifier)) {
+            return;
+        }
+    }
+
+    // we didn't find anything on primary, try all the panels
+    for (auto it = m_dockViews.constBegin(), end = m_dockViews.constEnd(); it != end; ++it) {
+        if (activateTaskManagerEntryOnContainment(it.key(), index, modifier)) {
+            return;
+        }
+    }
+}
+
 
 inline void DockCorona::qmlRegisterTypes() const
 {

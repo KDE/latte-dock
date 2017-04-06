@@ -39,6 +39,34 @@ function wheelActivateNextPrevTask(wheelDelta, eventDelta) {
     return wheelDelta;
 }
 
+function activateTask(index, model, modifiers, task) {
+    if (modifiers & Qt.ControlModifier) {
+        tasksModel.requestNewInstance(index);
+    } else if (task.isGroupParent) {
+        task.activateNextTask();
+       // if (backend.canPresentWindows()) {
+            //task.toolTipAreaItem.hideToolTip();
+        //    backend.presentWindows(model.LegacyWinIdList);
+       // }
+        /*} else if (groupDialog.visible) {
+            groupDialog.visible = false;
+        } else {
+            groupDialog.visualParent = task;
+            groupDialog.visible = true;
+        }*/
+    } else {
+        if (model.IsMinimized === true) {
+            tasksModel.requestToggleMinimized(index);
+            tasksModel.requestActivate(index);
+        } else if (model.IsActive === true) {
+            tasksModel.requestToggleMinimized(index);
+        } else {
+            tasksModel.requestActivate(index);
+        }
+    }
+}
+
+
 function activateNextPrevTask(next) {
     // FIXME TODO: Unnecessarily convoluted and costly; optimize.
 
@@ -108,7 +136,7 @@ function insertIndexAt(above, x, y) {
 }
 
 
-function publishIconGeometries(taskItems) {   
+function publishIconGeometries(taskItems) {
     for (var i = 0; i < taskItems.length - 1; ++i) {
         var task = taskItems[i];
 

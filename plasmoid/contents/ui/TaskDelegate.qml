@@ -804,6 +804,11 @@ MouseArea{
 
 
     ///// Helper functions /////
+    function activateNextTask() {
+        tasksWindows.activateNextTask();
+    }
+
+
     function preparePreviewWindow(hideClose){
         windowsPreviewDlg.visualParent = mainItemContainer;
 

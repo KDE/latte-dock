@@ -104,6 +104,7 @@ private slots:
     void syncDockViews();
 
 private:
+    void activateTaskManagerEntry(int index, Qt::Key modifier);
     void cleanConfig();
     void qmlRegisterTypes() const;
     bool appletExists(uint containmentId, uint appletId) const;

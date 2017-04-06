@@ -119,6 +119,33 @@ Item{
         return result;
     }
 
+    //! function which is used to cycle activation into
+    //! a group of windows
+    function activateNextTask() {
+        if (!mainItemContainer.isGroupParent) {
+            return;
+        }
+
+        windowsLocalModel.currentIndex = index;
+        var childs = windowsLocalModel.items;
+
+        var nextAvailableWindow = 0;
+
+        for(var i=0; i<childs.count; ++i){
+            var kid = childs.get(i);
+            if (kid.model.IsActive === true) {
+                nextAvailableWindow = i + 1;
+                break;
+            }
+        }
+
+        if (nextAvailableWindow >= childs.count) {
+            nextAvailableWindow = 0;
+        }
+
+        tasksModel.requestActivate(tasksModel.makeModelIndex(index,nextAvailableWindow));
+    }
+
 
     Component.onCompleted: {
         mainItemContainer.checkWindowsStates.connect(initializeStates);
