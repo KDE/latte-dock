@@ -307,12 +307,9 @@ MouseArea {
         onHeightChanged: handle.updatePlacement()
     }
 
-    Rectangle {
+    Item {
         id: handle
         visible: configurationArea.containsMouse
-        color: theme.backgroundColor
-        radius: 3
-        opacity: currentApplet ? 0.5 : 0
 
         //BEGIN functions
         function updatePlacement(){
@@ -329,11 +326,19 @@ MouseArea {
         }
 
         //END functions
+        Rectangle{
+            anchors.fill: parent
+            color: theme.backgroundColor
+            radius: 3
+            opacity: 0.5
+        }
+
         PlasmaCore.IconItem {
             source: "transform-move"
             width: Math.min(parent.width, parent.height)
             height: width
             anchors.centerIn: parent
+            opacity: 0.5
         }
         /*  Rectangle {
             anchors {
@@ -373,66 +378,6 @@ MouseArea {
                 }
             }
         }*/
-
-        PlasmaComponents.Button{
-            id: lockButton
-            checkable: true
-            iconSource: checked ? "lock" : "unlock"
-            width: units.iconSizes.large
-            visible: currentApplet &&
-                     ((currentApplet.applet &&
-                       ((currentApplet.applet.pluginName === "org.kde.plasma.systemtray")
-                        || (currentApplet.applet.pluginName === root.plasmoidName)) )
-                      || (currentApplet.isInternalViewSplitter))
-                     ? false : true
-
-            anchors.margins: 2*units.smallSpacing
-            tooltip: "Lock/Unlock zoom effect"
-
-            onCheckedChanged: {
-                currentApplet.lockZoom = checked;
-                root.layoutManager.saveLocks();
-            }
-
-            states: [
-                State {
-                    name: "left"
-                    when: plasmoid.location === PlasmaCore.Types.LeftEdge
-
-                    AnchorChanges {
-                        target: lockButton
-                        anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; }
-                    }
-                },
-                State {
-                    name: "right"
-                    when: plasmoid.location === PlasmaCore.Types.RightEdge
-
-                    AnchorChanges {
-                        target: lockButton
-                        anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; }
-                    }
-                },
-                State {
-                    name: "bottom"
-                    when: plasmoid.location === PlasmaCore.Types.BottomEdge
-
-                    AnchorChanges {
-                        target: lockButton
-                        anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; }
-                    }
-                },
-                State {
-                    name: "top"
-                    when: plasmoid.location === PlasmaCore.Types.TopEdge
-
-                    AnchorChanges {
-                        target: lockButton
-                        anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; }
-                    }
-                }
-            ]
-        }
 
         Behavior on x {
             enabled: !configurationArea.pressed
@@ -499,32 +444,62 @@ MouseArea {
             Row {
                 id: handleRow
                 anchors.horizontalCenter: parent.horizontalCenter
-                spacing: units.smallSpacing
-                PlasmaComponents.ToolButton {
-                    id: configureButton
-                    anchors.verticalCenter: parent.verticalCenter
-                    iconSource: "configure"
-                    onClicked: {
-                        tooltip.visible = false;
-                        currentApplet.applet.action("configure").trigger();
+                spacing: 2*units.smallSpacing
+
+                Row{
+                    spacing: unit.smallSpacing/2
+                    PlasmaComponents.ToolButton {
+                        id: configureButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        iconSource: "configure"
+                        onClicked: {
+                            tooltip.visible = false;
+                            currentApplet.applet.action("configure").trigger();
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        id: label
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.rightMargin: units.smallSpacing
+                        textFormat: Text.PlainText
+                        maximumLineCount: 1
                     }
                 }
-                PlasmaComponents.Label {
-                    id: label
-                    anchors.verticalCenter: parent.verticalCenter
-                    textFormat: Text.PlainText
-                    maximumLineCount: 1
-                }
-                PlasmaComponents.ToolButton {
-                    id: closeButton
-                    anchors.verticalCenter: parent.verticalCenter
-                    iconSource: "window-close"
-                    onClicked: {
-                        tooltip.visible = false;
-                        if(currentApplet && currentApplet.applet)
-                            currentApplet.applet.action("remove").trigger();
+
+                Row{
+                    spacing: 0
+                    PlasmaComponents.ToolButton{
+                        id: lockButton
+                        checkable: true
+                        iconSource: checked ? "lock" : "unlock"
+                        // tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
+
+                        visible: currentApplet &&
+                                 ((currentApplet.applet &&
+                                   ((currentApplet.applet.pluginName === "org.kde.plasma.systemtray")
+                                    || (currentApplet.applet.pluginName === root.plasmoidName)) )
+                                  || (currentApplet.isInternalViewSplitter))
+                                 ? false : true
+
+                        onCheckedChanged: {
+                            currentApplet.lockZoom = checked;
+                            root.layoutManager.saveLocks();
+                        }
+                    }
+
+                    PlasmaComponents.ToolButton {
+                        id: closeButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        iconSource: "window-close"
+                        onClicked: {
+                            tooltip.visible = false;
+                            if(currentApplet && currentApplet.applet)
+                                currentApplet.applet.action("remove").trigger();
+                        }
                     }
                 }
+
             }
         }
     }
