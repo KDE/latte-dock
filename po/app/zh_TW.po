@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-03-23 11:13+0800\n"
+"PO-Revision-Date: 2017-04-07 10:20+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -177,7 +177,7 @@ msgstr "螢幕高度比例："
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:156
 msgid "Applets Distance:"
-msgstr "小程式拒離："
+msgstr "小程式距離："
 
 #: ../../shell/contents/configuration/AppearanceConfig.qml:193
 msgid "Zoom On Hover"
@@ -252,7 +252,7 @@ msgstr "螢幕："
 #: ../../shell/contents/configuration/BehaviorConfig.qml:194
 msgctxt "bottom location"
 msgid "Bottom"
-msgstr "底端"
+msgstr "底部"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:205
 msgctxt "left location"
@@ -477,7 +477,7 @@ msgstr "只顯示目前活動裡的工作"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:54
 msgid "Blur for panel background"
-msgstr "面版背景模糊"
+msgstr "面板背景模糊"
 
 #: ../../shell/contents/configuration/TweaksConfig.qml:65
 msgid "Shrink thickness margins to minimum"
