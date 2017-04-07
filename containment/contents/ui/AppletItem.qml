@@ -40,6 +40,18 @@ Item {
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
     property bool canBeHovered: true
+    property bool inFillCalculations: false //it is used in calculations for fillWidth,fillHeight applets
+    property bool needsFillSpace: { //it is used in calculations for fillWidth,fillHeight applets
+        if (!applet || !applet.Layout)
+            return false;
+
+        if (((root.isHorizontal && applet.Layout.fillWidth===true)
+                || (root.isVertical && applet.Layout.fillHeight===true))
+            && (applet.status !== PlasmaCore.Types.HiddenStatus))
+            return true;
+        else
+            return false;
+    }
     property bool showZoomed: false
     property bool lockZoom: false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
@@ -68,6 +80,7 @@ Item {
     property int maxHeight: root.isHorizontal ? root.height : root.width
     property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
     property int internalSplitterId: 0
+    property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
     property int status: applet ? applet.status : -1
 
@@ -91,7 +104,6 @@ Item {
 
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
-
 
     /*onComputeHeightChanged: {
         if(index==0)
@@ -341,10 +353,53 @@ Item {
         Item{
             id: wrapper
 
-            width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isVertical) ?
-                                                                                     scaledWidth : latteApplet.tasksWidth) : scaledWidth )
-            height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isHorizontal) ?
-                                                                                      scaledHeight : latteApplet.tasksHeight ): scaledHeight )
+            width: {
+                if (container.isInternalViewSplitter && !root.editMode)
+                    return 0;
+
+                if (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal){
+                    //! in edit mode shrink a bit the fill sizes because the splitters are shown
+                    return root.editMode && container.needsFillSpace && (container.sizeForFill > 5*root.iconSize) ?
+                                container.sizeForFill - 2.5*root.iconSize : container.sizeForFill;
+                    //return container.sizeForFill;
+                }
+
+                if (latteApplet) {
+                    if (container.showZoomed && root.isVertical)
+                        return Math.round(scaledWidth);
+                    else
+                        return Math.round(latteApplet.tasksWidth);
+                } else {
+                    return Math.round(scaledWidth);
+                }
+            }
+
+            height: {
+                if (container.isInternalViewSplitter && !root.editMode)
+                    return 0;
+
+                if (container.needsFillSpace && (container.sizeForFill>-1) && root.isVertical){
+                    //! in edit mode shrink a bit the fill sizes because the splitters are shown
+                    return root.editMode && container.needsFillSpace && (container.sizeForFill > 5*root.iconSize) ?
+                                container.sizeForFill - 2.5*root.iconSize : container.sizeForFill;
+
+                    //return container.sizeForFill;
+                }
+
+                if (latteApplet) {
+                    if (container.showZoomed && root.isHorizontal)
+                        return Math.round(scaledHeight);
+                    else
+                        return Math.round(latteApplet.tasksHeight);
+                } else {
+                    return Math.round(scaledHeight);
+                }
+            }
+
+            //width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isVertical) ?
+            //                                                                        scaledWidth : latteApplet.tasksWidth) : scaledWidth )
+            //height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isHorizontal) ?
+            //                                                                          scaledHeight : latteApplet.tasksHeight ): scaledHeight )
 
             property bool disableScaleWidth: false
             property bool disableScaleHeight: false
@@ -555,8 +610,31 @@ Item {
 
             Item{
                 id:wrapperContainer
-                width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
-                height: Math.round( container.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
+
+                width:{
+                    if (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal){
+                        return wrapper.width;
+                    }
+
+                    if (container.isInternalViewSplitter)
+                        return Math.round(wrapper.layoutWidth);
+                    else
+                        return Math.round(parent.zoomScaleWidth * wrapper.layoutWidth);
+                }
+
+                height:{
+                    if (container.needsFillSpace && (container.sizeForFill>-1) && root.isVertical){
+                        return wrapper.height;
+                    }
+
+                    if (container.isInternalViewSplitter)
+                        return Math.round(wrapper.layoutHeight);
+                    else
+                        return Math.round(parent.zoomScaleHeight * wrapper.layoutHeight);
+                }
+
+                //width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
+                //height: Math.round( container.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
 
                 anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? root.thickMarginBase : 0
                 anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? root.thickMarginBase : 0
@@ -726,7 +804,9 @@ Item {
                 sourceComponent: Rectangle{
                     anchors.fill: parent
                     color: "transparent"
-                    border.color: "green"
+                    //! red visualizer, in debug mode for the applets that use fillWidth or fillHeight
+                    //! green, for the rest
+                    border.color:  (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal) ? "red" : "green"
                     border.width: 1
                 }
             }

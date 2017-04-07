@@ -39,8 +39,8 @@ import "../code/activitiesTools.js" as ActivitiesTools
 Item {
     id:root
 
-    Layout.fillHeight: userPanelPosition === 0 ? true : false
-    Layout.fillWidth: userPanelPosition === 0 ? true : false
+   // Layout.fillHeight: userPanelPosition === 0 ? true : false
+   // Layout.fillWidth: userPanelPosition === 0 ? true : false
 
     ///IMPORTANT: These values must be tested when the Now Dock Panel support
     ///also the four new anchors. A small issue is shown between the animation

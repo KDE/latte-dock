@@ -125,6 +125,7 @@ Item{
     onNormalStateChanged: {
         if (normalState) {
             root.updateAutomaticIconSize();
+            root.updateSizeForAppletsInFill();
         }
     }
 

@@ -30,7 +30,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
 
-import "LayoutManager.js" as LayoutManager
+import "../code/LayoutManager.js" as LayoutManager
+import "../code/HeuristicTools.js" as HeuristicTools
 
 DragDrop.DropArea {
     id: root
@@ -40,11 +41,10 @@ DragDrop.DropArea {
     signal clearZoomSignal();
     signal updateEffectsArea();
     signal updateIndexes();
-    ////
+    //// END SIGNALS
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
-
     property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
 
     property bool addLaunchersMessage: false
@@ -450,6 +450,7 @@ DragDrop.DropArea {
             visibilityManager.updateMaskArea();
         } else {
             updateAutomaticIconSize();
+            HeuristicTools.updateSizeForAppletsInFill();
         }
 
         updateLayouts();
@@ -564,6 +565,8 @@ DragDrop.DropArea {
             latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
         }
     }
+
+    onMaxLengthChanged: HeuristicTools.updateSizeForAppletsInFill();
 
     onToolBoxChanged: {
         if (toolBox) {
@@ -1026,7 +1029,7 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if ((visibilityManager.normalState && !root.editMode)
+        if ((visibilityManager.normalState && !root.editMode && root.autoDecreaseIconSize)
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = root.maxLength;
@@ -1086,6 +1089,10 @@ DragDrop.DropArea {
                 }
             }
         }
+    }
+
+    function updateSizeForAppletsInFill() {
+        HeuristicTools.updateSizeForAppletsInFill();
     }
 
     function updateLayouts(){
@@ -1357,6 +1364,8 @@ DragDrop.DropArea {
                     slotAnimationsNeedLength(1);
                 }
 
+                HeuristicTools.updateSizeForAppletsInFill();
+
                 delayUpdateMaskArea.start();
             }
         }
@@ -1380,6 +1389,8 @@ DragDrop.DropArea {
                     slotAnimationsNeedLength(1);
                 }
 
+                HeuristicTools.updateSizeForAppletsInFill();
+
                 delayUpdateMaskArea.start();
             }
         }
@@ -1401,6 +1412,53 @@ DragDrop.DropArea {
 
             property int beginIndex: 0
             property int count: children.length
+
+            property int shownApplets: {
+                var res = 0;
+
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && children[i].applet
+                            && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
+                        //do nothing
+                    } else if (children[i] && children[i].applet){
+                        res = res + 1;
+                    }
+                }
+
+                return res;
+            }
+
+            //it is used in calculations for fillWidth,fillHeight applets
+            property int sizeWithNoFillApplets: {
+                if (!visibilityManager || !visibilityManager.normalState)
+                    return;
+
+                var space = 0;
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && !children[i].needsFillSpace) {
+                        space = root.isHorizontal ? space + children[i].width : space + children[i].height;
+                    }
+                }
+
+                return space;
+            }
+
+            //it is used in calculations for fillWidth,fillHeight applets
+            property int fillApplets:{
+                var no = 0;
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && children[i].needsFillSpace) {
+                        //console.log("fill :::: " + children[i].applet.pluginName);
+                        no++;
+                    }
+                }
+
+                return no;
+            }
+
+            onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+            onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+            onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
 
             states:[
                 State {
@@ -1473,6 +1531,53 @@ DragDrop.DropArea {
 
             property int beginIndex: 100
             property int count: children.length
+
+            property int shownApplets: {
+                var res = 0;
+
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && children[i].applet
+                            && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
+                        //do nothing
+                    } else if (children[i] && children[i].applet){
+                        res = res + 1;
+                    }
+                }
+
+                return res;
+            }
+
+            //it is used in calculations for fillWidth,fillHeight applets
+            property int sizeWithNoFillApplets: {
+                if (!visibilityManager || !visibilityManager.normalState)
+                    return;
+
+                var space = 0;
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && !children[i].needsFillSpace) {
+                        space = root.isHorizontal ? space + children[i].width : space + children[i].height;
+                    }
+                }
+
+                return space;
+            }
+
+            //it is used in calculations for fillWidth,fillHeight applets
+            property int fillApplets:{
+                var no = 0;
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && children[i].needsFillSpace) {
+                        //console.log("fill :::: " + children[i].applet.pluginName);
+                        no++;
+                    }
+                }
+
+                return no;
+            }
+
+            onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+            onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+            onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
         }
 
         Grid{
@@ -1484,12 +1589,58 @@ DragDrop.DropArea {
             rows: root.isHorizontal ? 1 : 0
             rowSpacing: 0
 
-
             Layout.preferredWidth: width
             Layout.preferredHeight: height
 
             property int beginIndex: 200
             property int count: children.length
+
+            property int shownApplets: {
+                var res = 0;
+
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && children[i].applet
+                            && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
+                        //do nothing
+                    } else if (children[i] && children[i].applet){
+                        res = res + 1;
+                    }
+                }
+
+                return res;
+            }
+
+            //it is used in calculations for fillWidth,fillHeight applets
+            property int sizeWithNoFillApplets: {
+                if (!visibilityManager || !visibilityManager.normalState)
+                    return;
+
+                var space = 0;
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && !children[i].needsFillSpace) {
+                        space = root.isHorizontal ? space + children[i].width : space + children[i].height;
+                    }
+                }
+
+                return space;
+            }
+
+            //it is used in calculations for fillWidth,fillHeight applets
+            property int fillApplets:{
+                var no = 0;
+                for (var i=0; i<children.length; ++i){
+                    if (children[i] && children[i].needsFillSpace) {
+                        //console.log("fill :::: " + children[i].applet.pluginName);
+                        no++;
+                    }
+                }
+
+                return no;
+            }
+
+            onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+            onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+            onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
 
             states:[
                 State {

@@ -553,6 +553,103 @@ Window{
             Text{
                 text: root.animationsNeedThickness
             }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Start Layout Shown Applets"+space
+            }
+
+            Text{
+                text: startLayout.shownApplets
+            }
+
+            Text{
+                text: "Start Layout Applets (with fill)"+space
+            }
+
+            Text{
+                text: startLayout.fillApplets
+            }
+
+            Text{
+                text: "Start Layout Size (no fill applets)"+space
+            }
+
+            Text{
+                text: startLayout.sizeWithNoFillApplets+" px."
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "Main Layout Shown Applets"+space
+            }
+
+            Text{
+                text: mainLayout.shownApplets
+            }
+
+            Text{
+                text: "Main Layout Applets (with fill)"+space
+            }
+
+            Text{
+                text: mainLayout.fillApplets
+            }
+
+            Text{
+                text: "Main Layout Size (no fill applets)"+space
+            }
+
+            Text{
+                text: mainLayout.sizeWithNoFillApplets+" px."
+            }
+
+            Text{
+                text: "   -----------   "
+            }
+
+            Text{
+                text: " -----------   "
+            }
+
+            Text{
+                text: "End Layout Shown Applets"+space
+            }
+
+            Text{
+                text: endLayout.shownApplets
+            }
+
+            Text{
+                text: "End Layout Applets (with fill)"+space
+            }
+
+            Text{
+                text: endLayout.fillApplets
+            }
+
+            Text{
+                text: "End Layout Size (no fill applets)"+space
+            }
+
+            Text{
+                text: endLayout.sizeWithNoFillApplets+" px."
+            }
+
         }
 
     }
