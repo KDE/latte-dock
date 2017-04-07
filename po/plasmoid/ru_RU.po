@@ -1,0 +1,344 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
+"POT-Creation-Date: 2017-04-07 19:06+0700\n"
+"PO-Revision-Date: 2017-04-07 19:47+0700\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: Vladislav Gorevoy <vladislavgorevoy@gmail.com>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru_RU\n"
+
+#: ../../plasmoid/contents/config/config.qml:27
+msgid "Appearance"
+msgstr "Внешний вид"
+
+#: ../../plasmoid/contents/config/config.qml:32
+msgid "Panel"
+msgstr "Панель"
+
+#: ../../plasmoid/contents/config/config.qml:37
+msgid "Interaction"
+msgstr "Действия"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:70
+msgid "Icon size: "
+msgstr "Размер иконок:"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:158
+msgid "ver: "
+msgstr "вер:"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:165
+msgid "Enable shadows for icons"
+msgstr "Включить тени иконок"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:171
+msgid "Show glow around windows points"
+msgstr "Показывать свечение вокруг точек"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:177
+msgid "Different color for minimized windows"
+msgstr "Различный цвет для минимизированных окон"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
+msgid "Indicator for active window group"
+msgstr "Индикатор для активной группы окон"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:189
+msgid "Reverse position for lines and dots"
+msgstr "Обратная позиция для линий и точек"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:207
+msgid "Animations: "
+msgstr "Анимация:"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:225
+msgid "duration"
+msgstr "продолжительность"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:225
+msgid "disabled"
+msgstr "выключено"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:237
+msgid "Zoom"
+msgstr "Увеличение"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:251
+msgid "Level: "
+msgstr "Уровень:"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:295
+msgid "Show a red line on the limit needed for animations"
+msgstr "Показывать красную линию на лимите, необходимом для анимации"
+
+#: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:325
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:171
+msgid "For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr "Для отключенных настроек вы должны использовать окно настройки Latte Dock"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:59
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Переключение между задачами колесом мыши"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:66
+msgid "Preview windows on hovering"
+msgstr "Просмотр окон при наведении"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:72
+msgid "Highlight windows on hovering"
+msgstr "Подсвечивать окна при наведении"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:78
+msgid "Show window actions in the context menu"
+msgstr "Показывать действия окна в контекстном меню"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:84
+msgid "Show progress information for tasks"
+msgstr "Показывать информацию о прогрессе задач"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:89
+msgid "On middle-click:"
+msgstr "При клике средней кнопкой мыши:"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
+msgctxt "The click action"
+msgid "None"
+msgstr "Нет"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
+msgid "Close Window or Group"
+msgstr "Закрыть Окно или Группу окон"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
+msgid "New Instance"
+msgstr "Новый экземпляр"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
+msgid "Minimize/Restore Window or Group"
+msgstr "Минимизировать/Восстановить Окно или Группу окон"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:107
+msgid "Filters"
+msgstr "Фильтры"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:118
+msgid "Show only tasks from the current screen"
+msgstr "Показывать задачи только с текущего экрана"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:123
+msgid "Show only tasks from the current desktop"
+msgstr "Показывать задачи только с текущего рабочего стола"
+
+#: ../../plasmoid/contents/ui/ConfigInteraction.qml:128
+msgid "Show only tasks from the current activity"
+msgstr "Показывать задачи только из текущей комнаты"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:60
+msgid "Position: "
+msgstr "Позиция:"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
+msgid "Center"
+msgstr "Центр"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
+msgid "Left"
+msgstr "Слева"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
+msgid "Right"
+msgstr "Справа"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
+msgid "Top"
+msgstr "Вверху"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:68
+msgid "Bottom"
+msgstr "Внизу"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:76
+msgid "Show bar line for tasks"
+msgstr "Показывать линию для задач"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:83
+msgid "Use plasma theme panel"
+msgstr "Использовать тему Plasma"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:90
+msgid "Use transparency in the panel"
+msgstr "Использовать прозрачность"
+
+#: ../../plasmoid/contents/ui/ConfigPanel.qml:97
+msgid "Size: "
+msgstr "Размер:"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:121
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Предыдущий трек"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:134
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Пауза"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:134
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Воспроизведение"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:145
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Стоп"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:153
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Следующий трек"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:169
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Выход"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:184
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Восстановить"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:231
+msgid "Move To Desktop"
+msgstr "На Рабочий стол"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:253
+msgid "Move To Current Desktop"
+msgstr "На текущий Рабочий стол"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:262
+msgid "All Desktops"
+msgstr "Все рабочие столы"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:291
+msgid "New Desktop"
+msgstr "Новый Рабочий стол"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:311
+msgid "Move To &Activity"
+msgstr "Переместить в Комнату"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:332
+msgid "Add To Current Activity"
+msgstr "Добавить в текущую Комнату"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:342
+msgid "All Activities"
+msgstr "Все Комнаты"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:411
+msgid "Minimize"
+msgstr "Минимизировать"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:427
+msgid "Maximize"
+msgstr "Максимизировать"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:442
+msgid "More Actions"
+msgstr "Больше Действий"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:450
+msgid "Move"
+msgstr "Переместить"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:459
+msgid "Resize"
+msgstr "Изменить размер"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:468
+msgid "Keep Above Others"
+msgstr "Поддерживать поверх других"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:478
+msgid "Keep Below Others"
+msgstr "Поддерживать на заднем плане"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:490
+msgid "Fullscreen"
+msgstr "Полный экран"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:502
+msgid "Shade"
+msgstr "Тень"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:517
+msgid "Allow this program to be grouped"
+msgstr "Приложение может быть сгруппировано"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:530
+msgid "Start New Instance"
+msgstr "Запустить новый экземпляр"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:552
+#: ../../plasmoid/contents/ui/ContextMenu.qml:587
+msgid "Show Launcher On All Activities"
+msgstr "Показывать ярлык во всех Комнатах"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:569
+msgid "Show Launcher When Not Running"
+msgstr "Показывать ярлык, когда приложение не запущено"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:598
+msgid "Remove Launcher"
+msgstr "Удалить ярлык"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:632
+msgid "Close"
+msgstr "Закрыть"
+
+#: ../../plasmoid/contents/ui/ContextMenu.qml:647
+msgid "Alternative Session"
+msgstr "Альтернативная Сессия"
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:893
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:460
+msgid "On %1"
+msgstr "На %1"
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:902
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:470
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Доступно во всех Комнатах"
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:921
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:492
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "Также доступно в %1"
+
+#: ../../plasmoid/contents/ui/TaskDelegate.qml:925
+#: ../../plasmoid/contents/ui/ToolTipInstance.qml:496
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "Доступно в %1"
+
+#: ../desktop-templates/plasmoid.metadata.desktop.template:3
+msgid "Latte Plasmoid"
+msgstr "Латте Плазмоид"
+
+#: ../desktop-templates/plasmoid.metadata.desktop.template:4
+msgid "Plasmoid from the Latte Dock"
+msgstr "Плазмоид Latte Dock"
