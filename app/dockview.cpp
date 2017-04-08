@@ -545,8 +545,10 @@ void DockView::updatePosition(QRect availableScreenRect)
     QRect screenGeometry;
     QPoint position;
     position = {0, 0};
+
     const auto length = [&](int length) -> int {
-        return static_cast<int>(length * (1 - maxLength()) / 2);
+        float offs = static_cast<float>(offset());
+        return static_cast<int>(length * ((1 - maxLength()) / 2) + length * (offs / 100));
     };
     int cleanThickness = normalThickness() - shadow();
 
