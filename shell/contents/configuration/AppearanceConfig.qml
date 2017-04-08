@@ -400,7 +400,7 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Label {
-                    text: i18n("Max: ")
+                    text: i18n("Maximum: ")
                     horizontalAlignment: Text.AlignLeft
                 }
 
