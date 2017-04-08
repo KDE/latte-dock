@@ -636,7 +636,7 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: closeWindowItem
+        id: removePlasmoid
         visible: !latteDock && !plasmoid.immutable
 
         text: plasmoid.action("remove").text
