@@ -624,7 +624,7 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: closeWindowItem
+        id: removeWindowItem
         visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
 
         enabled: visualParent && visualParent.m.IsClosable === true
@@ -633,6 +633,16 @@ PlasmaComponents.ContextMenu {
         icon: "window-close"
 
         onClicked: tasksModel.requestClose(visualParent.modelIndex())
+    }
+
+    PlasmaComponents.MenuItem {
+        id: closeWindowItem
+        visible: !latteDock && !plasmoid.immutable
+
+        text: plasmoid.action("remove").text
+        icon: plasmoid.action("remove").icon
+
+        onClicked: plasmoid.action("remove").trigger();
     }
 
     PlasmaComponents.MenuItem {
