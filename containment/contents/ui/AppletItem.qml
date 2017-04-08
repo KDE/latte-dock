@@ -519,6 +519,26 @@ Item {
                 }
             }
 
+            Connections {
+                target: root
+                onIsVerticalChanged: {
+                    if (container.latteApplet) {
+                        return;
+                    }
+
+                    wrapper.disableScaleWidth = false;
+                    wrapper.disableScaleHeight = false;
+
+                    if (root.isVertical)  {
+                        wrapper.updateLayoutHeight();
+                        wrapper.updateLayoutWidth();
+                    } else {
+                        wrapper.updateLayoutWidth();
+                        wrapper.updateLayoutHeight();
+                    }
+                }
+            }
+
             function updateLayoutHeight(){
                 if(container.isInternalViewSplitter){
                     if(!root.editMode)
@@ -990,8 +1010,8 @@ Item {
         }
 
         PlasmaExtras.Heading {
-            anchors.fill: parent
-            anchors.centerIn: parent
+            width: parent.width
+            height: parent.height
 
             text: i18n("Launchers Area")
             level: 3
