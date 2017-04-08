@@ -124,6 +124,14 @@ Window{
             }
 
             Text{
+                text: "Offset (pixels)"+space
+            }
+
+            Text{
+                text: root.offset
+            }
+
+            Text{
                 text: "Mask"+space
             }
 

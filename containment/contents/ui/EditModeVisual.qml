@@ -72,6 +72,7 @@ Image{
         target: root
         onIconSizeChanged: initializeEditPosition();
         onPanelAlignmentChanged: initializeEditPosition();
+        onOffsetChanged: initializeEditPosition();
     }
 
     onRootThicknessChanged: {
@@ -137,23 +138,23 @@ Image{
 
         if (root.isHorizontal) {
             if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                x = root.width/2 - editVisual.editLength/2;
+                x = root.width/2 - editVisual.editLength/2 + root.offset;
             } else if (root.panelAlignment === Latte.Dock.Left) {
-                x = 0;
+                x = root.offset;
             } else if (root.panelAlignment === Latte.Dock.Center) {
-                x = root.width/2 - editVisual.editLength/2;
+                x = root.width/2 - editVisual.editLength/2 + root.offset;
             } else if (root.panelAlignment === Latte.Dock.Right) {
-                x = root.width - editVisual.editLength;
+                x = root.width - editVisual.editLength - root.offset;
             }
         } else if (root.isVertical) {
             if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                y = root.height/2 - editVisual.editLength/2;
+                y = root.height/2 - editVisual.editLength/2 + root.offset;
             } else if (root.panelAlignment === Latte.Dock.Top) {
-                y = 0;
+                y = root.offset;
             } else if (root.panelAlignment === Latte.Dock.Center) {
-                y = root.height/2 - editVisual.editLength/2;
+                y = root.height/2 - editVisual.editLength/2 + root.offset;
             } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                y = root.height - editVisual.editLength;
+                y = root.height - editVisual.editLength - root.offset;
             }
         }
     }
@@ -172,23 +173,23 @@ Image{
 
             if (root.isHorizontal) {
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    x = root.width/2 - editVisual.width/2;
+                    x = root.width/2 - editVisual.width/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
-                    x = 0;
+                    x = root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    x = root.width/2 - editVisual.width/2;
+                    x = root.width/2 - editVisual.width/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Right) {
-                    x = root.width - editVisual.width;
+                    x = root.width - editVisual.width - root.offset;
                 }
             } else if (root.isVertical) {
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    y = root.height/2 - editVisual.height/2;
+                    y = root.height/2 - editVisual.height/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
-                    y = 0;
+                    y = root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    y = root.height/2 - editVisual.height/2;
+                    y = root.height/2 - editVisual.height/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    y = root.height - editVisual.height;
+                    y = root.height - editVisual.height - root.offset;
                 }
             }
         }

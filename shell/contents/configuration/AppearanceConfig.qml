@@ -384,7 +384,7 @@ PlasmaComponents.Page {
         }
         //! END: Background
 
-        //! BEGIN: Max Length
+        //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
@@ -399,6 +399,11 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
+                PlasmaComponents.Label {
+                    text: i18n("Max: ")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
                 PlasmaComponents.Slider {
                     Layout.fillWidth: true
                     id: maxLengthSlider
@@ -409,11 +414,37 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.maxLength
                     minimumValue: 30
                     maximumValue: 100
-                    stepSize: 5
+                    stepSize: 2
 
                     function updateMaxLength() {
                         if (!pressed) {
                             plasmoid.configuration.maxLength = value;
+                            var newTotal = Math.abs(plasmoid.configuration.offset) + value;
+
+                            //centered and justify alignments based on offset and get out of the screen in some cases
+                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                                                 || (plasmoid.configuration.panelPosition === Latte.Dock.Justify))
+                                    && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
+
+                            if (newTotal > 100 || centeredCheck) {
+                                if ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                                        || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) {
+
+                                    var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
+
+                                    if ((Math.abs(suggestedValue) + value/2) > 50) {
+                                        if (suggestedValue < 0) {
+                                            suggestedValue = - (50 - value/2);
+                                        } else {
+                                            suggestedValue = 50 - value/2;
+                                        }
+                                    }
+
+                                    plasmoid.configuration.offset = suggestedValue;
+                                } else {
+                                    plasmoid.configuration.offset = Math.max(0, 100-value);
+                                }
+                            }
                         }
                     }
 
@@ -432,9 +463,66 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
-        }
-        //! END: Zoom On Hover
 
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Label {
+                    text: i18n("Offset: ")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                PlasmaComponents.Slider {
+                    Layout.fillWidth: true
+                    id: offsetSlider
+
+                    valueIndicatorText: i18n("Offset")
+                    valueIndicatorVisible: true
+
+                    value: plasmoid.configuration.offset
+                    minimumValue: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                                   || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? -20 :  0
+                    maximumValue: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                                   || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? 20 :  40
+                    stepSize: 2
+
+                    function updateOffset() {
+                        if (!pressed) {
+                            plasmoid.configuration.offset = value;
+                            var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
+
+                            //centered and justify alignments based on offset and get out of the screen in some cases
+                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                                                 || (plasmoid.configuration.panelPosition === Latte.Dock.Justify))
+                                    && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
+                            if (newTotal > 100 || centeredCheck) {
+                                plasmoid.configuration.maxLength = ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                                                                    || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ?
+                                            2*(50 - Math.abs(value)) :100 - Math.abs(value);
+                            }
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateOffset();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateOffset);
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: offsetSlider.value + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+        }
+        //! END: Length
 
         //! BEGIN: Shadows
         ColumnLayout {

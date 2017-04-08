@@ -369,6 +369,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+            }
         },
         ///Left
         State {
@@ -382,6 +387,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Left
@@ -397,6 +407,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "leftDouble"
@@ -409,6 +424,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
             }
         },
         ///Right
@@ -424,6 +444,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+            }
         },
         State {
             name: "rightTop"
@@ -436,6 +461,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -450,6 +480,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "rightDouble"
@@ -462,6 +497,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
             }
         },
         ///Bottom
@@ -477,6 +517,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "bottomLeft"
@@ -490,6 +535,12 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
+
         },
         State {
             name: "bottomRight"
@@ -503,6 +554,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "bottomDouble"
@@ -515,6 +571,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
             }
         },
         ///Top
@@ -530,6 +591,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "topLeft"
@@ -542,6 +608,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -556,6 +627,11 @@ Item{
                 target: shadowsSvgItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
             }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
         },
         State {
             name: "topDouble"
@@ -568,6 +644,11 @@ Item{
             AnchorChanges {
                 target: shadowsSvgItem
                 anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            PropertyChanges{
+                target: barLine
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
             }
         }
     ]

@@ -237,13 +237,13 @@ Item{
                 if (noCompositingEdit) {
                     localX = 0;
                 } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    localX = (dock.width/2) - tempLength/2;
+                    localX = (dock.width/2) - tempLength/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
-                    localX = 0;
+                    localX = root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localX = (dock.width/2) - tempLength/2;
+                    localX = (dock.width/2) - tempLength/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Right) {
-                    localX = dock.width - mainLayout.width - space;
+                    localX = dock.width - mainLayout.width - space - root.offset;
                 }
             } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                 if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -255,13 +255,13 @@ Item{
                 if (noCompositingEdit) {
                     localY = 0;
                 } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    localY = (dock.height/2) - tempLength/2;
+                    localY = (dock.height/2) - tempLength/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
-                    localY = 0;
+                    localY = root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localY = (dock.height/2) - tempLength/2;
+                    localY = (dock.height/2) - tempLength/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    localY = dock.height - mainLayout.height - space;
+                    localY = dock.height - mainLayout.height - space - root.offset;
                 }
             }
         } else {
