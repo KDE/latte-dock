@@ -636,6 +636,16 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: removePlasmoid
+        visible: !latteDock && !plasmoid.immutable
+
+        text: plasmoid.action("remove").text
+        icon: plasmoid.action("remove").icon
+
+        onClicked: plasmoid.action("remove").trigger();
+    }
+
+    PlasmaComponents.MenuItem {
         separator: true
     }
 
