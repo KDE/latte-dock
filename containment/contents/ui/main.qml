@@ -1026,7 +1026,7 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if ((visibilityManager.normalState && !root.editMode)
+        if ((visibilityManager.normalState && !root.editMode && root.autoDecreaseIconSize)
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = root.maxLength;
