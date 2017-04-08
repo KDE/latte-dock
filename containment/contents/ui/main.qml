@@ -110,8 +110,21 @@ DragDrop.DropArea {
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
-    property int offset: root.isHorizontal ? width * (plasmoid.configuration.offset/100)
-                                           : height * (plasmoid.configuration.offset/100)
+    property int offset: {
+        if (drawShadowsExternal) {
+            return 0;
+        }
+
+        if (root.isHorizontal) {
+            return width * (plasmoid.configuration.offset/100);
+        } else {
+            height * (plasmoid.configuration.offset/100)
+        }
+    }
+
+    //center the layout correctly when the user uses an offset
+    property int offsetFixed: (offset===0 || panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify)?
+                                     offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
 
     property int realSize: iconSize + iconMargin
     property int realPanelSize: 0
@@ -280,7 +293,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offsetFixed;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -294,7 +307,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offsetFixed;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -323,7 +336,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offset;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offsetFixed;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -337,7 +350,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offset;
+                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offsetFixed;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -366,7 +379,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: root.offsetFixed;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -380,7 +393,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offsetFixed;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -409,7 +422,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                anchors.leftMargin: root.offset;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: root.offsetFixed;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
@@ -423,7 +436,7 @@ DragDrop.DropArea {
             }
             PropertyChanges{
                 target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.leftMargin: 0;    anchors.rightMargin:root.offsetFixed;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }

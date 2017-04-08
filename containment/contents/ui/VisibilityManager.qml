@@ -103,6 +103,14 @@ Item{
         value: plasmoid.configuration.maxLength/100
     }
 
+
+    Binding{
+        target: dock
+        property: "offset"
+        when: dock
+        value: plasmoid.configuration.offset
+    }
+
     Binding{
         target: dock
         property: "alignment"

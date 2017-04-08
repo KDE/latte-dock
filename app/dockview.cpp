@@ -166,6 +166,7 @@ void DockView::init()
     });
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
+    connect(this, &DockView::offsetChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
@@ -949,6 +950,21 @@ QRect DockView::screenGeometry() const
     return QRect();
 }
 
+int DockView::offset() const
+{
+    return m_offset;
+}
+
+void DockView::setOffset(int offset)
+{
+    if (m_offset == offset) {
+        return;
+    }
+
+    m_offset = offset;
+    emit offsetChanged();
+}
+
 int DockView::shadow() const
 {
     return m_shadow;
@@ -1505,11 +1521,11 @@ void DockView::updateEnabledBorders()
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
 
-        if (m_alignment == Dock::Top && !m_forceDrawCenteredBorders) {
+        if (m_alignment == Dock::Top && !m_forceDrawCenteredBorders && m_offset == 0) {
             borders &= ~Plasma::FrameSvg::TopBorder;
         }
 
-        if (m_alignment == Dock::Bottom && !m_forceDrawCenteredBorders) {
+        if (m_alignment == Dock::Bottom && !m_forceDrawCenteredBorders && m_offset == 0) {
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
     }
@@ -1520,11 +1536,11 @@ void DockView::updateEnabledBorders()
             borders &= ~Plasma::FrameSvg::RightBorder;
         }
 
-        if (m_alignment == Dock::Left) {
+        if (m_alignment == Dock::Left && m_offset == 0) {
             borders &= ~Plasma::FrameSvg::LeftBorder;
         }
 
-        if (m_alignment == Dock::Right) {
+        if (m_alignment == Dock::Right  && m_offset == 0) {
             borders &= ~Plasma::FrameSvg::RightBorder;
         }
     }

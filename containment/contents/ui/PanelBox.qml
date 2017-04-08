@@ -65,7 +65,8 @@ Item{
     property int spacing: {
         if (!Latte.WindowSystem.compositingActive) {
             return 0;
-        } else if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+        } else if (root.panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify
+                   || root.offset!==0) {
             return root.panelEdgeSpacing/2;
         } else {
             return root.panelEdgeSpacing/4;
@@ -128,9 +129,9 @@ Item{
             if (root.drawShadowsExternal || !Latte.WindowSystem.compositingActive) {
                 return 0;
             } else {
-                if (root.panelAlignment === Latte.Dock.Left)
+                if (root.panelAlignment === Latte.Dock.Left && root.offset===0)
                     return margins.right;
-                else if (root.panelAlignment === Latte.Dock.Right)
+                else if (root.panelAlignment === Latte.Dock.Right && root.offset===0)
                     return margins.left;
                 else
                     return margins.left+margins.right;
@@ -141,9 +142,9 @@ Item{
             if (root.drawShadowsExternal || !Latte.WindowSystem.compositingActive) {
                 return 0;
             } else {
-                if (root.panelAlignment === Latte.Dock.Top)
+                if (root.panelAlignment === Latte.Dock.Top && root.offset===0)
                     return margins.bottom;
-                else if (root.panelAlignment === Latte.Dock.Bottom)
+                else if (root.panelAlignment === Latte.Dock.Bottom && root.offset===0)
                     return margins.top;
                 else
                     return margins.top + margins.bottom;
