@@ -39,8 +39,8 @@ import "../code/activitiesTools.js" as ActivitiesTools
 Item {
     id:root
 
-   // Layout.fillHeight: userPanelPosition === 0 ? true : false
-   // Layout.fillWidth: userPanelPosition === 0 ? true : false
+    // Layout.fillHeight: userPanelPosition === 0 ? true : false
+    // Layout.fillWidth: userPanelPosition === 0 ? true : false
 
     ///IMPORTANT: These values must be tested when the Now Dock Panel support
     ///also the four new anchors. A small issue is shown between the animation
@@ -238,6 +238,7 @@ Item {
         mouseHandler.urlsDroppedOnArea(urls);
     }
 
+    ///UPDATE
     function launcherExists(url) {
         return (ActivitiesTools.getIndex(url, tasksModel.launcherList)>=0);
     }
@@ -266,11 +267,12 @@ Item {
         return createLaunchers;
     }
 
+    ///REMOVE
     function updateLaunchersNewArchitecture(){
         ///frameworks 5.29.0 provide id 335104
 
         //work only after Plasma 5.9 and frameworks 5.29
-        if (Latte.WindowSystem.frameworksVersion < 335104) {
+        /*  if (Latte.WindowSystem.frameworksVersion < 335104) {
             return;
         }
 
@@ -292,7 +294,7 @@ Item {
                 launchers.push(task.m.LauncherUrlWithoutIcon);
             }
         }
-        ActivitiesTools.updateLaunchers(launchers);
+        ActivitiesTools.updateLaunchers(launchers);*/
     }
 
     onDragSourceChanged: {
@@ -301,7 +303,7 @@ Item {
             root.signalActionsBlockHiding(-1);
             //root.signalDraggingState(false);
 
-            updateLaunchersNewArchitecture();
+            //updateLaunchersNewArchitecture();
             tasksModel.syncLaunchers();
         } else {
             root.signalActionsBlockHiding(1);
@@ -409,11 +411,12 @@ Item {
         groupMode: TaskManager.TasksModel.GroupApplications
         sortMode: TaskManager.TasksModel.SortManual
 
+        ///REMOVE
         onActivityChanged: {
-            ActivitiesTools.currentActivity = activity;
+            ActivitiesTools.currentActivity = String(activity);
             //  console.log("Updated :"+activity);
 
-            launcherList = ActivitiesTools.restoreLaunchers();
+            //launcherList = ActivitiesTools.restoreLaunchers();
             //root.updateImplicits();
             //panelGeometryTimer.start();
         }
@@ -423,8 +426,8 @@ Item {
         //  }
 
         onLauncherListChanged: {
-            // plasmoid.configuration.launchers = launcherList;
-            ActivitiesTools.updateLaunchers(launcherList);
+            plasmoid.configuration.launchers59 = launcherList;
+            // ActivitiesTools.updateLaunchers(launcherList);
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -445,10 +448,13 @@ Item {
 
         Component.onCompleted: {
             ActivitiesTools.launchersOnActivities = root.launchersOnActivities
-            ActivitiesTools.currentActivity = activityInfo.currentActivity;
+            ActivitiesTools.currentActivity = String(activityInfo.currentActivity);
             ActivitiesTools.plasmoid = plasmoid;
 
-            launcherList = ActivitiesTools.restoreLaunchers();
+            //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
+            ActivitiesTools.importLaunchersToNewArchitecture();
+            launcherList = plasmoid.configuration.launchers59;
+
             groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
 
@@ -886,6 +892,7 @@ Item {
         onTriggered: icList.directRender = true;
     }
 
+    ///REMOVE
     ////Activities List
     ////it can be used to cleanup the launchers from garbage-deleted activities....
     Item{
@@ -916,13 +923,14 @@ Item {
             return activitiesResult;
         }
 
+        ///REMOVE
         onCountChanged: {
-            if(activityInfo.currentActivity != "00000000-0000-0000-0000-000000000000"){
+            /*  if(activityInfo.currentActivity != "00000000-0000-0000-0000-000000000000"){
                 console.log("----------- Latte Plasmoid Signal: Activities number was changed ---------");
                 var allActivities = activities();
                 ActivitiesTools.cleanupRecords(allActivities);
                 console.log("----------- Latte Plasmoid Signal End ---------");
-            }
+            }*/
         }
     }
 
@@ -1185,12 +1193,23 @@ Item {
         dragSource = null;
     }
 
-    function createContextMenu(task) {
+    ///REMOVE
+    /*function createContextMenu(task) {
         var menu = root.contextMenuComponent.createObject(task);
         menu.visualParent = task;
         menu.mpris2Source = mpris2Source;
         menu.activitiesCount = activityModelInstance.count;
         return menu;
+    }*/
+
+    function createContextMenu(rootTask, modelIndex, args) {
+        var initialArgs = args || {}
+        initialArgs.visualParent = rootTask;
+        initialArgs.modelIndex = modelIndex;
+        initialArgs.mpris2Source = mpris2Source;
+        initialArgs.backend = backend;
+
+        return root.contextMenuComponent.createObject(rootTask, initialArgs);
     }
 
     Component.onCompleted:  {

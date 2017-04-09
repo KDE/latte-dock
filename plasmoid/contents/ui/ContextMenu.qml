@@ -25,6 +25,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.activities 0.1 as Activities
+import org.kde.taskmanager 0.1 as TaskManager
+
 
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -32,6 +34,10 @@ PlasmaComponents.ContextMenu {
     id: menu
 
     property QtObject mpris2Source
+    property QtObject backend
+
+    property var modelIndex
+    readonly property var atm: TaskManager.AbstractTasksModel
 
     placement: {
         if (plasmoid.location == PlasmaCore.Types.LeftEdge) {
@@ -50,13 +56,18 @@ PlasmaComponents.ContextMenu {
     property int activitiesCount: 0
 
     onStatusChanged: {
+        ///REMOVE
         if (visualParent && visualParent.m.LauncherUrlWithoutIcon != null && status == PlasmaComponents.DialogStatus.Open) {
-            launcherToggleAction.checked = (tasksModel.launcherPosition(visualParent.m.LauncherUrlWithoutIcon) != -1);
-            updateOnAllActivitiesLauncher();
+            //launcherToggleAction.checked = (tasksModel.launcherPosition(visualParent.m.LauncherUrlWithoutIcon) != -1);
+            // updateOnAllActivitiesLauncher();
         } else if (status == PlasmaComponents.DialogStatus.Closed) {
             checkListHovered.startDuration(100);
             menu.destroy();
         }
+    }
+
+    function get(modelProp) {
+        return tasksModel.data(modelIndex, modelProp)
     }
 
     function show() {
@@ -195,8 +206,9 @@ PlasmaComponents.ContextMenu {
         }
     }
 
+    ///REMOVE
     function updateOnAllActivitiesLauncher(){
-        isOnAllActivitiesLauncher = ActivitiesTools.isOnAllActivities(visualParent.m.LauncherUrlWithoutIcon);
+        //isOnAllActivitiesLauncher = ActivitiesTools.isOnAllActivities(visualParent.m.LauncherUrlWithoutIcon);
     }
 
     Component.onCompleted: {
@@ -255,7 +267,7 @@ PlasmaComponents.ContextMenu {
                     return menu.visualParent && menu.visualParent.m.VirtualDesktop != virtualDesktopInfo.currentDesktop;
                 });
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestVirtualDesktop(menu.visualParent.modelIndex(), 0);
+                    tasksModel.requestVirtualDesktop(menu.modelIndex, 0);
                 });
 
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
@@ -265,7 +277,7 @@ PlasmaComponents.ContextMenu {
                     return menu.visualParent && menu.visualParent.m.IsOnAllVirtualDesktops === true;
                 });
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestVirtualDesktop(menu.visualParent.modelIndex(), 0);
+                    tasksModel.requestVirtualDesktop(menu.modelIndex, 0);
                 });
                 backend.setActionGroup(menuItem.action);
 
@@ -280,7 +292,7 @@ PlasmaComponents.ContextMenu {
                         return function() { return menu.visualParent && menu.visualParent.m.VirtualDesktop == (i + 1) };
                     })(i));
                     menuItem.clicked.connect((function(i) {
-                        return function() { return tasksModel.requestVirtualDesktop(menu.visualParent.modelIndex(), i + 1); };
+                        return function() { return tasksModel.requestVirtualDesktop(menu.modelIndex, i + 1); };
                     })(i));
                     backend.setActionGroup(menuItem.action);
                 }
@@ -290,7 +302,7 @@ PlasmaComponents.ContextMenu {
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
                 menuItem.text = i18n("New Desktop");
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestVirtualDesktop(menu.visualParent.modelIndex(), virtualDesktopInfo.numberOfDesktops + 1)
+                    tasksModel.requestVirtualDesktop(menu.modelIndex, virtualDesktopInfo.numberOfDesktops + 1)
                 });
             }
 
@@ -335,7 +347,7 @@ PlasmaComponents.ContextMenu {
                             menu.visualParent.m.Activities.indexOf(activityInfo.currentActivity) < 0;
                 });
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestActivities(menu.visualParent.modelIndex(), menu.visualParent.m.Activities.concat(activityInfo.currentActivity));
+                    tasksModel.requestActivities(menu.modelIndex, menu.visualParent.m.Activities.concat(activityInfo.currentActivity));
                 });
 
                 menuItem = menu.newMenuItem(activitiesDesktopsMenu);
@@ -354,7 +366,7 @@ PlasmaComponents.ContextMenu {
                         newActivities = new Array(activityInfo.currentActivity);
                     }
 
-                    tasksModel.requestActivities(menu.visualParent.modelIndex(), newActivities);
+                    tasksModel.requestActivities(menu.modelIndex, newActivities);
                 });
 
                 menu.newSeparator(activitiesDesktopsMenu);
@@ -383,7 +395,7 @@ PlasmaComponents.ContextMenu {
                                 //newActivities = newActivities.splice(index, 1);  //this does not work!!!
                                 newActivities.splice(index, 1);
                             }
-                            return tasksModel.requestActivities(menu.visualParent.modelIndex(), newActivities);
+                            return tasksModel.requestActivities(menu.modelIndex, newActivities);
                         };
                     })(activityId));
                 }
@@ -410,7 +422,7 @@ PlasmaComponents.ContextMenu {
 
         text: i18n("Minimize")
 
-        onClicked: tasksModel.requestToggleMinimized(visualParent.modelIndex())
+        onClicked: tasksModel.requestToggleMinimized(menu.modelIndex)
     }
 
     PlasmaComponents.MenuItem {
@@ -426,7 +438,7 @@ PlasmaComponents.ContextMenu {
 
         text: i18n("Maximize")
 
-        onClicked: tasksModel.requestToggleMaximized(visualParent.modelIndex())
+        onClicked: tasksModel.requestToggleMaximized(menu.modelIndex)
     }
 
     PlasmaComponents.MenuItem {
@@ -450,7 +462,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Move")
                 icon: "transform-move"
 
-                onClicked: tasksModel.requestMove(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestMove(menu.menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -458,7 +470,7 @@ PlasmaComponents.ContextMenu {
 
                 text: i18n("Resize")
 
-                onClicked: tasksModel.requestResize(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestResize(menu.menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -468,7 +480,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Keep Above Others")
                 icon: "go-up"
 
-                onClicked: tasksModel.requestToggleKeepAbove(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestToggleKeepAbove(menu.menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -478,7 +490,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Keep Below Others")
                 icon: "go-down"
 
-                onClicked: tasksModel.requestToggleKeepBelow(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestToggleKeepBelow(menu.menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -490,7 +502,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Fullscreen")
                 icon: "view-fullscreen"
 
-                onClicked: tasksModel.requestToggleFullScreen(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestToggleFullScreen(menu.menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -501,7 +513,7 @@ PlasmaComponents.ContextMenu {
 
                 text: i18n("Shade")
 
-                onClicked: tasksModel.requestToggleShaded(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestToggleShaded(menu.menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -516,7 +528,7 @@ PlasmaComponents.ContextMenu {
 
                 text: i18n("Allow this program to be grouped")
 
-                onClicked: tasksModel.requestToggleGrouping(menu.visualParent.modelIndex())
+                onClicked: tasksModel.requestToggleGrouping(menu.menu.modelIndex)
             }
         }
     }
@@ -530,7 +542,7 @@ PlasmaComponents.ContextMenu {
         text: i18n("Start New Instance")
         icon: "system-run"
 
-        onClicked: tasksModel.requestNewInstance(visualParent.modelIndex())
+        onClicked: tasksModel.requestNewInstance(menu.modelIndex)
     }
 
     PlasmaComponents.MenuItem {
@@ -542,6 +554,130 @@ PlasmaComponents.ContextMenu {
                   && root.showWindowActions)
     }
 
+    //// NEW Launchers Mechanism
+    PlasmaComponents.MenuItem {
+        id: launcherToggleAction
+
+        visible: visualParent
+                 && get(atm.IsLauncher) !== true
+                 && get(atm.IsStartup) !== true
+                 && (activityInfo.numberOfRunningActivities < 2)
+                 //&& plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+
+
+        enabled: visualParent && get(atm.LauncherUrlWithoutIcon) !== ""
+
+        checkable: true
+
+        text: i18nc("Toggle action for showing a launcher button while the application is not running", "&Pin")
+
+        onClicked: {
+            if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
+                root.launcherForRemoval = get(atm.LauncherUrlWithoutIcon);
+                tasksModel.requestRemoveLauncher(get(atm.LauncherUrlWithoutIcon));
+            } else {
+                tasksModel.requestAddLauncher(get(atm.LauncherUrl));
+            }
+        }
+    }
+
+    PlasmaComponents.MenuItem {
+        id: showLauncherInActivitiesItem
+
+        text: i18n("&Pin")
+
+        visible: visualParent
+                // && get(atm.IsLauncher) !== true
+                 && get(atm.IsStartup) !== true
+                 && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+                 && (activityInfo.numberOfRunningActivities >= 2)
+
+        Connections {
+            target: activityInfo
+            onNumberOfRunningActivitiesChanged: activitiesDesktopsMenu.refresh()
+        }
+
+        PlasmaComponents.ContextMenu {
+            id: activitiesLaunchersMenu
+            visualParent: showLauncherInActivitiesItem.action
+
+            function refresh() {
+                clearMenuItems();
+
+                if (menu.visualParent === null) return;
+
+                var createNewItem = function(id, title, url, activities) {
+                    var result = menu.newMenuItem(activitiesLaunchersMenu);
+                    result.text = title;
+
+                    result.visible = true;
+                    result.checkable = true;
+
+                    result.checked = activities.some(function(activity) { return activity === id });
+
+                    result.clicked.connect(
+                                function() {
+                                    if (result.checked) {
+                                        tasksModel.requestAddLauncherToActivity(url, id);
+                                    } else {
+                                        root.launcherForRemoval = url;
+                                        tasksModel.requestRemoveLauncherFromActivity(url, id);
+                                    }
+                                }
+                                );
+
+                    return result;
+                }
+
+                if (menu.visualParent === null) return;
+
+                var url = menu.get(atm.LauncherUrlWithoutIcon);
+
+                var activities = tasksModel.launcherActivities(url);
+
+                var NULL_UUID = "00000000-0000-0000-0000-000000000000";
+
+                createNewItem(NULL_UUID, i18n("On All Activities"), url, activities);
+
+                if (activityInfo.numberOfRunningActivities <= 1) {
+                    return;
+                }
+
+                createNewItem(activityInfo.currentActivity, i18n("On The Current Activity"), url, activities);
+
+                menu.newSeparator(activitiesLaunchersMenu);
+
+                var runningActivities = activityInfo.runningActivities();
+
+                runningActivities.forEach(function(id) {
+                    createNewItem(id, activityInfo.activityName(id), url, activities);
+                });
+            }
+
+            Component.onCompleted: {
+                menu.onVisualParentChanged.connect(refresh);
+                refresh();
+            }
+        }
+    }
+
+    PlasmaComponents.MenuItem {
+        visible: (visualParent && get(atm.IsLauncher) === true) && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+
+        text: i18nc("Remove launcher button for application shown while it is not running", "Unpin")
+
+        onClicked: {
+            root.launcherForRemoval = get(atm.LauncherUrlWithoutIcon);
+            tasksModel.requestRemoveLauncher(get(atm.LauncherUrlWithoutIcon));
+        }
+    }
+
+    //////END OF NEW ARCHITECTURE
+
+    ////
+
+    ///REMOVE
+    /*
     PlasmaComponents.MenuItem {
         id: launcherToggleOnAllActivitiesAction
         visible: launcherToggleAction.visible && launcherToggleAction.checked && activitiesCount > 1
@@ -602,7 +738,7 @@ PlasmaComponents.ContextMenu {
             tasksModel.requestRemoveLauncher(visualParent.m.LauncherUrlWithoutIcon);
             root.updateLaunchersNewArchitecture();
         }
-    }
+    }*/
 
     PlasmaComponents.MenuItem {
         property QtObject configureAction: null
@@ -632,7 +768,7 @@ PlasmaComponents.ContextMenu {
         text: i18n("Close")
         icon: "window-close"
 
-        onClicked: tasksModel.requestClose(visualParent.modelIndex())
+        onClicked: tasksModel.requestClose(menu.modelIndex)
     }
 
     PlasmaComponents.MenuItem {
@@ -686,7 +822,7 @@ PlasmaComponents.ContextMenu {
                 var visibleActions=0;
 
                 for (var i=0; i<actionList.length; ++i){
-                   console.log(i);
+                    console.log(i);
                     if (actionList[i].visible) {
                         visibleActions++;
                     }

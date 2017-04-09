@@ -24,6 +24,36 @@ var launchersOnActivities;
 var indicator = 'multi';
 var plasmoid;
 
+function importLaunchersToNewArchitecture(){
+    if (plasmoid.configuration.launchers59.length>0)
+        return;
+
+    console.log("------------- Importing Launchers To New Architecture --------------");
+
+    restoreLaunchers();
+    var newLaunchers = [];
+
+    var size = launchersOnActivities.length;
+    for(var i=size-1; i>=0; --i){
+        var activitySaving = get(launchersOnActivities[i].id);
+        if(activitySaving.launchers.length>0){
+            //this fixes the segmentation fault of previous command....
+            for(var j=0; j<activitySaving.launchers.length; ++j){
+                console.log(String(activitySaving.id) + "  -  " + String(activitySaving.launchers[j]));
+                var newString = "";
+                if (activitySaving.id === '*')
+                    newString = activitySaving.launchers[j];
+                else {
+                    newString = "["+activitySaving.id+"]\n"+activitySaving.launchers[j];
+                }
+                newLaunchers.push(newString);
+            }
+        }
+    }
+
+    plasmoid.configuration.launchers59 = newLaunchers;
+}
+
 function restoreLaunchers(){
     ///this is a stringlist of types activityId, number of launchers, launchers
     if(plasmoid && plasmoid.configuration && currentActivity != "00000000-0000-0000-0000-000000000000"){
@@ -126,12 +156,11 @@ function saveLaunchers(){
 }
 
 function updateLaunchers(launcherList){
-   // console.log("----------------------- Updating ---------------------");
-  //  console.log("---- Full Launchers ------");
-   /* for(var j=0; j<launcherList.length; ++j){
+    //console.log("----------------------- Updating ---------------------");
+    //console.log("---- Full Launchers ------");
+    for(var j=0; j<launcherList.length; ++j){
         console.log(launcherList[j]);
-    } */
-
+    }
 
     var tempList;
     if(launcherList.length > 0){

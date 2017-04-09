@@ -30,6 +30,10 @@
     <entry name="launchers" type="String">
       <default></default>
     </entry>
+    <entry name="launchers59" type="StringList">
+      <label>New launchers mechanism. The list of launcher tasks on the widget. Usually .desktop file or executable URLs. Special URLs such as preferred://browser that expand to default applications are supported.</label>
+      <default></default>
+    </entry>
     <entry name="middleClickAction" type="Enum">
       <choices>
             <choice name="None"/>
