@@ -71,7 +71,6 @@ XWindowInterface::XWindowInterface(QObject *parent)
 
 XWindowInterface::~XWindowInterface()
 {
-    qDebug() << "x window interface deleting...";
 }
 
 void XWindowInterface::setDockExtraFlags(QQuickWindow &view)
