@@ -116,10 +116,12 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Behave as a normal dock window")
                 checked: dock.dockWinBehavior
-                enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
+                           || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+
 //                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")
 
-                onClicked: {
+                onCheckedChanged: {
                     dock.dockWinBehavior = checked
                 }
             }

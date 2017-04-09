@@ -48,8 +48,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         setIcon(qGuiApp->windowIcon());
     }
 
-    m_previousDockWinBehavior = m_dockView->dockWinBehavior();
-
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
     connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
@@ -209,28 +207,40 @@ void DockConfigView::showEvent(QShowEvent *ev)
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
 
-    m_previousMode = m_dockView->visibility()->mode();
-
     emit showSignal();
 }
 
 void DockConfigView::hideEvent(QHideEvent *ev)
 {
-    if (m_dockView && m_dockView->containment())
+    if (!m_dockView) {
+        QQuickWindow::hideEvent(ev);
+        return;
+    }
+
+    if (m_dockView->containment())
         m_dockView->containment()->setUserConfiguring(false);
 
     QQuickWindow::hideEvent(ev);
 
-    if ((m_dockView && m_dockView->visibility()->mode() != m_previousMode
-         && ((m_dockView->visibility()->mode() == Dock::AlwaysVisible)
-             || (m_previousMode == Dock::AlwaysVisible)))
-        || (m_previousDockWinBehavior != m_dockView->dockWinBehavior())) {
-
+    auto recreateDock = [&]() noexcept {
         auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
         if (dockCorona) {
             dockCorona->recreateDock(m_dockView->containment());
         }
+    };
+
+    const auto mode = m_dockView->visibility()->mode();
+    const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
+
+    if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
+        if (!previousDockWinBehavior) {
+            recreateDock();
+            return;
+        }
+    } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
+        recreateDock();
+        return;
     }
 
     deleteLater();

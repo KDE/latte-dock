@@ -40,7 +40,8 @@ public:
         AutoHide,
         DodgeActive,
         DodgeMaximized,
-        DodgeAllWindows
+        DodgeAllWindows,
+        WindowsGoBelow
     };
     Q_ENUM(Visibility)
 

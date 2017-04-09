@@ -170,6 +170,9 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             timerCheckWindows.start();
         }
         break;
+        case Dock::WindowsGoBelow: {
+            //
+        }
     }
 
     view->containment()->config().writeEntry("visibility", static_cast<int>(mode));

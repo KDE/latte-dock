@@ -50,7 +50,7 @@ namespace Latte {
 //! both alwaysVisible and dockWinBehavior are passed through corona because
 //! during the dock window creation containment hasnt been set, but these variables
 //! are needed in order for window flags to be set correctly
-DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVisible, bool dockWindowBehavior)
+DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
 {
@@ -61,17 +61,16 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool alwaysVis
     setColor(QColor(Qt::transparent));
     setClearBeforeRendering(true);
 
-    if (!alwaysVisible && !dockWindowBehavior) {
-        setFlags(Qt::BypassWindowManagerHint
-                 | Qt::FramelessWindowHint
+    const auto flags = Qt::FramelessWindowHint
                  | Qt::WindowStaysOnTopHint
                  | Qt::NoDropShadowWindowHint
-                 | Qt::WindowDoesNotAcceptFocus);
+                 | Qt::WindowDoesNotAcceptFocus;
+
+
+    if (dockWindowBehavior) {
+        setFlags(flags);
     } else {
-        setFlags(Qt::FramelessWindowHint
-                 | Qt::WindowStaysOnTopHint
-                 | Qt::NoDropShadowWindowHint
-                 | Qt::WindowDoesNotAcceptFocus);
+        setFlags(flags | Qt::BypassWindowManagerHint);
     }
 
     KWindowSystem::setOnAllDesktops(winId(), true);

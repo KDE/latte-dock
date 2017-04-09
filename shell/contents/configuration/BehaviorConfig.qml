@@ -352,7 +352,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Always Visible")
-                    checked: dock.visibility.mode === mode
+                    checked: parent.mode === mode
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
@@ -361,7 +361,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Auto Hide")
-                    checked: dock.visibility.mode === mode
+                    checked: parent.mode === mode
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
@@ -370,7 +370,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Dodge Active")
-                    checked: dock.visibility.mode === mode
+                    checked: parent.mode === mode
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
@@ -379,7 +379,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Dodge Maximized")
-                    checked: dock.visibility.mode === mode
+                    checked: parent.mode === mode
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
@@ -388,11 +388,20 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Dodge All Windows")
-                    checked: dock.visibility.mode === mode
+                    checked: parent.mode === mode
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
                     property int mode: Latte.Dock.DodgeAllWindows
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Windows Go Below")
+                    checked: parent.mode === mode
+                    checkable: true
+                    exclusiveGroup: visibilityGroup
+
+                    property int mode: Latte.Dock.WindowsGoBelow
                 }
             }
         }
@@ -402,6 +411,9 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+
+            enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
+                     || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
 
             Header {
                 Layout.fillWidth: true
@@ -424,8 +436,6 @@ PlasmaComponents.Page {
                 }
                 LatteTextField {
                     Layout.preferredWidth: width
-                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-
                     text: dock.visibility.timerShow
 
                     onValueChanged: {
@@ -441,8 +451,6 @@ PlasmaComponents.Page {
                 }
                 LatteTextField{
                     Layout.preferredWidth: width
-                    enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
-
                     text: dock.visibility.timerHide
 
                     onValueChanged: {

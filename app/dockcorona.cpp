@@ -814,14 +814,15 @@ void DockCorona::addDock(Plasma::Containment *containment)
     //! of the window... This of course is also used during
     //! recreations of the window between different visibility modes
     auto mode = static_cast<Dock::Visibility>(containment->config().readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
-    bool dockWin = containment->config().readEntry("dockWindowBehavior", false);
-    bool alwaysVisible{false};
+    bool dockWin{false};
 
-    if (mode == Latte::Dock::AlwaysVisible) {
-        alwaysVisible = true;
+    if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
+        dockWin = true;
+    } else {
+        dockWin = containment->config().readEntry("dockWindowBehavior", false);
     }
 
-    auto dockView = new DockView(this, nextScreen, alwaysVisible, dockWin);
+    auto dockView = new DockView(this, nextScreen, dockWin);
     dockView->init();
     dockView->setContainment(containment);
 

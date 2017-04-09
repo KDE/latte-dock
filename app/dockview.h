@@ -78,7 +78,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(Latte::Dock::SessionType session READ session WRITE setSession NOTIFY sessionChanged)
 
 public:
-    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool alwaysVisible = false, bool dockWindowBehavior = false);
+    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool dockWindowBehavior = false);
     virtual ~DockView();
 
     void init();
