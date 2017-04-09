@@ -42,7 +42,7 @@ Item {
     property bool canBeHovered: true
     property bool inFillCalculations: false //it is used in calculations for fillWidth,fillHeight applets
     property bool needsFillSpace: { //it is used in calculations for fillWidth,fillHeight applets
-        if (!applet || !applet.Layout)
+        if (!applet || !applet.Layout ||  (applet && applet.pluginName === "org.kde.plasma.panelspacer"))
             return false;
 
         if (((root.isHorizontal && applet.Layout.fillWidth===true)
