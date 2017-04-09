@@ -75,6 +75,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 
 DockConfigView::~DockConfigView()
 {
+    qDebug() << "DockConfigView deleting ...";
     foreach (auto var, connections) {
         QObject::disconnect(var);
     }
@@ -236,11 +237,9 @@ void DockConfigView::hideEvent(QHideEvent *ev)
     if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
         if (!previousDockWinBehavior) {
             recreateDock();
-            return;
         }
     } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
         recreateDock();
-        return;
     }
 
     deleteLater();
