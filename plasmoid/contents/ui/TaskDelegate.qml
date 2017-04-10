@@ -33,7 +33,7 @@ import org.kde.latte 0.1 as Latte
 MouseArea{
     id: mainItemContainer
 
-    visible: (isStartup && root.durationTime !== 0) ? false : true
+    visible: true//(isStartup && root.durationTime !== 0) ? false : true
 
     anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
     anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
@@ -239,8 +239,8 @@ MouseArea{
             id: wrapper
 
             opacity: 0
-            width: (mainItemContainer.isStartup && root.durationTime !==0 ) ? 0 : showDelegateWidth
-            height: (mainItemContainer.isStartup && root.durationTime !==0) ? 0 : showDelegateheight
+            width: (mainItemContainer.isStartup && root.durationTime !==0 ) ? cleanScalingWidth : showDelegateWidth
+            height: (mainItemContainer.isStartup && root.durationTime !==0) ? cleanScalingHeight : showDelegateheight
 
             //size needed fom the states below icons
             //property int statesLineSize: root.statesLineSize
