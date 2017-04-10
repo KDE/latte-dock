@@ -1279,7 +1279,7 @@ MouseArea{
         property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                                      && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
                                        || !launcherIsPresent(mainItemContainer.launcherUrl))
-                                      && mainItemContainer.isWindow)
+                                      && !mainItemContainer.isStartup)
 
         property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
                                     || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )&& mainItemContainer.isLauncher)
