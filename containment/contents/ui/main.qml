@@ -53,7 +53,7 @@ DragDrop.DropArea {
     property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
-                                       && (dock.visibility.mode === Latte.Dock.AlwaysVisible)
+                                       && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
                                        && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
 
     property bool editMode: plasmoid.userConfiguring
