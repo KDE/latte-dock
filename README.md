@@ -17,6 +17,8 @@ Repositories
 
 [ArchLinux AUR](https://www.archlinux.org/packages/?sort=&q=latte-dock)
 
+[Ubuntu Deb Packages](https://github.com/ubuntuvibes/Debs)
+
 Requirements
 ============
 We recommend that you use at least **Plasma 5.8.0**
