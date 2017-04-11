@@ -234,7 +234,7 @@ PlasmaComponents.Page {
             }
 
             RowLayout {
-                Layout.fillWidth: false
+                Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
 
@@ -248,6 +248,18 @@ PlasmaComponents.Page {
                         dockConfig.addPanelSpacer()
                     }
                 }
+                PlasmaComponents.Button {
+                    iconSource: "edit-delete"
+                    text: i18n("Remove Tasks")
+                    Layout.alignment: Qt.AlignRight
+                    enabled: dock.tasksPresent()
+//                    tooltip: i18n("Remove Latte plasmoid")
+
+                    onClicked: {
+                        dock.removeTasksPlasmoid();
+                    }
+                }
+
             }
         }
         //! END: Extra Actions

@@ -157,6 +157,7 @@ public slots:
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE QVariantList containmentActions();
     Q_INVOKABLE int docksWithTasks();
+    Q_INVOKABLE void removeTasksPlasmoid();
     Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE void updateEnabledBorders();

@@ -62,9 +62,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     setClearBeforeRendering(true);
 
     const auto flags = Qt::FramelessWindowHint
-                 | Qt::WindowStaysOnTopHint
-                 | Qt::NoDropShadowWindowHint
-                 | Qt::WindowDoesNotAcceptFocus;
+                       | Qt::WindowStaysOnTopHint
+                       | Qt::NoDropShadowWindowHint
+                       | Qt::WindowDoesNotAcceptFocus;
 
 
     if (dockWindowBehavior) {
@@ -1029,6 +1029,28 @@ void DockView::updateEffects()
     } else {
         KWindowEffects::enableBlurBehind(winId(), false);
         KWindowEffects::enableBackgroundContrast(winId(), false);
+    }
+}
+
+//! remove latte tasks plasmoid
+void DockView::removeTasksPlasmoid()
+{
+    if (!tasksPresent() || !containment()) {
+        return;
+    }
+
+    foreach (Plasma::Applet *applet, containment()->applets()) {
+        KPluginMetaData meta = applet->kPackage().metadata();
+
+        if (meta.pluginId() == "org.kde.latte.plasmoid") {
+            QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
+
+            if (closeApplet) {
+                closeApplet->trigger();
+                //! remove only the first found
+                return;
+            }
+        }
     }
 }
 
