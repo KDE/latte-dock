@@ -30,7 +30,7 @@
     </entry>
     <!-- this is percentage -->
     <entry name="iconMargin" type="Int">
-      <default>0</default>
+      <default>15</default>
     </entry>
     <entry name="shrinkThickMargins" type="Bool">
       <default>false</default>
