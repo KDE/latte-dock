@@ -83,6 +83,7 @@ public slots:
     void activateLauncherMenu();
     void loadDefaultLayout() override;
     void dockContainmentDestroyed(QObject *cont);
+    void updateDockItemBadge(QString identifier, QString value);
 
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);

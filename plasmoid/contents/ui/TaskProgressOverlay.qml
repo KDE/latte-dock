@@ -56,10 +56,20 @@ Item {
             anchors.centerIn: parent
             width: 0.8 * parent.width
             height: width
-            numberValue: centralItem.smartLauncherItem.count
+            numberValue: mainItemContainer.badgeIndicator > 0 ? mainItemContainer.badgeIndicator : centralItem.smartLauncherItem.count
             fullCircle: true
             showNumber: true
-            proportion: centralItem.smartLauncherItem ? centralItem.smartLauncherItem.progress / 100 : 0
+            proportion: {
+                if (mainItemContainer.badgeIndicator > 0) {
+                    return 100;
+                }
+
+                if (centralItem.smartLauncherItem) {
+                    return centralItem.smartLauncherItem.progress / 100;
+                } else {
+                    return 0;
+                }
+            }
         }
     }
 }

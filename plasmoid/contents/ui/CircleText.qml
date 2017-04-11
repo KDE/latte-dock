@@ -22,6 +22,8 @@
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
 
+import org.kde.plasma.plasmoid 2.0
+
 Rectangle {
     property double proportion: 0
 
@@ -45,7 +47,7 @@ Rectangle {
 
     property color alphaBackColor: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.45)
     property color alphaBackColor2: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.8)
-    color: alphaBackColor
+    color: mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
     radius: width
     border.width: Math.max(1,width/64)
     border.color: alphaBackColor2
@@ -76,14 +78,18 @@ Rectangle {
 
         width: parent.width - 2 * parent.border.width
         height: parent.height - 2 * parent.border.width
-        opacity: 0.7
+        opacity: proportion > 0 ? 1 : 0
 
         anchors.centerIn: parent
+
+        property color drawColor: mainItemContainer.badgeIndicator > 0 ? theme.buttonFocusColor : theme.highlightColor;
+
+        onDrawColorChanged: requestPaint();
 
         onPaint: {
             var ctx = getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = theme.highlightColor;
+            ctx.fillStyle = drawColor;
 
             var startRadian = - Math.PI / 2;
 
@@ -102,8 +108,9 @@ Rectangle {
         id: valueText
         anchors.centerIn: parent
         text: numberValue
-        font.pixelSize: fontPixelSize
-        color: theme.textColor
+        font.pixelSize: 0.6 * parent.height
+        font.bold: true
+        color: mainItemContainer.badgeIndicator > 0 ? theme.backgroundColor : theme.textColor
         visible: showNumber
     }
 

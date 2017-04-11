@@ -82,6 +82,10 @@ Item {
 
     property real textColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
 
+    //a small badgers record (id,value)
+    //in order to track badgers when there are changes
+    //in launcher reference from libtaskmanager
+    property variant badgers:[]
     property variant launchersOnActivities: []
 
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
@@ -1109,6 +1113,37 @@ Item {
             icList.orientation = Qt.Horizontal;
 
         root.position = newPosition;
+    }
+
+    function getBadger(identifier) {
+        var ident1 = identifier;
+        var n = ident1.lastIndexOf('/');
+        var result = n>=0 ? ident1.substring(n + 1) : identifier;
+
+        for(var i=0; i<badgers.length; ++i) {
+            if (badgers[i].id === result) {
+                return badgers[i];
+            }
+        }
+    }
+
+    function updateBadge(identifier, value) {
+        var tasks = icList.contentItem.children;
+        var identifierF = identifier.concat(".desktop");
+
+        for(var i=0; i<tasks.length; ++i){
+            var task = tasks[i];
+
+            if (task && task.launcherUrl && task.launcherUrl.indexOf(identifierF) >= 0) {
+                task.badgeIndicator = value === "" ? 0 : Number(value);
+                var badge = getBadger(identifierF);
+                if (badge) {
+                    badge.value = value;
+                } else {
+                    badgers.push({id: identifierF, value: value});
+                }
+            }
+        }
     }
 
     function outsideContainsMouse(){

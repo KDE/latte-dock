@@ -75,6 +75,7 @@ MouseArea{
     property bool pressed: false
 
     property int animationTime: root.durationTime * 1.2 * units.shortDuration
+    property int badgeIndicator: 0 //it is used from external apps
     property int directAnimationTime: 0
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
@@ -547,6 +548,16 @@ MouseArea{
 
     onIsActiveChanged: {
         checkWindowsStates();
+    }
+
+    onLauncherUrlChanged: {
+        var badger = root.getBadger(launcherUrl);
+
+        if (badger && !isLauncher) {
+            badgeIndicator = badger.value;
+        } else {
+            badgeIndicator = 0;
+        }
     }
 
     ////// End of Values Changes /////

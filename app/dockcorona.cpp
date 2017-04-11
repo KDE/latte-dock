@@ -1186,6 +1186,58 @@ void DockCorona::activateTaskManagerEntry(int index, Qt::Key modifier)
 }
 
 
+//! update badge for specific dock item
+void DockCorona::updateDockItemBadge(QString identifier, QString value)
+{
+    qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
+    auto updateBadgeForTaskInContainment = [this](const Plasma::Containment * c, QString identifier, QString value) {
+        const auto &applets = c->applets();
+
+        for (auto *applet : applets) {
+            KPluginMetaData meta = applet->kPackage().metadata();
+
+            if (meta.pluginId() == "org.kde.latte.plasmoid") {
+
+                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                    const auto &childItems = appletInterface->childItems();
+
+                    if (childItems.isEmpty()) {
+                        continue;
+                    }
+
+                    for (QQuickItem *item : childItems) {
+                        if (auto *metaObject = item->metaObject()) {
+                            // not using QMetaObject::invokeMethod to avoid warnings when calling
+                            // this on applets that don't have it or other child items since this
+                            // is pretty much trial and error.
+                            // Also, "var" arguments are treated as QVariant in QMetaObject
+
+                            int methodIndex = metaObject->indexOfMethod("updateBadge(QVariant,QVariant)");
+
+                            if (methodIndex == -1) {
+                                continue;
+                            }
+
+                            QMetaMethod method = metaObject->method(methodIndex);
+
+                            if (method.invoke(item, Q_ARG(QVariant, identifier), Q_ARG(QVariant, value))) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    };
+
+    // update badges in all Latte Tasks plasmoids
+    for (auto it = m_dockViews.constBegin(), end = m_dockViews.constEnd(); it != end; ++it) {
+        updateBadgeForTaskInContainment(it.key(), identifier, value);
+    }
+}
+
 inline void DockCorona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();

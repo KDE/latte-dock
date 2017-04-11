@@ -226,7 +226,7 @@ Item{
             id: progressLoader
             anchors.fill: parent
             active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
-                     && centralItem.smartLauncherItem.progressVisible)
+                     && (centralItem.smartLauncherItem.progressVisible || mainItemContainer.badgeIndicator > 0))
             asynchronous: true
 
             sourceComponent: Item{
@@ -291,7 +291,7 @@ Item{
                             //badgeMask
                         }
                         hideSource: true
-                        live: false
+                        live: mainItemContainer.badgeIndicator > 0 ? true : false
                     }
 
                     //  onWidthChanged: mask.scheduleUpdate();

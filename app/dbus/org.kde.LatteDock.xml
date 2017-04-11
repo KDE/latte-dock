@@ -3,5 +3,9 @@
   <interface name="org.kde.LatteDock">
     <method name="activateLauncherMenu">
     </method>
+    <method name="updateDockItemBadge">
+        <arg name="identifier" type="s" direction="in"/>
+        <arg name="value" type="s" direction="in"/>
+    </method>
   </interface>
 </node>
