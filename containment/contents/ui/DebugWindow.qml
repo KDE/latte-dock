@@ -454,6 +454,27 @@ Window{
             }
 
             Text{
+                text: "Panel Transparency"+space
+            }
+
+            Text{
+                text: root.panelTransparency + "%"
+            }
+
+            Text{
+                text: "Panel Shadows Active"+space
+            }
+
+            Text{
+                text: {
+                    if (root.panelShadowsActive)
+                        return "Yes";
+                    else
+                        return "No";
+                }
+            }
+
+            Text{
                 text: "Panel Background Shadow"+space
             }
 

@@ -117,8 +117,8 @@ Item{
         height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
-        imagePath: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? "" : "widgets/panel-background"
-        prefix: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive ? "" : "shadow"
+        imagePath: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "widgets/panel-background"
+        prefix: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "shadow"
 
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
@@ -126,7 +126,7 @@ Item{
         enabledBorders: dock ? dock.enabledBorders : 0
 
         property int marginsWidth: {
-            if (root.drawShadowsExternal || !Latte.WindowSystem.compositingActive) {
+            if (imagePath === "") {
                 return 0;
             } else {
                 if (root.panelAlignment === Latte.Dock.Left && root.offset===0)
@@ -139,7 +139,7 @@ Item{
         }
 
         property int marginsHeight: {
-            if (root.drawShadowsExternal || !Latte.WindowSystem.compositingActive) {
+            if (imagePath === "") {
                 return 0;
             } else {
                 if (root.panelAlignment === Latte.Dock.Top && root.offset===0)
@@ -171,7 +171,7 @@ Item{
         }
 
         property int shadowsSize: {
-            if (shadowsSvgItem && root.useThemePanel){
+            if (shadowsSvgItem && root.useThemePanel && root.panelShadowsActive){
                 if (root.isVertical){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge)
                         return shadowsSvgItem.margins.right;
@@ -221,6 +221,8 @@ Item{
             anchors.topMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.top - topIncreaser : 0
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
+
+            opacity: root.solidPanel ? 1 : plasmoid.configuration.panelTransparency / 100
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 

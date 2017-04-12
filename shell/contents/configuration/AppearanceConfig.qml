@@ -310,19 +310,15 @@ PlasmaComponents.Page {
                 text: i18n("Background")
             }
 
-            GridLayout {
-                width: parent.width
-                rowSpacing: 1
-                columnSpacing: 1
+            RowLayout {
+                Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-
-                columns: 2
 
                 PlasmaComponents.CheckBox {
                     id: showBackground
                     Layout.fillWidth: true
-                    text: i18n("Show Panel Background")
+                    text: i18n("Show Panel")
                     checked: plasmoid.configuration.useThemePanel
 
                     onClicked: {
@@ -331,11 +327,23 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.CheckBox {
-                    id: solidBackground
+                    id: panelShadows
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
+                    text: i18n("Shadows")
+                    checked: plasmoid.configuration.panelShadows
 
-                    text: i18n("Solid Background")
+                    onClicked: {
+                        plasmoid.configuration.panelShadows = checked
+                    }
+                }
+
+                PlasmaComponents.CheckBox {
+                    id: solidBackground
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignRight
+
+                    text: i18n("Solid")
                     checked: plasmoid.configuration.solidPanel
                     enabled: showBackground.checked
 
@@ -349,6 +357,11 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
+
+                PlasmaComponents.Label {
+                    text: i18n("Size: ")
+                    horizontalAlignment: Text.AlignLeft
+                }
 
                 PlasmaComponents.Slider {
                     id: panelSizeSlider
@@ -377,6 +390,49 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     enabled: showBackground.checked
                     text: panelSizeSlider.value + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+
+                PlasmaComponents.Label {
+                    text: i18n("Transparency: ")
+                    horizontalAlignment: Text.AlignLeft
+                    enabled: showBackground.checked && !solidBackground.checked
+                }
+
+                PlasmaComponents.Slider {
+                    id: transparencySlider
+                    Layout.fillWidth: true
+                    enabled: showBackground.checked && !solidBackground.checked
+
+                    value: plasmoid.configuration.panelTransparency
+                    minimumValue: 0
+                    maximumValue: 100
+                    stepSize: 5
+
+                    function updatePanelTransparency() {
+                        if (!pressed)
+                            plasmoid.configuration.panelTransparency = value
+                    }
+
+                    onPressedChanged: {
+                        updatePanelTransparency();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updatePanelTransparency);
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    enabled: showBackground.checked && !solidBackground.checked
+                    text: transparencySlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }

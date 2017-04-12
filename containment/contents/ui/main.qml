@@ -55,6 +55,7 @@ DragDrop.DropArea {
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                                        && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
                                        && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
+                                       && root.panelShadowsActive
 
     property bool editMode: plasmoid.userConfiguring
     property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
@@ -107,6 +108,9 @@ DragDrop.DropArea {
     property int modifierClick: plasmoid.configuration.modifierClick
 
     property int panelEdgeSpacing: iconSize / 3
+    property int panelTransparency: plasmoid.configuration.panelTransparency
+    property bool panelShadowsActive: plasmoid.configuration.panelShadows
+
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
