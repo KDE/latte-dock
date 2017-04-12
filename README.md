@@ -15,7 +15,7 @@ Repositories
 
 [openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Aaudoban&package=latte-dock)
 
-[ArchLinux AUR](https://www.archlinux.org/packages/?sort=&q=latte-dock)
+[Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
 
 [Ubuntu Deb Packages](https://github.com/ubuntuvibes/Debs)
 
