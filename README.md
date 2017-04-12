@@ -19,6 +19,8 @@ Repositories
 
 [Ubuntu Deb Packages](https://github.com/ubuntuvibes/Debs)
 
+[Gentoo](https://github.com/redcorelinux/redcore-desktop/blob/master/kde-apps/latte-dock/latte-dock-0.6.0.ebuild)
+
 Requirements
 ============
 We recommend that you use at least **Plasma 5.8.0**
