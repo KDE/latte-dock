@@ -1,7 +1,7 @@
 Installation
 ============
 
-## 1. Dependencies
+## Using installation script
 
 **Before running the installation script you have to install the dependencies needed for compiling.**
 
@@ -28,19 +28,14 @@ sudo apt install cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extras5-d
 
 ### Arch Linux
 
-For install it using the script:
 ```
 sudo pacman -Syy
 sudo pacman -S cmake extra-cmake-modules
 sudo pacman -S qt5-base qt5-declarative qt5-x11extras
 sudo pacman -S kiconthemes kdbusaddons kxmlgui kdeclarative plasma-framework plasma-desktop
 ```
-Or easily install it from community repository:
-```
-sudo pacman -Sy latte-dock
-```
 
-## 2. Building and Installing
+### Building and Installing
 
 **Now you can run the installation script.**
 
@@ -48,6 +43,3 @@ sudo pacman -Sy latte-dock
 sh install.sh
 ```
 
-## 3. Run
-
-Latte is now ready to be used by executing  ```latte-dock``` or _Latte Dock_ in applications menu.

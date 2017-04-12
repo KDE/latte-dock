@@ -7,22 +7,9 @@ Latte is a dock based on plasma frameworks that provides an elegant and intuitiv
 
 Installation
 ============
-Please run  ```./install.sh``` script.
-After the installation has completed successfully, you can execute ```latte-dock``` or search *Latte Dock* on your menu of applications.
 
-Repositories
-===========
+## Requirements
 
-[openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Aaudoban&package=latte-dock)
-
-[Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
-
-[Ubuntu Deb Packages](https://github.com/ubuntuvibes/Debs)
-
-[Gentoo](https://github.com/redcorelinux/redcore-desktop/blob/master/kde-apps/latte-dock/latte-dock-0.6.0.ebuild)
-
-Requirements
-============
 We recommend that you use at least **Plasma 5.8.0**
 
 **development packages for:**
@@ -51,6 +38,32 @@ We recommend that you use at least **Plasma 5.8.0**
     libxcb
 ```
 
+## From repositories
+
+### Ubuntu/Debian
+
+- [Ubuntu Deb Packages](https://github.com/ubuntuvibes/Debs)
+
+### openSUSE
+
+- [openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Aaudoban&package=latte-dock)
+
+### ArchLinux
+
+- [Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
+
+### Gentoo
+
+- [Gentoo package](https://github.com/redcorelinux/redcore-desktop/blob/master/kde-apps/latte-dock/latte-dock-0.6.0.ebuild)
+
+
+See the [installation instruction](INSTALLATION.md) for others Linux distribution or development build
+
+## Run Latte-Dock
+
+Latte is now ready to be used by executing  ```latte-dock``` or _Latte Dock_ in applications menu.
+
+
 Contributors
-=============
+============
 [Varlesh](https://github.com/varlesh): Logos and Icons.
