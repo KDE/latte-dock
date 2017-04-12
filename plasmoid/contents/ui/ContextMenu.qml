@@ -760,7 +760,7 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: removeWindowItem
+        id: closeWindowItem
         visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
 
         enabled: visualParent && visualParent.m.IsClosable === true
