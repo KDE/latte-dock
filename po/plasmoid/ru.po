@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-04-07 19:06+0700\n"
-"PO-Revision-Date: 2017-04-07 19:47+0700\n"
+"PO-Revision-Date: 2017-04-13 01:57+0700\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +36,7 @@ msgstr "Размер иконок:"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:158
 msgid "ver: "
-msgstr "вер:"
+msgstr "Версия:"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:165
 msgid "Enable shadows for icons"
@@ -48,7 +48,7 @@ msgstr "Показывать свечение вокруг точек"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:177
 msgid "Different color for minimized windows"
-msgstr "Различный цвет для минимизированных окон"
+msgstr "Различный цвет для свернутых окон"
 
 #: ../../plasmoid/contents/ui/ConfigAppearance.qml.cmake:183
 msgid "Indicator for active window group"
@@ -93,11 +93,11 @@ msgstr "Переключение между задачами колесом мы
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:66
 msgid "Preview windows on hovering"
-msgstr "Просмотр окон при наведении"
+msgstr "Миниатюры окон при наведении"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:72
 msgid "Highlight windows on hovering"
-msgstr "Подсвечивать окна при наведении"
+msgstr "Переключаться на окно при наведении"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:78
 msgid "Show window actions in the context menu"
@@ -126,7 +126,7 @@ msgstr "Новый экземпляр"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:95
 msgid "Minimize/Restore Window or Group"
-msgstr "Минимизировать/Восстановить Окно или Группу окон"
+msgstr "Свернуть/Распахнуть Окно или Группу окон"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:107
 msgid "Filters"
@@ -221,19 +221,19 @@ msgstr "Восстановить"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:231
 msgid "Move To Desktop"
-msgstr "На Рабочий стол"
+msgstr "Переместить на рабочий стол"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:253
 msgid "Move To Current Desktop"
-msgstr "На текущий Рабочий стол"
+msgstr "На текущий рабочий стол"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:262
 msgid "All Desktops"
-msgstr "Все рабочие столы"
+msgstr "На всех рабочих столах"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:291
 msgid "New Desktop"
-msgstr "Новый Рабочий стол"
+msgstr "Новый рабочий стол"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:311
 msgid "Move To &Activity"
@@ -249,15 +249,15 @@ msgstr "Все Комнаты"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:411
 msgid "Minimize"
-msgstr "Минимизировать"
+msgstr "Свернуть"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:427
 msgid "Maximize"
-msgstr "Максимизировать"
+msgstr "Распахнуть"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:442
 msgid "More Actions"
-msgstr "Больше Действий"
+msgstr "Дополнительно"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:450
 msgid "Move"
@@ -277,11 +277,11 @@ msgstr "Поддерживать на заднем плане"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:490
 msgid "Fullscreen"
-msgstr "Полный экран"
+msgstr "На весь экран"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:502
 msgid "Shade"
-msgstr "Тень"
+msgstr "Свернуть в заголовок"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:517
 msgid "Allow this program to be grouped"
@@ -298,7 +298,7 @@ msgstr "Показывать ярлык во всех Комнатах"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:569
 msgid "Show Launcher When Not Running"
-msgstr "Показывать ярлык, когда приложение не запущено"
+msgstr "Закрепить на панели"
 
 #: ../../plasmoid/contents/ui/ContextMenu.qml:598
 msgid "Remove Launcher"
