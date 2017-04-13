@@ -228,6 +228,14 @@ msgstr "Сплошной фон"
 msgid "Length"
 msgstr "Длина"
 
+#: ../../shell/contents/configuration/AppearanceConfig.qml:403
+msgid "Maximum: "
+msgstr "Максимум: "
+
+#: ../../shell/contents/configuration/AppearanceConfig.qml:474
+msgid "Offset: "
+msgstr "Отступ: "
+
 #: ../../shell/contents/configuration/AppearanceConfig.qml:445
 msgid "Applet shadows"
 msgstr "Тени Апплетов"
@@ -328,7 +336,11 @@ msgstr "Скрывать при распахнутом"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:391
 msgid "Dodge All Windows"
-msgstr "Скрывать для всех"
+msgstr "Скрывать всегда"
+
+#: ../../shell/contents/configuration/BehaviorConfig.qml:400
+msgid "Windows Go Below"
+msgstr "Поверх других"
 
 #: ../../shell/contents/configuration/BehaviorConfig.qml:409
 msgid "Delay"
