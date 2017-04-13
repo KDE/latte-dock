@@ -4,6 +4,12 @@ Latte is a dock based on plasma frameworks that provides an elegant and intuitiv
 
 *"Art in Coffee"*
 
+Screenshots
+===========
+
+![](screenshots/screenshot01.png)
+
+![](screenshots/screenshot02.png)
 
 Installation
 ============
