@@ -530,10 +530,6 @@ msgstr ""
 msgid "Add Spacer"
 msgstr ""
 
-#: ../../shell/contents/configuration/TweaksConfig.qml:247
-msgid "Remove Tasks"
-msgstr ""
-
 #: ../desktop-templates/latte-dock.desktop.template:3
 msgid "Latte"
 msgstr ""
