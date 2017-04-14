@@ -54,6 +54,10 @@ We recommend that you use at least **Plasma 5.8.0**
 
 - [openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Aaudoban&package=latte-dock)
 
+### Fedora
+
+- [Fedora Copr](https://copr.fedorainfracloud.org/coprs/hcooh/Latte-dock/)
+
 ### ArchLinux
 
 - [Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
