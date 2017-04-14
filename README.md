@@ -58,7 +58,7 @@ We recommend that you use at least **Plasma 5.8.0**
 
 - [Fedora Copr](https://copr.fedorainfracloud.org/coprs/hcooh/Latte-dock/)
 
-### ArchLinux
+### Arch Linux
 
 - [Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
 

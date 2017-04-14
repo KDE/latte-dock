@@ -16,8 +16,8 @@ sudo apt install g++ cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extra
 
 ```
 sudo add-apt-repository ppa:kubuntu-ppa/backports
-sudo apt update 
-sudo apt dist-upgrade 
+sudo apt update
+sudo apt dist-upgrade
 ```
 
 ### Kubuntu and KDE Neon
@@ -29,10 +29,8 @@ sudo apt install cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extras5-d
 ### Arch Linux
 
 ```
-sudo pacman -Syy
-sudo pacman -S cmake extra-cmake-modules
-sudo pacman -S qt5-base qt5-declarative qt5-x11extras
-sudo pacman -S kiconthemes kdbusaddons kxmlgui kdeclarative plasma-framework plasma-desktop
+sudo pacman -Syu
+sudo pacman -S cmake extra-cmake-modules python plasma-framework plasma-desktop
 ```
 
 ### Building and Installing
