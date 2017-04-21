@@ -432,7 +432,7 @@ MouseArea{
 
             function signalUpdateScale(nIndex, nScale, step){
                 //if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
-                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)){
+                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
                     if(nScale >= 0) {
                         mScale = nScale + step;
                     } else {
@@ -591,7 +591,7 @@ MouseArea{
 
         checkListHovered.stop();
 
-        if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation)){
+        if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
             mouseEntered = true;
             root.mouseWasEntered(index-2, false);
@@ -632,7 +632,7 @@ MouseArea{
     onPositionChanged: {
         checkListHovered.stop();
 
-        if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom)){
+        if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
             if(root.dragSource == null){
                 if (icList.orientation == Qt.Horizontal){
                     var step = Math.abs(icList.currentSpot-mouse.x);
@@ -1024,6 +1024,7 @@ MouseArea{
 
     function slotWaitingLauncherRemoved(launch) {
         if ((isWindow || isStartup) && !visible && launch === launcherUrl) {
+            wrapper.mScale = 1;
             visible = true;
         }
     }
@@ -1424,6 +1425,7 @@ MouseArea{
 
                 //send signal that the launcher is really removing
                 if (mainItemContainer.inBouncingAnimation) {
+                    mainItemContainer.visible = false;
                     root.removeWaitingLauncher(mainItemContainer.launcherUrl);
                 }
             }

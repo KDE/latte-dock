@@ -930,7 +930,12 @@ Item {
     Timer {
         id: enableDirectRenderTimer
         interval: 4 * root.durationTime * units.shortDuration
-        onTriggered: icList.directRender = true;
+        onTriggered: {
+            if (waitingLaunchers.length > 0)
+                restart();
+            else
+                icList.directRender = true;
+        }
     }
 
     ///REMOVE
