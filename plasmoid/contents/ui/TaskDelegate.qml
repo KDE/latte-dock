@@ -289,8 +289,8 @@ MouseArea{
             property bool inTempScaling: (((tempScaleWidth !== 1) || (tempScaleHeight !== 1) ) && (!mainItemContainer.mouseEntered) )
 
             property real mScale: 1
-            property real tempScaleWidth: 0
-            property real tempScaleHeight: 0
+            property real tempScaleWidth: 1
+            property real tempScaleHeight: 1
 
             property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
             property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
