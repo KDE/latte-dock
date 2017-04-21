@@ -296,8 +296,8 @@ MouseArea{
                 anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
                 anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
-                anchors.horizontalCenter: !parent.vertical ? parent.horizontalCenter : undefined
-                anchors.verticalCenter: parent.vertical ? parent.verticalCenter : undefined
+                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
                 width: wrapper.width
                 height: wrapper.height
