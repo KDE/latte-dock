@@ -20,27 +20,27 @@ We recommend that you use at least **Plasma 5.8.0**
 
 **development packages for:**
 ```bash
- Qt5Core >= 5.6.0
- Qt5Gui >= 5.6.0
- Qt5Dbus >= 5.6.0
+ Qt5Core >= 5.7.0
+ Qt5Gui >= 5.7.0
+ Qt5Dbus >= 5.7.0
 
- KF5Plasma >= 5.26.0
- KF5PlasmaQuick >= 5.26.0
- KF5Activities >= 5.26.0
- KF5CoreAddons >= 5.26.0
- KF5DBusAddons >= 5.26.0
- KF5Declarative >= 5.26.0
- KF5Wayland >= 5.26.0
- KF5Package >= 5.26.0
- KF5XmlGui >= 5.26.0
- KF5IconThemes >= 5.26.0
- KF5I18n >= 5.26.0
- KF5Notifications >= 5.26.0
- KF5Archive >= 5.26.0
+ KF5Plasma >= 5.29.0
+ KF5PlasmaQuick >= 5.29.0
+ KF5Activities >= 5.29.0
+ KF5CoreAddons >= 5.29.0
+ KF5DBusAddons >= 5.29.0
+ KF5Declarative >= 5.29.0
+ KF5Wayland >= 5.29.0
+ KF5Package >= 5.29.0
+ KF5XmlGui >= 5.29.0
+ KF5IconThemes >= 5.29.0
+ KF5I18n >= 5.29.0
+ KF5Notifications >= 5.29.0
+ KF5Archive >= 5.29.0
 
  For X11 support:
-    KF5WindowSystem >= 5.26.0
-    Qt5X11Extras >= 5.6.0
+    KF5WindowSystem >= 5.29.0
+    Qt5X11Extras >= 5.7.0
     libxcb
 ```
 
