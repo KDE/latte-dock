@@ -466,6 +466,20 @@ Item{
         property int speed: root.durationTime * 0.8 * units.longDuration
 
         SequentialAnimation{
+            ScriptAction {
+                script: mainItemContainer.launcherAction();
+            }
+
+            //Ghost animation that acts as a delayer
+            PropertyAnimation {
+                target: wrapper
+                property: "opacity"
+                to: 1
+                duration:  50
+                easing.type: Easing.InQuad
+            }
+            //end of ghost animation
+
             ParallelAnimation{
                 PropertyAnimation {
                     target: wrapper
@@ -492,10 +506,6 @@ Item{
                 easing.type: Easing.OutBounce
             }
 
-            ScriptAction {
-                script: mainItemContainer.launcherAction();
-            }
-
             ParallelAnimation{
                 PropertyAnimation {
                     target: wrapper
@@ -516,14 +526,6 @@ Item{
         }
 
         onStopped: {
-            //wrapper.mScale = 1;
-            /*   if ( root.noTasksInAnimation>0 ) {
-                root.noTasksInAnimation--;
-            }
-            if ( root.animations>0 ) {
-                root.animations--;
-            }*/
-            //console.log ("Nooo 2: "+root.noTasksInAnimation + " - "+root.animations);
             clearAnimationsSignals();
 
             mainItemContainer.setBlockingAnimation(false);

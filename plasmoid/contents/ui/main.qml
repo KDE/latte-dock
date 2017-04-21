@@ -87,6 +87,7 @@ Item {
     //in launcher reference from libtaskmanager
     property variant badgers:[]
     property variant launchersOnActivities: []
+    property variant waitingLaunchers: []
 
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
     property Item dragSource: null
@@ -175,6 +176,7 @@ Item {
     //trigger updating scaling of neighbour delegates of zoomed delegate
     signal updateScale(int delegateIndex, real newScale, real step)
     signal publishTasksGeometries();
+    signal waitingLauncherRemoved(string launch);
     signal windowsHovered(variant winIds, bool hovered)
 
     //onAnimationsChanged: console.log(animations);
@@ -270,6 +272,39 @@ Item {
 
         return createLaunchers;
     }
+
+    /// waiting launchers... this is used in order to check
+    /// a window or startup if its launcher is playing its animation
+    function addWaitingLauncher(launch){
+        for(var i=0; i<waitingLaunchers.length; ++i){
+            if (waitingLaunchers[i]===launch) {
+                return;
+            }
+        }
+
+        waitingLaunchers.push(launch);
+    }
+
+    function removeWaitingLauncher(launch){
+        for(var i=0; i<waitingLaunchers.length; ++i){
+            if (waitingLaunchers[i]===launch) {
+                waitingLaunchers.splice(i,1);
+                waitingLauncherRemoved(launch);
+                return;
+            }
+        }
+    }
+
+    function waitingLauncherExists(launch){
+        for(var i=0; i<waitingLaunchers.length; ++i){
+            if (waitingLaunchers[i]===launch) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     ///REMOVE
     function updateLaunchersNewArchitecture(){

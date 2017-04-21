@@ -33,7 +33,7 @@ import org.kde.latte 0.1 as Latte
 MouseArea{
     id: mainItemContainer
 
-    visible: true//(isStartup && root.durationTime !== 0) ? false : true
+    visible: false //true//(isStartup && root.durationTime !== 0) ? false : true
 
     anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
     anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
@@ -47,7 +47,8 @@ MouseArea{
                             wrapper.height
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
-    hoverEnabled: (inAnimation !== true)&& (!IsStartup)&&(!root.taskInAnimation)&&(!root.editMode || root.debugLocation)
+    hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
+                  && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation)
     // hoverEnabled: false
 
     property bool buffersAreReady: false
@@ -59,6 +60,7 @@ MouseArea{
     property bool inAddRemoveAnimation: true
     property bool inAnimation: true
     property bool inBlockingAnimation: false
+    property bool inBouncingAnimation: false
     property bool inPopup: false
 
     property bool isActive: (IsActive === true) ? true : false
@@ -240,8 +242,25 @@ MouseArea{
             id: wrapper
 
             opacity: 0
-            width: (mainItemContainer.isStartup && root.durationTime !==0 ) ? cleanScalingWidth : showDelegateWidth
-            height: (mainItemContainer.isStartup && root.durationTime !==0) ? cleanScalingHeight : showDelegateheight
+            width: {
+                if (!mainItemContainer.visible)
+                    return 0;
+
+                if (mainItemContainer.isStartup && root.durationTime !==0 )
+                    return cleanScalingWidth;
+                else
+                    return showDelegateWidth;
+            }
+
+            height: {
+                if (!mainItemContainer.visible)
+                    return 0;
+
+                if (mainItemContainer.isStartup && root.durationTime !==0)
+                    return cleanScalingHeight;
+                else
+                    return showDelegateheight;
+            }
 
             //size needed fom the states below icons
             //property int statesLineSize: root.statesLineSize
@@ -412,7 +431,8 @@ MouseArea{
 
 
             function signalUpdateScale(nIndex, nScale, step){
-                if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
+                //if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
+                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)){
                     if(nScale >= 0) {
                         mScale = nScale + step;
                     } else {
@@ -909,6 +929,8 @@ MouseArea{
 
     function launcherAction(){
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
+        inBouncingAnimation = true;
+        root.addWaitingLauncher(mainItemContainer.launcherUrl);
         tasksModel.requestActivate(modelIndex());
         // }
     }
@@ -1000,6 +1022,12 @@ MouseArea{
         }
     }
 
+    function slotWaitingLauncherRemoved(launch) {
+        if ((isWindow || isStartup) && !visible && launch === launcherUrl) {
+            visible = true;
+        }
+    }
+
     ///REMOVE
     //fix wrong positioning of launchers....
     onActivityChanged:{
@@ -1019,6 +1047,14 @@ MouseArea{
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
 
+
+        if ( (isWindow || isStartup) && root.waitingLauncherExists(launcherUrl)) {
+            root.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);
+            visible = false;
+        } else {
+            visible = true;
+        }
+
         ///REMOVE
         //fix wrong positioning of launchers....
         /*for(var i=0; i<tasksModel.launcherList.length; ++i){
@@ -1032,6 +1068,7 @@ MouseArea{
 
     Component.onDestruction: {
         wrapper.sendEndOfNeedBothAxisAnimation();
+        root.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
     }
 
     ///REMOVE
@@ -1317,6 +1354,18 @@ MouseArea{
             }
         }
 
+        //Ghost animation that acts as a delayer in case there is a bouncing animation
+        //taking place
+        PropertyAnimation {
+            target: wrapper
+            property: "opacity"
+            to: 1
+            duration:  mainItemContainer.inBouncingAnimation ? //exactly how much the bounche animation lasts
+                           5*(root.durationTime * 0.8 * units.longDuration) : 0
+            easing.type: Easing.InQuad
+        }
+        //end of ghost animation
+
         PropertyAnimation {
             target: wrapper
             property: "mScale"
@@ -1372,6 +1421,11 @@ MouseArea{
 
                 if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
                     root.launcherForRemoval="";
+
+                //send signal that the launcher is really removing
+                if (mainItemContainer.inBouncingAnimation) {
+                    root.removeWaitingLauncher(mainItemContainer.launcherUrl);
+                }
             }
         }
 
