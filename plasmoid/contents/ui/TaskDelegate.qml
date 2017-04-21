@@ -338,8 +338,8 @@ MouseArea{
                 anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
                 anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
-                anchors.horizontalCenter: !parent.vertical ? parent.horizontalCenter : undefined
-                anchors.verticalCenter: parent.vertical ? parent.verticalCenter : undefined
+                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
                 width: wrapper.width
                 height: wrapper.height
@@ -1347,7 +1347,7 @@ MouseArea{
         property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
                                     || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )&& mainItemContainer.isLauncher)
 
-        property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0);
+        property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0) && !mainItemContainer.inBouncingAnimation;
 
         ScriptAction{
             script:{
