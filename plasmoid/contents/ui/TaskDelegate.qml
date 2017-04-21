@@ -557,7 +557,7 @@ MouseArea{
 
     onItemIndexChanged: {
         if (itemIndex>=0)
-            lastValidIndex = itemIndex;
+            lastValidTimer.start();
     }
 
     onIsDraggedChanged: {
@@ -711,11 +711,11 @@ MouseArea{
         ////window previews/////////
         if (isWindow) {
             if(containsMouse && root.showPreviews && Latte.WindowSystem.compositingActive){
-               // if (!windowsPreviewDlg.visible) {
-                    hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
-               // } else {
-               //     mainItemContainer.preparePreviewWindow(false);
-               // }
+                // if (!windowsPreviewDlg.visible) {
+                hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                // } else {
+                //     mainItemContainer.preparePreviewWindow(false);
+                // }
 
                 //  preparePreviewWindow();
             }
@@ -1175,8 +1175,8 @@ MouseArea{
             //Animation Add/Remove (3) - when is launcher with no window, animations enabled
             var animation2 = ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                                 && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                                  || !launcherIsPresent(mainItemContainer.launcherUrl))
-                                && mainItemContainer.isWindow);
+                               || !launcherIsPresent(mainItemContainer.launcherUrl))
+                              && mainItemContainer.isWindow);
 
             var animation3 = ((!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher));
 
@@ -1326,6 +1326,20 @@ MouseArea{
         }
     }
 
+    // when changing activities and desktops the index of the tasks
+    // is updated immediately to -1, this timer protects this indexing
+    // change in order to provide a beautiful removal tasks animation
+    Timer {
+        id: lastValidTimer
+        interval: 100 ///the interval does not follow the animations timing
+        repeat: false
+
+        onTriggered: {
+            if (mainItemContainer.itemIndex >= 0)
+                mainItemContainer.lastValidIndex = mainItemContainer.itemIndex;
+        }
+    }
+
     function launcherIsPresent(url) {
         var activities = tasksModel.launcherActivities(url);
 
@@ -1346,8 +1360,8 @@ MouseArea{
         //Animation Add/Remove (4) - the user removes a launcher, animation enabled
         property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                                      && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                                       || !launcherIsPresent(mainItemContainer.launcherUrl))
-                                      && !mainItemContainer.isStartup)
+                                    || !launcherIsPresent(mainItemContainer.launcherUrl))
+                                   && !mainItemContainer.isStartup)
 
         property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
                                     || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )&& mainItemContainer.isLauncher)
@@ -1369,14 +1383,12 @@ MouseArea{
 
                 //trying to fix the ListView nasty behavior
                 //during the removal the anchoring for ListView children changes a lot
-                if(taskRealRemovalAnimation.animation4){
-                    var previousTask = icList.chiltAtIndex(mainItemContainer.lastValidIndex-1);
-                    if (previousTask !== undefined){
-                        if (root.vertical) {
-                            mainItemContainer.anchors.top = previousTask.bottom;
-                        } else {
-                            mainItemContainer.anchors.left = previousTask.right;
-                        }
+                var previousTask = icList.chiltAtIndex(mainItemContainer.lastValidIndex-1);
+                if (previousTask !== undefined){
+                    if (root.vertical) {
+                        mainItemContainer.anchors.top = previousTask.bottom;
+                    } else {
+                        mainItemContainer.anchors.left = previousTask.right;
                     }
                 }
 
@@ -1394,7 +1406,7 @@ MouseArea{
             property: "opacity"
             to: 1
             duration:  mainItemContainer.inBouncingAnimation ? //exactly how much the bounche animation lasts
-                           5*(root.durationTime * 0.8 * units.longDuration) : 0
+                                                               5*(root.durationTime * 0.8 * units.longDuration) : 0
             easing.type: Easing.InQuad
         }
         //end of ghost animation

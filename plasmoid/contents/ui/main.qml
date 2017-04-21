@@ -909,7 +909,7 @@ Item {
                 for(var i=0; i<tasks.length; ++i){
                     var task = tasks[i];
 
-                    if (task.itemIndex === position) {
+                    if (task.lastValidIndex === position) {
                         return task;
                     }
                 }
