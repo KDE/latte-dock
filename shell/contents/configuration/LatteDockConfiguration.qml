@@ -46,12 +46,6 @@ PlasmaCore.FrameSvgItem {
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-    FontLoader {
-        id: tangerineFont
-        name: "Tangerine"
-        source: "../fonts/tangerine.ttf"
-    }
-
     PlasmaComponents.ToolButton {
         id: pinButton
 
@@ -130,7 +124,7 @@ PlasmaCore.FrameSvgItem {
                     height: logo.height
                     verticalAlignment: Text.AlignVCenter
                     text: "atte"
-                    font.family: tangerineFont.name
+                    font.family: "Tangerine"
                     font.pointSize: 2 * theme.defaultFont.pointSize
                     font.italic: true
 

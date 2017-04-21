@@ -33,6 +33,7 @@
 #include <QDBusConnection>
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QFontDatabase>
 #include <QQmlContext>
 
 #include <Plasma>
@@ -71,6 +72,8 @@ DockCorona::DockCorona(QObject *parent)
 
     setKPackage(package);
     qmlRegisterTypes();
+    QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
+
     connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
 
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running)) {
