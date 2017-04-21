@@ -40,11 +40,25 @@ MouseArea{
     anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
     anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
-    width: root.vertical ? wrapper.width :
-                           hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
+    width: {
+        if (!visible)
+            return 0;
 
-    height: root.vertical ? hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height :
-                            wrapper.height
+        if (root.vertical)
+            return wrapper.width;
+        else
+            return hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width;
+    }
+
+    height: {
+        if (!visible)
+            return 0;
+
+        if (root.vertical)
+            return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
+        else
+            wrapper.height;
+    }
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
     hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
