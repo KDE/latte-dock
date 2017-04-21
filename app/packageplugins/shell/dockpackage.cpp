@@ -45,6 +45,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     //Configuration
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
     package->addFileDefinition("configmodel", QStringLiteral("configuration/config.qml"), i18n("Config model"));
+    package->addFileDefinition("tangerineFont", QStringLiteral("fonts/tangerine.ttf"), i18n("Tangerine Font"));
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();
 }
@@ -53,9 +54,9 @@ void DockPackage::pathChanged(KPackage::Package *package)
 {
     if (!package->metadata().isValid())
         return;
-        
+
     const QString pluginName = package->metadata().pluginId();
-    
+
     if (!pluginName.isEmpty() && pluginName != "org.kde.latte.shell") {
         auto fallback = KPackage::PackageLoader::self()->loadPackage("Plasma/Shell", "org.kde.latte.shell");
         package->setFallbackPackage(fallback);
