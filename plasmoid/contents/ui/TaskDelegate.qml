@@ -203,7 +203,7 @@ MouseArea{
             }
             else if ((windowsCount >=1) &&(windowsCount < previousCount)){
                 //sometimes this is triggered in dragging with no reason
-                if(root.dragSource == null)
+                if(root.dragSource == null && !mainItemContainer.delayingRemove)
                     mainItemContainer.groupWindowRemoved();
             }
 
@@ -568,11 +568,6 @@ MouseArea{
             pressX = -1;
             pressY = -1;
         }
-    }
-
-    onDelayingRemoveChanged: {
-        if(delayingRemove && (!root.launcherExists(mainItemContainer.launcherUrl) && mainItemContainer.isWindow))
-            groupWindowRemoved();
     }
 
     onIsWindowChanged: {

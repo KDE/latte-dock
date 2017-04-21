@@ -740,7 +740,6 @@ Item{
             }
         }
 
-
         Component.onCompleted: {
             mainItemContainer.groupWindowRemoved.connect(removeTask);
         }
@@ -847,12 +846,6 @@ Item{
                     }
 
                     visible = true;
-
-                    if (mainItemContainer.isWindow && !mainItemContainer.isGroupParent && mainItemContainer.delayingRemove) {
-                        iconImageBuffer.visible = false;
-                        taskWithShadow.visible = false;
-                    }
-
                     componentRemoveAnimation.start();
                 }
 
