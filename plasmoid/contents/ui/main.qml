@@ -899,6 +899,23 @@ Item {
 
                 return null;
             }
+
+            function chiltAtIndex(position) {
+                var tasks = icList.contentItem.children;
+
+                if (position <=0)
+                    return;
+
+                for(var i=0; i<tasks.length; ++i){
+                    var task = tasks[i];
+
+                    if (task.itemIndex === position) {
+                        return task;
+                    }
+                }
+
+                return undefined;
+            }
         }
 
         VisualAddItem{

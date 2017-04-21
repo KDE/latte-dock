@@ -146,7 +146,7 @@ Item{
 
             onValidChanged: {
                 if (!valid && (source === decoration || source === "unknown")) {
-                        source = "application-x-executable";
+                    source = "application-x-executable";
                 }
             }
 
@@ -555,6 +555,17 @@ Item{
                 root.updateScale(index-1, 1, 0);
                 root.noTasksInAnimation++;
                 mainItemContainer.setBlockingAnimation(true);
+
+                //trying to fix the ListView nasty behavior
+                //during the removal the anchoring for ListView children changes a lot
+                var previousTask = icList.chiltAtIndex(mainItemContainer.lastValidIndex-1);
+                if (previousTask !== undefined){
+                    if (root.vertical) {
+                        mainItemContainer.anchors.top = previousTask.bottom;
+                    } else {
+                        mainItemContainer.anchors.left = previousTask.right;
+                    }
+                }
             }
 
             wrapper.tempScaleWidth = wrapper.mScale;

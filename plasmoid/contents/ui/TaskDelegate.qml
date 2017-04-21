@@ -95,6 +95,7 @@ MouseArea{
     property int directAnimationTime: 0
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
+    property int lastValidIndex: -1 //used for the removal animation
     property int lastButtonClicked: -1;
     property int pressX: -1
     property int pressY: -1
@@ -554,6 +555,10 @@ MouseArea{
         }
     }
 
+    onItemIndexChanged: {
+        if (itemIndex>=0)
+            lastValidIndex = itemIndex;
+    }
 
     onIsDraggedChanged: {
         if(isDragged && (!root.editMode)){
@@ -1361,6 +1366,19 @@ MouseArea{
                 mainItemContainer.inAnimation = true;
                 icList.delayingRemoval = true;
                 mainItemContainer.inAddRemoveAnimation = true;
+
+                //trying to fix the ListView nasty behavior
+                //during the removal the anchoring for ListView children changes a lot
+                if(taskRealRemovalAnimation.animation4){
+                    var previousTask = icList.chiltAtIndex(mainItemContainer.lastValidIndex-1);
+                    if (previousTask !== undefined){
+                        if (root.vertical) {
+                            mainItemContainer.anchors.top = previousTask.bottom;
+                        } else {
+                            mainItemContainer.anchors.left = previousTask.right;
+                        }
+                    }
+                }
 
                 // console.log("1." + mainItemContainer.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
                 // console.log("2." + root.launcherForRemoval + " - " + mainItemContainer.isLauncher);
