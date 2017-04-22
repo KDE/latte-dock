@@ -102,7 +102,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
-                visible: plasmoid.configuration.advanced
+                visible: plasmoid.configuration.advanced || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
                     text: i18n("Screen Height Proportion:")
@@ -319,8 +319,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.CheckBox {
                     id: showBackground
-                    Layout.fillWidth: true
-                    text: i18n("Show Panel")
+                    text: i18nc("show panel","Show")
                     checked: plasmoid.configuration.useThemePanel
 
                     onClicked: {
@@ -328,41 +327,14 @@ PlasmaComponents.Page {
                     }
                 }
 
-                PlasmaComponents.CheckBox {
-                    id: panelShadows
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignHCenter
-                    text: i18n("Shadows")
-                    checked: plasmoid.configuration.panelShadows
-                    visible: plasmoid.configuration.advanced
-
-                    onClicked: {
-                        plasmoid.configuration.panelShadows = checked
-                    }
+                PlasmaComponents.Label {
+                    text: " | "
+                    horizontalAlignment: Text.AlignLeft
+                    opacity: 0.35
                 }
-
-                PlasmaComponents.CheckBox {
-                    id: solidBackground
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignRight
-
-                    text: i18n("Solid")
-                    checked: plasmoid.configuration.solidPanel
-                    enabled: showBackground.checked
-                    visible: plasmoid.configuration.advanced
-
-                    onClicked: {
-                        plasmoid.configuration.solidPanel = checked
-                    }
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
 
                 PlasmaComponents.Label {
+                    enabled: showBackground.checked
                     text: i18n("Size: ")
                     horizontalAlignment: Text.AlignLeft
                 }
@@ -442,8 +414,106 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
+                visible: plasmoid.configuration.advanced
+
+                PlasmaComponents.Button {
+                    id: panelShadows
+                    Layout.fillWidth: true
+                    text: i18n("Shadows")
+                    checked: plasmoid.configuration.panelShadows
+                    checkable: true
+                    enabled: showBackground.checked
+
+                    onClicked: {
+                        plasmoid.configuration.panelShadows  = checked
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    id: solidBackground
+                    Layout.fillWidth: true
+                    text: i18n("Solid")
+                    checked: plasmoid.configuration.solidPanel
+                    checkable: true
+                    enabled: showBackground.checked
+
+                    onClicked: {
+                        plasmoid.configuration.solidPanel = checked
+                    }
+                }
+            }
         }
         //! END: Background
+
+        //! BEGIN: Shadows
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+            visible: plasmoid.configuration.advanced
+
+            Header {
+                text: i18n("Applet shadows")
+            }
+
+            RowLayout{
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing / 2
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    spacing: units.smallSpacing
+
+                    property int shadows: plasmoid.configuration.shadows
+
+                    ExclusiveGroup {
+                        id: shadowsGroup
+                        onCurrentChanged: {
+                            if (current.checked)
+                                plasmoid.configuration.shadows = current.shadow
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18n("None")
+                        checked: parent.shadows === shadow
+                        checkable: true
+                        exclusiveGroup: shadowsGroup
+
+                        readonly property int shadow: 0
+                    }
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18n("Locked")
+                        checked: parent.shadows === shadow
+                        checkable: true
+                        exclusiveGroup: shadowsGroup
+
+                        readonly property int shadow: 1
+                    }
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18n("All")
+                        checked: parent.shadows === shadow
+                        checkable: true
+                        exclusiveGroup: shadowsGroup
+
+                        readonly property int shadow: 2
+                    }
+                }
+            }
+        }
+        //! END: Shadows
 
         //! BEGIN: Length
         ColumnLayout {
@@ -585,66 +655,5 @@ PlasmaComponents.Page {
             }
         }
         //! END: Length
-
-        //! BEGIN: Shadows
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            visible: plasmoid.configuration.advanced
-
-            Header {
-                text: i18n("Applet shadows")
-            }
-
-            RowLayout{
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing / 2
-
-                RowLayout {
-                    Layout.fillWidth: true
-
-                    spacing: units.smallSpacing
-
-                    property int shadows: plasmoid.configuration.shadows
-
-                    ExclusiveGroup {
-                        id: shadowsGroup
-                        onCurrentChanged: {
-                            if (current.checked)
-                                plasmoid.configuration.shadows = current.shadow
-                        }
-                    }
-
-                    PlasmaComponents.RadioButton {
-                        Layout.fillWidth: true
-
-                        text: i18n("None")
-                        checked: parent.shadows === shadow
-                        exclusiveGroup: shadowsGroup
-
-                        readonly property int shadow: 0
-                    }
-                    PlasmaComponents.RadioButton {
-                        Layout.fillWidth: true
-
-                        text: i18n("Locked")
-                        checked: parent.shadows === shadow
-                        exclusiveGroup: shadowsGroup
-
-                        readonly property int shadow: 1
-                    }
-                    PlasmaComponents.RadioButton {
-                        Layout.fillWidth: true
-
-                        text: i18n("All")
-                        checked: parent.shadows === shadow
-                        exclusiveGroup: shadowsGroup
-
-                        readonly property int shadow: 2
-                    }
-                }
-            }
-        }
-        //! END: Shadows
     }
 }
