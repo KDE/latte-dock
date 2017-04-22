@@ -163,6 +163,18 @@ PlasmaCore.FrameSvgItem {
                         if(pressed)
                             plasmoid.configuration.advanced = !checked;
                     }
+
+                    onCheckedChanged: {
+                        if (!checked && tabGroup.currentTab === tweaksPage) {
+                            if (tasksTabBtn.visible) {
+                                tabGroup.currentTab = tasksPage;
+                                tabBar.currentTab = tasksTabBtn;
+                            } else {
+                                tabGroup.currentTab = appearancePage;
+                                tabBar.currentTab = appearanceTabBtn;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -173,14 +185,17 @@ PlasmaCore.FrameSvgItem {
             Layout.maximumWidth: maxWidth
 
             PlasmaComponents.TabButton {
+                id: behaviorTabBtn
                 text: i18n("Behavior")
                 tab: behaviorPage
             }
             PlasmaComponents.TabButton {
+                id: appearanceTabBtn
                 text: i18n("Appearance")
                 tab: appearancePage
             }
             PlasmaComponents.TabButton {
+                id: tasksTabBtn
                 text: i18n("Tasks")
                 tab: tasksPage
 
