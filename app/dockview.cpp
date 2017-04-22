@@ -1593,7 +1593,7 @@ void DockView::restoreConfig()
     auto config = this->containment()->config();
     setOnPrimary(config.readEntry("onPrimary", true));
     setSession((Dock::SessionType)config.readEntry("session", (int)Dock::DefaultSession));
-    setDockWinBehavior(config.readEntry("dockWindowBehavior", false));
+    setDockWinBehavior(config.readEntry("dockWindowBehavior", true));
 }
 //!END configuration functions
 
