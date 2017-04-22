@@ -79,7 +79,7 @@
           <choice name="Locked"/>
           <choice name="All"/>
         </choices>
-      <default>1</default>
+      <default>2</default>
     </entry>
     <entry name="maxLength" type="Int">
       <default>100</default>

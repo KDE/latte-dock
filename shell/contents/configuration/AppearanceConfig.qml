@@ -590,6 +590,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            visible: plasmoid.configuration.advanced
 
             Header {
                 text: i18n("Applet shadows")
