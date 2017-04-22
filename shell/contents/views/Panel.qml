@@ -95,4 +95,15 @@ PlasmaCore.FrameSvgItem {
         id: containmentParent
         anchors.fill: parent
     }
+
+    //! it is used in order to check the right click position
+    //! the only way to take into account the visual appearance
+    //! of the applet (including its spacers)
+    function appletContainsPos(appletId, pos) {
+        if (dockLayout) {
+            return dockLayout.appletContainsPos(appletId, pos);
+        }
+
+        return false;
+    }
 }

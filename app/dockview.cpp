@@ -1221,10 +1221,26 @@ void DockView::mousePressEvent(QMouseEvent *event)
         Plasma::Applet *applet = 0;
         bool inSystray = false;
 
+        //! initialize the appletContainsMethod on the first right click
+        if (!m_appletContainsMethod.isValid()) {
+            updateAppletContainsMethod();
+        }
+
         foreach (Plasma::Applet *appletTemp, this->containment()->applets()) {
             PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
-            if (ai && ai->isVisible() && ai->contains(ai->mapFromItem(contentItem(), event->pos()))) {
+            bool appletContainsMouse = false;
+
+            if (m_appletContainsMethod.isValid()) {
+                QVariant retVal;
+                m_appletContainsMethod.invoke(m_appletContainsMethodItem, Qt::DirectConnection, Q_RETURN_ARG(QVariant, retVal)
+                                              , Q_ARG(QVariant, appletTemp->id()), Q_ARG(QVariant, event->pos()));
+                appletContainsMouse = retVal.toBool();
+            } else {
+                appletContainsMouse = ai->contains(ai->mapFromItem(contentItem(), event->pos()));
+            }
+
+            if (ai && ai->isVisible() && appletContainsMouse) {
                 applet = ai->applet();
                 KPluginMetaData meta = applet->kPackage().metadata();
 
@@ -1342,6 +1358,28 @@ void DockView::mousePressEvent(QMouseEvent *event)
 
     //qDebug() << "10 ...";
     PlasmaQuick::ContainmentView::mousePressEvent(event);
+}
+
+//! update the appletContainsPos method from Panel view
+void DockView::updateAppletContainsMethod()
+{
+    for (QQuickItem *item : contentItem()->childItems()) {
+        if (auto *metaObject = item->metaObject()) {
+            // not using QMetaObject::invokeMethod to avoid warnings when calling
+            // this on applets that don't have it or other child items since this
+            // is pretty much trial and error.
+            // Also, "var" arguments are treated as QVariant in QMetaObject
+
+            int methodIndex = metaObject->indexOfMethod("appletContainsPos(QVariant,QVariant)");
+
+            if (methodIndex == -1) {
+                continue;
+            }
+
+            m_appletContainsMethod = metaObject->method(methodIndex);
+            m_appletContainsMethodItem = item;
+        }
+    }
 }
 
 void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)

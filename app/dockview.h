@@ -220,6 +220,7 @@ private:
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
+    void updateAppletContainsMethod();
 
     QRect maximumNormalGeometry();
 
@@ -245,6 +246,8 @@ private:
     QRect m_absGeometry;
     QRect m_maskArea;
     QMenu *m_contextMenu;
+    QMetaMethod m_appletContainsMethod;
+    QQuickItem *m_appletContainsMethodItem{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
     QPointer<QScreen> m_screenToFollow;

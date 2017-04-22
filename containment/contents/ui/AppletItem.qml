@@ -193,6 +193,16 @@ Item {
         }
     }
 
+    //! pos in global root positioning
+    function containsPos(pos) {
+        var relPos = root.mapToItem(container,pos.x, pos.y);
+
+        if (relPos.x>=0 && relPos.x<=width && relPos.y>=0 && relPos.y<=height)
+            return true;
+
+        return false;
+    }
+
     function reconsiderAppletIconItem(){
         if (appletIconItem)
             return;

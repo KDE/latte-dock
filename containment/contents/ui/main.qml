@@ -612,7 +612,6 @@ DragDrop.DropArea {
             automaticSizeAnimation = true;
             slotAnimationsNeedBothAxis(1);
         }
-
     }
 
     onIconSizeChanged: {
@@ -862,6 +861,34 @@ DragDrop.DropArea {
 
             layoutManager.save();
         }
+    }
+
+    //! it is used in order to check the right click position
+    //! the only way to take into account the visual appearance
+    //! of the applet (including its spacers)
+    function appletContainsPos(appletId, pos){
+        for (var i = 0; i < startLayout.children.length; ++i) {
+            var child = startLayout.children[i];
+
+            if (child && child.applet && child.applet.id === appletId && child.containsPos(pos))
+                return true;
+        }
+
+        for (var i = 0; i < mainLayout.children.length; ++i) {
+            var child = mainLayout.children[i];
+
+            if (child && child.applet && child.applet.id === appletId && child.containsPos(pos))
+                return true;
+        }
+
+        for (var i = 0; i < endLayout.children.length; ++i) {
+            var child = endLayout.children[i];
+
+            if (child && child.applet && child.applet.id === appletId && child.containsPos(pos))
+                return true;
+        }
+
+        return false;
     }
 
     function checkLastSpacer() {
