@@ -50,6 +50,55 @@ PlasmaComponents.Page {
         anchors.centerIn: parent
         Layout.leftMargin: units.smallSpacing * 2
 
+        //! BEGIN: Layout
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+
+            Header {
+                text: i18n("Layout")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.ComboBox {
+                    id: layoutCmb
+                    Layout.preferredWidth: 0.5 * dialog.maxWidth
+                    Component.onCompleted: layoutCmb.loadLayouts();
+
+                    function loadLayouts(){
+
+                        var layouts = [i18n("Current"), i18n("Default"), "Plasma", "Unity", i18n("Extended"), " ------- ", "myfavourite1"];
+                        model = layouts;
+
+                        currentIndex = 0;
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Import")
+                    onClicked: {
+                        globalSettings.importConfiguration()
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Export")
+                    onClicked: {
+                        globalSettings.exportConfiguration()
+                    }
+                }
+
+            }
+        }
+        //! END: Layout
+
         //! BEGIN: Applet Size
         ColumnLayout {
             Layout.fillWidth: true

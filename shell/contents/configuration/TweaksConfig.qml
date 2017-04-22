@@ -160,41 +160,6 @@ PlasmaComponents.Page {
         }
         //! END: Behavior
 
-        //! BEGIN: Backup
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-
-            Header {
-                text: i18n("Backup")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: units.smallSpacing
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    iconSource: "document-import"
-                    text: i18n("Import configuration")
-                    onClicked: {
-                        globalSettings.importConfiguration()
-                    }
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    iconSource: "document-export"
-                    text: i18n("Export configuration")
-                    onClicked: {
-                        globalSettings.exportConfiguration()
-                    }
-                }
-            }
-        }
-        //! END: Backup
-
         //! BEGIN: Session
         ColumnLayout {
             spacing: units.smallSpacing
