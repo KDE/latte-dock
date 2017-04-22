@@ -1503,7 +1503,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: startLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom;
-                        anchors.leftMargin: panelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                        anchors.leftMargin: root.totalPanelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                     }
                 },
                 State {
@@ -1516,7 +1516,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: startLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:panelEdgeSpacing/2;    anchors.bottomMargin:0;
+                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.totalPanelEdgeSpacing/2;    anchors.bottomMargin:0;
                     }
                 },
                 State {
@@ -1529,7 +1529,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: startLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:panelEdgeSpacing/2;    anchors.bottomMargin:0;
+                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.totalPanelEdgeSpacing/2;    anchors.bottomMargin:0;
                     }
                 },
                 State {
@@ -1542,7 +1542,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: startLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop;
-                        anchors.leftMargin: panelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                        anchors.leftMargin: root.totalPanelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                     }
                 }
             ]
@@ -1685,7 +1685,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: endLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                        anchors.leftMargin: 0;    anchors.rightMargin:panelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                        anchors.leftMargin: 0;    anchors.rightMargin:root.totalPanelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
                     }
                 },
                 State {
@@ -1698,7 +1698,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: endLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:panelEdgeSpacing/2;
+                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.totalPanelEdgeSpacing/2;
                     }
                 },
                 State {
@@ -1711,7 +1711,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: endLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:panelEdgeSpacing/2;
+                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.totalPanelEdgeSpacing/2;
                     }
                 },
                 State {
@@ -1724,7 +1724,7 @@ DragDrop.DropArea {
                     }
                     PropertyChanges{
                         target: endLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                        anchors.leftMargin: 0;    anchors.rightMargin:panelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                        anchors.leftMargin: 0;    anchors.rightMargin:root.totalPanelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
                     }
                 }
             ]
