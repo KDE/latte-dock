@@ -463,7 +463,9 @@ PlasmaComponents.Page {
 
             RowLayout{
                 Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing / 2
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
 
                 RowLayout {
                     Layout.fillWidth: true
