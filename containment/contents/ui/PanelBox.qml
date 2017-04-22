@@ -91,6 +91,9 @@ Item{
         value: spacing
     }
 
+    onXChanged: solidBackground.updateEffectsArea();
+    onYChanged: solidBackground.updateEffectsArea();
+
     /// plasmoid's default panel
     /*  BorderImage{
             anchors.fill:parent
