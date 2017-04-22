@@ -1110,6 +1110,17 @@ MouseArea{
         property int speed: Latte.WindowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
         property bool animationSent: false
 
+        //Ghost animation that acts as a delayer, in order to fix #342
+        PropertyAnimation {
+            target: wrapper
+            property: "opacity"
+            to: 0
+            //it is not depend to durationTime when animations are active
+            duration: root.durationTime > 0 ? 750 : 0
+            easing.type: Easing.InQuad
+        }
+        //end of ghost animation
+
         ScriptAction{
             script:{
                 if (!showWindowAnimation.animationSent) {
