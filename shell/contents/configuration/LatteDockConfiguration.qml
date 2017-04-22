@@ -151,11 +151,13 @@ PlasmaCore.FrameSvgItem {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignRight
                 }
+
                 PlasmaComponents.Label {
                     text: i18n("Advanced")
                     Layout.alignment: Qt.AlignRight
-                    opacity: plasmoid.configuration.advanced ? 1 : 0.35
+                    opacity: plasmoid.configuration.advanced ? 1 : 0.3
                 }
+
                 Switch {
                     id: advancedSwitch
                     checked: plasmoid.configuration.advanced
