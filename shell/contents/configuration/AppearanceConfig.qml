@@ -102,6 +102,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
                     text: i18n("Screen Height Proportion:")
@@ -151,6 +152,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
                     text: i18n("Applets Distance:")
@@ -332,6 +334,7 @@ PlasmaComponents.Page {
                     Layout.alignment: Qt.AlignHCenter
                     text: i18n("Shadows")
                     checked: plasmoid.configuration.panelShadows
+                    visible: plasmoid.configuration.advanced
 
                     onClicked: {
                         plasmoid.configuration.panelShadows = checked
@@ -346,6 +349,7 @@ PlasmaComponents.Page {
                     text: i18n("Solid")
                     checked: plasmoid.configuration.solidPanel
                     enabled: showBackground.checked
+                    visible: plasmoid.configuration.advanced
 
                     onClicked: {
                         plasmoid.configuration.solidPanel = checked
@@ -399,6 +403,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
+                visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
                     text: i18n("Transparency: ")
@@ -444,6 +449,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            visible: plasmoid.configuration.advanced
 
             Header {
                 text: i18n("Length")

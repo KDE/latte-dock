@@ -151,6 +151,7 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
+                visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
                     text: i18n("On middle-click:")
@@ -170,6 +171,7 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.ComboBox {
                     id: modifier

@@ -23,6 +23,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
+import QtQuick.Controls.Styles 1.4 as Styles
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -141,20 +142,28 @@ PlasmaCore.FrameSvgItem {
                 }
             }
 
-            PlasmaComponents.Label {
-                id: verLabel
-
+            RowLayout {
                 Layout.fillWidth: true
                 Layout.rightMargin: units.smallSpacing
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
 
-                font.family: "monospace"
-                font.pointSize: 0.8 * theme.defaultFont.pointSize
-                font.bold: true
-                opacity: 0.4
-
-                text: i18n("ver:") + Qt.application.version
-                horizontalAlignment: Text.AlignRight
+                PlasmaComponents.Label {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignRight
+                }
+                PlasmaComponents.Label {
+                    text: i18n("Advanced")
+                    Layout.alignment: Qt.AlignRight
+                    opacity: plasmoid.configuration.advanced ? 1 : 0.35
+                }
+                Switch {
+                    id: advancedSwitch
+                    checked: plasmoid.configuration.advanced
+                    onPressedChanged: {
+                        if(pressed)
+                            plasmoid.configuration.advanced = !checked;
+                    }
+                }
             }
         }
 
@@ -180,6 +189,8 @@ PlasmaCore.FrameSvgItem {
             PlasmaComponents.TabButton {
                 text: i18n("Tweaks")
                 tab: tweaksPage
+
+                visible: plasmoid.configuration.advanced
             }
         }
 

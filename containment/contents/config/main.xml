@@ -123,6 +123,9 @@
       <default>0</default>
     </entry>
 <!-- Config properties  -->
+    <entry name="advanced" type="Bool">
+        <default>false</default>
+    </entry>
     <entry name="configurationSticker" type="Bool">
         <default>false</default>
     </entry>
