@@ -595,6 +595,7 @@ DragDrop.DropArea {
             latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
             latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
             latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
+            latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
         }
     }
 
@@ -1084,6 +1085,12 @@ DragDrop.DropArea {
         } else {
             if (!root.editMode)
                 dock.visibility.blockHiding = false;
+        }
+    }
+
+    function slotPreviewsShown(){
+        if (dock) {
+            dock.deactivateApplets();
         }
     }
 

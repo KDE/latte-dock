@@ -171,6 +171,7 @@ Item {
     signal signalAnimationsNeedBothAxis(int value);
     signal signalAnimationsNeedLength(int value);
     signal signalAnimationsNeedThickness(int value);
+    signal signalPreviewsShown();
     //signal signalDraggingState(bool value);
     signal showPreviewForTasks(QtObject group);
     //trigger updating scaling of neighbour delegates of zoomed delegate
@@ -401,6 +402,12 @@ Item {
             //console.log("preview show called...");
             if (!activeItem || (activeItem !== taskItem) && !taskItem.contextMenu) {
                 //console.log("preview show called: accepted...");
+
+                //this can be used from others to hide their appearance
+                //e.g but applets from the dock to hide themselves
+                if (!visible) {
+                    root.signalPreviewsShown();
+                }
 
                 //used to initialize windows previews buffers from task to task
                 visible = false;
