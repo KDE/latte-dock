@@ -118,7 +118,6 @@ Item {
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
-    property int durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
@@ -148,6 +147,7 @@ Item {
     property int tasksWidth: mouseHandler.width
     property int userPanelPosition: latteDock ? latteDock.panelAlignment : plasmoid.configuration.plasmoidPosition
 
+    property real durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteDock ? latteDock.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
     property alias tasksCount: tasksModel.count

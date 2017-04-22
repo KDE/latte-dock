@@ -209,9 +209,20 @@ DragDrop.DropArea {
     property bool smartLaunchersEnabled: plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 
-    property int durationTime: plasmoid.configuration.durationTime
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
+
+    property real durationTime: {
+        if (plasmoid.configuration.durationTime === 0 || plasmoid.configuration.durationTime === 2 )
+            return plasmoid.configuration.durationTime;
+
+        if (plasmoid.configuration.durationTime === 1)
+            return 1.65;
+        else if (plasmoid.configuration.durationTime === 3)
+            return 2.35;
+
+        return 2;
+    }
 
     property rect screenGeometry: dock ? dock.screenGeometry : plasmoid.screenGeometry
     ///END properties from latteApplet
