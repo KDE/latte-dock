@@ -22,7 +22,6 @@ GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
     m_corona = qobject_cast<DockCorona *>(parent);
-    m_ghostWidget = new QWidget();
 
     if (m_corona) {
         m_configGroup = m_corona->config()->group("General");
@@ -43,7 +42,6 @@ GlobalSettings::GlobalSettings(QObject *parent)
 GlobalSettings::~GlobalSettings()
 {
     m_altSessionAction->deleteLater();
-    m_ghostWidget->deleteLater();
     m_configGroup.sync();
     m_externalGroup.sync();
 }
@@ -330,8 +328,9 @@ void GlobalSettings::importLayout(QString name, QString file)
 {
     qDebug() << "layout should be imported : " << file;
 
-    auto msg = new QMessageBox(m_ghostWidget);
+    auto msg = new QMessageBox();
     //msg->setIcon(QMessageBox::Warning);
+    msg->setModal(false);
     msg->setWindowTitle(i18n("Activate Layout"));
     msg->setText(i18n("You are going to activate a layout called <b>%1</b>, <br>by doing so the current layout will be lost... <br>Do you want to proceed?").arg(name));
     msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -342,7 +341,7 @@ void GlobalSettings::importLayout(QString name, QString file)
     });
     connect(msg, &QMessageBox::finished,  msg, &QMessageBox::deleteLater);
 
-    msg->open();
+    msg->show();
 }
 
 void GlobalSettings::importLayoutInternal(QString file)

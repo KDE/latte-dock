@@ -26,7 +26,6 @@
 
 #include <QFileDialog>
 #include <QPointer>
-#include <QWidget>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -89,7 +88,6 @@ private:
     QAction *m_altSessionAction{nullptr};
     DockCorona *m_corona{nullptr};
     QPointer<QFileDialog> m_fileDialog;
-    QPointer<QWidget> m_ghostWidget;
     QVariantList m_defaultLayouts;
     QVariantList m_userLayouts;
     QStringList m_userLayoutsFiles;
