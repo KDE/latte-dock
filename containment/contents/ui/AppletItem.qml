@@ -46,8 +46,8 @@ Item {
             return false;
 
         if (((root.isHorizontal && applet.Layout.fillWidth===true)
-                || (root.isVertical && applet.Layout.fillHeight===true))
-            && (applet.status !== PlasmaCore.Types.HiddenStatus))
+             || (root.isVertical && applet.Layout.fillHeight===true))
+                && (applet.status !== PlasmaCore.Types.HiddenStatus))
             return true;
         else
             return false;
@@ -96,7 +96,7 @@ Item {
 
     property Item applet
     property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
-                               (applet.children[0] ? applet.children[0] : null) : null
+                                   (applet.children[0] ? applet.children[0] : null) : null
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||
                                   (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapperContainer
@@ -176,10 +176,10 @@ Item {
     }
 
     function clearZoom(){
-       if (restoreAnimation)
-           restoreAnimation.start();
-       // if(wrapper)
-       //     wrapper.zoomScale = 1;
+        if (restoreAnimation)
+            restoreAnimation.start();
+        // if(wrapper)
+        //     wrapper.zoomScale = 1;
     }
 
     function checkCanBeHovered(){
@@ -426,8 +426,12 @@ Item {
 
             property int iconSize: root.iconSize
 
-            property int marginWidth: root.isVertical ? root.thickMargin : root.iconMargin
-            property int marginHeight: root.isHorizontal ? root.thickMargin : root.iconMargin
+            property int marginWidth: root.isVertical ?
+                                          (applet && (applet.pluginName === "org.kde.plasma.systemtray") ? root.thickMarginBase : root.thickMargin ) :
+                                          root.iconMargin
+            property int marginHeight: root.isHorizontal ?
+                                           (applet && (applet.pluginName === "org.kde.plasma.systemtray") ? root.thickMarginBase : root.thickMargin ) :
+                                           root.iconMargin
 
             property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
             property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
@@ -511,7 +515,7 @@ Item {
 
             onZoomScaleChanged: {
                 if ((zoomScale === root.zoomFactor) && !enableDirectRenderTimer.running && !layoutsContainer.directRender) {
-                        enableDirectRenderTimer.start();
+                    enableDirectRenderTimer.start();
                 }
 
                 if ((zoomScale > 1) && !container.isZoomed) {
@@ -571,7 +575,7 @@ Item {
                             && ( (applet.Layout.maximumHeight < root.iconSize) || (applet.Layout.preferredHeight > root.iconSize))
                             && root.isVertical
                             && !disableScaleWidth ) {
-                            //&& !root.editMode ){
+                        //&& !root.editMode ){
                         disableScaleHeight = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
                         if((applet.Layout.maximumHeight < root.iconSize)){
@@ -614,7 +618,7 @@ Item {
                             && ( (applet.Layout.maximumWidth < root.iconSize) || (applet.Layout.preferredWidth > root.iconSize))
                             && root.isHorizontal
                             && !disableScaleHeight ){
-                          //  && !root.editMode){
+                        //  && !root.editMode){
                         disableScaleWidth = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
                         if((applet.Layout.maximumWidth < root.iconSize)){
