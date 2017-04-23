@@ -447,7 +447,7 @@ MouseArea {
                 spacing: 2*units.smallSpacing
 
                 Row{
-                    spacing: unit.smallSpacing/2
+                    spacing: units.smallSpacing/2
                     PlasmaComponents.ToolButton {
                         id: configureButton
                         anchors.verticalCenter: parent.verticalCenter
