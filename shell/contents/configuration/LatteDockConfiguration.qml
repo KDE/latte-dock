@@ -23,11 +23,11 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
-import QtQuick.Controls.Styles 1.4 as Styles
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import QtQuick.Controls.Styles.Plasma 2.0 as Styles
 
 import org.kde.plasma.plasmoid 2.0
 
@@ -166,6 +166,7 @@ PlasmaCore.FrameSvgItem {
                             plasmoid.configuration.advanced = !checked;
                     }
 
+                    style: Styles.SwitchStyle { }
                     onCheckedChanged: {
                         if (!checked && tabGroup.currentTab === tweaksPage) {
                             if (tasksTabBtn.visible) {
