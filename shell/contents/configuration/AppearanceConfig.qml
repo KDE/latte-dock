@@ -68,23 +68,33 @@ PlasmaComponents.Page {
                 PlasmaComponents.ComboBox {
                     id: layoutCmb
                     Layout.preferredWidth: 0.5 * dialog.maxWidth
+
+                    property var layouts: [i18nc("current layout","Current")];
+                    property var layoutObjs
+
                     Component.onCompleted: layoutCmb.loadLayouts();
 
                     function loadLayouts(){
+                        layoutObjs = globalSettings.layouts();
 
-                        var layouts = [i18n("Current")];
-                        var layoutsC = globalSettings.layouts();
-
-                        for(var i=0; i<layoutsC.length; ++i){
-                            layouts.push(layoutsC[i].key);
+                        for(var i=0; i<layoutObjs.length; ++i){
+                            layouts.push(layoutObjs[i].key);
                         }
 
-                        layouts.push("-----");
-                        layouts.push("myfavourite1");
-
                         model = layouts;
-
                         currentIndex = 0;
+                    }
+
+                    onCurrentIndexChanged: {
+                        if (currentIndex>0 && layoutObjs[currentIndex-1].value === ""){
+                            currentIndex = 0;
+                            return;
+                        }
+
+                        if (currentIndex>0) {
+                            globalSettings.importLayout(layoutObjs[currentIndex-1].key,
+                                                        layoutObjs[currentIndex-1].value);
+                        }
                     }
                 }
 

@@ -26,6 +26,7 @@
 
 #include <QFileDialog>
 #include <QPointer>
+#include <QWidget>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -62,6 +63,7 @@ public:
     static bool importHelper(const QString &fileName);
     Q_INVOKABLE void importConfiguration();
     Q_INVOKABLE void exportConfiguration();
+    Q_INVOKABLE void importLayout(QString name, QString file);
     Q_INVOKABLE QVariantList layouts();
 
 signals:
@@ -69,22 +71,31 @@ signals:
     void currentSessionChanged();
     void autostartChanged();
     void exposeAltSessionChanged();
+    void importLayoutSignal(QString);
 
 private slots:
     void currentSessionChangedSlot(Dock::SessionType type);
     void enableAltSession(bool enabled);
+    void importLayoutInternal(QString file);
 
 private:
     void save();
     void init();
+    void initExtConfiguration();
+    void loadExtConfiguration();
+    void saveExtConfiguration();
 
     bool m_exposeAltSession{false};
     QAction *m_altSessionAction{nullptr};
     DockCorona *m_corona{nullptr};
     QPointer<QFileDialog> m_fileDialog;
+    QPointer<QWidget> m_ghostWidget;
     QVariantList m_defaultLayouts;
+    QVariantList m_userLayouts;
+    QStringList m_userLayoutsFiles;
 
     KConfigGroup m_configGroup;
+    KConfigGroup m_externalGroup;
 };
 
 }

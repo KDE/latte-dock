@@ -22,6 +22,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
     : QObject(parent)
 {
     m_corona = qobject_cast<DockCorona *>(parent);
+    m_ghostWidget = new QWidget();
 
     if (m_corona) {
         m_configGroup = m_corona->config()->group("General");
@@ -33,6 +34,8 @@ GlobalSettings::GlobalSettings(QObject *parent)
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
 
+        connect(this, &GlobalSettings::importLayoutSignal, this, &GlobalSettings::importLayoutInternal);
+
         init();
     }
 }
@@ -40,7 +43,9 @@ GlobalSettings::GlobalSettings(QObject *parent)
 GlobalSettings::~GlobalSettings()
 {
     m_altSessionAction->deleteLater();
+    m_ghostWidget->deleteLater();
     m_configGroup.sync();
+    m_externalGroup.sync();
 }
 
 void GlobalSettings::init()
@@ -52,27 +57,13 @@ void GlobalSettings::init()
         setAutostart(true);
     }
 
-    //! load default layouts
-    QVariantMap layout1;
-    layout1.insert(QString("key"), QString(i18nc("default layout", "Default")));
-    layout1.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout1"))));
+    initExtConfiguration();
+}
 
-    QVariantMap layout2;
-    layout2.insert(QString("key"), QString(i18nc("plasma layout", "Plasma")));
-    layout2.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout2"))));
-
-    QVariantMap layout3;
-    layout3.insert(QString("key"), QString(i18nc("unity layout", "Unity")));
-    layout3.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout3"))));
-
-    QVariantMap layout4;
-    layout4.insert(QString("key"), QString(i18nc("extended layout", "Extended")));
-    layout4.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout4"))));
-
-    m_defaultLayouts.append(layout1);
-    m_defaultLayouts.append(layout2);
-    m_defaultLayouts.append(layout3);
-    m_defaultLayouts.append(layout4);
+void GlobalSettings::initExtConfiguration()
+{
+    KSharedConfigPtr extConfig = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedockextrc");
+    m_externalGroup = KConfigGroup(extConfig, "External");
 }
 
 void GlobalSettings::enableAltSession(bool enabled)
@@ -156,11 +147,12 @@ void GlobalSettings::setCurrentSession(Dock::SessionType session)
     }
 }
 
-
 //!BEGIN configuration functions
 void GlobalSettings::load()
 {
     setExposeAltSession(m_configGroup.readEntry("exposeAltSession", false));
+
+    loadExtConfiguration();
 }
 
 void GlobalSettings::save()
@@ -168,6 +160,64 @@ void GlobalSettings::save()
     m_configGroup.writeEntry("exposeAltSession", m_exposeAltSession);
     m_configGroup.sync();
 }
+
+void GlobalSettings::loadExtConfiguration()
+{
+    //! load default layouts
+    QVariantMap layout1;
+    layout1.insert(QString("key"), QString(i18nc("default layout", "Default")));
+    layout1.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout1"))));
+
+    QVariantMap layout2;
+    layout2.insert(QString("key"), QString(i18nc("plasma layout", "Plasma")));
+    layout2.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout2"))));
+
+    QVariantMap layout3;
+    layout3.insert(QString("key"), QString(i18nc("unity layout", "Unity")));
+    layout3.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout3"))));
+
+    QVariantMap layout4;
+    layout4.insert(QString("key"), QString(i18nc("extended layout", "Extended")));
+    layout4.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout4"))));
+
+    m_defaultLayouts.append(layout1);
+    m_defaultLayouts.append(layout2);
+    m_defaultLayouts.append(layout3);
+    m_defaultLayouts.append(layout4);
+
+    //! load user layouts
+    QStringList userLayouts = m_externalGroup.readEntry("userLayouts", QStringList());
+    QStringList confirmedLayouts;
+
+    foreach (QString layout, userLayouts) {
+        QFile layoutFile(layout);
+
+        if (layoutFile.exists() && !confirmedLayouts.contains(layout)) {
+            confirmedLayouts.append(layout);
+
+            QVariantMap userLayout;
+            int p1 = layout.lastIndexOf("/");
+            int p2 = layout.lastIndexOf(".");
+            //!add the filename as a key
+            userLayout.insert(QString("key"), layout.mid(p1 + 1, p2 - p1 - 1));
+            userLayout.insert(QString("value"), QVariant(QString(layout)));
+
+            m_userLayouts.append(userLayout);
+            m_userLayoutsFiles.append(layout);
+        }
+    }
+
+    //! a save is needed because on first loading we check also if any of the user layout files
+    //! has been removed by the user
+    saveExtConfiguration();
+}
+
+void GlobalSettings::saveExtConfiguration()
+{
+    m_externalGroup.writeEntry("userLayouts", m_userLayoutsFiles);
+    m_externalGroup.sync();
+}
+
 //!END configuration functions
 
 bool GlobalSettings::importHelper(const QString &fileName)
@@ -247,6 +297,7 @@ bool GlobalSettings::importHelper(const QString &fileName)
 
     return true;
 }
+
 void GlobalSettings::importConfiguration()
 {
     if (m_fileDialog) {
@@ -269,58 +320,109 @@ void GlobalSettings::importConfiguration()
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
     , this, [&](const QString & file) {
-
-        auto showMsgError = [&]() {
-            auto msg = new QMessageBox;
-            msg->setText(i18nc("import/export config", "The file has a wrong format"));
-            msg->setDetailedText(i18nc("import/export config", "Do you want to open other file?"));
-            msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-
-            connect(msg, &QMessageBox::accepted, this, &GlobalSettings::importConfiguration);
-            connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
-
-            msg->open();
-        };
-
-        if (!QFile::exists(file)) {
-            showMsgError();
-            return;
-        }
-
-        KTar archive(file, QStringLiteral("application/x-tar"));
-        archive.open(QIODevice::ReadOnly);
-
-        if (!archive.isOpen()) {
-            showMsgError();
-            return;
-        }
-
-        auto rootDir = archive.directory();
-
-        if (rootDir) {
-            foreach (auto &name, rootDir->entries()) {
-                auto fileEntry = rootDir->file(name);
-
-                if (fileEntry && (fileEntry->name() == "lattedockrc"
-                                  || fileEntry->name() == "lattedock-appletsrc")) {
-                    continue;
-                } else {
-                    archive.close();
-                    showMsgError();
-                    return;
-                }
-            }
-        }
-
-        archive.close();
-        //NOTE: Restart latte for import the new configuration
-        QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
-        qGuiApp->exit();
-
+        importLayoutInternal(file);
     });
 
     m_fileDialog->open();
 }
+
+void GlobalSettings::importLayout(QString name, QString file)
+{
+    qDebug() << "layout should be imported : " << file;
+
+    auto msg = new QMessageBox(m_ghostWidget);
+    //msg->setIcon(QMessageBox::Warning);
+    msg->setWindowTitle(i18n("Activate Layout"));
+    msg->setText(i18n("You are going to activate a layout called <b>%1</b>, <br>by doing so the current layout will be lost... <br>Do you want to proceed?").arg(name));
+    msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msg->setDefaultButton(QMessageBox::Cancel);
+
+    connect(msg, &QMessageBox::accepted, this, [this, file] {
+        importLayoutInternal(file);
+    });
+    connect(msg, &QMessageBox::finished,  msg, &QMessageBox::deleteLater);
+
+    msg->open();
+}
+
+void GlobalSettings::importLayoutInternal(QString file)
+{
+    auto showMsgError = [&]() {
+        auto msg = new QMessageBox;
+        msg->setText(i18nc("import/export config", "The file has a wrong format"));
+        msg->setDetailedText(i18nc("import/export config", "Do you want to open other file?"));
+        msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+
+        connect(msg, &QMessageBox::accepted, this, &GlobalSettings::importConfiguration);
+        connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
+
+        msg->open();
+    };
+
+    if (!QFile::exists(file)) {
+        showMsgError();
+        return;
+    }
+
+    //! start:: update the user layouts
+
+    //! first check if this is a default layout, in that case it shouldnt be added
+    bool defaultLayout = false;
+
+    foreach (QVariant it, m_userLayouts) {
+        if (it.canConvert<QVariantMap>()) {
+            QVariantMap map = it.toMap();
+
+            if (map["value"].toString() == file) {
+                defaultLayout = true;
+                break;
+            }
+        }
+    }
+
+    if (!defaultLayout) {
+        if (m_userLayoutsFiles.contains(file)) {
+            m_userLayoutsFiles.removeAll(file);
+        }
+
+        m_userLayoutsFiles.prepend(file);
+        saveExtConfiguration();
+    }
+
+    //! end:: update the user layouts
+
+    KTar archive(file, QStringLiteral("application/x-tar"));
+    archive.open(QIODevice::ReadOnly);
+
+    if (!archive.isOpen()) {
+        showMsgError();
+        return;
+    }
+
+    auto rootDir = archive.directory();
+
+    if (rootDir) {
+        foreach (auto &name, rootDir->entries()) {
+            auto fileEntry = rootDir->file(name);
+
+            if (fileEntry && (fileEntry->name() == "lattedockrc"
+                              || fileEntry->name() == "lattedock-appletsrc")) {
+                continue;
+            } else {
+                archive.close();
+                showMsgError();
+                return;
+            }
+        }
+    }
+
+    archive.close();
+    //NOTE: Restart latte for import the new configuration
+    QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
+    qGuiApp->exit();
+}
+
+
 
 void GlobalSettings::exportConfiguration()
 {
@@ -392,7 +494,39 @@ void GlobalSettings::exportConfiguration()
 
 QVariantList GlobalSettings::layouts()
 {
-    return m_defaultLayouts;
+    QVariantList result;
+    result.append(m_defaultLayouts);
+
+    //! clean up the user styles first in case some of them has been deleted from
+    //! the filesystem
+    foreach (QString layout, m_userLayoutsFiles) {
+        QFile layoutFile(layout);
+
+        if (!layoutFile.exists()) {
+            m_userLayoutsFiles.removeAll(layout);
+
+            foreach (QVariant it, m_userLayouts) {
+                if (it.canConvert<QVariantMap>()) {
+                    QVariantMap map = it.toMap();
+
+                    if (map["value"].toString() == layout) {
+                        m_userLayouts.removeAll(it);
+                    }
+                }
+            }
+        }
+    }
+
+    if (m_userLayouts.size() > 0) {
+        QVariantMap emptyRecord;
+        emptyRecord.insert(QString("key"), QString("-----"));
+        emptyRecord.insert(QString("value"), QVariant(QString("")));
+        result.append(emptyRecord);
+
+        result.append(m_userLayouts);
+    }
+
+    return result;
 }
 
 }

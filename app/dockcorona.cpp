@@ -59,7 +59,6 @@ DockCorona::DockCorona(QObject *parent)
 {
     KPackage::Package package(new DockPackage(this));
     m_screenPool->load();
-    m_globalSettings->load();
 
     if (!package.isValid()) {
         qWarning() << staticMetaObject.className()
@@ -71,6 +70,9 @@ DockCorona::DockCorona(QObject *parent)
     }
 
     setKPackage(package);
+    //! global settings must be loaded after the package has been set
+    m_globalSettings->load();
+
     qmlRegisterTypes();
     QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
 
