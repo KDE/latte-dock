@@ -62,7 +62,7 @@ public:
     static bool importHelper(const QString &fileName);
     Q_INVOKABLE void importConfiguration();
     Q_INVOKABLE void exportConfiguration();
-    Q_INVOKABLE void importLayout(QString name, QString file);
+    Q_INVOKABLE void importLayout(const QString &name, const QString &file);
     Q_INVOKABLE QVariantList layouts();
 
 signals:
@@ -75,7 +75,7 @@ signals:
 private slots:
     void currentSessionChangedSlot(Dock::SessionType type);
     void enableAltSession(bool enabled);
-    void importLayoutInternal(QString file);
+    void importLayoutInternal(const QString &file);
 
 private:
     void save();

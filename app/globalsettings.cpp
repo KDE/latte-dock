@@ -324,35 +324,36 @@ void GlobalSettings::importConfiguration()
     m_fileDialog->open();
 }
 
-void GlobalSettings::importLayout(QString name, QString file)
+void GlobalSettings::importLayout(const QString &name, const QString &file)
 {
     qDebug() << "layout should be imported : " << file;
 
     auto msg = new QMessageBox();
     //msg->setIcon(QMessageBox::Warning);
-    msg->setModal(false);
     msg->setWindowTitle(i18n("Activate Layout"));
     msg->setText(i18n("You are going to activate a layout called <b>%1</b>, <br>by doing so the current layout will be lost... <br>Do you want to proceed?").arg(name));
     msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msg->setDefaultButton(QMessageBox::Cancel);
 
-    connect(msg, &QMessageBox::accepted, this, [this, file] {
-        importLayoutInternal(file);
+    connect(msg, &QMessageBox::finished, this, [&, file](int result){
+        if (result == QMessageBox::Ok)
+            importLayoutInternal(file);
     });
-    connect(msg, &QMessageBox::finished,  msg, &QMessageBox::deleteLater);
-
-    msg->show();
+    connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
+    msg->open();
 }
 
-void GlobalSettings::importLayoutInternal(QString file)
+void GlobalSettings::importLayoutInternal(const QString &file)
 {
     auto showMsgError = [&]() {
         auto msg = new QMessageBox;
-        msg->setText(i18nc("import/export config", "The file has a wrong format"));
-        msg->setDetailedText(i18nc("import/export config", "Do you want to open other file?"));
+        msg->setText(i18nc("import/export config", "The file has a wrong format, do you want open other file?"));
         msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
-        connect(msg, &QMessageBox::accepted, this, &GlobalSettings::importConfiguration);
+        connect(msg, &QMessageBox::finished, this, [&, file](int result){
+            if (result == QMessageBox::Ok)
+                importConfiguration();
+        });
         connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
 
         msg->open();
