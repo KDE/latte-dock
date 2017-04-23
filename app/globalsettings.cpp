@@ -32,6 +32,13 @@ GlobalSettings::GlobalSettings(QObject *parent)
         m_altSessionAction->setCheckable(true);
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
+
+        //! check if user has set the autostart option
+        bool autostartUserSet = m_configGroup.readEntry("userConfigureAutostart", false);
+
+        if (!autostartUserSet && !autostart()) {
+            setAutostart(true);
+        }
     }
 }
 
@@ -93,6 +100,12 @@ void GlobalSettings::setAutostart(bool state)
     QFile metaFile("/usr/share/applications/latte-dock.desktop");
 
     if (!state && autostartFile.exists()) {
+        //! the first time that the user disables the autostart, this is recorded
+        //! and from now own it will not be recreated it in the beginning
+        if (!m_configGroup.readEntry("userConfigureAutostart", false)) {
+            m_configGroup.writeEntry("userConfigureAutostart", true);
+        }
+
         autostartFile.remove();
         emit autostartChanged();
     } else if (state && metaFile.exists()) {
@@ -148,6 +161,7 @@ bool GlobalSettings::importHelper(const QString &fileName)
         if (tempDir.exists()) {
             tempDir.removeRecursively();
         }
+
         archive.close();
     };
 
@@ -161,12 +175,11 @@ bool GlobalSettings::importHelper(const QString &fileName)
         if (!tempDir.exists())
             tempDir.mkpath(tempDir.absolutePath());
 
-        foreach(auto &name, rootDir->entries()) {
+        foreach (auto &name, rootDir->entries()) {
             auto fileEntry = rootDir->file(name);
 
             if (fileEntry && (fileEntry->name() == "lattedockrc"
-                              || fileEntry->name() == "lattedock-appletsrc"))
-            {
+                              || fileEntry->name() == "lattedock-appletsrc")) {
                 if (!fileEntry->copyTo(tempDir.absolutePath())) {
                     clean();
                     showNotificationErr();
@@ -191,6 +204,7 @@ bool GlobalSettings::importHelper(const QString &fileName)
     QFile::copy(appletsrc, appletsrc + "." + n + ".bak");
 
     qInfo() << "Importing the new configuration...";
+
     if (QFile::remove(latterc) && QFile::remove(appletsrc)) {
         QFile::copy(tempDir.absolutePath() + "/lattedockrc" , latterc);
         QFile::copy(tempDir.absolutePath() + "/lattedock-appletsrc", appletsrc);
@@ -224,10 +238,10 @@ void GlobalSettings::importConfiguration()
                                 + "(*.latterc)");
 
     connect(m_fileDialog.data(), &QFileDialog::finished
-    , m_fileDialog.data(), &QFileDialog::deleteLater);
+            , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
-    , this, [&](const QString &file) {
+    , this, [&](const QString & file) {
 
         auto showMsgError = [&]() {
             auto msg = new QMessageBox;
@@ -257,12 +271,11 @@ void GlobalSettings::importConfiguration()
         auto rootDir = archive.directory();
 
         if (rootDir) {
-            foreach(auto &name, rootDir->entries()) {
+            foreach (auto &name, rootDir->entries()) {
                 auto fileEntry = rootDir->file(name);
 
                 if (fileEntry && (fileEntry->name() == "lattedockrc"
-                                  || fileEntry->name() == "lattedock-appletsrc"))
-                {
+                                  || fileEntry->name() == "lattedock-appletsrc")) {
                     continue;
                 } else {
                     archive.close();
@@ -299,10 +312,10 @@ void GlobalSettings::exportConfiguration()
                                 + "(*.latterc)");
 
     connect(m_fileDialog.data(), &QFileDialog::finished
-    , m_fileDialog.data(), &QFileDialog::deleteLater);
+            , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
-    , this, [&](const QString &file) {
+    , this, [&](const QString & file) {
         auto showNotificationError = []() {
             auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
             notification->setText(i18nc("import/export config", "Failed to export configuration"));
