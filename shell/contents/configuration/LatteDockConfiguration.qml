@@ -166,7 +166,10 @@ PlasmaCore.FrameSvgItem {
                             plasmoid.configuration.advanced = !checked;
                     }
 
-                    style: Styles.SwitchStyle { }
+                    style: Styles.SwitchStyle {
+                         property bool checked: advancedSwitch.checked
+                    }
+
                     onCheckedChanged: {
                         if (!checked && tabGroup.currentTab === tweaksPage) {
                             if (tasksTabBtn.visible) {
