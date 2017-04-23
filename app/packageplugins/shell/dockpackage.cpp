@@ -46,6 +46,12 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
     package->addFileDefinition("configmodel", QStringLiteral("configuration/config.qml"), i18n("Config model"));
     package->addFileDefinition("tangerineFont", QStringLiteral("fonts/tangerine.ttf"), i18n("Tangerine Font"));
+
+    package->addFileDefinition("layout1", QStringLiteral("layouts/Default.latterc"), i18n("default layout file"));
+    package->addFileDefinition("layout2", QStringLiteral("layouts/Plasma.latterc"), i18n("plasma layout file"));
+    package->addFileDefinition("layout3", QStringLiteral("layouts/Unity.latterc"), i18n("unity layout file"));
+    package->addFileDefinition("layout4", QStringLiteral("layouts/Extended.latterc"), i18n("extended layout file"));
+
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();
 }

@@ -59,9 +59,10 @@ public:
     Latte::Dock::SessionType currentSession() const;
     void setCurrentSession(Latte::Dock::SessionType session);
 
-    static bool importHelper(const QString& fileName);
+    static bool importHelper(const QString &fileName);
     Q_INVOKABLE void importConfiguration();
     Q_INVOKABLE void exportConfiguration();
+    Q_INVOKABLE QVariantList layouts();
 
 signals:
     void altSessionActionChanged();
@@ -75,11 +76,13 @@ private slots:
 
 private:
     void save();
+    void init();
 
     bool m_exposeAltSession{false};
     QAction *m_altSessionAction{nullptr};
     DockCorona *m_corona{nullptr};
     QPointer<QFileDialog> m_fileDialog;
+    QVariantList m_defaultLayouts;
 
     KConfigGroup m_configGroup;
 };

@@ -33,12 +33,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
 
-        //! check if user has set the autostart option
-        bool autostartUserSet = m_configGroup.readEntry("userConfigureAutostart", false);
-
-        if (!autostartUserSet && !autostart()) {
-            setAutostart(true);
-        }
+        init();
     }
 }
 
@@ -46,6 +41,38 @@ GlobalSettings::~GlobalSettings()
 {
     m_altSessionAction->deleteLater();
     m_configGroup.sync();
+}
+
+void GlobalSettings::init()
+{
+    //! check if user has set the autostart option
+    bool autostartUserSet = m_configGroup.readEntry("userConfigureAutostart", false);
+
+    if (!autostartUserSet && !autostart()) {
+        setAutostart(true);
+    }
+
+    //! load default layouts
+    QVariantMap layout1;
+    layout1.insert(QString("key"), QString(i18nc("default layout", "Default")));
+    layout1.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout1"))));
+
+    QVariantMap layout2;
+    layout2.insert(QString("key"), QString(i18nc("plasma layout", "Plasma")));
+    layout2.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout2"))));
+
+    QVariantMap layout3;
+    layout3.insert(QString("key"), QString(i18nc("unity layout", "Unity")));
+    layout3.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout3"))));
+
+    QVariantMap layout4;
+    layout4.insert(QString("key"), QString(i18nc("extended layout", "Extended")));
+    layout4.insert(QString("value"), QVariant(QString(m_corona->kPackage().filePath("layout4"))));
+
+    m_defaultLayouts.append(layout1);
+    m_defaultLayouts.append(layout2);
+    m_defaultLayouts.append(layout3);
+    m_defaultLayouts.append(layout4);
 }
 
 void GlobalSettings::enableAltSession(bool enabled)
@@ -362,6 +389,12 @@ void GlobalSettings::exportConfiguration()
 
     m_fileDialog->open();
 }
+
+QVariantList GlobalSettings::layouts()
+{
+    return m_defaultLayouts;
+}
+
 }
 
 #include "moc_globalsettings.cpp"

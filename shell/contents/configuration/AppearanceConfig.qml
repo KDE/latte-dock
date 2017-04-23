@@ -72,7 +72,16 @@ PlasmaComponents.Page {
 
                     function loadLayouts(){
 
-                        var layouts = [i18n("Current"), i18n("Default"), "Plasma", "Unity", i18n("Extended"), " ------- ", "myfavourite1"];
+                        var layouts = [i18n("Current")];
+                        var layoutsC = globalSettings.layouts();
+
+                        for(var i=0; i<layoutsC.length; ++i){
+                            layouts.push(layoutsC[i].key);
+                        }
+
+                        layouts.push("-----");
+                        layouts.push("myfavourite1");
+
                         model = layouts;
 
                         currentIndex = 0;
