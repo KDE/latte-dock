@@ -391,6 +391,7 @@ Item{
 
         property bool pressed: mainItemContainer.pressed
         property int speed: root.durationTime*units.longDuration
+        property real maxMScale: Math.max(1,Math.root.zoomFactor - (root.zoomFactor - 1) / 2)
 
         ParallelAnimation{
             PropertyAnimation {
@@ -403,7 +404,7 @@ Item{
             PropertyAnimation {
                 target: wrapper
                 property: "mScale"
-                to: root.taskInAnimation ? 0.9 : wrapper.mScale - (root.zoomFactor - 1) / 2
+                to: root.taskInAnimation ? 1 : Math.max(clickedAnimation.maxMScale, wrapper.mScale - (root.zoomFactor - 1) / 2)
                 duration: clickedAnimation.speed
                 easing.type: Easing.OutQuad
             }
