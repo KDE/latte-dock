@@ -74,6 +74,11 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: layoutCmb.loadLayouts();
 
+                    Connections{
+                        target:globalSettings
+                        onClearLayoutSelection: layoutCmb.currentIndex = 0;
+                    }
+
                     function loadLayouts(){
                         layoutObjs = globalSettings.layouts();
 

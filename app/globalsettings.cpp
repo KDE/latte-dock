@@ -33,8 +33,6 @@ GlobalSettings::GlobalSettings(QObject *parent)
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
 
-        connect(this, &GlobalSettings::importLayoutSignal, this, &GlobalSettings::importLayoutInternal);
-
         init();
     }
 }
@@ -335,9 +333,11 @@ void GlobalSettings::importLayout(const QString &name, const QString &file)
     msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msg->setDefaultButton(QMessageBox::Cancel);
 
-    connect(msg, &QMessageBox::finished, this, [&, file](int result){
+    connect(msg, &QMessageBox::finished, this, [ &, file](int result) {
         if (result == QMessageBox::Ok)
             importLayoutInternal(file);
+        else
+            emit clearLayoutSelection();
     });
     connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
     msg->open();
@@ -350,7 +350,7 @@ void GlobalSettings::importLayoutInternal(const QString &file)
         msg->setText(i18nc("import/export config", "The file has a wrong format, do you want open other file?"));
         msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
-        connect(msg, &QMessageBox::finished, this, [&, file](int result){
+        connect(msg, &QMessageBox::finished, this, [ &, file](int result) {
             if (result == QMessageBox::Ok)
                 importConfiguration();
         });
@@ -518,11 +518,6 @@ QVariantList GlobalSettings::layouts()
     }
 
     if (m_userLayouts.size() > 0) {
-        QVariantMap emptyRecord;
-        emptyRecord.insert(QString("key"), QString("-----"));
-        emptyRecord.insert(QString("value"), QVariant(QString("")));
-        result.append(emptyRecord);
-
         result.append(m_userLayouts);
     }
 

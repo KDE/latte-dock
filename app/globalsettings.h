@@ -67,10 +67,10 @@ public:
 
 signals:
     void altSessionActionChanged();
+    void clearLayoutSelection();
     void currentSessionChanged();
     void autostartChanged();
     void exposeAltSessionChanged();
-    void importLayoutSignal(QString);
 
 private slots:
     void currentSessionChangedSlot(Dock::SessionType type);
