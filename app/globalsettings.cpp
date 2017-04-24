@@ -369,7 +369,7 @@ void GlobalSettings::importLayoutInternal(const QString &file)
     //! first check if this is a default layout, in that case it shouldnt be added
     bool defaultLayout = false;
 
-    foreach (QVariant it, m_userLayouts) {
+    foreach (QVariant it, m_defaultLayouts) {
         if (it.canConvert<QVariantMap>()) {
             QVariantMap map = it.toMap();
 
