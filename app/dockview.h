@@ -41,6 +41,12 @@ class Corona;
 class Containment;
 }
 
+namespace KWayland {
+namespace Client {
+class PlasmaShellSurface;
+}
+}
+
 namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
@@ -223,6 +229,7 @@ private slots:
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
+    void setupWaylandIntegration();
     void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
     void updateAppletContainsMethod();
@@ -267,6 +274,8 @@ private:
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;
+
+    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
 }

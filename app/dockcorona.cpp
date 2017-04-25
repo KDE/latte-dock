@@ -49,6 +49,11 @@
 #include <KAboutData>
 #include <KActivities/Consumer>
 
+#include <KWindowSystem>
+#include <KWayland/Client/connection_thread.h>
+#include <KWayland/Client/registry.h>
+#include <KWayland/Client/plasmashell.h>
+
 namespace Latte {
 
 DockCorona::DockCorona(QObject *parent)
@@ -56,8 +61,11 @@ DockCorona::DockCorona(QObject *parent)
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalSettings(new GlobalSettings(this)),
-      m_globalShortcuts(new GlobalShortcuts(this))
+      m_globalShortcuts(new GlobalShortcuts(this)),
+      m_waylandDockCorona(nullptr)
 {
+    setupWaylandIntegration();
+
     KPackage::Package package(new DockPackage(this));
     m_screenPool->load();
 
@@ -136,6 +144,36 @@ void DockCorona::load()
         loadLayout();
     }
 }
+
+void DockCorona::setupWaylandIntegration()
+{
+    if (!KWindowSystem::isPlatformWayland()) {
+        return;
+    }
+
+    using namespace KWayland::Client;
+    ConnectionThread *connection = ConnectionThread::fromApplication(this);
+
+    if (!connection) {
+        return;
+    }
+
+    Registry *registry = new Registry(this);
+    registry->create(connection);
+    connect(registry, &Registry::plasmaShellAnnounced, this,
+    [this, registry](quint32 name, quint32 version) {
+        qDebug() << "wayland registry ::: " << name << "  -  " << version;
+        m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
+    }
+           );
+    registry->setup();
+}
+
+KWayland::Client::PlasmaShell *DockCorona::waylandDockCoronaInterface() const
+{
+    return m_waylandDockCorona;
+}
+
 
 void DockCorona::cleanConfig()
 {

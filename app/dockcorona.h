@@ -45,6 +45,12 @@ namespace KActivities {
 class Consumer;
 }
 
+namespace KWayland {
+namespace Client {
+class PlasmaShell;
+}
+}
+
 namespace Latte {
 
 class DockCorona : public Plasma::Corona {
@@ -81,6 +87,8 @@ public:
     ScreenPool *screenPool() const;
     GlobalSettings *globalSettings() const;
 
+    KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
+
 public slots:
     void activateLauncherMenu();
     void loadDefaultLayout() override;
@@ -109,6 +117,7 @@ private slots:
 private:
     void cleanConfig();
     void qmlRegisterTypes() const;
+    void setupWaylandIntegration();
     bool appletExists(uint containmentId, uint appletId) const;
     bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
@@ -140,6 +149,8 @@ private:
     ScreenPool *m_screenPool{nullptr};
     GlobalSettings *m_globalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
+
+    KWayland::Client::PlasmaShell *m_waylandDockCorona;
 
     friend class GlobalShortcuts;
 };

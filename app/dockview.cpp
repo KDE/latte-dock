@@ -46,6 +46,9 @@
 #include <Plasma/ContainmentActions>
 #include <PlasmaQuick/AppletQuickItem>
 
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/surface.h>
+
 namespace Latte {
 
 //! both alwaysVisible and dockWinBehavior are passed through corona because
@@ -202,6 +205,31 @@ void DockView::init()
     setVisible(true);
     syncGeometry();
     qDebug() << "SOURCE:" << source();
+}
+
+void DockView::setupWaylandIntegration()
+{
+    if (m_shellSurface) {
+        // already setup
+        return;
+    }
+
+    if (DockCorona *c = qobject_cast<DockCorona *>(corona())) {
+        using namespace KWayland::Client;
+        PlasmaShell *interface = c->waylandDockCoronaInterface();
+
+        if (!interface) {
+            return;
+        }
+
+        Surface *s = Surface::fromWindow(this);
+
+        if (!s) {
+            return;
+        }
+
+        m_shellSurface = interface->createSurface(s, this);
+    }
 }
 
 bool DockView::setCurrentScreen(const QString id)
@@ -619,6 +647,10 @@ void DockView::updatePosition(QRect availableScreenRect)
     }
 
     setPosition(position);
+
+    if (m_shellSurface) {
+        m_shellSurface->setPosition(position);
+    }
 }
 
 inline void DockView::syncGeometry()
@@ -1120,6 +1152,44 @@ VisibilityManager *DockView::visibility() const
 bool DockView::event(QEvent *e)
 {
     emit eventTriggered(e);
+
+    switch (e->type()) {
+        case QEvent::PlatformSurface:
+            if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
+                switch (pe->surfaceEventType()) {
+                    case QPlatformSurfaceEvent::SurfaceCreated:
+                        setupWaylandIntegration();
+
+                        if (m_shellSurface) {
+                            KWayland::Client::PlasmaShellSurface::PanelBehavior behavior;
+                            behavior = KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow;
+
+                            m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
+                            m_shellSurface->setSkipTaskbar(true);
+                            m_shellSurface->setPanelBehavior(behavior);
+
+                            syncGeometry();
+
+                            if (m_drawShadows) {
+                                PanelShadows::self()->addWindow(this, enabledBorders());
+                            }
+                        }
+
+                        break;
+
+                    case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                        delete m_shellSurface;
+                        m_shellSurface = nullptr;
+                        PanelShadows::self()->removeWindow(this);
+                        break;
+                }
+            }
+
+            break;
+
+        default:
+            break;
+    }
 
     return ContainmentView::event(e);
 }

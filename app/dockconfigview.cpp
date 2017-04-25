@@ -35,6 +35,9 @@
 
 #include <Plasma/Package>
 
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/surface.h>
+
 namespace Latte {
 
 DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
@@ -120,6 +123,8 @@ void DockConfigView::syncGeometry()
 
     int clearThickness = m_dockView->normalThickness();
 
+    QPoint position{0, 0};
+
     switch (m_dockView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
             const QSize size(rootObject()->width(), rootObject()->height());
@@ -128,11 +133,13 @@ void DockConfigView::syncGeometry()
             resize(size);
 
             if (location == Plasma::Types::TopEdge) {
-                setPosition(sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + clearThickness);
+                position = {sGeometry.center().x() - size.width() / 2
+                            , sGeometry.y() + clearThickness
+                           };
             } else if (location == Plasma::Types::BottomEdge) {
-                setPosition(sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height());
+                position = {sGeometry.center().x() - size.width() / 2
+                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
+                           };
             }
         }
         break;
@@ -144,11 +151,13 @@ void DockConfigView::syncGeometry()
             resize(size);
 
             if (location == Plasma::Types::LeftEdge) {
-                setPosition(sGeometry.x() + clearThickness
-                            , sGeometry.center().y() - size.height() / 2);
+                position = {sGeometry.x() + clearThickness
+                            , sGeometry.center().y() - size.height() / 2
+                           };
             } else if (location == Plasma::Types::RightEdge) {
-                setPosition(sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                            , sGeometry.center().y() - size.height() / 2);
+                position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
+                            , sGeometry.center().y() - size.height() / 2
+                           };
             }
         }
         break;
@@ -156,6 +165,12 @@ void DockConfigView::syncGeometry()
         default:
             qWarning() << "no sync geometry, wrong formFactor";
             break;
+    }
+
+    setPosition(position);
+
+    if (m_shellSurface) {
+        m_shellSurface->setPosition(position);
     }
 }
 
@@ -258,6 +273,48 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
         hide();
     }
 }
+
+bool DockConfigView::event(QEvent *e)
+{
+    if (e->type() == QEvent::PlatformSurface) {
+        if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
+            switch (pe->surfaceEventType()) {
+                case QPlatformSurfaceEvent::SurfaceCreated:
+                    if (m_shellSurface) {
+                        break;
+                    }
+
+                    if (DockCorona *c = qobject_cast<DockCorona *>(m_dockView->containment()->corona())) {
+                        using namespace KWayland::Client;
+                        PlasmaShell *interface = c->waylandDockCoronaInterface();
+
+                        if (!interface) {
+                            break;
+                        }
+
+                        Surface *s = Surface::fromWindow(this);
+
+                        if (!s) {
+                            break;
+                        }
+
+                        m_shellSurface = interface->createSurface(s, this);
+                    }
+
+                    break;
+
+                case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                    delete m_shellSurface;
+                    m_shellSurface = nullptr;
+                    PanelShadows::self()->removeWindow(this);
+                    break;
+            }
+        }
+    }
+
+    return PlasmaQuick::ConfigView::event(e);
+}
+
 
 void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
