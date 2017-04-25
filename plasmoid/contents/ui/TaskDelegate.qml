@@ -76,6 +76,7 @@ MouseArea{
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
     property bool inPopup: false
+    property bool inRemoveStage: false
 
     property bool isActive: (IsActive === true) ? true : false
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
@@ -1361,6 +1362,7 @@ MouseArea{
     ListView.onRemove: SequentialAnimation {
         id: taskRealRemovalAnimation
         PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
+        PropertyAction { target: mainItemContainer; property: "inRemoveStage"; value: true }
 
         //Animation Add/Remove (1) - when is window with no launcher, animations enabled
         //Animation Add/Remove (4) - the user removes a launcher, animation enabled
