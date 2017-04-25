@@ -36,6 +36,7 @@ QuickWindowSystem::QuickWindowSystem(QObject *parent)
 {
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: Wayland compositing active
+        m_compositing = true;
     } else {
         connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
         , this, [&](bool enabled) {

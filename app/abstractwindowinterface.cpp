@@ -20,6 +20,7 @@
 
 #include "abstractwindowinterface.h"
 #include "xwindowinterface.h"
+#include "waylandinterface.h"
 
 #include <QObject>
 #include <QQuickWindow>
@@ -57,6 +58,7 @@ AbstractWindowInterface &AbstractWindowInterface::self()
 
     if (KWindowSystem::isPlatformWayland()) {
         //! TODO: WaylandWindowInterface
+        m_wm = std::make_unique<WaylandInterface>();
     } else { /* if(KWindowSystem::isPlatformX11) */
         m_wm = std::make_unique<XWindowInterface>();
     }

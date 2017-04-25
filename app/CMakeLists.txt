@@ -3,6 +3,7 @@ set(lattedock-app_SRCS
     windowinfowrap.cpp
     abstractwindowinterface.cpp
     xwindowinterface.cpp
+    waylandinterface.cpp
     windowinfowrap.cpp
     visibilitymanager.cpp
     dockcorona.cpp
