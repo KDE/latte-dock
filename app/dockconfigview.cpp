@@ -45,6 +45,8 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_blockFocusLost(false),
       m_dockView(dockView)
 {
+    setupWaylandIntegration();
+
     setScreen(m_dockView->screen());
 
     if (containment) {
@@ -83,6 +85,12 @@ DockConfigView::~DockConfigView()
     foreach (auto var, connections) {
         QObject::disconnect(var);
     }
+
+    if (m_shellSurface) {
+        delete m_shellSurface;
+        m_shellSurface = nullptr;
+    }
+
 }
 
 void DockConfigView::init()
@@ -274,38 +282,53 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
     }
 }
 
+void DockConfigView::setupWaylandIntegration()
+{
+    if (m_shellSurface) {
+        // already setup
+        return;
+    }
+
+    if (DockCorona *c = qobject_cast<DockCorona *>(m_dockView->containment()->corona())) {
+        using namespace KWayland::Client;
+        PlasmaShell *interface = c->waylandDockCoronaInterface();
+
+        if (!interface) {
+            return;
+        }
+
+        Surface *s = Surface::fromWindow(this);
+
+        if (!s) {
+            return;
+        }
+
+        qDebug() << "wayland dock window surface was created...";
+
+        m_shellSurface = interface->createSurface(s, this);
+    }
+}
+
 bool DockConfigView::event(QEvent *e)
 {
     if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
             switch (pe->surfaceEventType()) {
                 case QPlatformSurfaceEvent::SurfaceCreated:
+
                     if (m_shellSurface) {
                         break;
                     }
 
-                    if (DockCorona *c = qobject_cast<DockCorona *>(m_dockView->containment()->corona())) {
-                        using namespace KWayland::Client;
-                        PlasmaShell *interface = c->waylandDockCoronaInterface();
-
-                        if (!interface) {
-                            break;
-                        }
-
-                        Surface *s = Surface::fromWindow(this);
-
-                        if (!s) {
-                            break;
-                        }
-
-                        m_shellSurface = interface->createSurface(s, this);
-                    }
-
+                    setupWaylandIntegration();
                     break;
 
                 case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                    delete m_shellSurface;
-                    m_shellSurface = nullptr;
+                    if (m_shellSurface) {
+                        delete m_shellSurface;
+                        m_shellSurface = nullptr;
+                    }
+
                     PanelShadows::self()->removeWindow(this);
                     break;
             }

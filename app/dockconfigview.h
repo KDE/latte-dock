@@ -82,6 +82,8 @@ signals:
     void aboutApplication();
 
 private:
+    void setupWaylandIntegration();
+
     bool m_blockFocusLost;
 
     QPointer<DockView> m_dockView;

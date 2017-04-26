@@ -58,6 +58,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
 {
+    setupWaylandIntegration();
+
     setVisible(false);
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -147,6 +149,11 @@ DockView::~DockView()
 
     if (m_visibility)
         delete m_visibility;
+
+    if (m_shellSurface) {
+        delete m_shellSurface;
+        m_shellSurface = nullptr;
+    }
 }
 
 void DockView::init()
@@ -1164,6 +1171,8 @@ bool DockView::event(QEvent *e)
                             KWayland::Client::PlasmaShellSurface::PanelBehavior behavior;
                             behavior = KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow;
 
+                            qDebug() << "wayland dock window surface was created...";
+
                             m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
                             m_shellSurface->setSkipTaskbar(true);
                             m_shellSurface->setPanelBehavior(behavior);
@@ -1179,6 +1188,7 @@ bool DockView::event(QEvent *e)
 
                     case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
                         delete m_shellSurface;
+                        qDebug() << "wayland dock window surface was deleted...";
                         m_shellSurface = nullptr;
                         PanelShadows::self()->removeWindow(this);
                         break;

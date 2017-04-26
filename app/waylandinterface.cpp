@@ -64,9 +64,9 @@ WaylandInterface::WaylandInterface(QObject *parent)
             , this, &WaylandInterface::currentActivityChanged);
 
     // fill windows list
-    foreach (const auto &wid, KWindowSystem::self()->windows()) {
-        addWindow(wid);
-    }
+    /* foreach (const auto &wid, KWindowSystem::self()->windows()) {
+          addWindow(wid);
+      }*/
 }
 
 WaylandInterface::~WaylandInterface()
@@ -75,8 +75,8 @@ WaylandInterface::~WaylandInterface()
 
 void WaylandInterface::setDockExtraFlags(QQuickWindow &view)
 {
-    KWindowSystem::setType(view.winId(), NET::Dock);
-    KWindowSystem::setState(view.winId(), NET::SkipTaskbar | NET::SkipPager);
+    //  KWindowSystem::setType(view.winId(), NET::Dock);
+    //  KWindowSystem::setState(view.winId(), NET::SkipTaskbar | NET::SkipPager);
     KWindowSystem::setOnAllDesktops(view.winId(), true);
     KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
@@ -201,28 +201,28 @@ bool WaylandInterface::isOnCurrentDesktop(WId wid) const
 
 WindowInfoWrap WaylandInterface::requestInfo(WId wid) const
 {
-    const KWindowInfo winfo{wid, NET::WMFrameExtents
-        | NET::WMWindowType
-        | NET::WMGeometry
-        | NET::WMState};
+    /* const KWindowInfo winfo{wid, NET::WMFrameExtents
+         | NET::WMWindowType
+         | NET::WMGeometry
+         | NET::WMState};*/
 
     WindowInfoWrap winfoWrap;
 
-    if (isValidWindow(winfo)) {
-        winfoWrap.setIsValid(true);
-        winfoWrap.setWid(wid);
-        winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
-        winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
-        winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
-        winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));
-        winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
-        winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
-        winfoWrap.setGeometry(winfo.frameGeometry());
-    } else if (m_desktopId == wid) {
-        winfoWrap.setIsValid(true);
-        winfoWrap.setIsPlasmaDesktop(true);
-        winfoWrap.setWid(wid);
-    }
+    /* if (isValidWindow(winfo)) {
+         winfoWrap.setIsValid(true);
+         winfoWrap.setWid(wid);
+         winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
+         winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
+         winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
+         winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));
+         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
+         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
+         winfoWrap.setGeometry(winfo.frameGeometry());
+     } else if (m_desktopId == wid) {
+         winfoWrap.setIsValid(true);
+         winfoWrap.setIsPlasmaDesktop(true);
+         winfoWrap.setWid(wid);
+     }*/
 
     return winfoWrap;
 }
@@ -230,46 +230,47 @@ WindowInfoWrap WaylandInterface::requestInfo(WId wid) const
 
 bool WaylandInterface::isValidWindow(const KWindowInfo &winfo) const
 {
-    constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::NormalMask;
-    auto winType = winfo.windowType(types);
+    /*  constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::NormalMask;
+      auto winType = winfo.windowType(types);
 
-    if (winType == -1) {
-        // Trying to get more types for verify if the window have any other type
-        winType = winfo.windowType(~types & NET::AllTypesMask);
+      if (winType == -1) {
+          // Trying to get more types for verify if the window have any other type
+          winType = winfo.windowType(~types & NET::AllTypesMask);
 
-        if (winType == -1) {
-            qWarning() << KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName()
-                       << "doesn't have any WindowType, assuming as NET::Normal";
-            return true;
-        }
-    }
+          if (winType == -1) {
+              qWarning() << KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName()
+                         << "doesn't have any WindowType, assuming as NET::Normal";
+              return true;
+          }
+      }*/
+    return true;
 
-    return !((winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash));
+    //return !((winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash));
 }
 
 void WaylandInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
     //! if the dock changed is ignored
-    if (std::find(m_docks.cbegin(), m_docks.cend(), wid) != m_docks.cend())
-        return;
+    /* if (std::find(m_docks.cbegin(), m_docks.cend(), wid) != m_docks.cend())
+         return;
 
-    const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
+     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
 
-    if (winType != -1 && (winType & NET::Desktop)) {
-        m_desktopId = wid;
-        emit windowChanged(wid);
-        return;
-    }
+     if (winType != -1 && (winType & NET::Desktop)) {
+         m_desktopId = wid;
+         emit windowChanged(wid);
+         return;
+     }
 
-    //! ignore when, eg: the user presses a key
-    if (prop1 == 0 && prop2 == NET::WM2UserTime) {
-        return;
-    }
+     //! ignore when, eg: the user presses a key
+     if (prop1 == 0 && prop2 == NET::WM2UserTime) {
+         return;
+     }
 
-    if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
-        return;
+     if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
+         return;
 
-    emit windowChanged(wid);
+     emit windowChanged(wid);*/
 }
 
 }
