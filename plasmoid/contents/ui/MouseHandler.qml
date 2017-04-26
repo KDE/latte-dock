@@ -79,15 +79,21 @@ Item {
                 root.dropNewLauncher = false;
                 var createLaunchers = false;
 
-                if (event.mimeData.hasUrls) {
+                if (event.mimeData.hasUrls || (event.mimeData.formats.indexOf("text/x-plasmoidservicename") !== 0)) {
                     root.dropNewLauncher = true;
-                    createLaunchers = event.mimeData.urls.every(function (item) {
-                        return backend.isApplication(item)
-                    });
+
+                    if (event.mimeData.hasUrls){
+                        createLaunchers = event.mimeData.urls.every(function (item) {
+                            return backend.isApplication(item)
+                        });
+                    }
+                } else {
+                    event.ignore();
                 }
 
-                if (createLaunchers)
+                if (createLaunchers) {
                     onlyLaunchers = true;
+                }
             }
         }
 
