@@ -58,14 +58,19 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
 {
-    setupWaylandIntegration();
+    //! S1.1: the only way I found in order to solve kwin shadows issue in combinations of S1.2
+    //! this way we avoid an issue of kwin creating shadows for
+    //! the secondary, third dock
+    if (!KWindowSystem::isPlatformWayland()) {
+        setVisible(false);
+    }
 
-    setVisible(false);
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setColor(QColor(Qt::transparent));
     setClearBeforeRendering(true);
+
 
     const auto flags = Qt::FramelessWindowHint
                        | Qt::WindowStaysOnTopHint
@@ -79,6 +84,10 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         setFlags(flags | Qt::BypassWindowManagerHint);
     }
 
+    //! S1.2: setup the wayland early enough and after the flags settings
+    //! this way we avoid an issue of kwin creating shadows for
+    //! the secondary, third dock
+    setupWaylandIntegration();
     KWindowSystem::setOnAllDesktops(winId(), true);
 
     if (targetScreen)
@@ -236,6 +245,13 @@ void DockView::setupWaylandIntegration()
         }
 
         m_shellSurface = interface->createSurface(s, this);
+        qDebug() << "wayland dock window surface was created...";
+
+        KWayland::Client::PlasmaShellSurface::PanelBehavior behavior;
+        behavior = KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow;
+        m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
+        m_shellSurface->setSkipTaskbar(true);
+        m_shellSurface->setPanelBehavior(behavior);
     }
 }
 
@@ -1168,15 +1184,6 @@ bool DockView::event(QEvent *e)
                         setupWaylandIntegration();
 
                         if (m_shellSurface) {
-                            KWayland::Client::PlasmaShellSurface::PanelBehavior behavior;
-                            behavior = KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow;
-
-                            qDebug() << "wayland dock window surface was created...";
-
-                            m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
-                            m_shellSurface->setSkipTaskbar(true);
-                            m_shellSurface->setPanelBehavior(behavior);
-
                             syncGeometry();
 
                             if (m_drawShadows) {
