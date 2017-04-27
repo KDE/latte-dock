@@ -211,6 +211,7 @@ DragDrop.DropArea {
     property bool smartLaunchersEnabled: plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
 
+    property int latteInternalSeparatorPos: latteApplet ? latteApplet.internalSeparatorPos : -1
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 

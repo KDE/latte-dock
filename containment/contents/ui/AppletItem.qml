@@ -944,13 +944,21 @@ Item {
                         }
                         else{
                             if(layoutsContainer.hoveredIndex<container.index){
-                                latteApplet.updateScale(0, nScale, step);
-                            //disabled because of the internal tasks separator
-                                latteApplet.updateScale(1, 1, 0);
+                                if (root.latteInternalSeparatorPos===0){
+                                    latteApplet.updateScale(1, nScale, step);
+                                    latteApplet.updateScale(2,1,0);
+                                } else {
+                                    latteApplet.updateScale(0, nScale, step);
+                                    latteApplet.updateScale(1, 1, 0);
+                                }
                             } else if(layoutsContainer.hoveredIndex>container.index) {
-                                latteApplet.updateScale(root.tasksCount-1, nScale, step);
-                                //disabled because of the internal tasks separator
-                                latteApplet.updateScale(root.tasksCount-2, 1, 0);
+                                if (root.latteInternalSeparatorPos===root.tasksCount-1){
+                                    latteApplet.updateScale(root.tasksCount-2, nScale, step);
+                                    latteApplet.updateScale(root.tasksCount-3, 1, 0);
+                                } else {
+                                    latteApplet.updateScale(root.tasksCount-1, nScale, step);
+                                    latteApplet.updateScale(root.tasksCount-2, 1, 0);
+                                }
                             }
                         }
                     }  ///if the applet is hidden must forward its scale events to its neighbours

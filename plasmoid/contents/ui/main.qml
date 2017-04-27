@@ -71,6 +71,7 @@ Item {
     property int clearWidth
     property int clearHeight
 
+    property int internalSeparatorPos: -1
     property int newLocationDebugUse: PlasmaCore.Types.BottomPositioned
     property int newDroppedPosition: -1
     property int noInitCreatedBuffers: 0
@@ -494,6 +495,9 @@ Item {
                 }
             }
             root.hasInternalSeparator = hasSep;
+
+            if (!hasSep)
+                root.internalSeparatorPos = -1;
         }
 
         onGroupingAppIdBlacklistChanged: {

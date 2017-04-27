@@ -479,6 +479,14 @@ MouseArea{
                     if(!root.hasInternalSeparator) {
                         root.updateScale(index+2, 1, 0);
                         root.updateScale(index-2, 1, 0);
+                    } else if(root.internalSeparatorPos>=0) {
+                        if(root.internalSeparatorPos === index+1){
+                            root.updateScale(index+3, 1, 0);
+                            root.updateScale(index-2, 1, 0);
+                        } else if(root.internalSeparatorPos === index-1) {
+                            root.updateScale(index+2, 1, 0);
+                            root.updateScale(index-3, 1, 0);
+                        }
                     }
 
                     //Left hiddenSpacer
@@ -618,6 +626,10 @@ MouseArea{
     onItemIndexChanged: {
         if (itemIndex>=0)
             lastValidTimer.start();
+
+        if (isSeparator){
+            root.internalSeparatorPos = itemIndex;
+        }
     }
 
     onIsDraggedChanged: {
