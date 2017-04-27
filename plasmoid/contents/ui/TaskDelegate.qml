@@ -471,8 +471,15 @@ MouseArea{
                     //activate messages to update the the neighbour scales
                     root.updateScale(index+1, rightScale, 0);
                     root.updateScale(index-1, leftScale, 0);
-                   // root.updateScale(index+2, 1, 0);
-                   // root.updateScale(index-2, 1, 0);
+
+                   /* if (index>1)
+                        root.updateScale(-1, 1, 0);
+                    if (index<icList.tasksCount-2)
+                        root.updateScale(root.tasksCount, 1, 0);*/
+                    if(!root.hasInternalSeparator) {
+                        root.updateScale(index+2, 1, 0);
+                        root.updateScale(index-2, 1, 0);
+                    }
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
@@ -502,7 +509,8 @@ MouseArea{
                 }
 
                 if ((index === nIndex) && mainItemContainer.isSeparator){
-                    if (icList.hoveredIndex<index)
+                    // console.log(nIndex + " - " + icList.hoveredIndex + " - " + (icList.tasksCount-1));
+                    if (icList.hoveredIndex<index && icList.hoveredIndex >= 0)
                         root.updateScale(index+1, nScale, step);
                     else if (icList.hoveredIndex>index)
                         root.updateScale(index-1, nScale, step);

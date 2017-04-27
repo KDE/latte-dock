@@ -57,6 +57,7 @@ Item {
     property bool editMode: plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
+    property bool hasInternalSeparator: false
     property bool initializationStep: false //true
     property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
@@ -120,6 +121,7 @@ Item {
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
+    property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
@@ -339,6 +341,13 @@ Item {
         ActivitiesTools.updateLaunchers(launchers);*/
     }
 
+    onDockHoveredIndexChanged: {
+        if (dockHoveredIndex >= 0) {
+            icList.hoveredIndex = -1;
+            checkListHovered.startNormal();
+        }
+    }
+
     onDragSourceChanged: {
         if (dragSource == null) {
             root.draggingFinished();
@@ -475,7 +484,16 @@ Item {
 
         onLauncherListChanged: {
             plasmoid.configuration.launchers59 = launcherList;
-            // ActivitiesTools.updateLaunchers(launcherList);
+
+            var hasSep = false;
+            for(var i=0; i<launcherList.length; ++i){
+                var rec1 = launcherList[i];
+                if (rec1.indexOf("latte-separator.desktop") >= 0) {
+                    hasSep = true;
+                    break;
+                }
+            }
+            root.hasInternalSeparator = hasSep;
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -841,7 +859,7 @@ Item {
             property int hoveredIndex : -1
             property int previousCount : 0
 
-            property int tasksCount: contentItem.children.length
+            property int tasksCount: tasksModel.count
 
             property bool delayingRemoval: false
             property bool directRender: false
@@ -1217,8 +1235,11 @@ Item {
     //! it is used to add the fake desktop file which represents
     //! the separator (fake launcher)
     function addSeparator(filepath){
-        console.log(filepath);
-        addLauncher(filepath);
+        tasksModel.requestAddLauncher(filepath);
+    }
+
+    function removeSeparator(filepath){
+        tasksModel.requestRemoveLauncher(filepath);
     }
 
     function outsideContainsMouse(){

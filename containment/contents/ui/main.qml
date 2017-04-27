@@ -76,6 +76,8 @@ DragDrop.DropArea {
     property bool smallAutomaticIconJumps: true
     property bool useThemePanel: noApplets === 0 ? true : plasmoid.configuration.useThemePanel
 
+    property alias hoveredIndex: layoutsContainer.hoveredIndex
+
     property int actionsBlockHiding: 0 //actions that block hiding
 
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
@@ -211,6 +213,8 @@ DragDrop.DropArea {
 
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
+
+    property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
     property real durationTime: {
         if (plasmoid.configuration.durationTime === 0 || plasmoid.configuration.durationTime === 2 )
@@ -598,6 +602,11 @@ DragDrop.DropArea {
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
         //  dndSpacer.parent = root;
+    }
+
+    //! it is used in order to provide to config window the internalSeparator state
+    onHasInternalSeparatorChanged: {
+        plasmoid.configuration.hasInternalSeparator = root.hasInternalSeparator;
     }
 
     onLatteAppletChanged: {

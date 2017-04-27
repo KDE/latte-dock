@@ -945,9 +945,11 @@ Item {
                         else{
                             if(layoutsContainer.hoveredIndex<container.index){
                                 latteApplet.updateScale(0, nScale, step);
+                            //disabled because of the internal tasks separator
                                 latteApplet.updateScale(1, 1, 0);
                             } else if(layoutsContainer.hoveredIndex>container.index) {
                                 latteApplet.updateScale(root.tasksCount-1, nScale, step);
+                                //disabled because of the internal tasks separator
                                 latteApplet.updateScale(root.tasksCount-2, 1, 0);
                             }
                         }

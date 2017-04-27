@@ -215,14 +215,17 @@ PlasmaComponents.Page {
                     }
                 }
                 PlasmaComponents.Button {
-                    iconSource: "add"
+                    iconSource: plasmoid.configuration.hasInternalSeparator ? "remove" : "add"
                     text: i18n("Tasks Separator")
                     Layout.alignment: Qt.AlignLeft
                     visible: dock.tasksPresent()
 //                    tooltip: i18n("Add a separator for tasks")
 
                     onClicked: {
-                        dockConfig.addTasksSeparator();
+                        if (plasmoid.configuration.hasInternalSeparator)
+                            dockConfig.removeTasksSeparator();
+                        else
+                            dockConfig.addTasksSeparator();
                     }
                 }
                 PlasmaComponents.Button {

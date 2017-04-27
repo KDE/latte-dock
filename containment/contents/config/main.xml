@@ -172,5 +172,8 @@
     <entry name="showOnlyCurrentActivity" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="hasInternalSeparator" type="Bool">
+      <default>false</default>
+    </entry>
   </group>
 </kcfg>
