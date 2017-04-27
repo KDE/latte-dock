@@ -65,6 +65,7 @@ We recommend that you use at least **Plasma 5.8.0**
 
 ### Gentoo
 
+- in the portage, as `kde-misc/latte-dock`, [more infos](https://github.com/psifidotos/Latte-Dock/wiki/F.A.Q.#q-which-distributions-have-packages-for-it-so-to-install-it-via-pm-)
 - [Gentoo package](https://github.com/redcorelinux/redcore-desktop/blob/master/kde-apps/latte-dock/latte-dock-0.6.0.ebuild)
 
 
