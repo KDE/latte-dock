@@ -76,6 +76,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 DockConfigView::~DockConfigView()
 {
     qDebug() << "DockConfigView deleting ...";
+
     foreach (auto var, connections) {
         QObject::disconnect(var);
     }
@@ -280,6 +281,49 @@ void DockConfigView::addPanelSpacer()
         m_dockView->containment()->createApplet(QStringLiteral("org.kde.plasma.panelspacer"));
     }
 }
+
+void DockConfigView::addTasksSeparator()
+{
+
+    const auto &applets = m_dockView->containment()->applets();
+
+    for (auto *applet : applets) {
+        KPluginMetaData meta = applet->kPackage().metadata();
+
+        if (meta.pluginId() == "org.kde.latte.plasmoid") {
+
+            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                const auto &childItems = appletInterface->childItems();
+
+                if (childItems.isEmpty()) {
+                    continue;
+                }
+
+                for (QQuickItem *item : childItems) {
+                    if (auto *metaObject = item->metaObject()) {
+                        // not using QMetaObject::invokeMethod to avoid warnings when calling
+                        // this on applets that don't have it or other child items since this
+                        // is pretty much trial and error.
+                        // Also, "var" arguments are treated as QVariant in QMetaObject
+                        int methodIndex = metaObject->indexOfMethod("addSeparator(QVariant)");
+
+                        if (methodIndex == -1) {
+                            continue;
+                        }
+
+                        QMetaMethod method = metaObject->method(methodIndex);
+
+                        if (method.invoke(item, Q_ARG(QVariant, QString(m_dockView->corona()->kPackage().filePath("separator0"))))) {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
 
 void DockConfigView::hideConfigWindow()
 {

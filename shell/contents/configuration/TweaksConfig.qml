@@ -202,6 +202,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
 
                 PlasmaComponents.Button {
                     iconSource: "distribute-horizontal-x"
@@ -211,6 +212,17 @@ PlasmaComponents.Page {
 
                     onClicked: {
                         dockConfig.addPanelSpacer()
+                    }
+                }
+                PlasmaComponents.Button {
+                    iconSource: "add"
+                    text: i18n("Tasks Separator")
+                    Layout.alignment: Qt.AlignLeft
+                    visible: dock.tasksPresent()
+//                    tooltip: i18n("Add a separator for tasks")
+
+                    onClicked: {
+                        dockConfig.addTasksSeparator();
                     }
                 }
                 PlasmaComponents.Button {

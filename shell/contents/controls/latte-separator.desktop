@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Latte Separator
+Comment=Latte Ghost Separator (Ghost file)
+GenericName=Dock
+Version=0.1
+Categories=Utility;
+Exec=latte-dock %u
+Icon=latte-dock
+InitialPreference=1
+Terminal=false
+Type=Application

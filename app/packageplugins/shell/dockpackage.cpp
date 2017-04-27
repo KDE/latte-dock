@@ -51,6 +51,8 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("layout2", QStringLiteral("layouts/Plasma.latterc"), i18n("plasma layout file"));
     package->addFileDefinition("layout3", QStringLiteral("layouts/Unity.latterc"), i18n("unity layout file"));
     package->addFileDefinition("layout4", QStringLiteral("layouts/Extended.latterc"), i18n("extended layout file"));
+    
+    package->addFileDefinition("separator0", QStringLiteral("controls/latte-separator.desktop"), i18n("tasks plasmoid separator"));
 
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();

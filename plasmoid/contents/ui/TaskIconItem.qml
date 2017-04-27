@@ -37,8 +37,8 @@ import org.kde.latte 0.1 as Latte
 Item{
     id: centralItem
 
-    width: wrapper.regulatorWidth
-    height: wrapper.regulatorHeight
+    width: mainItemContainer.isSeparator ? wrapper.width : wrapper.regulatorWidth
+    height: mainItemContainer.isSeparator ? wrapper.height : wrapper.regulatorHeight
 
     //big interval to show shadows only after all the crappy adds and removes of tasks
     //have happened
@@ -63,12 +63,12 @@ Item{
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
 
-    /* Rectangle{
+    Rectangle{
         anchors.fill: parent
         border.width: 1
         border.color: "green"
         color: "transparent"
-    } */
+    }
 
     onSmartLauncherEnabledChanged: {
         if (smartLauncherEnabled && !smartLauncherItem) {
@@ -117,6 +117,41 @@ Item{
         width: parent.width
         height: parent.height
 
+        Item{
+            anchors.rightMargin: iconImageBuffer.rightMargin
+            anchors.leftMargin: iconImageBuffer.leftMargin
+            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? baseMargin : 0
+            anchors.topMargin: iconImageBuffer.topMargin
+
+            anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+            anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+            anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
+            anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
+            anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
+            anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
+
+            property int baseMargin: root.statesLineSize + root.thickMarginBase
+            opacity: 0.5
+            visible: mainItemContainer.isSeparator
+
+            width: root.vertical ? iconImageBuffer.width : 5
+            height: !root.vertical ? iconImageBuffer.height : 5
+
+            Rectangle {
+                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+                anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
+                anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
+                anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
+                anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
+
+                width: root.vertical ? root.iconSize - 8  : 1
+                height: !root.vertical ? root.iconSize - 8 : 1
+                color: theme.textColor
+            }
+        }
+
+
         Latte.IconItem{
             id: iconImageBuffer
 
@@ -142,6 +177,7 @@ Item{
             //icon: decoration
             source: decoration
 
+            visible: !mainItemContainer.isSeparator
             //visible: !root.enableShadows
 
             onValidChanged: {
@@ -163,7 +199,6 @@ Item{
 
             ///states for launcher animation
             states: [
-
                 State{
                     name: "*"
                     when:  !launcherAnimation.running && !newWindowAnimation.running && !mainItemContainer.inAddRemoveAnimation
@@ -904,7 +939,7 @@ Item{
                     PropertyAnimation {
                         target: stateColorizer
                         property: "opacity"
-                        to: 1
+                        to: mainItemContainer.isSeparator ? 0 : 1
                         duration: isDraggedTransition.speed
                         easing.type: Easing.OutQuad
                     }

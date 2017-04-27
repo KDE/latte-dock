@@ -1214,6 +1214,13 @@ Item {
         }
     }
 
+    //! it is used to add the fake desktop file which represents
+    //! the separator (fake launcher)
+    function addSeparator(filepath){
+        console.log(filepath);
+        addLauncher(filepath);
+    }
+
     function outsideContainsMouse(){
         //console.log("disable restore zoom:"+disableRestoreZoom);
         if (disableRestoreZoom) {

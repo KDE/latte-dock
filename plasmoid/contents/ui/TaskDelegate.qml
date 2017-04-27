@@ -84,6 +84,7 @@ MouseArea{
     property bool isGroupParent: (IsGroupParent === true) ? true : false
     property bool isLauncher: (IsLauncher === true) ? true : false
     property bool isMinimized: (IsMinimized === true) ? true : false
+    property bool isSeparator: false
     property bool isStartup: (IsStartup === true) ? true : false
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
@@ -116,6 +117,9 @@ MouseArea{
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== "")
             launcherUrl = modelLauncherUrl;
+
+        if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0)
+            isSeparator = true;
     }
 
     onModelLauncherUrlWithIconChanged: {
@@ -262,6 +266,13 @@ MouseArea{
                 if (!mainItemContainer.visible)
                     return 0;
 
+                if (mainItemContainer.isSeparator){
+                    if (!root.vertical)
+                        return 5 + widthMargins;
+                    else
+                        return root.iconSize + widthMargins;
+                }
+
                 if (mainItemContainer.isStartup && root.durationTime !==0 )
                     return cleanScalingWidth;
                 else
@@ -271,6 +282,13 @@ MouseArea{
             height: {
                 if (!mainItemContainer.visible)
                     return 0;
+
+                if (mainItemContainer.isSeparator){
+                    if (root.vertical)
+                        return 5 + heightMargins;
+                    else
+                        return root.iconSize + heightMargins;
+                }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0)
                     return cleanScalingHeight;
@@ -377,7 +395,7 @@ MouseArea{
             }//Flow
 
             function calculateScales( currentMousePosition ){
-                if (root.editMode) {
+                if (root.editMode || mainItemContainer.isSeparator) {
                     return;
                 }
 
@@ -448,7 +466,8 @@ MouseArea{
 
             function signalUpdateScale(nIndex, nScale, step){
                 //if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
-                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
+                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)
+                        &&(!mainItemContainer.isSeparator)){
                     if(nScale >= 0) {
                         mScale = nScale + step;
                     } else {
@@ -697,6 +716,10 @@ MouseArea{
 
             if(!inAnimation)
                 pressed=false;
+        } else {
+            if (isSeparator){
+                icList.directRender = false;
+            }
         }
 
         ////window previews/////////
