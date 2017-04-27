@@ -699,21 +699,10 @@ MouseArea{
                 pressed=false;
         }
 
-        if (isWindow) {
-            root.windowsHovered(model.LegacyWinIdList, containsMouse);
-        }
-
-
         ////window previews/////////
         if (isWindow) {
-            if(containsMouse && root.showPreviews && Latte.WindowSystem.compositingActive){
-                // if (!windowsPreviewDlg.visible) {
+            if(containsMouse && (root.showPreviews || root.highlightWindows) && Latte.WindowSystem.compositingActive){
                 hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
-                // } else {
-                //     mainItemContainer.preparePreviewWindow(false);
-                // }
-
-                //  preparePreviewWindow();
             }
             else{
                 if (hoveredTimerObj){
@@ -721,6 +710,11 @@ MouseArea{
                     hoveredTimerObj.destroy();
                 }
             }
+        }
+
+        ////disable hover effect///
+        if (isWindow && root.highlightWindows && !containsMouse) {
+            root.windowsHovered(model.LegacyWinIdList, false);
         }
     }
 
@@ -1255,8 +1249,14 @@ MouseArea{
             onTriggered: {
                 if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
                     //console.log("Hovered Timer....");
-                    mainItemContainer.preparePreviewWindow(false);
-                    windowsPreviewDlg.show(mainItemContainer);
+                    if (root.showPreviews) {
+                        mainItemContainer.preparePreviewWindow(false);
+                        windowsPreviewDlg.show(mainItemContainer);
+                    }
+
+                    if (mainItemContainer.isWindow && root.highlightWindows) {
+                        root.windowsHovered(model.LegacyWinIdList, mainItemContainer.containsMouse);
+                    }
                 }
 
                 hoveredTimer.destroy();
