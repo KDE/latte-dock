@@ -215,7 +215,7 @@ PlasmaComponents.Page {
                     }
                 }
                 PlasmaComponents.Button {
-                    iconSource: plasmoid.configuration.hasInternalSeparator ? "remove" : "add"
+                    iconSource: plasmoid.configuration.hasInternalSeparator ? "edit-delete" : "list-add"
                     text: i18n("Tasks Separator")
                     Layout.alignment: Qt.AlignLeft
                     visible: dock.tasksPresent()
