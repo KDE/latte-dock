@@ -120,6 +120,8 @@ MouseArea{
 
         if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0)
             isSeparator = true;
+        else
+            isSeparator = false;
     }
 
     onModelLauncherUrlWithIconChanged: {
@@ -270,7 +272,7 @@ MouseArea{
                     if (!root.vertical)
                         return 5 + widthMargins;
                     else
-                        return root.iconSize + widthMargins;
+                        return (root.iconSize + widthMargins) * mScale + root.statesLineSize;
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0 )
@@ -287,7 +289,7 @@ MouseArea{
                     if (root.vertical)
                         return 5 + heightMargins;
                     else
-                        return root.iconSize + heightMargins;
+                        return (root.iconSize + heightMargins) * mScale + root.statesLineSize;
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0)
@@ -325,8 +327,29 @@ MouseArea{
             property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + widthMargins) * scaleWidth) : cleanScalingWidth
             property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + heightMargins) * scaleHeight) : cleanScalingHeight
 
-            property real regulatorWidth: basicScalingWidth;//-2;
-            property real regulatorHeight: basicScalingHeight;//-2;
+            property real regulatorWidth: mainItemContainer.isSeparator ? separatorRegWidth : basicScalingWidth;
+            property real regulatorHeight: mainItemContainer.isSeparator ? separatorRegHeight : basicScalingHeight;
+
+            property real separatorRegWidth: {
+                if (!mainItemContainer.isSeparator)
+                    return;
+
+                if (!root.vertical)
+                    return 5 + widthMargins;
+                else
+                    return (root.iconSize + root.thickMargin) * mScale;
+            }
+
+            property real separatorRegHeight: {
+                if (!mainItemContainer.isSeparator)
+                    return;
+
+                if (root.vertical)
+                    return 5 + widthMargins;
+                else
+                    return (root.iconSize + root.thickMargin) * mScale;
+            }
+
             /// end of Scalers///////
 
             //property int curIndex: icList.hoveredIndex
@@ -395,7 +418,10 @@ MouseArea{
             }//Flow
 
             function calculateScales( currentMousePosition ){
-                if (root.editMode || mainItemContainer.isSeparator) {
+                if (root.editMode) {
+                    return;
+                } else if (mainItemContainer.isSeparator) {
+                    wrapper.mScale = root.zoomFactor;
                     return;
                 }
 
@@ -445,8 +471,8 @@ MouseArea{
                     //activate messages to update the the neighbour scales
                     root.updateScale(index+1, rightScale, 0);
                     root.updateScale(index-1, leftScale, 0);
-                    root.updateScale(index+2, 1, 0);
-                    root.updateScale(index-2, 1, 0);
+                   // root.updateScale(index+2, 1, 0);
+                   // root.updateScale(index-2, 1, 0);
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
@@ -466,14 +492,20 @@ MouseArea{
 
             function signalUpdateScale(nIndex, nScale, step){
                 //if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
-                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)
-                        &&(!mainItemContainer.isSeparator)){
+                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
                     if(nScale >= 0) {
                         mScale = nScale + step;
                     } else {
                         mScale = mScale + step;
                     }
                     //     console.log(index+ ", "+mScale);
+                }
+
+                if ((index === nIndex) && mainItemContainer.isSeparator){
+                    if (icList.hoveredIndex<index)
+                        root.updateScale(index+1, nScale, step);
+                    else if (icList.hoveredIndex>index)
+                        root.updateScale(index-1, nScale, step);
                 }
             }
 
@@ -716,10 +748,6 @@ MouseArea{
 
             if(!inAnimation)
                 pressed=false;
-        } else {
-            if (isSeparator){
-                icList.directRender = false;
-            }
         }
 
         ////window previews/////////
@@ -1021,6 +1049,9 @@ MouseArea{
     }
 
     function showContextMenu(args) {
+        if (isSeparator)
+            return;
+
         contextMenu = root.createContextMenu(mainItemContainer, modelIndex(), args);
         contextMenu.show();
     }

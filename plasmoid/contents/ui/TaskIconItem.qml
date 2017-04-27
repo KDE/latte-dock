@@ -37,8 +37,8 @@ import org.kde.latte 0.1 as Latte
 Item{
     id: centralItem
 
-    width: mainItemContainer.isSeparator ? wrapper.width : wrapper.regulatorWidth
-    height: mainItemContainer.isSeparator ? wrapper.height : wrapper.regulatorHeight
+    width: wrapper.regulatorWidth
+    height: wrapper.regulatorHeight
 
     //big interval to show shadows only after all the crappy adds and removes of tasks
     //have happened
@@ -63,12 +63,12 @@ Item{
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
 
-    Rectangle{
+    /*Rectangle{
         anchors.fill: parent
         border.width: 1
         border.color: "green"
         color: "transparent"
-    }
+    }*/
 
     onSmartLauncherEnabledChanged: {
         if (smartLauncherEnabled && !smartLauncherItem) {
@@ -87,8 +87,8 @@ Item{
 
     Rectangle{
         id: draggedRectangle
-        width: iconImageBuffer.width+1
-        height: iconImageBuffer.height+1
+        width: mainItemContainer.isSeparator ? parent.width + 1 : iconImageBuffer.width+1
+        height: mainItemContainer.isSeparator ? parent.height + 1 : iconImageBuffer.height+1
         anchors.centerIn: iconGraphic
         opacity: 0
         radius: 3
@@ -118,10 +118,11 @@ Item{
         height: parent.height
 
         Item{
-            anchors.rightMargin: iconImageBuffer.rightMargin
-            anchors.leftMargin: iconImageBuffer.leftMargin
-            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? baseMargin : 0
-            anchors.topMargin: iconImageBuffer.topMargin
+            id:separatorItem
+            anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? localThickMargin : 0
+            anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? localThickMargin : 0
+            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? localThickMargin : 0
+            anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? localThickMargin : 0
 
             anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
             anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
@@ -130,12 +131,13 @@ Item{
             anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
             anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
-            property int baseMargin: root.statesLineSize + root.thickMarginBase
             opacity: 0.5
             visible: mainItemContainer.isSeparator
 
             width: root.vertical ? iconImageBuffer.width : 5
             height: !root.vertical ? iconImageBuffer.height : 5
+
+            property int localThickMargin: root.thickMarginBase + 4
 
             Rectangle {
                 anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined

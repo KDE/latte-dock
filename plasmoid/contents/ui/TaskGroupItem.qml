@@ -40,7 +40,7 @@ Item{
     property color minimizedColor: root.threeColorsWindows ? root.minimizedDotColor : isActiveColor
     property color notActiveColor: mainItemContainer.hasMinimized ? minimizedColor : isActiveColor
 
-   /* Rectangle{
+    /*Rectangle{
         anchors.fill: parent
         border.width: 1
         border.color: "yellow"
