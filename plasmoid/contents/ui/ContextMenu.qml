@@ -221,6 +221,7 @@ PlasmaComponents.ContextMenu {
 
     Component.onDestruction: {
         windowsPreviewDlg.contextMenu = false;
+        root.contextMenu = null;
         backend.ungrabMouse(visualParent);
         root.signalActionsBlockHiding(-1);
         //root.signalDraggingState(false);

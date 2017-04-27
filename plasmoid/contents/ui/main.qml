@@ -89,6 +89,8 @@ Item {
     property variant launchersOnActivities: []
     property variant waitingLaunchers: []
 
+    //global plasmoid reference to the context menu
+    property QtObject contextMenu: null
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
     property Item dragSource: null
 
@@ -400,7 +402,7 @@ Item {
 
         function show(taskItem){
             //console.log("preview show called...");
-            if (!activeItem || (activeItem !== taskItem) && !taskItem.contextMenu) {
+            if ((!activeItem || (activeItem !== taskItem)) && !root.contextMenu) {
                 //console.log("preview show called: accepted...");
 
                 //this can be used from others to hide their appearance
@@ -1310,7 +1312,9 @@ Item {
         initialArgs.mpris2Source = mpris2Source;
         initialArgs.backend = backend;
 
-        return root.contextMenuComponent.createObject(rootTask, initialArgs);
+        root.contextMenu = root.contextMenuComponent.createObject(rootTask, initialArgs);
+
+        return root.contextMenu;
     }
 
     Component.onCompleted:  {
