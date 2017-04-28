@@ -118,10 +118,12 @@ MouseArea{
         if (modelLauncherUrl !== "")
             launcherUrl = modelLauncherUrl;
 
-        if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0)
+        if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0){
             isSeparator = true;
-        else
+            root.internalSeparatorPos = index;
+        } else {
             isSeparator = false;
+        }
     }
 
     onModelLauncherUrlWithIconChanged: {
@@ -345,9 +347,23 @@ MouseArea{
                     return;
 
                 if (root.vertical)
-                    return 5 + widthMargins;
+                    return 5 + heightMargins;
                 else
                     return (root.iconSize + root.thickMargin) * mScale;
+            }
+
+            property int maxSeparatorLength: {
+                if (root.vertical)
+                    return 5 + wrapper.heightMargins;
+                else
+                    return 5 + wrapper.widthMargins;
+            }
+
+            property real missingSeparatorLength: {
+                if (!root.isVertical)
+                    return ((root.iconSize + widthMargins) * root.zoomFactor) - maxSeparatorLength;
+                else
+                    return ((root.iconSize + heightMargins) * root.zoomFactor) - maxSeparatorLength;
             }
 
             /// end of Scalers///////
@@ -420,9 +436,6 @@ MouseArea{
             function calculateScales( currentMousePosition ){
                 if (root.editMode) {
                     return;
-                } else if (mainItemContainer.isSeparator) {
-                    wrapper.mScale = root.zoomFactor;
-                    return;
                 }
 
                 var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
@@ -438,17 +451,24 @@ MouseArea{
                     //check if the mouse goes right or down according to the center
                     var positiveDirection =  ((currentMousePosition  - center) >= 0 );
 
+                    var minimumZoom = 1;
+
+                    if(mainItemContainer.isSeparator){
+                        //minimumZoom for separator item
+                        var tempZoomDifference = (wrapper.missingSeparatorLength / (wrapper.maxSeparatorLength+wrapper.missingSeparatorLength)) * root.zoomFactor;
+                        minimumZoom = tempZoomDifference;
+                    }
 
                     //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-                    var zoomCenter = (root.zoomFactor - 1) / 2
+                    var zoomCenter = ((root.zoomFactor + minimumZoom)/2) - 1;
 
                     //computes the in the scale e.g. 0...0.35 according to the mouse distance
                     //0.35 on the edge and 0 in the center
-                    var firstComputation = (rDistance / center) * zoomCenter;
+                    var firstComputation = (rDistance / center) * (zoomCenter-minimumZoom+1);
 
                     //calculates the scaling for the neighbour tasks
                     var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
-                    var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
+                    var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, minimumZoom);
 
                     bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
                     smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
@@ -459,43 +479,61 @@ MouseArea{
                     if(positiveDirection === true){
                         rightScale = bigNeighbourZoom;
                         leftScale = smallNeighbourZoom;
-                    }
-                    else {
+                    } else {
                         rightScale = smallNeighbourZoom;
                         leftScale = bigNeighbourZoom;
                     }
 
-                    // console.debug(leftScale + "  " + rightScale + " " + index);
+                    //! compute the neighbour separator scales
+                    var bsNeighbourZoom = 1;
+                    var ssNeighbourZoom = 1;
 
+                    if(root.internalSeparatorPos>=0) {
+                        if((root.internalSeparatorPos === index+1) || (root.internalSeparatorPos === index-1) ){
+                            var sepZoomDifference = (wrapper.maxSeparatorLength / (wrapper.maxSeparatorLength+wrapper.missingSeparatorLength)) * root.zoomFactor;
+
+                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
+                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
+                        }
+                    }
+
+                    // console.debug(leftScale + "  " + rightScale + " " + index);
 
                     //activate messages to update the the neighbour scales
                     root.updateScale(index+1, rightScale, 0);
                     root.updateScale(index-1, leftScale, 0);
 
-                   /* if (index>1)
-                        root.updateScale(-1, 1, 0);
-                    if (index<icList.tasksCount-2)
-                        root.updateScale(root.tasksCount, 1, 0);*/
                     if(!root.hasInternalSeparator) {
                         root.updateScale(index+2, 1, 0);
                         root.updateScale(index-2, 1, 0);
                         root.updateScale(icList.tasksCount, 1, 0);
                     } else if(root.internalSeparatorPos>=0) {
                         if(root.internalSeparatorPos === index+1){
+                            if (!positiveDirection) {
+                                root.updateScale(index+2, ssNeighbourZoom, 0);
+                            } else {
+                                root.updateScale(index+2, bsNeighbourZoom, 0);
+                            }
+
                             root.updateScale(index+3, 1, 0);
                             root.updateScale(index-2, 1, 0);
                         } else if(root.internalSeparatorPos === index-1) {
+                            if (!positiveDirection) {
+                                root.updateScale(index-2, bsNeighbourZoom, 0);
+                            } else {
+                                root.updateScale(index-2, ssNeighbourZoom, 0);
+                            }
+
                             root.updateScale(index+2, 1, 0);
                             root.updateScale(index-3, 1, 0);
                         }
                     }
 
+                    //!clear far away scales
                     if(index>1 && icList.tasksCount>2)
                         root.updateScale(-1, 1, 0);
                     if(index<icList.tasksCount-2 && icList.tasksCount>2)
                         root.updateScale(icList.tasksCount, 1, 0);
-
-
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
@@ -522,14 +560,6 @@ MouseArea{
                         mScale = mScale + step;
                     }
                     //     console.log(index+ ", "+mScale);
-                }
-
-                if ((index === nIndex) && mainItemContainer.isSeparator){
-                    // console.log(nIndex + " - " + icList.hoveredIndex + " - " + (icList.tasksCount-1));
-                    if (icList.hoveredIndex<index && icList.hoveredIndex >= 0)
-                        root.updateScale(index+1, nScale, step);
-                    else if (icList.hoveredIndex>index)
-                        root.updateScale(index-1, nScale, step);
                 }
             }
 
