@@ -896,6 +896,36 @@ Item {
                         leftScale = bigNeighbourZoom;
                     }
 
+                    //! compute the neighbour separator scales for latteApplet
+                    var bsNeighbourZoom = 1;
+                    var ssNeighbourZoom = 1;
+
+                    if(root.latteApplet && root.latteApplet.internalSeparatorPos>=0) {
+                        var latApp = root.latteApplet;
+
+                        if((latApp.internalSeparatorPos === latApp.tasksCount - 1) || (latApp.internalSeparatorPos === 0) &&
+                                (index === root.latteAppletPos-1 || index === root.latteAppletPos+1 )){
+                            var maxTaskLength = latApp.maxSeparatorLength+latApp.missingSeparatorLength;
+                            var sepZoomDifference = (latApp.maxSeparatorLength / maxTaskLength) * root.zoomFactor;
+
+                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
+                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
+
+                            if(latApp.internalSeparatorPos === 0 && (index === root.latteAppletPos-1) ){
+                                if (!positiveDirection) {
+                                    latApp.updateScale(1, ssNeighbourZoom, 0);
+                                } else {
+                                    latApp.updateScale(1, bsNeighbourZoom, 0);
+                                }
+                            } else if((latApp.internalSeparatorPos === latApp.tasksCount - 1) &&(index === root.latteAppletPos+1)) {
+                                if (!positiveDirection) {
+                                    latApp.updateScale(latApp.tasksCount-2, bsNeighbourZoom, 0);
+                                } else {
+                                    latApp.updateScale(latApp.tasksCount-2, ssNeighbourZoom, 0);
+                                }
+                            }
+                        }
+                    }
 
                     //   console.log("--------------")
                     //  console.debug(leftScale + "  " + rightScale + " " + index);
@@ -944,21 +974,17 @@ Item {
                         }
                         else{
                             if(layoutsContainer.hoveredIndex<container.index){
-                                if (root.latteInternalSeparatorPos===0){
-                                    latteApplet.updateScale(1, nScale, step);
-                                    latteApplet.updateScale(2,1,0);
-                                } else {
-                                    latteApplet.updateScale(0, nScale, step);
+                                latteApplet.updateScale(0, nScale, step);
+                                if (root.latteInternalSeparatorPos!==0)
                                     latteApplet.updateScale(1, 1, 0);
-                                }
+                                else
+                                    latteApplet.updateScale(2, 1, 0);
                             } else if(layoutsContainer.hoveredIndex>container.index) {
-                                if (root.latteInternalSeparatorPos===root.tasksCount-1){
-                                    latteApplet.updateScale(root.tasksCount-2, nScale, step);
-                                    latteApplet.updateScale(root.tasksCount-3, 1, 0);
-                                } else {
-                                    latteApplet.updateScale(root.tasksCount-1, nScale, step);
+                                latteApplet.updateScale(root.tasksCount-1, nScale, step);
+                                if (root.latteInternalSeparatorPos!==root.tasksCount-1)
                                     latteApplet.updateScale(root.tasksCount-2, 1, 0);
-                                }
+                                else
+                                    latteApplet.updateScale(root.tasksCount-3, 1, 0);
                             }
                         }
                     }  ///if the applet is hidden must forward its scale events to its neighbours
