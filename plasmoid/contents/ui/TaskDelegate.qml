@@ -272,9 +272,9 @@ MouseArea{
 
                 if (mainItemContainer.isSeparator){
                     if (!root.vertical)
-                        return 5 + widthMargins;
+                        return 5 + root.widthMargins;
                     else
-                        return (root.iconSize + widthMargins) * mScale + root.statesLineSize;
+                        return (root.iconSize + root.widthMargins) * mScale + root.statesLineSize;
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0 )
@@ -289,9 +289,9 @@ MouseArea{
 
                 if (mainItemContainer.isSeparator){
                     if (root.vertical)
-                        return 5 + heightMargins;
+                        return 5 + root.heightMargins;
                     else
-                        return (root.iconSize + heightMargins) * mScale + root.statesLineSize;
+                        return (root.iconSize + root.heightMargins) * mScale + root.statesLineSize;
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0)
@@ -319,15 +319,11 @@ MouseArea{
             property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
             property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
 
-            ///Dont use Math.floor it adds one pixel in animations and creates glitches
-            property int widthMargins: root.vertical ? root.thickMargin : root.iconMargin
-            property int heightMargins: !root.vertical ? root.thickMargin : root.iconMargin
+            property real cleanScalingWidth: (root.iconSize + root.widthMargins) * mScale
+            property real cleanScalingHeight: (root.iconSize + root.heightMargins) * mScale
 
-            property real cleanScalingWidth: (root.iconSize + widthMargins) * mScale
-            property real cleanScalingHeight: (root.iconSize + heightMargins) * mScale
-
-            property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + widthMargins) * scaleWidth) : cleanScalingWidth
-            property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + heightMargins) * scaleHeight) : cleanScalingHeight
+            property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
+            property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
 
             property real regulatorWidth: mainItemContainer.isSeparator ? separatorRegWidth : basicScalingWidth;
             property real regulatorHeight: mainItemContainer.isSeparator ? separatorRegHeight : basicScalingHeight;
@@ -337,7 +333,7 @@ MouseArea{
                     return;
 
                 if (!root.vertical)
-                    return 5 + widthMargins;
+                    return 5 + root.widthMargins;
                 else
                     return (root.iconSize + root.thickMargin) * mScale;
             }
@@ -347,25 +343,10 @@ MouseArea{
                     return;
 
                 if (root.vertical)
-                    return 5 + heightMargins;
+                    return 5 + root.heightMargins;
                 else
                     return (root.iconSize + root.thickMargin) * mScale;
             }
-
-            property int maxSeparatorLength: {
-                if (root.vertical)
-                    return 5 + wrapper.heightMargins;
-                else
-                    return 5 + wrapper.widthMargins;
-            }
-
-            property real missingSeparatorLength: {
-                if (!root.isVertical)
-                    return ((root.iconSize + widthMargins) * root.zoomFactor) - maxSeparatorLength;
-                else
-                    return ((root.iconSize + heightMargins) * root.zoomFactor) - maxSeparatorLength;
-            }
-
             /// end of Scalers///////
 
             //property int curIndex: icList.hoveredIndex
@@ -455,7 +436,7 @@ MouseArea{
 
                     if(mainItemContainer.isSeparator){
                         //minimumZoom for separator item
-                        var tempZoomDifference = (wrapper.missingSeparatorLength / (wrapper.maxSeparatorLength+wrapper.missingSeparatorLength)) * root.zoomFactor;
+                        var tempZoomDifference = (root.missingSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
                         minimumZoom = tempZoomDifference;
                     }
 
@@ -490,7 +471,7 @@ MouseArea{
 
                     if(root.internalSeparatorPos>=0) {
                         if((root.internalSeparatorPos === index+1) || (root.internalSeparatorPos === index-1) ){
-                            var sepZoomDifference = (wrapper.maxSeparatorLength / (wrapper.maxSeparatorLength+wrapper.missingSeparatorLength)) * root.zoomFactor;
+                            var sepZoomDifference = (root.maxSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
 
                             bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
                             ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);

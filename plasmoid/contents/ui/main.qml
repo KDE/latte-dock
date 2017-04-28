@@ -82,6 +82,10 @@ Item {
     property int tasksStarting: 0
     property int realSize: iconSize + iconMargin
 
+    ///Dont use Math.floor it adds one pixel in animations and creates glitches
+    property int widthMargins: root.vertical ? thickMargin : iconMargin
+    property int heightMargins: !root.vertical ? thickMargin : iconMargin
+
     property real textColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
 
     //a small badgers record (id,value)
@@ -97,6 +101,22 @@ Item {
     property Item dragSource: null
 
     property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
+
+    //separator calculations based on audoban's design
+    property int maxSeparatorLength: {
+        if (root.vertical)
+            return 5 + heightMargins;
+        else
+            return 5 + widthMargins;
+    }
+
+    property real missingSeparatorLength: {
+        if (!root.isVertical)
+            return ((iconSize + widthMargins) * zoomFactor) - maxSeparatorLength;
+        else
+            return ((iconSize + heightMargins) * zoomFactor) - maxSeparatorLength;
+    }
+
 
     //! it is used to play the animation correct when the user removes a launcher
     property string launcherForRemoval: ""
