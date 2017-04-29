@@ -314,7 +314,7 @@ void VisibilityManagerPrivate::updateHiddenState()
 
 inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 {
-    if (!view->containment() || this->dockGeometry == geometry)
+    if (!view->containment())
         return;
 
     this->dockGeometry = geometry;
