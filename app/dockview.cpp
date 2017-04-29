@@ -256,6 +256,7 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
         this->containment()->reactToScreenChange();
 
     syncGeometry();
+    updateAbsDockGeometry(true);
     emit screenGeometryChanged();
 }
 
@@ -319,6 +320,13 @@ void DockView::reconsiderScreen()
 void DockView::screenChanged(QScreen *scr)
 {
     m_screenSyncTimer.start();
+
+    //! this is needed in order to update the struts on screen change
+    //! and even though the geometry has been set correctly the offsets
+    //! of the screen must be updated to the new ones
+    if (m_visibility && m_visibility->mode() == Latte::Dock::AlwaysVisible) {
+        updateAbsDockGeometry(true);
+    }
 }
 
 void DockView::addNewDock()
@@ -526,12 +534,12 @@ void DockView::setLocalGeometry(const QRect &geometry)
     updateAbsDockGeometry();
 }
 
-void DockView::updateAbsDockGeometry()
+void DockView::updateAbsDockGeometry(bool bypassChecks)
 {
     QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
                        , m_localGeometry.width() - 1, m_localGeometry.height() - 1};
 
-    if (m_absGeometry == absGeometry)
+    if (m_absGeometry == absGeometry && !bypassChecks)
         return;
 
     m_absGeometry = absGeometry;

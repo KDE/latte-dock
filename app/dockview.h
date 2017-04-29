@@ -163,7 +163,7 @@ public slots:
 
     Q_INVOKABLE void closeApplication();
 
-    void updateAbsDockGeometry();
+    void updateAbsDockGeometry(bool bypassChecks = false);
 
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
