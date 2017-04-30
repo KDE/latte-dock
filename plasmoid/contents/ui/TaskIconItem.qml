@@ -261,7 +261,7 @@ Item{
         //////
         Loader{
             id: progressLoader
-            anchors.fill: parent
+            anchors.fill: iconImageBuffer
             active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
                      && (centralItem.smartLauncherItem.progressVisible || mainItemContainer.badgeIndicator > 0))
             asynchronous: true
@@ -369,7 +369,7 @@ Item{
 
         Loader{
             id: audioStreamIconLoader
-            anchors.fill: parent
+            anchors.fill: iconImageBuffer
             active: mainItemContainer.hasAudioStream
             asynchronous: true
 
