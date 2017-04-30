@@ -131,6 +131,7 @@ Item {
     property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
     property bool exposeAltSession: latteDock ? latteDock.exposeAltSession : false
     property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
+    property bool indicateAudioStreams: latteDock ? latteDock.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
     property bool reverseLinesPosition: latteDock ? latteDock.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: latteDock ? latteDock.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: latteDock ? latteDock.showGlow : plasmoid.configuration.showGlow
@@ -667,7 +668,7 @@ Item {
     Loader {
         id: pulseAudio
         source: "PulseAudio.qml"
-        active: plasmoid.configuration.indicateAudioStreams
+        active: root.indicateAudioStreams
     }
 
     /*  IconsModel{

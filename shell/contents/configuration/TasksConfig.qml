@@ -149,6 +149,18 @@ PlasmaComponents.Page {
                 }
             }
 
+            PlasmaComponents.CheckBox {
+                id: audioIndicatorChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show indicator for audio streams")
+                checked: plasmoid.configuration.indicateAudioStreams
+//                tooltip: i18n("Show an audio indicator for the user to mute/unmute an app")
+
+                onClicked: {
+                    plasmoid.configuration.indicateAudioStreams = checked
+                }
+            }
+
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
                 visible: plasmoid.configuration.advanced

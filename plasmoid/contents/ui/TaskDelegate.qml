@@ -138,7 +138,7 @@ MouseArea{
     ////// Audio streams //////
     property Item audioStreamOverlay
     property var audioStreams: []
-    readonly property bool hasAudioStream: plasmoid.configuration.indicateAudioStreams && audioStreams.length > 0
+    readonly property bool hasAudioStream: root.indicateAudioStreams && audioStreams.length > 0
     readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
         return !item.corked
     })
