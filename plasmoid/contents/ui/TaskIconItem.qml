@@ -353,14 +353,115 @@ Item{
             }
         }
 
-        //  Loader {
-        //   anchors.fill: parent
-        ////  asynchronous: true
-        // source: "TaskProgressOverlay.qml"
-        //  active: true
-        //active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem
-        //        && centralItem.smartLauncherItem.progressVisible)
-        //}
+        /// Audio Loader
+
+        /*Loader {
+            id: audioStreamIconLoader
+
+            readonly property bool shown: item && item.visible
+
+            source: "AudioStream.qml"
+            width: units.roundToIconSize(Math.min(Math.min(iconImageBuffer.width, iconImageBuffer.height), units.iconSizes.smallMedium))
+            height: width
+            active: mainItemContainer.hasAudioStream
+        }*/
+
+
+        Loader{
+            id: audioStreamIconLoader
+            anchors.fill: parent
+            active: mainItemContainer.hasAudioStream
+            asynchronous: true
+
+            readonly property bool shown: item && item.visible
+
+            sourceComponent: Item{
+                ShaderEffect {
+                    id: iconOverlay2
+                    enabled: false
+                    anchors.fill: parent
+                    property var source: ShaderEffectSource {
+                        sourceItem: iconImageBuffer
+                        hideSource: true
+                    }
+                    property var mask: ShaderEffectSource {
+                        sourceItem: Item{
+                            width: iconImageBuffer.width
+                            height: iconImageBuffer.height
+                            Rectangle{
+                                id: maskRect2
+                                width: parent.width/2
+                                height: width
+                                radius: width
+
+                                Rectangle{
+                                    id: maskCorner2
+                                    width:parent.width/2
+                                    height:parent.height/2
+                                }
+
+                                states: [
+                                    State {
+                                        name: "default"
+                                        when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
+
+                                        AnchorChanges {
+                                            target: maskRect2
+                                            anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;}
+                                        }
+                                        AnchorChanges {
+                                            target: maskCorner2
+                                            anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;}
+                                        }
+                                    },
+                                    State {
+                                        name: "right"
+                                        when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+                                        AnchorChanges {
+                                            target: maskRect2
+                                            anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;}
+                                        }
+                                        AnchorChanges {
+                                            target: maskCorner2
+                                            anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right;}
+                                        }
+                                    }
+                                ]
+
+                                Connections{
+                                    target: plasmoid
+                                    onLocationChanged: iconOverlay2.mask.scheduleUpdate();
+                                }
+                            }
+                            //badgeMask
+                        }
+                        hideSource: true
+                     //   live: mainItemContainer.badgeIndicator > 0 ? true : false
+                    }
+
+                    supportsAtlasTextures: true
+
+                    fragmentShader: "
+            varying highp vec2 qt_TexCoord0;
+            uniform highp float qt_Opacity;
+            uniform lowp sampler2D source;
+            uniform lowp sampler2D mask;
+            void main() {
+                gl_FragColor = texture2D(source, qt_TexCoord0.st) * (1.0 - (texture2D(mask, qt_TexCoord0.st).a)) * qt_Opacity;
+            }
+        "
+                }
+
+                AudioStream{
+                    anchors.fill:parent
+                }
+            }
+        }
+
+
+
+        /// END of Audio Loader
     }
 
     ///Shadow in tasks

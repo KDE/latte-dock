@@ -107,6 +107,9 @@
     <entry name="showWindowActions" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="indicateAudioStreams" type="Bool">
+      <default>true</default>
+    </entry>
   </group>
 </kcfg>
 

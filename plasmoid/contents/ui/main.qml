@@ -614,9 +614,8 @@ Item {
         id: mpris2Source
         engine: "mpris2"
         connectedSources: sources
-
-        function sourceNameForLauncherUrl(launcherUrl) {
-            if (!launcherUrl) {
+        function sourceNameForLauncherUrl(launcherUrl, pid) {
+            if (!launcherUrl || launcherUrl == "") {
                 return "";
             }
 
@@ -624,12 +623,15 @@ Item {
             // Moreover, remove URL parameters, like wmClass (part after the question mark)
             var desktopFileName = launcherUrl.toString().split('/').pop().split('?')[0].replace(".desktop", "")
 
-            for (var i = 0, length = sources.length; i < length; ++i) {
-                var source = sources[i];
+            for (var i = 0, length = connectedSources.length; i < length; ++i) {
+                var source = connectedSources[i];
+                // we intend to connect directly, otherwise the multiplexer steals the connection away
+                if (source === "@multiplex") {
+                    continue;
+                }
                 var sourceData = data[source];
-
-                if (sourceData && sourceData.DesktopEntry === desktopFileName) {
-                    return source
+                if (sourceData && sourceData.DesktopEntry === desktopFileName && (pid === undefined || sourceData.InstancePid === pid)) {
+                    return source;
                 }
             }
 
@@ -662,6 +664,11 @@ Item {
         }
     }
 
+    Loader {
+        id: pulseAudio
+        source: "PulseAudio.qml"
+        active: plasmoid.configuration.indicateAudioStreams
+    }
 
     /*  IconsModel{
         id: iconsmdl

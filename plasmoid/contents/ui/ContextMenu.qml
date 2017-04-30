@@ -204,6 +204,26 @@ PlasmaComponents.ContextMenu {
                 }
             }
         }
+
+        // We allow mute/unmute whenever an application has a stream, regardless of whether it
+        // is actually playing sound.
+        // This way you can unmute, e.g. a telephony app, even after the conversation has ended,
+        // so you still have it ringing later on.
+        if (menu.visualParent.hasAudioStream) {
+            var muteItem = menu.newMenuItem(menu);
+            muteItem.checkable = true;
+            muteItem.checked = Qt.binding(function() {
+                return menu.visualParent && menu.visualParent.muted;
+            });
+            muteItem.clicked.connect(function() {
+                menu.visualParent.toggleMuted();
+            });
+            muteItem.text = i18n("Mute");
+            muteItem.icon = "audio-volume-muted";
+            menu.addMenuItem(muteItem, virtualDesktopsMenuItem);
+
+            menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
+        }
     }
 
     ///REMOVE

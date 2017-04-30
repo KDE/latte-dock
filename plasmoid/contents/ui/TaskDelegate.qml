@@ -109,6 +109,9 @@ MouseArea{
     property string activity: tasksModel.activity
 
     readonly property var m: model
+    readonly property int pid: model.AppPid
+    readonly property string appName: model.AppName
+
     property string modelLauncherUrl: (LauncherUrlWithoutIcon !== null) ? LauncherUrlWithoutIcon : ""
     property string modelLauncherUrlWithIcon: (LauncherUrl !== null) ? LauncherUrl : ""
     property string launcherUrl: ""
@@ -131,6 +134,18 @@ MouseArea{
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
         }
     }
+
+    ////// Audio streams //////
+    property Item audioStreamOverlay
+    property var audioStreams: []
+    readonly property bool hasAudioStream: plasmoid.configuration.indicateAudioStreams && audioStreams.length > 0
+    readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
+        return !item.corked
+    })
+    readonly property bool muted: hasAudioStream && audioStreams.every(function (item) {
+        return item.muted
+    })
+    //////
 
     property QtObject contextMenu: null
     property QtObject draggingResistaner: null
@@ -627,6 +642,9 @@ MouseArea{
     //the mouse is out of the ListView
     // onItemIndexChanged: {
     //  }
+
+    onAppNameChanged: updateAudioStreams()
+    onPidChanged: updateAudioStreams()
 
     onHoveredIndexChanged: {
         var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
@@ -1131,6 +1149,45 @@ MouseArea{
         }
     }
 
+
+    function updateAudioStreams() {
+        var pa = pulseAudio.item;
+        if (!pa) {
+            task.audioStreams = [];
+            return;
+        }
+
+        var streams = pa.streamsForPid(mainItemContainer.pid);
+        if (streams.length) {
+            pa.registerPidMatch(mainItemContainer.appName);
+        } else {
+            // We only want to fall back to appName matching if we never managed to map
+            // a PID to an audio stream window. Otherwise if you have two instances of
+            // an application, one playing and the other not, it will look up appName
+            // for the non-playing instance and erroneously show an indicator on both.
+            if (!pa.hasPidMatch(mainItemContainer.appName)) {
+                streams = pa.streamsForAppName(mainItemContainer.appName);
+            }
+        }
+
+        mainItemContainer.audioStreams = streams;
+    }
+
+    function toggleMuted() {
+        if (muted) {
+            mainItemContainer.audioStreams.forEach(function (item) { item.unmute(); });
+        } else {
+            mainItemContainer.audioStreams.forEach(function (item) { item.mute(); });
+        }
+    }
+
+    Connections {
+        target: pulseAudio.item
+        ignoreUnknownSignals: true // Plasma-PA might not be available
+        onStreamsChanged: mainItemContainer.updateAudioStreams()
+    }
+
+
     ///REMOVE
     //fix wrong positioning of launchers....
     onActivityChanged:{
@@ -1167,6 +1224,7 @@ MouseArea{
         }*/
 
         showWindowAnimation.showWindow();
+        updateAudioStreams();
     }
 
     Component.onDestruction: {
