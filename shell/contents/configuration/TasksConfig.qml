@@ -76,6 +76,7 @@ PlasmaComponents.Page {
                 text: i18n("Indicator for active window group")
                 checked: plasmoid.configuration.dotsOnActive
 //                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active")
+                visible: plasmoid.configuration.advanced
 
                 onClicked: {
                     plasmoid.configuration.dotsOnActive = checked
@@ -130,6 +131,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show window actions in the context menu")
                 checked: plasmoid.configuration.showWindowActions
+                visible: plasmoid.configuration.advanced
 
                 onClicked: {
                     plasmoid.configuration.showWindowActions = checked
@@ -155,6 +157,7 @@ PlasmaComponents.Page {
                 text: i18n("Show indicator for audio streams")
                 checked: plasmoid.configuration.indicateAudioStreams
 //                tooltip: i18n("Show an audio indicator for the user to mute/unmute an app")
+                visible: plasmoid.configuration.advanced
 
                 onClicked: {
                     plasmoid.configuration.indicateAudioStreams = checked
