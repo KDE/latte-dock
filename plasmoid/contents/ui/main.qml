@@ -850,8 +850,8 @@ Item {
             target: icList
 
             property int maxSize: (root.hoveredIndex>=0 && !root.dragSource) ?
-                                      root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) - 1 :
-                                      root.statesLineSize + root.iconSize + root.thickMargin - 1
+                                      root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) :
+                                      root.statesLineSize + root.iconSize + root.thickMargin
 
             function urlsDroppedOnArea(urls){
                 // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.

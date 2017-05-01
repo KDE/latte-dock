@@ -376,7 +376,7 @@ Item {
 
                 if (latteApplet) {
                     if (container.showZoomed && root.isVertical)
-                        return Math.round(scaledWidth);
+                        return root.statesLineSize + root.thickMargin + root.iconSize + 1;
                     else
                         return Math.round(latteApplet.tasksWidth);
                 } else {
@@ -398,7 +398,7 @@ Item {
 
                 if (latteApplet) {
                     if (container.showZoomed && root.isHorizontal)
-                        return Math.round(scaledHeight);
+                        return root.statesLineSize + root.thickMargin + root.iconSize + 1;
                     else
                         return Math.round(latteApplet.tasksHeight);
                 } else {
