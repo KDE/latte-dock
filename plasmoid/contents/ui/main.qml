@@ -1164,10 +1164,13 @@ Item {
 
         var tasks = icList.contentItem.children;
 
+        //! this is used to bypass the internal separator if it exists
+        var confirmedIndex = root.hasInternalSeparator && (index>=root.internalSeparatorPos) ? index+1 : index;
+
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
 
-            if (task.itemIndex === index) {
+            if (task.itemIndex === confirmedIndex) {
                 TaskTools.activateTask(task.modelIndex(), task.m, null, task);
                 break;
             }
@@ -1182,10 +1185,13 @@ Item {
 
         var tasks = icList.contentItem.children;
 
+        //! this is used to bypass the internal separator if it exists
+        var confirmedIndex = root.hasInternalSeparator && (index>=root.internalSeparatorPos) ? index+1 : index;
+
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
 
-            if (task.itemIndex === index) {
+            if (task.itemIndex === confirmedIndex) {
                 TaskTools.activateTask(task.modelIndex(), task.m, Qt.ControlModifier , task);
                 break;
             }
