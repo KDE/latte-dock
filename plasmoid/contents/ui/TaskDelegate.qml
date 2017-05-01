@@ -452,7 +452,7 @@ MouseArea{
                     if(mainItemContainer.isSeparator){
                         //minimumZoom for separator item
                         var tempZoomDifference = (root.missingSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
-                        minimumZoom = tempZoomDifference;
+                        minimumZoom = Math.max(tempZoomDifference, 1);
                     }
 
                     //finding the zoom center e.g. for zoom:1.7, calculates 0.35
