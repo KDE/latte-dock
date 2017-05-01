@@ -869,7 +869,7 @@ MouseArea{
             draggingResistaner = null;
         }
 
-        if(pressed && !inBlockingAnimation){
+        if(pressed && !inBlockingAnimation && !isSeparator){
 
             if (modifierAccepted(mouse)){
                 if( !mainItemContainer.isLauncher){
