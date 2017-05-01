@@ -1194,7 +1194,7 @@ void DockCorona::activateTaskManagerEntry(int index, Qt::Key modifier)
 //! update badge for specific dock item
 void DockCorona::updateDockItemBadge(QString identifier, QString value)
 {
-    qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
+    //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
     auto updateBadgeForTaskInContainment = [this](const Plasma::Containment * c, QString identifier, QString value) {
         const auto &applets = c->applets();
 
