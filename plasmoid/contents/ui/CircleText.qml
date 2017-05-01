@@ -47,10 +47,10 @@ Rectangle {
 
     property color alphaBackColor: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.45)
     property color alphaBackColor2: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.8)
-    color: mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
+    color: theme.backgroundColor //mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
     radius: width
     border.width: Math.max(1,width/64)
-    border.color: alphaBackColor2
+    border.color: root.minimizedDotColor //alphaBackColor2
 
     onProportionChanged: {
       //  console.log(previousProportion + " - "+proportion);
@@ -112,6 +112,19 @@ Rectangle {
         font.bold: true
         color: mainItemContainer.badgeIndicator > 0 ? theme.backgroundColor : theme.textColor
         visible: showNumber
+    }
+
+
+    Rectangle{
+       anchors.fill: parent
+       anchors.topMargin: parent.border.width
+       anchors.bottomMargin: parent.border.width
+       anchors.leftMargin: parent.border.width
+       anchors.rightMargin: parent.border.width
+       color: "transparent"
+       border.width: parent.border.width
+       border.color: parent.alphaBackColor2
+       radius: parent.radius
     }
 
     Rectangle{

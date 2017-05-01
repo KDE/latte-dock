@@ -57,10 +57,9 @@ Item {
             height: width
             radius: width/2
 
-            color: theme.textColor
+            color: theme.backgroundColor
             border.width: 1
-            border.color: "grey"
-
+            border.color: root.minimizedDotColor
 
             Latte.IconItem{
                 id: audioStreamIcon
