@@ -430,6 +430,10 @@ MouseArea {
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
                         && !(currentApplet.applet.pluginName===root.plasmoidName && dock && dock.docksWithTasks()===1 && dock.tasksPresent());
+                lockButton.visible = (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
+                        && (currentApplet.applet.pluginName !== root.plasmoidName)
+                        && !currentApplet.isInternalViewSplitter
+
                 label.text = currentApplet.applet.title;
             }
         }
@@ -474,13 +478,6 @@ MouseArea {
                         checkable: true
                         iconSource: checked ? "lock" : "unlock"
                         // tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
-
-                        visible: currentApplet &&
-                                 ((currentApplet.applet &&
-                                   ((currentApplet.applet.pluginName === "org.kde.plasma.systemtray")
-                                    || (currentApplet.applet.pluginName === root.plasmoidName)) )
-                                  || (currentApplet.isInternalViewSplitter))
-                                 ? false : true
 
                         onCheckedChanged: {
                             currentApplet.lockZoom = checked;
