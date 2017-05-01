@@ -127,12 +127,16 @@ MouseArea{
         } else {
             isSeparator = false;
         }
+
+        updateAudioStreams();
     }
 
     onModelLauncherUrlWithIconChanged: {
         if (modelLauncherUrlWithIcon !== ""){
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
         }
+
+        updateAudioStreams();
     }
 
     ////// Audio streams //////
