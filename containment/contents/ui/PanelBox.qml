@@ -158,9 +158,7 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.drawShadowsExternal) {
-                var iconS = 1.2*root.maxIconSize + 1;
-                root.realPanelThickness = iconS;
-                return iconS;
+                return root.isVertical ? root.width : root.height;
             } else {
                 var icons = root.statesLineSize + root.iconSize + root.thickMargin + 1;
                 var panels = root.themePanelSize + root.panelMargin;
