@@ -127,22 +127,18 @@ MouseArea{
         } else {
             isSeparator = false;
         }
-
-        updateAudioStreams();
     }
 
     onModelLauncherUrlWithIconChanged: {
         if (modelLauncherUrlWithIcon !== ""){
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
         }
-
-        updateAudioStreams();
     }
 
     ////// Audio streams //////
     property Item audioStreamOverlay
     property var audioStreams: []
-    readonly property bool hasAudioStream: root.indicateAudioStreams && audioStreams.length > 0
+    readonly property bool hasAudioStream: root.indicateAudioStreams && audioStreams.length > 0 && !isLauncher
     readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
         return !item.corked
     })
@@ -649,6 +645,7 @@ MouseArea{
 
     onAppNameChanged: updateAudioStreams()
     onPidChanged: updateAudioStreams()
+    onHasAudioStreamChanged: updateAudioStreams()
 
     onHoveredIndexChanged: {
         var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
