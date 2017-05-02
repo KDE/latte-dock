@@ -127,12 +127,20 @@ MouseArea{
         } else {
             isSeparator = false;
         }
+
+        //trying to fix #440, showing the audio icon indicator to irrelevant tasks
+        //after dragging an existent task with audio
+        updateAudioStreams();
     }
 
     onModelLauncherUrlWithIconChanged: {
         if (modelLauncherUrlWithIcon !== ""){
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
         }
+
+        //trying to fix #440, showing the audio icon indicator to irrelevant tasks
+        //after dragging an existent task with audio
+        updateAudioStreams();
     }
 
     ////// Audio streams //////
