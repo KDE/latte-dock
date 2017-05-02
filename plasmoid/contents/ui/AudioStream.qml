@@ -65,14 +65,25 @@ Item {
                 border.color: root.minimizedDotColor
                 radius: width/2
 
-                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.4
+                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.5
             }
 
 
             Latte.IconItem{
                 id: audioStreamIcon
                 anchors.fill: parent
-                source: mainItemContainer.playingAudio && !mainItemContainer.muted ? "audio-volume-high" : "audio-volume-muted"
+                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.5
+                source: {
+                    if (mainItemContainer.volume <= 0 || mainItemContainer.muted) {
+                        return "audio-volume-muted";
+                    } else if (mainItemContainer.volume <= 25) {
+                        return "audio-volume-low";
+                    } else if (mainItemContainer.volume <= 75) {
+                        return "audio-volume-medium";
+                    } else {
+                        return "audio-volume-high" ;
+                    }
+                }
 
                 MouseArea{
                     anchors.fill: parent

@@ -145,6 +145,21 @@ MouseArea{
     readonly property bool muted: hasAudioStream && audioStreams.every(function (item) {
         return item.muted
     })
+
+    readonly property int volume: {
+        if (!hasAudioStream){
+            return 0;
+        }
+
+        var maxVolume = 0;
+        for (var i=0; i<audioStreams.length; ++i){
+            if (audioStreams[i].volume > maxVolume)
+                maxVolume = audioStreams[i].volume;
+        }
+
+        return maxVolume;
+    }
+
     //////
 
     property QtObject contextMenu: null

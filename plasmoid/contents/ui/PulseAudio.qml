@@ -78,6 +78,8 @@ QtObject {
             readonly property bool muted: Muted
             // whether there is nothing actually going on on that stream
             readonly property bool corked: Corked
+            readonly property int volume: Math.round(pulseVolume / PulseAudio.NormalVolume * 100.0)
+            readonly property int pulseVolume: Volume
 
             function mute() {
                 Muted = true
@@ -85,6 +87,7 @@ QtObject {
             function unmute() {
                 Muted = false
             }
+
         }
 
         onObjectAdded: pulseAudio.streamsChanged()
