@@ -58,8 +58,16 @@ Item {
             radius: width/2
 
             color: theme.backgroundColor
-            border.width: 1
-            border.color: root.minimizedDotColor
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                border.width: 1
+                border.color: root.minimizedDotColor
+                radius: width/2
+
+                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.4
+            }
+
 
             Latte.IconItem{
                 id: audioStreamIcon
