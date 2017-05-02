@@ -262,9 +262,15 @@ Item{
         Loader{
             id: progressLoader
             anchors.fill: iconImageBuffer
-            active: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !mainItemContainer.isSeparator
-                     && (centralItem.smartLauncherItem.progressVisible || mainItemContainer.badgeIndicator > 0))
+            active: opacityN > 0
             asynchronous: true
+
+            property real opacityN: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !mainItemContainer.isSeparator
+                                     && (centralItem.smartLauncherItem.progressVisible || mainItemContainer.badgeIndicator > 0)) ? 1 : 0
+
+            Behavior on opacityN {
+                NumberAnimation { duration: root.durationTime*2*units.longDuration }
+            }
 
             sourceComponent: Item{
                 ShaderEffect {
@@ -349,6 +355,7 @@ Item{
 
                 TaskProgressOverlay{
                     anchors.fill:parent
+                    opacity: progressLoader.opacityN
                 }
             }
         }
@@ -370,10 +377,16 @@ Item{
         Loader{
             id: audioStreamIconLoader
             anchors.fill: iconImageBuffer
-            active: mainItemContainer.hasAudioStream && !mainItemContainer.isSeparator
+            active: opacityN>0
             asynchronous: true
 
             readonly property bool shown: item && item.visible
+
+            property real opacityN: mainItemContainer.hasAudioStream && !mainItemContainer.isSeparator ? 1 : 0
+
+            Behavior on opacityN {
+                NumberAnimation { duration: root.durationTime*2*units.longDuration }
+            }
 
             sourceComponent: Item{
                 ShaderEffect {
@@ -454,12 +467,12 @@ Item{
                 }
 
                 AudioStream{
+                    id: audioStreamBadge
                     anchors.fill:parent
+                    opacity: audioStreamIconLoader.opacityN
                 }
             }
         }
-
-
 
         /// END of Audio Loader
     }

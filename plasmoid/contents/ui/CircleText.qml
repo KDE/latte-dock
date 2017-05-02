@@ -107,7 +107,7 @@ Rectangle {
     Text {
         id: valueText
         anchors.centerIn: parent
-        text: numberValue
+        text: numberValue > 0 ? numberValue : ""
         font.pixelSize: 0.6 * parent.height
         font.bold: true
         color: mainItemContainer.badgeIndicator > 0 ? theme.backgroundColor : theme.textColor

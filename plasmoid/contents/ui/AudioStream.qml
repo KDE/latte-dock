@@ -24,7 +24,6 @@ import org.kde.latte 0.1 as Latte
 Item {
     id: background
 
-
     Item {
         id: subRectangle
         width: parent.width/ 2
