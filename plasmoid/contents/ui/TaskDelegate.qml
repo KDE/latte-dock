@@ -445,7 +445,7 @@ MouseArea{
             }//Flow
 
             function calculateScales( currentMousePosition ){
-                if (root.editMode) {
+                if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
                     return;
                 }
 

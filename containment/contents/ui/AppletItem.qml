@@ -857,6 +857,10 @@ Item {
 
 
             function calculateScales( currentMousePosition ){
+                if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
+                    return;
+                }
+
                 var distanceFromHovered = Math.abs(index - layoutsContainer.hoveredIndex);
 
                 // A new algorithm tryig to make the zoom calculation only once
