@@ -127,20 +127,12 @@ MouseArea{
         } else {
             isSeparator = false;
         }
-
-        //trying to fix #440, showing the audio icon indicator to irrelevant tasks
-        //after dragging an existent task with audio
-        updateAudioStreams();
     }
 
     onModelLauncherUrlWithIconChanged: {
         if (modelLauncherUrlWithIcon !== ""){
             launcherUrlWithIcon = modelLauncherUrlWithIcon;
         }
-
-        //trying to fix #440, showing the audio icon indicator to irrelevant tasks
-        //after dragging an existent task with audio
-        updateAudioStreams();
     }
 
     ////// Audio streams //////
@@ -1175,6 +1167,11 @@ MouseArea{
 
 
     function updateAudioStreams() {
+        if (root.dragSource !== null) {
+            audioStreams = [];
+            return;
+        }
+
         var pa = pulseAudio.item;
         if (!pa) {
             task.audioStreams = [];
@@ -1217,6 +1214,13 @@ MouseArea{
         target: pulseAudio.item
         ignoreUnknownSignals: true // Plasma-PA might not be available
         onStreamsChanged: mainItemContainer.updateAudioStreams()
+    }
+
+    Connections {
+        target: root
+        //trying to fix #440, showing the audio icon indicator to irrelevant tasks
+        //after dragging an existent task with audio
+        onDragSourceChanged: mainItemContainer.updateAudioStreams()
     }
 
 
