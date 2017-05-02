@@ -190,6 +190,7 @@ DragDrop.DropArea {
     property QtObject dock
     property QtObject globalSettings
 
+    property QtObject addWidgetsAction: globalSettings ? globalSettings.addWidgetsAction : 0
     property QtObject altSessionAction: globalSettings ? globalSettings.altSessionAction : 0
 
     // TO BE DELETED, if not needed: property int counter:0;

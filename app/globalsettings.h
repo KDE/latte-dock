@@ -42,6 +42,7 @@ class GlobalSettings : public QObject {
     Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
 
     Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
+    Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
 public:
     GlobalSettings(QObject *parent = nullptr);
@@ -56,6 +57,8 @@ public:
     void setExposeAltSession(bool state);
     QAction *altSessionAction() const;
 
+    QAction *addWidgetsAction() const;
+
     Latte::Dock::SessionType currentSession() const;
     void setCurrentSession(Latte::Dock::SessionType session);
 
@@ -66,6 +69,7 @@ public:
     Q_INVOKABLE QVariantList layouts();
 
 signals:
+    void addWidgetsActionChanged();
     void altSessionActionChanged();
     void clearLayoutSelection();
     void currentSessionChanged();
@@ -76,6 +80,7 @@ private slots:
     void currentSessionChangedSlot(Dock::SessionType type);
     void enableAltSession(bool enabled);
     void importLayoutInternal(const QString &file);
+    void showWidgetsExplorer();
 
 private:
     void save();
@@ -85,6 +90,7 @@ private:
     void saveExtConfiguration();
 
     bool m_exposeAltSession{false};
+    QAction *m_addWidgetsAction{nullptr};
     QAction *m_altSessionAction{nullptr};
     DockCorona *m_corona{nullptr};
     QPointer<QFileDialog> m_fileDialog;

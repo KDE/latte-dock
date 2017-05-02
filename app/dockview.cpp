@@ -1509,15 +1509,24 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
         if ((this->containment()->containmentType() != Plasma::Types::PanelContainment &&
              this->containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
             this->containment()->actions()->action(QStringLiteral("configure"))) {
+            auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+            if (dockCorona) {
+                desktopMenu->addAction(dockCorona->globalSettings()->addWidgetsAction());
+            }
+
             desktopMenu->addAction(this->containment()->actions()->action(QStringLiteral("configure")));
         }
     } else {
         auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
+        desktopMenu->addSeparator();
+
         if (dockCorona && dockCorona->globalSettings()->exposeAltSession()) {
-            desktopMenu->addSeparator();
             desktopMenu->addAction(dockCorona->globalSettings()->altSessionAction());
         }
+
+        desktopMenu->addAction(dockCorona->globalSettings()->addWidgetsAction());
 
         desktopMenu->addActions(actions);
     }

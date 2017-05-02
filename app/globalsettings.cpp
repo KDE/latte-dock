@@ -9,6 +9,8 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 
+#include <QtDBus/QtDBus>
+
 #include <KLocalizedString>
 #include <KConfig>
 #include <KArchive/KTar>
@@ -32,6 +34,12 @@ GlobalSettings::GlobalSettings(QObject *parent)
         m_altSessionAction->setCheckable(true);
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
+
+        //! create the add widgets action
+        const QIcon addWidIcon = QIcon::fromTheme("add");
+        m_addWidgetsAction = new QAction(addWidIcon, i18n("Add Widgets..."), this);
+        m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
+        connect(m_addWidgetsAction, &QAction::triggered, this, &GlobalSettings::showWidgetsExplorer);
 
         init();
     }
@@ -60,6 +68,15 @@ void GlobalSettings::initExtConfiguration()
 {
     KSharedConfigPtr extConfig = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedockextrc");
     m_externalGroup = KConfigGroup(extConfig, "External");
+}
+
+void GlobalSettings::showWidgetsExplorer()
+{
+    QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
+
+    if (iface.isValid()) {
+        iface.call("toggleWidgetExplorer");
+    }
 }
 
 void GlobalSettings::enableAltSession(bool enabled)
@@ -100,6 +117,11 @@ void GlobalSettings::currentSessionChangedSlot(Dock::SessionType type)
 QAction *GlobalSettings::altSessionAction() const
 {
     return m_altSessionAction;
+}
+
+QAction *GlobalSettings::addWidgetsAction() const
+{
+    return m_addWidgetsAction;
 }
 
 bool GlobalSettings::autostart() const
