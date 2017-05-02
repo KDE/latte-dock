@@ -29,6 +29,14 @@ QtObject {
     // It's a JS object so we can do key lookup and don't need to take care of filtering duplicates.
     property var pidMatches: ({})
 
+    property int maxVolumePercent: 125
+    property int maxVolumeValue: Math.round(maxVolumePercent * PulseAudio.NormalVolume / 100.0)
+    property int volumeStep: Math.round(3 * PulseAudio.NormalVolume / 100.0)
+
+    function boundVolume(volume) {
+        return Math.max(PulseAudio.MinimalVolume, Math.min(volume, maxVolumeValue));
+    }
+
     // TODO Evict cache at some point, preferably if all instances of an application closed.
     function registerPidMatch(appName) {
         if (!hasPidMatch(appName)) {
@@ -88,6 +96,15 @@ QtObject {
                 Muted = false
             }
 
+            function increaseVolume() {
+                var bVolume = pulseAudio.boundVolume(Volume + pulseAudio.volumeStep);
+                Volume = bVolume;
+            }
+
+            function decreaseVolume() {
+                var bVolume = pulseAudio.boundVolume(Volume - pulseAudio.volumeStep);
+                Volume = bVolume;
+            }
         }
 
         onObjectAdded: pulseAudio.streamsChanged()

@@ -65,9 +65,8 @@ Item {
                 border.color: root.minimizedDotColor
                 radius: width/2
 
-                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.5
+                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted && mainItemContainer.volume>0 ? 1 : 0.5
             }
-
 
             Latte.IconItem{
                 id: audioStreamIcon
@@ -87,7 +86,17 @@ Item {
 
                 MouseArea{
                     anchors.fill: parent
+
                     onClicked: mainItemContainer.toggleMuted();
+
+                    onWheel: {
+                        var angle = wheel.angleDelta.y / 8;
+
+                        if (angle > 12)
+                            mainItemContainer.increaseVolume();
+                        else if (angle < 12)
+                            mainItemContainer.decreaseVolume();
+                    }
                 }
             }
         }

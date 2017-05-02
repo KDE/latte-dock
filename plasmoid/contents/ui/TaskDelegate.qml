@@ -1197,6 +1197,14 @@ MouseArea{
         }
     }
 
+    function increaseVolume() {
+        mainItemContainer.audioStreams.forEach(function (item) { item.increaseVolume(); });
+    }
+
+    function decreaseVolume() {
+        mainItemContainer.audioStreams.forEach(function (item) { item.decreaseVolume(); });
+    }
+
     Connections {
         target: pulseAudio.item
         ignoreUnknownSignals: true // Plasma-PA might not be available
