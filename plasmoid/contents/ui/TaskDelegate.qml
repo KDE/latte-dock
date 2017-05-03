@@ -516,14 +516,14 @@ MouseArea{
 
                     if(!root.hasInternalSeparator) {
                         //restore neighbour tasks
-                        var hIndex = index + 2;
+                    /*    var hIndex = index + 2;
                         var lIndex = index - 2;
 
                         if (hIndex<=icList.tasksCount)
                             root.updateScale(hIndex, 1, 0);
 
                         if (lIndex>=-1)
-                            root.updateScale(lIndex, 1, 0);
+                            root.updateScale(lIndex, 1, 0);*/
 
                     } else if(root.internalSeparatorPos>=0) {
                         if(root.internalSeparatorPos === index+1){
@@ -534,14 +534,14 @@ MouseArea{
                             }
 
                             //restore neighbour tasks
-                            var hIndex = index + 3;
+                        /*    var hIndex = index + 3;
                             var lIndex = index - 2;
 
                             if (hIndex<=icList.tasksCount)
                                 root.updateScale(hIndex, 1, 0);
 
                             if (lIndex>=-1)
-                                root.updateScale(lIndex, 1, 0);
+                                root.updateScale(lIndex, 1, 0);*/
 
                         } else if(root.internalSeparatorPos === index-1) {
                             if (!positiveDirection) {
@@ -551,14 +551,14 @@ MouseArea{
                             }
 
                             //restore neighbour tasks
-                            var hIndex = index + 2;
+                        /*    var hIndex = index + 2;
                             var lIndex = index - 3;
 
                             if (hIndex<=icList.tasksCount)
                                 root.updateScale(hIndex, 1, 0);
 
                             if (lIndex>=-1)
-                                root.updateScale(lIndex, 1, 0);
+                                root.updateScale(lIndex, 1, 0);*/
                         }
                     }
 
