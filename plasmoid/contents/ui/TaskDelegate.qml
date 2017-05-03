@@ -302,15 +302,15 @@ MouseArea{
 
                 if (mainItemContainer.isSeparator){
                     if (!root.vertical)
-                        return 5 + root.widthMargins;
+                        return Math.round(5 + root.widthMargins);
                     else
-                        return (root.iconSize + root.widthMargins) * mScale + root.statesLineSize;
+                        return Math.round((root.iconSize + root.widthMargins) * mScale + root.statesLineSize);
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0 )
-                    return cleanScalingWidth;
+                    return Math.round(cleanScalingWidth);
                 else
-                    return showDelegateWidth;
+                    return Math.round(showDelegateWidth);
             }
 
             height: {
@@ -319,15 +319,15 @@ MouseArea{
 
                 if (mainItemContainer.isSeparator){
                     if (root.vertical)
-                        return 5 + root.heightMargins;
+                        return Math.round(5 + root.heightMargins);
                     else
-                        return (root.iconSize + root.heightMargins) * mScale + root.statesLineSize;
+                        return Math.round((root.iconSize + root.heightMargins) * mScale + root.statesLineSize);
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0)
-                    return cleanScalingHeight;
+                    return Math.round(cleanScalingHeight);
                 else
-                    return showDelegateheight;
+                    return Math.round(showDelegateheight);
             }
 
             //size needed fom the states below icons
