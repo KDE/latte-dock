@@ -515,8 +515,16 @@ MouseArea{
                     root.updateScale(index-1, leftScale, 0);
 
                     if(!root.hasInternalSeparator) {
-                        root.updateScale(index+2, 1, 0);
-                        root.updateScale(index-2, 1, 0);
+                        //restore neighbour tasks
+                        var hIndex = index + 2;
+                        var lIndex = index - 2;
+
+                        if (hIndex<=icList.tasksCount)
+                            root.updateScale(hIndex, 1, 0);
+
+                        if (lIndex>=-1)
+                            root.updateScale(lIndex, 1, 0);
+
                     } else if(root.internalSeparatorPos>=0) {
                         if(root.internalSeparatorPos === index+1){
                             if (!positiveDirection) {
@@ -525,8 +533,16 @@ MouseArea{
                                 root.updateScale(index+2, bsNeighbourZoom, 0);
                             }
 
-                            root.updateScale(index+3, 1, 0);
-                            root.updateScale(index-2, 1, 0);
+                            //restore neighbour tasks
+                            var hIndex = index + 3;
+                            var lIndex = index - 2;
+
+                            if (hIndex<=icList.tasksCount)
+                                root.updateScale(hIndex, 1, 0);
+
+                            if (lIndex>=-1)
+                                root.updateScale(lIndex, 1, 0);
+
                         } else if(root.internalSeparatorPos === index-1) {
                             if (!positiveDirection) {
                                 root.updateScale(index-2, bsNeighbourZoom, 0);
@@ -534,10 +550,31 @@ MouseArea{
                                 root.updateScale(index-2, ssNeighbourZoom, 0);
                             }
 
-                            root.updateScale(index+2, 1, 0);
-                            root.updateScale(index-3, 1, 0);
+                            //restore neighbour tasks
+                            var hIndex = index + 2;
+                            var lIndex = index - 3;
+
+                            if (hIndex<=icList.tasksCount)
+                                root.updateScale(hIndex, 1, 0);
+
+                            if (lIndex>=-1)
+                                root.updateScale(lIndex, 1, 0);
                         }
                     }
+
+                    //extra restoring signals for applets around the plasmoid
+                    //at the low end
+                    if (index>=2 || ((index>=1) && (!root.hasInternalSeparator || root.internalSeparatorPos>1)) ) {
+                        root.updateScale(-1, 1, 0);
+                    }
+                    //at the high end
+                    if (index<=root.tasksCount-3
+                            || ((index<=root.tasksCount-2)
+                                && (!root.hasInternalSeparator
+                                    || (root.hasInternalSeparator && root.internalSeparatorPos<root.tasksCount-2)) )) {
+                        root.updateScale(root.tasksCount, 1, 0);
+                    }
+
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){

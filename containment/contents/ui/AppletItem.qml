@@ -164,13 +164,12 @@ Item {
     //property int debCounter: 0;
     function interceptLatteAppletUpdateScale(dIndex, newScale, step){
         if(!root.editMode){
-            if(dIndex === -1){
-                layoutsContainer.updateScale(index-1,newScale, step);
+            if(dIndex <= -1){
+                layoutsContainer.updateScale(index+dIndex,newScale, step);
             }
-            else if(dIndex === root.tasksCount){
-                //   debCounter++;
-                //   console.log(debCounter+ " "+dIndex+" "+newScale+" received...");
-                layoutsContainer.updateScale(index+1,newScale, step);
+            else if(dIndex >= root.tasksCount){
+                var dif = dIndex - root.tasksCount + 1;
+                layoutsContainer.updateScale(index+dif,newScale, step);
             }
         }
     }
