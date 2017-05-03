@@ -517,7 +517,6 @@ MouseArea{
                     if(!root.hasInternalSeparator) {
                         root.updateScale(index+2, 1, 0);
                         root.updateScale(index-2, 1, 0);
-                        root.updateScale(icList.tasksCount, 1, 0);
                     } else if(root.internalSeparatorPos>=0) {
                         if(root.internalSeparatorPos === index+1){
                             if (!positiveDirection) {
@@ -539,12 +538,6 @@ MouseArea{
                             root.updateScale(index-3, 1, 0);
                         }
                     }
-
-                    //!clear far away scales
-                    if(index>1 && icList.tasksCount>2)
-                        root.updateScale(-1, 1, 0);
-                    if(index<icList.tasksCount-2 && icList.tasksCount>2)
-                        root.updateScale(icList.tasksCount, 1, 0);
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
