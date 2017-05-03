@@ -945,6 +945,10 @@ Item {
                         } else if((index+1)<root.latteAppletPos) {
                             root.latteApplet.updateScale(0, 1, 0);
                         }
+
+                        if (Math.abs(index - root.latteAppletPos) > 2){
+                            root.latteApplet.clearZoom();
+                        }
                     }
 
                     //Left hiddenSpacer

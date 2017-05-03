@@ -575,7 +575,6 @@ MouseArea{
                         root.updateScale(root.tasksCount, 1, 0);
                     }
 
-
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
                         hiddenSpacerLeft.nScale = leftScale - 1;
