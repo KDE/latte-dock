@@ -128,12 +128,16 @@ PlasmaExtras.ScrollArea {
                 if (isInside){
                     root.disableRestoreZoom = true;
                     mainToolTip.containsMouse = true;
-                    checkListHovered.stop();
+
+                    if(!root.latteDock)
+                        checkListHovered.stop();
                 }
                 else{
                     root.disableRestoreZoom = false;
                     mainToolTip.containsMouse = false;
-                    checkListHovered.startDuration(100);
+
+                    if(!root.latteDock)
+                        checkListHovered.startDuration(100);
                 }
             }
 

@@ -365,7 +365,7 @@ MouseArea{
                 if (!root.vertical)
                     return 5 + root.widthMargins;
                 else
-                    return (root.iconSize + root.thickMargin) * mScale;
+                    return (root.iconSize + root.thickMargin) * wrapper.mScale;
             }
 
             property real separatorRegHeight: {
@@ -375,7 +375,7 @@ MouseArea{
                 if (root.vertical)
                     return 5 + root.heightMargins;
                 else
-                    return (root.iconSize + root.thickMargin) * mScale;
+                    return (root.iconSize + root.thickMargin) * wrapper.mScale;
             }
             /// end of Scalers///////
 
@@ -611,8 +611,8 @@ MouseArea{
             }
 
             onMScaleChanged: {
-                if ((mScale === root.zoomFactor) && !enableDirectRenderTimer.running && !icList.directRender) {
-                    enableDirectRenderTimer.start();
+                if ((mScale === root.zoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+                    root.startEnableDirectRenderTimer();
                 }
 
                 if ((mScale > 1) && !mainItemContainer.isZoomed) {
@@ -757,7 +757,8 @@ MouseArea{
             windowsPreviewDlg.hide(1);
         }
 
-        checkListHovered.stop();
+        if(!root.latteDock)
+            checkListHovered.stop();
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
@@ -785,7 +786,7 @@ MouseArea{
             ///dont check to restore zooms
         }
         else{
-            if(!inAnimation){
+            if(!inAnimation && !root.latteDock){
                 checkListHovered.startNormal();
             }
         }
@@ -798,7 +799,8 @@ MouseArea{
     }
 
     onPositionChanged: {
-        checkListHovered.stop();
+        if(!root.latteDock)
+            checkListHovered.stop();
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
             if(root.dragSource == null){
@@ -976,7 +978,7 @@ MouseArea{
 
         pressed = false;
 
-        if(!inAnimation)
+        if(!inAnimation && !root.latteDock)
             checkListHovered.startDuration(3*units.longDuration);
     }
     ///////////////// End Of Mouse Area Events ///////////////////
@@ -999,10 +1001,10 @@ MouseArea{
     }
 
     function clearZoom(){
-        if (restoreAnimation)
+        if (root.globalDirectRender)
+            wrapper.mScale = 1;
+        else
             restoreAnimation.start();
-        //if (wrapper)
-        //    wrapper.mScale=1;
     }
 
     function handlerDraggingFinished(){

@@ -46,6 +46,7 @@ DragDrop.DropArea {
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
+    property bool directRenderTimerIsRunning: enableDirectRenderTimer.running
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
@@ -1050,6 +1051,11 @@ DragDrop.DropArea {
         }
     }
 
+    function startEnableDirectRenderTimer(){
+        if (!enableDirectRenderTimer.running)
+            enableDirectRenderTimer.start();
+    }
+
     function updateAutomaticIconSize() {
         if ((visibilityManager.normalState && !root.editMode && root.autoDecreaseIconSize)
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
@@ -1754,6 +1760,9 @@ DragDrop.DropArea {
         interval: 150;
 
         onTriggered: {
+            if (latteApplet && latteApplet.previewContainsMouse())
+                return;
+
             if (!dock.visibility.containsMouse || (rootMouseArea.containsMouse && !root.editMode)){
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();
@@ -1771,6 +1780,9 @@ DragDrop.DropArea {
         id: enableDirectRenderTimer
         interval: 4 * root.durationTime * units.shortDuration
         onTriggered: {
+            if (latteApplet && latteApplet.waitingLaunchers.length > 0)
+                return;
+
             if (dock.visibility.containsMouse)
                 root.globalDirectRender = true;
         }

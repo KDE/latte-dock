@@ -52,7 +52,9 @@ Item {
 
     property bool debugLocation: false
 
-    property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
+    //it is used to check both the applet and the containment for direct render
+    property bool globalDirectRender: latteDock ? latteDock.globalDirectRender : icList.directRender
+    property bool directRenderTimerIsRunning: latteDock ? latteDock.directRenderTimerIsRunning : enableDirectRenderTimer.running
 
     property bool editMode: plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
@@ -122,8 +124,6 @@ Item {
     property string launcherForRemoval: ""
 
     //BEGIN Now Dock Panel properties
-    property bool directRender: icList.directRender
-
     property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
@@ -237,19 +237,6 @@ Item {
         onGroupingLauncherUrlBlacklistChanged: tasksModel.groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
     }
 
-    Connections {
-        target: latteDock
-        onDirectRenderChanged: {
-            root.globalDirectRender = latteDock.directRender || icList.directRender;
-        }
-    }
-
-    Connections {
-        target: icList
-        onDirectRenderChanged: {
-            root.globalDirectRender = latteDock ? latteDock.directRender || icList.directRender : icList.directRender;
-        }
-    }
 
     Connections{
         target: latteDock
@@ -361,13 +348,6 @@ Item {
             }
         }
         ActivitiesTools.updateLaunchers(launchers);*/
-    }
-
-    onDockHoveredIndexChanged: {
-        if (dockHoveredIndex >= 0) {
-            icList.hoveredIndex = -1;
-            checkListHovered.startNormal();
-        }
     }
 
     onDragSourceChanged: {
@@ -691,6 +671,8 @@ Item {
     }
 
     //Timer to check if the mouse is still inside the ListView
+    //IMPORTANT ::: This timer should be used only when the Latte plasmoid
+    //is not inside a Latte dock
     Timer{
         id:checkListHovered
         repeat:false;
@@ -699,10 +681,16 @@ Item {
         property int normalInterval: Math.max(120, 2 * (root.durationTime * 1.2 * units.shortDuration) + 50)
 
         onTriggered: {
+            if(root.latteDock)
+                console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldnt...");
+
             if (!root.containsMouse()) {
+                if (enableDirectRenderTimer.running)
+                    enableDirectRenderTimer.stop();
+
+                icList.directRender = false;
+
                 root.clearZoom();
-                if (latteDock && !root.disableRestoreZoom)
-                    latteDock.clearZoom();
             }
 
             interval = normalInterval;
@@ -720,6 +708,26 @@ Item {
             start();
         }
     }
+
+    //this timer adds a delay into enabling direct rendering...
+    //it gives the time to neighbour tasks to complete their animation
+    //during first hovering phase
+    //IMPORTANT ::: This timer should be used only when the Latte plasmoid
+    //is not inside a Latte dock
+    Timer {
+        id: enableDirectRenderTimer
+        interval: 4 * root.durationTime * units.shortDuration
+        onTriggered: {
+            if(root.latteDock)
+                console.log("Plasmoid, enableDirectRenderTimer was called, even though it shouldnt...");
+
+            if (waitingLaunchers.length > 0)
+                restart();
+            else
+                icList.directRender = true;
+        }
+    }
+
 
 
     ///Red Liner!!! show the upper needed limit for annimations
@@ -1000,19 +1008,6 @@ Item {
         }
     }
 
-    //this timer adds a delay into enabling direct rendering...
-    //it gives the time to neighbour tasks to complete their animation
-    //during first hovering phase
-    Timer {
-        id: enableDirectRenderTimer
-        interval: 4 * root.durationTime * units.shortDuration
-        onTriggered: {
-            if (waitingLaunchers.length > 0)
-                restart();
-            else
-                icList.directRender = true;
-        }
-    }
 
     ///REMOVE
     ////Activities List
@@ -1280,19 +1275,24 @@ Item {
         tasksModel.requestRemoveLauncher(filepath);
     }
 
-    function outsideContainsMouse(){
-        //console.log("disable restore zoom:"+disableRestoreZoom);
+    function previewContainsMouse() {
+        if(toolTipDelegate && toolTipDelegate.containsMouse && toolTipDelegate.parentTask)
+            return true;
+        else
+            return false;
+    }
+
+    function containsMouse(){
+        //console.log("s1...");
         if (disableRestoreZoom) {
-            return true;
+            return;
         }
 
-        var tasks = icList.contentItem.children;
-
-        if(toolTipDelegate && toolTipDelegate.containsMouse && toolTipDelegate.parentTask) {
-            return true;
-        } else {
+        if (!previewContainsMouse())
             windowsPreviewDlg.hide(4);
-        }
+
+        //console.log("s3...");
+        var tasks = icList.contentItem.children;
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
@@ -1306,37 +1306,12 @@ Item {
         return false;
     }
 
-    function containsMouse(){
-        //console.log("s1...");
-        if (disableRestoreZoom) {
-            return;
-        }
-
-        var result = root.outsideContainsMouse();
-        //console.log("s2... outsideContainsMouse:"+result);
-
-        if (result)
-            return true;
-
-        //console.log("s3...");
-        if (!result && latteDock && latteDock.outsideContainsMouse())
-            return true;
-
-        //console.log("s4...");
-
-        return false;
-    }
-
     function clearZoom(){
         //console.log("Plasmoid clear...");
         if (disableRestoreZoom) {
             return;
         }
 
-        if (enableDirectRenderTimer.running)
-            enableDirectRenderTimer.stop();
-
-        icList.directRender = false;
         icList.currentSpot = -1000;
         icList.hoveredIndex = -1;
         root.clearZoomSignal();
@@ -1360,6 +1335,14 @@ Item {
     function resetDragSource() {
         dragSource.z = 0;
         dragSource = null;
+    }
+
+    function startEnableDirectRenderTimer() {
+        if (latteDock) {
+            latteDock.startEnableDirectRenderTimer();
+        } else {
+            enableDirectRenderTimer.start();
+        }
     }
 
     ///REMOVE
