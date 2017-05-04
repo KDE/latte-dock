@@ -1788,57 +1788,6 @@ DragDrop.DropArea {
         }
     }
 
-    ///Buffers to paint areas outside the maskArea///
-    ///this is an approach to try to solve #132 issue///
-    Loader{
-        anchors.fill: parent
-        active: dock & !drawShadowsExternal && Latte.WindowSystem.compositingActive
-        z: 1000
-
-        sourceComponent: Item{
-            anchors.fill: parent
-
-            Rectangle{
-                x:0
-                y:0
-                width: root.width
-                height: dock.maskArea.y - 1
-
-                color: "red"
-            }
-
-            Rectangle{
-                x: 0
-                y: dock.maskArea.y
-                width: dock.maskArea.x - 1
-                height: dock.maskArea.height
-
-                color: "red"
-            }
-
-            Rectangle{
-                x: dock.maskArea.x + dock.maskArea.width + 1
-                y: dock.maskArea.y
-                width: dock.width - x
-                height: dock.maskArea.height
-
-                color: "red"
-            }
-
-            Rectangle{
-                x: 0
-                y: dock.maskArea.y + dock.maskArea.height + 1
-                width: root.width
-                height: root.height - y
-
-                color: "red"
-            }
-        }
-    }
-
-    ///Buffers///
-
-
     ///////////////END UI elements
 
     ///////////////BEGIN TIMER elements
