@@ -141,14 +141,7 @@ Item{
 
     function slotContainsMouseChanged() {
         if(dock.visibility.containsMouse) {
-            if (delayerTimer.running) {
-                delayerTimer.stop();
-            }
-
             updateMaskArea();
-        } else {
-            // initialize the zoom
-            delayerTimer.start();
         }
     }
 
@@ -495,18 +488,6 @@ Item{
     }
 
     ////////////// Timers //////
-    //Timer to delay onLeave event
-    Timer {
-        id: delayerTimer
-        interval: 400
-        onTriggered: {
-            if (!root.containsMouse()) {
-                root.clearZoom();
-            }
-        }
-    }
-
-    //Timer to delay onLeave event
     Timer {
         id: delayAnimationTimer
         interval: manager.inStartup ? 1000 : 500

@@ -45,13 +45,14 @@ DragDrop.DropArea {
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
-    property bool globalDirectRender: false //it is used to check both the applet and the containment for direct render
+    property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
     property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
+    property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
     property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                                        && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
                                        && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
@@ -196,8 +197,6 @@ DragDrop.DropArea {
     // TO BE DELETED, if not needed: property int counter:0;
 
     ///BEGIN properties provided to Latte Plasmoid
-    property bool directRender: layoutsContainer.directRender
-
     property bool enableShadows: plasmoid.configuration.shadows
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
@@ -481,20 +480,6 @@ DragDrop.DropArea {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
-    Connections {
-        target: latteApplet
-        onDirectRenderChanged: {
-            root.globalDirectRender = latteApplet.directRender || layoutsContainer.directRender;
-        }
-    }
-
-    Connections {
-        target: layoutsContainer
-        onDirectRenderChanged: {
-            root.globalDirectRender = latteApplet ? latteApplet.directRender || layoutsContainer.directRender : layoutsContainer.directRender;
-        }
-    }
-
     onEditModeChanged: {
         if (editMode) {
             visibilityManager.updateMaskArea();
@@ -941,35 +926,18 @@ DragDrop.DropArea {
     }
 
     function clearZoom(){
-        if (enableDirectRenderTimer.running)
-            enableDirectRenderTimer.stop();
-
-        layoutsContainer.directRender = false;
         layoutsContainer.currentSpot = -1000;
         layoutsContainer.hoveredIndex = -1;
-        root.clearZoomSignal();
-    }
-
-    function containmentActions(){
-        return dock.containmentActions();
-    }
-
-    function containsMouse(){
-        var result = root.outsideContainsMouse();
-
-        if(result)
-            return true;
-
-        if(!result && latteApplet && latteApplet.outsideContainsMouse()){
-            layoutsContainer.hoveredIndex = latteAppletContainer.index;
-            return true;
-        }
 
         if (latteApplet){
             latteApplet.clearZoom();
         }
 
-        return false;
+        root.clearZoomSignal();
+    }
+
+    function containmentActions(){
+        return dock.containmentActions();
     }
 
     function internalViewSplittersCount(){
@@ -996,41 +964,6 @@ DragDrop.DropArea {
         }
 
         return splitters;
-    }
-
-    function outsideContainsMouse(){
-        var applets = startLayout.children;
-
-        for(var i=0; i<applets.length; ++i){
-            var applet = applets[i];
-
-            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
-                return true;
-            }
-        }
-
-        applets = mainLayout.children;
-
-        for(var i=0; i<applets.length; ++i){
-            var applet = applets[i];
-
-            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
-                return true;
-            }
-        }
-
-        ///check second layout also
-        applets = endLayout.children;
-
-        for(var i=0; i<applets.length; ++i){
-            var applet = applets[i];
-
-            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
-                return true;
-            }
-        }
-
-        return false;
     }
 
     function removeInternalViewSplitters(){
@@ -1269,6 +1202,17 @@ DragDrop.DropArea {
         }
     }
 
+    Connections{
+        target: dock.visibility
+        onContainsMouseChanged: {
+            if (dock.visibility.containsMouse) {
+                if (checkRestoreZoom.running)
+                    checkRestoreZoom.stop();
+            } else {
+                checkRestoreZoom.start();
+            }
+        }
+    }
 
     ////END interfaces
 
@@ -1280,6 +1224,18 @@ DragDrop.DropArea {
     ///////////////END components
 
     ///////////////BEGIN UI elements
+
+    //it is used to check if the mouse is outside the layoutsContainer borders,
+    //so in that case the onLeave event behavior should be trigerred
+    MouseArea{
+        id: rootMouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        onEntered: {
+            if(!root.editMode)
+                checkRestoreZoom.start();
+        }
+    }
 
     Loader{
         active: Qt.application.arguments.indexOf("--with-window") >= 0
@@ -1369,8 +1325,6 @@ DragDrop.DropArea {
         property int allCount: root.latteApplet ? mainLayout.count-1+latteApplet.tasksCount : mainLayout.count
         property int currentSpot: -1000
         property int hoveredIndex: -1
-
-        property bool directRender: false
 
         x: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
@@ -1792,18 +1746,36 @@ DragDrop.DropArea {
 
     ///////////////BEGIN TIMER elements
 
-    //Timer to check if the mouse is still inside the ListView
+
+    //Timer to check if the mouse is still outside the dock in order to restore zooms to 1.0
     Timer{
-        id:checkListHovered
+        id:checkRestoreZoom
         repeat:false;
         interval: 150;
 
         onTriggered: {
-            if(!root.containsMouse()) {
+            if (!dock.visibility.containsMouse || (rootMouseArea.containsMouse && !root.editMode)){
+                if (enableDirectRenderTimer.running)
+                    enableDirectRenderTimer.stop();
+
+                root.globalDirectRender = false;
                 root.clearZoom();
             }
         }
     }
+
+    //this timer adds a delay into enabling direct rendering...
+    //it gives the time to neighbour tasks to complete their animation
+    //during first hovering phase
+    Timer {
+        id: enableDirectRenderTimer
+        interval: 4 * root.durationTime * units.shortDuration
+        onTriggered: {
+            if (dock.visibility.containsMouse)
+                root.globalDirectRender = true;
+        }
+    }
+
 
     //this is a delayer to update mask area, it is used in cases
     //that animations can not catch up with animations signals
@@ -1821,15 +1793,6 @@ DragDrop.DropArea {
 
             visibilityManager.updateMaskArea();
         }
-    }
-
-    //this timer adds a delay into enabling direct rendering...
-    //it gives the time to neighbour tasks to complete their animation
-    //during first hovering phase
-    Timer {
-        id: enableDirectRenderTimer
-        interval: 4 * root.durationTime * units.shortDuration
-        onTriggered: layoutsContainer.directRender = true;
     }
 
     ///////////////END TIMER elements

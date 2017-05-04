@@ -175,8 +175,14 @@ Item {
     }
 
     function clearZoom(){
-        if (restoreAnimation)
+        if (root.globalDirectRender){
+            wrapper.zoomScale = 1;
+        } else {
             restoreAnimation.start();
+        }
+
+        //if (restoreAnimation)
+        //    restoreAnimation.start();
         // if(wrapper)
         //     wrapper.zoomScale = 1;
     }
@@ -513,7 +519,7 @@ Item {
             }
 
             onZoomScaleChanged: {
-                if ((zoomScale === root.zoomFactor) && !enableDirectRenderTimer.running && !layoutsContainer.directRender) {
+                if ((zoomScale === root.zoomFactor) && !enableDirectRenderTimer.running && !root.globalDirectRender) {
                     enableDirectRenderTimer.start();
                 }
 
@@ -1131,7 +1137,6 @@ Item {
         }
 
         onExited:{
-            checkListHovered.start();
             if (appletIconItem)
                 appletIconItem.active = false;
         }
@@ -1275,5 +1280,3 @@ Item {
     }
     //END animations
 }
-
-
