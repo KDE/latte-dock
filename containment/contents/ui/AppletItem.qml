@@ -920,6 +920,9 @@ Item {
                     else
                         root.updateScale(index+2, 1 ,0);
 
+                    if (root.latteApplet && Math.abs(index - root.latteAppletPos) > 2){
+                        root.latteApplet.clearZoom();
+                    }
 
                     //Left hiddenSpacer
                     if(container.startEdge){
