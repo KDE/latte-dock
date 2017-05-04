@@ -358,6 +358,8 @@ MouseArea{
             property real regulatorWidth: mainItemContainer.isSeparator ? separatorRegWidth : basicScalingWidth;
             property real regulatorHeight: mainItemContainer.isSeparator ? separatorRegHeight : basicScalingHeight;
 
+            property int separatorRegLength: root.vertical ? separatorRegWidth : separatorRegHeight
+
             property real separatorRegWidth: {
                 if (!mainItemContainer.isSeparator)
                     return;
@@ -444,6 +446,24 @@ MouseArea{
 
             }//Flow
 
+            //!this is used in order to update the index when the signal is for applets
+            //!outside the latte plasmoid
+            function updateIdSendScale(indx, zScale, zStep){
+                if ((indx>=0 && indx<=root.tasksCount-1) || (!root.latteDock)){
+                    root.updateScale(indx, zScale, zStep);
+                } else{
+                    var appletId = latteDock.latteAppletPos;
+                    if (indx<0)
+                        appletId = latteDock.latteAppletPos + indx;
+                    else if (indx>root.tasksCount-1){
+                        var step=indx-root.tasksCount+1;
+                        appletId = latteDock.latteAppletPos + step;
+                    }
+
+                    latteDock.updateScale(appletId, zScale, zStep);
+                }
+            }
+
             function calculateScales( currentMousePosition ){
                 if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
                     return;
@@ -495,32 +515,56 @@ MouseArea{
                         leftScale = bigNeighbourZoom;
                     }
 
+                    //! compute the neighbour separator scales
+                    var bsNeighbourZoom = 1;
+                    var ssNeighbourZoom = 1;
+
+                    if(root.internalSeparatorPos>=0) {
+                        if((root.internalSeparatorPos === index+1) || (root.internalSeparatorPos === index-1) ){
+                            var sepZoomDifference = (root.maxSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
+
+                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
+                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
+                        }
+                    }
+
                     // console.debug(leftScale + "  " + rightScale + " " + index);
 
-                    //activate messages to update the the neighbour scales
-                    if(root.latteDock && index === root.tasksCount-1)
-                        latteDock.updateScale(latteDock.latteAppletPos+1, rightScale, 0);
-                    else
-                        root.updateScale(index+1, rightScale, 0);
+                    if(!root.hasInternalSeparator || Math.abs(index-root.internalSeparatorPos)>=2
+                            || mainItemContainer.isSeparator){
+                        //activate messages to update the the neighbour scales
+                            updateIdSendScale(index+1, rightScale, 0);
+                            updateIdSendScale(index-1, leftScale, 0);
 
-                    if(root.latteDock && index === 0)
-                        latteDock.updateScale(latteDock.latteAppletPos-1, leftScale, 0);
-                    else
-                        root.updateScale(index-1, leftScale, 0);
+                            updateIdSendScale(index+2, 1, 0);
+                            updateIdSendScale(index-2, 1, 0);
+                    } else if(root.internalSeparatorPos>=0) {
+                        if(root.internalSeparatorPos === index+1){
+                            if (!positiveDirection) {
+                                updateIdSendScale(index+2, ssNeighbourZoom, 0);
+                            } else {
+                                updateIdSendScale(index+2, bsNeighbourZoom, 0);
+                            }
 
-                    if(root.latteDock && index === root.tasksCount-1)
-                        latteDock.updateScale(latteDock.latteAppletPos+2, 1, 0);
-                    else if (root.latteDock && index === root.tasksCount-2)
-                        latteDock.updateScale(latteDock.latteAppletPos+1, 1, 0);
-                    else
-                        root.updateScale(index+2, 1, 0);
+                            updateIdSendScale(index-1, leftScale, 0);
+                            updateIdSendScale(index+1, rightScale, 0);
 
-                    if(root.latteDock && index === 0)
-                        latteDock.updateScale(latteDock.latteAppletPos-2, 1, 0);
-                    else if (root.latteDock && index === 1)
-                        latteDock.updateScale(latteDock.latteAppletPos-1, 1, 0);
-                    else
-                        root.updateScale(index-2, 1, 0);
+                            updateIdSendScale(index+3, 1, 0);
+                            updateIdSendScale(index-2, 1, 0);
+                        } else if(root.internalSeparatorPos === index-1) {
+                            if (!positiveDirection) {
+                                updateIdSendScale(index-2, bsNeighbourZoom, 0);
+                            } else {
+                                updateIdSendScale(index-2, ssNeighbourZoom, 0);
+                            }
+
+                            updateIdSendScale(index-1, leftScale, 0);
+                            updateIdSendScale(index+1, rightScale, 0);
+
+                            updateIdSendScale(index+2, 1, 0);
+                            updateIdSendScale(index-3, 1, 0);
+                        }
+                    }
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
@@ -539,7 +583,6 @@ MouseArea{
 
 
             function signalUpdateScale(nIndex, nScale, step){
-                //if ((index === nIndex)&&(!mainItemContainer.inAnimation)){
                 if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
                     if(nScale >= 0) {
                         mScale = nScale + step;

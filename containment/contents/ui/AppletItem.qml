@@ -847,6 +847,23 @@ Item {
                 NumberAnimation { duration: container.directAnimationTime }
             }
 
+            //!this is used in order to update the index when the signal is for the internal latte plasmoid
+            function updateIdSendScale(indx, zScale, zStep){
+                if(root.latteApplet && ((index<root.latteAppletPos && indx>=root.latteAppletPos)
+                                        || (index>root.latteAppletPos && indx<=root.latteAppletPos)) ){
+                    var appStep = Math.abs(root.latteAppletPos-index);
+                    var signalStep = Math.abs(indx - index);
+
+                    if(index<root.latteAppletPos){
+                        root.latteApplet.updateScale(signalStep-appStep, zScale,zStep);
+                    } else if (index>root.latteAppletPos){
+                        root.latteApplet.updateScale(root.tasksCount-1 - (signalStep-appStep), zScale,zStep);
+                    }
+                } else {
+                    root.updateScale(indx, zScale, zStep);
+                }
+            }
+
 
             function calculateScales( currentMousePosition ){
                 if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
@@ -892,33 +909,58 @@ Item {
                         leftScale = bigNeighbourZoom;
                     }
 
-                    //   console.log("--------------")
-                    //  console.debug(leftScale + "  " + rightScale + " " + index);
-                    //activate messages to update the the neighbour scales
-                    if(root.latteApplet && index===root.latteAppletPos+1)
-                        root.latteApplet.updateScale(root.tasksCount-1, leftScale, 0);
-                    else
-                        root.updateScale(index-1, leftScale, 0);
+                    //! compute the neighbour separator scales
+                    var bsNeighbourZoom = 1;
+                    var ssNeighbourZoom = 1;
 
-                    if(root.latteApplet && index===root.latteAppletPos-1)
-                        root.latteApplet.updateScale(0, rightScale, 0);
-                    else
-                        root.updateScale(index+1, rightScale, 0);
+                    if(root.latteApplet && root.latteApplet.internalSeparatorPos>=0) {
+                        var latApp = root.latteApplet;
+                        if((latApp.internalSeparatorPos === 0) || (latApp.internalSeparatorPos === root.tasksCount-1) ){
+                            var sepZoomDifference = (5+root.iconMargin) / root.realSize;
 
+                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
+                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
+                        }
+                    }
 
-                    if(root.latteApplet && index===root.latteAppletPos+1)
-                        root.latteApplet.updateScale(root.tasksCount-2, 1, 0);
-                    else if (root.latteApplet && index===root.latteAppletPos+2)
-                        root.latteApplet.updateScale(root.tasksCount-1, 1, 0);
-                    else
-                        root.updateScale(index-2, 1, 0);
+                    if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1
+                            || (root.hasInternalSeparator
+                                && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
+                                    || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
+                                    || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
+                            ){
+                        updateIdSendScale(index-1, leftScale, 0);
+                        updateIdSendScale(index+1, rightScale, 0);
 
-                    if(root.latteApplet && index===root.latteAppletPos-1)
-                        root.latteApplet.updateScale(1, 1, 0);
-                    else if (root.latteApplet && index===root.latteAppletPos-2)
-                        root.latteApplet.updateScale(0, 1, 0);
-                    else
-                        root.updateScale(index+2, 1 ,0);
+                        updateIdSendScale(index-2, 1, 0);
+                        updateIdSendScale(index+2, 1 ,0);
+                    } else{
+                        if(latApp.internalSeparatorPos === 0){
+                            if (!positiveDirection) {
+                                updateIdSendScale(index+2, ssNeighbourZoom, 0);
+                            } else {
+                                updateIdSendScale(index+2, bsNeighbourZoom, 0);
+                            }
+
+                            updateIdSendScale(index-1, leftScale, 0);
+                            updateIdSendScale(index+1, rightScale, 0);
+
+                            updateIdSendScale(index+3, 1, 0);
+                            updateIdSendScale(index-2, 1, 0);
+                        } else if(root.hasInternalSeparator && latApp.internalSeparatorPos === root.tasksCount-1) {
+                            if (!positiveDirection) {
+                                updateIdSendScale(index-2, bsNeighbourZoom, 0);
+                            } else {
+                                updateIdSendScale(index-2, ssNeighbourZoom, 0);
+                            }
+
+                            updateIdSendScale(index-1, leftScale, 0);
+                            updateIdSendScale(index+1, rightScale, 0);
+
+                            updateIdSendScale(index+2, 1, 0);
+                            updateIdSendScale(index-3, 1, 0);
+                        }
+                    }
 
                     if (root.latteApplet && Math.abs(index - root.latteAppletPos) > 2){
                         root.latteApplet.clearZoom();

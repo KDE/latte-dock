@@ -221,7 +221,7 @@ PlasmaComponents.Page {
                     //The Tasks separator adds a lot of complexity in the parabolic effect
                     //signaling... For now I disable it and in the future if a better way
                     //is found to support it with the parabolic effect we can enable it again
-                    visible: false //dock.tasksPresent()
+                    visible: dock.tasksPresent()
 //                    tooltip: i18n("Add a separator for tasks")
 
                     onClicked: {
