@@ -162,18 +162,6 @@ Item {
     //this functions gets the signal from the plasmoid, it can be used for signal items
     //outside the LatteApplet Plasmoid
     //property int debCounter: 0;
-    function interceptLatteAppletUpdateScale(dIndex, newScale, step){
-        if(!root.editMode){
-            if(dIndex <= -1){
-                layoutsContainer.updateScale(index+dIndex,newScale, step);
-            }
-            else if(dIndex >= root.tasksCount){
-                var dif = dIndex - root.tasksCount + 1;
-                layoutsContainer.updateScale(index+dif,newScale, step);
-            }
-        }
-    }
-
     function clearZoom(){
         if (root.globalDirectRender){
             wrapper.zoomScale = 1;
@@ -265,7 +253,6 @@ Item {
             root.latteAppletPos = index;
             latteApplet.latteDock = root;
             latteApplet.forceHidePanel = true;
-            latteApplet.updateScale.connect(interceptLatteAppletUpdateScale);
         }
     }
 
@@ -905,57 +892,34 @@ Item {
                         leftScale = bigNeighbourZoom;
                     }
 
-                    //! compute the neighbour separator scales for latteApplet
-                    var bsNeighbourZoom = 1;
-                    var ssNeighbourZoom = 1;
-
-                    if(root.latteApplet && root.latteApplet.internalSeparatorPos>=0) {
-                        var latApp = root.latteApplet;
-
-                        if((latApp.internalSeparatorPos === latApp.tasksCount - 1) || (latApp.internalSeparatorPos === 0) &&
-                                (index === root.latteAppletPos-1 || index === root.latteAppletPos+1 )){
-                            var maxTaskLength = latApp.maxSeparatorLength+latApp.missingSeparatorLength;
-                            var sepZoomDifference = (latApp.maxSeparatorLength / maxTaskLength) * root.zoomFactor;
-
-                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
-                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
-
-                            if(latApp.internalSeparatorPos === 0 && (index === root.latteAppletPos-1) ){
-                                if (!positiveDirection) {
-                                    latApp.updateScale(1, ssNeighbourZoom, 0);
-                                } else {
-                                    latApp.updateScale(1, bsNeighbourZoom, 0);
-                                }
-                            } else if((latApp.internalSeparatorPos === latApp.tasksCount - 1) &&(index === root.latteAppletPos+1)) {
-                                if (!positiveDirection) {
-                                    latApp.updateScale(latApp.tasksCount-2, bsNeighbourZoom, 0);
-                                } else {
-                                    latApp.updateScale(latApp.tasksCount-2, ssNeighbourZoom, 0);
-                                }
-                            }
-                        }
-                    }
-
                     //   console.log("--------------")
                     //  console.debug(leftScale + "  " + rightScale + " " + index);
                     //activate messages to update the the neighbour scales
-                    layoutsContainer.updateScale(index-1, leftScale, 0);
-                    layoutsContainer.updateScale(index+1, rightScale, 0);
-                    //these messages interfere when an applet is hidden, that is why I disabled them
-                    //  currentLayout.updateScale(index-2, 1, 0);
-                    //   currentLayout.updateScale(index+2, 1, 0);
+                    if(root.latteApplet && index===root.latteAppletPos+1)
+                        root.latteApplet.updateScale(root.tasksCount-1, leftScale, 0);
+                    else
+                        root.updateScale(index-1, leftScale, 0);
 
-                    if (root.latteApplet) {
-                        if ((index-1) > root.latteAppletPos ){
-                            root.latteApplet.updateScale(root.tasksCount-1, 1 ,0);
-                        } else if((index+1)<root.latteAppletPos) {
-                            root.latteApplet.updateScale(0, 1, 0);
-                        }
+                    if(root.latteApplet && index===root.latteAppletPos-1)
+                        root.latteApplet.updateScale(0, rightScale, 0);
+                    else
+                        root.updateScale(index+1, rightScale, 0);
 
-                        if (Math.abs(index - root.latteAppletPos) > 2){
-                            root.latteApplet.clearZoom();
-                        }
-                    }
+
+                    if(root.latteApplet && index===root.latteAppletPos+1)
+                        root.latteApplet.updateScale(root.tasksCount-2, 1, 0);
+                    else if (root.latteApplet && index===root.latteAppletPos+2)
+                        root.latteApplet.updateScale(root.tasksCount-1, 1, 0);
+                    else
+                        root.updateScale(index-2, 1, 0);
+
+                    if(root.latteApplet && index===root.latteAppletPos-1)
+                        root.latteApplet.updateScale(1, 1, 0);
+                    else if (root.latteApplet && index===root.latteAppletPos-2)
+                        root.latteApplet.updateScale(0, 1, 0);
+                    else
+                        root.updateScale(index+2, 1 ,0);
+
 
                     //Left hiddenSpacer
                     if(container.startEdge){
@@ -985,34 +949,19 @@ Item {
                             else
                                 zoomScale = zoomScale + step;
                         }
-                        else{
-                            if(layoutsContainer.hoveredIndex<container.index){
-                                latteApplet.updateScale(0, nScale, step);
-                                if (root.latteInternalSeparatorPos!==0)
-                                    latteApplet.updateScale(1, 1, 0);
-                                else
-                                    latteApplet.updateScale(2, 1, 0);
-                            } else if(layoutsContainer.hoveredIndex>container.index) {
-                                latteApplet.updateScale(root.tasksCount-1, nScale, step);
-                                if (root.latteInternalSeparatorPos!==root.tasksCount-1)
-                                    latteApplet.updateScale(root.tasksCount-2, 1, 0);
-                                else
-                                    latteApplet.updateScale(root.tasksCount-3, 1, 0);
-                            }
-                        }
                     }  ///if the applet is hidden must forward its scale events to its neighbours
                     else if ((applet && (applet.status === PlasmaCore.Types.HiddenStatus))
                              || container.isInternalViewSplitter){
                         if(layoutsContainer.hoveredIndex>index)
-                            layoutsContainer.updateScale(index-1, nScale, step);
+                            root.updateScale(index-1, nScale, step);
                         else if((layoutsContainer.hoveredIndex<index))
-                            layoutsContainer.updateScale(index+1, nScale, step);
+                            root.updateScale(index+1, nScale, step);
                     }
                 }
             }
 
             Component.onCompleted: {
-                layoutsContainer.updateScale.connect(signalUpdateScale);
+                root.updateScale.connect(signalUpdateScale);
             }
         }// Main task area // id:wrapper
 

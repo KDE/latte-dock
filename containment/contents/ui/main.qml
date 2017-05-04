@@ -41,6 +41,7 @@ DragDrop.DropArea {
     signal clearZoomSignal();
     signal updateEffectsArea();
     signal updateIndexes();
+    signal updateScale(int delegateIndex, real newScale, real step);
     //// END SIGNALS
 
     ////BEGIN properties
@@ -1325,8 +1326,6 @@ DragDrop.DropArea {
 
     Item{
         id: layoutsContainer
-
-        signal updateScale(int delegateIndex, real newScale, real step)
 
         property int allCount: root.latteApplet ? mainLayout.count-1+latteApplet.tasksCount : mainLayout.count
         property int currentSpot: -1000

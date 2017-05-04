@@ -495,85 +495,32 @@ MouseArea{
                         leftScale = bigNeighbourZoom;
                     }
 
-                    //! compute the neighbour separator scales
-                    var bsNeighbourZoom = 1;
-                    var ssNeighbourZoom = 1;
-
-                    if(root.internalSeparatorPos>=0) {
-                        if((root.internalSeparatorPos === index+1) || (root.internalSeparatorPos === index-1) ){
-                            var sepZoomDifference = (root.maxSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
-
-                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
-                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
-                        }
-                    }
-
                     // console.debug(leftScale + "  " + rightScale + " " + index);
 
                     //activate messages to update the the neighbour scales
-                    root.updateScale(index+1, rightScale, 0);
-                    root.updateScale(index-1, leftScale, 0);
+                    if(root.latteDock && index === root.tasksCount-1)
+                        latteDock.updateScale(latteDock.latteAppletPos+1, rightScale, 0);
+                    else
+                        root.updateScale(index+1, rightScale, 0);
 
-                    if(!root.hasInternalSeparator) {
-                        //restore neighbour tasks
-                    /*    var hIndex = index + 2;
-                        var lIndex = index - 2;
+                    if(root.latteDock && index === 0)
+                        latteDock.updateScale(latteDock.latteAppletPos-1, leftScale, 0);
+                    else
+                        root.updateScale(index-1, leftScale, 0);
 
-                        if (hIndex<=icList.tasksCount)
-                            root.updateScale(hIndex, 1, 0);
+                    if(root.latteDock && index === root.tasksCount-1)
+                        latteDock.updateScale(latteDock.latteAppletPos+2, 1, 0);
+                    else if (root.latteDock && index === root.tasksCount-2)
+                        latteDock.updateScale(latteDock.latteAppletPos+1, 1, 0);
+                    else
+                        root.updateScale(index+2, 1, 0);
 
-                        if (lIndex>=-1)
-                            root.updateScale(lIndex, 1, 0);*/
-
-                    } else if(root.internalSeparatorPos>=0) {
-                        if(root.internalSeparatorPos === index+1){
-                            if (!positiveDirection) {
-                                root.updateScale(index+2, ssNeighbourZoom, 0);
-                            } else {
-                                root.updateScale(index+2, bsNeighbourZoom, 0);
-                            }
-
-                            //restore neighbour tasks
-                        /*    var hIndex = index + 3;
-                            var lIndex = index - 2;
-
-                            if (hIndex<=icList.tasksCount)
-                                root.updateScale(hIndex, 1, 0);
-
-                            if (lIndex>=-1)
-                                root.updateScale(lIndex, 1, 0);*/
-
-                        } else if(root.internalSeparatorPos === index-1) {
-                            if (!positiveDirection) {
-                                root.updateScale(index-2, bsNeighbourZoom, 0);
-                            } else {
-                                root.updateScale(index-2, ssNeighbourZoom, 0);
-                            }
-
-                            //restore neighbour tasks
-                        /*    var hIndex = index + 2;
-                            var lIndex = index - 3;
-
-                            if (hIndex<=icList.tasksCount)
-                                root.updateScale(hIndex, 1, 0);
-
-                            if (lIndex>=-1)
-                                root.updateScale(lIndex, 1, 0);*/
-                        }
-                    }
-
-                    //extra restoring signals for applets around the plasmoid
-                    //at the low end
-                    if (index>=2 || ((index>=1) && (!root.hasInternalSeparator || root.internalSeparatorPos>1)) ) {
-                        root.updateScale(-1, 1, 0);
-                    }
-                    //at the high end
-                    if (index<=root.tasksCount-3
-                            || ((index<=root.tasksCount-2)
-                                && (!root.hasInternalSeparator
-                                    || (root.hasInternalSeparator && root.internalSeparatorPos<root.tasksCount-2)) )) {
-                        root.updateScale(root.tasksCount, 1, 0);
-                    }
+                    if(root.latteDock && index === 0)
+                        latteDock.updateScale(latteDock.latteAppletPos-2, 1, 0);
+                    else if (root.latteDock && index === 1)
+                        latteDock.updateScale(latteDock.latteAppletPos-1, 1, 0);
+                    else
+                        root.updateScale(index-2, 1, 0);
 
                     //Left hiddenSpacer
                     if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
