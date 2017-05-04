@@ -1057,6 +1057,11 @@ DragDrop.DropArea {
             enableDirectRenderTimer.start();
     }
 
+    function startCheckRestoreZoomTimer(){
+        checkRestoreZoom.start();
+    }
+
+
     function updateAutomaticIconSize() {
         if ((visibilityManager.normalState && !root.editMode && root.autoDecreaseIconSize)
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {

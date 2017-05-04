@@ -1312,6 +1312,9 @@ Item {
             return;
         }
 
+        if (!previewContainsMouse())
+            windowsPreviewDlg.hide(4);
+
         icList.currentSpot = -1000;
         icList.hoveredIndex = -1;
         root.clearZoomSignal();

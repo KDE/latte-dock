@@ -138,6 +138,8 @@ PlasmaExtras.ScrollArea {
 
                     if(!root.latteDock)
                         checkListHovered.startDuration(100);
+                    else
+                        root.latteDock.startCheckRestoreZoomTimer();
                 }
             }
 
