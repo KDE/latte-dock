@@ -369,9 +369,9 @@ Item {
                     if (container.showZoomed && root.isVertical)
                         return root.statesLineSize + root.thickMargin + root.iconSize + 1;
                     else
-                        return Math.round(latteApplet.tasksWidth);
+                        return latteApplet.tasksWidth;
                 } else {
-                    return Math.round(scaledWidth);
+                    return scaledWidth;
                 }
             }
 
@@ -391,9 +391,9 @@ Item {
                     if (container.showZoomed && root.isHorizontal)
                         return root.statesLineSize + root.thickMargin + root.iconSize + 1;
                     else
-                        return Math.round(latteApplet.tasksHeight);
+                        return latteApplet.tasksHeight;
                 } else {
-                    return Math.round(scaledHeight);
+                    return scaledHeight;
                 }
             }
 
@@ -642,9 +642,9 @@ Item {
                     }
 
                     if (container.isInternalViewSplitter)
-                        return Math.round(wrapper.layoutWidth);
+                        return wrapper.layoutWidth;
                     else
-                        return Math.round(parent.zoomScaleWidth * wrapper.layoutWidth);
+                        return parent.zoomScaleWidth * wrapper.layoutWidth;
                 }
 
                 height:{
@@ -653,9 +653,9 @@ Item {
                     }
 
                     if (container.isInternalViewSplitter)
-                        return Math.round(wrapper.layoutHeight);
+                        return wrapper.layoutHeight;
                     else
-                        return Math.round(parent.zoomScaleHeight * wrapper.layoutHeight);
+                        return parent.zoomScaleHeight * wrapper.layoutHeight;
                 }
 
                 //width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
@@ -893,8 +893,8 @@ Item {
                     var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
                     var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
 
-                    bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-                    smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
+                    //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
+                    //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
 
                     var leftScale;
                     var rightScale;

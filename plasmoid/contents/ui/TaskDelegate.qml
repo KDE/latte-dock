@@ -60,10 +60,6 @@ MouseArea{
             wrapper.height;
     }
 
-    onWidthChanged: {
-        console.log("tt :: "+index+ " - "+wrapper.mScale+" - "+width);
-    }
-
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
     hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
                   && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation)
@@ -305,15 +301,15 @@ MouseArea{
 
                 if (mainItemContainer.isSeparator){
                     if (!root.vertical)
-                        return Math.round(5 + root.widthMargins);
+                        return 5 + root.widthMargins;
                     else
-                        return Math.round((root.iconSize + root.widthMargins) * mScale + root.statesLineSize);
+                        return (root.iconSize + root.widthMargins) * mScale + root.statesLineSize;
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0 )
-                    return Math.round(cleanScalingWidth);
+                    return cleanScalingWidth;
                 else
-                    return Math.round(showDelegateWidth);
+                    return showDelegateWidth;
             }
 
             height: {
@@ -322,15 +318,15 @@ MouseArea{
 
                 if (mainItemContainer.isSeparator){
                     if (root.vertical)
-                        return Math.round(5 + root.heightMargins);
+                        return 5 + root.heightMargins;
                     else
-                        return Math.round((root.iconSize + root.heightMargins) * mScale + root.statesLineSize);
+                        return (root.iconSize + root.heightMargins) * mScale + root.statesLineSize;
                 }
 
                 if (mainItemContainer.isStartup && root.durationTime !==0)
-                    return Math.round(cleanScalingHeight);
+                    return cleanScalingHeight;
                 else
-                    return Math.round(showDelegateheight);
+                    return showDelegateheight;
             }
 
             //size needed fom the states below icons
@@ -404,7 +400,7 @@ MouseArea{
 
             Behavior on mScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: 0 }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Flow{
@@ -504,8 +500,8 @@ MouseArea{
                     var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
                     var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, minimumZoom);
 
-                    bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-                    smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
+                    //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
+                    //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
 
                     var leftScale;
                     var rightScale;
