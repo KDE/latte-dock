@@ -60,6 +60,10 @@ MouseArea{
             wrapper.height;
     }
 
+    onWidthChanged: {
+        console.log("tt :: "+index+ " - "+wrapper.mScale+" - "+width);
+    }
+
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
     hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
                   && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation)
@@ -400,7 +404,7 @@ MouseArea{
 
             Behavior on mScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
+                NumberAnimation { duration: 0 }
             }
 
             Flow{
