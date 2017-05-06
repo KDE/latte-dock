@@ -94,7 +94,6 @@ MouseArea{
 
     property int animationTime: root.durationTime * 1.2 * units.shortDuration
     property int badgeIndicator: 0 //it is used from external apps
-    property int directAnimationTime: 0
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index
     property int lastValidIndex: -1 //used for the removal animation
@@ -279,7 +278,7 @@ MouseArea{
 
             Behavior on nScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: mainItemContainer.directAnimationTime }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             /*   Rectangle{
@@ -401,7 +400,7 @@ MouseArea{
 
             Behavior on mScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: mainItemContainer.directAnimationTime }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Flow{
@@ -637,7 +636,7 @@ MouseArea{
 
             Behavior on nScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: mainItemContainer.directAnimationTime }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             /*     Rectangle{

@@ -70,7 +70,6 @@ Item {
 
 
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
-    property int directAnimationTime: 0
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int appletMargin: (applet && (applet.pluginName === root.plasmoidName))
@@ -333,7 +332,7 @@ Item {
 
             Behavior on nScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: container.directAnimationTime }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Loader{
@@ -844,7 +843,7 @@ Item {
 
             Behavior on zoomScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: container.directAnimationTime }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             //!this is used in order to update the index when the signal is for the internal latte plasmoid
@@ -1030,7 +1029,7 @@ Item {
 
             Behavior on nScale {
                 enabled: root.globalDirectRender
-                NumberAnimation { duration: container.directAnimationTime }
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Loader{
