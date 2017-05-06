@@ -775,8 +775,8 @@ MouseArea{
             ///dont check to restore zooms
         }
         else{
-            if(!inAnimation && !root.latteDock){
-                checkListHovered.startNormal();
+            if(!inAnimation){
+                root.startCheckRestoreZoomTimer();
             }
         }
 

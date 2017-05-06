@@ -1349,6 +1349,14 @@ Item {
         }
     }
 
+    function startCheckRestoreZoomTimer() {
+        if (latteDock) {
+            latteDock.startCheckRestoreZoomTimer();
+        } else {
+            checkListHovered.startNormal();
+        }
+    }
+
     ///REMOVE
     /*function createContextMenu(task) {
         var menu = root.contextMenuComponent.createObject(task);

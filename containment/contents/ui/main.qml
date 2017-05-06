@@ -135,7 +135,7 @@ DragDrop.DropArea {
 
     //center the layout correctly when the user uses an offset
     property int offsetFixed: (offset===0 || panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify)?
-                                     offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
+                                  offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
 
     property int realSize: iconSize + iconMargin
     property int realPanelSize: 0
@@ -973,6 +973,45 @@ DragDrop.DropArea {
         return splitters;
     }
 
+
+    function mouseInCanBeHoveredApplet(){
+        if (latteApplet && latteApplet.containsMouse())
+            return true;
+
+        var applets = startLayout.children;
+
+        for(var i=0; i<applets.length; ++i){
+            var applet = applets[i];
+
+            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
+                return true;
+            }
+        }
+
+        applets = mainLayout.children;
+
+        for(var i=0; i<applets.length; ++i){
+            var applet = applets[i];
+
+            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
+                return true;
+            }
+        }
+
+        ///check second layout also
+        applets = endLayout.children;
+
+        for(var i=0; i<applets.length; ++i){
+            var applet = applets[i];
+
+            if(applet && applet.containsMouse && !applet.lockZoom && applet.canBeHovered){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     function removeInternalViewSplitters(){
         for (var container in mainLayout.children) {
             var item = mainLayout.children[container];
@@ -1772,7 +1811,8 @@ DragDrop.DropArea {
             if (latteApplet && latteApplet.previewContainsMouse())
                 return;
 
-            if (!dock.visibility.containsMouse || (rootMouseArea.containsMouse && !root.editMode)){
+            if (!dock.visibility.containsMouse || (rootMouseArea.containsMouse && !root.editMode)
+                    || !mouseInCanBeHoveredApplet()){
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();
 

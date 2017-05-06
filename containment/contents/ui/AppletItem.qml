@@ -1132,6 +1132,10 @@ Item {
         onExited:{
             if (appletIconItem)
                 appletIconItem.active = false;
+
+            if (root.zoomFactor>1){
+                checkRestoreZoom.start();
+            }
         }
 
         onPositionChanged: {
