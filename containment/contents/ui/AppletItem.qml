@@ -326,13 +326,8 @@ Item {
             property real nScale: 0
 
             Behavior on nScale {
-                enabled: !root.globalDirectRender
-                NumberAnimation { duration: 3*container.animationTime }
-            }
-
-            Behavior on nScale {
-                enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
+                NumberAnimation { duration: root.globalDirectRender ?
+                                                root.directRenderAnimationTime : 3*container.animationTime }
             }
 
             Loader{
@@ -837,13 +832,8 @@ Item {
             }
 
             Behavior on zoomScale {
-                enabled: !root.globalDirectRender
-                NumberAnimation { duration: 3*container.animationTime }
-            }
-
-            Behavior on zoomScale {
-                enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
+                NumberAnimation { duration: root.globalDirectRender ?
+                                                root.directRenderAnimationTime : 3*container.animationTime }
             }
 
             //!this is used in order to update the index when the signal is for the internal latte plasmoid
@@ -1023,13 +1013,8 @@ Item {
             property real nScale: 0
 
             Behavior on nScale {
-                enabled: !root.globalDirectRender
-                NumberAnimation { duration: 3*container.animationTime }
-            }
-
-            Behavior on nScale {
-                enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
+                NumberAnimation { duration: root.globalDirectRender ?
+                                                root.directRenderAnimationTime : 3*container.animationTime }
             }
 
             Loader{

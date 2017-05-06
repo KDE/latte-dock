@@ -48,7 +48,7 @@ DragDrop.DropArea {
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
     property bool directRenderTimerIsRunning: enableDirectRenderTimer.running
-    property int directRenderAnimationTime: 0
+    property int directRenderAnimationTime: 20
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager

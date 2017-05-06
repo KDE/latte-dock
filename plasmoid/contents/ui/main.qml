@@ -143,7 +143,7 @@ Item {
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
 
-    property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
+    property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 20
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
