@@ -326,8 +326,13 @@ Item {
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: root.globalDirectRender ?
-                                                root.directRenderAnimationTime : 3*container.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3*container.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Loader{
@@ -832,8 +837,13 @@ Item {
             }
 
             Behavior on zoomScale {
-                NumberAnimation { duration: root.globalDirectRender ?
-                                                root.directRenderAnimationTime : 3*container.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3*container.animationTime }
+            }
+
+            Behavior on zoomScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             //!this is used in order to update the index when the signal is for the internal latte plasmoid
@@ -912,7 +922,7 @@ Item {
                         }
                     }
 
-                    if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
+                    if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1
                             || (root.hasInternalSeparator
                                 && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
                                     || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
@@ -1013,8 +1023,13 @@ Item {
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: root.globalDirectRender ?
-                                                root.directRenderAnimationTime : 3*container.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3*container.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Loader{

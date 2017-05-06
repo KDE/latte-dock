@@ -272,8 +272,13 @@ MouseArea{
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: root.globalDirectRender ?
-                                                root.directRenderAnimationTime : 3 * mainItemContainer.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             /*   Rectangle{
@@ -389,8 +394,13 @@ MouseArea{
                 }*/
 
             Behavior on mScale {
-                NumberAnimation { duration: root.globalDirectRender ?
-                                                root.directRenderAnimationTime : 3 * mainItemContainer.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
+            Behavior on mScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             Flow{
@@ -620,8 +630,13 @@ MouseArea{
             property real nScale: 0
 
             Behavior on nScale {
-                NumberAnimation { duration: root.globalDirectRender ?
-                                                root.directRenderAnimationTime : 3 * mainItemContainer.animationTime }
+                enabled: !root.globalDirectRender
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
+            Behavior on nScale {
+                enabled: root.globalDirectRender
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             /*     Rectangle{
