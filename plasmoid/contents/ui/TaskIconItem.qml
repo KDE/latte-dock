@@ -707,8 +707,12 @@ Item{
             if(!launchedAlready) {
                 launchedAlready = true;
                 root.signalAnimationsNeedThickness(1);
-                root.globalDirectRender=false;
-                icList.directRender=false;
+
+                if (root.latteDock)
+                    root.latteDock.disableDirectRender();
+                else
+                    icList.directRender=false;
+
                 root.updateScale(index+1, 1, 0);
                 root.updateScale(index-1, 1, 0);
                 root.noTasksInAnimation++;

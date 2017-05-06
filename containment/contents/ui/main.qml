@@ -943,6 +943,10 @@ DragDrop.DropArea {
         return dock.containmentActions();
     }
 
+    function disableDirectRender(){
+        root.globalDirectRender = false;
+    }
+
     function internalViewSplittersCount(){
         var splitters = 0;
         for (var container in startLayout.children) {
