@@ -922,7 +922,7 @@ Item {
                         }
                     }
 
-                    if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1
+                    if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
                             || (root.hasInternalSeparator
                                 && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
                                     || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
