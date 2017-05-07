@@ -53,13 +53,16 @@ DragDrop.DropArea {
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
+    property bool behaveAsPlasmaPanel: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
+                                       && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+                                       && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
+
     property bool blurEnabled: plasmoid.configuration.blurEnabled
     property bool confirmedDragEntered: false
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
-    property bool drawShadowsExternal: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
-                                       && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
-                                       && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
-                                       && root.panelShadowsActive
+
+
+    property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
 
     property bool editMode: plasmoid.userConfiguring
     property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
@@ -122,7 +125,7 @@ DragDrop.DropArea {
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
     property int offset: {
-        if (drawShadowsExternal) {
+        if (behaveAsPlasmaPanel) {
             return 0;
         }
 
@@ -1312,12 +1315,12 @@ DragDrop.DropArea {
 
     EditModeVisual{
         id:editModeVisual
-        z: root.drawShadowsExternal ? 1 : 0
+        z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
     Item{
         anchors.fill:layoutsContainer
-        z: root.drawShadowsExternal ? 0 : 1
+        z: root.behaveAsPlasmaPanel ? 0 : 1
 
         PanelBox{}
     }
@@ -1382,7 +1385,7 @@ DragDrop.DropArea {
 
         x: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-                    && !root.editMode && !root.drawShadowsExternal ){
+                    && !root.editMode && !root.behaveAsPlasmaPanel ){
                 return ((dock.width/2) - (root.maxLength/2) + root.offset)
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
@@ -1407,7 +1410,7 @@ DragDrop.DropArea {
 
         y: {
             if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-                    && !root.editMode && !root.drawShadowsExternal ) {
+                    && !root.editMode && !root.behaveAsPlasmaPanel ) {
                 return ((dock.height/2) - (root.maxLength/2) + root.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
@@ -1430,9 +1433,9 @@ DragDrop.DropArea {
             }
         }
 
-        width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.drawShadowsExternal ?
+        width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.behaveAsPlasmaPanel ?
                    root.maxLength : parent.width
-        height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.drawShadowsExternal ?
+        height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.behaveAsPlasmaPanel ?
                     root.maxLength : parent.height
         z:10
 

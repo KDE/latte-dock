@@ -79,7 +79,7 @@ Item{
         target: dock
         property: "drawShadows"
         when: dock
-        value: root.drawShadowsExternal
+        value: root.behaveAsPlasmaPanel
     }
 
     Binding{

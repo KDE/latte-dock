@@ -39,7 +39,7 @@ Item{
     opacity: root.useThemePanel ? 1 : 0
 
     property int panelWidth: {
-        if (root.drawShadowsExternal) {
+        if (root.behaveAsPlasmaPanel) {
             return root.width;
         } else {
             if ((root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode) {
@@ -51,7 +51,7 @@ Item{
     }
 
     property int panelHeight: {
-        if (root.drawShadowsExternal) {
+        if (root.behaveAsPlasmaPanel) {
             return root.height;
         } else {
             if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode) {
@@ -121,8 +121,8 @@ Item{
         height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
-        imagePath: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "widgets/panel-background"
-        prefix: root.drawShadowsExternal || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "shadow"
+        imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "widgets/panel-background"
+        prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "shadow"
 
         opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
@@ -157,7 +157,7 @@ Item{
 
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
-            if (root.drawShadowsExternal) {
+            if (root.behaveAsPlasmaPanel) {
                 return root.isVertical ? root.width : root.height;
             } else {
                 var icons = root.statesLineSize + root.iconSize + root.thickMargin + 1;
@@ -315,7 +315,7 @@ Item{
             }
 
             onRepaintNeeded: {
-                if (root.drawShadowsExternal)
+                if (root.behaveAsPlasmaPanel)
                     adjustPrefix();
             }
 

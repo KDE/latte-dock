@@ -37,8 +37,8 @@ Image{
     property int speed: root.durationTime*4*units.longDuration
     property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
-    property int editLength: root.isHorizontal ? (root.drawShadowsExternal ? root.width - root.maxIconSize/4 : root.maxLength) :
-                                               (root.drawShadowsExternal ? root.height - root.maxIconSize/4 : root.maxLength)
+    property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength) :
+                                               (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
@@ -84,7 +84,7 @@ Image{
             return;
         }
 
-        if (editAnimationEnded && !root.drawShadowsExternal) {
+        if (editAnimationEnded && !root.behaveAsPlasmaPanel) {
             dock.shadow = root.editShadow;
         } else {
             dock.shadow = root.panelShadow;
@@ -234,7 +234,7 @@ Image{
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
-                        to: root.drawShadowsExternal && dock.session===Latte.Dock.DefaultSession  ? 0.3 : 0.6
+                        to: root.behaveAsPlasmaPanel && dock.session===Latte.Dock.DefaultSession  ? 0.3 : 0.6
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }
