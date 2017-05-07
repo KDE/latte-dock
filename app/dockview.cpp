@@ -179,6 +179,13 @@ void DockView::init()
     connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::updateEffects);
+
+    connect(this, &DockView::normalThicknessChanged, this, [&]() {
+        if (m_behaveAsPlasmaPanel) {
+            syncGeometry();
+        }
+    });
+
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     rootContext()->setContextProperty(QStringLiteral("dock"), this);

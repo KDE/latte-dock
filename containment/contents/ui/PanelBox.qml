@@ -158,7 +158,7 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.behaveAsPlasmaPanel) {
-                return root.isVertical ? root.width : root.height;
+                return root.statesLineSize + root.iconSize + root.thickMargin;
             } else {
                 var icons = root.statesLineSize + root.iconSize + root.thickMargin + 1;
                 var panels = root.themePanelSize + root.panelMargin;
@@ -173,7 +173,7 @@ Item{
         }
 
         property int shadowsSize: {
-            if (shadowsSvgItem && root.useThemePanel && root.panelShadowsActive){
+            if (shadowsSvgItem && !root.behaveAsPlasmaPanel && root.useThemePanel && root.panelShadowsActive){
                 if (root.isVertical){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge)
                         return shadowsSvgItem.margins.right;
