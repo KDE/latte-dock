@@ -494,9 +494,9 @@ Item {
             //! work only after Plasma 5.9 and frameworks 5.29
             //! + added a check for groupDialog also when it is present
             //!   in plasma 5.8 (that was introduced after 5.8.5)
-            if (Latte.WindowSystem.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
+            //if (Latte.WindowSystem.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
                 groupDialog = groupDialogGhost;
-            }
+            //}
         }
     }
 
