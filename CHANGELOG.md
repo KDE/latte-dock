@@ -1,5 +1,18 @@
 #**CHANGELOG**#
 
+#### Version 0.6.1
+
+* fix #385,load font through QFontDatabase 
+* fix #412,fix for groupDialog in plasma 5.8 
+* expose action for remove Latte plasmoid in desktop 
+* do not update iconSize automatically 
+* return correct screen geometry from corona 
+* fix #358, [Crash] - recreating dock for AlwaysVisible mode 
+* fix #351,use correct screenGeometry at task filter 
+* Update README.md 
+* links for repos 
+* fix no return in nonvoid function
+
 #### Version 0.6.0
 
 * fix #344, edit mode still active when I change the session
