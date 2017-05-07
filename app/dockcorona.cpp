@@ -296,7 +296,7 @@ QRegion DockCorona::availableScreenRegion(int id) const
             // because the left and right are those who dodge others docks
             switch (view->location()) {
                 case Plasma::Types::TopEdge:
-                    if (view->drawShadows()) {
+                    if (view->behaveAsPlasmaPanel()) {
                         available -= view->geometry();
                     } else {
                         QRect realGeometry;
@@ -326,7 +326,7 @@ QRegion DockCorona::availableScreenRegion(int id) const
                     break;
 
                 case Plasma::Types::BottomEdge:
-                    if (view->drawShadows()) {
+                    if (view->behaveAsPlasmaPanel()) {
                         available -= view->geometry();
                     } else {
                         QRect realGeometry;

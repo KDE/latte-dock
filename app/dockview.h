@@ -45,6 +45,7 @@ namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
+    Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
     Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
@@ -94,6 +95,9 @@ public:
     int currentThickness() const;
 
     int docksCount() const;
+
+    bool behaveAsPlasmaPanel() const;
+    void setBehaveAsPlasmaPanel(bool behavior);
 
     bool dockWinBehavior() const;
     void setDockWinBehavior(bool dock);
@@ -179,6 +183,7 @@ signals:
     void eventTriggered(QEvent *ev);
 
     void alignmentChanged();
+    void behaveAsPlasmaPanelChanged();
     void currentScreenChanged();
     void dockLocationChanged();
     void docksCountChanged();
@@ -226,9 +231,10 @@ private:
 private:
     Plasma::Containment *containmentById(uint id);
 
+    bool m_behaveAsPlasmaPanel{false};
     bool m_forceDrawCenteredBorders{false};
     bool m_dockWinBehavior{false};
-    bool m_drawShadows{false};
+    bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_onPrimary{true};
     int m_maxThickness{24};

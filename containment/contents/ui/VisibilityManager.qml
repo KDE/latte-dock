@@ -77,9 +77,16 @@ Item{
 
     Binding{
         target: dock
-        property: "drawShadows"
+        property: "behaveAsPlasmaPanel"
         when: dock
         value: root.behaveAsPlasmaPanel
+    }
+
+    Binding{
+        target: dock
+        property: "drawShadows"
+        when: dock
+        value: root.drawShadowsExternal
     }
 
     Binding{
@@ -330,7 +337,7 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            if (dock.drawShadows) {
+            if (dock.behaveAsPlasmaPanel) {
                 dock.maskArea = Qt.rect(0,0,root.width,root.height);
             } else {
                 dock.maskArea = newMaskArea;
@@ -343,7 +350,7 @@ Item{
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
-            if (!dock.drawShadows) {
+            if (!dock.behaveAsPlasmaPanel) {
                 var fixedThickness = root.realPanelThickness;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {

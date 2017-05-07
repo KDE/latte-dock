@@ -163,7 +163,7 @@ void DockView::init()
         if (formFactor() == Plasma::Types::Vertical)
             syncGeometry();
     });
-    connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
+    connect(this, &DockView::behaveAsPlasmaPanelChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::offsetChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
@@ -492,7 +492,7 @@ void DockView::resizeWindow(QRect availableScreenRect)
         //qDebug() << "MAXIMUM RECT :: " << maximumRect << " - AVAILABLE RECT :: " << availableRect;
         QSize size{maxThickness(), availableScreenRect.height()};
 
-        if (m_drawShadows) {
+        if (m_behaveAsPlasmaPanel) {
             size.setWidth(normalThickness());
             size.setHeight(static_cast<int>(maxLength() * availableScreenRect.height()));
         }
@@ -504,7 +504,7 @@ void DockView::resizeWindow(QRect availableScreenRect)
         QSize screenSize = this->screen()->size();
         QSize size{screenSize.width(), maxThickness()};
 
-        if (m_drawShadows) {
+        if (m_behaveAsPlasmaPanel) {
             size.setWidth(static_cast<int>(maxLength() * screenSize.width()));
             size.setHeight(normalThickness());
         }
@@ -563,7 +563,7 @@ void DockView::updatePosition(QRect availableScreenRect)
         case Plasma::Types::TopEdge:
             screenGeometry = this->screen()->geometry();
 
-            if (m_drawShadows) {
+            if (m_behaveAsPlasmaPanel) {
                 position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
             } else {
                 position = {screenGeometry.x(), screenGeometry.y()};
@@ -574,7 +574,7 @@ void DockView::updatePosition(QRect availableScreenRect)
         case Plasma::Types::BottomEdge:
             screenGeometry = this->screen()->geometry();
 
-            if (m_drawShadows) {
+            if (m_behaveAsPlasmaPanel) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
                             screenGeometry.y() + screenGeometry.height() - cleanThickness
                            };
@@ -585,7 +585,7 @@ void DockView::updatePosition(QRect availableScreenRect)
             break;
 
         case Plasma::Types::RightEdge:
-            if (m_drawShadows && !mask().isNull()) {
+            if (m_behaveAsPlasmaPanel && !mask().isNull()) {
                 position = {availableScreenRect.right() - cleanThickness + 1,
                             availableScreenRect.y() + length(availableScreenRect.height())
                            };
@@ -596,7 +596,7 @@ void DockView::updatePosition(QRect availableScreenRect)
             break;
 
         case Plasma::Types::LeftEdge:
-            if (m_drawShadows && !mask().isNull()) {
+            if (m_behaveAsPlasmaPanel && !mask().isNull()) {
                 position = {availableScreenRect.x(), availableScreenRect.y() + length(availableScreenRect.height())};
             } else {
                 position = {availableScreenRect.x(), availableScreenRect.y()};
@@ -659,7 +659,7 @@ inline void DockView::syncGeometry()
                 }
             }
 
-            if (availableRegion.rectCount() > 1 && m_drawShadows)
+            if (availableRegion.rectCount() > 1 && m_behaveAsPlasmaPanel)
                 m_forceDrawCenteredBorders = true;
             else
                 m_forceDrawCenteredBorders = false;
@@ -767,6 +767,31 @@ void DockView::setDockWinBehavior(bool dock)
     emit dockWinBehaviorChanged();
 }
 
+bool DockView::behaveAsPlasmaPanel() const
+{
+    return m_behaveAsPlasmaPanel;
+}
+
+void DockView::setBehaveAsPlasmaPanel(bool behavior)
+{
+    if (m_behaveAsPlasmaPanel == behavior) {
+        return;
+    }
+
+    m_behaveAsPlasmaPanel = behavior;
+
+    if (m_behaveAsPlasmaPanel) {
+        PanelShadows::self()->addWindow(this, enabledBorders());
+    } else {
+        PanelShadows::self()->removeWindow(this);
+        m_enabledBorders = Plasma::FrameSvg::AllBorders;
+        emit enabledBordersChanged();
+    }
+
+    updateEffects();
+    emit behaveAsPlasmaPanelChanged();
+}
+
 bool DockView::drawShadows() const
 {
     return m_drawShadows;
@@ -780,15 +805,6 @@ void DockView::setDrawShadows(bool draw)
 
     m_drawShadows = draw;
 
-    if (m_drawShadows) {
-        PanelShadows::self()->addWindow(this, enabledBorders());
-    } else {
-        PanelShadows::self()->removeWindow(this);
-        m_enabledBorders = Plasma::FrameSvg::AllBorders;
-        emit enabledBordersChanged();
-    }
-
-    updateEffects();
     emit drawShadowsChanged();
 }
 
@@ -986,7 +1002,7 @@ void DockView::setShadow(int shadow)
 
     m_shadow = shadow;
 
-    if (m_drawShadows) {
+    if (m_behaveAsPlasmaPanel) {
         syncGeometry();
     }
 
@@ -995,7 +1011,7 @@ void DockView::setShadow(int shadow)
 
 void DockView::updateEffects()
 {
-    if (!m_drawShadows) {
+    if (!m_behaveAsPlasmaPanel) {
         if (m_drawEffects && !m_effectsArea.isNull() && !m_effectsArea.isEmpty()) {
             //! this is used when compositing is disabled and provides
             //! the correct way for the mask to be painted in order for
@@ -1028,7 +1044,7 @@ void DockView::updateEffects()
             KWindowEffects::enableBlurBehind(winId(), false);
             KWindowEffects::enableBackgroundContrast(winId(), false);
         }
-    } else if (m_drawShadows && m_drawEffects) {
+    } else if (m_behaveAsPlasmaPanel && m_drawEffects) {
         KWindowEffects::enableBlurBehind(winId(), true);
         KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
                 m_theme.backgroundContrast(),
@@ -1555,7 +1571,6 @@ Plasma::FrameSvg::EnabledBorders DockView::enabledBorders() const
 
 void DockView::updateEnabledBorders()
 {
-    // qDebug() << "draw shadow!!!! :" << m_drawShadows;
     if (!this->screen()) {
         return;
     }
@@ -1618,7 +1633,7 @@ void DockView::updateEnabledBorders()
         emit enabledBordersChanged();
     }
 
-    if (!m_drawShadows) {
+    if (!m_behaveAsPlasmaPanel) {
         PanelShadows::self()->removeWindow(this);
     } else {
         PanelShadows::self()->setEnabledBorders(this, borders);
