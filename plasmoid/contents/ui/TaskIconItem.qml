@@ -450,7 +450,7 @@ Item{
                             //badgeMask
                         }
                         hideSource: true
-                     //   live: mainItemContainer.badgeIndicator > 0 ? true : false
+                        //   live: mainItemContainer.badgeIndicator > 0 ? true : false
                     }
 
                     supportsAtlasTextures: true
@@ -713,8 +713,11 @@ Item{
                 else
                     icList.directRender=false;
 
-                root.updateScale(index+1, 1, 0);
-                root.updateScale(index-1, 1, 0);
+                wrapper.updateIdSendScale(index+2, 1, 0);
+                wrapper.updateIdSendScale(index+1, 1, 0);
+                wrapper.updateIdSendScale(index-1, 1, 0);
+                wrapper.updateIdSendScale(index-2, 1, 0);
+
                 root.noTasksInAnimation++;
                 mainItemContainer.setBlockingAnimation(true);
 
@@ -1122,8 +1125,9 @@ Item{
             onRunningChanged: {
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
-                    root.updateScale(index-1, halfZoom, 0);
-                    root.updateScale(index+1, halfZoom, 0);
+
+                    wrapper.updateIdSendScale(index-1, halfZoom, 0);
+                    wrapper.updateIdSendScale(index+1, halfZoom, 0);
 
                     mainItemContainer.animationEnded();
                     //   root.animations--;
