@@ -1,5 +1,9 @@
 #**CHANGELOG**#
 
+#### Version 0.6.2
+
+* fix #446, crash from groupDialog in 5.8 
+
 #### Version 0.6.1
 
 * fix #385,load font through QFontDatabase 
