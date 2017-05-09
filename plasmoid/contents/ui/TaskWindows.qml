@@ -33,6 +33,8 @@ Item{
     property bool isStartup: IsStartup ? true : false
     property bool isWindow: IsWindow ? true : false
 
+    property int lastActiveWinInGroup: -1
+
     onIsLauncherChanged: updateCounter();
     //  onIsStartupChanged: updateCounter();
     //    onIsWindowChanged: updateCounter();
@@ -129,7 +131,7 @@ Item{
         windowsLocalModel.currentIndex = index;
         var childs = windowsLocalModel.items;
 
-        var nextAvailableWindow = 0;
+        var nextAvailableWindow = -1;
 
         for(var i=0; i<childs.count; ++i){
             var kid = childs.get(i);
@@ -143,9 +145,42 @@ Item{
             nextAvailableWindow = 0;
         }
 
+        if (nextAvailableWindow === -1 && lastActiveWinInGroup !==-1){
+            for(var i=0; i<childs.count; ++i){
+                var kid = childs.get(i);
+                if (kid.model.LegacyWinIdList[0] === lastActiveWinInGroup) {
+                    nextAvailableWindow = i;
+                    break;
+                }
+            }
+        }
+
+        if (nextAvailableWindow === -1)
+            nextAvailableWindow = 0;
+
         tasksModel.requestActivate(tasksModel.makeModelIndex(index,nextAvailableWindow));
     }
 
+    // keep a record of the last active window in a group
+    Connections{
+        target:tasksModel
+        onActiveTaskChanged:{
+            if (!mainItemContainer.isGroupParent) {
+                return;
+            }
+
+            windowsLocalModel.currentIndex = index;
+            var childs = windowsLocalModel.items;
+
+            for(var i=0; i<childs.count; ++i){
+                var kid = childs.get(i);
+                if (kid.model.IsActive === true) {
+                    windowsContainer.lastActiveWinInGroup = kid.model.LegacyWinIdList[0];
+                    break;
+                }
+            }
+        }
+    }
 
     Component.onCompleted: {
         mainItemContainer.checkWindowsStates.connect(initializeStates);
