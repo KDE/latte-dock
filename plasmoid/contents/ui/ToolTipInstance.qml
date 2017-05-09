@@ -176,6 +176,7 @@ Column {
         Item {
             id: thumbnailSourceItem
             anchors.fill: parent
+            anchors.bottomMargin: 2
 
             readonly property bool isMinimized: isGroup ? IsMinimized == true : isMinimizedParent
             // TODO: this causes XCB error message when being visible the first time
@@ -389,6 +390,15 @@ Column {
                     }
                 }
             }
+        }
+
+        //active window line
+        Rectangle{
+            width: parent.width
+            height: 2
+            color: theme.buttonFocusColor
+            anchors.bottom: parent.bottom
+            visible: isGroup ? IsActive === true : parentTask.isActive
         }
     }
 
