@@ -909,59 +909,43 @@ MouseArea{
 
             if (modifierAccepted(mouse)){
                 if( !mainItemContainer.isLauncher){
-                    if (root.modifierClickAction == TaskManagerApplet.Backend.NewInstance) {
+                    if (root.modifierClickAction == Latte.Dock.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (root.modifierClickAction == TaskManagerApplet.Backend.Close) {
+                    } else if (root.modifierClickAction == Latte.Dock.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (root.modifierClickAction == TaskManagerApplet.Backend.ToggleMinimized) {
+                    } else if (root.modifierClickAction == Latte.Dock.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
+                    } else if ( root.modifierClickAction == Latte.Dock.CycleThroughTasks) {
+                                                console.log("2...");
+                        if (isGroupParent)
+                            tasksWindows.activateNextTask();
+                        else
+                            activateTask();
                     }
+                } else {
+                    mouseEntered = false;
+                    wrapper.runLauncherAnimation();
                 }
-            }else if (mouse.button == Qt.MidButton){
+            } else if (mouse.button == Qt.MidButton){
                 if( !mainItemContainer.isLauncher){
-                    if (root.middleClickAction == TaskManagerApplet.Backend.NewInstance) {
+                    if (root.middleClickAction == Latte.Dock.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
-                    } else if (root.middleClickAction == TaskManagerApplet.Backend.Close) {
+                    } else if (root.middleClickAction == Latte.Dock.Close) {
                         tasksModel.requestClose(modelIndex());
-                    } else if (root.middleClickAction == TaskManagerApplet.Backend.ToggleMinimized) {
+                    } else if (root.middleClickAction == Latte.Dock.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
+                    } else if ( root.middleClickAction == Latte.Dock.CycleThroughTasks) {
+                        if (isGroupParent)
+                            tasksWindows.activateNextTask();
+                        else
+                            activateTask();
                     }
-                }
-                else {
+                } else {
                     mouseEntered = false;
                     wrapper.runLauncherAnimation();
                 }
-            }
-            else if (mouse.button == Qt.LeftButton){
-                if( mainItemContainer.isLauncher){
-                    mouseEntered = false;
-                    wrapper.runLauncherAnimation();
-                }
-                else{
-                    if (model.IsGroupParent) {
-                        if (Latte.WindowSystem.compositingActive) {
-                            root.presentWindows(model.LegacyWinIdList);
-                        } else {
-                            if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
-                                windowsPreviewDlg.hide(3);
-                            } else {
-                                preparePreviewWindow(false);
-                                windowsPreviewDlg.show(mainItemContainer);
-                            }
-                        }
-                    } else {
-                        if (IsMinimized === true) {
-                            var i = modelIndex();
-                            tasksModel.requestToggleMinimized(i);
-                            tasksModel.requestActivate(i);
-                        } else if (IsActive === true) {
-                            tasksModel.requestToggleMinimized(modelIndex());
-                        } else {
-                            tasksModel.requestActivate(modelIndex());
-                        }
-                    }
-
-                }
+            } else if (mouse.button == Qt.LeftButton){
+                activateTask();
             }
         }
 
@@ -1008,6 +992,36 @@ MouseArea{
         tasksWindows.activateNextTask();
     }
 
+    function activateTask() {
+        if( mainItemContainer.isLauncher){
+            mouseEntered = false;
+            wrapper.runLauncherAnimation();
+        }
+        else{
+            if (model.IsGroupParent) {
+                if (Latte.WindowSystem.compositingActive) {
+                    root.presentWindows(model.LegacyWinIdList);
+                } else {
+                    if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
+                        windowsPreviewDlg.hide(3);
+                    } else {
+                        preparePreviewWindow(false);
+                        windowsPreviewDlg.show(mainItemContainer);
+                    }
+                }
+            } else {
+                if (IsMinimized === true) {
+                    var i = modelIndex();
+                    tasksModel.requestToggleMinimized(i);
+                    tasksModel.requestActivate(i);
+                } else if (IsActive === true) {
+                    tasksModel.requestToggleMinimized(modelIndex());
+                } else {
+                    tasksModel.requestActivate(modelIndex());
+                }
+            }
+        }
+    }
 
     function preparePreviewWindow(hideClose){
         windowsPreviewDlg.visualParent = mainItemContainer;

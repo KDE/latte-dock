@@ -75,6 +75,15 @@ public:
         RightClick
     };
     Q_ENUM(ClickAction)
+
+    enum TaskAction {
+        NoneAction = 0,
+        Close,
+        NewInstance,
+        ToggleMinimized,
+        CycleThroughTasks
+    };
+    Q_ENUM(TaskAction)
 };
 
 }//end of namespace
