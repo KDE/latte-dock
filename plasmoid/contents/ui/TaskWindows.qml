@@ -141,6 +141,7 @@ Item{
             }
         }
 
+        //the active window is the last one
         if (nextAvailableWindow >= childs.count) {
             nextAvailableWindow = 0;
         }
@@ -160,6 +161,51 @@ Item{
 
         tasksModel.requestActivate(tasksModel.makeModelIndex(index,nextAvailableWindow));
     }
+
+    //! function which is used to cycle activation into
+    //! a group of windows backwise
+    function activatePreviousTask() {
+        if (!mainItemContainer.isGroupParent) {
+            return;
+        }
+
+        windowsLocalModel.currentIndex = index;
+        var childs = windowsLocalModel.items;
+
+        //indicates than nothing was found
+        var prevAvailableWindow = -2;
+
+        for(var i=childs.count-1; i>=0; --i){
+            var kid = childs.get(i);
+            if (kid.model.IsActive === true) {
+                prevAvailableWindow = i - 1;
+                break;
+            }
+        }
+
+        //the active window is 0
+        if (prevAvailableWindow == -1) {
+            prevAvailableWindow = childs.count-1;
+        }
+
+        if (prevAvailableWindow === -2 && lastActiveWinInGroup !==-1){
+            for(var i=childs.count-1; i>=0; --i){
+                var kid = childs.get(i);
+                if (kid.model.LegacyWinIdList[0] === lastActiveWinInGroup) {
+                    prevAvailableWindow = i;
+                    break;
+                }
+            }
+        }
+
+        //no window was found
+        if (prevAvailableWindow === -2)
+            prevAvailableWindow = 0;
+
+        tasksModel.requestActivate(tasksModel.makeModelIndex(index,prevAvailableWindow));
+    }
+
+
 
     // keep a record of the last active window in a group
     Connections{

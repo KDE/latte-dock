@@ -954,6 +954,41 @@ MouseArea{
         if(!inAnimation && !root.latteDock)
             checkListHovered.startDuration(3*units.longDuration);
     }
+
+    onWheel: {
+        var angle = wheel.angleDelta.y / 8;
+
+        //positive direction
+        if (angle > 12) {
+            if (isLauncher) {
+                mouseEntered = false;
+                wrapper.runLauncherAnimation();
+            } else if (isGroupParent) {
+                tasksWindows.activateNextTask();
+            } else {
+                activateTask();
+            }
+        //negative direction
+        } else if (angle < 12) {
+            if (isLauncher) {
+                mouseEntered = false;
+                wrapper.runLauncherAnimation();
+            } else if (isGroupParent) {
+                tasksWindows.activatePreviousTask();
+            } else {
+                if (IsMinimized === true) {
+                    var i = modelIndex();
+                    tasksModel.requestToggleMinimized(i);
+                    tasksModel.requestActivate(i);
+                } else if (IsActive === true) {
+                    tasksModel.requestToggleMinimized(modelIndex());
+                } else {
+                    tasksModel.requestActivate(modelIndex());
+                }
+            }
+        }
+    }
+
     ///////////////// End Of Mouse Area Events ///////////////////
 
     ///// Handlers for Signals /////
