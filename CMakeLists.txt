@@ -56,7 +56,3 @@ add_subdirectory(shell)
 add_subdirectory(containment)
 add_subdirectory(plasmoid)
 add_subdirectory(icons)
-
-plasma_install_package(build/shell/release org.kde.latte.shell shells shell)
-plasma_install_package(build/containment/release org.kde.latte.containment)
-plasma_install_package(build/plasmoid/release org.kde.latte.plasmoid)
