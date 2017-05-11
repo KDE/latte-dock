@@ -291,7 +291,7 @@ void DockView::reconsiderScreen()
     //! 1.a primary dock must be always on the primary screen
     //! 2.the last tasks dock must also always on the primary screen
     //! even though it has been configured as an explicit
-    if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1) && !screenExists)
+    if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1 && !screenExists))
         && m_screenToFollowId != qGuiApp->primaryScreen()->name()
         && m_screenToFollow != qGuiApp->primaryScreen()) {
         //change to primary screen only if the specific edge is free
