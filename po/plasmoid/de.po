@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-03-22 21:16+0200\n"
-"PO-Revision-Date: 2017-03-22 22:18+0100\n"
+"PO-Revision-Date: 2017-05-10 20:27+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -141,7 +141,7 @@ msgstr "Zeige nur Aufgaben dieses Bildschirms"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:123
 msgid "Show only tasks from the current desktop"
-msgstr "Zeige nur Aufgaben dieses Arbeitsplatzes"
+msgstr "Zeige nur Aufgaben dieser Arbeitsläche"
 
 #: ../../plasmoid/contents/ui/ConfigInteraction.qml:128
 msgid "Show only tasks from the current activity"
