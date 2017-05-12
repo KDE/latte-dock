@@ -15,3 +15,14 @@ cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=$build_type ..
 make
 sudo make install
+
+oldDeskFile="/usr/share/applications/latte-dock.desktop"
+
+# TODO: remove this lines before 0.7 release, it is provided only for
+# the users that use the master branch and built it themselves. It
+# will help them to not have to different desktop files for Latte
+if [ -f $oldDeskFile ] ; then
+    sudo rm $oldDeskFile
+    echo "Removed old desktop file..."
+fi
+

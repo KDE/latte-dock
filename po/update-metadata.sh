@@ -8,7 +8,7 @@ cd "$BASEDIR/.."
 PROJECTCONTAINMENT="$(pwd)/containment/metadata.desktop.cmake" # containment path
 PROJECTPLASMOID="$(pwd)/plasmoid/metadata.desktop.cmake" # plasmoid path
 PROJECTSHELL="$(pwd)/shell/metadata.desktop.cmake" # shell path
-PROJECTAPP="$(pwd)/app/latte-dock.desktop.cmake" # app path
+PROJECTAPP="$(pwd)/app/org.kde.latte-dock.desktop.cmake" # app path
 NOTIFYRC="$(pwd)/app/lattedock.notifyrc" # global notify config
 
 function generate_desktop_file
@@ -32,6 +32,6 @@ generate_desktop_file plasmoid plasmoid.metadata.desktop.template "$PROJECTPLASM
 
 generate_desktop_file shell shell.metadata.desktop.template "$PROJECTSHELL"
 
-generate_desktop_file app latte-dock.desktop.template "$PROJECTAPP"
+generate_desktop_file app org.kde.latte-dock.desktop.template "$PROJECTAPP"
 
 generate_desktop_file app lattedock.notifyrc.template "$NOTIFYRC"

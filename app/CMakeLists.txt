@@ -51,9 +51,9 @@ if(HAVE_X11)
     )
 endif()
 
-configure_file(latte-dock.desktop.cmake latte-dock.desktop)
+configure_file(org.kde.latte-dock.desktop.cmake org.kde.latte-dock.desktop)
 
 install(TARGETS latte-dock ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/latte-dock.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.latte-dock.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 install(FILES dbus/org.kde.LatteDock.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 install(FILES lattedock.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})

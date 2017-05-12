@@ -15,7 +15,7 @@ PROJECTSHELL="plasma_shell_org.kde.latte.shell" # project name
 TEMPLATESHELL="shell.metadata.desktop.template" # shell desktop template
 
 PROJECTAPP="latte-dock" # project name
-TEMPLATEAPP="latte-dock.desktop.template" # app desktop template
+TEMPLATEAPP="org.kde.latte-dock.desktop.template" # app desktop template
 
 NOTIFYRC="lattedock.notifyrc.template" # notifyrc template
 
