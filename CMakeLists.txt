@@ -7,6 +7,7 @@ set(AUTHOR "Michail Vourlakos, Smith Ar")
 set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
 set(WEBSITE "https://github.com/psifidotos/Latte-Dock")
 set(BUG_ADDRESS "https://github.com/psifidotos/Latte-Dock/issues")
+set(FAQS "https://github.com/psifidotos/Latte-Dock/wiki/F.A.Q.")
 
 set(QT_MIN_VERSION "5.7.0")
 set(KF5_MIN_VERSION "5.29.0")
