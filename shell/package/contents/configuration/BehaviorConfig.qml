@@ -460,5 +460,10 @@ PlasmaComponents.Page {
             }
         }
         //! END: Delay
+
+        PlasmaComponents.Label{
+            id: bottomMarginSpacer
+            text:" "
+        }
     }
 }

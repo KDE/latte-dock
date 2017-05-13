@@ -270,5 +270,10 @@ PlasmaComponents.Page {
             }
         }
         //! END: Tasks Filters
+
+        PlasmaComponents.Label{
+            id: bottomMarginSpacer
+            text:" "
+        }
     }
 }

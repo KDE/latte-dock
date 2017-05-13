@@ -246,5 +246,10 @@ PlasmaComponents.Page {
             }
         }
         //! END: Extra Actions
+
+        PlasmaComponents.Label{
+            id: bottomMarginSpacer
+            text:" "
+        }
     }
 }
