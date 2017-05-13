@@ -318,7 +318,7 @@ PlasmaCore.FrameSvgItem {
                 Layout.alignment: Qt.AlignRight
 
                 text: i18n("Quit")
-                iconSource: "window-close"
+                iconSource: "application-exit"
 
                 onClicked: dock.closeApplication()
             }
