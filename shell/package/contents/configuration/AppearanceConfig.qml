@@ -46,7 +46,7 @@ PlasmaComponents.Page {
         id: content
 
         width: dialog.maxWidth - Layout.leftMargin * 2
-        spacing: units.largeSpacing
+        spacing: dialog.subGroupSpacing
         anchors.centerIn: parent
         Layout.leftMargin: units.smallSpacing * 2
 

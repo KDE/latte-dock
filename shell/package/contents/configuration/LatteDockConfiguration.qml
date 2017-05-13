@@ -46,6 +46,7 @@ PlasmaCore.FrameSvgItem {
     Layout.minimumHeight: height
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+    property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
 
     PlasmaComponents.ToolButton {
         id: pinButton
