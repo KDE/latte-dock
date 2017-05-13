@@ -92,6 +92,10 @@ ki18n_xgettext app         "$PROJECTAPP"         "$TEMPLATEAPP"  shell
 # The msg of shell package is merged with app
 # ki18n_xgettext shell       "$PROJECTSHELL"       "$TEMPLATESHELL"
 
+# extract appstream metainfo strings
+
+cd "$BASEDIR/scripts"
+bash ./extract_metainfo.sh
 
 cd "$BASEDIR"
 bash ./update-metadata.sh

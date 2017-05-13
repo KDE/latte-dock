@@ -35,3 +35,7 @@ generate_desktop_file shell shell.metadata.desktop.template "$PROJECTSHELL"
 generate_desktop_file app org.kde.latte-dock.desktop.template "$PROJECTAPP"
 
 generate_desktop_file app lattedock.notifyrc.template "$NOTIFYRC"
+
+#update the appstream metadata file
+cd "$BASEDIR/scripts"
+bash ./update_metainfo.sh
