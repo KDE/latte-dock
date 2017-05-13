@@ -93,9 +93,6 @@ ki18n_xgettext app         "$PROJECTAPP"         "$TEMPLATEAPP"  shell
 # ki18n_xgettext shell       "$PROJECTSHELL"       "$TEMPLATESHELL"
 
 # extract appstream metainfo strings
-
 cd "$BASEDIR/scripts"
 bash ./extract_metainfo.sh
 
-cd "$BASEDIR"
-bash ./update-metadata.sh
