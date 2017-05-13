@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-03-22 21:21+0200\n"
+"PO-Revision-Date: 2017-05-13 21:46+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -19,11 +19,11 @@ msgstr ""
 
 #: ../../app/dockcorona.cpp:99
 msgid "Activate Task Manager Entry %1"
-msgstr ""
+msgstr "Ενεργοποίηση Εφαρμογής %1"
 
 #: ../../app/dockcorona.cpp:113
 msgid "New Instance for Task Manager Entry %1"
-msgstr ""
+msgstr "Νέο Στιγμιότυπο για την Εφαρμογή %1"
 
 #: ../../app/dockview.cpp:1456
 msgctxt "%1 is the name of the containment"
@@ -41,31 +41,31 @@ msgstr "Εμφάνιση Εναλλακτικής Συνεδρίας στο με
 
 #: ../../app/globalsettings.cpp:40
 msgid "Add Widgets..."
-msgstr ""
+msgstr "Προσθήκη συστατικών..."
 
 #: ../../app/globalsettings.cpp:41
 msgid "Show Plasma Widget Explorer"
-msgstr ""
+msgstr "Εμφάνιση Πίνακα Γραφικών Συστατικών"
 
 #: ../../app/globalsettings.cpp:186
 msgctxt "default layout"
 msgid "Default"
-msgstr ""
+msgstr "Προκαθορισμένο"
 
 #: ../../app/globalsettings.cpp:190
 msgctxt "plasma layout"
 msgid "Plasma"
-msgstr ""
+msgstr "Plasma"
 
 #: ../../app/globalsettings.cpp:194
 msgctxt "unity layout"
 msgid "Unity"
-msgstr ""
+msgstr "Unity"
 
 #: ../../app/globalsettings.cpp:198
 msgctxt "extended layout"
 msgid "Extended"
-msgstr ""
+msgstr "Εκτεταμένο"
 
 #: ../../app/globalsettings.cpp:265
 msgctxt "import/export config"
@@ -94,19 +94,22 @@ msgstr "Αρχείο ρυθμίσεων του Latte"
 
 #: ../../app/globalsettings.cpp:353
 msgid "Activate Layout"
-msgstr ""
+msgstr "Ενεργοποίηση Προφίλ"
 
 #: ../../app/globalsettings.cpp:354
 msgid ""
 "You are going to activate a layout called <b>%1</b>, <br>by doing so the "
 "current layout will be lost... <br>Do you want to proceed?"
 msgstr ""
+"Πρόκειται να ενεργοποιήσετε το προφίλ <b>%1</b>, <br> αυτή σας η ενέργεια "
+"θα διαγράψει όλες τις τρέχοντες ρυθμίσεις... <br>Θέλετε να συνεχίσετε;"
 
 #: ../../app/globalsettings.cpp:372
-#, fuzzy
 msgctxt "import/export config"
 msgid "The file has a wrong format, do you want open other file?"
-msgstr "Το αρχείο δεν έχει την απαιτούμενη μορφή"
+msgstr ""
+"Το αρχείο δεν έχει την απαιτούμενη μορφή, θέλετε να ανοίξετε κάποιο άλλο"
+" αρχείο;"
 
 #: ../../app/globalsettings.cpp:456
 msgctxt "import/export config"
@@ -217,44 +220,44 @@ msgstr "Μοντέλο ρυθμίσεων"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:48
 msgid "Tangerine Font"
-msgstr ""
+msgstr "Γραμματοσειρά Tangerine"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:50
 msgid "default layout file"
-msgstr ""
+msgstr "αρχείο προκαθορισμένου προφίλ"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:51
 msgid "plasma layout file"
-msgstr ""
+msgstr "αρχείο προφίλ plasma"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:52
 msgid "unity layout file"
-msgstr ""
+msgstr "αρχείο προφίλ unity"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:53
 msgid "extended layout file"
-msgstr ""
+msgstr "αρχείο εκτεταμένου προφίλ"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:55
 msgid "tasks plasmoid separator"
-msgstr ""
+msgstr "διαχωριστής καταχωρήσεων εφαρμογών"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:59
 msgid "Layout"
-msgstr ""
+msgstr "Προφίλ"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:72
 msgctxt "current layout"
 msgid "Current"
-msgstr ""
+msgstr "Τρέχον"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:108
 msgid "Import"
-msgstr ""
+msgstr "Εισαγωγή"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:116
 msgid "Export"
-msgstr ""
+msgstr "Εξαγωγή"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:132
 msgid "Applets Size"
@@ -302,19 +305,17 @@ msgid "Background"
 msgstr "Παρασκήνιο"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:395
-#, fuzzy
 msgctxt "show panel"
 msgid "Show"
-msgstr "Εμφάνιση:"
+msgstr "Εμφάνιση"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:411
-#, fuzzy
 msgid "Size: "
-msgstr "Μέγεθος"
+msgstr "Μέγεθος: "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:454
 msgid "Transparency: "
-msgstr ""
+msgstr "Αδιαφάνεια: "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:501
 msgid "Shadows"
@@ -322,7 +323,7 @@ msgstr "Σκιές"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:514
 msgid "Solid"
-msgstr ""
+msgstr "Συμπαγές"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:534
 msgid "Applet shadows"
@@ -343,15 +344,15 @@ msgstr "Μήκος"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:610
 msgid "Maximum: "
-msgstr ""
+msgstr "Μέγιστο: "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:681
 msgid "Offset: "
-msgstr ""
+msgstr "Θέση: "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:689
 msgid "Offset"
-msgstr ""
+msgstr "Θέση"
 
 #: ../../shell/package/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -465,7 +466,7 @@ msgstr "Γενικά"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:156
 msgid "Advanced"
-msgstr ""
+msgstr "Προχωρημένα"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:195
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:80
@@ -544,7 +545,7 @@ msgstr "Εμφάνιση προόδου εργασιών"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:157
 msgid "Show indicator for audio streams"
-msgstr ""
+msgstr "Εμφάνιση ένδειξης ροών ήχου"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:172
 msgid "On middle-click:"
@@ -574,7 +575,7 @@ msgstr "Απόκρυψη/Επαναφορά Παραθύρου ή Ομάδας"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:180
 #: ../../shell/package/contents/configuration/TasksConfig.qml:222
 msgid "Cycle Through Tasks"
-msgstr ""
+msgstr "Κυκλική Εναλλαγή Εργασιών"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:208
 msgid "Left Click"
@@ -654,12 +655,11 @@ msgstr "Προσθήκη Κενού"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:219
 msgid "Tasks Separator"
-msgstr ""
+msgstr "Διαχωριστής Εργασιών"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:236
-#, fuzzy
 msgid "Remove Tasks"
-msgstr "Αφαίρεση"
+msgstr "Αφαίρεση Συστατικού Εργασιών"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock for the masses"

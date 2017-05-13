@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-03-22 20:54+0200\n"
+"PO-Revision-Date: 2017-05-13 20:30+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -223,7 +223,7 @@ msgstr "Επαναφορά"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:221
 msgid "Mute"
-msgstr ""
+msgstr "Σίγαση"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:264
 msgid "Move To Desktop"
@@ -302,26 +302,24 @@ msgctxt ""
 "Toggle action for showing a launcher button while the application is not "
 "running"
 msgid "&Pin"
-msgstr ""
+msgstr "Καρφίτσωμα"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:608
 msgid "&Pin"
-msgstr ""
+msgstr "Καρφίτσωμα"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:661
-#, fuzzy
 msgid "On All Activities"
 msgstr "Όλες τις Δραστηριότητες"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:667
-#, fuzzy
 msgid "On The Current Activity"
 msgstr "Στην Τρέχουσα Δραστηριότητα"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:688
 msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
-msgstr ""
+msgstr "Ξεκαρφίτσωμα"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:789
 msgid "Close"
@@ -333,7 +331,7 @@ msgstr "Εναλλακτική Συνεδρία"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:829
 msgid "Add Widgets..."
-msgstr ""
+msgstr "Προσθήκη συστατικών..."
 
 #: ../../plasmoid/package/contents/ui/TaskDelegate.qml:1149
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462
