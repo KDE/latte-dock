@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-03-22 21:16+0200\n"
+"POT-Creation-Date: 2017-05-13 20:04+0300\n"
 "PO-Revision-Date: 2017-03-24 06:52+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: German <kde-i18n-it@kde.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../containment/contents/ui/AppletItem.qml:916
+#: ../../containment/package/contents/ui/AppletItem.qml:1072
 msgid "Launchers Area"
 msgstr "Area Lanciatori"
 
@@ -29,5 +29,3 @@ msgstr "Latte"
 #: ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
 msgstr "Contenitori per Latte Dock"
-
-
