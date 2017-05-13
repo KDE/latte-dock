@@ -46,6 +46,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Location")
@@ -241,6 +242,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Alignment")
@@ -325,6 +327,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Visibility")
@@ -410,6 +413,7 @@ PlasmaComponents.Page {
         //! BEGIN: Delay
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
             enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
@@ -421,13 +425,12 @@ PlasmaComponents.Page {
             }
 
             RowLayout {
-
                 Layout.fillWidth: false
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 Layout.alignment: Qt.AlignHCenter
 
-                spacing: units.smallSpacing
+                spacing: 2
 
                 PlasmaComponents.Label {
                     Layout.fillWidth: false

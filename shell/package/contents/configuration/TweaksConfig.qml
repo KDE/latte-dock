@@ -39,10 +39,12 @@ PlasmaComponents.Page {
         spacing: dialog.subGroupSpacing
         anchors.centerIn: parent
         Layout.leftMargin: units.smallSpacing * 2
+        Layout.rightMargin: units.smallSpacing * 2
 
         //! BEGIN: Appearance
         ColumnLayout {
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Appearance")
@@ -75,6 +77,7 @@ PlasmaComponents.Page {
         //! BEGIN: Behavior
         ColumnLayout {
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Behavior")
@@ -94,7 +97,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease applets size when it is needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
-//                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
+                //                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
 
                 onClicked: {
                     plasmoid.configuration.autoDecreaseIconSize = checked
@@ -105,7 +108,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Add launchers only in the corresponding area")
                 checked: plasmoid.configuration.addLaunchersInTaskManager
-//                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
+                //                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
 
                 onClicked: {
                     plasmoid.configuration.addLaunchersInTaskManager = checked;
@@ -119,7 +122,7 @@ PlasmaComponents.Page {
                 enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
                            || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
 
-//                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")
+                //                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")
 
                 onCheckedChanged: {
                     dock.dockWinBehavior = checked
@@ -163,39 +166,80 @@ PlasmaComponents.Page {
         //! BEGIN: Session
         ColumnLayout {
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Session")
             }
 
-            PlasmaComponents.Button {
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
+            RowLayout {
                 Layout.fillWidth: true
-                text: i18n("Alternative Session")
-                checked: globalSettings.currentSession === Latte.Dock.AlternativeSession
-                checkable: true
-//                tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
 
-                onClicked: {
-                    if (globalSettings.currentSession === Latte.Dock.DefaultSession) {
-                        globalSettings.currentSession = Latte.Dock.AlternativeSession
-                    } else {
-                        globalSettings.currentSession = Latte.Dock.DefaultSession
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Alternative Session")
+                    checked: globalSettings.currentSession === Latte.Dock.AlternativeSession
+                    checkable: true
+                    //                tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
+
+                    onClicked: {
+                        if (globalSettings.currentSession === Latte.Dock.DefaultSession) {
+                            globalSettings.currentSession = Latte.Dock.AlternativeSession
+                        } else {
+                            globalSettings.currentSession = Latte.Dock.DefaultSession
+                        }
+                        dockConfig.hideConfigWindow()
                     }
-                    dockConfig.hideConfigWindow()
                 }
+
             }
         }
         //! END: Session
 
         //! BEGIN: Extra Actions
         ColumnLayout {
-            Layout.fillWidth: false
+            Layout.fillWidth: true
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Extra Actions")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: 2
+
+                PlasmaComponents.Button {
+                    iconSource: "distribute-horizontal-x"
+                    text: i18n("Add Spacer")
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignLeft
+                    //                    tooltip: i18n("Add a spacer to separate applets")
+
+                    onClicked: {
+                        dockConfig.addPanelSpacer()
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    iconSource: plasmoid.configuration.hasInternalSeparator ? "edit-delete" : "list-add"
+                    text: i18n("Tasks Separator")
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignLeft
+                    visible: dock.tasksPresent()
+                    //                    tooltip: i18n("Add a separator for tasks")
+
+                    onClicked: {
+                        if (plasmoid.configuration.hasInternalSeparator)
+                            dockConfig.removeTasksSeparator();
+                        else
+                            dockConfig.addTasksSeparator();
+                    }
+                }
             }
 
             RowLayout {
@@ -205,44 +249,15 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Button {
-                    iconSource: "distribute-horizontal-x"
-                    text: i18n("Add Spacer")
-                    Layout.alignment: Qt.AlignLeft
-//                    tooltip: i18n("Add a spacer to separate applets")
-
-                    onClicked: {
-                        dockConfig.addPanelSpacer()
-                    }
-                }
-                PlasmaComponents.Button {
-                    iconSource: plasmoid.configuration.hasInternalSeparator ? "edit-delete" : "list-add"
-                    text: i18n("Tasks Separator")
-                    Layout.alignment: Qt.AlignLeft
-                    //The Tasks separator adds a lot of complexity in the parabolic effect
-                    //signaling... For now I disable it and in the future if a better way
-                    //is found to support it with the parabolic effect we can enable it again
-                    visible: dock.tasksPresent()
-//                    tooltip: i18n("Add a separator for tasks")
-
-                    onClicked: {
-                        if (plasmoid.configuration.hasInternalSeparator)
-                            dockConfig.removeTasksSeparator();
-                        else
-                            dockConfig.addTasksSeparator();
-                    }
-                }
-                PlasmaComponents.Button {
                     iconSource: "edit-delete"
                     text: i18n("Remove Tasks")
-                    Layout.alignment: Qt.AlignRight
                     enabled: dock.tasksPresent()
-//                    tooltip: i18n("Remove Latte plasmoid")
+                    //                    tooltip: i18n("Remove Latte plasmoid")
 
                     onClicked: {
                         dock.removeTasksPlasmoid();
                     }
                 }
-
             }
         }
         //! END: Extra Actions

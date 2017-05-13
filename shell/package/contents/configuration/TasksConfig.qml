@@ -39,10 +39,12 @@ PlasmaComponents.Page {
         spacing: dialog.subGroupSpacing
         anchors.centerIn: parent
         Layout.leftMargin: units.smallSpacing * 2
+        Layout.rightMargin: units.smallSpacing * 2
 
         //! BEGIN: Tasks Appearance
         ColumnLayout {
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Appearance")
@@ -99,6 +101,7 @@ PlasmaComponents.Page {
         //! BEGIN: Tasks Interaction
         ColumnLayout {
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Interaction")
@@ -231,6 +234,7 @@ PlasmaComponents.Page {
         //! BEGIN: Tasks Filters
         ColumnLayout {
             spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Filters")
