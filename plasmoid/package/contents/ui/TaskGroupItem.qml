@@ -62,11 +62,11 @@ Item{
                 id:firstPoint
                 visible: ( !IsLauncher ) ? true: false
 
-                basicColor: (mainItemContainer.hasActive) ?
+                basicColor: IsActive===true || (mainItemContainer.isGroupParent && mainItemContainer.hasShown)?
                                 glowFrame.isActiveColor : glowFrame.notActiveColor
 
                 roundCorners: true
-                showAttention: model.IsDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus? true : false
+                showAttention: model.IsDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ? true : false
 
                 opacity: (!mainItemContainer.hasActive && root.showPreviews
                           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
@@ -160,7 +160,7 @@ Item{
                 width: visible ? glowFrame.size : 0
                 height: width
 
-                basicColor: mainItemContainer.hasActive ? state2Color : state1Color
+                basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
                 visible:  ( mainItemContainer.isGroupParent && root.dotsOnActive )
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false

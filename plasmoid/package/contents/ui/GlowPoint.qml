@@ -36,11 +36,11 @@ Item{
     property color attentionColor: colorScopePalette.negativeTextColor // "#ffff1717"
     property color basicColor: "blue"
 
-    onShowAttentionChanged: {
-        if(showAttention == false){
+    /*onShowAttentionChanged: {
+        if(!showAttention){
             smallCircle.color = basicColor;
         }
-    }
+    }*/
 
     Item{
         id:mainGlow
@@ -54,10 +54,10 @@ Item{
             color: glowItem.basicColor
             radius: glowItem.roundCorners ? Math.min(width,height) / 2 : 0
 
-
             SequentialAnimation{
-                running: (glowItem.showAttention == true)
+                running: glowItem.showAttention
                 loops: Animation.Infinite
+                alwaysRunToEnd: true
 
                 PropertyAnimation {
                     target: smallCircle

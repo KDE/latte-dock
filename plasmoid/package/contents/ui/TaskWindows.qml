@@ -72,13 +72,14 @@ Item{
             checkInternalStates();
         }
         else{
+            if(mainItemContainer.isActive)
+                hasActive = true;
+
             if(mainItemContainer.isMinimized){
                 hasMinimized = true;
-            }
-            else if(mainItemContainer.isActive)
-                hasActive = true;
-            else
+            } else {
                 hasShown = true;
+            }
         }
     }
 
@@ -89,10 +90,11 @@ Item{
         for(var i=0; i<childs.count; ++i){
             var kid = childs.get(i);
 
+            if (kid.model.IsActive)
+                hasActive = true;
+
             if(kid.model.IsMinimized)
                 hasMinimized = true;
-            else if (kid.model.IsActive)
-                hasActive = true;
             else
                 hasShown = true;
         }
