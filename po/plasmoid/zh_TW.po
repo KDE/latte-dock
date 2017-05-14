@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-03-23 11:13+0800\n"
+"PO-Revision-Date: 2017-05-14 11:12+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -221,7 +221,7 @@ msgstr "恢復"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:221
 msgid "Mute"
-msgstr ""
+msgstr "靜音"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:264
 msgid "Move To Desktop"
@@ -300,26 +300,24 @@ msgctxt ""
 "Toggle action for showing a launcher button while the application is not "
 "running"
 msgid "&Pin"
-msgstr ""
+msgstr "釘選(&P)"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:608
 msgid "&Pin"
-msgstr ""
+msgstr "釘選(&P)"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:661
-#, fuzzy
 msgid "On All Activities"
-msgstr "所有的活動"
+msgstr "在所有活動上"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:667
-#, fuzzy
 msgid "On The Current Activity"
-msgstr "加入到目前的活動"
+msgstr "在目前的活動上"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:688
 msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
-msgstr ""
+msgstr "取消釘選"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:789
 msgid "Close"
@@ -331,7 +329,7 @@ msgstr "替代工作階段"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:829
 msgid "Add Widgets..."
-msgstr ""
+msgstr "新增元件..."
 
 #: ../../plasmoid/package/contents/ui/TaskDelegate.qml:1149
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-04-07 10:20+0800\n"
+"PO-Revision-Date: 2017-05-14 11:10+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -19,11 +19,11 @@ msgstr ""
 
 #: ../../app/dockcorona.cpp:99
 msgid "Activate Task Manager Entry %1"
-msgstr ""
+msgstr "啟用工作管理員項目 %1"
 
 #: ../../app/dockcorona.cpp:113
 msgid "New Instance for Task Manager Entry %1"
-msgstr ""
+msgstr "工作管理員項目 %1 的新實體"
 
 #: ../../app/dockview.cpp:1456
 msgctxt "%1 is the name of the containment"
@@ -41,31 +41,31 @@ msgstr "啟用／停用替代工作階段"
 
 #: ../../app/globalsettings.cpp:40
 msgid "Add Widgets..."
-msgstr ""
+msgstr "新增元件..."
 
 #: ../../app/globalsettings.cpp:41
 msgid "Show Plasma Widget Explorer"
-msgstr ""
+msgstr "顯示 Plasma 小工具探索器"
 
 #: ../../app/globalsettings.cpp:186
 msgctxt "default layout"
 msgid "Default"
-msgstr ""
+msgstr "預設"
 
 #: ../../app/globalsettings.cpp:190
 msgctxt "plasma layout"
 msgid "Plasma"
-msgstr ""
+msgstr "Plasma"
 
 #: ../../app/globalsettings.cpp:194
 msgctxt "unity layout"
 msgid "Unity"
-msgstr ""
+msgstr "Unity"
 
 #: ../../app/globalsettings.cpp:198
 msgctxt "extended layout"
 msgid "Extended"
-msgstr ""
+msgstr "延伸"
 
 #: ../../app/globalsettings.cpp:265
 msgctxt "import/export config"
@@ -94,19 +94,20 @@ msgstr "Latte Dock 設定檔"
 
 #: ../../app/globalsettings.cpp:353
 msgid "Activate Layout"
-msgstr ""
+msgstr "啟用佈局"
 
 #: ../../app/globalsettings.cpp:354
 msgid ""
 "You are going to activate a layout called <b>%1</b>, <br>by doing so the "
 "current layout will be lost... <br>Do you want to proceed?"
 msgstr ""
+"您將要啟用稱為 <b>%1</b> 的佈局，<br>這樣做的話， "
+"您目前的佈局將會遺失……<br>您想要繼續嗎？"
 
 #: ../../app/globalsettings.cpp:372
-#, fuzzy
 msgctxt "import/export config"
 msgid "The file has a wrong format, do you want open other file?"
-msgstr "檔案格式錯誤"
+msgstr "檔案格式錯誤，您想要開啟其他檔案嗎？"
 
 #: ../../app/globalsettings.cpp:456
 msgctxt "import/export config"
@@ -211,44 +212,44 @@ msgstr "設定模型"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:48
 msgid "Tangerine Font"
-msgstr ""
+msgstr "Tangerine 字型"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:50
 msgid "default layout file"
-msgstr ""
+msgstr "預設佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:51
 msgid "plasma layout file"
-msgstr ""
+msgstr "Plasma 佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:52
 msgid "unity layout file"
-msgstr ""
+msgstr "Unity 佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:53
 msgid "extended layout file"
-msgstr ""
+msgstr "延伸佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:55
 msgid "tasks plasmoid separator"
-msgstr ""
+msgstr "工作 plasmoid 分隔器"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:59
 msgid "Layout"
-msgstr ""
+msgstr "佈局"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:72
 msgctxt "current layout"
 msgid "Current"
-msgstr ""
+msgstr "目前"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:108
 msgid "Import"
-msgstr ""
+msgstr "匯入"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:116
 msgid "Export"
-msgstr ""
+msgstr "匯出"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:132
 msgid "Applets Size"
@@ -296,19 +297,17 @@ msgid "Background"
 msgstr "背景"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:395
-#, fuzzy
 msgctxt "show panel"
 msgid "Show"
-msgstr "顯示："
+msgstr "顯示"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:411
-#, fuzzy
 msgid "Size: "
-msgstr "大小"
+msgstr "大小："
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:454
 msgid "Transparency: "
-msgstr ""
+msgstr "透明度： "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:501
 msgid "Shadows"
@@ -316,7 +315,7 @@ msgstr "陰影"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:514
 msgid "Solid"
-msgstr ""
+msgstr "單色"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:534
 msgid "Applet shadows"
@@ -337,15 +336,15 @@ msgstr "長度"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:610
 msgid "Maximum: "
-msgstr ""
+msgstr "最大： "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:681
 msgid "Offset: "
-msgstr ""
+msgstr "位移： "
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:689
 msgid "Offset"
-msgstr ""
+msgstr "位移"
 
 #: ../../shell/package/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -459,7 +458,7 @@ msgstr "一般"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:156
 msgid "Advanced"
-msgstr ""
+msgstr "進階"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:195
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:80
@@ -538,7 +537,7 @@ msgstr "顯示工作的進度資訊"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:157
 msgid "Show indicator for audio streams"
-msgstr ""
+msgstr "顯示音訊流指示器"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:172
 msgid "On middle-click:"
@@ -568,7 +567,7 @@ msgstr "最小化/復原視窗"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:180
 #: ../../shell/package/contents/configuration/TasksConfig.qml:222
 msgid "Cycle Through Tasks"
-msgstr ""
+msgstr "工作循環切換"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:208
 msgid "Left Click"
@@ -648,12 +647,11 @@ msgstr "新增空白"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:219
 msgid "Tasks Separator"
-msgstr ""
+msgstr "工作分隔器"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:236
-#, fuzzy
 msgid "Remove Tasks"
-msgstr "移除"
+msgstr "移除工作"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock for the masses"
