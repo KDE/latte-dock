@@ -26,12 +26,12 @@ import QtGraphicalEffects 1.0
 
 Item{
     //   property string color
-    id: glowItem  
+    id: glowItem
 
     property bool roundCorners: true
     property bool showAttention: false
 
-    property int animation: root.durationTime*units.longDuration
+    property int animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
 
     property color attentionColor: colorScopePalette.negativeTextColor // "#ffff1717"
     property color basicColor: "blue"
@@ -74,7 +74,7 @@ Item{
                     duration: glowItem.animation
                     easing.type: Easing.InOutQuad
                 }
-            }           
+            }
         }
 
        RectangularGlow {
@@ -98,7 +98,5 @@ Item{
             visible: root.glow
         }*/
     }
-
-
 
 }

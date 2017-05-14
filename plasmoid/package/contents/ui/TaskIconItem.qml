@@ -763,18 +763,6 @@ Item{
 
 
     ////////////////// new window and needs attention animation
-    //stop the bouncing animation for attention needed when the plasmoid
-    //does not need any more attention
-    Connections{
-        target: plasmoid
-        onStatusChanged:{
-            if ( (plasmoid.status === PlasmaCore.Types.PassiveStatus)
-                    && newWindowAnimation.running && (newWindowAnimation.loops > 2) ) {
-                newWindowAnimation.clear();
-            }
-        }
-    }
-
     Connections{
         target: mainItemContainer
         onContainsMouseChanged: {
@@ -818,6 +806,18 @@ Item{
                 duration: 3*root.durationTime*newWindowAnimation.speed
                 easing.type: Easing.OutBounce
             }
+
+            ScriptAction{
+                script:{
+                    if (mainItemContainer.containsMouse) {
+                        newWindowAnimation.stop();
+                    }
+                    if (!newWindowAnimation.isDemandingAttention
+                            || (plasmoid.status === PlasmaCore.Types.PassiveStatus && newWindowAnimation.loops > 2)){
+                        newWindowAnimation.clear();
+                    }
+                }
+            }
         }
 
         function clear(){
@@ -835,11 +835,7 @@ Item{
         }
 
         onIsDemandingAttentionChanged: {
-            if( (!isDemandingAttention)&&(running)){
-                clear();
-                //  wrapper.animationEnded();
-            }
-            else if(isDemandingAttention){
+            if(isDemandingAttention){
                 bounceNewWindow();
             }
         }

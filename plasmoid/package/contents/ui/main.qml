@@ -660,7 +660,7 @@ Item {
         id: attentionTimerComponent
         Timer{
             id: attentionTimer
-            interval:6500
+            interval:8500
             onTriggered: {
                 plasmoid.status = PlasmaCore.Types.PassiveStatus;
                 destroy();
