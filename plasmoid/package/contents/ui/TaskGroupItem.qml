@@ -47,7 +47,6 @@ Item{
         color: "transparent"
         opacity:0.6
     }*/
-
     Item{
         anchors.centerIn: parent
 
@@ -66,7 +65,8 @@ Item{
                                 glowFrame.isActiveColor : glowFrame.notActiveColor
 
                 roundCorners: true
-                showAttention: model.IsDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ? true : false
+                showAttention: mainItemContainer.isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
+                                   true : false
 
                 opacity: (!mainItemContainer.hasActive && root.showPreviews
                           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
