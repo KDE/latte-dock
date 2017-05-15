@@ -565,7 +565,8 @@ Item {
                     else if(applet
                             && ( (applet.Layout.maximumHeight < root.iconSize) || (applet.Layout.preferredHeight > root.iconSize))
                             && root.isVertical
-                            && !disableScaleWidth ) {
+                            && !disableScaleWidth
+                            && applet.pluginName !== "org.kde.plasma.folder") {
                         //&& !root.editMode ){
                         disableScaleHeight = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
@@ -608,7 +609,8 @@ Item {
                     else if(applet
                             && ( (applet.Layout.maximumWidth < root.iconSize) || (applet.Layout.preferredWidth > root.iconSize))
                             && root.isHorizontal
-                            && !disableScaleHeight ){
+                            && !disableScaleHeight
+                            && applet.pluginName !== "org.kde.plasma.folder"){
                         //  && !root.editMode){
                         disableScaleWidth = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
