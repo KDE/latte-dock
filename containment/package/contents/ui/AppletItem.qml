@@ -710,6 +710,19 @@ Item {
                     }
                 ]
                 //END states
+
+                Loader{
+                    anchors.fill: parent
+                    active: appletIconItem && appletIconItem.source
+                    sourceComponent: Latte.IconItem{
+                        id: fakeAppletIconItem
+                        source: appletIconItem.source
+
+                        Component.onCompleted: {
+                            appletIconItem.opacity = 0;
+                        }
+                    }
+                }
             }
 
             //spacer background
@@ -779,7 +792,7 @@ Item {
                     anchors.fill: parent
                     color: "#ff080808"
                     samples: 2 * radius
-                    source: container.applet
+                    source: appletIconItem && appletIconItem.source ? wrapperContainer :container.applet
                     radius: shadowSize
                     verticalOffset: 2
 
