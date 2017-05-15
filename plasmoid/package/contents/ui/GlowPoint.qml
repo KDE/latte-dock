@@ -53,50 +53,52 @@ Item{
 
             color: glowItem.basicColor
             radius: glowItem.roundCorners ? Math.min(width,height) / 2 : 0
+        }
 
-            SequentialAnimation{
-                running: glowItem.showAttention
-                loops: Animation.Infinite
-                alwaysRunToEnd: true
+        Loader{
+            anchors.centerIn: parent
+            anchors.fill: parent
 
-                PropertyAnimation {
-                    target: smallCircle
-                    property: "color"
-                    to: glowItem.attentionColor
-                    duration: glowItem.animation
-                    easing.type: Easing.InOutQuad
-                }
+            active: glowItem.showAttention
 
-                PropertyAnimation {
-                    target:smallCircle
-                    property: "color"
-                    to: glowItem.basicColor
-                    duration: glowItem.animation
-                    easing.type: Easing.InOutQuad
+            sourceComponent:Rectangle {
+                id: smallCircleInAttention
+
+                color: glowItem.basicColor
+                radius: smallCircle.radius
+
+                SequentialAnimation{
+                    running: glowItem.showAttention
+                    loops: Animation.Infinite
+                    alwaysRunToEnd: true
+
+                    PropertyAnimation {
+                        target: smallCircleInAttention
+                        property: "color"
+                        to: glowItem.attentionColor
+                        duration: glowItem.animation
+                        easing.type: Easing.InOutQuad
+                    }
+
+                    PropertyAnimation {
+                        target: smallCircleInAttention
+                        property: "color"
+                        to: glowItem.basicColor
+                        duration: glowItem.animation
+                        easing.type: Easing.InOutQuad
+                    }
                 }
             }
         }
 
-       RectangularGlow {
+        RectangularGlow {
             id:recGlow
             anchors.fill: smallCircle
             glowRadius: 2 * Math.min(smallCircle.width, smallCircle.height)
             spread: 0.2
-            color: smallCircle.color
-            //color: "#cc222222"
-         //   cornerRadius: smallCircle.radius + glowRadius
+            color: glowItem.showAttention ? smallCircleInAttention.color : smallCircle.color
             opacity: root.showBarLine ? 0.25 : 0.45
             visible: root.showGlow
         }
-
-     /*   BrightnessContrast {
-            anchors.fill: recGlow
-            source: recGlow
-            anchors.margins: 1
-            brightness: 0.4
-            contrast: 0.3
-            visible: root.glow
-        }*/
     }
-
 }
