@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-05-10 20:27+0100\n"
+"PO-Revision-Date: 2017-05-15 17:59+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -92,7 +92,7 @@ msgstr ""
 
 #: ../../plasmoid/package/contents/ui/ConfigInteraction.qml:59
 msgid "Cycle through tasks with mouse wheel"
-msgstr "Mausrad für wechseln der Anwendungen"
+msgstr "Mausrad für Wechseln der Anwendungen"
 
 #: ../../plasmoid/package/contents/ui/ConfigInteraction.qml:66
 msgid "Preview windows on hovering"
@@ -137,15 +137,15 @@ msgstr "Filter"
 
 #: ../../plasmoid/package/contents/ui/ConfigInteraction.qml:118
 msgid "Show only tasks from the current screen"
-msgstr "Zeige nur Aufgaben dieses Bildschirms"
+msgstr "Nur Fenster des aktuellen Bildschirms anzeigen"
 
 #: ../../plasmoid/package/contents/ui/ConfigInteraction.qml:123
 msgid "Show only tasks from the current desktop"
-msgstr "Zeige nur Aufgaben dieser Arbeitsläche"
+msgstr "Nur Fenster der aktuellen Arbeitsfläche anzeigen"
 
 #: ../../plasmoid/package/contents/ui/ConfigInteraction.qml:128
 msgid "Show only tasks from the current activity"
-msgstr "Zeige nur Aufgaben dieser Aktivität"
+msgstr "Nur Fenster der aktuellen Aktivität anzeigen"
 
 #: ../../plasmoid/package/contents/ui/ConfigPanel.qml:60
 msgid "Position: "
@@ -181,7 +181,7 @@ msgstr "Benutze Plasma Thema für Leiste"
 
 #: ../../plasmoid/package/contents/ui/ConfigPanel.qml:90
 msgid "Use transparency in the panel"
-msgstr "Transparenz für Leiste"
+msgstr "Transparente Leiste"
 
 #: ../../plasmoid/package/contents/ui/ConfigPanel.qml:97
 msgid "Size: "
@@ -224,7 +224,7 @@ msgstr "Wiederherstellen"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:221
 msgid "Mute"
-msgstr ""
+msgstr "Stumm"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:264
 msgid "Move To Desktop"
@@ -303,26 +303,24 @@ msgctxt ""
 "Toggle action for showing a launcher button while the application is not "
 "running"
 msgid "&Pin"
-msgstr ""
+msgstr "&Anheften"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:608
 msgid "&Pin"
-msgstr ""
+msgstr "&Anheften"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:661
-#, fuzzy
 msgid "On All Activities"
 msgstr "Alle Aktivitäten"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:667
-#, fuzzy
 msgid "On The Current Activity"
 msgstr "Zu aktueller Aktivität hinzufügen"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:688
 msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
-msgstr ""
+msgstr "Lösen"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:789
 msgid "Close"
@@ -334,7 +332,7 @@ msgstr "Alternative Sitzung"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:829
 msgid "Add Widgets..."
-msgstr ""
+msgstr "Miniprogramme hinzufügen ..."
 
 #: ../../plasmoid/package/contents/ui/TaskDelegate.qml:1149
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462

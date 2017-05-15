@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-05-14 20:26+0100\n"
+"POT-Creation-Date: 2017-01-29 15:48-0500\n"
+"PO-Revision-Date: 2017-05-14 20:25+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -17,15 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../containment/package/contents/ui/AppletItem.qml:1072
-msgid "Launchers Area"
-msgstr "Anwendungsbereich"
+#: rc.cpp:1
+msgid "Latte Shell"
+msgstr "Latte Shell"
 
-#: ../desktop-templates/containment.metadata.desktop.template:4
-msgid "Latte"
-msgstr "Latte"
+#: rc.cpp:2
+msgid "Shell provided for the Latte Dock"
+msgstr "Shell für Latte Dock"
 
-#: ../desktop-templates/containment.metadata.desktop.template:5
-msgid "Containment provided for the Latte Dock"
-msgstr "Behälter für Latte Dock"
 

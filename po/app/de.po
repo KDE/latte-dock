@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-05-13 20:04+0300\n"
-"PO-Revision-Date: 2017-03-22 22:18+0100\n"
+"PO-Revision-Date: 2017-05-15 17:53+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -19,12 +19,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../app/dockcorona.cpp:99
+#, fuzzy
 msgid "Activate Task Manager Entry %1"
-msgstr ""
+msgstr "Aktiviere Eintrag  %1"
 
 #: ../../app/dockcorona.cpp:113
+#, fuzzy
 msgid "New Instance for Task Manager Entry %1"
-msgstr ""
+msgstr "Neue Instanz für Eintrag %1"
 
 #: ../../app/dockview.cpp:1456
 msgctxt "%1 is the name of the containment"
@@ -42,31 +44,31 @@ msgstr "Alternative Sitzung an/aus"
 
 #: ../../app/globalsettings.cpp:40
 msgid "Add Widgets..."
-msgstr ""
+msgstr "Miniprogramme hinzufügen ..."
 
 #: ../../app/globalsettings.cpp:41
 msgid "Show Plasma Widget Explorer"
-msgstr ""
+msgstr "Zeige Plasma Miniprogramme"
 
 #: ../../app/globalsettings.cpp:186
 msgctxt "default layout"
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #: ../../app/globalsettings.cpp:190
 msgctxt "plasma layout"
 msgid "Plasma"
-msgstr ""
+msgstr "Plasma"
 
 #: ../../app/globalsettings.cpp:194
 msgctxt "unity layout"
 msgid "Unity"
-msgstr ""
+msgstr "Unity"
 
 #: ../../app/globalsettings.cpp:198
 msgctxt "extended layout"
 msgid "Extended"
-msgstr ""
+msgstr "Erweitert"
 
 #: ../../app/globalsettings.cpp:265
 msgctxt "import/export config"
@@ -95,19 +97,20 @@ msgstr "Latte Dock Konfigurationsdatei"
 
 #: ../../app/globalsettings.cpp:353
 msgid "Activate Layout"
-msgstr ""
+msgstr "Aktiviere Profil"
 
 #: ../../app/globalsettings.cpp:354
 msgid ""
 "You are going to activate a layout called <b>%1</b>, <br>by doing so the "
 "current layout will be lost... <br>Do you want to proceed?"
 msgstr ""
+"Profil <b>%1</b> wird übernommen, <br> Ungespeicherte Einstellungen werden"
+" verworfen...<br>Fortsetzen? "
 
 #: ../../app/globalsettings.cpp:372
-#, fuzzy
 msgctxt "import/export config"
 msgid "The file has a wrong format, do you want open other file?"
-msgstr "Die Datei hat das falsche Format"
+msgstr "Die Datei hat das falsche Format, eine andere Datei öffnen?"
 
 #: ../../app/globalsettings.cpp:456
 msgctxt "import/export config"
@@ -185,7 +188,7 @@ msgstr ""
 "Es animiert mithilfe parabolischer Zoom Effekte und versucht nur da zu sein "
 "wenn man es braucht.\n"
 "\n"
-"\"Art in Coffee\""
+"\"Art In Coffee\""
 
 #: ../../app/main.cpp:165
 msgid "Logo and Icons"
@@ -213,44 +216,44 @@ msgstr "Konfigurationsmodell"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:48
 msgid "Tangerine Font"
-msgstr ""
+msgstr "Tangerine Schriftart"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:50
 msgid "default layout file"
-msgstr ""
+msgstr "Standard Profildatei"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:51
 msgid "plasma layout file"
-msgstr ""
+msgstr "Plasma Profildatei"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:52
 msgid "unity layout file"
-msgstr ""
+msgstr "Unity Profildatei"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:53
 msgid "extended layout file"
-msgstr ""
+msgstr "Erweitert Profildatei"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:55
 msgid "tasks plasmoid separator"
-msgstr ""
+msgstr "Abstandshalter"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:59
 msgid "Layout"
-msgstr ""
+msgstr "Profil"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:72
 msgctxt "current layout"
 msgid "Current"
-msgstr ""
+msgstr "Aktuell"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:108
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:116
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:132
 msgid "Applets Size"
@@ -298,18 +301,17 @@ msgid "Background"
 msgstr "Hintergrund"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:395
-#, fuzzy
 msgctxt "show panel"
 msgid "Show"
-msgstr "Erscheinen:"
+msgstr "Zeige"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:411
 msgid "Size: "
-msgstr ""
+msgstr "Größe:"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:454
 msgid "Transparency: "
-msgstr ""
+msgstr "Transparenz:"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:501
 msgid "Shadows"
@@ -317,11 +319,11 @@ msgstr "Schatten"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:514
 msgid "Solid"
-msgstr ""
+msgstr "Fest"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:534
 msgid "Applet shadows"
-msgstr "Schatten "
+msgstr "Applets Schatten"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:571
 msgid "Locked"
@@ -338,15 +340,15 @@ msgstr "Länge"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:610
 msgid "Maximum: "
-msgstr ""
+msgstr "Maximum:"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:681
 msgid "Offset: "
-msgstr ""
+msgstr "Versatz:"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:689
 msgid "Offset"
-msgstr ""
+msgstr "Versatz"
 
 #: ../../shell/package/contents/configuration/BehaviorConfig.qml:51
 msgid "Location"
@@ -440,7 +442,7 @@ msgstr "Allen Fenstern ausweichen"
 
 #: ../../shell/package/contents/configuration/BehaviorConfig.qml:399
 msgid "Windows Go Below"
-msgstr ""
+msgstr "Fenster rutschen unter die Leiste"
 
 #: ../../shell/package/contents/configuration/BehaviorConfig.qml:420
 msgid "Delay"
@@ -460,7 +462,7 @@ msgstr "Allgemein"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:156
 msgid "Advanced"
-msgstr ""
+msgstr "Erweitert"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:195
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:80
@@ -539,7 +541,7 @@ msgstr "Zeige Fortschrittsanzeige für Aufgaben"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:157
 msgid "Show indicator for audio streams"
-msgstr ""
+msgstr "Zeige Indikator für Audioausgabe"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:172
 msgid "On middle-click:"
@@ -569,7 +571,7 @@ msgstr "Fenster oder Gruppe minimieren/maximieren"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:180
 #: ../../shell/package/contents/configuration/TasksConfig.qml:222
 msgid "Cycle Through Tasks"
-msgstr ""
+msgstr "Zwischen laufenden Programmen mit dem Mausrad wechseln"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:208
 msgid "Left Click"
@@ -589,15 +591,15 @@ msgstr "Filter"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:242
 msgid "Show only tasks from the current screen"
-msgstr "Zeige nur Aufgaben dieses Bildschirms"
+msgstr "Nur Fenster des aktuellen Bildschirms anzeigen"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:253
 msgid "Show only tasks from the current desktop"
-msgstr "Zeige nur Aufgaben dieses Arbeitsplatzes"
+msgstr "Nur Fenster der aktuellen Arbeitsfläche anzeigen"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:264
 msgid "Show only tasks from the current activity"
-msgstr "Zeige nur Aufgaben dieser Aktivität"
+msgstr "Nur Fenster der aktuellen Aktivität anzeigen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:54
 msgid "Blur for panel background"
@@ -617,7 +619,7 @@ msgstr "Verkleinere Applets wenn notwendig"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:106
 msgid "Add launchers only in the corresponding area"
-msgstr "Starter nur in entsprechendem Bereich ablegen"
+msgstr "Starter nur im Anwendungsbereich ablegen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:117
 msgid "Behave as a normal dock window"
@@ -649,12 +651,11 @@ msgstr "Abstandshalter"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:219
 msgid "Tasks Separator"
-msgstr ""
+msgstr "Trennlinie"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:236
-#, fuzzy
 msgid "Remove Tasks"
-msgstr "Leiste entfernen"
+msgstr "Anwendungen entfernen"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock for the masses"
