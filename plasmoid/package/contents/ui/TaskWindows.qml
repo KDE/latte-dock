@@ -47,15 +47,20 @@ Item{
     //FIXME: For some reason the index is not updated correctly in some cases (e.g. window dragging, repositioning launchers)
     // and this way much beautiful information are lost, an activity change back and return,
     // it fixes this sometimes...
-    DelegateModel {
-        id: windowsLocalModel
-        model: tasksModel //icList.model
-        rootIndex: tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
+    Repeater{
+        model:DelegateModel {
+            id: windowsLocalModel
+            model: tasksModel //icList.model
+            rootIndex: tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
 
-        property int currentIndex: -1
+            property int currentIndex: -1
 
-        delegate: Item{
-            property string title: model.display
+            delegate: Item{
+                readonly property string title: display
+                readonly property bool isMinimized: IsMinimized === true ? true : false
+
+                onIsMinimizedChanged: windowsContainer.initializeStates();
+            }
         }
 
         onCountChanged:{
