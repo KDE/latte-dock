@@ -102,8 +102,7 @@ Item {
     property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
 
     //this is used for folderView and icon widgets to fake their visual
-    property bool fakeIconItem: applet && appletIconItem
-                                && (applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
+    property bool fakeIconItem: applet && appletIconItem && (applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
 
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
@@ -200,7 +199,8 @@ Item {
     function checkCanBeHovered(){
         if ( ((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
               (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
-                && (applet && applet.pluginName !== "org.kde.plasma.panelspacer") ){
+                && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
+                && !container.fakeIconItem){
             canBeHovered = false;
         }
         else{
@@ -219,7 +219,7 @@ Item {
     }
 
     function reconsiderAppletIconItem(){
-        if (appletIconItem)
+        if (container.appletIconItem || !applet)
             return;
 
         //! searching to find for that applet the first IconItem
@@ -568,6 +568,7 @@ Item {
             }
 
             function updateLayoutHeight(){
+
                 if(container.isInternalViewSplitter){
                     if(!root.editMode)
                         layoutHeight = 0;
@@ -613,6 +614,7 @@ Item {
             }
 
             function updateLayoutWidth(){
+
                 if(container.isInternalViewSplitter){
                     if(!root.editMode)
                         layoutWidth = 0;
@@ -736,6 +738,15 @@ Item {
                 ]
                 //END states
 
+                ///Secret MouseArea to be used by the folder widget
+                Loader{
+                    anchors.fill: parent
+                    active: container.fakeIconItem && applet.pluginName === "org.kde.plasma.folder"
+                    sourceComponent: MouseArea{
+                        onClicked: dock.toggleAppletExpanded(applet.id);
+                    }
+                }
+
                 Item{
                     id: fakeIconItemContainer
                     anchors.centerIn: parent
@@ -743,8 +754,8 @@ Item {
                     //we setup as maximum for hidden container of some applets that break
                     //the Latte experience the size:96 . This is why after that size
                     //the folder widget changes to fullRepresentation instead of compact one
-                    width: Math.min(96, parent.width);
-                    height: Math.min(96, parent.height);
+                    width: Math.min(96, parent.width)
+                    height: width
                 }
 
                 Loader{
@@ -752,6 +763,7 @@ Item {
                     active: container.fakeIconItem
                     sourceComponent: Latte.IconItem{
                         id: fakeAppletIconItem
+                        anchors.fill: parent
                         source: appletIconItem.source
                     }
                 }
@@ -1028,6 +1040,8 @@ Item {
 
             function signalUpdateScale(nIndex, nScale, step){
                 if(container && (container.index === nIndex)){
+                    reconsiderAppletIconItem();
+
                     if ( ((canBeHovered && !lockZoom ) || container.latteApplet)
                             && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
                             //&& (index != currentLayout.hoveredIndex)
@@ -1217,7 +1231,9 @@ Item {
             mouse.accepted = false;
         }
 
-        onReleased: pressed = false;
+        onReleased: {
+            pressed = false;
+        }
     }
 
     //BEGIN states
@@ -1297,7 +1313,7 @@ Item {
     SequentialAnimation{
         id: clickedAnimation
         alwaysRunToEnd: true
-        running: appletMouseArea.pressed
+        running: appletMouseArea.pressed && (root.durationTime > 0)
 
         onStopped: appletMouseArea.pressed = false;
 

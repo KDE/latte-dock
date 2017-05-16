@@ -1165,6 +1165,23 @@ void DockView::deactivateApplets()
     }
 }
 
+void DockView::toggleAppletExpanded(const int id)
+{
+    if (!containment()) {
+        return;
+    }
+
+    foreach (auto applet, containment()->applets()) {
+        if (applet->id() == id) {
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai) {
+                ai->setExpanded(!ai->isExpanded());
+            }
+        }
+    }
+}
+
 QVariantList DockView::containmentActions()
 {
     QVariantList actions;

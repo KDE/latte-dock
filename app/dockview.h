@@ -163,6 +163,7 @@ public slots:
     Q_INVOKABLE void removeTasksPlasmoid();
     Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
+    Q_INVOKABLE void toggleAppletExpanded(const int id);
     Q_INVOKABLE void updateEnabledBorders();
 
     Q_INVOKABLE void closeApplication();
