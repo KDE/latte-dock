@@ -101,6 +101,10 @@ Item {
                                   (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapperContainer
     property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
 
+    //this is used for folderView and icon widgets to fake their visual
+    property bool fakeIconItem: applet && appletIconItem
+                                && (applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
+
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
 
@@ -108,6 +112,25 @@ Item {
         if(index==0)
             console.log(computeHeight);
     }*/
+
+    //set up the fake containers and properties for when a fakeIconItem must be presented to the user
+    //because the plasma widgets specific implementation breaks the Latte experience
+    onFakeIconItemChanged: {
+        if (fakeIconItem) {
+            applet.opacity = 0;
+
+            if (applet.pluginName === "org.kde.plasma.folder") {
+                applet.parent =  fakeIconItemContainer;
+                applet.anchors.fill = fakeIconItemContainer;
+            }
+
+            wrapper.disableScaleWidth = false;
+            wrapper.disableScaleHeight = false;
+
+            wrapper.updateLayoutWidth();
+            wrapper.updateLayoutHeight();
+        }
+    }
 
     onIndexChanged: {
         if (container.latteApplet) {
@@ -558,7 +581,7 @@ Item {
                     layoutHeight = root.statesLineSize + root.iconSize;
                 }
                 else{
-                    if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && (!canBeHovered)){
+                    if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && !canBeHovered && !container.fakeIconItem){
                         // return applet.Layout.minimumHeight;
                         layoutHeight = applet.Layout.minimumHeight;
                     } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
@@ -566,7 +589,7 @@ Item {
                             && ( (applet.Layout.maximumHeight < root.iconSize) || (applet.Layout.preferredHeight > root.iconSize))
                             && root.isVertical
                             && !disableScaleWidth
-                            && applet.pluginName !== "org.kde.plasma.folder") {
+                            && !container.fakeIconItem) {
                         //&& !root.editMode ){
                         disableScaleHeight = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
@@ -603,14 +626,14 @@ Item {
                     layoutWidth = root.statesLineSize + root.iconSize;
                 }
                 else{
-                    if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && (!canBeHovered)){
+                    if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && !canBeHovered && !container.fakeIconItem){
                         layoutWidth = applet.Layout.minimumWidth;
                     } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
                     else if(applet
                             && ( (applet.Layout.maximumWidth < root.iconSize) || (applet.Layout.preferredWidth > root.iconSize))
                             && root.isHorizontal
                             && !disableScaleHeight
-                            && applet.pluginName !== "org.kde.plasma.folder"){
+                            && !container.fakeIconItem){
                         //  && !root.editMode){
                         disableScaleWidth = true;
                         //this way improves performance, probably because during animation the preferred sizes update a lot
@@ -713,16 +736,23 @@ Item {
                 ]
                 //END states
 
+                Item{
+                    id: fakeIconItemContainer
+                    anchors.centerIn: parent
+
+                    //we setup as maximum for hidden container of some applets that break
+                    //the Latte experience the size:96 . This is why after that size
+                    //the folder widget changes to fullRepresentation instead of compact one
+                    width: Math.min(96, parent.width);
+                    height: Math.min(96, parent.height);
+                }
+
                 Loader{
                     anchors.fill: parent
-                    active: appletIconItem && appletIconItem.source
+                    active: container.fakeIconItem
                     sourceComponent: Latte.IconItem{
                         id: fakeAppletIconItem
                         source: appletIconItem.source
-
-                        Component.onCompleted: {
-                            appletIconItem.opacity = 0;
-                        }
                     }
                 }
             }
@@ -794,7 +824,7 @@ Item {
                     anchors.fill: parent
                     color: "#ff080808"
                     samples: 2 * radius
-                    source: appletIconItem && appletIconItem.source ? wrapperContainer :container.applet
+                    source: container.fakeIconItem ? wrapperContainer : container.applet
                     radius: shadowSize
                     verticalOffset: 2
 
