@@ -968,16 +968,17 @@ Item {
                 return null;
             }
 
-            function chiltAtIndex(position) {
+            function childAtIndex(position) {
                 var tasks = icList.contentItem.children;
 
-                if (position <=0)
+                if (position < 0)
                     return;
 
                 for(var i=0; i<tasks.length; ++i){
                     var task = tasks[i];
 
-                    if (task.lastValidIndex === position) {
+                    if (task.lastValidIndex === position
+                            || (task.lastValidIndex === -1 && task.itemIndex === position )) {
                         return task;
                     }
                 }
