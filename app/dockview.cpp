@@ -33,6 +33,7 @@
 #include <QQuickItem>
 #include <QMenu>
 #include <QMetaEnum>
+#include <QVersionNumber>
 
 #include <KActionCollection>
 #include <KAuthorized>
@@ -1342,11 +1343,39 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
                 m_contextMenu = desktopMenu;
 
-                if (this->mouseGrabberItem()) {
+                //! deprecated old code that can be removed if the following plasma approach doesnt
+                //! create any issues with context menu creation in Latte
+                /*if (this->mouseGrabberItem()) {
                     //workaround, this fixes for me most of the right click menu behavior
                     this->mouseGrabberItem()->ungrabMouse();
                     return;
+                }*/
+
+                //!plasma official code
+                //this is a workaround where Qt will fail to realise a mouse has been released
+
+                // this happens if a window which does not accept focus spawns a new window that takes focus and X grab
+                // whilst the mouse is depressed
+                // https://bugreports.qt.io/browse/QTBUG-59044
+                // this causes the next click to go missing
+
+                //by releasing manually we avoid that situation
+                auto ungrabMouseHack = [this]() {
+                    if (this->mouseGrabberItem()) {
+                        this->mouseGrabberItem()->ungrabMouse();
+                    }
+                };
+
+                //pre 5.8.0 QQuickWindow code is "item->grabMouse(); sendEvent(item, mouseEvent)"
+                //post 5.8.0 QQuickWindow code is sendEvent(item, mouseEvent); item->grabMouse()
+                if (QVersionNumber::fromString(qVersion()) > QVersionNumber(5, 8, 0)) {
+                    QTimer::singleShot(0, this, ungrabMouseHack);
+                } else {
+                    ungrabMouseHack();
                 }
+
+                //end workaround
+                //!end of plasma official code(workaround)
 
                 //qDebug() << "5 ...";
 
