@@ -1160,7 +1160,7 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: !lockZoom && canBeHovered && (root.zoomFactor>1)
+        visible: !lockZoom && canBeHovered //&& (root.zoomFactor>1)
 
         property bool pressed: false
 
