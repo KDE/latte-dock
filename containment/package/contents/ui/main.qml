@@ -53,19 +53,20 @@ DragDrop.DropArea {
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
+    property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                                        && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
                                        && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
 
-    property bool blurEnabled: plasmoid.configuration.blurEnabled
+    property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
     property bool confirmedDragEntered: false
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
 
 
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
-
     property bool editMode: plasmoid.userConfiguring
     property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
+    property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow
 
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
@@ -119,7 +120,7 @@ DragDrop.DropArea {
 
     property int panelEdgeSpacing: iconSize / 3
     property int panelTransparency: plasmoid.configuration.panelTransparency
-    property bool panelShadowsActive: plasmoid.configuration.panelShadows
+    property bool panelShadowsActive: plasmoid.configuration.panelShadows && !root.forceTransparentPanel
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
@@ -203,7 +204,7 @@ DragDrop.DropArea {
     // TO BE DELETED, if not needed: property int counter:0;
 
     ///BEGIN properties provided to Latte Plasmoid
-    property bool enableShadows: plasmoid.configuration.shadows
+    property bool enableShadows: plasmoid.configuration.shadows || root.forceTransparentPanel
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool highlightWindows: plasmoid.configuration.highlightWindows
@@ -1310,6 +1311,15 @@ DragDrop.DropArea {
             fillMode: Image.Tile
             source: "../icons/sepiaprint.jpg"
         }
+    }
+
+    Loader{
+        id: windowsModel
+
+        active: plasmoid.configuration.backgroundOnlyOnMaximized
+
+        property bool hasMaximizedWindow: active ? item.maximizedWindowOnScreen : false
+        sourceComponent: WindowsModel{}
     }
 
 

@@ -71,6 +71,17 @@ PlasmaComponents.Page {
                     plasmoid.configuration.shrinkThickMargins = checked
                 }
             }
+
+            PlasmaComponents.CheckBox {
+                id: onlyOnMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show background only maximized windows ")
+                checked: plasmoid.configuration.backgroundOnlyOnMaximized
+
+                onClicked: {
+                    plasmoid.configuration.backgroundOnlyOnMaximized = checked
+                }
+            }
         }
         //! END: Appearance
 

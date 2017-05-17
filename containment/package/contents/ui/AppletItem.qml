@@ -827,20 +827,23 @@ Item {
                 anchors.fill: container.appletWrapper
 
                 active: container.applet
-                        &&((plasmoid.configuration.shadows === 1 /*Locked Applets*/
-                            && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
-                           || (plasmoid.configuration.shadows === 2 /*All Applets*/
-                               && (applet.pluginName !== root.plasmoidName)))
+                        && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
+                              && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
+                            || (plasmoid.configuration.shadows === 2 /*All Applets*/
+                                 && (applet.pluginName !== root.plasmoidName)))
+                            || (root.forceTransparentPanel && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
                 sourceComponent: DropShadow{
                     anchors.fill: parent
-                    color: "#ff080808"
+                    color: forcedShadow ? "#ff040404" : "#ff080808"
                     samples: 2 * radius
                     source: container.fakeIconItem ? wrapperContainer : container.applet
                     radius: shadowSize
-                    verticalOffset: 2
+                    verticalOffset: forcedShadow ? 1 : 2
 
-                    property int shadowSize : Math.ceil(root.iconSize / 12)
+                    property int shadowSize : forcedShadow? 7 : Math.ceil(root.iconSize / 12)
+
+                    property bool forcedShadow: root.forceTransparentPanel && applet.pluginName !== root.plasmoidName ? true : false
                 }
             }
 

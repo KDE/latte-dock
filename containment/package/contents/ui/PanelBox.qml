@@ -224,7 +224,14 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
-            opacity: root.solidPanel ? 1 : plasmoid.configuration.panelTransparency / 100
+            opacity: {
+                if (root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow)
+                    return 0;
+                else if (root.solidPanel)
+                    return 1;
+                else
+                    return plasmoid.configuration.panelTransparency / 100;
+            }
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
@@ -234,6 +241,11 @@ Item{
             onHeightChanged: updateEffectsArea();
 
             Component.onCompleted: root.updateEffectsArea.connect(updateEffectsArea);
+
+            Behavior on opacity {
+                enabled: root.backgroundOnlyOnMaximized
+                NumberAnimation { duration: 8*root.durationTime*units.shortDuration }
+            }
 
             Connections{
                 target: root
