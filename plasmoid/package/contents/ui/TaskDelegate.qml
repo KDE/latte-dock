@@ -108,8 +108,8 @@ MouseArea{
     property string activity: tasksModel.activity
 
     readonly property var m: model
-    readonly property int pid: model.AppPid
-    readonly property string appName: model.AppName
+    readonly property int pid: model && model.AppPid ? model.AppPid : -1
+    readonly property string appName: model && model.AppName ? model.AppName : ""
 
     property string modelLauncherUrl: (LauncherUrlWithoutIcon !== null) ? LauncherUrlWithoutIcon : ""
     property string modelLauncherUrlWithIcon: (LauncherUrl !== null) ? LauncherUrl : ""
