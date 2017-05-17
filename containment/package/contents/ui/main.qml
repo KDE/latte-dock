@@ -120,7 +120,8 @@ DragDrop.DropArea {
 
     property int panelEdgeSpacing: iconSize / 3
     property int panelTransparency: plasmoid.configuration.panelTransparency
-    property bool panelShadowsActive: plasmoid.configuration.panelShadows && !root.forceTransparentPanel
+    property bool panelShadowsActive: (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
+                                      || (plasmoid.configuration.panelShadows && root.backgroundOnlyOnMaximized && windowsModel.hasMaximizedWindow)
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably

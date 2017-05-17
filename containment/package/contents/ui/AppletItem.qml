@@ -835,13 +835,13 @@ Item {
 
                 sourceComponent: DropShadow{
                     anchors.fill: parent
-                    color: forcedShadow ? "#ff040404" : "#ff080808"
+                    color: forcedShadow ? theme.backgroundColor : "#ff080808"
                     samples: 2 * radius
                     source: container.fakeIconItem ? wrapperContainer : container.applet
                     radius: shadowSize
                     verticalOffset: forcedShadow ? 1 : 2
 
-                    property int shadowSize : forcedShadow? 7 : Math.ceil(root.iconSize / 12)
+                    property int shadowSize : forcedShadow? 8 : Math.ceil(root.iconSize / 12)
 
                     property bool forcedShadow: root.forceTransparentPanel && applet.pluginName !== root.plasmoidName ? true : false
                 }

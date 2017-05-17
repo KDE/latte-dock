@@ -792,8 +792,8 @@ void DockView::setBehaveAsPlasmaPanel(bool behavior)
         PanelShadows::self()->addWindow(this, enabledBorders());
     } else {
         PanelShadows::self()->removeWindow(this);
-        m_enabledBorders = Plasma::FrameSvg::AllBorders;
-        emit enabledBordersChanged();
+        // m_enabledBorders = Plasma::FrameSvg::AllBorders;
+        // emit enabledBordersChanged();
     }
 
     updateEffects();
@@ -817,8 +817,8 @@ void DockView::setDrawShadows(bool draw)
         PanelShadows::self()->addWindow(this, enabledBorders());
     } else {
         PanelShadows::self()->removeWindow(this);
-        m_enabledBorders = Plasma::FrameSvg::AllBorders;
-        emit enabledBordersChanged();
+        //m_enabledBorders = Plasma::FrameSvg::AllBorders;
+        //emit enabledBordersChanged();
     }
 
     emit drawShadowsChanged();
