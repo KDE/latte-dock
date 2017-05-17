@@ -27,6 +27,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.activities 0.1 as Activities
 import org.kde.taskmanager 0.1 as TaskManager
 
+import org.kde.latte 0.1 as Latte
 
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -52,6 +53,7 @@ PlasmaComponents.ContextMenu {
     minimumWidth: visualParent ? visualParent.width : 1
 
     property bool isOnAllActivitiesLauncher: true
+    property bool showAllPlaces: false
 
     property int activitiesCount: 0
 
@@ -97,34 +99,36 @@ PlasmaComponents.ContextMenu {
     }
 
     function loadDynamicLaunchActions(launcherUrl) {
-        var actionList = backend.jumpListActions(launcherUrl, menu);
+        var lists = [];
 
-        for (var i = 0; i < actionList.length; ++i) {
-            var item = newMenuItem(menu);
-            item.action = actionList[i];
-            menu.addMenuItem(item, virtualDesktopsMenuItem);
+        //From Plasma 5.10 and frameworks 5.34 jumpLists and
+        //places are supported
+        if (Latte.WindowSystem.frameworksVersion >= 336384) {
+            lists = [
+                        backend.jumpListActions(launcherUrl, menu),
+                        backend.placesActions(launcherUrl, showAllPlaces, menu),
+                        backend.recentDocumentActions(launcherUrl, menu)
+                    ]
+        } else {
+            lists = [backend.recentDocumentActions(launcherUrl, menu)]
         }
 
-        if (actionList.length > 0) {
-            menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
-        }
+        lists.forEach(function (list) {
+            for (var i = 0; i < list.length; ++i) {
+                var item = newMenuItem(menu);
+                item.action = list[i];
+                menu.addMenuItem(item, virtualDesktopsMenuItem);
+            }
 
-        var actionList = backend.recentDocumentActions(launcherUrl, menu);
-
-        for (var i = 0; i < actionList.length; ++i) {
-            var item = newMenuItem(menu);
-            item.action = actionList[i];
-            menu.addMenuItem(item, virtualDesktopsMenuItem);
-        }
-
-        if (actionList.length > 0) {
-            menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
-        }
+            if (list.length > 0) {
+                menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
+            }
+        });
 
         // Add Media Player control actions
-        var sourceName = mpris2Source.sourceNameForLauncherUrl(launcherUrl);
+        var sourceName = mpris2Source.sourceNameForLauncherUrl(launcherUrl, get(atm.AppPid));
 
-        if (sourceName) {
+        if (sourceName && !(get(atm.LegacyWinIdList) != undefined && get(atm.LegacyWinIdList).length > 1)) {
             var playerData = mpris2Source.data[sourceName]
 
             if (playerData.CanControl) {
@@ -147,16 +151,11 @@ PlasmaComponents.ContextMenu {
                 menuItem.icon = Qt.binding(function() {
                     return playerData.PlaybackStatus === "Playing" ? "media-playback-pause" : "media-playback-start";
                 });
+                menuItem.enabled = Qt.binding(function() {
+                    return playerData.PlaybackStatus === "Playing" ? playerData.CanPause : playerData.CanPlay;
+                });
                 menuItem.clicked.connect(function() {
                     mpris2Source.playPause(sourceName);
-                });
-                menu.addMenuItem(menuItem, virtualDesktopsMenuItem);
-
-                menuItem = menu.newMenuItem(menu);
-                menuItem.text = i18nc("Stop playback", "Stop");
-                menuItem.icon = "media-playback-stop";
-                menuItem.clicked.connect(function() {
-                    mpris2Source.stop(sourceName);
                 });
                 menu.addMenuItem(menuItem, virtualDesktopsMenuItem);
 
@@ -171,7 +170,19 @@ PlasmaComponents.ContextMenu {
                 });
                 menu.addMenuItem(menuItem, virtualDesktopsMenuItem);
 
-                menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
+                menuItem = menu.newMenuItem(menu);
+                menuItem.text = i18nc("Stop playback", "Stop");
+                menuItem.icon = "media-playback-stop";
+                menuItem.clicked.connect(function() {
+                    mpris2Source.stop(sourceName);
+                });
+                menu.addMenuItem(menuItem, virtualDesktopsMenuItem);
+
+                // Technically media controls and audio streams are separate but for the user they're
+                // semantically related, don't add a separator inbetween.
+                if (!menu.visualParent.hasAudioStream) {
+                    menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
+                }
 
                 // If we don't have a window associated with the player but we can quit
                 // it through MPRIS we'll offer a "Quit" option instead of "Close"
@@ -235,6 +246,15 @@ PlasmaComponents.ContextMenu {
         ActivitiesTools.launchersOnActivities = root.launchersOnActivities
         ActivitiesTools.currentActivity = activityInfo.currentActivity;
         ActivitiesTools.plasmoid = plasmoid;
+
+        //From Plasma 5.10 and frameworks 5.34 jumpLists and
+        //places are supported
+        if (Latte.WindowSystem.frameworksVersion >= 336384) {
+            // Cannot have "Connections" as child of PlasmaCoponents.ContextMenu.
+            backend.showAllPlaces.connect(function() {
+                visualParent.showContextMenu({showAllPlaces: true});
+            });
+        }
         //  updateOnAllActivitiesLauncher();
     }
 
@@ -583,7 +603,7 @@ PlasmaComponents.ContextMenu {
                  && get(atm.IsLauncher) !== true
                  && get(atm.IsStartup) !== true
                  && (activityInfo.numberOfRunningActivities < 2)
-                 //&& plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+        //&& plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
 
 
         enabled: visualParent && get(atm.LauncherUrlWithoutIcon) !== ""
@@ -608,7 +628,7 @@ PlasmaComponents.ContextMenu {
         text: i18n("&Pin")
 
         visible: visualParent
-                // && get(atm.IsLauncher) !== true
+        // && get(atm.IsLauncher) !== true
                  && get(atm.IsStartup) !== true
                  && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
                  && (activityInfo.numberOfRunningActivities >= 2)
