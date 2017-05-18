@@ -124,10 +124,20 @@ Item{
         imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "widgets/panel-background"
         prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "shadow"
 
-        opacity: root.useThemePanel ? 1 : 0
         visible: (opacity == 0) ? false : true
 
+        opacity: {
+            if (root.forceTransparentPanel || !root.useThemePanel)
+                return 0;
+            else
+                return 1;
+        }
+
         enabledBorders: dock ? dock.enabledBorders : 0
+
+        Behavior on opacity {
+            NumberAnimation { duration: 8*root.durationTime*units.shortDuration }
+        }
 
         property int marginsWidth: {
             if (imagePath === "") {
@@ -224,14 +234,7 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
-            opacity: {
-                if (root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow)
-                    return 0;
-                else if (root.solidPanel)
-                    return 1;
-                else
-                    return plasmoid.configuration.panelTransparency / 100;
-            }
+            opacity: root.solidPanel ?  1 : plasmoid.configuration.panelTransparency / 100
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
@@ -241,11 +244,6 @@ Item{
             onHeightChanged: updateEffectsArea();
 
             Component.onCompleted: root.updateEffectsArea.connect(updateEffectsArea);
-
-            Behavior on opacity {
-                enabled: root.backgroundOnlyOnMaximized
-                NumberAnimation { duration: 8*root.durationTime*units.shortDuration }
-            }
 
             Connections{
                 target: root
