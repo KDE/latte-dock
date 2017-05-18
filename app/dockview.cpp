@@ -165,6 +165,7 @@ void DockView::init()
             syncGeometry();
     });
     connect(this, &DockView::behaveAsPlasmaPanelChanged, this, &DockView::syncGeometry);
+    connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::offsetChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
