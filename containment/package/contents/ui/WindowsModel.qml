@@ -25,7 +25,6 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.taskmanager 0.1 as TaskManager
 
-
 Item{
     id: winModel
 
@@ -60,6 +59,9 @@ Item{
         delegate: Item{
             readonly property bool isMaximized: IsMaximized === true ? true : false
             readonly property bool isMinimized: IsMinimized === true ? true : false
+
+            onIsMinimizedChanged: winModel.reconsiderMaximized();
+            onIsMaximizedChanged: winModel.reconsiderMaximized();
         }
 
         Component.onCompleted: winModel.reconsiderMaximized();
