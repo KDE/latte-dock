@@ -988,7 +988,7 @@ Item {
             }
         }
 
-        VisualAddItem{
+        Task.VisualAddItem{
             id: newDroppedLauncherVisual
             anchors.fill: mouseHandler
 
