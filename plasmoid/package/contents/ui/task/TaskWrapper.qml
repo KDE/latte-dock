@@ -78,7 +78,7 @@ Item{
 
     property real separatorRegWidth: {
         if (!mainItemContainer.isSeparator)
-            return;
+            return 0;
 
         if (!root.vertical)
             return 5 + root.widthMargins;
@@ -88,7 +88,7 @@ Item{
 
     property real separatorRegHeight: {
         if (!mainItemContainer.isSeparator)
-            return;
+            return 0;
 
         if (root.vertical)
             return 5 + root.heightMargins;
