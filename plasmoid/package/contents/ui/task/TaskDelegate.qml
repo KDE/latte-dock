@@ -640,6 +640,9 @@ MouseArea{
     }
 
     function clearZoom(){
+        if(!root)
+            return;
+
         if (root.globalDirectRender)
             wrapper.mScale = 1;
         else

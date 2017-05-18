@@ -1089,6 +1089,9 @@ DragDrop.DropArea {
 
     Connections{
         target: dock.visibility
+
+        ignoreUnknownSignals : true
+
         onContainsMouseChanged: {
             if (dock.visibility.containsMouse) {
                 if (checkRestoreZoom.running)
