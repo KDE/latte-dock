@@ -200,8 +200,8 @@ DragDrop.DropArea {
     property QtObject dock
     property QtObject globalSettings
 
-    property QtObject addWidgetsAction: globalSettings ? globalSettings.addWidgetsAction : 0
-    property QtObject altSessionAction: globalSettings ? globalSettings.altSessionAction : 0
+    property QtObject addWidgetsAction: globalSettings ? globalSettings.addWidgetsAction : null
+    property QtObject altSessionAction: globalSettings ? globalSettings.altSessionAction : null
 
     // TO BE DELETED, if not needed: property int counter:0;
 
@@ -1146,7 +1146,7 @@ DragDrop.DropArea {
 
         active: plasmoid.configuration.backgroundOnlyOnMaximized
 
-        property bool hasMaximizedWindow: active ? item.maximizedWindowOnScreen : false
+        property bool hasMaximizedWindow: active && item ? item.maximizedWindowOnScreen : false
         sourceComponent: WindowsModel{}
     }
 
