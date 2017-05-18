@@ -33,6 +33,7 @@ import org.kde.activities 0.1 as Activities
 
 import org.kde.latte 0.1 as Latte
 
+import "task" as Task
 import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -921,7 +922,7 @@ Item {
 
             orientation: Qt.Horizontal
 
-            delegate: TaskDelegate{}
+            delegate: Task.TaskDelegate{}
 
             /* Rectangle{
                 anchors.fill: parent

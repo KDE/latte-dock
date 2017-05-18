@@ -30,6 +30,8 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.latte 0.1 as Latte
 
+import "animations" as TaskAnimations
+
 MouseArea{
     id: mainItemContainer
 
@@ -169,31 +171,6 @@ MouseArea{
     signal groupWindowRemoved();
     signal checkWindowsStates();
 
-    /*    onHasMinimizedChanged:{
-            console.log(AppId);
-            if(AppId == "org.kde.dolphin"){
-            console.log("1. Minimized:"+hasMinimized);
-            console.log("2. Active:"+hasActive);
-            console.log("3. Shown:"+hasShown);
-            }
-        }
-        onHasShownChanged:{
-            console.log(AppId);
-            if(AppId == "org.kde.dolphin"){
-            console.log("1. Minimized:"+hasMinimized);
-            console.log("2. Active:"+hasActive);
-            console.log("3. Shown:"+hasShown);
-            }
-        }
-        onHasActiveChanged:{
-            console.log(AppId);
-            if(AppId == "org.kde.dolphin"){
-            console.log("1. Minimized:"+hasMinimized);
-            console.log("2. Active:"+hasActive);
-            console.log("3. Shown:"+hasShown);
-            }
-        }*/
-
     /*  Rectangle{
             anchors.fill: parent
             border.width: 1
@@ -206,28 +183,6 @@ MouseArea{
         // NumberAnimation { duration: (IsStartup || (IsLauncher) ) ? 0 : 400 }
         NumberAnimation { duration: root.durationTime*units.longDuration }
     }
-
-
-    /*        PlasmaCore.ToolTipArea {
-             id: toolTip
-
-             anchors.fill: parent
-
-            // active: !inPopup && !groupDialog.visible && plasmoid.configuration.showToolTips
-             active: plasmoid.configuration.showToolTips && mainItemContainer.isWindow && mainItemContainer.containsMouse
-             enabled: mainItemContainer.isWindow
-
-             interactive: true
-             location: plasmoid.location
-
-             mainItem: toolTipDelegate
-
-             onContainsMouseChanged:  {
-
-             }
-
-         }*/
-
 
     TaskWindows{
         id: tasksWindows
@@ -291,337 +246,7 @@ MouseArea{
                 }*/
         }
 
-        Item{
-            id: wrapper
-
-            opacity: 0
-            width: {
-                if (!mainItemContainer.visible)
-                    return 0;
-
-                if (mainItemContainer.isSeparator){
-                    if (!root.vertical)
-                        return 5 + root.widthMargins;
-                    else
-                        return (root.iconSize + root.widthMargins) * mScale + root.statesLineSize;
-                }
-
-                if (mainItemContainer.isStartup && root.durationTime !==0 ) {
-                    var moreThickness = root.vertical ? addedSpace : 0;
-
-                    return cleanScalingWidth + moreThickness;
-                } else {
-                    return showDelegateWidth;
-                }
-            }
-
-            height: {
-                if (!mainItemContainer.visible)
-                    return 0;
-
-                if (mainItemContainer.isSeparator){
-                    if (root.vertical)
-                        return 5 + root.heightMargins;
-                    else
-                        return (root.iconSize + root.heightMargins) * mScale + root.statesLineSize;
-                }
-
-                if (mainItemContainer.isStartup && root.durationTime !==0){
-                    var moreThickness = !root.vertical ? addedSpace : 0;
-
-                    return cleanScalingHeight + moreThickness;
-                } else {
-                    return showDelegateheight;
-                }
-            }
-
-            //size needed fom the states below icons
-            //property int statesLineSize: root.statesLineSize
-            property int addedSpace: root.statesLineSize //7
-            property real showDelegateWidth: root.vertical ? basicScalingWidth+addedSpace :
-                                                             basicScalingWidth
-            property real showDelegateheight: root.vertical ? basicScalingHeight :
-                                                              basicScalingHeight + addedSpace
-
-            //scales which are used mainly for activating InLauncher
-            ////Scalers///////
-            property bool inTempScaling: (((tempScaleWidth !== 1) || (tempScaleHeight !== 1) ) && (!mainItemContainer.mouseEntered) )
-
-            property real mScale: 1
-            property real tempScaleWidth: 1
-            property real tempScaleHeight: 1
-
-            property real scaleWidth: (inTempScaling == true) ? tempScaleWidth : mScale
-            property real scaleHeight: (inTempScaling == true) ? tempScaleHeight : mScale
-
-            property real cleanScalingWidth: (root.iconSize + root.widthMargins) * mScale
-            property real cleanScalingHeight: (root.iconSize + root.heightMargins) * mScale
-
-            property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
-            property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
-
-            property real regulatorWidth: mainItemContainer.isSeparator ? separatorRegWidth : basicScalingWidth;
-            property real regulatorHeight: mainItemContainer.isSeparator ? separatorRegHeight : basicScalingHeight;
-
-            property int separatorRegLength: root.vertical ? separatorRegWidth : separatorRegHeight
-
-            property real separatorRegWidth: {
-                if (!mainItemContainer.isSeparator)
-                    return;
-
-                if (!root.vertical)
-                    return 5 + root.widthMargins;
-                else
-                    return (root.iconSize + root.thickMargin) * wrapper.mScale;
-            }
-
-            property real separatorRegHeight: {
-                if (!mainItemContainer.isSeparator)
-                    return;
-
-                if (root.vertical)
-                    return 5 + root.heightMargins;
-                else
-                    return (root.iconSize + root.thickMargin) * wrapper.mScale;
-            }
-            /// end of Scalers///////
-
-            //property int curIndex: icList.hoveredIndex
-            //  property int index: mainItemContainer.Positioner.index
-            property real center: width / 2
-
-            signal runLauncherAnimation();
-
-            /*   Rectangle{
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: "green"
-                    color: "transparent"
-                }*/
-
-            Behavior on mScale {
-                enabled: !root.globalDirectRender
-                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
-            }
-
-            Behavior on mScale {
-                enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
-            }
-
-            Flow{
-                anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-                anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-                anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-                anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
-
-                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-                width: wrapper.width
-                height: wrapper.height
-
-                flow: root.vertical ? Flow.TopToBottom : Flow.LeftToRight
-
-                Loader{
-                    id: firstIndicator
-
-                    active:( (((root.position === PlasmaCore.Types.TopPositioned) || (root.position === PlasmaCore.Types.LeftPositioned))
-                              && !root.reverseLinesPosition)
-                            || (((root.position === PlasmaCore.Types.BottomPositioned) || (root.position === PlasmaCore.Types.RightPositioned))
-                                && root.reverseLinesPosition) )
-                    visible: active
-
-                    sourceComponent: Component{
-                        TaskGroupItem{}
-                    }
-                }
-
-                TaskIconItem{}
-
-                Loader{
-                    id: secondIndicator
-                    active: !firstIndicator.active
-                    visible: active
-
-                    sourceComponent: Component{
-                        TaskGroupItem{}
-                    }
-                }
-
-            }//Flow
-
-            //!this is used in order to update the index when the signal is for applets
-            //!outside the latte plasmoid
-            function updateIdSendScale(indx, zScale, zStep){
-                if ((indx>=0 && indx<=root.tasksCount-1) || (!root.latteDock)){
-                    root.updateScale(indx, zScale, zStep);
-                } else{
-                    var appletId = latteDock.latteAppletPos;
-                    if (indx<0)
-                        appletId = latteDock.latteAppletPos + indx;
-                    else if (indx>root.tasksCount-1){
-                        var step=indx-root.tasksCount+1;
-                        appletId = latteDock.latteAppletPos + step;
-                    }
-
-                    latteDock.updateScale(appletId, zScale, zStep);
-                }
-            }
-
-            function calculateScales( currentMousePosition ){
-                if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
-                    return;
-                }
-
-                var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
-
-                // A new algorithm tryig to make the zoom calculation only once
-                // and at the same time fixing glitches
-                if ((distanceFromHovered == 0)&&
-                        (currentMousePosition  > 0)&&
-                        (root.dragSource == null) ){
-
-                    var rDistance = Math.abs(currentMousePosition  - center);
-
-                    //check if the mouse goes right or down according to the center
-                    var positiveDirection =  ((currentMousePosition  - center) >= 0 );
-
-                    var minimumZoom = 1;
-
-                    if(mainItemContainer.isSeparator){
-                        //minimumZoom for separator item
-                        var tempZoomDifference = (root.missingSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
-                        minimumZoom = Math.max(tempZoomDifference, 1);
-                    }
-
-                    //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-                    var zoomCenter = ((root.zoomFactor + minimumZoom)/2) - 1;
-
-                    //computes the in the scale e.g. 0...0.35 according to the mouse distance
-                    //0.35 on the edge and 0 in the center
-                    var firstComputation = (rDistance / center) * (zoomCenter-minimumZoom+1);
-
-                    //calculates the scaling for the neighbour tasks
-                    var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
-                    var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, minimumZoom);
-
-                    //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-                    //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
-
-                    var leftScale;
-                    var rightScale;
-
-                    if(positiveDirection === true){
-                        rightScale = bigNeighbourZoom;
-                        leftScale = smallNeighbourZoom;
-                    } else {
-                        rightScale = smallNeighbourZoom;
-                        leftScale = bigNeighbourZoom;
-                    }
-
-                    //! compute the neighbour separator scales
-                    var bsNeighbourZoom = 1;
-                    var ssNeighbourZoom = 1;
-
-                    if(root.internalSeparatorPos>=0) {
-                        if((root.internalSeparatorPos === index+1) || (root.internalSeparatorPos === index-1) ){
-                            var sepZoomDifference = (root.maxSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
-
-                            bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
-                            ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
-                        }
-                    }
-
-                    // console.debug(leftScale + "  " + rightScale + " " + index);
-
-                    if(!root.hasInternalSeparator || Math.abs(index-root.internalSeparatorPos)>=2
-                            || mainItemContainer.isSeparator){
-                        //activate messages to update the the neighbour scales
-                            updateIdSendScale(index+1, rightScale, 0);
-                            updateIdSendScale(index-1, leftScale, 0);
-
-                            updateIdSendScale(index+2, 1, 0);
-                            updateIdSendScale(index-2, 1, 0);
-                    } else if(root.internalSeparatorPos>=0) {
-                        if(root.internalSeparatorPos === index+1){
-                            if (!positiveDirection) {
-                                updateIdSendScale(index+2, ssNeighbourZoom, 0);
-                            } else {
-                                updateIdSendScale(index+2, bsNeighbourZoom, 0);
-                            }
-
-                            updateIdSendScale(index-1, leftScale, 0);
-                            updateIdSendScale(index+1, rightScale, 0);
-
-                            updateIdSendScale(index+3, 1, 0);
-                            updateIdSendScale(index-2, 1, 0);
-                        } else if(root.internalSeparatorPos === index-1) {
-                            if (!positiveDirection) {
-                                updateIdSendScale(index-2, bsNeighbourZoom, 0);
-                            } else {
-                                updateIdSendScale(index-2, ssNeighbourZoom, 0);
-                            }
-
-                            updateIdSendScale(index-1, leftScale, 0);
-                            updateIdSendScale(index+1, rightScale, 0);
-
-                            updateIdSendScale(index+2, 1, 0);
-                            updateIdSendScale(index-3, 1, 0);
-                        }
-                    }
-
-                    //Left hiddenSpacer
-                    if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
-                        hiddenSpacerLeft.nScale = leftScale - 1;
-                    }
-
-                    //Right hiddenSpacer
-                    if(((index === icList.count - 1 )&&(icList.count>1)) && (!root.disableRightSpacer)){
-                        hiddenSpacerRight.nScale =  rightScale - 1;
-                    }
-
-                    mScale = root.zoomFactor;
-                }
-
-            } //nScale
-
-
-            function signalUpdateScale(nIndex, nScale, step){
-                if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
-                    if(nScale >= 0) {
-                        mScale = nScale + step;
-                    } else {
-                        mScale = mScale + step;
-                    }
-                    //     console.log(index+ ", "+mScale);
-                }
-            }
-
-            function sendEndOfNeedBothAxisAnimation(){
-                if (mainItemContainer.isZoomed) {
-                    mainItemContainer.isZoomed = false;
-                    root.signalAnimationsNeedBothAxis(-1);
-                }
-            }
-
-            onMScaleChanged: {
-                if ((mScale === root.zoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
-                    root.startEnableDirectRenderTimer();
-                }
-
-                if ((mScale > 1) && !mainItemContainer.isZoomed) {
-                    mainItemContainer.isZoomed = true;
-                    root.signalAnimationsNeedBothAxis(1);
-                } else if ((mScale == 1) && mainItemContainer.isZoomed) {
-                    sendEndOfNeedBothAxisAnimation();
-                }
-            }
-
-            Component.onCompleted: {
-                root.updateScale.connect(signalUpdateScale);
-            }
-        }// Main task area // id:wrapper
+        TaskWrapper{ id: wrapper }
 
         // a hidden spacer on the right for the last item to add stability
         Item{
@@ -1192,6 +817,17 @@ MouseArea{
     }
     ///window previews////
 
+    function launcherIsPresent(url) {
+        var activities = tasksModel.launcherActivities(url);
+
+        var NULL_UUID = "00000000-0000-0000-0000-000000000000";
+
+        if (activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1)
+            return true;
+
+        return false;
+    }
+
     function modelIndex(){
         return tasksModel.makeModelIndex(index);
     }
@@ -1361,141 +997,9 @@ MouseArea{
 
     /////Animations
 
-    ///item's added Animation
-    SequentialAnimation{
-        id:showWindowAnimation
-        property int speed: Latte.WindowSystem.compositingActive ? root.durationTime* (1.2*units.longDuration) : 0
-        property bool animationSent: false
+    TaskAnimations.TaskShowWindowAnimation{ id: showWindowAnimation }
 
-        //Ghost animation that acts as a delayer, in order to fix #342
-        PropertyAnimation {
-            target: wrapper
-            property: "opacity"
-            to: 0
-            //it is not depend to durationTime when animations are active
-            duration: root.durationTime > 0 ? 750 : 0
-            easing.type: Easing.InQuad
-        }
-        //end of ghost animation
-
-        ScriptAction{
-            script:{
-                if (!showWindowAnimation.animationSent) {
-                    showWindowAnimation.animationSent = true;
-                    root.signalAnimationsNeedLength(1);
-                }
-            }
-        }
-
-        PropertyAnimation {
-            target: wrapper
-            property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
-            to: 1
-            duration: showWindowAnimation.speed
-            easing.type: Easing.OutQuad
-        }
-
-        ParallelAnimation{
-
-            PropertyAnimation {
-                target: wrapper
-                property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: 1
-                duration: showWindowAnimation.speed
-                easing.type: Easing.OutQuad
-            }
-
-
-            PropertyAnimation {
-                target: wrapper
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: showWindowAnimation.speed
-                easing.type: Easing.OutQuad
-            }
-        }
-
-        onStopped: {
-            mainItemContainer.inAddRemoveAnimation = false;
-
-            if(mainItemContainer.isWindow || mainItemContainer.isStartup){
-                taskInitComponent.createObject(wrapper);
-                if (mainItemContainer.isDemandingAttention){
-                    mainItemContainer.groupWindowAdded();
-                }
-            }
-            mainItemContainer.inAnimation = false;
-
-            if (showWindowAnimation.animationSent) {
-                root.signalAnimationsNeedLength(-1);
-                showWindowAnimation.animationSent = false;
-            }
-        }
-
-        function execute(){
-            //Animation Add/Remove (2) - when is window with no launcher, animations enabled
-            //Animation Add/Remove (3) - when is launcher with no window, animations enabled
-            var animation2 = ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                                && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                               || !launcherIsPresent(mainItemContainer.launcherUrl))
-                              && mainItemContainer.isWindow);
-
-            var animation3 = ((!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher));
-
-            if (( animation2 || animation3) && (root.durationTime !== 0)){
-                wrapper.tempScaleWidth = 0;
-                wrapper.tempScaleHeight = 0;
-                start();
-            } else {
-                wrapper.tempScaleWidth = 1;
-                wrapper.tempScaleHeight = 1;
-                wrapper.opacity = 1;
-                mainItemContainer.inAnimation = false;
-            }
-        }
-
-        function showWindow(){
-            execute();
-        }
-
-        Component.onDestruction: {
-            if (animationSent){
-                //console.log("SAFETY REMOVAL 2: animation removing ended");
-                animationSent = false;
-                root.signalAnimationsNeedLength(-1);
-            }
-        }
-    }
-
-    ///////Restore Zoom Animation/////
-    ParallelAnimation{
-        id: restoreAnimation
-
-        PropertyAnimation {
-            target: wrapper
-            property: "mScale"
-            to: 1
-            duration: 3 * mainItemContainer.animationTime
-            easing.type: Easing.Linear
-        }
-
-        PropertyAnimation {
-            target: hiddenSpacerLeft
-            property: "nScale"
-            to: 0
-            duration: 3 * mainItemContainer.animationTime
-            easing.type: Easing.Linear
-        }
-
-        PropertyAnimation {
-            target: hiddenSpacerRight
-            property: "nScale"
-            to: 0
-            duration: 3 * mainItemContainer.animationTime
-            easing.type: Easing.Linear
-        }
-    }
+    TaskAnimations.TaskRestoreAnimation{ id: restoreAnimation}
 
     //A Timer to check how much time the task is hovered in order to check if we must
     //show window previews
@@ -1548,7 +1052,6 @@ MouseArea{
             Component.onCompleted: resistanerTimer.start()
         }
     }
-
 
     ///trying to compete with the crazy situation in the tasksModel
     ///with launchers and startups... There are windows that stay
@@ -1609,144 +1112,8 @@ MouseArea{
         }
     }
 
-    function launcherIsPresent(url) {
-        var activities = tasksModel.launcherActivities(url);
-
-        var NULL_UUID = "00000000-0000-0000-0000-000000000000";
-
-        if (activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1)
-            return true;
-
-        return false;
-    }
-
     ///Item's Removal Animation
-    ListView.onRemove: SequentialAnimation {
-        id: taskRealRemovalAnimation
-        PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
-        PropertyAction { target: mainItemContainer; property: "inRemoveStage"; value: true }
-
-        //Animation Add/Remove (1) - when is window with no launcher, animations enabled
-        //Animation Add/Remove (4) - the user removes a launcher, animation enabled
-        property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                                     && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                                    || !launcherIsPresent(mainItemContainer.launcherUrl))
-                                   && !mainItemContainer.isStartup)
-
-        property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
-                                    || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )&& mainItemContainer.isLauncher)
-
-        property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0) && !mainItemContainer.inBouncingAnimation;
-
-        ScriptAction{
-            script:{
-                root.mouseWasEntered.disconnect(signalMouseWasEntered);
-                root.draggingFinished.disconnect(handlerDraggingFinished);
-                root.clearZoomSignal.disconnect(clearZoom);
-                root.publishTasksGeometries.disconnect(slotPublishGeometries);
-                root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
-                root.updateScale.disconnect(wrapper.signalUpdateScale);
-
-                mainItemContainer.inAnimation = true;
-                icList.delayingRemoval = true;
-                mainItemContainer.inAddRemoveAnimation = true;
-
-                //trying to fix the ListView nasty behavior
-                //during the removal the anchoring for ListView children changes a lot
-                var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);
-                if (previousTask !== undefined){
-                    if (root.vertical) {
-                        mainItemContainer.anchors.top = previousTask.bottom;
-                    } else {
-                        mainItemContainer.anchors.left = previousTask.right;
-                    }
-                }
-
-                // console.log("1." + mainItemContainer.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
-                // console.log("2." + root.launcherForRemoval + " - " + mainItemContainer.isLauncher);
-
-                root.signalAnimationsNeedLength(1);
-            }
-        }
-
-        //Ghost animation that acts as a delayer in case there is a bouncing animation
-        //taking place
-        PropertyAnimation {
-            target: wrapper
-            property: "opacity"
-            to: 1
-            duration:  mainItemContainer.inBouncingAnimation ? //exactly how much the bounche animation lasts
-                                                               5*(root.durationTime * 0.8 * units.longDuration) : 0
-            easing.type: Easing.InQuad
-        }
-        //end of ghost animation
-
-        PropertyAnimation {
-            target: wrapper
-            property: "mScale"
-            to: 1
-            duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
-            easing.type: Easing.InQuad
-        }
-
-        //PropertyAction { target: wrapper; property: "opacity"; value: isWindow ? 0 : 1 }
-        //animation mainly for launchers removal and startups
-        ParallelAnimation{
-            id: removalAnimation
-
-            // property int speed: (IsStartup && !mainItemContainer.visible)? 0 : 400
-            //property int speed: 400
-            NumberAnimation {
-                target: wrapper;
-                property: "opacity";
-                to: 0;
-                duration: taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
-                easing.type: Easing.InQuad }
-
-            PropertyAnimation {
-                target: wrapper
-                property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: 0
-                duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
-                easing.type: Easing.InQuad
-            }
-        }
-
-        //smooth move into place the surrounding tasks
-        PropertyAnimation {
-            target: wrapper
-            property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
-            to: 0
-            duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
-            easing.type: Easing.InQuad
-        }
-
-        ScriptAction{
-            script:{
-                if (showWindowAnimation.animationSent){
-                    //console.log("SAFETY REMOVAL 1: animation removing ended");
-                    showWindowAnimation.animationSent = false;
-                    root.signalAnimationsNeedLength(-1);
-                }
-
-                root.signalAnimationsNeedLength(-1);
-
-                mainItemContainer.inAnimation = false;
-                icList.delayingRemoval = false;
-
-                if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
-                    root.launcherForRemoval="";
-
-                //send signal that the launcher is really removing
-                if (mainItemContainer.inBouncingAnimation) {
-                    mainItemContainer.visible = false;
-                    root.removeWaitingLauncher(mainItemContainer.launcherUrl);
-                }
-            }
-        }
-
-        PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
-    }
+    ListView.onRemove: TaskAnimations.TaskRealRemovalAnimation{ id: taskRealRemovalAnimation }
 
 }// main Item
 
