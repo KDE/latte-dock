@@ -30,6 +30,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
 
+import "applet" as Applet
+
 import "../code/LayoutManager.js" as LayoutManager
 
 DragDrop.DropArea {
@@ -1102,7 +1104,7 @@ DragDrop.DropArea {
     ///////////////BEGIN components
     Component {
         id: appletContainerComponent
-        AppletItem{}
+        Applet.AppletItem{}
     }
     ///////////////END components
 
