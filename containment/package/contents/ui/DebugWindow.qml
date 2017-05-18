@@ -430,7 +430,7 @@ Window{
             }
 
             Text{
-                text: "Force Panel Transparency (auto)"+space
+                text: "Force Transparent Panel (auto)"+space
             }
 
             Text{
