@@ -26,16 +26,16 @@ ConfigModel {
     ConfigCategory {
          name: i18n("Appearance")
          icon: "preferences-desktop-display-color"
-         source: "ConfigAppearance.qml"
+         source: "config/ConfigAppearance.qml"
     }
     ConfigCategory {
          name: i18n("Panel")
          icon: "window-duplicate"
-         source: "ConfigPanel.qml"
+         source: "config/ConfigPanel.qml"
     }
     ConfigCategory {
          name: i18n("Interaction")
          icon: "preferences-system-windows-move"
-         source: "ConfigInteraction.qml"
+         source: "config/ConfigInteraction.qml"
     }
 }

@@ -146,17 +146,6 @@ Item {
                             }
                         }
                     }
-
-                    Label {
-                        id: versionLabel
-
-                        font.italic: true
-                        horizontalAlignment: Text.AlignRight
-                        Layout.alignment: Qt.AlignRight
-                        Layout.fillWidth: true
-
-                        text: i18n("ver: ") + "@VERSION@"
-                    }
                 }
 
 
