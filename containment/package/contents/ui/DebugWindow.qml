@@ -430,6 +430,19 @@ Window{
             }
 
             Text{
+                text: "Force Panel Transparency (auto)"+space
+            }
+
+            Text{
+                text: {
+                    if (root.forceTransparentPanel)
+                        return "Yes";
+                    else
+                        return "No";
+                }
+            }
+
+            Text{
                 text: "Panel Background Length"+space
             }
 
