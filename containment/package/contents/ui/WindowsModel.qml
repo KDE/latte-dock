@@ -29,10 +29,9 @@ import org.kde.taskmanager 0.1 as TaskManager
 Item{
     id: winModel
 
-    property bool maximizedWindowOnScreen: maximizedWindowModel.count > 0
+    property bool maximizedWindowOnScreen: false
 
     //--- active-window-control start
-    Component.onCompleted: maximizedWindowModel.doCheck()
     TaskManager.VirtualDesktopInfo { id: virtualDesktopInfo }
     TaskManager.ActivityInfo { id: activityInfo }
     TaskManager.TasksModel {
@@ -49,34 +48,35 @@ Item{
         filterByScreen: true
         filterByActivity: true
 
-        onActiveTaskChanged: {
-            maximizedWindowModel.sourceModel = tasksModel
-        }
-        onDataChanged: { maximizedWindowModel.doCheck(); }
-        onCountChanged: { maximizedWindowModel.doCheck(); }
+        onDataChanged: winModel.reconsiderMaximized();
+        onCountChanged: winModel.reconsiderMaximized();
+        Component.onCompleted: winModel.reconsiderMaximized();
     }
 
-    PlasmaCore.SortFilterModel {
-        id: maximizedWindowModel
-        filterRole: 'IsMaximized'
-        filterRegExp: 'true'
-        sourceModel: tasksModel
+    Repeater{
+        id: windowsRepeater
+        model:tasksModel
 
-        onDataChanged: { maximizedWindowModel.doCheck(); }
-        onCountChanged: { maximizedWindowModel.doCheck(); }
-        function doCheck() {
-            var screenHasMaximized = false
-            for (var i = 0; i < maximizedWindowModel.count; i++) {
-                var task = maximizedWindowModel.get(i)
-                if (task.IsMaximized && !task.IsMinimized) {
-                    screenHasMaximized = true
-                    break
-                }
-            }
-            if (winModel.maximizedWindowOnScreen != screenHasMaximized) {
-                winModel.maximizedWindowOnScreen = screenHasMaximized
+        delegate: Item{
+            readonly property bool isMaximized: IsMaximized === true ? true : false
+            readonly property bool isMinimized: IsMinimized === true ? true : false
+        }
+
+        Component.onCompleted: winModel.reconsiderMaximized();
+    }
+
+    function reconsiderMaximized() {
+        var hasMaximized = false;
+
+        for(var i=0; i<windowsRepeater.count; ++i){
+            var kid = windowsRepeater.itemAt(i);
+
+            if (kid && kid.isMaximized && !kid.isMinimized){
+                hasMaximized = true;
+                break;
             }
         }
+
+        maximizedWindowOnScreen = hasMaximized;
     }
-    //--- active-window-control end
 }

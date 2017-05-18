@@ -28,7 +28,7 @@ SequentialAnimation{
 
     property bool pressed: mainItemContainer.pressed
     property int speed: root.durationTime*units.longDuration
-    property real maxMScale: Math.max(1,Math.root.zoomFactor - (root.zoomFactor - 1) / 2)
+    property real maxMScale: Math.max(1,root.zoomFactor - (root.zoomFactor - 1) / 2)
 
     ParallelAnimation{
         PropertyAnimation {

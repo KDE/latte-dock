@@ -50,12 +50,12 @@ Item{
 
             if (dock.visibility.isHidden && root.isVertical) {
                 if (Latte.WindowSystem.compositingActive) {
-                    return slidingOutToPos;
+                    return visibilityManager.slidingOutToPos;
                 } else {
                     if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
-                        return slidingOutToPos + 1;
+                        return visibilityManager.slidingOutToPos + 1;
                     } else {
-                        return slidingOutToPos - 1;
+                        return visibilityManager.slidingOutToPos - 1;
                     }
                 }
             } else {
@@ -75,12 +75,12 @@ Item{
 
             if (dock.visibility.isHidden && root.isHorizontal) {
                 if (Latte.WindowSystem.compositingActive) {
-                    return slidingOutToPos;
+                    return visibilityManager.slidingOutToPos;
                 } else {
                     if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
-                        return slidingOutToPos + 1;
+                        return visibilityManager.slidingOutToPos + 1;
                     } else {
-                        return slidingOutToPos - 1;
+                        return visibilityManager.slidingOutToPos - 1;
                     }
                 }
             } else {
