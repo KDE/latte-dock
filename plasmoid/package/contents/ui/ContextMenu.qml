@@ -843,7 +843,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: addWidgets
-        visible: latteDock.addWidgetsAction
+        visible: latteDock && latteDock.addWidgetsAction
 
         icon: "add"
         text: i18n("Add Widgets...")
