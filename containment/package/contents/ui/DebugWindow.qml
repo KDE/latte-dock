@@ -609,7 +609,7 @@ Window{
             }
 
             Text{
-                text: startLayout.shownApplets
+                text: layoutsContainer.startLayout.shownApplets
             }
 
             Text{
@@ -617,7 +617,7 @@ Window{
             }
 
             Text{
-                text: startLayout.fillApplets
+                text: layoutsContainer.startLayout.fillApplets
             }
 
             Text{
@@ -625,7 +625,7 @@ Window{
             }
 
             Text{
-                text: startLayout.sizeWithNoFillApplets+" px."
+                text: layoutsContainer.startLayout.sizeWithNoFillApplets+" px."
             }
 
             Text{
@@ -641,7 +641,7 @@ Window{
             }
 
             Text{
-                text: mainLayout.shownApplets
+                text: layoutsContainer.mainLayout.shownApplets
             }
 
             Text{
@@ -649,7 +649,7 @@ Window{
             }
 
             Text{
-                text: mainLayout.fillApplets
+                text: layoutsContainer.mainLayout.fillApplets
             }
 
             Text{
@@ -657,7 +657,7 @@ Window{
             }
 
             Text{
-                text: mainLayout.sizeWithNoFillApplets+" px."
+                text: layoutsContainer.mainLayout.sizeWithNoFillApplets+" px."
             }
 
             Text{
@@ -673,7 +673,7 @@ Window{
             }
 
             Text{
-                text: endLayout.shownApplets
+                text: layoutsContainer.endLayout.shownApplets
             }
 
             Text{
@@ -681,7 +681,7 @@ Window{
             }
 
             Text{
-                text: endLayout.fillApplets
+                text: layoutsContainer.endLayout.fillApplets
             }
 
             Text{
@@ -689,7 +689,7 @@ Window{
             }
 
             Text{
-                text: endLayout.sizeWithNoFillApplets+" px."
+                text: layoutsContainer.endLayout.sizeWithNoFillApplets+" px."
             }
 
         }

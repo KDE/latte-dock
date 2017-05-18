@@ -45,7 +45,7 @@ Item{
             if ((root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode) {
                 return root.maxLength;
             } else {
-                return mainLayout.width + spacing;
+                return layoutsContainer.mainLayout.width + spacing;
             }
         }
     }
@@ -57,7 +57,7 @@ Item{
             if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode) {
                 return root.maxLength;
             } else {
-                return mainLayout.height + spacing;
+                return layoutsContainer.mainLayout.height + spacing;
             }
         }
     }

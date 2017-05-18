@@ -58,14 +58,14 @@ Item {
     property bool isZoomed: false
 
     //applet is in starting edge
-    /*property bool startEdge: index < endLayout.beginIndex ? (index === 0)&&(mainLayout.count > 1) :
-                                                               (index === endLayout.beginIndex)&&(endLayout.count > 1)*/
-    property bool startEdge: (index === startLayout.beginIndex) || (index === mainLayout.beginIndex) || (index === endLayout.beginIndex)
+    /*property bool startEdge: index < layoutsContainer.endLayout.beginIndex ? (index === 0)&&(layoutsContainer.mainLayout.count > 1) :
+                                                               (index === layoutsContainer.endLayout.beginIndex)&&(layoutsContainer.endLayout.count > 1)*/
+    property bool startEdge: (index === layoutsContainer.startLayout.beginIndex) || (index === layoutsContainer.mainLayout.beginIndex) || (index === layoutsContainer.endLayout.beginIndex)
     //applet is in ending edge
-    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === mainLayout.beginIndex + mainLayout.count - 1)&&(mainLayout.count>1) :
-                                                                                         (((index === startLayout.beginIndex+startLayout.count-2)&&(startLayout.count>2))
-                                                                                          ||((index === mainLayout.beginIndex+mainLayout.count-2)&&(mainLayout.count>2))
-                                                                                          ||((index === endLayout.beginIndex+endLayout.count-1)&&(endLayout.count>1)))
+    property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? (index === layoutsContainer.mainLayout.beginIndex + layoutsContainer.mainLayout.count - 1)&&(layoutsContainer.mainLayout.count>1) :
+                                                                                         (((index === layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-2)&&(layoutsContainer.startLayout.count>2))
+                                                                                          ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
+                                                                                          ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
 
 
@@ -141,39 +141,39 @@ Item {
     function checkIndex(){
         index = -1;
 
-        for(var i=0; i<startLayout.count; ++i){
-            if(startLayout.children[i] === container){
-                index = startLayout.beginIndex + i;
+        for(var i=0; i<layoutsContainer.startLayout.count; ++i){
+            if(layoutsContainer.startLayout.children[i] === container){
+                index = layoutsContainer.startLayout.beginIndex + i;
                 break;
             }
         }
 
-        for(var i=0; i<mainLayout.count; ++i){
-            if(mainLayout.children[i] === container){
-                index = mainLayout.beginIndex + i;
+        for(var i=0; i<layoutsContainer.mainLayout.count; ++i){
+            if(layoutsContainer.mainLayout.children[i] === container){
+                index = layoutsContainer.mainLayout.beginIndex + i;
                 break;
             }
         }
 
-        for(var i=0; i<endLayout.count; ++i){
-            if(endLayout.children[i] === container){
+        for(var i=0; i<layoutsContainer.endLayout.count; ++i){
+            if(layoutsContainer.endLayout.children[i] === container){
                 //create a very high index in order to not need to exchange hovering messages
-                //between mainLayout and endLayout
-                index = endLayout.beginIndex + i;
+                //between layoutsContainer.mainLayout and layoutsContainer.endLayout
+                index = layoutsContainer.endLayout.beginIndex + i;
                 break;
             }
         }
 
 
         if(container.latteApplet){
-            if(index===startLayout.beginIndex || index===mainLayout.beginIndex || index===endLayout.beginIndex)
+            if(index===layoutsContainer.startLayout.beginIndex || index===layoutsContainer.mainLayout.beginIndex || index===layoutsContainer.endLayout.beginIndex)
                 latteApplet.disableLeftSpacer = false;
             else
                 latteApplet.disableLeftSpacer = true;
 
-            if( index === startLayout.beginIndex + startLayout.count - 1
-                    || index===mainLayout.beginIndex + mainLayout.count - 1
-                    || index === endLayout.beginIndex + endLayout.count - 1)
+            if( index === layoutsContainer.startLayout.beginIndex + layoutsContainer.startLayout.count - 1
+                    || index===layoutsContainer.mainLayout.beginIndex + layoutsContainer.mainLayout.count - 1
+                    || index === layoutsContainer.endLayout.beginIndex + layoutsContainer.endLayout.count - 1)
                 latteApplet.disableRightSpacer = false;
             else
                 latteApplet.disableRightSpacer = true;

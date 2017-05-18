@@ -220,10 +220,10 @@ Item{
             } else {
                 if(root.isHorizontal) {
                     tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                layoutsContainer.width + space : mainLayout.width + space;
+                                layoutsContainer.width + space : layoutsContainer.mainLayout.width + space;
                 } else {
                     tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                layoutsContainer.height + space : mainLayout.height + space;
+                                layoutsContainer.height + space : layoutsContainer.mainLayout.height + space;
                 }
             }
 
@@ -254,7 +254,7 @@ Item{
                 } else if (root.panelAlignment === Latte.Dock.Center) {
                     localX = (dock.width/2) - tempLength/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Right) {
-                    localX = dock.width - mainLayout.width - space - root.offset;
+                    localX = dock.width - layoutsContainer.mainLayout.width - space - root.offset;
                 }
             } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                 if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -272,7 +272,7 @@ Item{
                 } else if (root.panelAlignment === Latte.Dock.Center) {
                     localY = (dock.height/2) - tempLength/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    localY = dock.height - mainLayout.height - space - root.offset;
+                    localY = dock.height - layoutsContainer.mainLayout.height - space - root.offset;
                 }
             }
         } else {

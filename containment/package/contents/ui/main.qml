@@ -31,7 +31,6 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte 0.1 as Latte
 
 import "../code/LayoutManager.js" as LayoutManager
-import "../code/HeuristicTools.js" as HeuristicTools
 
 DragDrop.DropArea {
     id: root
@@ -178,8 +177,8 @@ DragDrop.DropArea {
 
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
-    //property int mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
-    //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? plasmoid.configuration.panelPosition : mainLayoutPosition
+    //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
+    //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? plasmoid.configuration.panelPosition : layoutsContainer.mainLayoutPosition
 
     property int panelAlignment: !root.editMode ? plasmoid.configuration.panelPosition :
                                                   ( plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
@@ -243,12 +242,12 @@ DragDrop.DropArea {
 
     /* Layout.preferredWidth: plasmoid.immutable ?
                                (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                    layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin) :
+                                    layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin) :
                                Screen.width //on unlocked state use the maximum
 
     Layout.preferredHeight: plasmoid.immutable ?
                                (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                    layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin) :
+                                    layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin) :
                                Screen.height //on unlocked state use the maximum*/
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
@@ -258,20 +257,20 @@ DragDrop.DropArea {
         var count1 = 0;
         var count2 = 0;
 
-        count1 = mainLayout.children.length;
-        var tempLength = mainLayout.children.length;
+        count1 = layoutsContainer.mainLayout.children.length;
+        var tempLength = layoutsContainer.mainLayout.children.length;
 
         for (var i=tempLength-1; i>=0; --i) {
-            var applet = mainLayout.children[i];
+            var applet = layoutsContainer.mainLayout.children[i];
             if (applet && (applet === dndSpacer || applet === lastSpacer ||  applet.isInternalViewSplitter))
                 count1--;
         }
 
-        count2 = endLayout.children.length;
-        tempLength = endLayout.children.length;
+        count2 = layoutsContainer.endLayout.children.length;
+        tempLength = layoutsContainer.endLayout.children.length;
 
         for (var i=tempLength-1; i>=0; --i) {
-            var applet = endLayout.children[i];
+            var applet = layoutsContainer.endLayout.children[i];
             if (applet && (applet === dndSpacer || applet === lastSpacer  || applet.isInternalViewSplitter))
                 count2--;
         }
@@ -293,184 +292,7 @@ DragDrop.DropArea {
 
     ////////////////END properties
 
-    //////////////////////////BEGIN states
-    //user set Panel Positions
-    // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
-    states: [
-        ///Left Edge
-        State {
-            name: "leftCenter"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
 
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
-            }
-        },
-        State {
-            name: "leftTop"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Top)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offsetFixed;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "leftBottom"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offsetFixed;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        ///Right Edge
-        State {
-            name: "rightCenter"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
-            }
-        },
-        State {
-            name: "rightTop"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Top)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.offsetFixed;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "rightBottom"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.offsetFixed;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        ///Bottom Edge
-        State {
-            name: "bottomCenter"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "bottomLeft"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Left)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                anchors.leftMargin: root.offsetFixed;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "bottomRight"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Right)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offsetFixed;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        ///Top Edge
-        State {
-            name: "topCenter"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "topLeft"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Left)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                anchors.leftMargin: root.offsetFixed;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "topRight"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Right)
-
-            AnchorChanges {
-                target: mainLayout
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: mainLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                anchors.leftMargin: 0;    anchors.rightMargin:root.offsetFixed;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        }
-    ]
-    ////////////////END states
 
 
     //// BEGIN OF Behaviors
@@ -493,7 +315,7 @@ DragDrop.DropArea {
             visibilityManager.updateMaskArea();
         } else {
             updateAutomaticIconSize();
-            HeuristicTools.updateSizeForAppletsInFill();
+            layoutsContainer.updateSizeForAppletsInFill();
         }
 
         updateLayouts();
@@ -539,7 +361,7 @@ DragDrop.DropArea {
             slotAnimationsNeedLength(1);
         }
 
-        //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
+        //var relevantLayout = layoutsContainer.mainLayout.mapFromItem(root, event.x, event.y);
         //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
         LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
         dndSpacer.opacity = 1;
@@ -559,7 +381,7 @@ DragDrop.DropArea {
             }
         }
 
-        //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
+        //var relevantLayout = layoutsContainer.mainLayout.mapFromItem(root, event.x, event.y);
         //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
         LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
         dndSpacer.opacity = 1;
@@ -578,7 +400,7 @@ DragDrop.DropArea {
     }
 
     onDrop: {
-        //var relevantLayout = mainLayout.mapFromItem(root, event.x, event.y);
+        //var relevantLayout = layoutsContainer.mainLayout.mapFromItem(root, event.x, event.y);
         //plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
         //launchersDropped
         if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") < 0) {
@@ -615,7 +437,7 @@ DragDrop.DropArea {
         }
     }
 
-    onMaxLengthChanged: HeuristicTools.updateSizeForAppletsInFill();
+    onMaxLengthChanged: layoutsContainer.updateSizeForAppletsInFill();
 
     onToolBoxChanged: {
         if (toolBox) {
@@ -663,9 +485,9 @@ DragDrop.DropArea {
         //  currentLayout.isLayoutHorizontal = isHorizontal
         LayoutManager.plasmoid = plasmoid;
         LayoutManager.root = root;
-        LayoutManager.layout = mainLayout;
-        LayoutManager.layoutS = startLayout;
-        layoutManager.layoutE = endLayout;
+        LayoutManager.layout = layoutsContainer.mainLayout;
+        LayoutManager.layoutS = layoutsContainer.startLayout;
+        layoutManager.layoutE = layoutsContainer.endLayout;
         LayoutManager.lastSpacer = lastSpacer;
         LayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
@@ -689,8 +511,8 @@ DragDrop.DropArea {
     Containment.onAppletRemoved: {
         LayoutManager.removeApplet(applet);
         var flexibleFound = false;
-        for (var i = 0; i < mainLayout.children.length; ++i) {
-            var applet = mainLayout.children[i].applet;
+        for (var i = 0; i < layoutsContainer.mainLayout.children.length; ++i) {
+            var applet = layoutsContainer.mainLayout.children[i].applet;
             if (applet && ((root.isHorizontal && applet.Layout.fillWidth) ||
                            (!root.isHorizontal && applet.Layout.fillHeight)) &&
                     applet.visible) {
@@ -699,7 +521,7 @@ DragDrop.DropArea {
             }
         }
         if (!flexibleFound) {
-            lastSpacer.parent = mainLayout;
+            lastSpacer.parent = layoutsContainer.mainLayout;
         }
 
         LayoutManager.save();
@@ -762,10 +584,10 @@ DragDrop.DropArea {
         if (plasmoid.immutable) {
             if(root.isHorizontal) {
                 root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                                  layoutsContainer.width + 0.5*iconMargin : mainLayout.width + iconMargin);
+                                                  layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
             } else {
                 root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                                   layoutsContainer.height + 0.5*iconMargin : mainLayout.height + iconMargin);
+                                                   layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin);
             }
         } else {
             if (root.isHorizontal) {
@@ -802,9 +624,9 @@ DragDrop.DropArea {
 
     function addContainerInLayout(container, applet, x, y){
         // Is there a DND placeholder? Replace it!
-        if ( (dndSpacer.parent === mainLayout)
-                || (dndSpacer.parent === startLayout)
-                || (dndSpacer.parent===endLayout)) {
+        if ( (dndSpacer.parent === layoutsContainer.mainLayout)
+                || (dndSpacer.parent === layoutsContainer.startLayout)
+                || (dndSpacer.parent===layoutsContainer.endLayout)) {
             LayoutManager.insertBeforeForLayout(dndSpacer.parent, dndSpacer, container);
             dndSpacer.parent = root;
             return;
@@ -817,7 +639,7 @@ DragDrop.DropArea {
             var before = null;
             container.animationsEnabled = false;
 
-            if (lastSpacer.parent === mainLayout) {
+            if (lastSpacer.parent === layoutsContainer.mainLayout) {
                 before = lastSpacer;
             }
 
@@ -832,7 +654,7 @@ DragDrop.DropArea {
             // system the containment would be informed of requested launchers, and determine by
             // itself what it wants to do with that information.
             if (applet.pluginName == "org.kde.plasma.icon") {
-                var middle = mainLayout.childAt(root.width / 2, root.height / 2);
+                var middle = layoutsContainer.mainLayout.childAt(root.width / 2, root.height / 2);
 
                 if (middle) {
                     before = middle;
@@ -846,11 +668,11 @@ DragDrop.DropArea {
 
                 // Fall through to adding at the end.
             } else {
-                container.parent = mainLayout;
+                container.parent = layoutsContainer.mainLayout;
             }
         }
 
-        //Important, removes the first children of the mainLayout after the first
+        //Important, removes the first children of the layoutsContainer.mainLayout after the first
         //applet has been added
         lastSpacer.parent = root;
 
@@ -873,7 +695,7 @@ DragDrop.DropArea {
             if(pos>=0 ){
                 layoutManager.insertAtIndex(container, pos);
             } else {
-                layoutManager.insertAtIndex(container, Math.floor(mainLayout.count / 2));
+                layoutManager.insertAtIndex(container, Math.floor(layoutsContainer.mainLayout.count / 2));
             }
 
             layoutManager.save();
@@ -884,22 +706,22 @@ DragDrop.DropArea {
     //! the only way to take into account the visual appearance
     //! of the applet (including its spacers)
     function appletContainsPos(appletId, pos){
-        for (var i = 0; i < startLayout.children.length; ++i) {
-            var child = startLayout.children[i];
+        for (var i = 0; i < layoutsContainer.startLayout.children.length; ++i) {
+            var child = layoutsContainer.startLayout.children[i];
 
             if (child && child.applet && child.applet.id === appletId && child.containsPos(pos))
                 return true;
         }
 
-        for (var i = 0; i < mainLayout.children.length; ++i) {
-            var child = mainLayout.children[i];
+        for (var i = 0; i < layoutsContainer.mainLayout.children.length; ++i) {
+            var child = layoutsContainer.mainLayout.children[i];
 
             if (child && child.applet && child.applet.id === appletId && child.containsPos(pos))
                 return true;
         }
 
-        for (var i = 0; i < endLayout.children.length; ++i) {
-            var child = endLayout.children[i];
+        for (var i = 0; i < layoutsContainer.endLayout.children.length; ++i) {
+            var child = layoutsContainer.endLayout.children[i];
 
             if (child && child.applet && child.applet.id === appletId && child.containsPos(pos))
                 return true;
@@ -914,22 +736,22 @@ DragDrop.DropArea {
         var expands = false;
 
         if (isHorizontal) {
-            for (var container in mainLayout.children) {
-                var item = mainLayout.children[container];
+            for (var container in layoutsContainer.mainLayout.children) {
+                var item = layoutsContainer.mainLayout.children[container];
                 if (item.Layout && item.Layout.fillWidth) {
                     expands = true;
                 }
             }
         } else {
-            for (var container in mainLayout.children) {
-                var item = mainLayout.children[container];
+            for (var container in layoutsContainer.mainLayout.children) {
+                var item = layoutsContainer.mainLayout.children[container];
                 if (item.Layout && item.Layout.fillHeight) {
                     expands = true;
                 }
             }
         }
         if (!expands) {
-            lastSpacer.parent = mainLayout
+            lastSpacer.parent = layoutsContainer.mainLayout
         }
     }
 
@@ -954,22 +776,22 @@ DragDrop.DropArea {
 
     function internalViewSplittersCount(){
         var splitters = 0;
-        for (var container in startLayout.children) {
-            var item = startLayout.children[container];
+        for (var container in layoutsContainer.startLayout.children) {
+            var item = layoutsContainer.startLayout.children[container];
             if(item && item.isInternalViewSplitter) {
                 splitters++;
             }
         }
 
-        for (var container in mainLayout.children) {
-            var item = mainLayout.children[container];
+        for (var container in layoutsContainer.mainLayout.children) {
+            var item = layoutsContainer.mainLayout.children[container];
             if(item && item.isInternalViewSplitter) {
                 splitters++;
             }
         }
 
-        for (var container in endLayout.children) {
-            var item = endLayout.children[container];
+        for (var container in layoutsContainer.endLayout.children) {
+            var item = layoutsContainer.endLayout.children[container];
             if(item && item.isInternalViewSplitter) {
                 splitters++;
             }
@@ -983,7 +805,7 @@ DragDrop.DropArea {
         if (latteApplet && latteApplet.containsMouse())
             return true;
 
-        var applets = startLayout.children;
+        var applets = layoutsContainer.startLayout.children;
 
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
@@ -993,7 +815,7 @@ DragDrop.DropArea {
             }
         }
 
-        applets = mainLayout.children;
+        applets = layoutsContainer.mainLayout.children;
 
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
@@ -1004,7 +826,7 @@ DragDrop.DropArea {
         }
 
         ///check second layout also
-        applets = endLayout.children;
+        applets = layoutsContainer.endLayout.children;
 
         for(var i=0; i<applets.length; ++i){
             var applet = applets[i];
@@ -1018,8 +840,8 @@ DragDrop.DropArea {
     }
 
     function removeInternalViewSplitters(){
-        for (var container in mainLayout.children) {
-            var item = mainLayout.children[container];
+        for (var container in layoutsContainer.mainLayout.children) {
+            var item = layoutsContainer.mainLayout.children[container];
             if(item && item.isInternalViewSplitter)
                 item.destroy();
         }
@@ -1122,10 +944,10 @@ DragDrop.DropArea {
 
             if (root.isVertical) {
                 layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                            startLayout.height+mainLayout.height+endLayout.height : mainLayout.height
+                            layoutsContainer.startLayout.height+layoutsContainer.mainLayout.height+layoutsContainer.endLayout.height : layoutsContainer.mainLayout.height
             } else {
                 layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
-                            startLayout.width+mainLayout.width+endLayout.width : mainLayout.width
+                            layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 
             var toShrinkLimit = maxLength-(root.zoomFactor*(iconSize+2*iconMargin));
@@ -1175,7 +997,7 @@ DragDrop.DropArea {
     }
 
     function updateSizeForAppletsInFill() {
-        HeuristicTools.updateSizeForAppletsInFill();
+        layoutsContainer.updateSizeForAppletsInFill();
     }
 
     function updateLayouts(){
@@ -1185,9 +1007,9 @@ DragDrop.DropArea {
                 var splitter = -1;
                 var splitter2 = -1;
 
-                var totalChildren = mainLayout.children.length;
+                var totalChildren = layoutsContainer.mainLayout.children.length;
                 for (var i=0; i<totalChildren; ++i) {
-                    var item = mainLayout.children[i];
+                    var item = layoutsContainer.mainLayout.children[i];
 
                     if(item.isInternalViewSplitter && splitter === -1) {
                         splitter = i;
@@ -1198,39 +1020,39 @@ DragDrop.DropArea {
 
                 // console.log("update layouts 1:"+splitter + " - "+splitter2);
                 for (var i=0; i<=splitter; ++i){
-                    var item = mainLayout.children[0];
-                    item.parent = startLayout;
+                    var item = layoutsContainer.mainLayout.children[0];
+                    item.parent = layoutsContainer.startLayout;
                 }
 
                 splitter2 = splitter2 - splitter - 1;
                 // console.log("update layouts 2:"+splitter + " - "+splitter2);
 
-                totalChildren = mainLayout.children.length;
+                totalChildren = layoutsContainer.mainLayout.children.length;
                 for (var i=splitter2+1; i<totalChildren; ++i){
-                    var item = mainLayout.children[splitter2+1];
-                    item.parent = endLayout;
+                    var item = layoutsContainer.mainLayout.children[splitter2+1];
+                    item.parent = layoutsContainer.endLayout;
                 }
             }
         }
         else{
             if (internalViewSplittersCount() === 2) {
-                var totalChildren1 = mainLayout.children.length;
+                var totalChildren1 = layoutsContainer.mainLayout.children.length;
                 for (var i=totalChildren1-1; i>=0; --i) {
-                    var item1 = mainLayout.children[0];
-                    item1.parent = startLayout;
+                    var item1 = layoutsContainer.mainLayout.children[0];
+                    item1.parent = layoutsContainer.startLayout;
                 }
 
-                var totalChildren2 = endLayout.children.length;
+                var totalChildren2 = layoutsContainer.endLayout.children.length;
 
                 for (var i=totalChildren2-1; i>=0; --i) {
-                    var item2 = endLayout.children[0];
-                    item2.parent = startLayout;
+                    var item2 = layoutsContainer.endLayout.children[0];
+                    item2.parent = layoutsContainer.startLayout;
                 }
 
-                var totalChildrenL = startLayout.children.length;
+                var totalChildrenL = layoutsContainer.startLayout.children.length;
                 for (var i=totalChildrenL-1; i>=0; --i) {
-                    var itemL = startLayout.children[0];
-                    itemL.parent = mainLayout;
+                    var itemL = layoutsContainer.startLayout.children[0];
+                    itemL.parent = layoutsContainer.mainLayout;
                 }
             }
         }
@@ -1338,7 +1160,7 @@ DragDrop.DropArea {
 
     Item {
         id: lastSpacer
-        parent: mainLayout
+        parent: layoutsContainer.mainLayout
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -1383,432 +1205,10 @@ DragDrop.DropArea {
         }
     }
 
-    VisibilityManager{
-        id: visibilityManager
-    }
+    VisibilityManager{ id: visibilityManager }
 
-    Item{
-        id: layoutsContainer
+    LayoutsContainer { id: layoutsContainer }
 
-        property int allCount: root.latteApplet ? mainLayout.count-1+latteApplet.tasksCount : mainLayout.count
-        property int currentSpot: -1000
-        property int hoveredIndex: -1
-
-        x: {
-            if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-                    && !root.editMode && !root.behaveAsPlasmaPanel ){
-                return ((dock.width/2) - (root.maxLength/2) + root.offset)
-            } else {
-                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
-                    return;
-                }
-
-                if (dock.visibility.isHidden && root.isVertical) {
-                    if (Latte.WindowSystem.compositingActive) {
-                        return slidingOutToPos;
-                    } else {
-                        if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
-                            return slidingOutToPos + 1;
-                        } else {
-                            return slidingOutToPos - 1;
-                        }
-                    }
-                } else {
-                    return 0;
-                }
-            }
-        }
-
-        y: {
-            if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-                    && !root.editMode && !root.behaveAsPlasmaPanel ) {
-                return ((dock.height/2) - (root.maxLength/2) + root.offset);
-            } else {
-                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
-                    return;
-                }
-
-                if (dock.visibility.isHidden && root.isHorizontal) {
-                    if (Latte.WindowSystem.compositingActive) {
-                        return slidingOutToPos;
-                    } else {
-                        if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
-                            return slidingOutToPos + 1;
-                        } else {
-                            return slidingOutToPos - 1;
-                        }
-                    }
-                } else {
-                    return 0;
-                }
-            }
-        }
-
-        width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.behaveAsPlasmaPanel ?
-                   root.maxLength : parent.width
-        height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.behaveAsPlasmaPanel ?
-                    root.maxLength : parent.height
-        z:10
-
-        property bool animationSent: false
-        property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (mainLayout.children>1)
-
-        property int contentsWidth: startLayout.width + mainLayout.width + endLayout.width
-        property int contentsHeight: startLayout.height + mainLayout.height + endLayout.height
-
-        onContentsWidthChanged: {
-            if (root.isHorizontal){
-                var firstHalfExited = false;
-                var secondHalfExited = false;
-
-                if (shouldCheckHalfs){
-                    firstHalfExited = ( (startLayout.width + mainLayout.width/2) >= root.maxLength/2 );
-                    secondHalfExited = ( (endLayout.width + mainLayout.width/2) >= root.maxLength/2 );
-                }
-
-                if (dock && ((contentsWidth >= root.maxLength) || firstHalfExited || secondHalfExited)) {
-                    updateAutomaticIconSize();
-                }
-
-                if (!animationSent) {
-                    animationSent = true;
-                    slotAnimationsNeedLength(1);
-                }
-
-                HeuristicTools.updateSizeForAppletsInFill();
-
-                delayUpdateMaskArea.start();
-            }
-        }
-
-        onContentsHeightChanged: {
-            if (root.isVertical){
-                var firstHalfExited = false;
-                var secondHalfExited = false;
-
-                if (shouldCheckHalfs){
-                    firstHalfExited = ( (startLayout.height + mainLayout.height/2) >= root.maxLength/2 );
-                    secondHalfExited = ( (endLayout.height + mainLayout.height/2) >= root.maxLength/2 );
-                }
-
-                if (dock && ((contentsHeight >= root.maxLength) || firstHalfExited || secondHalfExited)) {
-                    updateAutomaticIconSize();
-                }
-
-                if (!animationSent) {
-                    animationSent = true;
-                    slotAnimationsNeedLength(1);
-                }
-
-                HeuristicTools.updateSizeForAppletsInFill();
-
-                delayUpdateMaskArea.start();
-            }
-        }
-
-        onXChanged: root.updateEffectsArea();
-        onYChanged: root.updateEffectsArea();
-
-        Grid{
-            id:startLayout
-
-            columns: root.isVertical ? 1 : 0
-            columnSpacing: 0
-            flow: isHorizontal ? Grid.LeftToRight : Grid.TopToBottom
-            rows: root.isHorizontal ? 1 : 0
-            rowSpacing: 0
-
-            Layout.preferredWidth: width
-            Layout.preferredHeight: height
-
-            property int beginIndex: 0
-            property int count: children.length
-
-            property int shownApplets: {
-                var res = 0;
-
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && children[i].applet
-                            && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
-                        //do nothing
-                    } else if (children[i] && children[i].applet){
-                        res = res + 1;
-                    }
-                }
-
-                return res;
-            }
-
-            //it is used in calculations for fillWidth,fillHeight applets
-            property int sizeWithNoFillApplets: {
-                if (!visibilityManager || !visibilityManager.normalState)
-                    return;
-
-                var space = 0;
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && !children[i].needsFillSpace) {
-                        space = root.isHorizontal ? space + children[i].width : space + children[i].height;
-                    }
-                }
-
-                return space;
-            }
-
-            //it is used in calculations for fillWidth,fillHeight applets
-            property int fillApplets:{
-                var no = 0;
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && children[i].needsFillSpace) {
-                        //console.log("fill :::: " + children[i].applet.pluginName);
-                        no++;
-                    }
-                }
-
-                return no;
-            }
-
-            onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-            onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-            onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-
-            states:[
-                State {
-                    name: "bottom"
-                    when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: startLayout
-                        anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: startLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom;
-                        anchors.leftMargin: root.totalPanelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    }
-                },
-                State {
-                    name: "left"
-                    when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: startLayout
-                        anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: startLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.totalPanelEdgeSpacing/2;    anchors.bottomMargin:0;
-                    }
-                },
-                State {
-                    name: "right"
-                    when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: startLayout
-                        anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: startLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:root.totalPanelEdgeSpacing/2;    anchors.bottomMargin:0;
-                    }
-                },
-                State {
-                    name: "top"
-                    when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: startLayout
-                        anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: startLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop;
-                        anchors.leftMargin: root.totalPanelEdgeSpacing/2;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    }
-                }
-            ]
-        }
-
-        // This is the main Layout, in contrary with the others
-        Grid{
-            id: mainLayout
-
-            columns: root.isVertical ? 1 : 0
-            columnSpacing: 0
-            flow: isHorizontal ? Grid.LeftToRight : Grid.TopToBottom
-            rows: root.isHorizontal ? 1 : 0
-            rowSpacing: 0
-
-            Layout.preferredWidth: width
-            Layout.preferredHeight: height
-
-            property int beginIndex: 100
-            property int count: children.length
-
-            property int shownApplets: {
-                var res = 0;
-
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && children[i].applet
-                            && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
-                        //do nothing
-                    } else if (children[i] && children[i].applet){
-                        res = res + 1;
-                    }
-                }
-
-                return res;
-            }
-
-            //it is used in calculations for fillWidth,fillHeight applets
-            property int sizeWithNoFillApplets: {
-                if (!visibilityManager || !visibilityManager.normalState)
-                    return;
-
-                var space = 0;
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && !children[i].needsFillSpace) {
-                        space = root.isHorizontal ? space + children[i].width : space + children[i].height;
-                    }
-                }
-
-                return space;
-            }
-
-            //it is used in calculations for fillWidth,fillHeight applets
-            property int fillApplets:{
-                var no = 0;
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && children[i].needsFillSpace) {
-                        //console.log("fill :::: " + children[i].applet.pluginName);
-                        no++;
-                    }
-                }
-
-                return no;
-            }
-
-            onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-            onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-            onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        }
-
-        Grid{
-            id:endLayout
-
-            columns: root.isVertical ? 1 : 0
-            columnSpacing: 0
-            flow: isHorizontal ? Grid.LeftToRight : Grid.TopToBottom
-            rows: root.isHorizontal ? 1 : 0
-            rowSpacing: 0
-
-            Layout.preferredWidth: width
-            Layout.preferredHeight: height
-
-            property int beginIndex: 200
-            property int count: children.length
-
-            property int shownApplets: {
-                var res = 0;
-
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && children[i].applet
-                            && (children[i].applet.status === PlasmaCore.Types.HiddenStatus || children[i].isInternalViewSplitter)) {
-                        //do nothing
-                    } else if (children[i] && children[i].applet){
-                        res = res + 1;
-                    }
-                }
-
-                return res;
-            }
-
-            //it is used in calculations for fillWidth,fillHeight applets
-            property int sizeWithNoFillApplets: {
-                if (!visibilityManager || !visibilityManager.normalState)
-                    return;
-
-                var space = 0;
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && !children[i].needsFillSpace) {
-                        space = root.isHorizontal ? space + children[i].width : space + children[i].height;
-                    }
-                }
-
-                return space;
-            }
-
-            //it is used in calculations for fillWidth,fillHeight applets
-            property int fillApplets:{
-                var no = 0;
-                for (var i=0; i<children.length; ++i){
-                    if (children[i] && children[i].needsFillSpace) {
-                        //console.log("fill :::: " + children[i].applet.pluginName);
-                        no++;
-                    }
-                }
-
-                return no;
-            }
-
-            onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-            onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-            onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-
-            states:[
-                State {
-                    name: "bottom"
-                    when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: endLayout
-                        anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: endLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignBottom
-                        anchors.leftMargin: 0;    anchors.rightMargin:root.totalPanelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    }
-                },
-                State {
-                    name: "left"
-                    when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: endLayout
-                        anchors{ top:undefined; bottom:parent.bottom; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: endLayout; horizontalItemAlignment: Grid.AlignLeft; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.totalPanelEdgeSpacing/2;
-                    }
-                },
-                State {
-                    name: "right"
-                    when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: endLayout
-                        anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: endLayout; horizontalItemAlignment: Grid.AlignRight; verticalItemAlignment: Grid.AlignVCenter;
-                        anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:root.totalPanelEdgeSpacing/2;
-                    }
-                },
-                State {
-                    name: "top"
-                    when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-                    AnchorChanges {
-                        target: endLayout
-                        anchors{ top:parent.top; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:undefined}
-                    }
-                    PropertyChanges{
-                        target: endLayout; horizontalItemAlignment: Grid.AlignHCenter; verticalItemAlignment: Grid.AlignTop
-                        anchors.leftMargin: 0;    anchors.rightMargin:root.totalPanelEdgeSpacing/2;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    }
-                }
-            ]
-        }
-    }
 
     ///////////////END UI elements
 
