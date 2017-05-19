@@ -398,7 +398,7 @@ Column {
             height: 2
             color: theme.buttonFocusColor
             anchors.bottom: parent.bottom
-            visible: isGroup ? IsActive === true : parentTask.isActive
+            visible: isGroup ? IsActive === true : (parentTask ? parentTask.isActive : false)
         }
     }
 

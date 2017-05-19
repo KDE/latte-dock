@@ -55,9 +55,14 @@ DragDrop.DropArea {
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
-    property bool behaveAsPlasmaPanel: visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
-                                       && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
-                                       && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel
+    property bool behaveAsPlasmaPanel: {
+        if (!dock || dock.visibility)
+            return false;
+
+        return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
+                && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+                && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel);
+    }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
     property bool confirmedDragEntered: false
@@ -1088,7 +1093,7 @@ DragDrop.DropArea {
     }
 
     Connections{
-        target: dock.visibility
+        target: dock && dock.visibility ? dock.visibility : root
 
         ignoreUnknownSignals : true
 

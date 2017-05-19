@@ -51,7 +51,7 @@ Window{
             }
 
             Text{
-                text: dock.currentScreen
+                text: dock && dock.currentScreen ? dock.currentScreen : "___"
             }
 
             Text{
@@ -59,7 +59,13 @@ Window{
             }
 
             Text{
-                text: dock.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height
+                text: {
+                    if (dock && dock.screenGeometry){
+                        return dock.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
             }
 
             Text{
@@ -67,7 +73,13 @@ Window{
             }
 
             Text{
-                text: dock.x + "," + dock.y + " "+dock.width+ "x"+dock.height
+                text: {
+                    if (dock) {
+                        return  dock.x + "," + dock.y + " "+dock.width+ "x"+dock.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
             }
 
             Text{
@@ -76,7 +88,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock.onPrimary)
+                    if (dock && dock.onPrimary)
                         return "Yes";
                     else
                         return "No";
@@ -136,7 +148,13 @@ Window{
             }
 
             Text{
-                text: dock.maskArea.x +", "+ dock.maskArea.y+"  "+dock.maskArea.width+"x"+dock.maskArea.height
+                text: {
+                    if (dock && dock.maskArea) {
+                        return dock.maskArea.x +", "+ dock.maskArea.y+"  "+dock.maskArea.width+"x"+dock.maskArea.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
             }
 
             Text{
@@ -144,8 +162,13 @@ Window{
             }
 
             Text{
-                text: dock.localGeometry.x + ", " + dock.localGeometry.y + "  " +
-                      dock.localGeometry.width + "x" + dock.localGeometry.height
+                text: {
+                    if (dock && dock.localGeometry) {
+                        return dock.localGeometry.x + ", " + dock.localGeometry.y + "  " + dock.localGeometry.width + "x" + dock.localGeometry.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
             }
 
             Text{
@@ -154,7 +177,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock.drawEffects)
+                    if (dock && dock.drawEffects)
                         return "Yes";
                     else
                         return "No";
@@ -166,8 +189,13 @@ Window{
             }
 
             Text{
-                text: dock.effectsArea.x + ", " + dock.effectsArea.y + "  " +
-                      dock.effectsArea.width + "x" + dock.effectsArea.height
+                text: {
+                    if (dock && dock.effectsArea) {
+                        return dock.effectsArea.x + ", " + dock.effectsArea.y + "  " +dock.effectsArea.width + "x" + dock.effectsArea.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
             }
 
             Text{
@@ -184,7 +212,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock.visibility.isHidden)
+                    if (dock && dock.visibility && dock.visibility.isHidden)
                         return "Yes";
                     else
                         return "No";
@@ -205,7 +233,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock.visibility.containsMouse)
+                    if (dock && dock.visibility && dock.visibility.containsMouse)
                         return "Yes";
                     else
                         return "No";
@@ -295,6 +323,9 @@ Window{
 
             Text{
                 text: {
+                    if (!dock || !dock.visibility)
+                        return "";
+
                     switch(dock.visibility.mode){
                     case Latte.Dock.AlwaysVisible:
                         return "Always Visible";

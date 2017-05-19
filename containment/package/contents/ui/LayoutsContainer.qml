@@ -48,7 +48,7 @@ Item{
                 return;
             }
 
-            if (dock.visibility.isHidden && root.isVertical) {
+            if (dock && dock.visibility && dock.visibility.isHidden && root.isVertical) {
                 if (Latte.WindowSystem.compositingActive) {
                     return visibilityManager.slidingOutToPos;
                 } else {
@@ -73,7 +73,7 @@ Item{
                 return;
             }
 
-            if (dock.visibility.isHidden && root.isHorizontal) {
+            if (dock && dock.visibility && dock.visibility.isHidden && root.isHorizontal) {
                 if (Latte.WindowSystem.compositingActive) {
                     return visibilityManager.slidingOutToPos;
                 } else {
@@ -169,6 +169,28 @@ Item{
         property int beginIndex: 0
         property int count: children.length
 
+        //it is used in calculations for fillWidth,fillHeight applets
+        property int sizeWithNoFillApplets: 0
+
+        Binding{
+            target: _startLayout
+            property:"sizeWithNoFillApplets"
+            when: _startLayout
+            value: {
+                if (!visibilityManager || !visibilityManager.normalState)
+                    return;
+
+                var space = 0;
+                for (var i=0; i<_startLayout.children.length; ++i){
+                    if (_startLayout.children[i] && !_startLayout.children[i].needsFillSpace) {
+                        space = root.isHorizontal ? space + _startLayout.children[i].width : space + _startLayout.children[i].height;
+                    }
+                }
+
+                return space;
+            }
+        }
+
         property int shownApplets: {
             var res = 0;
 
@@ -182,21 +204,6 @@ Item{
             }
 
             return res;
-        }
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int sizeWithNoFillApplets: {
-            if (!visibilityManager || !visibilityManager.normalState)
-                return;
-
-            var space = 0;
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && !children[i].needsFillSpace) {
-                    space = root.isHorizontal ? space + children[i].width : space + children[i].height;
-                }
-            }
-
-            return space;
         }
 
         //it is used in calculations for fillWidth,fillHeight applets
@@ -287,6 +294,27 @@ Item{
 
         property int beginIndex: 100
         property int count: children.length
+        //it is used in calculations for fillWidth,fillHeight applets
+        property int sizeWithNoFillApplets: 0
+
+        Binding{
+            target: _mainLayout
+            property:"sizeWithNoFillApplets"
+            when: _mainLayout
+            value: {
+                if (!visibilityManager || !visibilityManager.normalState)
+                    return;
+
+                var space = 0;
+                for (var i=0; i<_mainLayout.children.length; ++i){
+                    if (_mainLayout.children[i] && !_mainLayout.children[i].needsFillSpace) {
+                        space = root.isHorizontal ? space + _mainLayout.children[i].width : space + _mainLayout.children[i].height;
+                    }
+                }
+
+                return space;
+            }
+        }
 
         property int shownApplets: {
             var res = 0;
@@ -301,21 +329,6 @@ Item{
             }
 
             return res;
-        }
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int sizeWithNoFillApplets: {
-            if (!visibilityManager || !visibilityManager.normalState)
-                return;
-
-            var space = 0;
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && !children[i].needsFillSpace) {
-                    space = root.isHorizontal ? space + children[i].width : space + children[i].height;
-                }
-            }
-
-            return space;
         }
 
         //it is used in calculations for fillWidth,fillHeight applets
@@ -532,6 +545,28 @@ Item{
         property int beginIndex: 200
         property int count: children.length
 
+        //it is used in calculations for fillWidth,fillHeight applets
+        property int sizeWithNoFillApplets: 0
+
+        Binding{
+            target: _endLayout
+            property:"sizeWithNoFillApplets"
+            when: _endLayout
+            value: {
+                if (!visibilityManager || !visibilityManager.normalState)
+                    return;
+
+                var space = 0;
+                for (var i=0; i<_endLayout.children.length; ++i){
+                    if (_endLayout.children[i] && !_endLayout.children[i].needsFillSpace) {
+                        space = root.isHorizontal ? space + _endLayout.children[i].width : space + _endLayout.children[i].height;
+                    }
+                }
+
+                return space;
+            }
+        }
+
         property int shownApplets: {
             var res = 0;
 
@@ -545,21 +580,6 @@ Item{
             }
 
             return res;
-        }
-
-        //it is used in calculations for fillWidth,fillHeight applets
-        property int sizeWithNoFillApplets: {
-            if (!visibilityManager || !visibilityManager.normalState)
-                return;
-
-            var space = 0;
-            for (var i=0; i<children.length; ++i){
-                if (children[i] && !children[i].needsFillSpace) {
-                    space = root.isHorizontal ? space + children[i].width : space + children[i].height;
-                }
-            }
-
-            return space;
         }
 
         //it is used in calculations for fillWidth,fillHeight applets

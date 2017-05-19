@@ -181,7 +181,7 @@ Item {
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    property QtObject altSessionAction : latteDock ? latteDock.altSessionAction : 0
+    property QtObject altSessionAction : latteDock ? latteDock.altSessionAction : null
 
     property Item latteDock: null
     //END Now Dock Panel properties
