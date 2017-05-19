@@ -84,6 +84,15 @@
         </choices>
       <default>2</default>
     </entry>
+    <entry name="activeIndicator" type="Enum">
+      <label>Show active indicator</label>
+        <choices>
+          <choice name="None"/>
+          <choice name="Internal"/>
+          <choice name="All"/>
+        </choices>
+      <default>1</default>
+    </entry>
     <entry name="maxLength" type="Int">
       <default>100</default>
     </entry>

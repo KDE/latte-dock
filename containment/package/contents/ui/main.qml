@@ -93,6 +93,8 @@ DragDrop.DropArea {
 
     property alias hoveredIndex: layoutsContainer.hoveredIndex
 
+    property int activeIndicator: plasmoid.configuration.activeIndicator
+
     property int actionsBlockHiding: 0 //actions that block hiding
 
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task

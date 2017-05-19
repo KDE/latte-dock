@@ -174,6 +174,73 @@ PlasmaComponents.Page {
         }
         //! END: Behavior
 
+        //! BEGIN: Active Indicator
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+            visible: plasmoid.configuration.advanced
+
+            Header {
+                text: i18n("Active Applet Indicator")
+            }
+
+            RowLayout{
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    spacing: units.smallSpacing
+
+                    property int activeIndicator: plasmoid.configuration.activeIndicator
+
+                    ExclusiveGroup {
+                        id: activeIndicatorGroup
+                        onCurrentChanged: {
+                            if (current.checked)
+                                plasmoid.configuration.activeIndicator = current.activeIndicator
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("active indicator to no applets", "None")
+                        checked: parent.activeIndicator === activeIndicator
+                        checkable: true
+                        exclusiveGroup: activeIndicatorGroup
+
+                        readonly property int activeIndicator: Latte.Dock.NoneIndicator
+                    }
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("active indicator only to in-house latte applets", "Internals")
+                        checked: parent.activeIndicator === activeIndicator
+                        checkable: true
+                        exclusiveGroup: activeIndicatorGroup
+
+                        readonly property int activeIndicator: Latte.Dock.InternalsIndicator
+                    }
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("active indicator to all applets", "All")
+                        checked: parent.activeIndicator === activeIndicator
+                        checkable: true
+                        exclusiveGroup: activeIndicatorGroup
+
+                        readonly property int activeIndicator: Latte.Dock.AllIndicator
+                    }
+                }
+            }
+        }
+        //! END: Active Indicator
+
+
         //! BEGIN: Session
         ColumnLayout {
             spacing: units.smallSpacing

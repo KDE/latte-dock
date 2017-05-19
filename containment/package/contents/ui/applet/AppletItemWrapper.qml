@@ -320,7 +320,16 @@ Item{
         }
     }
 
-    ActiveIndicator{}
+    Loader{
+        anchors.fill: parent
+        active: root.activeIndicator === Latte.Dock.AllIndicator
+                || (root.activeIndicator === Latte.Dock.InternalsIndicator && fakeIconItem)
+
+        sourceComponent: Item{
+            anchors.fill: parent
+            ActiveIndicator{}
+        }
+    }
 
     Item{
         id:_wrapperContainer

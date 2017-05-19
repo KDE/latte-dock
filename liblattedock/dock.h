@@ -84,6 +84,13 @@ public:
         CycleThroughTasks
     };
     Q_ENUM(TaskAction)
+
+    enum ActiveAppletIndicator {
+        NoneIndicator = 0,
+        InternalsIndicator = 1,
+        AllIndicator = 2
+    };
+    Q_ENUM(ActiveAppletIndicator)
 };
 
 }//end of namespace
