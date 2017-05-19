@@ -112,7 +112,10 @@ PlasmaComponents.ContextMenu {
                         backend.recentDocumentActions(launcherUrl, menu)
                     ]
         } else {
-            lists = [backend.recentDocumentActions(launcherUrl, menu)]
+            lists = [
+                        backend.jumpListActions(launcherUrl, menu),
+                        backend.recentDocumentActions(launcherUrl, menu)
+                    ];
         }
 
         lists.forEach(function (list) {
