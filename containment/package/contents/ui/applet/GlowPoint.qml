@@ -96,7 +96,7 @@ Item{
             anchors.fill: smallCircle
             glowRadius: 2 * Math.min(smallCircle.width, smallCircle.height)
             spread: 0.2
-            color: glowItem.showAttention ? smallCircleInAttention.color : smallCircle.color
+            color: smallCircle.color
             opacity: root.showBarLine ? 0.25 : 0.45
             visible: mimicPlasmaPanel ? false : root.showGlow
         }
