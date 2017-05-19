@@ -75,7 +75,7 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: onlyOnMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show background only maximized windows ")
+                text: i18n("Show background only for maximized windows")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
 
                 onClicked: {
