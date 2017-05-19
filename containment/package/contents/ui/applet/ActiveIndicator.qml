@@ -63,7 +63,7 @@ Item{
 
         property bool vertical: root.isVertical
 
-        property int animationTime: root.durationTime * (1.5*units.longDuration)
+        property int animationTime: root.durationTime * (1.2*units.longDuration)
         property int stateWidth: glowFrame.width
         property int stateHeight: glowFrame.height
 
