@@ -101,10 +101,8 @@ PlasmaComponents.ContextMenu {
     function loadDynamicLaunchActions(launcherUrl) {
         var lists = [];
 
-        //From Plasma 5.10 and frameworks 5.34 jumpLists and
-        //places are supported
+        //From Plasma 5.10 and frameworks 5.34, places are also supported
         if (Latte.WindowSystem.frameworksVersion >= 336384
-                && (typeof backend.jumpListActions === "function")
                 && (typeof backend.placesActions === "function")) {
             lists = [
                         backend.jumpListActions(launcherUrl, menu),
