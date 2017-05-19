@@ -56,7 +56,7 @@ DragDrop.DropArea {
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
-        if (!dock || dock.visibility)
+        if (!dock || !dock.visibility)
             return false;
 
         return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
