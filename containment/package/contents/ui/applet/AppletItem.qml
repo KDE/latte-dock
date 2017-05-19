@@ -40,8 +40,8 @@ Item {
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
     property bool canBeHovered: true
-    property bool inFillCalculations: false //it is used in calculations for fillWidth,fillHeight applets
-    property bool needsFillSpace: { //it is used in calculations for fillWidth,fillHeight applets
+    property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
+    property bool needsFillSpace: { //fill flag, it is used in calculations for fillWidth,fillHeight applets
         if (!applet || !applet.Layout ||  (applet && applet.pluginName === "org.kde.plasma.panelspacer"))
             return false;
 
@@ -197,10 +197,11 @@ Item {
     }
 
     function checkCanBeHovered(){
-        if ( ((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
+        if ( (((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
               (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
                 && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
-                && !container.fakeIconItem){
+                && !container.fakeIconItem)
+            || (container.needsFillSpace)){
             canBeHovered = false;
         }
         else{
@@ -277,6 +278,8 @@ Item {
             latteApplet.forceHidePanel = true;
         }
     }
+
+    onNeedsFillSpaceChanged: checkCanBeHovered();
 
     onShowZoomedChanged: {
         if(showZoomed){
