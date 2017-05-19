@@ -425,6 +425,8 @@ Item{
                 id: fakeAppletIconItem
                 anchors.fill: parent
                 source: appletIconItem.source
+
+                ActiveIndicator{}
             }
         }
     }
