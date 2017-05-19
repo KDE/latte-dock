@@ -103,7 +103,9 @@ PlasmaComponents.ContextMenu {
 
         //From Plasma 5.10 and frameworks 5.34 jumpLists and
         //places are supported
-        if (Latte.WindowSystem.frameworksVersion >= 336384) {
+        if (Latte.WindowSystem.frameworksVersion >= 336384
+                && (typeof backend.jumpListActions === "function")
+                && (typeof backend.placesActions === "function")) {
             lists = [
                         backend.jumpListActions(launcherUrl, menu),
                         backend.placesActions(launcherUrl, showAllPlaces, menu),
