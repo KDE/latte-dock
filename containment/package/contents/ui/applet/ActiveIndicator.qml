@@ -29,7 +29,10 @@ Item{
     width: !root.isVertical ? parent.width : size
     height: root.isVertical ? parent.height : size
 
-    property int size: root.statesLineSize
+    property int size: mimicPlasmaPanel ? 4 : root.statesLineSize
+
+    property bool mimicPlasmaPanel: !root.latteApplet && plasmoid.configuration.panelSize===100 ? true : false
+
 
     /*Rectangle{
         anchors.fill: parent
@@ -54,7 +57,9 @@ Item{
             return 1;
         }
 
-        property bool isActive: (applet.status >= PlasmaCore.Types.NeedsAttentionStatus && applet.status !== PlasmaCore.Types.HiddenStatus)
+        property bool isActive: (applet && applet.pluginName!==root.plasmoidName && applet.pluginName!=="org.kde.plasma.systemtray"
+                                 && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
+                                 && applet.status !== PlasmaCore.Types.HiddenStatus)
 
         property bool vertical: root.isVertical
 
@@ -128,16 +133,11 @@ Item{
         }
     }
 
-    anchors.rightMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? root.thickMarginBase : 0
-    anchors.leftMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? root.thickMarginBase : 0
-    anchors.topMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? root.thickMarginBase : 0
-    anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? root.thickMarginBase : 0
-
     states: [
         State {
-            name: "left"
+            name: "leftLatte"
             when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !root.reverseLinesPosition) ||
-                   (plasmoid.location === PlasmaCore.Types.RightEdge && root.reverseLinesPosition))
+                   (plasmoid.location === PlasmaCore.Types.RightEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
 
             AnchorChanges {
                 target: glowFrame
@@ -146,14 +146,76 @@ Item{
             }
         },
         State {
-            name: "bottom"
+            name: "bottomLatte"
             when: ((plasmoid.location === PlasmaCore.Types.BottomEdge && !root.reverseLinesPosition) ||
-                   (plasmoid.location === PlasmaCore.Types.TopEdge && root.reverseLinesPosition))
+                   (plasmoid.location === PlasmaCore.Types.TopEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
 
             AnchorChanges {
                 target: glowFrame
                 anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                     top:parent.bottom; bottom:undefined; left:undefined; right:undefined;}
+            }
+        },
+        State {
+            name: "topLatte"
+            when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !root.reverseLinesPosition) ||
+                   (plasmoid.location === PlasmaCore.Types.BottomEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
+
+            AnchorChanges {
+                target: glowFrame
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:undefined; bottom:parent.top; left:undefined; right:undefined;}
+            }
+        },
+        State {
+            name: "rightLatte"
+            when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !root.reverseLinesPosition) ||
+                   (plasmoid.location === PlasmaCore.Types.LeftEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
+
+            AnchorChanges {
+                target: glowFrame
+                anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
+                    top:undefined; bottom:undefined; left:parent.right; right:undefined;}
+            }
+        },
+        State {
+            name: "topPlasma"
+            when: plasmoid.location === PlasmaCore.Types.TopEdge && mimicPlasmaPanel
+
+            AnchorChanges {
+                target: glowFrame
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
+            }
+        },
+        State {
+            name: "bottomPlasma"
+            when: plasmoid.location === PlasmaCore.Types.BottomEdge && mimicPlasmaPanel
+
+            AnchorChanges {
+                target: glowFrame
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:parent.top; bottom:undefined; left:undefined; right:undefined;}
+            }
+        },
+        State {
+            name: "leftPlasma"
+            when: plasmoid.location === PlasmaCore.Types.LeftEdge && mimicPlasmaPanel
+
+            AnchorChanges {
+                target: glowFrame
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+            }
+        },
+        State {
+            name: "rightPlasma"
+            when: plasmoid.location === PlasmaCore.Types.LeftEdge && mimicPlasmaPanel
+
+            AnchorChanges {
+                target: glowFrame
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:undefined; bottom:undefined; left:parent.left; right:undefined;}
             }
         }
     ]

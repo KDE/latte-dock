@@ -98,7 +98,7 @@ Item{
             spread: 0.2
             color: glowItem.showAttention ? smallCircleInAttention.color : smallCircle.color
             opacity: root.showBarLine ? 0.25 : 0.45
-            visible: root.showGlow
+            visible: mimicPlasmaPanel ? false : root.showGlow
         }
     }
 }

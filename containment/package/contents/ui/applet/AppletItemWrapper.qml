@@ -320,6 +320,8 @@ Item{
         }
     }
 
+    ActiveIndicator{}
+
     Item{
         id:_wrapperContainer
 
@@ -426,7 +428,7 @@ Item{
                 anchors.fill: parent
                 source: appletIconItem.source
 
-                ActiveIndicator{}
+                //ActiveIndicator{}
             }
         }
     }

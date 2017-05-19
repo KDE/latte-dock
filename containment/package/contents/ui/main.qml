@@ -215,7 +215,7 @@ DragDrop.DropArea {
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool highlightWindows: plasmoid.configuration.highlightWindows
-    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition// latteApplet ? latteApplet.reverseLinesPosition : false
+    property bool reverseLinesPosition: !latteApplet && plasmoid.configuration.panelSize===100 ? true : plasmoid.configuration.reverseLinesPosition
     property bool showGlow: plasmoid.configuration.showGlow
     property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions
@@ -1115,6 +1115,10 @@ DragDrop.DropArea {
         Applet.AppletItem{}
     }
     ///////////////END components
+
+    PlasmaCore.ColorScope{
+        id: colorScopePalette
+    }
 
     ///////////////BEGIN UI elements
 
