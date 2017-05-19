@@ -63,7 +63,7 @@ Item{
 
         property bool vertical: root.isVertical
 
-        property int animationTime: root.durationTime * (2.7*units.longDuration)
+        property int animationTime: root.durationTime * (1.5*units.longDuration)
         property int stateWidth: glowFrame.width
         property int stateHeight: glowFrame.height
 
@@ -125,7 +125,7 @@ Item{
             id: activeAndReverseAnimation
             target: activePoint
             property: root.isVertical ? "height" : "width"
-            to: activePoint.isActive ? (root.isVertical ? activePoint.stateHeight : activePoint.stateWidth) : glowFrame.size
+            to: !activePoint.isActive ? (root.isVertical ? activePoint.stateHeight : activePoint.stateWidth) : glowFrame.size
             duration: activePoint.animationTime
             easing.type: Easing.InQuad
 
