@@ -373,6 +373,9 @@ MouseArea{
 
     ///////////////// Mouse Area Events ///////////////////
     onEntered: {
+        if (root.editMode)
+            return;
+
         if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
         }
@@ -419,6 +422,9 @@ MouseArea{
     }
 
     onPositionChanged: {
+        if (root.editMode)
+            return;
+
         if(!root.latteDock)
             checkListHovered.stop();
 

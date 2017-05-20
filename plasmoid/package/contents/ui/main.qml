@@ -57,7 +57,7 @@ Item {
     property bool globalDirectRender: latteDock ? latteDock.globalDirectRender : icList.directRender
     property bool directRenderTimerIsRunning: latteDock ? latteDock.directRenderTimerIsRunning : enableDirectRenderTimer.running
 
-    property bool editMode: plasmoid.userConfiguring
+    property bool editMode: latteDock ? latteDock.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
     property bool hasInternalSeparator: false
