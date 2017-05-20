@@ -238,6 +238,15 @@ Item {
                             return;
                         }
                     }
+                } else if (applet.pluginName === "org.kde.plasma.kickoff") {
+                    if (typeOf(applet.children[i].children[j], "QQuickMouseArea")) {
+                        for(var k=0; k<applet.children[i].children[j].children.length; ++k){
+                            if (typeOf(applet.children[i].children[j].children[k], "IconItem")) {
+                                appletIconItem = applet.children[i].children[j].children[k];
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -245,6 +254,8 @@ Item {
 
     function typeOf(obj, className){
         var name = obj.toString();
+        //if (applet.pluginName === "set a plugin name to debug")
+        //    console.log(name);
         return ((name.indexOf(className + "(") === 0) || (name.indexOf(className + "_QML") === 0));
     }
     ///END functions
