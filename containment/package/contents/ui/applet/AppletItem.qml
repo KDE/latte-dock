@@ -303,6 +303,23 @@ Item {
         root.clearZoomSignal.disconnect(clearZoom);
     }
 
+    Connections{
+        target: root
+        onLatteAppletHoveredIndexChanged: {
+            if ((root.latteAppletHoveredIndex >= 0)
+                    && (Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=3))
+                container.clearZoom();
+        }
+    }
+
+    Connections{
+        target: layoutsContainer
+        onHoveredIndexChanged:{
+            if ((layoutsContainer.hoveredIndex>=0) && (Math.abs(index-layoutsContainer.hoveredIndex)>=3))
+                container.clearZoom();
+        }
+    }
+
     ///END connections
 
 
