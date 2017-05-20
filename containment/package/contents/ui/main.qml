@@ -959,8 +959,8 @@ DragDrop.DropArea {
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 
-            var toShrinkLimit = maxLength-(root.zoomFactor*(iconSize+2*iconMargin));
-            var toGrowLimit = maxLength-1.5*(root.zoomFactor*(iconSize+2*iconMargin));
+            var toShrinkLimit = maxLength-((root.zoomFactor-1)*(iconSize+2*iconMargin));
+            var toGrowLimit = maxLength-1.5*((root.zoomFactor-1)*(iconSize+2*iconMargin));
 
             if (layoutLength > toShrinkLimit) { //must shrink
                 //  console.log("step3");
