@@ -593,6 +593,10 @@ MouseArea{
     }
 
     onWheel: {
+        if (isSeparator) {
+            return;
+        }
+
         var angle = wheel.angleDelta.y / 8;
 
         //positive direction
