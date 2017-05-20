@@ -198,10 +198,10 @@ Item {
 
     function checkCanBeHovered(){
         if ( (((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
-              (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
-                && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
-                && !container.fakeIconItem)
-            || (container.needsFillSpace)){
+               (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
+              && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
+              && !container.fakeIconItem)
+                || (container.needsFillSpace)){
             canBeHovered = false;
         }
         else{
@@ -303,20 +303,36 @@ Item {
         root.clearZoomSignal.disconnect(clearZoom);
     }
 
+
     Connections{
         target: root
         onLatteAppletHoveredIndexChanged: {
-            if ( (root.zoomFactor>1) && (root.latteAppletHoveredIndex >= 0)
-                    && (Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=3))
-                container.clearZoom();
+            if ( (root.zoomFactor>1) && (root.latteAppletHoveredIndex >= 0) ){
+                var distance = 2;
+                //for Tasks plasmoid distance of 2 is not always safe there are
+                //cases that needs to be 3, when an internal separator there is
+                //between the hovered task and the current applet
+                if (root.latteInternalSeparatorPos>=0) {
+                    if ((index < root.latteAppletPos && root.latteInternalSeparatorPos < root.latteAppletHoveredIndex)
+                            || (index > root.latteAppletPos && root.latteInternalSeparatorPos > root.latteAppletHoveredIndex)) {
+                        distance = 3;
+                    }
+                }
+
+                if(Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=distance) {
+                    container.clearZoom();
+                }
+            }
         }
     }
 
     Connections{
         target: layoutsContainer
         onHoveredIndexChanged:{
+            //for applets it is safe to consider that a distance of 2
+            //is enough to clearZoom
             if ( (root.zoomFactor>1) && (layoutsContainer.hoveredIndex>=0)
-                    && (Math.abs(index-layoutsContainer.hoveredIndex)>=3))
+                    && (Math.abs(index-layoutsContainer.hoveredIndex)>=2))
                 container.clearZoom();
         }
     }
