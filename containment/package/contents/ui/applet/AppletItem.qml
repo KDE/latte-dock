@@ -306,7 +306,7 @@ Item {
     Connections{
         target: root
         onLatteAppletHoveredIndexChanged: {
-            if ((root.latteAppletHoveredIndex >= 0)
+            if ( (root.zoomFactor>1) && (root.latteAppletHoveredIndex >= 0)
                     && (Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=3))
                 container.clearZoom();
         }
@@ -315,7 +315,8 @@ Item {
     Connections{
         target: layoutsContainer
         onHoveredIndexChanged:{
-            if ((layoutsContainer.hoveredIndex>=0) && (Math.abs(index-layoutsContainer.hoveredIndex)>=3))
+            if ( (root.zoomFactor>1) && (layoutsContainer.hoveredIndex>=0)
+                    && (Math.abs(index-layoutsContainer.hoveredIndex)>=3))
                 container.clearZoom();
         }
     }
