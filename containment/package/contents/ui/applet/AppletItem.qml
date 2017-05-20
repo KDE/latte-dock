@@ -102,7 +102,7 @@ Item {
     property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
 
     //this is used for folderView and icon widgets to fake their visual
-    property bool fakeIconItem: applet && appletIconItem && (applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
+    property bool fakeIconItem: applet && appletIconItem && appletIconItem//(applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
 
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
