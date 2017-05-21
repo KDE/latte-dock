@@ -120,43 +120,6 @@ Item{
         width: parent.width
         height: parent.height
 
-        Item{
-            id:separatorItem
-            anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? localThickMargin : 0
-            anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? localThickMargin : 0
-            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? localThickMargin : 0
-            anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? localThickMargin : 0
-
-            anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-            anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-            anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
-            anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
-            anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
-            anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
-
-            opacity: 0.5
-            visible: mainItemContainer.isSeparator
-
-            width: root.vertical ? root.iconSize : 1
-            height: !root.vertical ? root.iconSize : 1
-
-            property int localThickMargin: root.thickMarginBase + 4
-
-            Rectangle {
-                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-                anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
-                anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
-                anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
-                anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
-
-                width: root.vertical ? root.iconSize - 8  : 1
-                height: !root.vertical ? root.iconSize - 8 : 1
-                color: theme.textColor
-            }
-        }
-
-
         Latte.IconItem{
             id: iconImageBuffer
 
