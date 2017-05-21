@@ -120,6 +120,28 @@ Item{
         width: parent.width
         height: parent.height
 
+
+        //fix bug #478, when changing form factor sometimes the tasks are not positioned
+        //correctly, in such case we make a fast reinitialization for the sizes
+        Connections {
+            target: plasmoid
+
+            onFormFactorChanged:{
+                mainItemContainer.inAddRemoveAnimation = false;
+
+                if (wrapper.mScale !== 1)
+                    wrapper.mScale = 1.01;
+                if (wrapper.tempScaleWidth !== 1)
+                    wrapper.tempScaleWidth = 1.01;
+                if (wrapper.tempScaleHeight !== 1)
+                    wrapper.tempScaleHeight = 1.01;
+
+                wrapper.mScale = 1;
+                wrapper.tempScaleWidth = 1;
+                wrapper.tempScaleHeight = 1;
+            }
+        }
+
         Latte.IconItem{
             id: iconImageBuffer
 
@@ -161,9 +183,12 @@ Item{
             property real basicScalingHeight : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleHeight) :
                                                                        root.iconSize * wrapper.mScale
 
-            property real newTempSize: (wrapper.opacity == 1) ? Math.min(basicScalingWidth, basicScalingHeight) :
-                                                                Math.max(basicScalingWidth, basicScalingHeight)
-
+            property real newTempSize: {
+                if (wrapper.opacity == 1)
+                    return Math.min(basicScalingWidth, basicScalingHeight)
+                else
+                    return Math.max(basicScalingWidth, basicScalingHeight)
+            }
 
             ///states for launcher animation
             states: [
