@@ -30,7 +30,7 @@ SequentialAnimation{
 
     property int speed: root.durationTime*units.longDuration
     property bool isDemandingAttention: (IsDemandingAttention === true)
-    property bool entered: mainItemContainer.mouseEntered
+    property bool containsMouse: mainItemContainer.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
 
     SequentialAnimation{
@@ -80,6 +80,8 @@ SequentialAnimation{
 
         wrapper.tempScaleWidth = 1;
         wrapper.tempScaleHeight = 1;
+
+        mainItemContainer.setBlockingAnimation(false);
     }
 
     onStopped: {
@@ -101,6 +103,8 @@ SequentialAnimation{
     }
 
     function init(){
+        mainItemContainer.setBlockingAnimation(true);
+
         wrapper.tempScaleWidth = wrapper.mScale;
         wrapper.tempScaleHeight = wrapper.mScale;
 

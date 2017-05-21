@@ -449,19 +449,21 @@ MouseArea{
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
-            mouseEntered = true;
-            root.mouseWasEntered(index-2, false);
-            root.mouseWasEntered(index+2, false);
-            root.mouseWasEntered(index-1, true);
-            root.mouseWasEntered(index+1, true);
+            if (!inBlockingAnimation) {
+                mouseEntered = true;
+                root.mouseWasEntered(index-2, false);
+                root.mouseWasEntered(index+2, false);
+                root.mouseWasEntered(index-1, true);
+                root.mouseWasEntered(index+1, true);
 
-            if (icList.orientation == Qt.Horizontal){
-                icList.currentSpot = mouseX;
-                wrapper.calculateScales(mouseX);
-            }
-            else{
-                icList.currentSpot = mouseY;
-                wrapper.calculateScales(mouseY);
+                if (icList.orientation == Qt.Horizontal){
+                    icList.currentSpot = mouseX;
+                    wrapper.calculateScales(mouseX);
+                }
+                else{
+                    icList.currentSpot = mouseY;
+                    wrapper.calculateScales(mouseY);
+                }
             }
         }
     }
@@ -486,7 +488,7 @@ MouseArea{
     }
 
     onPositionChanged: {
-        if (root.editMode)
+        if (root.editMode || inBlockingAnimation)
             return;
 
         if(!root.latteDock)

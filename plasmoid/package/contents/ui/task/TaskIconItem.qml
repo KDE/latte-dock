@@ -540,7 +540,8 @@ Item{
         target: mainItemContainer
         onContainsMouseChanged: {
             if (mainItemContainer.containsMouse && newWindowAnimation.running) {
-                newWindowAnimation.stop();
+                newWindowAnimation.pause();
+                fastRestoreAnimation.start();
             }
         }
     }
@@ -554,6 +555,8 @@ Item{
     TaskAnimations.TaskNewWindowAnimation { id: newWindowAnimation }
 
     TaskAnimations.TaskRemoveWindowFromGroupAnimation { id: removingAnimation }
+
+    TaskAnimations.TaskFastRestoreAnimation { id: fastRestoreAnimation }
 
     //////////// States ////////////////////
     states: [
