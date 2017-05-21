@@ -226,24 +226,52 @@ Item {
         //! searching to find for that applet the first IconItem
         //! which is going to be used in order to deactivate its active
         //! from our MouseArea
-        for(var i=0; i<applet.children.length; ++i){
-            for(var j=0; j<applet.children[i].children.length; ++j){
-                if (typeOf(applet.children[i].children[j], "IconItem")) {
-                    appletIconItem = applet.children[i].children[j];
+        var level0 = applet.children;
+
+        for(var i=0; i<level0.length; ++i){
+            var level1 = level0[i].children;
+            for(var j=0; j<level1.length; ++j){
+                if (typeOf(level1[j], "IconItem")) {
+                    appletIconItem = level1[j];
                     return;
-                } else if (typeOf(applet.children[i].children[j], "CompactRepresentation")) {
-                    for(var k=0; k<applet.children[i].children[j].children.length; ++k){
-                        if (typeOf(applet.children[i].children[j].children[k], "IconItem")) {
-                            appletIconItem = applet.children[i].children[j].children[k];
+                } else if (typeOf(level1[j], "CompactRepresentation")) {
+                    var level2 = level1[j].children;
+                    for(var k=0; k<level2.length; ++k){
+                        if (typeOf(level2[k], "IconItem")) {
+                            appletIconItem = level2[k];
                             return;
                         }
                     }
                 } else if (applet.pluginName === "org.kde.plasma.kickoff") {
-                    if (typeOf(applet.children[i].children[j], "QQuickMouseArea")) {
-                        for(var k=0; k<applet.children[i].children[j].children.length; ++k){
-                            if (typeOf(applet.children[i].children[j].children[k], "IconItem")) {
-                                appletIconItem = applet.children[i].children[j].children[k];
+                    if (typeOf(level1[j], "QQuickMouseArea")) {
+                        var level2 = level1[j].children;
+                        for(var k=0; k<level2.length; ++k){
+                            if (typeOf(level2[k], "IconItem")) {
+                                appletIconItem = level2[k];
                                 return;
+                            }
+                        }
+                    }
+                } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.lockZoom) {
+                    if (typeOf(level1[j], "QQuickMouseArea")) {
+                        var level2 = level1[j].children;
+                        for(var k=0; k<level2.length; ++k){
+                            if (typeOf(level2[k], "QQuickRow")) {
+                                var iconIt;
+                                var labelIt;
+                                var level3 = level2[k].children;
+
+                                for(var r=0; r<level3.length; ++r){
+                                    if (typeOf(level3[r], "IconItem")) {
+                                        iconIt = level3[r];
+                                    } else if (typeOf(level3[r], "QQuickText")) {
+                                        labelIt = level3[r];
+                                    }
+                                }
+                                if (iconIt && labelIt && !labelIt.visible){
+                                    appletIconItem = iconIt;
+                                    return;
+                                }
                             }
                         }
                     }
@@ -251,6 +279,7 @@ Item {
             }
         }
     }
+
 
     function typeOf(obj, className){
         var name = obj.toString();
