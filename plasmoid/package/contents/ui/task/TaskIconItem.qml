@@ -129,12 +129,9 @@ Item{
             onFormFactorChanged:{
                 mainItemContainer.inAddRemoveAnimation = false;
 
-                if (wrapper.mScale !== 1)
-                    wrapper.mScale = 1.01;
-                if (wrapper.tempScaleWidth !== 1)
-                    wrapper.tempScaleWidth = 1.01;
-                if (wrapper.tempScaleHeight !== 1)
-                    wrapper.tempScaleHeight = 1.01;
+                wrapper.mScale = 1.01;
+                wrapper.tempScaleWidth = 1.01;
+                wrapper.tempScaleHeight = 1.01;
 
                 wrapper.mScale = 1;
                 wrapper.tempScaleWidth = 1;
