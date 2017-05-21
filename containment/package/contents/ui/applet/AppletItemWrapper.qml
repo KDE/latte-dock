@@ -641,20 +641,6 @@ Item{
                 leftScale = bigNeighbourZoom;
             }
 
-            //! compute the neighbour separator scales
-            var bsNeighbourZoom = 1;
-            var ssNeighbourZoom = 1;
-
-            if(root.latteApplet && root.latteApplet.internalSeparatorPos>=0) {
-                var latApp = root.latteApplet;
-                if((latApp.internalSeparatorPos === 0) || (latApp.internalSeparatorPos === root.tasksCount-1) ){
-                    var sepZoomDifference = (5+root.iconMargin) / root.realSize;
-
-                    bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
-                    ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
-                }
-            }
-
             if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
                     || (root.hasInternalSeparator
                         && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
@@ -667,26 +653,15 @@ Item{
                 updateIdSendScale(index-2, 1, 0);
                 updateIdSendScale(index+2, 1 ,0);
             } else{
-                if(latApp.internalSeparatorPos === 0){
-                    if (!positiveDirection) {
-                        updateIdSendScale(index+2, ssNeighbourZoom, 0);
-                    } else {
-                        updateIdSendScale(index+2, bsNeighbourZoom, 0);
-                    }
-
+                if(root.latteApplet.internalSeparatorPos === 0){
+                    updateIdSendScale(index+2, rightScale, 0);
                     updateIdSendScale(index-1, leftScale, 0);
-                    updateIdSendScale(index+1, rightScale, 0);
+
 
                     updateIdSendScale(index+3, 1, 0);
                     updateIdSendScale(index-2, 1, 0);
-                } else if(root.hasInternalSeparator && latApp.internalSeparatorPos === root.tasksCount-1) {
-                    if (!positiveDirection) {
-                        updateIdSendScale(index-2, bsNeighbourZoom, 0);
-                    } else {
-                        updateIdSendScale(index-2, ssNeighbourZoom, 0);
-                    }
-
-                    updateIdSendScale(index-1, leftScale, 0);
+                } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
+                    updateIdSendScale(index-2, leftScale, 0);
                     updateIdSendScale(index+1, rightScale, 0);
 
                     updateIdSendScale(index+2, 1, 0);

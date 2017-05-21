@@ -391,9 +391,13 @@ Item {
             height: root.isHorizontal ? wrapper.height : nHiddenSize
 
             ///check also if this is the first plasmoid in anylayout
-            visible: container.startEdge
+            visible: container.startEdge || separatorSpace>0
 
-            property real nHiddenSize: (nScale > 0) ? container.spacersMaxSize * nScale : 0
+            //in case there is a neighbour internal separator
+            property int separatorSpace: (root.latteApplet && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1) ?
+                                             (2+root.iconMargin/2) : 0
+            property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+
             property real nScale: 0
 
             Behavior on nScale {
@@ -407,13 +411,14 @@ Item {
             }
 
             Loader{
-                anchors.fill: parent
+                width: !root.isVertical ? parent.width : 1
+                height: !root.isVertical ? 1 : parent.height
+                x: root.isVertical ? parent.width /2 : 0
+                y: !root.isVertical ? parent.height /2 : 0
+
                 active: root.debugMode
 
                 sourceComponent: Rectangle{
-                    height: 1
-                    width: parent.width
-                    y: parent.width/2
                     border.width: 1
                     border.color: "red"
                     color: "transparent"
@@ -432,9 +437,13 @@ Item {
             height: root.isHorizontal ? wrapper.height : nHiddenSize
 
             //check if this last plasmoid in any layout
-            visible: container.endEdge
+            visible: container.endEdge || separatorSpace>0
 
-            property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) : 0
+            //in case there is a neighbour internal separator
+            property int separatorSpace: (root.latteApplet && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1) ?
+                                             (2+root.iconMargin/2) : 0
+            property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+
             property real nScale: 0
 
             Behavior on nScale {
@@ -448,13 +457,14 @@ Item {
             }
 
             Loader{
-                anchors.fill: parent
+                width: !root.isVertical ? parent.width : 1
+                height: !root.isVertical ? 1 : parent.height
+                x: root.isVertical ? parent.width /2 : 0
+                y: !root.isVertical ? parent.height /2 : 0
+
                 active: root.debugMode
 
                 sourceComponent: Rectangle{
-                    height: 1
-                    width: parent.width
-                    y: parent.width/2
                     border.width: 1
                     border.color: "red"
                     color: "transparent"

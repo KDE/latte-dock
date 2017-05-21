@@ -220,7 +220,7 @@ MouseArea{
         width: root.vertical ? root.iconSize : 1
         height: !root.vertical ? root.iconSize : 1
 
-        property int localThickMargin: root.thickMarginBase + 4
+        property int localThickMargin: root.statesLineSize + root.thickMarginBase + 4
 
         Rectangle {
             anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
@@ -233,6 +233,25 @@ MouseArea{
             width: root.vertical ? root.iconSize - 8  : 1
             height: !root.vertical ? root.iconSize - 8 : 1
             color: theme.textColor
+        }
+    }
+
+    ///Shadow in tasks
+    Loader{
+        id: separatorShadow
+        anchors.fill: separatorItem
+        active: root.enableShadows && isSeparator
+
+        sourceComponent: DropShadow{
+            anchors.fill: parent
+            color: "#ff080808"
+            samples: 2 * radius
+            source: separatorItem
+            radius: shadowSize
+            verticalOffset: 2
+            opacity: 0.5
+
+            property int shadowSize : Math.ceil(root.iconSize / 10)
         }
     }
 
@@ -249,7 +268,7 @@ MouseArea{
             width: root.vertical ? wrapper.width : nHiddenSize
             height: root.vertical ? nHiddenSize : wrapper.height
 
-            visible: (index === 0) || (root.hasInternalSeparator && root.internalSeparatorPos === index-1)
+            visible: (index === 0) || (separatorSpace > 0)
 
             //in case there is a neighbour separator
             property int separatorSpace: (root.hasInternalSeparator && root.internalSeparatorPos === index-1) ?
@@ -288,7 +307,7 @@ MouseArea{
             width: root.vertical ? wrapper.width : nHiddenSize
             height: root.vertical ? nHiddenSize : wrapper.height
 
-            visible: (index === icList.count - 1) || (root.hasInternalSeparator && root.internalSeparatorPos === index+1)
+            visible: (index === icList.count - 1) ||  (separatorSpace > 0)
 
             //in case there is a neighbour separator
             property int separatorSpace: (root.hasInternalSeparator && root.internalSeparatorPos === index+1) ?
