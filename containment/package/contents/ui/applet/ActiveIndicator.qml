@@ -50,8 +50,8 @@ Item{
         roundCorners: true
 
         opacity:{
-            if ( (!vertical && width === glowFrame.size)
-                    || (vertical && height === glowFrame.size))
+            if ( (!vertical && width <= glowFrame.size)
+                    || (vertical && height <= glowFrame.size))
                 return 0;
 
             return 1;
