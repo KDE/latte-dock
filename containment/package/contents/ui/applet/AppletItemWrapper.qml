@@ -691,7 +691,7 @@ Item{
 
     function signalUpdateScale(nIndex, nScale, step){
         if(container && (container.index === nIndex)){
-            reconsiderAppletIconItem();
+            container.reconsiderAppletIconItem();
 
             if ( ((canBeHovered && !lockZoom ) || container.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
