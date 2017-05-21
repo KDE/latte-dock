@@ -137,8 +137,8 @@ Item{
             opacity: 0.5
             visible: mainItemContainer.isSeparator
 
-            width: root.vertical ? iconImageBuffer.width : 5
-            height: !root.vertical ? iconImageBuffer.height : 5
+            width: root.vertical ? root.iconSize : 1
+            height: !root.vertical ? root.iconSize : 1
 
             property int localThickMargin: root.thickMarginBase + 4
 

@@ -64,7 +64,7 @@ MouseArea{
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
     hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
-                  && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation)
+                  && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation) && !isSeparator
     // hoverEnabled: false
 
     property bool buffersAreReady: false
@@ -210,6 +210,7 @@ MouseArea{
 
 
     Flow{
+        id: taskFlow
         width: parent.width
         height: parent.height
 
@@ -221,9 +222,13 @@ MouseArea{
             width: root.vertical ? wrapper.width : nHiddenSize
             height: root.vertical ? nHiddenSize : wrapper.height
 
-            visible: (index === 0)
+            visible: (index === 0) || (root.hasInternalSeparator && root.internalSeparatorPos === index-1)
 
-            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) : 0
+            //in case there is a neighbour separator
+            property int separatorSpace: (root.hasInternalSeparator && root.internalSeparatorPos === index-1) ?
+                                             (2+root.iconMargin/2) : 0
+
+            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
 
             Behavior on nScale {
@@ -236,14 +241,15 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /*   Rectangle{
-                    width:parent.width
-                    height:1
-                    y:parent.height / 2
-                    border.width: 1
-                    border.color: "red"
-                    color: "transparent"
-                }*/
+            /* Rectangle{
+                width: !root.vertical ? parent.width : 1
+                height: !root.vertical ? 1 : parent.height
+                x: root.vertical ? parent.width /2 : 0
+                y: !root.vertical ? parent.height /2 : 0
+                border.width: 1
+                border.color: "red"
+                color: "transparent"
+            }*/
         }
 
         TaskWrapper{ id: wrapper }
@@ -255,9 +261,13 @@ MouseArea{
             width: root.vertical ? wrapper.width : nHiddenSize
             height: root.vertical ? nHiddenSize : wrapper.height
 
-            visible: (index === icList.count - 1)
+            visible: (index === icList.count - 1) || (root.hasInternalSeparator && root.internalSeparatorPos === index+1)
 
-            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) : 0
+            //in case there is a neighbour separator
+            property int separatorSpace: (root.hasInternalSeparator && root.internalSeparatorPos === index+1) ?
+                                             (2+root.iconMargin/2) : 0
+
+            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
 
             Behavior on nScale {
@@ -270,17 +280,25 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /*     Rectangle{
-                         width:parent.width
-                         height:1
-                         y:parent.height / 2
-                         border.width: 1
-                         border.color: "red"
-                         color: "transparent"
-                     }*/
+            /* Rectangle{
+                width: !root.vertical ? parent.width : 1
+                height: !root.vertical ? 1 : parent.height
+                x: root.vertical ? parent.width /2 : 0
+                y: !root.vertical ? parent.height /2 : 0
+                border.width: 1
+                border.color: "red"
+                color: "transparent"
+            } */
         }
 
     }// Flow with hidden spacers inside
+
+    /*Rectangle{
+        anchors.fill: taskFlow
+        color: "transparent"
+        border.width: 1
+        border.color: "blue"
+    }*/
 
     Component {
         id: taskInitComponent
@@ -553,7 +571,7 @@ MouseArea{
                     } else if (root.modifierClickAction == Latte.Dock.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
                     } else if ( root.modifierClickAction == Latte.Dock.CycleThroughTasks) {
-                                                console.log("2...");
+                        console.log("2...");
                         if (isGroupParent)
                             tasksWindows.activateNextTask();
                         else
@@ -609,7 +627,7 @@ MouseArea{
             } else {
                 activateTask();
             }
-        //negative direction
+            //negative direction
         } else if (angle < 12) {
             if (isLauncher) {
                 mouseEntered = false;

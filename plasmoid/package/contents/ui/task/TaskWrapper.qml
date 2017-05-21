@@ -12,9 +12,9 @@ Item{
 
         if (mainItemContainer.isSeparator){
             if (!root.vertical)
-                return 5 + root.widthMargins;
+                return 0; //5 + root.widthMargins;
             else
-                return (root.iconSize + root.widthMargins) * mScale + root.statesLineSize;
+                return (root.iconSize + root.widthMargins) + root.statesLineSize;
         }
 
         if (mainItemContainer.isStartup && root.durationTime !==0 ) {
@@ -32,9 +32,9 @@ Item{
 
         if (mainItemContainer.isSeparator){
             if (root.vertical)
-                return 5 + root.heightMargins;
+                return 0; //5 + root.heightMargins;
             else
-                return (root.iconSize + root.heightMargins) * mScale + root.statesLineSize;
+                return (root.iconSize + root.heightMargins) + root.statesLineSize;
         }
 
         if (mainItemContainer.isStartup && root.durationTime !==0){
@@ -71,35 +71,13 @@ Item{
     property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
     property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
 
-    property real regulatorWidth: mainItemContainer.isSeparator ? separatorRegWidth : basicScalingWidth;
-    property real regulatorHeight: mainItemContainer.isSeparator ? separatorRegHeight : basicScalingHeight;
-
-    property int separatorRegLength: root.vertical ? separatorRegWidth : separatorRegHeight
-
-    property real separatorRegWidth: {
-        if (!mainItemContainer.isSeparator)
-            return 0;
-
-        if (!root.vertical)
-            return 5 + root.widthMargins;
-        else
-            return (root.iconSize + root.thickMargin) * wrapper.mScale;
-    }
-
-    property real separatorRegHeight: {
-        if (!mainItemContainer.isSeparator)
-            return 0;
-
-        if (root.vertical)
-            return 5 + root.heightMargins;
-        else
-            return (root.iconSize + root.thickMargin) * wrapper.mScale;
-    }
+    property real regulatorWidth: mainItemContainer.isSeparator ? width : basicScalingWidth;
+    property real regulatorHeight: mainItemContainer.isSeparator ? height : basicScalingHeight;
     /// end of Scalers///////
 
     //property int curIndex: icList.hoveredIndex
     //  property int index: mainItemContainer.Positioner.index
-    property real center: width / 2
+    property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
 
     signal runLauncherAnimation();
 
@@ -231,19 +209,6 @@ Item{
                 leftScale = bigNeighbourZoom;
             }
 
-            //! compute the neighbour separator scales
-            var bsNeighbourZoom = 1;
-            var ssNeighbourZoom = 1;
-
-            if(root.internalSeparatorPos>=0) {
-                if((root.internalSeparatorPos === index+1) || (root.internalSeparatorPos === index-1) ){
-                    var sepZoomDifference = (root.maxSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
-
-                    bsNeighbourZoom = Math.max(1,bigNeighbourZoom - sepZoomDifference);
-                    ssNeighbourZoom = Math.max(1,smallNeighbourZoom - sepZoomDifference);
-                }
-            }
-
             // console.debug(leftScale + "  " + rightScale + " " + index);
 
             if(!root.hasInternalSeparator || Math.abs(index-root.internalSeparatorPos)>=2
@@ -256,25 +221,14 @@ Item{
                     updateIdSendScale(index-2, 1, 0);
             } else if(root.internalSeparatorPos>=0) {
                 if(root.internalSeparatorPos === index+1){
-                    if (!positiveDirection) {
-                        updateIdSendScale(index+2, ssNeighbourZoom, 0);
-                    } else {
-                        updateIdSendScale(index+2, bsNeighbourZoom, 0);
-                    }
-
+                    updateIdSendScale(index+2, rightScale, 0);
                     updateIdSendScale(index-1, leftScale, 0);
-                    updateIdSendScale(index+1, rightScale, 0);
+
 
                     updateIdSendScale(index+3, 1, 0);
                     updateIdSendScale(index-2, 1, 0);
                 } else if(root.internalSeparatorPos === index-1) {
-                    if (!positiveDirection) {
-                        updateIdSendScale(index-2, bsNeighbourZoom, 0);
-                    } else {
-                        updateIdSendScale(index-2, ssNeighbourZoom, 0);
-                    }
-
-                    updateIdSendScale(index-1, leftScale, 0);
+                    updateIdSendScale(index-2, leftScale, 0);
                     updateIdSendScale(index+1, rightScale, 0);
 
                     updateIdSendScale(index+2, 1, 0);
