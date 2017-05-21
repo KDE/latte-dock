@@ -359,10 +359,12 @@ Item{
         //width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
         //height: Math.round( container.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
 
-        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? root.thickMarginBase : 0
-        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? root.thickMarginBase : 0
-        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? root.thickMarginBase : 0
-        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? root.thickMarginBase : 0
+        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? lowThickUsed : 0
+        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? lowThickUsed : 0
+        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? lowThickUsed : 0
+        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? lowThickUsed : 0
+
+        property int lowThickUsed: root.reverseLinesPosition ? root.thickMarginHigh : root.thickMarginBase
 
         //BEGIN states
         states: [
