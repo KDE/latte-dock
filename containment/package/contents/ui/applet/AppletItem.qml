@@ -114,6 +114,13 @@ Item {
             console.log(computeHeight);
     }*/
 
+    //a timer that is used in  order to init the fake applets on startup
+    Timer {
+        id: fakeInitTimer
+        interval: 5000
+        onTriggered: AppletIndetifier.reconsiderAppletIconItem();
+    }
+
     //set up the fake containers and properties for when a fakeIconItem must be presented to the user
     //because the plasma widgets specific implementation breaks the Latte experience
     onFakeIconItemChanged: {
@@ -233,6 +240,7 @@ Item {
             destroy();
         } else {
             AppletIndetifier.reconsiderAppletIconItem();
+            fakeInitTimer.start();
         }
     }
 
