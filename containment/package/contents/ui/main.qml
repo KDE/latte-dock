@@ -1116,6 +1116,11 @@ DragDrop.DropArea {
         id: appletContainerComponent
         Applet.AppletItem{}
     }
+
+    ParabolicManager{
+        id: parabolicManager
+    }
+
     ///////////////END components
 
     PlasmaCore.ColorScope{

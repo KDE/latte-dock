@@ -581,24 +581,6 @@ Item{
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
-    //!this is used in order to update the index when the signal is for the internal latte plasmoid
-    function updateIdSendScale(indx, zScale, zStep){
-        if(root.latteApplet && ((index<root.latteAppletPos && indx>=root.latteAppletPos)
-                                || (index>root.latteAppletPos && indx<=root.latteAppletPos)) ){
-            var appStep = Math.abs(root.latteAppletPos-index);
-            var signalStep = Math.abs(indx - index);
-
-            if(index<root.latteAppletPos){
-                root.latteApplet.updateScale(signalStep-appStep, zScale,zStep);
-            } else if (index>root.latteAppletPos){
-                root.latteApplet.updateScale(root.tasksCount-1 - (signalStep-appStep), zScale,zStep);
-            }
-        } else {
-            root.updateScale(indx, zScale, zStep);
-        }
-    }
-
-
     function calculateScales( currentMousePosition ){
         if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
             return;
@@ -611,65 +593,8 @@ Item{
         if ((distanceFromHovered == 0)&&
                 (currentMousePosition  > 0) ){
 
-            var rDistance = Math.abs(currentMousePosition  - center);
-
-            //check if the mouse goes right or down according to the center
-            var positiveDirection =  ((currentMousePosition  - center) >= 0 );
-
-
-            //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-            var zoomCenter = (root.zoomFactor - 1) / 2
-
-            //computes the in the scale e.g. 0...0.35 according to the mouse distance
-            //0.35 on the edge and 0 in the center
-            var firstComputation = (rDistance / center) * zoomCenter;
-
-            //calculates the scaling for the neighbour tasks
-            var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
-            var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
-
-            //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-            //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
-
-            var leftScale;
-            var rightScale;
-
-            if(positiveDirection === true){
-                rightScale = bigNeighbourZoom;
-                leftScale = smallNeighbourZoom;
-            }
-            else {
-                rightScale = smallNeighbourZoom;
-                leftScale = bigNeighbourZoom;
-            }
-
-            if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
-                    || (root.hasInternalSeparator
-                        && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
-                            || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
-                            || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
-                    ){
-                updateIdSendScale(index-1, leftScale, 0);
-                updateIdSendScale(index+1, rightScale, 0);
-
-                updateIdSendScale(index-2, 1, 0);
-                updateIdSendScale(index+2, 1 ,0);
-            } else{
-                if(root.latteApplet.internalSeparatorPos === 0){
-                    updateIdSendScale(index+2, rightScale, 0);
-                    updateIdSendScale(index-1, leftScale, 0);
-
-
-                    updateIdSendScale(index+3, 1, 0);
-                    updateIdSendScale(index-2, 1, 0);
-                } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
-                    updateIdSendScale(index-2, leftScale, 0);
-                    updateIdSendScale(index+1, rightScale, 0);
-
-                    updateIdSendScale(index+2, 1, 0);
-                    updateIdSendScale(index-3, 1, 0);
-                }
-            }
+            //use the new parabolicManager in order to handle all parabolic effect messages
+            var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
             if (root.latteApplet && Math.abs(index - root.latteAppletPos) > 2){
                 root.latteApplet.clearZoom();
@@ -677,12 +602,12 @@ Item{
 
             //Left hiddenSpacer
             if(container.startEdge){
-                hiddenSpacerLeft.nScale = leftScale - 1;
+                hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer  ///there is one more item in the currentLayout ????
             if(container.endEdge){
-                hiddenSpacerRight.nScale =  rightScale - 1;
+                hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
             zoomScale = root.zoomFactor;
