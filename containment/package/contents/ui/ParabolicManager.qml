@@ -33,8 +33,10 @@ Item {
 
     //!this is used in order to update the index when the signal is for the internal latte plasmoid
     function updateIdSendScale(appIndex, index, zScale, zStep){
+        // console.log(appIndex + " _ "+index+ " _ "+zScale + " _ "+ zStep);
         if(root.latteApplet && ((appIndex<root.latteAppletPos && index>=root.latteAppletPos)
                                 || (appIndex>root.latteAppletPos && index<=root.latteAppletPos)) ){
+            // console.log("ch 1...");
             var appStep = Math.abs(root.latteAppletPos-appIndex);
             var signalStep = Math.abs(index - appIndex);
 
@@ -49,6 +51,7 @@ Item {
 
             return taskIndex;
         } else {
+            // console.log("ch 2...");
             root.updateScale(index, zScale, zStep);
             return -1;
         }
@@ -87,6 +90,9 @@ Item {
             leftScale = bigNeighbourZoom;
         }
 
+        var gAppletIndex = -1;
+        var lAppletIndex = -1;
+
         var gTaskIndex = -1;
         var lTaskIndex = -1;
 
@@ -99,27 +105,32 @@ Item {
                         || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
                         || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
                 ){
-            tLIndex = availableLowerId(index-1);
-            tHIndex = availableHigherId(index+1);
+            gAppletIndex = availableHigherId(index+1);
+            lAppletIndex = availableLowerId(index-1);
 
-            updateIdSendScale(index, tLIndex, leftScale, 0);
-            updateIdSendScale(index, tHIndex, rightScale, 0);
+            updateIdSendScale(index, lAppletIndex, leftScale, 0);
+            updateIdSendScale(index, gAppletIndex, rightScale, 0);
 
-            tLIndex = tLIndex-1;
-            tHIndex = tHIndex+1;
+            tLIndex = availableLowerId(lAppletIndex-1);
+            tHIndex = availableHigherId(gAppletIndex+1);
+
             gTaskIndex = updateIdSendScale(index, tHIndex, 1 ,0);
             lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
-                updateIdSendScale(index, index+2, rightScale, 0);
-                updateIdSendScale(index, index-1, leftScale, 0);
+                gAppletIndex = index + 2 ;
+                lAppletIndex= index - 1;
+                updateIdSendScale(index, gAppletIndex, rightScale, 0);
+                updateIdSendScale(index, lAppletIndex, leftScale, 0);
 
                 gTaskIndex = updateIdSendScale(index, index+3, 1, 0);
                 lTaskIndex = updateIdSendScale(index, index-2, 1, 0);
 
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
-                updateIdSendScale(index, index-2, leftScale, 0);
-                updateIdSendScale(index, index+1, rightScale, 0);
+                gAppletIndex = index + 1;
+                lAppletIndex= index - 2;
+                updateIdSendScale(index, lAppletIndex, leftScale, 0);
+                updateIdSendScale(index, gAppletIndex, rightScale, 0);
 
                 gTaskIndex = updateIdSendScale(index, index+2, 1, 0);
                 lTaskIndex = updateIdSendScale(index, index-3, 1, 0);
@@ -137,8 +148,8 @@ Item {
             }
         }
 
-        clearAppletsGreaterThan(index+1, 1, 0);
-        clearAppletsLowerThan(index-1, 1, 0);
+        clearAppletsGreaterThan(gAppletIndex, 1, 0);
+        clearAppletsLowerThan(lAppletIndex, 1, 0);
 
         return {leftScale:leftScale, rightScale:rightScale};
     }
@@ -216,7 +227,7 @@ Item {
             separators.push(nextId);
         }
 
-        //console.log("separators : "+separators);
+        // console.log("separators : "+separators);
     }
 
     // update the registered hidden applets
@@ -244,13 +255,13 @@ Item {
             hidden.push(nextId);
         }
 
-        //console.log("hidden : "+hidden);
+        // console.log("hidden : "+hidden);
     }
 
     function availableLowerId(from) {
         var next = from;
 
-        while (separators.indexOf(next) !== -1 && hidden.indexOf(next) !== -1)
+        while (separators.indexOf(next) !== -1 || hidden.indexOf(next) !== -1)
             next = next - 1;
 
         return next;
@@ -259,7 +270,7 @@ Item {
     function availableHigherId(from) {
         var next = from;
 
-        while (separators.indexOf(next) !== -1 && hidden.indexOf(next) !== -1)
+        while (separators.indexOf(next) !== -1 || hidden.indexOf(next) !== -1)
             next = next + 1;
 
         return next;

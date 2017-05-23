@@ -36,6 +36,13 @@ Item{
         if (container.isInternalViewSplitter && !root.editMode)
             return 0;
 
+        if (container.isSeparator && !root.editMode) {
+            if (!root.isVertical)
+                return 0.01;
+            else
+                return root.iconSize;
+        }
+
         if (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal){
             //! in edit mode shrink a bit the fill sizes because the splitters are shown
             return root.editMode && container.needsFillSpace && (container.sizeForFill > 5*root.iconSize) ?
@@ -56,6 +63,13 @@ Item{
     height: {
         if (container.isInternalViewSplitter && !root.editMode)
             return 0;
+
+        if (container.isSeparator && !root.editMode) {
+            if (root.isVertical)
+                return 0.01;
+            else
+                return root.iconSize;
+        }
 
         if (container.needsFillSpace && (container.sizeForFill>-1) && root.isVertical){
             //! in edit mode shrink a bit the fill sizes because the splitters are shown
