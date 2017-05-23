@@ -227,6 +227,7 @@ Item {
             separators.push(nextId);
         }
 
+        root.separatorsUpdated();
         // console.log("separators : "+separators);
     }
 
@@ -274,5 +275,9 @@ Item {
             next = next + 1;
 
         return next;
+    }
+
+    function isSeparator(index){
+        return (separators.indexOf(index) !== -1)
     }
 }

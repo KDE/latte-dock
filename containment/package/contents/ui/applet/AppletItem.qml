@@ -398,9 +398,11 @@ Item {
             ///check also if this is the first plasmoid in anylayout
             visible: container.startEdge || separatorSpace>0
 
+            property bool neighbourSeparator: false;
+
             //in case there is a neighbour internal separator
-            property int separatorSpace: (root.latteApplet && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1) ?
-                                             (2+root.iconMargin/2) : 0
+            property int separatorSpace: (root.latteApplet && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1)
+                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
             property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
             property real nScale: 0
@@ -413,6 +415,13 @@ Item {
             Behavior on nScale {
                 enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
+            }
+
+            Connections{
+                target: root
+                onSeparatorsUpdated: {
+                    hiddenSpacerLeft.neighbourSeparator = parabolicManager.isSeparator(index-1);
+                }
             }
 
             Loader{
@@ -444,9 +453,10 @@ Item {
             //check if this last plasmoid in any layout
             visible: container.endEdge || separatorSpace>0
 
+            property bool neighbourSeparator: false;
             //in case there is a neighbour internal separator
-            property int separatorSpace: (root.latteApplet && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1) ?
-                                             (2+root.iconMargin/2) : 0
+            property int separatorSpace: (root.latteApplet && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1)
+                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
             property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
             property real nScale: 0
@@ -459,6 +469,13 @@ Item {
             Behavior on nScale {
                 enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
+            }
+
+            Connections{
+                target: root
+                onSeparatorsUpdated: {
+                    hiddenSpacerRight.neighbourSeparator = parabolicManager.isSeparator(index+1);
+                }
             }
 
             Loader{

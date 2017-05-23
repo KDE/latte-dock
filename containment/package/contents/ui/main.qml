@@ -40,6 +40,7 @@ DragDrop.DropArea {
 
     //// BEGIN SIGNALS
     signal clearZoomSignal();
+    signal separatorsUpdated();
     signal updateEffectsArea();
     signal updateIndexes();
     signal updateScale(int delegateIndex, real newScale, real step);

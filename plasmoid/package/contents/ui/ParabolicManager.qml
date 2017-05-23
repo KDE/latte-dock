@@ -28,8 +28,7 @@ import QtQuick 2.0
 Item {
     id: parManager
 
-    property bool hasInternalSeparator: internalSeparatorPos > -1
-
+    readonly property bool hasInternalSeparator: internalSeparatorPos > -1
     property int internalSeparatorPos: -1
 
     //!this is used in order to update the index when the signal is for applets

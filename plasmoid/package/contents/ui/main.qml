@@ -487,9 +487,7 @@ Item {
         //   updateImplicits();
         //  }
 
-        onLauncherListChanged: {
-            plasmoid.configuration.launchers59 = launcherList;
-
+        function checkSeparator() {
             var hasSep = false;
             for(var i=0; i<launcherList.length; ++i){
                 var rec1 = launcherList[i];
@@ -501,6 +499,11 @@ Item {
 
             if (!hasSep)
                 parabolicManager.internalSeparatorPos = -1;
+        }
+
+        onLauncherListChanged: {
+            plasmoid.configuration.launchers59 = launcherList;
+            checkSeparator();
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -533,6 +536,8 @@ Item {
 
             icList.model = tasksModel;
             tasksStarting = count;
+
+            checkSeparator();
 
             ///Plasma 5.9 enforce grouping at all cases
             if (Latte.WindowSystem.frameworksVersion >= 335104) {
