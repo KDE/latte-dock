@@ -35,13 +35,19 @@ Item {
             var appStep = Math.abs(root.latteAppletPos-appIndex);
             var signalStep = Math.abs(index - appIndex);
 
+            var taskIndex = -1;
             if(appIndex<root.latteAppletPos){
-                root.latteApplet.updateScale(signalStep-appStep, zScale,zStep);
+                taskIndex = signalStep-appStep;
             } else if (appIndex>root.latteAppletPos){
-                root.latteApplet.updateScale(root.tasksCount-1 - (signalStep-appStep), zScale,zStep);
+                taskIndex = root.tasksCount-1 - (signalStep-appStep);
             }
+
+            root.latteApplet.updateScale(taskIndex, zScale,zStep);
+
+            return taskIndex;
         } else {
             root.updateScale(index, zScale, zStep);
+            return -1;
         }
     }
 
@@ -78,6 +84,9 @@ Item {
             leftScale = bigNeighbourZoom;
         }
 
+        var gTaskIndex = -1;
+        var lTaskIndex = -1;
+
         if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
                 || (root.hasInternalSeparator
                     && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
@@ -87,22 +96,33 @@ Item {
             updateIdSendScale(index, index-1, leftScale, 0);
             updateIdSendScale(index, index+1, rightScale, 0);
 
-            updateIdSendScale(index, index-2, 1, 0);
-            updateIdSendScale(index, index+2, 1 ,0);
+            gTaskIndex = updateIdSendScale(index, index+2, 1 ,0);
+            lTaskIndex = updateIdSendScale(index, index-2, 1, 0);
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
                 updateIdSendScale(index, index+2, rightScale, 0);
                 updateIdSendScale(index, index-1, leftScale, 0);
 
-                updateIdSendScale(index, index+3, 1, 0);
-                updateIdSendScale(index, index-2, 1, 0);
+                gTaskIndex = updateIdSendScale(index, index+3, 1, 0);
+                lTaskIndex = updateIdSendScale(index, index-2, 1, 0);
 
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
                 updateIdSendScale(index, index-2, leftScale, 0);
                 updateIdSendScale(index, index+1, rightScale, 0);
 
-                updateIdSendScale(index, index+2, 1, 0);
-                updateIdSendScale(index, index-3, 1, 0);
+                gTaskIndex = updateIdSendScale(index, index+2, 1, 0);
+                lTaskIndex = updateIdSendScale(index, index-3, 1, 0);
+            }
+        }
+
+        if (latteApplet) {
+            if (gTaskIndex === -1 && lTaskIndex === -1){
+                latteApplet.parabolicManager.clearTasksGreaterThan(0);
+            } else {
+                if (gTaskIndex > -1)
+                    latteApplet.parabolicManager.clearTasksGreaterThan(gTaskIndex-1);
+                if (lTaskIndex > -1)
+                    latteApplet.parabolicManager.clearTasksLowerThan(lTaskIndex+1);
             }
         }
 

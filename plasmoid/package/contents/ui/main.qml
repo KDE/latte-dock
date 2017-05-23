@@ -102,6 +102,7 @@ Item {
     property QtObject contextMenu: null
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
     property Item dragSource: null
+    property Item parabolicManager: _parabolicManager
 
     property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
 
@@ -653,7 +654,7 @@ Item {
     }
 
     ParabolicManager{
-        id: parabolicManager
+        id: _parabolicManager
     }
 
     /*  IconsModel{
