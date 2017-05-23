@@ -28,6 +28,9 @@ import QtQuick 2.0
 Item {
     id: parManager
 
+    property var hidden: []
+    property var separators: []
+
     //!this is used in order to update the index when the signal is for the internal latte plasmoid
     function updateIdSendScale(appIndex, index, zScale, zStep){
         if(root.latteApplet && ((appIndex<root.latteAppletPos && index>=root.latteAppletPos)
@@ -178,6 +181,61 @@ Item {
             for (var k=endClearStart; k>=endBeginIndex; --k)
                 root.updateScale(k, 1, 0);
         }
+    }
 
+    // update the registered separators
+    // -1, no = add separator
+    // no, -1 = remove separator
+    // no, no = update separator position
+    function setSeparator(previousId, nextId) {
+        if (previousId === nextId)
+            return;
+
+        var update=false;
+        //should update
+        if (previousId>-1 && nextId>-1)
+            update=true;
+
+        //remove
+        if ((previousId>-1 && nextId===-1) || update) {
+            var ind = separators.indexOf(previousId);
+            if (ind>-1)
+                separators.splice(ind,1);
+        }
+
+        //add
+        if ((previousId===-1 && nextId>-1) || update) {
+            separators.push(nextId);
+        }
+
+        //console.log("separators : "+separators);
+    }
+
+    // update the registered hidden applets
+    // -1, no = add hidden
+    // no, -1 = remove hidden
+    // no, no = update hidden position
+    function setHidden(previousId, nextId) {
+        if (previousId === nextId)
+            return;
+
+        var update=false;
+        //should update
+        if (previousId>-1 && nextId>-1)
+            update=true;
+
+        //remove
+        if ((previousId>-1 && nextId===-1) || update) {
+            var ind = hidden.indexOf(previousId);
+            if (ind>-1)
+                hidden.splice(ind,1);
+        }
+
+        //add
+        if ((previousId===-1 && nextId>-1) || update) {
+            hidden.push(nextId);
+        }
+
+        //console.log("hidden : "+hidden);
     }
 }

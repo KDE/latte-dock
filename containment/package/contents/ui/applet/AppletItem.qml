@@ -56,8 +56,10 @@ Item {
     }
     property bool showZoomed: false
     property bool lockZoom: false
+    property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
+    property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator" ? true : false
 
     //applet is in starting edge
     /*property bool startEdge: index < layoutsContainer.endLayout.beginIndex ? (index === 0)&&(layoutsContainer.mainLayout.count > 1) :
@@ -81,6 +83,7 @@ Item {
     property int maxHeight: root.isHorizontal ? root.height : root.width
     property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
     property int internalSplitterId: 0
+    property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
     property int status: applet ? applet.status : -1
@@ -137,12 +140,6 @@ Item {
 
             wrapper.updateLayoutWidth();
             wrapper.updateLayoutHeight();
-        }
-    }
-
-    onIndexChanged: {
-        if (container.latteApplet) {
-            root.latteAppletPos = index;
         }
     }
 
@@ -253,6 +250,39 @@ Item {
             hiddenSpacerLeft.nScale = 0;
             hiddenSpacerRight.nScale = 0;
         }
+    }
+
+    onIndexChanged: {
+        if (container.latteApplet) {
+            root.latteAppletPos = index;
+        }
+
+        if (isHidden) {
+            parabolicManager.setHidden(previousIndex, index);
+        }
+
+        if (isSeparator) {
+            parabolicManager.setSeparator(previousIndex, index);
+        }
+
+        previousIndex = index;
+    }
+
+    onIsHiddenChanged: {
+        if (isHidden) {
+            parabolicManager.setHidden(-1, index);
+        } else {
+            parabolicManager.setHidden(index, -1);
+        }
+    }
+
+    onIsSeparatorChanged: {
+        if (isSeparator) {
+            parabolicManager.setSeparator(-1, index);
+        } else {
+            parabolicManager.setSeparator(index, -1);
+        }
+
     }
 
     onLatteAppletChanged: {
