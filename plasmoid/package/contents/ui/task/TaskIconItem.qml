@@ -666,8 +666,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
 
-                    wrapper.updateIdSendScale(index-1, halfZoom, 0);
-                    wrapper.updateIdSendScale(index+1, halfZoom, 0);
+                    wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
 
                     mainItemContainer.animationEnded();
                     //   root.animations--;

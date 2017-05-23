@@ -60,7 +60,7 @@ Item {
     property bool editMode: latteDock ? latteDock.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
-    property bool hasInternalSeparator: false
+    readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool initializationStep: false //true
     property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
@@ -74,7 +74,7 @@ Item {
     property int clearWidth
     property int clearHeight
 
-    property int internalSeparatorPos: -1
+    readonly property int internalSeparatorPos: parabolicManager.internalSeparatorPos
     property int newLocationDebugUse: PlasmaCore.Types.BottomPositioned
     property int newDroppedPosition: -1
     property int noInitCreatedBuffers: 0
@@ -497,10 +497,9 @@ Item {
                     break;
                 }
             }
-            root.hasInternalSeparator = hasSep;
 
             if (!hasSep)
-                root.internalSeparatorPos = -1;
+                parabolicManager.internalSeparatorPos = -1;
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -651,6 +650,10 @@ Item {
         id: pulseAudio
         source: "PulseAudio.qml"
         active: root.indicateAudioStreams
+    }
+
+    ParabolicManager{
+        id: parabolicManager
     }
 
     /*  IconsModel{
@@ -1163,7 +1166,7 @@ Item {
         var tasks = icList.contentItem.children;
 
         //! this is used to bypass the internal separator if it exists
-        var confirmedIndex = root.hasInternalSeparator && (index>=root.internalSeparatorPos) ? index+1 : index;
+        var confirmedIndex = parabolicManager.hasInternalSeparator && (index>=parabolicManager.internalSeparatorPos) ? index+1 : index;
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
@@ -1184,7 +1187,7 @@ Item {
         var tasks = icList.contentItem.children;
 
         //! this is used to bypass the internal separator if it exists
-        var confirmedIndex = root.hasInternalSeparator && (index>=root.internalSeparatorPos) ? index+1 : index;
+        var confirmedIndex = parabolicManager.hasInternalSeparator && (index>=parabolicManager.internalSeparatorPos) ? index+1 : index;
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];

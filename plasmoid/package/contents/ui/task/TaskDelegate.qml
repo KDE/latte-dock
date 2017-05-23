@@ -124,7 +124,7 @@ MouseArea{
 
         if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0){
             isSeparator = true;
-            root.internalSeparatorPos = index;
+            parabolicManager.internalSeparatorPos = index;
         } else {
             isSeparator = false;
         }
@@ -271,7 +271,8 @@ MouseArea{
             visible: (index === 0) || (separatorSpace > 0)
 
             //in case there is a neighbour separator
-            property int separatorSpace: (root.hasInternalSeparator && root.internalSeparatorPos === index-1) ?
+            property int separatorSpace: (parabolicManager.hasInternalSeparator
+                                          && parabolicManager.internalSeparatorPos === index-1) ?
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
@@ -310,7 +311,8 @@ MouseArea{
             visible: (index === icList.count - 1) ||  (separatorSpace > 0)
 
             //in case there is a neighbour separator
-            property int separatorSpace: (root.hasInternalSeparator && root.internalSeparatorPos === index+1) ?
+            property int separatorSpace: (parabolicManager.hasInternalSeparator
+                                          && parabolicManager.internalSeparatorPos === index+1) ?
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
@@ -394,7 +396,7 @@ MouseArea{
             lastValidTimer.start();
 
         if (isSeparator){
-            root.internalSeparatorPos = itemIndex;
+            parabolicManager.internalSeparatorPos = itemIndex;
         }
     }
 

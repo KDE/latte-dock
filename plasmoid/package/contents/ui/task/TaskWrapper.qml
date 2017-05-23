@@ -140,23 +140,6 @@ Item{
 
     }//Flow
 
-    //!this is used in order to update the index when the signal is for applets
-    //!outside the latte plasmoid
-    function updateIdSendScale(indx, zScale, zStep){
-        if ((indx>=0 && indx<=root.tasksCount-1) || (!root.latteDock)){
-            root.updateScale(indx, zScale, zStep);
-        } else{
-            var appletId = latteDock.latteAppletPos;
-            if (indx<0)
-                appletId = latteDock.latteAppletPos + indx;
-            else if (indx>root.tasksCount-1){
-                var step=indx-root.tasksCount+1;
-                appletId = latteDock.latteAppletPos + step;
-            }
-
-            latteDock.updateScale(appletId, zScale, zStep);
-        }
-    }
 
     function calculateScales( currentMousePosition ){
         if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
@@ -171,79 +154,17 @@ Item{
                 (currentMousePosition  > 0)&&
                 (root.dragSource == null) ){
 
-            var rDistance = Math.abs(currentMousePosition  - center);
-
-            //check if the mouse goes right or down according to the center
-            var positiveDirection =  ((currentMousePosition  - center) >= 0 );
-
-            var minimumZoom = 1;
-
-            if(mainItemContainer.isSeparator){
-                //minimumZoom for separator item
-                var tempZoomDifference = (root.missingSeparatorLength / (root.maxSeparatorLength+root.missingSeparatorLength)) * root.zoomFactor;
-                minimumZoom = Math.max(tempZoomDifference, 1);
-            }
-
-            //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-            var zoomCenter = ((root.zoomFactor + minimumZoom)/2) - 1;
-
-            //computes the in the scale e.g. 0...0.35 according to the mouse distance
-            //0.35 on the edge and 0 in the center
-            var firstComputation = (rDistance / center) * (zoomCenter-minimumZoom+1);
-
-            //calculates the scaling for the neighbour tasks
-            var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, root.zoomFactor);
-            var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, minimumZoom);
-
-            //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-            //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
-
-            var leftScale;
-            var rightScale;
-
-            if(positiveDirection === true){
-                rightScale = bigNeighbourZoom;
-                leftScale = smallNeighbourZoom;
-            } else {
-                rightScale = smallNeighbourZoom;
-                leftScale = bigNeighbourZoom;
-            }
-
-            // console.debug(leftScale + "  " + rightScale + " " + index);
-
-            if(!root.hasInternalSeparator || Math.abs(index-root.internalSeparatorPos)>=2
-                    || mainItemContainer.isSeparator){
-                //activate messages to update the the neighbour scales
-                    updateIdSendScale(index+1, rightScale, 0);
-                    updateIdSendScale(index-1, leftScale, 0);
-
-                    updateIdSendScale(index+2, 1, 0);
-                    updateIdSendScale(index-2, 1, 0);
-            } else if(root.internalSeparatorPos>=0) {
-                if(root.internalSeparatorPos === index+1){
-                    updateIdSendScale(index+2, rightScale, 0);
-                    updateIdSendScale(index-1, leftScale, 0);
-
-
-                    updateIdSendScale(index+3, 1, 0);
-                    updateIdSendScale(index-2, 1, 0);
-                } else if(root.internalSeparatorPos === index-1) {
-                    updateIdSendScale(index-2, leftScale, 0);
-                    updateIdSendScale(index+1, rightScale, 0);
-
-                    updateIdSendScale(index+2, 1, 0);
-                    updateIdSendScale(index-3, 1, 0);
-                }
-            }
+            //use the new parabolicManager in order to handle all parabolic effect messages
+            var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
             //Left hiddenSpacer
             if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
-                hiddenSpacerLeft.nScale = leftScale - 1;
+                hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer
             if(((index === icList.count - 1 )&&(icList.count>1)) && (!root.disableRightSpacer)){
-                hiddenSpacerRight.nScale =  rightScale - 1;
+                hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
             mScale = root.zoomFactor;
