@@ -90,17 +90,25 @@ Item {
         var gTaskIndex = -1;
         var lTaskIndex = -1;
 
+        var tLIndex = -1;
+        var tHIndex = -1;
+
         if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
                 || (root.hasInternalSeparator
                     && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
                         || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
                         || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
                 ){
-            updateIdSendScale(index, index-1, leftScale, 0);
-            updateIdSendScale(index, index+1, rightScale, 0);
+            tLIndex = availableLowerId(index-1);
+            tHIndex = availableHigherId(index+1);
 
-            gTaskIndex = updateIdSendScale(index, index+2, 1 ,0);
-            lTaskIndex = updateIdSendScale(index, index-2, 1, 0);
+            updateIdSendScale(index, tLIndex, leftScale, 0);
+            updateIdSendScale(index, tHIndex, rightScale, 0);
+
+            tLIndex = tLIndex-1;
+            tHIndex = tHIndex+1;
+            gTaskIndex = updateIdSendScale(index, tHIndex, 1 ,0);
+            lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
                 updateIdSendScale(index, index+2, rightScale, 0);
@@ -237,5 +245,23 @@ Item {
         }
 
         //console.log("hidden : "+hidden);
+    }
+
+    function availableLowerId(from) {
+        var next = from;
+
+        while (separators.indexOf(next) !== -1 && hidden.indexOf(next) !== -1)
+            next = next - 1;
+
+        return next;
+    }
+
+    function availableHigherId(from) {
+        var next = from;
+
+        while (separators.indexOf(next) !== -1 && hidden.indexOf(next) !== -1)
+            next = next + 1;
+
+        return next;
     }
 }
