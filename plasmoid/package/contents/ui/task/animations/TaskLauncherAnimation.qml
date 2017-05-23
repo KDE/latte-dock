@@ -125,10 +125,8 @@ SequentialAnimation{
             else
                 icList.directRender=false;
 
-            wrapper.updateIdSendScale(index+2, 1, 0);
-            wrapper.updateIdSendScale(index+1, 1, 0);
-            wrapper.updateIdSendScale(index-1, 1, 0);
-            wrapper.updateIdSendScale(index-2, 1, 0);
+            parabolicManager.clearTasksGreaterThan(index);
+            parabolicManager.clearTasksLowerThan(index);
 
             root.noTasksInAnimation++;
             mainItemContainer.setBlockingAnimation(true);
