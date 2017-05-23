@@ -37,6 +37,7 @@ Item {
     function updateIdSendScale(index, zScale, zStep){
         if ((index>=0 && index<=root.tasksCount-1) || (!root.latteDock)){
             root.updateScale(index, zScale, zStep);
+            return -1;
         } else{
             var appletId = latteDock.latteAppletPos;
             if (index<0)
@@ -47,6 +48,7 @@ Item {
             }
 
             latteDock.updateScale(appletId, zScale, zStep);
+            return appletId;
         }
     }
 
@@ -85,13 +87,16 @@ Item {
 
         // console.debug(leftScale + "  " + rightScale + " " + index);
 
+        var gAppletId = -1;
+        var lAppletId = -1;
+
         if(!hasInternalSeparator || Math.abs(index-internalSeparatorPos)>=2){
             //activate messages to update the the neighbour scales
             updateIdSendScale(index+1, rightScale, 0);
             updateIdSendScale(index-1, leftScale, 0);
 
-            updateIdSendScale(index+2, 1, 0);
-            updateIdSendScale(index-2, 1, 0);
+            gAppletId = updateIdSendScale(index+2, 1, 0);
+            lAppletId = updateIdSendScale(index-2, 1, 0);
 
             clearTasksGreaterThan(index+1);
             clearTasksLowerThan(index-1);
@@ -100,9 +105,8 @@ Item {
                 updateIdSendScale(index+2, rightScale, 0);
                 updateIdSendScale(index-1, leftScale, 0);
 
-
-                updateIdSendScale(index+3, 1, 0);
-                updateIdSendScale(index-2, 1, 0);
+                gAppletId = updateIdSendScale(index+3, 1, 0);
+                lAppletId = updateIdSendScale(index-2, 1, 0);
 
                 clearTasksGreaterThan(index+2);
                 clearTasksLowerThan(index-1);
@@ -110,12 +114,24 @@ Item {
                 updateIdSendScale(index-2, leftScale, 0);
                 updateIdSendScale(index+1, rightScale, 0);
 
-                updateIdSendScale(index+2, 1, 0);
-                updateIdSendScale(index-3, 1, 0);
+                gAppletId = updateIdSendScale(index+2, 1, 0);
+                lAppletId = updateIdSendScale(index-3, 1, 0);
 
                 clearTasksGreaterThan(index+1);
                 clearTasksLowerThan(index-2);
             }
+        }
+
+        if (latteDock){
+            if (gAppletId > -1)
+                latteDock.parabolicManager.clearAppletsGreaterThan(gAppletId-1);
+            else
+                latteDock.parabolicManager.clearAppletsGreaterThan(latteDock.latteAppletPos);
+
+            if (lAppletId > -1)
+                latteDock.parabolicManager.clearAppletsLowerThan(lAppletId+1);
+            else
+                latteDock.parabolicManager.clearAppletsLowerThan(latteDock.latteAppletPos);
         }
 
         return {leftScale:leftScale, rightScale:rightScale};

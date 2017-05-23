@@ -596,9 +596,9 @@ Item{
             //use the new parabolicManager in order to handle all parabolic effect messages
             var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
-            if (root.latteApplet && Math.abs(index - root.latteAppletPos) > 2){
+            /*if (root.latteApplet && Math.abs(index - root.latteAppletPos) > 2){
                 root.latteApplet.clearZoom();
-            }
+            }*/
 
             //Left hiddenSpacer
             if(container.startEdge){
