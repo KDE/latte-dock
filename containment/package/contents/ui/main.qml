@@ -204,6 +204,7 @@ DragDrop.DropArea {
     property Item toolBox
     property Item latteAppletContainer
     property Item latteApplet
+    property Item parabolicManager: _parabolicManager
     property QtObject dock
     property QtObject globalSettings
 
@@ -1118,7 +1119,7 @@ DragDrop.DropArea {
     }
 
     ParabolicManager{
-        id: parabolicManager
+        id: _parabolicManager
     }
 
     ///////////////END components

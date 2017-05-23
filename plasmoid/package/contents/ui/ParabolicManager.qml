@@ -92,6 +92,9 @@ Item {
 
             updateIdSendScale(index+2, 1, 0);
             updateIdSendScale(index-2, 1, 0);
+
+            clearTasksGreaterThan(index+1);
+            clearTasksLowerThan(index-1);
         } else if(root.internalSeparatorPos>=0) {
             if(internalSeparatorPos === index+1){
                 updateIdSendScale(index+2, rightScale, 0);
@@ -100,15 +103,35 @@ Item {
 
                 updateIdSendScale(index+3, 1, 0);
                 updateIdSendScale(index-2, 1, 0);
+
+                clearTasksGreaterThan(index+2);
+                clearTasksLowerThan(index-1);
             } else if(internalSeparatorPos === index-1) {
                 updateIdSendScale(index-2, leftScale, 0);
                 updateIdSendScale(index+1, rightScale, 0);
 
                 updateIdSendScale(index+2, 1, 0);
                 updateIdSendScale(index-3, 1, 0);
+
+                clearTasksGreaterThan(index+1);
+                clearTasksLowerThan(index-2);
             }
         }
 
         return {leftScale:leftScale, rightScale:rightScale};
+    }
+
+    function clearTasksGreaterThan(index) {
+        if (index<root.tasksCount-1){
+            for(var i=index+1; i<root.tasksCount; ++i)
+                root.updateScale(i, 1, 0);
+        }
+    }
+
+    function clearTasksLowerThan(index) {
+        if (index>=0 && root.tasksCount>0) {
+            for(var i=0; i<index; ++i)
+                root.updateScale(i, 1, 0);
+        }
     }
 }

@@ -94,9 +94,9 @@ Item {
                 updateIdSendScale(index, index+2, rightScale, 0);
                 updateIdSendScale(index, index-1, leftScale, 0);
 
-
                 updateIdSendScale(index, index+3, 1, 0);
                 updateIdSendScale(index, index-2, 1, 0);
+
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
                 updateIdSendScale(index, index-2, leftScale, 0);
                 updateIdSendScale(index, index+1, rightScale, 0);
@@ -106,6 +106,58 @@ Item {
             }
         }
 
+        clearAppletsGreaterThan(index+1, 1, 0);
+        clearAppletsLowerThan(index-1, 1, 0);
+
         return {leftScale:leftScale, rightScale:rightScale};
+    }
+
+    function clearAppletsGreaterThan(index) {
+        var startLastIndex = layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-1;
+        if (index<startLastIndex) {
+            for (var i=index+1; i<=startLastIndex; ++i)
+                root.updateScale(i, 1, 0);
+        }
+
+        var mainLastIndex = layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-1;
+        if (index<mainLastIndex){
+            var mainClearStart = index>layoutsContainer.mainLayout.beginIndex ? index+1 : layoutsContainer.mainLayout.beginIndex;
+            for (var j=mainClearStart; j<=mainLastIndex; ++j)
+                root.updateScale(j, 1, 0);
+        }
+
+        var endLastIndex = layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1;
+        if (index<endLastIndex){
+            var endClearStart = index>layoutsContainer.endLayout.beginIndex ? index+1 : layoutsContainer.endLayout.beginIndex;
+            for (var k=endClearStart; k<=endLastIndex; ++k)
+                root.updateScale(k, 1, 0);
+        }
+    }
+
+    function clearAppletsLowerThan(index) {
+        var startBeginIndex = layoutsContainer.startLayout.beginIndex;
+        var startLastIndex = layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-1;
+        if (index>startBeginIndex) {
+            var startClearStart = index<=startLastIndex ? index-1 : startLastIndex;
+            for (var i=startClearStart; i>=startBeginIndex; --i)
+                root.updateScale(i, 1, 0);
+        }
+
+        var mainBeginIndex = layoutsContainer.mainLayout.beginIndex;
+        var mainLastIndex = layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-1;
+        if (index>mainBeginIndex) {
+            var mainClearStart = index<=mainLastIndex ? index-1 : mainLastIndex;
+            for (var j=mainClearStart; j>=mainBeginIndex; --j)
+                root.updateScale(j, 1, 0);
+        }
+
+        var endBeginIndex = layoutsContainer.endLayout.beginIndex;
+        var endLastIndex = layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1;
+        if (index>endBeginIndex) {
+            var endClearStart = index<=endLastIndex ? index-1 : endLastIndex;
+            for (var k=endClearStart; k>=endBeginIndex; --k)
+                root.updateScale(k, 1, 0);
+        }
+
     }
 }
