@@ -119,20 +119,22 @@ Item {
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
                 gAppletIndex = index + 2 ;
-                lAppletIndex= index - 1;
+                lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
 
+                tLIndex = availableLowerId(lAppletIndex-1);
                 gTaskIndex = updateIdSendScale(index, index+3, 1, 0);
-                lTaskIndex = updateIdSendScale(index, index-2, 1, 0);
+                lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
 
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
-                gAppletIndex = index + 1;
+                gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= index - 2;
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
 
-                gTaskIndex = updateIdSendScale(index, index+2, 1, 0);
+                tHIndex = availableHigherId(gAppletIndex+1);
+                gTaskIndex = updateIdSendScale(index, tHIndex, 1, 0);
                 lTaskIndex = updateIdSendScale(index, index-3, 1, 0);
             }
         }
