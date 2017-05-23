@@ -480,7 +480,7 @@ Item{
             id:splitterImage
             anchors.fill: parent
 
-            source: (container.internalSplitterId===1) ? "../icons/splitter.png" : "../icons/splitter2.png"
+            source: (container.internalSplitterId===1) ? "../../icons/splitter.png" : "../../icons/splitter2.png"
 
             layer.enabled: true
             layer.effect: DropShadow {
