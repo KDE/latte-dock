@@ -134,7 +134,7 @@ Item{
     property int moreWidth: ((applet && (applet.pluginName === "org.kde.plasma.systemtray")) || root.reverseLinesPosition)
                             && root.isVertical ? localMoreSpace : 0
 
-    property real center: width / 2
+    property real center:(width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real zoomScale: 1
 
     property int index: container.index
