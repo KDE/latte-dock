@@ -139,25 +139,25 @@ Item {
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
                 console.log("style 2...");
-                gAppletIndex = index + 2 ;
+                gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
 
                 tLIndex = availableLowerId(lAppletIndex-1);
-                gTaskIndex = updateIdSendScale(index, index+3, 1, 0);
+                gTaskIndex = updateIdSendScale(index, gAppletIndex+1, 1, 0);
                 lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
 
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
                 console.log("style 3...");
                 gAppletIndex = availableHigherId(index+1);
-                lAppletIndex= index - 2;
+                lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
 
                 tHIndex = availableHigherId(gAppletIndex+1);
                 gTaskIndex = updateIdSendScale(index, tHIndex, 1, 0);
-                lTaskIndex = updateIdSendScale(index, index-3, 1, 0);
+                lTaskIndex = updateIdSendScale(index, lAppletIndex-1, 1, 0);
             }
         }
 
@@ -234,6 +234,9 @@ Item {
         if (previousId === nextId && separators.indexOf(nextId)>-1)
             return;
 
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+            console.log("message: "+previousId + " - " + nextId);
+
         var update=false;
         //should update
         if (previousId>-1 && nextId>-1)
@@ -251,8 +254,8 @@ Item {
             separators.push(nextId);
         }
 
-        //if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-        //    console.log("separators : "+separators);
+        if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+            console.log("separators : "+separators);
 
         root.separatorsUpdated();
     }
