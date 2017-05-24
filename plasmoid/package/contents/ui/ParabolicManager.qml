@@ -93,17 +93,23 @@ Item {
 
         // console.debug(leftScale + "  " + rightScale + " " + index);
 
+        //first applets accessed
+        var gPAppletId = -1;
+        var lPAppletId = -1;
+
+        //secondary applets accessed to restore zoom
         var gAppletId = -1;
         var lAppletId = -1;
 
+        var gStep = 1;
+        var lStep = 1;
+
         if(!hasInternalSeparator || Math.abs(index-internalSeparatorPos)>=2){
             //activate messages to update the the neighbour scales
-            var gPAppletId = updateIdSendScale(index+1, rightScale, 0);
-            var lPAppletId = updateIdSendScale(index-1, leftScale, 0);
+            gPAppletId = updateIdSendScale(index+1, rightScale, 0);
+            lPAppletId = updateIdSendScale(index-1, leftScale, 0);
 
             if (latteDock) {
-                var gStep = 1;
-                var lStep = 1;
                 if (gPAppletId > -1)
                     gStep = Math.abs(gPAppletId - latteDock.latteAppletPos);
                 else if (lPAppletId > -1)
@@ -117,20 +123,47 @@ Item {
             clearTasksLowerThan(index-1);
         } else if(root.internalSeparatorPos>=0) {
             if(internalSeparatorPos === index+1){
-                updateIdSendScale(index+2, rightScale, 0);
-                updateIdSendScale(index-1, leftScale, 0);
+                //console.log("1...");
+                gPAppletId = updateIdSendScale(index+2, rightScale, 0);
+                lPAppletId = updateIdSendScale(index-1, leftScale, 0);
 
-                gAppletId = updateIdSendScale(index+3, 1, 0);
-                lAppletId = updateIdSendScale(index-2, 1, 0);
+                //console.log("apps: " + latteDock.latteAppletPos + " _ " + gPAppletId + " - " + lPAppletId);
+                if (latteDock) {
+                    gStep = 2;
+                    if (gPAppletId > -1)
+                        gStep = Math.abs(gPAppletId - latteDock.latteAppletPos);
+                    else if (lPAppletId > -1)
+                        lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
+                }
+
+                //console.log("g:"+ gStep + " l:" + lStep);
+
+                gAppletId = updateIdSendScale(index+gStep+2, 1, 0);
+                lAppletId = updateIdSendScale(index-lStep-1, 1, 0);
+                //console.log("apps2: "+ gAppletId + " - " + lAppletId);
 
                 clearTasksGreaterThan(index+2);
                 clearTasksLowerThan(index-1);
             } else if(internalSeparatorPos === index-1) {
-                updateIdSendScale(index-2, leftScale, 0);
-                updateIdSendScale(index+1, rightScale, 0);
+                //console.log("1...");
+                gPAppletId = updateIdSendScale(index+1, rightScale, 0);
+                lPAppletId = updateIdSendScale(index-2, leftScale, 0);
 
-                gAppletId = updateIdSendScale(index+2, 1, 0);
-                lAppletId = updateIdSendScale(index-3, 1, 0);
+                //console.log("apps: " + latteDock.latteAppletPos + " _ " + gPAppletId + " - " + lPAppletId);
+                if (latteDock) {
+                    gStep = 1;
+                    lStep = 2;
+                    if (gPAppletId > -1)
+                        gStep = Math.abs(gPAppletId - latteDock.latteAppletPos);
+                    else if (lPAppletId > -1)
+                        lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
+                }
+
+                //console.log("g:"+ gStep + " l:" + lStep);
+
+                gAppletId = updateIdSendScale(index+gStep+1, 1, 0);
+                lAppletId = updateIdSendScale(index-lStep-2, 1, 0);
+                //console.log("apps2: "+ gAppletId + " - " + lAppletId);
 
                 clearTasksGreaterThan(index+1);
                 clearTasksLowerThan(index-2);
