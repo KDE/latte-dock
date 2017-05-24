@@ -255,6 +255,13 @@ MouseArea{
         }
     }
 
+    /* Rectangle{
+            anchors.fill: parent
+            color: "transparent"
+            border.width: 1
+            border.color: "blue"
+        } */
+
     Flow{
         id: taskFlow
         width: parent.width
@@ -270,13 +277,25 @@ MouseArea{
 
             visible: (index === 0) || (separatorSpace > 0)
 
+            property bool neighbourSeparator: false
             //in case there is a neighbour separator
             property int separatorSpace: (parabolicManager.hasInternalSeparator
-                                          && parabolicManager.internalSeparatorPos === index-1) ?
-                                             (2+root.iconMargin/2) : 0
+                                          && parabolicManager.internalSeparatorPos === index-1)
+                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
+
+            Connections{
+                target: latteDock
+                onSeparatorsUpdated: {
+                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
+                }
+
+                onLatteAppletPosChanged: {
+                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
+                }
+            }
 
             Behavior on nScale {
                 enabled: !root.globalDirectRender
@@ -288,7 +307,7 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /*Rectangle{
+            /* Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -296,7 +315,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            }*/
+            } */
         }
 
         TaskWrapper{ id: wrapper }
@@ -310,13 +329,25 @@ MouseArea{
 
             visible: (index === icList.count - 1) ||  (separatorSpace > 0)
 
+            property bool neighbourSeparator: false
             //in case there is a neighbour separator
             property int separatorSpace: (parabolicManager.hasInternalSeparator
-                                          && parabolicManager.internalSeparatorPos === index+1) ?
-                                             (2+root.iconMargin/2) : 0
+                                          && parabolicManager.internalSeparatorPos === index+1)
+                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
+
+            Connections{
+                target: latteDock
+                onSeparatorsUpdated: {
+                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
+                }
+
+                onLatteAppletPosChanged: {
+                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
+                }
+            }
 
             Behavior on nScale {
                 enabled: !root.globalDirectRender
@@ -328,7 +359,7 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /*Rectangle{
+            /* Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0

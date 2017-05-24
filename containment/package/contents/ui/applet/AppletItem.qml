@@ -59,7 +59,7 @@ Item {
     property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
-    property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator" ? true : false
+    property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator"
 
     //applet is in starting edge
     /*property bool startEdge: index < layoutsContainer.endLayout.beginIndex ? (index === 0)&&(layoutsContainer.mainLayout.count > 1) :
@@ -98,7 +98,7 @@ Item {
 
     property string title: isInternalViewSplitter ? "Now Dock Splitter" : ""
 
-    property Item applet
+    property Item applet: null
     property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
                                    (applet.children[0] ? applet.children[0] : null) : null
     property Item appletWrapper: applet &&
@@ -265,14 +265,16 @@ Item {
             parabolicManager.setSeparator(previousIndex, index);
         }
 
-        previousIndex = index;
+        if (index>-1) {
+            previousIndex = index;
+        }
     }
 
     onIsHiddenChanged: {
         if (isHidden) {
             parabolicManager.setHidden(-1, index);
         } else {
-            parabolicManager.setHidden(index, -1);
+            parabolicManager.setHidden(previousIndex, -1);
         }
     }
 
@@ -280,7 +282,7 @@ Item {
         if (isSeparator) {
             parabolicManager.setSeparator(-1, index);
         } else {
-            parabolicManager.setSeparator(index, -1);
+            parabolicManager.setSeparator(previousIndex, -1);
         }
 
     }
@@ -315,6 +317,13 @@ Item {
     }
 
     Component.onDestruction: {
+        if (isSeparator){
+            parabolicManager.setSeparator(previousIndex, -1);
+        }
+
+        if (isHidden)
+            parabolicManager.setHidden(previousIndex, -1);
+
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
     }
@@ -370,7 +379,7 @@ Item {
         color: "transparent"
         border.color: "green"
         border.width: 1
-    } */
+    }*/
 
     Flow{
         id: appletFlow
@@ -401,8 +410,9 @@ Item {
             property bool neighbourSeparator: false;
 
             //in case there is a neighbour internal separator
-            property int separatorSpace: (root.latteApplet && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1)
-                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
+            property int separatorSpace: (root.latteApplet && root.latteApplet.hasInternalSeparator
+                                          && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1)
+                                         || (neighbourSeparator && !container.isSeparator && !container.latteApplet) ? (2+root.iconMargin/2) : 0
             property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
             property real nScale: 0
@@ -455,8 +465,9 @@ Item {
 
             property bool neighbourSeparator: false;
             //in case there is a neighbour internal separator
-            property int separatorSpace: (root.latteApplet && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1)
-                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
+            property int separatorSpace: (root.latteApplet &&  root.latteApplet.hasInternalSeparator
+                                          && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1)
+                                         || (neighbourSeparator && !container.isSeparator && !container.latteApplet) ? (2+root.iconMargin/2) : 0
             property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
             property real nScale: 0

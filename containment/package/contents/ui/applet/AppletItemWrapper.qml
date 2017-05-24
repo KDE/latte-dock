@@ -38,7 +38,7 @@ Item{
 
         if (container.isSeparator && !root.editMode) {
             if (!root.isVertical)
-                return 0.01;
+                return -1;
             else
                 return root.iconSize;
         }
@@ -66,7 +66,7 @@ Item{
 
         if (container.isSeparator && !root.editMode) {
             if (root.isVertical)
-                return 0.01;
+                return -1;
             else
                 return root.iconSize;
         }

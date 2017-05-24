@@ -20,6 +20,9 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+
 // holds all the logic around parabolic effect signals into one place.
 // ParabolicManager is responsible for triggering all the messages to applets
 // that are neighbour to the hovered applet. This will help a lot to catch cases
@@ -209,7 +212,7 @@ Item {
     // no, -1 = remove separator
     // no, no = update separator position
     function setSeparator(previousId, nextId) {
-        if (previousId === nextId)
+        if (previousId === nextId && separators.indexOf(nextId)>-1)
             return;
 
         var update=false;
@@ -229,8 +232,10 @@ Item {
             separators.push(nextId);
         }
 
+        //if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+        //    console.log("separators : "+separators);
+
         root.separatorsUpdated();
-        // console.log("separators : "+separators);
     }
 
     // update the registered hidden applets
