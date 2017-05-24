@@ -304,29 +304,6 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
-                    iconSource: plasmoid.configuration.hasInternalSeparator ? "edit-delete" : "list-add"
-                    text: i18n("Tasks Separator")
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignLeft
-                    visible: dock.tasksPresent()
-                    //                    tooltip: i18n("Add a separator for tasks")
-
-                    onClicked: {
-                        if (plasmoid.configuration.hasInternalSeparator)
-                            dockConfig.removeTasksSeparator();
-                        else
-                            dockConfig.addTasksSeparator();
-                    }
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-
-                PlasmaComponents.Button {
                     iconSource: "edit-delete"
                     text: i18n("Remove Tasks")
                     enabled: dock.tasksPresent()

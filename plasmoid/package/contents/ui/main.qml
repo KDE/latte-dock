@@ -1279,12 +1279,12 @@ Item {
 
     //! it is used to add the fake desktop file which represents
     //! the separator (fake launcher)
-    function addSeparator(filepath){
-        tasksModel.requestAddLauncher(filepath);
+    function addSeparator(){
+        tasksModel.requestAddLauncher("file:///latte-separator.desktop");
     }
 
-    function removeSeparator(filepath){
-        tasksModel.requestRemoveLauncher(filepath);
+    function removeSeparator(){
+        tasksModel.requestRemoveLauncher("file:///latte-separator.desktop");
     }
 
     function previewContainsMouse() {

@@ -830,6 +830,27 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: internalSeparatorItem
+        visible: root.editMode
+
+        icon: "view-split-left-right"
+        text: i18n("Internal Separator")
+        checkable: true
+
+        Component.onCompleted: {
+            checked = root.hasInternalSeparator;
+        }
+
+        onClicked: {
+            if (checked) {
+                root.addSeparator();
+            } else {
+                root.removeSeparator();
+            }
+        }
+    }
+
+    PlasmaComponents.MenuItem {
         id: altSession
         visible: root.exposeAltSession
 

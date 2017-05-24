@@ -53,8 +53,6 @@ public:
 
 public slots:
     Q_INVOKABLE void addPanelSpacer();
-    Q_INVOKABLE void addTasksSeparator();
-    Q_INVOKABLE void removeTasksSeparator();
     Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
