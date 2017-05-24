@@ -47,14 +47,14 @@ Item{
         filterByScreen: true
         filterByActivity: true
 
-        onDataChanged: winModel.reconsiderMaximized();
-        onCountChanged: winModel.reconsiderMaximized();
-        Component.onCompleted: winModel.reconsiderMaximized();
+        Component.onCompleted: {
+            windowsRepeater.model = tasksModel;
+            winModel.reconsiderMaximized();
+        }
     }
 
     Repeater{
         id: windowsRepeater
-        model:tasksModel
 
         delegate: Item{
             readonly property bool isMaximized: IsMaximized === true ? true : false
@@ -64,7 +64,7 @@ Item{
             onIsMaximizedChanged: winModel.reconsiderMaximized();
         }
 
-        Component.onCompleted: winModel.reconsiderMaximized();
+        onCountChanged: winModel.reconsiderMaximized();
     }
 
     function reconsiderMaximized() {
