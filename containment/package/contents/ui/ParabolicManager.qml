@@ -39,15 +39,24 @@ Item {
         // console.log(appIndex + " _ "+index+ " _ "+zScale + " _ "+ zStep);
         if(root.latteApplet && ((appIndex<root.latteAppletPos && index>=root.latteAppletPos)
                                 || (appIndex>root.latteAppletPos && index<=root.latteAppletPos)) ){
-            // console.log("ch 1...");
             var appStep = Math.abs(root.latteAppletPos-appIndex);
             var signalStep = Math.abs(index - appIndex);
 
             var taskIndex = -1;
+            var internSepStep = 0;
             if(appIndex<root.latteAppletPos){
-                taskIndex = signalStep-appStep;
+                if (root.latteApplet.internalSeparatorPos === 0)
+                    internSepStep = 1;
+
+                taskIndex = signalStep-appStep+internSepStep;
+                console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
-                taskIndex = root.tasksCount-1 - (signalStep-appStep);
+                console.log("C1...");
+                if (root.latteApplet.internalSeparatorPos === root.tasksCount-1)
+                    internSepStep = 1;
+
+                taskIndex = root.tasksCount-1 - (signalStep-appStep) - internSepStep;
+                console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             }
 
             root.latteApplet.updateScale(taskIndex, zScale,zStep);
@@ -59,6 +68,7 @@ Item {
             return -1;
         }
     }
+
 
     function applyParabolicEffect(index, currentMousePosition, center) {
         var rDistance = Math.abs(currentMousePosition  - center);
@@ -102,17 +112,24 @@ Item {
         var tLIndex = -1;
         var tHIndex = -1;
 
-        if(!root.latteApplet || Math.abs(root.latteAppletPos-index)>1 || !root.hasInternalSeparator
+
+        var gAppN = availableHigherId(index+1);
+        var lAppN = availableLowerId(index-1);
+
+        var latteNeighbour = root.latteApplet && ((gAppN === root.latteAppletPos) || (lAppN === root.latteAppletPos ));
+
+        if(!root.latteApplet || !latteNeighbour || !root.hasInternalSeparator
                 || (root.latteApplet && root.hasInternalSeparator
                     && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
                         || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
                         || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
                 ){
-            gAppletIndex = availableHigherId(index+1);
-            lAppletIndex = availableLowerId(index-1);
+            console.log("style 1...");
+            gAppletIndex = gAppN;
+            lAppletIndex = lAppN;
 
-            updateIdSendScale(index, lAppletIndex, leftScale, 0);
             updateIdSendScale(index, gAppletIndex, rightScale, 0);
+            updateIdSendScale(index, lAppletIndex, leftScale, 0);
 
             tLIndex = availableLowerId(lAppletIndex-1);
             tHIndex = availableHigherId(gAppletIndex+1);
@@ -121,6 +138,7 @@ Item {
             lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
+                console.log("style 2...");
                 gAppletIndex = index + 2 ;
                 lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
@@ -131,6 +149,7 @@ Item {
                 lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
 
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
+                console.log("style 3...");
                 gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= index - 2;
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
