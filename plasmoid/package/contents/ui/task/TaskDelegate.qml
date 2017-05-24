@@ -72,6 +72,8 @@ MouseArea{
     hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
                   && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation) && !isSeparator
     // hoverEnabled: false
+    opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
+
 
     property bool buffersAreReady: false
     property bool delayingRemove: ListView.delayRemove
@@ -287,20 +289,24 @@ MouseArea{
             //in case there is a neighbour separator
             property int separatorSpace: (parabolicManager.internalSeparatorPos !== -1
                                           && parabolicManager.internalSeparatorPos === index-1)
-                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
+                                         || (neighbourSeparator && !isSeparator) ? (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
 
+            function updateNeighbour() {
+                hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
+            }
+
             Connections{
                 target: latteDock
-                onSeparatorsUpdated: {
-                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
-                }
+                onSeparatorsUpdated: hiddenSpacerLeft.updateNeighbour();
+                onLatteAppletPosChanged: hiddenSpacerLeft.updateNeighbour();
+            }
 
-                onLatteAppletPosChanged: {
-                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
-                }
+            Connections{
+                target: mainItemContainer
+                onItemIndexChanged: hiddenSpacerLeft.updateNeighbour();
             }
 
             Behavior on nScale {
@@ -321,7 +327,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            } */
+            }*/
         }
 
         TaskWrapper{ id: wrapper }
@@ -339,20 +345,25 @@ MouseArea{
             //in case there is a neighbour separator
             property int separatorSpace: (parabolicManager.internalSeparatorPos !== -1
                                           && parabolicManager.internalSeparatorPos === index+1)
-                                         || neighbourSeparator ? (2+root.iconMargin/2) : 0
+                                         || (neighbourSeparator && !isSeparator) ? (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
 
+
+            function updateNeighbour() {
+                hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
+            }
+
             Connections{
                 target: latteDock
-                onSeparatorsUpdated: {
-                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
-                }
+                onSeparatorsUpdated: hiddenSpacerRight.updateNeighbour();
+                onLatteAppletPosChanged: hiddenSpacerRight.updateNeighbour();
+            }
 
-                onLatteAppletPosChanged: {
-                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
-                }
+            Connections{
+                target: mainItemContainer
+                onItemIndexChanged: hiddenSpacerRight.updateNeighbour();
             }
 
             Behavior on nScale {
@@ -365,7 +376,7 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /* Rectangle{
+             /*Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
