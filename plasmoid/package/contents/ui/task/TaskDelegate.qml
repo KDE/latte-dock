@@ -285,7 +285,7 @@ MouseArea{
 
             property bool neighbourSeparator: false
             //in case there is a neighbour separator
-            property int separatorSpace: (parabolicManager.hasInternalSeparator
+            property int separatorSpace: (parabolicManager.internalSeparatorPos !== -1
                                           && parabolicManager.internalSeparatorPos === index-1)
                                          || neighbourSeparator ? (2+root.iconMargin/2) : 0
 
@@ -337,7 +337,7 @@ MouseArea{
 
             property bool neighbourSeparator: false
             //in case there is a neighbour separator
-            property int separatorSpace: (parabolicManager.hasInternalSeparator
+            property int separatorSpace: (parabolicManager.internalSeparatorPos !== -1
                                           && parabolicManager.internalSeparatorPos === index+1)
                                          || neighbourSeparator ? (2+root.iconMargin/2) : 0
 

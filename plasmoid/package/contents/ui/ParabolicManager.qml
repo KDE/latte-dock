@@ -28,8 +28,15 @@ import QtQuick 2.0
 Item {
     id: parManager
 
-    readonly property bool hasInternalSeparator: internalSeparatorPos > -1
+    property bool hasInternalSeparator: false
     property int internalSeparatorPos: -1
+
+    onInternalSeparatorPosChanged: {
+        if (internalSeparatorPos>-1)
+            hasInternalSeparator = true;
+        else
+            hasInternalSeparator = false;
+    }
 
     //!this is used in order to update the index when the signal is for applets
     //!outside the latte plasmoid
