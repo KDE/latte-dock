@@ -274,7 +274,7 @@ Item {
         if (isHidden) {
             parabolicManager.setHidden(-1, index);
         } else {
-            parabolicManager.setHidden(previousIndex, -1);
+            parabolicManager.setHidden(index, -1);
         }
     }
 
@@ -282,7 +282,7 @@ Item {
         if (isSeparator) {
             parabolicManager.setSeparator(-1, index);
         } else {
-            parabolicManager.setSeparator(previousIndex, -1);
+            parabolicManager.setSeparator(index, -1);
         }
 
     }

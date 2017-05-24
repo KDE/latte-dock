@@ -147,14 +147,14 @@ Item {
                 latteApplet.parabolicManager.clearTasksGreaterThan(0);
             } else {
                 if (gTaskIndex > -1)
-                    latteApplet.parabolicManager.clearTasksGreaterThan(gTaskIndex-1);
+                    latteApplet.parabolicManager.clearTasksGreaterThan(gTaskIndex);
                 if (lTaskIndex > -1)
-                    latteApplet.parabolicManager.clearTasksLowerThan(lTaskIndex+1);
+                    latteApplet.parabolicManager.clearTasksLowerThan(lTaskIndex);
             }
         }
 
-        clearAppletsGreaterThan(gAppletIndex, 1, 0);
-        clearAppletsLowerThan(lAppletIndex, 1, 0);
+        clearAppletsGreaterThan(gAppletIndex+1, 1, 0);
+        clearAppletsLowerThan(lAppletIndex-1, 1, 0);
 
         return {leftScale:leftScale, rightScale:rightScale};
     }

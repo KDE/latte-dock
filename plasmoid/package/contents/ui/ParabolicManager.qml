@@ -132,12 +132,12 @@ Item {
 
         if (latteDock){
             if (gAppletId > -1)
-                latteDock.parabolicManager.clearAppletsGreaterThan(gAppletId-1);
+                latteDock.parabolicManager.clearAppletsGreaterThan(gAppletId);
             else
                 latteDock.parabolicManager.clearAppletsGreaterThan(latteDock.latteAppletPos);
 
             if (lAppletId > -1)
-                latteDock.parabolicManager.clearAppletsLowerThan(lAppletId+1);
+                latteDock.parabolicManager.clearAppletsLowerThan(lAppletId);
             else
                 latteDock.parabolicManager.clearAppletsLowerThan(latteDock.latteAppletPos);
         }
