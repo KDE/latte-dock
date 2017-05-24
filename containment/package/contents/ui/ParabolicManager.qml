@@ -49,6 +49,9 @@ Item {
                     internSepStep = 1;
 
                 taskIndex = signalStep-appStep+internSepStep;
+                if (taskIndex === root.latteApplet.internalSeparatorPos)
+                    taskIndex = taskIndex + 1;
+
                 console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
                 console.log("C1...");
@@ -56,6 +59,9 @@ Item {
                     internSepStep = 1;
 
                 taskIndex = root.tasksCount-1 - (signalStep-appStep) - internSepStep;
+                if (taskIndex === root.latteApplet.internalSeparatorPos)
+                    taskIndex = taskIndex - 1;
+
                 console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             }
 
@@ -131,8 +137,8 @@ Item {
             updateIdSendScale(index, gAppletIndex, rightScale, 0);
             updateIdSendScale(index, lAppletIndex, leftScale, 0);
 
-            tLIndex = availableLowerId(lAppletIndex-1);
-            tHIndex = availableHigherId(gAppletIndex+1);
+            tLIndex = (lAppletIndex !== root.latteAppletPos) ? availableLowerId(lAppletIndex-1) : lAppletIndex-1;
+            tHIndex = (gAppletIndex !== root.latteAppletPos) ? availableHigherId(gAppletIndex+1) : gAppletIndex+1;
 
             gTaskIndex = updateIdSendScale(index, tHIndex, 1 ,0);
             lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
