@@ -52,9 +52,8 @@ Item {
                 if (taskIndex === root.latteApplet.internalSeparatorPos)
                     taskIndex = taskIndex + 1;
 
-                console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+              //  console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
-                console.log("C1...");
                 if (root.latteApplet.internalSeparatorPos === root.tasksCount-1)
                     internSepStep = 1;
 
@@ -62,7 +61,7 @@ Item {
                 if (taskIndex === root.latteApplet.internalSeparatorPos)
                     taskIndex = taskIndex - 1;
 
-                console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+               // console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             }
 
             root.latteApplet.updateScale(taskIndex, zScale,zStep);
@@ -130,7 +129,7 @@ Item {
                         || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
                         || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
                 ){
-            console.log("style 1...");
+            //console.log("style 1...");
             gAppletIndex = gAppN;
             lAppletIndex = lAppN;
 
@@ -144,7 +143,7 @@ Item {
             lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
         } else{
             if(root.latteApplet.internalSeparatorPos === 0){
-                console.log("style 2...");
+                //console.log("style 2...");
                 gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
@@ -155,7 +154,7 @@ Item {
                 lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
 
             } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
-                console.log("style 3...");
+                //console.log("style 3...");
                 gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
@@ -240,8 +239,8 @@ Item {
         if (previousId === nextId && separators.indexOf(nextId)>-1)
             return;
 
-        if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-            console.log("message: "+previousId + " - " + nextId);
+        //if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+        //    console.log("message: "+previousId + " - " + nextId);
 
         var update=false;
         //should update
@@ -260,8 +259,8 @@ Item {
             separators.push(nextId);
         }
 
-        if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-            console.log("separators : "+separators);
+        //if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+        //    console.log("separators : "+separators);
 
         root.separatorsUpdated();
     }

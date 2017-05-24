@@ -72,8 +72,7 @@ MouseArea{
     hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
                   && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation) && !isSeparator
     // hoverEnabled: false
-    opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
-
+    //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
     property bool buffersAreReady: false
     property bool delayingRemove: ListView.delayRemove
