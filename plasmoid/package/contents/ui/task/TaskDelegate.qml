@@ -287,8 +287,10 @@ MouseArea{
             visible: (index === 0) || (separatorSpace > 0)
 
             property bool neighbourSeparator: false
-            //in case there is a neighbour separator
-            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === index-1)
+            //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
+            //when the task is removed
+            property int indexUsed: index === -1 ? lastValidIndex : index
+            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed-1)
                                          || neighbourSeparator) && !isSeparator ?
                                              (2+root.iconMargin/2) : 0
 
@@ -352,8 +354,10 @@ MouseArea{
             visible: (index === icList.count - 1) ||  (separatorSpace > 0)
 
             property bool neighbourSeparator: false
-            //in case there is a neighbour separator
-            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === index+1)
+            //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
+            //when the task is removed
+            property int indexUsed: index === -1 ? lastValidIndex : index
+            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed+1)
                                          || neighbourSeparator) && !isSeparator ?
                                              (2+root.iconMargin/2) : 0
 
