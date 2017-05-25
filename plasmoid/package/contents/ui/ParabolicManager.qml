@@ -105,9 +105,12 @@ Item {
         var lStep = 1;
 
         if(!hasInternalSeparator || Math.abs(index-internalSeparatorPos)>=2){
-            //activate messages to update the the neighbour scales
+            //console.log("--- task style 1...");
             gPAppletId = updateIdSendScale(index+1, rightScale, 0);
             lPAppletId = updateIdSendScale(index-1, leftScale, 0);
+
+            //console.log("index:"+index + " lattePos:"+latteDock.latteAppletPos);
+            //console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId);
 
             if (latteDock) {
                 if (gPAppletId > -1)
@@ -115,19 +118,24 @@ Item {
                 else if (lPAppletId > -1)
                     lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
             }
+            //console.log("gs:"+gStep+" ls:"+lStep);
 
             gAppletId = updateIdSendScale(index+gStep+1, 1, 0);
             lAppletId = updateIdSendScale(index-lStep-1, 1, 0);
+
+            //console.log(" cgApp:"+gAppletId+" clApp:"+lAppletId);
 
             clearTasksGreaterThan(index+1);
             clearTasksLowerThan(index-1);
         } else if(root.internalSeparatorPos>=0) {
             if(internalSeparatorPos === index+1){
-                //console.log("1...");
+                //console.log("--- task style 2...");
                 gPAppletId = updateIdSendScale(index+2, rightScale, 0);
                 lPAppletId = updateIdSendScale(index-1, leftScale, 0);
 
-                //console.log("apps: " + latteDock.latteAppletPos + " _ " + gPAppletId + " - " + lPAppletId);
+                //console.log("index:"+index + " lattePos:"+latteDock.latteAppletPos);
+                //console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId);
+
                 if (latteDock) {
                     gStep = 2;
                     if (gPAppletId > -1)
@@ -136,20 +144,23 @@ Item {
                         lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
                 }
 
-                //console.log("g:"+ gStep + " l:" + lStep);
+                //console.log("gs:"+gStep+" ls:"+lStep);
 
                 gAppletId = updateIdSendScale(index+gStep+2, 1, 0);
                 lAppletId = updateIdSendScale(index-lStep-1, 1, 0);
-                //console.log("apps2: "+ gAppletId + " - " + lAppletId);
+
+                //console.log(" cgApp:"+gAppletId+" clApp:"+lAppletId);
 
                 clearTasksGreaterThan(index+2);
                 clearTasksLowerThan(index-1);
             } else if(internalSeparatorPos === index-1) {
-                //console.log("1...");
+                //console.log("--- task style 3...");
                 gPAppletId = updateIdSendScale(index+1, rightScale, 0);
                 lPAppletId = updateIdSendScale(index-2, leftScale, 0);
 
-                //console.log("apps: " + latteDock.latteAppletPos + " _ " + gPAppletId + " - " + lPAppletId);
+                //console.log("index:"+index + " lattePos:"+latteDock.latteAppletPos);
+                //console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId);
+
                 if (latteDock) {
                     gStep = 1;
                     lStep = 2;
@@ -159,11 +170,12 @@ Item {
                         lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
                 }
 
-                //console.log("g:"+ gStep + " l:" + lStep);
+                //console.log("gs:"+gStep+" ls:"+lStep);
 
                 gAppletId = updateIdSendScale(index+gStep+1, 1, 0);
                 lAppletId = updateIdSendScale(index-lStep-2, 1, 0);
-                //console.log("apps2: "+ gAppletId + " - " + lAppletId);
+
+                //console.log(" cgApp:"+gAppletId+" clApp:"+lAppletId);
 
                 clearTasksGreaterThan(index+1);
                 clearTasksLowerThan(index-2);
@@ -193,7 +205,7 @@ Item {
     }
 
     function clearTasksLowerThan(index) {
-        if (index>=0 && root.tasksCount>0) {
+        if (index>0 && root.tasksCount>2) {
             for(var i=0; i<index; ++i)
                 root.updateScale(i, 1, 0);
         }
