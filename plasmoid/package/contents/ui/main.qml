@@ -868,7 +868,7 @@ Item {
 
             target: icList
 
-            property int maxSize: (root.hoveredIndex>=0 && !root.dragSource) ?
+            property int maxSize: ((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) && !root.dragSource) ?
                                       root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) :
                                       root.statesLineSize + root.iconSize + root.thickMargin
 

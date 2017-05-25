@@ -50,7 +50,7 @@ Item{
             //return container.sizeForFill;
         }
 
-        if (latteApplet) {
+        if (container.latteApplet) {
             if (container.showZoomed && root.isVertical)
                 return root.statesLineSize + root.thickMargin + root.iconSize + 1;
             else
@@ -79,7 +79,7 @@ Item{
             //return container.sizeForFill;
         }
 
-        if (latteApplet) {
+        if (container.latteApplet) {
             if (container.showZoomed && root.isHorizontal)
                 return root.statesLineSize + root.thickMargin + root.iconSize + 1;
             else
