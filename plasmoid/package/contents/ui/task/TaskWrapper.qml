@@ -175,6 +175,12 @@ Item{
 
     function signalUpdateScale(nIndex, nScale, step){
         if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
+            /*if (nScale !== 1){
+                if (isSeparator){
+                    console.log("WRONG TASK SIGNAL for internal separator at pos:"+ index +" and zoom:"+nScale);
+                }
+            }*/
+
             if(nScale >= 0) {
                 mScale = nScale + step;
             } else {

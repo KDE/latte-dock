@@ -634,6 +634,18 @@ Item{
         if(container && (container.index === nIndex)){
             container.reconsiderAppletIconItem();
 
+            /*if (nScale !== 1){
+                if (applet && (applet.status === PlasmaCore.Types.HiddenStatus)){
+                    console.log("WRONG SIGNAL for hidden applet with id:"+ index +" and zoom:"+nScale);
+                }
+                if (isSeparator){
+                    console.log("WRONG SIGNAL for separator applet with id:"+ index +" and zoom:"+nScale);
+                }
+                if (container.isInternalViewSplitter){
+                    console.log("WRONG SIGNAL for internal view splitter with id:"+ index +" and zoom:"+nScale);
+                }
+            }*/
+
             if ( ((canBeHovered && !lockZoom ) || container.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
                     //&& (index != currentLayout.hoveredIndex)
@@ -645,13 +657,13 @@ Item{
                         zoomScale = zoomScale + step;
                 }
             }  ///if the applet is hidden must forward its scale events to its neighbours
-            else if ((applet && (applet.status === PlasmaCore.Types.HiddenStatus))
+            /*else if ((applet && (applet.status === PlasmaCore.Types.HiddenStatus))
                      || container.isInternalViewSplitter){
                 if(layoutsContainer.hoveredIndex>index)
                     root.updateScale(index-1, nScale, step);
                 else if((layoutsContainer.hoveredIndex<index))
                     root.updateScale(index+1, nScale, step);
-            }
+            }*/
         }
     }
 
