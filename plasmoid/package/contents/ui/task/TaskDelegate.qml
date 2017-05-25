@@ -296,7 +296,14 @@ MouseArea{
             property real nScale: 0
 
             function updateNeighbour() {
-                hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
+                if (latteDock) {
+                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
+                }
+            }
+
+            Connections{
+                target: root
+                onLatteDockChanged: hiddenSpacerLeft.updateNeighbour();
             }
 
             Connections{
@@ -355,7 +362,14 @@ MouseArea{
 
 
             function updateNeighbour() {
-                hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
+                if (latteDock) {
+                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
+                }
+            }
+
+            Connections{
+                target: root
+                onLatteDockChanged: hiddenSpacerRight.updateNeighbour();
             }
 
             Connections{
