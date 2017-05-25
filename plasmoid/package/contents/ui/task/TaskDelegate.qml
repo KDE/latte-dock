@@ -291,15 +291,16 @@ MouseArea{
             //when the task is removed
             property int indexUsed: index === -1 ? lastValidIndex : index
             property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed-1)
-                                         || neighbourSeparator) && !isSeparator ?
+                                         || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
             property real nScale: 0
 
             function updateNeighbour() {
-                if (latteDock) {
-                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && index===0;
+                //index===-1 indicates that this item is removed
+                if (latteDock && index!==-1) {
+                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && indexUsed===0;
                 }
             }
 
@@ -331,6 +332,11 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
+            Behavior on separatorSpace {
+                enabled: wrapper.opacity > 0
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
             /* Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
@@ -358,7 +364,7 @@ MouseArea{
             //when the task is removed
             property int indexUsed: index === -1 ? lastValidIndex : index
             property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed+1)
-                                         || neighbourSeparator) && !isSeparator ?
+                                         || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
@@ -366,8 +372,9 @@ MouseArea{
 
 
             function updateNeighbour() {
-                if (latteDock) {
-                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && index===root.tasksCount-1;
+                //index===-1 indicates that this item is removed
+                if (latteDock && index!==-1) {
+                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && indexUsed===root.tasksCount-1;
                 }
             }
 
@@ -397,6 +404,11 @@ MouseArea{
             Behavior on nScale {
                 enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
+            }
+
+            Behavior on separatorSpace {
+                enabled: wrapper.opacity > 0
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
             /* Rectangle{
