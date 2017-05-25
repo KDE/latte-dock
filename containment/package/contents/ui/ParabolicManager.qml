@@ -270,7 +270,7 @@ Item {
     // no, -1 = remove hidden
     // no, no = update hidden position
     function setHidden(previousId, nextId) {
-        if (previousId === nextId)
+        if (previousId === nextId && hidden.indexOf(nextId)>-1)
             return;
 
         var update=false;
