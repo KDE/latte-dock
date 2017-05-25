@@ -221,7 +221,7 @@ MouseArea{
         anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
         anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
-        opacity: 0.5
+        opacity: separatorShadow.active ? 0 : 0.5
         visible: mainItemContainer.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
@@ -237,8 +237,10 @@ MouseArea{
             anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
             anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
-            width: root.vertical ? root.iconSize - 8  : 1
-            height: !root.vertical ? root.iconSize - 8 : 1
+            radius: 2
+
+            width: root.vertical ? root.iconSize - 8  : 2
+            height: !root.vertical ? root.iconSize - 8 : 2
             color: theme.textColor
         }
     }
