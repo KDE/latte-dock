@@ -38,6 +38,7 @@
 #include <KLocalizedString>
 #include <KAboutData>
 #include <KDBusService>
+#include <KQuickAddons/QtQuickSettings>
 
 
 //! COLORS
@@ -64,6 +65,8 @@ int main(int argc, char **argv)
 
     QQuickWindow::setDefaultAlphaBuffer(true);
     QApplication app(argc, argv);
+    KQuickAddons::QtQuickSettings::init();
+
     KLocalizedString::setApplicationDomain("latte-dock");
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("latte-dock")));
     //protect from closing app when changing to "alternative session" and back
