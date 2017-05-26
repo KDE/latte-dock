@@ -1,8 +1,8 @@
 
 function typeOf(obj, className){
     var name = obj.toString();
-    //if (applet.pluginName === "set a plugin name to debug")
-    //    console.log(name);
+    //if (applet.pluginName === "org.kde.plasma.simplemenu") //"set a plugin name to debug"
+        //console.log(name);
     return ((name.indexOf(className + "(") === 0) || (name.indexOf(className + "_QML") === 0));
 }
 
@@ -16,6 +16,10 @@ function reconsiderAppletIconItem(){
 
     if (applet.pluginName === "org.kde.plasma.kickoff") {
         identifyKickOff();
+    } else if (applet.pluginName === "org.kde.plasma.kicker") {
+        identifyKicker();
+    } else if (applet.pluginName === "org.kde.plasma.simplemenu") {
+        identifySimpleMenu();
     } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.lockZoom) {
         identifyUserSwitcher();
     } else {
@@ -29,10 +33,7 @@ function identifyGeneric() {
     for(var i=0; i<level0.length; ++i){
         var level1 = level0[i].children;
         for(var j=0; j<level1.length; ++j){
-            if (typeOf(level1[j], "IconItem")) {
-                container.appletIconItem = level1[j];
-                return;
-            } else if (typeOf(level1[j], "CompactRepresentation")) {
+            if (typeOf(level1[j], "CompactRepresentation")) {
                 var level2 = level1[j].children;
                 for(var k=0; k<level2.length; ++k){
                     if (typeOf(level2[k], "IconItem")) {
@@ -40,6 +41,9 @@ function identifyGeneric() {
                         return;
                     }
                 }
+            } else if (typeOf(level1[j], "IconItem")) {
+                container.appletIconItem = level1[j];
+                return;
             }
         }
     }
@@ -106,3 +110,68 @@ function identifyUserSwitcher() {
         }
     }
 }
+
+function identifyKicker() {
+    if (applet.pluginName !== "org.kde.plasma.kicker")
+        return;
+
+    var level0 = applet.children;
+
+    for(var i=0; i<level0.length; ++i){
+        var level1 = level0[i].children;
+        for(var j=0; j<level1.length; ++j){
+            if (typeOf(level1[j], "CompactRepresentation")) {
+                var level2 = level1[j].children;
+                var iconIt;
+                var imageIt;
+
+                for(var k=0; k<level2.length; ++k){
+                    if (typeOf(level2[k], "IconItem")) {
+                        iconIt = level2[k];
+                    } else if (typeOf(level2[k], "QQuickImage")) {
+                        imageIt = level2[k];
+                    }
+                }
+
+                if (iconIt && iconIt.visible) {
+                    container.appletIconItem = iconIt;
+                    return;
+                } else if (imageIt && imageIt.visible){
+                    container.appletIconItem = imageIt;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+function identifySimpleMenu() {
+    if (applet.pluginName !== "org.kde.plasma.simplemenu")
+        return;
+
+    var level0 = applet.children;
+
+    for(var i=0; i<level0.length; ++i){
+        var level1 = level0[i].children;
+        var iconIt;
+        var imageIt;
+
+        for(var j=0; j<level1.length; ++j){
+            if (typeOf(level1[j], "IconItem")) {
+                iconIt = level1[j];
+            } else if (typeOf(level1[j], "QQuickImage")) {
+                imageIt = level1[j];
+            }
+        }
+
+        if (imageIt && imageIt.visible){
+            container.appletIconItem = imageIt;
+            return;
+        } else if (iconIt && iconIt.visible) {
+            container.appletIconItem = iconIt;
+            return;
+        }
+    }
+}
+
+

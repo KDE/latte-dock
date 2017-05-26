@@ -632,7 +632,7 @@ Item{
 
     function signalUpdateScale(nIndex, nScale, step){
         if(container && (container.index === nIndex)){
-            container.reconsiderAppletIconItem();
+            //container.reconsiderAppletIconItem();
 
             /*if (nScale !== 1){
                 if (applet && (applet.status === PlasmaCore.Types.HiddenStatus)){

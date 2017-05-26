@@ -120,7 +120,7 @@ Item {
     //a timer that is used in  order to init the fake applets on startup
     Timer {
         id: fakeInitTimer
-        interval: 5000
+        interval: 4000
         onTriggered: AppletIndetifier.reconsiderAppletIconItem();
     }
 
@@ -362,6 +362,16 @@ Item {
         }
     }
 
+    Connections{
+        target: container.appletIconItem
+        onVisibleChanged: {
+            if (!container.appletIconItem.visible) {
+                container.appletIconItem = null;
+                container.reconsiderAppletIconItem();
+            }
+        }
+    }
+
     ///END connections
 
 
@@ -569,7 +579,7 @@ Item {
         }
 
         onEntered: {
-            AppletIndetifier.reconsiderAppletIconItem();
+            //AppletIndetifier.reconsiderAppletIconItem();
 
             if (lockZoom || !canBeHovered) {
                 return;
