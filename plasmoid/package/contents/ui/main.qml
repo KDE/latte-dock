@@ -1355,6 +1355,7 @@ Item {
 
     function startEnableDirectRenderTimer() {
         if (latteDock) {
+            latteDock.setGlobalDirectRender(true);
             latteDock.startEnableDirectRenderTimer();
         } else {
             enableDirectRenderTimer.start();

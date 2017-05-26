@@ -938,6 +938,12 @@ DragDrop.DropArea {
         checkRestoreZoom.start();
     }
 
+    function setGlobalDirectRender(value) {
+        if (latteApplet && latteApplet.waitingLaunchers.length > 0)
+            return;
+
+        root.globalDirectRender = value;
+    }
 
     function updateAutomaticIconSize() {
         if ((visibilityManager.normalState && !root.editMode && root.autoDecreaseIconSize)
