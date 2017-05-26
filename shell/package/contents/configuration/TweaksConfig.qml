@@ -108,7 +108,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease applets size when it is needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
-                //                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
+                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
 
                 onClicked: {
                     plasmoid.configuration.autoDecreaseIconSize = checked
@@ -119,7 +119,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Add launchers only in the corresponding area")
                 checked: plasmoid.configuration.addLaunchersInTaskManager
-                //                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
+                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
 
                 onClicked: {
                     plasmoid.configuration.addLaunchersInTaskManager = checked;
@@ -133,7 +133,7 @@ PlasmaComponents.Page {
                 enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
                            || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
 
-                //                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window")
+                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window.\nThe dock wont be above windows which are set at 'Always On Top'")
 
                 onCheckedChanged: {
                     dock.dockWinBehavior = checked
@@ -260,7 +260,7 @@ PlasmaComponents.Page {
                     text: i18n("Alternative Session")
                     checked: globalSettings.currentSession === Latte.Dock.AlternativeSession
                     checkable: true
-                    //                tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
+                    tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
 
                     onClicked: {
                         if (globalSettings.currentSession === Latte.Dock.DefaultSession) {
@@ -296,7 +296,7 @@ PlasmaComponents.Page {
                     text: i18n("Add Spacer")
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignLeft
-                    //                    tooltip: i18n("Add a spacer to separate applets")
+                    tooltip: i18n("Add a spacer to separate applets")
 
                     onClicked: {
                         dockConfig.addPanelSpacer()
@@ -307,7 +307,7 @@ PlasmaComponents.Page {
                     iconSource: "edit-delete"
                     text: i18n("Remove Tasks")
                     enabled: dock.tasksPresent()
-                    //                    tooltip: i18n("Remove Latte plasmoid")
+                    tooltip: i18n("Remove Latte plasmoid")
 
                     onClicked: {
                         dock.removeTasksPlasmoid();

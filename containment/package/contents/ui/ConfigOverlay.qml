@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.1
+import QtQuick 2.7
 import QtQuick.Layouts 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -456,6 +456,7 @@ MouseArea {
                         id: configureButton
                         anchors.verticalCenter: parent.verticalCenter
                         iconSource: "configure"
+                        tooltip: i18n("Configure applet")
                         onClicked: {
                             tooltip.visible = false;
                             currentApplet.applet.action("configure").trigger();
@@ -477,7 +478,7 @@ MouseArea {
                         id: lockButton
                         checkable: true
                         iconSource: checked ? "lock" : "unlock"
-                        // tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
+                        tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
 
                         onCheckedChanged: {
                             currentApplet.lockZoom = checked;
@@ -489,6 +490,7 @@ MouseArea {
                         id: closeButton
                         anchors.verticalCenter: parent.verticalCenter
                         iconSource: "window-close"
+                        tooltip: i18n("Remove applet")
                         onClicked: {
                             tooltip.visible = false;
                             if(currentApplet && currentApplet.applet)

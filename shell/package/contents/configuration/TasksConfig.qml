@@ -17,7 +17,7 @@
 *  You should have received a copy of the GNU General Public License
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
@@ -77,7 +77,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Indicator for active window group")
                 checked: plasmoid.configuration.dotsOnActive
-//                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active")
+                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active")
                 visible: plasmoid.configuration.advanced
 
                 onClicked: {
@@ -146,8 +146,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show progress information for tasks")
                 checked: plasmoid.configuration.smartLaunchersEnabled
-//                tooltip: i18n("Show a beautiful progress animation e.g. when copying \nfiles with Dolphin")
-
+                tooltip: i18n("Show a beautiful progress animation e.g. when copying \nfiles with Dolphin")
 
                 onClicked: {
                     plasmoid.configuration.smartLaunchersEnabled = checked
@@ -159,7 +158,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show indicator for audio streams")
                 checked: plasmoid.configuration.indicateAudioStreams
-//                tooltip: i18n("Show an audio indicator for the user to mute/unmute an app")
+                tooltip: i18n("Show an audio indicator for the user to mute/unmute an app")
                 visible: plasmoid.configuration.advanced
 
                 onClicked: {
@@ -172,7 +171,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate tasks through mouse wheel")
                 checked: plasmoid.configuration.mouseWheelActions
-//                tooltip: i18n("Enable/Disable the mouse wheel actions in order to cycle through tasks")
+                tooltip: i18n("Enable/Disable the mouse wheel actions in order to cycle through tasks")
                 visible: plasmoid.configuration.advanced
 
                 onClicked: {

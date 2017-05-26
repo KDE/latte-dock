@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
@@ -162,6 +162,7 @@ PlasmaCore.FrameSvgItem {
                 Switch {
                     id: advancedSwitch
                     checked: plasmoid.configuration.advanced
+
                     onPressedChanged: {
                         if(pressed)
                             plasmoid.configuration.advanced = !checked;
@@ -290,6 +291,8 @@ PlasmaCore.FrameSvgItem {
 
                 text: i18n("Add")
                 iconSource: "list-add"
+                tooltip: i18n("Add a new dock")
+
 
                 onClicked: dock.addNewDock()
 
@@ -307,6 +310,7 @@ PlasmaCore.FrameSvgItem {
                 iconSource: "edit-delete"
                 opacity: enabled ? 1 : 0
                 //enabled: dock.docksCount > 1
+                tooltip: i18n("Remove current dock")
 
                 onClicked: dock.removeDock()
             }
@@ -319,6 +323,7 @@ PlasmaCore.FrameSvgItem {
 
                 text: i18n("Quit")
                 iconSource: "application-exit"
+                tooltip: i18n("Quit Latte")
 
                 onClicked: dock.closeApplication()
             }
