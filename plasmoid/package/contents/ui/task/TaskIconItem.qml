@@ -120,6 +120,7 @@ Item{
         width: parent.width
         height: parent.height
 
+        opacity: root.enableShadows ? 0 : 1
 
         //fix bug #478, when changing form factor sometimes the tasks are not positioned
         //correctly, in such case we make a fast reinitialization for the sizes

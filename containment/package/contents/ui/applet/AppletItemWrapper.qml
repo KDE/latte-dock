@@ -379,6 +379,8 @@ Item{
         anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? lowThickUsed : 0
         anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? lowThickUsed : 0
 
+        opacity: appletShadow.active ? 0 : 1
+
         property int lowThickUsed: root.reverseLinesPosition ? root.thickMarginHigh : root.thickMarginBase
 
         //BEGIN states
@@ -514,6 +516,7 @@ Item{
 
     ///Shadow in applets
     Loader{
+        id: appletShadow
         anchors.fill: container.appletWrapper
 
         active: container.applet
