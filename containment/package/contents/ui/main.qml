@@ -82,6 +82,7 @@ DragDrop.DropArea {
     property bool isVertical: !isHorizontal
     property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
                                          : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
+    property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins

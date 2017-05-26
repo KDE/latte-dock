@@ -189,5 +189,8 @@
     <entry name="indicateAudioStreams" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="mouseWheelActions" type="Bool">
+      <default>true</default>
+    </entry>
   </group>
 </kcfg>

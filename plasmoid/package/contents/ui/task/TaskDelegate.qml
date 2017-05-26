@@ -744,7 +744,7 @@ MouseArea{
     }
 
     onWheel: {
-        if (isSeparator) {
+        if (isSeparator || !root.mouseWheelActions) {
             return;
         }
 

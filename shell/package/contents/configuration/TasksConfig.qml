@@ -167,6 +167,19 @@ PlasmaComponents.Page {
                 }
             }
 
+            PlasmaComponents.CheckBox {
+                id: mouseWheelChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Activate tasks through mouse wheel")
+                checked: plasmoid.configuration.mouseWheelActions
+//                tooltip: i18n("Enable/Disable the mouse wheel actions in order to cycle through tasks")
+                visible: plasmoid.configuration.advanced
+
+                onClicked: {
+                    plasmoid.configuration.mouseWheelActions = checked
+                }
+            }
+
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
                 visible: plasmoid.configuration.advanced
