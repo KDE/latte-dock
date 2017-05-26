@@ -1,8 +1,8 @@
 
 function typeOf(obj, className){
     var name = obj.toString();
-    //if (applet.pluginName === "org.kde.plasma.simplemenu") //"set a plugin name to debug"
-        //console.log(name);
+    //if (applet.pluginName === "org.kde.plasma.kicker") //"set a plugin name to debug"
+    //    console.log(name);
     return ((name.indexOf(className + "(") === 0) || (name.indexOf(className + "_QML") === 0));
 }
 
@@ -133,13 +133,15 @@ function identifyKicker() {
                     }
                 }
 
-                if (iconIt && iconIt.visible) {
+                if (iconIt) {
                     container.appletIconItem = iconIt;
-                    return;
-                } else if (imageIt && imageIt.visible){
-                    container.appletIconItem = imageIt;
-                    return;
                 }
+
+                if (imageIt){
+                   container.appletImageItem = imageIt;
+                }
+
+                return;
             }
         }
     }
@@ -164,14 +166,14 @@ function identifySimpleMenu() {
             }
         }
 
-        if (imageIt && imageIt.visible){
-            container.appletIconItem = imageIt;
-            return;
-        } else if (iconIt && iconIt.visible) {
+        if (iconIt) {
             container.appletIconItem = iconIt;
-            return;
         }
+
+        if (imageIt){
+            container.appletImageItem = imageIt;
+        }
+
+        return;
     }
 }
-
-

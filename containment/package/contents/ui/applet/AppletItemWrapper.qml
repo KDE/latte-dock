@@ -454,8 +454,12 @@ Item{
             sourceComponent: Latte.IconItem{
                 id: fakeAppletIconItem
                 anchors.fill: parent
-                source: appletIconItem.source
-
+                source: {
+                    if (appletIconItem && appletIconItem.visible)
+                        return appletIconItem.source;
+                    else if (appletImageItem && appletImageItem.visible)
+                        return appletImageItem.source;
+                }
                 //ActiveIndicator{}
             }
         }

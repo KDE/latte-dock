@@ -105,9 +105,10 @@ Item {
                                  ((applet.pluginName === root.plasmoidName) ||
                                   (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapper.wrapperContainer
     property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
+    property Item appletImageItem;
 
     //this is used for folderView and icon widgets to fake their visual
-    property bool fakeIconItem: applet && appletIconItem && appletIconItem//(applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
+    property bool fakeIconItem: applet && appletIconItem //(applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
 
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
@@ -362,18 +363,7 @@ Item {
         }
     }
 
-    Connections{
-        target: container.appletIconItem
-        onVisibleChanged: {
-            if (!container.appletIconItem.visible) {
-                container.appletIconItem = null;
-                container.reconsiderAppletIconItem();
-            }
-        }
-    }
-
     ///END connections
-
 
     PlasmaComponents.BusyIndicator {
         z: 1000
