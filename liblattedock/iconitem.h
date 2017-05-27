@@ -84,6 +84,11 @@ class IconItem : public QQuickItem {
     Q_PROPERTY(int paintedHeight READ paintedHeight NOTIFY paintedSizeChanged)
 
     /**
+     * If set, icon will try and use icons from the Plasma theme if possible
+     */
+    Q_PROPERTY(bool usesPlasmaTheme READ usesPlasmaTheme WRITE setUsesPlasmaTheme NOTIFY usesPlasmaThemeChanged)
+
+    /**
      * Contains the last valid icon name
      */
     Q_PROPERTY(QString lastValidSourceName READ lastValidSourceName NOTIFY lastValidSourceNameChanged)
@@ -109,6 +114,9 @@ public:
     int paintedWidth() const;
     int paintedHeight() const;
 
+    bool usesPlasmaTheme() const;
+    void setUsesPlasmaTheme(bool usesPlasmaTheme);
+
     QString lastValidSourceName();
 
     void updatePolish() Q_DECL_OVERRIDE;
@@ -127,6 +135,7 @@ signals:
     void smoothChanged();
     void validChanged();
     void paintedSizeChanged();
+    void usesPlasmaThemeChanged();
 
 private slots:
     void schedulePixmapUpdate();
@@ -153,6 +162,8 @@ private:
 
     bool m_textureChanged;
     bool m_sizeChanged;
+    bool m_usesPlasmaTheme;
+
 };
 
 }

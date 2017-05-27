@@ -43,7 +43,8 @@ IconItem::IconItem(QQuickItem *parent)
       m_smooth(false),
       m_active(false),
       m_textureChanged(false),
-      m_sizeChanged(false)
+      m_sizeChanged(false),
+      m_usesPlasmaTheme(false)
 {
     setFlag(ItemHasContents, true);
     connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
@@ -98,6 +99,15 @@ void IconItem::setSource(const QVariant &source)
                 m_svgIcon->setUsingRenderingCache(false);
                 m_svgIcon->setDevicePixelRatio((window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));
                 connect(m_svgIcon.get(), &Plasma::Svg::repaintNeeded, this, &IconItem::schedulePixmapUpdate);
+            }
+
+            if (m_usesPlasmaTheme) {
+                //try as a svg icon from plasma theme
+                m_svgIcon->setImagePath(QLatin1String("icons/") + sourceString.split('-').first());
+                m_svgIcon->setContainsMultipleImages(true);
+                //invalidate the image path to recalculate it later
+            } else {
+                m_svgIcon->setImagePath(QString());
             }
 
             //success?
@@ -252,6 +262,28 @@ int IconItem::paintedWidth() const
 int IconItem::paintedHeight() const
 {
     return boundingRect().size().toSize().height();
+}
+
+bool IconItem::usesPlasmaTheme() const
+{
+    return m_usesPlasmaTheme;
+}
+
+void IconItem::setUsesPlasmaTheme(bool usesPlasmaTheme)
+{
+    if (m_usesPlasmaTheme == usesPlasmaTheme) {
+        return;
+    }
+
+    m_usesPlasmaTheme = usesPlasmaTheme;
+
+    // Reload icon with new settings
+    const QVariant src = m_source;
+    m_source.clear();
+    setSource(src);
+
+    update();
+    emit usesPlasmaThemeChanged();
 }
 
 void IconItem::updatePolish()
