@@ -74,6 +74,7 @@ DragDrop.DropArea {
     property bool editMode: plasmoid.userConfiguring
     property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow
+                                         && Latte.WindowSystem.compositingActive
 
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
