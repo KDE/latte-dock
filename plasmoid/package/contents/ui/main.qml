@@ -452,6 +452,20 @@ Item {
         onTriggered: windowsPreviewDlg.visible = true;
     }
 
+    //! Timer to fix a crash that when going to Alternative Session through Context Menu,
+    //! animations are played during the destruction and because of that Latte.IconItem is crashing.
+    //! the timer makes sure that the animations will have ended and then change to alternative
+    //! session
+    Timer {
+        id: changeToAlternativeSessionTimer
+        //this is the animation time needed in order for tasks to restore their zoom first
+        interval: 7 * (root.durationTime * units.shortDuration)
+        onTriggered: {
+            if (root.altSessionAction)
+                root.altSessionAction.trigger();
+        }
+    }
+
     /////Window Previews/////////
 
     TaskManager.TasksModel {

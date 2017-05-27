@@ -862,7 +862,15 @@ PlasmaComponents.ContextMenu {
             checked = root.altSessionAction.checked;
         }
 
-        onClicked: root.altSessionAction.trigger();
+        onClicked: {
+            //fix a crash that when going to Alternative Session through Context Menu,
+            //animations are played during the destruction and because of that Latte.IconItem is crashing
+            root.disableRestoreZoom = false;
+            root.clearZoom();
+            if (latteDock)
+                latteDock.clearZoom();
+            changeToAlternativeSessionTimer.start();
+        }
     }
 
     PlasmaComponents.MenuItem {
