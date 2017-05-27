@@ -69,7 +69,7 @@ DragDrop.DropArea {
     property bool confirmedDragEntered: false
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
 
-
+    property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
     property bool editMode: plasmoid.userConfiguring
     property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
@@ -131,8 +131,11 @@ DragDrop.DropArea {
 
     property int panelEdgeSpacing: iconSize / 3
     property int panelTransparency: plasmoid.configuration.panelTransparency
-    property bool panelShadowsActive: (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
-                                      || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel)
+    property bool panelShadowsActive: ( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
+                                      || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
+                                      && !(disablePanelShadowMaximized && windowsModel.hasMaximizedWindow)
+
+
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
@@ -217,6 +220,7 @@ DragDrop.DropArea {
     // TO BE DELETED, if not needed: property int counter:0;
 
     ///BEGIN properties provided to Latte Plasmoid
+    //shadows for applets, it should be removed as the appleitems dont need it any more
     property bool enableShadows: plasmoid.configuration.shadows || root.forceTransparentPanel
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
@@ -1164,7 +1168,7 @@ DragDrop.DropArea {
     Loader{
         id: windowsModel
 
-        active: plasmoid.configuration.backgroundOnlyOnMaximized
+        active: plasmoid.configuration.backgroundOnlyOnMaximized || root.disablePanelShadowMaximized
 
         property bool hasMaximizedWindow: active && item ? item.maximizedWindowOnScreen : false
         sourceComponent: WindowsModel{}

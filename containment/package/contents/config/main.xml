@@ -48,6 +48,9 @@
     <entry name="panelShadows" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="disablePanelShadowForMaximized" type="Bool">
+      <default>false</default>
+    </entry>
     <entry name="panelTransparency" type="Int">
       <default>100</default>
     </entry>
