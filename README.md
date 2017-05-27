@@ -49,7 +49,8 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### Ubuntu/Debian
 
-- [Ubuntu Deb Packages](https://github.com/ubuntuvibes/Debs)
+- [Ubuntu Vibes](https://github.com/ubuntuvibes/Debs)
+- [Rik Mills - ppa](https://launchpad.net/~rikmills/+archive/ubuntu/latte-dock)
 
 ### openSUSE
 
@@ -65,8 +66,8 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### Gentoo
 
-- in the portage, as `kde-misc/latte-dock`, [more infos](https://github.com/psifidotos/Latte-Dock/wiki/F.A.Q.#q-which-distributions-have-packages-for-it-so-to-install-it-via-pm-)
 - [Gentoo package](https://github.com/redcorelinux/redcore-desktop/blob/master/kde-apps/latte-dock/latte-dock-0.6.0.ebuild)
+- in the portage, as `kde-misc/latte-dock`. If you need the live (git master), unmask the 9999 ebuild and emerge as usual (may be unstable).
 
 
 See the [installation instruction](INSTALLATION.md) for others Linux distribution or development build
