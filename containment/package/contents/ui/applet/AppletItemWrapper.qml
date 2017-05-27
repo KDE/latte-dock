@@ -460,6 +460,8 @@ Item{
                     else if (appletImageItem && appletImageItem.visible)
                         return appletImageItem.source;
                 }
+
+                usesPlasmaTheme: appletIconItem && appletIconItem.visible ? appletIconItem.usesPlasmaTheme : false
                 //ActiveIndicator{}
             }
         }

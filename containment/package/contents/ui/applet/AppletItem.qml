@@ -588,7 +588,7 @@ Item {
         }
 
         onExited:{
-            if (appletIconItem)
+            if (appletIconItem && appletIconItem.visible)
                 appletIconItem.active = false;
 
             if (root.zoomFactor>1){
