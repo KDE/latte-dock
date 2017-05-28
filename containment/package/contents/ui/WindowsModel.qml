@@ -49,7 +49,7 @@ Item{
 
         Component.onCompleted: {
             windowsRepeater.model = tasksModel;
-            winModel.reconsiderMaximized();
+           // winModel.reconsiderMaximized();
         }
     }
 

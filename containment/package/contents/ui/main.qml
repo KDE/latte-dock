@@ -1150,7 +1150,7 @@ DragDrop.DropArea {
     }
 
     Loader{
-        active: Qt.application.arguments.indexOf("--with-window") >= 0
+        active: root.debugMode
         sourceComponent: DebugWindow{}
     }
 
@@ -1168,7 +1168,7 @@ DragDrop.DropArea {
     Loader{
         id: windowsModel
 
-        active: plasmoid.configuration.backgroundOnlyOnMaximized || root.disablePanelShadowMaximized
+        active: (plasmoid.configuration.backgroundOnlyOnMaximized || root.disablePanelShadowMaximized) && dock
 
         property bool hasMaximizedWindow: active && item ? item.maximizedWindowOnScreen : false
         sourceComponent: WindowsModel{}
