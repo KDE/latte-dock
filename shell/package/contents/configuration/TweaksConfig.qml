@@ -81,8 +81,8 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.backgroundOnlyOnMaximized = checked;
-                    plasmoid.configuration.disablePanelShadowForMaximized = false;
-                    hideShadowsOnMaximizedChk.checked = false;
+                  //  plasmoid.configuration.disablePanelShadowForMaximized = false;
+                  //  hideShadowsOnMaximizedChk.checked = false;
                 }
             }
 
@@ -94,8 +94,8 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.disablePanelShadowForMaximized = checked;
-                    plasmoid.configuration.backgroundOnlyOnMaximized = false;
-                    onlyOnMaximizedChk.checked = false;
+                 //   plasmoid.configuration.backgroundOnlyOnMaximized = false;
+                 //   onlyOnMaximizedChk.checked = false;
                 }
             }
         }
