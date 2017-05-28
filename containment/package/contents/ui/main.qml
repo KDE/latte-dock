@@ -187,7 +187,7 @@ DragDrop.DropArea {
     //! iconMargin from configuration is a percentage. The calculation provides a length
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
     //! equal to the iconSize
-    property int iconMargin: Math.ceil( (0.04 + (0.46 * (plasmoid.configuration.iconMargin)/100)) * iconSize)
+    property int iconMargin: Math.ceil( ((0.5 * (plasmoid.configuration.iconMargin))/100) * iconSize)
     property int statesLineSize: latteApplet ?  Math.ceil( root.iconSize/13 ) : 0
 
 

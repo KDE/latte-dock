@@ -85,7 +85,7 @@ Item {
     property int internalSplitterId: 0
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.5*root.iconSize) - root.iconMargin)
     property int status: applet ? applet.status : -1
 
     //property real animationStep: root.iconSize / 8

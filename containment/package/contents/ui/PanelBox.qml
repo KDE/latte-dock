@@ -66,7 +66,7 @@ Item{
         if (!Latte.WindowSystem.compositingActive) {
             return 0;
         } else if (root.panelAlignment === Latte.Dock.Justify && plasmoid.configuration.maxLength === 100) {
-            return 2;
+            return 0;
         } else if (root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify || root.offset!==0) {
             return root.panelEdgeSpacing/2;
         } else {
