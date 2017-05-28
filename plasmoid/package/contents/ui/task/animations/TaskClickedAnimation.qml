@@ -66,7 +66,7 @@ SequentialAnimation{
 
 
     onPressedChanged: {
-        if( (pressed)&&
+        if( !running && pressed&&
                 ((mainItemContainer.lastButtonClicked == Qt.LeftButton)||(mainItemContainer.lastButtonClicked == Qt.MidButton)) ){
             mainItemContainer.animationStarted();
             start();
