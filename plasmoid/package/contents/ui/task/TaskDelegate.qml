@@ -735,6 +735,8 @@ MouseArea{
             } else if (mouse.button == Qt.LeftButton){
                 activateTask();
             }
+
+            backend.cancelHighlightWindows();
         }
 
         pressed = false;
@@ -829,7 +831,7 @@ MouseArea{
         }
         else{
             if (model.IsGroupParent) {
-                if (Latte.WindowSystem.compositingActive) {
+                if (Latte.WindowSystem.compositingActive && backend.canPresentWindows()) {
                     root.presentWindows(model.LegacyWinIdList);
                 } else {
                     if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
