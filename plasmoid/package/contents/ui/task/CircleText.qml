@@ -82,7 +82,7 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        property color drawColor: mainItemContainer.badgeIndicator > 0 ? theme.buttonFocusColor : theme.highlightColor;
+        property color drawColor:  theme.buttonFocusColor; //mainItemContainer.badgeIndicator > 0 ? theme.buttonFocusColor : theme.highlightColor;
 
         onDrawColorChanged: requestPaint();
 
@@ -110,7 +110,9 @@ Rectangle {
         text: numberValue > 0 ? numberValue : ""
         font.pixelSize: 0.6 * parent.height
         font.bold: true
-        color: mainItemContainer.badgeIndicator > 0 ? theme.backgroundColor : theme.textColor
+        color: ( (mainItemContainer.badgeIndicator > 0)
+               || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) ) ?
+                   theme.backgroundColor : theme.textColor
         visible: showNumber
     }
 
