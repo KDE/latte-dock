@@ -255,7 +255,8 @@ Item{
             asynchronous: true
 
             property real opacityN: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !mainItemContainer.isSeparator
-                                     && (centralItem.smartLauncherItem.progressVisible || mainItemContainer.badgeIndicator > 0)) ? 1 : 0
+                                     && (centralItem.smartLauncherItem.countVisible || centralItem.smartLauncherItem.progressVisible
+                                         || mainItemContainer.badgeIndicator > 0)) ? 1 : 0
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }

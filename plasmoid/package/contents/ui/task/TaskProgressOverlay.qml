@@ -60,7 +60,8 @@ Item {
             fullCircle: true
             showNumber: true
             proportion: {
-                if (mainItemContainer.badgeIndicator > 0) {
+                if (mainItemContainer.badgeIndicator > 0 ||
+                        (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible)) {
                     return 100;
                 }
 
