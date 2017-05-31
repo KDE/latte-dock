@@ -506,7 +506,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Move")
                 icon: "transform-move"
 
-                onClicked: tasksModel.requestMove(menu.menu.modelIndex)
+                onClicked: tasksModel.requestMove(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -514,7 +514,7 @@ PlasmaComponents.ContextMenu {
 
                 text: i18n("Resize")
 
-                onClicked: tasksModel.requestResize(menu.menu.modelIndex)
+                onClicked: tasksModel.requestResize(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -524,7 +524,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Keep Above Others")
                 icon: "go-up"
 
-                onClicked: tasksModel.requestToggleKeepAbove(menu.menu.modelIndex)
+                onClicked: tasksModel.requestToggleKeepAbove(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -534,7 +534,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Keep Below Others")
                 icon: "go-down"
 
-                onClicked: tasksModel.requestToggleKeepBelow(menu.menu.modelIndex)
+                onClicked: tasksModel.requestToggleKeepBelow(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -546,7 +546,7 @@ PlasmaComponents.ContextMenu {
                 text: i18n("Fullscreen")
                 icon: "view-fullscreen"
 
-                onClicked: tasksModel.requestToggleFullScreen(menu.menu.modelIndex)
+                onClicked: tasksModel.requestToggleFullScreen(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -557,7 +557,7 @@ PlasmaComponents.ContextMenu {
 
                 text: i18n("Shade")
 
-                onClicked: tasksModel.requestToggleShaded(menu.menu.modelIndex)
+                onClicked: tasksModel.requestToggleShaded(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -572,7 +572,7 @@ PlasmaComponents.ContextMenu {
 
                 text: i18n("Allow this program to be grouped")
 
-                onClicked: tasksModel.requestToggleGrouping(menu.menu.modelIndex)
+                onClicked: tasksModel.requestToggleGrouping(menu.modelIndex)
             }
         }
     }
