@@ -22,9 +22,11 @@
 #define GLOBALSHORTCUTS_H
 
 #include "dockcorona.h"
+#include "dockview.h"
 #include "../liblattedock/dock.h"
 
 class DockCorona;
+class DockView;
 
 namespace Latte {
 
@@ -39,11 +41,15 @@ public:
     void updateDockItemBadge(QString identifier, QString value);
 
 private:
-    void activateTaskManagerEntry(int index, Qt::Key modifier);
     void init();
+    void activateTaskManagerEntry(int index, Qt::Key modifier);
+    void showDock();
+    void hideDock();
+
+    QTimer m_hideDockTimer;
+    DockView *m_hideDock;
 
     DockCorona *m_corona{nullptr};
-
 };
 
 }

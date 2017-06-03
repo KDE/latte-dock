@@ -24,6 +24,15 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
     if (m_corona) {
         init();
     }
+
+    m_hideDockTimer.setSingleShot(true);
+    m_hideDockTimer.setInterval(3000);
+    connect(&m_hideDockTimer, &QTimer::timeout, this, [this]() {
+        if (m_hideDock) {
+            m_hideDock->visibility()->setBlockHiding(false);
+            m_hideDock = nullptr;
+        }
+    });
 }
 
 GlobalShortcuts::~GlobalShortcuts()
@@ -61,6 +70,14 @@ void GlobalShortcuts::init()
             activateTaskManagerEntry(i, static_cast<Qt::Key>(Qt::CTRL));
         });
     }
+
+    //show-hide the main dock in the primary screen
+    QAction *showAction = taskbarActions->addAction(QStringLiteral("show latte dock"));
+    showAction->setText(i18n("Show Latte Dock"));
+    KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
+    connect(showAction, &QAction::triggered, this, [this]() {
+        showDock();
+    });
 
 }
 
@@ -148,7 +165,6 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
     }
 }
 
-
 //! update badge for specific dock item
 void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
 {
@@ -201,6 +217,48 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
     }
 }
 
+void GlobalShortcuts::showDock()
+{
+    //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
+    auto containsLattePlasmoid = [this](const Plasma::Containment * c) {
+        const auto &applets = c->applets();
+
+        for (auto *applet : applets) {
+            KPluginMetaData meta = applet->kPackage().metadata();
+
+            if (meta.pluginId() == "org.kde.latte.plasmoid") {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    // To avoid overly complex configuration, we'll try to get the 90% usecase to work
+    // which is activating a task on the task manager on a panel on the primary screen.
+    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+        if (it.value()->screen() != qGuiApp->primaryScreen()) {
+            continue;
+        }
+
+        if (containsLattePlasmoid(it.key())) {
+            m_hideDock = it.value();
+            m_hideDock->visibility()->setBlockHiding(true);
+            m_hideDockTimer.start();
+            return;
+        }
+    }
+
+    // we didn't find anything on primary, try all the panels
+    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+        if (containsLattePlasmoid(it.key())) {
+            m_hideDock = it.value();
+            m_hideDock->visibility()->setBlockHiding(true);
+            m_hideDockTimer.start();
+            return;
+        }
+    }
+}
 
 }
 

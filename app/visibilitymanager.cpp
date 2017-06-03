@@ -170,6 +170,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             timerCheckWindows.start();
         }
         break;
+
         case Dock::WindowsGoBelow: {
             //
         }
@@ -203,7 +204,7 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     if (this->isHidden == isHidden)
         return;
 
-    if (blockHiding) {
+    if (blockHiding && isHidden) {
         qWarning() << "isHidden property is blocked, ignoring update";
         return;
     }
@@ -224,8 +225,6 @@ void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
         timerHide.stop();
 
         if (isHidden) {
-            isHidden = false;
-            emit q->isHiddenChanged();
             emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
         }
     } else {
@@ -364,17 +363,17 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
 
     auto isMaxVert = [&]() noexcept -> bool {
         return winfo.isMaxVert()
-                || (view->screen() && view->screen()->size().height() <= winfo.geometry().height());
+               || (view->screen() && view->screen()->size().height() <= winfo.geometry().height());
     };
 
     auto isMaxHoriz = [&]() noexcept -> bool {
         return winfo.isMaxHoriz()
-                || (view->screen() && view->screen()->size().width() <= winfo.geometry().width());
+               || (view->screen() && view->screen()->size().width() <= winfo.geometry().width());
     };
 
     if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized())
         raiseDock(view->formFactor() == Plasma::Types::Vertical
-                    ? !isMaxHoriz() : !isMaxVert());
+                  ? !isMaxHoriz() : !isMaxVert());
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WId wid)
@@ -457,18 +456,18 @@ inline void VisibilityManagerPrivate::restoreConfig()
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
 
     auto mode = [&]() {
-          return static_cast<Dock::Visibility>(view->containment()->config()
-                    .readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+        return static_cast<Dock::Visibility>(view->containment()->config()
+                                             .readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
     };
 
     if (mode() == Dock::AlwaysVisible) {
         setMode(Dock::AlwaysVisible);
     } else {
-        connect(&timerStartUp, &QTimer::timeout, this, [&, mode]() {
+        connect(&timerStartUp, &QTimer::timeout, this, [ &, mode]() {
             setMode(mode());
         });
         connect(view->containment(), &Plasma::Containment::userConfiguringChanged
-                ,this, [&](bool configuring) {
+        , this, [&](bool configuring) {
             if (configuring && timerStartUp.isActive())
                 timerStartUp.start(100);
         });
