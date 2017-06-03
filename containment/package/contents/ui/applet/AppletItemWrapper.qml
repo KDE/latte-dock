@@ -532,6 +532,14 @@ Item{
                          && (applet.pluginName !== root.plasmoidName)))
                     || (root.forceTransparentPanel && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
+        onActiveChanged: {
+            if (active) {
+                wrapperContainer.opacity = 0;
+            } else {
+                wrapperContainer.opacity = 1;
+            }
+        }
+
         sourceComponent: DropShadow{
             anchors.fill: parent
             color: forcedShadow ? theme.backgroundColor : "#ff080808"

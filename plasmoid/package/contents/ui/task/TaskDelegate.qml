@@ -221,7 +221,7 @@ MouseArea{
         anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
         anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
-        opacity: separatorShadow.active ? 0 : 0.5
+        opacity: separatorShadow.active ? 0 : 0.4
         visible: mainItemContainer.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
@@ -239,8 +239,8 @@ MouseArea{
 
             radius: 2
 
-            width: root.vertical ? root.iconSize - 8  : 2
-            height: !root.vertical ? root.iconSize - 8 : 2
+            width: root.vertical ? root.iconSize - 8  : 1
+            height: !root.vertical ? root.iconSize - 8 : 1
             color: theme.textColor
         }
     }
@@ -250,6 +250,7 @@ MouseArea{
         id: separatorShadow
         anchors.fill: separatorItem
         active: root.enableShadows && isSeparator
+        opacity: 0.4
 
         sourceComponent: DropShadow{
             anchors.fill: parent
@@ -258,7 +259,6 @@ MouseArea{
             source: separatorItem
             radius: shadowSize
             verticalOffset: 2
-            opacity: 0.5
 
             property int shadowSize : Math.ceil(root.iconSize / 10)
         }
