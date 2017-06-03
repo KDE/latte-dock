@@ -23,6 +23,7 @@
 
 #include "dockview.h"
 #include "globalsettings.h"
+#include "globalshortcuts.h"
 #include "../liblattedock/dock.h"
 
 #include <QObject>
@@ -38,6 +39,7 @@ class Types;
 
 class ScreenPool;
 class GlobalSettings;
+class GlobalShortcuts;
 
 namespace KActivities {
 class Consumer;
@@ -105,7 +107,6 @@ private slots:
     void syncDockViews();
 
 private:
-    void activateTaskManagerEntry(int index, Qt::Key modifier);
     void cleanConfig();
     void qmlRegisterTypes() const;
     bool appletExists(uint containmentId, uint appletId) const;
@@ -136,8 +137,11 @@ private:
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
 
-    ScreenPool *m_screenPool;
-    GlobalSettings *m_globalSettings;
+    ScreenPool *m_screenPool{nullptr};
+    GlobalSettings *m_globalSettings{nullptr};
+    GlobalShortcuts *m_globalShortcuts{nullptr};
+
+    friend class GlobalShortcuts;
 };
 
 }

@@ -13,6 +13,7 @@ set(lattedock-app_SRCS
     alternativeshelper.cpp
     screenpool.cpp
     globalsettings.cpp
+    globalshortcuts.cpp
     main.cpp
 )
 
