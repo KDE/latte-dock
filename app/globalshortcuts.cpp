@@ -154,6 +154,7 @@ void GlobalShortcuts::init()
 
         QAction *action = taskbarActions->addAction(QStringLiteral("activate task manager entry %1").arg(QString::number(entryNumber)));
         action->setText(i18n("Activate Task Manager Entry %1", entryNumber));
+        action->setShortcut(QKeySequence(Qt::META + key));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + key));
         connect(action, &QAction::triggered, this, [this, i] {
             // qDebug() << "meta action...";
@@ -178,6 +179,7 @@ void GlobalShortcuts::init()
     //show-hide the main dock in the primary screen
     QAction *showAction = taskbarActions->addAction(QStringLiteral("show latte dock"));
     showAction->setText(i18n("Show Latte Dock"));
+    showAction->setShortcut(QKeySequence(Qt::META + '`'));
     KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
     connect(showAction, &QAction::triggered, this, [this]() {
         showDock();
@@ -233,13 +235,20 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
                                               metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
                                               metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
 
-                            if (methodIndex == -1) {
+                            int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
+
+                            if (methodIndex == -1 || methodIndex2 == -1) {
                                 continue;
                             }
 
+                            m_tasksPlasmoid = item;
+                            m_tasksMethodIndex = methodIndex2;
+                            m_methodShowNumbers = metaObject->method(m_tasksMethodIndex);
+
                             QMetaMethod method = metaObject->method(methodIndex);
 
-                            if (method.invoke(item, Q_ARG(QVariant, index))) {
+                            if (method.invoke(item, Q_ARG(QVariant, index))
+                                && m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
                                 return true;
                             }
                         }
@@ -333,7 +342,6 @@ void GlobalShortcuts::showDock()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
-    //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
     auto containsLattePlasmoid = [this](const Plasma::Containment * c) {
         const auto &applets = c->applets();
 
@@ -341,7 +349,36 @@ void GlobalShortcuts::showDock()
             KPluginMetaData meta = applet->kPackage().metadata();
 
             if (meta.pluginId() == "org.kde.latte.plasmoid") {
-                return true;
+                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                    const auto &childItems = appletInterface->childItems();
+
+                    if (childItems.isEmpty()) {
+                        continue;
+                    }
+
+                    for (QQuickItem *item : childItems) {
+                        if (auto *metaObject = item->metaObject()) {
+                            // not using QMetaObject::invokeMethod to avoid warnings when calling
+                            // this on applets that don't have it or other child items since this
+                            // is pretty much trial and error.
+
+                            // Also, "var" arguments are treated as QVariant in QMetaObject
+                            int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
+
+                            if (methodIndex2 == -1) {
+                                continue;
+                            }
+
+                            m_tasksPlasmoid = item;
+                            m_tasksMethodIndex = methodIndex2;
+                            m_methodShowNumbers = metaObject->method(m_tasksMethodIndex);
+
+                            if (m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -380,12 +417,18 @@ void GlobalShortcuts::hideDockTimerSlot()
         return;
     }
 
-
     if (isPlatformX11()) {
         if (!x11_areModKeysDepressed(m_lastInvokedAction->shortcut())) {
             m_lastInvokedAction = Q_NULLPTR;
             m_hideDock->visibility()->setBlockHiding(false);
             m_hideDock = Q_NULLPTR;
+
+            if (m_tasksPlasmoid) {
+                m_methodShowNumbers.invoke(m_tasksPlasmoid, Q_ARG(QVariant, false));
+                m_tasksPlasmoid = Q_NULLPTR;
+                m_tasksMethodIndex = -1;
+            }
+
             return;
         }
 

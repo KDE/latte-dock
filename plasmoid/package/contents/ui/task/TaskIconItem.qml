@@ -465,6 +465,48 @@ Item{
         }
 
         /// END of Audio Loader
+
+        /// START Task Number
+
+        Loader{
+            id: taskNumberLoader
+            anchors.fill: iconImageBuffer
+            active: opacityN>0
+            asynchronous: true
+
+            property int fixedIndex: {
+                if (root.hasInternalSeparator && index > root.internalSeparatorPos ) {
+                        return index;
+                } else {
+                    return index+1;
+                }
+            }
+
+            property real opacityN: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<10 ? 1 : 0
+
+            Behavior on opacityN {
+                NumberAnimation { duration: root.durationTime*2*units.longDuration }
+            }
+
+            sourceComponent: Item{
+                CircleText {
+                    id: taskNumber
+                    anchors.centerIn: parent
+                    opacity: taskNumberLoader.opacityN
+
+                    width: 0.5 * parent.width
+                    height: width
+                    numberValue: taskNumberLoader.fixedIndex
+                    showNumber: true
+                    proportion: 0
+                    radiusPerCentage: 50
+                }
+            }
+        }
+
+        //END of task number
+
+        //showTasksNumbers
     }
 
     ///Shadow in tasks

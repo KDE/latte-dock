@@ -36,8 +36,9 @@ Rectangle {
     property bool showNumber
     property bool showLabel
 
-    property double circleOpacity: 1
+    property int radiusPerCentage: 100
 
+    property double circleOpacity: 1
     property double fontPixelSize: partSize // * 0.55
 
     property double stdThickness: partSize < 0 ? 0 : partSize  //  "/2.1"
@@ -48,7 +49,7 @@ Rectangle {
     property color alphaBackColor: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.45)
     property color alphaBackColor2: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.8)
     color: theme.backgroundColor //mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
-    radius: width
+    radius: (radiusPerCentage / 100) * (width / 2)
     border.width: Math.max(1,width/64)
     border.color: root.minimizedDotColor //alphaBackColor2
 

@@ -25,6 +25,9 @@
 #include "dockview.h"
 #include "../liblattedock/dock.h"
 
+#include <QQuickItem>
+#include <QMetaMethod>
+
 class DockCorona;
 class DockView;
 
@@ -50,9 +53,12 @@ private:
     void hideDock();
 
     QAction *m_lastInvokedAction;
-
     QTimer m_hideDockTimer;
     DockView *m_hideDock;
+
+    int m_tasksMethodIndex{ -1};
+    QQuickItem *m_tasksPlasmoid{nullptr};
+    QMetaMethod m_methodShowNumbers;
 
     DockCorona *m_corona{nullptr};
 };

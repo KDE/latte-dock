@@ -65,6 +65,7 @@ Item {
     property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
     property bool showBarLine: plasmoid.configuration.showBarLine
+    property bool showTasksNumbers: false
     property bool useThemePanel: plasmoid.configuration.useThemePanel
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
@@ -1300,6 +1301,10 @@ Item {
 
     function removeSeparator(){
         tasksModel.requestRemoveLauncher("file:///latte-separator.desktop");
+    }
+
+    function setShowTasksNumbers(showNumbers){
+        root.showTasksNumbers = showNumbers;
     }
 
     function previewContainsMouse() {
