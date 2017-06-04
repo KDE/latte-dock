@@ -40,11 +40,16 @@ public:
     void activateLauncherMenu();
     void updateDockItemBadge(QString identifier, QString value);
 
+private slots:
+    void hideDockTimerSlot();
+
 private:
     void init();
     void activateTaskManagerEntry(int index, Qt::Key modifier);
     void showDock();
     void hideDock();
+
+    QAction *m_lastInvokedAction;
 
     QTimer m_hideDockTimer;
     DockView *m_hideDock;

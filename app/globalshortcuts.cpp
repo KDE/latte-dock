@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QQuickItem>
 #include <QMetaMethod>
+#include <QX11Info>
 
 #include <KActionCollection>
 #include <KGlobalAccel>
@@ -12,6 +13,105 @@
 
 #include <Plasma/Applet>
 #include <Plasma/Containment>
+
+// X11
+#include <X11/keysym.h>
+#include <X11/keysymdef.h>
+#include <X11/Xlib.h>
+
+//this code is used by activityswitcher in plasma in order to check if the
+//user has release all the modifier keys from the globalshortcut
+namespace {
+bool isPlatformX11()
+{
+    static const bool isX11 = QX11Info::isPlatformX11();
+    return isX11;
+}
+
+// Taken from kwin/tabbox/tabbox.cpp
+Display *x11_display()
+{
+    static Display *s_display = nullptr;
+
+    if (!s_display) {
+        s_display = QX11Info::display();
+    }
+
+    return s_display;
+}
+
+bool x11_areKeySymXsDepressed(bool bAll, const uint keySyms[], int nKeySyms)
+{
+    char keymap[32];
+
+    XQueryKeymap(x11_display(), keymap);
+
+    for (int iKeySym = 0; iKeySym < nKeySyms; iKeySym++) {
+        uint keySymX = keySyms[ iKeySym ];
+        uchar keyCodeX = XKeysymToKeycode(x11_display(), keySymX);
+        int i = keyCodeX / 8;
+        char mask = 1 << (keyCodeX - (i * 8));
+
+        // Abort if bad index value,
+        if (i < 0 || i >= 32)
+            return false;
+
+        // If ALL keys passed need to be depressed,
+        if (bAll) {
+            if ((keymap[i] & mask) == 0)
+                return false;
+        } else {
+            // If we are looking for ANY key press, and this key is depressed,
+            if (keymap[i] & mask)
+                return true;
+        }
+    }
+
+    // If we were looking for ANY key press, then none was found, return false,
+    // If we were looking for ALL key presses, then all were found, return true.
+    return bAll;
+}
+
+bool x11_areModKeysDepressed(const QKeySequence &seq)
+{
+    uint rgKeySyms[10];
+    int nKeySyms = 0;
+
+    if (seq.isEmpty()) {
+        return false;
+    }
+
+    int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
+
+    if (mod & Qt::SHIFT) {
+        rgKeySyms[nKeySyms++] = XK_Shift_L;
+        rgKeySyms[nKeySyms++] = XK_Shift_R;
+    }
+
+    if (mod & Qt::CTRL) {
+        rgKeySyms[nKeySyms++] = XK_Control_L;
+        rgKeySyms[nKeySyms++] = XK_Control_R;
+    }
+
+    if (mod & Qt::ALT) {
+        rgKeySyms[nKeySyms++] = XK_Alt_L;
+        rgKeySyms[nKeySyms++] = XK_Alt_R;
+    }
+
+    if (mod & Qt::META) {
+        // It would take some code to determine whether the Win key
+        // is associated with Super or Meta, so check for both.
+        // See bug #140023 for details.
+        rgKeySyms[nKeySyms++] = XK_Super_L;
+        rgKeySyms[nKeySyms++] = XK_Super_R;
+        rgKeySyms[nKeySyms++] = XK_Meta_L;
+        rgKeySyms[nKeySyms++] = XK_Meta_R;
+    }
+
+    return x11_areKeySymXsDepressed(false, rgKeySyms, nKeySyms);
+}
+}
+
 
 
 namespace Latte {
@@ -26,13 +126,17 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
     }
 
     m_hideDockTimer.setSingleShot(true);
-    m_hideDockTimer.setInterval(3000);
-    connect(&m_hideDockTimer, &QTimer::timeout, this, [this]() {
-        if (m_hideDock) {
-            m_hideDock->visibility()->setBlockHiding(false);
-            m_hideDock = nullptr;
-        }
-    });
+
+    if (isPlatformX11()) {
+        //in X11 the timer is a poller that checks to see if the modifier keys
+        //from user global shortcut have been released
+        m_hideDockTimer.setInterval(300);
+    } else {
+        //on wayland in acting just as simple timer that hides the dock afterwards
+        m_hideDockTimer.setInterval(3000);
+    }
+
+    connect(&m_hideDockTimer, &QTimer::timeout, this, &GlobalShortcuts::hideDockTimerSlot);
 }
 
 GlobalShortcuts::~GlobalShortcuts()
@@ -102,6 +206,8 @@ void GlobalShortcuts::activateLauncherMenu()
 //! Activate task manager entry
 void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
 {
+    m_lastInvokedAction = dynamic_cast<QAction *>(sender());
+
     auto activateTaskManagerEntryOnContainment = [this](const Plasma::Containment * c, int index, Qt::Key modifier) {
         const auto &applets = c->applets();
 
@@ -153,6 +259,9 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
         }
 
         if (activateTaskManagerEntryOnContainment(it.key(), index, modifier)) {
+            m_hideDock = it.value();
+            m_hideDock->visibility()->setBlockHiding(true);
+            m_hideDockTimer.start();
             return;
         }
     }
@@ -160,6 +269,9 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
     // we didn't find anything on primary, try all the panels
     for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
         if (activateTaskManagerEntryOnContainment(it.key(), index, modifier)) {
+            m_hideDock = it.value();
+            m_hideDock->visibility()->setBlockHiding(true);
+            m_hideDockTimer.start();
             return;
         }
     }
@@ -219,6 +331,8 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
 
 void GlobalShortcuts::showDock()
 {
+    m_lastInvokedAction = dynamic_cast<QAction *>(sender());
+
     //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
     auto containsLattePlasmoid = [this](const Plasma::Containment * c) {
         const auto &applets = c->applets();
@@ -259,6 +373,32 @@ void GlobalShortcuts::showDock()
         }
     }
 }
+
+void GlobalShortcuts::hideDockTimerSlot()
+{
+    if (!m_lastInvokedAction || !m_hideDock) {
+        return;
+    }
+
+
+    if (isPlatformX11()) {
+        if (!x11_areModKeysDepressed(m_lastInvokedAction->shortcut())) {
+            m_lastInvokedAction = Q_NULLPTR;
+            m_hideDock->visibility()->setBlockHiding(false);
+            m_hideDock = Q_NULLPTR;
+            return;
+        }
+
+        m_hideDockTimer.start();
+    } else {
+        // TODO: This is needs to be fixed in wayland
+        m_lastInvokedAction = Q_NULLPTR;
+        m_hideDock->visibility()->setBlockHiding(false);
+        m_hideDock = Q_NULLPTR;
+    }
+
+}
+
 
 }
 
