@@ -48,6 +48,7 @@ DragDrop.DropArea {
 
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
+    property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
     property bool directRenderTimerIsRunning: enableDirectRenderTimer.running
     property int directRenderAnimationTime: 0
@@ -1150,7 +1151,7 @@ DragDrop.DropArea {
     }
 
     Loader{
-        active: root.debugMode
+        active: root.debugModeWindow
         sourceComponent: DebugWindow{}
     }
 
