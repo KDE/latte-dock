@@ -438,6 +438,12 @@ void GlobalShortcuts::hideDockTimerSlot()
         m_lastInvokedAction = Q_NULLPTR;
         m_hideDock->visibility()->setBlockHiding(false);
         m_hideDock = Q_NULLPTR;
+
+        if (m_tasksPlasmoid) {
+            m_methodShowNumbers.invoke(m_tasksPlasmoid, Q_ARG(QVariant, false));
+            m_tasksPlasmoid = Q_NULLPTR;
+            m_tasksMethodIndex = -1;
+        }
     }
 
 }
