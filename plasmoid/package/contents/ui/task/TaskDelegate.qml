@@ -711,8 +711,7 @@ MouseArea{
                             activateTask();
                     }
                 } else {
-                    mouseEntered = false;
-                    wrapper.runLauncherAnimation();
+                    activateTask();
                 }
             } else if (mouse.button == Qt.MidButton){
                 if( !mainItemContainer.isLauncher){
@@ -729,8 +728,7 @@ MouseArea{
                             activateTask();
                     }
                 } else {
-                    mouseEntered = false;
-                    wrapper.runLauncherAnimation();
+                    activateTask();
                 }
             } else if (mouse.button == Qt.LeftButton){
                 activateTask();

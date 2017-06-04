@@ -1194,7 +1194,7 @@ Item {
             var task = tasks[i];
 
             if (task.itemIndex === confirmedIndex) {
-                TaskTools.activateTask(task.modelIndex(), task.m, null, task);
+                task.activateTask();
                 break;
             }
         }
