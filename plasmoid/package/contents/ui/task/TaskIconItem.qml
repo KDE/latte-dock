@@ -467,7 +467,6 @@ Item{
         /// END of Audio Loader
 
         /// START Task Number
-
         Loader{
             id: taskNumberLoader
             anchors.fill: iconImageBuffer
@@ -492,7 +491,7 @@ Item{
                 CircleText {
                     id: taskNumber
                     anchors.centerIn: parent
-                    opacity: taskNumberLoader.opacityN
+                    opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
 
                     width: 0.5 * parent.width
                     height: width
@@ -501,9 +500,21 @@ Item{
                     proportion: 0
                     radiusPerCentage: 50
                 }
+
+                Loader{
+                    anchors.fill: taskNumber
+                    active: root.enableShadows
+
+                    sourceComponent: DropShadow{
+                        color: "#ff080808"
+                        samples: 2 * radius
+                        source: taskNumber
+                        radius: centralItem.shadowSize/2
+                        verticalOffset: 2
+                    }
+                }
             }
         }
-
         //END of task number
 
         //showTasksNumbers
