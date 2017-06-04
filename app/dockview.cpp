@@ -986,7 +986,11 @@ void DockView::setMaskArea(QRect area)
     m_maskArea = area;
 
     if (KWindowSystem::compositingActive()) {
-        setMask(m_maskArea);
+        if (m_behaveAsPlasmaPanel) {
+            setMask(QRect());
+        } else {
+            setMask(m_maskArea);
+        }
     } else {
         //! this is used when compositing is disabled and provides
         //! the correct way for the mask to be painted in order for
