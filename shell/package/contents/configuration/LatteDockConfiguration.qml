@@ -299,7 +299,22 @@ PlasmaCore.FrameSvgItem {
                 Component.onCompleted: {
                     enabled = dock.freeEdges().length > 0
                 }
+
+                PlasmaCore.IconItem {
+                    source: "arrow-down"
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    Layout.preferredWidth: units.iconSizes.medium
+                    Layout.preferredHeight: parent.height
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                        }
+                    }
+                }
             }
+
             PlasmaComponents.Button {
                 id: removeDock
 
