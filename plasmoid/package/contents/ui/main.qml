@@ -271,9 +271,9 @@ Item {
         }
     }
 
-    //is used to load correctly the launcherslist on startup
+    //is used to load correctly the global launcherslist on startup
     onGlobalSettingsChanged: {
-        if (globalSettings === latteDock.globalSettings ) {
+        if (globalSettings && globalSettings === latteDock.globalSettings ) {
             if (latteDock.globalSettings.syncLaunchers) {
                 tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
             } else {
@@ -1331,6 +1331,10 @@ Item {
                 }
             }
         }
+    }
+
+    function getLauncherList() {
+        return plasmoid.configuration.launchers59;
     }
 
     //! it is used to add the fake desktop file which represents

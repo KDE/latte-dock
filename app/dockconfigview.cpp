@@ -367,5 +367,62 @@ void DockConfigView::hideConfigWindow()
     hide();
 }
 
+
+void DockConfigView::setSyncLaunchers(bool sync)
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    //when the global launchers list is empty then the current dock launchers are used
+    if (sync && dockCorona && dockCorona->globalSettings() && dockCorona->globalSettings()->globalLaunchers().count() == 0) {
+        //update the global launchers
+        //getLauncherList
+
+        Plasma::Containment *c = m_dockView->containment();
+
+        const auto &applets = c->applets();
+
+        for (auto *applet : applets) {
+            KPluginMetaData meta = applet->kPackage().metadata();
+
+            if (meta.pluginId() == "org.kde.latte.plasmoid") {
+                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                    const auto &childItems = appletInterface->childItems();
+
+                    if (childItems.isEmpty()) {
+                        continue;
+                    }
+
+                    for (QQuickItem *item : childItems) {
+                        if (auto *metaObject = item->metaObject()) {
+                            // not using QMetaObject::invokeMethod to avoid warnings when calling
+                            // this on applets that don't have it or other child items since this
+                            // is pretty much trial and error.
+                            // Also, "var" arguments are treated as QVariant in QMetaObject
+
+                            int methodIndex = metaObject->indexOfMethod("getLauncherList()");
+
+                            if (methodIndex == -1) {
+                                continue;
+                            }
+
+                            QMetaMethod method = metaObject->method(methodIndex);
+
+                            QVariant launchers;
+
+                            if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
+                                dockCorona->globalSettings()->setGlobalLaunchers(launchers.toStringList());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    dockCorona->globalSettings()->setSyncLaunchers(sync);
+}
+
+
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

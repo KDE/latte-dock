@@ -511,7 +511,7 @@ MouseArea{
         var badger = root.getBadger(launcherUrl);
 
         if (badger && !isLauncher) {
-            badgeIndicator = badger.value;
+            badgeIndicator = parseInt(badger.value);
         } else {
             badgeIndicator = 0;
         }

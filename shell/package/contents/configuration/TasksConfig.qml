@@ -136,7 +136,7 @@ PlasmaComponents.Page {
                 checked: globalSettings.syncLaunchers
 
                 onClicked: {
-                    globalSettings.syncLaunchers = checked;
+                    dockConfig.setSyncLaunchers(checked);
                 }
             }
 
