@@ -373,10 +373,8 @@ void DockConfigView::setSyncLaunchers(bool sync)
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
     //when the global launchers list is empty then the current dock launchers are used
-    if (sync && dockCorona && dockCorona->globalSettings() && dockCorona->globalSettings()->globalLaunchers().count() == 0) {
+    if (sync && dockCorona && dockCorona->globalSettings()) {
         //update the global launchers
-        //getLauncherList
-
         Plasma::Containment *c = m_dockView->containment();
 
         const auto &applets = c->applets();
