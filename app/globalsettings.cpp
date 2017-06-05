@@ -124,6 +124,37 @@ QAction *GlobalSettings::addWidgetsAction() const
     return m_addWidgetsAction;
 }
 
+bool GlobalSettings::syncLaunchers() const
+{
+    return m_syncLaunchers;
+}
+void GlobalSettings::setSyncLaunchers(bool sync)
+{
+    if (m_syncLaunchers == sync)
+        return;
+
+    m_syncLaunchers = sync;
+
+    save();
+    emit syncLaunchersChanged();
+}
+
+QStringList GlobalSettings::globalLaunchers() const
+{
+    return m_globalLaunchers;
+}
+
+void GlobalSettings::setGlobalLaunchers(QStringList launchers)
+{
+    if (m_globalLaunchers == launchers)
+        return;
+
+    m_globalLaunchers = launchers;
+
+    save();
+    emit globalLaunchersChanged();
+}
+
 bool GlobalSettings::autostart() const
 {
     QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
@@ -168,7 +199,19 @@ void GlobalSettings::setCurrentSession(Dock::SessionType session)
 //!BEGIN configuration functions
 void GlobalSettings::load()
 {
-    setExposeAltSession(m_configGroup.readEntry("exposeAltSession", false));
+    m_exposeAltSession = m_configGroup.readEntry("exposeAltSession", false);
+
+    if (m_corona->currentSession() == Latte::Dock::AlternativeSession) {
+        m_syncLaunchers = m_configGroup.readEntry("syncLaunchers_alternative", false);
+        m_globalLaunchers = m_configGroup.readEntry("globalLaunchers_alternative", QStringList());
+    } else {
+        m_syncLaunchers = m_configGroup.readEntry("syncLaunchers_default", false);
+        m_globalLaunchers = m_configGroup.readEntry("globalLaunchers_default", QStringList());
+    }
+
+    emit exposeAltSessionChanged();
+    emit syncLaunchersChanged();
+    emit globalLaunchersChanged();
 
     loadExtConfiguration();
 }
@@ -176,6 +219,15 @@ void GlobalSettings::load()
 void GlobalSettings::save()
 {
     m_configGroup.writeEntry("exposeAltSession", m_exposeAltSession);
+
+    if (m_corona->currentSession() == Latte::Dock::AlternativeSession) {
+        m_configGroup.writeEntry("syncLaunchers_alternative", m_syncLaunchers);
+        m_configGroup.writeEntry("globalLaunchers_alternative", m_globalLaunchers);
+    } else {
+        m_configGroup.writeEntry("syncLaunchers_default", m_syncLaunchers);
+        m_configGroup.writeEntry("globalLaunchers_default", m_globalLaunchers);
+    }
+
     m_configGroup.sync();
 }
 

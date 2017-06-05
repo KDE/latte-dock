@@ -126,7 +126,7 @@ Item {
     //! it is used to play the animation correct when the user removes a launcher
     property string launcherForRemoval: ""
 
-    //BEGIN Now Dock Panel properties
+    //BEGIN Latte Dock properties
     property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
     property bool disableLeftSpacer: false
@@ -185,6 +185,7 @@ Item {
     property alias hoveredIndex: icList.hoveredIndex
 
     property QtObject altSessionAction : latteDock ? latteDock.altSessionAction : null
+    property QtObject globalSettings : latteDock && latteDock.globalSettings ? latteDock.globalSettings : null
 
     property Item latteDock: null
     //END Now Dock Panel properties
@@ -248,6 +249,35 @@ Item {
         onDockIsHiddenChanged:{
             if (latteDock.dockIsHidden) {
                 windowsPreviewDlg.hide();
+            }
+        }
+    }
+
+    Connections{
+        target: latteDock && latteDock.globalSettings ? latteDock.globalSettings : null
+
+        onSyncLaunchersChanged: {
+            if (latteDock.globalSettings.syncLaunchers) {
+                tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
+            } else {
+                tasksModel.launcherList = plasmoid.configuration.launchers59;
+            }
+        }
+
+        onGlobalLaunchersChanged: {
+            if (latteDock.globalSettings.syncLaunchers) {
+                tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
+            }
+        }
+    }
+
+    //is used to load correctly the launcherslist on startup
+    onGlobalSettingsChanged: {
+        if (globalSettings === latteDock.globalSettings ) {
+            if (latteDock.globalSettings.syncLaunchers) {
+                tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
+            } else {
+                tasksModel.launcherList = plasmoid.configuration.launchers59;
             }
         }
     }
@@ -518,7 +548,12 @@ Item {
         }
 
         onLauncherListChanged: {
-            plasmoid.configuration.launchers59 = launcherList;
+            if (latteDock && latteDock.globalSettings && latteDock.globalSettings.syncLaunchers) {
+                latteDock.globalSettings.globalLaunchers = launcherList;
+            } else {
+                plasmoid.configuration.launchers59 = launcherList;
+            }
+
             checkSeparator();
         }
 
@@ -545,7 +580,12 @@ Item {
 
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
-            launcherList = plasmoid.configuration.launchers59;
+
+            if (latteDock && latteDock.globalSettings && latteDock.globalSettings.syncLaunchers) {
+                launcherList = latteDock.globalSettings.globalLaunchers;
+            } else {
+                launcherList = plasmoid.configuration.launchers59;
+            }
 
             groupingAppIdBlacklist = plasmoid.configuration.groupingAppIdBlacklist;
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;

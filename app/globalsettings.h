@@ -39,6 +39,9 @@ class GlobalSettings : public QObject {
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool exposeAltSession READ exposeAltSession WRITE setExposeAltSession NOTIFY exposeAltSessionChanged)
 
+    Q_PROPERTY(bool syncLaunchers READ syncLaunchers WRITE setSyncLaunchers NOTIFY syncLaunchersChanged)
+    Q_PROPERTY(QStringList globalLaunchers READ globalLaunchers WRITE setGlobalLaunchers NOTIFY globalLaunchersChanged)
+
     Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
 
     Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
@@ -57,6 +60,12 @@ public:
     void setExposeAltSession(bool state);
     QAction *altSessionAction() const;
 
+    bool syncLaunchers() const;
+    void setSyncLaunchers(bool sync);
+
+    QStringList globalLaunchers() const;
+    void setGlobalLaunchers(QStringList launchers);
+
     QAction *addWidgetsAction() const;
 
     Latte::Dock::SessionType currentSession() const;
@@ -71,10 +80,12 @@ public:
 signals:
     void addWidgetsActionChanged();
     void altSessionActionChanged();
+    void autostartChanged();
     void clearLayoutSelection();
     void currentSessionChanged();
-    void autostartChanged();
     void exposeAltSessionChanged();
+    void globalLaunchersChanged();
+    void syncLaunchersChanged();
 
 private slots:
     void currentSessionChangedSlot(Dock::SessionType type);
@@ -90,6 +101,8 @@ private:
     void saveExtConfiguration();
 
     bool m_exposeAltSession{false};
+    bool m_syncLaunchers{false};
+
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_altSessionAction{nullptr};
     DockCorona *m_corona{nullptr};
@@ -97,6 +110,7 @@ private:
     QVariantList m_defaultLayouts;
     QVariantList m_userLayouts;
     QStringList m_userLayoutsFiles;
+    QStringList m_globalLaunchers;
 
     KConfigGroup m_configGroup;
     KConfigGroup m_externalGroup;

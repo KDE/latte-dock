@@ -130,14 +130,13 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                id: windowActionsChk
+                id: syncLaunchersChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show window actions in the context menu")
-                checked: plasmoid.configuration.showWindowActions
-                visible: plasmoid.configuration.advanced
+                text: i18n("Sync launchers between all docks")
+                checked: globalSettings.syncLaunchers
 
                 onClicked: {
-                    plasmoid.configuration.showWindowActions = checked
+                    globalSettings.syncLaunchers = checked;
                 }
             }
 
@@ -150,6 +149,18 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.smartLaunchersEnabled = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: windowActionsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show window actions in the context menu")
+                checked: plasmoid.configuration.showWindowActions
+                visible: plasmoid.configuration.advanced
+
+                onClicked: {
+                    plasmoid.configuration.showWindowActions = checked
                 }
             }
 

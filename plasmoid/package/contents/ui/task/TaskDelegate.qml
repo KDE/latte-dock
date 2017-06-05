@@ -1049,7 +1049,7 @@ MouseArea{
 
         var pa = pulseAudio.item;
         if (!pa) {
-            task.audioStreams = [];
+            audioStreams = [];
             return;
         }
 
