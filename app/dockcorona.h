@@ -76,6 +76,7 @@ public:
 
     void addDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
+    void copyDock(Plasma::Containment *containment);
 
     Dock::SessionType currentSession();
     void setCurrentSession(Dock::SessionType session);

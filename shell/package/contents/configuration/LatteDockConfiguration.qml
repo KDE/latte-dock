@@ -294,7 +294,7 @@ PlasmaCore.FrameSvgItem {
                 tooltip: i18n("Add a new dock")
 
 
-                onClicked: dock.addNewDock()
+                onClicked: dock.copyDock() //dock.addNewDock()
 
                 Component.onCompleted: {
                     enabled = dock.freeEdges().length > 0

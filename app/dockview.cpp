@@ -398,6 +398,15 @@ void DockView::addNewDock()
     }
 }
 
+void DockView::copyDock()
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+    if (dockCorona) {
+        dockCorona->copyDock(containment());
+    }
+}
+
 void DockView::removeDock()
 {
     if (docksCount() > 1) {

@@ -1044,6 +1044,56 @@ void DockCorona::loadDefaultLayout()
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
 
+void DockCorona::copyDock(Plasma::Containment *containment)
+{
+    if (!containment)
+        return;
+
+    qDebug() << "copying containment layout";
+    //! Settting mutable for create a containment
+    setImmutability(Plasma::Types::Mutable);
+
+    Plasma::Containment *newContainment{nullptr};
+
+    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
+
+    if (!newContainment)
+        return;
+
+    newContainment->setContainmentType(Plasma::Types::PanelContainment);
+    newContainment->init();
+
+    if (!newContainment || !newContainment->kPackage().isValid()) {
+        qWarning() << "the requested containment plugin can not be located or loaded";
+        return;
+    }
+
+    auto config = newContainment->config();
+    newContainment->restore(config);
+    QList<Plasma::Types::Location> edges = freeEdges(newContainment->screen());
+
+    if (edges.count() > 0) {
+        newContainment->setLocation(edges.at(0));
+    } else {
+        newContainment->setLocation(Plasma::Types::BottomEdge);
+    }
+
+    if (currentSession() != Dock::DefaultSession) {
+        config.writeEntry("session", (int)currentSession());
+    }
+
+    newContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
+
+    newContainment->save(config);
+    requestConfigSync();
+
+    newContainment->flushPendingConstraintsEvents();
+    emit containmentAdded(newContainment);
+    emit containmentCreated(newContainment);
+
+    addDock(newContainment);
+}
+
 //! This function figures in the beginning if a dock with tasks
 //! in it will be loaded taking into account also the screens are present.
 bool DockCorona::heuresticForLoadingDockWithTasks()
