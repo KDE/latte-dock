@@ -488,19 +488,6 @@ Item{
             }
 
             sourceComponent: Item{
-                CircleText {
-                    id: taskNumber
-                    anchors.centerIn: parent
-                    opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
-
-                    width: 0.5 * parent.width
-                    height: width
-                    numberValue: taskNumberLoader.fixedIndex
-                    showNumber: true
-                    proportion: 0
-                    radiusPerCentage: 50
-                }
-
                 Loader{
                     anchors.fill: taskNumber
                     active: root.enableShadows
@@ -512,6 +499,19 @@ Item{
                         radius: centralItem.shadowSize/2
                         verticalOffset: 2
                     }
+                }
+
+                CircleText {
+                    id: taskNumber
+                    anchors.centerIn: parent
+                    //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
+
+                    width: 0.5 * parent.width
+                    height: width
+                    numberValue: taskNumberLoader.fixedIndex
+                    showNumber: true
+                    proportion: 0
+                    radiusPerCentage: 50
                 }
             }
         }

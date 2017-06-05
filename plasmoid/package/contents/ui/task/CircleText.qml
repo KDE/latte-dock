@@ -30,11 +30,10 @@ Rectangle {
     property double previousProportion: 0
 
     property string valueLabel
-    property string numberValue
+    property int numberValue
 
-    property bool fullCircle
-    property bool showNumber
-    property bool showLabel
+    property bool fullCircle: true
+    property bool showNumber: true
 
     property int radiusPerCentage: 100
 
