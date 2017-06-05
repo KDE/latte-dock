@@ -91,6 +91,7 @@ private slots:
     void currentSessionChangedSlot(Dock::SessionType type);
     void enableAltSession(bool enabled);
     void importLayoutInternal(const QString &file);
+    void loadLaunchers();
     void showWidgetsExplorer();
 
 private:

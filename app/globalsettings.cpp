@@ -34,6 +34,7 @@ GlobalSettings::GlobalSettings(QObject *parent)
         m_altSessionAction->setCheckable(true);
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
         connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
+        connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::loadLaunchers);
 
         //! create the add widgets action
         const QIcon addWidIcon = QIcon::fromTheme("add");
@@ -201,6 +202,18 @@ void GlobalSettings::load()
 {
     m_exposeAltSession = m_configGroup.readEntry("exposeAltSession", false);
 
+    //the order is very important because we dont want to lose data
+    //the signals that the variable have been changed must be triggered
+    //after ALL variables have been loaded
+    loadLaunchers();
+
+    emit exposeAltSessionChanged();
+
+    loadExtConfiguration();
+}
+
+void GlobalSettings::loadLaunchers()
+{
     if (m_corona->currentSession() == Latte::Dock::AlternativeSession) {
         m_syncLaunchers = m_configGroup.readEntry("syncLaunchers_alternative", false);
         m_globalLaunchers = m_configGroup.readEntry("globalLaunchers_alternative", QStringList());
@@ -209,11 +222,8 @@ void GlobalSettings::load()
         m_globalLaunchers = m_configGroup.readEntry("globalLaunchers_default", QStringList());
     }
 
-    emit exposeAltSessionChanged();
     emit syncLaunchersChanged();
     emit globalLaunchersChanged();
-
-    loadExtConfiguration();
 }
 
 void GlobalSettings::save()
