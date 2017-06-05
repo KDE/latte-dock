@@ -307,9 +307,21 @@ PlasmaCore.FrameSvgItem {
                     Layout.preferredWidth: units.iconSizes.medium
                     Layout.preferredHeight: parent.height
 
+                    PlasmaComponents.Menu {
+                        id: menu
+                        visualParent: addDock
+                        PlasmaComponents.MenuItem {
+                            text: i18n("Add and copy the current launchers")
+                            onClicked: {
+
+                            }
+                        }
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            menu.open()
                         }
                     }
                 }
