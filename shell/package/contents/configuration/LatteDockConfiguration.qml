@@ -300,7 +300,17 @@ PlasmaCore.FrameSvgItem {
                     enabled = dock.freeEdges().length > 0
                 }
 
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.RightButton
+                    onClicked: {
+                        menu.visualParent = addDock
+                        menu.open()
+                    }
+                }
+
                 PlasmaCore.IconItem {
+                    id: dropDownButton
                     source: "arrow-down"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -309,7 +319,6 @@ PlasmaCore.FrameSvgItem {
 
                     PlasmaComponents.Menu {
                         id: menu
-                        visualParent: addDock
                         PlasmaComponents.MenuItem {
                             text: i18n("Add and copy the current launchers")
                             onClicked: {
@@ -320,7 +329,9 @@ PlasmaCore.FrameSvgItem {
 
                     MouseArea {
                         anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
                         onClicked: {
+                            menu.visualParent = dropDownButton
                             menu.open()
                         }
                     }
