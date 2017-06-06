@@ -1153,12 +1153,44 @@ void DockCorona::copyDock(Plasma::Containment *containment)
 
     auto config = newContainment->config();
     newContainment->restore(config);
-    QList<Plasma::Types::Location> edges = freeEdges(newContainment->screen());
 
-    if (edges.count() > 0) {
-        newContainment->setLocation(edges.at(0));
-    } else {
-        newContainment->setLocation(Plasma::Types::BottomEdge);
+    //in multi-screen environment the copied dock is moved to alternative screens first
+    const auto screens = qGuiApp->screens();
+    auto dock = m_dockViews[containment];
+
+    bool setOnExplicitScreen = false;
+
+    if (dock && screens.count() > 1) {
+        int dockScrId = m_screenPool->id(dock->currentScreen());
+
+        if (dockScrId != -1) {
+            foreach (auto scr, screens) {
+                int copyScrId = m_screenPool->id(scr->name());
+
+                //the screen must exist and not be the same with the original dock
+                if (copyScrId > -1 && copyScrId != dockScrId) {
+                    QList<Plasma::Types::Location> fEdges = freeEdges(copyScrId);
+
+                    if (fEdges.contains((Plasma::Types::Location)containment->location())) {
+                        ///set this containment to an explicit screen
+                        newContainment->config().writeEntry("onPrimary", false);
+                        newContainment->config().writeEntry("lastScreen", copyScrId);
+
+                        setOnExplicitScreen = true;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!setOnExplicitScreen) {
+        QList<Plasma::Types::Location> edges = freeEdges(newContainment->screen());
+
+        if (edges.count() > 0) {
+            newContainment->setLocation(edges.at(0));
+        } else {
+            newContainment->setLocation(Plasma::Types::BottomEdge);
+        }
     }
 
     if (currentSession() != Dock::DefaultSession) {
