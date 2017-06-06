@@ -169,7 +169,7 @@ PlasmaCore.FrameSvgItem {
                     }
 
                     style: Styles.SwitchStyle {
-                         property bool checked: advancedSwitch.checked
+                        property bool checked: advancedSwitch.checked
                     }
 
                     onCheckedChanged: {
@@ -285,55 +285,47 @@ PlasmaCore.FrameSvgItem {
             }
 
             PlasmaComponents.Button {
-                id: addDock
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
+                text:" "
 
-                text: i18n("Add")
-                iconSource: "list-add"
-                tooltip: i18n("Add a new dock")
+                PlasmaComponents.ComboBox {
+                    id: actionsCmb
 
-
-                onClicked: dock.addNewDock()
-
-                Component.onCompleted: {
-                    enabled = dock.freeEdges().length > 0
-                }
-
-                MouseArea {
                     anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
-                    onClicked: {
-                        menu.visualParent = addDock
-                        menu.open()
+
+                    Component.onCompleted:{
+                        var actions = []
+
+                        actions.push(i18n("Copy Dock"));
+                        actionsCmb.model = actions;
+                        actionsCmb.currentIndex = -1;
+                    }
+
+                    onActivated: {
+                        if (index==0) {
+                            dock.copyDock();
+                        }
+
+                        actionsCmb.currentIndex = -1;
                     }
                 }
 
-                PlasmaCore.IconItem {
-                    id: dropDownButton
-                    source: "arrow-down"
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    Layout.preferredWidth: units.iconSizes.medium
-                    Layout.preferredHeight: parent.height
 
-                    PlasmaComponents.Menu {
-                        id: menu
-                        PlasmaComponents.MenuItem {
-                            text: i18n("Copy current dock")
-                            onClicked: {
-                                dock.copyDock();
-                            }
-                        }
-                    }
+                //overlayed button
+                PlasmaComponents.Button {
+                    id: addDock
+                    width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
+                    height: parent.height
 
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.LeftButton | Qt.RightButton
-                        onClicked: {
-                            menu.visualParent = dropDownButton
-                            menu.open()
-                        }
+                    text: i18n("Add")
+                    iconSource: "list-add"
+                    tooltip: i18n("Add a new dock")
+
+                    onClicked: dock.addNewDock()
+
+                    Component.onCompleted: {
+                        enabled = dock.freeEdges().length > 0
                     }
                 }
             }
