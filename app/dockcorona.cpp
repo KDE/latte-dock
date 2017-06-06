@@ -85,7 +85,7 @@ DockCorona::DockCorona(QObject *parent)
     qmlRegisterTypes();
     QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
 
-    connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
+    //connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
 
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running)) {
         load();
@@ -142,6 +142,9 @@ void DockCorona::load()
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
 
         loadLayout();
+
+        foreach (auto containment, containments())
+            addDock(containment);
     }
 }
 
@@ -1053,12 +1056,92 @@ void DockCorona::copyDock(Plasma::Containment *containment)
     //! Settting mutable for create a containment
     setImmutability(Plasma::Types::Mutable);
 
-    Plasma::Containment *newContainment{nullptr};
-
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
+    QFile copyFile(QDir::homePath() + "/.config/lattedock.copy1.bak");
+
+    if (copyFile.exists())
+        copyFile.remove();
+
+    KSharedConfigPtr newFile = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock.copy1.bak");
+    KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
+    KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
+
+    containment->config().copyTo(&copied_c1);
+
+    //!investigate if there is a systray in the containment to copy also
+    int systrayId = -1;
+    auto applets = containment->config().group("Applets");
+
+    foreach (auto applet, applets.groupList()) {
+        KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+
+        int tSysId = appletSettings.readEntry("SystrayContainmentId", "-1").toInt();
+
+        if (tSysId != -1) {
+            systrayId = tSysId;
+            qDebug() << "systray was found in the containment...";
+            break;
+        }
+    }
+
+    if (systrayId != -1) {
+        Plasma::Containment *systray{nullptr};
+
+        foreach (auto containment, containments()) {
+            if (containment->id() == systrayId) {
+                systray = containment;
+                break;
+            }
+        }
+
+        if (systray) {
+            KConfigGroup copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
+            systray->config().copyTo(&copied_systray);
+        }
+    }
+
+    //! end of systray specific code
+
+
+    //! Finally import the configuration
+    auto nConts = importLayout(KConfigGroup(newFile, ""));
+
+    ///Find latte and systray containments
+    qDebug() << " imported containments ::: " << nConts.length();
+
+    Plasma::Containment *newContainment{nullptr};
+    int newSystrayId = -1;
+
+    foreach (auto containment, nConts) {
+        KPluginMetaData meta = containment->kPackage().metadata();
+
+        if (meta.pluginId() == "org.kde.latte.containment") {
+            qDebug() << "new latte containment id: " << containment->id();
+            newContainment = containment;
+        } else if (meta.pluginId() == "org.kde.plasma.private.systemtray") {
+            qDebug() << "new systray containment id: " << containment->id();
+            newSystrayId = containment->id();
+        }
+    }
 
     if (!newContainment)
         return;
+
+    ///after systray was found we must update in latte the relevant id
+    if (newSystrayId != -1) {
+        applets = newContainment->config().group("Applets");
+
+        qDebug() << "systray found with id : " << newSystrayId << " and applets in the containment :" << applets.groupList().count();
+
+        foreach (auto applet, applets.groupList()) {
+            KConfigGroup appletSettings = applets.group(applet).group("Configuration");
+
+            if (appletSettings.hasKey("SystrayContainmentId")) {
+                qDebug() << "!!! updating systray id to : " << newSystrayId;
+                appletSettings.writeEntry("SystrayContainmentId", newSystrayId);
+            }
+        }
+    }
 
     newContainment->setContainmentType(Plasma::Types::PanelContainment);
     newContainment->init();
