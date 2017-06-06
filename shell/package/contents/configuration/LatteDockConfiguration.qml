@@ -294,7 +294,7 @@ PlasmaCore.FrameSvgItem {
                 tooltip: i18n("Add a new dock")
 
 
-                onClicked: dock.copyDock() //dock.addNewDock()
+                onClicked: dock.addNewDock()
 
                 Component.onCompleted: {
                     enabled = dock.freeEdges().length > 0
@@ -320,9 +320,9 @@ PlasmaCore.FrameSvgItem {
                     PlasmaComponents.Menu {
                         id: menu
                         PlasmaComponents.MenuItem {
-                            text: i18n("Add and copy the current launchers")
+                            text: i18n("Copy current dock")
                             onClicked: {
-
+                                dock.copyDock();
                             }
                         }
                     }

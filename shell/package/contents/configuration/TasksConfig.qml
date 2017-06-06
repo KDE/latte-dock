@@ -134,6 +134,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Sync launchers between all docks")
                 checked: globalSettings.syncLaunchers
+                tooltip: i18n("When this option is acticated, it copies the current dock launchers\nand makes them global launchers for all docks")
 
                 onClicked: {
                     dockConfig.setSyncLaunchers(checked);
