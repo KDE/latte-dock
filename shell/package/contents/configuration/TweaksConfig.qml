@@ -77,7 +77,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show background only for maximized windows")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                tooltip: i18n("The panel background becomes transparent and is shown only\nwhen there is a maximized window")
+                tooltip: i18n("The panel background becomes transparent but is shown \nwhen there is a maximized window")
 
                 onClicked: {
                     plasmoid.configuration.backgroundOnlyOnMaximized = checked;

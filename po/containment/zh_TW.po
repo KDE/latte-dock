@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-05-13 20:04+0300\n"
+"POT-Creation-Date: 2017-06-07 14:40+0300\n"
 "PO-Revision-Date: 2017-03-23 11:13+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -17,9 +17,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../containment/package/contents/ui/AppletItem.qml:1072
+#: ../../containment/package/contents/ui/applet/AppletItem.qml:530
 msgid "Launchers Area"
 msgstr "啟動器區域"
+
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:459
+msgid "Configure applet"
+msgstr ""
+
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:481
+msgid "Lock/Unlock the parabolic effect for this applet"
+msgstr ""
+
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:493
+msgid "Remove applet"
+msgstr ""
 
 #: ../desktop-templates/containment.metadata.desktop.template:4
 msgid "Latte"

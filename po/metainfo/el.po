@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-05-13 20:04+0300\n"
+"POT-Creation-Date: 2017-06-07 14:40+0300\n"
 "PO-Revision-Date: 2017-05-13 19:36+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"

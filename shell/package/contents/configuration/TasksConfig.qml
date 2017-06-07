@@ -134,7 +134,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Sync launchers between all docks")
                 checked: globalSettings.syncLaunchers
-                tooltip: i18n("When this option is acticated, it copies the current dock launchers\nand makes them global launchers for all docks")
+                tooltip: i18n("When this option is activated, it copies the current dock launchers\nand makes them global launchers for all docks")
 
                 onClicked: {
                     dockConfig.setSyncLaunchers(checked);
@@ -170,7 +170,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show indicator for audio streams")
                 checked: plasmoid.configuration.indicateAudioStreams
-                tooltip: i18n("Show an audio indicator for the user to mute/unmute an app")
+                tooltip: i18n("Audio indicator from which the user can mute/unmute an app")
                 visible: plasmoid.configuration.advanced
 
                 onClicked: {
