@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-03-22 21:18+0200\n"
+"PO-Revision-Date: 2017-06-07 14:54+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el\n"
@@ -23,15 +23,15 @@ msgstr "Περιοχή Εκκινητών"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:459
 msgid "Configure applet"
-msgstr ""
+msgstr "Επεξεργασία εφαρμογής"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:481
 msgid "Lock/Unlock the parabolic effect for this applet"
-msgstr ""
+msgstr "Κλείδωμα/Ξεκλείδωμα του παραβολικού εφέ για αυτή την εφαρμογή"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:493
 msgid "Remove applet"
-msgstr ""
+msgstr "Αφαίρεση εφαρμογής"
 
 #: ../desktop-templates/containment.metadata.desktop.template:4
 msgid "Latte"
@@ -40,3 +40,4 @@ msgstr "Latte"
 #: ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
 msgstr "Containment που παρέχεται από το Latte"
+

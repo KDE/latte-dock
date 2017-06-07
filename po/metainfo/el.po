@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-05-13 19:36+0200\n"
+"PO-Revision-Date: 2017-06-07 14:57+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el\n"
@@ -21,7 +21,7 @@ msgstr "Latte"
 #. (itstool) path: component/summary
 #: org.kde.latte-dock.appdata.xml.cmake:5
 msgid "Dock for the masses"
-msgstr "Πίνακας εφαρμογών για όλον τον κόσμο"
+msgstr "Πίνακες εφαρμογών για όλον τον κόσμο"
 
 #. (itstool) path: description/p
 #: org.kde.latte-dock.appdata.xml.cmake:7
@@ -40,3 +40,4 @@ msgstr ""
 #: org.kde.latte-dock.appdata.xml.cmake:8
 msgid "\"Art In Coffee\""
 msgstr "\"Τέχνη στον Καφέ\""
+

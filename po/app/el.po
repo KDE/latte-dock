@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-05-13 21:46+0200\n"
+"PO-Revision-Date: 2017-06-07 14:53+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
 "Language: el_GR\n"
@@ -132,9 +132,8 @@ msgid "New Instance for Task Manager Entry %1"
 msgstr "Νέο Στιγμιότυπο για την Εφαρμογή %1"
 
 #: ../../app/globalshortcuts.cpp:181
-#, fuzzy
 msgid "Show Latte Dock"
-msgstr "Πίνακας Latte"
+msgstr "Εμφάνιση του Πίνακα Latte"
 
 #: ../../app/main.cpp:81
 msgctxt "command line"
@@ -493,37 +492,32 @@ msgid "Tweaks"
 msgstr "Προχωρημένα"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:300
-#, fuzzy
 msgid "Copy Dock"
-msgstr "Πίνακας"
+msgstr "Αντιγραφή Πίνακα"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:321
-#, fuzzy
 msgid "New Dock"
-msgstr "Προσθήκη Πίνακα"
+msgstr "Νέος Πίνακας"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:323
-#, fuzzy
 msgid "Add a new dock"
-msgstr "Προσθήκη Πίνακα"
+msgstr "Προσθήκη ενός νέου πίνακα"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:339
 msgid "Remove"
 msgstr "Αφαίρεση"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:343
-#, fuzzy
 msgid "Remove current dock"
-msgstr "Αντικατάσταση του τρέχοντα πίνακα"
+msgstr "Αφαίρεση αυτού του πίνακα"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:354
 msgid "Quit"
 msgstr "Έξοδος"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:356
-#, fuzzy
 msgid "Quit Latte"
-msgstr "Latte"
+msgstr "Έξοδος από το Latte"
 
 #: ../../shell/package/contents/configuration/LatteTextField.qml:42
 msgid "none"
@@ -571,13 +565,15 @@ msgstr "Τονισμός παραθύρων"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:135
 msgid "Sync launchers between all docks"
-msgstr ""
+msgstr "Συγχρονισμός των εκκινητών σε όλους τους πίνακες"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:137
 msgid ""
 "When this option is activated, it copies the current dock launchers\n"
 "and makes them global launchers for all docks"
 msgstr ""
+"Όταν ενεργοποιείται αυτή η επιλογή, οι εκκινητές αυτού του πίνακα\n"
+"μετατρέπονται σε καθολικοί και χρησιμοποιούνται από όλους τους πίνακες"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:147
 msgid "Show progress information for tasks"
@@ -602,14 +598,18 @@ msgstr "Εμφάνιση ένδειξης ροών ήχου"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:173
 msgid "Audio indicator from which the user can mute/unmute an app"
 msgstr ""
+"Ένδειξη ήχου με την οποία ο χρήστης μπορεί να ενεργοποιήσει ή όχι "
+"τη σίγαση σε μία εφαρμογή"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:184
 msgid "Activate tasks through mouse wheel"
-msgstr ""
+msgstr "Περιήγηση στις εργασίες με τη ροδέλα του ποντικιού"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:186
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
 msgstr ""
+"Ενεργοποίηση/Απενεργοποίηση των ενεργειών της ροδέλας του ποντικιού με τις\n"
+"οποίες πραγματοποιείται περιήγηση στις εργασίες"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:199
 msgid "On middle-click:"
@@ -678,20 +678,20 @@ msgid "Shrink thickness margins to minimum"
 msgstr "Ελαχιστοποίηση περιθωρίων πλάτους"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
-#, fuzzy
 msgid "Show background only for maximized windows"
-msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
+msgstr "Εμφάνιση παρασκηνίου μόνο για μεγιστοποιημένα παράθυρα"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:80
 msgid ""
 "The panel background becomes transparent but is shown \n"
 "when there is a maximized window"
 msgstr ""
+"Ο πίνακας γίνεται εντελώς διάφανος αλλά μπορεί να εμφανιστεί\n"
+"όταν υπάρχει κάποιο μεγιστοποιημένο παράθυρο"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:92
-#, fuzzy
 msgid "Hide panel shadow for maximized windows"
-msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
+msgstr "Απόκρυψη σκιών του πίνακα για μεγιστοποιημένα παράθυρα"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:115
 msgid "Enable autostart during startup"
@@ -715,20 +715,20 @@ msgstr "Προσθήκη εκκινητών μόνο στην αντίστοιχ
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
-msgstr ""
+msgstr "Εκκινητές μόνο στην περιοχή εργασιών και ποτέ ως εφαρμογές plasma"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:147
 msgid "Behave as a normal dock window"
 msgstr "Λειτουργία ως παράθυρο κανονικού πίνακα"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:152
-#, fuzzy
 msgid ""
 "Remove the BypassWindowManagerHint flag from the window.\n"
 "The dock wont be above windows which are set at 'Always On Top'"
 msgstr ""
 "Αφαίρεση της σήμανσης BypassWindowManagerHint από τα \n"
-"χαρακτηριστικά του παραθύρου"
+"χαρακτηριστικά του παραθύρου. Ο πίνακας δεν θα είναι ποτέ πάνω\n"
+"από παράθυρα που έχουν οριστεί ως \"Πάνω από τα άλλα\""
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:161
 msgid "Show Alternative Session in the context menu"
@@ -744,22 +744,19 @@ msgstr "Ανύψωση σε κάθε αλλαγή Δραστηριότητας"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:200
 msgid "Active Applet Indicator"
-msgstr ""
+msgstr "Ένδειξη Ενεργής Εφαρμογής"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:227
-#, fuzzy
 msgctxt "active indicator to no applets"
 msgid "None"
 msgstr "Καμία"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:237
-#, fuzzy
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
-msgstr "Αλληλεπίδραση"
+msgstr "Εσωτερικά"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:247
-#, fuzzy
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "Παντού"
@@ -796,7 +793,7 @@ msgstr "Αφαίρεση Συστατικού Εργασιών"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:326
 msgid "Remove Latte plasmoid"
-msgstr ""
+msgstr "Αφαίρεση Εργασιών Latte"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock for the masses"
