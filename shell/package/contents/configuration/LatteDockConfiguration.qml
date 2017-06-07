@@ -297,7 +297,7 @@ PlasmaCore.FrameSvgItem {
                     Component.onCompleted:{
                         var actions = []
 
-                        actions.push(i18n("Copy Dock"));
+                        actions.push("    " + i18n("Copy Dock"));
                         actionsCmb.model = actions;
                         actionsCmb.currentIndex = -1;
                     }
@@ -318,7 +318,7 @@ PlasmaCore.FrameSvgItem {
                     width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
                     height: parent.height
 
-                    text: i18n("Add")
+                    text: i18n("New Dock")
                     iconSource: "list-add"
                     tooltip: i18n("Add a new dock")
 
