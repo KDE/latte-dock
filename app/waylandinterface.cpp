@@ -42,9 +42,9 @@ WaylandInterface::WaylandInterface(QObject *parent)
             (&KWindowSystem::windowChanged)
             , this, &WaylandInterface::windowChangedProxy);
 
-    auto addWindow = [&](WId wid) {
+    auto addWindow = [&](WindowId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
-            if (isValidWindow(KWindowInfo(wid, NET::WMWindowType))) {
+            if (isValidWindow(KWindowInfo(wid.value<WId>(), NET::WMWindowType))) {
                 m_windows.push_back(wid);
                 emit windowAdded(wid);
             }
@@ -52,7 +52,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
     };
 
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
-    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WId wid) {
+    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WindowId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
             m_windows.remove(wid);
             emit windowRemoved(wid);
@@ -81,7 +81,7 @@ void WaylandInterface::setDockExtraFlags(QQuickWindow &view)
     KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
-void WaylandInterface::setDockStruts(WId dockId, const QRect &dockRect
+void WaylandInterface::setDockStruts(WindowId dockId, const QRect &dockRect
                                      , const QScreen &screen, Plasma::Types::Location location) const
 {
     NETExtendedStrut strut;
@@ -127,7 +127,7 @@ void WaylandInterface::setDockStruts(WId dockId, const QRect &dockRect
             return;
     }
 
-    KWindowSystem::setExtendedStrut(dockId,
+    KWindowSystem::setExtendedStrut(dockId.value<WId>(),
                                     strut.left_width,   strut.left_start,   strut.left_end,
                                     strut.right_width,  strut.right_start,  strut.right_end,
                                     strut.top_width,    strut.top_start,    strut.top_end,
@@ -135,17 +135,17 @@ void WaylandInterface::setDockStruts(WId dockId, const QRect &dockRect
                                    );
 }
 
-void WaylandInterface::removeDockStruts(WId dockId) const
+void WaylandInterface::removeDockStruts(WindowId dockId) const
 {
-    KWindowSystem::setStrut(dockId, 0, 0, 0, 0);
+    KWindowSystem::setStrut(dockId.value<WId>(), 0, 0, 0, 0);
 }
 
-WId WaylandInterface::activeWindow() const
+WindowId WaylandInterface::activeWindow() const
 {
     return KWindowSystem::self()->activeWindow();
 }
 
-const std::list<WId> &WaylandInterface::windows() const
+const std::list<WindowId> &WaylandInterface::windows() const
 {
     return m_windows;
 }
@@ -193,13 +193,13 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
     return requestInfo(KWindowSystem::activeWindow());
 }
 
-bool WaylandInterface::isOnCurrentDesktop(WId wid) const
+bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 {
-    KWindowInfo winfo(wid, NET::WMDesktop);
+    KWindowInfo winfo(wid.value<WId>(), NET::WMDesktop);
     return winfo.valid() && winfo.isOnCurrentDesktop();
 }
 
-WindowInfoWrap WaylandInterface::requestInfo(WId wid) const
+WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 {
     /* const KWindowInfo winfo{wid, NET::WMFrameExtents
          | NET::WMWindowType
@@ -248,7 +248,7 @@ bool WaylandInterface::isValidWindow(const KWindowInfo &winfo) const
     //return !((winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash));
 }
 
-void WaylandInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
+void WaylandInterface::windowChangedProxy(WindowId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
     //! if the dock changed is ignored
     /* if (std::find(m_docks.cbegin(), m_docks.cend(), wid) != m_docks.cend())

@@ -38,12 +38,12 @@ AbstractWindowInterface::~AbstractWindowInterface()
 {
 }
 
-void AbstractWindowInterface::addDock(WId wid)
+void AbstractWindowInterface::addDock(WindowId wid)
 {
     m_docks.push_back(wid);
 }
 
-void AbstractWindowInterface::removeDock(WId wid)
+void AbstractWindowInterface::removeDock(WindowId wid)
 {
     auto it = std::find(m_docks.begin(), m_docks.end(), wid);
 

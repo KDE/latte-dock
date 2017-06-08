@@ -23,14 +23,16 @@
 
 #include <QWindow>
 #include <QRect>
+#include <QVariant>
 
 namespace Latte {
 
+using WindowId = QVariant;
+
 class WindowInfoWrap {
-    Q_DISABLE_COPY(WindowInfoWrap)
 
 public:
-    constexpr WindowInfoWrap() noexcept
+    WindowInfoWrap() noexcept
         : m_isValid(false)
         , m_isActive(false)
         , m_isMinimized(false)
@@ -42,7 +44,21 @@ public:
     {
     }
 
-     constexpr WindowInfoWrap(WindowInfoWrap &&o) noexcept
+    WindowInfoWrap(const WindowInfoWrap &o)
+        : m_wid(o.m_wid)
+        , m_geometry(o.m_geometry)
+        , m_isValid(o.m_isValid)
+        , m_isActive(o.m_isActive)
+        , m_isMinimized(o.m_isMinimized)
+        , m_isMaxVert(o.m_isMaxVert)
+        , m_isMaxHoriz(o.m_isMaxHoriz)
+        , m_isFullscreen(o.m_isFullscreen)
+        , m_isShaded(o.m_isShaded)
+        , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
+    {
+    }
+
+    WindowInfoWrap(WindowInfoWrap &&o) noexcept
         : m_wid(std::move(o.m_wid))
         , m_geometry(std::move(o.m_geometry))
         , m_isValid(o.m_isValid)
@@ -57,44 +73,45 @@ public:
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
-    constexpr bool operator==(const WindowInfoWrap &rhs) const noexcept;
-    constexpr bool operator<(const WindowInfoWrap &rhs) const noexcept;
-    constexpr bool operator>(const WindowInfoWrap &rhs) const noexcept;
+    inline WindowInfoWrap &operator=(const WindowInfoWrap &rhs) noexcept;
+    inline bool operator==(const WindowInfoWrap &rhs) const noexcept;
+    inline bool operator<(const WindowInfoWrap &rhs) const noexcept;
+    inline bool operator>(const WindowInfoWrap &rhs) const noexcept;
 
-    constexpr bool isValid() const noexcept;
+    inline bool isValid() const noexcept;
     inline void setIsValid(bool isValid) noexcept;
 
-    constexpr bool isActive() const noexcept;
+    inline bool isActive() const noexcept;
     inline void setIsActive(bool isActive) noexcept;
 
-    constexpr bool isMinimized() const noexcept;
+    inline bool isMinimized() const noexcept;
     inline void setIsMinimized(bool isMinimized) noexcept;
 
-    constexpr bool isMaximized() const noexcept;
+    inline bool isMaximized() const noexcept;
 
-    constexpr bool isMaxVert() const noexcept;
+    inline bool isMaxVert() const noexcept;
     inline void setIsMaxVert(bool isMaxVert) noexcept;
 
-    constexpr bool isMaxHoriz() const noexcept;
+    inline bool isMaxHoriz() const noexcept;
     inline void setIsMaxHoriz(bool isMaxHoriz) noexcept;
 
-    constexpr bool isFullscreen() const noexcept;
+    inline bool isFullscreen() const noexcept;
     inline void setIsFullscreen(bool isFullscreen) noexcept;
 
-    constexpr bool isShaded() const noexcept;
+    inline bool isShaded() const noexcept;
     inline void setIsShaded(bool isShaded) noexcept;
 
-    constexpr bool isPlasmaDesktop() const noexcept;
+    inline bool isPlasmaDesktop() const noexcept;
     inline void setIsPlasmaDesktop(bool isPlasmaDesktop) noexcept;
 
-    constexpr QRect geometry() const noexcept;
+    inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
-    constexpr WId wid() const noexcept;
-    inline void setWid(WId wid) noexcept;
+    inline WindowId wid() const noexcept;
+    inline void setWid(WindowId wid) noexcept;
 
 private:
-    WId m_wid {0};
+    WindowId m_wid{0};
     QRect m_geometry;
 
     bool m_isValid : 1;
@@ -123,22 +140,37 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     return *this;
 }
 
-constexpr bool WindowInfoWrap::operator==(const WindowInfoWrap &rhs) const noexcept
+inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noexcept
+{
+    m_wid = rhs.m_wid;
+    m_geometry = std::move(rhs.m_geometry);
+    m_isValid = rhs.m_isValid;
+    m_isActive = rhs.m_isActive;
+    m_isMinimized = rhs.m_isMinimized;
+    m_isMaxVert = rhs.m_isMaxVert;
+    m_isMaxHoriz = rhs.m_isMaxHoriz;
+    m_isFullscreen = rhs.m_isFullscreen;
+    m_isShaded = rhs.m_isShaded;
+    m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
+    return *this;
+}
+
+inline bool WindowInfoWrap::operator==(const WindowInfoWrap &rhs) const noexcept
 {
     return m_wid == rhs.m_wid;
 }
 
-constexpr bool WindowInfoWrap::operator<(const WindowInfoWrap &rhs) const noexcept
+inline bool WindowInfoWrap::operator<(const WindowInfoWrap &rhs) const noexcept
 {
     return m_wid < rhs.m_wid;
 }
 
-constexpr bool WindowInfoWrap::operator>(const WindowInfoWrap &rhs) const noexcept
+inline bool WindowInfoWrap::operator>(const WindowInfoWrap &rhs) const noexcept
 {
     return m_wid > rhs.m_wid;
 }
 
-constexpr bool WindowInfoWrap::isValid() const noexcept
+inline bool WindowInfoWrap::isValid() const noexcept
 {
     return m_isValid;
 }
@@ -148,7 +180,7 @@ inline void WindowInfoWrap::setIsValid(bool isValid) noexcept
     m_isValid = isValid;
 }
 
-constexpr bool WindowInfoWrap::isActive() const noexcept
+inline bool WindowInfoWrap::isActive() const noexcept
 {
     return m_isActive;
 }
@@ -158,7 +190,7 @@ inline void WindowInfoWrap::setIsActive(bool isActive) noexcept
     m_isActive = isActive;
 }
 
-constexpr bool WindowInfoWrap::isMinimized() const noexcept
+inline bool WindowInfoWrap::isMinimized() const noexcept
 {
     return m_isMinimized;
 }
@@ -168,12 +200,12 @@ inline void WindowInfoWrap::setIsMinimized(bool isMinimized) noexcept
     m_isMinimized = isMinimized;
 }
 
-constexpr bool WindowInfoWrap::isMaximized() const noexcept
+inline bool WindowInfoWrap::isMaximized() const noexcept
 {
     return m_isMaxVert || m_isMaxHoriz;
 }
 
-constexpr bool WindowInfoWrap::isMaxVert() const noexcept
+inline bool WindowInfoWrap::isMaxVert() const noexcept
 {
     return m_isMaxVert;
 }
@@ -183,7 +215,7 @@ inline void WindowInfoWrap::setIsMaxVert(bool isMaxVert) noexcept
     m_isMaxVert = isMaxVert;
 }
 
-constexpr bool WindowInfoWrap::isMaxHoriz() const noexcept
+inline bool WindowInfoWrap::isMaxHoriz() const noexcept
 {
     return m_isMaxHoriz;
 }
@@ -193,7 +225,7 @@ inline void WindowInfoWrap::setIsMaxHoriz(bool isMaxHoriz) noexcept
     m_isMaxHoriz = isMaxHoriz;
 }
 
-constexpr bool WindowInfoWrap::isFullscreen() const noexcept
+inline bool WindowInfoWrap::isFullscreen() const noexcept
 {
     return m_isFullscreen;
 }
@@ -203,7 +235,7 @@ inline void WindowInfoWrap::setIsFullscreen(bool isFullscreen) noexcept
     m_isFullscreen = isFullscreen;
 }
 
-constexpr bool WindowInfoWrap::isShaded() const noexcept
+inline bool WindowInfoWrap::isShaded() const noexcept
 {
     return m_isShaded;
 }
@@ -213,7 +245,7 @@ inline void WindowInfoWrap::setIsShaded(bool isShaded) noexcept
     m_isShaded = isShaded;
 }
 
-constexpr bool WindowInfoWrap::isPlasmaDesktop() const noexcept
+inline bool WindowInfoWrap::isPlasmaDesktop() const noexcept
 {
     return m_isPlasmaDesktop;
 }
@@ -223,7 +255,7 @@ inline void WindowInfoWrap::setIsPlasmaDesktop(bool isPlasmaDesktop) noexcept
     m_isPlasmaDesktop = isPlasmaDesktop;
 }
 
-constexpr QRect WindowInfoWrap::geometry() const noexcept
+inline QRect WindowInfoWrap::geometry() const noexcept
 {
     return m_geometry;
 }
@@ -233,12 +265,12 @@ inline void WindowInfoWrap::setGeometry(const QRect &geometry) noexcept
     m_geometry = geometry;
 }
 
-constexpr WId WindowInfoWrap::wid() const noexcept
+inline WindowId WindowInfoWrap::wid() const noexcept
 {
     return m_wid;
 }
 
-inline void WindowInfoWrap::setWid(WId wid) noexcept
+inline void WindowInfoWrap::setWid(WindowId wid) noexcept
 {
     m_wid = wid;
 }

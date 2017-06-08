@@ -42,9 +42,9 @@ XWindowInterface::XWindowInterface(QObject *parent)
             (&KWindowSystem::windowChanged)
             , this, &XWindowInterface::windowChangedProxy);
 
-    auto addWindow = [&](WId wid) {
+    auto addWindow = [&](WindowId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
-            if (isValidWindow(KWindowInfo(wid, NET::WMWindowType))) {
+            if (isValidWindow(KWindowInfo(wid.value<WId>(), NET::WMWindowType))) {
                 m_windows.push_back(wid);
                 emit windowAdded(wid);
             }
@@ -52,7 +52,7 @@ XWindowInterface::XWindowInterface(QObject *parent)
     };
 
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
-    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WId wid) {
+    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WindowId wid) {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
             m_windows.remove(wid);
             emit windowRemoved(wid);
@@ -87,7 +87,7 @@ void XWindowInterface::setDockExtraFlags(QQuickWindow &view)
     KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
-void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect
+void XWindowInterface::setDockStruts(WindowId dockId, const QRect &dockRect
                                      , const QScreen &screen, Plasma::Types::Location location) const
 {
     NETExtendedStrut strut;
@@ -130,7 +130,7 @@ void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect
             return;
     }
 
-    KWindowSystem::setExtendedStrut(dockId,
+    KWindowSystem::setExtendedStrut(dockId.value<WId>(),
                                     strut.left_width,   strut.left_start,   strut.left_end,
                                     strut.right_width,  strut.right_start,  strut.right_end,
                                     strut.top_width,    strut.top_start,    strut.top_end,
@@ -138,17 +138,17 @@ void XWindowInterface::setDockStruts(WId dockId, const QRect &dockRect
                                    );
 }
 
-void XWindowInterface::removeDockStruts(WId dockId) const
+void XWindowInterface::removeDockStruts(WindowId dockId) const
 {
-    KWindowSystem::setStrut(dockId, 0, 0, 0, 0);
+    KWindowSystem::setStrut(dockId.value<WId>(), 0, 0, 0, 0);
 }
 
-WId XWindowInterface::activeWindow() const
+WindowId XWindowInterface::activeWindow() const
 {
     return KWindowSystem::self()->activeWindow();
 }
 
-const std::list<WId> &XWindowInterface::windows() const
+const std::list<WindowId> &XWindowInterface::windows() const
 {
     return m_windows;
 }
@@ -196,15 +196,15 @@ WindowInfoWrap XWindowInterface::requestInfoActive() const
     return requestInfo(KWindowSystem::activeWindow());
 }
 
-bool XWindowInterface::isOnCurrentDesktop(WId wid) const
+bool XWindowInterface::isOnCurrentDesktop(WindowId wid) const
 {
-    KWindowInfo winfo(wid, NET::WMDesktop);
+    KWindowInfo winfo(wid.value<WId>(), NET::WMDesktop);
     return winfo.valid() && winfo.isOnCurrentDesktop();
 }
 
-WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
+WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
-    const KWindowInfo winfo{wid, NET::WMFrameExtents
+    const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents
         | NET::WMWindowType
         | NET::WMGeometry
         | NET::WMState};
@@ -214,7 +214,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WId wid) const
     if (isValidWindow(winfo)) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
-        winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
+        winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid.value<WId>());
         winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
         winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
         winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));

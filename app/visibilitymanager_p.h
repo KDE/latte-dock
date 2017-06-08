@@ -5,12 +5,13 @@
 #include "windowinfowrap.h"
 #include "abstractwindowinterface.h"
 
-#include <unordered_map>
 #include <memory>
 
 #include <QObject>
 #include <QTimer>
 #include <QEvent>
+#include <QVariant>
+#include <QMap>
 
 #include <plasmaquick/containmentview.h>
 
@@ -43,10 +44,10 @@ public:
 
     void setDockGeometry(const QRect &rect);
 
-    void windowAdded(WId id);
-    void dodgeActive(WId id);
-    void dodgeMaximized(WId id);
-    void dodgeWindows(WId id);
+    void windowAdded(WindowId id);
+    void dodgeActive(WindowId id);
+    void dodgeMaximized(WindowId id);
+    void dodgeWindows(WindowId id);
     void checkAllWindows();
 
     bool intersects(const WindowInfoWrap &winfo);
@@ -61,7 +62,7 @@ public:
     AbstractWindowInterface *wm;
     Dock::Visibility mode{Dock::None};
     std::array<QMetaObject::Connection, 5> connections;
-    std::unordered_map<WId, WindowInfoWrap> windows;
+    QMap<WindowId, WindowInfoWrap> windows;
     QTimer timerShow;
     QTimer timerHide;
     QTimer timerCheckWindows;

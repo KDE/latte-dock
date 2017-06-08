@@ -41,6 +41,7 @@
 namespace Latte {
 
 class XWindowInterface;
+class WaylandInterface;
 
 class AbstractWindowInterface : public QObject {
     Q_OBJECT
@@ -58,37 +59,37 @@ public:
     virtual ~AbstractWindowInterface();
 
     virtual void setDockExtraFlags(QQuickWindow &view) = 0;
-    virtual void setDockStruts(WId dockId, const QRect &dockRect
+    virtual void setDockStruts(WindowId dockId, const QRect &dockRect
                                , const QScreen &screen, Plasma::Types::Location location) const = 0;
 
-    virtual void removeDockStruts(WId dockId) const = 0;
+    virtual void removeDockStruts(WindowId dockId) const = 0;
 
-    virtual WId activeWindow() const = 0;
-    virtual WindowInfoWrap requestInfo(WId wid) const = 0;
+    virtual WindowId activeWindow() const = 0;
+    virtual WindowInfoWrap requestInfo(WindowId wid) const = 0;
     virtual WindowInfoWrap requestInfoActive() const = 0;
-    virtual bool isOnCurrentDesktop(WId wid) const = 0;
-    virtual const std::list<WId> &windows() const = 0;
+    virtual bool isOnCurrentDesktop(WindowId wid) const = 0;
+    virtual const std::list<WindowId> &windows() const = 0;
 
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
     virtual void slideWindow(QQuickWindow &view, Slide location) const = 0;
     virtual void enableBlurBehind(QQuickWindow &view) const = 0;
 
-    void addDock(WId wid);
-    void removeDock(WId wid);
+    void addDock(WindowId wid);
+    void removeDock(WindowId wid);
 
     static AbstractWindowInterface &self();
 
 signals:
-    void activeWindowChanged(WId wid);
-    void windowChanged(WId winfo);
-    void windowAdded(WId wid);
-    void windowRemoved(WId wid);
+    void activeWindowChanged(WindowId wid);
+    void windowChanged(WindowId winfo);
+    void windowAdded(WindowId wid);
+    void windowRemoved(WindowId wid);
     void currentDesktopChanged();
     void currentActivityChanged();
 
 protected:
-    std::list<WId> m_windows;
-    std::list<WId> m_docks;
+    std::list<WindowId> m_windows;
+    std::list<WindowId> m_docks;
     QPointer<KActivities::Consumer> m_activities;
 
     static std::unique_ptr<AbstractWindowInterface> m_wm;

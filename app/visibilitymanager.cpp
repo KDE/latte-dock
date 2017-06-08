@@ -151,19 +151,19 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
         case Dock::DodgeAllWindows: {
             for (const auto &wid : wm->windows()) {
-                windows.insert(std::make_pair(wid, wm->requestInfo(wid)));
+                windows.insert(wid, wm->requestInfo(wid));
             }
 
             connections[0] = connect(wm, &WindowSystem::windowChanged
                                      , this, &VisibilityManagerPrivate::dodgeWindows);
             connections[1] = connect(wm, &WindowSystem::windowRemoved
-            , this, [&](WId wid) {
-                windows.erase(wid);
+            , this, [&](WindowId wid) {
+                windows.remove(wid);
                 timerCheckWindows.start();
             });
             connections[2] = connect(wm, &WindowSystem::windowAdded
-            , this, [&](WId wid) {
-                windows.insert(std::make_pair(wid, wm->requestInfo(wid)));
+            , this, [&](WindowId wid) {
+                windows.insert(wid, wm->requestInfo(wid));
                 timerCheckWindows.start();
             });
 
@@ -171,9 +171,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         }
         break;
 
-        case Dock::WindowsGoBelow: {
-            //
-        }
+        case Dock::WindowsGoBelow:
+            break;
+
+        default:
+            break;
     }
 
     view->containment()->config().writeEntry("visibility", static_cast<int>(mode));
@@ -308,6 +310,8 @@ void VisibilityManagerPrivate::updateHiddenState()
         case Dock::DodgeAllWindows:
             dodgeWindows(wm->activeWindow());
             break;
+        default:
+            break;
     }
 }
 
@@ -323,7 +327,7 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
     }
 }
 
-void VisibilityManagerPrivate::dodgeActive(WId wid)
+void VisibilityManagerPrivate::dodgeActive(WindowId wid)
 {
     if (raiseTemporarily)
         return;
@@ -344,7 +348,7 @@ void VisibilityManagerPrivate::dodgeActive(WId wid)
         raiseDock(!intersects(winfo));
 }
 
-void VisibilityManagerPrivate::dodgeMaximized(WId wid)
+void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 {
     if (raiseTemporarily)
         return;
@@ -376,7 +380,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
                   ? !isMaxHoriz() : !isMaxVert());
 }
 
-void VisibilityManagerPrivate::dodgeWindows(WId wid)
+void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
 {
     if (raiseTemporarily)
         return;
@@ -404,14 +408,14 @@ void VisibilityManagerPrivate::checkAllWindows()
     bool raise{true};
 
     for (const auto &winfo : windows) {
-        //! std::pair<WId, WindowInfoWrap>
-        if (!std::get<1>(winfo).isValid() || !wm->isOnCurrentDesktop(std::get<0>(winfo)))
+        //! std::pair<WindowId, WindowInfoWrap>
+        if (winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()))
             continue;
 
-        if (std::get<1>(winfo).isFullscreen()) {
+        if (winfo.isFullscreen()) {
             raise = false;
             break;
-        } else if (intersects(std::get<1>(winfo))) {
+        } else if (intersects(winfo)) {
             raise = false;
             break;
         }
@@ -522,6 +526,9 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
 
         case QEvent::Show:
             wm->setDockExtraFlags(*view);
+            break;
+
+        default:
             break;
     }
 }

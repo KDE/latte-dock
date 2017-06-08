@@ -39,16 +39,16 @@ public:
     ~WaylandInterface() override;
 
     void setDockExtraFlags(QQuickWindow &view) override;
-    void setDockStruts(WId dockId, const QRect &dockRect
+    void setDockStruts(WindowId dockId, const QRect &dockRect
                        , const QScreen &screen, Plasma::Types::Location location) const override;
 
-    void removeDockStruts(WId dockId) const override;
+    void removeDockStruts(WindowId dockId) const override;
 
-    WId activeWindow() const override;
-    WindowInfoWrap requestInfo(WId wid) const override;
+    WindowId activeWindow() const override;
+    WindowInfoWrap requestInfo(WindowId wid) const override;
     WindowInfoWrap requestInfoActive() const override;
-    bool isOnCurrentDesktop(WId wid) const override;
-    const std::list<WId> &windows() const override;
+    bool isOnCurrentDesktop(WindowId wid) const override;
+    const std::list<WindowId> &windows() const override;
 
     void skipTaskBar(const QDialog &dialog) const override;
     void slideWindow(QQuickWindow &view, Slide location) const override;
@@ -56,9 +56,9 @@ public:
 
 private:
     bool isValidWindow(const KWindowInfo &winfo) const;
-    void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
+    void windowChangedProxy(WindowId wid, NET::Properties prop1, NET::Properties2 prop2);
 
-    WId m_desktopId;
+    WindowId m_desktopId;
 };
 
 }
