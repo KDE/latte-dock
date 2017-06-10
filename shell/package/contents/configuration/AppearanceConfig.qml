@@ -175,6 +175,53 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                enabled: plasmoid.configuration.durationTime > 0
+
+                PlasmaComponents.Label {
+                    text: i18n("Zoom On Hover:")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                PlasmaComponents.Slider {
+                    Layout.fillWidth: true
+                    id: zoomSlider
+
+                    valueIndicatorText: i18n("Zoom Factor")
+                    valueIndicatorVisible: true
+
+                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
+                    minimumValue: 1
+                    maximumValue: 2
+                    stepSize: 0.05
+
+                    function updateZoomLevel() {
+                        if (!pressed) {
+                            var result = Math.round((value - 1) * 20)
+                            plasmoid.configuration.zoomLevel = result
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateZoomLevel()
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateZoomLevel)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
                 visible: plasmoid.configuration.advanced || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
@@ -257,59 +304,6 @@ PlasmaComponents.Page {
             }
         }
         //! END: Applet Size
-
-        //! BEGIN: Zoom On Hover
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            enabled: plasmoid.configuration.durationTime > 0
-
-            Header {
-                text: i18n("Zoom On Hover")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-
-                PlasmaComponents.Slider {
-                    Layout.fillWidth: true
-                    id: zoomSlider
-
-                    valueIndicatorText: i18n("Zoom Factor")
-                    valueIndicatorVisible: true
-
-                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
-                    minimumValue: 1
-                    maximumValue: 2
-                    stepSize: 0.05
-
-                    function updateZoomLevel() {
-                        if (!pressed) {
-                            var result = Math.round((value - 1) * 20)
-                            plasmoid.configuration.zoomLevel = result
-                        }
-                    }
-
-                    onPressedChanged: {
-                        updateZoomLevel()
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updateZoomLevel)
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-        }
-        //! END: Zoom On Hover
 
         //! BEGIN: Animations
         ColumnLayout {
