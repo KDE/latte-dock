@@ -384,7 +384,7 @@ Item{
                     enabled: false
                     anchors.fill: parent
                     property var source: ShaderEffectSource {
-                        sourceItem: iconImageBuffer
+                        sourceItem: progressLoader.active ? progressLoader.item : iconImageBuffer
                         hideSource: true
                     }
                     property var mask: ShaderEffectSource {
