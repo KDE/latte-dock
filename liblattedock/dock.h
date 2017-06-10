@@ -81,7 +81,8 @@ public:
         Close,
         NewInstance,
         ToggleMinimized,
-        CycleThroughTasks
+        CycleThroughTasks,
+        ToggleGrouping
     };
     Q_ENUM(TaskAction)
 

@@ -109,6 +109,7 @@
             <choice name="NewInstance"/>
             <choice name="ToggleMinimized"/>
             <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
       </choices>
       <default>2</default>
     </entry>
@@ -119,6 +120,7 @@
             <choice name="NewInstance"/>
             <choice name="ToggleMinimized"/>
             <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
       </choices>
       <default>0</default>
     </entry>

@@ -704,11 +704,12 @@ MouseArea{
                     } else if (root.modifierClickAction == Latte.Dock.ToggleMinimized) {
                         tasksModel.requestToggleMinimized(modelIndex());
                     } else if ( root.modifierClickAction == Latte.Dock.CycleThroughTasks) {
-                        console.log("2...");
                         if (isGroupParent)
                             tasksWindows.activateNextTask();
                         else
                             activateTask();
+                    } else if (root.modifierClickAction == Latte.Dock.ToggleGrouping) {
+                        tasksModel.requestToggleGrouping(modelIndex());
                     }
                 } else {
                     activateTask();
@@ -726,6 +727,8 @@ MouseArea{
                             tasksWindows.activateNextTask();
                         else
                             activateTask();
+                    } else if (root.middleClickAction == Latte.Dock.ToggleGrouping) {
+                        tasksModel.requestToggleGrouping(modelIndex());
                     }
                 } else {
                     activateTask();

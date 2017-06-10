@@ -204,7 +204,7 @@ PlasmaComponents.Page {
                     id: middleClickAction
                     Layout.fillWidth: true
                     model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
-                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"), i18n("Cycle Through Tasks")]
+                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"), i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
 
                     currentIndex: plasmoid.configuration.middleClickAction
                     onCurrentIndexChanged: plasmoid.configuration.middleClickAction = currentIndex
@@ -246,7 +246,7 @@ PlasmaComponents.Page {
                     id: modifierClickAction
                     Layout.fillWidth: true
                     model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
-                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks")]
+                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
 
                     currentIndex: plasmoid.configuration.modifierClickAction
                     onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
