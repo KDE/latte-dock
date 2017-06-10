@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-03-23 11:13+0800\n"
+"PO-Revision-Date: 2017-06-10 21:40+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -23,15 +23,15 @@ msgstr "啟動器區域"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:459
 msgid "Configure applet"
-msgstr ""
+msgstr "設定小工具"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:481
 msgid "Lock/Unlock the parabolic effect for this applet"
-msgstr ""
+msgstr "鎖定／解除鎖定這個小工具的拋物線效果"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:493
 msgid "Remove applet"
-msgstr ""
+msgstr "移除小工具"
 
 #: ../desktop-templates/containment.metadata.desktop.template:4
 msgid "Latte"
@@ -40,3 +40,4 @@ msgstr "Latte"
 #: ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
 msgstr "提供 Latte Dock 使用的容器"
+

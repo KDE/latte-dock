@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-05-14 11:10+0800\n"
+"PO-Revision-Date: 2017-06-10 21:39+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -130,9 +130,8 @@ msgid "New Instance for Task Manager Entry %1"
 msgstr "工作管理員項目 %1 的新實體"
 
 #: ../../app/globalshortcuts.cpp:181
-#, fuzzy
 msgid "Show Latte Dock"
-msgstr "Latte Dock"
+msgstr "顯示 Latte Dock"
 
 #: ../../app/main.cpp:81
 msgctxt "command line"
@@ -485,36 +484,32 @@ msgid "Tweaks"
 msgstr "調整"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:300
-#, fuzzy
 msgid "Copy Dock"
-msgstr "Dock"
+msgstr "複製 Dock"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:321
-#, fuzzy
 msgid "New Dock"
-msgstr "Latte Dock"
+msgstr "新 Dock"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:323
 msgid "Add a new dock"
-msgstr ""
+msgstr "加入新 dock"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:339
 msgid "Remove"
 msgstr "移除"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:343
-#, fuzzy
 msgid "Remove current dock"
-msgstr "取代目前的 dock 實體。"
+msgstr "移除目前的 dock"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:354
 msgid "Quit"
 msgstr "離開"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:356
-#, fuzzy
 msgid "Quit Latte"
-msgstr "Latte"
+msgstr "離開 Latte"
 
 #: ../../shell/package/contents/configuration/LatteTextField.qml:42
 msgid "none"
@@ -541,6 +536,8 @@ msgid ""
 "Grouped windows show both a line and a dot when \n"
 "one of them is active"
 msgstr ""
+"已成群組的視窗會在其中之一作用中時\n"
+"同時顯示線與點"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:91
 msgid "Reverse position for lines and dots"
@@ -560,13 +557,15 @@ msgstr "在滑鼠游標停留其上時突顯視窗"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:135
 msgid "Sync launchers between all docks"
-msgstr ""
+msgstr "在所有 dock 間同步啟動器"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:137
 msgid ""
 "When this option is activated, it copies the current dock launchers\n"
 "and makes them global launchers for all docks"
 msgstr ""
+"當這個選項啟用時，它會複製目前的 dock 啟動器\n"
+"並讓它們在所有的 dock 做為全域啟動器"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:147
 msgid "Show progress information for tasks"
@@ -577,6 +576,8 @@ msgid ""
 "Show a beautiful progress animation e.g. when copying \n"
 "files with Dolphin"
 msgstr ""
+"顯示一道漂亮的進度動畫，例如：\n"
+"當使用 Dolphin 複製檔案時"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:159
 msgid "Show window actions in the context menu"
@@ -588,15 +589,15 @@ msgstr "顯示音訊流指示器"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:173
 msgid "Audio indicator from which the user can mute/unmute an app"
-msgstr ""
+msgstr "讓使用者可以靜音／取消靜音應用程式的音訊指示器"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:184
 msgid "Activate tasks through mouse wheel"
-msgstr ""
+msgstr "透過滑鼠滾輪啟用工作"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:186
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
-msgstr ""
+msgstr "啟用／停用滑鼠滾輪的工作間循環動作"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:199
 msgid "On middle-click:"
@@ -665,20 +666,20 @@ msgid "Shrink thickness margins to minimum"
 msgstr "將邊框厚度縮到最小"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
-#, fuzzy
 msgid "Show background only for maximized windows"
-msgstr "最小化視窗使用不同的顏色"
+msgstr "僅在最大化視窗顯示背景"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:80
 msgid ""
 "The panel background becomes transparent but is shown \n"
 "when there is a maximized window"
 msgstr ""
+"這個面板背景變為透明，但在\n"
+"最大化視窗中會顯示"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:92
-#, fuzzy
 msgid "Hide panel shadow for maximized windows"
-msgstr "最小化視窗使用不同的顏色"
+msgstr "最大化視窗隱藏面板陰影"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:115
 msgid "Enable autostart during startup"
@@ -693,6 +694,8 @@ msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length"
 msgstr ""
+"小工具大小會在其內容超出最大長度時\n"
+"自動縮小"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:136
 msgid "Add launchers only in the corresponding area"
@@ -700,7 +703,7 @@ msgstr "僅在對應區域中新增啟動器"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
-msgstr ""
+msgstr "啟動器僅會在工作管理員中新增，而不是做為 plasma 小工具"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:147
 msgid "Behave as a normal dock window"
@@ -711,6 +714,8 @@ msgid ""
 "Remove the BypassWindowManagerHint flag from the window.\n"
 "The dock wont be above windows which are set at 'Always On Top'"
 msgstr ""
+"從視窗中移除 BypassWindowManagerHint 旗標。\n"
+"Dock 將不會在設定為「總是在最上層」的視窗上"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:161
 msgid "Show Alternative Session in the context menu"
@@ -726,22 +731,19 @@ msgstr "在活動變更時提升 dock"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:200
 msgid "Active Applet Indicator"
-msgstr ""
+msgstr "作用中的小工具指示器"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:227
-#, fuzzy
 msgctxt "active indicator to no applets"
 msgid "None"
 msgstr "無"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:237
-#, fuzzy
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
-msgstr "反應"
+msgstr "內部"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:247
-#, fuzzy
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "全部"
@@ -756,6 +758,9 @@ msgid ""
 "for example when you are travelling. Latte provides you with a full \n"
 "alternative sessionn to work on."
 msgstr ""
+"有時您目前面板的佈局仍不足\n"
+"例如您在旅行時。Latte 提供您一個完整的\n"
+"替代工作階段來使用。"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:302
 msgid "Extra Actions"
@@ -767,7 +772,7 @@ msgstr "新增空白"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:315
 msgid "Add a spacer to separate applets"
-msgstr ""
+msgstr "新增分隔器來分隔小工具"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:324
 msgid "Remove Tasks"
@@ -775,7 +780,7 @@ msgstr "移除工作"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:326
 msgid "Remove Latte plasmoid"
-msgstr ""
+msgstr "移除 Latte plasmoid"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock for the masses"
