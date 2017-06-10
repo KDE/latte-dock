@@ -44,7 +44,7 @@ public:
     {
     }
 
-    WindowInfoWrap(const WindowInfoWrap &o)
+    WindowInfoWrap(const WindowInfoWrap &o) noexcept
         : m_wid(o.m_wid)
         , m_geometry(o.m_geometry)
         , m_isValid(o.m_isValid)

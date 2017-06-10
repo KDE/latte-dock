@@ -23,11 +23,15 @@
 
 #include <QDebug>
 #include <QTimer>
+#include <QApplication>
+#include <QSignalMapper>
 #include <QtX11Extras/QX11Info>
 
 #include <KWindowSystem>
 #include <KWindowInfo>
 #include <NETWM>
+
+using namespace KWayland::Client;
 
 namespace Latte {
 
@@ -35,50 +39,82 @@ WaylandInterface::WaylandInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
     m_activities = new KActivities::Consumer(this);
-    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged
-            , this, &AbstractWindowInterface::activeWindowChanged);
-    connect(KWindowSystem::self()
-            , static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>
-            (&KWindowSystem::windowChanged)
-            , this, &WaylandInterface::windowChangedProxy);
 
-    auto addWindow = [&](WindowId wid) {
-        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) == m_windows.cend()) {
-            if (isValidWindow(KWindowInfo(wid.value<WId>(), NET::WMWindowType))) {
-                m_windows.push_back(wid);
-                emit windowAdded(wid);
-            }
-        }
-    };
+    m_connection = ConnectionThread::fromApplication(this);
 
-    connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
-    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WindowId wid) {
-        if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
-            m_windows.remove(wid);
-            emit windowRemoved(wid);
-        }
+    if (!m_connection) {
+        qWarning() << "Failed getting Wayland connection from QPA";
+        return;
+    }
+    m_registry = new Registry(this);
+    m_registry->create(m_connection);
+
+    connect(qApp, &QCoreApplication::aboutToQuit, this, [=]() {
+        if (m_wm)
+            m_wm->release();
+
+        if (m_plasmaShell)
+            m_plasmaShell->release();
+
+        m_registry->release();
     });
-    connect(KWindowSystem::self(), &KWindowSystem::currentDesktopChanged
-            , this, &WaylandInterface::currentDesktopChanged);
+
+    m_registry->setup();
+    m_connection->roundtrip();
+
+    const auto wmInterface{m_registry->interface(Registry::Interface::PlasmaWindowManagement)};
+
+    if (wmInterface.name == 0) {
+        qWarning() << "This compositor does not support the Plasma Window Management interface";
+        return;
+    }
+
+    m_wm = m_registry->createPlasmaWindowManagement(wmInterface.name, wmInterface.version, this);
+    connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
+    connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() {
+        emit activeWindowChanged(m_wm->activeWindow()->internalId());
+    });
+
+
+    const auto shellInterface{m_registry->interface(Registry::Interface::PlasmaShell)};
+
+    if (shellInterface.name == 0) {
+        qWarning() << "Plasma Shell interface can't be created";
+        return;
+    }
+
+    m_plasmaShell = m_registry->createPlasmaShell(shellInterface.name, shellInterface.version, this);
+
     connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged
             , this, &WaylandInterface::currentActivityChanged);
 
-    // fill windows list
-    /* foreach (const auto &wid, KWindowSystem::self()->windows()) {
-          addWindow(wid);
-      }*/
 }
 
 WaylandInterface::~WaylandInterface()
 {
 }
 
+void WaylandInterface::init()
+{
+}
+
 void WaylandInterface::setDockExtraFlags(QQuickWindow &view)
 {
-    //  KWindowSystem::setType(view.winId(), NET::Dock);
-    //  KWindowSystem::setState(view.winId(), NET::SkipTaskbar | NET::SkipPager);
-    KWindowSystem::setOnAllDesktops(view.winId(), true);
-    KWindowSystem::setOnActivities(view.winId(), {"0"});
+    auto surface {Surface::fromQtWinId(view.winId())};
+    if (surface == nullptr) {
+        qWarning() << "the surface of the Dock can't be created";
+        return;
+    }
+
+    auto shellSurface {PlasmaShellSurface::get(surface)};
+    if (shellSurface == nullptr) {
+        qWarning() << "the shell surface can't be created";
+        return;
+    }
+
+    shellSurface->setSkipTaskbar(true);
+    shellSurface->setRole(PlasmaShellSurface::Role::Panel);
+    shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
 }
 
 void WaylandInterface::setDockStruts(WindowId dockId, const QRect &dockRect
@@ -142,7 +178,9 @@ void WaylandInterface::removeDockStruts(WindowId dockId) const
 
 WindowId WaylandInterface::activeWindow() const
 {
-    return KWindowSystem::self()->activeWindow();
+    auto wid{m_wm->activeWindow()};
+
+    return wid ? wid->internalId() : 0;
 }
 
 const std::list<WindowId> &WaylandInterface::windows() const
@@ -190,87 +228,94 @@ void WaylandInterface::enableBlurBehind(QQuickWindow &view) const
 
 WindowInfoWrap WaylandInterface::requestInfoActive() const
 {
-    return requestInfo(KWindowSystem::activeWindow());
+    auto w{m_wm->activeWindow()};
+
+    if (!w) return {};
+
+    WindowInfoWrap winfoWrap;
+    winfoWrap.setIsValid(true);
+    winfoWrap.setWid(w->internalId());
+    winfoWrap.setIsActive(w->isActive());
+    winfoWrap.setIsMinimized(w->isMaximized());
+    winfoWrap.setIsMaxVert(w->isMaximized());
+    winfoWrap.setIsMaxHoriz(w->isMaximized());
+    winfoWrap.setIsFullscreen(w->isFullscreen());
+    winfoWrap.setIsShaded(w->isShaded());
+
+    return winfoWrap;
 }
 
 bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 {
-    KWindowInfo winfo(wid.value<WId>(), NET::WMDesktop);
-    return winfo.valid() && winfo.isOnCurrentDesktop();
+    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w){
+        return w->isValid() && w->internalId() == wid;
+    });
+
+    return it != m_wm->windows().constEnd() && ( (*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
 }
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 {
-    /* const KWindowInfo winfo{wid, NET::WMFrameExtents
-         | NET::WMWindowType
-         | NET::WMGeometry
-         | NET::WMState};*/
-
     WindowInfoWrap winfoWrap;
+    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w){
+        return w->isValid() && w->internalId() == wid;
+    });
 
-    /* if (isValidWindow(winfo)) {
-         winfoWrap.setIsValid(true);
-         winfoWrap.setWid(wid);
-         winfoWrap.setIsActive(KWindowSystem::activeWindow() == wid);
-         winfoWrap.setIsMinimized(winfo.hasState(NET::Hidden));
-         winfoWrap.setIsMaxVert(winfo.hasState(NET::MaxVert));
-         winfoWrap.setIsMaxHoriz(winfo.hasState(NET::MaxHoriz));
-         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
-         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
-         winfoWrap.setGeometry(winfo.frameGeometry());
-     } else if (m_desktopId == wid) {
-         winfoWrap.setIsValid(true);
-         winfoWrap.setIsPlasmaDesktop(true);
-         winfoWrap.setWid(wid);
-     }*/
+    if (it != m_wm->windows().constEnd()) {
+        auto w = *it;
+        winfoWrap.setIsValid(true);
+        winfoWrap.setWid(wid);
+        winfoWrap.setIsActive(w->isActive());
+        winfoWrap.setIsMinimized(w->isMaximized());
+        winfoWrap.setIsMaxVert(w->isMaximized());
+        winfoWrap.setIsMaxHoriz(w->isMaximized());
+        winfoWrap.setIsFullscreen(w->isFullscreen());
+        winfoWrap.setIsShaded(w->isShaded());
+    } else {
+        winfoWrap.setIsValid(false);
+        winfoWrap.setWid(wid);
+    }
 
     return winfoWrap;
 }
 
 
-bool WaylandInterface::isValidWindow(const KWindowInfo &winfo) const
+inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
 {
-    /*  constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::NormalMask;
-      auto winType = winfo.windowType(types);
-
-      if (winType == -1) {
-          // Trying to get more types for verify if the window have any other type
-          winType = winfo.windowType(~types & NET::AllTypesMask);
-
-          if (winType == -1) {
-              qWarning() << KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName()
-                         << "doesn't have any WindowType, assuming as NET::Normal";
-              return true;
-          }
-      }*/
-    return true;
-
-    //return !((winType & NET::Menu) || (winType & NET::Dock) || (winType & NET::Splash));
+    return w->isValid() && !w->skipTaskbar();
 }
 
-void WaylandInterface::windowChangedProxy(WindowId wid, NET::Properties prop1, NET::Properties2 prop2)
+void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 {
-    //! if the dock changed is ignored
-    /* if (std::find(m_docks.cbegin(), m_docks.cend(), wid) != m_docks.cend())
-         return;
+    if (!isValidWindow(w)) return;
 
-     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
+    if (!mapper) mapper = new QSignalMapper(this);
 
-     if (winType != -1 && (winType & NET::Desktop)) {
-         m_desktopId = wid;
-         emit windowChanged(wid);
-         return;
-     }
+    mapper->setMapping(w, w);
 
-     //! ignore when, eg: the user presses a key
-     if (prop1 == 0 && prop2 == NET::WM2UserTime) {
-         return;
-     }
+    connect(w, &PlasmaWindow::unmapped, this, [&, win = w]() {
+        mapper->removeMappings(win);
+        m_windows.remove(win->internalId());
+        emit windowRemoved(win->internalId());
+    });
 
-     if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
-         return;
+    connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(shadedChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()));
 
-     emit windowChanged(wid);*/
+    connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
+        , this, [&](QObject *w)
+    {
+        emit windowChanged(qobject_cast<PlasmaWindow *>(w)->internalId());
+    });
+
+    m_windows.push_back(w->internalId());
+
+    emit windowAdded(w->internalId());
 }
 
 }

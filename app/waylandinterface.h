@@ -28,6 +28,13 @@
 
 #include <KWindowInfo>
 #include <KWindowEffects>
+#include <QSignalMapper>
+
+#include <KWayland/Client/registry.h>
+#include <KWayland/Client/connection_thread.h>
+#include <KWayland/Client/plasmawindowmanagement.h>
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/surface.h>
 
 namespace Latte {
 
@@ -55,10 +62,17 @@ public:
     void enableBlurBehind(QQuickWindow &view) const override;
 
 private:
-    bool isValidWindow(const KWindowInfo &winfo) const;
-    void windowChangedProxy(WindowId wid, NET::Properties prop1, NET::Properties2 prop2);
+    void init();
+    inline bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
+    void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
 
     WindowId m_desktopId;
+    QSignalMapper *mapper{nullptr};
+
+    KWayland::Client::Registry *m_registry{nullptr};
+    KWayland::Client::ConnectionThread *m_connection{nullptr};
+    KWayland::Client::PlasmaWindowManagement *m_wm{nullptr};
+    KWayland::Client::PlasmaShell *m_plasmaShell{nullptr};
 };
 
 }
