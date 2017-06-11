@@ -1160,10 +1160,12 @@ void DockCorona::copyDock(Plasma::Containment *containment)
 
     bool setOnExplicitScreen = false;
 
-    if (dock && screens.count() > 1) {
-        int dockScrId = m_screenPool->id(dock->currentScreen());
+    int dockScrId = -1;
 
-        if (dockScrId != -1) {
+    if (dock) {
+        dockScrId = m_screenPool->id(dock->currentScreen());
+
+        if (dockScrId != -1 && screens.count() > 1) {
             foreach (auto scr, screens) {
                 int copyScrId = m_screenPool->id(scr->name());
 
@@ -1191,10 +1193,13 @@ void DockCorona::copyDock(Plasma::Containment *containment)
         } else {
             newContainment->setLocation(Plasma::Types::BottomEdge);
         }
+
+        newContainment->config().writeEntry("onPrimary", false);
+        newContainment->config().writeEntry("lastScreen", dockScrId);
     }
 
     if (currentSession() != Dock::DefaultSession) {
-        config.writeEntry("session", (int)currentSession());
+        newContainment->config().writeEntry("session", (int)currentSession());
     }
 
     newContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
