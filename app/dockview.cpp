@@ -1192,8 +1192,6 @@ bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
         const QStringList appletNames = data.split('\n', QString::SkipEmptyParts);
 
         foreach (const QString &appletName, appletNames) {
-            qDebug() << "adding" << appletName;
-
             if (appletName == name)
                 return true;
         }
