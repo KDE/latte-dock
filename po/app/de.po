@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-05-15 17:53+0100\n"
+"PO-Revision-Date: 2017-06-11 15:52+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -123,19 +123,16 @@ msgid "Configuration exported successfully"
 msgstr "Exportieren erfolgreich"
 
 #: ../../app/globalshortcuts.cpp:156
-#, fuzzy
 msgid "Activate Task Manager Entry %1"
-msgstr "Aktiviere Eintrag  %1"
+msgstr "Aktiviere Eintrag  %1 im Anwendungsbereich"
 
 #: ../../app/globalshortcuts.cpp:171
-#, fuzzy
 msgid "New Instance for Task Manager Entry %1"
-msgstr "Neue Instanz für Eintrag %1"
+msgstr "Neue Instanz für Eintrag %1 im Anwendungsbereich"
 
 #: ../../app/globalshortcuts.cpp:181
-#, fuzzy
 msgid "Show Latte Dock"
-msgstr "Latte Dock"
+msgstr "Latte Dock zeigen"
 
 #: ../../app/main.cpp:81
 msgctxt "command line"
@@ -489,36 +486,32 @@ msgid "Tweaks"
 msgstr "Tweaks"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:300
-#, fuzzy
 msgid "Copy Dock"
-msgstr "Dock"
+msgstr "Leiste kopieren"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:321
-#, fuzzy
 msgid "New Dock"
-msgstr "Latte Dock"
+msgstr "Neue Leiste"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:323
 msgid "Add a new dock"
-msgstr ""
+msgstr "Eine neue Leiste hinzufügen"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:339
 msgid "Remove"
 msgstr "Leiste entfernen"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:343
-#, fuzzy
 msgid "Remove current dock"
-msgstr "Ersetzt laufenden Prozess"
+msgstr "Diese Leiste entfernen"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:354
 msgid "Quit"
 msgstr "Beenden"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:356
-#, fuzzy
 msgid "Quit Latte"
-msgstr "Latte"
+msgstr "Beenden"
 
 #: ../../shell/package/contents/configuration/LatteTextField.qml:42
 msgid "none"
@@ -545,6 +538,8 @@ msgid ""
 "Grouped windows show both a line and a dot when \n"
 "one of them is active"
 msgstr ""
+"Gruppierte Fenster zeigen beides (Linie und Punkte),\n"
+"wenn eines davon aktiv ist"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:91
 msgid "Reverse position for lines and dots"
@@ -564,13 +559,16 @@ msgstr "Hervorheben von Fenstern beim Überfahren"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:135
 msgid "Sync launchers between all docks"
-msgstr ""
+msgstr "Starter auf allen Leisten synchronisieren."
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:137
 msgid ""
 "When this option is activated, it copies the current dock launchers\n"
 "and makes them global launchers for all docks"
 msgstr ""
+"Wird diese Option aktiviert, werden alle Starter vom aktuellen Dock kopiert."
+" \n"
+"Sie werden zu globalen Starten für alle Leisten  "
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:147
 msgid "Show progress information for tasks"
@@ -580,7 +578,7 @@ msgstr "Zeige Fortschrittsanzeige für Aufgaben"
 msgid ""
 "Show a beautiful progress animation e.g. when copying \n"
 "files with Dolphin"
-msgstr ""
+msgstr "Zeigt schöne Animationen z.B. beim Kopieren mit Dolphin"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:159
 msgid "Show window actions in the context menu"
@@ -593,14 +591,15 @@ msgstr "Zeige Indikator für Audioausgabe"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:173
 msgid "Audio indicator from which the user can mute/unmute an app"
 msgstr ""
+"Mit dem Audio Indikator kann man Audiostreams von Apps an/aus schalten."
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:184
 msgid "Activate tasks through mouse wheel"
-msgstr ""
+msgstr "Mit dem Mausrad Starter ausführen"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:186
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
-msgstr ""
+msgstr "Wenn aktiviert werden Anwendungen nicht gewechselt, sondern gestartet"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:199
 msgid "On middle-click:"
@@ -669,20 +668,20 @@ msgid "Shrink thickness margins to minimum"
 msgstr "Minimaler Abstand zum Bildschirmrand"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
-#, fuzzy
 msgid "Show background only for maximized windows"
-msgstr "Andere Farbe für minimierte Fenster"
+msgstr "Hintergrund nur bei maximierten Fenstern zeigen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:80
 msgid ""
 "The panel background becomes transparent but is shown \n"
 "when there is a maximized window"
 msgstr ""
+"Der Leistenhintergrund ist transparent aber wird solide \n"
+"wenn ein Fenster maximiert ist."
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:92
-#, fuzzy
 msgid "Hide panel shadow for maximized windows"
-msgstr "Andere Farbe für minimierte Fenster"
+msgstr "Keinen Leistenschatten bei maximierte Fenster"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:115
 msgid "Enable autostart during startup"
@@ -697,6 +696,8 @@ msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length"
 msgstr ""
+"Applet Größe verkleinert sich automatisch wenn der \n"
+"Inhalt die maximale Länge erreicht"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:136
 msgid "Add launchers only in the corresponding area"
@@ -704,7 +705,7 @@ msgstr "Starter nur im Anwendungsbereich ablegen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
-msgstr ""
+msgstr "Starter können nur im Starterbereich abgelegt werden. "
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:147
 msgid "Behave as a normal dock window"
@@ -715,6 +716,9 @@ msgid ""
 "Remove the BypassWindowManagerHint flag from the window.\n"
 "The dock wont be above windows which are set at 'Always On Top'"
 msgstr ""
+"Keine 'BypassWindowManagerHint'  Flagge für Fenster.\n "
+"Die Leiste wird nicht über Fenster sichtbar sein die auf \n"
+"'Immer im Vordergrund' gestellt sind"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:161
 msgid "Show Alternative Session in the context menu"
@@ -730,22 +734,19 @@ msgstr "Hebe das Dock bei Wechsel der Aktivität"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:200
 msgid "Active Applet Indicator"
-msgstr ""
+msgstr "Indikator für aktive Applets"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:227
-#, fuzzy
 msgctxt "active indicator to no applets"
 msgid "None"
-msgstr "Aus"
+msgstr "Keine"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:237
-#, fuzzy
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
-msgstr "Dialoge"
+msgstr "Intern"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:247
-#, fuzzy
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "Alle"
@@ -760,6 +761,8 @@ msgid ""
 "for example when you are travelling. Latte provides you with a full \n"
 "alternative sessionn to work on."
 msgstr ""
+"Manchmal ist das aktuelle Profil nicht ausreichend z.B. bei Reisen. \n"
+"Für solche Fälle bietet Latte eine alternative Sitzung"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:302
 msgid "Extra Actions"
@@ -771,7 +774,7 @@ msgstr "Abstandshalter"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:315
 msgid "Add a spacer to separate applets"
-msgstr ""
+msgstr "Fügt einen Platzhalter ein, damit kann man Applets voneinander trennen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:324
 msgid "Remove Tasks"
@@ -779,7 +782,7 @@ msgstr "Anwendungen entfernen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:326
 msgid "Remove Latte plasmoid"
-msgstr ""
+msgstr "Entfernt das Latte plasmoid"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock for the masses"

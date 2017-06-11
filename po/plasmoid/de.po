@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-05-15 17:59+0100\n"
+"PO-Revision-Date: 2017-06-08 18:19+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -324,7 +324,7 @@ msgstr "Schließen"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:837
 msgid "Internal Separator"
-msgstr ""
+msgstr "Interner Trenner"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:858
 msgid "Alternative Session"
