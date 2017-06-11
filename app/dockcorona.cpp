@@ -633,8 +633,21 @@ int DockCorona::docksCount() const
     int docks{0};
 
     for (const auto &view : m_dockViews) {
-        if (view && view->containment()
-            && !view->containment()->destroyed()) {
+        if (view && view->containment() && !view->containment()->destroyed()) {
+            ++docks;
+        }
+    }
+
+    // qDebug() << docks << "docks on screen:" << screen;
+    return docks;
+}
+
+int DockCorona::docksCount(QScreen *screen) const
+{
+    int docks{0};
+
+    for (const auto &view : m_dockViews) {
+        if (view && view->screen() == screen && !view->containment()->destroyed()) {
             ++docks;
         }
     }

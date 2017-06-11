@@ -69,8 +69,10 @@ public:
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
-    int docksCount(int screen) const;
     int docksCount() const;
+    int docksCount(int screen) const;
+    int docksCount(QScreen *screen) const;
+
     int noDocksWithTasks() const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 

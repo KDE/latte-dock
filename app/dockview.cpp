@@ -124,6 +124,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
     if (dockCorona) {
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
+        connect(this, &DockView::docksCountChanged, this, &DockView::totalDocksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, [&]() {
             //! check if an edge has been freed for a primary dock
@@ -788,7 +789,17 @@ int DockView::docksCount() const
 {
     auto dockCorona = qobject_cast<DockCorona *>(corona());
 
-    if (!dockCorona || !this->containment())
+    if (!dockCorona)
+        return 0;
+
+    return dockCorona->docksCount(screen());
+}
+
+int DockView::totalDocksCount() const
+{
+    auto dockCorona = qobject_cast<DockCorona *>(corona());
+
+    if (!dockCorona)
         return 0;
 
     return dockCorona->docksCount();
@@ -1247,12 +1258,14 @@ bool DockView::event(QEvent *e)
 
 QList<int> DockView::freeEdges() const
 {
-    if (!this->corona() || !this->containment()) {
+    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+    if (!dockCorona) {
         const QList<int> emptyEdges;
         return emptyEdges;
     }
 
-    const auto edges = corona()->freeEdges(this->containment()->screen());
+    const auto edges = dockCorona->freeEdges(screen());
     QList<int> edgesInt;
 
     foreach (Plasma::Types::Location edge, edges) {

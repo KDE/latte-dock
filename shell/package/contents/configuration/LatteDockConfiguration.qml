@@ -277,11 +277,14 @@ PlasmaCore.FrameSvgItem {
 
             spacing: units.largeSpacing
 
-            property int docksCount: dock.docksCount
+            Connections{
+                target: dock
+                onDocksCountChanged: actionButtons.updateEnabled();
+            }
 
-            onDocksCountChanged: {
-                addDock.enabled = docksCount < 4 && dock.freeEdges().length > 0
-                removeDock.enabled = (docksCount>1) && !(dock.docksWithTasks()===1 && dock.tasksPresent())
+            function updateEnabled() {
+                addDock.enabled = dock.docksCount < 4 && dock.freeEdges().length > 0
+                removeDock.enabled = dock.docksCount>1 && !(dock.docksWithTasks()===1 && dock.tasksPresent())
             }
 
             PlasmaComponents.Button {
@@ -291,15 +294,25 @@ PlasmaCore.FrameSvgItem {
 
                 PlasmaComponents.ComboBox {
                     id: actionsCmb
-
                     anchors.fill: parent
+                    enabled: addDock.enabled
 
-                    Component.onCompleted:{
+                    function addModel() {
                         var actions = []
-
                         actions.push("    " + i18n("Copy Dock"));
                         actionsCmb.model = actions;
                         actionsCmb.currentIndex = -1;
+                    }
+
+                    function emptyModel() {
+                        var actions = []
+                        actions.push("  ");
+                        actionsCmb.model = actions;
+                        actionsCmb.currentIndex = -1;
+                    }
+
+                    Component.onCompleted:{
+                        addModel();
                     }
 
                     onActivated: {
@@ -308,6 +321,13 @@ PlasmaCore.FrameSvgItem {
                         }
 
                         actionsCmb.currentIndex = -1;
+                    }
+
+                    onEnabledChanged: {
+                        if (enabled)
+                            addModel();
+                        else
+                            emptyModel();
                     }
                 }
 
@@ -338,8 +358,7 @@ PlasmaCore.FrameSvgItem {
 
                 text: i18n("Remove")
                 iconSource: "edit-delete"
-                opacity: enabled ? 1 : 0
-                //enabled: dock.docksCount > 1
+                opacity: dock.totalDocksCount > 1 ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
                 onClicked: dock.removeDock()
