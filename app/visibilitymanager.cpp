@@ -371,7 +371,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WId wid)
                || (view->screen() && view->screen()->size().width() <= winfo.geometry().width());
     };
 
-    if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized())
+    if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized() && intersects(winfo))
         raiseDock(view->formFactor() == Plasma::Types::Vertical
                   ? !isMaxHoriz() : !isMaxVert());
 }
