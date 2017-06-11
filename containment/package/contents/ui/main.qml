@@ -378,10 +378,10 @@ DragDrop.DropArea {
             slotAnimationsNeedLength(1);
         }
 
-        //var relevantLayout = layoutsContainer.mainLayout.mapFromItem(root, event.x, event.y);
-        //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
-        LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
-        dndSpacer.opacity = 1;
+        if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+            LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
+            dndSpacer.opacity = 1;
+        }
     }
 
     onDragMove: {
@@ -398,10 +398,10 @@ DragDrop.DropArea {
             }
         }
 
-        //var relevantLayout = layoutsContainer.mainLayout.mapFromItem(root, event.x, event.y);
-        //LayoutManager.insertAtCoordinates2(dndSpacer, relevantLayout.x, relevantLayout.y)
-        LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
-        dndSpacer.opacity = 1;
+        if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+            LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
+            dndSpacer.opacity = 1;
+        }
     }
 
     onDragLeave: {
@@ -423,7 +423,7 @@ DragDrop.DropArea {
         if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") < 0) {
             if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
                 latteApplet.launchersDropped(event.mimeData.urls);
-            } else {
+            } else if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
                 plasmoid.processMimeData(event.mimeData, event.x, event.y);
                 event.accept(event.proposedAction);
             }

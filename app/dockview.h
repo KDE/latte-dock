@@ -29,6 +29,7 @@
 #include <QQuickView>
 #include <QQmlListProperty>
 #include <QMenu>
+#include <QMimeData>
 #include <QScreen>
 #include <QPointer>
 #include <QTimer>
@@ -165,13 +166,17 @@ public slots:
 
     Q_INVOKABLE QList<int> freeEdges() const;
     Q_INVOKABLE QVariantList containmentActions();
-    Q_INVOKABLE int docksWithTasks();
+
     Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void removeTasksPlasmoid();
-    Q_INVOKABLE bool setCurrentScreen(const QString id);
-    Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE void toggleAppletExpanded(const int id);
     Q_INVOKABLE void updateEnabledBorders();
+
+    Q_INVOKABLE int docksWithTasks();
+
+    Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
+    Q_INVOKABLE bool setCurrentScreen(const QString id);
+    Q_INVOKABLE bool tasksPresent();
 
     Q_INVOKABLE void closeApplication();
 

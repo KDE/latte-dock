@@ -1180,6 +1180,29 @@ bool DockView::tasksPresent()
     return false;
 }
 
+//!check if the plasmoid with _name_ exists in the midedata
+bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
+{
+    if (!mimeData) {
+        return false;
+    }
+
+    if (mimeData->hasFormat(QStringLiteral("text/x-plasmoidservicename"))) {
+        QString data = mimeData->data(QStringLiteral("text/x-plasmoidservicename"));
+        const QStringList appletNames = data.split('\n', QString::SkipEmptyParts);
+
+        foreach (const QString &appletName, appletNames) {
+            qDebug() << "adding" << appletName;
+
+            if (appletName == name)
+                return true;
+        }
+    }
+
+    return false;
+}
+
+
 VisibilityManager *DockView::visibility() const
 {
     return m_visibility;
