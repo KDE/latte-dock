@@ -728,7 +728,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
                                  Types::TopEdge, Types::RightEdge};
 
     for (auto *view : m_dockViews) {
-        if (view && view->currentScreen() == screen->name() && view->session() == m_session) {
+        if (view && view->screen() == screen && view->session() == m_session) {
             edges.removeOne(view->location());
         }
     }

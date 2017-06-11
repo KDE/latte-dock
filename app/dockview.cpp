@@ -169,6 +169,7 @@ DockView::~DockView()
 void DockView::init()
 {
     connect(this, &QQuickWindow::screenChanged, this, &DockView::screenChanged);
+    connect(this, &QQuickWindow::screenChanged, this, &DockView::docksCountChanged);
     connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::screenChanged);
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::screenChanged);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
