@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QHash>
+#include <QScreen>
 #include <QString>
 #include <QTimer>
 #include <QAbstractNativeEventFilter>
@@ -50,6 +51,8 @@ public:
 
     //all ids that are known, included screens not enabled at the moment
     QList <int> knownIds() const;
+
+    QScreen *screenForId(int id);
 
 signals:
     void primaryPoolChanged();

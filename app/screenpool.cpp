@@ -198,6 +198,25 @@ QList <int> ScreenPool::knownIds() const
     return m_connectorForId.keys();
 }
 
+QScreen *ScreenPool::screenForId(int id)
+{
+    const auto screens = qGuiApp->screens();
+    QScreen *screen{qGuiApp->primaryScreen()};
+
+    if (id != -1 && knownIds().contains(id)) {
+        QString scrName = connector(id);
+
+        foreach (auto scr, screens) {
+            if (scr->name() == scrName) {
+                return scr;
+            }
+        }
+    }
+
+    return screen;
+}
+
+
 bool ScreenPool::nativeEventFilter(const QByteArray &eventType, void *message, long int *result)
 {
     Q_UNUSED(result);

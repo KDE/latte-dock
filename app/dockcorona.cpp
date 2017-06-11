@@ -614,15 +614,12 @@ int DockCorona::primaryScreenId() const
 
 int DockCorona::docksCount(int screen) const
 {
-    if (screen == -1)
-        return 0;
+    QScreen *scr = m_screenPool->screenForId(screen);
 
     int docks{0};
 
     for (const auto &view : m_dockViews) {
-        if (view && view->containment()
-            && view->containment()->screen() == screen
-            && !view->containment()->destroyed()) {
+        if (view && view->screen() == scr && !view->containment()->destroyed()) {
             ++docks;
         }
     }
@@ -731,13 +728,11 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
-    //when screen=-1 is passed then the primaryScreenid is used
-    int fixedScreen = (screen == -1) ? primaryScreenId() : screen;
+
+    QScreen *scr = m_screenPool->screenForId(screen);
 
     for (auto *view : m_dockViews) {
-        if (view && view->containment()
-            && view->containment()->screen() == fixedScreen
-            && view->session() == m_session) {
+        if (view && view->screen() == scr && view->session() == m_session) {
             edges.removeOne(view->location());
         }
     }
