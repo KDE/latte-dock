@@ -158,14 +158,23 @@ void GlobalSettings::setGlobalLaunchers(QStringList launchers)
 
 bool GlobalSettings::autostart() const
 {
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
     return autostartFile.exists();
 }
 
 void GlobalSettings::setAutostart(bool state)
 {
-    QFile autostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
-    QFile metaFile("/usr/share/applications/latte-dock.desktop");
+    //! remove old autostart file
+    QFile oldAutostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+
+    if (oldAutostartFile.exists()) {
+        oldAutostartFile.remove();
+    }
+
+    //! end of removal of old autostart file
+
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
+    QFile metaFile("/usr/share/applications/org.kde.latte-dock.desktop");
 
     if (!state && autostartFile.exists()) {
         //! the first time that the user disables the autostart, this is recorded
