@@ -135,8 +135,8 @@ void ScreenPool::save()
 
 void ScreenPool::insertScreenMapping(int id, const QString &connector)
 {
-    Q_ASSERT(!m_connectorForId.contains(id) || m_connectorForId.value(id) == connector);
-    Q_ASSERT(!m_idForConnector.contains(connector) || m_idForConnector.value(connector) == id);
+    //Q_ASSERT(!m_connectorForId.contains(id) || m_connectorForId.value(id) == connector);
+    //Q_ASSERT(!m_idForConnector.contains(connector) || m_idForConnector.value(connector) == id);
 
     //the ":" check fixes the strange plasma/qt issues when changing layouts
     //there are case that the QScreen instead of the correct screen name
