@@ -367,12 +367,12 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 
     auto isMaxVert = [&]() noexcept -> bool {
         return winfo.isMaxVert()
-               || (view->screen() && view->screen()->size().height() <= winfo.geometry().height());
+               || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height() && intersects(winfo));
     };
 
     auto isMaxHoriz = [&]() noexcept -> bool {
         return winfo.isMaxHoriz()
-               || (view->screen() && view->screen()->size().width() <= winfo.geometry().width());
+               || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width() && intersects(winfo));
     };
 
     if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized() && intersects(winfo))

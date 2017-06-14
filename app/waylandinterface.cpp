@@ -73,7 +73,10 @@ WaylandInterface::WaylandInterface(QObject *parent)
     connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() {
         auto w{m_wm->activeWindow()};
-        emit activeWindowChanged(w ? w->internalId() : 0);
+        if (w)
+            emit activeWindowChanged(w->internalId());
+        else
+            emit activeWindowChanged(0);
     }, Qt::QueuedConnection);
 
 
@@ -253,6 +256,8 @@ bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
         return w->isValid() && w->internalId() == wid;
     });
 
+    //qDebug() << "desktop:" << (it != m_wm->windows().constEnd() ? (*it)->virtualDesktop() : -1) << KWindowSystem::currentDesktop();
+    //return true;
     return it != m_wm->windows().constEnd() && ( (*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
 }
 
@@ -306,13 +311,16 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(minimizedChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(shadedChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(skipTaskBarChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()));
 
     connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
         , this, [&](QObject *w)
     {
+        qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         emit windowChanged(qobject_cast<PlasmaWindow *>(w)->internalId());
     });
 
