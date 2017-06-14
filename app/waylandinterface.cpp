@@ -73,10 +73,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
     connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() {
         auto w{m_wm->activeWindow()};
-        if (w)
-            emit activeWindowChanged(w->internalId());
-        else
-            emit activeWindowChanged(0);
+        emit activeWindowChanged(w ? w->internalId() : 0);
     }, Qt::QueuedConnection);
 
 
@@ -307,13 +304,13 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         emit windowRemoved(win->internalId());
     });
 
-    connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()));
+    //connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(minimizedChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(shadedChanged()), mapper, SLOT(map()));
-    connect(w, SIGNAL(skipTaskBarChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(skipTaskbarChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(onAllDesktopsChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()));
 

@@ -408,8 +408,8 @@ void VisibilityManagerPrivate::checkAllWindows()
     bool raise{true};
 
     for (const auto &winfo : windows) {
-        //! std::pair<WindowId, WindowInfoWrap>
-        if (winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()))
+        // <WindowId, WindowInfoWrap>
+        if (!winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()))
             continue;
 
         if (winfo.isFullscreen()) {
