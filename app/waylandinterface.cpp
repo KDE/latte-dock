@@ -72,8 +72,9 @@ WaylandInterface::WaylandInterface(QObject *parent)
     m_wm = m_registry->createPlasmaWindowManagement(wmInterface.name, wmInterface.version, this);
     connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() {
-        emit activeWindowChanged(m_wm->activeWindow()->internalId());
-    });
+        auto w{m_wm->activeWindow()};
+        emit activeWindowChanged(w ? w->internalId() : 0);
+    }, Qt::QueuedConnection);
 
 
     const auto shellInterface{m_registry->interface(Registry::Interface::PlasmaShell)};
@@ -236,11 +237,12 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
     winfoWrap.setIsValid(true);
     winfoWrap.setWid(w->internalId());
     winfoWrap.setIsActive(w->isActive());
-    winfoWrap.setIsMinimized(w->isMaximized());
+    winfoWrap.setIsMinimized(w->isMinimized());
     winfoWrap.setIsMaxVert(w->isMaximized());
     winfoWrap.setIsMaxHoriz(w->isMaximized());
     winfoWrap.setIsFullscreen(w->isFullscreen());
     winfoWrap.setIsShaded(w->isShaded());
+    winfoWrap.setGeometry(w->geometry());
 
     return winfoWrap;
 }
@@ -266,11 +268,12 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setIsActive(w->isActive());
-        winfoWrap.setIsMinimized(w->isMaximized());
+        winfoWrap.setIsMinimized(w->isMinimized());
         winfoWrap.setIsMaxVert(w->isMaximized());
         winfoWrap.setIsMaxHoriz(w->isMaximized());
         winfoWrap.setIsFullscreen(w->isFullscreen());
         winfoWrap.setIsShaded(w->isShaded());
+        winfoWrap.setGeometry(w->geometry());
     } else {
         winfoWrap.setIsValid(false);
         winfoWrap.setWid(wid);
