@@ -1360,8 +1360,10 @@ Item {
 
     function containsMouse(){
         //console.log("s1...");
-        if (disableRestoreZoom) {
+        if (disableRestoreZoom && (root.contextMenu || windowsPreviewDlg.visible)) {
             return;
+        } else {
+            disableRestoreZoom = false;
         }
 
         if (!previewContainsMouse())
@@ -1384,8 +1386,10 @@ Item {
 
     function clearZoom(){
         //console.log("Plasmoid clear...");
-        if (disableRestoreZoom) {
+        if (disableRestoreZoom && (root.contextMenu || windowsPreviewDlg.visible)) {
             return;
+        } else {
+            disableRestoreZoom = false;
         }
 
         if (!previewContainsMouse())
