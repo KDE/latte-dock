@@ -68,7 +68,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
     qDebug() << "VisibilityManagerPrivate deleting...";
-    wm->removeDockStruts(view->winId());
+    wm->removeDockStruts(*view);
     wm->removeDock(view->winId());
 }
 
@@ -85,7 +85,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     }
 
     if (this->mode == Dock::AlwaysVisible) {
-        wm->removeDockStruts(view->winId());
+        wm->removeDockStruts(*view);
     } else {
         connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
         , this, [&] {
@@ -109,18 +109,18 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     switch (this->mode) {
         case Dock::AlwaysVisible: {
             if (view->containment() && !view->containment()->isUserConfiguring() && view->screen()) {
-                wm->setDockStruts(view->winId(), dockGeometry, *view->screen(), view->location());
+                wm->setDockStruts(*view, dockGeometry, view->location());
             }
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
                 if (view->containment()->isUserConfiguring())
-                    wm->removeDockStruts(view->winId());
+                    wm->removeDockStruts(*view);
             });
             connections[1] = connect(view->containment(), &Plasma::Containment::userConfiguringChanged
             , this, [&](bool configuring) {
                 if (!configuring && view->screen())
-                    wm->setDockStruts(view->winId(), dockGeometry, *view->screen(), view->containment()->location());
+                    wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
             raiseDock(true);
         }
@@ -323,7 +323,7 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
     this->dockGeometry = geometry;
 
     if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring() && view->screen()) {
-        wm->setDockStruts(view->winId(), this->dockGeometry, *view->screen(), view->containment()->location());
+        wm->setDockStruts(*view, this->dockGeometry, view->containment()->location());
     }
 }
 

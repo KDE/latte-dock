@@ -31,18 +31,18 @@
 #include <KAboutApplicationDialog>
 #include <KDeclarative/QmlObject>
 
-namespace Plasma {
-class Corona;
-class Containment;
-class Types;
-}
-
 class ScreenPool;
 class GlobalSettings;
 class GlobalShortcuts;
 
 namespace KActivities {
 class Consumer;
+}
+
+namespace Plasma {
+class Corona;
+class Containment;
+class Types;
 }
 
 namespace KWayland {
@@ -153,7 +153,7 @@ private:
     GlobalSettings *m_globalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
 
-    KWayland::Client::PlasmaShell *m_waylandDockCorona;
+    KWayland::Client::PlasmaShell *m_waylandDockCorona{nullptr};
 
     friend class GlobalShortcuts;
 };

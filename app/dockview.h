@@ -288,8 +288,7 @@ private:
     Plasma::FrameSvg *m_background{nullptr};
 
     //only for the mask, not to actually paint
-    Plasma::FrameSvg::EnabledBorders m_enabledBorders = Plasma::FrameSvg::AllBorders;
-
+    Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 

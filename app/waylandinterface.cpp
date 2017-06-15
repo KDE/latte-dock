@@ -49,7 +49,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
     m_registry = new Registry(this);
     m_registry->create(m_connection);
 
-    connect(qApp, &QCoreApplication::aboutToQuit, this, [=]() {
+    connect(qApp, &QCoreApplication::aboutToQuit, this, [&]() {
         if (m_wm)
             m_wm->release();
 
@@ -99,82 +99,85 @@ void WaylandInterface::init()
 {
 }
 
-void WaylandInterface::setDockExtraFlags(QQuickWindow &view)
+void WaylandInterface::setDockExtraFlags(QWindow &view)
 {
-    auto surface {Surface::fromQtWinId(view.winId())};
-    if (surface == nullptr) {
-        qWarning() << "the surface of the Dock can't be created";
-        return;
-    }
-
-    auto shellSurface {PlasmaShellSurface::get(surface)};
-    if (shellSurface == nullptr) {
-        qWarning() << "the shell surface can't be created";
-        return;
-    }
-
-    shellSurface->setSkipTaskbar(true);
-    shellSurface->setRole(PlasmaShellSurface::Role::Panel);
-    shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+    Q_UNUSED(view)
 }
 
-void WaylandInterface::setDockStruts(WindowId dockId, const QRect &dockRect
-                                     , const QScreen &screen, Plasma::Types::Location location) const
+void WaylandInterface::setDockStruts(QWindow &view, const QRect &dockRect
+                                     , Plasma::Types::Location location)
 {
-    NETExtendedStrut strut;
+//     auto surface = std::make_unique<Surface>(Surface::fromWindow(&view));
+//     if (!surface) {
+//         qWarning() << "the surface of the Dock can't be created";
+//         return;
+//     }
+//
+//     auto shellSurface = std::make_unique<PlasmaShellSurface>(m_plasmaShell->createSurface(surface.get(), this));
+//     if (!shellSurface) {
+//         qWarning() << "the shell surface can't be created";
+//         return;
+//     }
+//
+//     shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
 
-    const QRect currentScreen {screen.geometry()};
-    const QRect wholeScreen {{0, 0}, screen.virtualSize()};
+//     NETExtendedStrut strut;
+//
+//     const QRect currentScreen {screen.geometry()};
+//     const QRect wholeScreen {{0, 0}, screen.virtualSize()};
 
-    switch (location) {
-        case Plasma::Types::TopEdge: {
-            const int topOffset {screen.geometry().top()};
-            strut.top_width = dockRect.height() + topOffset;
-            strut.top_start = dockRect.x();
-            strut.top_end = dockRect.x() + dockRect.width() - 1;
-            break;
-        }
 
-        case Plasma::Types::BottomEdge: {
-            const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
-            strut.bottom_width = dockRect.height() + bottomOffset;
-            strut.bottom_start = dockRect.x();
-            strut.bottom_end = dockRect.x() + dockRect.width() - 1;
-            break;
-        }
 
-        case Plasma::Types::LeftEdge: {
-            const int leftOffset = {screen.geometry().left()};
-            strut.left_width = dockRect.width() + leftOffset;
-            strut.left_start = dockRect.y();
-            strut.left_end = dockRect.y() + dockRect.height() - 1;
-            break;
-        }
 
-        case Plasma::Types::RightEdge: {
-            const int rightOffset = {wholeScreen.right() - currentScreen.right()};
-            strut.right_width = dockRect.width() + rightOffset;
-            strut.right_start = dockRect.y();
-            strut.right_end = dockRect.y() + dockRect.height() - 1;
-            break;
-        }
-
-        default:
-            qWarning() << "wrong location:" << qEnumToStr(location);
-            return;
-    }
-
-    KWindowSystem::setExtendedStrut(dockId.value<WId>(),
-                                    strut.left_width,   strut.left_start,   strut.left_end,
-                                    strut.right_width,  strut.right_start,  strut.right_end,
-                                    strut.top_width,    strut.top_start,    strut.top_end,
-                                    strut.bottom_width, strut.bottom_start, strut.bottom_end
-                                   );
+//     switch (location) {
+//         case Plasma::Types::TopEdge: {
+//             const int topOffset {screen.geometry().top()};
+//             strut.top_width = dockRect.height() + topOffset;
+//             strut.top_start = dockRect.x();
+//             strut.top_end = dockRect.x() + dockRect.width() - 1;
+//             break;
+//         }
+//
+//         case Plasma::Types::BottomEdge: {
+//             const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
+//             strut.bottom_width = dockRect.height() + bottomOffset;
+//             strut.bottom_start = dockRect.x();
+//             strut.bottom_end = dockRect.x() + dockRect.width() - 1;
+//             break;
+//         }
+//
+//         case Plasma::Types::LeftEdge: {
+//             const int leftOffset = {screen.geometry().left()};
+//             strut.left_width = dockRect.width() + leftOffset;
+//             strut.left_start = dockRect.y();
+//             strut.left_end = dockRect.y() + dockRect.height() - 1;
+//             break;
+//         }
+//
+//         case Plasma::Types::RightEdge: {
+//             const int rightOffset = {wholeScreen.right() - currentScreen.right()};
+//             strut.right_width = dockRect.width() + rightOffset;
+//             strut.right_start = dockRect.y();
+//             strut.right_end = dockRect.y() + dockRect.height() - 1;
+//             break;
+//         }
+//
+//         default:
+//             qWarning() << "wrong location:" << qEnumToStr(location);
+//             return;
+//     }
+//
+//     KWindowSystem::setExtendedStrut(dockId.value<WId>(),
+//                                     strut.left_width,   strut.left_start,   strut.left_end,
+//                                     strut.right_width,  strut.right_start,  strut.right_end,
+//                                     strut.top_width,    strut.top_start,    strut.top_end,
+//                                     strut.bottom_width, strut.bottom_start, strut.bottom_end
+//                                    );
 }
 
-void WaylandInterface::removeDockStruts(WindowId dockId) const
+void WaylandInterface::removeDockStruts(QWindow &view) const
 {
-    KWindowSystem::setStrut(dockId.value<WId>(), 0, 0, 0, 0);
+    KWindowSystem::setStrut(view.winId(), 0, 0, 0, 0);
 }
 
 WindowId WaylandInterface::activeWindow() const
@@ -194,7 +197,7 @@ void WaylandInterface::skipTaskBar(const QDialog &dialog) const
     KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);
 }
 
-void WaylandInterface::slideWindow(QQuickWindow &view, AbstractWindowInterface::Slide location) const
+void WaylandInterface::slideWindow(QWindow &view, AbstractWindowInterface::Slide location) const
 {
     auto slideLocation = KWindowEffects::NoEdge;
 
@@ -222,7 +225,7 @@ void WaylandInterface::slideWindow(QQuickWindow &view, AbstractWindowInterface::
     KWindowEffects::slideWindow(view.winId(), slideLocation, -1);
 }
 
-void WaylandInterface::enableBlurBehind(QQuickWindow &view) const
+void WaylandInterface::enableBlurBehind(QWindow &view) const
 {
     KWindowEffects::enableBlurBehind(view.winId());
 }
@@ -304,7 +307,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         emit windowRemoved(win->internalId());
     });
 
-    //connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()));
+    connect(w, SIGNAL(activeChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(fullscreenChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(geometryChanged()), mapper, SLOT(map()));
     connect(w, SIGNAL(maximizedChanged()), mapper, SLOT(map()));

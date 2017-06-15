@@ -64,7 +64,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     setColor(QColor(Qt::transparent));
     setClearBeforeRendering(true);
 
-
     const auto flags = Qt::FramelessWindowHint
                        | Qt::WindowStaysOnTopHint
                        | Qt::NoDropShadowWindowHint
@@ -222,33 +221,28 @@ void DockView::init()
 
 void DockView::setupWaylandIntegration()
 {
-    if (m_shellSurface) {
-        // already setup
+    using namespace KWayland::Client;
+
+    if (m_shellSurface)
         return;
-    }
 
     if (DockCorona *c = qobject_cast<DockCorona *>(corona())) {
-        using namespace KWayland::Client;
-        PlasmaShell *interface = c->waylandDockCoronaInterface();
+        PlasmaShell *interface{c->waylandDockCoronaInterface()};
 
-        if (!interface) {
+        if (!interface)
             return;
-        }
 
-        Surface *s = Surface::fromWindow(this);
+        Surface *s{Surface::fromWindow(this)};
 
-        if (!s) {
+        if (!s)
             return;
-        }
 
         m_shellSurface = interface->createSurface(s, this);
         qDebug() << "wayland dock window surface was created...";
 
-        KWayland::Client::PlasmaShellSurface::PanelBehavior behavior;
-        behavior = KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow;
         m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
         m_shellSurface->setSkipTaskbar(true);
-        m_shellSurface->setPanelBehavior(behavior);
+        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
     }
 }
 
@@ -1262,9 +1256,10 @@ bool DockView::event(QEvent *e)
                         break;
 
                     case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                        m_shellSurface->release();
                         delete m_shellSurface;
-                        qDebug() << "wayland dock window surface was deleted...";
                         m_shellSurface = nullptr;
+                        qDebug() << "wayland dock window surface was deleted...";
                         PanelShadows::self()->removeWindow(this);
                         break;
                 }
@@ -1779,7 +1774,6 @@ Plasma::Containment *DockView::containmentById(uint id)
 
     return 0;
 }
-
 //!END overriding context menus behavior
 
 //!BEGIN draw panel shadows outside the dock window

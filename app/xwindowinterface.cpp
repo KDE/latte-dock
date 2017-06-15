@@ -73,7 +73,7 @@ XWindowInterface::~XWindowInterface()
 {
 }
 
-void XWindowInterface::setDockExtraFlags(QQuickWindow &view)
+void XWindowInterface::setDockExtraFlags(QWindow &view)
 {
     NETWinInfo winfo(QX11Info::connection()
                      , static_cast<xcb_window_t>(view.winId())
@@ -87,17 +87,19 @@ void XWindowInterface::setDockExtraFlags(QQuickWindow &view)
     KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
-void XWindowInterface::setDockStruts(WindowId dockId, const QRect &dockRect
-                                     , const QScreen &screen, Plasma::Types::Location location) const
+void XWindowInterface::setDockStruts(QWindow &view, const QRect &dockRect
+                                     , Plasma::Types::Location location)
 {
     NETExtendedStrut strut;
 
-    const QRect currentScreen {screen.geometry()};
-    const QRect wholeScreen {{0, 0}, screen.virtualSize()};
+    const auto screen {view.screen()};
+
+    const QRect currentScreen {screen->geometry()};
+    const QRect wholeScreen {{0, 0}, screen->virtualSize()};
 
     switch (location) {
         case Plasma::Types::TopEdge: {
-            const int topOffset {screen.geometry().top()};
+            const int topOffset {screen->geometry().top()};
             strut.top_width = dockRect.height() + topOffset;
             strut.top_start = dockRect.x();
             strut.top_end = dockRect.x() + dockRect.width() - 1;
@@ -112,7 +114,7 @@ void XWindowInterface::setDockStruts(WindowId dockId, const QRect &dockRect
             break;
         }
         case Plasma::Types::LeftEdge: {
-            const int leftOffset = {screen.geometry().left()};
+            const int leftOffset = {screen->geometry().left()};
             strut.left_width = dockRect.width() + leftOffset;
             strut.left_start = dockRect.y();
             strut.left_end = dockRect.y() + dockRect.height() - 1;
@@ -130,7 +132,7 @@ void XWindowInterface::setDockStruts(WindowId dockId, const QRect &dockRect
             return;
     }
 
-    KWindowSystem::setExtendedStrut(dockId.value<WId>(),
+    KWindowSystem::setExtendedStrut(view.winId(),
                                     strut.left_width,   strut.left_start,   strut.left_end,
                                     strut.right_width,  strut.right_start,  strut.right_end,
                                     strut.top_width,    strut.top_start,    strut.top_end,
@@ -138,9 +140,9 @@ void XWindowInterface::setDockStruts(WindowId dockId, const QRect &dockRect
                                    );
 }
 
-void XWindowInterface::removeDockStruts(WindowId dockId) const
+void XWindowInterface::removeDockStruts(QWindow &view) const
 {
-    KWindowSystem::setStrut(dockId.value<WId>(), 0, 0, 0, 0);
+    KWindowSystem::setStrut(view.winId(), 0, 0, 0, 0);
 }
 
 WindowId XWindowInterface::activeWindow() const
@@ -158,7 +160,7 @@ void XWindowInterface::skipTaskBar(const QDialog &dialog) const
     KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);
 }
 
-void XWindowInterface::slideWindow(QQuickWindow &view, AbstractWindowInterface::Slide location) const
+void XWindowInterface::slideWindow(QWindow &view, AbstractWindowInterface::Slide location) const
 {
     auto slideLocation = KWindowEffects::NoEdge;
 
@@ -186,7 +188,7 @@ void XWindowInterface::slideWindow(QQuickWindow &view, AbstractWindowInterface::
     KWindowEffects::slideWindow(view.winId(), slideLocation, -1);
 }
 
-void XWindowInterface::enableBlurBehind(QQuickWindow &view) const
+void XWindowInterface::enableBlurBehind(QWindow &view) const
 {
     KWindowEffects::enableBlurBehind(view.winId());
 }

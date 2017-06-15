@@ -29,10 +29,10 @@
 #include <list>
 
 #include <QObject>
-#include <QPointer>
-#include <QRect>
-#include <QQuickView>
+#include <QWindow>
 #include <QDialog>
+#include <QRect>
+#include <QPointer>
 #include <QScreen>
 
 #include <Plasma>
@@ -58,11 +58,11 @@ public:
     explicit AbstractWindowInterface(QObject *parent = nullptr);
     virtual ~AbstractWindowInterface();
 
-    virtual void setDockExtraFlags(QQuickWindow &view) = 0;
-    virtual void setDockStruts(WindowId dockId, const QRect &dockRect
-                               , const QScreen &screen, Plasma::Types::Location location) const = 0;
+    virtual void setDockExtraFlags(QWindow &view) = 0;
+    virtual void setDockStruts(QWindow &view, const QRect &dockRect
+    , Plasma::Types::Location location) = 0;
 
-    virtual void removeDockStruts(WindowId dockId) const = 0;
+    virtual void removeDockStruts(QWindow &view) const = 0;
 
     virtual WindowId activeWindow() const = 0;
     virtual WindowInfoWrap requestInfo(WindowId wid) const = 0;
@@ -71,8 +71,8 @@ public:
     virtual const std::list<WindowId> &windows() const = 0;
 
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
-    virtual void slideWindow(QQuickWindow &view, Slide location) const = 0;
-    virtual void enableBlurBehind(QQuickWindow &view) const = 0;
+    virtual void slideWindow(QWindow &view, Slide location) const = 0;
+    virtual void enableBlurBehind(QWindow &view) const = 0;
 
     void addDock(WindowId wid);
     void removeDock(WindowId wid);

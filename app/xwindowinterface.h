@@ -38,11 +38,11 @@ public:
     explicit XWindowInterface(QObject *parent = nullptr);
     ~XWindowInterface() override;
 
-    void setDockExtraFlags(QQuickWindow &view) override;
-    void setDockStruts(WindowId dockId, const QRect &dockRect
-                       , const QScreen &screen, Plasma::Types::Location location) const override;
+    void setDockExtraFlags(QWindow &view) override;
+    void setDockStruts(QWindow &view, const QRect &dockRect
+                       , Plasma::Types::Location location) override;
 
-    void removeDockStruts(WindowId dockId) const override;
+    void removeDockStruts(QWindow &view) const override;
 
     WindowId activeWindow() const override;
     WindowInfoWrap requestInfo(WindowId wid) const override;
@@ -51,8 +51,8 @@ public:
     const std::list<WindowId> &windows() const override;
 
     void skipTaskBar(const QDialog &dialog) const override;
-    void slideWindow(QQuickWindow &view, Slide location) const override;
-    void enableBlurBehind(QQuickWindow &view) const override;
+    void slideWindow(QWindow &view, Slide location) const override;
+    void enableBlurBehind(QWindow &view) const override;
 
 private:
     bool isValidWindow(const KWindowInfo &winfo) const;

@@ -61,8 +61,7 @@ DockCorona::DockCorona(QObject *parent)
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalSettings(new GlobalSettings(this)),
-      m_globalShortcuts(new GlobalShortcuts(this)),
-      m_waylandDockCorona(nullptr)
+      m_globalShortcuts(new GlobalShortcuts(this))
 {
     setupWaylandIntegration();
 
@@ -150,25 +149,32 @@ void DockCorona::load()
 
 void DockCorona::setupWaylandIntegration()
 {
+    using namespace KWayland::Client;
+
     if (!KWindowSystem::isPlatformWayland()) {
         return;
     }
 
-    using namespace KWayland::Client;
-    ConnectionThread *connection = ConnectionThread::fromApplication(this);
+    auto connection{ConnectionThread::fromApplication(this)};
 
-    if (!connection) {
+    if (!connection)
         return;
-    }
 
-    Registry *registry = new Registry(this);
+    Registry *registry{new Registry(this)};
     registry->create(connection);
-    connect(registry, &Registry::plasmaShellAnnounced, this,
-    [this, registry](quint32 name, quint32 version) {
-        qDebug() << "wayland registry ::: " << name << "  -  " << version;
+
+    connect(registry, &Registry::plasmaShellAnnounced, this
+    , [this, registry](quint32 name, quint32 version) {
         m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
-    }
-           );
+    });
+
+    connect(qApp, &QCoreApplication::aboutToQuit, this, [this, registry]() {
+        if (m_waylandDockCorona)
+            m_waylandDockCorona->release();
+
+        registry->release();
+    });
+
     registry->setup();
 }
 
@@ -176,7 +182,6 @@ KWayland::Client::PlasmaShell *DockCorona::waylandDockCoronaInterface() const
 {
     return m_waylandDockCorona;
 }
-
 
 void DockCorona::cleanConfig()
 {
