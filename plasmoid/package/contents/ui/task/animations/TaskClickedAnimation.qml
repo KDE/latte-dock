@@ -38,13 +38,13 @@ SequentialAnimation{
             duration: clickedAnimation.speed
             easing.type: Easing.OutQuad
         }
-        PropertyAnimation {
+       /* PropertyAnimation {
             target: wrapper
             property: "mScale"
             to: root.taskInAnimation ? 1 : Math.max(clickedAnimation.maxMScale, wrapper.mScale - (root.zoomFactor - 1) / 2)
             duration: clickedAnimation.speed
             easing.type: Easing.OutQuad
-        }
+        }*/
     }
 
     ParallelAnimation{
@@ -55,27 +55,27 @@ SequentialAnimation{
             duration: clickedAnimation.speed
             easing.type: Easing.OutQuad
         }
-        PropertyAnimation {
+      /*  PropertyAnimation {
             target: wrapper
             property: "mScale"
             to: root.taskInAnimation ? 1 : root.zoomFactor
             duration: clickedAnimation.speed
             easing.type: Easing.OutQuad
-        }
+        }*/
     }
 
 
     onPressedChanged: {
         if( !running && pressed&&
                 ((mainItemContainer.lastButtonClicked == Qt.LeftButton)||(mainItemContainer.lastButtonClicked == Qt.MidButton)) ){
-            mainItemContainer.animationStarted();
+            //mainItemContainer.animationStarted();
             start();
         }
     }
 
     onStopped: {
         if( !mainItemContainer.isDragged){
-            mainItemContainer.animationEnded();
+            //mainItemContainer.animationEnded();
             if(!root.latteDock)
                 checkListHovered.startDuration(6*units.longDuration);
         }
