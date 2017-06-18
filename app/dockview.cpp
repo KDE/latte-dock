@@ -198,6 +198,7 @@ void DockView::init()
         updateFormFactor();
         syncGeometry();
     });
+    connect(this, &DockView::dockTransparencyChanged, this, &DockView::updateEffects);
     connect(this, &DockView::drawEffectsChanged, this, &DockView::updateEffects);
     connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
 
@@ -1087,6 +1088,21 @@ void DockView::setOffset(int offset)
     emit offsetChanged();
 }
 
+int DockView::dockTransparency() const
+{
+    return m_dockTransparency;
+}
+
+void DockView::setDockTransparency(int transparency)
+{
+    if (m_dockTransparency == transparency) {
+        return;
+    }
+
+    m_dockTransparency = transparency;
+    emit dockTransparencyChanged();
+}
+
 int DockView::shadow() const
 {
     return m_shadow;
@@ -1133,10 +1149,11 @@ void DockView::updateEffects()
 
             KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
 
+            bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_dockTransparency == 100);
             //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
             //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
             //at the dock bottom that was distinguishing it from other themes
-            KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
+            KWindowEffects::enableBackgroundContrast(winId(), drawBackgroundEffect,
                     m_theme.backgroundContrast(),
                     m_theme.backgroundIntensity(),
                     m_theme.backgroundSaturation(),

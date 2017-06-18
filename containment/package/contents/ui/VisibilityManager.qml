@@ -87,6 +87,13 @@ Item{
 
     Binding{
         target: dock
+        property: "dockTransparency"
+        when: dock
+        value: root.panelTransparency
+    }
+
+    Binding{
+        target: dock
         property: "drawShadows"
         when: dock
         value: root.drawShadowsExternal
