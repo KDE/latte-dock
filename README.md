@@ -58,11 +58,11 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### Fedora
 
-- [Fedora Copr](https://copr.fedorainfracloud.org/coprs/hcooh/Latte-dock/)
+- [Fedora - official](https://admin.fedoraproject.org/pkgdb/package/rpms/latte-dock/)
 
 ### Arch Linux
 
-- [Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
+- [Arch Linux - official](https://www.archlinux.org/packages/?sort=&q=latte-dock)
 
 ### Gentoo
 
