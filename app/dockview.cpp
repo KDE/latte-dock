@@ -1132,11 +1132,15 @@ void DockView::updateEffects()
             }
 
             KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
+
+            //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
+            //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
+            //at the dock bottom that was distinguishing it from other themes
             KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
                     m_theme.backgroundContrast(),
                     m_theme.backgroundIntensity(),
                     m_theme.backgroundSaturation(),
-                    fixedMask);
+                    fixedMask.boundingRect());
         } else {
             KWindowEffects::enableBlurBehind(winId(), false);
             KWindowEffects::enableBackgroundContrast(winId(), false);
