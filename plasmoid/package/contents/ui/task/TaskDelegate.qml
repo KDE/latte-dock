@@ -112,7 +112,7 @@ MouseArea{
     property int resistanceDelay: 750
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
 
-    property real animationStep: 1 //root.iconSize / 12
+    property real animationStep: Math.min(3, root.iconSize / 8)
 
     property string activity: tasksModel.activity
 

@@ -88,8 +88,7 @@ Item {
     property int spacersMaxSize: Math.max(0,Math.ceil(0.5*root.iconSize) - root.iconMargin)
     property int status: applet ? applet.status : -1
 
-    //property real animationStep: root.iconSize / 8
-    property real animationStep: 2 //6
+    property real animationStep: Math.min(3, root.iconSize / 8)
     property real computeWidth: root.isVertical ? wrapper.width :
                                                   hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
 
