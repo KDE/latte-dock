@@ -547,7 +547,7 @@ Item{
 
     BrightnessContrast{
         id:hoveredImage
-        opacity: mainItemContainer.containsMouse ? 1 : 0
+        opacity: mainItemContainer.containsMouse && !clickedAnimation.running ? 1 : 0
         anchors.fill: iconGraphic
 
         brightness: 0.30
