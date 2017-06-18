@@ -224,6 +224,8 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
                         continue;
                     }
 
+                    KPluginMetaData meta = applet->kPackage().metadata();
+
                     for (QQuickItem *item : childItems) {
                         if (auto *metaObject = item->metaObject()) {
                             // not using QMetaObject::invokeMethod to avoid warnings when calling
@@ -237,7 +239,7 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
 
                             int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
 
-                            if (methodIndex == -1 || methodIndex2 == -1) {
+                            if (methodIndex == -1 || (methodIndex2 == -1 && meta.pluginId() == "org.kde.latte.plasmoid")) {
                                 continue;
                             }
 
@@ -247,8 +249,11 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
 
                             QMetaMethod method = metaObject->method(methodIndex);
 
-                            if (method.invoke(item, Q_ARG(QVariant, index))
-                                && m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
+                            if (method.invoke(item, Q_ARG(QVariant, index))) {
+                                if (methodIndex2 != -1) {
+                                    m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
+                                }
+
                                 return true;
                             }
                         }
