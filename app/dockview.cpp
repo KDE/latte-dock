@@ -58,13 +58,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(nullptr)
 {
-    //! S1.1: the only way I found in order to solve kwin shadows issue in combinations of S1.2
-    //! this way we avoid an issue of kwin creating shadows for
-    //! the secondary, third dock
-    if (!KWindowSystem::isPlatformWayland()) {
-        setVisible(false);
-    }
-
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
@@ -84,10 +77,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         setFlags(flags | Qt::BypassWindowManagerHint);
     }
 
-    //! S1.2: setup the wayland early enough and after the flags settings
-    //! this way we avoid an issue of kwin creating shadows for
-    //! the secondary, third dock
-    setupWaylandIntegration();
     KWindowSystem::setOnAllDesktops(winId(), true);
 
     if (targetScreen)
@@ -221,8 +210,13 @@ void DockView::init()
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
-    setVisible(true);
+    // setVisible(true);
     syncGeometry();
+
+    if (!KWindowSystem::isPlatformWayland()) {
+        setVisible(true);
+    }
+
     qDebug() << "SOURCE:" << source();
 }
 

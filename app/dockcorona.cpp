@@ -842,14 +842,15 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
     bool onPrimary = containment->config().readEntry("onPrimary", true);
     int id = containment->screen();
 
-    if (id == -1 && expDockScreen==-1) {
+    if (id == -1 && expDockScreen == -1) {
         id = containment->lastScreen();
     }
-    if (expDockScreen>-1) {
+
+    if (expDockScreen > -1) {
         id = expDockScreen;
     }
 
-    qDebug() << "add dock - containment id : " << id << " onprimary:"<<onPrimary<<" forceDockLoad:"<<forceDockLoading;
+    qDebug() << "add dock - containment id : " << id << " onprimary:" << onPrimary << " forceDockLoad:" << forceDockLoading;
 
     if (id >= 0 && !onPrimary && !forceDockLoading) {
         QString connector = m_screenPool->connector(id);
@@ -903,7 +904,8 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , this, &DockCorona::showAlternativesForApplet, Qt::QueuedConnection);
 
-    dockView->show();
+    //! Qt 5.9 creates a crash for this in wayland
+    //dockView->show();
     m_dockViews[containment] = dockView;
 
     if (m_waitingSessionDocksCreation) {
@@ -1228,12 +1230,12 @@ void DockCorona::copyDock(Plasma::Containment *containment)
     emit containmentAdded(newContainment);
     emit containmentCreated(newContainment);
 
-    if (setOnExplicitScreen && copyScrId>-1) {
-        qDebug()<< "Copy Dock in explicit screen ::: " << copyScrId;
+    if (setOnExplicitScreen && copyScrId > -1) {
+        qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
         addDock(newContainment, copyScrId);
         newContainment->reactToScreenChange();
     } else {
-        qDebug()<< "Copy Dock in current screen...";
+        qDebug() << "Copy Dock in current screen...";
         addDock(newContainment);
     }
 }
