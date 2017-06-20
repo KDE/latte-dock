@@ -242,7 +242,7 @@ void DockView::setupWaylandIntegration()
 
         m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
         m_shellSurface->setSkipTaskbar(true);
-        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
+        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
     }
 }
 
