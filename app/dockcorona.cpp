@@ -1185,6 +1185,7 @@ void DockCorona::copyDock(Plasma::Containment *containment)
                         ///set this containment to an explicit screen
                         newContainment->config().writeEntry("onPrimary", false);
                         newContainment->config().writeEntry("lastScreen", copyScrId);
+                        newContainment->setLocation(containment->location());
 
                         setOnExplicitScreen = true;
                     }
