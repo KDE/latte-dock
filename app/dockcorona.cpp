@@ -801,7 +801,7 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     return -1;
 }
 
-void DockCorona::addDock(Plasma::Containment *containment)
+void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
 {
     if (!containment || !containment->kPackage().isValid()) {
         qWarning() << "the requested containment plugin can not be located or loaded";
@@ -842,11 +842,14 @@ void DockCorona::addDock(Plasma::Containment *containment)
     bool onPrimary = containment->config().readEntry("onPrimary", true);
     int id = containment->screen();
 
-    if (id == -1) {
+    if (id == -1 && expDockScreen==-1) {
         id = containment->lastScreen();
     }
+    if (expDockScreen>-1) {
+        id = expDockScreen;
+    }
 
-    qDebug() << "add dock - containment id : " << id;
+    qDebug() << "add dock - containment id : " << id << " onprimary:"<<onPrimary<<" forceDockLoad:"<<forceDockLoading;
 
     if (id >= 0 && !onPrimary && !forceDockLoading) {
         QString connector = m_screenPool->connector(id);
@@ -868,7 +871,7 @@ void DockCorona::addDock(Plasma::Containment *containment)
     }
 
     qDebug() << "Adding dock for container...";
-    qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << containment->screen();
+    qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << nextScreen->name();
 
     //! it is used to set the correct flag during the creation
     //! of the window... This of course is also used during
@@ -1169,13 +1172,15 @@ void DockCorona::copyDock(Plasma::Containment *containment)
     bool setOnExplicitScreen = false;
 
     int dockScrId = -1;
+    int copyScrId = -1;
 
     if (dock) {
         dockScrId = m_screenPool->id(dock->currentScreen());
+        qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
 
         if (dockScrId != -1 && screens.count() > 1) {
             foreach (auto scr, screens) {
-                int copyScrId = m_screenPool->id(scr->name());
+                copyScrId = m_screenPool->id(scr->name());
 
                 //the screen must exist and not be the same with the original dock
                 if (copyScrId > -1 && copyScrId != dockScrId) {
@@ -1187,7 +1192,10 @@ void DockCorona::copyDock(Plasma::Containment *containment)
                         newContainment->config().writeEntry("lastScreen", copyScrId);
                         newContainment->setLocation(containment->location());
 
+                        qDebug() << "COPY DOCK SCREEN NEW SCREEN ::: " << copyScrId;
+
                         setOnExplicitScreen = true;
+                        break;
                     }
                 }
             }
@@ -1220,7 +1228,14 @@ void DockCorona::copyDock(Plasma::Containment *containment)
     emit containmentAdded(newContainment);
     emit containmentCreated(newContainment);
 
-    addDock(newContainment);
+    if (setOnExplicitScreen && copyScrId>-1) {
+        qDebug()<< "Copy Dock in explicit screen ::: " << copyScrId;
+        addDock(newContainment, copyScrId);
+        newContainment->reactToScreenChange();
+    } else {
+        qDebug()<< "Copy Dock in current screen...";
+        addDock(newContainment);
+    }
 }
 
 //! This function figures in the beginning if a dock with tasks

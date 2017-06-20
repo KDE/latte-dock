@@ -76,7 +76,7 @@ public:
     int noDocksWithTasks() const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 
-    void addDock(Plasma::Containment *containment);
+    void addDock(Plasma::Containment *containment, int expDockScreen = -1);
     void recreateDock(Plasma::Containment *containment);
     void copyDock(Plasma::Containment *containment);
 
