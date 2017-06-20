@@ -412,7 +412,7 @@ void DockView::copyDock()
 
 void DockView::removeDock()
 {
-    if (docksCount() > 1) {
+    if (totalDocksCount() > 1) {
         QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));
 
         if (removeAct) {
