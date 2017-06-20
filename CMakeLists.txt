@@ -32,6 +32,12 @@ if(X11_FOUND)
     find_package(XCB MODULE REQUIRED COMPONENTS XCB RANDR EVENT)
     set_package_properties(XCB PROPERTIES TYPE REQUIRED)
     find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS X11Extras)
+
+    if(NOT X11_SM_FOUND)
+        message(FATAL_ERROR "\nThe X11 Session Management (SM) development package could not be found.
+                \nPlease install libSM.\n")
+    endif(NOT X11_SM_FOUND)
+
 endif()
 
 if(X11_FOUND AND XCB_XCB_FOUND)
