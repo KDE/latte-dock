@@ -608,8 +608,15 @@ void DockView::setLocalGeometry(const QRect &geometry)
 
 void DockView::updateAbsDockGeometry(bool bypassChecks)
 {
+    //! there was a -1 in height and width here. The reason of this
+    //! if I remember correctly was related to multi-screen but I cant
+    //! remember exactly the reason, something related to rigth edge in
+    //! multi screen environment. BUT this was breaking the entire AlwaysVisible
+    //! experience with struts. Removing them in order to restore correct
+    //! behavior and keeping this comment in order to check for
+    //! multi-screen breakage
     QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
-                       , m_localGeometry.width() - 1, m_localGeometry.height() - 1};
+                       , m_localGeometry.width(), m_localGeometry.height()};
 
     if (m_absGeometry == absGeometry && !bypassChecks)
         return;
