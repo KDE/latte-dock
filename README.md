@@ -43,6 +43,7 @@ We recommend that you use at least **Plasma 5.9.0**
     KF5WindowSystem >= 5.29.0
     Qt5X11Extras >= 5.7.0
     libxcb
+    libSM
 ```
 
 ## From repositories
