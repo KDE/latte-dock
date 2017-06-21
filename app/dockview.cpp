@@ -130,7 +130,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
 DockView::~DockView()
 {
+    m_inDelete = true;
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
+    disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
     m_inDelete = true;
     m_screenSyncTimer.stop();
@@ -152,6 +154,7 @@ DockView::~DockView()
         delete m_visibility;
 
     if (m_shellSurface) {
+        m_shellSurface->release();
         delete m_shellSurface;
         m_shellSurface = nullptr;
     }
@@ -223,6 +226,9 @@ void DockView::init()
 
 void DockView::availableScreenRectChanged()
 {
+    if (m_inDelete)
+        return;
+
     if (formFactor() == Plasma::Types::Vertical)
         syncGeometry();
 }
@@ -1255,39 +1261,41 @@ VisibilityManager *DockView::visibility() const
 
 bool DockView::event(QEvent *e)
 {
-    emit eventTriggered(e);
+    if (!m_inDelete) {
+        emit eventTriggered(e);
 
-    switch (e->type()) {
-        case QEvent::PlatformSurface:
-            if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
-                switch (pe->surfaceEventType()) {
-                    case QPlatformSurfaceEvent::SurfaceCreated:
-                        setupWaylandIntegration();
+        switch (e->type()) {
+            case QEvent::PlatformSurface:
+                if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
+                    switch (pe->surfaceEventType()) {
+                        case QPlatformSurfaceEvent::SurfaceCreated:
+                            setupWaylandIntegration();
 
-                        if (m_shellSurface) {
-                            syncGeometry();
+                            if (m_shellSurface) {
+                                syncGeometry();
 
-                            if (m_drawShadows) {
-                                PanelShadows::self()->addWindow(this, enabledBorders());
+                                if (m_drawShadows) {
+                                    PanelShadows::self()->addWindow(this, enabledBorders());
+                                }
                             }
-                        }
 
-                        break;
+                            break;
 
-                    case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                        m_shellSurface->release();
-                        delete m_shellSurface;
-                        m_shellSurface = nullptr;
-                        qDebug() << "wayland dock window surface was deleted...";
-                        PanelShadows::self()->removeWindow(this);
-                        break;
+                        case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                            m_shellSurface->release();
+                            delete m_shellSurface;
+                            m_shellSurface = nullptr;
+                            qDebug() << "wayland dock window surface was deleted...";
+                            PanelShadows::self()->removeWindow(this);
+                            break;
+                    }
                 }
-            }
 
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+        }
     }
 
     return ContainmentView::event(e);
