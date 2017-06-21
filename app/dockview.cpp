@@ -134,7 +134,6 @@ DockView::~DockView()
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
-    m_inDelete = true;
     m_screenSyncTimer.stop();
 
     qDebug() << "dock view deleting...";
@@ -1282,11 +1281,14 @@ bool DockView::event(QEvent *e)
                             break;
 
                         case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                            m_shellSurface->release();
-                            delete m_shellSurface;
-                            m_shellSurface = nullptr;
-                            qDebug() << "wayland dock window surface was deleted...";
-                            PanelShadows::self()->removeWindow(this);
+                            if (m_shellSurface) {
+                                m_shellSurface->release();
+                                delete m_shellSurface;
+                                m_shellSurface = nullptr;
+                                qDebug() << "wayland dock window surface was deleted...";
+                                PanelShadows::self()->removeWindow(this);
+                            }
+
                             break;
                     }
                 }
