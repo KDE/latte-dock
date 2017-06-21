@@ -104,75 +104,12 @@ void WaylandInterface::setDockExtraFlags(QWindow &view)
     Q_UNUSED(view)
 }
 
-void WaylandInterface::setDockStruts(QWindow &view, const QRect &dockRect
-                                     , Plasma::Types::Location location)
+void WaylandInterface::setDockStruts(QWindow &view, const QRect &dockRect , Plasma::Types::Location location)
 {
-//     auto surface = std::make_unique<Surface>(Surface::fromWindow(&view));
-//     if (!surface) {
-//         qWarning() << "the surface of the Dock can't be created";
-//         return;
-//     }
-//
-//     auto shellSurface = std::make_unique<PlasmaShellSurface>(m_plasmaShell->createSurface(surface.get(), this));
-//     if (!shellSurface) {
-//         qWarning() << "the shell surface can't be created";
-//         return;
-//     }
-//
-//     shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
-
-//     NETExtendedStrut strut;
-//
-//     const QRect currentScreen {screen.geometry()};
-//     const QRect wholeScreen {{0, 0}, screen.virtualSize()};
-
-
-
-
-//     switch (location) {
-//         case Plasma::Types::TopEdge: {
-//             const int topOffset {screen.geometry().top()};
-//             strut.top_width = dockRect.height() + topOffset;
-//             strut.top_start = dockRect.x();
-//             strut.top_end = dockRect.x() + dockRect.width() - 1;
-//             break;
-//         }
-//
-//         case Plasma::Types::BottomEdge: {
-//             const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
-//             strut.bottom_width = dockRect.height() + bottomOffset;
-//             strut.bottom_start = dockRect.x();
-//             strut.bottom_end = dockRect.x() + dockRect.width() - 1;
-//             break;
-//         }
-//
-//         case Plasma::Types::LeftEdge: {
-//             const int leftOffset = {screen.geometry().left()};
-//             strut.left_width = dockRect.width() + leftOffset;
-//             strut.left_start = dockRect.y();
-//             strut.left_end = dockRect.y() + dockRect.height() - 1;
-//             break;
-//         }
-//
-//         case Plasma::Types::RightEdge: {
-//             const int rightOffset = {wholeScreen.right() - currentScreen.right()};
-//             strut.right_width = dockRect.width() + rightOffset;
-//             strut.right_start = dockRect.y();
-//             strut.right_end = dockRect.y() + dockRect.height() - 1;
-//             break;
-//         }
-//
-//         default:
-//             qWarning() << "wrong location:" << qEnumToStr(location);
-//             return;
-//     }
-//
-//     KWindowSystem::setExtendedStrut(dockId.value<WId>(),
-//                                     strut.left_width,   strut.left_start,   strut.left_end,
-//                                     strut.right_width,  strut.right_start,  strut.right_end,
-//                                     strut.top_width,    strut.top_start,    strut.top_end,
-//                                     strut.bottom_width, strut.bottom_start, strut.bottom_end
-//                                    );
+    //TODO: implement AlwaysVisible
+    Q_UNUSED(view)
+    Q_UNUSED(dockRect)
+    Q_UNUSED(location)
 }
 
 void WaylandInterface::removeDockStruts(QWindow &view) const
@@ -259,6 +196,17 @@ bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
     //qDebug() << "desktop:" << (it != m_wm->windows().constEnd() ? (*it)->virtualDesktop() : -1) << KWindowSystem::currentDesktop();
     //return true;
     return it != m_wm->windows().constEnd() && ( (*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
+}
+
+bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
+{
+    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w){
+        return w->isValid() && w->internalId() == wid;
+    });
+
+    //TODO: Not yet implemented
+    return it != m_wm->windows().constEnd() && true;
+
 }
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
