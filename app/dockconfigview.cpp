@@ -45,7 +45,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_blockFocusLost(false),
       m_dockView(dockView)
 {
-    setupWaylandIntegration();
+    //setupWaylandIntegration();
 
     setScreen(m_dockView->screen());
 
@@ -113,8 +113,8 @@ void DockConfigView::init()
     kdeclarative.setupBindings();
     auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
-    syncGeometry();
-    syncSlideEffect();
+    //syncGeometry();
+    //syncSlideEffect();
 }
 
 inline Qt::WindowFlags DockConfigView::wFlags() const
@@ -279,7 +279,8 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
         return;
 
     if (!m_blockFocusLost) {
-        hide();
+        setVisible(false);
+        //hide();
     }
 }
 
@@ -307,6 +308,8 @@ void DockConfigView::setupWaylandIntegration()
         qDebug() << "wayland dock window surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
+
+        syncGeometry();
     }
 }
 
@@ -343,7 +346,8 @@ bool DockConfigView::event(QEvent *e)
 void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
     if (type != Plasma::Types::Mutable && isVisible()) {
-        hide();
+        setVisible(false);
+        //hide();
     }
 }
 
@@ -365,7 +369,8 @@ void DockConfigView::addPanelSpacer()
 
 void DockConfigView::hideConfigWindow()
 {
-    hide();
+    setVisible(false);
+    //hide();
 }
 
 

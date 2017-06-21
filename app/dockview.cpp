@@ -143,7 +143,7 @@ DockView::~DockView()
     //! this->disconnect();
 
     if (m_configView)
-        m_configView->hide();
+        m_configView->setVisible(false);//hide();
 
     if (m_visibility)
         delete m_visibility;
@@ -440,19 +440,23 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
 
     if (m_configView && c && c->isContainment() && c == this->containment()) {
         if (m_configView->isVisible()) {
-            m_configView->hide();
+            m_configView->setVisible(false);
+            //m_configView->hide();
         } else {
-            m_configView->show();
+            m_configView->setVisible(true);
+            //m_configView->show();
         }
 
         return;
     } else if (m_configView) {
         if (m_configView->applet() == applet) {
-            m_configView->show();
+            m_configView->setVisible(true);
+            //m_configView->show();
             m_configView->requestActivate();
             return;
         } else {
-            m_configView->hide();
+            m_configView->setVisible(false);
+            //m_configView->hide();
             m_configView->deleteLater();
         }
     }
@@ -469,12 +473,19 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     m_configView.data()->init();
 
     if (!delayConfigView) {
-        m_configView.data()->show();
+        m_configView->setVisible(true);
+        //m_configView.data()->show();
     } else {
         //add a timer for showing the configuration window the first time it is
         //created in order to give the containmnent's layouts the time to
         //calculate the window's height
-        QTimer::singleShot(150, m_configView, SLOT(show()));
+        if (!KWindowSystem::isPlatformWayland()) {
+            QTimer::singleShot(150, m_configView, SLOT(show()));
+        } else {
+            QTimer::singleShot(150, [this]() {
+                m_configView->setVisible(true);
+            });
+        }
     }
 }
 

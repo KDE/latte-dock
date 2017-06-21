@@ -91,7 +91,7 @@ private:
     QTimer m_screenSyncTimer;
     QList<QMetaObject::Connection> connections;
 
-    QPointer<KWayland::Client::PlasmaShellSurface> m_shellSurface;
+    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
 }
