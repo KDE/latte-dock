@@ -58,7 +58,8 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_dockView->screen());
-        WindowSystem::self().setDockExtraFlags(*this);
+        //!fix #517 restore focusOut proper behavior with qt5.9
+        //WindowSystem::self().setDockExtraFlags(*this);
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
