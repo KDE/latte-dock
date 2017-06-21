@@ -344,7 +344,7 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
         winfo = wm->requestInfo(wm->activeWindow());
     }
 
-    if (wm->isOnCurrentDesktop(wid))
+    if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
         raiseDock(!intersects(winfo));
 }
 
@@ -367,15 +367,17 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 
     auto isMaxVert = [&]() noexcept -> bool {
         return winfo.isMaxVert()
-               || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height() && intersects(winfo));
+               || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()
+                   && intersects(winfo));
     };
 
     auto isMaxHoriz = [&]() noexcept -> bool {
         return winfo.isMaxHoriz()
-               || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width() && intersects(winfo));
+               || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()
+                   && intersects(winfo));
     };
 
-    if (wm->isOnCurrentDesktop(wid) && !winfo.isMinimized() && intersects(winfo))
+    if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
         raiseDock(view->formFactor() == Plasma::Types::Vertical
                   ? !isMaxHoriz() : !isMaxVert());
 }
@@ -391,7 +393,7 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
     windows[wid] = wm->requestInfo(wid);
     auto &winfo = windows[wid];
 
-    if (!winfo.isValid() || !wm->isOnCurrentDesktop(wid))
+    if (!winfo.isValid() || !wm->isOnCurrentDesktop(wid) || !wm->isOnCurrentActivity(wid))
         return;
 
     if (intersects(winfo))
@@ -409,7 +411,7 @@ void VisibilityManagerPrivate::checkAllWindows()
 
     for (const auto &winfo : windows) {
         // <WindowId, WindowInfoWrap>
-        if (!winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()))
+        if (!winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()) || !wm->isOnCurrentActivity(winfo.wid()))
             continue;
 
         if (winfo.isFullscreen()) {

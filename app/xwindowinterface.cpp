@@ -204,6 +204,14 @@ bool XWindowInterface::isOnCurrentDesktop(WindowId wid) const
     return winfo.valid() && winfo.isOnCurrentDesktop();
 }
 
+bool XWindowInterface::isOnCurrentActivity(WindowId wid) const
+{
+    KWindowInfo winfo(wid.value<WId>(), 0, NET::WM2Activities);
+
+    return winfo.valid()
+            && (winfo.activities().contains(m_activities->currentActivity()) || winfo.activities().empty());
+}
+
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
     const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents

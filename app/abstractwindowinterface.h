@@ -68,6 +68,7 @@ public:
     virtual WindowInfoWrap requestInfo(WindowId wid) const = 0;
     virtual WindowInfoWrap requestInfoActive() const = 0;
     virtual bool isOnCurrentDesktop(WindowId wid) const = 0;
+    virtual bool isOnCurrentActivity(WindowId wid) const = 0;
     virtual const std::list<WindowId> &windows() const = 0;
 
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
