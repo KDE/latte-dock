@@ -130,6 +130,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
 DockView::~DockView()
 {
+    disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
+
+    m_inDelete = true;
     m_screenSyncTimer.stop();
 
     qDebug() << "dock view deleting...";
@@ -169,10 +172,9 @@ void DockView::init()
     connect(this, &QQuickWindow::widthChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::updateAbsDockGeometry);
-    connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, [&]() {
-        if (formFactor() == Plasma::Types::Vertical)
-            syncGeometry();
-    });
+
+    connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
+
     connect(this, &DockView::behaveAsPlasmaPanelChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
@@ -217,6 +219,12 @@ void DockView::init()
     }
 
     qDebug() << "SOURCE:" << source();
+}
+
+void DockView::availableScreenRectChanged()
+{
+    if (formFactor() == Plasma::Types::Vertical)
+        syncGeometry();
 }
 
 void DockView::setupWaylandIntegration()

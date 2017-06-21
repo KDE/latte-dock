@@ -232,6 +232,7 @@ signals:
     void absGeometryChanged(const QRect &geometry);
 
 private slots:
+    void availableScreenRectChanged();
     void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
@@ -258,6 +259,7 @@ private:
     bool m_dockWinBehavior{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
+    bool m_inDelete{false};
     bool m_onPrimary{true};
     int m_dockTransparency{100};
     int m_maxThickness{24};
