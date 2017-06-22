@@ -909,8 +909,13 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , this, &DockCorona::showAlternativesForApplet, Qt::QueuedConnection);
 
-    //! Qt 5.9 creates a crash for this in wayland
-    //dockView->show();
+    //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
+    //! but on the other hand we need this for copy to work correctly and show
+    //! the copied dock under X11
+    //if (!KWindowSystem::isPlatformWayland()) {
+    dockView->show();
+    //}
+
     m_dockViews[containment] = dockView;
 
     if (m_waitingSessionDocksCreation) {
@@ -1244,7 +1249,7 @@ void DockCorona::copyDock(Plasma::Containment *containment)
         newContainment->reactToScreenChange();
     } else {
         qDebug() << "Copy Dock in current screen...";
-        addDock(newContainment);
+        addDock(newContainment, dockScrId);
     }
 }
 
