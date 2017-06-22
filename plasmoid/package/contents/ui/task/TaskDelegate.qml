@@ -1069,7 +1069,24 @@ MouseArea{
             }
         }
 
-        mainItemContainer.audioStreams = streams;
+        // fix a binding loop concerning audiostreams, the audiostreams
+        // should be updated only when they have changed
+        var changed = false;
+
+        if (streams.length !== audioStreams.length) {
+            changed = true;
+        } else {
+            for(var i=0; i<streams.length; ++i) {
+                if (streams[i] !== audioStreams[i]) {
+                    changed = true;
+                    break;
+                }
+            }
+        }
+
+        if (changed) {
+            mainItemContainer.audioStreams = streams;
+        }
     }
 
     function toggleMuted() {
