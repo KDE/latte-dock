@@ -32,7 +32,8 @@ import "../controls" as ExtraControls
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
-    Layout.maximumHeight: content.height + units.smallSpacing * 2
+    //fix the height binding loop when showing the configuration window
+    Layout.maximumHeight: 26*theme.mSize(theme.defaultFont).height + units.smallSpacing * 2
 
     ColumnLayout {
         id: content
