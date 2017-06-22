@@ -1298,9 +1298,11 @@ bool DockView::event(QEvent *e)
             default:
                 break;
         }
+
+        return ContainmentView::event(e);
     }
 
-    return ContainmentView::event(e);
+    return false;
 }
 
 QList<int> DockView::freeEdges() const
