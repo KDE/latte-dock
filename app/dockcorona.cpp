@@ -926,13 +926,16 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
 
 void DockCorona::recreateDock(Plasma::Containment *containment)
 {
-    auto view = m_dockViews.take(containment);
+    //give the time to config window to close itself first and then recreate the dock
+    QTimer::singleShot(350, [this, containment]() {
+        auto view = m_dockViews.take(containment);
 
-    if (view) {
-        view->setVisible(false);
-        view->deleteLater();
-        addDock(view->containment());
-    }
+        if (view) {
+            view->setVisible(false);
+            view->deleteLater();
+            addDock(view->containment());
+        }
+    });
 }
 
 void DockCorona::destroyedChanged(bool destroyed)
