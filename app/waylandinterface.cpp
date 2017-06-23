@@ -72,7 +72,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
     m_wm = m_registry->createPlasmaWindowManagement(wmInterface.name, wmInterface.version, this);
     connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() {
-        auto w{m_wm->activeWindow()};
+        auto w = m_wm->activeWindow();
         emit activeWindowChanged(w ? w->internalId() : 0);
     }, Qt::QueuedConnection);
 
