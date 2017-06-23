@@ -119,7 +119,7 @@ void WaylandInterface::removeDockStruts(QWindow &view) const
 
 WindowId WaylandInterface::activeWindow() const
 {
-    auto wid{m_wm->activeWindow()};
+    auto wid = m_wm->activeWindow();
 
     return wid ? wid->internalId() : 0;
 }
