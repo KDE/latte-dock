@@ -62,7 +62,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
     m_registry->setup();
     m_connection->roundtrip();
 
-    const auto wmInterface{m_registry->interface(Registry::Interface::PlasmaWindowManagement)};
+    const auto wmInterface = m_registry->interface(Registry::Interface::PlasmaWindowManagement);
 
     if (wmInterface.name == 0) {
         qWarning() << "This compositor does not support the Plasma Window Management interface";
@@ -77,7 +77,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
     }, Qt::QueuedConnection);
 
 
-    const auto shellInterface{m_registry->interface(Registry::Interface::PlasmaShell)};
+    const auto shellInterface = m_registry->interface(Registry::Interface::PlasmaShell);
 
     if (shellInterface.name == 0) {
         qWarning() << "Plasma Shell interface can't be created";
@@ -169,7 +169,7 @@ void WaylandInterface::enableBlurBehind(QWindow &view) const
 
 WindowInfoWrap WaylandInterface::requestInfoActive() const
 {
-    auto w{m_wm->activeWindow()};
+    auto w = m_wm->activeWindow();
 
     if (!w) return {};
 

@@ -92,7 +92,7 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &dockRect
 {
     NETExtendedStrut strut;
 
-    const auto screen {view.screen()};
+    const auto screen = view.screen();
 
     const QRect currentScreen {screen->geometry()};
     const QRect wholeScreen {{0, 0}, screen->virtualSize()};
