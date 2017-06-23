@@ -155,7 +155,7 @@ void DockCorona::setupWaylandIntegration()
         return;
     }
 
-    auto connection{ConnectionThread::fromApplication(this)};
+    auto connection = ConnectionThread::fromApplication(this);
 
     if (!connection)
         return;
