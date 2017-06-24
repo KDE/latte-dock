@@ -938,15 +938,18 @@ void DockCorona::recreateDock(Plasma::Containment *containment)
 
         if (view) {
             qDebug() << "recreate - step 1: removing dock for containment:" << containment->id();
-            view->deleteLater();
 
             //! step:2 add the new dockview
-            QTimer::singleShot(250, [this, containment]() {
-                if (!m_dockViews.contains(containment)) {
-                    qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
-                    addDock(containment);
-                }
+            connect(view, &QObject::destroyed, this, [this, containment]() {
+                QTimer::singleShot(250, this, [this, containment](){
+                    if (!m_dockViews.contains(containment)) {
+                        qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
+                        addDock(containment);
+                    }
+                });
             });
+
+            view->deleteLater();
 
         }
     });
