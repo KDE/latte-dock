@@ -1896,7 +1896,7 @@ void DockView::saveConfig()
     config.writeEntry("onPrimary", m_onPrimary);
     config.writeEntry("session", (int)m_session);
     config.writeEntry("dockWindowBehavior", m_dockWinBehavior);
-    this->containment()->configNeedsSaving();
+    emit this->containment()->configNeedsSaving();
 }
 
 void DockView::restoreConfig()

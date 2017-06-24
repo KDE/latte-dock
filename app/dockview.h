@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef NOWDOCKVIEW_H
-#define NOWDOCKVIEW_H
+#ifndef DOCKVIEW_H
+#define DOCKVIEW_H
 
 #include "plasmaquick/configview.h"
 #include "plasmaquick/containmentview.h"
