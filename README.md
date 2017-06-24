@@ -4,6 +4,8 @@ Latte is a dock based on plasma frameworks that provides an elegant and intuitiv
 
 *"Art in Coffee"*
 
+<a href='https://pledgie.com/campaigns/34116'><img alt='Click here to lend your support to: Latte Dock and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/34116.png?skin_name=chrome' border='0' ></a>
+
 Screenshots
 ===========
 
