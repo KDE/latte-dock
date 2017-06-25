@@ -566,7 +566,8 @@ PlasmaComponents.Page {
                             enabled: backColorBtn.enabled
 
                             function addModel() {
-                                var actions = []
+                                var actions = [];
+                                actions.push(i18nc("Use theme shadow","Theme"));
                                 actions.push(i18nc("Clear applet shadow settings","Clear"));
                                 restoreCmb.model = actions;
                                 restoreCmb.currentIndex = -1;
@@ -584,8 +585,15 @@ PlasmaComponents.Page {
                             }
 
                             onActivated: {
-                                if (index==0) {
+                                if (index===0) {
+                                    var strC = String(theme.textColor);
+                                    if (strC.indexOf("#") === 0)
+                                        plasmoid.configuration.shadowColor = strC.substr(1);
+                                }else if (index===1){
                                     plasmoid.configuration.shadowColor = "080808";
+                                }
+
+                                if (index===0 || index===1) {
                                     plasmoid.configuration.shadowSize = 20;
                                     plasmoid.configuration.shadowOpacity = 100;
                                 }
