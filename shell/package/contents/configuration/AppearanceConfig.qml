@@ -22,6 +22,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import QtQuick.Dialogs 1.2
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -445,7 +446,7 @@ PlasmaComponents.Page {
                 visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
-                    text: i18n("Transparency: ")
+                    text: i18n("Opacity: ")
                     horizontalAlignment: Text.AlignLeft
                     enabled: showBackground.checked && !solidBackground.checked
                 }
@@ -528,56 +529,181 @@ PlasmaComponents.Page {
                 text: i18n("Applet shadows")
             }
 
-            RowLayout{
+            RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
 
-                RowLayout {
-                    Layout.fillWidth: true
+                ColumnLayout{
+                    RowLayout{
+                        PlasmaComponents.CheckBox {
+                            id: showAppletShadow
+                            text: i18nc("show applet shadow","Show")
+                            checked: plasmoid.configuration.shadows>0
 
-                    spacing: units.smallSpacing
-
-                    property int shadows: plasmoid.configuration.shadows
-
-                    ExclusiveGroup {
-                        id: shadowsGroup
-                        onCurrentChanged: {
-                            if (current.checked)
-                                plasmoid.configuration.shadows = current.shadow
+                            onClicked: {
+                                if (checked)
+                                    plasmoid.configuration.shadows = 2;
+                                else
+                                    plasmoid.configuration.shadows = 0;
+                            }
                         }
                     }
 
-                    PlasmaComponents.Button {
+                    RowLayout {
                         Layout.fillWidth: true
+                        Layout.leftMargin: units.smallSpacing * 2
+                        Layout.rightMargin: units.smallSpacing * 2
 
-                        text: i18n("None")
-                        checked: parent.shadows === shadow
-                        checkable: true
-                        exclusiveGroup: shadowsGroup
+                        PlasmaComponents.Button {
+                            id: colorBtn
+                            Layout.maximumWidth: showAppletShadow.width
 
-                        readonly property int shadow: 0
+                            text: i18n(" ")
+                            enabled: showAppletShadow.checked
+
+                            onClicked: {
+                                dockConfig.setSticker(true);
+                                colorDialogLoader.showDialog = true;
+                            }
+
+                            Rectangle{
+                                anchors.fill: parent
+                                anchors.margins: 1.5*units.smallSpacing
+                                color: "#" + plasmoid.configuration.shadowColor;
+                                opacity: colorBtn.enabled ? 1 : 0.4
+
+                                Rectangle{
+                                    anchors.fill: parent
+                                    color: "transparent"
+                                    border.width: 1
+                                    border.color: theme.textColor
+                                    opacity: 0.7
+                                }
+                            }
+
+                            Loader{
+                                id:colorDialogLoader
+                                property bool showDialog: false
+                                active: showDialog
+
+                                sourceComponent: ColorDialog {
+                                    title: i18n("Please choose shadow color")
+                                    showAlphaChannel: false
+
+                                    onAccepted: {
+                                        //console.log("You chose: " + String(color));
+                                        var strC = String(color);
+                                        if (strC.indexOf("#") === 0)
+                                                plasmoid.configuration.shadowColor = strC.substr(1);
+
+                                        colorDialogLoader.showDialog = false;
+                                        dockConfig.setSticker(false);
+                                    }
+                                    onRejected: {
+                                        colorDialogLoader.showDialog = false;
+                                        dockConfig.setSticker(false);
+                                    }
+                                    Component.onCompleted: {
+                                        color = String("#" + plasmoid.configuration.shadowColor);
+                                        visible = true;
+                                    }
+                                }
+                            }
+                        }
                     }
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
+                }
 
-                        text: i18n("Locked")
-                        checked: parent.shadows === shadow
-                        checkable: true
-                        exclusiveGroup: shadowsGroup
+                ColumnLayout {
+                    RowLayout{
+                        PlasmaComponents.Label {
+                            text: " | "
+                            horizontalAlignment: Text.AlignLeft
+                            opacity: 0.35
+                        }
 
-                        readonly property int shadow: 1
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: i18n("Opacity: ")
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        PlasmaComponents.Slider {
+                            id: shadowOpacitySlider
+                            Layout.fillWidth: true
+                            enabled: showAppletShadow.checked
+
+                            value: plasmoid.configuration.shadowOpacity
+                            minimumValue: 0
+                            maximumValue: 100
+                            stepSize: 5
+
+                            function updateShadowOpacity() {
+                                if (!pressed)
+                                    plasmoid.configuration.shadowOpacity = value;
+                            }
+
+                            onPressedChanged: {
+                                updateShadowOpacity();
+                            }
+
+                            Component.onCompleted: {
+                                valueChanged.connect(updateShadowOpacity);
+                            }
+                        }
+
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: shadowOpacitySlider.value + " %"
+                            horizontalAlignment: Text.AlignRight
+                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        }
                     }
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
 
-                        text: i18n("All")
-                        checked: parent.shadows === shadow
-                        checkable: true
-                        exclusiveGroup: shadowsGroup
+                    RowLayout{
+                        PlasmaComponents.Label {
+                            text: " | "
+                            horizontalAlignment: Text.AlignLeft
+                            opacity: 0.35
+                        }
 
-                        readonly property int shadow: 2
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: i18n("Size: ")
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        PlasmaComponents.Slider {
+                            id: shadowSizeSlider
+                            Layout.fillWidth: true
+                            enabled: showAppletShadow.checked
+
+                            value: plasmoid.configuration.shadowSize
+                            minimumValue: 0
+                            maximumValue: 100
+                            stepSize: 5
+
+                            function updateShadowSize() {
+                                if (!pressed)
+                                    plasmoid.configuration.shadowSize = value;
+                            }
+
+                            onPressedChanged: {
+                                updateShadowSize();
+                            }
+
+                            Component.onCompleted: {
+                                valueChanged.connect(updateShadowSize);
+                            }
+                        }
+
+                        PlasmaComponents.Label {
+                            enabled: showAppletShadow.checked
+                            text: shadowSizeSlider.value + " %"
+                            horizontalAlignment: Text.AlignRight
+                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        }
                     }
                 }
             }

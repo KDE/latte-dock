@@ -87,6 +87,15 @@
         </choices>
       <default>2</default>
     </entry>
+    <entry name="shadowOpacity" type="Int">
+      <default>100</default>
+    </entry>
+    <entry name="shadowSize" type="Int">
+      <default>20</default>
+    </entry>
+    <entry name="shadowColor" type="String">
+      <default>080808</default>
+    </entry>
     <entry name="activeIndicator" type="Enum">
       <label>Show active indicator</label>
         <choices>
