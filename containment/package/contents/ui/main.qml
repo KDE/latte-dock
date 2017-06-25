@@ -136,7 +136,9 @@ DragDrop.DropArea {
                                       || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
                                       && !(disablePanelShadowMaximized && windowsModel.hasMaximizedWindow)
 
-
+    property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
+    property int appShadowSize: (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100)
+    property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + plasmoid.configuration.shadowColor
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
@@ -781,6 +783,18 @@ DragDrop.DropArea {
     function containmentActions(){
         return dock.containmentActions();
     }
+
+    function decimalToHex(d, padding) {
+        var hex = Number(d).toString(16);
+        padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
+
+        while (hex.length < padding) {
+            hex = "0" + hex;
+        }
+
+        return hex;
+    }
+
 
     function disableDirectRender(){
         root.globalDirectRender = false;

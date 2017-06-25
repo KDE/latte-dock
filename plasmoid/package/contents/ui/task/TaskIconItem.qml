@@ -59,7 +59,7 @@ Item{
     // property int shadowInterval: firstDrawed ? firstDrawedInterval : 250
     property int shadowInterval: firstDrawed ? 1000 : 250
 
-    property int shadowSize : Math.ceil(root.iconSize / 10)
+    property int shadowSize : root.appShadowSize
 
     readonly property bool smartLauncherEnabled: ((mainItemContainer.isStartup === false) && (root.smartLaunchersEnabled))
     readonly property variant iconDecoration: decoration
@@ -493,10 +493,10 @@ Item{
                     active: root.enableShadows
 
                     sourceComponent: DropShadow{
-                        color: "#ff080808"
+                        color: root.appShadowColor
                         samples: 2 * radius
                         source: taskNumber
-                        radius: centralItem.shadowSize/2
+                        radius: root.appShadowSize/2
                         verticalOffset: 2
                     }
                 }
@@ -528,10 +528,10 @@ Item{
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: "#ff080808"
+            color: root.appShadowColor
             samples: 2 * radius
             source: iconGraphic
-            radius: centralItem.shadowSize
+            radius: root.appShadowSize
             verticalOffset: 2
         }
     }

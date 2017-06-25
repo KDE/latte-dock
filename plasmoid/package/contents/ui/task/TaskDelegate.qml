@@ -254,13 +254,11 @@ MouseArea{
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: "#ff080808"
+            color: root.appShadowColor
             samples: 2 * radius
             source: separatorItem
-            radius: shadowSize
+            radius: root.appShadowSize
             verticalOffset: 2
-
-            property int shadowSize : Math.ceil(root.iconSize / 10)
         }
     }
 

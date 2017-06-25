@@ -507,13 +507,11 @@ Item{
 
             layer.enabled: true
             layer.effect: DropShadow {
-                radius: shadowSize
+                radius: root.appShadowSize
                 samples: 2 * radius
-                color: "#ff080808"
+                color: root.appShadowColor
 
                 verticalOffset: 2
-
-                property int shadowSize : Math.ceil(root.iconSize / 10)
             }
 
             Component.onCompleted: wrapper.zoomScale = 1.1
@@ -542,13 +540,13 @@ Item{
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: forcedShadow ? theme.backgroundColor : "#ff080808"
+            color: forcedShadow ? theme.backgroundColor : root.appShadowColor //"#ff080808"
             samples: 2 * radius
             source: container.fakeIconItem ? _wrapperContainer : container.applet
             radius: shadowSize
             verticalOffset: forcedShadow ? 1 : 2
 
-            property int shadowSize : forcedShadow? 8 : Math.ceil(root.iconSize / 12)
+            property int shadowSize : forcedShadow? 8 : root.appShadowSize //Math.ceil(root.iconSize / 12)
 
             property bool forcedShadow: root.forceTransparentPanel && applet.pluginName !== root.plasmoidName ? true : false
         }
