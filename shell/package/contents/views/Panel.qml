@@ -72,10 +72,17 @@ PlasmaCore.FrameSvgItem {
         }
     }
 
+    Component.onDestruction: {
+        console.log("dock view qml source deleting...");
+    }
+
     onContainmentChanged: {
+        console.log("dock view qml source - containment changed 1...");
         if (!containment) {
             return;
         }
+        console.log("dock view qml source - containment changed 2...");
+
         containment.parent = containmentParent;
         containment.visible = true;
         containment.anchors.fill = containmentParent;

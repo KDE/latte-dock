@@ -85,8 +85,12 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
     connect(this, &DockView::containmentChanged
     , this, [&]() {
+        qDebug() << "dock view c++ containment changed 1...";
+
         if (!this->containment())
             return;
+
+        qDebug() << "dock view c++ containment changed 2...";
 
         restoreConfig();
         reconsiderScreen();
