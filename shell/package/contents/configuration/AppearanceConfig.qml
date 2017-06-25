@@ -536,30 +536,81 @@ PlasmaComponents.Page {
                 spacing: 2
 
                 ColumnLayout{
-                    RowLayout{
-                        PlasmaComponents.CheckBox {
-                            id: showAppletShadow
-                            text: i18nc("show applet shadow","Show")
-                            checked: plasmoid.configuration.shadows>0
+                    Layout.leftMargin: units.smallSpacing * 2
+                    Layout.rightMargin: units.smallSpacing * 2
+                    PlasmaComponents.CheckBox {
+                        id: showAppletShadow
+                        text: i18nc("show applet shadow","Show")
+                        checked: plasmoid.configuration.shadows>0
 
-                            onClicked: {
-                                if (checked)
-                                    plasmoid.configuration.shadows = 2;
-                                else
-                                    plasmoid.configuration.shadows = 0;
-                            }
+                        onClicked: {
+                            if (checked)
+                                plasmoid.configuration.shadows = 2;
+                            else
+                                plasmoid.configuration.shadows = 0;
                         }
                     }
 
-                    RowLayout {
-                        Layout.fillWidth: true
-                        Layout.leftMargin: units.smallSpacing * 2
-                        Layout.rightMargin: units.smallSpacing * 2
 
+                    PlasmaComponents.Button{
+                        id: backColorBtn
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.fillWidth: true
+                        Layout.maximumWidth: showAppletShadow.width
+                        text:" "
+
+                        PlasmaComponents.ComboBox {
+                            id: restoreCmb
+                            anchors.fill: parent
+                            enabled: backColorBtn.enabled
+
+                            function addModel() {
+                                var actions = []
+                                actions.push(i18nc("Clear applet shadow settings","Clear"));
+                                restoreCmb.model = actions;
+                                restoreCmb.currentIndex = -1;
+                            }
+
+                            function emptyModel() {
+                                var actions = []
+                                actions.push("  ");
+                                restoreCmb.model = actions;
+                                restoreCmb.currentIndex = -1;
+                            }
+
+                            Component.onCompleted:{
+                                addModel();
+                            }
+
+                            onActivated: {
+                                if (index==0) {
+                                    plasmoid.configuration.shadowColor = "080808";
+                                    plasmoid.configuration.shadowSize = 20;
+                                    plasmoid.configuration.shadowOpacity = 100;
+                                }
+
+                                restoreCmb.currentIndex = -1;
+                            }
+
+                            onCurrentIndexChanged: {
+                                if (currentIndex === 0)
+                                    currentIndex = -1;
+                            }
+
+                            onEnabledChanged: {
+                                if (enabled)
+                                    addModel();
+                                else
+                                    emptyModel();
+                            }
+                        }
+
+
+                        //overlayed button
                         PlasmaComponents.Button {
                             id: colorBtn
-                            Layout.maximumWidth: showAppletShadow.width
-
+                            width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
+                            height: parent.height
                             text: i18n(" ")
                             enabled: showAppletShadow.checked
 
@@ -571,6 +622,7 @@ PlasmaComponents.Page {
                             Rectangle{
                                 anchors.fill: parent
                                 anchors.margins: 1.5*units.smallSpacing
+
                                 color: "#" + plasmoid.configuration.shadowColor;
                                 opacity: colorBtn.enabled ? 1 : 0.4
 
@@ -596,7 +648,7 @@ PlasmaComponents.Page {
                                         //console.log("You chose: " + String(color));
                                         var strC = String(color);
                                         if (strC.indexOf("#") === 0)
-                                                plasmoid.configuration.shadowColor = strC.substr(1);
+                                            plasmoid.configuration.shadowColor = strC.substr(1);
 
                                         colorDialogLoader.showDialog = false;
                                         dockConfig.setSticker(false);
