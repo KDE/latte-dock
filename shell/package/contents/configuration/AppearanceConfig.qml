@@ -558,6 +558,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         Layout.maximumWidth: showAppletShadow.width
                         text:" "
+                        enabled: showAppletShadow.checked
 
                         PlasmaComponents.ComboBox {
                             id: restoreCmb
