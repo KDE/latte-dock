@@ -127,27 +127,12 @@ DockCorona::~DockCorona()
     delete m_activityConsumer;
 
     if (!m_layoutDir.isNull()) {
-        qDebug() << "layout directory found:" << m_layoutDir;
-        QFile latterc(m_layoutDir + "/lattedockrc");
-        QFile appletsrc(m_layoutDir  + "/lattedock-appletsrc");
+        updateConfigs();
+        QDir tempLayoutDir(m_layoutDir);
 
-        if (latterc.exists() && appletsrc.exists()) {
-            qDebug() << "updating latte layout...";
-
-            const auto homeLatterc = QDir::homePath() + "/.config/lattedockrc";
-            const auto homeAppletsrc = QDir::homePath() + "/.config/lattedock-appletsrc";
-
-            if (QFile::remove(homeLatterc) && QFile::remove(homeAppletsrc)){
-                QFile::copy(latterc.fileName() , homeLatterc);
-                QFile::copy(appletsrc.fileName() , homeAppletsrc);
-            }
-
-            QDir tempLayoutDir(m_layoutDir);
-
-            if (tempLayoutDir.exists() && m_layoutDir.startsWith("/tmp")) {
-                qDebug()<< "old layout directory should be deleted... - " << tempLayoutDir.absolutePath();
-                tempLayoutDir.removeRecursively();
-            }
+        if (tempLayoutDir.exists() && m_layoutDir.startsWith("/tmp")) {
+            qDebug()<< "old layout directory should be deleted... - " << tempLayoutDir.absolutePath();
+            tempLayoutDir.removeRecursively();
         }
     }
 
@@ -218,10 +203,36 @@ bool DockCorona::reloadLayout(QString path)
             oldLayoutDir.removeRecursively();
         }
 
+        QTimer::singleShot(2000, [this]() {
+            qDebug() << "reload: starting delayed update config files...";
+            updateConfigs();
+        });
+
         return true;
     }
 
     return false;
+}
+
+void DockCorona::updateConfigs()
+{
+    if (!m_layoutDir.isNull()) {
+        qDebug() << "layout directory found:" << m_layoutDir;
+        QFile latterc(m_layoutDir + "/lattedockrc");
+        QFile appletsrc(m_layoutDir  + "/lattedock-appletsrc");
+
+        if (latterc.exists() && appletsrc.exists()) {
+            qDebug() << "updating latte layout...";
+
+            const auto homeLatterc = QDir::homePath() + "/.config/lattedockrc";
+            const auto homeAppletsrc = QDir::homePath() + "/.config/lattedock-appletsrc";
+
+            if (QFile::remove(homeLatterc) && QFile::remove(homeAppletsrc)){
+                QFile::copy(latterc.fileName() , homeLatterc);
+                QFile::copy(appletsrc.fileName() , homeAppletsrc);
+            }
+        }
+    }
 }
 
 
@@ -242,7 +253,7 @@ void DockCorona::setupWaylandIntegration()
     registry->create(connection);
 
     connect(registry, &Registry::plasmaShellAnnounced, this
-    , [this, registry](quint32 name, quint32 version) {
+            , [this, registry](quint32 name, quint32 version) {
         m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
     });
 
@@ -393,66 +404,66 @@ QRegion DockCorona::availableScreenRegion(int id) const
             // need calculate available space for top and bottom location,
             // because the left and right are those who dodge others docks
             switch (view->location()) {
-                case Plasma::Types::TopEdge:
-                    if (view->behaveAsPlasmaPanel()) {
-                        available -= view->geometry();
-                    } else {
-                        QRect realGeometry;
-                        int realWidth = view->maxLength() * view->width();
+            case Plasma::Types::TopEdge:
+                if (view->behaveAsPlasmaPanel()) {
+                    available -= view->geometry();
+                } else {
+                    QRect realGeometry;
+                    int realWidth = view->maxLength() * view->width();
 
-                        switch (view->alignment()) {
-                            case Latte::Dock::Left:
-                                realGeometry = QRect(view->x(), view->y(),
-                                                     realWidth, realThickness);
-                                break;
+                    switch (view->alignment()) {
+                    case Latte::Dock::Left:
+                        realGeometry = QRect(view->x(), view->y(),
+                                             realWidth, realThickness);
+                        break;
 
-                            case Latte::Dock::Center:
-                            case Latte::Dock::Justify:
-                                realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2) , view->y(),
-                                                     realWidth , realThickness);
-                                break;
+                    case Latte::Dock::Center:
+                    case Latte::Dock::Justify:
+                        realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2) , view->y(),
+                                             realWidth , realThickness);
+                        break;
 
-                            case Latte::Dock::Right:
-                                realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
-                                                     realWidth, realThickness);
-                                break;
-                        }
-
-                        available -= realGeometry;
+                    case Latte::Dock::Right:
+                        realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
+                                             realWidth, realThickness);
+                        break;
                     }
 
-                    break;
+                    available -= realGeometry;
+                }
 
-                case Plasma::Types::BottomEdge:
-                    if (view->behaveAsPlasmaPanel()) {
-                        available -= view->geometry();
-                    } else {
-                        QRect realGeometry;
-                        int realWidth = view->maxLength() * view->width();
-                        int realY = view->geometry().bottom() - realThickness + 1;
+                break;
 
-                        switch (view->alignment()) {
-                            case Latte::Dock::Left:
-                                realGeometry = QRect(view->x(), realY,
-                                                     realWidth, realThickness);
-                                break;
+            case Plasma::Types::BottomEdge:
+                if (view->behaveAsPlasmaPanel()) {
+                    available -= view->geometry();
+                } else {
+                    QRect realGeometry;
+                    int realWidth = view->maxLength() * view->width();
+                    int realY = view->geometry().bottom() - realThickness + 1;
 
-                            case Latte::Dock::Center:
-                            case Latte::Dock::Justify:
-                                realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
-                                                     realY, realWidth, realThickness);
-                                break;
+                    switch (view->alignment()) {
+                    case Latte::Dock::Left:
+                        realGeometry = QRect(view->x(), realY,
+                                             realWidth, realThickness);
+                        break;
 
-                            case Latte::Dock::Right:
-                                realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
-                                                     realWidth, realThickness);
-                                break;
-                        }
+                    case Latte::Dock::Center:
+                    case Latte::Dock::Justify:
+                        realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
+                                             realY, realWidth, realThickness);
+                        break;
 
-                        available -= realGeometry;
+                    case Latte::Dock::Right:
+                        realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
+                                             realWidth, realThickness);
+                        break;
                     }
 
-                    break;
+                    available -= realGeometry;
+                }
+
+                break;
             }
         }
     }
@@ -498,13 +509,13 @@ QRect DockCorona::availableScreenRect(int id) const
             // need calculate available space for top and bottom location,
             // because the left and right are those who dodge others docks
             switch (view->location()) {
-                case Plasma::Types::TopEdge:
-                    available.setTopLeft({available.x(), dockRect.bottom()});
-                    break;
+            case Plasma::Types::TopEdge:
+                available.setTopLeft({available.x(), dockRect.bottom()});
+                break;
 
-                case Plasma::Types::BottomEdge:
-                    available.setBottomLeft({available.x(), dockRect.top()});
-                    break;
+            case Plasma::Types::BottomEdge:
+                available.setBottomLeft({available.x(), dockRect.top()});
+                break;
             }
         }
     }
@@ -591,7 +602,7 @@ void DockCorona::syncDockViews()
             //! 2. when a dock in explicit, not running and the associated screen currently exists
             //! e.g. the screen has just been added
             if (((onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary && (m_screenPool->connector(id) == scr->name())))
-                && (!m_dockViews.contains(cont)) && session == currentSession()) {
+                    && (!m_dockViews.contains(cont)) && session == currentSession()) {
                 qDebug() << "screen Count signal: view must be added... for:" << scr->name();
                 addDock(cont);
             }
@@ -625,7 +636,7 @@ void DockCorona::syncDockViews()
         }
 
         if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
-            && !(view->tasksPresent() && noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
+                && !(view->tasksPresent() && noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
             if (view->tasksPresent()) {
                 if (preserveContainmentId == -1)
                     preserveContainmentId = view->containment()->id();
@@ -804,7 +815,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     for (auto *view : m_dockViews) {
         if (view && view->currentScreen() == screen->name() && view->session() == m_session) {
@@ -819,7 +830,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
+                Types::TopEdge, Types::RightEdge};
 
     QScreen *scr = m_screenPool->screenForId(screen);
 
@@ -871,8 +882,8 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     for (auto screen : qGuiApp->screens()) {
         // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
         if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
-            (containment->activity() == m_activityConsumer->currentActivity() ||
-             containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
+                (containment->activity() == m_activityConsumer->currentActivity() ||
+                 containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
             return containment->lastScreen();
         }
     }

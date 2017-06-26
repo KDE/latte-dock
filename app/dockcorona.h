@@ -112,6 +112,7 @@ private slots:
     void showAlternativesForApplet(Plasma::Applet *applet);
     void alternativesVisibilityChanged(bool visible);
     void load();
+    void updateConfigs();
 
     void addOutput(QScreen *screen);
     void primaryOutputChanged();
