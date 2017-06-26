@@ -289,7 +289,7 @@ MouseArea{
             //when the task is removed
             property int indexUsed: index === -1 ? lastValidIndex : index
             property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed-1)
-                                         || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
+                                          || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
@@ -362,7 +362,7 @@ MouseArea{
             //when the task is removed
             property int indexUsed: index === -1 ? lastValidIndex : index
             property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed+1)
-                                         || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
+                                          || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
@@ -1136,9 +1136,16 @@ MouseArea{
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
 
+        //startup without launcher
+        var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
+                              && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
+                             || !launcherIsPresent(mainItemContainer.launcherUrl))
+                            && mainItemContainer.isStartup);
 
         if ( (isWindow || isStartup) && root.waitingLauncherExists(launcherUrl)) {
             root.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);
+            visible = false;
+        } else if (hideStartup){
             visible = false;
         } else {
             visible = true;

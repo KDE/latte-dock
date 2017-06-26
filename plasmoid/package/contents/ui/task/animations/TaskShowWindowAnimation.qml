@@ -106,10 +106,22 @@ SequentialAnimation{
 
         var animation3 = ((!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher));
 
+        //startup without launcher, animation should be blocked
+        var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
+                              && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
+                             || !launcherIsPresent(mainItemContainer.launcherUrl))
+                            && mainItemContainer.isStartup);
+
         if (( animation2 || animation3) && (root.durationTime !== 0)){
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             start();
+        } else if (hideStartup) {
+            mainItemContainer.visible = false;
+            wrapper.tempScaleWidth = 0;
+            wrapper.tempScaleHeight = 0;
+            wrapper.opacity = 0;
+            mainItemContainer.inAnimation = false;
         } else {
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;
