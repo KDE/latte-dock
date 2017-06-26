@@ -107,6 +107,8 @@ DockCorona::~DockCorona()
     m_docksScreenSyncTimer.stop();
     cleanConfig();
 
+    //qDebug() << "corona config file:" << config()->name();
+
     while (!containments().isEmpty()) {
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
         delete containments().first();
@@ -114,6 +116,7 @@ DockCorona::~DockCorona()
 
     m_globalSettings->deleteLater();
     m_globalShortcuts->deleteLater();
+    m_screenPool->deleteLater();
 
     qDeleteAll(m_dockViews);
     qDeleteAll(m_waitingDockViews);
@@ -122,7 +125,31 @@ DockCorona::~DockCorona()
 
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
-    qDebug() << "deleted" << this;
+
+    if (!m_layoutDir.isNull()) {
+        qDebug() << "layout directory found:" << m_layoutDir;
+        QFile latterc(m_layoutDir + "/lattedockrc");
+        QFile appletsrc(m_layoutDir  + "/lattedock-appletsrc");
+
+        if (latterc.exists() && appletsrc.exists()) {
+            qDebug() << "updating latte layout...";
+
+            const auto homeLatterc = QDir::homePath() + "/.config/lattedockrc";
+            const auto homeAppletsrc = QDir::homePath() + "/.config/lattedock-appletsrc";
+
+            QFile::copy(latterc.fileName() , homeLatterc);
+            QFile::copy(appletsrc.fileName() , homeAppletsrc);
+
+            QDir tempLayoutDir(m_layoutDir);
+
+            if (tempLayoutDir.exists() && m_layoutDir.startsWith("/tmp")) {
+                qDebug()<< "old layout directory should be deleted...";
+                //tempLayoutDir.removeRecursively();
+            }
+        }
+    }
+
+    qDebug() << "latte corona deleted..." << this;
 }
 
 void DockCorona::load()
@@ -146,6 +173,53 @@ void DockCorona::load()
             addDock(containment);
     }
 }
+
+void DockCorona::unload()
+{
+    qDebug() << "unload: removing dockViews and containments...";
+
+    qDeleteAll(m_dockViews);
+    m_dockViews.clear();
+    m_waitingDockViews.clear();
+
+    while (!containments().isEmpty()) {
+        //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
+        //this form doesn't crash, while qDeleteAll(containments()) does
+        delete containments().first();
+    }
+}
+
+bool DockCorona::reloadLayout(QString path)
+{
+    QFile latterc(path + "/lattedockrc");
+    QFile appletsrc(path  + "/lattedock-appletsrc");
+
+    if (latterc.exists() && appletsrc.exists()) {
+        QDir oldLayoutDir(m_layoutDir);
+
+        m_layoutDir = path;
+
+        unload();
+
+        qDebug() << "reloadLayout: loading new layout - " << appletsrc.fileName();
+
+        loadLayout(appletsrc.fileName());
+
+        foreach (auto containment, containments())
+            addDock(containment);
+
+        if (oldLayoutDir.exists() && oldLayoutDir.absolutePath().startsWith("/tmp")
+                && oldLayoutDir.absolutePath() != path) {
+            qDebug()<< "old layout directory should be deleted...";
+            //     oldLayoutDir.removeRecursively();
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 
 void DockCorona::setupWaylandIntegration()
 {
@@ -937,7 +1011,7 @@ void DockCorona::recreateDock(Plasma::Containment *containment)
 
             //! step:2 add the new dockview
             connect(view, &QObject::destroyed, this, [this, containment]() {
-                QTimer::singleShot(250, this, [this, containment](){
+                QTimer::singleShot(250, this, [this, containment]() {
                     if (!m_dockViews.contains(containment)) {
                         qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
                         addDock(containment);

@@ -69,6 +69,8 @@ public:
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
+    bool reloadLayout(QString path);
+
     int docksCount() const;
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;
@@ -121,6 +123,8 @@ private:
     void cleanConfig();
     void qmlRegisterTypes() const;
     void setupWaylandIntegration();
+    void unload();
+
     bool appletExists(uint containmentId, uint appletId) const;
     bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
@@ -138,6 +142,7 @@ private:
     //! with tasks" will be loaded otherwise. Currently the older one dock wins
     int m_firstContainmentWithTasks{ -1};
 
+    QString m_layoutDir;
     Dock::SessionType m_session{Dock::DefaultSession};
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;

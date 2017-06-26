@@ -8,6 +8,7 @@
 #include <QProcess>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QTemporaryDir>
 
 #include <QtDBus/QtDBus>
 
@@ -408,7 +409,7 @@ void GlobalSettings::importConfiguration()
             , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
-    , this, [&](const QString & file) {
+            , this, [&](const QString & file) {
         importLayoutInternal(file);
     });
 
@@ -493,15 +494,29 @@ void GlobalSettings::importLayoutInternal(const QString &file)
     }
 
     auto rootDir = archive.directory();
+    QTemporaryDir uniqueTempDir;
+    uniqueTempDir.setAutoRemove(false);
+
+    QDir tempDir{uniqueTempDir.path()};
+
+    qDebug() << "temp layout directory : " << tempDir.absolutePath();
 
     if (rootDir) {
+        if (!tempDir.exists())
+            tempDir.mkpath(tempDir.absolutePath());
+
         foreach (auto &name, rootDir->entries()) {
             auto fileEntry = rootDir->file(name);
 
             if (fileEntry && (fileEntry->name() == "lattedockrc"
                               || fileEntry->name() == "lattedock-appletsrc")) {
-                continue;
+                if (!fileEntry->copyTo(tempDir.absolutePath())) {
+                    archive.close();
+                    showMsgError();
+                    continue;
+                }
             } else {
+                qInfo() << i18nc("import/export config", "The file has a wrong format!!!");
                 archive.close();
                 showMsgError();
                 return;
@@ -509,13 +524,29 @@ void GlobalSettings::importLayoutInternal(const QString &file)
         }
     }
 
+    qDebug() << "Dynaminc Importing new layout" << file;
+
+    const auto latterc = QDir::homePath() + "/.config/lattedockrc";
+    const auto appletsrc = QDir::homePath() + "/.config/lattedock-appletsrc";
+
+    // NOTE: I'm trying to avoid possible loss of information
+    qInfo() << "Backing up old configuration files...";
+    auto n = QString::number(qrand() % 24);
+    QFile::copy(latterc, latterc + "." + n + ".bak");
+    QFile::copy(appletsrc, appletsrc + "." + n + ".bak");
+
+    qInfo() << "Importing the new configuration...";
+
+    if (m_corona->reloadLayout(QString(tempDir.absolutePath()))) {
+        auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
+        notification->setText(i18nc("import/export config", "Configuration imported successfully"));
+        notification->sendEvent();
+    } else {
+        showMsgError();
+    }
+
     archive.close();
-    //NOTE: Restart latte for import the new configuration
-    QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
-    qGuiApp->exit();
 }
-
-
 
 void GlobalSettings::exportConfiguration()
 {
@@ -537,7 +568,7 @@ void GlobalSettings::exportConfiguration()
             , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
-    , this, [&](const QString & file) {
+            , this, [&](const QString & file) {
         auto showNotificationError = []() {
             auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
             notification->setText(i18nc("import/export config", "Failed to export configuration"));
@@ -575,7 +606,7 @@ void GlobalSettings::exportConfiguration()
         notification->setText(i18nc("import/export config", "Configuration exported successfully"));
 
         connect(notification, &KNotification::action1Activated
-        , this, [file]() {
+                , this, [file]() {
             QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
         });
 
