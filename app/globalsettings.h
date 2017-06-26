@@ -51,7 +51,8 @@ public:
     GlobalSettings(QObject *parent = nullptr);
     ~GlobalSettings() override;
 
-    void load();
+    void load(bool all=true);
+    void reload();
 
     bool autostart() const;
     void setAutostart(bool state);

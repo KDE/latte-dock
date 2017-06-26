@@ -42,6 +42,7 @@ public:
     void setPrimaryConnector(const QString &primary);
 
     void insertScreenMapping(int id, const QString &connector);
+    void reload(QString path);
 
     int id(const QString &connector) const;
 

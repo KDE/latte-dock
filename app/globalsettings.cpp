@@ -66,6 +66,12 @@ void GlobalSettings::init()
     initExtConfiguration();
 }
 
+void GlobalSettings::reload()
+{
+    m_configGroup = m_corona->config()->group("General");
+    load(false);
+}
+
 void GlobalSettings::initExtConfiguration()
 {
     KSharedConfigPtr extConfig = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedockextrc");
@@ -208,7 +214,7 @@ void GlobalSettings::setCurrentSession(Dock::SessionType session)
 }
 
 //!BEGIN configuration functions
-void GlobalSettings::load()
+void GlobalSettings::load(bool all)
 {
     m_exposeAltSession = m_configGroup.readEntry("exposeAltSession", false);
 
@@ -219,7 +225,9 @@ void GlobalSettings::load()
 
     emit exposeAltSessionChanged();
 
-    loadExtConfiguration();
+    if (all) {
+        loadExtConfiguration();
+    }
 }
 
 void GlobalSettings::loadLaunchers()

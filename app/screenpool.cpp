@@ -21,6 +21,7 @@
 #include <config-latte.h>
 
 #include <QDebug>
+#include <QFile>
 #include <QGuiApplication>
 #include <QScreen>
 
@@ -91,6 +92,22 @@ void ScreenPool::load()
 ScreenPool::~ScreenPool()
 {
     m_configGroup.sync();
+}
+
+
+void ScreenPool::reload(QString path)
+{
+    QFile rcfile(QString(path + "/lattedockrc"));
+
+    if (rcfile.exists()){
+        qDebug() << "load screen connectors from ::: " << rcfile.fileName();
+        KSharedConfigPtr newFile = KSharedConfig::openConfig(rcfile.fileName());
+        m_configGroup = KConfigGroup(newFile, QStringLiteral("ScreenConnectors"));
+        load();
+    }
+
+
+
 }
 
 QString ScreenPool::primaryConnector() const

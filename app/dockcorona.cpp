@@ -137,14 +137,16 @@ DockCorona::~DockCorona()
             const auto homeLatterc = QDir::homePath() + "/.config/lattedockrc";
             const auto homeAppletsrc = QDir::homePath() + "/.config/lattedock-appletsrc";
 
-            QFile::copy(latterc.fileName() , homeLatterc);
-            QFile::copy(appletsrc.fileName() , homeAppletsrc);
+            if (QFile::remove(homeLatterc) && QFile::remove(homeAppletsrc)){
+                QFile::copy(latterc.fileName() , homeLatterc);
+                QFile::copy(appletsrc.fileName() , homeAppletsrc);
+            }
 
             QDir tempLayoutDir(m_layoutDir);
 
             if (tempLayoutDir.exists() && m_layoutDir.startsWith("/tmp")) {
-                qDebug()<< "old layout directory should be deleted...";
-                //tempLayoutDir.removeRecursively();
+                qDebug()<< "old layout directory should be deleted... - " << tempLayoutDir.absolutePath();
+                tempLayoutDir.removeRecursively();
             }
         }
     }
@@ -203,15 +205,17 @@ bool DockCorona::reloadLayout(QString path)
 
         qDebug() << "reloadLayout: loading new layout - " << appletsrc.fileName();
 
+        m_screenPool->reload(m_layoutDir);
         loadLayout(appletsrc.fileName());
+        m_globalSettings->reload();
 
         foreach (auto containment, containments())
             addDock(containment);
 
         if (oldLayoutDir.exists() && oldLayoutDir.absolutePath().startsWith("/tmp")
                 && oldLayoutDir.absolutePath() != path) {
-            qDebug()<< "old layout directory should be deleted...";
-            //     oldLayoutDir.removeRecursively();
+            qDebug()<< "old layout directory should be deleted... - "<< oldLayoutDir.absolutePath();
+            oldLayoutDir.removeRecursively();
         }
 
         return true;
