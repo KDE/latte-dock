@@ -52,7 +52,7 @@ XWindowInterface::XWindowInterface(QObject *parent)
     };
 
     connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, addWindow);
-    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WindowId wid) {
+    connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, [this](WindowId wid) noexcept {
         if (std::find(m_windows.cbegin(), m_windows.cend(), wid) != m_windows.end()) {
             m_windows.remove(wid);
             emit windowRemoved(wid);
@@ -87,7 +87,7 @@ void XWindowInterface::setDockExtraFlags(QWindow &view)
     KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
-void XWindowInterface::setDockStruts(QWindow &view, const QRect &dockRect
+void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
                                      , Plasma::Types::Location location)
 {
     NETExtendedStrut strut;
@@ -100,31 +100,31 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &dockRect
     switch (location) {
         case Plasma::Types::TopEdge: {
             const int topOffset {screen->geometry().top()};
-            strut.top_width = dockRect.height() + topOffset;
-            strut.top_start = dockRect.x();
-            strut.top_end = dockRect.x() + dockRect.width() - 1;
+            strut.top_width = rect.height() + topOffset;
+            strut.top_start = rect.x();
+            strut.top_end = rect.x() + rect.width() - 1;
             break;
         }
 
         case Plasma::Types::BottomEdge: {
             const int bottomOffset {wholeScreen.bottom() - currentScreen.bottom()};
-            strut.bottom_width = dockRect.height() + bottomOffset;
-            strut.bottom_start = dockRect.x();
-            strut.bottom_end = dockRect.x() + dockRect.width() - 1;
+            strut.bottom_width = rect.height() + bottomOffset;
+            strut.bottom_start = rect.x();
+            strut.bottom_end = rect.x() + rect.width() - 1;
             break;
         }
         case Plasma::Types::LeftEdge: {
             const int leftOffset = {screen->geometry().left()};
-            strut.left_width = dockRect.width() + leftOffset;
-            strut.left_start = dockRect.y();
-            strut.left_end = dockRect.y() + dockRect.height() - 1;
+            strut.left_width = rect.width() + leftOffset;
+            strut.left_start = rect.y();
+            strut.left_end = rect.y() + rect.height() - 1;
             break;
         }
         case Plasma::Types::RightEdge: {
             const int rightOffset = {wholeScreen.right() - currentScreen.right()};
-            strut.right_width = dockRect.width() + rightOffset;
-            strut.right_start = dockRect.y();
-            strut.right_end = dockRect.y() + dockRect.height() - 1;
+            strut.right_width = rect.width() + rightOffset;
+            strut.right_start = rect.y();
+            strut.right_end = rect.y() + rect.height() - 1;
             break;
         }
         default:

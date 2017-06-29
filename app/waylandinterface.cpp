@@ -125,7 +125,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
 
     m_wm = m_registry->createPlasmaWindowManagement(wmInterface.name, wmInterface.version, this);
     connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
-    connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() {
+    connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
         auto w = m_wm->activeWindow();
         emit activeWindowChanged(w ? w->internalId() : 0);
     }, Qt::QueuedConnection);
@@ -259,7 +259,7 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 
 bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 {
-    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w){
+    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
         return w->isValid() && w->internalId() == wid;
     });
 
@@ -270,7 +270,7 @@ bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 
 bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
 {
-    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w){
+    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
         return w->isValid() && w->internalId() == wid;
     });
 
@@ -319,7 +319,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 
     mapper->setMapping(w, w);
 
-    connect(w, &PlasmaWindow::unmapped, this, [&, win = w]() {
+    connect(w, &PlasmaWindow::unmapped, this, [&, win = w]() noexcept {
         mapper->removeMappings(win);
         m_windows.remove(win->internalId());
         emit windowRemoved(win->internalId());
@@ -336,7 +336,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()));
 
     connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
-        , this, [&](QObject *w)
+        , this, [&](QObject *w) noexcept
     {
         qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         emit windowChanged(qobject_cast<PlasmaWindow *>(w)->internalId());
