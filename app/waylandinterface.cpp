@@ -281,13 +281,17 @@ bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 {
-    WindowInfoWrap winfoWrap;
-    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w){
+    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
         return w->isValid() && w->internalId() == wid;
     });
 
-    if (it != m_wm->windows().constEnd()) {
-        auto w = *it;
+    if (it == m_wm->windows().constEnd())
+        return {};
+
+    WindowInfoWrap winfoWrap;
+    auto w = *it;
+
+    if (isValidWindow(w)) {
         winfoWrap.setIsValid(true);
         winfoWrap.setWid(wid);
         winfoWrap.setIsActive(w->isActive());
@@ -297,8 +301,9 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsFullscreen(w->isFullscreen());
         winfoWrap.setIsShaded(w->isShaded());
         winfoWrap.setGeometry(w->geometry());
-    } else {
-        winfoWrap.setIsValid(false);
+    } else if (w->appId() == QLatin1String("org.kde.plasmashell")) {
+        winfoWrap.setIsValid(true);
+        winfoWrap.setIsPlasmaDesktop(true);
         winfoWrap.setWid(wid);
     }
 
