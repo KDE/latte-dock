@@ -26,14 +26,68 @@
 #include <QApplication>
 #include <QSignalMapper>
 #include <QtX11Extras/QX11Info>
+#include <QRasterWindow>
 
 #include <KWindowSystem>
 #include <KWindowInfo>
 #include <NETWM>
 
+
 using namespace KWayland::Client;
 
 namespace Latte {
+
+class Private::GhostWindow : public QRasterWindow {
+    Q_OBJECT
+
+public:
+    GhostWindow(WaylandInterface *waylandInterface)
+    : m_waylandInterface(waylandInterface)
+    {
+        setFlags(Qt::FramelessWindowHint
+            | Qt::WindowStaysOnTopHint
+            | Qt::NoDropShadowWindowHint
+            | Qt::WindowDoesNotAcceptFocus);
+
+        setupWaylandIntegration();
+        show();
+    }
+
+    ~GhostWindow()
+    {
+        delete m_shellSurface;
+    }
+
+    void setGeometry(const QRect &rect)
+    {
+        QWindow::setGeometry(rect);
+        m_shellSurface->setPosition(rect.topLeft());
+    }
+
+    void setupWaylandIntegration()
+    {
+        using namespace KWayland::Client;
+
+        if (m_shellSurface)
+            return;
+
+        Surface *s{Surface::fromWindow(this)};
+
+        if (!s)
+            return;
+
+        m_shellSurface = m_waylandInterface->m_plasmaShell->createSurface(s, this);
+        qDebug() << "wayland ghost window surface was created...";
+
+        m_shellSurface->setSkipTaskbar(true);
+        m_shellSurface->setPanelTakesFocus(false);
+        m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
+        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
+    }
+
+    KWayland::Client::PlasmaShellSurface * m_shellSurface{nullptr};
+    WaylandInterface * m_waylandInterface{nullptr};
+};
 
 WaylandInterface::WaylandInterface(QObject *parent)
     : AbstractWindowInterface(parent)
@@ -104,17 +158,33 @@ void WaylandInterface::setDockExtraFlags(QWindow &view)
     Q_UNUSED(view)
 }
 
-void WaylandInterface::setDockStruts(QWindow &view, const QRect &dockRect , Plasma::Types::Location location)
+void WaylandInterface::setDockStruts(QWindow &view, const QRect &rect , Plasma::Types::Location location)
 {
-    //TODO: implement AlwaysVisible
-    Q_UNUSED(view)
-    Q_UNUSED(dockRect)
-    Q_UNUSED(location)
+    if (!m_ghostWindows.contains(view.winId()))
+        m_ghostWindows[view.winId()] = new Private::GhostWindow(this);
+
+    auto w = m_ghostWindows[view.winId()];
+
+    switch(location) {
+        case Plasma::Types::TopEdge:
+        case Plasma::Types::BottomEdge:
+            w->setGeometry({rect.x() + rect.width() / 2, rect.y(), 1, rect.height()});
+            break;
+
+        case Plasma::Types::LeftEdge:
+        case Plasma::Types::RightEdge:
+            w->setGeometry({rect.x(), rect.y() + rect.height() / 2, rect.width(), 1});
+            break;
+
+        default:
+            break;
+    }
+
 }
 
 void WaylandInterface::removeDockStruts(QWindow &view) const
 {
-    KWindowSystem::setStrut(view.winId(), 0, 0, 0, 0);
+    delete m_ghostWindows.take(view.winId());
 }
 
 WindowId WaylandInterface::activeWindow() const

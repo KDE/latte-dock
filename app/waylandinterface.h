@@ -25,6 +25,7 @@
 #include "windowinfowrap.h"
 
 #include <QObject>
+#include <QMap>
 
 #include <KWindowInfo>
 #include <KWindowEffects>
@@ -37,6 +38,13 @@
 #include <KWayland/Client/surface.h>
 
 namespace Latte {
+
+namespace Private {
+    /**
+     * @brief this class is use for create the struts inside wayland
+     */
+    class GhostWindow;
+}
 
 class WaylandInterface : public AbstractWindowInterface {
     Q_OBJECT
@@ -69,11 +77,15 @@ private:
 
     QSignalMapper *mapper{nullptr};
 
+    friend class Private::GhostWindow;
+    mutable QMap<WindowId, Private::GhostWindow *> m_ghostWindows;
+
     KWayland::Client::Registry *m_registry{nullptr};
     KWayland::Client::ConnectionThread *m_connection{nullptr};
     KWayland::Client::PlasmaWindowManagement *m_wm{nullptr};
     KWayland::Client::PlasmaShell *m_plasmaShell{nullptr};
 };
+
 
 }
 
