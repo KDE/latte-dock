@@ -348,3 +348,5 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 }
 
 }
+
+#include "waylandinterface.moc"
