@@ -366,7 +366,7 @@ void DockConfigView::hideConfigWindow()
         //!NOTE: Avoid crash in wayland enviroment with qt5.9
         close();
     } else {
-        hideConfigWindow();
+        hide();
     }
 }
 
