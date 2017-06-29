@@ -257,8 +257,8 @@ void DockView::setupWaylandIntegration()
         m_shellSurface = interface->createSurface(s, this);
         qDebug() << "wayland dock window surface was created...";
 
-        m_shellSurface->setRole(KWayland::Client::PlasmaShellSurface::Role::Panel);
         m_shellSurface->setSkipTaskbar(true);
+        m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
         m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
     }
 }
