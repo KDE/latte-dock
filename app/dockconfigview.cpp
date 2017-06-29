@@ -45,7 +45,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
       m_blockFocusLost(false),
       m_dockView(dockView)
 {
-    //setupWaylandIntegration();
+    setupWaylandIntegration();
 
     setScreen(m_dockView->screen());
 
@@ -58,8 +58,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_dockView->screen());
-        //!fix #517 restore focusOut proper behavior with qt5.9
-        //WindowSystem::self().setDockExtraFlags(*this);
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
@@ -113,8 +111,8 @@ void DockConfigView::init()
     kdeclarative.setupBindings();
     auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath("lattedockconfigurationui"));
     setSource(source);
-    //syncGeometry();
-    //syncSlideEffect();
+    syncGeometry();
+    syncSlideEffect();
 }
 
 inline Qt::WindowFlags DockConfigView::wFlags() const
@@ -208,7 +206,7 @@ void DockConfigView::syncSlideEffect()
             break;
 
         default:
-            qDebug() << staticMetaObject.className() << "wrong location";// << qEnumToStr(m_containment->location());
+            qDebug() << staticMetaObject.className() << "wrong location";
             break;
     }
 
@@ -278,10 +276,8 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
 
-    if (!m_blockFocusLost) {
-        setVisible(false);
-        //hide();
-    }
+    if (!m_blockFocusLost)
+        hideConfigWindow();
 }
 
 void DockConfigView::setupWaylandIntegration()
@@ -345,17 +341,14 @@ bool DockConfigView::event(QEvent *e)
 
 void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
-    if (type != Plasma::Types::Mutable && isVisible()) {
-        setVisible(false);
-        //hide();
-    }
+    if (type != Plasma::Types::Mutable && isVisible())
+        hideConfigWindow();
 }
 
 void DockConfigView::setSticker(bool blockFocusLost)
 {
-    if (m_blockFocusLost == blockFocusLost) {
+    if (m_blockFocusLost == blockFocusLost)
         return;
-    }
 
     m_blockFocusLost = blockFocusLost;
 }
@@ -369,10 +362,13 @@ void DockConfigView::addPanelSpacer()
 
 void DockConfigView::hideConfigWindow()
 {
-    setVisible(false);
-    //hide();
+    if (m_shellSurface) {
+        //!NOTE: Avoid crash in wayland enviroment with qt5.9
+        close();
+    } else {
+        hideConfigWindow();
+    }
 }
-
 
 void DockConfigView::setSyncLaunchers(bool sync)
 {
