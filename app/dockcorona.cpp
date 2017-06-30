@@ -533,14 +533,9 @@ void DockCorona::syncDockViews()
     foreach (auto view, m_dockViews) {
         bool found{false};
 
-        foreach (auto scr, qGuiApp->screens()) {
-            int id = view->containment()->screen();
-
-            if (id == -1) {
-                id = view->containment()->lastScreen();
-            }
-
-            if (scr->name() == view->currentScreen()) {
+        foreach (auto scr, qGuiApp->screens()) {           
+            if (scr->name() == view->currentScreen()
+                    || (view->onPrimary() && scr == qGuiApp->primaryScreen() ) ) {
                 found = true;
                 break;
             }
@@ -572,7 +567,8 @@ void DockCorona::syncDockViews()
         bool found{false};
 
         foreach (auto scr, qGuiApp->screens()) {
-            if (scr->name() == view->currentScreen()) {
+            if (scr->name() == view->currentScreen()
+                    || (view->onPrimary() && scr == qGuiApp->primaryScreen()) ) {
                 found = true;
                 break;
             }
@@ -733,7 +729,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
                                  Types::TopEdge, Types::RightEdge};
 
     for (auto *view : m_dockViews) {
-        if (view && view->screen() == screen && view->session() == m_session) {
+        if (view && view->currentScreen() == screen->name() && view->session() == m_session) {
             edges.removeOne(view->location());
         }
     }
@@ -750,7 +746,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     QScreen *scr = m_screenPool->screenForId(screen);
 
     for (auto *view : m_dockViews) {
-        if (view && view->screen() == scr && view->session() == m_session) {
+        if (view && scr && view->currentScreen() == scr->name() && view->session() == m_session) {
             edges.removeOne(view->location());
         }
     }
