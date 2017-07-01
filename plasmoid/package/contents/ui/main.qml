@@ -1023,14 +1023,9 @@ Item {
 
                     var choords = mapFromItem(task,0, 0);
 
-                    if(choords.y < 0)
-                        choords.y = 0;
-                    if(choords.x < 0)
-                        choords.x = 0;
-
-                    if( (x>=choords.x) && (x<=choords.x+task.width)
+                    if( (task.objectName==="TaskDelegate") && (x>=choords.x) && (x<=choords.x+task.width)
                             && (y>=choords.y) && (y<=choords.y+task.height)){
-                        return task
+                        return task;
                     }
                 }
 

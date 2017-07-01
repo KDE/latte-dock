@@ -42,6 +42,8 @@ MouseArea{
     anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
     anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
+    objectName: "TaskDelegate"
+
     width: {
         if (!visible)
             return 0;
