@@ -61,7 +61,9 @@ DockCorona::DockCorona(QObject *parent)
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalSettings(new GlobalSettings(this)),
-      m_globalShortcuts(new GlobalShortcuts(this))
+      m_globalShortcuts(new GlobalShortcuts(this)),
+      m_universalSettings(new UniversalSettings(this)),
+      m_layoutManager(new LayoutManager(this))
 {
     setupWaylandIntegration();
 
@@ -117,6 +119,8 @@ DockCorona::~DockCorona()
     m_globalSettings->deleteLater();
     m_globalShortcuts->deleteLater();
     m_screenPool->deleteLater();
+    m_layoutManager->deleteLater();
+    m_universalSettings->deleteLater();
 
     qDeleteAll(m_dockViews);
     qDeleteAll(m_waitingDockViews);

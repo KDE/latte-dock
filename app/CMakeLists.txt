@@ -15,6 +15,9 @@ set(lattedock-app_SRCS
     screenpool.cpp
     globalsettings.cpp
     globalshortcuts.cpp
+    universalsettings.cpp
+    layoutmanager.cpp
+    importer.cpp
     main.cpp
 )
 

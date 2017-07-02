@@ -24,6 +24,8 @@
 #include "dockview.h"
 #include "globalsettings.h"
 #include "globalshortcuts.h"
+#include "layoutmanager.h"
+#include "universalsettings.h"
 #include "../liblattedock/dock.h"
 
 #include <QObject>
@@ -158,6 +160,8 @@ private:
     ScreenPool *m_screenPool{nullptr};
     GlobalSettings *m_globalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
+    UniversalSettings *m_universalSettings{nullptr};
+    LayoutManager *m_layoutManager{nullptr};
 
     KWayland::Client::PlasmaShell *m_waylandDockCorona{nullptr};
 
