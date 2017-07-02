@@ -36,6 +36,8 @@
 class ScreenPool;
 class GlobalSettings;
 class GlobalShortcuts;
+class UniversalSettings;
+class LayoutManager;
 
 namespace KActivities {
 class Consumer;
@@ -93,6 +95,8 @@ public:
 
     ScreenPool *screenPool() const;
     GlobalSettings *globalSettings() const;
+    UniversalSettings *universalSettings() const;
+    LayoutManager *layoutManager() const;
 
     KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
 

@@ -18,19 +18,33 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "universalsettings.h"
+#include "layoutsettings.h"
+
+#include <QFile>
+#include <KSharedConfig>
 
 namespace Latte {
 
-UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
-    : QObject(parent),
-      m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
+LayoutSettings::LayoutSettings(QObject *parent, KSharedConfig::Ptr config)
+    : QObject(parent)
 {
+    m_layoutGroup = KConfigGroup(config, "LayoutSettings");
 }
 
-UniversalSettings::~UniversalSettings()
+LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile )
+    : QObject(parent)
 {
-      m_universalGroup.sync();
+    if (QFile(layoutFile).exists()){
+        KSharedConfigPtr lConfig = KSharedConfig::openConfig(layoutFile);
+        m_layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
+
+        m_layoutFile = layoutFile;
+    }
+}
+
+LayoutSettings::~LayoutSettings()
+{
+    m_layoutGroup.sync();
 }
 
 }

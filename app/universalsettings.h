@@ -23,6 +23,9 @@
 
 #include <QObject>
 
+#include <KConfigGroup>
+#include <KSharedConfig>
+
 namespace Latte {
 
 //! This class holds all the settings that are universally available
@@ -38,8 +41,12 @@ class UniversalSettings : public QObject {
     //Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
 public:
-    UniversalSettings(QObject *parent = nullptr);
+    UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
+
+private:
+    KConfigGroup m_universalGroup;
+
 };
 
 }

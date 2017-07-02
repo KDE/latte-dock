@@ -62,7 +62,7 @@ DockCorona::DockCorona(QObject *parent)
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalSettings(new GlobalSettings(this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
-      m_universalSettings(new UniversalSettings(this)),
+      m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
       m_layoutManager(new LayoutManager(this))
 {
     setupWaylandIntegration();
@@ -350,6 +350,16 @@ ScreenPool *DockCorona::screenPool() const
 GlobalSettings *DockCorona::globalSettings() const
 {
     return m_globalSettings;
+}
+
+UniversalSettings *DockCorona::universalSettings() const
+{
+    return m_universalSettings;
+}
+
+LayoutManager *DockCorona::layoutManager() const
+{
+    return m_layoutManager;
 }
 
 int DockCorona::numScreens() const

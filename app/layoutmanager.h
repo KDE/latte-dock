@@ -1,5 +1,5 @@
 /*
-*  Copyright 2016  Smith AR <audoban@openmailbox.org>
+*  Copyright 2017  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
@@ -21,9 +21,10 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
-#include <QObject>
-
+#include "dockcorona.h"
 #include "importer.h"
+
+#include <QObject>
 
 namespace Latte {
 
@@ -37,6 +38,7 @@ public:
     ~LayoutManager() override;
 
 private:
+    DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
 };
 

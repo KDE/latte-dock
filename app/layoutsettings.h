@@ -18,19 +18,38 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "universalsettings.h"
+#ifndef LAYOUTSETTINGS_H
+#define LAYOUTSETTINGS_H
+
+#include <QObject>
+
+#include <KConfigGroup>
+#include <KSharedConfig>
+
+#include "dockcorona.h"
+
+class DockCorona;
 
 namespace Latte {
 
-UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
-    : QObject(parent),
-      m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
-{
+//! This class is responsible to hold the settings for a specific layout.
+//! It also updates always the relevant layout configuration concerning
+//! its general settings (no the containments)
+class LayoutSettings : public QObject {
+    Q_OBJECT
+
+public:
+    LayoutSettings(QObject *parent, QString layoutFile);
+    LayoutSettings(QObject *parent, KSharedConfig::Ptr config);
+    ~LayoutSettings() override;
+
+private:
+    QString m_layoutFile;
+
+    DockCorona *m_corona{nullptr};
+    KConfigGroup m_layoutGroup;
+};
+
 }
 
-UniversalSettings::~UniversalSettings()
-{
-      m_universalGroup.sync();
-}
-
-}
+#endif // LAYOUTSETTINGS_H
