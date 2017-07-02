@@ -42,6 +42,12 @@ Importer::~Importer()
 
 bool Importer::updateOldConfiguration()
 {
+    QFile oldAppletsFile(QDir::homePath() + "/.config/lattedock-appletsrc");
+
+    if (!oldAppletsFile.exists()) {
+        return false;
+    }
+
     //! import standard old configuration and create the relevant layouts
     importOldLayout(QDir::homePath() + "/.config/lattedock-appletsrc", i18n("My Layout"));
     importOldLayout(QDir::homePath() + "/.config/lattedock-appletsrc", i18n("Alternative"), true);
@@ -54,6 +60,8 @@ bool Importer::updateOldConfiguration()
     if (m_manager) {
         m_manager->corona()->universalSettings()->setExposeLayoutsMenu(exposeLayoutsMenu);
     }
+
+    return true;
 }
 
 bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alternative)

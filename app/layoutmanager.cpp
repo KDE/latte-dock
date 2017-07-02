@@ -42,10 +42,9 @@ void LayoutManager::load()
     if (configVer < 2) {
         qDebug() << "Latte must update its configuration...";
         m_importer->updateOldConfiguration();
-    } else {
-        qDebug() << "Latte is loading  its layouts...";
     }
 
+    qDebug() << "Latte is loading  its layouts...";
 }
 
 DockCorona *LayoutManager::corona()
