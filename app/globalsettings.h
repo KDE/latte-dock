@@ -34,6 +34,8 @@ class DockCorona;
 
 namespace Latte {
 
+//! This class holds all the settings that are specific in
+//! a layout
 class GlobalSettings : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)

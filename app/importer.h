@@ -25,6 +25,8 @@
 
 namespace Latte {
 
+//! This class is responsible to import/export configurations
+//! and of course to import old configuration to new architecture
 class Importer : public QObject {
     Q_OBJECT
 
