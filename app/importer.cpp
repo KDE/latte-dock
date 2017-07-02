@@ -22,11 +22,14 @@
 
 #include "layoutmanager.h"
 #include "layoutsettings.h"
+#include "screenpool.h"
 #include "../liblattedock/dock.h"
 
 #include <QFile>
+#include <QTemporaryDir>
 
 #include <KLocalizedString>
+#include <KArchive/KTar>
 
 namespace Latte {
 
@@ -59,6 +62,21 @@ bool Importer::updateOldConfiguration()
 
     if (m_manager) {
         m_manager->corona()->universalSettings()->setExposeLayoutsMenu(exposeLayoutsMenu);
+    }
+
+
+    QFile extFile(QDir::homePath() + "/.config/lattedockextrc");
+
+    //! import also the old user layouts into the new architecture
+    if (extFile.exists()) {
+        KSharedConfigPtr extFileConfig = KSharedConfig::openConfig(extFile.fileName());
+        KConfigGroup externalSettings = KConfigGroup(extFileConfig, "External");
+        QStringList userLayouts = externalSettings.readEntry("userLayouts", QStringList());
+
+        foreach (auto userConfig, userLayouts) {
+            qDebug() << "user layout : " << userConfig;
+            importOldConfiguration(userConfig);
+        }
     }
 
     return true;
@@ -209,6 +227,91 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName)
     }
 
     return newLayoutPath;
+}
+
+bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
+{
+    QFile oldConfigFile(oldConfigPath);
+
+    if (!oldConfigFile.exists()) {
+        return false;
+    }
+
+    KTar archive(oldConfigPath, QStringLiteral("application/x-tar"));
+    archive.open(QIODevice::ReadOnly);
+
+    if (!archive.isOpen()) {
+        return false;
+    }
+
+    auto rootDir = archive.directory();
+    QTemporaryDir uniqueTempDir;
+    QDir tempDir{uniqueTempDir.path()};
+
+    qDebug() << "temp layout directory : " << tempDir.absolutePath();
+
+    if (rootDir) {
+        if (!tempDir.exists())
+            tempDir.mkpath(tempDir.absolutePath());
+
+        foreach (auto &name, rootDir->entries()) {
+            auto fileEntry = rootDir->file(name);
+
+            if (fileEntry && (fileEntry->name() == "lattedockrc"
+                              || fileEntry->name() == "lattedock-appletsrc")) {
+                if (!fileEntry->copyTo(tempDir.absolutePath())) {
+                    qInfo() << i18nc("import/export config", "The extracted file coulnd be copied!!!");
+                    archive.close();
+                    return false;
+                }
+            } else {
+                qInfo() << i18nc("import/export config", "The file has a wrong format!!!");
+                archive.close();
+                return false;
+            }
+        }
+    } else {
+        qInfo() << i18nc("import/export config", "The temp directory couldnt be created!!!");
+        archive.close();
+        return false;
+    }
+
+    //! only if the above has passed we must process the files
+    QString appletsPath(tempDir.absolutePath() + "/lattedock-appletsrc");
+    QString screensPath(tempDir.absolutePath() + "/lattedockrc");
+
+    if (!QFile(appletsPath).exists() || !QFile(screensPath).exists()) {
+        return false;
+    }
+
+
+    if (newName.isEmpty()) {
+        int lastSlash = oldConfigPath.lastIndexOf("/");
+        newName = oldConfigPath.remove(0, lastSlash + 1);
+
+        int ext = newName.lastIndexOf(".latterc");
+        newName = newName.remove(ext, 8);
+    }
+
+    if (!importOldLayout(appletsPath, newName)) {
+        return false;
+    }
+
+    //! the old configuration contains also screen values, these must be updated also
+    KSharedConfigPtr oldScreensConfig = KSharedConfig::openConfig(screensPath);
+    KConfigGroup m_screensGroup = KConfigGroup(oldScreensConfig, "ScreenConnectors");
+
+    //restore the known ids to connector mappings
+    foreach (const QString &key, m_screensGroup.keyList()) {
+        QString connector = m_screensGroup.readEntry(key, QString());
+        int id = key.toInt();
+
+        if (id >= 10 && !m_manager->corona()->screenPool()->knownIds().contains(id)) {
+            m_manager->corona()->screenPool()->insertScreenMapping(id, connector);
+        }
+    }
+
+    return true;
 }
 
 }

@@ -48,6 +48,11 @@ public:
     //!    true: imports only Alternative layout
     bool importOldLayout(QString oldAppletsPath, QString newName, bool alternative = false);
 
+    //! imports and old configuration file (tar archive) that contains
+    //! both an applets file and a latterc file with the screens
+    //!     newName: if it is empty the name is extracted from the old config file name
+    bool importOldConfiguration(QString oldConfigPath, QString newName = QString());
+
 private:
     //! checks if this old layout can be imported. If it can it returns
     //! the new layout path and an empty string if it cant
