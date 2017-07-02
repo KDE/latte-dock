@@ -29,22 +29,57 @@ LayoutSettings::LayoutSettings(QObject *parent, KSharedConfig::Ptr config)
     : QObject(parent)
 {
     m_layoutGroup = KConfigGroup(config, "LayoutSettings");
+    init();
 }
 
-LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile )
+LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile)
     : QObject(parent)
 {
-    if (QFile(layoutFile).exists()){
+    if (QFile(layoutFile).exists()) {
         KSharedConfigPtr lConfig = KSharedConfig::openConfig(layoutFile);
         m_layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
 
         m_layoutFile = layoutFile;
+        init();
     }
 }
 
 LayoutSettings::~LayoutSettings()
 {
+    saveConfig();
     m_layoutGroup.sync();
 }
+
+void LayoutSettings::init()
+{
+    connect(this, &LayoutSettings::versionChanged, this, &LayoutSettings::saveConfig);
+}
+
+int LayoutSettings::version() const
+{
+    return m_version;
+}
+
+void LayoutSettings::setVersion(int ver)
+{
+    if (m_version == ver) {
+        return;
+    }
+
+    m_version = ver;
+
+    emit versionChanged();
+}
+
+void LayoutSettings::loadConfig()
+{
+    m_version = m_layoutGroup.readEntry("version", 1);
+}
+
+void LayoutSettings::saveConfig()
+{
+    m_layoutGroup.writeEntry("version", m_version);
+}
+
 
 }

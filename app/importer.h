@@ -34,6 +34,20 @@ public:
     Importer(QObject *parent = nullptr);
     ~Importer() override;
 
+    //! updates the old configuration to version: 2
+    bool updateOldConfiguration();
+
+    //! imports an old layout file,
+    //! newName: the layout new name, if it is empty the original is used
+    //! alternative: old files can contain both a Default and an Alternative layout
+    //!    false: imports only Default layout
+    //!    true: imports only Alternative layout
+    bool importOldLayout(QString oldAppletsPath, QString newName, bool alternative = false);
+
+private:
+    //! checks if this old layout can be imported. If it can it returns
+    //! the new layout path and an empty string if it cant
+    QString layoutCanBeImported(QString oldAppletsPath, QString newName);
 };
 
 }

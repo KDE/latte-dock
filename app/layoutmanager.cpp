@@ -26,11 +26,26 @@ LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent),
       m_importer(new Importer(this))
 {
+    m_corona = qobject_cast<DockCorona *>(parent);
 }
 
 LayoutManager::~LayoutManager()
 {
     m_importer->deleteLater();
+}
+
+void LayoutManager::load()
+{
+    int configVer = m_corona->universalSettings()->version();
+    qDebug() << "Universal Settings version : " << configVer;
+
+    if (configVer < 2) {
+        qDebug() << "Latte must update its configuration...";
+        m_importer->updateOldConfiguration();
+    } else {
+        qDebug() << "Latte is loading  its layouts...";
+    }
+
 }
 
 }

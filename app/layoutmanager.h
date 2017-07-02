@@ -37,6 +37,8 @@ public:
     LayoutManager(QObject *parent = nullptr);
     ~LayoutManager() override;
 
+    void load();
+
 private:
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};

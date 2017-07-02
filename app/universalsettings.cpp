@@ -26,11 +26,45 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
+    connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
 
 UniversalSettings::~UniversalSettings()
 {
-      m_universalGroup.sync();
+    saveConfig();
+    m_universalGroup.sync();
 }
+
+void UniversalSettings::load()
+{
+    loadConfig();
+}
+
+int UniversalSettings::version() const
+{
+    return m_version;
+}
+
+void UniversalSettings::setVersion(int ver)
+{
+    if (m_version == ver) {
+        return;
+    }
+
+    m_version = ver;
+
+    emit versionChanged();
+}
+
+void UniversalSettings::loadConfig()
+{
+    m_version = m_universalGroup.readEntry("version", 1);
+}
+
+void UniversalSettings::saveConfig()
+{
+    m_universalGroup.writeEntry("version", m_version);
+}
+
 
 }

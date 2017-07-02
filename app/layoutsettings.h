@@ -43,7 +43,22 @@ public:
     LayoutSettings(QObject *parent, KSharedConfig::Ptr config);
     ~LayoutSettings() override;
 
+    int version() const;
+    void setVersion(int ver);
+
+signals:
+    void versionChanged();
+
+private slots:
+    void loadConfig();
+    void saveConfig();
+
 private:
+    void init();
+
+private:
+    //if version doesnt exist it is and old layout file
+    int m_version{1};
     QString m_layoutFile;
 
     DockCorona *m_corona{nullptr};

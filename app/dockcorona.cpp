@@ -82,6 +82,7 @@ DockCorona::DockCorona(QObject *parent)
     setKPackage(package);
     //! global settings must be loaded after the package has been set
     m_globalSettings->load();
+    m_layoutManager->load();
 
     qmlRegisterTypes();
     QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
@@ -636,7 +637,7 @@ void DockCorona::syncDockViews()
     foreach (auto view, m_dockViews) {
         bool found{false};
 
-        foreach (auto scr, qGuiApp->screens()) {           
+        foreach (auto scr, qGuiApp->screens()) {
             if (scr->name() == view->currentScreen()
                     || (view->onPrimary() && scr == qGuiApp->primaryScreen() ) ) {
                 found = true;

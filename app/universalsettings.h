@@ -44,9 +44,23 @@ public:
     UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
 
-private:
-    KConfigGroup m_universalGroup;
+    void load();
 
+    int version() const;
+    void setVersion(int ver);
+
+signals:
+    void versionChanged();
+
+private slots:
+    void loadConfig();
+    void saveConfig();
+
+private:
+    //when there isnt a version it is an old universal file
+    int m_version{1};
+
+    KConfigGroup m_universalGroup;
 };
 
 }
