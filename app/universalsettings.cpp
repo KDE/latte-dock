@@ -24,21 +24,39 @@ namespace Latte {
 
 UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
+      m_config(config),
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::exposeLayoutsMenuChanged, this, &UniversalSettings::saveConfig);
 }
 
 UniversalSettings::~UniversalSettings()
 {
     saveConfig();
-    m_universalGroup.sync();
+    cleanupSettings();
 }
 
 void UniversalSettings::load()
 {
     loadConfig();
 }
+
+bool UniversalSettings::exposeLayoutsMenu() const
+{
+    return m_exposeLayoutsMenu;
+}
+
+void UniversalSettings::setExposeLayoutsMenu(bool state)
+{
+    if (m_exposeLayoutsMenu == state) {
+        return;
+    }
+
+    m_exposeLayoutsMenu = state;
+    emit exposeLayoutsMenuChanged();
+}
+
 
 int UniversalSettings::version() const
 {
@@ -59,12 +77,23 @@ void UniversalSettings::setVersion(int ver)
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
+    m_exposeLayoutsMenu = m_universalGroup.readEntry("exposeLayoutsMenu", false);
 }
 
 void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
+    m_universalGroup.writeEntry("exposeLayoutsMenu", m_exposeLayoutsMenu);
+
+    m_universalGroup.sync();
 }
 
+void UniversalSettings::cleanupSettings()
+{
+    KConfigGroup containments = KConfigGroup(m_config, QStringLiteral("Containments"));
+    containments.deleteGroup();
+
+    containments.sync();
+}
 
 }

@@ -37,17 +37,27 @@ namespace Latte {
 //! its general settings (no the containments)
 class LayoutSettings : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool syncLaunchers READ syncLaunchers WRITE setSyncLaunchers NOTIFY syncLaunchersChanged)
+    Q_PROPERTY(QStringList globalLaunchers READ globalLaunchers WRITE setGlobalLaunchers NOTIFY globalLaunchersChanged)
 
 public:
     LayoutSettings(QObject *parent, QString layoutFile);
     LayoutSettings(QObject *parent, KSharedConfig::Ptr config);
     ~LayoutSettings() override;
 
+    QStringList globalLaunchers() const;
+    void setGlobalLaunchers(QStringList launchers);
+
     int version() const;
     void setVersion(int ver);
 
+    bool syncLaunchers() const;
+    void setSyncLaunchers(bool sync);
+
 signals:
+    void globalLaunchersChanged();
     void versionChanged();
+    void syncLaunchersChanged();
 
 private slots:
     void loadConfig();
@@ -57,9 +67,12 @@ private:
     void init();
 
 private:
+    bool m_syncLaunchers{false};
     //if version doesnt exist it is and old layout file
     int m_version{1};
+
     QString m_layoutFile;
+    QStringList m_globalLaunchers;
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;

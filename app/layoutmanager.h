@@ -26,6 +26,8 @@
 
 #include <QObject>
 
+class Importer;
+
 namespace Latte {
 
 //! This class is responsible to manipulate all layouts.
@@ -38,6 +40,8 @@ public:
     ~LayoutManager() override;
 
     void load();
+
+    DockCorona *corona();
 
 private:
     DockCorona *m_corona{nullptr};

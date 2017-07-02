@@ -19,6 +19,8 @@
 */
 
 #include "importer.h"
+
+#include "layoutmanager.h"
 #include "layoutsettings.h"
 #include "../liblattedock/dock.h"
 
@@ -31,6 +33,7 @@ namespace Latte {
 Importer::Importer(QObject *parent)
     : QObject(parent)
 {
+    m_manager = qobject_cast<LayoutManager *>(parent);
 }
 
 Importer::~Importer()
@@ -39,8 +42,18 @@ Importer::~Importer()
 
 bool Importer::updateOldConfiguration()
 {
+    //! import standard old configuration and create the relevant layouts
     importOldLayout(QDir::homePath() + "/.config/lattedock-appletsrc", i18n("My Layout"));
     importOldLayout(QDir::homePath() + "/.config/lattedock-appletsrc", i18n("Alternative"), true);
+
+    //! global settings that must be imported to universal
+    KSharedConfigPtr oldFile = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock-appletsrc");
+    KConfigGroup oldGeneralSettings = KConfigGroup(oldFile, "General");
+    bool exposeLayoutsMenu = oldGeneralSettings.readEntry("exposeAltSession", false);
+
+    if (m_manager) {
+        m_manager->corona()->universalSettings()->setExposeLayoutsMenu(exposeLayoutsMenu);
+    }
 }
 
 bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alternative)
@@ -55,6 +68,8 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     KConfigGroup copiedContainments = KConfigGroup(newFile, "Containments");
 
     QList<int> systrays;
+
+    bool atLeastOneContainmentWasFound{false};
 
     //! first copy the latte containments that correspond to the correct session
     //! and find also the systrays that should be copied also
@@ -92,7 +107,14 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
 
             KConfigGroup newContainment = copiedContainments.group(containmentId);
             containmentGroup.copyTo(&newContainment);
+            atLeastOneContainmentWasFound = true;
         }
+    }
+
+    //! not even one latte containment was found for that layout so we must break
+    //! the code here
+    if (!atLeastOneContainmentWasFound) {
+        return false;
     }
 
     //! copy also the systrays that were discovered
@@ -107,6 +129,25 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     }
 
     copiedContainments.sync();
+
+    KConfigGroup oldGeneralSettings = KConfigGroup(oldFile, "General");
+
+    bool syncLaunchers{false};
+    QStringList globalLaunchers;
+
+    if (!alternative) {
+        syncLaunchers = oldGeneralSettings.readEntry("syncLaunchers_default", false);
+        globalLaunchers = oldGeneralSettings.readEntry("globalLaunchers_default", QStringList());
+    } else {
+        syncLaunchers = oldGeneralSettings.readEntry("syncLaunchers_alternative", false);
+        globalLaunchers = oldGeneralSettings.readEntry("globalLaunchers_alternative", QStringList());
+    }
+
+    //! update also the layout settings correctly
+    LayoutSettings newLayout(this, newLayoutPath);
+    newLayout.setVersion(2);
+    newLayout.setSyncLaunchers(syncLaunchers);
+    newLayout.setGlobalLaunchers(globalLaunchers);
 
     return true;
 }

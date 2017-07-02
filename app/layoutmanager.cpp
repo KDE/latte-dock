@@ -48,4 +48,9 @@ void LayoutManager::load()
 
 }
 
+DockCorona *LayoutManager::corona()
+{
+    return m_corona;
+}
+
 }

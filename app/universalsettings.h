@@ -33,7 +33,7 @@ namespace Latte {
 class UniversalSettings : public QObject {
     Q_OBJECT
     //Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
-    //Q_PROPERTY(bool exposeAltSession READ exposeAltSession WRITE setExposeAltSession NOTIFY exposeAltSessionChanged)
+    Q_PROPERTY(bool exposeLayoutsMenu READ exposeLayoutsMenu WRITE setExposeLayoutsMenu NOTIFY exposeLayoutsMenuChanged)
 
     //Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
 
@@ -46,10 +46,14 @@ public:
 
     void load();
 
+    bool exposeLayoutsMenu() const;
+    void setExposeLayoutsMenu(bool state);
+
     int version() const;
     void setVersion(int ver);
 
 signals:
+    void exposeLayoutsMenuChanged();
     void versionChanged();
 
 private slots:
@@ -57,10 +61,15 @@ private slots:
     void saveConfig();
 
 private:
+    void cleanupSettings();
+
+private:
+    bool m_exposeLayoutsMenu{false};
     //when there isnt a version it is an old universal file
     int m_version{1};
 
     KConfigGroup m_universalGroup;
+    KSharedConfig::Ptr m_config;
 };
 
 }

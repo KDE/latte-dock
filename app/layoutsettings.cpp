@@ -53,6 +53,8 @@ LayoutSettings::~LayoutSettings()
 void LayoutSettings::init()
 {
     connect(this, &LayoutSettings::versionChanged, this, &LayoutSettings::saveConfig);
+    connect(this, &LayoutSettings::syncLaunchersChanged, this, &LayoutSettings::saveConfig);
+    connect(this, &LayoutSettings::globalLaunchersChanged, this, &LayoutSettings::saveConfig);
 }
 
 int LayoutSettings::version() const
@@ -71,14 +73,48 @@ void LayoutSettings::setVersion(int ver)
     emit versionChanged();
 }
 
+bool LayoutSettings::syncLaunchers() const
+{
+    return m_syncLaunchers;
+}
+void LayoutSettings::setSyncLaunchers(bool sync)
+{
+    if (m_syncLaunchers == sync)
+        return;
+
+    m_syncLaunchers = sync;
+
+    emit syncLaunchersChanged();
+}
+
+QStringList LayoutSettings::globalLaunchers() const
+{
+    return m_globalLaunchers;
+}
+
+void LayoutSettings::setGlobalLaunchers(QStringList launchers)
+{
+    if (m_globalLaunchers == launchers)
+        return;
+
+    m_globalLaunchers = launchers;
+
+    emit globalLaunchersChanged();
+}
+
+
 void LayoutSettings::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 1);
+    m_syncLaunchers = m_layoutGroup.readEntry("syncLaunchers", false);
+    m_globalLaunchers = m_layoutGroup.readEntry("globalLaunchers", QStringList());
 }
 
 void LayoutSettings::saveConfig()
 {
     m_layoutGroup.writeEntry("version", m_version);
+    m_layoutGroup.writeEntry("syncLaunchers", m_syncLaunchers);
+    m_layoutGroup.writeEntry("globalLaunchers", m_globalLaunchers);
 }
 
 

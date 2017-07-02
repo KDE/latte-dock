@@ -21,7 +21,11 @@
 #ifndef IMPORTER_H
 #define IMPORTER_H
 
+#include "layoutmanager.h"
+
 #include <QObject>
+
+class LayoutManager;
 
 namespace Latte {
 
@@ -48,6 +52,8 @@ private:
     //! checks if this old layout can be imported. If it can it returns
     //! the new layout path and an empty string if it cant
     QString layoutCanBeImported(QString oldAppletsPath, QString newName);
+
+    LayoutManager *m_manager;
 };
 
 }
