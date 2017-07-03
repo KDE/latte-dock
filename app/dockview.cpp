@@ -189,7 +189,6 @@ void DockView::init()
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::reconsiderScreen);
-    connect(this, &DockView::sessionChanged, this, &DockView::saveConfig);
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
@@ -344,7 +343,7 @@ void DockView::reconsiderScreen()
     //!check if the associated screen is running
     foreach (auto scr, qGuiApp->screens()) {
         if (m_screenToFollowId == scr->name()
-                || (onPrimary() && scr == qGuiApp->primaryScreen()) ) {
+            || (onPrimary() && scr == qGuiApp->primaryScreen())) {
             screenExists = true;
         }
     }
@@ -356,7 +355,7 @@ void DockView::reconsiderScreen()
     //! even though it has been configured as an explicit
     if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1 && !screenExists))
         && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
-        || m_screenToFollow != qGuiApp->primaryScreen())) {
+            || m_screenToFollow != qGuiApp->primaryScreen())) {
         //change to primary screen only if the specific edge is free
         qDebug() << "updating the primary screen for dock...";
         qDebug() << "available primary screen edges:" << dockCorona->freeEdges(qGuiApp->primaryScreen());
@@ -377,7 +376,7 @@ void DockView::reconsiderScreen()
 
             syncGeometry();
         }
-    } else if (!m_onPrimary){
+    } else if (!m_onPrimary) {
         //! 3.an explicit dock must be always on the correct associated screen
         //! there are cases that window manager misplaces the dock, this function
         //! ensures that this dock will return at its correct screen
@@ -964,21 +963,6 @@ void DockView::setOnPrimary(bool flag)
 
     m_onPrimary = flag;
     emit onPrimaryChanged();
-}
-
-Dock::SessionType DockView::session() const
-{
-    return m_session;
-}
-
-void DockView::setSession(Dock::SessionType type)
-{
-    if (m_session == type) {
-        return;
-    }
-
-    m_session = type;
-    emit sessionChanged();
 }
 
 float DockView::maxLength() const
@@ -1908,7 +1892,6 @@ void DockView::saveConfig()
 
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", m_onPrimary);
-    config.writeEntry("session", (int)m_session);
     config.writeEntry("dockWindowBehavior", m_dockWinBehavior);
     emit this->containment()->configNeedsSaving();
 }
@@ -1920,7 +1903,6 @@ void DockView::restoreConfig()
 
     auto config = this->containment()->config();
     setOnPrimary(config.readEntry("onPrimary", true));
-    setSession((Dock::SessionType)config.readEntry("session", (int)Dock::DefaultSession));
     setDockWinBehavior(config.readEntry("dockWindowBehavior", true));
 }
 //!END configuration functions

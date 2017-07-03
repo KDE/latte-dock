@@ -85,8 +85,6 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
-    Q_PROPERTY(Latte::Dock::SessionType session READ session WRITE setSession NOTIFY sessionChanged)
-
 public:
     DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool dockWindowBehavior = false);
     virtual ~DockView();
@@ -155,9 +153,6 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
-    Dock::SessionType session() const;
-    void setSession(Dock::SessionType type);
-
     VisibilityManager *visibility() const;
 
     QQmlListProperty<QScreen> screens();
@@ -223,7 +218,6 @@ signals:
     void visibilityChanged();
     void maskAreaChanged();
     void screenGeometryChanged();
-    void sessionChanged();
     void shadowChanged();
     void totalDocksCountChanged();
     void xChanged();
@@ -269,7 +263,6 @@ private:
     float m_maxLength{1};
 
     Dock::Alignment m_alignment{Dock::Center};
-    Dock::SessionType m_session{Dock::DefaultSession};
 
     QRect m_effectsArea;
     QRect m_localGeometry;

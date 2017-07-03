@@ -54,8 +54,6 @@ GlobalSettings::GlobalSettings(QObject *parent)
         m_altSessionAction->setStatusTip(i18n("Enable/Disable Alternative Session"));
         m_altSessionAction->setCheckable(true);
         connect(m_altSessionAction, &QAction::triggered, this, &GlobalSettings::enableAltSession);
-        connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::currentSessionChangedSlot);
-        connect(m_corona, &DockCorona::currentSessionChanged, this, &GlobalSettings::loadLaunchers);
 
         //! create the add widgets action
         const QIcon addWidIcon = QIcon::fromTheme("add");
@@ -109,11 +107,11 @@ void GlobalSettings::showWidgetsExplorer()
 
 void GlobalSettings::enableAltSession(bool enabled)
 {
-    if (enabled) {
+    /*if (enabled) {
         m_corona->switchToSession(Dock::AlternativeSession);
     } else {
         m_corona->switchToSession(Dock::DefaultSession);
-    }
+    }*/
 }
 
 bool GlobalSettings::exposeAltSession() const
@@ -132,15 +130,6 @@ void GlobalSettings::setExposeAltSession(bool state)
     emit exposeAltSessionChanged();
 }
 
-void GlobalSettings::currentSessionChangedSlot(Dock::SessionType type)
-{
-    if (m_corona->currentSession() == Dock::DefaultSession)
-        m_altSessionAction->setChecked(false);
-    else
-        m_altSessionAction->setChecked(true);
-
-    emit currentSessionChanged();
-}
 
 QAction *GlobalSettings::altSessionAction() const
 {
@@ -221,18 +210,6 @@ void GlobalSettings::setAutostart(bool state)
     }
 }
 
-Dock::SessionType GlobalSettings::currentSession() const
-{
-    return m_corona->currentSession();
-}
-
-void GlobalSettings::setCurrentSession(Dock::SessionType session)
-{
-    if (currentSession() != session) {
-        m_corona->switchToSession(session);
-    }
-}
-
 //!BEGIN configuration functions
 void GlobalSettings::load(bool all)
 {
@@ -252,13 +229,13 @@ void GlobalSettings::load(bool all)
 
 void GlobalSettings::loadLaunchers()
 {
-    if (m_corona->currentSession() == Latte::Dock::AlternativeSession) {
+    /*if (m_corona->currentSession() == Latte::Dock::AlternativeSession) {
         m_syncLaunchers = m_configGroup.readEntry("syncLaunchers_alternative", false);
         m_globalLaunchers = m_configGroup.readEntry("globalLaunchers_alternative", QStringList());
     } else {
         m_syncLaunchers = m_configGroup.readEntry("syncLaunchers_default", false);
         m_globalLaunchers = m_configGroup.readEntry("globalLaunchers_default", QStringList());
-    }
+    }*/
 
     emit syncLaunchersChanged();
     emit globalLaunchersChanged();
@@ -267,14 +244,6 @@ void GlobalSettings::loadLaunchers()
 void GlobalSettings::save()
 {
     m_configGroup.writeEntry("exposeAltSession", m_exposeAltSession);
-
-    if (m_corona->currentSession() == Latte::Dock::AlternativeSession) {
-        m_configGroup.writeEntry("syncLaunchers_alternative", m_syncLaunchers);
-        m_configGroup.writeEntry("globalLaunchers_alternative", m_globalLaunchers);
-    } else {
-        m_configGroup.writeEntry("syncLaunchers_default", m_syncLaunchers);
-        m_configGroup.writeEntry("globalLaunchers_default", m_globalLaunchers);
-    }
 
     m_configGroup.sync();
 }
@@ -437,7 +406,7 @@ void GlobalSettings::importConfiguration()
             , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
-            , this, [&](const QString & file) {
+    , this, [&](const QString & file) {
         importLayoutInternal(file);
     });
 
@@ -596,7 +565,7 @@ void GlobalSettings::exportConfiguration()
             , m_fileDialog.data(), &QFileDialog::deleteLater);
 
     connect(m_fileDialog.data(), &QFileDialog::fileSelected
-            , this, [&](const QString & file) {
+    , this, [&](const QString & file) {
         auto showNotificationError = []() {
             auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
             notification->setText(i18nc("import/export config", "Failed to export configuration"));
@@ -634,7 +603,7 @@ void GlobalSettings::exportConfiguration()
         notification->setText(i18nc("import/export config", "Configuration exported successfully"));
 
         connect(notification, &KNotification::action1Activated
-                , this, [file]() {
+        , this, [file]() {
             QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
         });
 

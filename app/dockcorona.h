@@ -86,10 +86,6 @@ public:
     void recreateDock(Plasma::Containment *containment);
     void copyDock(Plasma::Containment *containment);
 
-    Dock::SessionType currentSession();
-    void setCurrentSession(Dock::SessionType session);
-    void switchToSession(Dock::SessionType session);
-
     void aboutApplication();
     void closeApplication();
 
@@ -108,7 +104,6 @@ public slots:
 
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
-    void currentSessionChanged(Dock::SessionType type);
     void docksCountChanged();
     void dockLocationChanged();
     void raiseDocksTemporaryChanged();
@@ -136,12 +131,10 @@ private:
     bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
     bool heuresticForLoadingDockWithTasks();
-    int noDocksForSession(Dock::SessionType session);
+    int noOfDocks();
     int primaryScreenId() const;
 
     bool m_activitiesStarting{true};
-    //! used to initialize the docks when changing sessions
-    bool m_waitingSessionDocksCreation{false};
     //! this is used to check if a dock with tasks in it will be loaded on startup
     bool m_tasksWillBeLoaded{false};
     //! this is used to record the first dock having tasks in it. It is used
@@ -150,7 +143,6 @@ private:
     int m_firstContainmentWithTasks{ -1};
 
     QString m_layoutDir;
-    Dock::SessionType m_session{Dock::DefaultSession};
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;

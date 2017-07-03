@@ -44,8 +44,6 @@ class GlobalSettings : public QObject {
     Q_PROPERTY(bool syncLaunchers READ syncLaunchers WRITE setSyncLaunchers NOTIFY syncLaunchersChanged)
     Q_PROPERTY(QStringList globalLaunchers READ globalLaunchers WRITE setGlobalLaunchers NOTIFY globalLaunchersChanged)
 
-    Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
-
     Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
@@ -53,7 +51,7 @@ public:
     GlobalSettings(QObject *parent = nullptr);
     ~GlobalSettings() override;
 
-    void load(bool all=true);
+    void load(bool all = true);
     void reload();
 
     bool autostart() const;
@@ -71,9 +69,6 @@ public:
 
     QAction *addWidgetsAction() const;
 
-    Latte::Dock::SessionType currentSession() const;
-    void setCurrentSession(Latte::Dock::SessionType session);
-
     static bool importHelper(const QString &fileName);
     Q_INVOKABLE void importConfiguration();
     Q_INVOKABLE void exportConfiguration();
@@ -85,13 +80,12 @@ signals:
     void altSessionActionChanged();
     void autostartChanged();
     void clearLayoutSelection();
-    void currentSessionChanged();
     void exposeAltSessionChanged();
     void globalLaunchersChanged();
     void syncLaunchersChanged();
 
 private slots:
-    void currentSessionChangedSlot(Dock::SessionType type);
+    // void currentSessionChangedSlot(Dock::SessionType type);
     void enableAltSession(bool enabled);
     void importLayoutInternal(const QString &file);
     void loadLaunchers();
