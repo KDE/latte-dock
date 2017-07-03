@@ -25,13 +25,6 @@
 
 namespace Latte {
 
-/*LayoutSettings::LayoutSettings(QObject *parent, KSharedConfig::Ptr config)
-    : QObject(parent)
-{
-    m_layoutGroup = KConfigGroup(config, "LayoutSettings");
-    init();
-}*/
-
 LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layoutName)
     : QObject(parent)
 {
@@ -49,6 +42,7 @@ LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layo
 
         setFile(layoutFile);
         setName(layoutName);
+        loadConfig();
         init();
     }
 }
@@ -145,13 +139,14 @@ void LayoutSettings::setGlobalLaunchers(QStringList launchers)
 
 void LayoutSettings::loadConfig()
 {
-    m_version = m_layoutGroup.readEntry("version", 1);
+    m_version = m_layoutGroup.readEntry("version", 2);
     m_syncLaunchers = m_layoutGroup.readEntry("syncLaunchers", false);
     m_globalLaunchers = m_layoutGroup.readEntry("globalLaunchers", QStringList());
 }
 
 void LayoutSettings::saveConfig()
 {
+    qDebug() << "layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("version", m_version);
     m_layoutGroup.writeEntry("syncLaunchers", m_syncLaunchers);
     m_layoutGroup.writeEntry("globalLaunchers", m_globalLaunchers);

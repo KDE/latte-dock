@@ -43,7 +43,6 @@ class LayoutSettings : public QObject {
 
 public:
     LayoutSettings(QObject *parent, QString layoutFile, QString layoutName = QString());
-    //LayoutSettings(QObject *parent, KSharedConfig::Ptr config);
     ~LayoutSettings() override;
 
     QString name() const;
@@ -77,7 +76,7 @@ private:
 private:
     bool m_syncLaunchers{false};
     //if version doesnt exist it is and old layout file
-    int m_version{1};
+    int m_version{2};
 
     QString m_layoutFile;
     QString m_layoutName;

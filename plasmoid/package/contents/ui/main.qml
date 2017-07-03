@@ -187,7 +187,8 @@ Item {
     property alias hoveredIndex: icList.hoveredIndex
 
     property QtObject altSessionAction : latteDock ? latteDock.altSessionAction : null
-    property QtObject globalSettings : latteDock && latteDock.globalSettings ? latteDock.globalSettings : null
+    property QtObject currentLayout : latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout ?
+                                          latteDock.universalLayoutManager.currentLayout : null
 
     property Item latteDock: null
     //END Now Dock Panel properties
@@ -256,28 +257,30 @@ Item {
     }
 
     Connections{
-        target: latteDock && latteDock.globalSettings ? latteDock.globalSettings : null
+        target: latteDock && latteDock.universalLayoutManager
+                && latteDock.universalLayoutManager.currentLayout ?
+                    latteDock.universalLayoutManager.currentLayout : null
 
         onSyncLaunchersChanged: {
-            if (latteDock.globalSettings.syncLaunchers) {
-                tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
+            if (latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
+                tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.globalLaunchers;
             } else {
                 tasksModel.launcherList = plasmoid.configuration.launchers59;
             }
         }
 
         onGlobalLaunchersChanged: {
-            if (latteDock.globalSettings.syncLaunchers) {
-                tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
+            if (latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
+                tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.globalLaunchers;
             }
         }
     }
 
-    //is used to load correctly the global launcherslist on startup
-    onGlobalSettingsChanged: {
-        if (globalSettings && globalSettings === latteDock.globalSettings ) {
-            if (latteDock.globalSettings.syncLaunchers) {
-                tasksModel.launcherList = latteDock.globalSettings.globalLaunchers;
+
+    onCurrentLayoutChanged: {
+        if (currentLayout && currentLayout === latteDock.universalLayoutManager.currentLayout ) {
+            if (latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
+                tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.globalLaunchers;
             } else {
                 tasksModel.launcherList = plasmoid.configuration.launchers59;
             }
@@ -554,8 +557,9 @@ Item {
         }
 
         onLauncherListChanged: {
-            if (latteDock && latteDock.globalSettings && latteDock.globalSettings.syncLaunchers) {
-                latteDock.globalSettings.globalLaunchers = launcherList;
+            if (latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout
+                    && latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
+                latteDock.universalLayoutManager.currentLayout.globalLaunchers = launcherList;
             } else {
                 plasmoid.configuration.launchers59 = launcherList;
             }
@@ -587,8 +591,9 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            if (latteDock && latteDock.globalSettings && latteDock.globalSettings.syncLaunchers) {
-                launcherList = latteDock.globalSettings.globalLaunchers;
+            if (latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout
+                    && latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
+                launcherList = latteDock.universalLayoutManager.currentLayout.globalLaunchers;
             } else {
                 launcherList = plasmoid.configuration.launchers59;
             }

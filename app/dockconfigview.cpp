@@ -377,7 +377,7 @@ void DockConfigView::setSyncLaunchers(bool sync)
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
     //when the global launchers list is empty then the current dock launchers are used
-    if (sync && dockCorona && dockCorona->globalSettings()) {
+    if (sync && dockCorona && dockCorona->layoutManager() && dockCorona->layoutManager()->currentLayout()) {
         //update the global launchers
         Plasma::Containment *c = m_dockView->containment();
 
@@ -412,7 +412,7 @@ void DockConfigView::setSyncLaunchers(bool sync)
                             QVariant launchers;
 
                             if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                dockCorona->globalSettings()->setGlobalLaunchers(launchers.toStringList());
+                                dockCorona->layoutManager()->currentLayout()->setGlobalLaunchers(launchers.toStringList());
                             }
                         }
                     }
@@ -422,7 +422,7 @@ void DockConfigView::setSyncLaunchers(bool sync)
     }
 
 
-    dockCorona->globalSettings()->setSyncLaunchers(sync);
+    dockCorona->layoutManager()->currentLayout()->setSyncLaunchers(sync);
 }
 
 
