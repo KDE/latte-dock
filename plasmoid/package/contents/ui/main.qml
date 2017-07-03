@@ -495,6 +495,10 @@ Item {
         //this is the animation time needed in order for tasks to restore their zoom first
         interval: 7 * (root.durationTime * units.shortDuration)
         onTriggered: {
+            if (root.contextMenu) {
+                root.contextMenu.destroy();
+                root.contextMenu = null;
+            }
             if (root.altSessionAction)
                 root.altSessionAction.trigger();
         }

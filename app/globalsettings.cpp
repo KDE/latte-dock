@@ -107,11 +107,18 @@ void GlobalSettings::showWidgetsExplorer()
 
 void GlobalSettings::enableAltSession(bool enabled)
 {
-    if (enabled) {
-        m_corona->loadLatteLayout(QString(i18n("Alternative")));
-    } else {
-        m_corona->loadLatteLayout(QString(i18n("My Layout")));
-    }
+    //! this code must be called asynchronously because it is called
+    //! also from qml (Tasks plasmoid). This change fixes a very important
+    //! crash when switching sessions through the Tasks plasmoid Context menu
+    //! Latte was unstable and was crashing very often during changing
+    //! sessions
+    QTimer::singleShot(200, [this, enabled]() {
+        if (enabled) {
+            m_corona->loadLatteLayout(QString(i18n("Alternative")));
+        } else {
+            m_corona->loadLatteLayout(QString(i18n("My Layout")));
+        }
+    });
 }
 
 bool GlobalSettings::exposeAltSession() const

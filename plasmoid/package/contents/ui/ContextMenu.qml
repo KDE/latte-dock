@@ -34,6 +34,8 @@ import "../code/activitiesTools.js" as ActivitiesTools
 PlasmaComponents.ContextMenu {
     id: menu
 
+    property bool changingLayout: false
+
     property QtObject mpris2Source
     property QtObject backend
 
@@ -264,13 +266,15 @@ PlasmaComponents.ContextMenu {
 
 
     Component.onDestruction: {
-        windowsPreviewDlg.contextMenu = false;
-        root.contextMenu = null;
-        backend.ungrabMouse(visualParent);
-        root.signalActionsBlockHiding(-1);
-        //root.signalDraggingState(false);
-        root.disableRestoreZoom = false;
-        checkListHovered.startDuration(100);
+        if (!changingLayout) {
+            windowsPreviewDlg.contextMenu = false;
+            root.contextMenu = null;
+            backend.ungrabMouse(visualParent);
+            root.signalActionsBlockHiding(-1);
+            //root.signalDraggingState(false);
+            root.disableRestoreZoom = false;
+            checkListHovered.startDuration(100);
+        }
     }
 
     /// Sub Items
@@ -800,6 +804,7 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             //fix a crash that when going to Alternative Session through Context Menu,
             //animations are played during the destruction and because of that Latte.IconItem is crashing
+            menu.changingLayout = true;
             root.disableRestoreZoom = false;
             root.clearZoom();
             if (latteDock)
