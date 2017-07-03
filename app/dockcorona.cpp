@@ -181,19 +181,11 @@ void DockCorona::unload()
 {
     qDebug() << "unload: removing dockViews and containments...";
 
-    //foreach (auto cont, containments()) {
-    //dockContainmentDestroyed(cont);
-    // }
-
     while (!containments().isEmpty()) {
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
         //this form doesn't crash, while qDeleteAll(containments()) does
         delete containments().first();
     }
-
-    /*qDeleteAll(m_dockViews);
-    m_dockViews.clear();
-    m_waitingDockViews.clear();*/
 }
 
 bool DockCorona::reloadLayout(QString path)
