@@ -47,6 +47,8 @@ LayoutManager::LayoutManager(QObject *parent)
         m_addWidgetsAction = new QAction(addWidIcon, i18n("Add Widgets..."), this);
         m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
         connect(m_addWidgetsAction, &QAction::triggered, this, &LayoutManager::showWidgetsExplorer);
+
+        connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
     }
 }
 
@@ -71,6 +73,8 @@ void LayoutManager::load()
     }
 
     qDebug() << "Latte is loading  its layouts...";
+
+    loadLayouts();
 }
 
 DockCorona *LayoutManager::corona()
@@ -93,6 +97,20 @@ LayoutSettings *LayoutManager::currentLayout()
     return m_currentLayout;
 }
 
+QString LayoutManager::currentLayoutName() const
+{
+    if (m_corona && m_corona->universalSettings()) {
+        return m_corona->universalSettings()->currentLayoutName();
+    }
+
+    return QString();
+}
+
+QStringList LayoutManager::layouts() const
+{
+    return m_layouts;
+}
+
 QString LayoutManager::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
@@ -111,6 +129,25 @@ void LayoutManager::toggleLayout()
     } else {
         switchToLayout(i18n("Alternative"));
     }
+}
+
+void LayoutManager::loadLayouts()
+{
+    m_layouts.clear();
+
+    QDir layoutDir(QDir::homePath() + "/.config/latte");
+    QStringList filter;
+    filter.append(QString("*.layout.latte"));
+    QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    foreach (auto layout, files) {
+        int ext = layout.lastIndexOf(".layout.latte");
+        QString layoutName = layout.remove(ext, 13);
+
+        m_layouts.append(layoutName);
+    }
+
+    emit layoutsChanged();
 }
 
 bool LayoutManager::switchToLayout(QString layoutName)
@@ -146,13 +183,13 @@ bool LayoutManager::switchToLayout(QString layoutName)
 
             if (layoutName != i18n("Alternative")) {
                 m_toggleLayoutAction->setChecked(false);
+                m_lastNonAlternativeLayout = layoutName;
             } else {
                 m_toggleLayoutAction->setChecked(true);
             }
         });
     }
 }
-
 
 QString LayoutManager::newLayout(QString layoutName, QString preset)
 {

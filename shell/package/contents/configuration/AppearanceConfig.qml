@@ -70,29 +70,37 @@ PlasmaComponents.Page {
                     id: layoutCmb
                     Layout.preferredWidth: 0.5 * dialog.maxWidth
 
-                    property var layouts: [i18nc("current layout","Current")];
-                    property var layoutObjs
+                    property var layoutTexts: [];
+                    property var layouts;
 
-                    Component.onCompleted: layoutCmb.loadLayouts();
-
-                    Connections{
-                        target:globalSettings
-                        onClearLayoutSelection: layoutCmb.currentIndex = 0;
-                    }
+                    Component.onCompleted: loadLayouts();
 
                     function loadLayouts(){
-                        layoutObjs = globalSettings.layouts();
+                        layouts = layoutManager.layouts;
 
-                        for(var i=0; i<layoutObjs.length; ++i){
-                            layouts.push(layoutObjs[i].key);
+                        var activeLayout = 0;
+
+                        for(var i=0; i<layouts.length; ++i){
+                            var selText = "   ";
+
+                            if (layouts[i] === layoutManager.currentLayoutName) {
+                                selText = "* ";
+                                activeLayout = i;
+                            }
+
+                            layoutTexts.push(selText+layouts[i]);
                         }
 
-                        model = layouts;
-                        currentIndex = 0;
+                        model = layoutTexts;
+                        currentIndex = activeLayout;
                     }
 
-                    onCurrentIndexChanged: {
-                        if (currentIndex>0 && layoutObjs[currentIndex-1].value === ""){
+                    onActivated: {
+                        layoutManager.switchToLayout(layouts[index]);
+                    }
+
+                    /*onCurrentIndexChanged: {
+                       /* if (currentIndex>0 && layoutObjs[currentIndex-1].value === ""){
                             currentIndex = 0;
                             return;
                         }
@@ -100,13 +108,14 @@ PlasmaComponents.Page {
                         if (currentIndex>0) {
                             globalSettings.importLayout(layoutObjs[currentIndex-1].key,
                                                         layoutObjs[currentIndex-1].value);
-                        }
-                    }
+                        }*/
+                    //}
                 }
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Import")
+                    enabled: false
                     onClicked: {
                         globalSettings.importConfiguration()
                     }
@@ -115,6 +124,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Export")
+                    enabled: false
                     onClicked: {
                         globalSettings.exportConfiguration()
                     }

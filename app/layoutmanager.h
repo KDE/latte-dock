@@ -40,6 +40,10 @@ namespace Latte {
 class LayoutManager : public QObject {
     Q_OBJECT
 
+    Q_PROPERTY(QString currentLayoutName READ currentLayoutName NOTIFY currentLayoutNameChanged)
+
+    Q_PROPERTY(QStringList layouts READ layouts NOTIFY layoutsChanged)
+
     Q_PROPERTY(QAction *toggleLayoutAction READ toggleLayoutAction NOTIFY toggleLayoutActionChanged)
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
@@ -52,6 +56,10 @@ public:
     DockCorona *corona();
 
     void load();
+
+    QString currentLayoutName() const;
+
+    QStringList layouts() const;
 
     QAction *addWidgetsAction();
     QAction *toggleLayoutAction();
@@ -68,6 +76,8 @@ public slots:
 signals:
     void addWidgetsActionChanged();
     void currentLayoutChanged();
+    void currentLayoutNameChanged();
+    void layoutsChanged();
     void toggleLayoutActionChanged();
 
 private slots:
@@ -76,6 +86,7 @@ private slots:
 private:
     QString layoutPath(QString layoutName);
 
+    void loadLayouts();
     //! it is used to activate / deactivate the Alternative Layout
     void toggleLayout();
 
@@ -86,6 +97,8 @@ private:
     LayoutSettings *m_currentLayout{nullptr};
 
     QString m_lastNonAlternativeLayout{QString(i18n("My Layout"))};
+
+    QStringList m_layouts;
 
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_toggleLayoutAction{nullptr};
