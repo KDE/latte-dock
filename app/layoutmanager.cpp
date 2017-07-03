@@ -52,4 +52,16 @@ DockCorona *LayoutManager::corona()
     return m_corona;
 }
 
+QString LayoutManager::layoutPath(QString layoutName)
+{
+    QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
+
+    if (!QFile(path).exists()) {
+        path = "";
+    }
+
+    return path;
+}
+
+
 }

@@ -39,9 +39,11 @@ public:
     LayoutManager(QObject *parent = nullptr);
     ~LayoutManager() override;
 
+    DockCorona *corona();
+
     void load();
 
-    DockCorona *corona();
+    QString layoutPath(QString layoutName);
 
 private:
     DockCorona *m_corona{nullptr};

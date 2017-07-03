@@ -102,7 +102,6 @@ void LayoutSettings::setGlobalLaunchers(QStringList launchers)
     emit globalLaunchersChanged();
 }
 
-
 void LayoutSettings::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 1);
@@ -116,6 +115,5 @@ void LayoutSettings::saveConfig()
     m_layoutGroup.writeEntry("syncLaunchers", m_syncLaunchers);
     m_layoutGroup.writeEntry("globalLaunchers", m_globalLaunchers);
 }
-
 
 }

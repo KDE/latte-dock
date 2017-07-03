@@ -26,6 +26,8 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+#include "layoutsettings.h"
+
 namespace Latte {
 
 //! This class holds all the settings that are universally available
@@ -34,6 +36,8 @@ class UniversalSettings : public QObject {
     Q_OBJECT
     //Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool exposeLayoutsMenu READ exposeLayoutsMenu WRITE setExposeLayoutsMenu NOTIFY exposeLayoutsMenuChanged)
+
+    Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
     //Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
 
@@ -52,7 +56,11 @@ public:
     int version() const;
     void setVersion(int ver);
 
+    QString currentLayoutName() const;
+    void setCurrentLayoutName(QString layoutName);
+
 signals:
+    void currentLayoutNameChanged();
     void exposeLayoutsMenuChanged();
     void versionChanged();
 
@@ -68,8 +76,11 @@ private:
     //when there isnt a version it is an old universal file
     int m_version{1};
 
+    QString m_currentLayoutName;
+
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
+
 };
 
 }
