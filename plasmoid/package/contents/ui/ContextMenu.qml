@@ -791,18 +791,18 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: altSession
-        visible: root.exposeAltSession
+        visible: latteDock && latteDock.universalSettings.exposeLayoutsMenu
 
         icon: "user-identity"
-        text: i18n("Alternative Session")
+        text: i18n("Alternative Layout")
         checkable: true
 
         Component.onCompleted: {
-            checked = root.altSessionAction.checked;
+            checked = latteDock ? latteDock.universalLayoutManager.toggleLayoutAction.checked : false;
         }
 
         onClicked: {
-            //fix a crash that when going to Alternative Session through Context Menu,
+            //fix a crash that when going to Alternative Layout through Context Menu,
             //animations are played during the destruction and because of that Latte.IconItem is crashing
             menu.changingLayout = true;
             root.disableRestoreZoom = false;
@@ -815,12 +815,12 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: addWidgets
-        visible: latteDock && latteDock.addWidgetsAction
+        visible: latteDock && latteDock.universalLayoutManager.addWidgetsAction
 
         icon: "add"
         text: i18n("Add Widgets...")
 
-        onClicked: latteDock.addWidgetsAction.trigger();
+        onClicked: latteDock.universalLayoutManager.addWidgetsAction.trigger();
     }
 
     PlasmaComponents.MenuItem {

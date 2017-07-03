@@ -22,6 +22,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QtDBus/QtDBus>
 
 #include <KLocalizedString>
 
@@ -32,11 +33,27 @@ LayoutManager::LayoutManager(QObject *parent)
       m_importer(new Importer(this))
 {
     m_corona = qobject_cast<DockCorona *>(parent);
+
+    if (m_corona) {
+        //! create the alternative session action
+        const QIcon toggleIcon = QIcon::fromTheme("user-identity");
+        m_toggleLayoutAction = new QAction(toggleIcon, i18n("Alternative Layout"), this);
+        m_toggleLayoutAction->setStatusTip(i18n("Enable/Disable Alternative Layout"));
+        m_toggleLayoutAction->setCheckable(true);
+        connect(m_toggleLayoutAction, &QAction::triggered, this, &LayoutManager::toggleLayout);
+
+        //! create the add widgets action
+        const QIcon addWidIcon = QIcon::fromTheme("add");
+        m_addWidgetsAction = new QAction(addWidIcon, i18n("Add Widgets..."), this);
+        m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
+        connect(m_addWidgetsAction, &QAction::triggered, this, &LayoutManager::showWidgetsExplorer);
+    }
 }
 
 LayoutManager::~LayoutManager()
 {
     m_importer->deleteLater();
+    m_toggleLayoutAction->deleteLater();
 }
 
 void LayoutManager::load()
@@ -57,6 +74,16 @@ DockCorona *LayoutManager::corona()
     return m_corona;
 }
 
+QAction *LayoutManager::toggleLayoutAction()
+{
+    return m_toggleLayoutAction;
+}
+
+QAction *LayoutManager::addWidgetsAction()
+{
+    return m_addWidgetsAction;
+}
+
 QString LayoutManager::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
@@ -68,20 +95,77 @@ QString LayoutManager::layoutPath(QString layoutName)
     return path;
 }
 
-
-QString LayoutManager::requestLayout(QString layoutName, QString preset)
+void LayoutManager::toggleLayout()
 {
-    QString newFile = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
-    QString resFile;
-    qDebug() << "adding layout : " << layoutName << " based on preset:" << preset;
+    if (m_corona->universalSettings()->currentLayoutName() == i18n("Alternative")) {
+        switchToLayout(m_lastNonAlternativeLayout);
+    } else {
+        switchToLayout(i18n("Alternative"));
+    }
+}
 
-    if (preset == i18n("Default") && !QFile(newFile).exists()) {
-        qDebug() << "adding layout : succeed";
-        QFile(m_corona->kPackage().filePath("preset1")).copy(newFile);
-        resFile = newFile;
+bool LayoutManager::switchToLayout(QString layoutName)
+{
+    QString lPath = layoutPath(layoutName);
+
+    if (lPath.isEmpty() && layoutName == i18n("Alternative")) {
+        lPath = newLayout(i18n("Alternative"), i18n("Default"));
     }
 
-    return resFile;
+    if (!lPath.isEmpty()) {
+        //! this code must be called asynchronously because it is called
+        //! also from qml (Tasks plasmoid). This change fixes a very important
+        //! crash when switching sessions through the Tasks plasmoid Context menu
+        //! Latte was unstable and was crashing very often during changing
+        //! sessions
+        QTimer::singleShot(200, [this, layoutName, lPath]() {
+            qDebug() << layoutName << " - " << lPath;
+            m_corona->loadLatteLayout(lPath);
+            m_corona->universalSettings()->setCurrentLayoutName(layoutName);
+
+            if (layoutName != i18n("Alternative")) {
+                m_toggleLayoutAction->setChecked(false);
+            } else {
+                m_toggleLayoutAction->setChecked(true);
+            }
+        });
+    }
+}
+
+
+QString LayoutManager::newLayout(QString layoutName, QString preset)
+{
+    QDir layoutDir(QDir::homePath() + "/.config/latte");
+    QStringList filter;
+    filter.append(QString(layoutName + "*.layout.latte"));
+    QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    //! if the newLayout already exists provide a newName that doesnt
+    if (files.count() >= 1) {
+        int newCounter = files.count() + 1;
+
+        layoutName = layoutName + "-" + QString::number(newCounter);
+    }
+
+    QString newLayoutPath = layoutDir.absolutePath() + "/" + layoutName + ".layout.latte";
+
+    qDebug() << "adding layout : " << layoutName << " based on preset:" << preset;
+
+    if (preset == i18n("Default") && !QFile(newLayoutPath).exists()) {
+        qDebug() << "adding layout : succeed";
+        QFile(m_corona->kPackage().filePath("preset1")).copy(newLayoutPath);
+    }
+
+    return layoutName;
+}
+
+void LayoutManager::showWidgetsExplorer()
+{
+    QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
+
+    if (iface.isValid()) {
+        iface.call("toggleWidgetExplorer");
+    }
 }
 
 }

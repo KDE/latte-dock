@@ -132,7 +132,6 @@ Item {
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
-    property bool exposeAltSession: latteDock ? latteDock.exposeAltSession : false
     property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
     property bool indicateAudioStreams: latteDock ? latteDock.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
     property bool  mouseWheelActions: latteDock ? latteDock.mouseWheelActions : true
@@ -499,8 +498,8 @@ Item {
                 root.contextMenu.destroy();
                 root.contextMenu = null;
             }
-            if (root.altSessionAction)
-                root.altSessionAction.trigger();
+
+            latteDock.universalLayoutManager.toggleLayoutAction.trigger();
         }
     }
 

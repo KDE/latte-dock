@@ -112,13 +112,15 @@ void GlobalSettings::enableAltSession(bool enabled)
     //! crash when switching sessions through the Tasks plasmoid Context menu
     //! Latte was unstable and was crashing very often during changing
     //! sessions
-    QTimer::singleShot(200, [this, enabled]() {
+    /*QTimer::singleShot(200, [this, enabled]() {
         if (enabled) {
             m_corona->loadLatteLayout(QString(i18n("Alternative")));
         } else {
             m_corona->loadLatteLayout(QString(i18n("My Layout")));
         }
-    });
+    });*/
+
+    //m_corona->layoutManager()->toggleLayout();
 }
 
 bool GlobalSettings::exposeAltSession() const

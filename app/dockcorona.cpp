@@ -160,20 +160,10 @@ void DockCorona::load()
         connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &DockCorona::screenCountChanged);
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
 
+        m_layoutManager->switchToLayout(m_universalSettings->currentLayoutName());
 
-        QString defaultLayoutPath = m_layoutManager->layoutPath(m_universalSettings->currentLayoutName());
-
-        if (!defaultLayoutPath.isEmpty()) {
-            qDebug() << "loading config file for layout:" << m_universalSettings->currentLayoutName() << " - " << defaultLayoutPath;
-            loadLayout(defaultLayoutPath);
-
-            foreach (auto containment, containments())
-                addDock(containment);
-        } else {
-            qDebug() << "NOT FOUND, config file for layout:" << m_universalSettings->currentLayoutName() << " - " << defaultLayoutPath;
-            //in such case we cannot load Latte we must first make sure we have created at least a My Layout in the latte directory
-        }
-
+        foreach (auto containment, containments())
+            addDock(containment);
     }
 }
 
@@ -226,20 +216,13 @@ bool DockCorona::reloadLayout(QString path)
     return false;
 }
 
-void DockCorona::loadLatteLayout(QString layoutName)
+void DockCorona::loadLatteLayout(QString layoutPath)
 {
-    QString layoutPath = m_layoutManager->layoutPath(layoutName);
-
-    if (layoutPath.isEmpty() && layoutName == i18n("Alternative")) {
-        layoutPath = m_layoutManager->requestLayout(i18n("Alternative"), i18n("Default"));
-    }
-
     if (!layoutPath.isEmpty()) {
         qDebug() << "corona is unloading the interface...";
         unload();
-        qDebug() << "loading config file for layout:" << layoutName << " - " << layoutPath;
+        qDebug() << "loading layout:" << layoutPath;
         loadLayout(layoutPath);
-        universalSettings()->setCurrentLayoutName(layoutName);
 
         foreach (auto containment, containments())
             addDock(containment);

@@ -103,6 +103,8 @@ void DockConfigView::init()
 
     if (dockCorona) {
         rootContext()->setContextProperty(QStringLiteral("globalSettings"), dockCorona->globalSettings());
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
+        rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
     }
 
     KDeclarative::KDeclarative kdeclarative;

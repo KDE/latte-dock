@@ -213,6 +213,8 @@ void DockView::init()
 
     if (dockCorona) {
         rootContext()->setContextProperty(QStringLiteral("globalSettings"), dockCorona->globalSettings());
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
+        rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
@@ -1771,7 +1773,7 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
             if (dockCorona) {
-                desktopMenu->addAction(dockCorona->globalSettings()->addWidgetsAction());
+                desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
             }
 
             desktopMenu->addAction(this->containment()->actions()->action(QStringLiteral("configure")));
@@ -1781,11 +1783,11 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
         desktopMenu->addSeparator();
 
-        if (dockCorona && dockCorona->globalSettings()->exposeAltSession()) {
-            desktopMenu->addAction(dockCorona->globalSettings()->altSessionAction());
+        if (dockCorona && dockCorona->universalSettings()->exposeLayoutsMenu()) {
+            desktopMenu->addAction(dockCorona->layoutManager()->toggleLayoutAction());
         }
 
-        desktopMenu->addAction(dockCorona->globalSettings()->addWidgetsAction());
+        desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
 
         desktopMenu->addActions(actions);
     }

@@ -94,6 +94,8 @@ PlasmaCore.FrameSvgItem {
                 dockLayout = containment.children[i];
                 dockLayout.dock = dock;
                 dockLayout.globalSettings = globalSettings;
+                dockLayout.universalSettings = universalSettings;
+                dockLayout.universalLayoutManager = layoutManager;
             }
         }
     }

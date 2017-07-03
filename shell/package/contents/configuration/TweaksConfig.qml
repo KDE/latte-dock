@@ -159,10 +159,10 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show Alternative Session in the context menu")
-                checked: globalSettings.exposeAltSession
+                checked: universalSettings.exposeLayoutsMenu
 
                 onClicked: {
-                    globalSettings.exposeAltSession = checked
+                    universalSettings.exposeLayoutsMenu = checked;
                 }
             }
 
@@ -255,42 +255,6 @@ PlasmaComponents.Page {
             }
         }
         //! END: Active Indicator
-
-
-        //! BEGIN: Session
-        ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-
-            Header {
-                text: i18n("Session")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Alternative Session")
-                    checked: globalSettings.currentSession === Latte.Dock.AlternativeSession
-                    checkable: true
-                    tooltip: i18n("Sometimes the current layout of your panels is not sufficient \nfor example when you are travelling. Latte provides you with a full \nalternative sessionn to work on.")
-
-                    onClicked: {
-                        if (globalSettings.currentSession === Latte.Dock.DefaultSession) {
-                            globalSettings.currentSession = Latte.Dock.AlternativeSession
-                        } else {
-                            globalSettings.currentSession = Latte.Dock.DefaultSession
-                        }
-                        dockConfig.hideConfigWindow()
-                    }
-                }
-
-            }
-        }
-        //! END: Session
 
         //! BEGIN: Extra Actions
         ColumnLayout {

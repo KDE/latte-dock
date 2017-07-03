@@ -24,7 +24,10 @@
 #include "dockcorona.h"
 #include "importer.h"
 
+#include <QAction>
 #include <QObject>
+
+#include <KLocalizedString>
 
 class Importer;
 
@@ -35,6 +38,9 @@ namespace Latte {
 class LayoutManager : public QObject {
     Q_OBJECT
 
+    Q_PROPERTY(QAction *toggleLayoutAction READ toggleLayoutAction NOTIFY toggleLayoutActionChanged)
+    Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
+
 public:
     LayoutManager(QObject *parent = nullptr);
     ~LayoutManager() override;
@@ -43,14 +49,36 @@ public:
 
     void load();
 
-    QString layoutPath(QString layoutName);
+    QAction *addWidgetsAction();
+    QAction *toggleLayoutAction();
+
+public slots:
+    //! switch to specified layout
+    Q_INVOKABLE bool switchToLayout(QString layoutName);
 
     //! creates a new layout with layoutName based on the preset
-    QString requestLayout(QString layoutName, QString preset);
+    Q_INVOKABLE QString newLayout(QString layoutName, QString preset = QString(i18n("Default")));
+
+signals:
+    void addWidgetsActionChanged();
+    void toggleLayoutActionChanged();
+
+private slots:
+    void showWidgetsExplorer();
+
+private:
+    QString layoutPath(QString layoutName);
+    //! it is used to activate / deactivate the Alternative Layout
+    void toggleLayout();
 
 private:
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
+
+    QString m_lastNonAlternativeLayout{QString(i18n("My Layout"))};
+
+    QAction *m_addWidgetsAction{nullptr};
+    QAction *m_toggleLayoutAction{nullptr};
 };
 
 }

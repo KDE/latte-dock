@@ -73,7 +73,8 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
     property bool editMode: plasmoid.userConfiguring
-    property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
+//    property bool exposeAltSession: globalSettings ? globalSettings.exposeAltSession : false
+//    property bool exposeLayoutsMenu: universalSettings ? universalSettings.exposeLayoutsMenu : false
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow
                                          && Latte.WindowSystem.compositingActive
 
@@ -216,9 +217,12 @@ DragDrop.DropArea {
     property Item parabolicManager: _parabolicManager
     property QtObject dock
     property QtObject globalSettings
+    property QtObject universalSettings
+    property QtObject universalLayoutManager
 
-    property QtObject addWidgetsAction: globalSettings ? globalSettings.addWidgetsAction : null
-    property QtObject altSessionAction: globalSettings ? globalSettings.altSessionAction : null
+    //property QtObject addWidgetsAction: globalSettings ? globalSettings.addWidgetsAction : null
+    //property QtObject altSessionAction: globalSettings ? globalSettings.altSessionAction : null
+    //property QtObject toggleLayoutAction: universalLayoutManager ? universalLayoutManager.toggleLayoutAction : null
 
     // TO BE DELETED, if not needed: property int counter:0;
 
