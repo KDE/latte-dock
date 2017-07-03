@@ -67,9 +67,20 @@ void LayoutManager::load()
     int configVer = m_corona->universalSettings()->version();
     qDebug() << "Universal Settings version : " << configVer;
 
-    if (configVer < 2) {
+    if (configVer < 2 && QFile(QDir::homePath() + ".config/lattedockrc").exists()) {
         qDebug() << "Latte must update its configuration...";
         m_importer->updateOldConfiguration();
+    } else if (!QFile(QDir::homePath() + ".config/lattedockrc").exists()) {
+        //startup create what is necessary....
+        QDir layoutDir(QDir::homePath() + "/.config/latte");
+
+        if (!layoutDir.exists()) {
+            QDir(QDir::homePath() + "/.config").mkdir("latte");
+        }
+
+        newLayout(i18n("My Layout"));
+        m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
+        m_corona->universalSettings()->setVersion(2);
     }
 
     qDebug() << "Latte is loading  its layouts...";
