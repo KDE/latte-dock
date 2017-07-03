@@ -73,6 +73,7 @@ public:
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
+    void loadLatteLayout(QString layoutName);
     bool reloadLayout(QString path);
 
     int docksCount() const;

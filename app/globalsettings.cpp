@@ -107,11 +107,11 @@ void GlobalSettings::showWidgetsExplorer()
 
 void GlobalSettings::enableAltSession(bool enabled)
 {
-    /*if (enabled) {
-        m_corona->switchToSession(Dock::AlternativeSession);
+    if (enabled) {
+        m_corona->loadLatteLayout(QString(i18n("Alternative")));
     } else {
-        m_corona->switchToSession(Dock::DefaultSession);
-    }*/
+        m_corona->loadLatteLayout(QString(i18n("My Layout")));
+    }
 }
 
 bool GlobalSettings::exposeAltSession() const

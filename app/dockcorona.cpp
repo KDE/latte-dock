@@ -181,15 +181,19 @@ void DockCorona::unload()
 {
     qDebug() << "unload: removing dockViews and containments...";
 
-    qDeleteAll(m_dockViews);
-    m_dockViews.clear();
-    m_waitingDockViews.clear();
+    //foreach (auto cont, containments()) {
+    //dockContainmentDestroyed(cont);
+    // }
 
     while (!containments().isEmpty()) {
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
         //this form doesn't crash, while qDeleteAll(containments()) does
         delete containments().first();
     }
+
+    /*qDeleteAll(m_dockViews);
+    m_dockViews.clear();
+    m_waitingDockViews.clear();*/
 }
 
 bool DockCorona::reloadLayout(QString path)
@@ -229,6 +233,22 @@ bool DockCorona::reloadLayout(QString path)
 
     return false;
 }
+
+void DockCorona::loadLatteLayout(QString layoutName)
+{
+    QString layoutPath = m_layoutManager->layoutPath(layoutName);
+
+    if (!layoutPath.isEmpty()) {
+        qDebug() << "corona is unloading the interface...";
+        unload();
+        qDebug() << "loading config file for layout:" << layoutName << " - " << layoutPath;
+        loadLayout(layoutPath);
+
+        foreach (auto containment, containments())
+            addDock(containment);
+    }
+}
+
 
 void DockCorona::updateConfigs()
 {
@@ -1023,10 +1043,15 @@ void DockCorona::destroyedChanged(bool destroyed)
 void DockCorona::dockContainmentDestroyed(QObject *cont)
 {
     qDebug() << "dock containment destroyed!!!!";
-    auto view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
+    auto view = m_dockViews.take(static_cast<Plasma::Containment *>(cont));
 
-    if (view)
+    if (!view) {
+        view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
+    }
+
+    if (view) {
         view->deleteLater();
+    }
 
     emit docksCountChanged();
 }
