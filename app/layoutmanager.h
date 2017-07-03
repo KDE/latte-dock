@@ -45,6 +45,9 @@ public:
 
     QString layoutPath(QString layoutName);
 
+    //! creates a new layout with layoutName based on the preset
+    QString requestLayout(QString layoutName, QString preset);
+
 private:
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};

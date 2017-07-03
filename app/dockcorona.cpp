@@ -230,11 +230,16 @@ void DockCorona::loadLatteLayout(QString layoutName)
 {
     QString layoutPath = m_layoutManager->layoutPath(layoutName);
 
+    if (layoutPath.isEmpty() && layoutName == i18n("Alternative")) {
+        layoutPath = m_layoutManager->requestLayout(i18n("Alternative"), i18n("Default"));
+    }
+
     if (!layoutPath.isEmpty()) {
         qDebug() << "corona is unloading the interface...";
         unload();
         qDebug() << "loading config file for layout:" << layoutName << " - " << layoutPath;
         loadLayout(layoutPath);
+        universalSettings()->setCurrentLayoutName(layoutName);
 
         foreach (auto containment, containments())
             addDock(containment);

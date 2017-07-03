@@ -20,6 +20,11 @@
 
 #include "layoutmanager.h"
 
+#include <QDir>
+#include <QFile>
+
+#include <KLocalizedString>
+
 namespace Latte {
 
 LayoutManager::LayoutManager(QObject *parent)
@@ -63,5 +68,20 @@ QString LayoutManager::layoutPath(QString layoutName)
     return path;
 }
 
+
+QString LayoutManager::requestLayout(QString layoutName, QString preset)
+{
+    QString newFile = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
+    QString resFile;
+    qDebug() << "adding layout : " << layoutName << " based on preset:" << preset;
+
+    if (preset == i18n("Default") && !QFile(newFile).exists()) {
+        qDebug() << "adding layout : succeed";
+        QFile(m_corona->kPackage().filePath("preset1")).copy(newFile);
+        resFile = newFile;
+    }
+
+    return resFile;
+}
 
 }
