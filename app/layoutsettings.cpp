@@ -25,21 +25,30 @@
 
 namespace Latte {
 
-LayoutSettings::LayoutSettings(QObject *parent, KSharedConfig::Ptr config)
+/*LayoutSettings::LayoutSettings(QObject *parent, KSharedConfig::Ptr config)
     : QObject(parent)
 {
     m_layoutGroup = KConfigGroup(config, "LayoutSettings");
     init();
-}
+}*/
 
-LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile)
+LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layoutName)
     : QObject(parent)
 {
     if (QFile(layoutFile).exists()) {
+        if (layoutName.isEmpty()) {
+            int lastSlash = layoutFile.lastIndexOf("/");
+            layoutName = layoutFile.remove(0, lastSlash + 1);
+
+            int ext = layoutName.lastIndexOf(".latterc");
+            layoutName = layoutName.remove(ext, 8);
+        }
+
         KSharedConfigPtr lConfig = KSharedConfig::openConfig(layoutFile);
         m_layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
 
-        m_layoutFile = layoutFile;
+        setFile(layoutFile);
+        setName(layoutName);
         init();
     }
 }
@@ -71,6 +80,38 @@ void LayoutSettings::setVersion(int ver)
     m_version = ver;
 
     emit versionChanged();
+}
+
+QString LayoutSettings::name() const
+{
+    return m_layoutName;
+}
+
+void LayoutSettings::setName(QString name)
+{
+    if (m_layoutName == name) {
+        return;
+    }
+
+    m_layoutName = name;
+
+    emit nameChanged();
+}
+
+
+QString LayoutSettings::file() const
+{
+    return m_layoutFile;
+}
+
+void LayoutSettings::setFile(QString file)
+{
+    if (m_layoutFile == file) {
+        return;
+    }
+
+    m_layoutFile = file;
+    emit fileChanged();
 }
 
 bool LayoutSettings::syncLaunchers() const

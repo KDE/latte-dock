@@ -23,6 +23,7 @@
 
 #include "dockcorona.h"
 #include "importer.h"
+#include "layoutsettings.h"
 
 #include <QAction>
 #include <QObject>
@@ -30,6 +31,7 @@
 #include <KLocalizedString>
 
 class Importer;
+class LayoutSettings;
 
 namespace Latte {
 
@@ -40,6 +42,8 @@ class LayoutManager : public QObject {
 
     Q_PROPERTY(QAction *toggleLayoutAction READ toggleLayoutAction NOTIFY toggleLayoutActionChanged)
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
+
+    Q_PROPERTY(LayoutSettings *currentLayout READ currentLayout NOTIFY currentLayoutChanged)
 
 public:
     LayoutManager(QObject *parent = nullptr);
@@ -52,6 +56,8 @@ public:
     QAction *addWidgetsAction();
     QAction *toggleLayoutAction();
 
+    LayoutSettings *currentLayout();
+
 public slots:
     //! switch to specified layout
     Q_INVOKABLE bool switchToLayout(QString layoutName);
@@ -61,6 +67,7 @@ public slots:
 
 signals:
     void addWidgetsActionChanged();
+    void currentLayoutChanged();
     void toggleLayoutActionChanged();
 
 private slots:
@@ -68,12 +75,15 @@ private slots:
 
 private:
     QString layoutPath(QString layoutName);
+
     //! it is used to activate / deactivate the Alternative Layout
     void toggleLayout();
 
 private:
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
+
+    LayoutSettings *m_currentLayout{nullptr};
 
     QString m_lastNonAlternativeLayout{QString(i18n("My Layout"))};
 

@@ -54,6 +54,10 @@ LayoutManager::~LayoutManager()
 {
     m_importer->deleteLater();
     m_toggleLayoutAction->deleteLater();
+
+    if (m_currentLayout) {
+        m_currentLayout->deleteLater();
+    }
 }
 
 void LayoutManager::load()
@@ -84,6 +88,11 @@ QAction *LayoutManager::addWidgetsAction()
     return m_addWidgetsAction;
 }
 
+LayoutSettings *LayoutManager::currentLayout()
+{
+    return m_currentLayout;
+}
+
 QString LayoutManager::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
@@ -106,6 +115,10 @@ void LayoutManager::toggleLayout()
 
 bool LayoutManager::switchToLayout(QString layoutName)
 {
+    if (m_currentLayout && m_currentLayout->name() == layoutName) {
+        return false;
+    }
+
     QString lPath = layoutPath(layoutName);
 
     if (lPath.isEmpty() && layoutName == i18n("Alternative")) {
@@ -122,6 +135,14 @@ bool LayoutManager::switchToLayout(QString layoutName)
             qDebug() << layoutName << " - " << lPath;
             m_corona->loadLatteLayout(lPath);
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
+
+            if (m_currentLayout) {
+                m_currentLayout->deleteLater();
+            }
+
+            m_currentLayout = new LayoutSettings(this, lPath, layoutName);
+
+            emit currentLayoutChanged();
 
             if (layoutName != i18n("Alternative")) {
                 m_toggleLayoutAction->setChecked(false);
