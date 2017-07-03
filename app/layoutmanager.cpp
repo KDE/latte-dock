@@ -225,7 +225,7 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
         QFile(m_corona->kPackage().filePath("preset1")).copy(newLayoutPath);
     }
 
-    return layoutName;
+    return newLayoutPath;
 }
 
 void LayoutManager::showWidgetsExplorer()

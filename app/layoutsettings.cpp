@@ -28,6 +28,8 @@ namespace Latte {
 LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layoutName)
     : QObject(parent)
 {
+    qDebug() << "Layout file to create object: " << layoutFile;
+
     if (QFile(layoutFile).exists()) {
         if (layoutName.isEmpty()) {
             int lastSlash = layoutFile.lastIndexOf("/");
@@ -87,6 +89,8 @@ void LayoutSettings::setName(QString name)
         return;
     }
 
+    qDebug() << "Layout name:" << name;
+
     m_layoutName = name;
 
     emit nameChanged();
@@ -103,6 +107,8 @@ void LayoutSettings::setFile(QString file)
     if (m_layoutFile == file) {
         return;
     }
+
+    qDebug() << "Layout file:" << file;
 
     m_layoutFile = file;
     emit fileChanged();
