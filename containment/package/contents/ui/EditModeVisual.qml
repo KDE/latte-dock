@@ -31,7 +31,7 @@ Image{
     height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal
 
     fillMode: Image.Tile
-    source: !dock || dock.session===Latte.Dock.DefaultSession ? "../icons/blueprint.jpg":"../icons/purpleprint.jpg"
+    source: "../icons/"+layoutColor+"print.jpg"
     opacity: 0
 
     property int speed: root.durationTime*4*units.longDuration
@@ -45,6 +45,9 @@ Image{
     property bool editAnimationEnded: false
 
     property rect efGeometry
+
+    property string layoutColor: universalLayoutManager && universalLayoutManager.currentLayout ?
+                                     universalLayoutManager.currentLayout.color : "blue"
 
     layer.enabled: true
     layer.effect: DropShadow {

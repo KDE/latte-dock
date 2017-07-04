@@ -38,6 +38,7 @@ namespace Latte {
 class LayoutSettings : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool syncLaunchers READ syncLaunchers WRITE setSyncLaunchers NOTIFY syncLaunchersChanged)
+    Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QStringList globalLaunchers READ globalLaunchers WRITE setGlobalLaunchers NOTIFY globalLaunchersChanged)
 
@@ -47,6 +48,9 @@ public:
 
     QString name() const;
     QString file() const;
+
+    QString color() const;
+    void setColor(QString color);
 
     QStringList globalLaunchers() const;
     void setGlobalLaunchers(QStringList launchers);
@@ -58,6 +62,7 @@ public:
     void setSyncLaunchers(bool sync);
 
 signals:
+    void colorChanged();
     void fileChanged();
     void globalLaunchersChanged();
     void nameChanged();
@@ -78,6 +83,7 @@ private:
     //if version doesnt exist it is and old layout file
     int m_version{2};
 
+    QString m_color;
     QString m_layoutFile;
     QString m_layoutName;
     QStringList m_globalLaunchers;
