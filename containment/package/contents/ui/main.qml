@@ -1175,7 +1175,7 @@ DragDrop.DropArea {
         sourceComponent: Image{
             anchors.fill: parent
             fillMode: Image.Tile
-            source: "../icons/sepiaprint.jpg"
+            source: "../icons/wheatprint.jpg"
         }
     }
 
