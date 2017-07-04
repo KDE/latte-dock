@@ -40,6 +40,14 @@ UniversalSettings::~UniversalSettings()
 
 void UniversalSettings::load()
 {
+    //! check if user has set the autostart option
+    bool autostartUserSet = m_universalGroup.readEntry("userConfiguredAutostart", false);
+
+    if (!autostartUserSet && !autostart()) {
+        setAutostart(true);
+    }
+
+    //! load configuration
     loadConfig();
 }
 
@@ -88,6 +96,44 @@ void UniversalSettings::setCurrentLayoutName(QString layoutName)
 
     m_currentLayoutName = layoutName;
     emit currentLayoutNameChanged();
+}
+
+bool UniversalSettings::autostart() const
+{
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
+    return autostartFile.exists();
+}
+
+void UniversalSettings::setAutostart(bool state)
+{
+    //! remove old autostart file
+    QFile oldAutostartFile(QDir::homePath() + "/.config/autostart/latte-dock.desktop");
+
+    if (oldAutostartFile.exists()) {
+        oldAutostartFile.remove();
+    }
+
+    //! end of removal of old autostart file
+
+    QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
+    QFile metaFile("/usr/share/applications/org.kde.latte-dock.desktop");
+
+    if (!state && autostartFile.exists()) {
+        //! the first time that the user disables the autostart, this is recorded
+        //! and from now own it will not be recreated it in the beginning
+        if (!m_universalGroup.readEntry("userConfiguredAutostart", false)) {
+            m_universalGroup.writeEntry("userConfiguredAutostart", true);
+        }
+
+        autostartFile.remove();
+        emit autostartChanged();
+    } else if (state && metaFile.exists()) {
+        metaFile.copy(autostartFile.fileName());
+        //! I havent added the flag "OnlyShowIn=KDE;" into the autostart file
+        //! because I fall onto a Plasma 5.8 case that this flag
+        //! didnt let the plasma desktop to start
+        emit autostartChanged();
+    }
 }
 
 void UniversalSettings::loadConfig()

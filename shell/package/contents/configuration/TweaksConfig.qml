@@ -113,10 +113,10 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Enable autostart during startup")
-                checked: globalSettings.autostart
+                checked: universalSettings.autostart
 
                 onClicked: {
-                    globalSettings.autostart = checked
+                    universalSettings.autostart = checked;
                 }
             }
 

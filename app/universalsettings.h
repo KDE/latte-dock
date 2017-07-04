@@ -34,21 +34,19 @@ namespace Latte {
 //! independent of layouts
 class UniversalSettings : public QObject {
     Q_OBJECT
-    //Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
+    Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool exposeLayoutsMenu READ exposeLayoutsMenu WRITE setExposeLayoutsMenu NOTIFY exposeLayoutsMenuChanged)
 
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
-
-    //Q_PROPERTY(Latte::Dock::SessionType currentSession READ currentSession WRITE setCurrentSession NOTIFY currentSessionChanged)
-
-    //Q_PROPERTY(QAction *altSessionAction READ altSessionAction NOTIFY altSessionActionChanged)
-    //Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
 public:
     UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
 
     void load();
+
+    bool autostart() const;
+    void setAutostart(bool state);
 
     bool exposeLayoutsMenu() const;
     void setExposeLayoutsMenu(bool state);
@@ -60,6 +58,7 @@ public:
     void setCurrentLayoutName(QString layoutName);
 
 signals:
+    void autostartChanged();
     void currentLayoutNameChanged();
     void exposeLayoutsMenuChanged();
     void versionChanged();
