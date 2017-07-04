@@ -194,10 +194,12 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName)
         return QString();
     }
 
-    LayoutSettings oldLSettings(this, oldAppletsPath);
+    KSharedConfigPtr lConfig = KSharedConfig::openConfig(oldAppletsPath);
+    KConfigGroup m_layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
+    int layoutVersion = m_layoutGroup.readEntry("version", 1);
 
     //! old file layout appears to not be old as its version is >=2
-    if (oldLSettings.version() >= 2) {
+    if (layoutVersion >= 2) {
         return QString();
     }
 
@@ -219,8 +221,8 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName)
         }
     }
 
-    QFile newLayoutFile(layoutDir.absolutePath() + "/" + newName + ".layout.latte");
-    QString newLayoutPath = newLayoutFile.fileName();
+    QString newLayoutPath = layoutDir.absolutePath() + "/" + newName + ".layout.latte";
+    QFile newLayoutFile(newLayoutPath);
 
     QStringList filter;
     filter.append(QString(newName + "*.layout.latte"));

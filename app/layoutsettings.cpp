@@ -28,15 +28,16 @@ namespace Latte {
 LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layoutName)
     : QObject(parent)
 {
-    qDebug() << "Layout file to create object: " << layoutFile;
+    qDebug() << "Layout file to create object: " << layoutFile << " with name: " << layoutName;
 
     if (QFile(layoutFile).exists()) {
         if (layoutName.isEmpty()) {
             int lastSlash = layoutFile.lastIndexOf("/");
-            layoutName = layoutFile.remove(0, lastSlash + 1);
+            QString tempLayoutFile = layoutFile;
+            layoutName = tempLayoutFile.remove(0, lastSlash + 1);
 
-            int ext = layoutName.lastIndexOf(".latterc");
-            layoutName = layoutName.remove(ext, 8);
+            int ext = layoutName.lastIndexOf(".layout.latte");
+            layoutName = layoutName.remove(ext, 13);
         }
 
         KSharedConfigPtr lConfig = KSharedConfig::openConfig(layoutFile);
