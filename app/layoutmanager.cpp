@@ -179,7 +179,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
         //! crash when switching sessions through the Tasks plasmoid Context menu
         //! Latte was unstable and was crashing very often during changing
         //! sessions
-        QTimer::singleShot(200, [this, layoutName, lPath]() {
+        QTimer::singleShot(300, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
             m_corona->loadLatteLayout(lPath);
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
