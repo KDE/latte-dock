@@ -176,6 +176,11 @@ void DockCorona::unload()
         //this form doesn't crash, while qDeleteAll(containments()) does
         delete containments().first();
     }
+
+    qDeleteAll(m_dockViews);
+    qDeleteAll(m_waitingDockViews);
+    m_dockViews.clear();
+    m_waitingDockViews.clear();
 }
 
 bool DockCorona::reloadLayout(QString path)
