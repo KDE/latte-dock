@@ -53,7 +53,7 @@ Image{
     layer.effect: DropShadow {
         radius: root.editShadow
         samples: 2 * radius
-        color: "#ee080808"
+        color: "#aa080808"
     }
 
     /*Behavior on width {
@@ -237,7 +237,7 @@ Image{
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
-                        to: root.behaveAsPlasmaPanel && dock.session===Latte.Dock.DefaultSession  ? 0.3 : 0.6
+                        to: root.behaveAsPlasmaPanel  ? 0.4 : root.blurEnabled ? 0.7 : 0.8
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }
