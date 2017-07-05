@@ -18,12 +18,14 @@ set(lattedock-app_SRCS
     universalsettings.cpp
     layoutmanager.cpp
     layoutsettings.cpp
+    layoutconfigdialog.cpp
     importer.cpp
     main.cpp
 )
 
 set(latte_dbusXML dbus/org.kde.LatteDock.xml)
 qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} dockcorona.h Latte::DockCorona lattedockadaptor)
+ki18n_wrap_ui(lattedock-app_SRCS layoutconfigdialog.ui)
 
 add_executable(latte-dock ${lattedock-app_SRCS})
 

@@ -114,22 +114,9 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    text: i18n("Import")
-                    enabled: false
-                    onClicked: {
-                        globalSettings.importConfiguration()
-                    }
+                    text: i18n("Layouts")
+                    onClicked: dock.showLayoutConfigDialog()
                 }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Export")
-                    enabled: false
-                    onClicked: {
-                        globalSettings.exportConfiguration()
-                    }
-                }
-
             }
         }
         //! END: Layout

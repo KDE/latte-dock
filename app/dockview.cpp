@@ -1056,7 +1056,7 @@ void DockView::setMaskArea(QRect area)
         setMask(fixedMask);
     }
 
-    //qDebug() << "dock mask set:" << m_maskArea;
+    qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
 }
 
@@ -1229,6 +1229,15 @@ bool DockView::tasksPresent()
     }
 
     return false;
+}
+
+void DockView::showLayoutConfigDialog()
+{
+
+    if (!m_layoutConfigDialog)
+        m_layoutConfigDialog = new LayoutConfigDialog(nullptr);
+
+    m_layoutConfigDialog->show();
 }
 
 //!check if the plasmoid with _name_ exists in the midedata
@@ -1908,5 +1917,6 @@ void DockView::restoreConfig()
 }
 //!END configuration functions
 
+QPointer<LayoutConfigDialog> DockView::m_layoutConfigDialog;
 }
 //!END namespace

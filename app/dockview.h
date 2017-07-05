@@ -25,6 +25,7 @@
 #include "plasmaquick/containmentview.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/dock.h"
+#include "layoutconfigdialog.h"
 
 #include <QQuickView>
 #include <QQmlListProperty>
@@ -179,6 +180,8 @@ public slots:
     Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
 
+    Q_INVOKABLE void showLayoutConfigDialog();
+
     Q_INVOKABLE void closeApplication();
 
     void updateAbsDockGeometry(bool bypassChecks = false);
@@ -274,6 +277,8 @@ private:
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
     QPointer<QScreen> m_screenToFollow;
+    static QPointer<LayoutConfigDialog> m_layoutConfigDialog;
+
     QString m_screenToFollowId;
 
     QTimer m_screenSyncTimer;
