@@ -41,16 +41,16 @@ public:
     ~LayoutConfigDialog();
 
 private slots:
+    // auto connections
     void on_copyButton_clicked();
     void on_removeButton_clicked();
     void on_importButton_clicked();
     void on_exportButton_clicked();
 
-    void on_okButton_clicked();
-    void on_applyButton_cliked();
-    void on_cancelButton_clicked();
-    void on_resetButton_clicked();
-
+    void accept() override;
+    void reject() override;
+    void apply();
+    void restoreDefaults();
 
 private:
     Ui::LayoutConfigDialog* ui;

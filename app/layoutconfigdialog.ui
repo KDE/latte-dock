@@ -27,8 +27,8 @@
       <attribute name="title">
        <string>Layouts</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
         <widget class="QTableView" name="layoutsView">
          <property name="showGrid">
           <bool>false</bool>
@@ -44,7 +44,7 @@
          </attribute>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item>
         <widget class="QWidget" name="widget" native="true">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -119,8 +119,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>254</x>
+     <y>341</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -135,8 +135,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>322</x>
+     <y>341</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

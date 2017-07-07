@@ -28,6 +28,11 @@ Latte::LayoutConfigDialog::LayoutConfigDialog(QWidget* parent)
     ui->setupUi(this);
 
     setAttribute(Qt::WA_DeleteOnClose, true);
+
+    connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
+    , this, &LayoutConfigDialog::apply);
+    connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
+    , this, &LayoutConfigDialog::restoreDefaults);
 }
 
 Latte::LayoutConfigDialog::~LayoutConfigDialog()
@@ -55,22 +60,26 @@ void Latte::LayoutConfigDialog::on_exportButton_clicked()
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::on_okButton_clicked()
+void Latte::LayoutConfigDialog::accept()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    setVisible(false);
+}
+
+void Latte::LayoutConfigDialog::reject()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    setVisible(false);
+}
+
+void Latte::LayoutConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::on_applyButton_cliked()
-{
-    qDebug() << Q_FUNC_INFO;
-}
-
-void Latte::LayoutConfigDialog::on_cancelButton_clicked()
-{
-    qDebug() << Q_FUNC_INFO;
-}
-
-void Latte::LayoutConfigDialog::on_resetButton_clicked()
+void Latte::LayoutConfigDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 }
