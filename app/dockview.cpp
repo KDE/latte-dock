@@ -1231,15 +1231,6 @@ bool DockView::tasksPresent()
     return false;
 }
 
-void DockView::showLayoutConfigDialog()
-{
-
-    if (!m_layoutConfigDialog)
-        m_layoutConfigDialog = new LayoutConfigDialog(nullptr);
-
-    m_layoutConfigDialog->show();
-}
-
 //!check if the plasmoid with _name_ exists in the midedata
 bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
 {
@@ -1917,6 +1908,5 @@ void DockView::restoreConfig()
 }
 //!END configuration functions
 
-QPointer<LayoutConfigDialog> DockView::m_layoutConfigDialog;
 }
 //!END namespace

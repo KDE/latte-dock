@@ -24,6 +24,7 @@
 #include "dockcorona.h"
 #include "importer.h"
 #include "layoutsettings.h"
+#include "layoutconfigdialog.h"
 
 #include <QAction>
 #include <QObject>
@@ -66,12 +67,15 @@ public:
 
     LayoutSettings *currentLayout();
 
+
 public slots:
     //! switch to specified layout
     Q_INVOKABLE bool switchToLayout(QString layoutName);
 
     //! creates a new layout with layoutName based on the preset
-    Q_INVOKABLE QString newLayout(QString layoutName, QString preset = QString(i18n("Default")));
+    Q_INVOKABLE QString newLayout(QString layoutName, QString preset = i18n("Default"));
+
+    Q_INVOKABLE void showLayoutConfigDialog();
 
 signals:
     void addWidgetsActionChanged();
@@ -102,6 +106,8 @@ private:
 
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_toggleLayoutAction{nullptr};
+
+    QPointer<LayoutConfigDialog> m_layoutConfigDialog;
 };
 
 }

@@ -26,7 +26,8 @@ Latte::LayoutConfigDialog::LayoutConfigDialog(QWidget* parent)
 : QDialog(parent), ui(new Ui::LayoutConfigDialog)
 {
     ui->setupUi(this);
-    //QMetaObject::connectSlotsByName(this);
+
+    setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 Latte::LayoutConfigDialog::~LayoutConfigDialog()

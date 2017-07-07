@@ -228,6 +228,14 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     return newLayoutPath;
 }
 
+void LayoutManager::showLayoutConfigDialog()
+{
+    if (!m_layoutConfigDialog)
+        m_layoutConfigDialog = new LayoutConfigDialog(nullptr);
+
+    m_layoutConfigDialog->show();
+}
+
 void LayoutManager::showWidgetsExplorer()
 {
     QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());

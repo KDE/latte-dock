@@ -115,7 +115,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Layouts")
-                    onClicked: dock.showLayoutConfigDialog()
+                    onClicked: layoutManager.showLayoutConfigDialog()
                 }
             }
         }
