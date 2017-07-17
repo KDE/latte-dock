@@ -55,16 +55,6 @@ bool Importer::updateOldConfiguration()
     importOldLayout(QDir::homePath() + "/.config/lattedock-appletsrc", i18n("My Layout"));
     importOldLayout(QDir::homePath() + "/.config/lattedock-appletsrc", i18n("Alternative"), true);
 
-    //! global settings that must be imported to universal
-    KSharedConfigPtr oldFile = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock-appletsrc");
-    KConfigGroup oldGeneralSettings = KConfigGroup(oldFile, "General");
-    bool exposeLayoutsMenu = oldGeneralSettings.readEntry("exposeAltSession", false);
-
-    if (m_manager) {
-        m_manager->corona()->universalSettings()->setExposeLayoutsMenu(exposeLayoutsMenu);
-    }
-
-
     QFile extFile(QDir::homePath() + "/.config/lattedockextrc");
 
     //! import also the old user layouts into the new architecture

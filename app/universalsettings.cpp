@@ -29,7 +29,6 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
 {
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::exposeLayoutsMenuChanged, this, &UniversalSettings::saveConfig);
 }
 
 UniversalSettings::~UniversalSettings()
@@ -50,22 +49,6 @@ void UniversalSettings::load()
     //! load configuration
     loadConfig();
 }
-
-bool UniversalSettings::exposeLayoutsMenu() const
-{
-    return m_exposeLayoutsMenu;
-}
-
-void UniversalSettings::setExposeLayoutsMenu(bool state)
-{
-    if (m_exposeLayoutsMenu == state) {
-        return;
-    }
-
-    m_exposeLayoutsMenu = state;
-    emit exposeLayoutsMenuChanged();
-}
-
 
 int UniversalSettings::version() const
 {
@@ -139,14 +122,12 @@ void UniversalSettings::setAutostart(bool state)
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
-    m_exposeLayoutsMenu = m_universalGroup.readEntry("exposeLayoutsMenu", false);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
 }
 
 void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
-    m_universalGroup.writeEntry("exposeLayoutsMenu", m_exposeLayoutsMenu);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
 
     m_universalGroup.sync();
