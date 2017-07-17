@@ -47,13 +47,14 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     m_model = new QStandardItemModel(manager->layouts().count(), 5, this);
 
-    m_model->setHorizontalHeaderItem(0, new QStandardItem(QString("id")));
+    m_model->setHorizontalHeaderItem(0, new QStandardItem(QString("#")));
     m_model->setHorizontalHeaderItem(1, new QStandardItem(QString(i18n("Color"))));
     m_model->setHorizontalHeaderItem(2, new QStandardItem(QString(i18n("Name"))));
     m_model->setHorizontalHeaderItem(3, new QStandardItem(QString(i18n("In Menu"))));
     m_model->setHorizontalHeaderItem(4, new QStandardItem(QString(i18n("Activities"))));
 
     ui->layoutsView->setModel(m_model);
+    ui->layoutsView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::currentLayoutNameChanged);
 
@@ -158,6 +159,10 @@ void LayoutConfigDialog::loadLayouts()
         QStandardItem *activities = new QStandardItem(layoutSets.activities().join(","));
         activities->setEditable(false);
         m_model->setItem(i - 1, 4, activities);
+
+        if (layoutSets.name() == m_manager->currentLayoutName()) {
+            ui->layoutsView->selectRow(i - 1);
+        }
     }
 }
 
@@ -182,6 +187,7 @@ void LayoutConfigDialog::currentLayoutNameChanged()
 
             if (m_manager->currentLayoutName() == value.toString()) {
                 font.setBold(true);
+                ui->layoutsView->selectRow(i);
             } else {
                 font.setBold(false);
             }
