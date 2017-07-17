@@ -158,16 +158,6 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show Alternative Session in the context menu")
-                checked: universalSettings.exposeLayoutsMenu
-
-                onClicked: {
-                    universalSettings.exposeLayoutsMenu = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise dock on desktop change")
                 checked: dock.visibility.raiseOnDesktop
                 enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
