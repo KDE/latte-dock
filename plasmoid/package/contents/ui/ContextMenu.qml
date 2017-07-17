@@ -790,26 +790,48 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: altSession
-        visible: latteDock && latteDock.universalSettings.exposeLayoutsMenu
+        id: layoutsMenuItem
+
+        visible: latteDock && latteDock.universalLayoutManager.menuLayouts.length>1
+        enabled: visible
 
         icon: "user-identity"
-        text: i18n("Alternative Layout")
-        checkable: true
+        text: i18n("Layouts")
 
-        Component.onCompleted: {
-            checked = latteDock ? latteDock.universalLayoutManager.toggleLayoutAction.checked : false;
-        }
 
-        onClicked: {
-            //fix a crash that when going to Alternative Layout through Context Menu,
-            //animations are played during the destruction and because of that Latte.IconItem is crashing
-            menu.changingLayout = true;
-            root.disableRestoreZoom = false;
-            root.clearZoom();
-            if (latteDock)
-                latteDock.clearZoom();
-            changeToAlternativeSessionTimer.start();
+        PlasmaComponents.ContextMenu {
+            id: layoutsMenu
+
+            visualParent: layoutsMenuItem.action
+
+            function refresh() {
+                clearMenuItems();
+
+                if (latteDock.universalLayoutManager.menuLayouts.length <= 1) {
+                    return;
+                }
+
+                var layouts = latteDock.universalLayoutManager.menuLayouts;
+                for (var i = 0; i < layouts.length; ++i) {
+                    var layout = layouts[i];
+
+                    var menuItem = menu.newMenuItem(layoutsMenu);
+                    menuItem.text = layout;
+                    menuItem.checkable = true;
+                    menuItem.checked = Qt.binding( (function(layout) {
+                        return function() {
+                            return (layout===latteDock.universalSettings.currentLayoutName);
+                        };
+                    })(layout));
+                    menuItem.clicked.connect((function(layout) {
+                        return function () {
+                            return latteDock.universalLayoutManager.switchToLayout(layout);
+                        };
+                    })(layout));
+                }
+            }
+
+            Component.onCompleted: refresh()
         }
     }
 
