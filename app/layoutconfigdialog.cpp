@@ -38,6 +38,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 {
     ui->setupUi(this);
 
+    setWindowTitle(i18n("Layouts Editor"));
+
     setAttribute(Qt::WA_DeleteOnClose, true);
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
@@ -55,6 +57,9 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     ui->layoutsView->setModel(m_model);
     ui->layoutsView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    //! this line should be commented for debugging layouts window functionality
+    ui->layoutsView->setColumnHidden(0, true);
 
     connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::currentLayoutNameChanged);
 
@@ -128,12 +133,21 @@ void LayoutConfigDialog::loadLayouts()
                  << layoutSets.showInMenu() << " - " << layoutSets.activities();
 
         QStandardItem *id = new QStandardItem(QString::number(i));
+        id->setTextAlignment(Qt::AlignCenter);
         m_model->setItem(i - 1, 0, id);
 
         QStandardItem *color = new QStandardItem();
         color->setEditable(false);
+
+        QString colorPath = m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/" + layoutSets.color() + "print.jpg";
+        qDebug() << "coloring path :::: " << colorPath;
+
+        QBrush colorBrush;
+        colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
+        color->setBackground(colorBrush);
         m_model->setItem(i - 1, 1, color);
-        m_model->setData(m_model->index(i - 1, 1), QColor(layoutSets.color()), Qt::BackgroundRole);
+
+        //m_model->setData(m_model->index(i - 1, 1), QColor(layoutSets.color()), Qt::BackgroundRole);
 
         QStandardItem *name = new QStandardItem(layoutSets.name());
 
@@ -144,6 +158,8 @@ void LayoutConfigDialog::loadLayouts()
         } else {
             font.setBold(false);
         }
+
+        name->setTextAlignment(Qt::AlignCenter);
 
         m_model->setItem(i - 1, 2, name);
         m_model->setData(m_model->index(i - 1, 2), font, Qt::FontRole);
