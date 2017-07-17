@@ -125,8 +125,9 @@ void LayoutConfigDialog::loadLayouts()
         QStandardItem *id = new QStandardItem(QString::number(i));
         m_model->setItem(i - 1, 0, id);
 
-        QStandardItem *color = new QStandardItem(layoutSets.color());
+        QStandardItem *color = new QStandardItem();
         m_model->setItem(i - 1, 1, color);
+        m_model->setData(m_model->index(i - 1, 1), QColor(layoutSets.color()), Qt::BackgroundRole);
 
         QStandardItem *name = new QStandardItem(layoutSets.name());
         m_model->setItem(i - 1, 2, name);
