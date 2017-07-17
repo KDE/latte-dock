@@ -91,14 +91,16 @@ void LayoutConfigDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;
 
-    setVisible(false);
+    //setVisible(false);
+    deleteLater();
 }
 
 void LayoutConfigDialog::reject()
 {
     qDebug() << Q_FUNC_INFO;
 
-    setVisible(false);
+    //setVisible(false);
+    deleteLater();
 }
 
 void LayoutConfigDialog::apply()
@@ -131,7 +133,17 @@ void LayoutConfigDialog::loadLayouts()
         m_model->setData(m_model->index(i - 1, 1), QColor(layoutSets.color()), Qt::BackgroundRole);
 
         QStandardItem *name = new QStandardItem(layoutSets.name());
+
+        QFont font;
+
+        if (layoutSets.name() == m_manager->currentLayoutName()) {
+            font.setBold(true);
+        } else {
+            font.setBold(false);
+        }
+
         m_model->setItem(i - 1, 2, name);
+        m_model->setData(m_model->index(i - 1, 2), font, Qt::FontRole);
 
         //QString menuText = layoutSets.showInMenu() ? QString::fromUtf8("\u2714") : "";
         QStandardItem *menu = new QStandardItem();
