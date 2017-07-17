@@ -1782,8 +1782,33 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
         desktopMenu->addSeparator();
 
-        if (dockCorona && dockCorona->universalSettings()->exposeLayoutsMenu()) {
-            desktopMenu->addAction(dockCorona->layoutManager()->toggleLayoutAction());
+        if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
+            const QIcon identityIcon = QIcon::fromTheme("user-identity");
+            QMenu *layoutsMenu = new QMenu(desktopMenu);
+
+            QAction *layoutsAction = desktopMenu->addMenu(layoutsMenu); //  new QAction(identityIcon, i18n("Layouts"), desktopMenu);
+            layoutsAction->setIcon(identityIcon);
+            layoutsAction->setCheckable(false);
+            layoutsAction->setText(i18n("Layouts"));
+            layoutsAction->setStatusTip(i18n("Switch to another layout"));
+
+            foreach (auto layout, dockCorona->layoutManager()->menuLayouts()) {
+                QAction *layoutAction = new QAction(layout, layoutsMenu);
+                layoutAction->setCheckable(true);
+
+                if (layout == dockCorona->universalSettings()->currentLayoutName()) {
+                    layoutAction->setChecked(true);
+                } else {
+                    layoutAction->setChecked(false);
+                }
+
+                connect(layoutAction, &QAction::triggered, this, [this, dockCorona, layout] {
+                    dockCorona->layoutManager()->switchToLayout(layout);
+                });
+
+                layoutsMenu->addAction(layoutAction);
+            }
+
         }
 
         desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
