@@ -58,9 +58,11 @@ LayoutSettings::~LayoutSettings()
 
 void LayoutSettings::init()
 {
+    connect(this, &LayoutSettings::activitiesChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::versionChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::colorChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::syncLaunchersChanged, this, &LayoutSettings::saveConfig);
+    connect(this, &LayoutSettings::showInMenuChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::globalLaunchersChanged, this, &LayoutSettings::saveConfig);
 }
 
@@ -78,6 +80,21 @@ void LayoutSettings::setVersion(int ver)
     m_version = ver;
 
     emit versionChanged();
+}
+
+bool LayoutSettings::showInMenu() const
+{
+    return m_showInMenu;
+}
+
+void LayoutSettings::setShowInMenu(bool show)
+{
+    if (m_showInMenu == show) {
+        return;
+    }
+
+    m_showInMenu = show;
+    emit showInMenuChanged();
 }
 
 QString LayoutSettings::name() const
@@ -160,11 +177,29 @@ void LayoutSettings::setGlobalLaunchers(QStringList launchers)
     emit globalLaunchersChanged();
 }
 
+QStringList LayoutSettings::activities() const
+{
+    return m_activities;
+}
+
+void  LayoutSettings::setActivities(QStringList activities)
+{
+    if (m_activities == activities) {
+        return;
+    }
+
+    m_activities = activities;
+
+    emit activitiesChanged();
+}
+
 void LayoutSettings::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
+    m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
     m_syncLaunchers = m_layoutGroup.readEntry("syncLaunchers", false);
+    m_activities = m_layoutGroup.readEntry("activities", QStringList());
     m_globalLaunchers = m_layoutGroup.readEntry("globalLaunchers", QStringList());
 }
 
@@ -172,9 +207,11 @@ void LayoutSettings::saveConfig()
 {
     qDebug() << "layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("version", m_version);
+    m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("color", m_color);
     m_layoutGroup.writeEntry("syncLaunchers", m_syncLaunchers);
     m_layoutGroup.writeEntry("globalLaunchers", m_globalLaunchers);
+    m_layoutGroup.writeEntry("activities", m_activities);
 }
 
 }

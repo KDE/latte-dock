@@ -37,14 +37,25 @@ namespace Latte {
 //! its general settings (no the containments)
 class LayoutSettings : public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
     Q_PROPERTY(bool syncLaunchers READ syncLaunchers WRITE setSyncLaunchers NOTIFY syncLaunchersChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QStringList globalLaunchers READ globalLaunchers WRITE setGlobalLaunchers NOTIFY globalLaunchersChanged)
+    Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
 public:
     LayoutSettings(QObject *parent, QString layoutFile, QString layoutName = QString());
     ~LayoutSettings() override;
+
+    bool showInMenu() const;
+    void setShowInMenu(bool show);
+
+    bool syncLaunchers() const;
+    void setSyncLaunchers(bool sync);
+
+    int version() const;
+    void setVersion(int ver);
 
     QString name() const;
     QString file() const;
@@ -52,21 +63,20 @@ public:
     QString color() const;
     void setColor(QString color);
 
+    QStringList activities() const;
+    void setActivities(QStringList activities);
+
     QStringList globalLaunchers() const;
     void setGlobalLaunchers(QStringList launchers);
 
-    int version() const;
-    void setVersion(int ver);
-
-    bool syncLaunchers() const;
-    void setSyncLaunchers(bool sync);
-
 signals:
+    void activitiesChanged();
     void colorChanged();
     void fileChanged();
     void globalLaunchersChanged();
     void nameChanged();
     void versionChanged();
+    void showInMenuChanged();
     void syncLaunchersChanged();
 
 private slots:
@@ -79,6 +89,7 @@ private:
     void setFile(QString file);
 
 private:
+    bool m_showInMenu{false};
     bool m_syncLaunchers{false};
     //if version doesnt exist it is and old layout file
     int m_version{2};
@@ -86,6 +97,7 @@ private:
     QString m_color;
     QString m_layoutFile;
     QString m_layoutName;
+    QStringList m_activities;
     QStringList m_globalLaunchers;
 
     DockCorona *m_corona{nullptr};
