@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>491</width>
-    <height>348</height>
+    <width>650</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,6 +48,13 @@
         <widget class="QWidget" name="widget" native="true">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
+           <widget class="QPushButton" name="switchButton">
+            <property name="text">
+             <string>Switch</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="copyButton">
             <property name="text">
              <string>Copy</string>
@@ -58,6 +65,13 @@
            <widget class="QPushButton" name="removeButton">
             <property name="text">
              <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>

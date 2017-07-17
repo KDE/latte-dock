@@ -68,7 +68,8 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.ComboBox {
                     id: layoutCmb
-                    Layout.preferredWidth: 0.5 * dialog.maxWidth
+                    Layout.minimumWidth: 0.6 * dialog.maxWidth
+                    Layout.preferredWidth: Layout.minimumWidth
 
                     property var layoutTexts: [];
                     property var layouts;
@@ -114,7 +115,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    text: i18n("Layouts")
+                    text: i18n("Configure...")
                     onClicked: layoutManager.showLayoutConfigDialog()
                 }
             }
