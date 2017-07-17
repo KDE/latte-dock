@@ -178,6 +178,8 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     newLayout.setSyncLaunchers(syncLaunchers);
     newLayout.setGlobalLaunchers(globalLaunchers);
 
+    newLayout.setShowInMenu(true);
+
     if (alternative) {
         newLayout.setColor("purple");
     }

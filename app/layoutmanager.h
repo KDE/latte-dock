@@ -44,6 +44,7 @@ class LayoutManager : public QObject {
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName NOTIFY currentLayoutNameChanged)
 
     Q_PROPERTY(QStringList layouts READ layouts NOTIFY layoutsChanged)
+    Q_PROPERTY(QStringList menuLayouts READ menuLayouts NOTIFY menuLayoutsChanged)
 
     Q_PROPERTY(QAction *toggleLayoutAction READ toggleLayoutAction NOTIFY toggleLayoutActionChanged)
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
@@ -61,6 +62,7 @@ public:
     QString currentLayoutName() const;
 
     QStringList layouts() const;
+    QStringList menuLayouts() const;
 
     QAction *addWidgetsAction();
     QAction *toggleLayoutAction();
@@ -82,6 +84,7 @@ signals:
     void currentLayoutChanged();
     void currentLayoutNameChanged();
     void layoutsChanged();
+    void menuLayoutsChanged();
     void toggleLayoutActionChanged();
 
 private slots:
@@ -103,6 +106,7 @@ private:
     QString m_lastNonAlternativeLayout{QString(i18n("My Layout"))};
 
     QStringList m_layouts;
+    QStringList m_menuLayouts;
 
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_toggleLayoutAction{nullptr};

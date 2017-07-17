@@ -77,7 +77,7 @@ PlasmaComponents.Page {
                     Component.onCompleted: loadLayouts();
 
                     function loadLayouts(){
-                        layouts = layoutManager.layouts;
+                        layouts = layoutManager.menuLayouts;
 
                         var activeLayout = 0;
 

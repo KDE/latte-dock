@@ -122,6 +122,11 @@ QStringList LayoutManager::layouts() const
     return m_layouts;
 }
 
+QStringList LayoutManager::menuLayouts() const
+{
+    return m_menuLayouts;
+}
+
 QString LayoutManager::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
@@ -145,6 +150,7 @@ void LayoutManager::toggleLayout()
 void LayoutManager::loadLayouts()
 {
     m_layouts.clear();
+    m_menuLayouts.clear();
 
     QDir layoutDir(QDir::homePath() + "/.config/latte");
     QStringList filter;
@@ -152,13 +158,19 @@ void LayoutManager::loadLayouts()
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     foreach (auto layout, files) {
-        int ext = layout.lastIndexOf(".layout.latte");
-        QString layoutName = layout.remove(ext, 13);
+        LayoutSettings layoutSets(this, layoutDir.absolutePath() + "/" + layout);
+        //int ext = layout.lastIndexOf(".layout.latte");
+        //QString layoutName = layout.remove(ext, 13);
 
-        m_layouts.append(layoutName);
+        m_layouts.append(layoutSets.name());
+
+        if (layoutSets.showInMenu()) {
+            m_menuLayouts.append(layoutSets.name());
+        }
     }
 
     emit layoutsChanged();
+    emit menuLayoutsChanged();
 }
 
 bool LayoutManager::switchToLayout(QString layoutName)
