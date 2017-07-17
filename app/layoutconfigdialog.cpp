@@ -21,67 +21,124 @@
 
 #include "ui_layoutconfigdialog.h"
 #include "layoutconfigdialog.h"
+#include "layoutsettings.h"
 
-Latte::LayoutConfigDialog::LayoutConfigDialog(QWidget* parent)
-: QDialog(parent), ui(new Ui::LayoutConfigDialog)
+#include <QDir>
+#include <QStandardItem>
+#include <QStandardItemModel>
+
+#include <KLocalizedString>
+
+namespace Latte {
+
+LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
+    : QDialog(parent),
+      ui(new Ui::LayoutConfigDialog),
+      m_manager(manager)
 {
     ui->setupUi(this);
 
     setAttribute(Qt::WA_DeleteOnClose, true);
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
-    , this, &LayoutConfigDialog::apply);
+            , this, &LayoutConfigDialog::apply);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
-    , this, &LayoutConfigDialog::restoreDefaults);
+            , this, &LayoutConfigDialog::restoreDefaults);
+
+    m_model = new QStandardItemModel(manager->layouts().count(), 5, this);
+
+    m_model->setHorizontalHeaderItem(0, new QStandardItem(QString("id")));
+    m_model->setHorizontalHeaderItem(1, new QStandardItem(QString(i18n("Color"))));
+    m_model->setHorizontalHeaderItem(2, new QStandardItem(QString(i18n("Name"))));
+    m_model->setHorizontalHeaderItem(3, new QStandardItem(QString(i18n("Menu"))));
+    m_model->setHorizontalHeaderItem(4, new QStandardItem(QString(i18n("Activities"))));
+
+    ui->layoutsView->setModel(m_model);
+
+    loadLayouts();
 }
 
-Latte::LayoutConfigDialog::~LayoutConfigDialog()
+LayoutConfigDialog::~LayoutConfigDialog()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (m_model) {
+        delete m_model;
+    }
+}
+
+void LayoutConfigDialog::on_copyButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::on_copyButton_clicked()
+void LayoutConfigDialog::on_removeButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::on_removeButton_clicked()
+void LayoutConfigDialog::on_importButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::on_importButton_clicked()
+void LayoutConfigDialog::on_exportButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::on_exportButton_clicked()
-{
-    qDebug() << Q_FUNC_INFO;
-}
-
-void Latte::LayoutConfigDialog::accept()
+void LayoutConfigDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;
 
     setVisible(false);
 }
 
-void Latte::LayoutConfigDialog::reject()
+void LayoutConfigDialog::reject()
 {
     qDebug() << Q_FUNC_INFO;
 
     setVisible(false);
 }
 
-void Latte::LayoutConfigDialog::apply()
+void LayoutConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Latte::LayoutConfigDialog::restoreDefaults()
+void LayoutConfigDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 }
 
+void LayoutConfigDialog::loadLayouts()
+{
+    int i = 0;
+
+    foreach (auto layout, m_manager->layouts()) {
+        i++;
+        LayoutSettings layoutSets(this, QDir::homePath() + "/.config/latte/" + layout + ".layout.latte");
+
+        qDebug() << i << ". " << layoutSets.name() << " - " << layoutSets.color() << " - "
+                 << layoutSets.showInMenu() << " - " << layoutSets.activities();
+
+        QStandardItem *id = new QStandardItem(QString::number(i));
+        m_model->setItem(i - 1, 0, id);
+
+        QStandardItem *color = new QStandardItem(layoutSets.color());
+        m_model->setItem(i - 1, 1, color);
+
+        QStandardItem *name = new QStandardItem(layoutSets.name());
+        m_model->setItem(i - 1, 2, name);
+
+        QString menuText = layoutSets.showInMenu() ? "true" : "false";
+        QStandardItem *menu = new QStandardItem(menuText);
+        m_model->setItem(i - 1, 3, menu);
+
+        QStandardItem *activities = new QStandardItem(layoutSets.activities().join(","));
+        m_model->setItem(i - 1, 4, activities);
+    }
+}
+
+}//end of namespace
 

@@ -52,8 +52,10 @@ LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layo
 
 LayoutSettings::~LayoutSettings()
 {
-    saveConfig();
-    m_layoutGroup.sync();
+    if (!m_layoutFile.isEmpty()) {
+        saveConfig();
+        m_layoutGroup.sync();
+    }
 }
 
 void LayoutSettings::init()

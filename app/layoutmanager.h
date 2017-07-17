@@ -33,6 +33,7 @@
 
 class Importer;
 class LayoutSettings;
+class LayoutConfigDialog;
 
 namespace Latte {
 

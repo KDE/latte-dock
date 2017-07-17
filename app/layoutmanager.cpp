@@ -159,8 +159,6 @@ void LayoutManager::loadLayouts()
 
     foreach (auto layout, files) {
         LayoutSettings layoutSets(this, layoutDir.absolutePath() + "/" + layout);
-        //int ext = layout.lastIndexOf(".layout.latte");
-        //QString layoutName = layout.remove(ext, 13);
 
         m_layouts.append(layoutSets.name());
 
@@ -243,7 +241,7 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
 void LayoutManager::showLayoutConfigDialog()
 {
     if (!m_layoutConfigDialog)
-        m_layoutConfigDialog = new LayoutConfigDialog(nullptr);
+        m_layoutConfigDialog = new LayoutConfigDialog(nullptr, this);
 
     m_layoutConfigDialog->show();
 }

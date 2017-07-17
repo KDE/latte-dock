@@ -25,19 +25,24 @@
 #include <QObject>
 #include <QDialog>
 #include <QDebug>
+#include <QStandardItemModel>
 
-namespace Ui
-{
+#include "layoutmanager.h"
+
+namespace Ui {
 class LayoutConfigDialog;
 }
 
 namespace Latte {
+class LayoutManager;
+}
 
-class LayoutConfigDialog : public QDialog
-{
+namespace Latte {
+
+class LayoutConfigDialog : public QDialog {
     Q_OBJECT
 public:
-    LayoutConfigDialog(QWidget *parent);
+    LayoutConfigDialog(QWidget *parent, LayoutManager *corona);
     ~LayoutConfigDialog();
 
 private slots:
@@ -53,7 +58,12 @@ private slots:
     void restoreDefaults();
 
 private:
-    Ui::LayoutConfigDialog* ui;
+    void loadLayouts();
+
+    LayoutManager *m_manager{nullptr};
+
+    QStandardItemModel *m_model{nullptr};
+    Ui::LayoutConfigDialog *ui;
 };
 
 }
