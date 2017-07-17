@@ -55,6 +55,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     ui->layoutsView->setModel(m_model);
 
+    connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::currentLayoutNameChanged);
+
     loadLayouts();
 }
 
@@ -156,6 +158,36 @@ void LayoutConfigDialog::loadLayouts()
         QStandardItem *activities = new QStandardItem(layoutSets.activities().join(","));
         activities->setEditable(false);
         m_model->setItem(i - 1, 4, activities);
+    }
+}
+
+void LayoutConfigDialog::on_switchButton_clicked()
+{
+    QString sRec = "not valid column";
+    QVariant value = m_model->data(ui->layoutsView->currentIndex(), 2);
+
+    if (value.isValid()) {
+        m_manager->switchToLayout(value.toString());
+    }
+}
+
+void LayoutConfigDialog::currentLayoutNameChanged()
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QModelIndex nameIndex = m_model->index(i, 2);
+        QVariant value = m_model->data(nameIndex);
+
+        if (value.isValid()) {
+            QFont font;
+
+            if (m_manager->currentLayoutName() == value.toString()) {
+                font.setBold(true);
+            } else {
+                font.setBold(false);
+            }
+
+            m_model->setData(nameIndex, font, Qt::FontRole);
+        }
     }
 }
 

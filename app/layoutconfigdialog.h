@@ -49,6 +49,7 @@ private slots:
     // auto connections
     void on_copyButton_clicked();
     void on_removeButton_clicked();
+    void on_switchButton_clicked();
     void on_importButton_clicked();
     void on_exportButton_clicked();
 
@@ -56,6 +57,8 @@ private slots:
     void reject() override;
     void apply();
     void restoreDefaults();
+
+    void currentLayoutNameChanged();
 
 private:
     void loadLayouts();
