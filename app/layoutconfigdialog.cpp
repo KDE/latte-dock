@@ -148,6 +148,7 @@ void LayoutConfigDialog::loadLayouts()
         QBrush colorBrush;
         colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
         color->setBackground(colorBrush);
+        color->setSelectable(false);
         m_model->setItem(i - 1, 1, color);
 
         //m_model->setData(m_model->index(i - 1, 1), QColor(layoutSets.color()), Qt::BackgroundRole);
@@ -171,6 +172,7 @@ void LayoutConfigDialog::loadLayouts()
         QStandardItem *menu = new QStandardItem();
         menu->setTextAlignment(Qt::AlignCenter);
         menu->setEditable(false);
+        menu->setSelectable(false);
         menu->setCheckable(true);
         menu->setCheckState(layoutSets.showInMenu() ? Qt::Checked : Qt::Unchecked);
         m_model->setItem(i - 1, 3, menu);

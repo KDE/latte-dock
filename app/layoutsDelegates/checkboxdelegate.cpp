@@ -14,8 +14,9 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 {
     QStyleOptionViewItem viewItemOption(option);
 
+    const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
     QRect newRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
-                                        QSize(option.decorationSize.width(), option.decorationSize.height()),
+                                        QSize(option.decorationSize.width() - 1.5 * textMargin, option.decorationSize.height()),
                                         QRect(option.rect.x(), option.rect.y(),
                                                 option.rect.width(), option.rect.height()));
     viewItemOption.rect = newRect;
