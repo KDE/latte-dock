@@ -22,6 +22,7 @@
 #include "ui_layoutconfigdialog.h"
 #include "layoutconfigdialog.h"
 #include "layoutsettings.h"
+#include "layoutsDelegates/checkboxdelegate.h"
 
 #include <QDir>
 #include <QStandardItem>
@@ -64,6 +65,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::currentLayoutNameChanged);
 
     loadLayouts();
+
+    ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()

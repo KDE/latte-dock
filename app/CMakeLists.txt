@@ -20,6 +20,7 @@ set(lattedock-app_SRCS
     layoutsettings.cpp
     layoutconfigdialog.cpp
     importer.cpp
+    layoutsDelegates/checkboxdelegate.cpp
     main.cpp
 )
 
