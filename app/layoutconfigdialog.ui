@@ -52,12 +52,21 @@
             <property name="text">
              <string>Switch</string>
             </property>
+            <property name="icon">
+             <iconset theme="user-identity"/>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="copyButton">
             <property name="text">
              <string>Copy</string>
+            </property>
+            <property name="icon">
+             <iconset theme="edit-copy"/>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -66,10 +75,34 @@
             <property name="text">
              <string>Remove</string>
             </property>
+            <property name="icon">
+             <iconset theme="list-remove"/>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="Line" name="line">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -80,6 +113,9 @@
             <property name="text">
              <string>Import</string>
             </property>
+            <property name="icon">
+             <iconset theme="document-import"/>
+            </property>
             <property name="default">
              <bool>false</bool>
             </property>
@@ -89,6 +125,9 @@
            <widget class="QPushButton" name="exportButton">
             <property name="text">
              <string>Export</string>
+            </property>
+            <property name="icon">
+             <iconset theme="document-export"/>
             </property>
            </widget>
           </item>
