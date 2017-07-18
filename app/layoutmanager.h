@@ -70,6 +70,7 @@ public:
 
     LayoutSettings *currentLayout();
 
+    QStringList activities();
 
 public slots:
     //! switch to specified layout

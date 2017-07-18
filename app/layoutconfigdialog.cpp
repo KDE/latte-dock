@@ -24,6 +24,7 @@
 #include "layoutsettings.h"
 #include "layoutsDelegates/checkboxdelegate.h"
 #include "layoutsDelegates/colorcmbboxdelegate.h"
+#include "layoutsDelegates/activitycmbboxdelegate.h"
 
 #include <QDir>
 #include <QStandardItem>
@@ -67,7 +68,6 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     loadLayouts();
 
-    ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
     QString iconsPath(m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
 
     //!find the available colors
@@ -84,6 +84,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     }
 
     ui->layoutsView->setItemDelegateForColumn(1, new ColorCmbBoxDelegate(this, iconsPath, colors));
+    ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(4, new ActivityCmbBoxDelegate(this, m_manager));
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()
@@ -192,7 +194,6 @@ void LayoutConfigDialog::loadLayouts()
         m_model->setItem(i - 1, 3, menu);
 
         QStandardItem *activities = new QStandardItem(layoutSets.activities().join(","));
-        activities->setEditable(false);
         m_model->setItem(i - 1, 4, activities);
 
         if (layoutSets.name() == m_manager->currentLayoutName()) {

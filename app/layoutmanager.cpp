@@ -25,6 +25,7 @@
 #include <QtDBus/QtDBus>
 
 #include <KLocalizedString>
+#include <KActivities/Consumer>
 
 namespace Latte {
 
@@ -125,6 +126,11 @@ QStringList LayoutManager::layouts() const
 QStringList LayoutManager::menuLayouts() const
 {
     return m_menuLayouts;
+}
+
+QStringList LayoutManager::activities()
+{
+    return m_corona->m_activityConsumer->activities();
 }
 
 QString LayoutManager::layoutPath(QString layoutName)
