@@ -90,6 +90,10 @@ public:
     void aboutApplication();
     void closeApplication();
 
+    QStringList activities();
+    QString activityIcon(QString id);
+    QString activityName(QString id);
+
     ScreenPool *screenPool() const;
     GlobalSettings *globalSettings() const;
     UniversalSettings *universalSettings() const;

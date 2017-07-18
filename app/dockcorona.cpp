@@ -48,6 +48,7 @@
 #include <KPackage/PackageLoader>
 #include <KAboutData>
 #include <KActivities/Consumer>
+#include <KActivities/Info>
 
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>
@@ -770,6 +771,33 @@ int DockCorona::docksCount(QScreen *screen) const
 
     // qDebug() << docks << "docks on screen:" << screen;
     return docks;
+}
+
+QStringList DockCorona::activities()
+{
+    return m_activityConsumer->activities();
+}
+
+QString DockCorona::activityName(QString id)
+{
+    KActivities::Info info(id);
+
+    if (info.state() != KActivities::Info::Invalid) {
+        return info.name();
+    }
+
+    return QString();
+}
+
+QString DockCorona::activityIcon(QString id)
+{
+    KActivities::Info info(id);
+
+    if (info.state() != KActivities::Info::Invalid) {
+        return info.icon();
+    }
+
+    return QString();
 }
 
 void DockCorona::closeApplication()
