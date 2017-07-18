@@ -22,6 +22,7 @@ set(lattedock-app_SRCS
     importer.cpp
     layoutsDelegates/checkboxdelegate.cpp
     layoutsDelegates/colorcmbboxdelegate.cpp
+    layoutsDelegates/colorcmbboxitemdelegate.cpp
     main.cpp
 )
 

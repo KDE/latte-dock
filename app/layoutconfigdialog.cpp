@@ -69,7 +69,21 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
     QString iconsPath(m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
-    ui->layoutsView->setItemDelegateForColumn(1, new ColorCmbBoxDelegate(this, iconsPath));
+
+    //!find the available colors
+    QDir layoutDir(iconsPath);
+    QStringList filter;
+    filter.append(QString("*print.jpg"));
+    QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+    QStringList colors;
+
+    foreach (auto file, files) {
+        int colorEnd = file.lastIndexOf("print.jpg");
+        QString color = file.remove(colorEnd, 9);
+        colors.append(color);
+    }
+
+    ui->layoutsView->setItemDelegateForColumn(1, new ColorCmbBoxDelegate(this, iconsPath, colors));
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()
