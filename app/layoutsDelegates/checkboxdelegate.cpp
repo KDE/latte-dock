@@ -4,6 +4,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QPainter>
 
 CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -13,6 +14,14 @@ CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
 void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem viewItemOption(option);
+
+    if (option.state & QStyle::State_Selected) {
+        painter->setBrush(option.palette.highlight());
+        QPen nPen;
+        nPen.setColor(option.palette.highlight().color());
+        painter->setPen(nPen);
+        painter->drawRect(option.rect);
+    }
 
     const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
     QRect newRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
