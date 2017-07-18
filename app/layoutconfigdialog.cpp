@@ -23,6 +23,7 @@
 #include "layoutconfigdialog.h"
 #include "layoutsettings.h"
 #include "layoutsDelegates/checkboxdelegate.h"
+#include "layoutsDelegates/colorcmbboxdelegate.h"
 
 #include <QDir>
 #include <QStandardItem>
@@ -67,6 +68,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     loadLayouts();
 
     ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
+    QString iconsPath(m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
+    ui->layoutsView->setItemDelegateForColumn(1, new ColorCmbBoxDelegate(this, iconsPath));
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()
@@ -140,18 +143,15 @@ void LayoutConfigDialog::loadLayouts()
         m_model->setItem(i - 1, 0, id);
 
         QStandardItem *color = new QStandardItem();
-        color->setEditable(false);
+        //color->setEditable(false);
 
-        QString colorPath = m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/" + layoutSets.color() + "print.jpg";
-        qDebug() << "coloring path :::: " << colorPath;
-
+        /*QString colorPath = m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/" + layoutSets.color() + "print.jpg";
         QBrush colorBrush;
         colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
-        color->setBackground(colorBrush);
+        color->setBackground(colorBrush);*/
         color->setSelectable(false);
         m_model->setItem(i - 1, 1, color);
-
-        //m_model->setData(m_model->index(i - 1, 1), QColor(layoutSets.color()), Qt::BackgroundRole);
+        m_model->setData(m_model->index(i - 1, 1), layoutSets.color(), Qt::BackgroundRole);
 
         QStandardItem *name = new QStandardItem(layoutSets.name());
 

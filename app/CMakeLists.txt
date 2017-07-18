@@ -21,6 +21,7 @@ set(lattedock-app_SRCS
     layoutconfigdialog.cpp
     importer.cpp
     layoutsDelegates/checkboxdelegate.cpp
+    layoutsDelegates/colorcmbboxdelegate.cpp
     main.cpp
 )
 
