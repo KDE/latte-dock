@@ -1,4 +1,5 @@
 #include "colorcmbboxdelegate.h"
+#include "colorcmbboxitemdelegate.h"
 
 #include <QComboBox>
 #include <QDebug>
@@ -19,9 +20,16 @@ ColorCmbBoxDelegate::ColorCmbBoxDelegate(QObject *parent, QString iconsPath, QSt
 QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QComboBox *editor = new QComboBox(parent);
+    editor->setItemDelegate(new ColorCmbBoxItemDelegate(editor, m_iconsPath));
 
     for (unsigned int i = 0; i < Colors.count(); ++i) {
-        editor->addItem(Colors[i]);
+        if (Colors[i] != "sepia") {
+            QPixmap pixmap(50, 50);
+            pixmap.fill(QColor(Colors[i]));
+            QIcon icon(pixmap);
+
+            editor->addItem(icon, Colors[i]);
+        }
     }
 
     return editor;
