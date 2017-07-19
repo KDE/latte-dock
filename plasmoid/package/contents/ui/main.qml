@@ -493,16 +493,18 @@ Item {
     //! the timer makes sure that the animations will have ended and then change to alternative
     //! session
     Timer {
-        id: changeToAlternativeSessionTimer
+        id: switchLayoutTimer
         //this is the animation time needed in order for tasks to restore their zoom first
         interval: 7 * (root.durationTime * units.shortDuration)
+        property string toLayout
+
         onTriggered: {
             if (root.contextMenu) {
                 root.contextMenu.destroy();
                 root.contextMenu = null;
             }
 
-            latteDock.universalLayoutManager.toggleLayoutAction.trigger();
+            latteDock.universalLayoutManager.switchToLayout(toLayout);
         }
     }
 

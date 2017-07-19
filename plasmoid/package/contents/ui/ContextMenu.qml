@@ -825,7 +825,8 @@ PlasmaComponents.ContextMenu {
                     })(layout));
                     menuItem.clicked.connect((function(layout) {
                         return function () {
-                            return latteDock.universalLayoutManager.switchToLayout(layout);
+                            switchLayoutTimer.toLayout = layout;
+                            return switchLayoutTimer.start();
                         };
                     })(layout));
                 }
