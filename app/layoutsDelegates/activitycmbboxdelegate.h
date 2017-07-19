@@ -1,7 +1,7 @@
 #ifndef ACTIVITYCMBBOXDELEGATE_H
 #define ACTIVITYCMBBOXDELEGATE_H
 
-#include "../layoutmanager.h"
+#include "../layoutconfigdialog.h"
 
 #include <QItemDelegate>
 
@@ -16,7 +16,7 @@ class LayoutManager;
 class ActivityCmbBoxDelegate : public QItemDelegate {
     Q_OBJECT
 public:
-    ActivityCmbBoxDelegate(QObject *parent = 0, Latte::LayoutManager *manager = 0);
+    ActivityCmbBoxDelegate(QObject *parent);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -25,8 +25,9 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
-    QStringList m_activities;
-    Latte::LayoutManager *m_manager{nullptr};
+    QString assignedActivitiesText(const QModelIndex &index) const;
+
+    Latte::LayoutConfigDialog *m_configDialog{nullptr};
 };
 
 #endif

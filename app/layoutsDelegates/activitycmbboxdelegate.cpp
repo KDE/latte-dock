@@ -10,11 +10,14 @@
 
 #include <KActivities/Info>
 
-ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent, Latte::LayoutManager *manager)
-    : QItemDelegate(parent),
-      m_manager(manager)
+ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)
+    : QItemDelegate(parent)
 {
-    m_activities = m_manager->activities();
+    auto *configDialog = qobject_cast<Latte::LayoutConfigDialog *>(parent);
+
+    if (configDialog) {
+        m_configDialog = configDialog;
+    }
 }
 
 QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -22,19 +25,29 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
     QComboBox *editor = new QComboBox(parent);
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
+    QStringList availableActivities = m_configDialog->availableActivities();
+    QStringList activities = m_configDialog->activities();
 
-    for (unsigned int i = 0; i < m_activities.count(); ++i) {
+    QStringList shownActivities;
 
-        KActivities::Info info(m_activities[i]);
+    foreach (auto activity, activities) {
+        if (assignedActivities.contains(activity) || availableActivities.contains(activity)) {
+            shownActivities.append(activity);
+        }
+    }
+
+    for (unsigned int i = 0; i < shownActivities.count(); ++i) {
+
+        KActivities::Info info(shownActivities[i]);
 
         QString indicator = "    ";
 
-        if (assignedActivities.contains(m_activities[i])) {
+        if (assignedActivities.contains(shownActivities[i])) {
             indicator = QString::fromUtf8("\u2714") + " ";
         }
 
         if (info.state() != KActivities::Info::Invalid) {
-            editor->addItem(QIcon::fromTheme(info.icon()), QString(indicator + info.name()), QVariant(m_activities[i]));
+            editor->addItem(QIcon::fromTheme(info.icon()), QString(indicator + info.name()), QVariant(shownActivities[i]));
         }
     }
 
@@ -50,11 +63,13 @@ void ActivityCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &i
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
+    int pos = -1;
+
     if (assignedActivities.count() > 0) {
-        comboBox->setCurrentIndex(m_activities.indexOf(assignedActivities[0]));
-    } else {
-        comboBox->setCurrentIndex(-1);
+        pos = comboBox->findData(QVariant(assignedActivities[0]));
     }
+
+    comboBox->setCurrentIndex(pos);
 }
 
 void ActivityCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
@@ -85,8 +100,19 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
     if (assignedActivities.count() > 0) {
-        QString finalText;
+        myOption.text = assignedActivitiesText(index);
+    }
 
+    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+}
+
+QString ActivityCmbBoxDelegate::assignedActivitiesText(const QModelIndex &index) const
+{
+    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
+
+    QString finalText;
+
+    if (assignedActivities.count() > 0) {
         for (int i = 0; i < assignedActivities.count(); ++i) {
             KActivities::Info info(assignedActivities[i]);
 
@@ -98,10 +124,7 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
                 finalText += info.name();
             }
         }
-
-        myOption.text = finalText;
     }
 
-    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    return finalText;
 }
-

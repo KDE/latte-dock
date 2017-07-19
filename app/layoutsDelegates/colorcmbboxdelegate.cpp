@@ -32,6 +32,10 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
         }
     }
 
+    connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
+        editor->clearFocus();
+    });
+
     return editor;
 }
 

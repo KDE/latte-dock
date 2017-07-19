@@ -86,7 +86,9 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     ui->layoutsView->setItemDelegateForColumn(1, new ColorCmbBoxDelegate(this, iconsPath, colors));
     ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
-    ui->layoutsView->setItemDelegateForColumn(4, new ActivityCmbBoxDelegate(this, m_manager));
+    ui->layoutsView->setItemDelegateForColumn(4, new ActivityCmbBoxDelegate(this));
+
+    connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()
@@ -96,6 +98,16 @@ LayoutConfigDialog::~LayoutConfigDialog()
     if (m_model) {
         delete m_model;
     }
+}
+
+QStringList LayoutConfigDialog::activities()
+{
+    return m_manager->activities();
+}
+
+QStringList LayoutConfigDialog::availableActivities()
+{
+    return m_availableActivities;
 }
 
 void LayoutConfigDialog::on_copyButton_clicked()
@@ -197,6 +209,8 @@ void LayoutConfigDialog::loadLayouts()
             ui->layoutsView->selectRow(i - 1);
         }
     }
+
+    recalculateAvailableActivities();
 }
 
 void LayoutConfigDialog::on_switchButton_clicked()
@@ -228,6 +242,31 @@ void LayoutConfigDialog::currentLayoutNameChanged()
             m_model->setData(nameIndex, font, Qt::FontRole);
         }
     }
+}
+
+void LayoutConfigDialog::itemChanged(QStandardItem *item)
+{
+    //! recalculate the available activities
+    if (item->column() == 4) {
+        recalculateAvailableActivities();
+    }
+}
+
+void LayoutConfigDialog::recalculateAvailableActivities()
+{
+    QStringList tempActivities = m_manager->activities();
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QStringList assigned = m_model->data(m_model->index(i, 4), Qt::UserRole).toStringList();
+
+        foreach (auto activity, assigned) {
+            if (tempActivities.contains(activity)) {
+                tempActivities.removeAll(activity);
+            }
+        }
+    }
+
+    m_availableActivities = tempActivities;
 }
 
 }//end of namespace

@@ -45,6 +45,9 @@ public:
     LayoutConfigDialog(QWidget *parent, LayoutManager *corona);
     ~LayoutConfigDialog();
 
+    QStringList activities();
+    QStringList availableActivities();
+
 private slots:
     // auto connections
     void on_copyButton_clicked();
@@ -59,9 +62,13 @@ private slots:
     void restoreDefaults();
 
     void currentLayoutNameChanged();
+    void itemChanged(QStandardItem *item);
 
 private:
     void loadLayouts();
+    void recalculateAvailableActivities();
+
+    QStringList m_availableActivities;
 
     LayoutManager *m_manager{nullptr};
 
