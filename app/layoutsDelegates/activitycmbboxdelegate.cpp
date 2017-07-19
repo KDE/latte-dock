@@ -21,37 +21,56 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
 {
     QComboBox *editor = new QComboBox(parent);
 
+    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
+
     for (unsigned int i = 0; i < m_activities.count(); ++i) {
 
         KActivities::Info info(m_activities[i]);
 
+        QString indicator = "    ";
+
+        if (assignedActivities.contains(m_activities[i])) {
+            indicator = QString::fromUtf8("\u2714") + " ";
+        }
+
         if (info.state() != KActivities::Info::Invalid) {
-            editor->addItem(QIcon::fromTheme(info.icon()), info.name(), QVariant(m_activities[i]));
+            editor->addItem(QIcon::fromTheme(info.icon()), QString(indicator + info.name()), QVariant(m_activities[i]));
         }
     }
+
+    connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
+        editor->clearFocus();
+    });
 
     return editor;
 }
 
 void ActivityCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    //QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    //QString value = index.model()->data(index, Qt::BackgroundRole).toString();
-    //comboBox->setCurrentIndex(Colors.indexOf(value));
+    QComboBox *comboBox = static_cast<QComboBox *>(editor);
+    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
+
+    if (assignedActivities.count() > 0) {
+        comboBox->setCurrentIndex(m_activities.indexOf(assignedActivities[0]));
+    } else {
+        comboBox->setCurrentIndex(-1);
+    }
 }
 
 void ActivityCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
-    for (int i = 0; i < comboBox->count(); ++i) {
-        qDebug() << i << ". " << comboBox->itemData(i);
+    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
+    QString selectedActivity = comboBox->currentData().toString();
+
+    if (assignedActivities.contains(selectedActivity)) {
+        assignedActivities.removeAll(selectedActivity);
+    } else {
+        assignedActivities.append(selectedActivity);
     }
 
-    bool value = index.model()->data(index, Qt::UserRole).toBool();
-    qDebug() << " model ::: " << value;
-
-    //model->setData(index, comboBox->currentText(), Qt::UserDataRole);
+    model->setData(index, assignedActivities, Qt::UserRole);
 }
 
 void ActivityCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -62,17 +81,26 @@ void ActivityCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleO
 void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOption = option;
-    /*  QVariant value = index.data(Qt::BackgroundRole);
 
-      if (value.isValid()) {
-          QString colorPath = m_iconsPath + value.toString() + "print.jpg";
-          QBrush colorBrush;
-          colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
+    QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
-          painter->setBrush(colorBrush);
-          painter->drawRect(QRect(option.rect.x(), option.rect.y(),
-                                  option.rect.width(), option.rect.height()));
-      }*/
+    if (assignedActivities.count() > 0) {
+        QString finalText;
+
+        for (int i = 0; i < assignedActivities.count(); ++i) {
+            KActivities::Info info(assignedActivities[i]);
+
+            if (info.state() != KActivities::Info::Invalid) {
+                if (i > 0) {
+                    finalText += ", ";
+                }
+
+                finalText += info.name();
+            }
+        }
+
+        myOption.text = finalText;
+    }
 
     QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
 }

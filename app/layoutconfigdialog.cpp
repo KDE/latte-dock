@@ -44,6 +44,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     setWindowTitle(i18n("Layouts Editor"));
 
     setAttribute(Qt::WA_DeleteOnClose, true);
+    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &LayoutConfigDialog::apply);
@@ -159,12 +160,7 @@ void LayoutConfigDialog::loadLayouts()
         m_model->setItem(i - 1, 0, id);
 
         QStandardItem *color = new QStandardItem();
-        //color->setEditable(false);
 
-        /*QString colorPath = m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/" + layoutSets.color() + "print.jpg";
-        QBrush colorBrush;
-        colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
-        color->setBackground(colorBrush);*/
         color->setSelectable(false);
         m_model->setItem(i - 1, 1, color);
         m_model->setData(m_model->index(i - 1, 1), layoutSets.color(), Qt::BackgroundRole);
@@ -195,6 +191,7 @@ void LayoutConfigDialog::loadLayouts()
 
         QStandardItem *activities = new QStandardItem(layoutSets.activities().join(","));
         m_model->setItem(i - 1, 4, activities);
+        m_model->setData(m_model->index(i - 1, 4), layoutSets.activities(), Qt::UserRole);
 
         if (layoutSets.name() == m_manager->currentLayoutName()) {
             ui->layoutsView->selectRow(i - 1);
