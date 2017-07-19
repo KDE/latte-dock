@@ -23,7 +23,6 @@ set(lattedock-app_SRCS
     layoutsDelegates/checkboxdelegate.cpp
     layoutsDelegates/colorcmbboxdelegate.cpp
     layoutsDelegates/colorcmbboxitemdelegate.cpp
-    layoutsDelegates/QMultiComboBox.cpp
     layoutsDelegates/activitycmbboxdelegate.cpp
     main.cpp
 )

@@ -1,13 +1,12 @@
 #include "activitycmbboxdelegate.h"
 
+#include <QApplication>
+#include <QComboBox>
 #include <QDebug>
 #include <QWidget>
 #include <QModelIndex>
-#include <QApplication>
 #include <QPainter>
 #include <QString>
-
-#include "QMultiComboBox.h"
 
 #include <KActivities/Info>
 
@@ -20,14 +19,14 @@ ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent, Latte::LayoutMan
 
 QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QMultiComboBox *editor = new QMultiComboBox(parent);
+    QComboBox *editor = new QComboBox(parent);
 
     for (unsigned int i = 0; i < m_activities.count(); ++i) {
 
         KActivities::Info info(m_activities[i]);
 
         if (info.state() != KActivities::Info::Invalid) {
-            editor->addItem(info.name(), QVariant(m_activities[i]));
+            editor->addItem(QIcon::fromTheme(info.icon()), info.name(), QVariant(m_activities[i]));
         }
     }
 
@@ -36,15 +35,23 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
 
 void ActivityCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    QMultiComboBox *comboBox = static_cast<QMultiComboBox *>(editor);
+    //QComboBox *comboBox = static_cast<QComboBox *>(editor);
     //QString value = index.model()->data(index, Qt::BackgroundRole).toString();
     //comboBox->setCurrentIndex(Colors.indexOf(value));
 }
 
 void ActivityCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    //QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    //model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
+    QComboBox *comboBox = static_cast<QComboBox *>(editor);
+
+    for (int i = 0; i < comboBox->count(); ++i) {
+        qDebug() << i << ". " << comboBox->itemData(i);
+    }
+
+    bool value = index.model()->data(index, Qt::UserRole).toBool();
+    qDebug() << " model ::: " << value;
+
+    //model->setData(index, comboBox->currentText(), Qt::UserDataRole);
 }
 
 void ActivityCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const

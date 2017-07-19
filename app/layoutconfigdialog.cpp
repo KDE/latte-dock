@@ -188,7 +188,7 @@ void LayoutConfigDialog::loadLayouts()
         QStandardItem *menu = new QStandardItem();
         menu->setTextAlignment(Qt::AlignCenter);
         menu->setEditable(false);
-        //menu->setSelectable(false);
+        menu->setSelectable(false);
         menu->setCheckable(true);
         menu->setCheckState(layoutSets.showInMenu() ? Qt::Checked : Qt::Unchecked);
         m_model->setItem(i - 1, 3, menu);
