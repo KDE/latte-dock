@@ -198,6 +198,7 @@ void LayoutConfigDialog::loadLayouts()
         name->setTextAlignment(Qt::AlignCenter);
 
         m_model->setItem(i - 1, 2, name);
+        m_model->setData(m_model->index(i - 1, 2), QVariant(layoutSets.name()), Qt::DisplayRole);
         m_model->setData(m_model->index(i - 1, 2), font, Qt::FontRole);
 
         QStandardItem *menu = new QStandardItem();
@@ -221,11 +222,12 @@ void LayoutConfigDialog::loadLayouts()
 
 void LayoutConfigDialog::on_switchButton_clicked()
 {
-    QString sRec = "not valid column";
-    QVariant value = m_model->data(ui->layoutsView->currentIndex(), 2);
+    QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), 2), Qt::DisplayRole);
 
     if (value.isValid()) {
         m_manager->switchToLayout(value.toString());
+    } else {
+        qDebug() << "not valid layout";
     }
 }
 
