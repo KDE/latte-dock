@@ -72,6 +72,6 @@ void ColorCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
                                 option.rect.width(), option.rect.height()));
     }
 
-    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    //QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
 }
 
