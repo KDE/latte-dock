@@ -53,9 +53,13 @@ public:
     QString currentLayoutName() const;
     void setCurrentLayoutName(QString layoutName);
 
+    QSize layoutsWindowSize() const;
+    void setLayoutsWindowSize(QSize);
+
 signals:
     void autostartChanged();
     void currentLayoutNameChanged();
+    void layoutsWindowSizeChanged();
     void versionChanged();
 
 private slots:
@@ -70,6 +74,7 @@ private:
     int m_version{1};
 
     QString m_currentLayoutName;
+    QSize m_layoutsWindowSize{700, 450};
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;

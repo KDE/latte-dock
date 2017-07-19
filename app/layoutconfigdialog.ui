@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>LayoutConfigDialog</class>
  <widget class="QDialog" name="LayoutConfigDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>682</width>
-    <height>462</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string/>
   </property>
@@ -53,7 +45,8 @@
              <string>Switch</string>
             </property>
             <property name="icon">
-             <iconset theme="user-identity"/>
+             <iconset theme="user-identity">
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </widget>
           </item>
@@ -63,7 +56,8 @@
              <string>Copy</string>
             </property>
             <property name="icon">
-             <iconset theme="edit-copy"/>
+             <iconset theme="edit-copy">
+              <normaloff>.</normaloff>.</iconset>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -76,7 +70,8 @@
              <string>Remove</string>
             </property>
             <property name="icon">
-             <iconset theme="list-remove"/>
+             <iconset theme="list-remove">
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </widget>
           </item>
@@ -114,7 +109,8 @@
              <string>Import</string>
             </property>
             <property name="icon">
-             <iconset theme="document-import"/>
+             <iconset theme="document-import">
+              <normaloff>.</normaloff>.</iconset>
             </property>
             <property name="default">
              <bool>false</bool>
@@ -127,7 +123,8 @@
              <string>Export</string>
             </property>
             <property name="icon">
-             <iconset theme="document-export"/>
+             <iconset theme="document-export">
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </widget>
           </item>

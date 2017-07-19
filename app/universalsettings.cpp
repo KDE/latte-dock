@@ -81,6 +81,21 @@ void UniversalSettings::setCurrentLayoutName(QString layoutName)
     emit currentLayoutNameChanged();
 }
 
+QSize UniversalSettings::layoutsWindowSize() const
+{
+    return m_layoutsWindowSize;
+}
+
+void UniversalSettings::setLayoutsWindowSize(QSize size)
+{
+    if (m_layoutsWindowSize == size) {
+        return;
+    }
+
+    m_layoutsWindowSize = size;
+    emit layoutsWindowSizeChanged();
+}
+
 bool UniversalSettings::autostart() const
 {
     QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
@@ -123,12 +138,14 @@ void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
+    m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
 }
 
 void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
+    m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
 
     m_universalGroup.sync();
 }

@@ -46,6 +46,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     setAttribute(Qt::WA_DeleteOnClose, true);
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+    resize(m_manager->corona()->universalSettings()->layoutsWindowSize());
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &LayoutConfigDialog::apply);
@@ -100,6 +101,10 @@ LayoutConfigDialog::~LayoutConfigDialog()
 
     if (m_model) {
         delete m_model;
+    }
+
+    if (m_manager && m_manager->corona() && m_manager->corona()->universalSettings()) {
+        m_manager->corona()->universalSettings()->setLayoutsWindowSize(size());
     }
 }
 
