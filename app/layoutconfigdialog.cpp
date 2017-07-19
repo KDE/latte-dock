@@ -192,11 +192,9 @@ void LayoutConfigDialog::loadLayouts()
         m_model->setItem(i - 1, 2, name);
         m_model->setData(m_model->index(i - 1, 2), font, Qt::FontRole);
 
-        //QString menuText = layoutSets.showInMenu() ? QString::fromUtf8("\u2714") : "";
         QStandardItem *menu = new QStandardItem();
-        menu->setTextAlignment(Qt::AlignCenter);
         menu->setEditable(false);
-        menu->setSelectable(false);
+        menu->setSelectable(true);
         menu->setCheckable(true);
         menu->setCheckState(layoutSets.showInMenu() ? Qt::Checked : Qt::Unchecked);
         m_model->setItem(i - 1, 3, menu);
