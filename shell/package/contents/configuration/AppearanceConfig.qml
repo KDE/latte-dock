@@ -68,8 +68,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.ComboBox {
                     id: layoutCmb
-                    Layout.minimumWidth: 0.6 * dialog.maxWidth
-                    Layout.preferredWidth: Layout.minimumWidth
+                    Layout.fillWidth: true
 
                     property var layoutTexts: [];
                     property var layouts;
@@ -82,10 +81,10 @@ PlasmaComponents.Page {
                         var activeLayout = 0;
 
                         for(var i=0; i<layouts.length; ++i){
-                            var selText = "   ";
+                            var selText = "    ";
 
                             if (layouts[i] === layoutManager.currentLayoutName) {
-                                selText = "* ";
+                                selText = "✔ ";
                                 activeLayout = i;
                             }
 
@@ -99,23 +98,13 @@ PlasmaComponents.Page {
                     onActivated: {
                         layoutManager.switchToLayout(layouts[index]);
                     }
-
-                    /*onCurrentIndexChanged: {
-                       /* if (currentIndex>0 && layoutObjs[currentIndex-1].value === ""){
-                            currentIndex = 0;
-                            return;
-                        }
-
-                        if (currentIndex>0) {
-                            globalSettings.importLayout(layoutObjs[currentIndex-1].key,
-                                                        layoutObjs[currentIndex-1].value);
-                        }*/
-                    //}
                 }
 
                 PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Configure...")
+                    text: i18nc("opens the layout manager window","Configure...")
+                    iconSource: "document-edit"
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+
                     onClicked: layoutManager.showLayoutConfigDialog()
                 }
             }
