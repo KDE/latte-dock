@@ -1,6 +1,7 @@
 #include "checkboxdelegate.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -16,9 +17,20 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QStyleOptionViewItem viewItemOption(option);
 
     if (option.state & QStyle::State_Selected) {
-        painter->setBrush(option.palette.highlight());
         QPen nPen;
-        nPen.setColor(option.palette.highlight().color());
+        QBrush nBrush;
+
+        if (option.state & QStyle::State_Active) {
+            nBrush = option.palette.highlight();
+        } else if (option.state & QStyle::State_MouseOver) {
+            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Highlight);
+        } else {
+            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Highlight);
+        }
+
+        painter->setBrush(nBrush);
+        nPen.setColor(nBrush.color());
+
         painter->setPen(nPen);
         painter->drawRect(option.rect);
     }
