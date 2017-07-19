@@ -27,6 +27,7 @@
 #include "layoutsDelegates/activitycmbboxdelegate.h"
 
 #include <QDir>
+#include <QHeaderView>
 #include <QStandardItem>
 #include <QStandardItemModel>
 
@@ -61,6 +62,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     ui->layoutsView->setModel(m_model);
     ui->layoutsView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(0, true);
