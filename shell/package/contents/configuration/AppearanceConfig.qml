@@ -75,8 +75,19 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: loadLayouts();
 
+                    Connections {
+                        target:layoutManager
+                        onMenuLayoutsChanged: layoutCmb.loadLayouts();
+                    }
+
                     function loadLayouts(){
                         layouts = layoutManager.menuLayouts;
+                        layoutTexts = [];
+
+                        //if current layout isnt at the menu layouts
+                        if (layouts.indexOf(layoutManager.currentLayoutName) === -1) {
+                            layoutTexts.push( "✔ "+layoutManager.currentLayoutName);
+                        }
 
                         var activeLayout = 0;
 
