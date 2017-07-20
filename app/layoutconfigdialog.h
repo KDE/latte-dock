@@ -22,12 +22,13 @@
 #ifndef LAYOUTCONFIGDIALOG_H
 #define LAYOUTCONFIGDIALOG_H
 
+#include "layoutmanager.h"
+#include "layoutsettings.h"
+
 #include <QObject>
 #include <QDialog>
 #include <QDebug>
 #include <QStandardItemModel>
-
-#include "layoutmanager.h"
 
 namespace Ui {
 class LayoutConfigDialog;
@@ -35,6 +36,7 @@ class LayoutConfigDialog;
 
 namespace Latte {
 class LayoutManager;
+class LayoutSettings;
 }
 
 namespace Latte {
@@ -74,6 +76,8 @@ private:
 
     QStandardItemModel *m_model{nullptr};
     Ui::LayoutConfigDialog *ui;
+
+    QHash<const QString, LayoutSettings *> m_layouts;
 };
 
 }
