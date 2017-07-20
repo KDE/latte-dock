@@ -26,7 +26,9 @@
 #include "layoutsDelegates/colorcmbboxdelegate.h"
 #include "layoutsDelegates/activitycmbboxdelegate.h"
 
+#include <QDesktopServices>
 #include <QDir>
+#include <QFileDialog>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QStandardItem>
@@ -34,6 +36,7 @@
 #include <QTemporaryDir>
 
 #include <KLocalizedString>
+#include <KNotification>
 
 namespace Latte {
 
@@ -142,7 +145,64 @@ void LayoutConfigDialog::on_importButton_clicked()
 
 void LayoutConfigDialog::on_exportButton_clicked()
 {
+    int row = ui->layoutsView->currentIndex().row();
+
+    if (row < 0) {
+        return;
+    }
+
+    QString layoutExported = m_model->data(m_model->index(row, 0), Qt::DisplayRole).toString();
+
     qDebug() << Q_FUNC_INFO;
+
+    QFileDialog *m_fileDialog = new QFileDialog(this, i18nc("export layout", "Export layout")
+            , QDir::homePath() , QStringLiteral("layout.latte"));
+
+    m_fileDialog->setFileMode(QFileDialog::AnyFile);
+    m_fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    m_fileDialog->setDefaultSuffix("layout.latte");
+    m_fileDialog->setNameFilter(i18nc("export layout", "Latte Dock layout file")
+                                + "(*.layout.latte)");
+
+    connect(m_fileDialog, &QFileDialog::finished
+            , m_fileDialog, &QFileDialog::deleteLater);
+
+    connect(m_fileDialog, &QFileDialog::fileSelected
+    , this, [ &, layoutExported](const QString & file) {
+        auto showNotificationError = []() {
+            auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
+            notification->setText(i18nc("export layout", "Failed to export layout"));
+            notification->sendEvent();
+        };
+
+        if (QFile::exists(file) && !QFile::remove(file)) {
+            showNotificationError();
+            return;
+        }
+
+        if (!QFile(layoutExported).copy(file)) {
+            showNotificationError();
+            return;
+        }
+
+        LayoutSettings layoutS(this, file);
+        layoutS.setActivities(QStringList());
+
+        //NOTE: The pointer is automatically deleted when the event is closed
+        auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
+        notification->setActions({i18nc("export layout", "Open location")});
+        notification->setText(i18nc("export layout", "Layout exported successfully"));
+
+        connect(notification, &KNotification::action1Activated
+        , this, [file]() {
+            QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
+        });
+
+        notification->sendEvent();
+    });
+
+
+    m_fileDialog->open();
 }
 
 void LayoutConfigDialog::accept()
