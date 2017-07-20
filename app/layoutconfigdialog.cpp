@@ -28,6 +28,7 @@
 
 #include <QDir>
 #include <QHeaderView>
+#include <QMessageBox>
 #include <QStandardItem>
 #include <QStandardItemModel>
 
@@ -162,6 +163,7 @@ void LayoutConfigDialog::reject()
 void LayoutConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
+    dataAreAccepted();
 }
 
 void LayoutConfigDialog::restoreDefaults()
@@ -285,6 +287,42 @@ void LayoutConfigDialog::recalculateAvailableActivities()
     }
 
     m_availableActivities = tempActivities;
+}
+
+bool LayoutConfigDialog::dataAreAccepted()
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString layout1 = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+
+        for (int j = i + 1; j < m_model->rowCount(); ++j) {
+            QString temp = m_model->data(m_model->index(j, 2), Qt::DisplayRole).toString();
+
+            //!same layout name exists again
+            if (layout1 == temp) {
+                auto msg = new QMessageBox(this);
+                msg->setIcon(QMessageBox::Warning);
+                msg->setWindowTitle(i18n("Layout Warning"));
+                msg->setText(i18n("There are layouts with the same name, that is not permitted!!! Please update these names to re-apply the changes..."));
+                msg->setStandardButtons(QMessageBox::Ok);
+
+                connect(msg, &QMessageBox::finished, this, [ &, i, j](int result) {
+                    QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
+                    QModelIndex indexBase = m_model->index(i, 2);
+                    ui->layoutsView->selectionModel()->select(indexBase, flags);
+
+                    QModelIndex indexOccurence = m_model->index(j, 2);
+                    ui->layoutsView->edit(indexOccurence);
+                });
+
+
+                msg->open();
+
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 }//end of namespace

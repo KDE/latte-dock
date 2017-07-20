@@ -70,6 +70,8 @@ private:
     void loadLayouts();
     void recalculateAvailableActivities();
 
+    bool dataAreAccepted();
+
     QStringList m_availableActivities;
 
     LayoutManager *m_manager{nullptr};
