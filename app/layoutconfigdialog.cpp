@@ -335,6 +335,8 @@ bool LayoutConfigDialog::saveAllChanges()
 
     QStringList knownActivities = activities();
 
+    QStringList menuLayouts;
+
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, 1), Qt::BackgroundRole).toString();
@@ -366,8 +368,14 @@ bool LayoutConfigDialog::saveAllChanges()
         if (layout->activities() != cleanedActivities) {
             layout->setActivities(cleanedActivities);
         }
+
+        //! publish the layouts for the menus
+        if (menu) {
+            menuLayouts.append(name);
+        }
     }
 
+    m_manager->setMenuLayouts(menuLayouts);
 
     return true;
 }

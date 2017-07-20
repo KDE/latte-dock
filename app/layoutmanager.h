@@ -93,6 +93,7 @@ private slots:
     void showWidgetsExplorer();
 
 private:
+    void setMenuLayouts(QStringList layouts);
     QString layoutPath(QString layoutName);
 
     void loadLayouts();
@@ -114,6 +115,8 @@ private:
     QAction *m_toggleLayoutAction{nullptr};
 
     QPointer<LayoutConfigDialog> m_layoutConfigDialog;
+
+    friend class LayoutConfigDialog;
 };
 
 }

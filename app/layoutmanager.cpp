@@ -128,6 +128,16 @@ QStringList LayoutManager::menuLayouts() const
     return m_menuLayouts;
 }
 
+void LayoutManager::setMenuLayouts(QStringList layouts)
+{
+    if (m_menuLayouts == layouts) {
+        return;
+    }
+
+    m_menuLayouts = layouts;
+    emit menuLayoutsChanged();
+}
+
 QStringList LayoutManager::activities()
 {
     return m_corona->m_activityConsumer->activities();
