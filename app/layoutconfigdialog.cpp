@@ -101,6 +101,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->layoutsView->setItemDelegateForColumn(4, new ActivityCmbBoxDelegate(this));
 
     connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
+    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()
@@ -136,6 +137,23 @@ void LayoutConfigDialog::on_copyButton_clicked()
 void LayoutConfigDialog::on_removeButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
+
+    int row = ui->layoutsView->currentIndex().row();
+
+    if (row < 0) {
+        return;
+    }
+
+    QString layoutName = m_model->data(m_model->index(row, 2), Qt::DisplayRole).toString();
+
+    if (layoutName == m_manager->currentLayoutName()) {
+        return;
+    }
+
+    m_model->removeRow(row);
+
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
 
 void LayoutConfigDialog::on_importButton_clicked()
@@ -235,11 +253,15 @@ void LayoutConfigDialog::restoreDefaults()
 
 void LayoutConfigDialog::loadLayouts()
 {
+    m_initLayoutPaths.clear();
+
     int i = 0;
 
     foreach (auto layout, m_manager->layouts()) {
         i++;
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
+        m_initLayoutPaths.append(layoutPath);
+
         LayoutSettings *layoutSets = new LayoutSettings(this, layoutPath);
         m_layouts[layoutPath] = layoutSets;
 
@@ -332,6 +354,17 @@ void LayoutConfigDialog::itemChanged(QStandardItem *item)
     if (item->column() == 4) {
         //! recalculate the available activities
         recalculateAvailableActivities();
+    }
+}
+
+void LayoutConfigDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+    QString id = m_model->data(m_model->index(current.row(), 0), Qt::DisplayRole).toString();
+
+    if (m_layouts[id]->name() == m_manager->currentLayoutName()) {
+        ui->removeButton->setEnabled(false);
+    } else {
+        ui->removeButton->setEnabled(true);
     }
 }
 
@@ -477,6 +510,13 @@ bool LayoutConfigDialog::saveAllChanges()
         }
     }
 
+    //! remove layouts that have been removed from the user
+    foreach (auto initLayout, m_initLayoutPaths) {
+        if (!idExistsInModel(initLayout)) {
+            QFile(initLayout).remove();
+        }
+    }
+
     m_manager->loadLayouts();
 
     if (!switchToLayout.isNull()) {
@@ -484,6 +524,20 @@ bool LayoutConfigDialog::saveAllChanges()
     }
 
     return true;
+}
+
+
+bool LayoutConfigDialog::idExistsInModel(QString id)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString rowId = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
+
+        if (rowId == id) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 }//end of namespace

@@ -64,6 +64,7 @@ private slots:
     void restoreDefaults();
 
     void currentLayoutNameChanged();
+    void currentRowChanged(const QModelIndex &current, const QModelIndex &previous);
     void itemChanged(QStandardItem *item);
 
 private:
@@ -71,9 +72,11 @@ private:
     void recalculateAvailableActivities();
 
     bool dataAreAccepted();
+    bool idExistsInModel(QString id);
     bool saveAllChanges();
 
     QStringList m_availableActivities;
+    QStringList m_initLayoutPaths;
 
     LayoutManager *m_manager{nullptr};
 
