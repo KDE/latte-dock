@@ -71,6 +71,7 @@ private:
     void recalculateAvailableActivities();
 
     bool dataAreAccepted();
+    bool saveAllChanges();
 
     QStringList m_availableActivities;
 

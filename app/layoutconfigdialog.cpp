@@ -149,21 +149,22 @@ void LayoutConfigDialog::accept()
     qDebug() << Q_FUNC_INFO;
 
     //setVisible(false);
-    deleteLater();
+    if (saveAllChanges()) {
+        deleteLater();
+    }
 }
 
 void LayoutConfigDialog::reject()
 {
     qDebug() << Q_FUNC_INFO;
 
-    //setVisible(false);
     deleteLater();
 }
 
 void LayoutConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
-    dataAreAccepted();
+    saveAllChanges();
 }
 
 void LayoutConfigDialog::restoreDefaults()
@@ -217,6 +218,7 @@ void LayoutConfigDialog::loadLayouts()
         menu->setCheckState(layoutSets->showInMenu() ? Qt::Checked : Qt::Unchecked);
         m_model->setItem(i - 1, 3, menu);
 
+
         QStandardItem *activities = new QStandardItem(layoutSets->activities().join(","));
         m_model->setItem(i - 1, 4, activities);
         m_model->setData(m_model->index(i - 1, 4), layoutSets->activities(), Qt::UserRole);
@@ -266,8 +268,8 @@ void LayoutConfigDialog::itemChanged(QStandardItem *item)
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
-    //! recalculate the available activities
     if (item->column() == 4) {
+        //! recalculate the available activities
         recalculateAvailableActivities();
     }
 }
@@ -321,6 +323,51 @@ bool LayoutConfigDialog::dataAreAccepted()
             }
         }
     }
+
+    return true;
+}
+
+bool LayoutConfigDialog::saveAllChanges()
+{
+    if (!dataAreAccepted()) {
+        return false;
+    }
+
+    QStringList knownActivities = activities();
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString id = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
+        QString color = m_model->data(m_model->index(i, 1), Qt::BackgroundRole).toString();
+        QString name = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+        bool menu = m_model->data(m_model->index(i, 3), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
+        QStringList lActivities = m_model->data(m_model->index(i, 4), Qt::UserRole).toStringList();
+
+        QStringList cleanedActivities;
+
+        //!update only activities that are valid
+        foreach (auto activity, lActivities) {
+            if (knownActivities.contains(activity)) {
+                cleanedActivities.append(activity);
+            }
+        }
+
+        //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
+
+        LayoutSettings *layout = name == m_manager->currentLayoutName() ? m_manager->currentLayout() : m_layouts[id];
+
+        if (layout->color() != color) {
+            layout->setColor(color);
+        }
+
+        if (layout->showInMenu() != menu) {
+            layout->setShowInMenu(menu);
+        }
+
+        if (layout->activities() != cleanedActivities) {
+            layout->setActivities(cleanedActivities);
+        }
+    }
+
 
     return true;
 }
