@@ -31,6 +31,7 @@
 #include <QMessageBox>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QTemporaryDir>
 
 #include <KLocalizedString>
 
@@ -335,7 +336,13 @@ bool LayoutConfigDialog::saveAllChanges()
 
     QStringList knownActivities = activities();
 
-    QStringList menuLayouts;
+    QTemporaryDir layoutTempDir;
+
+    qDebug() << "Temporary Directory ::: " << layoutTempDir.path();
+
+    QStringList fromRenamePaths;
+    QStringList toRenamePaths;
+    QStringList toRenameNames;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
@@ -369,13 +376,40 @@ bool LayoutConfigDialog::saveAllChanges()
             layout->setActivities(cleanedActivities);
         }
 
-        //! publish the layouts for the menus
-        if (menu) {
-            menuLayouts.append(name);
+        if (layout->name() != name && layout->name() != m_manager->currentLayoutName()) {
+            QString tempFile = layoutTempDir.filePath(QString(layout->name() + ".layout.latte"));
+            qDebug() << "new temp file ::: " << tempFile;
+            layout = m_layouts.take(id);
+            delete layout;
+
+            QFile(id).rename(tempFile);
+
+            fromRenamePaths.append(id);
+            toRenamePaths.append(tempFile);
+            toRenameNames.append(name);
         }
     }
 
-    m_manager->setMenuLayouts(menuLayouts);
+    //! this is necessary in case two layouts have to swap names
+    //! so we copy first the layouts in a temp directory and afterwards all
+    //! together we move them in the official layout directory
+    for (int i = 0; i < toRenamePaths.count(); ++i) {
+        QString newFile = QDir::homePath() + "/.config/latte/" + toRenameNames[i] + ".layout.latte";
+        QFile(toRenamePaths[i]).rename(newFile);
+
+        LayoutSettings *nLayout = new LayoutSettings(this, newFile);
+        m_layouts[newFile] = nLayout;
+
+        for (int j = 0; j < m_model->rowCount(); ++j) {
+            QString tId = m_model->data(m_model->index(j, 0), Qt::DisplayRole).toString();
+
+            if (tId == fromRenamePaths[i]) {
+                m_model->setData(m_model->index(j, 0), newFile, Qt::DisplayRole);
+            }
+        }
+    }
+
+    m_manager->loadLayouts();
 
     return true;
 }
