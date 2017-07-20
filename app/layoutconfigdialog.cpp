@@ -344,6 +344,8 @@ bool LayoutConfigDialog::saveAllChanges()
     QStringList toRenamePaths;
     QStringList toRenameNames;
 
+    QString switchToLayout;
+
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, 1), Qt::BackgroundRole).toString();
@@ -376,9 +378,15 @@ bool LayoutConfigDialog::saveAllChanges()
             layout->setActivities(cleanedActivities);
         }
 
-        if (layout->name() != name && layout->name() != m_manager->currentLayoutName()) {
+        if (layout->name() != name) {
             QString tempFile = layoutTempDir.filePath(QString(layout->name() + ".layout.latte"));
             qDebug() << "new temp file ::: " << tempFile;
+
+            if (layout->name() == m_manager->currentLayoutName()) {
+                switchToLayout = name;
+                m_manager->corona()->unload();
+            }
+
             layout = m_layouts.take(id);
             delete layout;
 
@@ -410,6 +418,10 @@ bool LayoutConfigDialog::saveAllChanges()
     }
 
     m_manager->loadLayouts();
+
+    if (!switchToLayout.isNull()) {
+        m_manager->switchToLayout(switchToLayout);
+    }
 
     return true;
 }

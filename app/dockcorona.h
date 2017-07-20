@@ -102,6 +102,7 @@ public slots:
     void loadDefaultLayout() override;
     void dockContainmentDestroyed(QObject *cont);
     void updateDockItemBadge(QString identifier, QString value);
+    void unload();
 
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
@@ -126,7 +127,6 @@ private:
     void cleanConfig();
     void qmlRegisterTypes() const;
     void setupWaylandIntegration();
-    void unload();
 
     bool appletExists(uint containmentId, uint appletId) const;
     bool containmentContainsTasks(Plasma::Containment *cont);
