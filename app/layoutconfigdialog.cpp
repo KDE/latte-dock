@@ -66,6 +66,9 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
     ui->layoutsView->verticalHeader()->setVisible(false);
 
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+
     //! this line should be commented for debugging layouts window functionality
     //ui->layoutsView->setColumnHidden(0, true);
 
@@ -258,6 +261,9 @@ void LayoutConfigDialog::currentLayoutNameChanged()
 
 void LayoutConfigDialog::itemChanged(QStandardItem *item)
 {
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+
     //! recalculate the available activities
     if (item->column() == 4) {
         recalculateAvailableActivities();
