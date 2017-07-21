@@ -70,12 +70,16 @@ private slots:
 private:
     void loadLayouts();
     void recalculateAvailableActivities();
+    void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
     bool saveAllChanges();
 
+    QString uniqueTempDirectory();
+
     QStringList m_availableActivities;
+    QStringList m_tempDirectories;
     QStringList m_initLayoutPaths;
 
     LayoutManager *m_manager{nullptr};

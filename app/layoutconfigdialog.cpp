@@ -117,6 +117,14 @@ LayoutConfigDialog::~LayoutConfigDialog()
     if (m_manager && m_manager->corona() && m_manager->corona()->universalSettings()) {
         m_manager->corona()->universalSettings()->setLayoutsWindowSize(size());
     }
+
+    foreach (auto tempDir, m_tempDirectories) {
+        QDir tDir(tempDir);
+
+        if (tDir.exists() && tempDir.startsWith("/tmp/")) {
+            tDir.removeRecursively();
+        }
+    }
 }
 
 QStringList LayoutConfigDialog::activities()
@@ -132,6 +140,27 @@ QStringList LayoutConfigDialog::availableActivities()
 void LayoutConfigDialog::on_copyButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
+
+    int row = ui->layoutsView->currentIndex().row();
+
+    if (row < 0) {
+        return;
+    }
+
+    QString tempDir = uniqueTempDirectory();
+
+    QString id = m_model->data(m_model->index(row, 0), Qt::DisplayRole).toString();
+    QString color = m_model->data(m_model->index(row, 1), Qt::BackgroundRole).toString();
+    QString layoutName = m_model->data(m_model->index(row, 2), Qt::DisplayRole).toString();
+    bool menu = m_model->data(m_model->index(row, 3), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
+
+    QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
+    QFile(id).copy(copiedId);
+
+    LayoutSettings *settings = new LayoutSettings(this, copiedId);
+    m_layouts[copiedId] = settings;
+
+    insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
 }
 
 void LayoutConfigDialog::on_removeButton_clicked()
@@ -254,57 +283,23 @@ void LayoutConfigDialog::restoreDefaults()
 void LayoutConfigDialog::loadLayouts()
 {
     m_initLayoutPaths.clear();
+    m_model->clear();
 
     int i = 0;
 
     foreach (auto layout, m_manager->layouts()) {
-        i++;
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
 
         LayoutSettings *layoutSets = new LayoutSettings(this, layoutPath);
         m_layouts[layoutPath] = layoutSets;
 
-        qDebug() << i << ". " << layoutSets->name() << " - " << layoutSets->color() << " - "
-                 << layoutSets->showInMenu() << " - " << layoutSets->activities();
+        insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), layoutSets->name(),
+                              layoutSets->showInMenu(), layoutSets->activities());
 
-        QStandardItem *path = new QStandardItem(layoutPath);
-        m_model->setItem(i - 1, 0, path);
-        m_model->setData(m_model->index(i - 1, 0), layoutPath, Qt::DisplayRole);
+        qDebug() << "counter:" << i << " total:" << m_model->rowCount();
 
-        QStandardItem *color = new QStandardItem();
-
-        color->setSelectable(false);
-        m_model->setItem(i - 1, 1, color);
-        m_model->setData(m_model->index(i - 1, 1), layoutSets->color(), Qt::BackgroundRole);
-
-        QStandardItem *name = new QStandardItem(layoutSets->name());
-
-        QFont font;
-
-        if (layoutSets->name() == m_manager->currentLayoutName()) {
-            font.setBold(true);
-        } else {
-            font.setBold(false);
-        }
-
-        name->setTextAlignment(Qt::AlignCenter);
-
-        m_model->setItem(i - 1, 2, name);
-        m_model->setData(m_model->index(i - 1, 2), QVariant(layoutSets->name()), Qt::DisplayRole);
-        m_model->setData(m_model->index(i - 1, 2), font, Qt::FontRole);
-
-        QStandardItem *menu = new QStandardItem();
-        menu->setEditable(false);
-        menu->setSelectable(true);
-        menu->setCheckable(true);
-        menu->setCheckState(layoutSets->showInMenu() ? Qt::Checked : Qt::Unchecked);
-        m_model->setItem(i - 1, 3, menu);
-
-
-        QStandardItem *activities = new QStandardItem(layoutSets->activities().join(","));
-        m_model->setItem(i - 1, 4, activities);
-        m_model->setData(m_model->index(i - 1, 4), layoutSets->activities(), Qt::UserRole);
+        i++;
 
         if (layoutSets->name() == m_manager->currentLayoutName()) {
             ui->layoutsView->selectRow(i - 1);
@@ -313,6 +308,62 @@ void LayoutConfigDialog::loadLayouts()
 
     recalculateAvailableActivities();
 }
+
+void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
+{
+    QStandardItem *pathItem = new QStandardItem(path);
+
+    QStandardItem *colorItem = new QStandardItem();
+    colorItem->setSelectable(false);
+
+    QStandardItem *nameItem = new QStandardItem(name);
+    nameItem->setTextAlignment(Qt::AlignCenter);
+
+    QStandardItem *menuItem = new QStandardItem();
+    menuItem->setEditable(false);
+    menuItem->setSelectable(true);
+    menuItem->setCheckable(true);
+    menuItem->setCheckState(menu ? Qt::Checked : Qt::Unchecked);
+
+    QStandardItem *activitiesItem = new QStandardItem(activities.join(","));
+
+    QList<QStandardItem *> items;
+
+    items.append(pathItem);
+    items.append(colorItem);
+    items.append(nameItem);
+    items.append(menuItem);
+    items.append(activitiesItem);
+
+    if (row > m_model->rowCount() - 1) {
+
+        m_model->appendRow(items);
+        row = m_model->rowCount() - 1;
+
+        qDebug() << "append row at:" << row << " rows:" << m_model->rowCount();
+    } else {
+        m_model->insertRow(row, items);
+        qDebug() << "insert row at:" << row << " rows:" << m_model->rowCount();
+    }
+
+    m_model->setData(m_model->index(row, 0), path, Qt::DisplayRole);
+
+    m_model->setData(m_model->index(row, 1), color, Qt::BackgroundRole);
+
+    QFont font;
+
+    if (name == m_manager->currentLayoutName()) {
+        font.setBold(true);
+    } else {
+        font.setBold(false);
+    }
+
+    m_model->setData(m_model->index(row, 2), QVariant(name), Qt::DisplayRole);
+    m_model->setData(m_model->index(row, 2), font, Qt::FontRole);
+
+    m_model->setData(m_model->index(row, 4), activities, Qt::UserRole);
+}
+
 
 void LayoutConfigDialog::on_switchButton_clicked()
 {
@@ -538,6 +589,15 @@ bool LayoutConfigDialog::idExistsInModel(QString id)
     }
 
     return false;
+}
+
+QString LayoutConfigDialog::uniqueTempDirectory()
+{
+    QTemporaryDir tempDir;
+    tempDir.setAutoRemove(false);
+    m_tempDirectories.append(tempDir.path());
+
+    return tempDir.path();
 }
 
 }//end of namespace
