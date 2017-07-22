@@ -22,7 +22,6 @@
 #define DOCKCORONA_H
 
 #include "dockview.h"
-#include "globalsettings.h"
 #include "globalshortcuts.h"
 #include "layoutmanager.h"
 #include "universalsettings.h"
@@ -34,7 +33,6 @@
 #include <KDeclarative/QmlObject>
 
 class ScreenPool;
-class GlobalSettings;
 class GlobalShortcuts;
 class UniversalSettings;
 class LayoutManager;
@@ -91,7 +89,6 @@ public:
     void closeApplication();
 
     ScreenPool *screenPool() const;
-    GlobalSettings *globalSettings() const;
     UniversalSettings *universalSettings() const;
     LayoutManager *layoutManager() const;
 
@@ -155,7 +152,6 @@ private:
     QPointer<KAboutApplicationDialog> aboutDialog;
 
     ScreenPool *m_screenPool{nullptr};
-    GlobalSettings *m_globalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
     LayoutManager *m_layoutManager{nullptr};

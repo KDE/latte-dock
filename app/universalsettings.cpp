@@ -20,6 +20,8 @@
 
 #include "universalsettings.h"
 
+#include <QDir>
+
 namespace Latte {
 
 UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)

@@ -21,7 +21,6 @@
 #include "dockview.h"
 #include "dockconfigview.h"
 #include "dockcorona.h"
-#include "globalsettings.h"
 #include "panelshadows_p.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/extras.h"

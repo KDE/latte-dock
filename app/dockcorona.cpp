@@ -60,7 +60,6 @@ DockCorona::DockCorona(QObject *parent)
     : Plasma::Corona(parent),
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
-      m_globalSettings(new GlobalSettings(this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
       m_layoutManager(new LayoutManager(this))
@@ -80,8 +79,7 @@ DockCorona::DockCorona(QObject *parent)
     }
 
     setKPackage(package);
-    //! global settings must be loaded after the package has been set
-    m_globalSettings->load();
+    //! universal settings must be loaded after the package has been set
     m_universalSettings->load();
     m_layoutManager->load();
 
@@ -118,7 +116,6 @@ DockCorona::~DockCorona()
         delete containments().first();
     }
 
-    m_globalSettings->deleteLater();
     m_globalShortcuts->deleteLater();
     m_screenPool->deleteLater();
     m_layoutManager->deleteLater();
@@ -199,7 +196,6 @@ bool DockCorona::reloadLayout(QString path)
 
         m_screenPool->reload(m_layoutDir);
         loadLayout(appletsrc.fileName());
-        m_globalSettings->reload();
 
         foreach (auto containment, containments())
             addDock(containment);
@@ -362,11 +358,6 @@ bool DockCorona::appletExists(uint containmentId, uint appletId) const
 ScreenPool *DockCorona::screenPool() const
 {
     return m_screenPool;
-}
-
-GlobalSettings *DockCorona::globalSettings() const
-{
-    return m_globalSettings;
 }
 
 UniversalSettings *DockCorona::universalSettings() const

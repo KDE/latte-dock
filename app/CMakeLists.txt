@@ -13,7 +13,6 @@ set(lattedock-app_SRCS
     panelshadows.cpp
     alternativeshelper.cpp
     screenpool.cpp
-    globalsettings.cpp
     globalshortcuts.cpp
     universalsettings.cpp
     layoutmanager.cpp
