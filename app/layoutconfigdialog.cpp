@@ -74,9 +74,6 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 
-    //! this line should be commented for debugging layouts window functionality
-    //ui->layoutsView->setColumnHidden(0, true);
-
     connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::currentLayoutNameChanged);
 
     loadLayouts();
@@ -421,6 +418,9 @@ void LayoutConfigDialog::loadLayouts()
     m_model->setHorizontalHeaderItem(2, new QStandardItem(QString(i18n("Name"))));
     m_model->setHorizontalHeaderItem(3, new QStandardItem(QString(i18n("In Menu"))));
     m_model->setHorizontalHeaderItem(4, new QStandardItem(QString(i18n("Activities"))));
+
+    //! this line should be commented for debugging layouts window functionality
+    ui->layoutsView->setColumnHidden(0, true);
 }
 
 void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
