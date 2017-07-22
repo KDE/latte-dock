@@ -66,6 +66,7 @@ public:
 
     static Importer::LatteFileVersion fileVersion(QString file);
     static QString nameOfConfigFile(const QString &fileName);
+    static bool importHelper(QString fileName);
 private:
     //! checks if this old layout can be imported. If it can it returns
     //! the new layout path and an empty string if it cant

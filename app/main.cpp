@@ -20,7 +20,7 @@
 
 #include "dockcorona.h"
 #include "config-latte.h"
-#include "globalsettings.h"
+#include "importer.h"
 
 #include <memory>
 #include <csignal>
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     }
 
     if (parser.isSet(QStringLiteral("import"))) {
-        bool imported = Latte::GlobalSettings::importHelper(parser.value(QStringLiteral("import")));
+        bool imported = Latte::Importer::importHelper(parser.value(QStringLiteral("import")));
 
         if (!imported) {
             qInfo() << i18n("The configuration cannot be imported");

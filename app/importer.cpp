@@ -32,6 +32,7 @@
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
 #include <KLocalizedString>
+#include <KNotification>
 
 
 namespace Latte {
@@ -425,6 +426,34 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
 
     return Importer::UnknownFileType;
 }
+
+bool Importer::importHelper(QString fileName)
+{
+    LatteFileVersion version = fileVersion(fileName);
+
+    if ((version != ConfigVersion1) && (version != ConfigVersion2)) {
+        return false;
+    }
+
+    KTar archive(fileName, QStringLiteral("application/x-tar"));
+    archive.open(QIODevice::ReadOnly);
+
+    if (!archive.isOpen()) {
+        return false;
+    }
+
+    QString latteDirPath(QDir::homePath() + "/.config/latte");
+    QDir latteDir(latteDirPath);
+
+    if (latteDir.exists()) {
+        latteDir.removeRecursively();
+    }
+
+    archive.directory()->copyTo(QString(QDir::homePath() + "/.config"));
+
+    return true;
+}
+
 
 QString Importer::nameOfConfigFile(const QString &fileName)
 {

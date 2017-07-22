@@ -30,9 +30,8 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QHeaderView>
-#include <KLocalizedString>
-
 #include <QMessageBox>
+#include <QProcess>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QTemporaryDir>
@@ -239,6 +238,13 @@ void LayoutConfigDialog::on_importButton_clicked()
             connect(layoutsBtn, &QPushButton::clicked
             , this, [ &, file](bool check) {
                 importLayoutsFromV1ConfigFile(file);
+            });
+
+            connect(fullBtn, &QPushButton::clicked
+            , this, [ &, file](bool check) {
+                //!NOTE: Restart latte for import the new configuration
+                QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
+                qGuiApp->exit();
             });
         }
     });
