@@ -45,6 +45,12 @@
 
 namespace Latte {
 
+const int IDCOLUMN = 0;
+const int COLORCOLUMN = 1;
+const int NAMECOLUMN = 2;
+const int MENUCOLUMN = 3;
+const int ACTIVITYCOLUMN = 4;
+
 LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     : QDialog(parent),
       ui(new Ui::LayoutConfigDialog),
@@ -92,9 +98,9 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
         colors.append(color);
     }
 
-    ui->layoutsView->setItemDelegateForColumn(1, new ColorCmbBoxDelegate(this, iconsPath, colors));
-    ui->layoutsView->setItemDelegateForColumn(3, new CheckBoxDelegate(this));
-    ui->layoutsView->setItemDelegateForColumn(4, new ActivityCmbBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
+    ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
     connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
@@ -145,10 +151,10 @@ void LayoutConfigDialog::on_copyButton_clicked()
 
     QString tempDir = uniqueTempDirectory();
 
-    QString id = m_model->data(m_model->index(row, 0), Qt::DisplayRole).toString();
-    QString color = m_model->data(m_model->index(row, 1), Qt::BackgroundRole).toString();
-    QString layoutName = m_model->data(m_model->index(row, 2), Qt::DisplayRole).toString();
-    bool menu = m_model->data(m_model->index(row, 3), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
+    QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
+    QString color = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
+    QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
+    bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
 
     QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
     QFile(id).copy(copiedId);
@@ -171,7 +177,7 @@ void LayoutConfigDialog::on_removeButton_clicked()
         return;
     }
 
-    QString layoutName = m_model->data(m_model->index(row, 2), Qt::DisplayRole).toString();
+    QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
 
     if (layoutName == m_manager->currentLayoutName()) {
         return;
@@ -318,7 +324,7 @@ void LayoutConfigDialog::on_exportButton_clicked()
         return;
     }
 
-    QString layoutExported = m_model->data(m_model->index(row, 0), Qt::DisplayRole).toString();
+    QString layoutExported = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
 
     qDebug() << Q_FUNC_INFO;
 
@@ -506,14 +512,14 @@ void LayoutConfigDialog::loadLayouts()
 
     recalculateAvailableActivities();
 
-    m_model->setHorizontalHeaderItem(0, new QStandardItem(QString("#path")));
-    m_model->setHorizontalHeaderItem(1, new QStandardItem(QString(i18n("Color"))));
-    m_model->setHorizontalHeaderItem(2, new QStandardItem(QString(i18n("Name"))));
-    m_model->setHorizontalHeaderItem(3, new QStandardItem(QString(i18n("In Menu"))));
-    m_model->setHorizontalHeaderItem(4, new QStandardItem(QString(i18n("Activities"))));
+    m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
+    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18n("Color"))));
+    m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18n("Name"))));
+    m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18n("In Menu"))));
+    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18n("Activities"))));
 
     //! this line should be commented for debugging layouts window functionality
-    ui->layoutsView->setColumnHidden(0, true);
+    ui->layoutsView->setColumnHidden(IDCOLUMN, true);
 }
 
 void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
@@ -553,9 +559,9 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
         qDebug() << "insert row at:" << row << " rows:" << m_model->rowCount();
     }
 
-    m_model->setData(m_model->index(row, 0), path, Qt::DisplayRole);
+    m_model->setData(m_model->index(row, IDCOLUMN), path, Qt::DisplayRole);
 
-    m_model->setData(m_model->index(row, 1), color, Qt::BackgroundRole);
+    m_model->setData(m_model->index(row, COLORCOLUMN), color, Qt::BackgroundRole);
 
     QFont font;
 
@@ -571,16 +577,16 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
         font.setItalic(false);
     }
 
-    m_model->setData(m_model->index(row, 2), QVariant(name), Qt::DisplayRole);
-    m_model->setData(m_model->index(row, 2), font, Qt::FontRole);
+    m_model->setData(m_model->index(row, NAMECOLUMN), QVariant(name), Qt::DisplayRole);
+    m_model->setData(m_model->index(row, NAMECOLUMN), font, Qt::FontRole);
 
-    m_model->setData(m_model->index(row, 4), activities, Qt::UserRole);
+    m_model->setData(m_model->index(row, ACTIVITYCOLUMN), activities, Qt::UserRole);
 }
 
 
 void LayoutConfigDialog::on_switchButton_clicked()
 {
-    QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), 2), Qt::DisplayRole);
+    QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
 
     if (value.isValid()) {
         m_manager->switchToLayout(value.toString());
@@ -592,7 +598,7 @@ void LayoutConfigDialog::on_switchButton_clicked()
 void LayoutConfigDialog::currentLayoutNameChanged()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QModelIndex nameIndex = m_model->index(i, 2);
+        QModelIndex nameIndex = m_model->index(i, NAMECOLUMN);
         QVariant value = m_model->data(nameIndex);
 
         if (value.isValid()) {
@@ -615,7 +621,7 @@ void LayoutConfigDialog::itemChanged(QStandardItem *item)
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
-    if (item->column() == 4) {
+    if (item->column() == ACTIVITYCOLUMN) {
         //! recalculate the available activities
         recalculateAvailableActivities();
     }
@@ -623,7 +629,7 @@ void LayoutConfigDialog::itemChanged(QStandardItem *item)
 
 void LayoutConfigDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    QString id = m_model->data(m_model->index(current.row(), 0), Qt::DisplayRole).toString();
+    QString id = m_model->data(m_model->index(current.row(), IDCOLUMN), Qt::DisplayRole).toString();
 
     if (m_layouts[id]->name() == m_manager->currentLayoutName()) {
         ui->removeButton->setEnabled(false);
@@ -643,7 +649,7 @@ void LayoutConfigDialog::recalculateAvailableActivities()
     QStringList tempActivities = m_manager->activities();
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QStringList assigned = m_model->data(m_model->index(i, 4), Qt::UserRole).toStringList();
+        QStringList assigned = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         foreach (auto activity, assigned) {
             if (tempActivities.contains(activity)) {
@@ -658,10 +664,10 @@ void LayoutConfigDialog::recalculateAvailableActivities()
 bool LayoutConfigDialog::dataAreAccepted()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString layout1 = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+        QString layout1 = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
 
         for (int j = i + 1; j < m_model->rowCount(); ++j) {
-            QString temp = m_model->data(m_model->index(j, 2), Qt::DisplayRole).toString();
+            QString temp = m_model->data(m_model->index(j, NAMECOLUMN), Qt::DisplayRole).toString();
 
             //!same layout name exists again
             if (layout1 == temp) {
@@ -673,10 +679,10 @@ bool LayoutConfigDialog::dataAreAccepted()
 
                 connect(msg, &QMessageBox::finished, this, [ &, i, j](int result) {
                     QItemSelectionModel::SelectionFlags flags = QItemSelectionModel::ClearAndSelect;
-                    QModelIndex indexBase = m_model->index(i, 2);
+                    QModelIndex indexBase = m_model->index(i, NAMECOLUMN);
                     ui->layoutsView->selectionModel()->select(indexBase, flags);
 
-                    QModelIndex indexOccurence = m_model->index(j, 2);
+                    QModelIndex indexOccurence = m_model->index(j, NAMECOLUMN);
                     ui->layoutsView->edit(indexOccurence);
                 });
 
@@ -710,11 +716,11 @@ bool LayoutConfigDialog::saveAllChanges()
     QString switchToLayout;
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString id = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
-        QString color = m_model->data(m_model->index(i, 1), Qt::BackgroundRole).toString();
-        QString name = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
-        bool menu = m_model->data(m_model->index(i, 3), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
-        QStringList lActivities = m_model->data(m_model->index(i, 4), Qt::UserRole).toStringList();
+        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+        QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
+        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
+        QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         QStringList cleanedActivities;
 
@@ -773,16 +779,16 @@ bool LayoutConfigDialog::saveAllChanges()
         m_layouts[newFile] = nLayout;
 
         for (int j = 0; j < m_model->rowCount(); ++j) {
-            QString tId = m_model->data(m_model->index(j, 0), Qt::DisplayRole).toString();
+            QString tId = m_model->data(m_model->index(j, IDCOLUMN), Qt::DisplayRole).toString();
 
             if (tId == fromRenamePaths[i]) {
-                m_model->setData(m_model->index(j, 0), newFile, Qt::DisplayRole);
+                m_model->setData(m_model->index(j, IDCOLUMN), newFile, Qt::DisplayRole);
                 m_initLayoutPaths.append(newFile);
 
-                QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(j, 2), Qt::FontRole));
+                QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(j, NAMECOLUMN), Qt::FontRole));
 
                 font.setItalic(false);
-                m_model->setData(m_model->index(j, 2), font, Qt::FontRole);
+                m_model->setData(m_model->index(j, NAMECOLUMN), font, Qt::FontRole);
             }
         }
     }
@@ -806,7 +812,7 @@ bool LayoutConfigDialog::saveAllChanges()
 bool LayoutConfigDialog::idExistsInModel(QString id)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString rowId = m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
+        QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
 
         if (rowId == id) {
             return true;
@@ -819,7 +825,7 @@ bool LayoutConfigDialog::idExistsInModel(QString id)
 bool LayoutConfigDialog::nameExistsInModel(QString name)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString rowName = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+        QString rowName = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
 
         if (rowName == name) {
             return true;
@@ -832,7 +838,7 @@ bool LayoutConfigDialog::nameExistsInModel(QString name)
 int LayoutConfigDialog::ascendingRowFor(QString name)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
-        QString rowName = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+        QString rowName = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
 
         if (rowName.toUpper() > name.toUpper()) {
             return i;
