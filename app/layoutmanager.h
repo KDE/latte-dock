@@ -57,6 +57,7 @@ public:
     ~LayoutManager() override;
 
     DockCorona *corona();
+    Importer *importer();
 
     void load();
 

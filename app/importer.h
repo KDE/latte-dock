@@ -55,7 +55,7 @@ public:
     //! alternative: old files can contain both a Default and an Alternative layout
     //!    false: imports only Default layout
     //!    true: imports only Alternative layout
-    bool importOldLayout(QString oldAppletsPath, QString newName, bool alternative = false);
+    bool importOldLayout(QString oldAppletsPath, QString newName, bool alternative = false, QString exportDirectory = QString());
 
     //! imports and old configuration file (tar archive) that contains
     //! both an applets file and a latterc file with the screens
@@ -63,11 +63,11 @@ public:
     bool importOldConfiguration(QString oldConfigPath, QString newName = QString());
 
     static Importer::LatteFileVersion fileVersion(QString file);
-
+    static QString nameOfConfigFile(const QString &fileName);
 private:
     //! checks if this old layout can be imported. If it can it returns
     //! the new layout path and an empty string if it cant
-    QString layoutCanBeImported(QString oldAppletsPath, QString newName);
+    QString layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory = QString());
 
     LayoutManager *m_manager;
 };

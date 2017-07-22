@@ -94,6 +94,11 @@ DockCorona *LayoutManager::corona()
     return m_corona;
 }
 
+Importer *LayoutManager::importer()
+{
+    return m_importer;
+}
+
 QAction *LayoutManager::toggleLayoutAction()
 {
     return m_toggleLayoutAction;

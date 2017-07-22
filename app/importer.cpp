@@ -78,9 +78,9 @@ bool Importer::updateOldConfiguration()
     return true;
 }
 
-bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alternative)
+bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alternative, QString exportDirectory)
 {
-    QString newLayoutPath = layoutCanBeImported(oldAppletsPath, newName);
+    QString newLayoutPath = layoutCanBeImported(oldAppletsPath, newName, exportDirectory);
     qDebug() << "New Layout Should be created: " << newLayoutPath;
 
     KSharedConfigPtr oldFile = KSharedConfig::openConfig(oldAppletsPath);
@@ -166,7 +166,7 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     }
 
     //! update also the layout settings correctly
-    LayoutSettings newLayout(this, newLayoutPath);
+    LayoutSettings newLayout(this, newLayoutPath, newName);
     newLayout.setVersion(2);
     newLayout.setSyncLaunchers(syncLaunchers);
     newLayout.setGlobalLaunchers(globalLaunchers);
@@ -175,12 +175,14 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
 
     if (alternative) {
         newLayout.setColor("purple");
+    } else {
+        newLayout.setColor("blue");
     }
 
     return true;
 }
 
-QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName)
+QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory)
 {
     QFile oldAppletsrc(oldAppletsPath);
 
@@ -198,9 +200,9 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName)
         return QString();
     }
 
-    QDir layoutDir(QDir::homePath() + "/.config/latte");
+    QDir layoutDir(exportDirectory.isNull() ? QDir::homePath() + "/.config/latte" : exportDirectory);
 
-    if (!layoutDir.exists()) {
+    if (!layoutDir.exists() && exportDirectory.isNull()) {
         QDir(QDir::homePath() + "/.config").mkdir("latte");
     }
 
@@ -346,7 +348,6 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
         return Importer::UnknownFileType;
     }
 
-
     QTemporaryDir archiveTempDir;
     QDir tempDir{archiveTempDir.path()};
 
@@ -394,6 +395,18 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
     }
 
     return Importer::UnknownFileType;
+}
+
+QString Importer::nameOfConfigFile(const QString &fileName)
+{
+    int lastSlash = fileName.lastIndexOf("/");
+    QString tempLayoutFile = fileName;
+    QString layoutName = tempLayoutFile.remove(0, lastSlash + 1);
+
+    int ext = layoutName.lastIndexOf(".latterc");
+    layoutName = layoutName.remove(ext, 8);
+
+    return layoutName;
 }
 
 }

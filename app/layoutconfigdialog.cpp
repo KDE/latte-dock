@@ -37,8 +37,12 @@
 #include <QStandardItemModel>
 #include <QTemporaryDir>
 
+#include <KArchive/KTar>
+#include <KArchive/KArchiveEntry>
+#include <KArchive/KArchiveDirectory>
 #include <KLocalizedString>
 #include <KNotification>
+
 
 namespace Latte {
 
@@ -206,8 +210,41 @@ void LayoutConfigDialog::on_importButton_clicked()
 
     connect(fileDialog, &QFileDialog::fileSelected
     , this, [&](const QString & file) {
-        if (Importer::fileVersion(file) == Importer::LayoutVersion2) {
+        Importer::LatteFileVersion version = Importer::fileVersion(file);
+
+        if (version == Importer::LayoutVersion2) {
             addLayoutForFile(file);
+        } else if (version == Importer::ConfigVersion1) {
+            KTar archive(file, QStringLiteral("application/x-tar"));
+            archive.open(QIODevice::ReadOnly);
+
+            //! if the file isnt a tar archive
+            if (archive.isOpen()) {
+                QDir tempDir{uniqueTempDirectory()};
+
+                const auto archiveRootDir = archive.directory();
+
+                foreach (auto &name, archiveRootDir->entries()) {
+                    auto fileEntry = archiveRootDir->file(name);
+                    fileEntry->copyTo(tempDir.absolutePath());
+                }
+
+                QString name = Importer::nameOfConfigFile(file);
+
+                QString applets(tempDir.absolutePath() + "/" + "lattedock-appletsrc");
+
+                if (QFile(applets).exists()) {
+                    if (m_manager->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
+                        addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name, false);
+                    }
+
+                    QString alternativeName = name + "-" + i18nc("layout", "Alternative");
+
+                    if (m_manager->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
+                        addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
+                    }
+                }
+            }
         }
     });
 
@@ -315,16 +352,21 @@ void LayoutConfigDialog::restoreDefaults()
     }
 }
 
-void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName)
+void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory)
 {
     if (layoutName.isEmpty()) {
         layoutName = LayoutSettings::layoutName(file);
     }
 
-    QString tempDir = uniqueTempDirectory();
+    QString copiedId;
 
-    QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
-    QFile(file).copy(copiedId);
+    if (newTempDirectory) {
+        QString tempDir = uniqueTempDirectory();
+        copiedId = tempDir + "/" + layoutName + ".layout.latte";
+        QFile(file).copy(copiedId);
+    } else {
+        copiedId = file;
+    }
 
     LayoutSettings *settings = new LayoutSettings(this, copiedId);
     m_layouts[copiedId] = settings;
@@ -339,6 +381,11 @@ void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName)
     insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
 
     ui->layoutsView->selectRow(row);
+
+    //NOTE: The pointer is automatically deleted when the event is closed
+    auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
+    notification->setText(i18nc("import-done", "Layout: <b>%0</b> imported successfully\n").arg(layoutName));
+    notification->sendEvent();
 }
 
 void LayoutConfigDialog::loadLayouts()
@@ -425,6 +472,12 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
         font.setBold(false);
     }
 
+    if (path.startsWith("/tmp/")) {
+        font.setItalic(true);
+    } else {
+        font.setItalic(false);
+    }
+
     m_model->setData(m_model->index(row, 2), QVariant(name), Qt::DisplayRole);
     m_model->setData(m_model->index(row, 2), font, Qt::FontRole);
 
@@ -483,6 +536,12 @@ void LayoutConfigDialog::currentRowChanged(const QModelIndex &current, const QMo
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
+    }
+
+    if (id.startsWith("/tmp/")) {
+        ui->switchButton->setEnabled(false);
+    } else {
+        ui->switchButton->setEnabled(true);
     }
 }
 
@@ -625,6 +684,12 @@ bool LayoutConfigDialog::saveAllChanges()
 
             if (tId == fromRenamePaths[i]) {
                 m_model->setData(m_model->index(j, 0), newFile, Qt::DisplayRole);
+                m_initLayoutPaths.append(newFile);
+
+                QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(j, 2), Qt::FontRole));
+
+                font.setItalic(false);
+                m_model->setData(m_model->index(j, 2), font, Qt::FontRole);
             }
         }
     }
@@ -644,7 +709,6 @@ bool LayoutConfigDialog::saveAllChanges()
 
     return true;
 }
-
 
 bool LayoutConfigDialog::idExistsInModel(QString id)
 {
