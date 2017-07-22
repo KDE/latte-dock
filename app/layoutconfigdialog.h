@@ -80,6 +80,7 @@ private:
     int ascendingRowFor(QString name);
 
     QString uniqueTempDirectory();
+    QString uniqueLayoutName(QString name);
 
     QStringList m_availableActivities;
     QStringList m_tempDirectories;

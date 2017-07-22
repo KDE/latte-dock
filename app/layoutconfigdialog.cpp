@@ -156,7 +156,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
     LayoutSettings *settings = new LayoutSettings(this, copiedId);
     m_layouts[copiedId] = settings;
 
-    insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
+    insertLayoutInfoAtRow(row + 1, copiedId, color, uniqueLayoutName(layoutName), menu, QStringList());
 
     ui->layoutsView->selectRow(row + 1);
 }
@@ -657,6 +657,26 @@ QString LayoutConfigDialog::uniqueTempDirectory()
     m_tempDirectories.append(tempDir.path());
 
     return tempDir.path();
+}
+
+QString LayoutConfigDialog::uniqueLayoutName(QString name)
+{
+    int pos_ = name.lastIndexOf(QRegExp(QString("[-][0-9]+")));
+
+    if (nameExistsInModel(name) && pos_ > 0) {
+        name = name.left(pos_);
+    }
+
+    int i = 2;
+
+    QString namePart = name;
+
+    while (nameExistsInModel(name)) {
+        name = namePart + "-" + QString::number(i);
+        i++;
+    }
+
+    return name;
 }
 
 }//end of namespace
