@@ -74,6 +74,8 @@ public:
 
     QStringList activities();
 
+    void importPresets(bool includeDefault = false);
+
 public slots:
     //! switch to specified layout
     Q_INVOKABLE bool switchToLayout(QString layoutName);

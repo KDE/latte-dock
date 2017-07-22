@@ -71,6 +71,7 @@ void LayoutManager::load()
     if (configVer < 2 && QFile(QDir::homePath() + "/.config/lattedockrc").exists()) {
         qDebug() << "Latte must update its configuration...";
         m_importer->updateOldConfiguration();
+        importPresets(false);
     } else if (!QFile(QDir::homePath() + "/.config/lattedockrc").exists()) {
         //startup create what is necessary....
         QDir layoutDir(QDir::homePath() + "/.config/latte");
@@ -80,6 +81,7 @@ void LayoutManager::load()
         }
 
         newLayout(i18n("My Layout"));
+        importPresets(false);
         m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
         m_corona->universalSettings()->setVersion(2);
     }
@@ -268,6 +270,29 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     }
 
     return newLayoutPath;
+}
+
+void LayoutManager::importPresets(bool includeDefault)
+{
+    int start = 1;
+
+    if (!includeDefault) {
+        start = 2;
+    }
+
+    for (int i = start; i <= 4; ++i) {
+        QByteArray presetNameOrig = QString("preset" + QString::number(i)).toUtf8();
+        QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
+        QString presetName = LayoutSettings::layoutName(presetPath);
+        QByteArray presetNameChars = presetName.toUtf8();
+        presetName = i18n(presetNameChars);
+
+        QString newLayoutFile = QDir::homePath() + "/.config/latte/" + presetName + ".layout.latte";
+
+        if (!QFile(newLayoutFile).exists()) {
+            QFile(presetPath).copy(newLayoutFile);
+        }
+    }
 }
 
 void LayoutManager::showLayoutConfigDialog()
