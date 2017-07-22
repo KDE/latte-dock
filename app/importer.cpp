@@ -28,8 +28,11 @@
 #include <QFile>
 #include <QTemporaryDir>
 
-#include <KLocalizedString>
 #include <KArchive/KTar>
+#include <KArchive/KArchiveEntry>
+#include <KArchive/KArchiveDirectory>
+#include <KLocalizedString>
+
 
 namespace Latte {
 
@@ -313,6 +316,84 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
     }
 
     return true;
+}
+
+Importer::LatteFileVersion Importer::fileVersion(QString file)
+{
+    if (!QFile::exists(file))
+        return UnknownFileType;
+
+    if (file.endsWith(".layout.latte")) {
+        KSharedConfigPtr lConfig = KSharedConfig::openConfig(file);
+        KConfigGroup layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
+        int version = layoutGroup.readEntry("version", 1);
+
+        if (version == 2)
+            return Importer::LayoutVersion2;
+        else
+            return Importer::UnknownFileType;
+    }
+
+    if (!file.endsWith(".latterc")) {
+        return Importer::UnknownFileType;
+    }
+
+    KTar archive(file, QStringLiteral("application/x-tar"));
+    archive.open(QIODevice::ReadOnly);
+
+    //! if the file isnt a tar archive
+    if (!archive.isOpen()) {
+        return Importer::UnknownFileType;
+    }
+
+
+    QTemporaryDir archiveTempDir;
+    QDir tempDir{archiveTempDir.path()};
+
+    const auto archiveRootDir = archive.directory();
+
+    bool version1rc = false;
+    bool version1applets = false;
+
+    bool version2rc = false;
+    bool version2LatteDir = false;
+    bool version2layout = false;
+
+    foreach (auto &name, archiveRootDir->entries()) {
+        auto fileEntry = archiveRootDir->file(name);
+
+        if (fileEntry->copyTo(tempDir.absolutePath())) {
+            if (fileEntry->name() == "lattedockrc") {
+                KSharedConfigPtr lConfig = KSharedConfig::openConfig(tempDir.absolutePath() + "/" + fileEntry->name());
+                KConfigGroup universalGroup = KConfigGroup(lConfig, "UniversalSettings");
+                int version = universalGroup.readEntry("version", 1);
+
+                if (version == 1) {
+                    version1rc = true;
+                } else if (version == 2) {
+                    version2rc = true;
+                }
+            } else if (fileEntry->name() == "lattedock-appletsrc") {
+                KSharedConfigPtr lConfig = KSharedConfig::openConfig(tempDir.absolutePath() + "/" + fileEntry->name());
+                KConfigGroup generalGroup = KConfigGroup(lConfig, "LayoutSettings");
+                int version = generalGroup.readEntry("version", 1);
+
+                if (version == 1) {
+                    version1applets = true;
+                } else if (version == 2) {
+                    version2layout = true;
+                }
+            }
+        }
+    }
+
+    if (version1applets && version1applets) {
+        return ConfigVersion1;
+    } else if (version2rc && version2LatteDir) {
+        return ConfigVersion2;
+    }
+
+    return Importer::UnknownFileType;
 }
 
 }

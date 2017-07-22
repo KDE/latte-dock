@@ -186,6 +186,32 @@ void LayoutConfigDialog::on_removeButton_clicked()
 void LayoutConfigDialog::on_importButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
+
+
+    QFileDialog *fileDialog = new QFileDialog(this, i18nc("import layout", "Import layout")
+            , QDir::homePath()
+            , QStringLiteral("layout.latte"));
+
+    fileDialog->setFileMode(QFileDialog::AnyFile);
+    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog->setDefaultSuffix("layout.latte");
+
+    QStringList filters;
+    filters << QString(i18nc("import latte layout", "Latte Dock layout file v2") + "(*.layout.latte)")
+            << QString(i18nc("import latte layout from config v1", "Latte Dock layout from config file v1") + "(*.latterc)");
+    fileDialog->setNameFilters(filters);
+
+    connect(fileDialog, &QFileDialog::finished
+            , fileDialog, &QFileDialog::deleteLater);
+
+    connect(fileDialog, &QFileDialog::fileSelected
+    , this, [&](const QString & file) {
+        if (Importer::fileVersion(file) == Importer::LayoutVersion2) {
+            addLayoutForFile(file);
+        }
+    });
+
+    fileDialog->open();
 }
 
 void LayoutConfigDialog::on_exportButton_clicked()
@@ -284,26 +310,35 @@ void LayoutConfigDialog::restoreDefaults()
         presetName = i18n(prset_str);
 
         if (!nameExistsInModel(presetName)) {
-            qDebug() << "Must be added ::: " << presetName;
-            QString tempDir = uniqueTempDirectory();
-
-            QString copiedId = tempDir + "/" + presetName + ".layout.latte";
-            QFile(preset).copy(copiedId);
-
-            LayoutSettings *settings = new LayoutSettings(this, copiedId);
-            m_layouts[copiedId] = settings;
-
-            QString id = copiedId;
-            QString color = settings->color();
-            QString layoutName = presetName;
-            bool menu = settings->showInMenu();
-
-            int row = ascendingRowFor(layoutName);
-            insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
-
-            ui->layoutsView->selectRow(row);
+            addLayoutForFile(preset, presetName);
         }
     }
+}
+
+void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName)
+{
+    if (layoutName.isEmpty()) {
+        layoutName = LayoutSettings::layoutName(file);
+    }
+
+    QString tempDir = uniqueTempDirectory();
+
+    QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
+    QFile(file).copy(copiedId);
+
+    LayoutSettings *settings = new LayoutSettings(this, copiedId);
+    m_layouts[copiedId] = settings;
+
+    QString id = copiedId;
+    QString color = settings->color();
+    bool menu = settings->showInMenu();
+
+    layoutName = uniqueLayoutName(layoutName);
+
+    int row = ascendingRowFor(layoutName);
+    insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
+
+    ui->layoutsView->selectRow(row);
 }
 
 void LayoutConfigDialog::loadLayouts()

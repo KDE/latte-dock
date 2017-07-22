@@ -35,6 +35,15 @@ class Importer : public QObject {
     Q_OBJECT
 
 public:
+    enum LatteFileVersion {
+        UnknownFileType = -1,
+        LayoutVersion1 = 0,
+        ConfigVersion1 = 1,
+        LayoutVersion2 = 2,
+        ConfigVersion2 = 3
+    };
+    Q_ENUM(LatteFileVersion);
+
     Importer(QObject *parent = nullptr);
     ~Importer() override;
 
@@ -52,6 +61,8 @@ public:
     //! both an applets file and a latterc file with the screens
     //!     newName: if it is empty the name is extracted from the old config file name
     bool importOldConfiguration(QString oldConfigPath, QString newName = QString());
+
+    static Importer::LatteFileVersion fileVersion(QString file);
 
 private:
     //! checks if this old layout can be imported. If it can it returns

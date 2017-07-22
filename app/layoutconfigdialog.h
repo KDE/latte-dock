@@ -68,6 +68,7 @@ private slots:
     void itemChanged(QStandardItem *item);
 
 private:
+    void addLayoutForFile(QString file, QString layoutName = QString());
     void loadLayouts();
     void recalculateAvailableActivities();
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
