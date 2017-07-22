@@ -198,7 +198,7 @@ void LayoutConfigDialog::on_importButton_clicked()
 
     QStringList filters;
     filters << QString(i18nc("import latte layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)")
-            << QString(i18nc("import latte layouts/configuration", "Latte Dock Full Configuration file v0.1,v0.2") + "(*.latterc)");
+            << QString(i18nc("import latte layouts/configuration", "Latte Dock Full Configuration file (v0.1, v0.2)") + "(*.latterc)");
     fileDialog->setNameFilters(filters);
 
     connect(fileDialog, &QFileDialog::finished
@@ -216,7 +216,7 @@ void LayoutConfigDialog::on_importButton_clicked()
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Configuration file version v0.1"));
             msg->setText(
-                i18n("You are going to import an old version v0.1 configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
+                i18n("You are going to import an old version <b>v0.1</b> configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
             msg->setStandardButtons(QMessageBox::Cancel);
 
             QPushButton *fullBtn = new QPushButton(msg);
@@ -246,6 +246,25 @@ void LayoutConfigDialog::on_importButton_clicked()
                 QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
                 qGuiApp->exit();
             });
+        } else if (version == Importer::ConfigVersion2) {
+            auto msg = new QMessageBox(this);
+            msg->setIcon(QMessageBox::Warning);
+            msg->setWindowTitle(i18n("Import: Configuration file version v0.2"));
+            msg->setText(
+                i18n("You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</b>, importing <b>will erase all</b> your current configuration!!!<br><br><i>Would you like to proceed?</i>"));
+            msg->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            msg->setDefaultButton(QMessageBox::No);
+
+            connect(msg, &QMessageBox::finished, this, [ &, msg, file](int result) {
+                if (result == QMessageBox::Yes) {
+                    //!NOTE: Restart latte for import the new configuration
+                    msg->deleteLater();
+                    QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
+                    qGuiApp->exit();
+                }
+            });
+
+            msg->open();
         }
     });
 
