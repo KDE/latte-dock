@@ -143,6 +143,11 @@ QStringList LayoutManager::activities()
     return m_corona->m_activityConsumer->activities();
 }
 
+QStringList LayoutManager::presetsPaths() const
+{
+    return m_presetsPaths;
+}
+
 QString LayoutManager::layoutPath(QString layoutName)
 {
     QString path = QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte";
@@ -167,6 +172,7 @@ void LayoutManager::loadLayouts()
 {
     m_layouts.clear();
     m_menuLayouts.clear();
+    m_presetsPaths.clear();
 
     QDir layoutDir(QDir::homePath() + "/.config/latte");
     QStringList filter;
@@ -182,6 +188,11 @@ void LayoutManager::loadLayouts()
             m_menuLayouts.append(layoutSets.name());
         }
     }
+
+    m_presetsPaths.append(m_corona->kPackage().filePath("preset1"));
+    m_presetsPaths.append(m_corona->kPackage().filePath("preset2"));
+    m_presetsPaths.append(m_corona->kPackage().filePath("preset3"));
+    m_presetsPaths.append(m_corona->kPackage().filePath("preset4"));
 
     emit layoutsChanged();
     emit menuLayoutsChanged();

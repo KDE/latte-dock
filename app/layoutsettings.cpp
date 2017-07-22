@@ -25,26 +25,21 @@
 
 namespace Latte {
 
-LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString layoutName)
+LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString assignedName)
     : QObject(parent)
 {
-    qDebug() << "Layout file to create object: " << layoutFile << " with name: " << layoutName;
+    qDebug() << "Layout file to create object: " << layoutFile << " with name: " << assignedName;
 
     if (QFile(layoutFile).exists()) {
-        if (layoutName.isEmpty()) {
-            int lastSlash = layoutFile.lastIndexOf("/");
-            QString tempLayoutFile = layoutFile;
-            layoutName = tempLayoutFile.remove(0, lastSlash + 1);
-
-            int ext = layoutName.lastIndexOf(".layout.latte");
-            layoutName = layoutName.remove(ext, 13);
+        if (assignedName.isEmpty()) {
+            assignedName =  layoutName(layoutFile);
         }
 
         KSharedConfigPtr lConfig = KSharedConfig::openConfig(layoutFile);
         m_layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
 
         setFile(layoutFile);
-        setName(layoutName);
+        setName(assignedName);
         loadConfig();
         init();
     }
@@ -193,6 +188,18 @@ void  LayoutSettings::setActivities(QStringList activities)
     m_activities = activities;
 
     emit activitiesChanged();
+}
+
+QString LayoutSettings::layoutName(const QString &fileName)
+{
+    int lastSlash = fileName.lastIndexOf("/");
+    QString tempLayoutFile = fileName;
+    QString layoutName = tempLayoutFile.remove(0, lastSlash + 1);
+
+    int ext = layoutName.lastIndexOf(".layout.latte");
+    layoutName = layoutName.remove(ext, 13);
+
+    return layoutName;
 }
 
 void LayoutSettings::loadConfig()

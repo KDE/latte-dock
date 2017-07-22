@@ -64,6 +64,7 @@ public:
 
     QStringList layouts() const;
     QStringList menuLayouts() const;
+    QStringList presetsPaths() const;
 
     QAction *addWidgetsAction();
     QAction *toggleLayoutAction();
@@ -110,6 +111,7 @@ private:
 
     QStringList m_layouts;
     QStringList m_menuLayouts;
+    QStringList m_presetsPaths;
 
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_toggleLayoutAction{nullptr};

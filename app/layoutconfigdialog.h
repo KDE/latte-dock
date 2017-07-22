@@ -74,7 +74,10 @@ private:
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
+    bool nameExistsInModel(QString name);
     bool saveAllChanges();
+
+    int ascendingRowFor(QString name);
 
     QString uniqueTempDirectory();
 

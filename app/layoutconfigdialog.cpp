@@ -30,6 +30,8 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QHeaderView>
+#include <KLocalizedString>
+
 #include <QMessageBox>
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -161,6 +163,8 @@ void LayoutConfigDialog::on_copyButton_clicked()
     m_layouts[copiedId] = settings;
 
     insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
+
+    ui->layoutsView->selectRow(row + 1);
 }
 
 void LayoutConfigDialog::on_removeButton_clicked()
@@ -278,6 +282,34 @@ void LayoutConfigDialog::apply()
 void LayoutConfigDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
+
+    foreach (auto preset, m_manager->presetsPaths()) {
+        QString presetName = LayoutSettings::layoutName(preset);
+        QByteArray presetNameChars = presetName.toUtf8();
+        const char *prset_str = presetNameChars.data();
+        presetName = i18n(prset_str);
+
+        if (!nameExistsInModel(presetName)) {
+            qDebug() << "Must be added ::: " << presetName;
+            QString tempDir = uniqueTempDirectory();
+
+            QString copiedId = tempDir + "/" + presetName + ".layout.latte";
+            QFile(preset).copy(copiedId);
+
+            LayoutSettings *settings = new LayoutSettings(this, copiedId);
+            m_layouts[copiedId] = settings;
+
+            QString id = copiedId;
+            QString color = settings->color();
+            QString layoutName = presetName;
+            bool menu = settings->showInMenu();
+
+            int row = ascendingRowFor(layoutName);
+            insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
+
+            ui->layoutsView->selectRow(row);
+        }
+    }
 }
 
 void LayoutConfigDialog::loadLayouts()
@@ -522,7 +554,8 @@ bool LayoutConfigDialog::saveAllChanges()
             layout->setActivities(cleanedActivities);
         }
 
-        if (layout->name() != name) {
+        //!if the layout name changed or when the layout path is a temporary one
+        if (layout->name() != name || (id.startsWith("/tmp/"))) {
             QString tempFile = layoutTempDir.filePath(QString(layout->name() + ".layout.latte"));
             qDebug() << "new temp file ::: " << tempFile;
 
@@ -589,6 +622,32 @@ bool LayoutConfigDialog::idExistsInModel(QString id)
     }
 
     return false;
+}
+
+bool LayoutConfigDialog::nameExistsInModel(QString name)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString rowName = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+
+        if (rowName == name) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int LayoutConfigDialog::ascendingRowFor(QString name)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString rowName = m_model->data(m_model->index(i, 2), Qt::DisplayRole).toString();
+
+        if (rowName.toUpper() > name.toUpper()) {
+            return i;
+        }
+    }
+
+    return m_model->rowCount();
 }
 
 QString LayoutConfigDialog::uniqueTempDirectory()

@@ -69,6 +69,8 @@ public:
     QStringList globalLaunchers() const;
     void setGlobalLaunchers(QStringList launchers);
 
+    static QString layoutName(const QString &fileName);
+
 signals:
     void activitiesChanged();
     void colorChanged();
