@@ -35,12 +35,14 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         painter->drawRect(option.rect);
     }
 
-    const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1;
+    const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
     QRect newRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
-                                        QSize(option.decorationSize.width() - 1.5 * textMargin, option.decorationSize.height()),
-                                        QRect(option.rect.x(), option.rect.y(),
-                                                option.rect.width(), option.rect.height()));
+                                        QSize(option.decorationSize.width() + textMargin * 2, option.decorationSize.height()),
+                                        option.rect);
+
+    //viewItemOption.rect = newRect;
     viewItemOption.rect = newRect;
+    viewItemOption.decorationAlignment = Qt::AlignCenter;
 
     QStyledItemDelegate::paint(painter, viewItemOption, index);
 }

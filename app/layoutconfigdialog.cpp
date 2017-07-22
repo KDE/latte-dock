@@ -537,6 +537,7 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
     menuItem->setSelectable(true);
     menuItem->setCheckable(true);
     menuItem->setCheckState(menu ? Qt::Checked : Qt::Unchecked);
+    menuItem->setTextAlignment(Qt::AlignLeft);
 
     QStandardItem *activitiesItem = new QStandardItem(activities.join(","));
 
