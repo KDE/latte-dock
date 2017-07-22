@@ -62,12 +62,6 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
     m_model = new QStandardItemModel(manager->layouts().count(), 5, this);
 
-    m_model->setHorizontalHeaderItem(0, new QStandardItem(QString("#path")));
-    m_model->setHorizontalHeaderItem(1, new QStandardItem(QString(i18n("Color"))));
-    m_model->setHorizontalHeaderItem(2, new QStandardItem(QString(i18n("Name"))));
-    m_model->setHorizontalHeaderItem(3, new QStandardItem(QString(i18n("In Menu"))));
-    m_model->setHorizontalHeaderItem(4, new QStandardItem(QString(i18n("Activities"))));
-
     ui->layoutsView->setModel(m_model);
     ui->layoutsView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
@@ -339,6 +333,12 @@ void LayoutConfigDialog::loadLayouts()
     }
 
     recalculateAvailableActivities();
+
+    m_model->setHorizontalHeaderItem(0, new QStandardItem(QString("#path")));
+    m_model->setHorizontalHeaderItem(1, new QStandardItem(QString(i18n("Color"))));
+    m_model->setHorizontalHeaderItem(2, new QStandardItem(QString(i18n("Name"))));
+    m_model->setHorizontalHeaderItem(3, new QStandardItem(QString(i18n("In Menu"))));
+    m_model->setHorizontalHeaderItem(4, new QStandardItem(QString(i18n("Activities"))));
 }
 
 void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
