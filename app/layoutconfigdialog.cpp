@@ -189,7 +189,7 @@ void LayoutConfigDialog::on_importButton_clicked()
     qDebug() << Q_FUNC_INFO;
 
 
-    QFileDialog *fileDialog = new QFileDialog(this, i18nc("import layout", "Import layout")
+    QFileDialog *fileDialog = new QFileDialog(this, i18nc("import layout/configuration", "Import Layout/Configuration")
             , QDir::homePath()
             , QStringLiteral("layout.latte"));
 
@@ -198,8 +198,8 @@ void LayoutConfigDialog::on_importButton_clicked()
     fileDialog->setDefaultSuffix("layout.latte");
 
     QStringList filters;
-    filters << QString(i18nc("import latte layout", "Latte Dock layout file v2") + "(*.layout.latte)")
-            << QString(i18nc("import latte layout from config v1", "Latte Dock layout from config file v1") + "(*.latterc)");
+    filters << QString(i18nc("import latte layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)")
+            << QString(i18nc("import latte layouts/configuration", "Latte Dock Full Configuration file v0.1,v0.2") + "(*.latterc)");
     fileDialog->setNameFilters(filters);
 
     connect(fileDialog, &QFileDialog::finished
@@ -208,45 +208,82 @@ void LayoutConfigDialog::on_importButton_clicked()
     connect(fileDialog, &QFileDialog::fileSelected
     , this, [&](const QString & file) {
         Importer::LatteFileVersion version = Importer::fileVersion(file);
+        qDebug() << "VERSION :::: " << version;
 
         if (version == Importer::LayoutVersion2) {
             addLayoutForFile(file);
         } else if (version == Importer::ConfigVersion1) {
-            KTar archive(file, QStringLiteral("application/x-tar"));
-            archive.open(QIODevice::ReadOnly);
+            auto msg = new QMessageBox(this);
+            msg->setIcon(QMessageBox::Warning);
+            msg->setWindowTitle(i18n("Import: Configuration file version v0.1"));
+            msg->setText(
+                i18n("You are going to import an old version v0.1 configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
+            msg->setStandardButtons(QMessageBox::Cancel);
 
-            //! if the file isnt a tar archive
-            if (archive.isOpen()) {
-                QDir tempDir{uniqueTempDirectory()};
+            QPushButton *fullBtn = new QPushButton(msg);
+            QPushButton *layoutsBtn = new QPushButton(msg);
+            fullBtn->setText(i18nc("import full configuration", "Full Configuration"));
+            fullBtn->setIcon(QIcon::fromTheme("settings"));
+            layoutsBtn->setText(i18nc("import only the layouts", "Only Layouts"));
+            layoutsBtn->setIcon(QIcon::fromTheme("user-identity"));
 
-                const auto archiveRootDir = archive.directory();
+            msg->addButton(fullBtn, QMessageBox::AcceptRole);
+            msg->addButton(layoutsBtn, QMessageBox::AcceptRole);
 
-                foreach (auto &name, archiveRootDir->entries()) {
-                    auto fileEntry = archiveRootDir->file(name);
-                    fileEntry->copyTo(tempDir.absolutePath());
-                }
+            msg->setDefaultButton(layoutsBtn);
 
-                QString name = Importer::nameOfConfigFile(file);
+            connect(msg, &QMessageBox::finished, msg, &QMessageBox::deleteLater);
 
-                QString applets(tempDir.absolutePath() + "/" + "lattedock-appletsrc");
+            msg->open();
 
-                if (QFile(applets).exists()) {
-                    if (m_manager->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
-                        addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name, false);
-                    }
-
-                    QString alternativeName = name + "-" + i18nc("layout", "Alternative");
-
-                    if (m_manager->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
-                        addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
-                    }
-                }
-            }
+            connect(layoutsBtn, &QPushButton::clicked
+            , this, [ &, file](bool check) {
+                importLayoutsFromV1ConfigFile(file);
+            });
         }
     });
 
     fileDialog->open();
 }
+
+bool LayoutConfigDialog::importLayoutsFromV1ConfigFile(QString file)
+{
+    KTar archive(file, QStringLiteral("application/x-tar"));
+    archive.open(QIODevice::ReadOnly);
+
+    //! if the file isnt a tar archive
+    if (archive.isOpen()) {
+        QDir tempDir{uniqueTempDirectory()};
+
+        const auto archiveRootDir = archive.directory();
+
+        foreach (auto &name, archiveRootDir->entries()) {
+            auto fileEntry = archiveRootDir->file(name);
+            fileEntry->copyTo(tempDir.absolutePath());
+        }
+
+        QString name = Importer::nameOfConfigFile(file);
+
+        QString applets(tempDir.absolutePath() + "/" + "lattedock-appletsrc");
+
+        if (QFile(applets).exists()) {
+            if (m_manager->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
+                addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name, false);
+            }
+
+            QString alternativeName = name + "-" + i18nc("layout", "Alternative");
+
+            if (m_manager->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
+                addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
+            }
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 
 void LayoutConfigDialog::on_exportButton_clicked()
 {
@@ -260,19 +297,26 @@ void LayoutConfigDialog::on_exportButton_clicked()
 
     qDebug() << Q_FUNC_INFO;
 
-    QFileDialog *m_fileDialog = new QFileDialog(this, i18nc("export layout", "Export layout")
+    QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
             , QDir::homePath() , QStringLiteral("layout.latte"));
 
-    m_fileDialog->setFileMode(QFileDialog::AnyFile);
-    m_fileDialog->setAcceptMode(QFileDialog::AcceptSave);
-    m_fileDialog->setDefaultSuffix("layout.latte");
-    m_fileDialog->setNameFilter(i18nc("export layout", "Latte Dock layout file")
-                                + "(*.layout.latte)");
+    fileDialog->setFileMode(QFileDialog::AnyFile);
+    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog->setDefaultSuffix("layout.latte");
 
-    connect(m_fileDialog, &QFileDialog::finished
-            , m_fileDialog, &QFileDialog::deleteLater);
+    QStringList filters;
+    QString filter1(i18nc("export layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)");
+    QString filter2(i18nc("export full configuraion", "Latte Dock Full Configuration file v0.2") + "(*.latterc)");
 
-    connect(m_fileDialog, &QFileDialog::fileSelected
+    filters << filter1
+            << filter2;
+
+    fileDialog->setNameFilters(filters);
+
+    connect(fileDialog, &QFileDialog::finished
+            , fileDialog, &QFileDialog::deleteLater);
+
+    connect(fileDialog, &QFileDialog::fileSelected
     , this, [ &, layoutExported](const QString & file) {
         auto showNotificationError = []() {
             auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
@@ -285,29 +329,53 @@ void LayoutConfigDialog::on_exportButton_clicked()
             return;
         }
 
-        if (!QFile(layoutExported).copy(file)) {
-            showNotificationError();
-            return;
+        if (file.endsWith(".layout.latte")) {
+            if (!QFile(layoutExported).copy(file)) {
+                showNotificationError();
+                return;
+            }
+
+            LayoutSettings layoutS(this, file);
+            layoutS.setActivities(QStringList());
+
+            //NOTE: The pointer is automatically deleted when the event is closed
+            auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
+            notification->setActions({i18nc("export layout", "Open location")});
+            notification->setText(i18nc("export layout", "Layout exported successfully"));
+
+            connect(notification, &KNotification::action1Activated
+            , this, [file]() {
+                QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
+            });
+
+            notification->sendEvent();
+        } else if (file.endsWith(".latterc")) {
+            auto showNotificationError = []() {
+                auto notification = new KNotification("export-fail", KNotification::CloseOnTimeout);
+                notification->setText(i18nc("import/export config", "Failed to export configuration"));
+                notification->sendEvent();
+            };
+
+            if (m_manager->importer()->exportFullConfiguration(file)) {
+
+                auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
+                notification->setActions({i18nc("import/export config", "Open location")});
+                notification->setText(i18nc("import/export config", "Full Configuration exported successfully"));
+
+                connect(notification, &KNotification::action1Activated
+                , this, [file]() {
+                    QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
+                });
+
+                notification->sendEvent();
+            } else {
+                showNotificationError();
+            }
         }
-
-        LayoutSettings layoutS(this, file);
-        layoutS.setActivities(QStringList());
-
-        //NOTE: The pointer is automatically deleted when the event is closed
-        auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
-        notification->setActions({i18nc("export layout", "Open location")});
-        notification->setText(i18nc("export layout", "Layout exported successfully"));
-
-        connect(notification, &KNotification::action1Activated
-        , this, [file]() {
-            QDesktopServices::openUrl({QFileInfo(file).canonicalPath()});
-        });
-
-        notification->sendEvent();
     });
 
 
-    m_fileDialog->open();
+    fileDialog->open();
 }
 
 void LayoutConfigDialog::accept()

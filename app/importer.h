@@ -62,6 +62,8 @@ public:
     //!     newName: if it is empty the name is extracted from the old config file name
     bool importOldConfiguration(QString oldConfigPath, QString newName = QString());
 
+    bool exportFullConfiguration(QString file);
+
     static Importer::LatteFileVersion fileVersion(QString file);
     static QString nameOfConfigFile(const QString &fileName);
 private:

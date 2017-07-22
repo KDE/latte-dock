@@ -320,6 +320,26 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
     return true;
 }
 
+bool Importer::exportFullConfiguration(QString file)
+{
+    if (QFile::exists(file) && !QFile::remove(file)) {
+        return false;
+    }
+
+    KTar archive(file, QStringLiteral("application/x-tar"));
+
+    if (!archive.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    archive.addLocalFile(QString(QDir::homePath() + "/.config/lattedockrc"), QStringLiteral("lattedockrc"));
+    archive.addLocalDirectory(QString(QDir::homePath() + "/.config/latte"), QStringLiteral("latte"));
+
+    archive.close();
+
+    return true;
+}
+
 Importer::LatteFileVersion Importer::fileVersion(QString file)
 {
     if (!QFile::exists(file))
@@ -349,9 +369,6 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
     }
 
     QTemporaryDir archiveTempDir;
-    QDir tempDir{archiveTempDir.path()};
-
-    const auto archiveRootDir = archive.directory();
 
     bool version1rc = false;
     bool version1applets = false;
@@ -360,32 +377,44 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
     bool version2LatteDir = false;
     bool version2layout = false;
 
-    foreach (auto &name, archiveRootDir->entries()) {
-        auto fileEntry = archiveRootDir->file(name);
+    archive.directory()->copyTo(archiveTempDir.path());
 
-        if (fileEntry->copyTo(tempDir.absolutePath())) {
-            if (fileEntry->name() == "lattedockrc") {
-                KSharedConfigPtr lConfig = KSharedConfig::openConfig(tempDir.absolutePath() + "/" + fileEntry->name());
-                KConfigGroup universalGroup = KConfigGroup(lConfig, "UniversalSettings");
-                int version = universalGroup.readEntry("version", 1);
 
-                if (version == 1) {
-                    version1rc = true;
-                } else if (version == 2) {
-                    version2rc = true;
-                }
-            } else if (fileEntry->name() == "lattedock-appletsrc") {
-                KSharedConfigPtr lConfig = KSharedConfig::openConfig(tempDir.absolutePath() + "/" + fileEntry->name());
-                KConfigGroup generalGroup = KConfigGroup(lConfig, "LayoutSettings");
-                int version = generalGroup.readEntry("version", 1);
+    //rc file
+    QString rcFile(archiveTempDir.path() + "/lattedockrc");
 
-                if (version == 1) {
-                    version1applets = true;
-                } else if (version == 2) {
-                    version2layout = true;
-                }
-            }
+    if (QFile(rcFile).exists()) {
+        KSharedConfigPtr lConfig = KSharedConfig::openConfig(rcFile);
+        KConfigGroup universalGroup = KConfigGroup(lConfig, "UniversalSettings");
+        int version = universalGroup.readEntry("version", 1);
+
+        if (version == 1) {
+            version1rc = true;
+        } else if (version == 2) {
+            version2rc = true;
         }
+    }
+
+    //applets file
+    QString appletsFile(archiveTempDir.path() + "/lattedock-appletsrc");
+
+    if (QFile(appletsFile).exists() && version1rc) {
+        KSharedConfigPtr lConfig = KSharedConfig::openConfig(appletsFile);
+        KConfigGroup generalGroup = KConfigGroup(lConfig, "LayoutSettings");
+        int version = generalGroup.readEntry("version", 1);
+
+        if (version == 1) {
+            version1applets = true;
+        } else if (version == 2) {
+            version2layout = true;
+        }
+    }
+
+    //latte directory
+    QString latteDir(archiveTempDir.path() + "/latte");
+
+    if (QDir(latteDir).exists()) {
+        version2LatteDir = true;
     }
 
     if (version1applets && version1applets) {

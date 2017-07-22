@@ -75,6 +75,7 @@ private:
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
+    bool importLayoutsFromV1ConfigFile(QString file);
     bool nameExistsInModel(QString name);
     bool saveAllChanges();
 
