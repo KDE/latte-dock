@@ -61,6 +61,8 @@ public:
 
     void load();
 
+    QString shouldSwitchToLayout(QString activityId);
+
     QString currentLayoutName() const;
 
     QStringList layouts() const;
@@ -94,9 +96,11 @@ signals:
     void toggleLayoutActionChanged();
 
 private slots:
+    void currentActivityChanged(const QString &id);
     void showWidgetsExplorer();
 
 private:
+    void confirmDynamicSwitch();
     void setMenuLayouts(QStringList layouts);
     QString layoutPath(QString layoutName);
 
@@ -111,6 +115,10 @@ private:
     LayoutSettings *m_currentLayout{nullptr};
 
     QString m_lastNonAlternativeLayout{QString(i18n("My Layout"))};
+    QString m_shouldSwitchToLayout;
+
+    bool layoutIsAssigned(QString layoutName);
+    QStringList validActivities(QStringList currentList);
 
     QStringList m_layouts;
     QStringList m_menuLayouts;
@@ -120,6 +128,10 @@ private:
     QAction *m_toggleLayoutAction{nullptr};
 
     QPointer<LayoutConfigDialog> m_layoutConfigDialog;
+
+    QHash<const QString, QString> m_assignedLayouts;
+
+    QTimer m_dynamicSwitchTimer;
 
     friend class LayoutConfigDialog;
 };

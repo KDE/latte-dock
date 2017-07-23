@@ -81,7 +81,6 @@ DockCorona::DockCorona(QObject *parent)
     setKPackage(package);
     //! universal settings must be loaded after the package has been set
     m_universalSettings->load();
-    m_layoutManager->load();
 
     qmlRegisterTypes();
     QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
@@ -146,6 +145,7 @@ void DockCorona::load()
 {
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
         disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+        m_layoutManager->load();
 
         m_activitiesStarting = false;
         m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
@@ -157,7 +157,13 @@ void DockCorona::load()
         connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &DockCorona::screenCountChanged);
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
 
-        m_layoutManager->switchToLayout(m_universalSettings->currentLayoutName());
+        QString assignedLayout = m_layoutManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());
+
+        if (!assignedLayout.isEmpty() && assignedLayout != m_universalSettings->currentLayoutName()) {
+            m_layoutManager->switchToLayout(assignedLayout);
+        } else {
+            m_layoutManager->switchToLayout(m_universalSettings->currentLayoutName());
+        }
 
         foreach (auto containment, containments())
             addDock(containment);

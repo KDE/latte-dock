@@ -53,12 +53,16 @@ public:
     QString currentLayoutName() const;
     void setCurrentLayoutName(QString layoutName);
 
+    QString lastNonAssignedLayoutName() const;
+    void setLastNonAssignedLayoutName(QString layoutName);
+
     QSize layoutsWindowSize() const;
     void setLayoutsWindowSize(QSize);
 
 signals:
     void autostartChanged();
     void currentLayoutNameChanged();
+    void lastNonAssignedLayoutNameChanged();
     void layoutsWindowSizeChanged();
     void versionChanged();
 
@@ -74,6 +78,7 @@ private:
     int m_version{1};
 
     QString m_currentLayoutName;
+    QString m_lastNonAssignedLayoutName;
     QSize m_layoutsWindowSize{700, 450};
 
     KConfigGroup m_universalGroup;

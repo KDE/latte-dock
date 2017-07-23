@@ -24,8 +24,9 @@
 #include <QFile>
 #include <QtDBus/QtDBus>
 
-#include <KLocalizedString>
 #include <KActivities/Consumer>
+#include <KLocalizedString>
+#include <KNotification>
 
 namespace Latte {
 
@@ -50,6 +51,10 @@ LayoutManager::LayoutManager(QObject *parent)
         connect(m_addWidgetsAction, &QAction::triggered, this, &LayoutManager::showWidgetsExplorer);
 
         connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
+
+        m_dynamicSwitchTimer.setSingleShot(true);
+        m_dynamicSwitchTimer.setInterval(3000);
+        connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &LayoutManager::confirmDynamicSwitch);
     }
 }
 
@@ -87,6 +92,9 @@ void LayoutManager::load()
     }
 
     qDebug() << "Latte is loading  its layouts...";
+
+    connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
+            this, &LayoutManager::currentActivityChanged);
 
     loadLayouts();
 }
@@ -132,7 +140,15 @@ QStringList LayoutManager::layouts() const
 
 QStringList LayoutManager::menuLayouts() const
 {
-    return m_menuLayouts;
+    QStringList fixedMenuLayouts = m_menuLayouts;
+
+    //! in case the current layout isnt checked to be shown in the menus
+    //! we must add it on top
+    if (!fixedMenuLayouts.contains(currentLayoutName())) {
+        fixedMenuLayouts.prepend(currentLayoutName());
+    }
+
+    return fixedMenuLayouts;
 }
 
 void LayoutManager::setMenuLayouts(QStringList layouts)
@@ -166,6 +182,45 @@ QString LayoutManager::layoutPath(QString layoutName)
     return path;
 }
 
+void LayoutManager::currentActivityChanged(const QString &id)
+{
+    qDebug() << "activity changed :: " << id;
+
+    m_shouldSwitchToLayout = shouldSwitchToLayout(id);
+
+    m_dynamicSwitchTimer.start();
+}
+
+QString LayoutManager::shouldSwitchToLayout(QString activityId)
+{
+    if (m_assignedLayouts.contains(activityId) && m_assignedLayouts[activityId] != currentLayoutName()) {
+        return m_assignedLayouts[activityId];
+    } else if (!m_assignedLayouts.contains(activityId) && !m_corona->universalSettings()->lastNonAssignedLayoutName().isEmpty()
+               && m_corona->universalSettings()->lastNonAssignedLayoutName() != currentLayoutName()) {
+        return m_corona->universalSettings()->lastNonAssignedLayoutName();
+    }
+
+    return QString();
+}
+
+void LayoutManager::confirmDynamicSwitch()
+{
+    QString tempShouldSwitch = shouldSwitchToLayout(m_corona->m_activityConsumer->currentActivity());
+
+    if (m_shouldSwitchToLayout == tempShouldSwitch) {
+        qDebug() << "dynamic switch to layout :: " << m_shouldSwitchToLayout;
+        //NOTE: The pointer is automatically deleted when the event is closed
+        auto notification = new KNotification("dynamic-switch", KNotification::CloseOnTimeout);
+        notification->setText(i18nc("dynamic-switch-layout", "Changing to layout <b>%0</b>...").arg(m_shouldSwitchToLayout));
+        notification->sendEvent();
+
+        switchToLayout(m_shouldSwitchToLayout);
+    } else {
+        m_shouldSwitchToLayout = tempShouldSwitch;
+        m_dynamicSwitchTimer.start();
+    }
+}
+
 void LayoutManager::toggleLayout()
 {
     if (m_corona->universalSettings()->currentLayoutName() == i18n("Alternative")) {
@@ -180,6 +235,7 @@ void LayoutManager::loadLayouts()
     m_layouts.clear();
     m_menuLayouts.clear();
     m_presetsPaths.clear();
+    m_assignedLayouts.clear();
 
     QDir layoutDir(QDir::homePath() + "/.config/latte");
     QStringList filter;
@@ -188,6 +244,13 @@ void LayoutManager::loadLayouts()
 
     foreach (auto layout, files) {
         LayoutSettings layoutSets(this, layoutDir.absolutePath() + "/" + layout);
+
+        QStringList validActivityIds = validActivities(layoutSets.activities());
+        layoutSets.setActivities(validActivityIds);
+
+        foreach (auto activity, validActivityIds) {
+            m_assignedLayouts[activity] = layoutSets.name();
+        }
 
         m_layouts.append(layoutSets.name());
 
@@ -225,8 +288,13 @@ bool LayoutManager::switchToLayout(QString layoutName)
         //! sessions
         QTimer::singleShot(0, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
+
             m_corona->loadLatteLayout(lPath);
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
+
+            if (!layoutIsAssigned(layoutName)) {
+                m_corona->universalSettings()->setLastNonAssignedLayoutName(layoutName);
+            }
 
             if (m_currentLayout) {
                 m_currentLayout->deleteLater();
@@ -293,6 +361,34 @@ void LayoutManager::importPresets(bool includeDefault)
             QFile(presetPath).copy(newLayoutFile);
         }
     }
+}
+
+QStringList LayoutManager::validActivities(QStringList currentList)
+{
+    QStringList validIds;
+
+    foreach (auto activity, currentList) {
+        if (activities().contains(activity)) {
+            validIds.append(activity);
+        }
+    }
+
+    return validIds;
+}
+
+bool LayoutManager::layoutIsAssigned(QString layoutName)
+{
+    QHashIterator<const QString, QString> i(m_assignedLayouts);
+
+    while (i.hasNext()) {
+        i.next();
+
+        if (i.value() == layoutName) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void LayoutManager::showLayoutConfigDialog()

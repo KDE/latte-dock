@@ -30,6 +30,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
 
@@ -81,6 +82,21 @@ void UniversalSettings::setCurrentLayoutName(QString layoutName)
 
     m_currentLayoutName = layoutName;
     emit currentLayoutNameChanged();
+}
+
+QString UniversalSettings::lastNonAssignedLayoutName() const
+{
+    return m_lastNonAssignedLayoutName;
+}
+
+void UniversalSettings::setLastNonAssignedLayoutName(QString layoutName)
+{
+    if (m_lastNonAssignedLayoutName == layoutName) {
+        return;
+    }
+
+    m_lastNonAssignedLayoutName = layoutName;
+    emit lastNonAssignedLayoutNameChanged();
 }
 
 QSize UniversalSettings::layoutsWindowSize() const
@@ -140,6 +156,7 @@ void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
+    m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
 }
 
@@ -147,6 +164,7 @@ void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
+    m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
 
     m_universalGroup.sync();
