@@ -309,7 +309,7 @@ MouseArea {
 
     Item {
         id: handle
-        visible: configurationArea.containsMouse
+        visible: configurationArea.containsMouse || tooltipMouseArea.containsMouse
 
         //BEGIN functions
         function updatePlacement(){
@@ -439,6 +439,7 @@ MouseArea {
         }
 
         mainItem: MouseArea {
+            id: tooltipMouseArea
             enabled: currentApplet
             width: handleRow.childrenRect.width + (2 * handleRow.spacing)
             height: Math.max(configureButton.height, label.contentHeight, closeButton.height)
