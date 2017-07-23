@@ -24,3 +24,7 @@ Action=Popup
 Name[el]=Αποτυχία εξαγωγής ρυθμίσεων
 Name=Failed to export configuration
 Action=Popup
+
+[Event/switch-layout]
+Name=Switch to layout
+Action=Popup

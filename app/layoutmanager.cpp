@@ -53,7 +53,7 @@ LayoutManager::LayoutManager(QObject *parent)
         connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
 
         m_dynamicSwitchTimer.setSingleShot(true);
-        m_dynamicSwitchTimer.setInterval(3000);
+        m_dynamicSwitchTimer.setInterval(2000);
         connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &LayoutManager::confirmDynamicSwitch);
     }
 }
@@ -207,14 +207,22 @@ void LayoutManager::confirmDynamicSwitch()
 {
     QString tempShouldSwitch = shouldSwitchToLayout(m_corona->m_activityConsumer->currentActivity());
 
-    if (m_shouldSwitchToLayout == tempShouldSwitch) {
+    if (tempShouldSwitch.isEmpty()) {
+        return;
+    }
+
+    if (m_shouldSwitchToLayout == tempShouldSwitch && m_shouldSwitchToLayout != currentLayoutName()) {
         qDebug() << "dynamic switch to layout :: " << m_shouldSwitchToLayout;
-        //NOTE: The pointer is automatically deleted when the event is closed
-        auto notification = new KNotification("dynamic-switch", KNotification::CloseOnTimeout);
-        notification->setText(i18nc("dynamic-switch-layout", "Changing to layout <b>%0</b>...").arg(m_shouldSwitchToLayout));
-        notification->sendEvent();
 
         switchToLayout(m_shouldSwitchToLayout);
+
+        QTimer::singleShot(1000, [this, tempShouldSwitch]() {
+            //NOTE: The pointer is automatically deleted when the event is closed
+            KNotification *notification = new KNotification("switch-layout", KNotification::CloseOnTimeout);
+            notification->setTitle(i18nc("switch layouts", "Switching..."));
+            notification->setText(i18nc("switch layout", "Changing to layout <b>%0</b>...").arg(tempShouldSwitch));
+            notification->sendEvent();
+        });
     } else {
         m_shouldSwitchToLayout = tempShouldSwitch;
         m_dynamicSwitchTimer.start();
@@ -285,7 +293,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
         //! also from qml (Tasks plasmoid). This change fixes a very important
         //! crash when switching sessions through the Tasks plasmoid Context menu
         //! Latte was unstable and was crashing very often during changing
-        //! sessions
+        //! sessions.
         QTimer::singleShot(0, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
 
