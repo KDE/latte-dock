@@ -14,8 +14,6 @@ CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
 
 void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem viewItemOption(option);
-
     if (option.state & QStyle::State_Selected) {
         QPen nPen;
         QBrush nBrush;
@@ -35,16 +33,7 @@ void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         painter->drawRect(option.rect);
     }
 
-    const int textMargin = QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
-    QRect newRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
-                                        QSize(option.decorationSize.width() + textMargin * 2, option.decorationSize.height()),
-                                        option.rect);
-
-    //viewItemOption.rect = newRect;
-    viewItemOption.rect = newRect;
-    viewItemOption.decorationAlignment = Qt::AlignCenter;
-
-    QStyledItemDelegate::paint(painter, viewItemOption, index);
+    QStyledItemDelegate::paint(painter, option, index);
 }
 
 bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
@@ -53,26 +42,21 @@ bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
     Q_ASSERT(event);
     Q_ASSERT(model);
 
-    // make sure that the item is checkable
-    Qt::ItemFlags flags = model->flags(index);
-
-    if (!(flags & Qt::ItemIsUserCheckable) || !(flags & Qt::ItemIsEnabled))
-        return false;
-
-    // make sure that we have a check state
-    QVariant value = index.data(Qt::CheckStateRole);
-
-    if (!value.isValid())
-        return false;
+//     // make sure that the item is checkable
+//     Qt::ItemFlags flags = model->flags(index);
+//
+//     if (!(flags & Qt::ItemIsUserCheckable) || !(flags & Qt::ItemIsEnabled))
+//         return false;
+//
+//     // make sure that we have a check state
+    QString value{index.data().toString()};
+//
+//     if (!value.isValid())
+//         return false;
 
     // make sure that we have the right event type
     if (event->type() == QEvent::MouseButtonRelease) {
-        QRect checkRect = QStyle::alignedRect(option.direction, Qt::AlignCenter,
-                                              option.decorationSize,
-                                              QRect(option.rect.x(), option.rect.y(),
-                                                      option.rect.width(), option.rect.height()));
-
-        if (!checkRect.contains(static_cast<QMouseEvent *>(event)->pos()))
+        if (!option.rect.contains(static_cast<QMouseEvent *>(event)->pos()))
             return false;
     } else if (event->type() == QEvent::KeyPress) {
         if (static_cast<QKeyEvent *>(event)->key() != Qt::Key_Space && static_cast<QKeyEvent *>(event)->key() != Qt::Key_Select)
@@ -81,7 +65,6 @@ bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
         return false;
     }
 
-    Qt::CheckState state = (static_cast<Qt::CheckState>(value.toInt()) == Qt::Checked
-                            ? Qt::Unchecked : Qt::Checked);
-    return model->setData(index, state, Qt::CheckStateRole);
+    const QChar CheckMark{0x2714};
+    return model->setData(index, value == CheckMark ? QString("") : CheckMark, Qt::DisplayRole);
 }

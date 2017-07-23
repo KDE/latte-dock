@@ -50,6 +50,7 @@ const int COLORCOLUMN = 1;
 const int NAMECOLUMN = 2;
 const int MENUCOLUMN = 3;
 const int ACTIVITYCOLUMN = 4;
+const QChar CheckMark{0x2714};
 
 LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     : QDialog(parent),
@@ -154,7 +155,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
     QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
     QString color = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
     QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
-    bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
+    bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
 
     QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
     QFile(id).copy(copiedId);
@@ -535,9 +536,8 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
     QStandardItem *menuItem = new QStandardItem();
     menuItem->setEditable(false);
     menuItem->setSelectable(true);
-    menuItem->setCheckable(true);
-    menuItem->setCheckState(menu ? Qt::Checked : Qt::Unchecked);
-    menuItem->setTextAlignment(Qt::AlignLeft);
+    menuItem->setText(menu ? CheckMark : QString());
+    menuItem->setTextAlignment(Qt::AlignCenter);
 
     QStandardItem *activitiesItem = new QStandardItem(activities.join(","));
 
@@ -720,7 +720,7 @@ bool LayoutConfigDialog::saveAllChanges()
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
-        bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::CheckStateRole).toInt() == Qt::Checked ? true : false;
+        bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         QStringList cleanedActivities;
