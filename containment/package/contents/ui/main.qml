@@ -241,6 +241,7 @@ DragDrop.DropArea {
     readonly property int latteInternalSeparatorPos: latteApplet ? latteApplet.internalSeparatorPos : -1
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
+    property int launchersGroup: plasmoid.configuration.launchersGroup
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     property real durationTime: {

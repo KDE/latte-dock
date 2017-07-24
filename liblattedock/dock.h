@@ -94,7 +94,7 @@ public:
     Q_ENUM(ActiveAppletIndicator)
 
     enum LaunchersGroup {
-        UnigueLaunchers = 0,
+        UniqueLaunchers = 0,
         LayoutLaunchers = 1,
         GlobalLaunchers = 2
     };

@@ -289,8 +289,9 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
+                    tooltip: i18n("Use a unique set of launchers for this dock")
 
-                    readonly property int group: 0
+                    readonly property int group: Latte.Dock.UniqueLaunchers
                 }
 
                 PlasmaComponents.Button {
@@ -299,8 +300,9 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
+                    tooltip: i18n("Use the current layout set of launchers for this dock")
 
-                    readonly property int group: 1
+                    readonly property int group: Latte.Dock.LayoutLaunchers
                 }
 
                 PlasmaComponents.Button {
@@ -309,8 +311,9 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
+                    tooltip: i18n("Use the global set of launchers for this dock")
 
-                    readonly property int group: 2
+                    readonly property int group: Latte.Dock.GlobalLaunchers
                 }
             }
         }
