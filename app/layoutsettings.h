@@ -38,10 +38,9 @@ namespace Latte {
 class LayoutSettings : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
-    Q_PROPERTY(bool syncLaunchers READ syncLaunchers WRITE setSyncLaunchers NOTIFY syncLaunchersChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
-    Q_PROPERTY(QStringList globalLaunchers READ globalLaunchers WRITE setGlobalLaunchers NOTIFY globalLaunchersChanged)
+    Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
     Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
 public:
@@ -50,9 +49,6 @@ public:
 
     bool showInMenu() const;
     void setShowInMenu(bool show);
-
-    bool syncLaunchers() const;
-    void setSyncLaunchers(bool sync);
 
     int version() const;
     void setVersion(int ver);
@@ -66,8 +62,8 @@ public:
     QStringList activities() const;
     void setActivities(QStringList activities);
 
-    QStringList globalLaunchers() const;
-    void setGlobalLaunchers(QStringList launchers);
+    QStringList launchers() const;
+    void setLaunchers(QStringList launchers);
 
     static QString layoutName(const QString &fileName);
 
@@ -75,11 +71,10 @@ signals:
     void activitiesChanged();
     void colorChanged();
     void fileChanged();
-    void globalLaunchersChanged();
+    void launchersChanged();
     void nameChanged();
     void versionChanged();
     void showInMenuChanged();
-    void syncLaunchersChanged();
 
 private slots:
     void loadConfig();
@@ -92,7 +87,6 @@ private:
 
 private:
     bool m_showInMenu{false};
-    bool m_syncLaunchers{false};
     //if version doesnt exist it is and old layout file
     int m_version{2};
 
@@ -100,7 +94,7 @@ private:
     QString m_layoutFile;
     QString m_layoutName;
     QStringList m_activities;
-    QStringList m_globalLaunchers;
+    QStringList m_launchers;
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;

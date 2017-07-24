@@ -58,9 +58,8 @@ void LayoutSettings::init()
     connect(this, &LayoutSettings::activitiesChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::versionChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::colorChanged, this, &LayoutSettings::saveConfig);
-    connect(this, &LayoutSettings::syncLaunchersChanged, this, &LayoutSettings::saveConfig);
     connect(this, &LayoutSettings::showInMenuChanged, this, &LayoutSettings::saveConfig);
-    connect(this, &LayoutSettings::globalLaunchersChanged, this, &LayoutSettings::saveConfig);
+    connect(this, &LayoutSettings::launchersChanged, this, &LayoutSettings::saveConfig);
 }
 
 int LayoutSettings::version() const
@@ -145,33 +144,19 @@ void LayoutSettings::setFile(QString file)
     emit fileChanged();
 }
 
-bool LayoutSettings::syncLaunchers() const
+QStringList LayoutSettings::launchers() const
 {
-    return m_syncLaunchers;
+    return m_launchers;
 }
-void LayoutSettings::setSyncLaunchers(bool sync)
+
+void LayoutSettings::setLaunchers(QStringList launchers)
 {
-    if (m_syncLaunchers == sync)
+    if (m_launchers == launchers)
         return;
 
-    m_syncLaunchers = sync;
+    m_launchers = launchers;
 
-    emit syncLaunchersChanged();
-}
-
-QStringList LayoutSettings::globalLaunchers() const
-{
-    return m_globalLaunchers;
-}
-
-void LayoutSettings::setGlobalLaunchers(QStringList launchers)
-{
-    if (m_globalLaunchers == launchers)
-        return;
-
-    m_globalLaunchers = launchers;
-
-    emit globalLaunchersChanged();
+    emit launchersChanged();
 }
 
 QStringList LayoutSettings::activities() const
@@ -207,9 +192,8 @@ void LayoutSettings::loadConfig()
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
-    m_syncLaunchers = m_layoutGroup.readEntry("syncLaunchers", false);
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
-    m_globalLaunchers = m_layoutGroup.readEntry("globalLaunchers", QStringList());
+    m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
 }
 
 void LayoutSettings::saveConfig()
@@ -218,8 +202,7 @@ void LayoutSettings::saveConfig()
     m_layoutGroup.writeEntry("version", m_version);
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("color", m_color);
-    m_layoutGroup.writeEntry("syncLaunchers", m_syncLaunchers);
-    m_layoutGroup.writeEntry("globalLaunchers", m_globalLaunchers);
+    m_layoutGroup.writeEntry("launchers", m_launchers);
     m_layoutGroup.writeEntry("activities", m_activities);
 }
 

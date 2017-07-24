@@ -411,7 +411,7 @@ void DockConfigView::setSyncLaunchers(bool sync)
                             QVariant launchers;
 
                             if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                dockCorona->layoutManager()->currentLayout()->setGlobalLaunchers(launchers.toStringList());
+                                dockCorona->layoutManager()->currentLayout()->setLaunchers(launchers.toStringList());
                             }
                         }
                     }
@@ -420,8 +420,6 @@ void DockConfigView::setSyncLaunchers(bool sync)
         }
     }
 
-
-    dockCorona->layoutManager()->currentLayout()->setSyncLaunchers(sync);
 }
 
 

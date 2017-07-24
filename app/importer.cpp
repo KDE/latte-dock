@@ -155,22 +155,18 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
 
     KConfigGroup oldGeneralSettings = KConfigGroup(oldFile, "General");
 
-    bool syncLaunchers{false};
-    QStringList globalLaunchers;
+    QStringList layoutLaunchers;
 
     if (!alternative) {
-        syncLaunchers = oldGeneralSettings.readEntry("syncLaunchers_default", false);
-        globalLaunchers = oldGeneralSettings.readEntry("globalLaunchers_default", QStringList());
+        layoutLaunchers = oldGeneralSettings.readEntry("globalLaunchers_default", QStringList());
     } else {
-        syncLaunchers = oldGeneralSettings.readEntry("syncLaunchers_alternative", false);
-        globalLaunchers = oldGeneralSettings.readEntry("globalLaunchers_alternative", QStringList());
+        layoutLaunchers = oldGeneralSettings.readEntry("globalLaunchers_alternative", QStringList());
     }
 
     //! update also the layout settings correctly
     LayoutSettings newLayout(this, newLayoutPath, newName);
     newLayout.setVersion(2);
-    newLayout.setSyncLaunchers(syncLaunchers);
-    newLayout.setGlobalLaunchers(globalLaunchers);
+    newLayout.setLaunchers(layoutLaunchers);
 
     newLayout.setShowInMenu(true);
 
