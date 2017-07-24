@@ -129,7 +129,7 @@ PlasmaComponents.Page {
                 }
             }
 
-            PlasmaComponents.CheckBox {
+            /*PlasmaComponents.CheckBox {
                 id: syncLaunchersChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Sync launchers between all docks")
@@ -139,7 +139,7 @@ PlasmaComponents.Page {
                 onClicked: {
                     dockConfig.setSyncLaunchers(checked);
                 }
-            }
+            }*/
 
             PlasmaComponents.CheckBox {
                 id: smartLaunchersChk
@@ -254,6 +254,67 @@ PlasmaComponents.Page {
             }
         }
         //! END: Tasks Interaction
+
+        //! BEGIN: Launchers Group
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: plasmoid.configuration.advanced
+
+            Header {
+                text: i18n("Launchers")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
+
+                property int group: plasmoid.configuration.launchersGroup
+
+                ExclusiveGroup {
+                    id: launchersGroup
+                    onCurrentChanged: {
+                        if (current.checked) {
+                            dockConfig.updateLaunchersForGroup(current.group);
+                            plasmoid.configuration.launchersGroup = current.group;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("unique launchers","Unique")
+                    checked: parent.group === group
+                    checkable: true
+                    exclusiveGroup: launchersGroup
+
+                    readonly property int group: 0
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("layout launchers","Layout")
+                    checked: parent.group === group
+                    checkable: true
+                    exclusiveGroup: launchersGroup
+
+                    readonly property int group: 1
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("global launchers","Global")
+                    checked: parent.group === group
+                    checkable: true
+                    exclusiveGroup: launchersGroup
+
+                    readonly property int group: 2
+                }
+            }
+        }
+        //! END: Launchers Group
 
         //! BEGIN: Tasks Filters
         ColumnLayout {

@@ -204,6 +204,8 @@ void LayoutSettings::saveConfig()
     m_layoutGroup.writeEntry("color", m_color);
     m_layoutGroup.writeEntry("launchers", m_launchers);
     m_layoutGroup.writeEntry("activities", m_activities);
+
+    m_layoutGroup.sync();
 }
 
 }

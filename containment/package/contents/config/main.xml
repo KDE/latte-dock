@@ -179,6 +179,14 @@
       </choices>
       <default>2</default>
     </entry>
+    <entry name="launchersGroup" type="Enum">
+      <choices>
+            <choice name="Unique"/>
+            <choice name="Layout"/>
+            <choice name="Global"/>
+      </choices>
+      <default>0</default>
+    </entry>
     <entry name="smartLaunchersEnabled" type="Bool">
       <default>true</default>
     </entry>

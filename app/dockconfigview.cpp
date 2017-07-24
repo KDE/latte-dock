@@ -371,47 +371,57 @@ void DockConfigView::hideConfigWindow()
     }
 }
 
-void DockConfigView::setSyncLaunchers(bool sync)
+void DockConfigView::updateLaunchersForGroup(int groupInt)
 {
+    Dock::LaunchersGroup group = (Dock::LaunchersGroup)groupInt;
+
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
-    //when the global launchers list is empty then the current dock launchers are used
-    if (sync && dockCorona && dockCorona->layoutManager() && dockCorona->layoutManager()->currentLayout()) {
-        //update the global launchers
-        Plasma::Containment *c = m_dockView->containment();
+    //! when the layout/global launchers list is empty then the current dock launchers are used for them
+    //! as a start point
+    if (dockCorona && dockCorona->layoutManager() && dockCorona->layoutManager()->currentLayout()) {
+        if ((group == Dock::LayoutLaunchers && dockCorona->layoutManager()->currentLayout()->launchers().isEmpty())
+            || group == Dock::GlobalLaunchers && dockCorona->universalSettings()->launchers().isEmpty()) {
 
-        const auto &applets = c->applets();
+            Plasma::Containment *c = m_dockView->containment();
 
-        for (auto *applet : applets) {
-            KPluginMetaData meta = applet->kPackage().metadata();
+            const auto &applets = c->applets();
 
-            if (meta.pluginId() == "org.kde.latte.plasmoid") {
-                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                    const auto &childItems = appletInterface->childItems();
+            for (auto *applet : applets) {
+                KPluginMetaData meta = applet->kPackage().metadata();
 
-                    if (childItems.isEmpty()) {
-                        continue;
-                    }
+                if (meta.pluginId() == "org.kde.latte.plasmoid") {
+                    if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                        const auto &childItems = appletInterface->childItems();
 
-                    for (QQuickItem *item : childItems) {
-                        if (auto *metaObject = item->metaObject()) {
-                            // not using QMetaObject::invokeMethod to avoid warnings when calling
-                            // this on applets that don't have it or other child items since this
-                            // is pretty much trial and error.
-                            // Also, "var" arguments are treated as QVariant in QMetaObject
+                        if (childItems.isEmpty()) {
+                            continue;
+                        }
 
-                            int methodIndex = metaObject->indexOfMethod("getLauncherList()");
+                        for (QQuickItem *item : childItems) {
+                            if (auto *metaObject = item->metaObject()) {
+                                // not using QMetaObject::invokeMethod to avoid warnings when calling
+                                // this on applets that don't have it or other child items since this
+                                // is pretty much trial and error.
+                                // Also, "var" arguments are treated as QVariant in QMetaObject
 
-                            if (methodIndex == -1) {
-                                continue;
-                            }
+                                int methodIndex = metaObject->indexOfMethod("getLauncherList()");
 
-                            QMetaMethod method = metaObject->method(methodIndex);
+                                if (methodIndex == -1) {
+                                    continue;
+                                }
 
-                            QVariant launchers;
+                                QMetaMethod method = metaObject->method(methodIndex);
 
-                            if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                dockCorona->layoutManager()->currentLayout()->setLaunchers(launchers.toStringList());
+                                QVariant launchers;
+
+                                if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
+                                    if (group == Dock::LayoutLaunchers) {
+                                        dockCorona->layoutManager()->currentLayout()->setLaunchers(launchers.toStringList());
+                                    } else if (group == Dock::GlobalLaunchers) {
+                                        dockCorona->universalSettings()->setLaunchers(launchers.toStringList());
+                                    }
+                                }
                             }
                         }
                     }
