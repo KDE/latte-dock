@@ -71,7 +71,10 @@ Item {
 
             Latte.IconItem{
                 id: audioStreamIcon
-                anchors.fill: parent
+                anchors.centerIn: parent
+                width: 0.9*parent.width
+                height: width
+
                 opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.5
                 source: {
                     if (mainItemContainer.volume <= 0 || mainItemContainer.muted) {
