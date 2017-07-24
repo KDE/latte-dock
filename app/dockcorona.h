@@ -131,6 +131,9 @@ private:
     bool heuresticForLoadingDockWithTasks();
     int noOfDocks();
     int primaryScreenId() const;
+    QString availableId(QStringList all, QStringList assigned, int base);
+    QStringList containmentsIds();
+    QStringList appletsIds();
 
     bool m_activitiesStarting{true};
     //! this is used to check if a dock with tasks in it will be loaded on startup

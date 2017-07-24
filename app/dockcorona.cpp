@@ -33,6 +33,7 @@
 #include <QDBusConnection>
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QFile>
 #include <QFontDatabase>
 #include <QQmlContext>
 
@@ -1144,20 +1145,34 @@ void DockCorona::copyDock(Plasma::Containment *containment)
     //! Settting mutable for create a containment
     setImmutability(Plasma::Types::Mutable);
 
+    QStringList toCopyContainmentIds;
+    QStringList toCopyAppletIds;
+
+    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
+    QString temp2File = QDir::homePath() + "/.config/lattedock.copy2.bak";
+
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
-    QFile copyFile(QDir::homePath() + "/.config/lattedock.copy1.bak");
+    QFile copyFile(temp1File);
+    QFile copyFile2(temp2File);
 
     if (copyFile.exists())
         copyFile.remove();
 
+    if (copyFile2.exists())
+        copyFile2.remove();
+
     KSharedConfigPtr newFile = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock.copy1.bak");
     KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
     KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
+    KConfigGroup copied_systray;
 
+    toCopyContainmentIds << QString::number(containment->id());
+    toCopyAppletIds << containment->config().group("Applets").groupList();
     containment->config().copyTo(&copied_c1);
 
     //!investigate if there is a systray in the containment to copy also
     int systrayId = -1;
+    QString systrayAppletId;
     auto applets = containment->config().group("Applets");
 
     foreach (auto applet, applets.groupList()) {
@@ -1167,6 +1182,7 @@ void DockCorona::copyDock(Plasma::Containment *containment)
 
         if (tSysId != -1) {
             systrayId = tSysId;
+            systrayAppletId = applet;
             qDebug() << "systray was found in the containment...";
             break;
         }
@@ -1183,16 +1199,99 @@ void DockCorona::copyDock(Plasma::Containment *containment)
         }
 
         if (systray) {
-            KConfigGroup copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
+            copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
+            toCopyContainmentIds << QString::number(systray->id());
+            toCopyAppletIds << systray->config().group("Applets").groupList();
             systray->config().copyTo(&copied_systray);
         }
     }
 
     //! end of systray specific code
 
+    //! BEGIN updating the ids in the temp file
+    QStringList allIds;
+    allIds << containmentsIds();
+    allIds << appletsIds();
+
+    //qDebug() << "Ids:" << allIds;
+
+    //qDebug() << "to copy containments: " << toCopyContainmentIds;
+    //qDebug() << "to copy applets: " << toCopyAppletIds;
+
+    QStringList assignedIds;
+    QHash<QString, QString> assigned;
+
+    foreach (auto contId, toCopyContainmentIds) {
+        QString newId = availableId(allIds, assignedIds, 12);
+        assignedIds << newId;
+        assigned[contId] = newId;
+    }
+
+    foreach (auto appId, toCopyAppletIds) {
+        QString newId = availableId(allIds, assignedIds, 40);
+        assignedIds << newId;
+        assigned[appId] = newId;
+    }
+
+    qDebug() << "full assignments ::: " << assigned;
+
+    QString order1 = copied_c1.group("General").readEntry("appletOrder", QString());
+    QStringList order1Ids = order1.split(";");
+    QStringList fixedOrder1Ids;
+
+    //qDebug() << "order1 :: " << order1;
+
+    for (int i = 0; i < order1Ids.count(); ++i) {
+        fixedOrder1Ids.append(assigned[order1Ids[i]]);
+    }
+
+    QString fixedOrder1 = fixedOrder1Ids.join(";");
+    //qDebug() << "fixed order ::: " << fixedOrder1;
+    copied_c1.group("General").writeEntry("appletOrder", fixedOrder1);
+
+    //! must update also the systray id in its applet
+    if (systrayId > -1) {
+        copied_c1.group("Applets").group(systrayAppletId).group("Configuration").writeEntry("SystrayContainmentId", assigned[QString::number(systrayId)]);
+        copied_systray.sync();
+    }
+
+    copied_c1.sync();
+
+    QFile(temp1File).copy(temp2File);
+
+    QFile f(temp2File);
+
+    if (!f.open(QFile::ReadOnly)) {
+        qDebug() << "temp file couldnt be opened...";
+        return;
+    }
+
+    QTextStream in(&f);
+    QString fileText = in.readAll();
+
+    foreach (auto contId, toCopyContainmentIds) {
+        fileText = fileText.replace("[Containments][" + contId + "]", "[Containments][" + assigned[contId] + "]");
+    }
+
+    foreach (auto appId, toCopyAppletIds) {
+        fileText = fileText.replace("][Applets][" + appId + "]", "][Applets][" + assigned[appId] + "]");
+    }
+
+    f.close();
+
+    if (!f.open(QFile::WriteOnly)) {
+        qDebug() << "temp file couldnt be opened for writing...";
+        return;
+    }
+
+    QTextStream outputStream(&f);
+    outputStream << fileText;
+    f.close();
+    //! END of updating the ids in the temp file
 
     //! Finally import the configuration
-    auto nConts = importLayout(KConfigGroup(newFile, ""));
+    KSharedConfigPtr newFile2 = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock.copy2.bak");
+    auto nConts = importLayout(KConfigGroup(newFile2, ""));
 
     ///Find latte and systray containments
     qDebug() << " imported containments ::: " << nConts.length();
@@ -1309,6 +1408,46 @@ void DockCorona::copyDock(Plasma::Containment *containment)
         qDebug() << "Copy Dock in current screen...";
         addDock(newContainment, dockScrId);
     }
+}
+
+QString DockCorona::availableId(QStringList all, QStringList assigned, int base)
+{
+    bool found = false;
+
+    int i = base;
+
+    while (!found && i < 30000) {
+        QString iStr = QString::number(i);
+
+        if (!all.contains(iStr) && !assigned.contains(iStr)) {
+            return iStr;
+        }
+
+        i++;
+    }
+
+    return QString("");
+}
+
+QStringList DockCorona::containmentsIds()
+{
+    auto containmentsEntries = config()->group("Containments");
+
+    return containmentsEntries.groupList();
+}
+
+QStringList DockCorona::appletsIds()
+{
+    QStringList ids;
+    auto containmentsEntries = config()->group("Containments");
+
+    foreach (auto cId, containmentsEntries.groupList()) {
+        auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+        ids << appletsEntries.groupList();
+    }
+
+    return ids;
 }
 
 //! This function figures in the beginning if a dock with tasks

@@ -299,7 +299,7 @@ PlasmaCore.FrameSvgItem {
 
                     function addModel() {
                         var actions = []
-                       // actions.push("    " + i18n("Copy Dock"));
+                        actions.push("    " + i18n("Copy Dock"));
                         actionsCmb.model = actions;
                         actionsCmb.currentIndex = -1;
                     }
