@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-06-07 14:40+0300\n"
-"PO-Revision-Date: 2017-04-07 19:05+0700\n"
+"PO-Revision-Date: 2017-07-24 22:09+0700\n"
 "Last-Translator: Vladislav Gorevoy <vladislavgorevoy@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -25,15 +25,15 @@ msgstr "Область запуска"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:459
 msgid "Configure applet"
-msgstr ""
+msgstr "Настроить апплет"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:481
 msgid "Lock/Unlock the parabolic effect for this applet"
-msgstr ""
+msgstr "Блокировать/разблокировать параболический эффект для этого апплета"
 
 #: ../../containment/package/contents/ui/ConfigOverlay.qml:493
 msgid "Remove applet"
-msgstr ""
+msgstr "Удалить апплет"
 
 #: ../desktop-templates/containment.metadata.desktop.template:4
 msgid "Latte"
