@@ -750,7 +750,7 @@ bool LayoutConfigDialog::saveAllChanges()
 
         //!if the layout name changed or when the layout path is a temporary one
         if (layout->name() != name || (id.startsWith("/tmp/"))) {
-            QString tempFile = layoutTempDir.filePath(QString(layout->name() + ".layout.latte"));
+            QString tempFile = layoutTempDir.path() + "/" + QString(layout->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
             if (layout->name() == m_manager->currentLayoutName()) {
