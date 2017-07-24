@@ -31,6 +31,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
 {
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
 
@@ -114,6 +115,22 @@ void UniversalSettings::setLayoutsWindowSize(QSize size)
     emit layoutsWindowSizeChanged();
 }
 
+QStringList UniversalSettings::launchers() const
+{
+    return m_launchers;
+}
+
+void UniversalSettings::setLaunchers(QStringList launcherList)
+{
+    if (m_launchers == launcherList) {
+        return;
+    }
+
+    m_launchers = launcherList;
+    emit launchersChanged();
+}
+
+
 bool UniversalSettings::autostart() const
 {
     QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
@@ -158,6 +175,7 @@ void UniversalSettings::loadConfig()
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
+    m_launchers = m_universalGroup.readEntry("launchers", QStringList());
 }
 
 void UniversalSettings::saveConfig()
@@ -166,6 +184,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
+    m_universalGroup.writeEntry("launchers", m_launchers);
 
     m_universalGroup.sync();
 }

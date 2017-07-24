@@ -92,6 +92,13 @@ public:
         AllIndicator = 2
     };
     Q_ENUM(ActiveAppletIndicator)
+
+    enum LaunchersGroup {
+        UnigueLaunchers = 0,
+        LayoutLaunchers = 1,
+        GlobalLaunchers = 2
+    };
+    Q_ENUM(LaunchersGroup)
 };
 
 }//end of namespace

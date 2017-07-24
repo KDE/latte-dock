@@ -38,6 +38,7 @@ class UniversalSettings : public QObject {
 
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
+    Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 public:
     UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
@@ -59,11 +60,15 @@ public:
     QSize layoutsWindowSize() const;
     void setLayoutsWindowSize(QSize);
 
+    QStringList launchers() const;
+    void setLaunchers(QStringList launcherList);
+
 signals:
     void autostartChanged();
     void currentLayoutNameChanged();
     void lastNonAssignedLayoutNameChanged();
     void layoutsWindowSizeChanged();
+    void launchersChanged();
     void versionChanged();
 
 private slots:
@@ -80,6 +85,7 @@ private:
     QString m_currentLayoutName;
     QString m_lastNonAssignedLayoutName;
     QSize m_layoutsWindowSize{700, 450};
+    QStringList m_launchers;
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;

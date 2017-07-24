@@ -63,7 +63,7 @@ public:
     void setActivities(QStringList activities);
 
     QStringList launchers() const;
-    void setLaunchers(QStringList launchers);
+    void setLaunchers(QStringList launcherList);
 
     static QString layoutName(const QString &fileName);
 

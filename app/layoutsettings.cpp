@@ -149,12 +149,12 @@ QStringList LayoutSettings::launchers() const
     return m_launchers;
 }
 
-void LayoutSettings::setLaunchers(QStringList launchers)
+void LayoutSettings::setLaunchers(QStringList launcherList)
 {
-    if (m_launchers == launchers)
+    if (m_launchers == launcherList)
         return;
 
-    m_launchers = launchers;
+    m_launchers = launcherList;
 
     emit launchersChanged();
 }
