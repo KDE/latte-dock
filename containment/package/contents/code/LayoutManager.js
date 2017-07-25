@@ -334,7 +334,7 @@ function insertAtCoordinates(item, x, y) {
 
     if (!child) {
         // check if dragging takes place after the end of the layout
-        if ( ((root.isVertical && y > layout.height)||(root.Horizontal && x > layout.width))
+        if ( ((root.isVertical && y > layout.height)||(root.isHorizontal && x > layout.width))
               && layout.children.length>0  ){
             child = layout.children[layout.children.length-1];
         } else {
@@ -392,12 +392,12 @@ function insertAtLayoutCoordinates(tLayout, item, x, y) {
         // check if dragging takes place after the end of the layout
         var neededSpace = 1.5 * root.realSize;
         if ( (((root.isVertical && (y - neededSpace) <= tLayout.height) && y>=0)
-              ||(root.Horizontal && (x - neededSpace) <= tLayout.width) && x>=0)
+              ||(root.isHorizontal && (x - neededSpace) <= tLayout.width) && x>=0)
               && tLayout.children.length>0  ){
             child = tLayout.children[layout.children.length-1];
         // check if dragging takes place before the start of the layout
         } else if ( ((root.isVertical && (y >= -neededSpace) && (y<=neededSpace))
-                  ||(root.Horizontal && (x >= -neededSpace)  && (x<=neededSpace)))
+                  ||(root.isHorizontal && (x >= -neededSpace)  && (x<=neededSpace)))
                   && tLayout.children.length>0  ){
                 child = tLayout.children[0];
         } else {
