@@ -46,6 +46,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
     package->addFileDefinition("configmodel", QStringLiteral("configuration/config.qml"), i18n("Config model"));
     package->addFileDefinition("tangerineFont", QStringLiteral("fonts/tangerine.ttf"), i18n("Tangerine Font"));
+    package->addFileDefinition("infoviewui", QStringLiteral("views/InfoView.qml"), i18n("Info View Window"));
 
     package->addFileDefinition("layout1", QStringLiteral("layouts/Default.latterc"), i18n("default layout file"));
     package->addFileDefinition("layout2", QStringLiteral("layouts/Plasma.latterc"), i18n("plasma layout file"));
@@ -56,7 +57,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("preset2", QStringLiteral("presets/Plasma.layout.latte"), i18n("plasma preset file"));
     package->addFileDefinition("preset3", QStringLiteral("presets/Unity.layout.latte"), i18n("unity preset file"));
     package->addFileDefinition("preset4", QStringLiteral("presets/Extended.layout.latte"), i18n("extended preset file"));
-    
+
     package->addFileDefinition("separator0", QStringLiteral("controls/latte-separator.desktop"), i18n("tasks plasmoid separator"));
 
     package->setFallbackPackage(fallback);

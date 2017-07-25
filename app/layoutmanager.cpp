@@ -22,6 +22,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QQmlProperty>
 #include <QtDBus/QtDBus>
 
 #include <KActivities/Consumer>
@@ -214,14 +215,10 @@ void LayoutManager::confirmDynamicSwitch()
     if (m_shouldSwitchToLayout == tempShouldSwitch && m_shouldSwitchToLayout != currentLayoutName()) {
         qDebug() << "dynamic switch to layout :: " << m_shouldSwitchToLayout;
 
-        switchToLayout(m_shouldSwitchToLayout);
+        showInfoWindow(i18n("Switching to layout <b>%0</b> ...").arg(m_shouldSwitchToLayout), 4500);
 
-        QTimer::singleShot(1000, [this, tempShouldSwitch]() {
-            //NOTE: The pointer is automatically deleted when the event is closed
-            KNotification *notification = new KNotification("switch-layout", KNotification::CloseOnTimeout);
-            notification->setTitle(i18nc("switch layouts", "Switching..."));
-            notification->setText(i18nc("switch layout", "Changing to layout <b>%0</b>...").arg(tempShouldSwitch));
-            notification->sendEvent();
+        QTimer::singleShot(500, [this, tempShouldSwitch]() {
+            switchToLayout(tempShouldSwitch);
         });
     } else {
         m_shouldSwitchToLayout = tempShouldSwitch;
@@ -407,6 +404,25 @@ void LayoutManager::showLayoutConfigDialog()
         m_layoutConfigDialog = new LayoutConfigDialog(nullptr, this);
 
     m_layoutConfigDialog->show();
+}
+
+void LayoutManager::showInfoWindow(QString info, int duration)
+{
+    const QString infoQML = m_corona->kPackage().filePath("infoviewui");
+
+    if (infoQML.isEmpty()) {
+        return;
+    }
+
+    KDeclarative::QmlObject *qmlObj = new KDeclarative::QmlObject(this);
+    qmlObj->setInitializationDelayed(true);
+    qmlObj->setSource(QUrl::fromLocalFile(infoQML));
+    qmlObj->completeInitialization();
+    qmlObj->rootObject()->setProperty("message", info);
+
+    QTimer::singleShot(duration, [this, qmlObj]() {
+        qmlObj->deleteLater();
+    });
 }
 
 void LayoutManager::showWidgetsExplorer()

@@ -102,6 +102,7 @@ private slots:
 private:
     void confirmDynamicSwitch();
     void setMenuLayouts(QStringList layouts);
+    void showInfoWindow(QString info, int duration);
     QString layoutPath(QString layoutName);
 
     void loadLayouts();
