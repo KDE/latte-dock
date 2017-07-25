@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-06-07 14:40+0300\n"
+"POT-Creation-Date: 2017-07-25 15:51+0300\n"
 "PO-Revision-Date: 2017-06-11 10:45+0100\n"
 "Last-Translator: Vasco Antunes <vasco.antunes@sapo.pt>\n"
 "Language-Team: \n"
@@ -15,121 +15,271 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../app/dockview.cpp:1603
+#: ../../app/dockview.cpp:1684
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "Opções de %1"
 
-#: ../../app/globalsettings.cpp:32
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:276
-msgid "Alternative Session"
+#: ../../app/dockview.cpp:1791
+#, fuzzy
+msgid "Layouts"
+msgstr "Modelo"
+
+#: ../../app/dockview.cpp:1792
+msgid "Switch to another layout"
+msgstr ""
+
+#: ../../app/globalshortcuts.cpp:176
+msgid "Activate Task Manager Entry %1"
+msgstr "Ativar a Entrada do Gestor de Atividades"
+
+#: ../../app/globalshortcuts.cpp:191
+msgid "New Instance for Task Manager Entry %1"
+msgstr "Nova Instância para a Entrada do Gestor de Atividades"
+
+#: ../../app/globalshortcuts.cpp:201
+msgid "Show Latte Dock"
+msgstr "Mostrar a Latte Dock"
+
+#: ../../app/importer.cpp:59 ../../app/importer.cpp:76
+#: ../../app/layoutmanager.cpp:81 ../../app/layoutmanager.cpp:83
+#, fuzzy
+msgid "My Layout"
+msgstr "Modelo"
+
+#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:267
+#: ../../app/layoutmanager.cpp:268
+#, fuzzy
+msgid "Alternative"
 msgstr "Sessão Alternativa"
 
-#: ../../app/globalsettings.cpp:33
-msgid "Enable/Disable Alternative Session"
-msgstr "Habilitar/Desabilitar Sessão Alternativa"
-
-#: ../../app/globalsettings.cpp:41
-msgid "Add Widgets..."
-msgstr "Adicionar Elementos"
-
-#: ../../app/globalsettings.cpp:42
-msgid "Show Plasma Widget Explorer"
-msgstr "Mostrar o Explorador de Elementos do Plasma"
-
-#: ../../app/globalsettings.cpp:248
-msgctxt "default layout"
-msgid "Default"
-msgstr "Padrão"
-
-#: ../../app/globalsettings.cpp:252
-msgctxt "plasma layout"
-msgid "Plasma"
-msgstr "Plasma"
-
-#: ../../app/globalsettings.cpp:256
-msgctxt "unity layout"
-msgid "Unity"
-msgstr "Unity"
-
-#: ../../app/globalsettings.cpp:260
-msgctxt "extended layout"
-msgid "Extended"
-msgstr "Extendido"
-
-#: ../../app/globalsettings.cpp:327
+#: ../../app/importer.cpp:266
 msgctxt "import/export config"
-msgid "Failed to import configuration"
-msgstr "Falhou a importação da configuração"
+msgid "The extracted file coulnd be copied!!!"
+msgstr ""
 
-#: ../../app/globalsettings.cpp:346
+#: ../../app/importer.cpp:271
 msgctxt "import/export config"
 msgid "The file has a wrong format!!!"
 msgstr "O ficheiro tem um formato errado!"
 
-#: ../../app/globalsettings.cpp:375
+#: ../../app/importer.cpp:277
 msgctxt "import/export config"
-msgid "Configuration imported successfully"
-msgstr "Configuração importada com sucesso"
+msgid "The temp directory couldnt be created!!!"
+msgstr ""
 
-#: ../../app/globalsettings.cpp:388
-msgctxt "import/export config"
-msgid "Import configuration"
+#: ../../app/layoutconfigdialog.cpp:62
+#, fuzzy
+msgid "Layouts Editor"
+msgstr "Modelo"
+
+#: ../../app/layoutconfigdialog.cpp:106
+msgctxt "switch button"
+msgid "Switch"
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:107
+#, fuzzy
+msgctxt "copy button"
+msgid "Copy"
+msgstr "Copiar Dock"
+
+#: ../../app/layoutconfigdialog.cpp:108
+#, fuzzy
+msgctxt "remove button"
+msgid "Remove"
+msgstr "Remover"
+
+#: ../../app/layoutconfigdialog.cpp:109
+#, fuzzy
+msgctxt "import button"
+msgid "Import"
+msgstr "Importar"
+
+#: ../../app/layoutconfigdialog.cpp:110
+#, fuzzy
+msgctxt "export button"
+msgid "Export"
+msgstr "Exportar"
+
+#: ../../app/layoutconfigdialog.cpp:204
+#, fuzzy
+msgctxt "import layout/configuration"
+msgid "Import Layout/Configuration"
 msgstr "Importar configuração"
 
-#: ../../app/globalsettings.cpp:395 ../../app/globalsettings.cpp:524
-msgctxt "import/export config"
-msgid "Latte Dock configuration file"
+#: ../../app/layoutconfigdialog.cpp:213
+#, fuzzy
+msgctxt "import latte layout"
+msgid "Latte Dock Layout file v0.2"
 msgstr "Ficheiro de configuração da Latte Dock"
 
-#: ../../app/globalsettings.cpp:415
-msgid "Activate Layout"
-msgstr "Ativar Modelo"
+#: ../../app/layoutconfigdialog.cpp:214
+#, fuzzy
+msgctxt "import latte layouts/configuration"
+msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
+msgstr "Ficheiro de configuração da Latte Dock"
 
-#: ../../app/globalsettings.cpp:416
+#: ../../app/layoutconfigdialog.cpp:230
+#, fuzzy
+msgid "Import: Configuration file version v0.1"
+msgstr "Importar configuração"
+
+#: ../../app/layoutconfigdialog.cpp:232
 msgid ""
-"You are going to activate a layout called <b>%1</b>, <br>by doing so the "
-"current layout will be lost... <br>Do you want to proceed?"
+"You are going to import an old version <b>v0.1</b> configuration file."
+"<br><b>Be careful</b>, importing the entire configuration <b>will erase all</"
+"b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import "
+"safely</b> from this file<br><b>only the contained layouts...</b></i>"
 msgstr ""
-"Está prestes a ativar o modelo <b>%1</b>, <br>ao fazê-lo "
-"o modelo atual será perdido... <br> Pretende proceder?"
 
-#: ../../app/globalsettings.cpp:434
-msgctxt "import/export config"
-msgid "The file has a wrong format, do you want open other file?"
-msgstr "O ficheiro tem um formato errado, pretende abrir outro ficheiro?"
+#: ../../app/layoutconfigdialog.cpp:237
+#, fuzzy
+msgctxt "import full configuration"
+msgid "Full Configuration"
+msgstr "Importar configuração"
 
-#: ../../app/globalsettings.cpp:518
-msgctxt "import/export config"
-msgid "Export configuration"
+#: ../../app/layoutconfigdialog.cpp:239
+#, fuzzy
+msgctxt "import only the layouts"
+msgid "Only Layouts"
+msgstr "Modelo"
+
+#: ../../app/layoutconfigdialog.cpp:265
+#, fuzzy
+msgid "Import: Configuration file version v0.2"
+msgstr "Importar configuração"
+
+#: ../../app/layoutconfigdialog.cpp:267
+msgid ""
+"You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</"
+"b>, importing <b>will erase all</b> your current configuration!!!"
+"<br><br><i>Would you like to proceed?</i>"
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:312
+#, fuzzy
+msgctxt "layout"
+msgid "Alternative"
+msgstr "Sessão Alternativa"
+
+#: ../../app/layoutconfigdialog.cpp:338
+#, fuzzy
+msgctxt "export layout/configuration"
+msgid "Export Layout/Configuration"
 msgstr "Exportar configuração"
 
-#: ../../app/globalsettings.cpp:534
+#: ../../app/layoutconfigdialog.cpp:346
+#, fuzzy
+msgctxt "export layout"
+msgid "Latte Dock Layout file v0.2"
+msgstr "Ficheiro de configuração da Latte Dock"
+
+#: ../../app/layoutconfigdialog.cpp:347
+#, fuzzy
+msgctxt "export full configuraion"
+msgid "Latte Dock Full Configuration file v0.2"
+msgstr "Ficheiro de configuração da Latte Dock"
+
+#: ../../app/layoutconfigdialog.cpp:361
+#, fuzzy
+msgctxt "export layout"
+msgid "Failed to export layout"
+msgstr "Falha na exportação da configuração"
+
+#: ../../app/layoutconfigdialog.cpp:381
+#, fuzzy
+msgctxt "export layout"
+msgid "Open location"
+msgstr "Abrir localização"
+
+#: ../../app/layoutconfigdialog.cpp:382
+#, fuzzy
+msgctxt "export layout"
+msgid "Layout exported successfully"
+msgstr "Configuração exportada com sucesso"
+
+#: ../../app/layoutconfigdialog.cpp:393
 msgctxt "import/export config"
 msgid "Failed to export configuration"
 msgstr "Falhou a exportação da configuração"
 
-#: ../../app/globalsettings.cpp:565
+#: ../../app/layoutconfigdialog.cpp:400
 msgctxt "import/export config"
 msgid "Open location"
 msgstr "Abrir localização"
 
-#: ../../app/globalsettings.cpp:566
+#: ../../app/layoutconfigdialog.cpp:401
+#, fuzzy
 msgctxt "import/export config"
-msgid "Configuration exported successfully"
+msgid "Full Configuration exported successfully"
 msgstr "Configuração exportada com sucesso"
 
-#: ../../app/globalshortcuts.cpp:156
-msgid "Activate Task Manager Entry %1"
-msgstr "Ativar a Entrada do Gestor de Atividades"
+#: ../../app/layoutconfigdialog.cpp:490
+#, fuzzy
+msgctxt "import-done"
+msgid "Layout: <b>%0</b> imported successfully\n"
+msgstr "Configuração importada com sucesso"
 
-#: ../../app/globalshortcuts.cpp:171
-msgid "New Instance for Task Manager Entry %1"
-msgstr "Nova Instância para a Entrada do Gestor de Atividades"
+#: ../../app/layoutconfigdialog.cpp:523
+msgid "Color"
+msgstr ""
 
-#: ../../app/globalshortcuts.cpp:181
-msgid "Show Latte Dock"
-msgstr "Mostrar a Latte Dock"
+#: ../../app/layoutconfigdialog.cpp:524
+msgid "Name"
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:525
+msgid "In Menu"
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:526
+msgid "Activities"
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:683
+#, fuzzy
+msgid "Layout Warning"
+msgstr "Modelo"
+
+#: ../../app/layoutconfigdialog.cpp:684
+msgid ""
+"There are layouts with the same name, that is not permitted!!! Please update "
+"these names to re-apply the changes..."
+msgstr ""
+
+#: ../../app/layoutmanager.cpp:43
+msgid "Add Widgets..."
+msgstr "Adicionar Elementos"
+
+#: ../../app/layoutmanager.cpp:44
+msgid "Show Plasma Widget Explorer"
+msgstr "Mostrar o Explorador de Elementos do Plasma"
+
+#: ../../app/layoutmanager.cpp:206
+msgid "Switching to layout <b>%0</b> ..."
+msgstr ""
+
+#: ../../app/layoutmanager.cpp:268 ../../app/layoutmanager.cpp:318
+#: ../../app/layoutmanager.cpp:416 ../../app/layoutmanager.h:84
+#, fuzzy
+msgid "Default"
+msgstr "Padrão"
+
+#: ../../app/layoutmanager.cpp:417
+#, fuzzy
+msgid "Plasma"
+msgstr "Plasma"
+
+#: ../../app/layoutmanager.cpp:418
+#, fuzzy
+msgid "Unity"
+msgstr "Unity"
+
+#: ../../app/layoutmanager.cpp:419
+#, fuzzy
+msgid "Extended"
+msgstr "Extendido"
 
 #: ../../app/main.cpp:81
 msgctxt "command line"
@@ -144,7 +294,8 @@ msgstr "Mostrar as mensagens de depuração na saída padrão"
 #: ../../app/main.cpp:83
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
-msgstr "Mostrar as mensagens de depuração para a máscara (útil para desenvolvedores)"
+msgstr ""
+"Mostrar as mensagens de depuração para a máscara (útil para desenvolvedores)"
 
 #: ../../app/main.cpp:84
 msgctxt "command line"
@@ -168,7 +319,8 @@ msgstr "file_name"
 
 #: ../../app/main.cpp:105
 msgid "An instance is already running!, use --replace to restart Latte"
-msgstr "Uma estância está atualmente correndo, use --replace para reiniciar a Latte"
+msgstr ""
+"Uma estância está atualmente correndo, use --replace para reiniciar a Latte"
 
 #: ../../app/main.cpp:113
 msgid "The configuration cannot be imported"
@@ -182,9 +334,10 @@ msgid ""
 "\n"
 "\"Art in Coffee\""
 msgstr ""
-"A Latte é uma dock baseada no framworks do plama que providencia uma elegante "
-"e intuitiva experiência com as suas atividades e elementos, animando-os usando "
-"um efeito de zoom parabólico ao mesmo tempo que tenta não estorvar. \n"
+"A Latte é uma dock baseada no framworks do plama que providencia uma "
+"elegante e intuitiva experiência com as suas atividades e elementos, "
+"animando-os usando um efeito de zoom parabólico ao mesmo tempo que tenta não "
+"estorvar. \n"
 "\n"
 "\"Art in Coffe\""
 
@@ -216,241 +369,271 @@ msgstr "Modelo de configuração"
 msgid "Tangerine Font"
 msgstr "Fonte Tangerine"
 
-#: ../../app/packageplugins/shell/dockpackage.cpp:50
+#: ../../app/packageplugins/shell/dockpackage.cpp:49
+msgid "Info View Window"
+msgstr ""
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:51
 msgid "default layout file"
 msgstr "ficheiro padrão do modelo"
 
-#: ../../app/packageplugins/shell/dockpackage.cpp:51
+#: ../../app/packageplugins/shell/dockpackage.cpp:52
 msgid "plasma layout file"
 msgstr "ficheiro do modelo do plasma"
 
-#: ../../app/packageplugins/shell/dockpackage.cpp:52
+#: ../../app/packageplugins/shell/dockpackage.cpp:53
 msgid "unity layout file"
 msgstr "ficheiro do modelo do unity"
 
-#: ../../app/packageplugins/shell/dockpackage.cpp:53
+#: ../../app/packageplugins/shell/dockpackage.cpp:54
 msgid "extended layout file"
 msgstr "ficheiro do modelo extendido "
 
-#: ../../app/packageplugins/shell/dockpackage.cpp:55
+#: ../../app/packageplugins/shell/dockpackage.cpp:56
+#, fuzzy
+msgid "default preset file"
+msgstr "ficheiro padrão do modelo"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:57
+#, fuzzy
+msgid "plasma preset file"
+msgstr "ficheiro do modelo do plasma"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:58
+#, fuzzy
+msgid "unity preset file"
+msgstr "ficheiro do modelo do unity"
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:59
+#, fuzzy
+msgid "extended preset file"
+msgstr "ficheiro do modelo extendido "
+
+#: ../../app/packageplugins/shell/dockpackage.cpp:61
 msgid "tasks plasmoid separator"
 msgstr "elemento separador de tarefas"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:59
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:60
 msgid "Layout"
 msgstr "Modelo"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:72
-msgctxt "current layout"
-msgid "Current"
-msgstr "Atual"
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:115
+msgctxt "opens the layout manager window"
+msgid "Configure..."
+msgstr ""
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:108
-msgid "Import"
-msgstr "Importar"
-
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:116
-msgid "Export"
-msgstr "Exportar"
-
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:132
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:131
 msgid "Applets Size"
 msgstr "Tamanho dos Elementos"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:181
-msgid "Screen Height Proportion:"
-msgstr "Proporção à Altura do Ecrã:"
-
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:231
-msgid "Applets Distance:"
-msgstr "Distância:"
-
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:268
-msgid "Zoom On Hover"
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:180
+#, fuzzy
+msgid "Zoom On Hover:"
 msgstr "Zoom à Passagem"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:281
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:188
 msgid "Zoom Factor"
 msgstr "Fator de Zoom"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:320
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:227
+msgid "Screen Height Proportion:"
+msgstr "Proporção à Altura do Ecrã:"
+
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:277
+msgid "Applets Distance:"
+msgstr "Distância:"
+
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:313
 msgid "Animations"
 msgstr "Animações"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:341
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:561
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:334
 msgid "None"
 msgstr "Nenhum"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:350
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:343
 msgid "x1"
 msgstr "x1"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:359
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:352
 msgid "x2"
 msgstr "x2"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:368
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:361
 msgid "x3"
 msgstr "x3"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:385
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:378
 msgid "Background"
 msgstr "Fundo"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:395
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:388
 msgctxt "show panel"
 msgid "Show"
 msgstr "Mostrar"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:411
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:404
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:732
 msgid "Size: "
 msgstr "Tamanho: "
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:454
-msgid "Transparency: "
-msgstr "Transparência: "
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:447
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:687
+msgid "Opacity: "
+msgstr ""
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:501
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:494
 msgid "Shadows"
 msgstr "Sombras"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:514
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:507
 msgid "Solid"
 msgstr "Sólido"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:534
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:527
 msgid "Applet shadows"
 msgstr "Sombras dos elementos"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:571
-msgid "Locked"
-msgstr "Trancados"
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:541
+#, fuzzy
+msgctxt "show applet shadow"
+msgid "Show"
+msgstr "Mostrar"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:581
-msgid "All"
-msgstr "Todos"
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:568
+msgctxt "Use theme shadow"
+msgid "Theme"
+msgstr ""
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:600
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:618
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
+msgctxt "Clear applet shadow settings"
+msgid "Clear"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:651
+msgid "Please choose shadow color"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:779
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:797
 msgid "Length"
 msgstr "Largura"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:610
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:789
 msgid "Maximum: "
 msgstr "Máximo: "
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:681
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:860
 msgid "Offset: "
 msgstr "Deslocamento:"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:689
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:868
 msgid "Offset"
 msgstr "Deslocamento"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:52
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:53
 msgid "Location"
 msgstr "Localização"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:71
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:72
 msgid "On Primary"
 msgstr "Saída primária"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:106
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:107
 msgid "Screen:"
 msgstr "Ecrã:"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:195
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:196
 msgctxt "bottom location"
 msgid "Bottom"
 msgstr "Inferior"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:206
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:207
 msgctxt "left location"
 msgid "Left"
 msgstr "Esquerda"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:217
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:218
 msgctxt "top location"
 msgid "Top"
 msgstr "Superior"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:228
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:229
 msgctxt "right location"
 msgid "Right"
 msgstr "Direita"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:248
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:249
 msgid "Alignment"
 msgstr "Alinhamento"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:283
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:284
 msgctxt "top alignment"
 msgid "Top"
 msgstr "Superior"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:283
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:284
 msgctxt "left alignment"
 msgid "Left"
 msgstr "Esquerda"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:293
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:294
 msgctxt "center alignment"
 msgid "Center"
 msgstr "Centro"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:303
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:304
 msgctxt "bottom alignment"
 msgid "Bottom"
 msgstr "Inferior"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:303
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:304
 msgctxt "right alignment"
 msgid "Right"
 msgstr "Direita"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:314
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:315
 msgctxt "justify alignment"
 msgid "Justify"
 msgstr "Justificado"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:333
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:334
 msgid "Visibility"
 msgstr "Visibilidade"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:357
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:358
 msgid "Always Visible"
 msgstr "Sempre visível"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:366
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:367
 msgid "Auto Hide"
 msgstr "Ocultar Automaticamente"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:375
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:376
 msgid "Dodge Active"
 msgstr "Evadir Janela Ativa"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:384
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:385
 msgid "Dodge Maximized"
 msgstr "Evadir Janela Maximizada"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:393
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:394
 msgid "Dodge All Windows"
 msgstr "Evadir Todas as Janelas"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:402
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:403
 msgid "Windows Go Below"
 msgstr "Janelas Vão por Baixo"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:424
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:425
 msgid "Delay"
 msgstr "Atraso"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:438
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:439
 msgid "Show:"
 msgstr "Mostrar:"
 
-#: ../../shell/package/contents/configuration/BehaviorConfig.qml:453
+#: ../../shell/package/contents/configuration/BehaviorConfig.qml:454
 msgid "Hide:"
 msgstr "Esconder:"
 
@@ -481,31 +664,31 @@ msgstr "Atividades"
 msgid "Tweaks"
 msgstr "Ajustes"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:300
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:302
 msgid "Copy Dock"
 msgstr "Copiar Dock"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:321
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:341
 msgid "New Dock"
 msgstr "Nova Dock"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:323
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:343
 msgid "Add a new dock"
 msgstr "Adicionar nova dock"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:339
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:359
 msgid "Remove"
 msgstr "Remover"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:343
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:362
 msgid "Remove current dock"
 msgstr "Remover dock atual"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:354
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:373
 msgid "Quit"
 msgstr "Fechar"
 
-#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:356
+#: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:375
 msgid "Quit Latte"
 msgstr "Fechar Latte"
 
@@ -526,19 +709,20 @@ msgid "Different color for minimized windows"
 msgstr "Cores diferentes para janelas minimizadas"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:78
+msgid "Reverse position for lines and dots"
+msgstr "Inverter posição das linhas e pontos"
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:89
 msgid "Indicator for active window group"
 msgstr "Indicador para grupo de janelas ativas"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:80
+#: ../../shell/package/contents/configuration/TasksConfig.qml:91
 msgid ""
 "Grouped windows show both a line and a dot when \n"
 "one of them is active"
-msgstr "Janelas agrupadas apresentam linha e ponto  \n"
+msgstr ""
+"Janelas agrupadas apresentam linha e ponto  \n"
 "quando ativas"
-
-#: ../../shell/package/contents/configuration/TasksConfig.qml:91
-msgid "Reverse position for lines and dots"
-msgstr "Inverter posição das linhas e pontos"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:107
 msgid "Interaction"
@@ -551,18 +735,6 @@ msgstr "Pré-visualizar janelas à passagem"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:124
 msgid "Highlight windows on hovering"
 msgstr "Realçar janelas à passagem"
-
-#: ../../shell/package/contents/configuration/TasksConfig.qml:135
-msgid "Sync launchers between all docks"
-msgstr "Sincronizar lançadores de todas as docks"
-
-#: ../../shell/package/contents/configuration/TasksConfig.qml:137
-msgid ""
-"When this option is activated, it copies the current dock launchers\n"
-"and makes them global launchers for all docks"
-msgstr ""
-"Quando ativa, esta opção copia os atuais lançadores da dock\n"
-"e fá-los globais em todas as docks"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:147
 msgid "Show progress information for tasks"
@@ -626,6 +798,11 @@ msgstr "Minimizar/Restaurar Janela ou Grupo"
 msgid "Cycle Through Tasks"
 msgstr "Rodar entre Tarefas"
 
+#: ../../shell/package/contents/configuration/TasksConfig.qml:207
+#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+msgid "Toggle Task Grouping"
+msgstr ""
+
 #: ../../shell/package/contents/configuration/TasksConfig.qml:235
 msgid "Left Click"
 msgstr "Botão Esquerdo"
@@ -638,19 +815,51 @@ msgstr "Botão do Meio"
 msgid "Right Click"
 msgstr "Botão Direito"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:264
+#: ../../shell/package/contents/configuration/TasksConfig.qml:265
+msgid "Launchers"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:288
+msgctxt "unique launchers"
+msgid "Unique"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:292
+msgid "Use a unique set of launchers for this dock"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:299
+#, fuzzy
+msgctxt "layout launchers"
+msgid "Layout"
+msgstr "Modelo"
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:303
+msgid "Use the current layout set of launchers for this dock"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:310
+msgctxt "global launchers"
+msgid "Global"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:314
+msgid "Use the global set of launchers for this dock"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TasksConfig.qml:328
 msgid "Filters"
 msgstr "Filtros"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:270
+#: ../../shell/package/contents/configuration/TasksConfig.qml:334
 msgid "Show only tasks from the current screen"
 msgstr "Mostrar só as tarefas do ecrã atual"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:281
+#: ../../shell/package/contents/configuration/TasksConfig.qml:345
 msgid "Show only tasks from the current desktop"
 msgstr "Mostrar só as tarefas do ambiente de trabalho atual"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:292
+#: ../../shell/package/contents/configuration/TasksConfig.qml:356
 msgid "Show only tasks from the current activity"
 msgstr "Mostrar só as tarefas da atividade atual"
 
@@ -715,67 +924,57 @@ msgstr ""
 "A dock não se sobreporá a janelas configuradas como 'Sempre em Cima'"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:161
-msgid "Show Alternative Session in the context menu"
-msgstr "Mostrar Sessão Alternativa no menu de contexto"
+msgid "Show info for layouts automatic switching"
+msgstr ""
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:171
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:163
+msgid "It shows a Latte specific info window"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:172
 msgid "Raise dock on desktop change"
 msgstr "Subir dock na mudança de ambiente de trabalho"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:182
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:183
 msgid "Raise dock on activity change"
 msgstr "Subir dock na mudança de atividade"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:200
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:201
 msgid "Active Applet Indicator"
 msgstr "Ativar Indicador dos Elementos"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:227
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:228
 msgctxt "active indicator to no applets"
 msgid "None"
 msgstr "Nenhum"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:237
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:238
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
 msgstr "Internos"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:247
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:248
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "Todos"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:266
-msgid "Session"
-msgstr "Sessão"
-
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:279
-msgid ""
-"Sometimes the current layout of your panels is not sufficient \n"
-"for example when you are travelling. Latte provides you with a full \n"
-"alternative sessionn to work on."
-msgstr ""
-"Por vezes o modelo atual do seu painel não chega, \n"
-"por exemplo, enquanto viaja. A Latte oferece-lhe uma sessão \n"
-"alternativa inteira para trabalhar."
-
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:302
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:267
 msgid "Extra Actions"
 msgstr "Ações Extra"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:312
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:277
 msgid "Add Spacer"
 msgstr "Adicionar Separador"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:315
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:280
 msgid "Add a spacer to separate applets"
 msgstr "Adicionar separador entre os elementos"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:324
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:289
 msgid "Remove Tasks"
 msgstr "Remover Tarefas"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:326
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:291
 msgid "Remove Latte plasmoid"
 msgstr "Remover Elemento Latte"
 
@@ -811,3 +1010,70 @@ msgstr "Configuração exportada com sucesso"
 #: ../desktop-templates/lattedock.notifyrc.template:20
 msgid "Failed to export configuration"
 msgstr "Falha na exportação da configuração"
+
+#: ../desktop-templates/lattedock.notifyrc.template:24
+msgid "Switch to layout"
+msgstr ""
+
+#~ msgid "Enable/Disable Alternative Session"
+#~ msgstr "Habilitar/Desabilitar Sessão Alternativa"
+
+#~ msgctxt "import/export config"
+#~ msgid "Failed to import configuration"
+#~ msgstr "Falhou a importação da configuração"
+
+#~ msgctxt "import/export config"
+#~ msgid "Configuration imported successfully"
+#~ msgstr "Configuração importada com sucesso"
+
+#~ msgid "Activate Layout"
+#~ msgstr "Ativar Modelo"
+
+#~ msgid ""
+#~ "You are going to activate a layout called <b>%1</b>, <br>by doing so the "
+#~ "current layout will be lost... <br>Do you want to proceed?"
+#~ msgstr ""
+#~ "Está prestes a ativar o modelo <b>%1</b>, <br>ao fazê-lo o modelo atual "
+#~ "será perdido... <br> Pretende proceder?"
+
+#~ msgctxt "import/export config"
+#~ msgid "The file has a wrong format, do you want open other file?"
+#~ msgstr "O ficheiro tem um formato errado, pretende abrir outro ficheiro?"
+
+#~ msgctxt "current layout"
+#~ msgid "Current"
+#~ msgstr "Atual"
+
+#~ msgid "Transparency: "
+#~ msgstr "Transparência: "
+
+#~ msgid "Locked"
+#~ msgstr "Trancados"
+
+#~ msgid "All"
+#~ msgstr "Todos"
+
+#~ msgid "Sync launchers between all docks"
+#~ msgstr "Sincronizar lançadores de todas as docks"
+
+#~ msgid ""
+#~ "When this option is activated, it copies the current dock launchers\n"
+#~ "and makes them global launchers for all docks"
+#~ msgstr ""
+#~ "Quando ativa, esta opção copia os atuais lançadores da dock\n"
+#~ "e fá-los globais em todas as docks"
+
+#~ msgid "Show Alternative Session in the context menu"
+#~ msgstr "Mostrar Sessão Alternativa no menu de contexto"
+
+#~ msgid "Session"
+#~ msgstr "Sessão"
+
+#~ msgid ""
+#~ "Sometimes the current layout of your panels is not sufficient \n"
+#~ "for example when you are travelling. Latte provides you with a full \n"
+#~ "alternative sessionn to work on."
+#~ msgstr ""
+#~ "Por vezes o modelo atual do seu painel não chega, \n"
+#~ "por exemplo, enquanto viaja. A Latte oferece-lhe uma sessão \n"
+#~ "alternativa inteira para trabalhar."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-06-07 14:40+0300\n"
+"POT-Creation-Date: 2017-07-25 15:51+0300\n"
 "PO-Revision-Date: 2017-06-17 15:05+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: German <kde-i18n-it@kde.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../containment/package/contents/ui/applet/AppletItem.qml:530
+#: ../../containment/package/contents/ui/applet/AppletItem.qml:529
 msgid "Launchers Area"
 msgstr "Area Lanciatori"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:459
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:460
 msgid "Configure applet"
 msgstr "Configura applet"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:481
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:482
 msgid "Lock/Unlock the parabolic effect for this applet"
 msgstr "Blocca/sblocca l'effetto parabolico per questa applet"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:493
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:494
 msgid "Remove applet"
 msgstr "Rimuovi applet"
 
@@ -41,4 +41,3 @@ msgstr "Latte"
 #: ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
 msgstr "Contenitori per Latte Dock"
-

@@ -112,6 +112,9 @@ private:
 
     QString m_shouldSwitchToLayout;
 
+    //! it is used just in order to provide translations for the presets
+    void ghostForTranslatedPresets();
+
     bool layoutIsAssigned(QString layoutName);
     QStringList validActivities(QStringList currentList);
 

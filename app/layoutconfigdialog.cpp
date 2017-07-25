@@ -103,6 +103,12 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
+    ui->switchButton->setText(i18nc("switch button", "Switch"));
+    ui->copyButton->setText(i18nc("copy button", "Copy"));
+    ui->removeButton->setText(i18nc("remove button", "Remove"));
+    ui->importButton->setText(i18nc("import button", "Import"));
+    ui->exportButton->setText(i18nc("export button", "Export"));
+
     connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
 }

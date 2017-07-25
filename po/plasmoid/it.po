@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-06-07 14:40+0300\n"
+"POT-Creation-Date: 2017-07-25 15:51+0300\n"
 "PO-Revision-Date: 2017-06-17 15:17+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -83,8 +83,8 @@ msgstr "Mostra una linea rossa sul limite consentito per l'animazione"
 msgid ""
 "For the disabled settings you should use the Latte Dock Configuration Window"
 msgstr ""
-"Per le impostazioni disattivate è necessario utilizzare la finestra di"
-" configurazione di Latte Dock"
+"Per le impostazioni disattivate è necessario utilizzare la finestra di "
+"configurazione di Latte Dock"
 
 #: ../../plasmoid/package/contents/ui/config/ConfigInteraction.qml:59
 msgid "Cycle through tasks with mouse wheel"
@@ -183,175 +183,175 @@ msgstr "Usa la trasparenza nel pannello"
 msgid "Size: "
 msgstr "Dimensione: "
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:139
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:142
 msgctxt "Play previous track"
 msgid "Previous Track"
 msgstr "Precedente"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:152
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:155
 msgctxt "Pause playback"
 msgid "Pause"
 msgstr "Pausa"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:152
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:155
 msgctxt "Start playback"
 msgid "Play"
 msgstr "Riproduci"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:166
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:169
 msgctxt "Play next track"
 msgid "Next Track"
 msgstr "Successivo"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:177
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:180
 msgctxt "Stop playback"
 msgid "Stop"
 msgstr "Stop"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:194
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:197
 msgctxt "Quit media player app"
 msgid "Quit"
 msgstr "Esci"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:209
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:212
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
 msgstr "Ripristina"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:235
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:238
 msgid "Mute"
 msgstr "Muto"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:287
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:292
 msgid "Move To Desktop"
 msgstr "Sposta al Desktop"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:309
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:314
 msgid "Move To Current Desktop"
 msgstr "Sposta al Desktop Corrente"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:318
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:323
 msgid "All Desktops"
 msgstr "Tutti i Desktop"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:347
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:352
 msgid "New Desktop"
 msgstr "Nuovo Desktop"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:367
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:372
 msgid "Move To &Activity"
 msgstr "Sposta alla attività"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:388
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:393
 msgid "Add To Current Activity"
 msgstr "Aggiungi all'Attività Corrente"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:398
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:403
 msgid "All Activities"
 msgstr "Tutte le Attività"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:467
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:471
 msgid "Minimize"
 msgstr "Minimizza"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:483
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:487
 msgid "Maximize"
 msgstr "Massimizza"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:498
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:502
 msgid "More Actions"
 msgstr "Azioni aggiuntive"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:506
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:510
 msgid "Move"
 msgstr "Sposta"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:515
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:519
 msgid "Resize"
 msgstr "Ridimensiona"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:524
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:528
 msgid "Keep Above Others"
 msgstr "Tieni sopra le altre"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:534
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:538
 msgid "Keep Below Others"
 msgstr "Tieni sotto le altre"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:546
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:550
 msgid "Fullscreen"
 msgstr "Pieno schermo"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:558
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:562
 msgid "Shade"
 msgstr "Shade"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:573
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:577
 msgid "Allow this program to be grouped"
 msgstr "Permetti a questo task di essere raggruppato"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:586
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:590
 msgid "Start New Instance"
 msgstr "Inizia nuova istanza"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:616
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:620
 msgctxt ""
 "Toggle action for showing a launcher button while the application is not "
 "running"
 msgid "&Pin"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:631
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:635
 msgid "&Pin"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:684
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:688
 msgid "On All Activities"
 msgstr "Tutte le Attività"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:690
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:694
 msgid "On The Current Activity"
 msgstr "Aggiungi all'Attività Corrente"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:711
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:715
 msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:812
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:751
 msgid "Close"
 msgstr "Chiudi"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:837
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:776
 msgid "Internal Separator"
 msgstr "Separatore interno"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:858
-msgid "Alternative Session"
-msgstr "Sessione Alternativa"
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:799
+msgid "Layouts"
+msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:881
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:844
 msgid "Add Widgets..."
 msgstr "Aggiungi Widgets..."
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:944
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:947
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462
 msgid "On %1"
 msgstr "Su %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:953
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:956
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:472
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Disponibile in tutte le attività"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:972
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:975
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:494
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Disponibile anche su %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:976
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:979
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:498
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
@@ -364,6 +364,9 @@ msgstr "Latte Plasmoide"
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
 msgstr "Plasmoide dal Latte Dock"
+
+#~ msgid "Alternative Session"
+#~ msgstr "Sessione Alternativa"
 
 #~ msgid "ver: "
 #~ msgstr "ver: "

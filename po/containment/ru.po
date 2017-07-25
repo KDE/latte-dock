@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-06-07 14:40+0300\n"
+"POT-Creation-Date: 2017-07-25 15:51+0300\n"
 "PO-Revision-Date: 2017-07-24 22:09+0700\n"
 "Last-Translator: Vladislav Gorevoy <vladislavgorevoy@gmail.com>\n"
 "Language-Team: \n"
@@ -19,19 +19,19 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../../containment/package/contents/ui/applet/AppletItem.qml:530
+#: ../../containment/package/contents/ui/applet/AppletItem.qml:529
 msgid "Launchers Area"
 msgstr "Область запуска"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:459
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:460
 msgid "Configure applet"
 msgstr "Настроить апплет"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:481
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:482
 msgid "Lock/Unlock the parabolic effect for this applet"
 msgstr "Блокировать/разблокировать параболический эффект для этого апплета"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:493
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:494
 msgid "Remove applet"
 msgstr "Удалить апплет"
 

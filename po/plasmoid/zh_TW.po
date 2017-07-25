@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-06-07 14:40+0300\n"
+"POT-Creation-Date: 2017-07-25 15:51+0300\n"
 "PO-Revision-Date: 2017-06-10 21:41+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -180,175 +180,175 @@ msgstr "在面板中使用漸層"
 msgid "Size: "
 msgstr "大小："
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:139
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:142
 msgctxt "Play previous track"
 msgid "Previous Track"
 msgstr "前一軌"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:152
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:155
 msgctxt "Pause playback"
 msgid "Pause"
 msgstr "暫停"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:152
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:155
 msgctxt "Start playback"
 msgid "Play"
 msgstr "播放"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:166
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:169
 msgctxt "Play next track"
 msgid "Next Track"
 msgstr "下一軌"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:177
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:180
 msgctxt "Stop playback"
 msgid "Stop"
 msgstr "停止"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:194
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:197
 msgctxt "Quit media player app"
 msgid "Quit"
 msgstr "離開"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:209
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:212
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
 msgstr "恢復"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:235
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:238
 msgid "Mute"
 msgstr "靜音"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:287
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:292
 msgid "Move To Desktop"
 msgstr "移動到桌面"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:309
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:314
 msgid "Move To Current Desktop"
 msgstr "移到目前桌面"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:318
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:323
 msgid "All Desktops"
 msgstr "所有桌面"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:347
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:352
 msgid "New Desktop"
 msgstr "新增桌面"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:367
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:372
 msgid "Move To &Activity"
 msgstr "移動到活動(&A)"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:388
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:393
 msgid "Add To Current Activity"
 msgstr "加入到目前的活動"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:398
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:403
 msgid "All Activities"
 msgstr "所有的活動"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:467
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:471
 msgid "Minimize"
 msgstr "最小化"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:483
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:487
 msgid "Maximize"
 msgstr "最大化"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:498
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:502
 msgid "More Actions"
 msgstr "更多動作"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:506
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:510
 msgid "Move"
 msgstr "移動"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:515
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:519
 msgid "Resize"
 msgstr "調整大小"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:524
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:528
 msgid "Keep Above Others"
 msgstr "顯示在最上層"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:534
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:538
 msgid "Keep Below Others"
 msgstr "顯示在最下層"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:546
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:550
 msgid "Fullscreen"
 msgstr "全螢幕"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:558
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:562
 msgid "Shade"
 msgstr "陰影"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:573
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:577
 msgid "Allow this program to be grouped"
 msgstr "允許此程式被歸類"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:586
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:590
 msgid "Start New Instance"
 msgstr "開啟新的實體"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:616
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:620
 msgctxt ""
 "Toggle action for showing a launcher button while the application is not "
 "running"
 msgid "&Pin"
 msgstr "釘選(&P)"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:631
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:635
 msgid "&Pin"
 msgstr "釘選(&P)"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:684
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:688
 msgid "On All Activities"
 msgstr "在所有活動上"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:690
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:694
 msgid "On The Current Activity"
 msgstr "在目前的活動上"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:711
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:715
 msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
 msgstr "取消釘選"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:812
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:751
 msgid "Close"
 msgstr "關閉"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:837
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:776
 msgid "Internal Separator"
 msgstr "內部分隔器"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:858
-msgid "Alternative Session"
-msgstr "替代工作階段"
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:799
+msgid "Layouts"
+msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:881
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:844
 msgid "Add Widgets..."
 msgstr "新增元件..."
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:944
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:947
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462
 msgid "On %1"
 msgstr "於 %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:953
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:956
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:472
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "所有活動都可使用"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:972
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:975
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:494
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "也可在 %1 上使用"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:976
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:979
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:498
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
@@ -361,6 +361,9 @@ msgstr "Latte Plasmoid"
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
 msgstr "從 Latte Dock 而來的 Plasmoid"
+
+#~ msgid "Alternative Session"
+#~ msgstr "替代工作階段"
 
 #~ msgid "ver: "
 #~ msgstr "版本："

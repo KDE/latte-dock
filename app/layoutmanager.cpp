@@ -410,4 +410,13 @@ void LayoutManager::showWidgetsExplorer()
     }
 }
 
+//! it is used just in order to provide translations for the presets
+void LayoutManager::ghostForTranslatedPresets()
+{
+    QString preset1 = i18n("Default");
+    QString preset2 = i18n("Plasma");
+    QString preset3 = i18n("Unity");
+    QString preset4 = i18n("Extended");
+}
+
 }

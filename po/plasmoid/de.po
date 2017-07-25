@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-06-07 14:40+0300\n"
+"POT-Creation-Date: 2017-07-25 15:51+0300\n"
 "PO-Revision-Date: 2017-06-08 18:19+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -183,175 +183,175 @@ msgstr "Transparente Leiste"
 msgid "Size: "
 msgstr "Größe:"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:139
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:142
 msgctxt "Play previous track"
 msgid "Previous Track"
 msgstr "Vorheriges Stück"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:152
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:155
 msgctxt "Pause playback"
 msgid "Pause"
 msgstr "Pause"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:152
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:155
 msgctxt "Start playback"
 msgid "Play"
 msgstr "Start"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:166
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:169
 msgctxt "Play next track"
 msgid "Next Track"
 msgstr "Nächstes Stück"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:177
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:180
 msgctxt "Stop playback"
 msgid "Stop"
 msgstr "Stop"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:194
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:197
 msgctxt "Quit media player app"
 msgid "Quit"
 msgstr "Beenden"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:209
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:212
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:235
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:238
 msgid "Mute"
 msgstr "Stumm"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:287
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:292
 msgid "Move To Desktop"
 msgstr "Auf Arbeitsfläche verschieben"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:309
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:314
 msgid "Move To Current Desktop"
 msgstr "Verschiebe auf aktuelle Arbeitsfläche"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:318
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:323
 msgid "All Desktops"
 msgstr "Alle Arbeitsflächen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:347
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:352
 msgid "New Desktop"
 msgstr "Neue Arbeitsfläche"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:367
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:372
 msgid "Move To &Activity"
 msgstr "Verschiebe zu &Activity"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:388
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:393
 msgid "Add To Current Activity"
 msgstr "Zu aktueller Aktivität hinzufügen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:398
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:403
 msgid "All Activities"
 msgstr "Alle Aktivitäten"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:467
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:471
 msgid "Minimize"
 msgstr "Minimieren"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:483
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:487
 msgid "Maximize"
 msgstr "Maximieren"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:498
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:502
 msgid "More Actions"
 msgstr "Weitere Aktionen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:506
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:510
 msgid "Move"
 msgstr "Verschieben"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:515
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:519
 msgid "Resize"
 msgstr "Größe ändern"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:524
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:528
 msgid "Keep Above Others"
 msgstr "Immer im Vordergrund"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:534
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:538
 msgid "Keep Below Others"
 msgstr "Immer im Hintergrund"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:546
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:550
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:558
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:562
 msgid "Shade"
 msgstr "Fensterheber"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:573
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:577
 msgid "Allow this program to be grouped"
 msgstr "Erlaube Gruppierung"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:586
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:590
 msgid "Start New Instance"
 msgstr "Neue Instanz"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:616
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:620
 msgctxt ""
 "Toggle action for showing a launcher button while the application is not "
 "running"
 msgid "&Pin"
 msgstr "&Anheften"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:631
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:635
 msgid "&Pin"
 msgstr "&Anheften"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:684
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:688
 msgid "On All Activities"
 msgstr "Alle Aktivitäten"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:690
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:694
 msgid "On The Current Activity"
 msgstr "Zu aktueller Aktivität hinzufügen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:711
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:715
 msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
 msgstr "Lösen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:812
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:751
 msgid "Close"
 msgstr "Schließen"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:837
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:776
 msgid "Internal Separator"
 msgstr "Interner Trenner"
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:858
-msgid "Alternative Session"
-msgstr "Alternative Sitzung"
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:799
+msgid "Layouts"
+msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:881
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:844
 msgid "Add Widgets..."
 msgstr "Miniprogramme hinzufügen ..."
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:944
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:947
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462
 msgid "On %1"
 msgstr "Auf %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:953
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:956
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:472
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Sichtbar in allen Aktivitäten"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:972
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:975
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:494
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Auch sichtbar in %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:976
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:979
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:498
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
@@ -364,6 +364,9 @@ msgstr "Latte Plasmoid"
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
 msgstr "Latte Dock Plasmoid"
+
+#~ msgid "Alternative Session"
+#~ msgstr "Alternative Sitzung"
 
 #~ msgid "ver: "
 #~ msgstr "ver:"

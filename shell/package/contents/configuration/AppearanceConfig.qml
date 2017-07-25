@@ -618,7 +618,7 @@ PlasmaComponents.Page {
                             id: colorBtn
                             width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
                             height: parent.height
-                            text: i18n(" ")
+                            text: " "
                             enabled: showAppletShadow.checked
 
                             onClicked: {
