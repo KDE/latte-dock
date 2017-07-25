@@ -424,7 +424,10 @@ Item{
         id: slidingAnimationAutoHiddenOut
 
         ScriptAction{
-            script: dock.visibility.isHidden = true;
+            script: {
+                dock.visibility.isHidden = true;
+                root.isHalfShown = true;
+            }
         }
 
         PropertyAnimation {
@@ -474,6 +477,12 @@ Item{
             to: 0
             duration: manager.animationSpeed
             easing.type: Easing.OutQuad
+        }
+
+        ScriptAction{
+            script: {
+                root.isHalfShown = false;
+            }
         }
 
         onStarted: {

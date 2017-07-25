@@ -576,6 +576,10 @@ Item {
 
             layoutsContainer.hoveredIndex = index;
 
+            if (root.isHalfShown) {
+                return;
+            }
+
             if (root.isHorizontal){
                 layoutsContainer.currentSpot = mouseX;
                 wrapper.calculateScales(mouseX);
@@ -599,6 +603,10 @@ Item {
             //  if(!pressed){
             if (lockZoom || !canBeHovered) {
                 mouse.accepted = false;
+                return;
+            }
+
+            if (root.isHalfShown) {
                 return;
             }
 

@@ -79,6 +79,7 @@ DragDrop.DropArea {
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
     property bool inStartup: true
+    property bool isHalfShown: false //is used to disable the zoom hovering effect at sliding in-out the dock
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
     property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse

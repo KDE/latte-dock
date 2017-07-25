@@ -532,6 +532,10 @@ MouseArea{
         if(!root.latteDock)
             checkListHovered.stop();
 
+        if (root.latteDock && root.latteDock.isHalfShown) {
+            return;
+        }
+
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
             if (!inBlockingAnimation) {
@@ -578,6 +582,10 @@ MouseArea{
 
         if(!root.latteDock)
             checkListHovered.stop();
+
+        if (root.latteDock && root.latteDock.isHalfShown) {
+            return;
+        }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
             if(root.dragSource == null){
