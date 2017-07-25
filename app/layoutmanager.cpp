@@ -320,6 +320,8 @@ bool LayoutManager::switchToLayout(QString layoutName)
             }
         });
     }
+
+    return true;
 }
 
 QString LayoutManager::newLayout(QString layoutName, QString preset)
