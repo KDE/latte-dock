@@ -49,7 +49,7 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: root.zoomFactor
+                to: mainItemContainer.containsMouse ? root.zoomFactor : 1 + (0.65 * (root.zoomFactor-1))
                 duration: launcherAnimation.speed
                 easing.type: Easing.OutQuad
             }
