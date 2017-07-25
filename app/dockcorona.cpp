@@ -204,6 +204,9 @@ bool DockCorona::reloadLayout(QString path)
         m_screenPool->reload(m_layoutDir);
         loadLayout(appletsrc.fileName());
 
+        m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
+        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
+
         foreach (auto containment, containments())
             addDock(containment);
 
@@ -1470,7 +1473,11 @@ bool DockCorona::heuresticForLoadingDockWithTasks()
             bool containsTasks = false;
 
             foreach (auto appId, appletEntries.groupList()) {
-                if (appletEntries.group(appId).readEntry("plugin") == "org.kde.latte.plasmoid") {
+                QString pluginId = appletEntries.group(appId).readEntry("plugin");
+
+                if ((pluginId == "org.kde.latte.plasmoid") ||
+                    (pluginId == "org.kde.plasma.taskmanager") ||
+                    (pluginId == "org.kde.plasma.icontasks")) {
                     containsTasks = true;
                     break;
                 }
@@ -1513,7 +1520,11 @@ bool DockCorona::containmentContainsTasks(Plasma::Containment *cont)
             auto appletEntries = containmentsEntries.group(cId).group("Applets");
 
             foreach (auto appId, appletEntries.groupList()) {
-                if (appletEntries.group(appId).readEntry("plugin") == "org.kde.latte.plasmoid") {
+                QString pluginId = appletEntries.group(appId).readEntry("plugin");
+
+                if ((pluginId == "org.kde.latte.plasmoid") ||
+                    (pluginId == "org.kde.plasma.taskmanager") ||
+                    (pluginId == "org.kde.plasma.icontasks")) {
                     return true;
                     break;
                 }
