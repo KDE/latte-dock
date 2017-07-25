@@ -38,13 +38,6 @@ LayoutManager::LayoutManager(QObject *parent)
     m_corona = qobject_cast<DockCorona *>(parent);
 
     if (m_corona) {
-        //! create the alternative session action
-        const QIcon toggleIcon = QIcon::fromTheme("user-identity");
-        m_toggleLayoutAction = new QAction(toggleIcon, i18n("Alternative Layout"), this);
-        m_toggleLayoutAction->setStatusTip(i18n("Enable/Disable Alternative Layout"));
-        m_toggleLayoutAction->setCheckable(true);
-        connect(m_toggleLayoutAction, &QAction::triggered, this, &LayoutManager::toggleLayout);
-
         //! create the add widgets action
         const QIcon addWidIcon = QIcon::fromTheme("add");
         m_addWidgetsAction = new QAction(addWidIcon, i18n("Add Widgets..."), this);
@@ -62,7 +55,6 @@ LayoutManager::LayoutManager(QObject *parent)
 LayoutManager::~LayoutManager()
 {
     m_importer->deleteLater();
-    m_toggleLayoutAction->deleteLater();
 
     if (m_currentLayout) {
         m_currentLayout->deleteLater();
@@ -108,11 +100,6 @@ DockCorona *LayoutManager::corona()
 Importer *LayoutManager::importer()
 {
     return m_importer;
-}
-
-QAction *LayoutManager::toggleLayoutAction()
-{
-    return m_toggleLayoutAction;
 }
 
 QAction *LayoutManager::addWidgetsAction()
@@ -226,15 +213,6 @@ void LayoutManager::confirmDynamicSwitch()
     }
 }
 
-void LayoutManager::toggleLayout()
-{
-    if (m_corona->universalSettings()->currentLayoutName() == i18n("Alternative")) {
-        switchToLayout(m_lastNonAlternativeLayout);
-    } else {
-        switchToLayout(i18n("Alternative"));
-    }
-}
-
 void LayoutManager::loadLayouts()
 {
     m_layouts.clear();
@@ -308,13 +286,6 @@ bool LayoutManager::switchToLayout(QString layoutName)
             m_currentLayout = new LayoutSettings(this, lPath, layoutName);
 
             emit currentLayoutChanged();
-
-            if (layoutName != i18n("Alternative")) {
-                m_toggleLayoutAction->setChecked(false);
-                m_lastNonAlternativeLayout = layoutName;
-            } else {
-                m_toggleLayoutAction->setChecked(true);
-            }
         });
     }
 

@@ -47,7 +47,6 @@ class LayoutManager : public QObject {
     Q_PROPERTY(QStringList layouts READ layouts NOTIFY layoutsChanged)
     Q_PROPERTY(QStringList menuLayouts READ menuLayouts NOTIFY menuLayoutsChanged)
 
-    Q_PROPERTY(QAction *toggleLayoutAction READ toggleLayoutAction NOTIFY toggleLayoutActionChanged)
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
     Q_PROPERTY(LayoutSettings *currentLayout READ currentLayout NOTIFY currentLayoutChanged)
@@ -70,7 +69,6 @@ public:
     QStringList presetsPaths() const;
 
     QAction *addWidgetsAction();
-    QAction *toggleLayoutAction();
 
     LayoutSettings *currentLayout();
 
@@ -93,7 +91,6 @@ signals:
     void currentLayoutNameChanged();
     void layoutsChanged();
     void menuLayoutsChanged();
-    void toggleLayoutActionChanged();
 
 private slots:
     void currentActivityChanged(const QString &id);
@@ -106,8 +103,6 @@ private:
     QString layoutPath(QString layoutName);
 
     void loadLayouts();
-    //! it is used to activate / deactivate the Alternative Layout
-    void toggleLayout();
 
 private:
     DockCorona *m_corona{nullptr};
@@ -115,7 +110,6 @@ private:
 
     LayoutSettings *m_currentLayout{nullptr};
 
-    QString m_lastNonAlternativeLayout{QString(i18n("My Layout"))};
     QString m_shouldSwitchToLayout;
 
     bool layoutIsAssigned(QString layoutName);
@@ -126,7 +120,6 @@ private:
     QStringList m_presetsPaths;
 
     QAction *m_addWidgetsAction{nullptr};
-    QAction *m_toggleLayoutAction{nullptr};
 
     QPointer<LayoutConfigDialog> m_layoutConfigDialog;
 
