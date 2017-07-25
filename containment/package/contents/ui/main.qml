@@ -73,8 +73,13 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
     property bool editMode: plasmoid.userConfiguring
-    property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow
-                                         && Latte.WindowSystem.compositingActive
+    property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow && Latte.WindowSystem.compositingActive
+                                         && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+
+    readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
+        return (item.status >= PlasmaCore.Types.NeedsAttentionStatus
+                && item.status !== PlasmaCore.Types.HiddenStatus);
+    })
 
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
@@ -132,9 +137,11 @@ DragDrop.DropArea {
 
     property int panelEdgeSpacing: iconSize / 3
     property int panelTransparency: plasmoid.configuration.panelTransparency
-    property bool panelShadowsActive: ( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
+    property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
                                       || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                                      && !(disablePanelShadowMaximized && windowsModel.hasMaximizedWindow)
+                                      && !(disablePanelShadowMaximized && windowsModel.hasMaximizedWindow))
+                                      || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
     property int appShadowSize: (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100)
