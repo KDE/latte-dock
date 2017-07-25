@@ -32,6 +32,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
 
@@ -52,6 +53,21 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
+}
+
+bool UniversalSettings::showInfoWindow() const
+{
+    return m_showInfoWindow;
+}
+
+void UniversalSettings::setShowInfoWindow(bool show)
+{
+    if (m_showInfoWindow == show) {
+        return;
+    }
+
+    m_showInfoWindow = show;
+    emit showInfoWindowChanged();
 }
 
 int UniversalSettings::version() const
@@ -176,6 +192,7 @@ void UniversalSettings::loadConfig()
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
+    m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
 }
 
 void UniversalSettings::saveConfig()
@@ -185,6 +202,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
     m_universalGroup.writeEntry("launchers", m_launchers);
+    m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
 
     m_universalGroup.sync();
 }

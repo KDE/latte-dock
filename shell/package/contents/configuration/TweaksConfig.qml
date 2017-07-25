@@ -158,6 +158,17 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show info for layouts automatic switching")
+                checked: universalSettings.showInfoWindow
+                tooltip: i18n("It shows a Latte specific info window")
+
+                onClicked: {
+                    universalSettings.showInfoWindow = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise dock on desktop change")
                 checked: dock.visibility.raiseOnDesktop
                 enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible

@@ -35,6 +35,7 @@ namespace Latte {
 class UniversalSettings : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
+    Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
 
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
@@ -47,6 +48,9 @@ public:
 
     bool autostart() const;
     void setAutostart(bool state);
+
+    bool showInfoWindow() const;
+    void setShowInfoWindow(bool show);
 
     int version() const;
     void setVersion(int ver);
@@ -69,6 +73,7 @@ signals:
     void lastNonAssignedLayoutNameChanged();
     void layoutsWindowSizeChanged();
     void launchersChanged();
+    void showInfoWindowChanged();
     void versionChanged();
 
 private slots:
@@ -79,6 +84,8 @@ private:
     void cleanupSettings();
 
 private:
+    bool m_showInfoWindow{true};
+
     //when there isnt a version it is an old universal file
     int m_version{1};
 

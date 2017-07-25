@@ -202,11 +202,16 @@ void LayoutManager::confirmDynamicSwitch()
     if (m_shouldSwitchToLayout == tempShouldSwitch && m_shouldSwitchToLayout != currentLayoutName()) {
         qDebug() << "dynamic switch to layout :: " << m_shouldSwitchToLayout;
 
-        showInfoWindow(i18n("Switching to layout <b>%0</b> ...").arg(m_shouldSwitchToLayout), 4500);
+        if (m_corona->universalSettings()->showInfoWindow()) {
+            showInfoWindow(i18n("Switching to layout <b>%0</b> ...").arg(m_shouldSwitchToLayout), 4000);
 
-        QTimer::singleShot(500, [this, tempShouldSwitch]() {
-            switchToLayout(tempShouldSwitch);
-        });
+            QTimer::singleShot(500, [this, tempShouldSwitch]() {
+                switchToLayout(tempShouldSwitch);
+            });
+        } else {
+            switchToLayout(m_shouldSwitchToLayout);
+        }
+
     } else {
         m_shouldSwitchToLayout = tempShouldSwitch;
         m_dynamicSwitchTimer.start();
