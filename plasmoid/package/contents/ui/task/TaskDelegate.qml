@@ -538,9 +538,7 @@ MouseArea{
             return;
         }
 
-
         titleTooltipDlg.show(mainItemContainer, model.AppName);
-
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;

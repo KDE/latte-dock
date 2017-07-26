@@ -114,7 +114,26 @@ PlasmaComponents.Page {
                 checked: plasmoid.configuration.showToolTips
 
                 onClicked: {
-                    plasmoid.configuration.showToolTips = checked
+                    plasmoid.configuration.showToolTips = checked;
+
+                   // if (checked && titleTooltipsChk.checked) {
+                    //    plasmoid.configuration.titleTooltips = false;
+                   // }
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: titleTooltipsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show task name tooltips on hovering")
+                checked: plasmoid.configuration.titleTooltips
+
+                onClicked: {
+                    plasmoid.configuration.titleTooltips = checked;
+
+                  //  if (checked && showPreviewsChk.checked) {
+                 //       plasmoid.configuration.showToolTips = false;
+                  //  }
                 }
             }
 

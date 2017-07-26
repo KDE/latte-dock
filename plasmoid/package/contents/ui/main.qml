@@ -145,6 +145,7 @@ Item {
     property bool showWindowActions: latteDock ? latteDock.showWindowActions : plasmoid.configuration.showWindowActions
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
+    property bool titleTooltips: latteDock ? latteDock.titleTooltips : false
 
     property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
@@ -447,8 +448,12 @@ Item {
 
         visible: false
 
-        property Item activeItem: null
         property string title: ""
+
+        property Item activeItem: null
+        property Item activeItemTooltipParent: null
+        property string activeItemText: ""
+
 
         Component.onCompleted: {
             root.clearZoomSignal.connect(titleTooltipDlg.hide);
@@ -459,16 +464,30 @@ Item {
         }
 
         function show(taskItem, text){
-            if (activeItem !== taskItem) {
-                activeItem = taskItem;
-                visualParent = taskItem.tooltipVisualParent;
-                titleTooltipDlg.title = text;
+            if (!root.titleTooltips || root.contextMenu){
+                return;
             }
 
-            if (!visible) {
-                visible = true;
+            if (activeItem !== taskItem) {
+                activeItem = taskItem;
+                activeItemTooltipParent = taskItem.tooltipVisualParent;
+                activeItemText = text;
             }
+
+            showTitleTooltipTimer.start();
         }
+
+        function update() {
+            title = activeItemText;
+            visualParent = activeItemTooltipParent;
+            visible = true;
+        }
+    }
+
+    Timer {
+        id: showTitleTooltipTimer
+        interval: 100
+        onTriggered: titleTooltipDlg.update();
     }
     /////END: Title Tooltip///////////
 
