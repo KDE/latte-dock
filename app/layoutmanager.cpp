@@ -19,6 +19,8 @@
 */
 
 #include "layoutmanager.h"
+#include "infoview.h"
+
 
 #include <QDir>
 #include <QFile>
@@ -384,21 +386,15 @@ void LayoutManager::showLayoutConfigDialog()
 
 void LayoutManager::showInfoWindow(QString info, int duration)
 {
-    const QString infoQML = m_corona->kPackage().filePath("infoviewui");
+    foreach (auto screen, qGuiApp->screens()) {
+        InfoView *infoView = new InfoView(m_corona, info, screen);
 
-    if (infoQML.isEmpty()) {
-        return;
+        infoView->show();
+
+        QTimer::singleShot(duration, [this, infoView]() {
+            infoView->deleteLater();
+        });
     }
-
-    KDeclarative::QmlObject *qmlObj = new KDeclarative::QmlObject(this);
-    qmlObj->setInitializationDelayed(true);
-    qmlObj->setSource(QUrl::fromLocalFile(infoQML));
-    qmlObj->completeInitialization();
-    qmlObj->rootObject()->setProperty("message", info);
-
-    QTimer::singleShot(duration, [this, qmlObj]() {
-        qmlObj->deleteLater();
-    });
 }
 
 void LayoutManager::showWidgetsExplorer()

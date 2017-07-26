@@ -27,23 +27,22 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 import org.kde.latte 0.1 as Latte
 
-PlasmaCore.Dialog {
+PlasmaCore.FrameSvgItem {
     id: dialog
 
-    type: PlasmaCore.Dialog.Tooltip
-    flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
+    imagePath: "widgets/panel-background"
+    prefix:""
+    enabledBorders: infoWindow.enabledBorders
+
+    width: Screen.width + 1
+    height: Math.min(Screen.height - units.gridUnit * 8, logo.height + messageLbl.height + 2 *units.gridUnit)
 
     property string message
 
-    Component.onCompleted: {
-        flags = flags |  Qt.WindowStaysOnTopHint;
-        dialog.show();
-    }
-
     ColumnLayout {
         id: root
-        Layout.minimumWidth: Screen.width
-        Layout.minimumHeight: Math.min(Screen.height - units.gridUnit * 10, logo.height + messageLbl.height)
+
+        anchors.centerIn: parent
 
         Item{
             id: iconItem

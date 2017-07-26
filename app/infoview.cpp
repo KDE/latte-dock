@@ -31,6 +31,7 @@
 #include <KDeclarative/KDeclarative>
 
 #include <Plasma/Package>
+#include <KWindowSystem>
 
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
@@ -47,11 +48,12 @@ InfoView::InfoView(DockCorona *corona, QString message, QScreen *screen, QWindow
 
     setResizeMode(QQuickView::SizeViewToRootObject);
     setColor(QColor(Qt::transparent));
+    setDefaultAlphaBuffer(true);
+
     setIcon(qGuiApp->windowIcon());
 
     setScreen(screen);
     setFlags(wFlags());
-    syncGeometry();
 
     init();
 }
@@ -69,9 +71,10 @@ InfoView::~InfoView()
 
 void InfoView::init()
 {
-    setDefaultAlphaBuffer(true);
-    setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
+    PanelShadows::self()->setEnabledBorders(this, m_borders);
+
+    rootContext()->setContextProperty(QStringLiteral("infoWindow"), this);
 
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
@@ -79,10 +82,17 @@ void InfoView::init()
     kdeclarative.setupBindings();
     auto source = QUrl::fromLocalFile(m_corona->kPackage().filePath("infoviewui"));
     setSource(source);
+
     rootObject()->setProperty("message", m_message);
 
     syncGeometry();
 }
+
+Plasma::FrameSvg::EnabledBorders InfoView::enabledBorders() const
+{
+    return m_borders;
+}
+
 
 inline Qt::WindowFlags InfoView::wFlags() const
 {
@@ -91,63 +101,20 @@ inline Qt::WindowFlags InfoView::wFlags() const
 
 void InfoView::syncGeometry()
 {
-    /*if (!m_dockView->containment() || !rootObject())
-        return;
-
-    const auto location = m_dockView->containment()->location();
+    const QSize size(rootObject()->width(), rootObject()->height());
     const auto sGeometry = screen()->geometry();
 
-    int clearThickness = m_dockView->normalThickness();
+    setMaximumSize(size);
+    setMinimumSize(size);
+    resize(size);
 
-    QPoint position{0, 0};
-
-    switch (m_dockView->containment()->formFactor()) {
-        case Plasma::Types::Horizontal: {
-            const QSize size(rootObject()->width(), rootObject()->height());
-            setMaximumSize(size);
-            setMinimumSize(size);
-            resize(size);
-
-            if (location == Plasma::Types::TopEdge) {
-                position = {sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + clearThickness
-                           };
-            } else if (location == Plasma::Types::BottomEdge) {
-                position = {sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
-                           };
-            }
-        }
-        break;
-
-        case Plasma::Types::Vertical: {
-            const QSize size(rootObject()->width(), rootObject()->height());
-            setMaximumSize(size);
-            setMinimumSize(size);
-            resize(size);
-
-            if (location == Plasma::Types::LeftEdge) {
-                position = {sGeometry.x() + clearThickness
-                            , sGeometry.center().y() - size.height() / 2
-                           };
-            } else if (location == Plasma::Types::RightEdge) {
-                position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                            , sGeometry.center().y() - size.height() / 2
-                           };
-            }
-        }
-        break;
-
-        default:
-            qWarning() << "no sync geometry, wrong formFactor";
-            break;
-    }
+    QPoint position{sGeometry.center().x() - size.width() / 2, sGeometry.center().y() - size.height() / 2 };
 
     setPosition(position);
 
     if (m_shellSurface) {
         m_shellSurface->setPosition(position);
-    }*/
+    }
 }
 
 void InfoView::showEvent(QShowEvent *ev)
@@ -219,7 +186,7 @@ bool InfoView::event(QEvent *e)
         }
     }
 
-    return InfoView::event(e);
+    return QQuickWindow::event(e);
 }
 
 }

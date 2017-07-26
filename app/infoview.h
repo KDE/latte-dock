@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <QQuickView>
+#include <QScreen>
 
 namespace KWayland {
 namespace Client {
@@ -37,15 +38,22 @@ namespace Latte {
 class InfoView : public QQuickView {
     Q_OBJECT
 
+    Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
+
 public:
     InfoView(DockCorona *corona, QString message, QScreen *screen = qGuiApp->primaryScreen(), QWindow *parent = nullptr);
     ~InfoView() override;
+
+    Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     void init();
     Qt::WindowFlags wFlags() const;
 
 public slots:
     Q_INVOKABLE void syncGeometry();
+
+signals:
+    void enabledBordersChanged();
 
 protected:
     void showEvent(QShowEvent *ev) override;
@@ -58,6 +66,9 @@ private:
     QString m_message;
 
     QScreen *m_screen;
+
+    Plasma::FrameSvg::EnabledBorders m_borders{Plasma::FrameSvg::TopBorder | Plasma::FrameSvg::BottomBorder};
+
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
     DockCorona *m_corona;
