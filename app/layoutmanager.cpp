@@ -47,9 +47,10 @@ LayoutManager::LayoutManager(QObject *parent)
         connect(m_addWidgetsAction, &QAction::triggered, this, &LayoutManager::showWidgetsExplorer);
 
         connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
+        connect(m_corona->universalSettings(), &UniversalSettings::showInfoWindowChanged, this, &LayoutManager::showInfoWindowChanged);
 
         m_dynamicSwitchTimer.setSingleShot(true);
-        m_dynamicSwitchTimer.setInterval(2000);
+        showInfoWindowChanged();
         connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &LayoutManager::confirmDynamicSwitch);
     }
 }
@@ -179,6 +180,15 @@ void LayoutManager::currentActivityChanged(const QString &id)
     m_shouldSwitchToLayout = shouldSwitchToLayout(id);
 
     m_dynamicSwitchTimer.start();
+}
+
+void LayoutManager::showInfoWindowChanged()
+{
+    if (m_corona->universalSettings()->showInfoWindow()) {
+        m_dynamicSwitchTimer.setInterval(1800);
+    } else {
+        m_dynamicSwitchTimer.setInterval(2300);
+    }
 }
 
 QString LayoutManager::shouldSwitchToLayout(QString activityId)

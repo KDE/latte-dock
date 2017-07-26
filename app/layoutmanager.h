@@ -94,6 +94,7 @@ signals:
 
 private slots:
     void currentActivityChanged(const QString &id);
+    void showInfoWindowChanged();
     void showWidgetsExplorer();
 
 private:
