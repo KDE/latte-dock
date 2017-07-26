@@ -129,16 +129,6 @@ DockCorona::~DockCorona()
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
 
-    if (!m_layoutDir.isNull()) {
-        updateConfigs();
-        QDir tempLayoutDir(m_layoutDir);
-
-        if (tempLayoutDir.exists() && m_layoutDir.startsWith("/tmp")) {
-            qDebug() << "old layout directory should be deleted... - " << tempLayoutDir.absolutePath();
-            tempLayoutDir.removeRecursively();
-        }
-    }
-
     qDebug() << "latte corona deleted..." << this;
 }
 
@@ -187,46 +177,6 @@ void DockCorona::unload()
     m_waitingDockViews.clear();
 }
 
-bool DockCorona::reloadLayout(QString path)
-{
-    QFile latterc(path + "/lattedockrc");
-    QFile appletsrc(path  + "/lattedock-appletsrc");
-
-    if (latterc.exists() && appletsrc.exists()) {
-        QDir oldLayoutDir(m_layoutDir);
-
-        m_layoutDir = path;
-
-        unload();
-
-        qDebug() << "reloadLayout: loading new layout - " << appletsrc.fileName();
-
-        m_screenPool->reload(m_layoutDir);
-        loadLayout(appletsrc.fileName());
-
-        m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
-        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
-
-        foreach (auto containment, containments())
-            addDock(containment);
-
-        if (oldLayoutDir.exists() && oldLayoutDir.absolutePath().startsWith("/tmp")
-            && oldLayoutDir.absolutePath() != path) {
-            qDebug() << "old layout directory should be deleted... - " << oldLayoutDir.absolutePath();
-            oldLayoutDir.removeRecursively();
-        }
-
-        QTimer::singleShot(2000, [this]() {
-            qDebug() << "reload: starting delayed update config files...";
-            updateConfigs();
-        });
-
-        return true;
-    }
-
-    return false;
-}
-
 void DockCorona::loadLatteLayout(QString layoutPath)
 {
     if (!layoutPath.isEmpty()) {
@@ -239,29 +189,6 @@ void DockCorona::loadLatteLayout(QString layoutPath)
             addDock(containment);
     }
 }
-
-
-void DockCorona::updateConfigs()
-{
-    if (!m_layoutDir.isNull()) {
-        qDebug() << "layout directory found:" << m_layoutDir;
-        QFile latterc(m_layoutDir + "/lattedockrc");
-        QFile appletsrc(m_layoutDir  + "/lattedock-appletsrc");
-
-        if (latterc.exists() && appletsrc.exists()) {
-            qDebug() << "updating latte layout...";
-
-            const auto homeLatterc = QDir::homePath() + "/.config/lattedockrc";
-            const auto homeAppletsrc = QDir::homePath() + "/.config/lattedock-appletsrc";
-
-            if (QFile::remove(homeLatterc) && QFile::remove(homeAppletsrc)) {
-                QFile::copy(latterc.fileName() , homeLatterc);
-                QFile::copy(appletsrc.fileName() , homeAppletsrc);
-            }
-        }
-    }
-}
-
 
 void DockCorona::setupWaylandIntegration()
 {

@@ -72,7 +72,6 @@ public:
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
     void loadLatteLayout(QString layoutPath);
-    bool reloadLayout(QString path);
 
     int docksCount() const;
     int docksCount(int screen) const;
@@ -112,7 +111,6 @@ private slots:
     void showAlternativesForApplet(Plasma::Applet *applet);
     void alternativesVisibilityChanged(bool visible);
     void load();
-    void updateConfigs();
 
     void addOutput(QScreen *screen);
     void primaryOutputChanged();
@@ -142,8 +140,6 @@ private:
     //! to specify which dock will be loaded on startup if a case that no "dock
     //! with tasks" will be loaded otherwise. Currently the older one dock wins
     int m_firstContainmentWithTasks{ -1};
-
-    QString m_layoutDir;
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
