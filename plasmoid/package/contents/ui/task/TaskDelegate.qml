@@ -869,7 +869,7 @@ MouseArea{
     }
 
     function preparePreviewWindow(hideClose){
-        windowsPreviewDlg.visualParent = mainItemContainer;
+        windowsPreviewDlg.visualParent = tooltipVisualParent;
 
         toolTipDelegate.parentTask = mainItemContainer;
         toolTipDelegate.parentIndex = itemIndex;

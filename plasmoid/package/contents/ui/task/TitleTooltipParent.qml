@@ -24,8 +24,11 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item{
     id: visual
-    width: root.zoomFactor * root.realSize
-    height: width
+    width: root.vertical ?  thickness : size
+    height: root.vertical ? size : thickness
+
+    property int size: 1// root.iconSize
+    property int thickness: (root.zoomFactor * root.realSize) + root.statesLineSize
     //border.width: 1
     //border.color: "green"
     //color: "transparent"
