@@ -23,6 +23,7 @@ set(lattedock-app_SRCS
     layoutsDelegates/colorcmbboxdelegate.cpp
     layoutsDelegates/colorcmbboxitemdelegate.cpp
     layoutsDelegates/activitycmbboxdelegate.cpp
+    infoview.cpp
     main.cpp
 )
 

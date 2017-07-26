@@ -18,24 +18,13 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DOCKCONFIGVIEW_H
-#define DOCKCONFIGVIEW_H
+#ifndef INFOVIEW_H
+#define INFOVIEW_H
 
-#include "plasmaquick/configview.h"
-#include "../liblattedock/dock.h"
-
-#include <plasma/package.h>
+#include "dockcorona.h"
 
 #include <QObject>
-#include <QWindow>
-#include <QPointer>
-#include <QTimer>
-
-namespace Plasma {
-class Applet;
-class Containment;
-class Types;
-}
+#include <QQuickView>
 
 namespace KWayland {
 namespace Client {
@@ -45,53 +34,33 @@ class PlasmaShellSurface;
 
 namespace Latte {
 
-class DockView;
-
-class DockConfigView : public PlasmaQuick::ConfigView {
+class InfoView : public QQuickView {
     Q_OBJECT
 
 public:
-    DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent = nullptr);
-    ~DockConfigView() override;
+    InfoView(DockCorona *corona, QString message, QScreen *screen = qGuiApp->primaryScreen(), QWindow *parent = nullptr);
+    ~InfoView() override;
 
-    void init() override;
+    void init();
     Qt::WindowFlags wFlags() const;
 
 public slots:
-    Q_INVOKABLE void addPanelSpacer();
-    Q_INVOKABLE void hideConfigWindow();
-    Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
-    Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
-
-signals:
-    void raiseDocksTemporaryChanged();
-    void showSignal();
 
 protected:
     void showEvent(QShowEvent *ev) override;
-    void hideEvent(QHideEvent *ev) override;
-    void focusOutEvent(QFocusEvent *ev) override;
     bool event(QEvent *e) override;
-
-    void syncSlideEffect();
-
-private slots:
-    void immutabilityChanged(Plasma::Types::ImmutabilityType type);
-
-signals:
-    void aboutApplication();
 
 private:
     void setupWaylandIntegration();
 
-    bool m_blockFocusLost;
+private:
+    QString m_message;
 
-    QPointer<DockView> m_dockView;
-    QTimer m_screenSyncTimer;
-    QList<QMetaObject::Connection> connections;
-
+    QScreen *m_screen;
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+
+    DockCorona *m_corona;
 };
 
 }
