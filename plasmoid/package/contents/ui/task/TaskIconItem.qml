@@ -66,6 +66,7 @@ Item{
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
 
+    property Item titleTooltipVisualParent: titleTooltipParent
     /*Rectangle{
         anchors.fill: parent
         border.width: 1
@@ -105,12 +106,7 @@ Item{
         onTempColorChanged: tempColor.a = 0.35;
     }
 
-    /* Rectangle{
-        anchors.fill: parent
-        border.width: 1
-        border.color: "red"
-        color: "transparent"
-    } */
+    TitleTooltipParent{ id: titleTooltipParent}
 
     // KQuickControlAddons.QIconItem{
     Item{

@@ -1,0 +1,79 @@
+/*
+*  Copyright 2017  Smith AR <audoban@openmailbox.org>
+*                  Michail Vourlakos <mvourlakos@gmail.com>
+*
+*  This file is part of Latte-Dock
+*
+*  Latte-Dock is free software; you can redistribute it and/or
+*  modify it under the terms of the GNU General Public License as
+*  published by the Free Software Foundation; either version 2 of
+*  the License, or (at your option) any later version.
+*
+*  Latte-Dock is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+import QtQuick 2.0
+
+import org.kde.plasma.core 2.0 as PlasmaCore
+
+Item{
+    id: visual
+    width: root.zoomFactor * root.realSize
+    height: width
+    //border.width: 1
+    //border.color: "green"
+    //color: "transparent"
+
+    states:[
+        State{
+            name: "bottom"
+            when: root.position === PlasmaCore.Types.BottomPositioned
+
+            AnchorChanges{
+                target: visual;
+                anchors.horizontalCenter: parent.horizontalCenter;
+                anchors.verticalCenter: undefined;
+                anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+            }
+        },
+        State{
+            name: "top"
+            when: root.position === PlasmaCore.Types.TopPositioned
+
+            AnchorChanges{
+                target:visual;
+                anchors.horizontalCenter: parent.horizontalCenter;
+                anchors.verticalCenter: undefined;
+                anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+            }
+        },
+        State{
+            name: "left"
+            when: root.position === PlasmaCore.Types.LeftPositioned
+
+            AnchorChanges{
+                target: visual;
+                anchors.horizontalCenter: undefined;
+                anchors.verticalCenter: parent.verticalCenter;
+                anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+            }
+        },
+        State{
+            name: "right"
+            when: root.position === PlasmaCore.Types.RightPositioned
+
+            AnchorChanges{
+                target: visual;
+                anchors.horizontalCenter: undefined;
+                anchors.verticalCenter: parent.verticalCenter;
+                anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+            }
+        }
+    ]
+}

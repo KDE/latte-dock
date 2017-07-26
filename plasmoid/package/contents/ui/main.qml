@@ -186,7 +186,6 @@ Item {
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    property QtObject altSessionAction : latteDock ? latteDock.altSessionAction : null
     property QtObject currentLayout : latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout ?
                                           latteDock.universalLayoutManager.currentLayout : null
 
@@ -429,7 +428,52 @@ Item {
         }
     }
 
-    /////Winwow previews///////////
+    /////BEGIN: Title Tooltip///////////
+    PlasmaCore.Dialog{
+        id: titleTooltipDlg
+
+        type: PlasmaCore.Dialog.Tooltip
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
+
+        location: plasmoid.location
+        mainItem: Item{
+            width: titleLbl.width
+            height: titleLbl.height
+            PlasmaComponents.Label{
+                id:titleLbl
+                text: titleTooltipDlg.title
+            }
+        }
+
+        visible: false
+
+        property Item activeItem: null
+        property string title: ""
+
+        Component.onCompleted: {
+            root.clearZoomSignal.connect(titleTooltipDlg.hide);
+        }
+
+        function hide(debug){
+            visible = false;
+        }
+
+        function show(taskItem, text){
+            if (activeItem !== taskItem) {
+                activeItem = taskItem;
+                visualParent = taskItem.tooltipVisualParent;
+                titleTooltipDlg.title = text;
+            }
+
+            if (!visible) {
+                visible = true;
+            }
+        }
+    }
+    /////END: Title Tooltip///////////
+
+
+    /////Window previews///////////
 
     ToolTipDelegate2 {
         id: toolTipDelegate
@@ -1439,6 +1483,10 @@ Item {
             if(task && task.containsMouse){
                 return true;
             }
+        }
+
+        if (titleTooltipDlg.visible) {
+            titleTooltipDlg.hide();
         }
 
         return false;

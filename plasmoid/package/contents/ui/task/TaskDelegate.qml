@@ -127,6 +127,8 @@ MouseArea{
     property string launcherUrl: ""
     property string launcherUrlWithIcon: ""
 
+    property Item tooltipVisualParent: wrapper.titleTooltipVisualParent
+
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== "")
             launcherUrl = modelLauncherUrl;
@@ -535,6 +537,10 @@ MouseArea{
         if (root.latteDock && root.latteDock.isHalfShown) {
             return;
         }
+
+
+        titleTooltipDlg.show(mainItemContainer, model.AppName);
+
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
