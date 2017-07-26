@@ -470,7 +470,7 @@ Item{
         Loader{
             id: taskNumberLoader
             anchors.fill: iconImageBuffer
-            active: opacityN>0
+            active: opacityN>0 && !launcherAnimation.running
             asynchronous: true
 
             property int fixedIndex: {
