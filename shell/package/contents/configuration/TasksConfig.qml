@@ -112,13 +112,15 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Preview windows on hovering")
                 checked: plasmoid.configuration.showToolTips
+                tooltip: i18n("This option can be combined with task name tooltips")
 
                 onClicked: {
                     plasmoid.configuration.showToolTips = checked;
 
-                   // if (checked && titleTooltipsChk.checked) {
-                    //    plasmoid.configuration.titleTooltips = false;
-                   // }
+                    if (checked && titleTooltipsChk.checked) {
+                        plasmoid.configuration.titleTooltips = false;
+                        titleTooltipsChk.checked = false;
+                    }
                 }
             }
 
@@ -127,13 +129,15 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show task name tooltips on hovering")
                 checked: plasmoid.configuration.titleTooltips
+                tooltip: i18n("This option can be combined with window previews")
 
                 onClicked: {
                     plasmoid.configuration.titleTooltips = checked;
 
-                  //  if (checked && showPreviewsChk.checked) {
-                 //       plasmoid.configuration.showToolTips = false;
-                  //  }
+                    if (checked && showPreviewsChk.checked) {
+                        plasmoid.configuration.showToolTips = false;
+                        showPreviewsChk.checked = false;
+                    }
                 }
             }
 
@@ -147,18 +151,6 @@ PlasmaComponents.Page {
                     plasmoid.configuration.highlightWindows = checked
                 }
             }
-
-            /*PlasmaComponents.CheckBox {
-                id: syncLaunchersChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Sync launchers between all docks")
-                checked: layoutManager.currentLayout.syncLaunchers
-                tooltip: i18n("When this option is activated, it copies the current dock launchers\nand makes them global launchers for all docks")
-
-                onClicked: {
-                    dockConfig.setSyncLaunchers(checked);
-                }
-            }*/
 
             PlasmaComponents.CheckBox {
                 id: smartLaunchersChk
