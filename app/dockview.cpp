@@ -1817,6 +1817,16 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
                 layoutsMenu->addAction(layoutAction);
             }
 
+            layoutsMenu->addSeparator();
+
+            QAction *editLayoutsAction = new QAction(i18n("Configure..."), layoutsMenu);
+
+            connect(editLayoutsAction, &QAction::triggered, this, [this, dockCorona] {
+                dockCorona->layoutManager()->showLayoutConfigDialog();
+            });
+
+            layoutsMenu->addAction(editLayoutsAction);
+
         }
 
         desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());

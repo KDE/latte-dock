@@ -831,6 +831,15 @@ PlasmaComponents.ContextMenu {
                         };
                     })(layout));
                 }
+
+                menu.addMenuItem(newSeparator(layoutsMenu), layoutsMenuItem);
+
+                var configureItem = menu.newMenuItem(layoutsMenu);
+                configureItem.text = i18n("Configure...");
+                configureItem.clicked.connect(function() {
+                    latteDock.universalLayoutManager.showLayoutConfigDialog();
+                });
+
             }
 
             Component.onCompleted: refresh()
