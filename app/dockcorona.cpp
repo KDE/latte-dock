@@ -845,7 +845,7 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
         id = expDockScreen;
     }
 
-    qDebug() << "add dock - containment id : " << id << " onprimary:" << onPrimary << " forceDockLoad:" << forceDockLoading;
+    qDebug() << "add dock - containment id: " << containment->id() << " ,screen id : " << id << " ,onprimary:" << onPrimary << " ,forceDockLoad:" << forceDockLoading;
 
     if (id >= 0 && !onPrimary && !forceDockLoading) {
         QString connector = m_screenPool->connector(id);
@@ -1260,16 +1260,12 @@ void DockCorona::copyDock(Plasma::Containment *containment)
         }
     }
 
-    newContainment->setContainmentType(Plasma::Types::PanelContainment);
-    newContainment->init();
-
     if (!newContainment || !newContainment->kPackage().isValid()) {
         qWarning() << "the requested containment plugin can not be located or loaded";
         return;
     }
 
     auto config = newContainment->config();
-    newContainment->restore(config);
 
     //in multi-screen environment the copied dock is moved to alternative screens first
     const auto screens = qGuiApp->screens();
@@ -1294,8 +1290,8 @@ void DockCorona::copyDock(Plasma::Containment *containment)
 
                     if (fEdges.contains((Plasma::Types::Location)containment->location())) {
                         ///set this containment to an explicit screen
-                        newContainment->config().writeEntry("onPrimary", false);
-                        newContainment->config().writeEntry("lastScreen", copyScrId);
+                        config.writeEntry("onPrimary", false);
+                        config.writeEntry("lastScreen", copyScrId);
                         newContainment->setLocation(containment->location());
 
                         qDebug() << "COPY DOCK SCREEN NEW SCREEN ::: " << copyScrId;
@@ -1317,18 +1313,11 @@ void DockCorona::copyDock(Plasma::Containment *containment)
             newContainment->setLocation(Plasma::Types::BottomEdge);
         }
 
-        newContainment->config().writeEntry("onPrimary", false);
-        newContainment->config().writeEntry("lastScreen", dockScrId);
+        config.writeEntry("onPrimary", false);
+        config.writeEntry("lastScreen", dockScrId);
     }
 
-    newContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
-
-    newContainment->save(config);
-    requestConfigSync();
-
-    newContainment->flushPendingConstraintsEvents();
-    emit containmentAdded(newContainment);
-    emit containmentCreated(newContainment);
+    newContainment->config().sync();
 
     if (setOnExplicitScreen && copyScrId > -1) {
         qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
