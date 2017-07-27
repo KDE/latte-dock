@@ -1190,6 +1190,9 @@ DragDrop.DropArea {
         }
 
         function hide(debug){
+            if (!root.titleTooltips)
+                return;
+
             activeItemHovered = false;
             hideTitleTooltipTimer.start();
         }
