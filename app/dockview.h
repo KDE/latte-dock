@@ -53,6 +53,7 @@ namespace Latte {
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
+    Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
@@ -106,6 +107,8 @@ public:
 
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
+
+    bool contextMenuIsShown() const;
 
     bool dockWinBehavior() const;
     void setDockWinBehavior(bool dock);
@@ -198,6 +201,7 @@ signals:
 
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
+    void contextMenuIsShownChanged();
     void currentScreenChanged();
     void dockLocationChanged();
     void docksCountChanged();

@@ -1124,6 +1124,12 @@ DragDrop.DropArea {
             if (root.isVertical && proportionIconSize!==-1)
                 updateAutomaticIconSize();
         }
+
+        onContextMenuIsShownChanged: {
+            if (!dock.contextMenuIsShown) {
+                checkRestoreZoom.start();
+            }
+        }
     }
 
     Connections{
@@ -1278,7 +1284,10 @@ DragDrop.DropArea {
             if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
                 return;
 
-            if (!dock.visibility.containsMouse || (rootMouseArea.containsMouse && !root.editMode)
+            if (dock.contextMenuIsShown)
+                return;
+
+            if (!dock.visibility.containsMouse  || (rootMouseArea.containsMouse && !root.editMode)
                     || !mouseInCanBeHoveredApplet()){
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();

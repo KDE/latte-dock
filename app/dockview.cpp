@@ -795,6 +795,11 @@ void DockView::statusChanged(Plasma::Types::ItemStatus status)
     }
 }
 
+bool DockView::contextMenuIsShown() const
+{
+    return m_contextMenu;
+}
+
 int DockView::currentThickness() const
 {
     if (formFactor() == Plasma::Types::Vertical) {
@@ -1402,6 +1407,7 @@ void DockView::menuAboutToHide()
 {
     m_contextMenu = 0;
     m_visibility->setBlockHiding(false);
+    emit contextMenuIsShownChanged();
 }
 
 
@@ -1430,6 +1436,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
         //qDebug() << "Step 0.5 ...";
         m_contextMenu->close();
         m_contextMenu = 0;
+        emit contextMenuIsShownChanged();
         PlasmaQuick::ContainmentView::mousePressEvent(event);
         return;
     }
@@ -1614,6 +1621,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 m_visibility->setBlockHiding(true);
                 desktopMenu->popup(pos);
                 event->setAccepted(true);
+                emit contextMenuIsShownChanged();
                 return;
             }
 
@@ -1624,6 +1632,7 @@ void DockView::mousePressEvent(QMouseEvent *event)
     }
 
     //qDebug() << "10 ...";
+    emit contextMenuIsShownChanged();
     PlasmaQuick::ContainmentView::mousePressEvent(event);
 }
 
