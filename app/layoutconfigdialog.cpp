@@ -497,6 +497,7 @@ void LayoutConfigDialog::loadLayouts()
     m_model->clear();
 
     int i = 0;
+    QStringList brokenLayouts;
 
     foreach (auto layout, m_manager->layouts()) {
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
@@ -515,6 +516,10 @@ void LayoutConfigDialog::loadLayouts()
         if (layoutSets->name() == m_manager->currentLayoutName()) {
             ui->layoutsView->selectRow(i - 1);
         }
+
+        if (layoutSets->fileIsBroken()) {
+            brokenLayouts.append(layoutSets->name());
+        }
     }
 
     recalculateAvailableActivities();
@@ -527,6 +532,17 @@ void LayoutConfigDialog::loadLayouts()
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
+
+    //! there are broken layouts and the user must be informed!
+    if (brokenLayouts.count() > 0) {
+        auto msg = new QMessageBox(this);
+        msg->setIcon(QMessageBox::Warning);
+        msg->setWindowTitle(i18n("Layout Warning"));
+        msg->setText(i18n("The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove them<b> to improve the system stability...").arg(brokenLayouts.join(",")));
+        msg->setStandardButtons(QMessageBox::Ok);
+
+        msg->open();
+    }
 }
 
 void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)

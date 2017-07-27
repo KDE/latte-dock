@@ -50,6 +50,8 @@ public:
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
+    bool fileIsBroken() const;
+
     int version() const;
     void setVersion(int ver);
 

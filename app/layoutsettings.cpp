@@ -175,6 +175,35 @@ void  LayoutSettings::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
+bool LayoutSettings::fileIsBroken() const
+{
+    if (m_layoutFile.isEmpty() || !QFile(m_layoutFile).exists()) {
+        return false;
+    }
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layoutFile);
+    KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
+
+    QStringList ids;
+
+    ids << containmentsEntries.groupList();
+
+    foreach (auto cId, containmentsEntries.groupList()) {
+        auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+        ids << appletsEntries.groupList();
+    }
+
+    QSet<QString> idsSet = QSet<QString>::fromList(ids);
+
+    if (idsSet.count() != ids.count()) {
+        return true;
+    }
+
+    return false;
+}
+
+
 QString LayoutSettings::layoutName(const QString &fileName)
 {
     int lastSlash = fileName.lastIndexOf("/");
