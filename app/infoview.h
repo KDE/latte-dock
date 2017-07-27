@@ -65,13 +65,13 @@ private:
 private:
     QString m_message;
 
-    QScreen *m_screen;
+    QScreen *m_screen{nullptr};
 
     Plasma::FrameSvg::EnabledBorders m_borders{Plasma::FrameSvg::TopBorder | Plasma::FrameSvg::BottomBorder};
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
-    DockCorona *m_corona;
+    DockCorona *m_corona{nullptr};
 };
 
 }
