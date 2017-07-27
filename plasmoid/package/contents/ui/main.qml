@@ -141,7 +141,7 @@ Item {
     property bool showOnlyCurrentScreen: latteDock ? latteDock.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: latteDock ? latteDock.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: latteDock ? latteDock.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
-    property bool showPreviews:  latteDock ? latteDock.showToolTips : plasmoid.configuration.showToolTips
+    property bool showPreviews:  latteDock ? (latteDock.showToolTips && !titleTooltips) : plasmoid.configuration.showToolTips
     property bool showWindowActions: latteDock ? latteDock.showWindowActions : plasmoid.configuration.showWindowActions
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
@@ -428,69 +428,6 @@ Item {
             //root.signalDraggingState(true);
         }
     }
-
-    /////BEGIN: Title Tooltip///////////
-    PlasmaCore.Dialog{
-        id: titleTooltipDlg
-
-        type: PlasmaCore.Dialog.Tooltip
-        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
-
-        location: plasmoid.location
-        mainItem: Item{
-            width: titleLbl.width
-            height: titleLbl.height
-            PlasmaComponents.Label{
-                id:titleLbl
-                text: titleTooltipDlg.title
-            }
-        }
-
-        visible: false
-
-        property string title: ""
-
-        property Item activeItem: null
-        property Item activeItemTooltipParent: null
-        property string activeItemText: ""
-
-
-        Component.onCompleted: {
-            root.clearZoomSignal.connect(titleTooltipDlg.hide);
-        }
-
-        function hide(debug){
-            visible = false;
-        }
-
-        function show(taskItem, text){
-            if (!root.titleTooltips || root.contextMenu){
-                return;
-            }
-
-            if (activeItem !== taskItem) {
-                activeItem = taskItem;
-                activeItemTooltipParent = taskItem.tooltipVisualParent;
-                activeItemText = text;
-            }
-
-            showTitleTooltipTimer.start();
-        }
-
-        function update() {
-            title = activeItemText;
-            visualParent = activeItemTooltipParent;
-            visible = true;
-        }
-    }
-
-    Timer {
-        id: showTitleTooltipTimer
-        interval: 100
-        onTriggered: titleTooltipDlg.update();
-    }
-    /////END: Title Tooltip///////////
-
 
     /////Window previews///////////
 
@@ -1508,10 +1445,6 @@ Item {
             }
         }
 
-        if (titleTooltipDlg.visible) {
-            titleTooltipDlg.hide();
-        }
-
         return false;
     }
 
@@ -1528,6 +1461,7 @@ Item {
 
         icList.currentSpot = -1000;
         icList.hoveredIndex = -1;
+
         root.clearZoomSignal();
     }
 

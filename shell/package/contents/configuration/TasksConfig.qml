@@ -112,32 +112,11 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Preview windows on hovering")
                 checked: plasmoid.configuration.showToolTips
-                tooltip: i18n("This option can be combined with task name tooltips")
+                tooltip: i18n("This option can be combined with applet/task title tooltips")
+                enabled: !plasmoid.configuration.titleTooltips
 
                 onClicked: {
                     plasmoid.configuration.showToolTips = checked;
-
-                    if (checked && titleTooltipsChk.checked) {
-                        plasmoid.configuration.titleTooltips = false;
-                        titleTooltipsChk.checked = false;
-                    }
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: titleTooltipsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show task name tooltips on hovering")
-                checked: plasmoid.configuration.titleTooltips
-                tooltip: i18n("This option can be combined with window previews")
-
-                onClicked: {
-                    plasmoid.configuration.titleTooltips = checked;
-
-                    if (checked && showPreviewsChk.checked) {
-                        plasmoid.configuration.showToolTips = false;
-                        showPreviewsChk.checked = false;
-                    }
                 }
             }
 

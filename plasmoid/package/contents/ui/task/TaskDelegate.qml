@@ -538,7 +538,9 @@ MouseArea{
             return;
         }
 
-        titleTooltipDlg.show(mainItemContainer, model.AppName);
+        if (root.latteDock){
+            root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
+        }
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
@@ -564,6 +566,11 @@ MouseArea{
     // IMPORTANT: This must be improved ! even for small miliseconds  it reduces performance
     onExited: {
         mouseEntered = false;
+
+        if (root.latteDock){
+            root.latteDock.hideTooltipLabel();
+        }
+
         if(mainItemContainer.contextMenu && mainItemContainer.contextMenu.status == PlasmaComponents.DialogStatus.Open){
             ///dont check to restore zooms
         }

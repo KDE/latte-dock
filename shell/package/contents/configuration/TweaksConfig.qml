@@ -62,6 +62,18 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: titleTooltipsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show applets/task title tooltips on hovering")
+                checked: plasmoid.configuration.titleTooltips
+                tooltip: i18n("This option can be combined with tasks window previews")
+
+                onClicked: {
+                    plasmoid.configuration.titleTooltips = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: shrinkThickness
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Shrink thickness margins to minimum")

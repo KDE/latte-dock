@@ -106,6 +106,8 @@ Item {
     property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
     property Item appletImageItem;
 
+    property Item tooltipVisualParent: titleTooltipParent
+
     //this is used for folderView and icon widgets to fake their visual
     property bool fakeIconItem: applet && appletIconItem //(applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
 
@@ -449,7 +451,13 @@ Item {
             }
         }
 
-        AppletItemWrapper{ id: wrapper }
+        AppletItemWrapper{
+            id: wrapper
+
+            TitleTooltipParent{
+                id: titleTooltipParent
+            }
+        }
 
 
         // a hidden spacer on the right for the last item to add stability
@@ -570,6 +578,8 @@ Item {
         onEntered: {
             //AppletIndetifier.reconsiderAppletIconItem();
 
+            root.showTooltipLabel(container, applet.title);
+
             if (lockZoom || !canBeHovered) {
                 return;
             }
@@ -593,6 +603,8 @@ Item {
         onExited:{
             if (appletIconItem && appletIconItem.visible)
                 appletIconItem.active = false;
+
+            root.hideTooltipLabel();
 
             if (root.zoomFactor>1){
                 checkRestoreZoom.start();

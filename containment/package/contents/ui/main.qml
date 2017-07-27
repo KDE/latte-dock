@@ -457,6 +457,7 @@ DragDrop.DropArea {
             latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
             latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
             latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
+            latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
         }
     }
 
@@ -884,6 +885,14 @@ DragDrop.DropArea {
         layoutManager.save();
     }
 
+    function hideTooltipLabel(debug){
+        titleTooltipDialog.hide(debug);
+    }
+
+    function showTooltipLabel(taskItem, text){
+        titleTooltipDialog.show(taskItem, text);
+    }
+
     function sizeIsFromAutomaticMode(size){
 
         for(var i=iconsArray.length-1; i>=0; --i){
@@ -1149,6 +1158,83 @@ DragDrop.DropArea {
 
     ////END interfaces
 
+    /////BEGIN: Title Tooltip///////////
+    PlasmaCore.Dialog{
+        id: titleTooltipDialog
+
+        type: PlasmaCore.Dialog.Tooltip
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
+
+        location: plasmoid.location
+        mainItem: Item{
+            width: titleLbl.width
+            height: titleLbl.height
+            PlasmaComponents.Label{
+                id:titleLbl
+                text: titleTooltipDialog.title
+            }
+        }
+
+        visible: false
+
+        property string title: ""
+
+        property bool activeItemHovered: false
+        property Item activeItem: null
+        property Item activeItemTooltipParent: null
+        property string activeItemText: ""
+
+
+        Component.onCompleted: {
+            root.clearZoomSignal.connect(titleTooltipDialog.hide);
+        }
+
+        function hide(debug){
+            activeItemHovered = false;
+            hideTitleTooltipTimer.start();
+        }
+
+        function show(taskItem, text){
+            if (!root.titleTooltips || (latteApplet && latteApplet.contextMenu)){
+                return;
+            }
+
+            activeItemHovered = true;
+
+            if (activeItem !== taskItem) {
+                activeItem = taskItem;
+                activeItemTooltipParent = taskItem.tooltipVisualParent;
+                activeItemText = text;
+            }
+
+            showTitleTooltipTimer.start();
+        }
+
+        function update() {
+            activeItemHovered = true
+            title = activeItemText;
+            visualParent = activeItemTooltipParent;
+            visible = true;
+        }
+    }
+
+    Timer {
+        id: showTitleTooltipTimer
+        interval: 100
+        onTriggered: titleTooltipDialog.update();
+    }
+
+    Timer {
+        id: hideTitleTooltipTimer
+        interval: 200
+        onTriggered: {
+            if (!titleTooltipDialog.activeItemHovered) {
+                titleTooltipDialog.visible = false;
+            }
+        }
+    }
+    /////END: Title Tooltip///////////
+
     ///////////////BEGIN components
     Component {
         id: appletContainerComponent
@@ -1164,6 +1250,7 @@ DragDrop.DropArea {
     PlasmaCore.ColorScope{
         id: colorScopePalette
     }
+
 
     ///////////////BEGIN UI elements
 
