@@ -66,7 +66,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show applets/task title tooltips on hovering")
                 checked: plasmoid.configuration.titleTooltips
-                tooltip: i18n("This option can be combined with tasks window previews")
 
                 onClicked: {
                     plasmoid.configuration.titleTooltips = checked;

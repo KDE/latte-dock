@@ -141,7 +141,7 @@ Item {
     property bool showOnlyCurrentScreen: latteDock ? latteDock.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: latteDock ? latteDock.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: latteDock ? latteDock.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
-    property bool showPreviews:  latteDock ? (latteDock.showToolTips && !titleTooltips) : plasmoid.configuration.showToolTips
+    property bool showPreviews:  latteDock ? latteDock.showToolTips : plasmoid.configuration.showToolTips
     property bool showWindowActions: latteDock ? latteDock.showWindowActions : plasmoid.configuration.showWindowActions
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows

@@ -112,8 +112,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Preview windows on hovering")
                 checked: plasmoid.configuration.showToolTips
-                tooltip: i18n("This option can be combined with applet/task title tooltips")
-                enabled: !plasmoid.configuration.titleTooltips
 
                 onClicked: {
                     plasmoid.configuration.showToolTips = checked;

@@ -538,7 +538,7 @@ MouseArea{
             return;
         }
 
-        if (root.latteDock){
+        if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
         }
 
@@ -567,7 +567,7 @@ MouseArea{
     onExited: {
         mouseEntered = false;
 
-        if (root.latteDock){
+        if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.hideTooltipLabel();
         }
 
