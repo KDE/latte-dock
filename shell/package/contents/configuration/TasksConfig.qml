@@ -273,7 +273,7 @@ PlasmaComponents.Page {
             visible: plasmoid.configuration.advanced
 
             Header {
-                text: i18n("Launchers")
+                text: i18n("Launchers Group")
             }
 
             RowLayout {
@@ -296,7 +296,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    text: i18nc("unique launchers","Unique")
+                    text: i18nc("unique launchers group","Unique")
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
@@ -307,7 +307,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    text: i18nc("layout launchers","Layout")
+                    text: i18nc("layout launchers group","Layout")
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
@@ -318,7 +318,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    text: i18nc("global launchers","Global")
+                    text: i18nc("global launchers group","Global")
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
