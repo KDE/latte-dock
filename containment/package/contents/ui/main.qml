@@ -1275,7 +1275,7 @@ DragDrop.DropArea {
         interval: 150;
 
         onTriggered: {
-            if (latteApplet && latteApplet.previewContainsMouse())
+            if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
                 return;
 
             if (!dock.visibility.containsMouse || (rootMouseArea.containsMouse && !root.editMode)

@@ -884,6 +884,10 @@ Item {
                     enableDirectRenderTimer.stop();
 
                 icList.directRender = false;
+                if(root.latteDock) {
+                    root.latteDock.globalDirectRender = false;
+                    root.latteDock.clearZoom();
+                }
 
                 root.clearZoom();
             }
