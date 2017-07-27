@@ -83,6 +83,9 @@ Item {
     property int maxHeight: root.isHorizontal ? root.height : root.width
     property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
     property int internalSplitterId: 0
+    property int isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
+                             && applet.status !== PlasmaCore.Types.HiddenStatus
+
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
     property int spacersMaxSize: Math.max(0,Math.ceil(0.5*root.iconSize) - root.iconMargin)
@@ -269,6 +272,12 @@ Item {
 
         if (index>-1) {
             previousIndex = index;
+        }
+    }
+
+    onIsExpandedChanged: {
+        if (isExpanded) {
+            root.hideTooltipLabel();
         }
     }
 

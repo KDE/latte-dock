@@ -57,9 +57,7 @@ Item{
             return 1;
         }
 
-        property bool isActive: (applet && applet.pluginName!==root.plasmoidName && applet.pluginName!=="org.kde.plasma.systemtray"
-                                 && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
-                                 && applet.status !== PlasmaCore.Types.HiddenStatus)
+        property bool isActive: (container.isExpanded && applet.pluginName!==root.plasmoidName && applet.pluginName!=="org.kde.plasma.systemtray")
 
         property bool vertical: root.isVertical
 
