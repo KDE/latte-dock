@@ -277,6 +277,19 @@ MouseArea {
         root.layoutManager.save();
     }
 
+    onWheel: {
+        if (currentApplet && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")) {
+            return
+        }
+
+        var angle = wheel.angleDelta.y / 8;
+
+        if (angle > 12)
+            currentApplet.latteSpacer.increaseLength();
+        else if (angle < 12)
+            currentApplet.latteSpacer.decreaseLength();
+    }
+
     Item {
         id: placeHolder
         visible: configurationArea.containsMouse
@@ -431,6 +444,7 @@ MouseArea {
                 closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
                         && !(currentApplet.applet.pluginName===root.plasmoidName && dock && dock.docksWithTasks()===1 && dock.tasksPresent());
                 lockButton.visible = (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
+                        && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isInternalViewSplitter
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="expanding" type="bool">
+        <label>If true, the spacer tries to take all the available space in the panel.</label>
+        <default>false</default>
+    </entry>
+    <entry name="usePixels" type="Bool">
+        <default>false</default>
+    </entry>
+    <entry name="lengthPixels" type="Int">
+        <label>length in pixels of the spacer</label>
+        <default>48</default>
+    </entry>
+    <entry name="usePercentage" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="lengthPercentage" type="Int">
+        <label>length in percentage of latte icon size.</label>
+        <default>100</default>
+    </entry>
+  </group>
+
+</kcfg>

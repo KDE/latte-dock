@@ -357,7 +357,7 @@ void DockConfigView::setSticker(bool blockFocusLost)
 void DockConfigView::addPanelSpacer()
 {
     if (m_dockView && m_dockView->containment()) {
-        m_dockView->containment()->createApplet(QStringLiteral("org.kde.plasma.panelspacer"));
+        m_dockView->containment()->createApplet(QStringLiteral("org.kde.latte.spacer"));
     }
 }
 

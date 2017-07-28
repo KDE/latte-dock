@@ -103,6 +103,9 @@ Item {
     property Item applet: null
     property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
                                    (applet.children[0] ? applet.children[0] : null) : null
+    property Item latteSpacer: applet && (applet.pluginName === "org.kde.latte.spacer") ?
+                                   (applet.children[0] ? applet.children[0] : null) : null
+
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||
                                   (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapper.wrapperContainer
@@ -305,6 +308,13 @@ Item {
             root.latteAppletPos = index;
             latteApplet.latteDock = root;
             latteApplet.forceHidePanel = true;
+        }
+    }
+
+    onLatteSpacerChanged: {
+        if(container.latteSpacer){
+            latteSpacer.latteDock = root;
+            container.lockZoom = true;
         }
     }
 
