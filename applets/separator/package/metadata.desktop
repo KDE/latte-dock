@@ -1,8 +1,8 @@
 [Desktop Entry]
+Name[el]=Διαχωριστής
 Name=Separator
-Name[es]=Separador
+Comment[el]=Για όλες τις εργασίες διαχωρισμού σας
 Comment=For all your separation tasks
-Comment[es]=Para todas sus tareas de separación
 
 Encoding=UTF-8
 Icon=filename-divider
@@ -20,5 +20,4 @@ X-KDE-PluginInfo-Name=audoban.applet.separator
 X-KDE-PluginInfo-Version=0.1
 X-KDE-PluginInfo-Website=https://github.com/audoban/Separator
 X-KDE-ServiceTypes=Plasma/Applet
-
 

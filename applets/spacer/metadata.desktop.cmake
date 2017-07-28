@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name[el]=Κενό Latte
+Name[el]=Latte Κενό
 Name=Latte Dock Spacer
 Comment[el]=Διατηρεί κενούς χώρους μέσα στον πίνακα.
 Comment=Reserve empty spaces within the dock.

@@ -78,4 +78,55 @@ else()
                 RENAME ${catalogname-app}.mo)
         endif()
     endforeach()
+    
+    #separator translations
+    set(catalogname-separator plasma_applet_org.kde.latte.separator)
+    add_custom_target(translations-separator ALL)
+
+    file(GLOB PO_FILES_SEPARATOR po/applets/separator/*.po)
+
+    foreach(_poFile ${PO_FILES_SPACER})
+        get_filename_component(_poFileName ${_poFile} NAME)
+        string(REGEX REPLACE "^${catalogname-separator}_?" "" _langCode ${_poFileName})
+        string(REGEX REPLACE "\\.po$" "" _langCode ${_langCode})
+
+        if(_langCode)
+            get_filename_component(_lang ${_poFile} NAME_WE)
+            set(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/applets/separator/${_lang}.gmo)
+
+            add_custom_command(TARGET translations-separator
+                    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
+                    DEPENDS ${_poFile})
+
+            install(FILES ${_gmoFile}
+                DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/
+                RENAME ${catalogname-separator}.mo)
+        endif()
+    endforeach()
+    
+    
+    #spacer translations
+    set(catalogname-spacer plasma_applet_org.kde.latte.spacer)
+    add_custom_target(translations-spacer ALL)
+
+    file(GLOB PO_FILES_SPACER po/applets/spacer/*.po)
+
+    foreach(_poFile ${PO_FILES_SPACER})
+        get_filename_component(_poFileName ${_poFile} NAME)
+        string(REGEX REPLACE "^${catalogname-spacer}_?" "" _langCode ${_poFileName})
+        string(REGEX REPLACE "\\.po$" "" _langCode ${_langCode})
+
+        if(_langCode)
+            get_filename_component(_lang ${_poFile} NAME_WE)
+            set(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/applets/spacer/${_lang}.gmo)
+
+            add_custom_command(TARGET translations-spacer
+                    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_poFile}
+                    DEPENDS ${_poFile})
+
+            install(FILES ${_gmoFile}
+                DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/
+                RENAME ${catalogname-spacer}.mo)
+        endif()
+    endforeach()
 endif()
