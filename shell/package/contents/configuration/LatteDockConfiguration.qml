@@ -207,7 +207,7 @@ PlasmaCore.FrameSvgItem {
                 text: i18n("Tasks")
                 tab: tasksPage
 
-                visible: dock.tasksPresent()
+                visible: dock.latteTasksPresent()
             }
             PlasmaComponents.TabButton {
                 text: i18n("Tweaks")

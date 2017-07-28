@@ -181,6 +181,7 @@ public slots:
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
+    Q_INVOKABLE bool latteTasksPresent();
 
     Q_INVOKABLE void closeApplication();
 

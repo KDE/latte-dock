@@ -1236,6 +1236,26 @@ bool DockView::tasksPresent()
     return false;
 }
 
+
+//! check if the tasks plasmoid exist in the dock
+bool DockView::latteTasksPresent()
+{
+    if (!this->containment()) {
+        return false;
+    }
+
+    foreach (Plasma::Applet *applet, this->containment()->applets()) {
+        KPluginMetaData metadata = applet->pluginMetaData();
+
+        if (metadata.pluginId() == "org.kde.latte.plasmoid") {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 //!check if the plasmoid with _name_ exists in the midedata
 bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
 {
