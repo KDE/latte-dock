@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-25 15:51+0300\n"
+"POT-Creation-Date: 2017-07-28 09:25+0300\n"
 "PO-Revision-Date: 2017-07-26 22:43+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -18,18 +18,23 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../../app/dockview.cpp:1684
+#: ../../app/dockview.cpp:1693
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 Optionen"
 
-#: ../../app/dockview.cpp:1791
+#: ../../app/dockview.cpp:1800
 msgid "Layouts"
 msgstr "Profile"
 
-#: ../../app/dockview.cpp:1792
+#: ../../app/dockview.cpp:1801
 msgid "Switch to another layout"
 msgstr "Profil wechseln"
+
+#: ../../app/dockview.cpp:1822
+#, fuzzy
+msgid "Configure..."
+msgstr "Konfiguration..."
 
 #: ../../app/globalshortcuts.cpp:176
 msgid "Activate Task Manager Entry %1"
@@ -44,12 +49,12 @@ msgid "Show Latte Dock"
 msgstr "Latte Dock zeigen"
 
 #: ../../app/importer.cpp:59 ../../app/importer.cpp:76
-#: ../../app/layoutmanager.cpp:81 ../../app/layoutmanager.cpp:83
+#: ../../app/layoutmanager.cpp:84 ../../app/layoutmanager.cpp:86
 msgid "My Layout"
 msgstr "Mein Profil"
 
-#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:267
-#: ../../app/layoutmanager.cpp:268
+#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:279
+#: ../../app/layoutmanager.cpp:280
 msgid "Alternative"
 msgstr "Alternativ"
 
@@ -123,10 +128,10 @@ msgid ""
 "b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import "
 "safely</b> from this file<br><b>only the contained layouts...</b></i>"
 msgstr ""
-"Es wird eine Version <b>v0.1</b> Konfiguration importiert. "
-"<br><b>Vorsicht</b>, importieren dieser Konfiguration <b>löscht</"
-"b> die aktuelle Konfiguration!!!<br><br> <i>Alternativ können <br><b>nur die"
-" beinhalteten Profile importiert werden</b></i>"
+"Es wird eine Version <b>v0.1</b> Konfiguration importiert. <br><b>Vorsicht</"
+"b>, importieren dieser Konfiguration <b>löscht</b> die aktuelle "
+"Konfiguration!!!<br><br> <i>Alternativ können <br><b>nur die beinhalteten "
+"Profile importiert werden</b></i>"
 
 #: ../../app/layoutconfigdialog.cpp:237
 msgctxt "import full configuration"
@@ -148,9 +153,9 @@ msgid ""
 "b>, importing <b>will erase all</b> your current configuration!!!"
 "<br><br><i>Would you like to proceed?</i>"
 msgstr ""
-"Es wird eine Version <b>v0.2</b> Konfiguration importiert. "
-"<br><b>Vorsicht</b>, importieren dieser Konfiguration <b>löscht</"
-"b> die aktuelle Konfiguration!!!<br><br> <i>Weiter?</i>"
+"Es wird eine Version <b>v0.2</b> Konfiguration importiert. <br><b>Vorsicht</"
+"b>, importieren dieser Konfiguration <b>löscht</b> die aktuelle "
+"Konfiguration!!!<br><br> <i>Weiter?</i>"
 
 #: ../../app/layoutconfigdialog.cpp:312
 msgctxt "layout"
@@ -207,60 +212,66 @@ msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "Profil <b>%0</b> erfolgreich importiert\n"
 
-#: ../../app/layoutconfigdialog.cpp:523
+#: ../../app/layoutconfigdialog.cpp:528
 msgid "Color"
 msgstr "Farbe"
 
-#: ../../app/layoutconfigdialog.cpp:524
+#: ../../app/layoutconfigdialog.cpp:529
 msgid "Name"
 msgstr "Name"
 
-#: ../../app/layoutconfigdialog.cpp:525
+#: ../../app/layoutconfigdialog.cpp:530
 msgid "In Menu"
 msgstr "Im Menü"
 
-#: ../../app/layoutconfigdialog.cpp:526
+#: ../../app/layoutconfigdialog.cpp:531
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../../app/layoutconfigdialog.cpp:683
+#: ../../app/layoutconfigdialog.cpp:540 ../../app/layoutconfigdialog.cpp:699
 msgid "Layout Warning"
 msgstr "Profil - Warnung"
 
-#: ../../app/layoutconfigdialog.cpp:684
+#: ../../app/layoutconfigdialog.cpp:541
+msgid ""
+"The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
+"them<b> to improve the system stability..."
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:700
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
 msgstr ""
-"Mehrere Profile mit gleicher Bezeichnung!!! Bitte Profilnamen korrigieren und"
-" Änderungen speichern."
+"Mehrere Profile mit gleicher Bezeichnung!!! Bitte Profilnamen korrigieren "
+"und Änderungen speichern."
 
-#: ../../app/layoutmanager.cpp:43
+#: ../../app/layoutmanager.cpp:45
 msgid "Add Widgets..."
 msgstr "Miniprogramme hinzufügen ..."
 
-#: ../../app/layoutmanager.cpp:44
+#: ../../app/layoutmanager.cpp:46
 msgid "Show Plasma Widget Explorer"
 msgstr "Zeige Plasma Miniprogramme"
 
-#: ../../app/layoutmanager.cpp:206
+#: ../../app/layoutmanager.cpp:218
 msgid "Switching to layout <b>%0</b> ..."
 msgstr "Wechsel zu Profil <b>%0</b> ..."
 
-#: ../../app/layoutmanager.cpp:268 ../../app/layoutmanager.cpp:318
-#: ../../app/layoutmanager.cpp:416 ../../app/layoutmanager.h:84
+#: ../../app/layoutmanager.cpp:280 ../../app/layoutmanager.cpp:330
+#: ../../app/layoutmanager.cpp:422 ../../app/layoutmanager.h:84
 msgid "Default"
 msgstr "Standard"
 
-#: ../../app/layoutmanager.cpp:417
+#: ../../app/layoutmanager.cpp:423
 msgid "Plasma"
 msgstr "Plasma"
 
-#: ../../app/layoutmanager.cpp:418
+#: ../../app/layoutmanager.cpp:424
 msgid "Unity"
 msgstr "Unity"
 
-#: ../../app/layoutmanager.cpp:419
+#: ../../app/layoutmanager.cpp:425
 msgid "Extended"
 msgstr "Erweitert"
 
@@ -621,7 +632,7 @@ msgid "Advanced"
 msgstr "Erweitert"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:197
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:110
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:121
 msgid "Behavior"
 msgstr "Verhalten"
 
@@ -711,129 +722,133 @@ msgstr "Vorschau beim Überfahren"
 msgid "Highlight windows on hovering"
 msgstr "Hervorheben von Fenstern beim Überfahren"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:147
+#: ../../shell/package/contents/configuration/TasksConfig.qml:135
 msgid "Show progress information for tasks"
 msgstr "Zeige Fortschrittsanzeige für Aufgaben"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:149
+#: ../../shell/package/contents/configuration/TasksConfig.qml:137
 msgid ""
 "Show a beautiful progress animation e.g. when copying \n"
 "files with Dolphin"
 msgstr "Zeigt schöne Animationen z.B. beim Kopieren mit Dolphin"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:159
+#: ../../shell/package/contents/configuration/TasksConfig.qml:147
 msgid "Show window actions in the context menu"
 msgstr "Zeige Fenster Aktionen im Kontextmenü"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:171
+#: ../../shell/package/contents/configuration/TasksConfig.qml:159
 msgid "Show indicator for audio streams"
 msgstr "Zeige Indikator für Audioausgabe"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:173
+#: ../../shell/package/contents/configuration/TasksConfig.qml:161
 msgid "Audio indicator from which the user can mute/unmute an app"
 msgstr ""
 "Mit dem Audio Indikator kann man Audiostreams von Apps an/aus schalten."
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:184
+#: ../../shell/package/contents/configuration/TasksConfig.qml:172
 msgid "Activate tasks through mouse wheel"
 msgstr "Mit dem Mausrad Starter ausführen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:186
+#: ../../shell/package/contents/configuration/TasksConfig.qml:174
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
 msgstr "Wenn aktiviert werden Anwendungen nicht gewechselt, sondern gestartet"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:199
+#: ../../shell/package/contents/configuration/TasksConfig.qml:187
 msgid "On middle-click:"
 msgstr "Mittlere Maustaste:"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:206
-#: ../../shell/package/contents/configuration/TasksConfig.qml:248
+#: ../../shell/package/contents/configuration/TasksConfig.qml:194
+#: ../../shell/package/contents/configuration/TasksConfig.qml:236
 msgctxt "The click action"
 msgid "None"
 msgstr "Nichts"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:206
-#: ../../shell/package/contents/configuration/TasksConfig.qml:248
+#: ../../shell/package/contents/configuration/TasksConfig.qml:194
+#: ../../shell/package/contents/configuration/TasksConfig.qml:236
 msgid "Close Window or Group"
 msgstr "Fenster oder Gruppe schließen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "New Instance"
 msgstr "Neue Instanz"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Minimize/Restore Window or Group"
 msgstr "Fenster oder Gruppe minimieren/maximieren"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Cycle Through Tasks"
 msgstr "Laufende Anwendungen mit dem Mausrad wechseln"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Toggle Task Grouping"
 msgstr "Fenster Gruppierung an/aus"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:235
+#: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Left Click"
 msgstr "Linke Maustaste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:235
+#: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Middle Click"
 msgstr "Mittlere Maustaste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:235
+#: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Right Click"
 msgstr "Rechte Maustaste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:265
-msgid "Launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:253
+#, fuzzy
+msgid "Launchers Group"
 msgstr "Starter"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:288
-msgctxt "unique launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:276
+#, fuzzy
+msgctxt "unique launchers group"
 msgid "Unique"
 msgstr "Speziell"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:292
+#: ../../shell/package/contents/configuration/TasksConfig.qml:280
 msgid "Use a unique set of launchers for this dock"
 msgstr "Die Starter sind für diese Leiste frei konfigurierbar"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:299
-msgctxt "layout launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:287
+#, fuzzy
+msgctxt "layout launchers group"
 msgid "Layout"
 msgstr "Profil"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:303
+#: ../../shell/package/contents/configuration/TasksConfig.qml:291
 msgid "Use the current layout set of launchers for this dock"
 msgstr "Benutze die im Profil festgelegten Starter für diese Leiste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:310
-msgctxt "global launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:298
+#, fuzzy
+msgctxt "global launchers group"
 msgid "Global"
 msgstr "Global"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:314
+#: ../../shell/package/contents/configuration/TasksConfig.qml:302
 msgid "Use the global set of launchers for this dock"
 msgstr ""
 "Es werden auf allen Leisten die gleichen Starter angezeigt wenn aktiviert"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:328
+#: ../../shell/package/contents/configuration/TasksConfig.qml:316
 msgid "Filters"
 msgstr "Filter"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:334
+#: ../../shell/package/contents/configuration/TasksConfig.qml:322
 msgid "Show only tasks from the current screen"
 msgstr "Nur Fenster des aktuellen Bildschirms anzeigen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:345
+#: ../../shell/package/contents/configuration/TasksConfig.qml:333
 msgid "Show only tasks from the current desktop"
 msgstr "Nur Fenster der aktuellen Arbeitsfläche anzeigen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:356
+#: ../../shell/package/contents/configuration/TasksConfig.qml:344
 msgid "Show only tasks from the current activity"
 msgstr "Nur Fenster der aktuellen Aktivität anzeigen"
 
@@ -842,14 +857,18 @@ msgid "Blur for panel background"
 msgstr "Leistenhintergrund verwischen (Blur)"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:67
+msgid "Show applets/task title tooltips on hovering"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:78
 msgid "Shrink thickness margins to minimum"
 msgstr "Minimaler Abstand zum Bildschirmrand"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:78
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:89
 msgid "Show background only for maximized windows"
 msgstr "Hintergrund nur bei maximierten Fenstern zeigen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:80
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:91
 msgid ""
 "The panel background becomes transparent but is shown \n"
 "when there is a maximized window"
@@ -857,19 +876,19 @@ msgstr ""
 "Der Leistenhintergrund ist transparent aber wird solide \n"
 "wenn ein Fenster maximiert ist."
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:92
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:103
 msgid "Hide panel shadow for maximized windows"
 msgstr "Keinen Leistenschatten bei maximierte Fenster"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:115
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:126
 msgid "Enable autostart during startup"
 msgstr "Autostart bei Login"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:125
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:136
 msgid "Decrease applets size when it is needed"
 msgstr "Verkleinere Applets wenn notwendig"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:127
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:138
 msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length"
@@ -877,19 +896,19 @@ msgstr ""
 "Applet Größe verkleinert sich automatisch wenn der \n"
 "Inhalt die maximale Länge erreicht"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:136
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:147
 msgid "Add launchers only in the corresponding area"
 msgstr "Starter nur im Anwendungsbereich ablegen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:138
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:149
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
 msgstr "Starter können nur im Starterbereich abgelegt werden. "
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:147
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:158
 msgid "Behave as a normal dock window"
 msgstr "Verhalte wie normales Dock Fenster"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:152
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:163
 msgid ""
 "Remove the BypassWindowManagerHint flag from the window.\n"
 "The dock wont be above windows which are set at 'Always On Top'"
@@ -898,60 +917,60 @@ msgstr ""
 " Die Leiste wird nicht über Fenster sichtbar sein die auf \n"
 "'Immer im Vordergrund' gestellt sind"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:161
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:172
 msgid "Show info for layouts automatic switching"
 msgstr "Zeige Benachrichtigung beim automatischen Profilwechsel"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:163
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:174
 msgid "It shows a Latte specific info window"
 msgstr ""
-"Zeigt ein Benachrichtigung wenn durch Aktivitätenwechsel das Profil"
-" automatisch gewechselt wird"
+"Zeigt ein Benachrichtigung wenn durch Aktivitätenwechsel das Profil "
+"automatisch gewechselt wird"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:172
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:183
 msgid "Raise dock on desktop change"
 msgstr "Hebe das Dock bei Wechsel der Arbeitsfläche"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:183
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:194
 msgid "Raise dock on activity change"
 msgstr "Hebe das Dock bei Wechsel der Aktivität"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:201
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:212
 msgid "Active Applet Indicator"
 msgstr "Indikator für aktive Applets"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:228
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:239
 msgctxt "active indicator to no applets"
 msgid "None"
 msgstr "Keine"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:238
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:249
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
 msgstr "Nur Interne"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:248
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:259
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "Alle"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:267
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:278
 msgid "Extra Actions"
 msgstr "Extras"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:277
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:288
 msgid "Add Spacer"
 msgstr "Abstandshalter"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:280
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:291
 msgid "Add a spacer to separate applets"
 msgstr "Fügt einen Platzhalter ein, damit kann man Applets voneinander trennen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:289
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:300
 msgid "Remove Tasks"
 msgstr "Anwendungen entfernen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:291
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:302
 msgid "Remove Latte plasmoid"
 msgstr "Entfernt das Latte plasmoid"
 
@@ -991,6 +1010,10 @@ msgstr "Konfiguration konnte nicht exportiert werden"
 #: ../desktop-templates/lattedock.notifyrc.template:24
 msgid "Switch to layout"
 msgstr "Wechsel zu Profil"
+
+#~ msgctxt "layout launchers"
+#~ msgid "Layout"
+#~ msgstr "Profil"
 
 #~ msgid "Enable/Disable Alternative Session"
 #~ msgstr "Alternative Sitzung an/aus"

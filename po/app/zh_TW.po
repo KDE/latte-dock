@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-25 15:51+0300\n"
+"POT-Creation-Date: 2017-07-28 09:25+0300\n"
 "PO-Revision-Date: 2017-06-10 21:39+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -17,18 +17,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../app/dockview.cpp:1684
+#: ../../app/dockview.cpp:1693
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 選項"
 
-#: ../../app/dockview.cpp:1791
+#: ../../app/dockview.cpp:1800
 #, fuzzy
 msgid "Layouts"
 msgstr "佈局"
 
-#: ../../app/dockview.cpp:1792
+#: ../../app/dockview.cpp:1801
 msgid "Switch to another layout"
+msgstr ""
+
+#: ../../app/dockview.cpp:1822
+msgid "Configure..."
 msgstr ""
 
 #: ../../app/globalshortcuts.cpp:176
@@ -44,13 +48,13 @@ msgid "Show Latte Dock"
 msgstr "顯示 Latte Dock"
 
 #: ../../app/importer.cpp:59 ../../app/importer.cpp:76
-#: ../../app/layoutmanager.cpp:81 ../../app/layoutmanager.cpp:83
+#: ../../app/layoutmanager.cpp:84 ../../app/layoutmanager.cpp:86
 #, fuzzy
 msgid "My Layout"
 msgstr "佈局"
 
-#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:267
-#: ../../app/layoutmanager.cpp:268
+#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:279
+#: ../../app/layoutmanager.cpp:280
 #, fuzzy
 msgid "Alternative"
 msgstr "替代工作階段"
@@ -223,62 +227,68 @@ msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "設定匯入成功"
 
-#: ../../app/layoutconfigdialog.cpp:523
+#: ../../app/layoutconfigdialog.cpp:528
 msgid "Color"
 msgstr ""
 
-#: ../../app/layoutconfigdialog.cpp:524
+#: ../../app/layoutconfigdialog.cpp:529
 msgid "Name"
 msgstr ""
 
-#: ../../app/layoutconfigdialog.cpp:525
+#: ../../app/layoutconfigdialog.cpp:530
 msgid "In Menu"
 msgstr ""
 
-#: ../../app/layoutconfigdialog.cpp:526
+#: ../../app/layoutconfigdialog.cpp:531
 msgid "Activities"
 msgstr ""
 
-#: ../../app/layoutconfigdialog.cpp:683
+#: ../../app/layoutconfigdialog.cpp:540 ../../app/layoutconfigdialog.cpp:699
 #, fuzzy
 msgid "Layout Warning"
 msgstr "佈局"
 
-#: ../../app/layoutconfigdialog.cpp:684
+#: ../../app/layoutconfigdialog.cpp:541
+msgid ""
+"The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
+"them<b> to improve the system stability..."
+msgstr ""
+
+#: ../../app/layoutconfigdialog.cpp:700
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
 msgstr ""
 
-#: ../../app/layoutmanager.cpp:43
+#: ../../app/layoutmanager.cpp:45
 msgid "Add Widgets..."
 msgstr "新增元件..."
 
-#: ../../app/layoutmanager.cpp:44
+#: ../../app/layoutmanager.cpp:46
 msgid "Show Plasma Widget Explorer"
 msgstr "顯示 Plasma 小工具探索器"
 
-#: ../../app/layoutmanager.cpp:206
+#: ../../app/layoutmanager.cpp:218
 msgid "Switching to layout <b>%0</b> ..."
 msgstr ""
 
-#: ../../app/layoutmanager.cpp:268 ../../app/layoutmanager.cpp:318
-#: ../../app/layoutmanager.cpp:416 ../../app/layoutmanager.h:84
+#: ../../app/layoutmanager.cpp:280 ../../app/layoutmanager.cpp:330
+#: ../../app/layoutmanager.cpp:422 ../../app/layoutmanager.h:84
 #, fuzzy
 msgid "Default"
 msgstr "預設"
 
-#: ../../app/layoutmanager.cpp:417
+#: ../../app/layoutmanager.cpp:423
 #, fuzzy
 msgid "Plasma"
 msgstr "Plasma"
 
-#: ../../app/layoutmanager.cpp:418
+#: ../../app/layoutmanager.cpp:424
 #, fuzzy
 msgid "Unity"
 msgstr "Unity"
 
-#: ../../app/layoutmanager.cpp:419
+#: ../../app/layoutmanager.cpp:425
 #, fuzzy
 msgid "Extended"
 msgstr "延伸"
@@ -645,7 +655,7 @@ msgid "Advanced"
 msgstr "進階"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:197
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:110
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:121
 msgid "Behavior"
 msgstr "行為"
 
@@ -735,11 +745,11 @@ msgstr "在滑鼠游標停留其上時預覽視窗"
 msgid "Highlight windows on hovering"
 msgstr "在滑鼠游標停留其上時突顯視窗"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:147
+#: ../../shell/package/contents/configuration/TasksConfig.qml:135
 msgid "Show progress information for tasks"
 msgstr "顯示工作的進度資訊"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:149
+#: ../../shell/package/contents/configuration/TasksConfig.qml:137
 msgid ""
 "Show a beautiful progress animation e.g. when copying \n"
 "files with Dolphin"
@@ -747,118 +757,118 @@ msgstr ""
 "顯示一道漂亮的進度動畫，例如：\n"
 "當使用 Dolphin 複製檔案時"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:159
+#: ../../shell/package/contents/configuration/TasksConfig.qml:147
 msgid "Show window actions in the context menu"
 msgstr "在右鍵選單中顯示視窗動作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:171
+#: ../../shell/package/contents/configuration/TasksConfig.qml:159
 msgid "Show indicator for audio streams"
 msgstr "顯示音訊流指示器"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:173
+#: ../../shell/package/contents/configuration/TasksConfig.qml:161
 msgid "Audio indicator from which the user can mute/unmute an app"
 msgstr "讓使用者可以靜音／取消靜音應用程式的音訊指示器"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:184
+#: ../../shell/package/contents/configuration/TasksConfig.qml:172
 msgid "Activate tasks through mouse wheel"
 msgstr "透過滑鼠滾輪啟用工作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:186
+#: ../../shell/package/contents/configuration/TasksConfig.qml:174
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
 msgstr "啟用／停用滑鼠滾輪的工作間循環動作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:199
+#: ../../shell/package/contents/configuration/TasksConfig.qml:187
 msgid "On middle-click:"
 msgstr "點擊滑鼠中鍵："
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:206
-#: ../../shell/package/contents/configuration/TasksConfig.qml:248
+#: ../../shell/package/contents/configuration/TasksConfig.qml:194
+#: ../../shell/package/contents/configuration/TasksConfig.qml:236
 msgctxt "The click action"
 msgid "None"
 msgstr "無"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:206
-#: ../../shell/package/contents/configuration/TasksConfig.qml:248
+#: ../../shell/package/contents/configuration/TasksConfig.qml:194
+#: ../../shell/package/contents/configuration/TasksConfig.qml:236
 msgid "Close Window or Group"
 msgstr "關閉視窗或群組"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "New Instance"
 msgstr "新的實體"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Minimize/Restore Window or Group"
 msgstr "最小化/復原視窗"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Cycle Through Tasks"
 msgstr "工作循環切換"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:207
-#: ../../shell/package/contents/configuration/TasksConfig.qml:249
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Toggle Task Grouping"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:235
+#: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Left Click"
 msgstr "點擊滑鼠左鍵"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:235
+#: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Middle Click"
 msgstr "點擊滑鼠中鍵"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:235
+#: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Right Click"
 msgstr "點擊滑鼠右鍵"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:265
-msgid "Launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:253
+msgid "Launchers Group"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:288
-msgctxt "unique launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:276
+msgctxt "unique launchers group"
 msgid "Unique"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:292
+#: ../../shell/package/contents/configuration/TasksConfig.qml:280
 msgid "Use a unique set of launchers for this dock"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:299
+#: ../../shell/package/contents/configuration/TasksConfig.qml:287
 #, fuzzy
-msgctxt "layout launchers"
+msgctxt "layout launchers group"
 msgid "Layout"
 msgstr "佈局"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:303
+#: ../../shell/package/contents/configuration/TasksConfig.qml:291
 msgid "Use the current layout set of launchers for this dock"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:310
-msgctxt "global launchers"
+#: ../../shell/package/contents/configuration/TasksConfig.qml:298
+msgctxt "global launchers group"
 msgid "Global"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:314
+#: ../../shell/package/contents/configuration/TasksConfig.qml:302
 msgid "Use the global set of launchers for this dock"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:328
+#: ../../shell/package/contents/configuration/TasksConfig.qml:316
 msgid "Filters"
 msgstr "過濾器"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:334
+#: ../../shell/package/contents/configuration/TasksConfig.qml:322
 msgid "Show only tasks from the current screen"
 msgstr "只顯示目前螢幕上的工作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:345
+#: ../../shell/package/contents/configuration/TasksConfig.qml:333
 msgid "Show only tasks from the current desktop"
 msgstr "只顯示目前桌面上的工作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:356
+#: ../../shell/package/contents/configuration/TasksConfig.qml:344
 msgid "Show only tasks from the current activity"
 msgstr "只顯示目前活動裡的工作"
 
@@ -867,14 +877,18 @@ msgid "Blur for panel background"
 msgstr "面板背景模糊"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:67
+msgid "Show applets/task title tooltips on hovering"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:78
 msgid "Shrink thickness margins to minimum"
 msgstr "將邊框厚度縮到最小"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:78
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:89
 msgid "Show background only for maximized windows"
 msgstr "僅在最大化視窗顯示背景"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:80
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:91
 msgid ""
 "The panel background becomes transparent but is shown \n"
 "when there is a maximized window"
@@ -882,19 +896,19 @@ msgstr ""
 "這個面板背景變為透明，但在\n"
 "最大化視窗中會顯示"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:92
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:103
 msgid "Hide panel shadow for maximized windows"
 msgstr "最大化視窗隱藏面板陰影"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:115
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:126
 msgid "Enable autostart during startup"
 msgstr "在開機時啟用自動啟動"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:125
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:136
 msgid "Decrease applets size when it is needed"
 msgstr "當小工具被需要時減小其大小"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:127
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:138
 msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length"
@@ -902,19 +916,19 @@ msgstr ""
 "小工具大小會在其內容超出最大長度時\n"
 "自動縮小"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:136
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:147
 msgid "Add launchers only in the corresponding area"
 msgstr "僅在對應區域中新增啟動器"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:138
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:149
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
 msgstr "啟動器僅會在工作管理員中新增，而不是做為 plasma 小工具"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:147
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:158
 msgid "Behave as a normal dock window"
 msgstr "如同正常 dock 視窗般的行為"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:152
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:163
 msgid ""
 "Remove the BypassWindowManagerHint flag from the window.\n"
 "The dock wont be above windows which are set at 'Always On Top'"
@@ -922,58 +936,58 @@ msgstr ""
 "從視窗中移除 BypassWindowManagerHint 旗標。\n"
 "Dock 將不會在設定為「總是在最上層」的視窗上"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:161
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:172
 msgid "Show info for layouts automatic switching"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:163
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:174
 msgid "It shows a Latte specific info window"
 msgstr ""
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:172
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:183
 msgid "Raise dock on desktop change"
 msgstr "在桌面變更時提升 dock"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:183
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:194
 msgid "Raise dock on activity change"
 msgstr "在活動變更時提升 dock"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:201
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:212
 msgid "Active Applet Indicator"
 msgstr "作用中的小工具指示器"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:228
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:239
 msgctxt "active indicator to no applets"
 msgid "None"
 msgstr "無"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:238
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:249
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
 msgstr "內部"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:248
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:259
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "全部"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:267
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:278
 msgid "Extra Actions"
 msgstr "更多動作"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:277
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:288
 msgid "Add Spacer"
 msgstr "新增空白"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:280
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:291
 msgid "Add a spacer to separate applets"
 msgstr "新增分隔器來分隔小工具"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:289
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:300
 msgid "Remove Tasks"
 msgstr "移除工作"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:291
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:302
 msgid "Remove Latte plasmoid"
 msgstr "移除 Latte plasmoid"
 
@@ -1013,6 +1027,11 @@ msgstr "匯出設定失敗"
 #: ../desktop-templates/lattedock.notifyrc.template:24
 msgid "Switch to layout"
 msgstr ""
+
+#, fuzzy
+#~ msgctxt "layout launchers"
+#~ msgid "Layout"
+#~ msgstr "佈局"
 
 #~ msgid "Enable/Disable Alternative Session"
 #~ msgstr "啟用／停用替代工作階段"

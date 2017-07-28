@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-25 15:51+0300\n"
+"POT-Creation-Date: 2017-07-28 09:25+0300\n"
 "PO-Revision-Date: 2017-06-11 11:00+0100\n"
 "Last-Translator: Vasco Antunes <vasco.antunes@sapo.pt>\n"
 "Language-Team: \n"
@@ -15,19 +15,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../containment/package/contents/ui/applet/AppletItem.qml:529
+#: ../../containment/package/contents/ui/applet/AppletItem.qml:556
 msgid "Launchers Area"
 msgstr "Área de Lançadores"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:460
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:474
 msgid "Configure applet"
 msgstr "Configurar elemento"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:482
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:496
 msgid "Lock/Unlock the parabolic effect for this applet"
 msgstr "Bloquear/Desbloquear efeito parabólico neste elemento"
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:494
+#: ../../containment/package/contents/ui/ConfigOverlay.qml:508
 msgid "Remove applet"
 msgstr "Remover elemento"
 

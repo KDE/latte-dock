@@ -19,15 +19,27 @@ TEMPLATEAPP="org.kde.latte-dock.desktop.template" # app desktop template
 
 NOTIFYRC="lattedock.notifyrc.template" # notifyrc template
 
+SEPARATORAPPLET="plasma_applet_audoban.applet.separator" # audoban separator
+SEPARATORTEMPLATE="separator.metadata.desktop.template" # audoban separator template
+
+SPACERAPPLET="plasma_applet_org.kde.latte.spacer" # spacer
+SPACERTEMPLATE="spacer.metadata.desktop.template" # spacer template
+
 function ki18n_xgettext
 {
     cd "$BASEDIR/$1"
 
+    EXTRADIR=""
+    
+    if [[ $1 == applets/* ]] ; then
+        EXTRADIR=../
+    fi    
+    
     WDIR="." # working dir
     ROOT="../../"
     PROJECTNAME=$2 # project name
     TEMPLATE=$3 # desktop template
-    PROJECTPATH="../../$1" # project path
+    PROJECTPATH="$EXTRADIR../../$1" # project path
     PROJECTPATH2= #extra project path
     TARGET="\e[0;32m$1\e[0m"
 
@@ -55,9 +67,9 @@ function ki18n_xgettext
 
     xgettext --from-code=UTF-8 --language=Desktop --join-existing --msgid-bugs-address="${BUGADDR}" \
     -k -kName -kGenericName -kComment \
-    "${WDIR}/../desktop-templates/${TEMPLATE}" -o "${WDIR}/${PROJECTNAME}.pot" || \
+    "${WDIR}/${EXTRADIR}../desktop-templates/${TEMPLATE}" -o "${WDIR}/${PROJECTNAME}.pot" || \
     { echo "error while calling xgettext. aborting."; exit 1; }
-
+    
     if [[ $1 == "app" ]] ; then
         xgettext --from-code=UTF-8 --language=Desktop --join-existing --msgid-bugs-address="${BUGADDR}" \
         -k -kName -kGenericName -kComment \
@@ -88,6 +100,9 @@ ki18n_xgettext plasmoid    "$PROJECTPLASMOID"    "$TEMPLATEPLASMOID"
 
 ki18n_xgettext app         "$PROJECTAPP"         "$TEMPLATEAPP"  shell
 
+ki18n_xgettext applets/separator "$SEPARATORAPPLET" "$SEPARATORTEMPLATE"
+
+ki18n_xgettext applets/spacer "$SPACERAPPLET" "$SPACERTEMPLATE"
 
 # The msg of shell package is merged with app
 # ki18n_xgettext shell       "$PROJECTSHELL"       "$TEMPLATESHELL"

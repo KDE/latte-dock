@@ -17,26 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../containment/package/contents/ui/applet/AppletItem.qml:556
-msgid "Launchers Area"
+#: ../../../applets/spacer/plasmoid/contents/config/config.qml:27
+msgid "Appearance"
 msgstr ""
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:474
-msgid "Configure applet"
+#: ../../../applets/spacer/plasmoid/contents/ui/ConfigAppearance.qml:56
+msgid "Use pixels size, "
 msgstr ""
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:496
-msgid "Lock/Unlock the parabolic effect for this applet"
+#: ../../../applets/spacer/plasmoid/contents/ui/ConfigAppearance.qml:77
+msgid "Use percentage, "
 msgstr ""
 
-#: ../../containment/package/contents/ui/ConfigOverlay.qml:508
-msgid "Remove applet"
+#: ../../desktop-templates/spacer.metadata.desktop.template:3
+msgid "Latte Dock Spacer"
 msgstr ""
 
-#: ../desktop-templates/containment.metadata.desktop.template:4
-msgid "Latte"
-msgstr ""
-
-#: ../desktop-templates/containment.metadata.desktop.template:5
-msgid "Containment provided for the Latte Dock"
+#: ../../desktop-templates/spacer.metadata.desktop.template:4
+msgid "Reserve empty spaces within the dock."
 msgstr ""
