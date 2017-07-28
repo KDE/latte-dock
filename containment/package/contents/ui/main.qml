@@ -55,7 +55,8 @@ DragDrop.DropArea {
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
-    property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize
+    // when there are only plasma style task managers the automatic icon size algorithm should better be disabled
+    property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize && !containsOnlyPlasmaTasks
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
         if (!dock || !dock.visibility)
@@ -68,6 +69,7 @@ DragDrop.DropArea {
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
     property bool confirmedDragEntered: false
+    property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
@@ -530,6 +532,7 @@ DragDrop.DropArea {
         addApplet(applet, x, y);
         LayoutManager.save();
         updateIndexes();
+        updateContainsOnlyPlasmaTasks();
     }
 
     Containment.onAppletRemoved: {
@@ -551,6 +554,7 @@ DragDrop.DropArea {
         LayoutManager.save();
 
         updateIndexes();
+        updateContainsOnlyPlasmaTasks();
     }
 
     Plasmoid.onUserConfiguringChanged: {
@@ -1044,6 +1048,10 @@ DragDrop.DropArea {
                 }
             }
         }
+    }
+
+    function updateContainsOnlyPlasmaTasks() {
+        root.containsOnlyPlasmaTasks = (dock.tasksPresent() && !dock.latteTasksPresent());
     }
 
     function updateSizeForAppletsInFill() {

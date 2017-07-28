@@ -135,7 +135,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease applets size when it is needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
-                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length")
+                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length <br><br><i>Hint: this option is disabled when only plasma taskmanagers are present</i>")
+                enabled: !(dock.tasksPresent() && !dock.latteTasksPresent());
 
                 onClicked: {
                     plasmoid.configuration.autoDecreaseIconSize = checked
