@@ -1,30 +1,72 @@
 [Global]
+Name[de]=Latte Dock
 Name[el]=Πίνακας Latte
+Name[es]=Latte Dock
+Name[it]=Latte Dock
+Name[pt]=Dock Latte
+Name[ru]=Latte Dock
+Name[zh_TW]=Latte Dock
 Name=Latte Dock
+Comment[de]=Latte Dock
 Comment[el]=Πίνακας Latte
+Comment[es]=Latte Dock
+Comment[it]=Latte Dock
+Comment[pt]=Dock Latte
+Comment[ru]=Latte Dock
+Comment[zh_TW]=Latte Dock
 Comment=Latte Dock
 IconName=latte-dock
 
 [Event/import-done]
+Name[de]=Konfiguration erfolgreich importiert
 Name[el]=Επιτυχής εισαγωγή ρυθμίσεων
+Name[es]=Configuración importada satisfactoriamente
+Name[it]=Configurazione importata con successo
+Name[pl]=Konfiguracja zaimportowana poprawnie
+Name[pt]=Configuração importada com sucesso
+Name[ru]=Конфигурация успешно импортирована
+Name[zh_TW]=設定匯入成功
 Name=Configuration imported successfully
 Action=Popup
 
 [Event/import-fail]
+Name[de]=Importieren fehlgeschlagen
 Name[el]=Αποτυχία εισαγωγής ρυθμίσεων
+Name[es]=Fallo al importar la configuración
+Name[it]=Impossibile importare la configurazione
+Name[pl]=Nie udało się zaimportować konfiguracji
+Name[pt]=Falha na importação da configuração
+Name[ru]=Не удалось импортировать конфигурацию
+Name[zh_TW]=匯入設定失敗
 Name=Failed to import configuration
 Action=Popup
 
 [Event/export-done]
+Name[de]=Konfiguration erfolgreich exportiert
 Name[el]=Επιτυχής εξαγωγή ρυθμίσεων
+Name[es]=Configuración exportada satisfactoriamente
+Name[it]=Configurazione esportata con successo
+Name[pl]=Konfiguracja wyeksportowana poprawnie
+Name[pt]=Configuração exportada com sucesso
+Name[ru]=Конфигурация успешно экспортирована
+Name[zh_TW]=設定匯出成功
 Name=Configuration exported successfully
 Action=Popup
 
 [Event/export-fail]
+Name[de]=Konfiguration konnte nicht exportiert werden
 Name[el]=Αποτυχία εξαγωγής ρυθμίσεων
+Name[es]=Fallo al exportar la configuración
+Name[it]=Impossibile esportare la configurazione
+Name[pl]=Nie udało się wyeksportować konfiguracji
+Name[pt]=Falha na exportação da configuração
+Name[ru]=Не удалось экспортировать конфигурацию
+Name[zh_TW]=匯出設定失敗
 Name=Failed to export configuration
 Action=Popup
 
 [Event/switch-layout]
+Name[de]=Wechsel zu Profil
+Name[el]=Εναλλαγή στο προφίλ
 Name=Switch to layout
 Action=Popup

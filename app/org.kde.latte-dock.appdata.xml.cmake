@@ -2,14 +2,29 @@
 <component type="desktop">
   <id>org.kde.latte-dock.desktop</id>
   <name>Latte</name>
+  <name xml:lang="de">Latte</name>
   <name xml:lang="el">Latte</name>
+  <name xml:lang="ru">Latte</name>
+  <name xml:lang="zh-TW">Latte</name>
   <summary>Dock for the masses</summary>
-  <summary xml:lang="el">Πίνακας εφαρμογών για όλον τον κόσμο</summary>
+  <summary xml:lang="de">Dock für die Massen</summary>
+  <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
+  <summary xml:lang="ru">Док в массы</summary>
+  <summary xml:lang="zh-TW">給大眾使用的 Dock</summary>
   <description>
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and trys to be there only when it is needed.</p>
+    <p xml:lang="de">Latte Dock basiert auf Plasma Framework Technologie und bietet einen eleganten, intuitiven Umgang mit Plasmoiden und Tasks.
+Es animiert mithilfe parabolischer Zoom Effekte und versucht nur da zu sein wenn man es braucht.
+
+"Art in Coffee"</p>
     <p xml:lang="el">Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στα plasma frameworks που εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες και τα γραφικά συστατικά σας. Χρησιμοποιεί ένα παραβολικό εφέ έτσι ώστε να απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το χρειάζεστε.</p>
+    <p xml:lang="ru">Latte - это док-панель, основанная на Plasma Frameworks, которая обеспечивает элегантный и интуитивно понятный интерфейс для ваших задач и плазмоидов. Она анимирует свое содержимое с помощью эффекта параболического увеличения и пытается быть видима только тогда, когда это необходимо.</p>
+    <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
     <p> "Art In Coffee" </p>
+    <p xml:lang="de">"Art In Coffee"</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
+    <p xml:lang="ru">«Искусство в кофе»</p>
+    <p xml:lang="zh-TW">「咖啡中的藝術」</p>
   </description>
   <categories>
     <category>Utility</category>
