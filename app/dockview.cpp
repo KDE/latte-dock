@@ -1226,10 +1226,11 @@ bool DockView::tasksPresent()
     }
 
     foreach (Plasma::Applet *applet, this->containment()->applets()) {
-        KPluginMetaData meta = applet->kPackage().metadata();
+        const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
 
-        if (meta.pluginId() == "org.kde.latte.plasmoid")
+        if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
             return true;
+        }
     }
 
     return false;
