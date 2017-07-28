@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-07-28 20:32+0300\n"
-"PO-Revision-Date: 2017-07-26 22:43+0100\n"
+"PO-Revision-Date: 2017-07-28 20:43+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -32,7 +32,6 @@ msgid "Switch to another layout"
 msgstr "Profil wechseln"
 
 #: ../../app/dockview.cpp:1843
-#, fuzzy
 msgid "Configure..."
 msgstr "Konfiguration..."
 
@@ -237,6 +236,8 @@ msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
 msgstr ""
+"Profil(e) <b>%0</b> <i>ungültige Konfiguration festgestellt</i>!!! Um die"
+" Stabilität zu gewährleisten bitte <b>entfernen<b>"
 
 #: ../../app/layoutconfigdialog.cpp:706
 msgid ""
@@ -801,12 +802,10 @@ msgid "Right Click"
 msgstr "Rechte Maustaste"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:253
-#, fuzzy
 msgid "Launchers Group"
-msgstr "Starter"
+msgstr "Starterbereich"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:276
-#, fuzzy
 msgctxt "unique launchers group"
 msgid "Unique"
 msgstr "Speziell"
@@ -816,7 +815,6 @@ msgid "Use a unique set of launchers for this dock"
 msgstr "Die Starter sind für diese Leiste frei konfigurierbar"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:287
-#, fuzzy
 msgctxt "layout launchers group"
 msgid "Layout"
 msgstr "Profil"
@@ -826,7 +824,6 @@ msgid "Use the current layout set of launchers for this dock"
 msgstr "Benutze die im Profil festgelegten Starter für diese Leiste"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:298
-#, fuzzy
 msgctxt "global launchers group"
 msgid "Global"
 msgstr "Global"
@@ -858,7 +855,7 @@ msgstr "Leistenhintergrund verwischen (Blur)"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:67
 msgid "Show applets/task title tooltips on hovering"
-msgstr ""
+msgstr "Zeige Tooltips beim Überfahren von Applets und Aufgaben"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
 msgid "Shrink thickness margins to minimum"
@@ -889,22 +886,25 @@ msgid "Decrease applets size when it is needed"
 msgstr "Verkleinere Applets wenn notwendig"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
-#, fuzzy
 msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length <br><br><i>Hint: this option is disabled when only "
 "plasma taskmanagers are present</i>"
 msgstr ""
-"Applet Größe verkleinert sich automatisch wenn der \n"
-"Inhalt die maximale Länge erreicht"
+"Applet Größe verkleinert sich automatisch wenn der Inhalt die maximale Länge"
+" erreicht\n"
+"<br><br><i>Tip: Wenn sich kein Starterbereich/Latte-Plasmoid in dieser Leiste"
+" befindet ist diese Option ausgegraut</i>"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
-msgstr "Starter nur im Anwendungsbereich ablegen"
+msgstr "Starter nur im Starterbereich ablegen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:150
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
-msgstr "Starter können nur im Starterbereich abgelegt werden. "
+msgstr ""
+"Starter können können nicht als Applets sondern\n"
+" nur im Starterbereich/Latte Plasmoid abgelegt werden. "
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:159
 msgid "Behave as a normal dock window"
@@ -916,7 +916,7 @@ msgid ""
 "The dock wont be above windows which are set at 'Always On Top'"
 msgstr ""
 "Keine 'BypassWindowManagerHint'  Flagge für Fenster.\n"
-" Die Leiste wird nicht über Fenster sichtbar sein die auf \n"
+" Die Leiste rutscht nicht über Fenster die auf \n"
 "'Immer im Vordergrund' gestellt sind"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:173
@@ -951,6 +951,8 @@ msgid ""
 "Latte will not show any active applet indicator on its own\n"
 " except those the plasma theme provides"
 msgstr ""
+"Latte wird keine eigenen Indikatoren für aktive Applets anzeigen\n"
+" Plasma Design Indikatoren werden jedoch angezeigt."
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:251
 msgctxt "active indicator only to in-house latte applets"
@@ -963,6 +965,10 @@ msgid ""
 "adjusted\n"
 " by it for hovering capabilities e.g. folderview"
 msgstr ""
+"Latte zeigt nur Indikatoren für aktive Applets wenn es vorher so eingestellt"
+" wurde\n "
+" z.B. für die Ordneransicht"
+" "
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:262
 msgctxt "active indicator to all applets"
@@ -971,7 +977,7 @@ msgstr "Alle"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:266
 msgid "Latte will show active applet indicators for all applets"
-msgstr ""
+msgstr "Latte zeigt bei allen Applets Indikatoren für aktive Applets"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:282
 msgid "Extra Actions"
