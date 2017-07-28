@@ -85,7 +85,9 @@ PlasmaComponents.ContextMenu {
         openRelative();
         windowsPreviewDlg.contextMenu = true;
         windowsPreviewDlg.hide();
-        titleTooltipDlg.hide();
+        if (root.latteDock){
+            root.latteDock.hideTooltipLabel();
+        }
     }
 
     function newMenuItem(parent) {
