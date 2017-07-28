@@ -1166,9 +1166,9 @@ DragDrop.DropArea {
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
 
         location: plasmoid.location
-        mainItem: Item{
-            width: titleLbl.width
-            height: titleLbl.height
+        mainItem: RowLayout{
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             PlasmaComponents.Label{
                 id:titleLbl
                 text: titleTooltipDialog.title
