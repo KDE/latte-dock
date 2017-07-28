@@ -72,6 +72,7 @@ private:
     void loadLayouts();
     void recalculateAvailableActivities();
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
+    void updateButtonsState();
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);

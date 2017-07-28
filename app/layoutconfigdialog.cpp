@@ -437,6 +437,7 @@ void LayoutConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
     saveAllChanges();
+    updateButtonsState();
 }
 
 void LayoutConfigDialog::restoreDefaults()
@@ -652,7 +653,12 @@ void LayoutConfigDialog::itemChanged(QStandardItem *item)
 
 void LayoutConfigDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    QString id = m_model->data(m_model->index(current.row(), IDCOLUMN), Qt::DisplayRole).toString();
+    updateButtonsState();
+}
+
+void LayoutConfigDialog::updateButtonsState()
+{
+    QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
 
     if (m_layouts[id]->name() == m_manager->currentLayoutName()) {
         ui->removeButton->setEnabled(false);
