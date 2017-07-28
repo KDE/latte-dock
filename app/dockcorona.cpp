@@ -1423,34 +1423,6 @@ bool DockCorona::heuresticForLoadingDockWithTasks()
     return false;
 }
 
-//! This function figures if a latte containment contains a
-//! latte tasks plasmoid
-bool DockCorona::containmentContainsTasks(Plasma::Containment *cont)
-{
-    auto containmentsEntries = config()->group("Containments");
-
-    foreach (auto cId, containmentsEntries.groupList()) {
-        QString plugin = containmentsEntries.group(cId).readEntry("plugin");
-
-        if ((plugin == "org.kde.latte.containment") && (cId.toUInt() == cont->id())) {
-            auto appletEntries = containmentsEntries.group(cId).group("Applets");
-
-            foreach (auto appId, appletEntries.groupList()) {
-                QString pluginId = appletEntries.group(appId).readEntry("plugin");
-
-                if ((pluginId == "org.kde.latte.plasmoid") ||
-                    (pluginId == "org.kde.plasma.taskmanager") ||
-                    (pluginId == "org.kde.plasma.icontasks")) {
-                    return true;
-                    break;
-                }
-            }
-        }
-    }
-
-    return false;
-}
-
 //! Activate launcher menu through dbus interface
 void DockCorona::activateLauncherMenu()
 {

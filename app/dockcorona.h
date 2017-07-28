@@ -124,7 +124,6 @@ private:
     void setupWaylandIntegration();
 
     bool appletExists(uint containmentId, uint appletId) const;
-    bool containmentContainsTasks(Plasma::Containment *cont);
     bool containmentExists(uint id) const;
     bool heuresticForLoadingDockWithTasks();
     int noOfDocks();
