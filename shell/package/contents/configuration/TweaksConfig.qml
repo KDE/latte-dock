@@ -241,6 +241,7 @@ PlasmaComponents.Page {
                         checked: parent.activeIndicator === activeIndicator
                         checkable: true
                         exclusiveGroup: activeIndicatorGroup
+                        tooltip: i18n("Latte will not show any active applet indicator on its own\n except those the plasma theme provides")
 
                         readonly property int activeIndicator: Latte.Dock.NoneIndicator
                     }
@@ -251,6 +252,7 @@ PlasmaComponents.Page {
                         checked: parent.activeIndicator === activeIndicator
                         checkable: true
                         exclusiveGroup: activeIndicatorGroup
+                        tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted\n by it for hovering capabilities e.g. folderview")
 
                         readonly property int activeIndicator: Latte.Dock.InternalsIndicator
                     }
@@ -261,6 +263,7 @@ PlasmaComponents.Page {
                         checked: parent.activeIndicator === activeIndicator
                         checkable: true
                         exclusiveGroup: activeIndicatorGroup
+                        tooltip: i18n("Latte will show active applet indicators for all applets")
 
                         readonly property int activeIndicator: Latte.Dock.AllIndicator
                     }

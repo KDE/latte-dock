@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 09:25+0300\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
 "PO-Revision-Date: 2017-07-26 22:43+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../../app/dockview.cpp:1693
+#: ../../app/dockview.cpp:1714
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 Optionen"
 
-#: ../../app/dockview.cpp:1800
+#: ../../app/dockview.cpp:1821
 msgid "Layouts"
 msgstr "Profile"
 
-#: ../../app/dockview.cpp:1801
+#: ../../app/dockview.cpp:1822
 msgid "Switch to another layout"
 msgstr "Profil wechseln"
 
-#: ../../app/dockview.cpp:1822
+#: ../../app/dockview.cpp:1843
 #, fuzzy
 msgid "Configure..."
 msgstr "Konfiguration..."
@@ -207,38 +207,38 @@ msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
 msgstr "Konfiguration erfolgreich exportiert"
 
-#: ../../app/layoutconfigdialog.cpp:490
+#: ../../app/layoutconfigdialog.cpp:491
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "Profil <b>%0</b> erfolgreich importiert\n"
 
-#: ../../app/layoutconfigdialog.cpp:528
+#: ../../app/layoutconfigdialog.cpp:529
 msgid "Color"
 msgstr "Farbe"
 
-#: ../../app/layoutconfigdialog.cpp:529
+#: ../../app/layoutconfigdialog.cpp:530
 msgid "Name"
 msgstr "Name"
 
-#: ../../app/layoutconfigdialog.cpp:530
+#: ../../app/layoutconfigdialog.cpp:531
 msgid "In Menu"
 msgstr "Im Menü"
 
-#: ../../app/layoutconfigdialog.cpp:531
+#: ../../app/layoutconfigdialog.cpp:532
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../../app/layoutconfigdialog.cpp:540 ../../app/layoutconfigdialog.cpp:699
+#: ../../app/layoutconfigdialog.cpp:541 ../../app/layoutconfigdialog.cpp:705
 msgid "Layout Warning"
 msgstr "Profil - Warnung"
 
-#: ../../app/layoutconfigdialog.cpp:541
+#: ../../app/layoutconfigdialog.cpp:542
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
 msgstr ""
 
-#: ../../app/layoutconfigdialog.cpp:700
+#: ../../app/layoutconfigdialog.cpp:706
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
@@ -889,26 +889,28 @@ msgid "Decrease applets size when it is needed"
 msgstr "Verkleinere Applets wenn notwendig"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
+#, fuzzy
 msgid ""
 "Applets size is decreased automatically when the contents \n"
-"exceed the maximum length"
+"exceed the maximum length <br><br><i>Hint: this option is disabled when only "
+"plasma taskmanagers are present</i>"
 msgstr ""
 "Applet Größe verkleinert sich automatisch wenn der \n"
 "Inhalt die maximale Länge erreicht"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:147
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
 msgstr "Starter nur im Anwendungsbereich ablegen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:149
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:150
 msgid "Launchers are added only in the taskmanager and not as plasma applets"
 msgstr "Starter können nur im Starterbereich abgelegt werden. "
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:158
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:159
 msgid "Behave as a normal dock window"
 msgstr "Verhalte wie normales Dock Fenster"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:163
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:164
 msgid ""
 "Remove the BypassWindowManagerHint flag from the window.\n"
 "The dock wont be above windows which are set at 'Always On Top'"
@@ -917,60 +919,77 @@ msgstr ""
 " Die Leiste wird nicht über Fenster sichtbar sein die auf \n"
 "'Immer im Vordergrund' gestellt sind"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:172
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:173
 msgid "Show info for layouts automatic switching"
 msgstr "Zeige Benachrichtigung beim automatischen Profilwechsel"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:174
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:175
 msgid "It shows a Latte specific info window"
 msgstr ""
 "Zeigt ein Benachrichtigung wenn durch Aktivitätenwechsel das Profil "
 "automatisch gewechselt wird"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:183
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:184
 msgid "Raise dock on desktop change"
 msgstr "Hebe das Dock bei Wechsel der Arbeitsfläche"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:194
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:195
 msgid "Raise dock on activity change"
 msgstr "Hebe das Dock bei Wechsel der Aktivität"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:212
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:213
 msgid "Active Applet Indicator"
 msgstr "Indikator für aktive Applets"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:239
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:240
 msgctxt "active indicator to no applets"
 msgid "None"
 msgstr "Keine"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:249
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:244
+msgid ""
+"Latte will not show any active applet indicator on its own\n"
+" except those the plasma theme provides"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:251
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
 msgstr "Nur Interne"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:259
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:255
+msgid ""
+"Latte will show active applet indicators only for applets that have been "
+"adjusted\n"
+" by it for hovering capabilities e.g. folderview"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:262
 msgctxt "active indicator to all applets"
 msgid "All"
 msgstr "Alle"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:278
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:266
+msgid "Latte will show active applet indicators for all applets"
+msgstr ""
+
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:282
 msgid "Extra Actions"
 msgstr "Extras"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:288
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:292
 msgid "Add Spacer"
 msgstr "Abstandshalter"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:291
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:295
 msgid "Add a spacer to separate applets"
 msgstr "Fügt einen Platzhalter ein, damit kann man Applets voneinander trennen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:300
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:304
 msgid "Remove Tasks"
 msgstr "Anwendungen entfernen"
 
-#: ../../shell/package/contents/configuration/TweaksConfig.qml:302
+#: ../../shell/package/contents/configuration/TweaksConfig.qml:306
 msgid "Remove Latte plasmoid"
 msgstr "Entfernt das Latte plasmoid"
 

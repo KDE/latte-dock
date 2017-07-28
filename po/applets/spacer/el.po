@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 09:25+0300\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
 "PO-Revision-Date: 2017-07-28 09:37+0200\n"
 "Last-Translator: Michail Vourlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../../applets/spacer/plasmoid/contents/config/config.qml:27
+#: ../../../applets/spacer/package/contents/config/config.qml:27
 msgid "Appearance"
 msgstr "Εμφάνιση"
 
-#: ../../../applets/spacer/plasmoid/contents/ui/ConfigAppearance.qml:56
+#: ../../../applets/spacer/package/contents/ui/ConfigAppearance.qml:56
 msgid "Use pixels size, "
 msgstr "Χρήση pixel,"
 
-#: ../../../applets/spacer/plasmoid/contents/ui/ConfigAppearance.qml:77
+#: ../../../applets/spacer/package/contents/ui/ConfigAppearance.qml:77
 msgid "Use percentage, "
 msgstr "Χρήση ποσοστού, "
 
@@ -36,5 +36,3 @@ msgstr "Latte Κενό"
 #: ../../desktop-templates/spacer.metadata.desktop.template:4
 msgid "Reserve empty spaces within the dock."
 msgstr "Διατηρεί κενούς χώρους μέσα στον πίνακα."
-
-

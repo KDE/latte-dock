@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 09:25+0300\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
 "PO-Revision-Date: 2017-07-24 22:09+0700\n"
 "Last-Translator: Vladislav Gorevoy <vladislavgorevoy@gmail.com>\n"
 "Language-Team: \n"
@@ -334,7 +334,7 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:854
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:864
 msgid "Add Widgets..."
 msgstr "Добавить виджеты..."
 

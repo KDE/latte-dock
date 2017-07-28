@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name[el]=Διαχωριστής
+Name[el]=Διαχωριστικό
 Name=Separator
 Comment[el]=Για όλες τις εργασίες διαχωρισμού σας
 Comment=For all your separation tasks

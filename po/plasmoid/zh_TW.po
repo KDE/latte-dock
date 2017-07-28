@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 09:25+0300\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
 "PO-Revision-Date: 2017-06-10 21:41+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -331,7 +331,7 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:854
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:864
 msgid "Add Widgets..."
 msgstr "新增元件..."
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 09:25+0300\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../../applets/spacer/plasmoid/contents/config/config.qml:27
+#: ../../../applets/spacer/package/contents/config/config.qml:27
 msgid "Appearance"
 msgstr ""
 
-#: ../../../applets/spacer/plasmoid/contents/ui/ConfigAppearance.qml:56
+#: ../../../applets/spacer/package/contents/ui/ConfigAppearance.qml:56
 msgid "Use pixels size, "
 msgstr ""
 
-#: ../../../applets/spacer/plasmoid/contents/ui/ConfigAppearance.qml:77
+#: ../../../applets/spacer/package/contents/ui/ConfigAppearance.qml:77
 msgid "Use percentage, "
 msgstr ""
 

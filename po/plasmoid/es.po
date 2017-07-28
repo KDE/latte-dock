@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 09:25+0300\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
 "PO-Revision-Date: 2017-03-24 19:12-0500\n"
 "Last-Translator: Smith Ar <audoban@openmailbox.org>\n"
 "Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
@@ -333,7 +333,7 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:854
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:864
 msgid "Add Widgets..."
 msgstr ""
 
