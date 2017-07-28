@@ -3,10 +3,12 @@ RightButton;NoModifier=org.kde.contextmenu
 
 [Containments][1]
 activityId=
+dockWindowBehavior=true
 formfactor=2
 immutability=1
 lastScreen=-1
 location=4
+onPrimary=true
 plugin=org.kde.latte.containment
 raiseOnActivityChange=false
 raiseOnDesktopChange=false
@@ -22,19 +24,25 @@ plugin=org.kde.latte.plasmoid
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
 launchers=multi;*;2;file:///usr/share/applications/firefox.desktop;file:///usr/share/applications/org.kde.dolphin.desktop
+launchers59=file:///usr/share/applications/firefox.desktop,file:///usr/share/applications/org.kde.dolphin.desktop
 
 [Containments][1][Applets][3]
 immutability=1
 plugin=org.kde.plasma.analogclock
 
 [Containments][1][ConfigDialog]
-DialogHeight=487
-DialogWidth=484
+DialogHeight=600
+DialogWidth=586
 
 [Containments][1][General]
+advanced=false
 appletOrder=2;3
+iconSize=80
 panelSize=10
+shadowOpacity=50
+shadowSize=35
 shadows=All
+showGlow=false
 zoomLevel=16
 
 [Containments][11]
@@ -49,10 +57,6 @@ wallpaperplugin=org.kde.image
 [Containments][11][Applets][12]
 immutability=1
 plugin=org.kde.kdeconnect
-
-[Containments][11][Applets][13]
-immutability=1
-plugin=org.kde.plasma.pkupdates
 
 [Containments][11][Applets][14]
 immutability=1
@@ -78,10 +82,6 @@ plugin=org.kde.plasma.clipboard
 immutability=1
 plugin=org.kde.plasma.battery
 
-[Containments][11][Applets][20]
-immutability=1
-plugin=org.kde.ktp-contactlist
-
 [Containments][11][Applets][21]
 immutability=1
 plugin=org.kde.plasma.networkmanagement
@@ -90,16 +90,78 @@ plugin=org.kde.plasma.networkmanagement
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
+[Containments][11][Applets][51]
+immutability=1
+plugin=org.kde.discovernotifier
+
 [Containments][11][General]
-extraItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller
-knownItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller
+extraItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+knownItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+
+[Containments][13][Applets][41][Configuration][General]
+launchers=multi;*;2;file:///usr/share/applications/firefox.desktop;file:///usr/share/applications/org.kde.dolphin.desktop
+launchers59=file:///usr/share/applications/firefox.desktop,file:///usr/share/applications/org.kde.dolphin.desktop
+
+[Containments][20]
+activityId=
+formfactor=3
+immutability=1
+lastScreen=-1
+location=5
+plugin=org.kde.plasma.private.systemtray
+wallpaperplugin=org.kde.image
+
+[Containments][20][General]
+extraItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+knownItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+
+[Containments][23]
+activityId=
+formfactor=3
+immutability=1
+lastScreen=-1
+location=5
+plugin=org.kde.plasma.private.systemtray
+wallpaperplugin=org.kde.image
+
+[Containments][23][General]
+extraItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+knownItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+
+[Containments][26]
+activityId=
+formfactor=3
+immutability=1
+lastScreen=-1
+location=5
+plugin=org.kde.plasma.private.systemtray
+wallpaperplugin=org.kde.image
+
+[Containments][26][General]
+extraItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+knownItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+
+[Containments][27]
+activityId=
+formfactor=3
+immutability=1
+lastScreen=-1
+location=5
+plugin=org.kde.plasma.private.systemtray
+wallpaperplugin=org.kde.image
+
+[Containments][27][General]
+extraItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
+knownItems=org.kde.plasma.networkmanagement,org.kde.ktp-contactlist,org.kde.plasma.clipboard,org.kde.plasma.printmanager,org.kde.kdeconnect,org.kde.plasma.pkupdates,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.devicenotifier,org.kde.plasma.volume,org.kde.plasma.mediacontroller,org.kde.discovernotifier
 
 [Containments][4]
 activityId=
+dockWindowBehavior=true
 formfactor=2
 immutability=1
 lastScreen=-1
 location=3
+onPrimary=true
 plugin=org.kde.latte.containment
 raiseOnActivityChange=false
 raiseOnDesktopChange=false
@@ -131,20 +193,26 @@ plugin=org.kde.plasma.kickoff
 favorites=preferred://browser,systemsettings.desktop,org.kde.dolphin.desktop,org.kde.kate.desktop,org.kde.discover.desktop
 
 [Containments][4][ConfigDialog]
-DialogHeight=487
-DialogWidth=484
+DialogHeight=600
+DialogWidth=586
 
 [Containments][4][General]
+advanced=false
 appletOrder=8;24;25;10
 autoDecreaseIconSize=false
 iconSize=24
 panelPosition=10
 panelSize=100
+shadowOpacity=55
+shadowSize=40
+shrinkThickMargins=true
 splitterPosition=2
 splitterPosition2=4
 zoomLevel=0
 
 [LayoutSettings]
-version=2
+activities=
 color=red
-showInMenu=true
+launchers=
+showInMenu=false
+version=2

@@ -3,10 +3,12 @@ RightButton;NoModifier=org.kde.contextmenu
 
 [Containments][1]
 activityId=
+dockWindowBehavior=true
 formfactor=2
 immutability=1
 lastScreen=-1
 location=4
+onPrimary=true
 plugin=org.kde.latte.containment
 raiseOnActivityChange=false
 raiseOnDesktopChange=false
@@ -22,22 +24,27 @@ plugin=org.kde.latte.plasmoid
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
 launchers=multi;*;2;file:///usr/share/applications/firefox.desktop;file:///usr/share/applications/org.kde.dolphin.desktop
+launchers59=file:///usr/share/applications/firefox.desktop,file:///usr/share/applications/org.kde.dolphin.desktop
 
 [Containments][1][Applets][3]
 immutability=1
 plugin=org.kde.plasma.analogclock
 
 [Containments][1][ConfigDialog]
-DialogHeight=487
-DialogWidth=484
+DialogHeight=600
+DialogWidth=586
 
 [Containments][1][General]
+advanced=false
 appletOrder=2;3
 panelSize=10
+shadowOpacity=60
+shadowSize=45
 shadows=All
+showGlow=false
 zoomLevel=17
 
 [LayoutSettings]
-version=2
 color=blue
 showInMenu=true
+version=2
