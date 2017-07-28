@@ -33,7 +33,7 @@
       <default>15</default>
     </entry>
     <entry name="shrinkThickMargins" type="Bool">
-      <default>false</default>
+      <default>true</default>
     </entry>
     <!-- this is percentage -->
     <entry name="proportionIconSize" type="Double">
@@ -159,7 +159,7 @@
     </entry>
 <!-- Tasks properties  -->
     <entry name="showGlow" type="Bool">
-       <default>true</default>
+       <default>false</default>
     </entry>
     <entry name="threeColorsWindows" type="Bool">
       <default>false</default>
