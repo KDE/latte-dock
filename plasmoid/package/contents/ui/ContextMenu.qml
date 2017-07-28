@@ -847,6 +847,16 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        id: altenativesMenuItem
+        visible: root.editMode
+        text: plasmoid.action("alternatives").text
+        icon: plasmoid.action("alternatives").icon
+
+        onClicked: plasmoid.action("alternatives").trigger();
+
+    }
+
+    PlasmaComponents.MenuItem {
         id: addWidgets
         visible: latteDock && latteDock.universalLayoutManager.addWidgetsAction
 
