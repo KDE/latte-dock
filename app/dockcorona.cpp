@@ -139,8 +139,6 @@ void DockCorona::load()
         m_layoutManager->load();
 
         m_activitiesStarting = false;
-        m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
-        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
 
         //  connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockCorona::primaryOutputChanged, Qt::UniqueConnection);
@@ -156,8 +154,8 @@ void DockCorona::load()
             m_layoutManager->switchToLayout(m_universalSettings->currentLayoutName());
         }
 
-        foreach (auto containment, containments())
-            addDock(containment);
+        /*foreach (auto containment, containments())
+            addDock(containment);*/
     }
 }
 
@@ -184,6 +182,10 @@ void DockCorona::loadLatteLayout(QString layoutPath)
         unload();
         qDebug() << "loading layout:" << layoutPath;
         loadLayout(layoutPath);
+
+        m_firstContainmentWithTasks = -1;
+        m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
+        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
 
         foreach (auto containment, containments())
             addDock(containment);
@@ -1373,34 +1375,29 @@ QStringList DockCorona::appletsIds()
 //! in it will be loaded taking into account also the screens are present.
 bool DockCorona::heuresticForLoadingDockWithTasks()
 {
-    auto containmentsEntries = config()->group("Containments");
-
-    foreach (auto cId, containmentsEntries.groupList()) {
-        QString plugin = containmentsEntries.group(cId).readEntry("plugin");
+    foreach (auto containment, containments()) {
+        QString plugin = containment->pluginMetaData().pluginId();
 
         if (plugin == "org.kde.latte.containment") {
-            bool onPrimary = containmentsEntries.group(cId).readEntry("onPrimary", true);
-            int lastScreen = containmentsEntries.group(cId).readEntry("lastScreen", -1);
+            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            int lastScreen =  containment->lastScreen();
 
             qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
 
-            auto appletEntries = containmentsEntries.group(cId).group("Applets");
 
             bool containsTasks = false;
 
-            foreach (auto appId, appletEntries.groupList()) {
-                QString pluginId = appletEntries.group(appId).readEntry("plugin");
+            foreach (auto applet, containment->applets()) {
+                const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
 
-                if ((pluginId == "org.kde.latte.plasmoid") ||
-                    (pluginId == "org.kde.plasma.taskmanager") ||
-                    (pluginId == "org.kde.plasma.icontasks")) {
+                if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
                     containsTasks = true;
                     break;
                 }
             }
 
             if (containsTasks) {
-                m_firstContainmentWithTasks = cId.toInt();
+                m_firstContainmentWithTasks = containment->id();
 
                 if (onPrimary) {
                     return true;
