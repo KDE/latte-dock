@@ -340,6 +340,8 @@ DragDrop.DropArea {
     //// END OF Behaviors
 
     //////////////START OF CONNECTIONS
+    onContainsOnlyPlasmaTasksChanged: updateAutomaticIconSize();
+
     onEditModeChanged: {
         if (editMode) {
             visibilityManager.updateMaskArea();
@@ -364,6 +366,8 @@ DragDrop.DropArea {
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
             dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+
+            updateContainsOnlyPlasmaTasks();
         }
     }
 
@@ -532,7 +536,6 @@ DragDrop.DropArea {
         addApplet(applet, x, y);
         LayoutManager.save();
         updateIndexes();
-        updateContainsOnlyPlasmaTasks();
     }
 
     Containment.onAppletRemoved: {
@@ -648,6 +651,8 @@ DragDrop.DropArea {
         })
 
         addContainerInLayout(container, applet, x, y);
+
+        updateContainsOnlyPlasmaTasks();
     }
 
     function addContainerInLayout(container, applet, x, y){
@@ -988,7 +993,8 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if ((visibilityManager.normalState && !root.editMode && root.autoDecreaseIconSize)
+        if ((visibilityManager.normalState && !root.editMode
+             && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
             var maxLength = root.maxLength;
@@ -1051,7 +1057,11 @@ DragDrop.DropArea {
     }
 
     function updateContainsOnlyPlasmaTasks() {
-        root.containsOnlyPlasmaTasks = (dock.tasksPresent() && !dock.latteTasksPresent());
+        if (dock) {
+            root.containsOnlyPlasmaTasks = (dock.tasksPresent() && !dock.latteTasksPresent());
+        } else {
+            root.containsOnlyPlasmaTasks = false;
+        }
     }
 
     function updateSizeForAppletsInFill() {
