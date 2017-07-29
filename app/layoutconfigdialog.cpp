@@ -160,7 +160,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
 
     QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
     QString color = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
-    QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
+    QString layoutName = uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString());
     bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
 
     QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
@@ -169,7 +169,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
     LayoutSettings *settings = new LayoutSettings(this, copiedId);
     m_layouts[copiedId] = settings;
 
-    insertLayoutInfoAtRow(row + 1, copiedId, color, uniqueLayoutName(layoutName), menu, QStringList());
+    insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
 
     ui->layoutsView->selectRow(row + 1);
 }
