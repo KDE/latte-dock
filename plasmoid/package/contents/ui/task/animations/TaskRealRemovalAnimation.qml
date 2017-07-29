@@ -76,9 +76,13 @@ SequentialAnimation {
         target: wrapper
         property: "opacity"
         to: 1
-        duration:  mainItemContainer.inBouncingAnimation ? //exactly how much the bounche animation lasts
-                                                           5*(root.durationTime * 0.8 * units.longDuration) : 0
+
+        //this duration must be a bit less than the bouncing animation. Otherwise the
+        //smooth trasition between removals is breaking
+        duration:  mainItemContainer.inBouncingAnimation ? 5*launcherSpeedStep : 0
         easing.type: Easing.InQuad
+
+        property int launcherSpeedStep: root.durationTime * 0.8 * units.longDuration
     }
     //end of ghost animation
 

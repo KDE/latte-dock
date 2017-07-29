@@ -67,7 +67,7 @@ SequentialAnimation{
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 1
-            duration: 3*root.durationTime*launcherAnimation.speed
+            duration: 4*launcherAnimation.speed
             easing.type: Easing.OutBounce
         }
 
