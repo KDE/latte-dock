@@ -255,7 +255,7 @@ private:
 
     bool m_behaveAsPlasmaPanel{false};
     bool m_forceDrawCenteredBorders{false};
-    bool m_dockWinBehavior{false};
+    bool m_dockWinBehavior{true};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_inDelete{false};

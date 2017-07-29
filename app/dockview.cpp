@@ -68,7 +68,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
                        | Qt::NoDropShadowWindowHint
                        | Qt::WindowDoesNotAcceptFocus;
 
-
     if (dockWindowBehavior) {
         setFlags(flags);
     } else {
@@ -83,13 +82,15 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         setScreenToFollow(qGuiApp->primaryScreen());
 
     connect(this, &DockView::containmentChanged
-    , this, [&]() {
+    , this, [ &, dockWindowBehavior]() {
         qDebug() << "dock view c++ containment changed 1...";
 
         if (!this->containment())
             return;
 
         qDebug() << "dock view c++ containment changed 2...";
+
+        setDockWinBehavior(dockWindowBehavior);
 
         restoreConfig();
         reconsiderScreen();
@@ -1958,7 +1959,7 @@ void DockView::saveConfig()
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", m_onPrimary);
     config.writeEntry("dockWindowBehavior", m_dockWinBehavior);
-    emit this->containment()->configNeedsSaving();
+    config.sync();
 }
 
 void DockView::restoreConfig()
