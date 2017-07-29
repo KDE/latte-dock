@@ -619,9 +619,6 @@ Item{
         State{
             name: "isDragged"
             when: ( (mainItemContainer.isDragged) && (!root.editMode) )
-
-            //    PropertyChanges { target: clickedAnimation; running:false }
-            PropertyChanges { target: wrapper; mScale:1 + ((root.zoomFactor - 1) / 2)}
         }
     ]
 
@@ -634,6 +631,25 @@ Item{
             property int speed: root.durationTime*units.longDuration
 
             SequentialAnimation{
+                ScriptAction{
+                    script: {
+                        icList.directRender = false;
+                        if(latteDock) {
+                            latteDock.globalDirectRender=false;
+                        }
+
+                        mainItemContainer.inBlockingAnimation = true;
+                    }
+                }
+
+                PropertyAnimation {
+                    target: wrapper
+                    property: "mScale"
+                    to: 1 + ((root.zoomFactor - 1) / 2)
+                    duration: isDraggedTransition.speed / 2
+                    easing.type: Easing.OutQuad
+                }
+
                 ParallelAnimation{
                     PropertyAnimation {
                         target: draggedRectangle
@@ -677,6 +693,15 @@ Item{
             property int speed: root.durationTime*units.longDuration
 
             SequentialAnimation{
+                ScriptAction{
+                    script: {
+                        icList.directRender = false;
+                        if(latteDock) {
+                            latteDock.globalDirectRender=false;
+                        }
+                    }
+                }
+
                 ParallelAnimation{
                     PropertyAnimation {
                         target: draggedRectangle
@@ -711,6 +736,11 @@ Item{
                     easing.type: Easing.OutQuad
                 }
 
+                ScriptAction{
+                    script: {
+                        mainItemContainer.inBlockingAnimation = false;
+                    }
+                }
             }
 
             onRunningChanged: {
