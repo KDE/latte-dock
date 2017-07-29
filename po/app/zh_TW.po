@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-07-28 20:32+0300\n"
-"PO-Revision-Date: 2017-06-10 21:39+0800\n"
+"PO-Revision-Date: 2017-07-29 11:17+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
 "Language: zh_TW\n"
@@ -23,17 +23,16 @@ msgid "%1 Options"
 msgstr "%1 選項"
 
 #: ../../app/dockview.cpp:1821
-#, fuzzy
 msgid "Layouts"
 msgstr "佈局"
 
 #: ../../app/dockview.cpp:1822
 msgid "Switch to another layout"
-msgstr ""
+msgstr "切換到其他佈局"
 
 #: ../../app/dockview.cpp:1843
 msgid "Configure..."
-msgstr ""
+msgstr "設定..."
 
 #: ../../app/globalshortcuts.cpp:176
 msgid "Activate Task Manager Entry %1"
@@ -49,20 +48,18 @@ msgstr "顯示 Latte Dock"
 
 #: ../../app/importer.cpp:59 ../../app/importer.cpp:76
 #: ../../app/layoutmanager.cpp:84 ../../app/layoutmanager.cpp:86
-#, fuzzy
 msgid "My Layout"
-msgstr "佈局"
+msgstr "我的佈局"
 
 #: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:279
 #: ../../app/layoutmanager.cpp:280
-#, fuzzy
 msgid "Alternative"
-msgstr "替代工作階段"
+msgstr "替代"
 
 #: ../../app/importer.cpp:266
 msgctxt "import/export config"
 msgid "The extracted file coulnd be copied!!!"
-msgstr ""
+msgstr "解壓縮的檔案可以被複製！！！"
 
 #: ../../app/importer.cpp:271
 msgctxt "import/export config"
@@ -72,64 +69,55 @@ msgstr "檔案格式錯誤！"
 #: ../../app/importer.cpp:277
 msgctxt "import/export config"
 msgid "The temp directory couldnt be created!!!"
-msgstr ""
+msgstr "可以建立暫時目錄！！！"
 
 #: ../../app/layoutconfigdialog.cpp:62
-#, fuzzy
 msgid "Layouts Editor"
-msgstr "佈局"
+msgstr "佈局編輯器"
 
 #: ../../app/layoutconfigdialog.cpp:106
 msgctxt "switch button"
 msgid "Switch"
-msgstr ""
+msgstr "切換"
 
 #: ../../app/layoutconfigdialog.cpp:107
-#, fuzzy
 msgctxt "copy button"
 msgid "Copy"
-msgstr "複製 Dock"
+msgstr "複製"
 
 #: ../../app/layoutconfigdialog.cpp:108
-#, fuzzy
 msgctxt "remove button"
 msgid "Remove"
 msgstr "移除"
 
 #: ../../app/layoutconfigdialog.cpp:109
-#, fuzzy
 msgctxt "import button"
 msgid "Import"
 msgstr "匯入"
 
 #: ../../app/layoutconfigdialog.cpp:110
-#, fuzzy
 msgctxt "export button"
 msgid "Export"
 msgstr "匯出"
 
 #: ../../app/layoutconfigdialog.cpp:204
-#, fuzzy
 msgctxt "import layout/configuration"
 msgid "Import Layout/Configuration"
-msgstr "匯入設定"
+msgstr "匯入佈局／設定"
 
 #: ../../app/layoutconfigdialog.cpp:213
-#, fuzzy
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
-msgstr "Latte Dock 設定檔"
+msgstr "Latte Dock 佈局檔案 v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:214
-#, fuzzy
 msgctxt "import latte layouts/configuration"
 msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
-msgstr "Latte Dock 設定檔"
+msgstr "Latte Dock 完整設定檔 (v0.1, v0.2)"
 
 #: ../../app/layoutconfigdialog.cpp:230
-#, fuzzy
 msgid "Import: Configuration file version v0.1"
-msgstr "匯入設定。"
+msgstr "匯入：設定版本 v0.1"
 
 #: ../../app/layoutconfigdialog.cpp:232
 msgid ""
@@ -138,23 +126,24 @@ msgid ""
 "b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import "
 "safely</b> from this file<br><b>only the contained layouts...</b></i>"
 msgstr ""
+"您將會要匯入舊版本 <b>v0.1</b> 的設定檔。"
+"<br><b>請小心</b>，匯入整個設定檔<b>將會抹除所有</"
+"b>您目前的設定！！！<br><br> <i>另外，您也可以從這個檔案"
+"<b>安全地匯入</b><br><b>僅包含佈局的部份s...</b></i>"
 
 #: ../../app/layoutconfigdialog.cpp:237
-#, fuzzy
 msgctxt "import full configuration"
 msgid "Full Configuration"
-msgstr "匯入設定"
+msgstr "完整設定"
 
 #: ../../app/layoutconfigdialog.cpp:239
-#, fuzzy
 msgctxt "import only the layouts"
 msgid "Only Layouts"
-msgstr "佈局"
+msgstr "僅佈局"
 
 #: ../../app/layoutconfigdialog.cpp:265
-#, fuzzy
 msgid "Import: Configuration file version v0.2"
-msgstr "匯入設定。"
+msgstr "匯入：設定檔版本 v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:267
 msgid ""
@@ -162,48 +151,44 @@ msgid ""
 "b>, importing <b>will erase all</b> your current configuration!!!"
 "<br><br><i>Would you like to proceed?</i>"
 msgstr ""
+"您將會要匯入舊版本 v0.2</b> 的設定檔。<br>請小心</b>"
+"，匯入整個設定檔<b>將會抹除所有</b>您目前的設定！！！"
+"<br><br> <i>您想要繼續嗎？</i>"
 
 #: ../../app/layoutconfigdialog.cpp:312
-#, fuzzy
 msgctxt "layout"
 msgid "Alternative"
-msgstr "替代工作階段"
+msgstr "替代"
 
 #: ../../app/layoutconfigdialog.cpp:338
-#, fuzzy
 msgctxt "export layout/configuration"
 msgid "Export Layout/Configuration"
-msgstr "匯出設定"
+msgstr "匯出佈局／設定"
 
 #: ../../app/layoutconfigdialog.cpp:346
-#, fuzzy
 msgctxt "export layout"
 msgid "Latte Dock Layout file v0.2"
-msgstr "Latte Dock 設定檔"
+msgstr "Latte Dock 佈局檔案 v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:347
-#, fuzzy
 msgctxt "export full configuraion"
 msgid "Latte Dock Full Configuration file v0.2"
-msgstr "Latte Dock 設定檔"
+msgstr "Latte Dock 完整設定檔 v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:361
-#, fuzzy
 msgctxt "export layout"
 msgid "Failed to export layout"
-msgstr "匯出設定失敗"
+msgstr "匯出佈局失敗"
 
 #: ../../app/layoutconfigdialog.cpp:381
-#, fuzzy
 msgctxt "export layout"
 msgid "Open location"
 msgstr "開啟位置"
 
 #: ../../app/layoutconfigdialog.cpp:382
-#, fuzzy
 msgctxt "export layout"
 msgid "Layout exported successfully"
-msgstr "設定匯出成功"
+msgstr "佈局匯出成功"
 
 #: ../../app/layoutconfigdialog.cpp:393
 msgctxt "import/export config"
@@ -216,49 +201,50 @@ msgid "Open location"
 msgstr "開啟位置"
 
 #: ../../app/layoutconfigdialog.cpp:401
-#, fuzzy
 msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
-msgstr "設定匯出成功"
+msgstr "完整設定匯出成功"
 
 #: ../../app/layoutconfigdialog.cpp:491
-#, fuzzy
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
-msgstr "設定匯入成功"
+msgstr "佈局：<b>%0</b> 匯入成功\n"
 
 #: ../../app/layoutconfigdialog.cpp:529
 msgid "Color"
-msgstr ""
+msgstr "顏色"
 
 #: ../../app/layoutconfigdialog.cpp:530
 msgid "Name"
-msgstr ""
+msgstr "名稱"
 
 #: ../../app/layoutconfigdialog.cpp:531
 msgid "In Menu"
-msgstr ""
+msgstr "在選單中"
 
 #: ../../app/layoutconfigdialog.cpp:532
 msgid "Activities"
-msgstr ""
+msgstr "活動"
 
 #: ../../app/layoutconfigdialog.cpp:541 ../../app/layoutconfigdialog.cpp:705
-#, fuzzy
 msgid "Layout Warning"
-msgstr "佈局"
+msgstr "佈局警告"
 
 #: ../../app/layoutconfigdialog.cpp:542
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
 msgstr ""
+"佈局 <b>%0</b> 有<i>損壞的設定</i>！！！請<b>移除 "
+"它們<b>來改善系統的穩定性..."
 
 #: ../../app/layoutconfigdialog.cpp:706
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
 msgstr ""
+"有一些相同名稱的佈局，這是不被允許的！！！請更新"
+"它們的名稱以重新套用變更..."
 
 #: ../../app/layoutmanager.cpp:45
 msgid "Add Widgets..."
@@ -270,26 +256,22 @@ msgstr "顯示 Plasma 小工具探索器"
 
 #: ../../app/layoutmanager.cpp:218
 msgid "Switching to layout <b>%0</b> ..."
-msgstr ""
+msgstr "正在切換到佈局 <b>%0</b> ..."
 
 #: ../../app/layoutmanager.cpp:280 ../../app/layoutmanager.cpp:330
 #: ../../app/layoutmanager.cpp:422 ../../app/layoutmanager.h:84
-#, fuzzy
 msgid "Default"
 msgstr "預設"
 
 #: ../../app/layoutmanager.cpp:423
-#, fuzzy
 msgid "Plasma"
 msgstr "Plasma"
 
 #: ../../app/layoutmanager.cpp:424
-#, fuzzy
 msgid "Unity"
 msgstr "Unity"
 
 #: ../../app/layoutmanager.cpp:425
-#, fuzzy
 msgid "Extended"
 msgstr "延伸"
 
@@ -380,7 +362,7 @@ msgstr "Tangerine 字型"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:49
 msgid "Info View Window"
-msgstr ""
+msgstr "資訊檢視視窗"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:51
 msgid "default layout file"
@@ -399,24 +381,20 @@ msgid "extended layout file"
 msgstr "延伸佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:56
-#, fuzzy
 msgid "default preset file"
 msgstr "預設佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:57
-#, fuzzy
 msgid "plasma preset file"
-msgstr "Plasma 佈局檔"
+msgstr "Plasma 預設佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:58
-#, fuzzy
 msgid "unity preset file"
-msgstr "Unity 佈局檔"
+msgstr "unity 預設佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:59
-#, fuzzy
 msgid "extended preset file"
-msgstr "延伸佈局檔"
+msgstr "延伸預設佈局檔"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:61
 msgid "tasks plasmoid separator"
@@ -429,14 +407,13 @@ msgstr "佈局"
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:115
 msgctxt "opens the layout manager window"
 msgid "Configure..."
-msgstr ""
+msgstr "設定..."
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:131
 msgid "Applets Size"
 msgstr "小程式大小"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:180
-#, fuzzy
 msgid "Zoom On Hover:"
 msgstr "滑鼠游標置於其上時縮放"
 
@@ -489,7 +466,7 @@ msgstr "大小："
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:447
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:687
 msgid "Opacity: "
-msgstr ""
+msgstr "不透明度："
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:494
 msgid "Shadows"
@@ -504,7 +481,6 @@ msgid "Applet shadows"
 msgstr "小工具陰影"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:541
-#, fuzzy
 msgctxt "show applet shadow"
 msgid "Show"
 msgstr "顯示"
@@ -512,16 +488,16 @@ msgstr "顯示"
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:568
 msgctxt "Use theme shadow"
 msgid "Theme"
-msgstr ""
+msgstr "主題"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
 msgctxt "Clear applet shadow settings"
 msgid "Clear"
-msgstr ""
+msgstr "清除"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:651
 msgid "Please choose shadow color"
-msgstr ""
+msgstr "請選擇陰影顏色"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:779
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:797
@@ -810,7 +786,7 @@ msgstr "工作循環切換"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:195
 #: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Toggle Task Grouping"
-msgstr ""
+msgstr "切換工作分組"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:223
 msgid "Left Click"
@@ -826,35 +802,34 @@ msgstr "點擊滑鼠右鍵"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:253
 msgid "Launchers Group"
-msgstr ""
+msgstr "啟動器分組"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:276
 msgctxt "unique launchers group"
 msgid "Unique"
-msgstr ""
+msgstr "唯一"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:280
 msgid "Use a unique set of launchers for this dock"
-msgstr ""
+msgstr "為此 dock 使用唯一的啟動器群集"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:287
-#, fuzzy
 msgctxt "layout launchers group"
 msgid "Layout"
 msgstr "佈局"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:291
 msgid "Use the current layout set of launchers for this dock"
-msgstr ""
+msgstr "為此 dock 使用目前的佈局集"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:298
 msgctxt "global launchers group"
 msgid "Global"
-msgstr ""
+msgstr "全域"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:302
 msgid "Use the global set of launchers for this dock"
-msgstr ""
+msgstr "為此 dock 使用全域群集"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:316
 msgid "Filters"
@@ -878,7 +853,7 @@ msgstr "面板背景模糊"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:67
 msgid "Show applets/task title tooltips on hovering"
-msgstr ""
+msgstr "在滑鼠游標置於其上時顯示小工具／工作的標題工具提示"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
 msgid "Shrink thickness margins to minimum"
@@ -909,14 +884,14 @@ msgid "Decrease applets size when it is needed"
 msgstr "當小工具被需要時減小其大小"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
-#, fuzzy
 msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length <br><br><i>Hint: this option is disabled when only "
 "plasma taskmanagers are present</i>"
 msgstr ""
 "小工具大小會在其內容超出最大長度時\n"
-"自動縮小"
+"自動縮小<br><br><i>提示：這個選項僅在 plasma "
+" 的工作管理員存在時停用</i>"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
@@ -940,11 +915,11 @@ msgstr ""
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:173
 msgid "Show info for layouts automatic switching"
-msgstr ""
+msgstr "顯示佈局自動切換的資訊"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:175
 msgid "It shows a Latte specific info window"
-msgstr ""
+msgstr "顯示專屬於 Latte 的資訊視窗"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:184
 msgid "Raise dock on desktop change"
@@ -968,6 +943,8 @@ msgid ""
 "Latte will not show any active applet indicator on its own\n"
 " except those the plasma theme provides"
 msgstr ""
+"Latte 將不會在它自己上面顯示任何活躍的小工具指示器\n"
+"除了那些 plasma 主題提供的以外"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:251
 msgctxt "active indicator only to in-house latte applets"
@@ -980,6 +957,8 @@ msgid ""
 "adjusted\n"
 " by it for hovering capabilities e.g. folderview"
 msgstr ""
+"Latte 將會只顯示那些已被調整過小工具的活躍小工具指示器\n"
+"用於懸停功能，例如：資料夾檢視"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:262
 msgctxt "active indicator to all applets"
@@ -988,7 +967,7 @@ msgstr "全部"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:266
 msgid "Latte will show active applet indicators for all applets"
-msgstr ""
+msgstr "Latte 將會為所有小工具顯示活躍的小工具指示器"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:282
 msgid "Extra Actions"
@@ -1045,7 +1024,7 @@ msgstr "匯出設定失敗"
 
 #: ../desktop-templates/lattedock.notifyrc.template:24
 msgid "Switch to layout"
-msgstr ""
+msgstr "切換到佈局"
 
 #, fuzzy
 #~ msgctxt "layout launchers"

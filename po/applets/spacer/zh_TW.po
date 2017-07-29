@@ -1,0 +1,39 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jeff Huang <s8321414@gmail.com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
+"POT-Creation-Date: 2017-07-28 20:32+0300\n"
+"PO-Revision-Date: 2017-07-29 11:21+0800\n"
+"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
+"Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: ../../../applets/spacer/package/contents/config/config.qml:27
+msgid "Appearance"
+msgstr "外觀"
+
+#: ../../../applets/spacer/package/contents/ui/ConfigAppearance.qml:56
+msgid "Use pixels size, "
+msgstr "使用像素大小，"
+
+#: ../../../applets/spacer/package/contents/ui/ConfigAppearance.qml:77
+msgid "Use percentage, "
+msgstr "使用百分比，"
+
+#: ../../desktop-templates/spacer.metadata.desktop.template:3
+msgid "Latte Dock Spacer"
+msgstr "Latte Dock 間隔器"
+
+#: ../../desktop-templates/spacer.metadata.desktop.template:4
+msgid "Reserve empty spaces within the dock."
+msgstr "在 dock 內保留空間。"
+
