@@ -215,7 +215,7 @@ Item{
             }
         } else if ((zoomScale == 1) && container.isZoomed) {
             container.isZoomed = false;
-            if (!root.editMode && animationWasSent) {
+            if (animationWasSent) {
                 root.slotAnimationsNeedBothAxis(-1);
                 animationWasSent = false;
             }
