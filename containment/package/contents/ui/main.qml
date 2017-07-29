@@ -453,7 +453,7 @@ DragDrop.DropArea {
 
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
-        //  dndSpacer.parent = root;
+        dndSpacer.parent = root;
     }
 
     onLatteAppletChanged: {
