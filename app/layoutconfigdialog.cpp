@@ -194,6 +194,11 @@ void LayoutConfigDialog::on_removeButton_clicked()
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+
+
+    row = qMax(row - 1, 0);
+
+    ui->layoutsView->selectRow(row);
 }
 
 void LayoutConfigDialog::on_importButton_clicked()
