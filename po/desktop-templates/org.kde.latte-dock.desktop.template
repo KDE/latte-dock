@@ -1,19 +1,13 @@
 [Desktop Entry]
-Categories=Utility;X-SuSE-DesktopUtility;
-Comment[el_GR]=Dock for the masses
+Name=Latte
 Comment=Dock for the masses
-Exec=latte-dock %u
-GenericName[el_GR]=Dock
 GenericName=Dock
 Icon=latte-dock
+Categories=Utility;X-SuSE-DesktopUtility;
+Exec=latte-dock %u
 InitialPreference=1
-MimeType=
-Name[el_GR]=Latte
-Name=Latte
-Path=
 StartupNotify=false
 Terminal=false
-TerminalOptions=
 Type=Application
 Version=@VERSION@
 X-DBUS-ServiceName=org.kde.lattedock
@@ -23,4 +17,4 @@ X-KDE-PluginInfo-Email=@EMAIL@
 X-KDE-PluginInfo-Website=@WEBSITE@
 X-KDE-StartupNotify=false
 X-KDE-SubstituteUID=false
-X-KDE-Username=
+
