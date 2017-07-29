@@ -176,7 +176,7 @@ DragDrop.DropArea {
     property int panelMargin: 0
     property int panelMarginLength: 0
     property int panelShadow: 0 //shadowsSize
-    property int editShadow: Math.ceil(iconSize / 5)
+    property int editShadow: 7
     property int themePanelSize: {
         //root.statesLineSize + root.iconSize + root.iconMargin + 1
         var panelBase = root.statesLineSize + root.panelMargin;
