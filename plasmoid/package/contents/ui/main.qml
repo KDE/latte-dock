@@ -257,58 +257,56 @@ Item {
     }
 
     Connections{
-        target: latteDock && latteDock.universalLayoutManager
-                && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings ?
+        target: currentLayout && latteDock.universalSettings ?
                     latteDock : null
 
         onLaunchersGroupChanged: {
-            if (latteDock.launchersGroup === Latte.Dock.UniqueLaunchers) {
-                tasksModel.launcherList = plasmoid.configuration.launchers59;
-            } else if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
-            } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
-                tasksModel.launcherList = latteDock.universalSettings.launchers;
+            if(currentLayout) {
+                if (latteDock.launchersGroup === Latte.Dock.UniqueLaunchers) {
+                    tasksModel.launcherList = plasmoid.configuration.launchers59;
+                } else if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                    tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
+                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                    tasksModel.launcherList = latteDock.universalSettings.launchers;
+                }
             }
         }
     }
 
     Connections{
-        target: latteDock && latteDock.universalLayoutManager
-                && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings ?
-                    latteDock.universalLayoutManager.currentLayout : null
+        target: currentLayout ? currentLayout : null
 
         onLaunchersChanged: {
-            if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+            if (currentLayout && latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
                 tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
             }
         }
     }
 
     Connections{
-        target: latteDock && latteDock.universalLayoutManager
-                && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings ?
+        target: currentLayout && latteDock.universalSettings ?
                     latteDock.universalSettings : null
 
         onLaunchersChanged: {
-            if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+            if (currentLayout && latteDock.universalSettings && latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
                 tasksModel.launcherList = latteDock.universalSettings.launchers;
             }
         }
     }
 
     onCurrentLayoutChanged: {
-        if (latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout
-                && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings
-                && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                    || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
-
-            if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
-            } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
-                tasksModel.launcherList = latteDock.universalSettings.launchers;
+        if (currentLayout) {
+            if (latteDock.universalSettings
+                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
+                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
+                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                    tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
+                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                    tasksModel.launcherList = latteDock.universalSettings.launchers;
+                }
+            } else {
+                tasksModel.launcherList = plasmoid.configuration.launchers59;
             }
-        } else {
-            tasksModel.launcherList = plasmoid.configuration.launchers59;
         }
     }
 
@@ -558,16 +556,7 @@ Item {
         ///REMOVE
         onActivityChanged: {
             ActivitiesTools.currentActivity = String(activity);
-            //  console.log("Updated :"+activity);
-
-            //launcherList = ActivitiesTools.restoreLaunchers();
-            //root.updateImplicits();
-            //panelGeometryTimer.start();
         }
-
-        //    onCountChanged: {
-        //   updateImplicits();
-        //  }
 
         function checkSeparator() {
             var hasSep = false;
@@ -584,28 +573,22 @@ Item {
         }
 
         onLauncherListChanged: {
-            /*if (latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout
-                    && latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
-                latteDock.universalLayoutManager.currentLayout.globalLaunchers = launcherList;
-            } else {
-                plasmoid.configuration.launchers59 = launcherList;
-            }*/
+            if (currentLayout) {
+                if (latteDock && latteDock.universalLayoutManager
+                        && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings
+                        && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
+                            || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
 
-            if (latteDock && latteDock.universalLayoutManager
-                    && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
-
-                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.currentLayout.launchers = launcherList;
-                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
-                    latteDock.universalSettings.launchers = launcherList;
+                    if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                        latteDock.universalLayoutManager.currentLayout.launchers = launcherList;
+                    } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                        latteDock.universalSettings.launchers = launcherList;
+                    }
+                } else {
+                    plasmoid.configuration.launchers59 = launcherList;
                 }
-            } else {
-                plasmoid.configuration.launchers59 = launcherList;
+                checkSeparator();
             }
-
-            checkSeparator();
         }
 
         onGroupingAppIdBlacklistChanged: {
@@ -632,14 +615,7 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            /*if (latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout
-                    && latteDock.universalLayoutManager.currentLayout.syncLaunchers) {
-                launcherList = latteDock.universalLayoutManager.currentLayout.globalLaunchers;
-            } else {
-                launcherList = plasmoid.configuration.launchers59;
-            }*/
-            if (latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout
-                    && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings
+            if (currentLayout && latteDock.universalSettings
                     && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
                         || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
 
