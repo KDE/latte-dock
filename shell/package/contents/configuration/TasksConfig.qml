@@ -247,7 +247,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
-            visible: plasmoid.configuration.advanced
 
             Header {
                 text: i18n("Launchers Group")
@@ -289,6 +288,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: launchersGroup
                     tooltip: i18n("Use the current layout set of launchers for this dock")
+                    visible: plasmoid.configuration.advanced || plasmoid.configuration.launchersGroup === group;
 
                     readonly property int group: Latte.Dock.LayoutLaunchers
                 }
