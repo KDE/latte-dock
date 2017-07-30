@@ -866,6 +866,12 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
             qDebug() << "adding dock rejected, screen not available : " << connector;
             return;
         }
+    } else if (onPrimary) {
+        if (explicitDockOccupyEdge(primaryScreenId(), containment->location())) {
+            //we must check that an onPrimary dock should never catch up the same edge on
+            //the same screen with an explicit dock
+            return;
+        }
     }
 
     qDebug() << "Adding dock for container...";
@@ -909,6 +915,22 @@ void DockCorona::addDock(Plasma::Containment *containment, int expDockScreen)
     m_dockViews[containment] = dockView;
 
     emit docksCountChanged();
+}
+
+bool DockCorona::explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const
+{
+    foreach (auto containment, containments()) {
+        bool onPrimary = containment->config().readEntry("onPrimary", true);
+        int id = containment->lastScreen();
+        Plasma::Types::Location contLocation = containment->location();
+
+        if (!onPrimary && id == screen && contLocation == location) {
+            return true;
+        }
+
+    }
+
+    return false;
 }
 
 void DockCorona::recreateDock(Plasma::Containment *containment)
