@@ -392,6 +392,12 @@ void LayoutManager::showLayoutConfigDialog()
         m_layoutConfigDialog = new LayoutConfigDialog(nullptr, this);
 
     m_layoutConfigDialog->show();
+
+    if (m_layoutConfigDialog->isMinimized()) {
+        m_layoutConfigDialog->showNormal();
+    }
+
+    m_layoutConfigDialog->activateWindow();
 }
 
 void LayoutManager::showInfoWindow(QString info, int duration)
