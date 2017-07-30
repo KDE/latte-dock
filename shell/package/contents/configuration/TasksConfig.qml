@@ -123,6 +123,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Highlight windows on hovering")
                 checked: plasmoid.configuration.highlightWindows
+                visible: plasmoid.configuration.advanced
 
                 onClicked: {
                     plasmoid.configuration.highlightWindows = checked
