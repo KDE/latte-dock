@@ -323,6 +323,7 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
     if (this->containment())
         this->containment()->reactToScreenChange();
 
+    connect(screen, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
     syncGeometry();
     updateAbsDockGeometry(true);
     emit screenGeometryChanged();
@@ -363,8 +364,6 @@ void DockView::reconsiderScreen()
         qDebug() << "dock location:" << location();
 
         if (dockCorona->freeEdges(qGuiApp->primaryScreen()).contains(location())) {
-            connect(qGuiApp->primaryScreen(), &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
-
             //! case 2
             if (!m_onPrimary && !screenExists && tasksPresent() && (dockCorona->noDocksWithTasks() == 1)) {
                 qDebug() << "reached case 2 of updating dock primary screen...";
@@ -384,7 +383,6 @@ void DockView::reconsiderScreen()
         foreach (auto scr, qGuiApp->screens()) {
             if (scr && scr->name() == m_screenToFollowId) {
                 qDebug() << "updating the explicit screen for dock...";
-                connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
                 setScreenToFollow(scr);
                 syncGeometry();
                 break;
