@@ -256,26 +256,6 @@ Item {
         }
     }
 
-    property bool loadLaunchersFirstTime: false;
-
-    onCurrentLayoutChanged: {
-        if (currentLayout && !loadLaunchersFirstTime) {
-            if (latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
-                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                    tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
-                    tasksModel.launcherList = latteDock.universalSettings.launchers;
-                }
-            } else {
-                tasksModel.launcherList = plasmoid.configuration.launchers59;
-            }
-
-            loadLaunchersFirstTime = true;
-        }
-    }
-
     /////
     PlasmaCore.ColorScope{
         id: colorScopePalette
@@ -345,37 +325,6 @@ Item {
         }
 
         return false;
-    }
-
-
-    ///REMOVE
-    function updateLaunchersNewArchitecture(){
-        ///frameworks 5.29.0 provide id 335104
-
-        //work only after Plasma 5.9 and frameworks 5.29
-        /*  if (Latte.WindowSystem.frameworksVersion < 335104) {
-            return;
-        }
-
-        var launchers = [];
-        var tasks = icList.contentItem.children;
-
-        var len = tasks.length
-        for(var i=0; i<len; ++i){
-            var task;
-            for (var j=0; j<len; ++j){
-                if (tasks && tasks[j] && tasks[j].itemIndex === i) {
-                    task = tasks[j];
-                    break;
-                }
-            }
-
-            if (task && task.m && task.m.LauncherUrlWithoutIcon
-                    && ActivitiesTools.getIndex(task.m.LauncherUrlWithoutIcon, tasksModel.launcherList)>=0) {
-                launchers.push(task.m.LauncherUrlWithoutIcon);
-            }
-        }
-        ActivitiesTools.updateLaunchers(launchers);*/
     }
 
     onDragSourceChanged: {
@@ -498,6 +447,26 @@ Item {
 
     /////Window Previews/////////
 
+
+    property bool loadLaunchersFirstTime: false;
+
+    onCurrentLayoutChanged: {
+        if (currentLayout && !loadLaunchersFirstTime) {
+            tasksModel.updateLaunchersList();
+            loadLaunchersFirstTime = true;
+        }
+    }
+
+    Connections{
+        target: latteDock
+
+        onLaunchersGroupChanged:{
+            if( latteDock && latteDock.editMode) {
+                tasksModel.updateLaunchersList();
+            }
+        }
+    }
+
     TaskManager.TasksModel {
         id: tasksModel
 
@@ -518,11 +487,6 @@ Item {
         groupMode: TaskManager.TasksModel.GroupApplications
         sortMode: TaskManager.TasksModel.SortManual
 
-        ///REMOVE
-        onActivityChanged: {
-            ActivitiesTools.currentActivity = String(activity);
-        }
-
         function checkSeparator() {
             var hasSep = false;
             for(var i=0; i<launcherList.length; ++i){
@@ -535,6 +499,24 @@ Item {
 
             if (!hasSep)
                 parabolicManager.internalSeparatorPos = -1;
+        }
+
+        function updateLaunchersList(){
+            if (latteDock.universalSettings
+                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
+                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
+                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                    tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
+                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                    tasksModel.launcherList = latteDock.universalSettings.launchers;
+                }
+            } else {
+                tasksModel.launcherList = plasmoid.configuration.launchers59;
+            }
+        }
+
+        onActivityChanged: {
+            ActivitiesTools.currentActivity = String(activity);
         }
 
         onLauncherListChanged: {
