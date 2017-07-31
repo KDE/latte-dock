@@ -199,30 +199,32 @@ void LaunchersSignals::urlsDropped(int launcherGroup, QStringList urls)
     }
 }
 
-void LaunchersSignals::moveTask(int launcherGroup, int from, int to)
+void LaunchersSignals::moveTask(int senderId, int launcherGroup, int from, int to)
 {
     if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
         return;
     }
 
     foreach (auto applet, lattePlasmoids()) {
-        if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = appletInterface->childItems();
+        if (applet->id() != senderId) {
+            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                const auto &childItems = appletInterface->childItems();
 
-            if (childItems.isEmpty()) {
-                continue;
-            }
+                if (childItems.isEmpty()) {
+                    continue;
+                }
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    int methodIndex = metaObject->indexOfMethod("extSignalMoveTask(QVariant,QVariant,QVariant)");
+                for (QQuickItem *item : childItems) {
+                    if (auto *metaObject = item->metaObject()) {
+                        int methodIndex = metaObject->indexOfMethod("extSignalMoveTask(QVariant,QVariant,QVariant)");
 
-                    if (methodIndex == -1) {
-                        continue;
+                        if (methodIndex == -1) {
+                            continue;
+                        }
+
+                        QMetaMethod method = metaObject->method(methodIndex);
+                        method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, from), Q_ARG(QVariant, to));
                     }
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-                    method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, from), Q_ARG(QVariant, to));
                 }
             }
         }

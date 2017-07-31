@@ -21,6 +21,7 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.draganddrop 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
@@ -142,13 +143,14 @@ Item {
                 if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
                     //      console.log(root.dragSource.itemIndex + " - "+insertAt);
                     root.dragSource.z = 100;
+                    ignoredItem = above;
+
+                    var pos = root.dragSource.itemIndex;
+                    tasksModel.move(pos, insertAt);
                     if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                        latteDock.universalLayoutManager.launchersSignals.moveTask(latteDock.launchersGroup, root.dragSource.itemIndex, insertAt);
-                    } else {
-                        tasksModel.move(root.dragSource.itemIndex, insertAt);
+                        latteDock.universalLayoutManager.launchersSignals.moveTask(plasmoid.id, latteDock.launchersGroup, pos, insertAt);
                     }
 
-                    ignoredItem = above;
                     ignoreItemTimer.restart();
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
