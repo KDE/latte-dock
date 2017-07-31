@@ -624,10 +624,22 @@ PlasmaComponents.ContextMenu {
 
         onClicked: {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
-                root.launcherForRemoval = get(atm.LauncherUrlWithoutIcon);
-                tasksModel.requestRemoveLauncher(get(atm.LauncherUrlWithoutIcon));
+                var launcher = get(atm.LauncherUrl);
+
+                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                    latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, launcher);
+                } else {
+                    root.launcherForRemoval = launcher;
+                    tasksModel.requestRemoveLauncher(launcher);
+                }
+
             } else {
-                tasksModel.requestAddLauncher(get(atm.LauncherUrl));
+                var launcher = get(atm.LauncherUrl);
+                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                    latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, launcher);
+                } else {
+                    tasksModel.requestAddLauncher(launcher);
+                }
             }
         }
     }
@@ -669,10 +681,20 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        tasksModel.requestAddLauncherToActivity(url, id);
+                                        if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                                            latteDock.universalLayoutManager.launchersSignals.addLauncherToActivity(latteDock.launchersGroup, url, id);
+                                        } else {
+                                            tasksModel.requestAddLauncherToActivity(url, id);
+                                        }
                                     } else {
-                                        root.launcherForRemoval = url;
-                                        tasksModel.requestRemoveLauncherFromActivity(url, id);
+                                        if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                                            latteDock.universalLayoutManager.launchersSignals.removeLauncherFromActivity(latteDock.launchersGroup, url, id);
+                                        } else {
+                                            if (id === tasksModel.activity) {
+                                                root.launcherForRemoval = url;
+                                            }
+                                            tasksModel.requestRemoveLauncherFromActivity(url, id);
+                                        }
                                     }
                                 }
                                 );
@@ -718,8 +740,14 @@ PlasmaComponents.ContextMenu {
         text: i18nc("Remove launcher button for application shown while it is not running", "Unpin")
 
         onClicked: {
-            root.launcherForRemoval = get(atm.LauncherUrlWithoutIcon);
-            tasksModel.requestRemoveLauncher(get(atm.LauncherUrlWithoutIcon));
+            var launcher = get(atm.LauncherUrlWithoutIcon);
+
+            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, launcher);
+            } else {
+                root.launcherForRemoval = launcher
+                tasksModel.requestRemoveLauncher(launcher);
+            }
         }
     }
 

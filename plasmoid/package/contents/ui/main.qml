@@ -256,46 +256,10 @@ Item {
         }
     }
 
-    Connections{
-        target: currentLayout && latteDock.universalSettings ?
-                    latteDock : null
-
-        onLaunchersGroupChanged: {
-            if(currentLayout) {
-                if (latteDock.launchersGroup === Latte.Dock.UniqueLaunchers) {
-                    tasksModel.launcherList = plasmoid.configuration.launchers59;
-                } else if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                    tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
-                    tasksModel.launcherList = latteDock.universalSettings.launchers;
-                }
-            }
-        }
-    }
-
-    Connections{
-        target: currentLayout ? currentLayout : null
-
-        onLaunchersChanged: {
-            if (currentLayout && latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
-            }
-        }
-    }
-
-    Connections{
-        target: currentLayout && latteDock.universalSettings ?
-                    latteDock.universalSettings : null
-
-        onLaunchersChanged: {
-            if (currentLayout && latteDock.universalSettings && latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
-                tasksModel.launcherList = latteDock.universalSettings.launchers;
-            }
-        }
-    }
+    property bool loadLaunchersFirstTime: false;
 
     onCurrentLayoutChanged: {
-        if (currentLayout) {
+        if (currentLayout && !loadLaunchersFirstTime) {
             if (latteDock.universalSettings
                     && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
                         || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
@@ -307,6 +271,8 @@ Item {
             } else {
                 tasksModel.launcherList = plasmoid.configuration.launchers59;
             }
+
+            loadLaunchersFirstTime = true;
         }
     }
 
@@ -314,7 +280,6 @@ Item {
     PlasmaCore.ColorScope{
         id: colorScopePalette
     }
-
     /////
 
     function launchersDropped(urls){
@@ -999,7 +964,11 @@ Item {
             }
 
             onUrlsDropped: {
-                urlsDroppedOnArea(urls);
+                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                    latteDock.universalLayoutManager.launchersSignals.urlsDropped(latteDock.launchersGroup, urls);
+                } else {
+                    urlsDroppedOnArea(urls);
+                }
             }
         }
 
@@ -1376,6 +1345,51 @@ Item {
     function getLauncherList() {
         return plasmoid.configuration.launchers59;
     }
+
+    //! BEGIN ::: external launchers signals in order to update the tasks model
+    function extSignalAddLauncher(group, launcher) {
+        if (group === latteDock.launchersGroup) {
+            tasksModel.requestAddLauncher(launcher);
+        }
+    }
+
+    function extSignalRemoveLauncher(group, launcher) {
+        if (group === latteDock.launchersGroup) {
+            root.launcherForRemoval = launcher;
+            tasksModel.requestRemoveLauncher(launcher);
+        }
+    }
+
+    function extSignalAddLauncherToActivity(group, launcher, activity) {
+        if (group === latteDock.launchersGroup) {
+            tasksModel.requestAddLauncherToActivity(launcher, activity);
+        }
+    }
+
+    function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
+        if (group === latteDock.launchersGroup) {
+            if (activity === tasksModel.activity) {
+                root.launcherForRemoval = launcher;
+            }
+
+            tasksModel.requestRemoveLauncherFromActivity(launcher, activity);
+        }
+    }
+
+    function extSignalUrlsDropped(group, urls) {
+        if (group === latteDock.launchersGroup) {
+            mouseHandler.urlsDroppedOnArea(urls);
+        }
+    }
+
+    function extSignalMoveTask(group, from, to) {
+        if (group === latteDock.launchersGroup) {
+            tasksModel.move(from, to);
+        }
+    }
+
+    //! END ::: external launchers signals in order to update the tasks model
+
 
     //! it is used to add the fake desktop file which represents
     //! the separator (fake launcher)

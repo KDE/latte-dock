@@ -21,7 +21,6 @@
 #include "layoutmanager.h"
 #include "infoview.h"
 
-
 #include <QDir>
 #include <QFile>
 #include <QQmlProperty>
@@ -35,7 +34,8 @@ namespace Latte {
 
 LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent),
-      m_importer(new Importer(this))
+      m_importer(new Importer(this)),
+      m_launchersSignals(new LaunchersSignals(this))
 {
     m_corona = qobject_cast<DockCorona *>(parent);
 
@@ -58,6 +58,7 @@ LayoutManager::LayoutManager(QObject *parent)
 LayoutManager::~LayoutManager()
 {
     m_importer->deleteLater();
+    m_launchersSignals->deleteLater();
 
     if (m_currentLayout) {
         m_currentLayout->deleteLater();
@@ -113,6 +114,11 @@ QAction *LayoutManager::addWidgetsAction()
 LayoutSettings *LayoutManager::currentLayout()
 {
     return m_currentLayout;
+}
+
+LaunchersSignals *LayoutManager::launchersSignals()
+{
+    return m_launchersSignals;
 }
 
 QString LayoutManager::currentLayoutName() const

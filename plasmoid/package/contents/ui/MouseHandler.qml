@@ -25,7 +25,8 @@ import org.kde.draganddrop 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-//import "../code/layout.js" as LayoutManager
+import org.kde.latte 0.1 as Latte
+
 import "../code/tools.js" as TaskTools
 
 Item {
@@ -141,7 +142,12 @@ Item {
                 if (root.dragSource != above && root.dragSource.itemIndex != insertAt) {
                     //      console.log(root.dragSource.itemIndex + " - "+insertAt);
                     root.dragSource.z = 100;
-                    tasksModel.move(root.dragSource.itemIndex, insertAt);
+                    if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                        latteDock.universalLayoutManager.launchersSignals.moveTask(latteDock.launchersGroup, root.dragSource.itemIndex, insertAt);
+                    } else {
+                        tasksModel.move(root.dragSource.itemIndex, insertAt);
+                    }
+
                     ignoredItem = above;
                     ignoreItemTimer.restart();
                 }

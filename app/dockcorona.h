@@ -26,6 +26,7 @@
 #include "layoutmanager.h"
 #include "universalsettings.h"
 #include "../liblattedock/dock.h"
+#include "launcherssignals.h"
 
 #include <QObject>
 
@@ -36,6 +37,7 @@ class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
 class LayoutManager;
+class LaunchersSignals;
 
 namespace KActivities {
 class Consumer;
@@ -159,6 +161,7 @@ private:
 
     friend class GlobalShortcuts;
     friend class LayoutManager;
+    friend class LaunchersSignals;
 };
 
 }

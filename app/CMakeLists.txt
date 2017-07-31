@@ -24,6 +24,7 @@ set(lattedock-app_SRCS
     layoutsDelegates/colorcmbboxitemdelegate.cpp
     layoutsDelegates/activitycmbboxdelegate.cpp
     infoview.cpp
+    launcherssignals.cpp
     main.cpp
 )
 

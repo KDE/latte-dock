@@ -25,6 +25,7 @@
 #include "importer.h"
 #include "layoutsettings.h"
 #include "layoutconfigdialog.h"
+#include "launcherssignals.h"
 
 #include <QAction>
 #include <QObject>
@@ -34,6 +35,7 @@
 class Importer;
 class LayoutSettings;
 class LayoutConfigDialog;
+class LaunchersSignals;
 
 namespace Latte {
 
@@ -50,6 +52,7 @@ class LayoutManager : public QObject {
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
     Q_PROPERTY(LayoutSettings *currentLayout READ currentLayout NOTIFY currentLayoutChanged)
+    Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
 
 public:
     LayoutManager(QObject *parent = nullptr);
@@ -71,6 +74,7 @@ public:
     QAction *addWidgetsAction();
 
     LayoutSettings *currentLayout();
+    LaunchersSignals *launchersSignals();
 
     QStringList activities();
 
@@ -89,6 +93,7 @@ signals:
     void addWidgetsActionChanged();
     void currentLayoutChanged();
     void currentLayoutNameChanged();
+    void launchersSignalsChanged();
     void layoutsChanged();
     void menuLayoutsChanged();
 
@@ -110,6 +115,7 @@ private:
     Importer *m_importer{nullptr};
 
     LayoutSettings *m_currentLayout{nullptr};
+    LaunchersSignals *m_launchersSignals{nullptr};
 
     QString m_shouldSwitchToLayout;
 
