@@ -60,20 +60,18 @@ InfoView::InfoView(DockCorona *corona, QString message, QScreen *screen, QWindow
 
 InfoView::~InfoView()
 {
+    PanelShadows::self()->removeWindow(this);
+
     qDebug() << "InfoView deleting ...";
 
     if (m_shellSurface) {
         delete m_shellSurface;
         m_shellSurface = nullptr;
     }
-
 }
 
 void InfoView::init()
 {
-    PanelShadows::self()->addWindow(this);
-    PanelShadows::self()->setEnabledBorders(this, m_borders);
-
     rootContext()->setContextProperty(QStringLiteral("infoWindow"), this);
 
     KDeclarative::KDeclarative kdeclarative;
@@ -129,6 +127,9 @@ void InfoView::showEvent(QShowEvent *ev)
     syncGeometry();
 
     QTimer::singleShot(400, this, &InfoView::syncGeometry);
+
+    PanelShadows::self()->addWindow(this);
+    PanelShadows::self()->setEnabledBorders(this, m_borders);
 }
 
 void InfoView::setupWaylandIntegration()
