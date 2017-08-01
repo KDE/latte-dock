@@ -56,6 +56,8 @@ Item {
     }
     property bool showZoomed: false
     property bool lockZoom: false
+    property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
+                             && applet.status !== PlasmaCore.Types.HiddenStatus
     property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
@@ -83,8 +85,6 @@ Item {
     property int maxHeight: root.isHorizontal ? root.height : root.width
     property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
     property int internalSplitterId: 0
-    property int isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
-                             && applet.status !== PlasmaCore.Types.HiddenStatus
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets

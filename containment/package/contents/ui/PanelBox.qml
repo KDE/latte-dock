@@ -133,7 +133,7 @@ Item{
                 return 1;
         }
 
-        enabledBorders: dock ? dock.enabledBorders : 0
+        enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
         Behavior on opacity {
             NumberAnimation { duration: 8*root.durationTime*units.shortDuration }
@@ -329,7 +329,7 @@ Item{
                     adjustPrefix();
             }
 
-            enabledBorders: dock ? dock.enabledBorders : 0
+            enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
             function adjustPrefix() {
                 if (!plasmoid) {
