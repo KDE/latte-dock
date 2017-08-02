@@ -782,7 +782,14 @@ PlasmaComponents.ContextMenu {
         text: i18n("Close")
         icon: "window-close"
 
-        onClicked: tasksModel.requestClose(menu.modelIndex)
+        onClicked: {
+            if (root.zoomFactor>1) {
+                delayWindowRemovalTimer.modelIndex = menu.modelIndex;
+                delayWindowRemovalTimer.start();
+            } else {
+                tasksModel.requestClose(menu.modelIndex);
+            }
+        }
     }
 
     PlasmaComponents.MenuItem {

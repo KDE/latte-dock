@@ -445,6 +445,21 @@ Item {
         }
     }
 
+    //! Timer to delay the removal of the window through the context menu in case the
+    //! the window is zoomed
+    Timer{
+        id: delayWindowRemovalTimer
+        //this is the animation time needed in order for tasks to restore their zoom first
+        interval: 7 * (root.durationTime * units.shortDuration)
+
+        property var modelIndex
+
+        onTriggered: {
+            tasksModel.requestClose(delayWindowRemovalTimer.modelIndex)
+        }
+    }
+
+
     /////Window Previews/////////
 
 
