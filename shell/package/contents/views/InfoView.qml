@@ -32,7 +32,7 @@ PlasmaCore.FrameSvgItem {
 
     imagePath: "widgets/panel-background"
     prefix:""
-    enabledBorders: infoWindow ? infoWindow.enabledBorders : 0
+    enabledBorders: infoWindow ? infoWindow.enabledBorders : PlasmaCore.FrameSvg.AllBorders
 
     width: Screen.width + 1
     height: Math.min(Screen.height - units.gridUnit * 8, logo.height + messageLbl.height + 2 *units.gridUnit)
