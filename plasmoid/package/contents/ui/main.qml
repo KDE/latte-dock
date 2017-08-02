@@ -496,7 +496,7 @@ Item {
         filterByActivity: root.showOnlyCurrentActivity
 
         launchInPlace: true
-        separateLaunchers: false
+        separateLaunchers: true
         groupInline: false
 
         groupMode: TaskManager.TasksModel.GroupApplications
