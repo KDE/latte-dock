@@ -652,7 +652,7 @@ void DockView::updateAbsDockGeometry(bool bypassChecks)
 
 void DockView::updatePosition(QRect availableScreenRect)
 {
-    QRect screenGeometry;
+    QRect screenGeometry{availableScreenRect};
     QPoint position;
     position = {0, 0};
 
@@ -664,8 +664,6 @@ void DockView::updatePosition(QRect availableScreenRect)
 
     switch (location()) {
         case Plasma::Types::TopEdge:
-            screenGeometry = this->screen()->geometry();
-
             if (m_behaveAsPlasmaPanel) {
                 position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
             } else {
@@ -675,8 +673,6 @@ void DockView::updatePosition(QRect availableScreenRect)
             break;
 
         case Plasma::Types::BottomEdge:
-            screenGeometry = this->screen()->geometry();
-
             if (m_behaveAsPlasmaPanel) {
                 position = {screenGeometry.x() + length(screenGeometry.width()),
                             screenGeometry.y() + screenGeometry.height() - cleanThickness
@@ -743,7 +739,7 @@ inline void DockView::syncGeometry()
         //! instead of two times (both inside the resizeWindow and the updatePosition)
         QRegion freeRegion;;
         QRect maximumRect;
-        QRect availableScreenRect;
+        QRect availableScreenRect{this->screen()->geometry()};
 
         if (formFactor() == Plasma::Types::Vertical) {
             freeRegion = corona()->availableScreenRegion(this->containment()->screen());
