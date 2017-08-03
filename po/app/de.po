@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 20:32+0300\n"
+"POT-Creation-Date: 2017-08-03 17:31+0300\n"
 "PO-Revision-Date: 2017-07-28 20:43+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../../app/dockview.cpp:1714
+#: ../../app/dockview.cpp:1709
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 Optionen"
 
-#: ../../app/dockview.cpp:1821
+#: ../../app/dockview.cpp:1816
 msgid "Layouts"
 msgstr "Profile"
 
-#: ../../app/dockview.cpp:1822
+#: ../../app/dockview.cpp:1817
 msgid "Switch to another layout"
 msgstr "Profil wechseln"
 
-#: ../../app/dockview.cpp:1843
+#: ../../app/dockview.cpp:1838
 msgid "Configure..."
 msgstr "Konfiguration..."
 
@@ -48,12 +48,12 @@ msgid "Show Latte Dock"
 msgstr "Latte Dock zeigen"
 
 #: ../../app/importer.cpp:59 ../../app/importer.cpp:76
-#: ../../app/layoutmanager.cpp:84 ../../app/layoutmanager.cpp:86
+#: ../../app/layoutmanager.cpp:85 ../../app/layoutmanager.cpp:87
 msgid "My Layout"
 msgstr "Mein Profil"
 
-#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:279
-#: ../../app/layoutmanager.cpp:280
+#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:285
+#: ../../app/layoutmanager.cpp:286
 msgid "Alternative"
 msgstr "Alternativ"
 
@@ -101,26 +101,26 @@ msgctxt "export button"
 msgid "Export"
 msgstr "Exportieren"
 
-#: ../../app/layoutconfigdialog.cpp:204
+#: ../../app/layoutconfigdialog.cpp:209
 msgctxt "import layout/configuration"
 msgid "Import Layout/Configuration"
 msgstr "Profil/Konfiguration importieren"
 
-#: ../../app/layoutconfigdialog.cpp:213
+#: ../../app/layoutconfigdialog.cpp:218
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock Profildatei V0.2"
 
-#: ../../app/layoutconfigdialog.cpp:214
+#: ../../app/layoutconfigdialog.cpp:219
 msgctxt "import latte layouts/configuration"
 msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
 msgstr "Latte Dock Konfigurationsdatei (v0.1, v0.2)"
 
-#: ../../app/layoutconfigdialog.cpp:230
+#: ../../app/layoutconfigdialog.cpp:235
 msgid "Import: Configuration file version v0.1"
 msgstr "Importiere Konfigurationsdatei v0.1"
 
-#: ../../app/layoutconfigdialog.cpp:232
+#: ../../app/layoutconfigdialog.cpp:237
 msgid ""
 "You are going to import an old version <b>v0.1</b> configuration file."
 "<br><b>Be careful</b>, importing the entire configuration <b>will erase all</"
@@ -132,21 +132,21 @@ msgstr ""
 "Konfiguration!!!<br><br> <i>Alternativ können <br><b>nur die beinhalteten "
 "Profile importiert werden</b></i>"
 
-#: ../../app/layoutconfigdialog.cpp:237
+#: ../../app/layoutconfigdialog.cpp:242
 msgctxt "import full configuration"
 msgid "Full Configuration"
 msgstr "Konfiguration"
 
-#: ../../app/layoutconfigdialog.cpp:239
+#: ../../app/layoutconfigdialog.cpp:244
 msgctxt "import only the layouts"
 msgid "Only Layouts"
 msgstr "Nur Profile"
 
-#: ../../app/layoutconfigdialog.cpp:265
+#: ../../app/layoutconfigdialog.cpp:270
 msgid "Import: Configuration file version v0.2"
 msgstr "Importiere Konfigurationsdatei v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:267
+#: ../../app/layoutconfigdialog.cpp:272
 msgid ""
 "You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</"
 "b>, importing <b>will erase all</b> your current configuration!!!"
@@ -156,90 +156,90 @@ msgstr ""
 "b>, importieren dieser Konfiguration <b>löscht</b> die aktuelle "
 "Konfiguration!!!<br><br> <i>Weiter?</i>"
 
-#: ../../app/layoutconfigdialog.cpp:312
+#: ../../app/layoutconfigdialog.cpp:317
 msgctxt "layout"
 msgid "Alternative"
 msgstr "Alternativ"
 
-#: ../../app/layoutconfigdialog.cpp:338
+#: ../../app/layoutconfigdialog.cpp:343
 msgctxt "export layout/configuration"
 msgid "Export Layout/Configuration"
 msgstr "Profil/Konfiguration exportieren"
 
-#: ../../app/layoutconfigdialog.cpp:346
+#: ../../app/layoutconfigdialog.cpp:351
 msgctxt "export layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock Profildatei v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:347
+#: ../../app/layoutconfigdialog.cpp:352
 msgctxt "export full configuraion"
 msgid "Latte Dock Full Configuration file v0.2"
 msgstr "Latte Dock Konfigurationsdatei v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:361
+#: ../../app/layoutconfigdialog.cpp:366
 msgctxt "export layout"
 msgid "Failed to export layout"
 msgstr "Profil konnte nicht exportiert werden"
 
-#: ../../app/layoutconfigdialog.cpp:381
+#: ../../app/layoutconfigdialog.cpp:386
 msgctxt "export layout"
 msgid "Open location"
 msgstr "Öffnen ..."
 
-#: ../../app/layoutconfigdialog.cpp:382
+#: ../../app/layoutconfigdialog.cpp:387
 msgctxt "export layout"
 msgid "Layout exported successfully"
 msgstr "Profil erfolgreich exportiert"
 
-#: ../../app/layoutconfigdialog.cpp:393
+#: ../../app/layoutconfigdialog.cpp:398
 msgctxt "import/export config"
 msgid "Failed to export configuration"
 msgstr "Konfiguration konnte nicht exportiert werden"
 
-#: ../../app/layoutconfigdialog.cpp:400
+#: ../../app/layoutconfigdialog.cpp:405
 msgctxt "import/export config"
 msgid "Open location"
 msgstr "Öffnen ..."
 
-#: ../../app/layoutconfigdialog.cpp:401
+#: ../../app/layoutconfigdialog.cpp:406
 msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
 msgstr "Konfiguration erfolgreich exportiert"
 
-#: ../../app/layoutconfigdialog.cpp:491
+#: ../../app/layoutconfigdialog.cpp:496
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "Profil <b>%0</b> erfolgreich importiert\n"
 
-#: ../../app/layoutconfigdialog.cpp:529
+#: ../../app/layoutconfigdialog.cpp:534
 msgid "Color"
 msgstr "Farbe"
 
-#: ../../app/layoutconfigdialog.cpp:530
+#: ../../app/layoutconfigdialog.cpp:535
 msgid "Name"
 msgstr "Name"
 
-#: ../../app/layoutconfigdialog.cpp:531
+#: ../../app/layoutconfigdialog.cpp:536
 msgid "In Menu"
 msgstr "Im Menü"
 
-#: ../../app/layoutconfigdialog.cpp:532
+#: ../../app/layoutconfigdialog.cpp:537
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../../app/layoutconfigdialog.cpp:541 ../../app/layoutconfigdialog.cpp:705
+#: ../../app/layoutconfigdialog.cpp:546 ../../app/layoutconfigdialog.cpp:710
 msgid "Layout Warning"
 msgstr "Profil - Warnung"
 
-#: ../../app/layoutconfigdialog.cpp:542
+#: ../../app/layoutconfigdialog.cpp:547
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
 msgstr ""
-"Profil(e) <b>%0</b> <i>ungültige Konfiguration festgestellt</i>!!! Um die"
-" Stabilität zu gewährleisten bitte <b>entfernen<b>"
+"Profil(e) <b>%0</b> <i>ungültige Konfiguration festgestellt</i>!!! Um die "
+"Stabilität zu gewährleisten bitte <b>entfernen<b>"
 
-#: ../../app/layoutconfigdialog.cpp:706
+#: ../../app/layoutconfigdialog.cpp:711
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
@@ -255,71 +255,71 @@ msgstr "Miniprogramme hinzufügen ..."
 msgid "Show Plasma Widget Explorer"
 msgstr "Zeige Plasma Miniprogramme"
 
-#: ../../app/layoutmanager.cpp:218
+#: ../../app/layoutmanager.cpp:224
 msgid "Switching to layout <b>%0</b> ..."
 msgstr "Wechsel zu Profil <b>%0</b> ..."
 
-#: ../../app/layoutmanager.cpp:280 ../../app/layoutmanager.cpp:330
-#: ../../app/layoutmanager.cpp:422 ../../app/layoutmanager.h:84
+#: ../../app/layoutmanager.cpp:286 ../../app/layoutmanager.cpp:336
+#: ../../app/layoutmanager.cpp:434 ../../app/layoutmanager.h:88
 msgid "Default"
 msgstr "Standard"
 
-#: ../../app/layoutmanager.cpp:423
+#: ../../app/layoutmanager.cpp:435
 msgid "Plasma"
 msgstr "Plasma"
 
-#: ../../app/layoutmanager.cpp:424
+#: ../../app/layoutmanager.cpp:436
 msgid "Unity"
 msgstr "Unity"
 
-#: ../../app/layoutmanager.cpp:425
+#: ../../app/layoutmanager.cpp:437
 msgid "Extended"
 msgstr "Erweitert"
 
-#: ../../app/main.cpp:81
+#: ../../app/main.cpp:82
 msgctxt "command line"
 msgid "Replace the current dock instance."
 msgstr "Ersetzt laufenden Prozess"
 
-#: ../../app/main.cpp:82
+#: ../../app/main.cpp:83
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Sende Debug Informationen zu stdout."
 
-#: ../../app/main.cpp:83
+#: ../../app/main.cpp:84
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
 msgstr "Debug Informationen für die Maske (Nur sinnvoll für Devs)."
 
-#: ../../app/main.cpp:84
+#: ../../app/main.cpp:85
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
 msgstr "Zeichnet Kästen um Applets."
 
-#: ../../app/main.cpp:85
+#: ../../app/main.cpp:86
 msgctxt "command line"
 msgid "Open a window with much debug information."
 msgstr "Öffnet Fenster mit vielen Debug Informationen."
 
-#: ../../app/main.cpp:86
+#: ../../app/main.cpp:87
 msgctxt "command line"
 msgid "Import configuration."
 msgstr "Konfiguration importieren."
 
-#: ../../app/main.cpp:86
+#: ../../app/main.cpp:87
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "Dateiname"
 
-#: ../../app/main.cpp:105
+#: ../../app/main.cpp:106
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr "Latte Dock läuft bereits! Benutze --replace zum Neustarten."
 
-#: ../../app/main.cpp:113
+#: ../../app/main.cpp:114
 msgid "The configuration cannot be imported"
 msgstr "Konfiguration konnte nicht importiert werden"
 
-#: ../../app/main.cpp:155
+#: ../../app/main.cpp:158
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "
 "intuitive experience for your tasks and plasmoids. It animates its contents "
@@ -334,15 +334,15 @@ msgstr ""
 "\n"
 "\"Art In Coffee\""
 
-#: ../../app/main.cpp:172
+#: ../../app/main.cpp:175
 msgid "Logo and Icons"
 msgstr "Logo und Icons"
 
-#: ../../app/main.cpp:174 ../../app/main.cpp:176
+#: ../../app/main.cpp:177 ../../app/main.cpp:179
 msgid "Many bug reports"
 msgstr "Viele Bug Reports"
 
-#: ../../app/main.cpp:178
+#: ../../app/main.cpp:181
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
 msgstr "Überprüfungen von Latte Dock, CandilDock und Nowdock"
 
@@ -723,81 +723,81 @@ msgstr "Vorschau beim Überfahren"
 msgid "Highlight windows on hovering"
 msgstr "Hervorheben von Fenstern beim Überfahren"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:135
+#: ../../shell/package/contents/configuration/TasksConfig.qml:136
 msgid "Show progress information for tasks"
 msgstr "Zeige Fortschrittsanzeige für Aufgaben"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:137
+#: ../../shell/package/contents/configuration/TasksConfig.qml:138
 msgid ""
 "Show a beautiful progress animation e.g. when copying \n"
 "files with Dolphin"
 msgstr "Zeigt schöne Animationen z.B. beim Kopieren mit Dolphin"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:147
+#: ../../shell/package/contents/configuration/TasksConfig.qml:148
 msgid "Show window actions in the context menu"
 msgstr "Zeige Fenster Aktionen im Kontextmenü"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:159
+#: ../../shell/package/contents/configuration/TasksConfig.qml:160
 msgid "Show indicator for audio streams"
 msgstr "Zeige Indikator für Audioausgabe"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:161
+#: ../../shell/package/contents/configuration/TasksConfig.qml:162
 msgid "Audio indicator from which the user can mute/unmute an app"
 msgstr ""
 "Mit dem Audio Indikator kann man Audiostreams von Apps an/aus schalten."
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:172
+#: ../../shell/package/contents/configuration/TasksConfig.qml:173
 msgid "Activate tasks through mouse wheel"
 msgstr "Mit dem Mausrad Starter ausführen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:174
+#: ../../shell/package/contents/configuration/TasksConfig.qml:175
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
 msgstr "Wenn aktiviert werden Anwendungen nicht gewechselt, sondern gestartet"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:187
+#: ../../shell/package/contents/configuration/TasksConfig.qml:188
 msgid "On middle-click:"
 msgstr "Mittlere Maustaste:"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:194
-#: ../../shell/package/contents/configuration/TasksConfig.qml:236
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgctxt "The click action"
 msgid "None"
 msgstr "Nichts"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:194
-#: ../../shell/package/contents/configuration/TasksConfig.qml:236
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Close Window or Group"
 msgstr "Fenster oder Gruppe schließen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "New Instance"
 msgstr "Neue Instanz"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Minimize/Restore Window or Group"
 msgstr "Fenster oder Gruppe minimieren/maximieren"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Cycle Through Tasks"
 msgstr "Laufende Anwendungen mit dem Mausrad wechseln"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Toggle Task Grouping"
 msgstr "Fenster Gruppierung an/aus"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:223
+#: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Left Click"
 msgstr "Linke Maustaste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:223
+#: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Middle Click"
 msgstr "Mittlere Maustaste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:223
+#: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Right Click"
 msgstr "Rechte Maustaste"
 
@@ -823,29 +823,29 @@ msgstr "Profil"
 msgid "Use the current layout set of launchers for this dock"
 msgstr "Benutze die im Profil festgelegten Starter für diese Leiste"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:298
+#: ../../shell/package/contents/configuration/TasksConfig.qml:299
 msgctxt "global launchers group"
 msgid "Global"
 msgstr "Global"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:302
+#: ../../shell/package/contents/configuration/TasksConfig.qml:303
 msgid "Use the global set of launchers for this dock"
 msgstr ""
 "Es werden auf allen Leisten die gleichen Starter angezeigt wenn aktiviert"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:316
+#: ../../shell/package/contents/configuration/TasksConfig.qml:317
 msgid "Filters"
 msgstr "Filter"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:322
+#: ../../shell/package/contents/configuration/TasksConfig.qml:323
 msgid "Show only tasks from the current screen"
 msgstr "Nur Fenster des aktuellen Bildschirms anzeigen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:333
+#: ../../shell/package/contents/configuration/TasksConfig.qml:334
 msgid "Show only tasks from the current desktop"
 msgstr "Nur Fenster der aktuellen Arbeitsfläche anzeigen"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:344
+#: ../../shell/package/contents/configuration/TasksConfig.qml:345
 msgid "Show only tasks from the current activity"
 msgstr "Nur Fenster der aktuellen Aktivität anzeigen"
 
@@ -891,10 +891,10 @@ msgid ""
 "exceed the maximum length <br><br><i>Hint: this option is disabled when only "
 "plasma taskmanagers are present</i>"
 msgstr ""
-"Applet Größe verkleinert sich automatisch wenn der Inhalt die maximale Länge"
-" erreicht\n"
-"<br><br><i>Tip: Wenn sich kein Starterbereich/Latte-Plasmoid in dieser Leiste"
-" befindet ist diese Option ausgegraut</i>"
+"Applet Größe verkleinert sich automatisch wenn der Inhalt die maximale Länge "
+"erreicht\n"
+"<br><br><i>Tip: Wenn sich kein Starterbereich/Latte-Plasmoid in dieser "
+"Leiste befindet ist diese Option ausgegraut</i>"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
@@ -965,10 +965,9 @@ msgid ""
 "adjusted\n"
 " by it for hovering capabilities e.g. folderview"
 msgstr ""
-"Latte zeigt nur Indikatoren für aktive Applets wenn es vorher so eingestellt"
-" wurde\n "
-" z.B. für die Ordneransicht"
-" "
+"Latte zeigt nur Indikatoren für aktive Applets wenn es vorher so eingestellt "
+"wurde\n"
+"  z.B. für die Ordneransicht "
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:262
 msgctxt "active indicator to all applets"
@@ -999,17 +998,17 @@ msgstr "Anwendungen entfernen"
 msgid "Remove Latte plasmoid"
 msgstr "Entfernt das Latte plasmoid"
 
-#: ../desktop-templates/org.kde.latte-dock.desktop.template:5
+#: ../desktop-templates/org.kde.latte-dock.desktop.template:3
+msgid "Latte"
+msgstr "Latte"
+
+#: ../desktop-templates/org.kde.latte-dock.desktop.template:4
 msgid "Dock for the masses"
 msgstr "Dock für die Massen"
 
-#: ../desktop-templates/org.kde.latte-dock.desktop.template:8
+#: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock"
 msgstr "Dock"
-
-#: ../desktop-templates/org.kde.latte-dock.desktop.template:13
-msgid "Latte"
-msgstr "Latte"
 
 #: ../desktop-templates/lattedock.notifyrc.template:3
 #: ../desktop-templates/lattedock.notifyrc.template:4

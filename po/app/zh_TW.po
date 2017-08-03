@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-07-28 20:32+0300\n"
+"POT-Creation-Date: 2017-08-03 17:31+0300\n"
 "PO-Revision-Date: 2017-07-29 11:17+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -17,20 +17,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../app/dockview.cpp:1714
+#: ../../app/dockview.cpp:1709
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 選項"
 
-#: ../../app/dockview.cpp:1821
+#: ../../app/dockview.cpp:1816
 msgid "Layouts"
 msgstr "佈局"
 
-#: ../../app/dockview.cpp:1822
+#: ../../app/dockview.cpp:1817
 msgid "Switch to another layout"
 msgstr "切換到其他佈局"
 
-#: ../../app/dockview.cpp:1843
+#: ../../app/dockview.cpp:1838
 msgid "Configure..."
 msgstr "設定..."
 
@@ -47,12 +47,12 @@ msgid "Show Latte Dock"
 msgstr "顯示 Latte Dock"
 
 #: ../../app/importer.cpp:59 ../../app/importer.cpp:76
-#: ../../app/layoutmanager.cpp:84 ../../app/layoutmanager.cpp:86
+#: ../../app/layoutmanager.cpp:85 ../../app/layoutmanager.cpp:87
 msgid "My Layout"
 msgstr "我的佈局"
 
-#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:279
-#: ../../app/layoutmanager.cpp:280
+#: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:285
+#: ../../app/layoutmanager.cpp:286
 msgid "Alternative"
 msgstr "替代"
 
@@ -100,151 +100,148 @@ msgctxt "export button"
 msgid "Export"
 msgstr "匯出"
 
-#: ../../app/layoutconfigdialog.cpp:204
+#: ../../app/layoutconfigdialog.cpp:209
 msgctxt "import layout/configuration"
 msgid "Import Layout/Configuration"
 msgstr "匯入佈局／設定"
 
-#: ../../app/layoutconfigdialog.cpp:213
+#: ../../app/layoutconfigdialog.cpp:218
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock 佈局檔案 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:214
+#: ../../app/layoutconfigdialog.cpp:219
 msgctxt "import latte layouts/configuration"
 msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
 msgstr "Latte Dock 完整設定檔 (v0.1, v0.2)"
 
-#: ../../app/layoutconfigdialog.cpp:230
+#: ../../app/layoutconfigdialog.cpp:235
 msgid "Import: Configuration file version v0.1"
 msgstr "匯入：設定版本 v0.1"
 
-#: ../../app/layoutconfigdialog.cpp:232
+#: ../../app/layoutconfigdialog.cpp:237
 msgid ""
 "You are going to import an old version <b>v0.1</b> configuration file."
 "<br><b>Be careful</b>, importing the entire configuration <b>will erase all</"
 "b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import "
 "safely</b> from this file<br><b>only the contained layouts...</b></i>"
 msgstr ""
-"您將會要匯入舊版本 <b>v0.1</b> 的設定檔。"
-"<br><b>請小心</b>，匯入整個設定檔<b>將會抹除所有</"
-"b>您目前的設定！！！<br><br> <i>另外，您也可以從這個檔案"
-"<b>安全地匯入</b><br><b>僅包含佈局的部份s...</b></i>"
+"您將會要匯入舊版本 <b>v0.1</b> 的設定檔。<br><b>請小心</b>，匯入整個設定檔<b>"
+"將會抹除所有</b>您目前的設定！！！<br><br> <i>另外，您也可以從這個檔案<b>安全"
+"地匯入</b><br><b>僅包含佈局的部份s...</b></i>"
 
-#: ../../app/layoutconfigdialog.cpp:237
+#: ../../app/layoutconfigdialog.cpp:242
 msgctxt "import full configuration"
 msgid "Full Configuration"
 msgstr "完整設定"
 
-#: ../../app/layoutconfigdialog.cpp:239
+#: ../../app/layoutconfigdialog.cpp:244
 msgctxt "import only the layouts"
 msgid "Only Layouts"
 msgstr "僅佈局"
 
-#: ../../app/layoutconfigdialog.cpp:265
+#: ../../app/layoutconfigdialog.cpp:270
 msgid "Import: Configuration file version v0.2"
 msgstr "匯入：設定檔版本 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:267
+#: ../../app/layoutconfigdialog.cpp:272
 msgid ""
 "You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</"
 "b>, importing <b>will erase all</b> your current configuration!!!"
 "<br><br><i>Would you like to proceed?</i>"
 msgstr ""
-"您將會要匯入舊版本 v0.2</b> 的設定檔。<br>請小心</b>"
-"，匯入整個設定檔<b>將會抹除所有</b>您目前的設定！！！"
-"<br><br> <i>您想要繼續嗎？</i>"
+"您將會要匯入舊版本 v0.2</b> 的設定檔。<br>請小心</b>，匯入整個設定檔<b>將會抹"
+"除所有</b>您目前的設定！！！<br><br> <i>您想要繼續嗎？</i>"
 
-#: ../../app/layoutconfigdialog.cpp:312
+#: ../../app/layoutconfigdialog.cpp:317
 msgctxt "layout"
 msgid "Alternative"
 msgstr "替代"
 
-#: ../../app/layoutconfigdialog.cpp:338
+#: ../../app/layoutconfigdialog.cpp:343
 msgctxt "export layout/configuration"
 msgid "Export Layout/Configuration"
 msgstr "匯出佈局／設定"
 
-#: ../../app/layoutconfigdialog.cpp:346
+#: ../../app/layoutconfigdialog.cpp:351
 msgctxt "export layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock 佈局檔案 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:347
+#: ../../app/layoutconfigdialog.cpp:352
 msgctxt "export full configuraion"
 msgid "Latte Dock Full Configuration file v0.2"
 msgstr "Latte Dock 完整設定檔 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:361
+#: ../../app/layoutconfigdialog.cpp:366
 msgctxt "export layout"
 msgid "Failed to export layout"
 msgstr "匯出佈局失敗"
 
-#: ../../app/layoutconfigdialog.cpp:381
+#: ../../app/layoutconfigdialog.cpp:386
 msgctxt "export layout"
 msgid "Open location"
 msgstr "開啟位置"
 
-#: ../../app/layoutconfigdialog.cpp:382
+#: ../../app/layoutconfigdialog.cpp:387
 msgctxt "export layout"
 msgid "Layout exported successfully"
 msgstr "佈局匯出成功"
 
-#: ../../app/layoutconfigdialog.cpp:393
+#: ../../app/layoutconfigdialog.cpp:398
 msgctxt "import/export config"
 msgid "Failed to export configuration"
 msgstr "匯出設定失敗"
 
-#: ../../app/layoutconfigdialog.cpp:400
+#: ../../app/layoutconfigdialog.cpp:405
 msgctxt "import/export config"
 msgid "Open location"
 msgstr "開啟位置"
 
-#: ../../app/layoutconfigdialog.cpp:401
+#: ../../app/layoutconfigdialog.cpp:406
 msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
 msgstr "完整設定匯出成功"
 
-#: ../../app/layoutconfigdialog.cpp:491
+#: ../../app/layoutconfigdialog.cpp:496
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "佈局：<b>%0</b> 匯入成功\n"
 
-#: ../../app/layoutconfigdialog.cpp:529
+#: ../../app/layoutconfigdialog.cpp:534
 msgid "Color"
 msgstr "顏色"
 
-#: ../../app/layoutconfigdialog.cpp:530
+#: ../../app/layoutconfigdialog.cpp:535
 msgid "Name"
 msgstr "名稱"
 
-#: ../../app/layoutconfigdialog.cpp:531
+#: ../../app/layoutconfigdialog.cpp:536
 msgid "In Menu"
 msgstr "在選單中"
 
-#: ../../app/layoutconfigdialog.cpp:532
+#: ../../app/layoutconfigdialog.cpp:537
 msgid "Activities"
 msgstr "活動"
 
-#: ../../app/layoutconfigdialog.cpp:541 ../../app/layoutconfigdialog.cpp:705
+#: ../../app/layoutconfigdialog.cpp:546 ../../app/layoutconfigdialog.cpp:710
 msgid "Layout Warning"
 msgstr "佈局警告"
 
-#: ../../app/layoutconfigdialog.cpp:542
+#: ../../app/layoutconfigdialog.cpp:547
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
 msgstr ""
-"佈局 <b>%0</b> 有<i>損壞的設定</i>！！！請<b>移除 "
-"它們<b>來改善系統的穩定性..."
+"佈局 <b>%0</b> 有<i>損壞的設定</i>！！！請<b>移除 它們<b>來改善系統的穩定"
+"性..."
 
-#: ../../app/layoutconfigdialog.cpp:706
+#: ../../app/layoutconfigdialog.cpp:711
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
 msgstr ""
-"有一些相同名稱的佈局，這是不被允許的！！！請更新"
-"它們的名稱以重新套用變更..."
+"有一些相同名稱的佈局，這是不被允許的！！！請更新它們的名稱以重新套用變更..."
 
 #: ../../app/layoutmanager.cpp:45
 msgid "Add Widgets..."
@@ -254,71 +251,71 @@ msgstr "新增元件..."
 msgid "Show Plasma Widget Explorer"
 msgstr "顯示 Plasma 小工具探索器"
 
-#: ../../app/layoutmanager.cpp:218
+#: ../../app/layoutmanager.cpp:224
 msgid "Switching to layout <b>%0</b> ..."
 msgstr "正在切換到佈局 <b>%0</b> ..."
 
-#: ../../app/layoutmanager.cpp:280 ../../app/layoutmanager.cpp:330
-#: ../../app/layoutmanager.cpp:422 ../../app/layoutmanager.h:84
+#: ../../app/layoutmanager.cpp:286 ../../app/layoutmanager.cpp:336
+#: ../../app/layoutmanager.cpp:434 ../../app/layoutmanager.h:88
 msgid "Default"
 msgstr "預設"
 
-#: ../../app/layoutmanager.cpp:423
+#: ../../app/layoutmanager.cpp:435
 msgid "Plasma"
 msgstr "Plasma"
 
-#: ../../app/layoutmanager.cpp:424
+#: ../../app/layoutmanager.cpp:436
 msgid "Unity"
 msgstr "Unity"
 
-#: ../../app/layoutmanager.cpp:425
+#: ../../app/layoutmanager.cpp:437
 msgid "Extended"
 msgstr "延伸"
 
-#: ../../app/main.cpp:81
+#: ../../app/main.cpp:82
 msgctxt "command line"
 msgid "Replace the current dock instance."
 msgstr "取代目前的 dock 實體。"
 
-#: ../../app/main.cpp:82
+#: ../../app/main.cpp:83
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "在 stdout 顯示除錯資訊。"
 
-#: ../../app/main.cpp:83
+#: ../../app/main.cpp:84
 msgctxt "command line"
 msgid "Show messages of debugging for the mask (Only useful to devs)."
 msgstr "顯示遮罩的除錯用資訊（僅對開發者有用）。"
 
-#: ../../app/main.cpp:84
+#: ../../app/main.cpp:85
 msgctxt "command line"
 msgid "Draw boxes around of the applets."
 msgstr "在小工具旁繪製框線。"
 
-#: ../../app/main.cpp:85
+#: ../../app/main.cpp:86
 msgctxt "command line"
 msgid "Open a window with much debug information."
 msgstr "開啟包含除錯資訊的視窗。"
 
-#: ../../app/main.cpp:86
+#: ../../app/main.cpp:87
 msgctxt "command line"
 msgid "Import configuration."
 msgstr "匯入設定。"
 
-#: ../../app/main.cpp:86
+#: ../../app/main.cpp:87
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "檔案名稱"
 
-#: ../../app/main.cpp:105
+#: ../../app/main.cpp:106
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr "已有執行中的實體！使用 --replace 重新啟動 Latte"
 
-#: ../../app/main.cpp:113
+#: ../../app/main.cpp:114
 msgid "The configuration cannot be imported"
 msgstr "設定無法匯入"
 
-#: ../../app/main.cpp:155
+#: ../../app/main.cpp:158
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "
 "intuitive experience for your tasks and plasmoids. It animates its contents "
@@ -332,15 +329,15 @@ msgstr ""
 "\n"
 "「咖啡中的藝術」"
 
-#: ../../app/main.cpp:172
+#: ../../app/main.cpp:175
 msgid "Logo and Icons"
 msgstr "標誌與圖示"
 
-#: ../../app/main.cpp:174 ../../app/main.cpp:176
+#: ../../app/main.cpp:177 ../../app/main.cpp:179
 msgid "Many bug reports"
 msgstr "許多的錯誤回報"
 
-#: ../../app/main.cpp:178
+#: ../../app/main.cpp:181
 msgid "Reviews for Latte Dock, CandilDock and NowDock"
 msgstr "審閱 Latte Dock、CandilDock 與 NowDock"
 
@@ -721,11 +718,11 @@ msgstr "在滑鼠游標停留其上時預覽視窗"
 msgid "Highlight windows on hovering"
 msgstr "在滑鼠游標停留其上時突顯視窗"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:135
+#: ../../shell/package/contents/configuration/TasksConfig.qml:136
 msgid "Show progress information for tasks"
 msgstr "顯示工作的進度資訊"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:137
+#: ../../shell/package/contents/configuration/TasksConfig.qml:138
 msgid ""
 "Show a beautiful progress animation e.g. when copying \n"
 "files with Dolphin"
@@ -733,70 +730,70 @@ msgstr ""
 "顯示一道漂亮的進度動畫，例如：\n"
 "當使用 Dolphin 複製檔案時"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:147
+#: ../../shell/package/contents/configuration/TasksConfig.qml:148
 msgid "Show window actions in the context menu"
 msgstr "在右鍵選單中顯示視窗動作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:159
+#: ../../shell/package/contents/configuration/TasksConfig.qml:160
 msgid "Show indicator for audio streams"
 msgstr "顯示音訊流指示器"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:161
+#: ../../shell/package/contents/configuration/TasksConfig.qml:162
 msgid "Audio indicator from which the user can mute/unmute an app"
 msgstr "讓使用者可以靜音／取消靜音應用程式的音訊指示器"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:172
+#: ../../shell/package/contents/configuration/TasksConfig.qml:173
 msgid "Activate tasks through mouse wheel"
 msgstr "透過滑鼠滾輪啟用工作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:174
+#: ../../shell/package/contents/configuration/TasksConfig.qml:175
 msgid "Enable/Disable the mouse wheel actions in order to cycle through tasks"
 msgstr "啟用／停用滑鼠滾輪的工作間循環動作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:187
+#: ../../shell/package/contents/configuration/TasksConfig.qml:188
 msgid "On middle-click:"
 msgstr "點擊滑鼠中鍵："
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:194
-#: ../../shell/package/contents/configuration/TasksConfig.qml:236
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgctxt "The click action"
 msgid "None"
 msgstr "無"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:194
-#: ../../shell/package/contents/configuration/TasksConfig.qml:236
+#: ../../shell/package/contents/configuration/TasksConfig.qml:195
+#: ../../shell/package/contents/configuration/TasksConfig.qml:237
 msgid "Close Window or Group"
 msgstr "關閉視窗或群組"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "New Instance"
 msgstr "新的實體"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Minimize/Restore Window or Group"
 msgstr "最小化/復原視窗"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Cycle Through Tasks"
 msgstr "工作循環切換"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:195
-#: ../../shell/package/contents/configuration/TasksConfig.qml:237
+#: ../../shell/package/contents/configuration/TasksConfig.qml:196
+#: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Toggle Task Grouping"
 msgstr "切換工作分組"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:223
+#: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Left Click"
 msgstr "點擊滑鼠左鍵"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:223
+#: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Middle Click"
 msgstr "點擊滑鼠中鍵"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:223
+#: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Right Click"
 msgstr "點擊滑鼠右鍵"
 
@@ -822,28 +819,28 @@ msgstr "佈局"
 msgid "Use the current layout set of launchers for this dock"
 msgstr "為此 dock 使用目前的佈局集"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:298
+#: ../../shell/package/contents/configuration/TasksConfig.qml:299
 msgctxt "global launchers group"
 msgid "Global"
 msgstr "全域"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:302
+#: ../../shell/package/contents/configuration/TasksConfig.qml:303
 msgid "Use the global set of launchers for this dock"
 msgstr "為此 dock 使用全域群集"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:316
+#: ../../shell/package/contents/configuration/TasksConfig.qml:317
 msgid "Filters"
 msgstr "過濾器"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:322
+#: ../../shell/package/contents/configuration/TasksConfig.qml:323
 msgid "Show only tasks from the current screen"
 msgstr "只顯示目前螢幕上的工作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:333
+#: ../../shell/package/contents/configuration/TasksConfig.qml:334
 msgid "Show only tasks from the current desktop"
 msgstr "只顯示目前桌面上的工作"
 
-#: ../../shell/package/contents/configuration/TasksConfig.qml:344
+#: ../../shell/package/contents/configuration/TasksConfig.qml:345
 msgid "Show only tasks from the current activity"
 msgstr "只顯示目前活動裡的工作"
 
@@ -890,8 +887,7 @@ msgid ""
 "plasma taskmanagers are present</i>"
 msgstr ""
 "小工具大小會在其內容超出最大長度時\n"
-"自動縮小<br><br><i>提示：這個選項僅在 plasma "
-" 的工作管理員存在時停用</i>"
+"自動縮小<br><br><i>提示：這個選項僅在 plasma  的工作管理員存在時停用</i>"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
@@ -989,17 +985,17 @@ msgstr "移除工作"
 msgid "Remove Latte plasmoid"
 msgstr "移除 Latte plasmoid"
 
-#: ../desktop-templates/org.kde.latte-dock.desktop.template:5
+#: ../desktop-templates/org.kde.latte-dock.desktop.template:3
+msgid "Latte"
+msgstr "Latte"
+
+#: ../desktop-templates/org.kde.latte-dock.desktop.template:4
 msgid "Dock for the masses"
 msgstr "給大眾使用的 dock"
 
-#: ../desktop-templates/org.kde.latte-dock.desktop.template:8
+#: ../desktop-templates/org.kde.latte-dock.desktop.template:5
 msgid "Dock"
 msgstr "Dock"
-
-#: ../desktop-templates/org.kde.latte-dock.desktop.template:13
-msgid "Latte"
-msgstr "Latte"
 
 #: ../desktop-templates/lattedock.notifyrc.template:3
 #: ../desktop-templates/lattedock.notifyrc.template:4
