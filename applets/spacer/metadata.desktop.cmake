@@ -1,7 +1,9 @@
 [Desktop Entry]
 Name[el]=Latte Κενό
+Name[zh_TW]=Latte Dock 間隔器
 Name=Latte Dock Spacer
 Comment[el]=Διατηρεί κενούς χώρους μέσα στον πίνακα.
+Comment[zh_TW]=在 dock 內保留空間。
 Comment=Reserve empty spaces within the dock.
 
 Encoding=UTF-8

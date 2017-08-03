@@ -68,5 +68,6 @@ Action=Popup
 [Event/switch-layout]
 Name[de]=Wechsel zu Profil
 Name[el]=Εναλλαγή στο προφίλ
+Name[zh_TW]=切換到佈局
 Name=Switch to layout
 Action=Popup
