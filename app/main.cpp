@@ -35,6 +35,7 @@
 #include <QLockFile>
 #include <QSharedMemory>
 
+#include <KCrash>
 #include <KLocalizedString>
 #include <KAboutData>
 #include <KDBusService>
@@ -115,7 +116,6 @@ int main(int argc, char **argv)
         }
     }
 
-
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {
         //! set pattern for debug messages
         //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
@@ -140,6 +140,9 @@ int main(int argc, char **argv)
 
     std::signal(SIGKILL, signal_handler);
     std::signal(SIGINT, signal_handler);
+
+    KCrash::setDrKonqiEnabled(true);
+    KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
     Latte::DockCorona corona;
     KDBusService service(KDBusService::Unique);

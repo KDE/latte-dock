@@ -46,6 +46,7 @@ target_link_libraries(latte-dock
     KF5::CoreAddons
     KF5::GlobalAccel
     KF5::Archive
+    KF5::Crash
     KF5::XmlGui
     KF5::Plasma
     KF5::PlasmaQuick

@@ -40,6 +40,7 @@ We recommend that you use at least **Plasma 5.9.0**
  KF5Notifications >= 5.29.0
  KF5Archive >= 5.29.0
  KF5GlobalAccel >= 5.29.0
+ KF5Crash >= 5.29.0
 
  For X11 support:
     KF5WindowSystem >= 5.29.0
