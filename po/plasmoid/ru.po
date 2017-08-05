@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-08-03 17:31+0300\n"
+"POT-Creation-Date: 2017-08-05 20:16+0300\n"
 "PO-Revision-Date: 2017-07-24 22:09+0700\n"
 "Last-Translator: Vladislav Gorevoy <vladislavgorevoy@gmail.com>\n"
 "Language-Team: \n"
@@ -338,24 +338,24 @@ msgstr ""
 msgid "Add Widgets..."
 msgstr "Добавить виджеты..."
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:966
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:968
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462
 msgid "On %1"
 msgstr "На %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:975
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:977
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:472
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Доступно во всех Комнатах"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:994
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:996
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:494
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Также доступно в %1"
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:998
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:1000
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:498
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
