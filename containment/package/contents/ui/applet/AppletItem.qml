@@ -605,7 +605,7 @@ Item {
 
             layoutsContainer.hoveredIndex = index;
 
-            if (root.isHalfShown) {
+            if (root.isHalfShown || (root.latteApplet && root.latteApplet.noTasksInAnimation>0)) {
                 return;
             }
 
@@ -637,7 +637,7 @@ Item {
                 return;
             }
 
-            if (root.isHalfShown) {
+            if (root.isHalfShown || (root.latteApplet && root.latteApplet.noTasksInAnimation>0)) {
                 return;
             }
 
