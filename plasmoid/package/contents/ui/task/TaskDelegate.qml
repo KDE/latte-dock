@@ -599,23 +599,25 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            if(root.dragSource == null){
-                if (icList.orientation == Qt.Horizontal){
-                    var step = Math.abs(icList.currentSpot-mouse.x);
-                    if (step >= animationStep){
-                        icList.hoveredIndex = index;
-                        icList.currentSpot = mouse.x;
+            if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
+                if(root.dragSource == null){
+                    if (icList.orientation == Qt.Horizontal){
+                        var step = Math.abs(icList.currentSpot-mouse.x);
+                        if (step >= animationStep){
+                            icList.hoveredIndex = index;
+                            icList.currentSpot = mouse.x;
 
-                        wrapper.calculateScales(mouse.x);
+                            wrapper.calculateScales(mouse.x);
+                        }
                     }
-                }
-                else{
-                    var step = Math.abs(icList.currentSpot-mouse.y);
-                    if (step >= animationStep){
-                        icList.hoveredIndex = index;
-                        icList.currentSpot = mouse.y;
+                    else{
+                        var step = Math.abs(icList.currentSpot-mouse.y);
+                        if (step >= animationStep){
+                            icList.hoveredIndex = index;
+                            icList.currentSpot = mouse.y;
 
-                        wrapper.calculateScales(mouse.y);
+                            wrapper.calculateScales(mouse.y);
+                        }
                     }
                 }
             }

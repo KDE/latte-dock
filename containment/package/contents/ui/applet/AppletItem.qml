@@ -57,7 +57,7 @@ Item {
     property bool showZoomed: false
     property bool lockZoom: false
     property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
-                             && applet.status !== PlasmaCore.Types.HiddenStatus
+                              && applet.status !== PlasmaCore.Types.HiddenStatus
     property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
@@ -431,8 +431,8 @@ Item {
 
             //in case there is a neighbour internal separator
             property int separatorSpace: ((root.latteApplet && root.latteApplet.hasInternalSeparator
-                                          && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1)
-                                         || neighbourSeparator) && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
+                                           && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1)
+                                          || neighbourSeparator) && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
             property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
             property real nScale: 0
@@ -492,8 +492,8 @@ Item {
             property bool neighbourSeparator: false;
             //in case there is a neighbour internal separator
             property int separatorSpace: ((root.latteApplet &&  root.latteApplet.hasInternalSeparator
-                                          && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1)
-                                         || neighbourSeparator) && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
+                                           && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1)
+                                          || neighbourSeparator) && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
             property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
             property real nScale: 0
@@ -641,25 +641,27 @@ Item {
                 return;
             }
 
-            if (root.isHorizontal){
-                var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                if (step >= container.animationStep){
-                    layoutsContainer.hoveredIndex = index;
-                    layoutsContainer.currentSpot = mouse.x;
+            if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
+                if (root.isHorizontal){
+                    var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
+                    if (step >= container.animationStep){
+                        layoutsContainer.hoveredIndex = index;
+                        layoutsContainer.currentSpot = mouse.x;
 
-                    wrapper.calculateScales(mouse.x);
+                        wrapper.calculateScales(mouse.x);
+                    }
+                }
+                else{
+                    var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
+                    if (step >= container.animationStep){
+                        layoutsContainer.hoveredIndex = index;
+                        layoutsContainer.currentSpot = mouse.y;
+
+                        wrapper.calculateScales(mouse.y);
+                    }
                 }
             }
-            else{
-                var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                if (step >= container.animationStep){
-                    layoutsContainer.hoveredIndex = index;
-                    layoutsContainer.currentSpot = mouse.y;
 
-                    wrapper.calculateScales(mouse.y);
-                }
-            }
-            //  }
             mouse.accepted = false;
         }
 
