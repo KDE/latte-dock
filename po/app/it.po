@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-03 17:31+0300\n"
-"PO-Revision-Date: 2017-06-17 11:54+0100\n"
+"PO-Revision-Date: 2017-08-05 10:44+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -24,17 +24,16 @@ msgid "%1 Options"
 msgstr "Opzioni %1"
 
 #: ../../app/dockview.cpp:1816
-#, fuzzy
 msgid "Layouts"
 msgstr "Layout"
 
 #: ../../app/dockview.cpp:1817
 msgid "Switch to another layout"
-msgstr ""
+msgstr "Passa a un altro Layout"
 
 #: ../../app/dockview.cpp:1838
 msgid "Configure..."
-msgstr ""
+msgstr "Configura..."
 
 #: ../../app/globalshortcuts.cpp:176
 msgid "Activate Task Manager Entry %1"
@@ -50,20 +49,18 @@ msgstr "Mostra Latte Dock"
 
 #: ../../app/importer.cpp:59 ../../app/importer.cpp:76
 #: ../../app/layoutmanager.cpp:85 ../../app/layoutmanager.cpp:87
-#, fuzzy
 msgid "My Layout"
-msgstr "Layout"
+msgstr "My Layout"
 
 #: ../../app/importer.cpp:60 ../../app/layoutmanager.cpp:285
 #: ../../app/layoutmanager.cpp:286
-#, fuzzy
 msgid "Alternative"
-msgstr "Sessione Alternativa"
+msgstr "Alternativa"
 
 #: ../../app/importer.cpp:266
 msgctxt "import/export config"
 msgid "The extracted file coulnd be copied!!!"
-msgstr ""
+msgstr "Il file estratto potrebbe non essere copiato !!!"
 
 #: ../../app/importer.cpp:271
 msgctxt "import/export config"
@@ -73,64 +70,55 @@ msgstr "Il file ha un formato sbagliato!!!"
 #: ../../app/importer.cpp:277
 msgctxt "import/export config"
 msgid "The temp directory couldnt be created!!!"
-msgstr ""
+msgstr "La directory temp potrebbe non essere creata !!!"
 
 #: ../../app/layoutconfigdialog.cpp:62
-#, fuzzy
 msgid "Layouts Editor"
-msgstr "Layout"
+msgstr "Editor dei Layout"
 
 #: ../../app/layoutconfigdialog.cpp:106
 msgctxt "switch button"
 msgid "Switch"
-msgstr ""
+msgstr "Passa a"
 
 #: ../../app/layoutconfigdialog.cpp:107
-#, fuzzy
 msgctxt "copy button"
 msgid "Copy"
-msgstr "Copia la Dock"
+msgstr "Copia"
 
 #: ../../app/layoutconfigdialog.cpp:108
-#, fuzzy
 msgctxt "remove button"
 msgid "Remove"
 msgstr "Rimuovi"
 
 #: ../../app/layoutconfigdialog.cpp:109
-#, fuzzy
 msgctxt "import button"
 msgid "Import"
 msgstr "Importa"
 
 #: ../../app/layoutconfigdialog.cpp:110
-#, fuzzy
 msgctxt "export button"
 msgid "Export"
 msgstr "Esporta"
 
 #: ../../app/layoutconfigdialog.cpp:209
-#, fuzzy
 msgctxt "import layout/configuration"
 msgid "Import Layout/Configuration"
-msgstr "Importa configurazione"
+msgstr "Importa Layout/Configurazione"
 
 #: ../../app/layoutconfigdialog.cpp:218
-#, fuzzy
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
-msgstr "File di configurazione di Latte Dock"
+msgstr "Latte Dock Layout File v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:219
-#, fuzzy
 msgctxt "import latte layouts/configuration"
 msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
-msgstr "File di configurazione di Latte Dock"
+msgstr "Latte Dock, file di Configurazione Completo (v0.1, v0.2)"
 
 #: ../../app/layoutconfigdialog.cpp:235
-#, fuzzy
 msgid "Import: Configuration file version v0.1"
-msgstr "Importa la configurazione"
+msgstr "Importa: File di configurazione versione v0.1"
 
 #: ../../app/layoutconfigdialog.cpp:237
 msgid ""
@@ -139,23 +127,26 @@ msgid ""
 "b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import "
 "safely</b> from this file<br><b>only the contained layouts...</b></i>"
 msgstr ""
+"Stai per importare un vecchio file di configurazione <b> v0.1 </b>."
+"<br> <b> Fai attenzione </b>, importando l'intera configurazione <b>"
+" cancellerà tutta </b>"
+"B> la tua corrente configurazione !!!. <br> <br> <i> In alternativa, puoi"
+" importare <b>"
+"in sicurezza </b> da questo file - <b> solo i layout contenuti ... </b> </i>"
 
 #: ../../app/layoutconfigdialog.cpp:242
-#, fuzzy
 msgctxt "import full configuration"
 msgid "Full Configuration"
-msgstr "Importa configurazione"
+msgstr "Configurazione completa"
 
 #: ../../app/layoutconfigdialog.cpp:244
-#, fuzzy
 msgctxt "import only the layouts"
 msgid "Only Layouts"
-msgstr "Layout"
+msgstr "Solo i Layout"
 
 #: ../../app/layoutconfigdialog.cpp:270
-#, fuzzy
 msgid "Import: Configuration file version v0.2"
-msgstr "Importa la configurazione"
+msgstr "Importa: File di configurazione versione v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:272
 msgid ""
@@ -163,48 +154,46 @@ msgid ""
 "b>, importing <b>will erase all</b> your current configuration!!!"
 "<br><br><i>Would you like to proceed?</i>"
 msgstr ""
+"Stai per importare un file di configurazione <b> v0.2 </b>. <B> Fai"
+" attenzione </"
+"B>, l'importazione <b> cancellerà tutta </b> la tua corrente configurazione"
+" !!!"
+"<br> <br> <i> Vuoi procedere? </I>"
 
 #: ../../app/layoutconfigdialog.cpp:317
-#, fuzzy
 msgctxt "layout"
 msgid "Alternative"
-msgstr "Sessione Alternativa"
+msgstr "Alternativa"
 
 #: ../../app/layoutconfigdialog.cpp:343
-#, fuzzy
 msgctxt "export layout/configuration"
 msgid "Export Layout/Configuration"
-msgstr "Esporta configurazione"
+msgstr "Esporta Layout/Configurazione"
 
 #: ../../app/layoutconfigdialog.cpp:351
-#, fuzzy
 msgctxt "export layout"
 msgid "Latte Dock Layout file v0.2"
-msgstr "File di configurazione di Latte Dock"
+msgstr "Latte Dock Layout File v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:352
-#, fuzzy
 msgctxt "export full configuraion"
 msgid "Latte Dock Full Configuration file v0.2"
-msgstr "File di configurazione di Latte Dock"
+msgstr "Latte Dock, file di Configurazione Completo v0.2"
 
 #: ../../app/layoutconfigdialog.cpp:366
-#, fuzzy
 msgctxt "export layout"
 msgid "Failed to export layout"
 msgstr "Impossibile esportare la configurazione"
 
 #: ../../app/layoutconfigdialog.cpp:386
-#, fuzzy
 msgctxt "export layout"
 msgid "Open location"
 msgstr "Apri posizione"
 
 #: ../../app/layoutconfigdialog.cpp:387
-#, fuzzy
 msgctxt "export layout"
 msgid "Layout exported successfully"
-msgstr "Configurazione esportata con successo"
+msgstr "Layout esportato con successo"
 
 #: ../../app/layoutconfigdialog.cpp:398
 msgctxt "import/export config"
@@ -217,49 +206,51 @@ msgid "Open location"
 msgstr "Apri posizione"
 
 #: ../../app/layoutconfigdialog.cpp:406
-#, fuzzy
 msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
-msgstr "Configurazione esportata con successo"
+msgstr "La configurazione completa è stata esportata correttamente"
 
 #: ../../app/layoutconfigdialog.cpp:496
-#, fuzzy
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
-msgstr "Configurazione importata con successo"
+msgstr "Layout: <b>%0</b> importato con successo\n"
 
 #: ../../app/layoutconfigdialog.cpp:534
 msgid "Color"
-msgstr ""
+msgstr "Colore"
 
 #: ../../app/layoutconfigdialog.cpp:535
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: ../../app/layoutconfigdialog.cpp:536
 msgid "In Menu"
-msgstr ""
+msgstr "Nel Menu"
 
 #: ../../app/layoutconfigdialog.cpp:537
 msgid "Activities"
-msgstr ""
+msgstr "Attività"
 
 #: ../../app/layoutconfigdialog.cpp:546 ../../app/layoutconfigdialog.cpp:710
-#, fuzzy
 msgid "Layout Warning"
-msgstr "Layout"
+msgstr "Avviso Layout"
 
 #: ../../app/layoutconfigdialog.cpp:547
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
 msgstr ""
+"I layout <b>% 0 </b> hanno <i> la configurazione corrotta</i> !!! Si prega di"
+" <b> rimuoverli "
+"<b> per migliorare la stabilità del sistema ..."
 
 #: ../../app/layoutconfigdialog.cpp:711
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
 msgstr ""
+"Ci sono layout con lo stesso nome ma questo non è permesso !!! "
+"Per favore aggiorna i nomi per ri-applicare le modifiche ...  "
 
 #: ../../app/layoutmanager.cpp:45
 msgid "Add Widgets..."
@@ -271,7 +262,7 @@ msgstr "Mostra Plasma Widget Explorer"
 
 #: ../../app/layoutmanager.cpp:224
 msgid "Switching to layout <b>%0</b> ..."
-msgstr ""
+msgstr "Passa al layout <b>%0</b> ..."
 
 #: ../../app/layoutmanager.cpp:286 ../../app/layoutmanager.cpp:336
 #: ../../app/layoutmanager.cpp:434 ../../app/layoutmanager.h:88
@@ -382,43 +373,39 @@ msgstr ""
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:49
 msgid "Info View Window"
-msgstr ""
+msgstr "Finestra di visualizzazione delle informazioni"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:51
 msgid "default layout file"
-msgstr "Default layout file"
+msgstr "\"Default\" layout file"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:52
 msgid "plasma layout file"
-msgstr "Plasma layout file"
+msgstr "\"Plasma\" layout file"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:53
 msgid "unity layout file"
-msgstr "Unity layout file"
+msgstr "\"Unity\" layout file"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:54
 msgid "extended layout file"
-msgstr "Esteso layout file"
+msgstr "\"Esteso\" layout file"
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:56
-#, fuzzy
 msgid "default preset file"
-msgstr "Default layout file"
+msgstr "File predefinito \"Default\""
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:57
-#, fuzzy
 msgid "plasma preset file"
-msgstr "Plasma layout file"
+msgstr "File predefinito \"Plasma\""
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:58
-#, fuzzy
 msgid "unity preset file"
-msgstr "Unity layout file"
+msgstr "File predefinito \"Unity\""
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:59
-#, fuzzy
 msgid "extended preset file"
-msgstr "Esteso layout file"
+msgstr "File predefinito \"Esteso\""
 
 #: ../../app/packageplugins/shell/dockpackage.cpp:61
 msgid "tasks plasmoid separator"
@@ -431,16 +418,15 @@ msgstr "Layout"
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:115
 msgctxt "opens the layout manager window"
 msgid "Configure..."
-msgstr ""
+msgstr "Configura..."
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:131
 msgid "Applets Size"
 msgstr "Dimensione delle icone"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:180
-#, fuzzy
 msgid "Zoom On Hover:"
-msgstr "Fattore di Zoom"
+msgstr "Zoom al passaggio del mouse:"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:188
 msgid "Zoom Factor"
@@ -491,7 +477,7 @@ msgstr "Dimensione:"
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:447
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:687
 msgid "Opacity: "
-msgstr ""
+msgstr "Opacità:"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:494
 msgid "Shadows"
@@ -506,7 +492,6 @@ msgid "Applet shadows"
 msgstr "Ombre degli elementi grafici"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:541
-#, fuzzy
 msgctxt "show applet shadow"
 msgid "Show"
 msgstr "Mostra"
@@ -514,16 +499,16 @@ msgstr "Mostra"
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:568
 msgctxt "Use theme shadow"
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
 msgctxt "Clear applet shadow settings"
 msgid "Clear"
-msgstr ""
+msgstr "Pulisci"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:651
 msgid "Please choose shadow color"
-msgstr ""
+msgstr "Per favore, scegli il colore dell'ombra"
 
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:779
 #: ../../shell/package/contents/configuration/AppearanceConfig.qml:797
@@ -813,7 +798,7 @@ msgstr "Attraversa ciclicamente i Task"
 #: ../../shell/package/contents/configuration/TasksConfig.qml:196
 #: ../../shell/package/contents/configuration/TasksConfig.qml:238
 msgid "Toggle Task Grouping"
-msgstr ""
+msgstr "Raggruppa/separa i Task"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:224
 msgid "Left Click"
@@ -829,35 +814,36 @@ msgstr "Click destro"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:253
 msgid "Launchers Group"
-msgstr ""
+msgstr "Gruppo Lanciatori"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:276
 msgctxt "unique launchers group"
 msgid "Unique"
-msgstr ""
+msgstr "Unico"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:280
 msgid "Use a unique set of launchers for this dock"
-msgstr ""
+msgstr "Utilizza un insieme unico di lanciatori per questa dock"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:287
-#, fuzzy
 msgctxt "layout launchers group"
 msgid "Layout"
 msgstr "Layout"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:291
 msgid "Use the current layout set of launchers for this dock"
-msgstr ""
+msgstr "Utilizza il set di lanciatori del layout corrente per questa dock"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:299
 msgctxt "global launchers group"
 msgid "Global"
-msgstr ""
+msgstr "Globale"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:303
 msgid "Use the global set of launchers for this dock"
 msgstr ""
+"Dock differenti, possono avere lo stesso insieme di lanciatori indipendente"
+" dai layout"
 
 #: ../../shell/package/contents/configuration/TasksConfig.qml:317
 msgid "Filters"
@@ -881,7 +867,7 @@ msgstr "Sfondo del pannello sfuocato"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:67
 msgid "Show applets/task title tooltips on hovering"
-msgstr ""
+msgstr "Mostra il nome dell'applet/task al passaggio del mouse"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
 msgid "Shrink thickness margins to minimum"
@@ -912,14 +898,15 @@ msgid "Decrease applets size when it is needed"
 msgstr "Ridimensiona icone quando necessario"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
-#, fuzzy
 msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length <br><br><i>Hint: this option is disabled when only "
 "plasma taskmanagers are present</i>"
 msgstr ""
 "Le dimensioni delle icone vengono ridotte automaticamente quando \n"
-"il contenuto della dock supera la lunghezza massima"
+"il contenuto della dock supera la sua lunghezza massima  <br><br><i>"
+"Suggerimento: questa opzione è disabilitata quando sono presenti solo i"
+" plasma taskmanagers </i>"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
@@ -945,11 +932,11 @@ msgstr ""
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:173
 msgid "Show info for layouts automatic switching"
-msgstr ""
+msgstr "Mostra informazioni per la commutazione automatica dei layout"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:175
 msgid "It shows a Latte specific info window"
-msgstr ""
+msgstr "Mostra una finestra informativa specifica di Latte"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:184
 msgid "Raise dock on desktop change"
@@ -973,11 +960,13 @@ msgid ""
 "Latte will not show any active applet indicator on its own\n"
 " except those the plasma theme provides"
 msgstr ""
+"Latte non mostrerà alcun indicatore di applet attiva di proprio \n"
+"eccetto per quelli che, il tema plasma, offre"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:251
 msgctxt "active indicator only to in-house latte applets"
 msgid "Internals"
-msgstr "Interno"
+msgstr "Interni"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:255
 msgid ""
@@ -985,6 +974,9 @@ msgid ""
 "adjusted\n"
 " by it for hovering capabilities e.g. folderview"
 msgstr ""
+"Latte mostrerà l'indicatore applet attiva solo per applet che sono state"
+" adattate\n"
+" ad esso per capacità di navigazione, ad es. folderview"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:262
 msgctxt "active indicator to all applets"
@@ -993,7 +985,7 @@ msgstr "Tutto"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:266
 msgid "Latte will show active applet indicators for all applets"
-msgstr ""
+msgstr "Latte mostrerà l'indicatore applet attiva, per tutte le applet"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:282
 msgid "Extra Actions"
@@ -1050,7 +1042,7 @@ msgstr "Impossibile esportare la configurazione"
 
 #: ../desktop-templates/lattedock.notifyrc.template:24
 msgid "Switch to layout"
-msgstr ""
+msgstr "Passa al layout"
 
 #, fuzzy
 #~ msgctxt "layout launchers"
