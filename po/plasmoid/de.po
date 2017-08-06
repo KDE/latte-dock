@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-05 20:16+0300\n"
-"PO-Revision-Date: 2017-07-28 20:14+0100\n"
+"PO-Revision-Date: 2017-08-06 22:20+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -40,7 +40,7 @@ msgstr "Schatten für Icons"
 
 #: ../../plasmoid/package/contents/ui/config/ConfigAppearance.qml:160
 msgid "Show glow around windows points"
-msgstr "Zeige glühende Punkte für Fenster"
+msgstr "Zeige <b>glühende</b> Punkte für Fenster"
 
 #: ../../plasmoid/package/contents/ui/config/ConfigAppearance.qml:166
 msgid "Different color for minimized windows"
@@ -76,7 +76,7 @@ msgstr "Stufe:"
 
 #: ../../plasmoid/package/contents/ui/config/ConfigAppearance.qml:284
 msgid "Show a red line on the limit needed for animations"
-msgstr "Rote Linie für minimalen Platzbedarf"
+msgstr "Rote Linie zeigt minimalen Platzbedarf"
 
 #: ../../plasmoid/package/contents/ui/config/ConfigAppearance.qml:314
 #: ../../plasmoid/package/contents/ui/config/ConfigPanel.qml:171

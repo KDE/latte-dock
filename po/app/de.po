@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-05 20:16+0300\n"
-"PO-Revision-Date: 2017-07-28 20:43+0100\n"
+"PO-Revision-Date: 2017-08-06 22:24+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -886,17 +886,17 @@ msgid "Decrease applets size when it is needed"
 msgstr "Verkleinere Applets wenn notwendig"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:138
-#, fuzzy
 msgid ""
 "Applets size is decreased automatically when the contents \n"
 "exceed the maximum length \n"
 "\n"
 "Hint: this option is disabled when only plasma taskmanagers are present"
 msgstr ""
-"Applet Größe verkleinert sich automatisch wenn der Inhalt die maximale Länge "
-"erreicht\n"
-"<br><br><i>Tip: Wenn sich kein Starterbereich/Latte-Plasmoid in dieser "
-"Leiste befindet ist diese Option ausgegraut</i>"
+"Applet Größe verkleinert sich automatisch wenn der Inhalt \n"
+"die maximale Länge erreicht \n"
+"\n"
+"Tip: Wenn sich kein Starterbereich/Latte-Plasmoid in \n"
+"dieser Leiste befindet ist diese Option ausgegraut"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:148
 msgid "Add launchers only in the corresponding area"
@@ -954,7 +954,7 @@ msgid ""
 " except those the plasma theme provides"
 msgstr ""
 "Latte wird keine eigenen Indikatoren für aktive Applets anzeigen\n"
-" Plasma Design Indikatoren werden jedoch angezeigt."
+"Plasma Design Indikatoren werden jedoch angezeigt."
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:251
 msgctxt "active indicator only to in-house latte applets"
@@ -969,7 +969,7 @@ msgid ""
 msgstr ""
 "Latte zeigt nur Indikatoren für aktive Applets wenn es vorher so eingestellt "
 "wurde\n"
-"  z.B. für die Ordneransicht "
+"z.B. für die Ordneransicht "
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:262
 msgctxt "active indicator to all applets"
@@ -998,7 +998,7 @@ msgstr "Anwendungen entfernen"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:306
 msgid "Remove Latte plasmoid"
-msgstr "Entfernt das Latte plasmoid"
+msgstr "Entfernt das Latte Plasmoid"
 
 #: ../desktop-templates/org.kde.latte-dock.desktop.template:3
 msgid "Latte"
