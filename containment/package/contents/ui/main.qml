@@ -351,6 +351,13 @@ DragDrop.DropArea {
         }
 
         updateLayouts();
+
+        //! This is used in case the dndspacer has been left behind
+        //! e.g. the user drops a folder and a context menu is appearing
+        //! but the user decides to not make a choice for the applet type
+        if (dndSpacer.parent !== root) {
+            dndSpacer.parent = root;
+        }
     }
 
     onDockChanged: {
@@ -453,7 +460,8 @@ DragDrop.DropArea {
 
         root.addLaunchersMessage = false;
         dndSpacer.opacity = 0;
-        dndSpacer.parent = root;
+        //! this line is very important because it positions correctly the new applets
+        //dndSpacer.parent = root;
     }
 
     onLatteAppletChanged: {
