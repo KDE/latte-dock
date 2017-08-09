@@ -1161,7 +1161,7 @@ void DockView::setBlockHiding(bool block)
     if (!block) {
         auto *configView = qobject_cast<DockConfigView *>(m_configView);
 
-        if (m_alternativesIsShown || (configView && configView->sticker())) {
+        if (m_alternativesIsShown || (configView && configView->sticker() && configView->isVisible())) {
             return;
         }
 

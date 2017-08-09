@@ -974,7 +974,7 @@ DragDrop.DropArea {
             dock.setBlockHiding(true);
         } else {
             if (!root.editMode)
-                dock.visibiliy.setBlockHiding(false);
+                dock.setBlockHiding(false);
         }
     }
 
