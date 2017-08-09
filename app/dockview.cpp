@@ -790,6 +790,23 @@ void DockView::statusChanged(Plasma::Types::ItemStatus status)
     }
 }
 
+bool DockView::alternativesIsShown() const
+{
+    return m_alternativesIsShown;
+}
+
+void DockView::setAlternativesIsShown(bool show)
+{
+    if (m_alternativesIsShown == show) {
+        return;
+    }
+
+    m_alternativesIsShown = show;
+
+    setBlockHiding(show);
+    emit alternativesIsShownChanged();
+}
+
 bool DockView::contextMenuIsShown() const
 {
     return m_contextMenu;
@@ -1137,6 +1154,21 @@ void DockView::setShadow(int shadow)
     }
 
     emit shadowChanged();
+}
+
+void DockView::setBlockHiding(bool block)
+{
+    if (!block) {
+        auto *configView = qobject_cast<DockConfigView *>(m_configView);
+
+        if (m_alternativesIsShown || (configView && configView->sticker())) {
+            return;
+        }
+
+        m_visibility->setBlockHiding(false);
+    } else {
+        m_visibility->setBlockHiding(true);
+    }
 }
 
 void DockView::updateEffects()

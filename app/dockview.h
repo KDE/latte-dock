@@ -21,8 +21,8 @@
 #ifndef DOCKVIEW_H
 #define DOCKVIEW_H
 
-#include "plasmaquick/configview.h"
 #include "plasmaquick/containmentview.h"
+#include "plasmaquick/configview.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/dock.h"
 
@@ -52,6 +52,7 @@ namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
+    Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
@@ -96,6 +97,9 @@ public:
 
     void resizeWindow(QRect availableScreenRect = QRect());
     void syncGeometry();
+
+    bool alternativesIsShown() const;
+    void setAlternativesIsShown(bool show);
 
     bool onPrimary() const;
     void setOnPrimary(bool flag);
@@ -173,6 +177,7 @@ public slots:
 
     Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void removeTasksPlasmoid();
+    Q_INVOKABLE void setBlockHiding(bool block);
     Q_INVOKABLE void toggleAppletExpanded(const int id);
     Q_INVOKABLE void updateEnabledBorders();
 
@@ -200,6 +205,7 @@ signals:
     void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
 
+    void alternativesIsShownChanged();
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
     void contextMenuIsShownChanged();
@@ -253,6 +259,7 @@ private:
 private:
     Plasma::Containment *containmentById(uint id);
 
+    bool m_alternativesIsShown{false};
     bool m_behaveAsPlasmaPanel{false};
     bool m_forceDrawCenteredBorders{false};
     bool m_dockWinBehavior{true};

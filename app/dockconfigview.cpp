@@ -346,6 +346,11 @@ void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
         hideConfigWindow();
 }
 
+bool DockConfigView::sticker() const
+{
+    return m_blockFocusLost;
+}
+
 void DockConfigView::setSticker(bool blockFocusLost)
 {
     if (m_blockFocusLost == blockFocusLost)

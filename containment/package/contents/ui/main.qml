@@ -579,7 +579,7 @@ DragDrop.DropArea {
         // console.debug("user configuring", plasmoid.userConfiguring)
 
         if (plasmoid.userConfiguring) {
-            dock.visibility.blockHiding = true;
+            dock.setBlockHiding(true);
 
             //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
@@ -599,7 +599,7 @@ DragDrop.DropArea {
                 dragOverlay.visible = true;
             }
         } else {
-            dock.visibility.blockHiding = false;
+            dock.setBlockHiding(false);
 
             if (dock.visibility.isHidden) {
                 dock.visibility.mustBeShown();
@@ -971,10 +971,10 @@ DragDrop.DropArea {
         actionsBlockHiding = Math.max(actionsBlockHiding + step, 0);
 
         if (actionsBlockHiding > 0){
-            dock.visibility.blockHiding = true;
+            dock.setBlockHiding(true);
         } else {
             if (!root.editMode)
-                dock.visibility.blockHiding = false;
+                dock.visibiliy.setBlockHiding(false);
         }
     }
 

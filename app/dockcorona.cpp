@@ -1010,6 +1010,17 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
 
     m_alternativesObjects << qmlObj;
     qmlObj->completeInitialization();
+
+    DockView *dockView = m_dockViews[applet->containment()];
+
+    if (dockView) {
+        dockView->setAlternativesIsShown(true);
+    }
+
+    connect(helper, &QObject::destroyed, this, [dockView]() {
+        dockView->setAlternativesIsShown(false);
+    });
+
     connect(qmlObj->rootObject(), SIGNAL(visibleChanged(bool)),
             this, SLOT(alternativesVisibilityChanged(bool)));
 

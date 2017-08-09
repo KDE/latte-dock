@@ -57,6 +57,8 @@ public:
     void init() override;
     Qt::WindowFlags wFlags() const;
 
+    bool sticker() const;
+
 public slots:
     Q_INVOKABLE void addPanelSpacer();
     Q_INVOKABLE void hideConfigWindow();
