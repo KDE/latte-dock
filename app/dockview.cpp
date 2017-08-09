@@ -1165,9 +1165,13 @@ void DockView::setBlockHiding(bool block)
             return;
         }
 
-        m_visibility->setBlockHiding(false);
+        if (m_visibility) {
+            m_visibility->setBlockHiding(false);
+        }
     } else {
-        m_visibility->setBlockHiding(true);
+        if (m_visibility) {
+            m_visibility->setBlockHiding(true);
+        }
     }
 }
 

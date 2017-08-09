@@ -1001,7 +1001,17 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    KDeclarative::QmlObject *qmlObj = new KDeclarative::QmlObject(this);
+    DockView *dockView = m_dockViews[applet->containment()];
+
+    KDeclarative::QmlObject *qmlObj{nullptr};
+
+    if (dockView) {
+        dockView->setAlternativesIsShown(true);
+        qmlObj = new KDeclarative::QmlObject(dockView);
+    } else {
+        qmlObj = new KDeclarative::QmlObject(this);
+    }
+
     qmlObj->setInitializationDelayed(true);
     qmlObj->setSource(QUrl::fromLocalFile(alternativesQML));
 
@@ -1011,12 +1021,7 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
     m_alternativesObjects << qmlObj;
     qmlObj->completeInitialization();
 
-    DockView *dockView = m_dockViews[applet->containment()];
-
-    if (dockView) {
-        dockView->setAlternativesIsShown(true);
-    }
-
+    //! Alternative dialog signals
     connect(helper, &QObject::destroyed, this, [dockView]() {
         dockView->setAlternativesIsShown(false);
     });
