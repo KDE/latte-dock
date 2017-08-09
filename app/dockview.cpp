@@ -1733,7 +1733,7 @@ void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEve
 
         QAction *appletAlternatives = applet->actions()->action(QStringLiteral("alternatives"));
 
-        if (appletAlternatives && appletAlternatives->isEnabled()) {
+        if (appletAlternatives && appletAlternatives->isEnabled() && containment()->isUserConfiguring()) {
             desktopMenu->addAction(appletAlternatives);
         }
     }
