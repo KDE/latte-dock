@@ -783,9 +783,9 @@ void DockView::statusChanged(Plasma::Types::ItemStatus status)
     if (containment()) {
         if (containment()->status() >= Plasma::Types::NeedsAttentionStatus &&
             containment()->status() != Plasma::Types::HiddenStatus) {
-            m_visibility->setBlockHiding(true);
+            setBlockHiding(true);
         } else {
-            m_visibility->setBlockHiding(false);
+            setBlockHiding(false);
         }
     }
 }
