@@ -111,10 +111,10 @@ Item{
 
     property int marginWidth: root.isVertical ?
                                   (applet && (applet.pluginName === "org.kde.plasma.systemtray") ? root.thickMarginBase : root.thickMargin ) :
-                                  root.iconMargin
+                                  (root.inFullJustify && (container.firstChildOfStartLayout || container.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
                                    (applet && (applet.pluginName === "org.kde.plasma.systemtray") ? root.thickMarginBase : root.thickMargin ) :
-                                   root.iconMargin
+                                   (root.inFullJustify && (container.firstChildOfStartLayout || container.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)

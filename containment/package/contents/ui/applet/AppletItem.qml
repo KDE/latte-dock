@@ -63,6 +63,8 @@ Item {
     property bool isZoomed: false
     property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator"
 
+    property bool firstChildOfStartLayout: (index === layoutsContainer.startLayout.beginIndex)
+    property bool lastChildOfEndLayout: ((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1))
     //applet is in starting edge
     /*property bool startEdge: index < layoutsContainer.endLayout.beginIndex ? (index === 0)&&(layoutsContainer.mainLayout.count > 1) :
                                                                (index === layoutsContainer.endLayout.beginIndex)&&(layoutsContainer.endLayout.count > 1)*/

@@ -85,6 +85,7 @@ DragDrop.DropArea {
 
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
+    property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (plasmoid.configuration.maxLength===100)
     property bool inStartup: true
     property bool isHalfShown: false //is used to disable the zoom hovering effect at sliding in-out the dock
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
@@ -188,8 +189,8 @@ DragDrop.DropArea {
 
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
-    property int thickMarginBase: shrinkThickMargins ? 1 : Math.ceil(0.06 * iconSize)
-    property int thickMarginHigh: shrinkThickMargins ? 1 : Math.ceil(0.06 * iconSize)
+    property int thickMarginBase: shrinkThickMargins ? 0 : Math.ceil(0.06 * iconSize)
+    property int thickMarginHigh: shrinkThickMargins ? 0 : Math.ceil(0.06 * iconSize)
     property int thickMargin: thickMarginBase + thickMarginHigh
 
     //it is used in order to not break the calculations for the thickness placement
