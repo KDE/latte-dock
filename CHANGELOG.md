@@ -1,5 +1,44 @@
 #**CHANGELOG**#
 
+#### Version 0.7.0
+
+* wayland tech preview
+* dynamic layouts, different layouts per activities
+* new layouts editor
+* support copy, remove, presets, import, export for layouts
+* basic/advanced mode for configuration window
+* windows go below visibility mode
+* title tooltips
+* change dock offset, panel transparency, applets shadow, panel shadow
+* dynamic background, show background only for maximized windows
+* separators everywhere as applets and one special internal separator for tasks
+* audio streams indicator, increase/decrease/mute volume
+* different launchers groups, unique/global/layout to sync launchers between docks
+* support applets that can fill all the free space of the dock
+* support plasma taskmanagers in order to replace Latte plasmoid
+* libunity support for progress indicators and counters
+* global shortcuts for activating tasks,showing app launcher, show the hidden dock
+* an all new dbus interface to show tasks counters
+* a community thunderbird plugin using the new latte dbus interface
+* switch completely to plasma libtaskmanager for launchers and tasks
+* improve color handling for window different states
+* add Widgets through the context menu
+* places support from Plasma 5.10
+* a special Latte spacer that its size can be set in pixels or in percentage according to the current Latte icon size
+* active window indicator for window previews
+* copy dock support, fantastic feature for multi-screen environments
+* remember last active window in a tasks group and use the mouse wheel to cycle through a tasks group
+* restart Latte in case of a crash
+* overlay over plasma applets such as forlderview in order to provide correct parabolic effect (bug: showing problematic animations for icon sizes smaller of 64px)
+* provide our own build-in active applet indicator in case the user wants to have uniformity across its docks
+* move the lock button from the drag area into the tooltip
+* disable automatic icon size shrinking when a plasma taskmanager is used
+* improvements for parabolic effect and  various animations
+* support import/export for layout independently and for the full configuration
+* support automatic and manual importing from v0.6 architecture
+* version 0.7 contains around 700 new commits comparing with the v0.6.x branch
+* various small or big improvements/bug fixes etc 
+
 #### Version 0.6.0
 
 * fix #344, edit mode still active when I change the session
