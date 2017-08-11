@@ -1404,8 +1404,10 @@ DragDrop.DropArea {
             if (dock.contextMenuIsShown)
                 return;
 
-            if (!dock.visibility.containsMouse  || (rootMouseArea.containsMouse && !root.editMode)
-                    || !mouseInCanBeHoveredApplet()){
+            //! dropped because was creating a glitch when the user was clicking the area
+            //! underneath the applet until the screen edge and the applet was zoomed
+            // || (rootMouseArea.containsMouse && !root.editMode)
+            if (!dock.visibility.containsMouse || !mouseInCanBeHoveredApplet()) {
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();
 
