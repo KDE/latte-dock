@@ -753,55 +753,6 @@ PlasmaComponents.ContextMenu {
 
     //////END OF NEW ARCHITECTURE
 
-
-    PlasmaComponents.MenuItem {
-        property QtObject configureAction: null
-
-        visible: !latteDock
-        enabled: configureAction && configureAction.enabled
-
-        text: configureAction ? configureAction.text : ""
-        icon: configureAction ? configureAction.icon : ""
-
-        onClicked: configureAction.trigger()
-
-        Component.onCompleted: configureAction = plasmoid.action("configure")
-    }
-
-
-    PlasmaComponents.MenuItem {
-        separator: true
-    }
-
-    PlasmaComponents.MenuItem {
-        id: closeWindowItem
-        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
-
-        enabled: visualParent && visualParent.m.IsClosable === true
-
-        text: i18n("Close")
-        icon: "window-close"
-
-        onClicked: {
-            if (root.zoomFactor>1) {
-                delayWindowRemovalTimer.modelIndex = menu.modelIndex;
-                delayWindowRemovalTimer.start();
-            } else {
-                tasksModel.requestClose(menu.modelIndex);
-            }
-        }
-    }
-
-    PlasmaComponents.MenuItem {
-        id: removePlasmoid
-        visible: !latteDock && !plasmoid.immutable
-
-        text: plasmoid.action("remove").text
-        icon: plasmoid.action("remove").icon
-
-        onClicked: plasmoid.action("remove").trigger();
-    }
-
     PlasmaComponents.MenuItem {
         separator: true
     }
@@ -884,13 +835,12 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: altenativesMenuItem
+        id: alternativesMenuItem
         visible: root.editMode
         text: plasmoid.action("alternatives").text
         icon: plasmoid.action("alternatives").icon
 
         onClicked: plasmoid.action("alternatives").trigger();
-
     }
 
     PlasmaComponents.MenuItem {
@@ -904,56 +854,44 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: containmentMenuItem
+        id: configureItem
 
-        visible: latteDock
-        enabled: visible
-
-        icon: "latte-dock"
-        text: "Latte"
-
-        PlasmaComponents.ContextMenu {
-            id: containmentSubMenu
-
-            visualParent: containmentMenuItem.action
-
-            function refresh() {
-                clearMenuItems();
-
-                var actionList = latteDock.containmentActions();
-
-                var visibleActions=0;
-
-                for (var i=0; i<actionList.length; ++i){
-                    console.log(i);
-                    if (actionList[i].visible) {
-                        visibleActions++;
-                    }
-                }
-
-                if (visibleActions > 1) {
-                    for (var i=0; i<actionList.length; ++i){
-                        var item = menu.newMenuItem(containmentSubMenu);
-                        item.visible = false;
-                        item.action = actionList[i];
-                        containmentSubMenu.addMenuItem(item,containmentMenuItem);
-                    }
-                } else if (visibleActions === 1){
-                    for (var i=0; i<actionList.length; ++i){
-                        if (actionList[i].visible){
-                            var item = menu.newMenuItem(menu);
-                            item.action = actionList[i];
-                        }
-                    }
-                }
-
-                if (visibleActions <= 1) {
-                    containmentMenuItem.visible = false;
-                }
-            }
-
-            Component.onCompleted: refresh();
-        }
+        action: latteDock ? latteDock.containmentActions()[1] : plasmoid.action("configure")
     }
 
+    PlasmaComponents.MenuItem {
+        id: removePlasmoid
+        visible: !latteDock && !plasmoid.immutable
+
+        text: plasmoid.action("remove").text
+        icon: plasmoid.action("remove").icon
+
+        onClicked: plasmoid.action("remove").trigger();
+    }
+
+    PlasmaComponents.MenuItem {
+        separator: true
+        visible: closeWindowItem.visible
+    }
+
+    //!move window Close button at the very bottom in order to not alter users workflow
+    //!comparing with the design decisions of other taskmanagers
+    PlasmaComponents.MenuItem {
+        id: closeWindowItem
+        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
+
+        enabled: visualParent && visualParent.m.IsClosable === true
+
+        text: i18n("Close")
+        icon: "window-close"
+
+        onClicked: {
+            if (root.zoomFactor>1) {
+                delayWindowRemovalTimer.modelIndex = menu.modelIndex;
+                delayWindowRemovalTimer.start();
+            } else {
+                tasksModel.requestClose(menu.modelIndex);
+            }
+        }
+    }
 }
