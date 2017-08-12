@@ -443,8 +443,7 @@ MouseArea{
 
             onTriggered: {
                 //      mainItemContainer.hoverEnabled = true;
-                tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(),
-                                                          backend.globalRect(mainItemContainer), mainItemContainer);
+                slotPublishGeometries();
                 timer.destroy();
             }
 
