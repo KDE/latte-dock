@@ -1052,8 +1052,30 @@ MouseArea{
 
     function slotPublishGeometries() {
         if ((isWindow || isStartup || isGroupParent) && icList && !icList.delayingRemoval) {
-            tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(),
-                                                      backend.globalRect(mainItemContainer), mainItemContainer);
+            var globalChoords = backend.globalRect(mainItemContainer);
+
+            //! Magic Lamp effect doesnt like coordinates outside the screen and
+            //! width,heights of zero value... So we now normalize the geometries
+            //! sent in order to avoid such circumstances
+            if (root.vertical) {
+                globalChoords.width = 1;
+                globalChoords.height = Math.max(root.iconSize, mainItemContainer.height);
+            } else {
+                globalChoords.height = 1;
+                globalChoords.width = Math.max(root.iconSize, mainItemContainer.width);
+            }
+
+            if (root.position === PlasmaCore.Types.BottomPositioned) {
+                globalChoords.y = plasmoid.screenGeometry.y+plasmoid.screenGeometry.height-1;
+            } else if (root.position === PlasmaCore.Types.TopPositioned) {
+                globalChoords.y = plasmoid.screenGeometry.y+1;
+            } else if (root.position === PlasmaCore.Types.LeftPositioned) {
+                globalChoords.x = plasmoid.screenGeometry.x+1;
+            } else if (root.position === PlasmaCore.Types.RightPositioned) {
+                globalChoords.x = plasmoid.screenGeometry.x+plasmoid.screenGeometry.width - 1;
+            }
+
+            tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(), globalChoords, mainItemContainer);
         }
     }
 
