@@ -88,6 +88,7 @@ MouseArea{
     property bool inBouncingAnimation: false
     property bool inPopup: false
     property bool inRemoveStage: false
+    property bool inWheelAction: false
 
     property bool isActive: (IsActive === true) ? true : false
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
@@ -767,7 +768,7 @@ MouseArea{
     }
 
     onWheel: {
-        if (isSeparator || !root.mouseWheelActions
+        if (isSeparator || !root.mouseWheelActions || inWheelAction || inBouncingAnimation
                 || (latteDock && (latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
             return;
         }
@@ -778,28 +779,35 @@ MouseArea{
         if (angle > 12) {
             if (isLauncher) {
                 mouseEntered = false;
+                inWheelAction = true;
                 wrapper.runLauncherAnimation();
             } else if (isGroupParent) {
                 tasksWindows.activateNextTask();
             } else {
-                tasksModel.requestActivate(modelIndex());
+                var taskIndex = modelIndex();
+
+                if (isMinimized) {
+                    inWheelAction = true;
+                    tasksModel.requestToggleMinimized(taskIndex);
+                    wheelActionDelayer.start();
+                }
+
+                tasksModel.requestActivate(taskIndex);
             }
             //negative direction
         } else if (angle < 12) {
             if (isLauncher) {
-                //mouseEntered = false;
-                //wrapper.runLauncherAnimation();
+                // do nothing
             } else if (isGroupParent) {
                 tasksWindows.activatePreviousTask();
             } else {
-                if (IsMinimized === true) {
-                    /*var i = modelIndex();
-                    tasksModel.requestToggleMinimized(i);
-                    tasksModel.requestActivate(i);*/
-                } else if (IsActive === true) {
-                   tasksModel.requestToggleMinimized(modelIndex());
+                if (isMinimized) {
+                    // do nothing
                 } else {
-                    tasksModel.requestActivate(modelIndex());
+                    var taskIndex = modelIndex();
+                    inWheelAction = true;
+                    tasksModel.requestToggleMinimized(taskIndex);
+                    wheelActionDelayer.start();
                 }
             }
         }
@@ -1344,6 +1352,15 @@ MouseArea{
             if (mainItemContainer.itemIndex >= 0)
                 mainItemContainer.lastValidIndex = mainItemContainer.itemIndex;
         }
+    }
+
+    // The best solution in order to catch when the wheel action ended is to
+    // track the isMinimized state, but when the user has enabled window previews
+    // at all times that flag doesnt work
+    Timer {
+        id: wheelActionDelayer
+        interval: 200
+        onTriggered: mainItemContainer.inWheelAction = false;
     }
 
     ///Item's Removal Animation
