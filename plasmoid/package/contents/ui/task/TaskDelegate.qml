@@ -111,7 +111,7 @@ MouseArea{
     property int lastButtonClicked: -1;
     property int pressX: -1
     property int pressY: -1
-    property int resistanceDelay: 750
+    property int resistanceDelay: 450
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
 
     property real animationStep: Math.min(3, root.iconSize / 8)

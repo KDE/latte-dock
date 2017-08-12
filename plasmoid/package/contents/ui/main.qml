@@ -972,6 +972,7 @@ Item {
 
         ListView {
             id:icList
+            boundsBehavior: Flickable.StopAtBounds
 
             property int currentSpot : -1000
             property int hoveredIndex : -1
