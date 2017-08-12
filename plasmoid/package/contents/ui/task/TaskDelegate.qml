@@ -767,7 +767,8 @@ MouseArea{
     }
 
     onWheel: {
-        if (isSeparator || !root.mouseWheelActions) {
+        if (isSeparator || !root.mouseWheelActions
+                || (latteDock && (latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
             return;
         }
 
@@ -781,22 +782,22 @@ MouseArea{
             } else if (isGroupParent) {
                 tasksWindows.activateNextTask();
             } else {
-                activateTask();
+                tasksModel.requestActivate(modelIndex());
             }
             //negative direction
         } else if (angle < 12) {
             if (isLauncher) {
-                mouseEntered = false;
-                wrapper.runLauncherAnimation();
+                //mouseEntered = false;
+                //wrapper.runLauncherAnimation();
             } else if (isGroupParent) {
                 tasksWindows.activatePreviousTask();
             } else {
                 if (IsMinimized === true) {
-                    var i = modelIndex();
+                    /*var i = modelIndex();
                     tasksModel.requestToggleMinimized(i);
-                    tasksModel.requestActivate(i);
+                    tasksModel.requestActivate(i);*/
                 } else if (IsActive === true) {
-                    tasksModel.requestToggleMinimized(modelIndex());
+                   tasksModel.requestToggleMinimized(modelIndex());
                 } else {
                     tasksModel.requestActivate(modelIndex());
                 }
