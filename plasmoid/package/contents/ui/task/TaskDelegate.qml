@@ -802,11 +802,11 @@ MouseArea{
                 tasksWindows.activatePreviousTask();
             } else {
                 if (isMinimized) {
-                    // do nothing
-                } else {
                     var taskIndex = modelIndex();
+
                     inWheelAction = true;
                     tasksModel.requestToggleMinimized(taskIndex);
+                    tasksModel.requestActivate(taskIndex);
                     wheelActionDelayer.start();
                 }
             }
