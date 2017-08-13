@@ -1574,11 +1574,11 @@ void DockView::mousePressEvent(QMouseEvent *event)
         //qDebug() << "3 ...";
 
         if (applet) {
-            KPluginMetaData meta = applet->kPackage().metadata();
+            const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
 
             //qDebug() << "3.5 ...";
 
-            if (meta.pluginId() != "org.kde.latte.plasmoid") {
+            if (!provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
                 //qDebug() << "4...";
                 QMenu *desktopMenu = new QMenu;
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
