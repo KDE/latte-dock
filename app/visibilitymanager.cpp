@@ -310,6 +310,7 @@ void VisibilityManagerPrivate::updateHiddenState()
         case Dock::DodgeAllWindows:
             dodgeWindows(wm->activeWindow());
             break;
+
         default:
             break;
     }
@@ -344,8 +345,10 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
         winfo = wm->requestInfo(wm->activeWindow());
     }
 
-    if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
-        raiseDock(!intersects(winfo));
+    //!dont send false raiseDock signal when containing mouse
+    if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid)) {
+        raiseDock(!intersects(winfo) || containsMouse);
+    }
 }
 
 void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
@@ -377,9 +380,10 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
                    && intersects(winfo));
     };
 
+    //!dont send false raiseDock signal when containing mouse
     if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
-        raiseDock(view->formFactor() == Plasma::Types::Vertical
-                  ? !isMaxHoriz() : !isMaxVert());
+        raiseDock((view->formFactor() == Plasma::Types::Vertical
+                   ? !isMaxHoriz() : !isMaxVert()) || containsMouse);
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
@@ -396,7 +400,8 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
     if (!winfo.isValid() || !wm->isOnCurrentDesktop(wid) || !wm->isOnCurrentActivity(wid))
         return;
 
-    if (intersects(winfo))
+    //!dont send false raiseDock signal when containing mouse
+    if (intersects(winfo) && !containsMouse)
         raiseDock(false);
     else
         timerCheckWindows.start();
