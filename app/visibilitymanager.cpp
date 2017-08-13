@@ -333,6 +333,12 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
     if (raiseTemporarily)
         return;
 
+    //!dont send false raiseDock signal when containing mouse
+    if (containsMouse) {
+        raiseDock(true);
+        return;
+    }
+
     auto winfo = wm->requestInfo(wid);
 
     if (!winfo.isValid())
@@ -347,7 +353,7 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
 
     //!dont send false raiseDock signal when containing mouse
     if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid)) {
-        raiseDock(!intersects(winfo) || containsMouse);
+        raiseDock(!intersects(winfo));
     }
 }
 
@@ -355,6 +361,12 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 {
     if (raiseTemporarily)
         return;
+
+    //!dont send false raiseDock signal when containing mouse
+    if (containsMouse) {
+        raiseDock(true);
+        return;
+    }
 
     auto winfo = wm->requestInfo(wid);
 
@@ -382,8 +394,8 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 
     //!dont send false raiseDock signal when containing mouse
     if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
-        raiseDock((view->formFactor() == Plasma::Types::Vertical
-                   ? !isMaxHoriz() : !isMaxVert()) || containsMouse);
+        raiseDock(view->formFactor() == Plasma::Types::Vertical
+                  ? !isMaxHoriz() : !isMaxVert());
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
@@ -394,14 +406,19 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
     if (windows.find(wid) == std::end(windows))
         return;
 
+    //!dont send false raiseDock signal when containing mouse
+    if (containsMouse) {
+        raiseDock(true);
+        return;
+    }
+
     windows[wid] = wm->requestInfo(wid);
     auto &winfo = windows[wid];
 
     if (!winfo.isValid() || !wm->isOnCurrentDesktop(wid) || !wm->isOnCurrentActivity(wid))
         return;
 
-    //!dont send false raiseDock signal when containing mouse
-    if (intersects(winfo) && !containsMouse)
+    if (intersects(winfo))
         raiseDock(false);
     else
         timerCheckWindows.start();
