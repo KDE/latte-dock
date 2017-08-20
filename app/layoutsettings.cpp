@@ -187,16 +187,42 @@ bool LayoutSettings::fileIsBroken() const
     QStringList ids;
 
     ids << containmentsEntries.groupList();
+    QStringList conts;
+    conts << ids;
+    QStringList applets;
 
     foreach (auto cId, containmentsEntries.groupList()) {
         auto appletsEntries = containmentsEntries.group(cId).group("Applets");
 
         ids << appletsEntries.groupList();
+        applets << appletsEntries.groupList();
     }
 
     QSet<QString> idsSet = QSet<QString>::fromList(ids);
 
+    QMap<QString, int> countOfStrings;
+
+    for (int i = 0; i < ids.count(); i++) {
+        countOfStrings[ids[i]]++;
+    }
+
     if (idsSet.count() != ids.count()) {
+        qDebug() << "   ----   ERROR: BROKEN LAYOUT ----";
+
+        foreach (QString c, conts) {
+            if (applets.contains(c)) {
+                qDebug() << "Error: Same applet and containment id found ::: " << c;
+            }
+        }
+
+        for (int i = 0; i < ids.count(); ++i) {
+            for (int j = i + 1; j < ids.count(); ++j) {
+                if (ids[i] == ids[j]) {
+                    qDebug() << "Error: Applets with same id ::: " << ids[i];
+                }
+            }
+        }
+
         return true;
     }
 
