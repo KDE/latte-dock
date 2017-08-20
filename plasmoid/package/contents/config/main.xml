@@ -110,6 +110,10 @@
     <entry name="indicateAudioStreams" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="previewsDelay" type="Int">
+      <label>Delay in order to show previews or highlight windows. Values lower than 150ms are ignored because previews do not work correctly</label>
+      <default>600</default>
+    </entry>
   </group>
 </kcfg>
 

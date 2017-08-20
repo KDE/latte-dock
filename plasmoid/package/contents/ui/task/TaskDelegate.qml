@@ -1250,7 +1250,7 @@ MouseArea{
         Timer {
             id: hoveredTimer
 
-            interval: 600
+            interval: Math.max(150,plasmoid.configuration.previewsDelay)
 
             repeat: false
 
