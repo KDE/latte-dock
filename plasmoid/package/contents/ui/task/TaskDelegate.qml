@@ -654,7 +654,7 @@ MouseArea{
 
         ////window previews/////////
         if (isWindow) {
-            if(containsMouse && (root.showPreviews || root.highlightWindows) && Latte.WindowSystem.compositingActive){
+            if(containsMouse && (root.showPreviews || (!root.showPreviews && root.highlightWindows)) && Latte.WindowSystem.compositingActive){
                 hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
             }
             else{
@@ -1260,9 +1260,7 @@ MouseArea{
                     if (root.showPreviews) {
                         mainItemContainer.preparePreviewWindow(false);
                         windowsPreviewDlg.show(mainItemContainer);
-                    }
-
-                    if (mainItemContainer.isWindow && root.highlightWindows) {
+                    } else if (mainItemContainer.isWindow && root.highlightWindows) {
                         root.windowsHovered(model.LegacyWinIdList, mainItemContainer.containsMouse);
                     }
                 }
