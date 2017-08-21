@@ -169,6 +169,17 @@ Item{
                 }
             }
 
+            //! try to show the correct icon when a window is removed... libtaskmanager when a window is removed
+            //! sends an unknow pixmap as icon
+            Connections {
+                target: mainItemContainer
+                onInRemoveStageChanged: {
+                    if (mainItemContainer.inRemoveStage && iconImageBuffer.lastValidSourceName !== "") {
+                        iconImageBuffer.source = iconImageBuffer.lastValidSourceName;
+                    }
+                }
+            }
+
             property int zoomedSize: root.zoomFactor * root.iconSize
 
             property real basicScalingWidth : wrapper.inTempScaling ? (root.iconSize * wrapper.scaleWidth) :
