@@ -33,6 +33,7 @@ InitialPreference=1
 StartupNotify=false
 Terminal=false
 Type=Application
+StartupWMClass=latte-dock
 Version=@VERSION@
 X-DBUS-ServiceName=org.kde.lattedock
 X-DBUS-StartupType=unique
