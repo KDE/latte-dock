@@ -51,6 +51,7 @@ SequentialAnimation {
             mainItemContainer.inAnimation = true;
             icList.delayingRemoval = true;
             mainItemContainer.inAddRemoveAnimation = true;
+            mainItemContainer.inRemoveStage = true;
 
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot

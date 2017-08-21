@@ -158,8 +158,7 @@ Item{
 
             width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
             height: Math.round(width)
-            //icon: decoration
-            //source: decoration
+            source: decoration
 
             visible: !mainItemContainer.isSeparator
             //visible: !root.enableShadows
@@ -183,19 +182,6 @@ Item{
                 else
                     return Math.max(basicScalingWidth, basicScalingHeight)
             }
-
-            Connections{
-                target: centralItem
-                onIconDecorationChanged: {
-                    if (iconImageBuffer.lastValidSourceName !== "") {
-                        iconImageBuffer.source = iconImageBuffer.lastValidSourceName;
-                    } else {
-                        iconImageBuffer.source = centralItem.iconDecoration;
-                    }
-                }
-            }
-
-            Component.onCompleted: source = decoration;
 
             ///states for launcher animation
             states: [
