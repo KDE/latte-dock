@@ -237,7 +237,7 @@ Item{
             tempThickness = thicknessNormal;
 
             if (root.animationsNeedThickness > 0) {
-                tempThickness = Latte.WindowSystem.compositingActive ? thicknessMid : thicknessNormal;
+                tempThickness = Latte.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
             }
 
             if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
@@ -301,7 +301,7 @@ Item{
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;
                 } else if (root.animationsNeedThickness > 0) {
-                    tempThickness = thicknessMidOriginal;
+                    tempThickness = thicknessZoomOriginal;
                 }
             } else{
                 //use all thickness space
