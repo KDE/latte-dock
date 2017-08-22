@@ -129,6 +129,7 @@ SequentialAnimation{
             parabolicManager.clearTasksLowerThan(index);
 
             root.noTasksInAnimation++;
+            mainItemContainer.inBouncingAnimation = true;
             mainItemContainer.setBlockingAnimation(true);
 
             //trying to fix the ListView nasty behavior
