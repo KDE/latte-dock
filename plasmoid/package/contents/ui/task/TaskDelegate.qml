@@ -801,14 +801,15 @@ MouseArea{
             } else if (isGroupParent) {
                 tasksWindows.activatePreviousTask();
             } else {
-                if (isMinimized) {
-                    var taskIndex = modelIndex();
+                var taskIndex = modelIndex();
 
+                if (isMinimized) {
                     inWheelAction = true;
                     tasksModel.requestToggleMinimized(taskIndex);
-                    tasksModel.requestActivate(taskIndex);
                     wheelActionDelayer.start();
                 }
+
+                tasksModel.requestActivate(taskIndex);
             }
         }
     }
