@@ -528,7 +528,7 @@ Item{
                       && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
                     || (plasmoid.configuration.shadows === 2 /*All Applets*/
                          && (applet.pluginName !== root.plasmoidName)))
-                    || (root.forceTransparentPanel && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
+                    || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
         onActiveChanged: {
             if (active) {
@@ -540,7 +540,7 @@ Item{
 
         sourceComponent: DropShadow{
             anchors.fill: parent
-            color: forcedShadow ? theme.backgroundColor : root.appShadowColor //"#ff080808"
+            color: root.appShadowColor //"#ff080808"
             samples: 2 * radius
             source: container.fakeIconItem ? _wrapperContainer : container.applet
             radius: shadowSize
@@ -548,7 +548,7 @@ Item{
 
             property int shadowSize : forcedShadow? 8 : root.appShadowSize //Math.ceil(root.iconSize / 12)
 
-            property bool forcedShadow: root.forceTransparentPanel && applet.pluginName !== root.plasmoidName ? true : false
+            property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName ? true : false
         }
     }
 
