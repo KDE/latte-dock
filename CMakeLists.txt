@@ -52,7 +52,7 @@ include(KDECMakeSettings)
 #include(KDECompilerSettings NO_POLICY_SCOPE)
 include(KDEInstallDirs)
 include(KDEPackageAppTemplates)
-include(WriteBasicConfigVersionFile
+include(WriteBasicConfigVersionFile)
 
 include(Definitions.cmake)
 include(Locale.cmake)
