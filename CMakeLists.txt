@@ -17,10 +17,10 @@ set(KF5_LOCALE_PREFIX "")
 find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS Quick Qml DBus Gui)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-    Plasma PlasmaQuick WindowSystem Declarative Activities Notifications
-    I18n CoreAddons GlobalAccel Archive XmlGui DBusAddons IconThemes Wayland Crash)
+    Activities Archive CoreAddons Crash DBusAddons Declarative GlobalAccel I18n
+    IconThemes Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
 
 find_package(X11 REQUIRED)
 set_package_properties(X11 PROPERTIES DESCRIPTION "X11 libraries"
@@ -44,23 +44,23 @@ if(X11_FOUND AND XCB_XCB_FOUND)
     set(HAVE_X11 ON)
 endif()
 
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-#include(KDECompilerSettings NO_POLICY_SCOPE)
-include(CMakePackageConfigHelpers)
-include(WriteBasicConfigVersionFile)
 include(CheckIncludeFiles)
+include(CMakePackageConfigHelpers)
 include(ECMOptionalAddSubdirectory)
 include(ECMQtDeclareLoggingCategory)
+include(KDECMakeSettings)
+#include(KDECompilerSettings NO_POLICY_SCOPE)
+include(KDEInstallDirs)
 include(KDEPackageAppTemplates)
+include(WriteBasicConfigVersionFile
 
 include(Definitions.cmake)
 include(Locale.cmake)
 
 add_subdirectory(app)
-add_subdirectory(liblattedock)
-add_subdirectory(shell)
-add_subdirectory(containment)
-add_subdirectory(plasmoid)
-add_subdirectory(icons)
 add_subdirectory(applets)
+add_subdirectory(containment)
+add_subdirectory(icons)
+add_subdirectory(liblattedock)
+add_subdirectory(plasmoid)
+add_subdirectory(shell)
