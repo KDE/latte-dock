@@ -22,6 +22,8 @@ function reconsiderAppletIconItem(){
         identifySimpleMenu();
     } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.lockZoom) {
         identifyUserSwitcher();
+    } else if (applet.pluginName === "org.kde.redshiftControl") {
+        //blacklist
     } else {
         identifyGeneric();
     }
