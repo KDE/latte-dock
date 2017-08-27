@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-08-05 20:16+0300\n"
+"POT-Creation-Date: 2017-08-27 17:00+0300\n"
 "PO-Revision-Date: 2017-08-06 12:18+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <kde-i18n-doc@kde.org>\n"
@@ -17,20 +17,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../app/dockview.cpp:1709
+#: ../../app/dockview.cpp:1745
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 選項"
 
-#: ../../app/dockview.cpp:1816
+#: ../../app/dockview.cpp:1852
 msgid "Layouts"
 msgstr "佈局"
 
-#: ../../app/dockview.cpp:1817
+#: ../../app/dockview.cpp:1853
 msgid "Switch to another layout"
 msgstr "切換到其他佈局"
 
-#: ../../app/dockview.cpp:1838
+#: ../../app/dockview.cpp:1874
 msgid "Configure..."
 msgstr "設定..."
 
@@ -76,9 +76,9 @@ msgid "Layouts Editor"
 msgstr "佈局編輯器"
 
 #: ../../app/layoutconfigdialog.cpp:106
-msgctxt "switch button"
-msgid "Switch"
-msgstr "切換"
+msgctxt "new button"
+msgid "New"
+msgstr ""
 
 #: ../../app/layoutconfigdialog.cpp:107
 msgctxt "copy button"
@@ -91,35 +91,40 @@ msgid "Remove"
 msgstr "移除"
 
 #: ../../app/layoutconfigdialog.cpp:109
+msgctxt "switch button"
+msgid "Switch"
+msgstr "切換"
+
+#: ../../app/layoutconfigdialog.cpp:110
 msgctxt "import button"
 msgid "Import"
 msgstr "匯入"
 
-#: ../../app/layoutconfigdialog.cpp:110
+#: ../../app/layoutconfigdialog.cpp:111
 msgctxt "export button"
 msgid "Export"
 msgstr "匯出"
 
-#: ../../app/layoutconfigdialog.cpp:209
+#: ../../app/layoutconfigdialog.cpp:229
 msgctxt "import layout/configuration"
 msgid "Import Layout/Configuration"
 msgstr "匯入佈局／設定"
 
-#: ../../app/layoutconfigdialog.cpp:218
+#: ../../app/layoutconfigdialog.cpp:238
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock 佈局檔案 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:219
+#: ../../app/layoutconfigdialog.cpp:239
 msgctxt "import latte layouts/configuration"
 msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
 msgstr "Latte Dock 完整設定檔 (v0.1, v0.2)"
 
-#: ../../app/layoutconfigdialog.cpp:235
+#: ../../app/layoutconfigdialog.cpp:255
 msgid "Import: Configuration file version v0.1"
 msgstr "匯入：設定版本 v0.1"
 
-#: ../../app/layoutconfigdialog.cpp:237
+#: ../../app/layoutconfigdialog.cpp:257
 msgid ""
 "You are going to import an old version <b>v0.1</b> configuration file."
 "<br><b>Be careful</b>, importing the entire configuration <b>will erase all</"
@@ -130,21 +135,21 @@ msgstr ""
 "將會抹除所有</b>您目前的設定！！！<br><br> <i>另外，您也可以從這個檔案<b>安全"
 "地匯入</b><br><b>僅包含佈局的部份s...</b></i>"
 
-#: ../../app/layoutconfigdialog.cpp:242
+#: ../../app/layoutconfigdialog.cpp:262
 msgctxt "import full configuration"
 msgid "Full Configuration"
 msgstr "完整設定"
 
-#: ../../app/layoutconfigdialog.cpp:244
+#: ../../app/layoutconfigdialog.cpp:264
 msgctxt "import only the layouts"
 msgid "Only Layouts"
 msgstr "僅佈局"
 
-#: ../../app/layoutconfigdialog.cpp:270
+#: ../../app/layoutconfigdialog.cpp:290
 msgid "Import: Configuration file version v0.2"
 msgstr "匯入：設定檔版本 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:272
+#: ../../app/layoutconfigdialog.cpp:292
 msgid ""
 "You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</"
 "b>, importing <b>will erase all</b> your current configuration!!!"
@@ -153,82 +158,82 @@ msgstr ""
 "您將會要匯入舊版本 v0.2</b> 的設定檔。<br>請小心</b>，匯入整個設定檔<b>將會抹"
 "除所有</b>您目前的設定！！！<br><br> <i>您想要繼續嗎？</i>"
 
-#: ../../app/layoutconfigdialog.cpp:317
+#: ../../app/layoutconfigdialog.cpp:337
 msgctxt "layout"
 msgid "Alternative"
 msgstr "替代"
 
-#: ../../app/layoutconfigdialog.cpp:343
+#: ../../app/layoutconfigdialog.cpp:363
 msgctxt "export layout/configuration"
 msgid "Export Layout/Configuration"
 msgstr "匯出佈局／設定"
 
-#: ../../app/layoutconfigdialog.cpp:351
+#: ../../app/layoutconfigdialog.cpp:371
 msgctxt "export layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock 佈局檔案 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:352
+#: ../../app/layoutconfigdialog.cpp:372
 msgctxt "export full configuraion"
 msgid "Latte Dock Full Configuration file v0.2"
 msgstr "Latte Dock 完整設定檔 v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:366
+#: ../../app/layoutconfigdialog.cpp:386
 msgctxt "export layout"
 msgid "Failed to export layout"
 msgstr "匯出佈局失敗"
 
-#: ../../app/layoutconfigdialog.cpp:386
+#: ../../app/layoutconfigdialog.cpp:406
 msgctxt "export layout"
 msgid "Open location"
 msgstr "開啟位置"
 
-#: ../../app/layoutconfigdialog.cpp:387
+#: ../../app/layoutconfigdialog.cpp:407
 msgctxt "export layout"
 msgid "Layout exported successfully"
 msgstr "佈局匯出成功"
 
-#: ../../app/layoutconfigdialog.cpp:398
+#: ../../app/layoutconfigdialog.cpp:418
 msgctxt "import/export config"
 msgid "Failed to export configuration"
 msgstr "匯出設定失敗"
 
-#: ../../app/layoutconfigdialog.cpp:405
+#: ../../app/layoutconfigdialog.cpp:425
 msgctxt "import/export config"
 msgid "Open location"
 msgstr "開啟位置"
 
-#: ../../app/layoutconfigdialog.cpp:406
+#: ../../app/layoutconfigdialog.cpp:426
 msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
 msgstr "完整設定匯出成功"
 
-#: ../../app/layoutconfigdialog.cpp:496
+#: ../../app/layoutconfigdialog.cpp:517
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "佈局：<b>%0</b> 匯入成功\n"
 
-#: ../../app/layoutconfigdialog.cpp:534
+#: ../../app/layoutconfigdialog.cpp:556
 msgid "Color"
 msgstr "顏色"
 
-#: ../../app/layoutconfigdialog.cpp:535
+#: ../../app/layoutconfigdialog.cpp:557
 msgid "Name"
 msgstr "名稱"
 
-#: ../../app/layoutconfigdialog.cpp:536
+#: ../../app/layoutconfigdialog.cpp:558
 msgid "In Menu"
 msgstr "在選單中"
 
-#: ../../app/layoutconfigdialog.cpp:537
+#: ../../app/layoutconfigdialog.cpp:559
 msgid "Activities"
 msgstr "活動"
 
-#: ../../app/layoutconfigdialog.cpp:546 ../../app/layoutconfigdialog.cpp:710
+#: ../../app/layoutconfigdialog.cpp:568 ../../app/layoutconfigdialog.cpp:732
 msgid "Layout Warning"
 msgstr "佈局警告"
 
-#: ../../app/layoutconfigdialog.cpp:547
+#: ../../app/layoutconfigdialog.cpp:569
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
@@ -236,11 +241,12 @@ msgstr ""
 "佈局 <b>%0</b> 有<i>損壞的設定</i>！！！請<b>移除 它們<b>來改善系統的穩定"
 "性..."
 
-#: ../../app/layoutconfigdialog.cpp:711
+#: ../../app/layoutconfigdialog.cpp:733
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
-msgstr "有一些相同名稱的佈局，這是不被允許的！！！請更新它們的名稱以重新套用變更..."
+msgstr ""
+"有一些相同名稱的佈局，這是不被允許的！！！請更新它們的名稱以重新套用變更..."
 
 #: ../../app/layoutmanager.cpp:45
 msgid "Add Widgets..."
@@ -409,106 +415,106 @@ msgstr "設定..."
 msgid "Applets Size"
 msgstr "小程式大小"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:180
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:181
 msgid "Zoom On Hover:"
 msgstr "滑鼠游標置於其上時縮放"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:188
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:189
 msgid "Zoom Factor"
 msgstr "縮放係數"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:227
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:228
 msgid "Screen Height Proportion:"
 msgstr "螢幕高度比例："
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:277
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:278
 msgid "Applets Distance:"
 msgstr "小程式距離："
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:313
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:314
 msgid "Animations"
 msgstr "動畫"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:334
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:335
 msgid "None"
 msgstr "無"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:343
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:344
 msgid "x1"
 msgstr "x1"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:352
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:353
 msgid "x2"
 msgstr "x2"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:361
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:362
 msgid "x3"
 msgstr "x3"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:378
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:379
 msgid "Background"
 msgstr "背景"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:388
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:389
 msgctxt "show panel"
 msgid "Show"
 msgstr "顯示"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:404
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:732
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:405
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:733
 msgid "Size: "
 msgstr "大小："
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:447
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:687
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:448
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:688
 msgid "Opacity: "
 msgstr "不透明度："
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:494
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:495
 msgid "Shadows"
 msgstr "陰影"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:507
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:508
 msgid "Solid"
 msgstr "單色"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:527
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:528
 msgid "Applet shadows"
 msgstr "小工具陰影"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:541
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:542
 msgctxt "show applet shadow"
 msgid "Show"
 msgstr "顯示"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:568
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
 msgctxt "Use theme shadow"
 msgid "Theme"
 msgstr "主題"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:570
 msgctxt "Clear applet shadow settings"
 msgid "Clear"
 msgstr "清除"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:651
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:652
 msgid "Please choose shadow color"
 msgstr "請選擇陰影顏色"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:779
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:797
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:780
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:798
 msgid "Length"
 msgstr "長度"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:789
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:790
 msgid "Maximum: "
 msgstr "最大： "
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:860
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:861
 msgid "Offset: "
 msgstr "位移： "
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:868
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:869
 msgid "Offset"
 msgstr "位移"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-08-05 20:16+0300\n"
+"POT-Creation-Date: 2017-08-27 17:00+0300\n"
 "PO-Revision-Date: 2017-06-07 14:54+0200\n"
 "Last-Translator: Michail Vοurlakos <mvourlakos@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../../containment/package/contents/ui/applet/AppletItem.qml:556
+#: ../../containment/package/contents/ui/applet/AppletItem.qml:558
 msgid "Launchers Area"
 msgstr "Περιοχή Εκκινητών"
 

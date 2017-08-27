@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-08-05 20:16+0300\n"
+"POT-Creation-Date: 2017-08-27 17:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -315,44 +315,44 @@ msgctxt "Remove launcher button for application shown while it is not running"
 msgid "Unpin"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:782
-msgid "Close"
-msgstr ""
-
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:814
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:765
 msgid "Internal Separator"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:837
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:788
 msgid "Layouts"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:875
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:826
 msgid "Configure..."
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/ContextMenu.qml:901
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:851
 msgid "Add Widgets..."
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:968
+#: ../../plasmoid/package/contents/ui/ContextMenu.qml:885
+msgid "Close"
+msgstr ""
+
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:977
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:462
 msgid "On %1"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:977
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:986
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:472
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:996
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:1005
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:494
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr ""
 
-#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:1000
+#: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:1009
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:498
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"

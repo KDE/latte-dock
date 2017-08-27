@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
-"POT-Creation-Date: 2017-08-05 20:16+0300\n"
+"POT-Creation-Date: 2017-08-27 17:00+0300\n"
 "PO-Revision-Date: 2017-08-06 22:24+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -18,20 +18,20 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../../app/dockview.cpp:1709
+#: ../../app/dockview.cpp:1745
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
 msgstr "%1 Optionen"
 
-#: ../../app/dockview.cpp:1816
+#: ../../app/dockview.cpp:1852
 msgid "Layouts"
 msgstr "Profile"
 
-#: ../../app/dockview.cpp:1817
+#: ../../app/dockview.cpp:1853
 msgid "Switch to another layout"
 msgstr "Profil wechseln"
 
-#: ../../app/dockview.cpp:1838
+#: ../../app/dockview.cpp:1874
 msgid "Configure..."
 msgstr "Konfiguration..."
 
@@ -77,9 +77,9 @@ msgid "Layouts Editor"
 msgstr "Profile Editor"
 
 #: ../../app/layoutconfigdialog.cpp:106
-msgctxt "switch button"
-msgid "Switch"
-msgstr "Wechseln"
+msgctxt "new button"
+msgid "New"
+msgstr ""
 
 #: ../../app/layoutconfigdialog.cpp:107
 msgctxt "copy button"
@@ -92,35 +92,40 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #: ../../app/layoutconfigdialog.cpp:109
+msgctxt "switch button"
+msgid "Switch"
+msgstr "Wechseln"
+
+#: ../../app/layoutconfigdialog.cpp:110
 msgctxt "import button"
 msgid "Import"
 msgstr "Importieren"
 
-#: ../../app/layoutconfigdialog.cpp:110
+#: ../../app/layoutconfigdialog.cpp:111
 msgctxt "export button"
 msgid "Export"
 msgstr "Exportieren"
 
-#: ../../app/layoutconfigdialog.cpp:209
+#: ../../app/layoutconfigdialog.cpp:229
 msgctxt "import layout/configuration"
 msgid "Import Layout/Configuration"
 msgstr "Profil/Konfiguration importieren"
 
-#: ../../app/layoutconfigdialog.cpp:218
+#: ../../app/layoutconfigdialog.cpp:238
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock Profildatei V0.2"
 
-#: ../../app/layoutconfigdialog.cpp:219
+#: ../../app/layoutconfigdialog.cpp:239
 msgctxt "import latte layouts/configuration"
 msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
 msgstr "Latte Dock Konfigurationsdatei (v0.1, v0.2)"
 
-#: ../../app/layoutconfigdialog.cpp:235
+#: ../../app/layoutconfigdialog.cpp:255
 msgid "Import: Configuration file version v0.1"
 msgstr "Importiere Konfigurationsdatei v0.1"
 
-#: ../../app/layoutconfigdialog.cpp:237
+#: ../../app/layoutconfigdialog.cpp:257
 msgid ""
 "You are going to import an old version <b>v0.1</b> configuration file."
 "<br><b>Be careful</b>, importing the entire configuration <b>will erase all</"
@@ -132,21 +137,21 @@ msgstr ""
 "Konfiguration!!!<br><br> <i>Alternativ können <br><b>nur die beinhalteten "
 "Profile importiert werden</b></i>"
 
-#: ../../app/layoutconfigdialog.cpp:242
+#: ../../app/layoutconfigdialog.cpp:262
 msgctxt "import full configuration"
 msgid "Full Configuration"
 msgstr "Konfiguration"
 
-#: ../../app/layoutconfigdialog.cpp:244
+#: ../../app/layoutconfigdialog.cpp:264
 msgctxt "import only the layouts"
 msgid "Only Layouts"
 msgstr "Nur Profile"
 
-#: ../../app/layoutconfigdialog.cpp:270
+#: ../../app/layoutconfigdialog.cpp:290
 msgid "Import: Configuration file version v0.2"
 msgstr "Importiere Konfigurationsdatei v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:272
+#: ../../app/layoutconfigdialog.cpp:292
 msgid ""
 "You are going to import a <b>v0.2</b> configuration file.<br><b>Be careful</"
 "b>, importing <b>will erase all</b> your current configuration!!!"
@@ -156,82 +161,82 @@ msgstr ""
 "b>, importieren dieser Konfiguration <b>löscht</b> die aktuelle "
 "Konfiguration!!!<br><br> <i>Weiter?</i>"
 
-#: ../../app/layoutconfigdialog.cpp:317
+#: ../../app/layoutconfigdialog.cpp:337
 msgctxt "layout"
 msgid "Alternative"
 msgstr "Alternativ"
 
-#: ../../app/layoutconfigdialog.cpp:343
+#: ../../app/layoutconfigdialog.cpp:363
 msgctxt "export layout/configuration"
 msgid "Export Layout/Configuration"
 msgstr "Profil/Konfiguration exportieren"
 
-#: ../../app/layoutconfigdialog.cpp:351
+#: ../../app/layoutconfigdialog.cpp:371
 msgctxt "export layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock Profildatei v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:352
+#: ../../app/layoutconfigdialog.cpp:372
 msgctxt "export full configuraion"
 msgid "Latte Dock Full Configuration file v0.2"
 msgstr "Latte Dock Konfigurationsdatei v0.2"
 
-#: ../../app/layoutconfigdialog.cpp:366
+#: ../../app/layoutconfigdialog.cpp:386
 msgctxt "export layout"
 msgid "Failed to export layout"
 msgstr "Profil konnte nicht exportiert werden"
 
-#: ../../app/layoutconfigdialog.cpp:386
+#: ../../app/layoutconfigdialog.cpp:406
 msgctxt "export layout"
 msgid "Open location"
 msgstr "Öffnen ..."
 
-#: ../../app/layoutconfigdialog.cpp:387
+#: ../../app/layoutconfigdialog.cpp:407
 msgctxt "export layout"
 msgid "Layout exported successfully"
 msgstr "Profil erfolgreich exportiert"
 
-#: ../../app/layoutconfigdialog.cpp:398
+#: ../../app/layoutconfigdialog.cpp:418
 msgctxt "import/export config"
 msgid "Failed to export configuration"
 msgstr "Konfiguration konnte nicht exportiert werden"
 
-#: ../../app/layoutconfigdialog.cpp:405
+#: ../../app/layoutconfigdialog.cpp:425
 msgctxt "import/export config"
 msgid "Open location"
 msgstr "Öffnen ..."
 
-#: ../../app/layoutconfigdialog.cpp:406
+#: ../../app/layoutconfigdialog.cpp:426
 msgctxt "import/export config"
 msgid "Full Configuration exported successfully"
 msgstr "Konfiguration erfolgreich exportiert"
 
-#: ../../app/layoutconfigdialog.cpp:496
+#: ../../app/layoutconfigdialog.cpp:517
 msgctxt "import-done"
 msgid "Layout: <b>%0</b> imported successfully\n"
 msgstr "Profil <b>%0</b> erfolgreich importiert\n"
 
-#: ../../app/layoutconfigdialog.cpp:534
+#: ../../app/layoutconfigdialog.cpp:556
 msgid "Color"
 msgstr "Farbe"
 
-#: ../../app/layoutconfigdialog.cpp:535
+#: ../../app/layoutconfigdialog.cpp:557
 msgid "Name"
 msgstr "Name"
 
-#: ../../app/layoutconfigdialog.cpp:536
+#: ../../app/layoutconfigdialog.cpp:558
 msgid "In Menu"
 msgstr "Im Menü"
 
-#: ../../app/layoutconfigdialog.cpp:537
+#: ../../app/layoutconfigdialog.cpp:559
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: ../../app/layoutconfigdialog.cpp:546 ../../app/layoutconfigdialog.cpp:710
+#: ../../app/layoutconfigdialog.cpp:568 ../../app/layoutconfigdialog.cpp:732
 msgid "Layout Warning"
 msgstr "Profil - Warnung"
 
-#: ../../app/layoutconfigdialog.cpp:547
+#: ../../app/layoutconfigdialog.cpp:569
 msgid ""
 "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove "
 "them<b> to improve the system stability..."
@@ -239,7 +244,7 @@ msgstr ""
 "Profil(e) <b>%0</b> <i>ungültige Konfiguration festgestellt</i>!!! Um die "
 "Stabilität zu gewährleisten bitte <b>entfernen<b>"
 
-#: ../../app/layoutconfigdialog.cpp:711
+#: ../../app/layoutconfigdialog.cpp:733
 msgid ""
 "There are layouts with the same name, that is not permitted!!! Please update "
 "these names to re-apply the changes..."
@@ -415,106 +420,106 @@ msgstr "Konfiguration..."
 msgid "Applets Size"
 msgstr "Applets Größe"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:180
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:181
 msgid "Zoom On Hover:"
 msgstr "Vergrößerung:        "
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:188
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:189
 msgid "Zoom Factor"
 msgstr "Vergrößerungs Faktor"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:227
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:228
 msgid "Screen Height Proportion:"
 msgstr "% Bildschirmhöhe:"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:277
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:278
 msgid "Applets Distance:"
 msgstr "Applets Abstand:   "
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:313
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:314
 msgid "Animations"
 msgstr "Animation"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:334
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:335
 msgid "None"
 msgstr "Aus"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:343
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:344
 msgid "x1"
 msgstr "x1"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:352
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:353
 msgid "x2"
 msgstr "x2"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:361
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:362
 msgid "x3"
 msgstr "x3"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:378
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:379
 msgid "Background"
 msgstr "Hintergrund"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:388
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:389
 msgctxt "show panel"
 msgid "Show"
 msgstr "Zeige"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:404
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:732
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:405
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:733
 msgid "Size: "
 msgstr "Größe:"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:447
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:687
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:448
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:688
 msgid "Opacity: "
 msgstr "Deckkraft:"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:494
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:495
 msgid "Shadows"
 msgstr "Schatten"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:507
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:508
 msgid "Solid"
 msgstr "Fest"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:527
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:528
 msgid "Applet shadows"
 msgstr "Applets Schatten"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:541
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:542
 msgctxt "show applet shadow"
 msgid "Show"
 msgstr "Zeige"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:568
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
 msgctxt "Use theme shadow"
 msgid "Theme"
 msgstr "Design"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:569
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:570
 msgctxt "Clear applet shadow settings"
 msgid "Clear"
 msgstr "Klar"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:651
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:652
 msgid "Please choose shadow color"
 msgstr "Farbe für Schatten wählen"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:779
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:797
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:780
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:798
 msgid "Length"
 msgstr "Länge"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:789
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:790
 msgid "Maximum: "
 msgstr "Maximum:"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:860
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:861
 msgid "Offset: "
 msgstr "Versatz:"
 
-#: ../../shell/package/contents/configuration/AppearanceConfig.qml:868
+#: ../../shell/package/contents/configuration/AppearanceConfig.qml:869
 msgid "Offset"
 msgstr "Versatz"
 

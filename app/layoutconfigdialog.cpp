@@ -103,7 +103,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
-    ui->exportButton->setText(i18nc("new button", "New"));
+    ui->newButton->setText(i18nc("new button", "New"));
     ui->copyButton->setText(i18nc("copy button", "Copy"));
     ui->removeButton->setText(i18nc("remove button", "Remove"));
     ui->switchButton->setText(i18nc("switch button", "Switch"));
