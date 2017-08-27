@@ -103,9 +103,10 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
-    ui->switchButton->setText(i18nc("switch button", "Switch"));
+    ui->exportButton->setText(i18nc("new button", "New"));
     ui->copyButton->setText(i18nc("copy button", "Copy"));
     ui->removeButton->setText(i18nc("remove button", "Remove"));
+    ui->switchButton->setText(i18nc("switch button", "Switch"));
     ui->importButton->setText(i18nc("import button", "Import"));
     ui->exportButton->setText(i18nc("export button", "Export"));
 
@@ -144,6 +145,25 @@ QStringList LayoutConfigDialog::activities()
 QStringList LayoutConfigDialog::availableActivities()
 {
     return m_availableActivities;
+}
+
+void LayoutConfigDialog::on_newButton_clicked()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    //! find Default preset path
+    foreach (auto preset, m_manager->presetsPaths()) {
+        QString presetName = LayoutSettings::layoutName(preset);
+
+        if (presetName == "Default") {
+            QByteArray presetNameChars = presetName.toUtf8();
+            const char *prset_str = presetNameChars.data();
+            presetName = uniqueLayoutName(i18n(prset_str));
+
+            addLayoutForFile(preset, presetName, true, false);
+            break;
+        }
+    }
 }
 
 void LayoutConfigDialog::on_copyButton_clicked()
@@ -461,7 +481,7 @@ void LayoutConfigDialog::restoreDefaults()
     }
 }
 
-void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory)
+void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory, bool showNotification)
 {
     if (layoutName.isEmpty()) {
         layoutName = LayoutSettings::layoutName(file);
@@ -491,10 +511,12 @@ void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool
 
     ui->layoutsView->selectRow(row);
 
-    //NOTE: The pointer is automatically deleted when the event is closed
-    auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
-    notification->setText(i18nc("import-done", "Layout: <b>%0</b> imported successfully\n").arg(layoutName));
-    notification->sendEvent();
+    if (showNotification) {
+        //NOTE: The pointer is automatically deleted when the event is closed
+        auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
+        notification->setText(i18nc("import-done", "Layout: <b>%0</b> imported successfully\n").arg(layoutName));
+        notification->sendEvent();
+    }
 }
 
 void LayoutConfigDialog::loadLayouts()

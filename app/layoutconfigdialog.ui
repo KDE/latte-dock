@@ -51,13 +51,12 @@
         <widget class="QWidget" name="widget" native="true">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QPushButton" name="switchButton">
+           <widget class="QPushButton" name="newButton">
             <property name="text">
-             <string>Switch</string>
+             <string>New</string>
             </property>
             <property name="icon">
-             <iconset theme="user-identity">
-              <normaloff>.</normaloff>.</iconset>
+             <iconset theme="add"/>
             </property>
            </widget>
           </item>
@@ -82,6 +81,17 @@
             </property>
             <property name="icon">
              <iconset theme="list-remove">
+              <normaloff>.</normaloff>.</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="switchButton">
+            <property name="text">
+             <string>Switch</string>
+            </property>
+            <property name="icon">
+             <iconset theme="user-identity">
               <normaloff>.</normaloff>.</iconset>
             </property>
            </widget>
