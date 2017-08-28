@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-27 17:00+0300\n"
-"PO-Revision-Date: 2017-08-06 09:46+0100\n"
+"PO-Revision-Date: 2017-08-28 20:57+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -79,7 +79,7 @@ msgstr "Editor dei Layout"
 #: ../../app/layoutconfigdialog.cpp:106
 msgctxt "new button"
 msgid "New"
-msgstr ""
+msgstr "Nuovo"
 
 #: ../../app/layoutconfigdialog.cpp:107
 msgctxt "copy button"
@@ -679,7 +679,7 @@ msgstr "Rimuovi"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:362
 msgid "Remove current dock"
-msgstr "Sostituisce l'istanza dock corrente."
+msgstr "Sostituisce l'istanza dock corrente"
 
 #: ../../shell/package/contents/configuration/LatteDockConfiguration.qml:373
 msgid "Quit"
@@ -870,7 +870,7 @@ msgstr "Mostra il nome dell'applet/task al passaggio del mouse"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:78
 msgid "Shrink thickness margins to minimum"
-msgstr "Restringi lo spessore dei margini al  minimo"
+msgstr "Restringi lo spessore dei margini al minimo"
 
 #: ../../shell/package/contents/configuration/TweaksConfig.qml:89
 msgid "Show background only for maximized windows"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-27 17:00+0300\n"
-"PO-Revision-Date: 2017-06-17 15:05+0100\n"
+"PO-Revision-Date: 2017-08-28 21:00+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: German <kde-i18n-it@kde.org>\n"
 "Language: de_DE\n"
@@ -40,4 +40,5 @@ msgstr "Latte"
 
 #: ../desktop-templates/containment.metadata.desktop.template:5
 msgid "Containment provided for the Latte Dock"
-msgstr "Contenitori per Latte Dock"
+msgstr "Contenitore per Latte Dock"
+

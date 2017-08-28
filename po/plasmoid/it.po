@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-27 17:00+0300\n"
-"PO-Revision-Date: 2017-06-17 15:17+0100\n"
+"PO-Revision-Date: 2017-08-28 21:09+0100\n"
 "Last-Translator: Ivan Bordoni <ivan.mail@fastwebnet.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -284,7 +284,7 @@ msgstr "Pieno schermo"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:565
 msgid "Shade"
-msgstr "Shade"
+msgstr "Ombra"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:580
 msgid "Allow this program to be grouped"
@@ -307,7 +307,7 @@ msgstr ""
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:713
 msgid "On All Activities"
-msgstr "Tutte le Attività"
+msgstr "Su tutte le Attività"
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:719
 msgid "On The Current Activity"
@@ -328,7 +328,7 @@ msgstr ""
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:826
 msgid "Configure..."
-msgstr ""
+msgstr "Configura..."
 
 #: ../../plasmoid/package/contents/ui/ContextMenu.qml:851
 msgid "Add Widgets..."
@@ -347,7 +347,7 @@ msgstr "Su %1"
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:472
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
-msgstr "Disponibile in tutte le attività"
+msgstr "Disponibile per tutte le attività"
 
 #: ../../plasmoid/package/contents/ui/task/TaskDelegate.qml:1005
 #: ../../plasmoid/package/contents/ui/ToolTipInstance.qml:494
@@ -367,7 +367,7 @@ msgstr "Latte Plasmoide"
 
 #: ../desktop-templates/plasmoid.metadata.desktop.template:4
 msgid "Plasmoid from the Latte Dock"
-msgstr "Plasmoide dal Latte Dock"
+msgstr "Plasmoide da Latte Dock"
 
 #~ msgid "Alternative Session"
 #~ msgstr "Sessione Alternativa"
