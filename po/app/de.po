@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://github.com/psifidotos/latte-dock/\n"
 "POT-Creation-Date: 2017-08-27 17:00+0300\n"
-"PO-Revision-Date: 2017-08-06 22:24+0100\n"
+"PO-Revision-Date: 2017-08-29 20:28+0100\n"
 "Last-Translator: Jan Neumann <neum dot ja at gmail dot com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -79,7 +79,7 @@ msgstr "Profile Editor"
 #: ../../app/layoutconfigdialog.cpp:106
 msgctxt "new button"
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: ../../app/layoutconfigdialog.cpp:107
 msgctxt "copy button"
