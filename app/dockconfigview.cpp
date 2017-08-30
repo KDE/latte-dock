@@ -38,6 +38,8 @@
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 
+#include <KWindowSystem>
+
 namespace Latte {
 
 DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
@@ -283,7 +285,7 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
 
 void DockConfigView::setupWaylandIntegration()
 {
-    if (m_shellSurface) {
+    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_dockView || !m_dockView->containment()) {
         // already setup
         return;
     }
