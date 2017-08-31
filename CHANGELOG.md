@@ -1,5 +1,20 @@
 #**CHANGELOG**#
 
+#### Version 0.7.1
+
+* added “New” button in Layouts manager
+* “Close” window from context menu was moved in the end
+* provide always valid task geometries, fixes any lamb minimize/unminimize effect issues
+* improve scroll wheel behavior, it is only used to show and activate windows and not minimizing them
+* fix issue with Firefox 55 that was blocking the dock from showing
+* improve combination or previews and highlight effect. (the user can now highlight windows from their previews)
+* provide a previewsDelay which can be used from advanced users to lower the delay between showing previews or highlighting windows. Be careful, very low values dont provide correct previews. 150ms is by default the lowest value that is taken into account. The value must be added in the Latte plasmoid general settings in any layout file
+* show correct icon when a single window is removed
+* allow for 1px substitutions for applet sizes when in advanced mode and the user has disabled to automatic shrinking… This way for example you can have a Latte panel with size of 29px.
+* Behavior for show background only for maximized windows now respects the applets shadows settings… concerning visibility, color, size etc…
+* fix a crash when changing layouts from settings combobox
+
+
 #### Version 0.7.0
 
 * wayland tech preview
