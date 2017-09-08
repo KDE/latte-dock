@@ -14,6 +14,9 @@ fi
 cd build
 
 if [ $1 == "-translations" ] ; then
+    if [ -a po ] ; then
+        sudo rm -fr po
+    fi
     cmake -DCMAKE_INSTALL_PREFIX=/usr -DKDE_L10N_BRANCH=trunk -DKDE_L10N_AUTO_TRANSLATIONS=ON -DCMAKE_BUILD_TYPE=$build_type ..
     make fetch-translations
 else
