@@ -13,7 +13,7 @@ fi
 
 cd build
 
-if [ $1 == "-translations" ] ; then
+if [ "$1" == "-translations" ] ; then
     if [ -a po ] ; then
         sudo rm -fr po
     fi
