@@ -13,7 +13,13 @@ fi
 
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=$build_type ..
-make
+
+if [ $1 == "-translations" ] ; then
+    make fetch-translations
+else
+    make
+fi
+
 sudo make install
 
 oldDeskFile="/usr/share/applications/latte-dock.desktop"
