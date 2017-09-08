@@ -263,7 +263,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
             if (fileEntry && (fileEntry->name() == "lattedockrc"
                               || fileEntry->name() == "lattedock-appletsrc")) {
                 if (!fileEntry->copyTo(tempDir.absolutePath())) {
-                    qInfo() << i18nc("import/export config", "The extracted file coulnd be copied!!!");
+                    qInfo() << i18nc("import/export config", "The extracted file could not be copied!!!");
                     archive.close();
                     return false;
                 }
@@ -274,7 +274,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
             }
         }
     } else {
-        qInfo() << i18nc("import/export config", "The temp directory couldnt be created!!!");
+        qInfo() << i18nc("import/export config", "The temp directory could not be created!!!");
         archive.close();
         return false;
     }
