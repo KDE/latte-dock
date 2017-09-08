@@ -55,7 +55,6 @@ include(KDEPackageAppTemplates)
 include(WriteBasicConfigVersionFile)
 
 include(Definitions.cmake)
-include(Locale.cmake)
 
 add_subdirectory(app)
 add_subdirectory(applets)
