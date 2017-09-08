@@ -63,3 +63,5 @@ add_subdirectory(icons)
 add_subdirectory(liblattedock)
 add_subdirectory(plasmoid)
 add_subdirectory(shell)
+
+ki18n_install(${CMAKE_CURRENT_BINARY_DIR}/po)
