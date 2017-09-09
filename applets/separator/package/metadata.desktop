@@ -1,11 +1,5 @@
 [Desktop Entry]
-Name[de]=Abstandshalter
-Name[el]=Διαχωριστικό
-Name[zh_TW]=分隔符號
 Name=Separator
-Comment[de]=Für Latte Dock und Latte Plasmoid
-Comment[el]=Για όλες τις εργασίες διαχωρισμού σας
-Comment[zh_TW]=為您所有分開的工作
 Comment=For all your separation tasks
 
 Encoding=UTF-8
