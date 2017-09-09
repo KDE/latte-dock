@@ -571,7 +571,7 @@ void DockCorona::syncDockViews()
 
     qDebug() << "removing consideration & updating screen for always on primary docks....";
 
-    //! this code trys to find a containment that must not be deleted by
+    //! this code tries to find a containment that must not be deleted by
     //! automatic algorithm. Currently the containment with the minimum id
     //! containing tasks plasmoid wins
     int preserveContainmentId{ -1};

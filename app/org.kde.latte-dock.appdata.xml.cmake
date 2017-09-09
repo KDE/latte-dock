@@ -14,7 +14,7 @@
   <summary xml:lang="ru">Док в массы</summary>
   <summary xml:lang="zh-TW">給大眾使用的 Dock</summary>
   <description>
-    <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and trys to be there only when it is needed.</p>
+    <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
     <p xml:lang="ca">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
     <p xml:lang="de">Latte Dock basiert auf Plasma Framework Technologie und bietet einen eleganten, intuitiven Umgang mit Plasmoiden und Tasks.
 Es animiert mithilfe parabolischer Zoom Effekte und versucht nur da zu sein wenn man es braucht.

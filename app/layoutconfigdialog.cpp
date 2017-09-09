@@ -254,7 +254,7 @@ void LayoutConfigDialog::on_importButton_clicked()
             msg->setIcon(QMessageBox::Warning);
             msg->setWindowTitle(i18n("Import: Configuration file version v0.1"));
             msg->setText(
-                i18n("You are going to import an old version <b>v0.1</b> configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!.<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
+                i18n("You are going to import an old version <b>v0.1</b> configuration file.<br><b>Be careful</b>, importing the entire configuration <b>will erase all</b> your current configuration!!!<br><br> <i>Alternative, you can <b>import safely</b> from this file<br><b>only the contained layouts...</b></i>"));
             msg->setStandardButtons(QMessageBox::Cancel);
 
             QPushButton *fullBtn = new QPushButton(msg);
@@ -566,7 +566,7 @@ void LayoutConfigDialog::loadLayouts()
         auto msg = new QMessageBox(this);
         msg->setIcon(QMessageBox::Warning);
         msg->setWindowTitle(i18n("Layout Warning"));
-        msg->setText(i18n("The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove them<b> to improve the system stability...").arg(brokenLayouts.join(",")));
+        msg->setText(i18n("The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please <b>remove them</b> to improve the system stability...").arg(brokenLayouts.join(",")));
         msg->setStandardButtons(QMessageBox::Ok);
 
         msg->open();
