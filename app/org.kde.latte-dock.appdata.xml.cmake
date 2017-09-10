@@ -5,29 +5,37 @@
   <name xml:lang="ca">Latte</name>
   <name xml:lang="de">Latte</name>
   <name xml:lang="el">Latte</name>
+  <name xml:lang="nl">Latte</name>
+  <name xml:lang="pt">Latte</name>
   <name xml:lang="ru">Latte</name>
+  <name xml:lang="sv">Latte</name>
+  <name xml:lang="uk">Латте</name>
+  <name xml:lang="x-test">xxLattexx</name>
   <name xml:lang="zh-TW">Latte</name>
   <summary>Dock for the masses</summary>
   <summary xml:lang="ca">Dock per a les masses</summary>
   <summary xml:lang="de">Dock für die Massen</summary>
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
+  <summary xml:lang="nl">Dock voor de massa</summary>
+  <summary xml:lang="pt">Área acoplável para as massas</summary>
   <summary xml:lang="ru">Док в массы</summary>
+  <summary xml:lang="sv">Dockningsfönster för alla</summary>
+  <summary xml:lang="uk">Панель для усіх</summary>
+  <summary xml:lang="x-test">xxDock for the massesxx</summary>
   <summary xml:lang="zh-TW">給大眾使用的 Dock</summary>
   <description>
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
-    <p xml:lang="ca">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
-    <p xml:lang="de">Latte Dock basiert auf Plasma Framework Technologie und bietet einen eleganten, intuitiven Umgang mit Plasmoiden und Tasks.
-Es animiert mithilfe parabolischer Zoom Effekte und versucht nur da zu sein wenn man es braucht.
-
-"Art in Coffee"</p>
-    <p xml:lang="el">Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στα plasma frameworks που εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες και τα γραφικά συστατικά σας. Χρησιμοποιεί ένα παραβολικό εφέ έτσι ώστε να απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το χρειάζεστε.</p>
-    <p xml:lang="ru">Latte - это док-панель, основанная на Plasma Frameworks, которая обеспечивает элегантный и интуитивно понятный интерфейс для ваших задач и плазмоидов. Она анимирует свое содержимое с помощью эффекта параболического увеличения и пытается быть видима только тогда, когда это необходимо.</p>
-    <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
+    <p xml:lang="uk">Латте — панель на основі бібліотек Плазми, яка забезпечує елегантний і інтуїтивно зрозумілий доступ до ваших завдань та плазмоїдів. Вміст панелі анімується за допомогою ефекту параболічного збільшення і показується лише тоді, коли це потрібно.</p>
     <p> "Art In Coffee" </p>
     <p xml:lang="ca">"Art al cafè"</p>
     <p xml:lang="de">"Art In Coffee"</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
+    <p xml:lang="nl">"Kunst in koffie"</p>
+    <p xml:lang="pt">"Art In Coffee"</p>
     <p xml:lang="ru">«Искусство в кофе»</p>
+    <p xml:lang="sv">"Konst i kaffe"</p>
+    <p xml:lang="uk">«Мистецтво кави»</p>
+    <p xml:lang="x-test">xx"Art In Coffee"xx</p>
     <p xml:lang="zh-TW">「咖啡中的藝術」</p>
   </description>
   <categories>
@@ -38,6 +46,12 @@ Es animiert mithilfe parabolischer Zoom Effekte und versucht nur da zu sein wenn
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>@AUTHOR@</developer_name>
+  <developer_name xml:lang="ca">@AUTHOR@</developer_name>
+  <developer_name xml:lang="nl">@AUTHOR@</developer_name>
+  <developer_name xml:lang="pt">@AUTHOR@</developer_name>
+  <developer_name xml:lang="sv">@Upphovsman@</developer_name>
+  <developer_name xml:lang="uk">@AUTHOR@</developer_name>
+  <developer_name xml:lang="x-test">xx@AUTHOR@xx</developer_name>
   <icon type="stock">latte-dock</icon>
   <project_license>GPL v2+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
