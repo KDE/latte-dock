@@ -1,7 +1,25 @@
 [Desktop Entry]
 Name=Latte Separator
+Name[ca]=Separador del Latte
+Name[nl]=Latte-scheidingsteken
+Name[pt]=Separador do Latte
+Name[sv]=Latte avskiljare
+Name[uk]=Роздільник Латте
+Name[x-test]=xxLatte Separatorxx
 Comment=Latte Ghost Separator (Ghost file)
+Comment[ca]=Separador del Latte Ghost (fitxer Ghost)
+Comment[nl]=Latte Ghost-scheidingsteken (Ghost-bestand)
+Comment[pt]=Separador Ghost do Latte (ficheiro Ghost)
+Comment[sv]=Latte spökavskiljare (spökfil)
+Comment[uk]=Роздільник-привид Латте (файл-привид)
+Comment[x-test]=xxLatte Ghost Separator (Ghost file)xx
 GenericName=Dock
+GenericName[ca]=Acobla
+GenericName[nl]=Dock
+GenericName[pt]=Área Acoplável
+GenericName[sv]=Dockningsfönster
+GenericName[uk]=Панель
+GenericName[x-test]=xxDockxx
 Version=0.1
 Categories=Utility;
 Exec=latte-dock %u

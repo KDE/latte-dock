@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=Latte Plasmoid
+Name[ca]=Plasmoide del Latte
+Name[nl]=Latte-plasmoid
+Name[pt]=Plasmóide do Latte
+Name[sv]=Latte Plasmoid
+Name[uk]=Плазмоїд Латте
+Name[x-test]=xxLatte Plasmoidxx
 Comment=Plasmoid from the Latte Dock
+Comment[ca]=Plasmoide del Latte Dock
+Comment[nl]=Plasmoid uit de Latte Dock
+Comment[pt]=Plasmóide da Área Acoplável do Latte
+Comment[sv]=Plasmoid för Latte dockningsfönster
+Comment[uk]=Плазмоїд для панелі Латте
+Comment[x-test]=xxPlasmoid from the Latte Dockxx
 
 Type=Service
 Icon=latte-dock

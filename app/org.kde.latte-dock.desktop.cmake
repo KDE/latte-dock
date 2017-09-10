@@ -1,7 +1,25 @@
 [Desktop Entry]
 Name=Latte
+Name[ca]=Latte
+Name[nl]=Latte
+Name[pt]=Latte
+Name[sv]=Latte
+Name[uk]=Латте
+Name[x-test]=xxLattexx
 Comment=Dock for the masses
+Comment[ca]=Acoblador per a les masses
+Comment[nl]=Dock voor de massa
+Comment[pt]=Área acoplável para as massas
+Comment[sv]=Dockningsfönster för alla
+Comment[uk]=Панель для усіх
+Comment[x-test]=xxDock for the massesxx
 GenericName=Dock
+GenericName[ca]=Acobla
+GenericName[nl]=Dock
+GenericName[pt]=Área Acoplável
+GenericName[sv]=Dockningsfönster
+GenericName[uk]=Панель
+GenericName[x-test]=xxDockxx
 Icon=latte-dock
 Categories=Utility;X-SuSE-DesktopUtility;
 Exec=latte-dock %u
