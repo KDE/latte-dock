@@ -19,6 +19,7 @@ Keywords=shell
 Keywords[ca]=intèrpret d'ordres
 Keywords[nl]=shell
 Keywords[pt]=consola
+Keywords[sk]=shell
 Keywords[sv]=skal
 Keywords[uk]=оболонка
 Keywords[x-test]=xxshellxx
