@@ -1,6 +1,8 @@
 [Desktop Entry]
 Name=Separator
 Name[ca]=Separador
+Name[ca@valencia]=Separador
+Name[fr]=Séparateur
 Name[nl]=Scheidingshulpmiddel
 Name[pt]=Separador
 Name[sk]=Oddeľovač
@@ -10,6 +12,7 @@ Name[x-test]=xxSeparatorxx
 Name[zh_CN]=分隔符
 Comment=For all your separation tasks
 Comment[ca]=Per a totes les tasques de separació
+Comment[ca@valencia]=Per a totes les tasques de separació
 Comment[nl]=Voor al uw scheidingstaken
 Comment[pt]=Para todas as suas tarefas de separação
 Comment[sv]=För alla dina separationsuppgifter
@@ -20,6 +23,7 @@ Encoding=UTF-8
 Icon=filename-divider
 Keywords=separator
 Keywords[ca]=separador
+Keywords[ca@valencia]=separador
 Keywords[nl]=scheiding
 Keywords[pt]=separador
 Keywords[sk]=oddeľovač

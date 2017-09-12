@@ -1,6 +1,7 @@
 [Global]
 Name=Latte Dock
 Name[ca]=Latte Dock
+Name[ca@valencia]=Latte Dock
 Name[nl]=Latte Dock
 Name[pt]=Área Acoplável do Latte
 Name[sv]=Latte dockningsfönster
@@ -8,6 +9,7 @@ Name[uk]=Панель Латте
 Name[x-test]=xxLatte Dockxx
 Comment=Latte Dock
 Comment[ca]=Acoblable del Latte
+Comment[ca@valencia]=Acoblable del Latte
 Comment[nl]=Latte Dock
 Comment[pt]=Área Acoplável do Latte
 Comment[sv]=Latte dockningsfönster
@@ -18,6 +20,7 @@ IconName=latte-dock
 [Event/import-done]
 Name=Configuration imported successfully
 Name[ca]=La configuració s'ha importat amb èxit
+Name[ca@valencia]=La configuració s'ha importat amb èxit
 Name[nl]=Configuration met succes geïmporteerd
 Name[pt]=A configuração foi importada com sucesso
 Name[sv]=Inställning importerad med lyckat resultat
@@ -28,6 +31,7 @@ Action=Popup
 [Event/import-fail]
 Name=Failed to import configuration
 Name[ca]=Ha fallat en importar la configuració
+Name[ca@valencia]=Ha fallat en importar la configuració
 Name[nl]=Configuratie importeren is mislukt
 Name[pt]=Não foi possível importar a configuração
 Name[sv]=Misslyckades importera inställning
@@ -38,6 +42,7 @@ Action=Popup
 [Event/export-done]
 Name=Configuration exported successfully
 Name[ca]=La configuració s'ha exportat amb èxit
+Name[ca@valencia]=La configuració s'ha exportat amb èxit
 Name[nl]=Configuration met succes geëxporteerd
 Name[pt]=A configuração foi exportada com sucesso
 Name[sv]=Inställning exporterad med lyckat resultat
@@ -48,6 +53,7 @@ Action=Popup
 [Event/export-fail]
 Name=Failed to export configuration
 Name[ca]=Ha fallat en exportar la configuració
+Name[ca@valencia]=Ha fallat en exportar la configuració
 Name[nl]=Configuratie exporteren is mislukt
 Name[pt]=Não foi possível exportar a configuração
 Name[sv]=Misslyckades exportera inställning
@@ -58,6 +64,7 @@ Action=Popup
 [Event/switch-layout]
 Name=Switch to layout
 Name[ca]=Commuta a la disposició
+Name[ca@valencia]=Commuta a la disposició
 Name[nl]=Naar indeling omschakelen
 Name[pt]=Mudar para a disposição
 Name[sv]=Byt till layout

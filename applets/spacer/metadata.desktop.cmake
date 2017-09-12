@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Latte Dock Spacer
 Name[ca]=Espaiador pel Latte Dock
+Name[ca@valencia]=Espaiador pel Latte Dock
 Name[nl]=Latte Dock paneelscheider
 Name[pt]=Espaço da Área Acoplável do Latte
 Name[sv]=Avskiljare för Latte dockningsfönster
@@ -8,6 +9,7 @@ Name[uk]=Розпірка панелі Латте
 Name[x-test]=xxLatte Dock Spacerxx
 Comment=Reserve empty spaces within the dock.
 Comment[ca]=Reserva espais buits dins de l'acoblador.
+Comment[ca@valencia]=Reserva espais buits dins de l'acoblador.
 Comment[nl]=Reserveer lege ruimte in het dok.
 Comment[pt]=Reservar espaços em branco dentro da área acoplável.
 Comment[sv]=Reservera tomt utrymme inne i dockningsfönstret.
@@ -18,6 +20,7 @@ Encoding=UTF-8
 Type=Service
 Keywords=spacer
 Keywords[ca]=espaiador
+Keywords[ca@valencia]=espaiador
 Keywords[nl]=paneelscheider
 Keywords[pt]=espaço
 Keywords[sv]=mellanrum

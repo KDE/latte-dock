@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Latte Shell
 Name[ca]=Intèrpret d'ordres del Latte
+Name[ca@valencia]=Intèrpret d'ordes del Latte
 Name[nl]=Latte-shell
 Name[pt]=Consola do Latte
 Name[sv]=Latte skal
@@ -9,6 +10,7 @@ Name[uk]=Оболонка Латте
 Name[x-test]=xxLatte Shellxx
 Comment=Shell provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat pel Latte Dock
+Comment[ca@valencia]=Intèrpret d'ordes proporcionat pel Latte Dock
 Comment[nl]=Shell geleverd voor de Latte Dock
 Comment[pt]=Consola oferecida para a área acoplável do Latte
 Comment[sv]=Skal tillhandahållet för Latte dockningsfönster
@@ -17,6 +19,7 @@ Comment[x-test]=xxShell provided for the Latte Dockxx
 
 Keywords=shell
 Keywords[ca]=intèrpret d'ordres
+Keywords[ca@valencia]=intèrpret d'ordes
 Keywords[nl]=shell
 Keywords[pt]=consola
 Keywords[sk]=shell

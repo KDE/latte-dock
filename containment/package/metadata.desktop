@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Latte
 Name[ca]=Latte
+Name[ca@valencia]=Latte
 Name[nl]=Latte
 Name[pt]=Latte
 Name[sv]=Latte
@@ -9,6 +10,7 @@ Name[uk]=Латте
 Name[x-test]=xxLattexx
 Comment=Containment provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat pel Latte Dock
+Comment[ca@valencia]=Intèrpret d'ordes proporcionat pel Latte Dock
 Comment[nl]=Container geleverd voor de Latte Dock
 Comment[pt]=Contentor oferecido para a área acoplável do Latte
 Comment[sv]=Omgivning tillhandahållen för Latte dockningsfönster

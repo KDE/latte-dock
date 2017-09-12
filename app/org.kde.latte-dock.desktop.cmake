@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Latte
 Name[ca]=Latte
+Name[ca@valencia]=Latte
 Name[nl]=Latte
 Name[pt]=Latte
 Name[sv]=Latte
@@ -8,6 +9,7 @@ Name[uk]=Латте
 Name[x-test]=xxLattexx
 Comment=Dock for the masses
 Comment[ca]=Acoblador per a les masses
+Comment[ca@valencia]=Acoblador per a les masses
 Comment[nl]=Dock voor de massa
 Comment[pt]=Área acoplável para as massas
 Comment[sv]=Dockningsfönster för alla
@@ -15,6 +17,7 @@ Comment[uk]=Панель для усіх
 Comment[x-test]=xxDock for the massesxx
 GenericName=Dock
 GenericName[ca]=Acobla
+GenericName[ca@valencia]=Acobla
 GenericName[nl]=Dock
 GenericName[pt]=Área Acoplável
 GenericName[sk]=Dok
