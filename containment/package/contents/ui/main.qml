@@ -1166,6 +1166,8 @@ DragDrop.DropArea {
         onContextMenuIsShownChanged: {
             if (!dock.contextMenuIsShown) {
                 checkRestoreZoom.start();
+            } else {
+                root.globalDirectRender = false;
             }
         }
     }

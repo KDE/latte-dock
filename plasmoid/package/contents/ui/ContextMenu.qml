@@ -85,8 +85,12 @@ PlasmaComponents.ContextMenu {
         openRelative();
         windowsPreviewDlg.contextMenu = true;
         windowsPreviewDlg.hide();
+
+        icList.directRender = false;
+
         if (root.latteDock){
             root.latteDock.hideTooltipLabel();
+            root.latteDock.globalDirectRender = false;
         }
     }
 
