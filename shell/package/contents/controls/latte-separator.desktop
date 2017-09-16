@@ -2,6 +2,7 @@
 Name=Latte Separator
 Name[ca]=Separador del Latte
 Name[ca@valencia]=Separador del Latte
+Name[de]=Latte-Abstandshalter
 Name[es]=Separador de Latte
 Name[nl]=Latte-scheidingsteken
 Name[pt]=Separador do Latte
@@ -20,6 +21,7 @@ Comment[x-test]=xxLatte Ghost Separator (Ghost file)xx
 GenericName=Dock
 GenericName[ca]=Acobla
 GenericName[ca@valencia]=Acobla
+GenericName[de]=Dock
 GenericName[es]=Dock
 GenericName[nl]=Dock
 GenericName[pt]=Área Acoplável
