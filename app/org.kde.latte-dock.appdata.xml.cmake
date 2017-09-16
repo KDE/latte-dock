@@ -6,6 +6,7 @@
   <name xml:lang="ca-valencia">Latte</name>
   <name xml:lang="de">Latte</name>
   <name xml:lang="el">Latte</name>
+  <name xml:lang="es">Latte</name>
   <name xml:lang="nl">Latte</name>
   <name xml:lang="pt">Latte</name>
   <name xml:lang="ru">Latte</name>
@@ -19,6 +20,7 @@
   <summary xml:lang="ca-valencia">Dock per a les masses</summary>
   <summary xml:lang="de">Dock für die Massen</summary>
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
+  <summary xml:lang="es">Un dock para las masas</summary>
   <summary xml:lang="nl">Dock voor de massa</summary>
   <summary xml:lang="pt">Área acoplável para as massas</summary>
   <summary xml:lang="ru">Док в массы</summary>
@@ -42,6 +44,7 @@
     <p xml:lang="ca-valencia">"Art al cafè"</p>
     <p xml:lang="de">"Art In Coffee"</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
+    <p xml:lang="es">"El arte en el café"</p>
     <p xml:lang="nl">"Kunst in koffie"</p>
     <p xml:lang="pt">"Art In Coffee"</p>
     <p xml:lang="ru">«Искусство в кофе»</p>
@@ -61,6 +64,7 @@
   <developer_name>@AUTHOR@</developer_name>
   <developer_name xml:lang="ca">@AUTHOR@</developer_name>
   <developer_name xml:lang="ca-valencia">@AUTHOR@</developer_name>
+  <developer_name xml:lang="es">@AUTOR@</developer_name>
   <developer_name xml:lang="nl">@AUTHOR@</developer_name>
   <developer_name xml:lang="pt">@AUTHOR@</developer_name>
   <developer_name xml:lang="sk">@AUTHOR@</developer_name>
