@@ -2,6 +2,7 @@
 Name=Latte Plasmoid
 Name[ca]=Plasmoide del Latte
 Name[ca@valencia]=Plasmoide del Latte
+Name[es]=Plasmoide Latte
 Name[nl]=Latte-plasmoid
 Name[pt]=Plasmóide do Latte
 Name[sv]=Latte Plasmoid
@@ -10,6 +11,7 @@ Name[x-test]=xxLatte Plasmoidxx
 Comment=Plasmoid from the Latte Dock
 Comment[ca]=Plasmoide del Latte Dock
 Comment[ca@valencia]=Plasmoide del Latte Dock
+Comment[es]=Plasmoide de Latte Dock
 Comment[nl]=Plasmoid uit de Latte Dock
 Comment[pt]=Plasmóide da Área Acoplável do Latte
 Comment[sv]=Plasmoid för Latte dockningsfönster
