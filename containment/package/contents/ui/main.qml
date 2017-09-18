@@ -68,6 +68,8 @@ DragDrop.DropArea {
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
+                               || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
@@ -75,6 +77,7 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
     property bool editMode: plasmoid.userConfiguring
+    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && windowsModel.hasMaximizedWindow
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
@@ -99,6 +102,7 @@ DragDrop.DropArea {
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
     property bool solidPanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
+
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
     //property bool smallAutomaticIconJumps: plasmoid.configuration.smallAutomaticIconJumps
@@ -1319,7 +1323,7 @@ DragDrop.DropArea {
     Loader{
         id: windowsModel
 
-        active: (plasmoid.configuration.backgroundOnlyOnMaximized || root.disablePanelShadowMaximized) && dock
+        active: (plasmoid.configuration.backgroundOnlyOnMaximized || root.disablePanelShadowMaximized || plasmoid.configuration.solidBackgroundForMaximized) && dock
 
         property bool hasMaximizedWindow: active && item ? item.maximizedWindowOnScreen : false
         sourceComponent: WindowsModel{}

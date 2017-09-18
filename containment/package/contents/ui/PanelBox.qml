@@ -257,7 +257,9 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
-            opacity: root.solidPanel ?  1 : plasmoid.configuration.panelTransparency / 100
+            opacity: root.solidPanel || root.forceSolidPanel
+                     || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100) ?
+                         1 : plasmoid.configuration.panelTransparency / 100
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 

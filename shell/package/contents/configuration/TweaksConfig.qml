@@ -85,9 +85,23 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: solidForMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Force solid background for maximized windows")
+                checked: plasmoid.configuration.solidBackgroundForMaximized
+                tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized window")
+
+                onClicked: {
+                    plasmoid.configuration.solidBackgroundForMaximized = checked;
+                  //  plasmoid.configuration.disablePanelShadowForMaximized = false;
+                  //  hideShadowsOnMaximizedChk.checked = false;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: onlyOnMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show background only for maximized windows")
+                text: i18n("Hide background for not maximized windows")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
                 tooltip: i18n("The panel background becomes transparent but is shown \nwhen there is a maximized window")
 
