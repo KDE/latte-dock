@@ -39,6 +39,7 @@
     <p xml:lang="sv">Latte är ett dockningsfönster baserat på Plasma ramverk som erbjuder en elegant och intuitiv upplevelse för aktiviteter och Plasmoider. Det animerar innehållet genom att använda en paraboleffekt för zoomning, och försöker bara vara där när det behövs.</p>
     <p xml:lang="uk">Латте — панель на основі бібліотек Плазми, яка забезпечує елегантний і інтуїтивно зрозумілий доступ до ваших завдань та плазмоїдів. Вміст панелі анімується за допомогою ефекту параболічного збільшення і показується лише тоді, коли це потрібно.</p>
     <p xml:lang="x-test">xxLatte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.xx</p>
+    <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
     <p> "Art In Coffee" </p>
     <p xml:lang="ca">"Art al cafè"</p>
     <p xml:lang="ca-valencia">"Art al cafè"</p>
@@ -71,6 +72,7 @@
   <developer_name xml:lang="sv">@Upphovsman@</developer_name>
   <developer_name xml:lang="uk">@AUTHOR@</developer_name>
   <developer_name xml:lang="x-test">xx@AUTHOR@xx</developer_name>
+  <developer_name xml:lang="zh-TW">@作者@</developer_name>
   <icon type="stock">latte-dock</icon>
   <project_license>GPL v2+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
