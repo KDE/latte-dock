@@ -9,6 +9,7 @@ Name[pt]=Plasmóide do Latte
 Name[sv]=Latte Plasmoid
 Name[uk]=Плазмоїд Латте
 Name[x-test]=xxLatte Plasmoidxx
+Name[zh_TW]=Latte Plasmoid
 Comment=Plasmoid from the Latte Dock
 Comment[ca]=Plasmoide del Latte Dock
 Comment[ca@valencia]=Plasmoide del Latte Dock
@@ -19,6 +20,7 @@ Comment[pt]=Plasmóide da Área Acoplável do Latte
 Comment[sv]=Plasmoid för Latte dockningsfönster
 Comment[uk]=Плазмоїд для панелі Латте
 Comment[x-test]=xxPlasmoid from the Latte Dockxx
+Comment[zh_TW]=從 Latte Dock 而來的 Plasmoid
 
 Type=Service
 Icon=latte-dock

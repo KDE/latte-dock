@@ -10,6 +10,7 @@ Name[pt]=Consola do Latte
 Name[sv]=Latte skal
 Name[uk]=Оболонка Латте
 Name[x-test]=xxLatte Shellxx
+Name[zh_TW]=Latte Shell
 Comment=Shell provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat pel Latte Dock
 Comment[ca@valencia]=Intèrpret d'ordes proporcionat pel Latte Dock
@@ -20,6 +21,7 @@ Comment[pt]=Consola oferecida para a área acoplável do Latte
 Comment[sv]=Skal tillhandahållet för Latte dockningsfönster
 Comment[uk]=Оболонка панелі Латте
 Comment[x-test]=xxShell provided for the Latte Dockxx
+Comment[zh_TW]=由 Latte Dock 提供的 Shell
 
 Keywords=shell
 Keywords[ca]=intèrpret d'ordres
@@ -32,6 +34,7 @@ Keywords[sk]=shell
 Keywords[sv]=skal
 Keywords[uk]=оболонка
 Keywords[x-test]=xxshellxx
+Keywords[zh_TW]=shell
 Type=Service
 
 X-KDE-ServiceTypes=Plasma/Shell

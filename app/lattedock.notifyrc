@@ -9,6 +9,7 @@ Name[pt]=Área Acoplável do Latte
 Name[sv]=Latte dockningsfönster
 Name[uk]=Панель Латте
 Name[x-test]=xxLatte Dockxx
+Name[zh_TW]=Latte Dock
 Comment=Latte Dock
 Comment[ca]=Acoblable del Latte
 Comment[ca@valencia]=Acoblable del Latte
@@ -19,6 +20,7 @@ Comment[pt]=Área Acoplável do Latte
 Comment[sv]=Latte dockningsfönster
 Comment[uk]=Панель Латте
 Comment[x-test]=xxLatte Dockxx
+Comment[zh_TW]=Latte Dock
 IconName=latte-dock
 
 [Event/import-done]
@@ -32,6 +34,7 @@ Name[pt]=A configuração foi importada com sucesso
 Name[sv]=Inställning importerad med lyckat resultat
 Name[uk]=Налаштування успішно імпортовано
 Name[x-test]=xxConfiguration imported successfullyxx
+Name[zh_TW]=設定匯入成功
 Action=Popup
 
 [Event/import-fail]
@@ -45,6 +48,7 @@ Name[pt]=Não foi possível importar a configuração
 Name[sv]=Misslyckades importera inställning
 Name[uk]=Не вдалося імпортувати налаштування
 Name[x-test]=xxFailed to import configurationxx
+Name[zh_TW]=匯入設定失敗
 Action=Popup
 
 [Event/export-done]
@@ -58,6 +62,7 @@ Name[pt]=A configuração foi exportada com sucesso
 Name[sv]=Inställning exporterad med lyckat resultat
 Name[uk]=Налаштування успішно експортовано
 Name[x-test]=xxConfiguration exported successfullyxx
+Name[zh_TW]=設定匯出成功
 Action=Popup
 
 [Event/export-fail]
@@ -71,6 +76,7 @@ Name[pt]=Não foi possível exportar a configuração
 Name[sv]=Misslyckades exportera inställning
 Name[uk]=Не вдалося експортувати налаштування
 Name[x-test]=xxFailed to export configurationxx
+Name[zh_TW]=匯出設定失敗
 Action=Popup
 
 [Event/switch-layout]
@@ -84,4 +90,5 @@ Name[pt]=Mudar para a disposição
 Name[sv]=Byt till layout
 Name[uk]=Перемкнутися на компонування
 Name[x-test]=xxSwitch to layoutxx
+Name[zh_TW]=切換至佈局
 Action=Popup

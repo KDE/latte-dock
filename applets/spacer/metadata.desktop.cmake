@@ -9,6 +9,7 @@ Name[pt]=Espaço da Área Acoplável do Latte
 Name[sv]=Avskiljare för Latte dockningsfönster
 Name[uk]=Розпірка панелі Латте
 Name[x-test]=xxLatte Dock Spacerxx
+Name[zh_TW]=Latte Dock 間隔器
 Comment=Reserve empty spaces within the dock.
 Comment[ca]=Reserva espais buits dins de l'acoblador.
 Comment[ca@valencia]=Reserva espais buits dins de l'acoblador.
@@ -19,6 +20,7 @@ Comment[pt]=Reservar espaços em branco dentro da área acoplável.
 Comment[sv]=Reservera tomt utrymme inne i dockningsfönstret.
 Comment[uk]=Створює прогалини на панелі.
 Comment[x-test]=xxReserve empty spaces within the dock.xx
+Comment[zh_TW]=在 dock 中保留空間。
 
 Encoding=UTF-8
 Type=Service
@@ -32,6 +34,7 @@ Keywords[pt]=espaço
 Keywords[sv]=mellanrum
 Keywords[uk]=розпірка
 Keywords[x-test]=xxspacerxx
+Keywords[zh_TW]=空白
 NoDisplay=true
 
 
