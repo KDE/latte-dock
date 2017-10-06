@@ -5,6 +5,7 @@
 #include "windowinfowrap.h"
 #include "abstractwindowinterface.h"
 
+#include <array>
 #include <memory>
 
 #include <QObject>
