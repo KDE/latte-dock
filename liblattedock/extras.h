@@ -15,16 +15,6 @@
 #include <memory>
 #include <cmath>
 
-#if __GLIBCXX__ <= 20150623
-namespace std {
-template<class T, class... Args>
-unique_ptr<T> make_unique(Args &&... args)
-{
-    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-}
-#endif
-
 /*!
  * @brief convert a QRect to a QString with format `(<x>, <y>) <width>x<height>`
  */
