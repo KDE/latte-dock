@@ -80,17 +80,20 @@
   <metadata_license>CC0-1.0</metadata_license>
   <screenshots>
     <screenshot type="default">
-      <image type="source">http://i.imgur.com/LLoXdgK.png</image>
+      <image type="source">https://cdn.kde.org/screenshots/latte-dock/latte-dock_regular.png</image>
     </screenshot>
     <screenshot>
-      <image type="source">https://2.bp.blogspot.com/-_gEFl6vIQt8/WNf3LaHcpvI/AAAAAAAAASk/CRZCF1vD2k0MQCesQk8CheBm5QrFRqYdQCLcB/s640/blur2.png</image>
+      <image type="source">https://cdn.kde.org/screenshots/latte-dock/latte-dock_badges.png</image>
     </screenshot>
     <screenshot>
-      <image type="source">http://i.imgur.com/CHCZ51A.png</image>
+      <image type="source">https://cdn.kde.org/screenshots/latte-dock/latte-dock_settings.png</image>
     </screenshot>
     <screenshot>
-      <image type="source">https://3.bp.blogspot.com/-4u-K09Tu8xI/WNf3LifOFxI/AAAAAAAAASo/AKh2HcenWpovNoJM8Yy65_jZUoXfhEi_QCLcB/s400/configwin.png</image>
+      <image type="source">https://cdn.kde.org/screenshots/latte-dock/latte-dock_settings2.png</image>
     </screenshot>
+    <screenshot>
+      <image type="source">https://cdn.kde.org/screenshots/latte-dock/latte-dock_toppanel.png</image>
+    </screenshot>    
   </screenshots>
   <project_group>KDE</project_group>
   <provides>
@@ -101,5 +104,7 @@
 ​    <release version="0.6.0" date="2017-04-02"/>
 ​    <release version="0.6.1" date="2017-05-05"/>
 ​    <release version="0.6.2" date="2017-05-09"/>
+​    <release version="0.7.0" date="2017-08-11"/>
+​    <release version="0.7.1" date="2017-08-31"/>
 ​  </releases>
 </component>
