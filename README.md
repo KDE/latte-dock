@@ -9,9 +9,9 @@ Latte is a dock based on plasma frameworks that provides an elegant and intuitiv
 Screenshots
 ===========
 
-![](screenshots/screenshot01.png)
+![](https://cdn.kde.org/screenshots/latte-dock/latte-dock_regular.png)
 
-![](screenshots/screenshot02.png)
+![](https://cdn.kde.org/screenshots/latte-dock/latte-dock_settings.png)
 
 Installation
 ============
