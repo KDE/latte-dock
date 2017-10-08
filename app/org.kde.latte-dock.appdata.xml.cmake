@@ -93,7 +93,7 @@
     </screenshot>
     <screenshot>
       <image type="source">https://cdn.kde.org/screenshots/latte-dock/latte-dock_toppanel.png</image>
-    </screenshot>    
+    </screenshot>
   </screenshots>
   <project_group>KDE</project_group>
   <provides>
