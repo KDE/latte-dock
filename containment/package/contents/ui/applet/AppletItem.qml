@@ -217,7 +217,8 @@ Item {
                (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
               && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
               && !container.fakeIconItem)
-                || (container.needsFillSpace)){
+                || (applet && applet.pluginName === "org.kde.plasma.systemtray")
+                || (container.needsFillSpace) ) {
             canBeHovered = false;
         }
         else{
