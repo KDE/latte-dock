@@ -226,13 +226,17 @@ MouseArea{
         anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
         anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
-        opacity: separatorShadow.active ? 0 : 0.4
+        opacity: separatorShadow.active || root.internalSeparatorHidden ? 0 : 0.4
         visible: mainItemContainer.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
         height: !root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
 
         property int localThickMargin: root.statesLineSize + root.thickMarginBase + 4
+
+        Behavior on opacity {
+            NumberAnimation { duration: root.durationTime*units.longDuration }
+        }
 
         Rectangle {
             anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
@@ -255,7 +259,11 @@ MouseArea{
         id: separatorShadow
         anchors.fill: separatorItem
         active: root.enableShadows && isSeparator
-        opacity: 0.4
+        opacity: root.internalSeparatorHidden ? 0 : 0.4
+
+        Behavior on opacity {
+            NumberAnimation { duration: root.durationTime*units.longDuration }
+        }
 
         sourceComponent: DropShadow{
             anchors.fill: parent
@@ -293,7 +301,9 @@ MouseArea{
             //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
             //when the task is removed
             property int indexUsed: index === -1 ? lastValidIndex : index
-            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed-1)
+            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1
+                                           && !root.internalSeparatorHidden
+                                           && parabolicManager.internalSeparatorPos === indexUsed-1)
                                           || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
@@ -366,7 +376,9 @@ MouseArea{
             //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
             //when the task is removed
             property int indexUsed: index === -1 ? lastValidIndex : index
-            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1 && parabolicManager.internalSeparatorPos === indexUsed+1)
+            property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1
+                                           && !root.internalSeparatorHidden
+                                           && parabolicManager.internalSeparatorPos === indexUsed+1)
                                           || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 

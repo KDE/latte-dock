@@ -29,6 +29,7 @@ Item {
     id: parManager
 
     property bool hasInternalSeparator: false
+    property bool internalSeparatorHidden: (internalSeparatorPos === 0) || (internalSeparatorPos === root.tasksCount - 1)
     property int internalSeparatorPos: -1
 
     onInternalSeparatorPosChanged: {
