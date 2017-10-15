@@ -313,13 +313,15 @@ MouseArea{
             function updateNeighbour() {
                 //index===-1 indicates that this item is removed
                 if (latteDock && index!==-1) {
-                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && indexUsed===0;
+                    hiddenSpacerLeft.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1)
+                            && (indexUsed===0 || (indexUsed===1 && root.internalSeparatorPos===0 && root.internalSeparatorHidden));
                 }
             }
 
             Connections{
                 target: root
                 onLatteDockChanged: hiddenSpacerLeft.updateNeighbour();
+                onInternalSeparatorHiddenChanged: hiddenSpacerLeft.updateNeighbour();
             }
 
             Connections{
@@ -389,13 +391,17 @@ MouseArea{
             function updateNeighbour() {
                 //index===-1 indicates that this item is removed
                 if (latteDock && index!==-1) {
-                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && indexUsed===root.tasksCount-1;
+                    hiddenSpacerRight.neighbourSeparator = latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1)
+                            && ( indexUsed===root.tasksCount-1 || (indexUsed===root.tasksCount-2 && indexUsed>=0
+                                                                   && root.internalSeparatorPos===root.tasksCount-1
+                                                                   && root.internalSeparatorHidden));;
                 }
             }
 
             Connections{
                 target: root
                 onLatteDockChanged: hiddenSpacerRight.updateNeighbour();
+                onInternalSeparatorHiddenChanged: hiddenSpacerRight.updateNeighbour();
             }
 
             Connections{
