@@ -446,6 +446,7 @@ MouseArea {
                 lockButton.visible = (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
                         && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
+                        && !currentApplet.isSeparator
                         && !currentApplet.isInternalViewSplitter
 
                 label.text = currentApplet.applet.title;
