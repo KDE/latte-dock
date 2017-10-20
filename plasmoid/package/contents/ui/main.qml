@@ -1361,6 +1361,12 @@ Item {
 
     function extSignalAddLauncherToActivity(group, launcher, activity) {
         if (group === latteDock.launchersGroup) {
+            var launcherActivities = tasksModel.launcherActivities(launcher);
+
+            if (activity !== tasksModel.activity && (launcherActivities[0] === "00000000-0000-0000-0000-000000000000")) {
+                root.launcherForRemoval = launcher;
+            }
+
             tasksModel.requestAddLauncherToActivity(launcher, activity);
         }
     }

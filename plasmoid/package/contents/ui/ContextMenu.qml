@@ -688,6 +688,10 @@ PlasmaComponents.ContextMenu {
                                         if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
                                             latteDock.universalLayoutManager.launchersSignals.addLauncherToActivity(latteDock.launchersGroup, url, id);
                                         } else {
+                                            if (id !== tasksModel.activity && (activities[0] === "00000000-0000-0000-0000-000000000000")) {
+                                                root.launcherForRemoval = url;
+                                            }
+
                                             tasksModel.requestAddLauncherToActivity(url, id);
                                         }
                                     } else {
