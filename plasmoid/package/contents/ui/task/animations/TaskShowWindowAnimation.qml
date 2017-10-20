@@ -97,6 +97,20 @@ SequentialAnimation{
     }
 
     function execute(){
+        //trying to fix the ListView nasty behavior
+        //during the removal the anchoring for ListView children changes a lot
+        if (isWindow){
+            var previousTask = icList.childAtIndex(index-1);
+            var nextTask = icList.childAtIndex(index+1);
+            if (previousTask !== undefined && nextTask !== undefined && nextTask.inBouncingAnimation){
+                if (root.vertical) {
+                    mainItemContainer.anchors.top = previousTask.bottom;
+                } else {
+                    mainItemContainer.anchors.left = previousTask.right;
+                }
+            }
+        }
+
         //Animation Add/Remove (2) - when is window with no launcher, animations enabled
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled
         var animation2 = ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
