@@ -118,7 +118,7 @@ SequentialAnimation{
         wrapper.tempScaleHeight = wrapper.mScale;
 
         if(!isDemandingAttention)
-            loops = 2;
+            loops = 1;
         else {
             loops = 20;
             mainItemContainer.inAttentionAnimation = true;
@@ -133,7 +133,8 @@ SequentialAnimation{
     }
 
     function bounceNewWindow(){
-        if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
+        //if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
+        if (!root.dockIsHidden && (root.zoomFactor > 1) && (root.durationTime>0)){
             newWindowAnimation.init();
             start();
         }
