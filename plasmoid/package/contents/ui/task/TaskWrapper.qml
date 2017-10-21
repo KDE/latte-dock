@@ -241,7 +241,7 @@ Item{
                 var subSpacerScale = (nScale-1)/2;
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
-            } else {
+            } else if (!inBlockingAnimation) {
                 if(nScale >= 0) {
                     mScale = nScale + step;
                 } else {
