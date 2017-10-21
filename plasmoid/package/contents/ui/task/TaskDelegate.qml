@@ -204,7 +204,7 @@ MouseArea{
         property int previousCount: 0
 
         onWindowsCountChanged: {
-            if ((windowsCount >= 2) && (windowsCount > previousCount)){
+            if ((windowsCount >= 2) && (windowsCount > previousCount) && !mainItemContainer.containsMouse){
                 if(root.dragSource == null)
                     mainItemContainer.groupWindowAdded();
             }
