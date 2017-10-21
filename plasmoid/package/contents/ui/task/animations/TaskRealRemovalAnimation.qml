@@ -35,7 +35,7 @@ SequentialAnimation {
                                && !mainItemContainer.isStartup)
 
     property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
-                                || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )&& mainItemContainer.isLauncher)
+                                || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval ) && !mainItemContainer.isStartup)
 
     property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0) && !mainItemContainer.inBouncingAnimation;
 
