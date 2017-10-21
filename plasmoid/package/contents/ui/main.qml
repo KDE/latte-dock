@@ -1313,10 +1313,11 @@ Item {
     function getBadger(identifier) {
         var ident1 = identifier;
         var n = ident1.lastIndexOf('/');
+
         var result = n>=0 ? ident1.substring(n + 1) : identifier;
 
         for(var i=0; i<badgers.length; ++i) {
-            if (badgers[i].id === result) {
+            if (result.indexOf(badgers[i].id) >= 0) {
                 return badgers[i];
             }
         }

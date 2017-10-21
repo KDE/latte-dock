@@ -527,15 +527,7 @@ MouseArea{
         checkWindowsStates();
     }
 
-    onLauncherUrlChanged: {
-        var badger = root.getBadger(launcherUrl);
-
-        if (badger && !isLauncher) {
-            badgeIndicator = parseInt(badger.value);
-        } else {
-            badgeIndicator = 0;
-        }
-    }
+    onLauncherUrlChanged: updateBadge();
 
     ////// End of Values Changes /////
 
@@ -1175,6 +1167,16 @@ MouseArea{
         mainItemContainer.audioStreams.forEach(function (item) { item.decreaseVolume(); });
     }
 
+    function updateBadge() {
+        var badger = root.getBadger(launcherUrl);
+
+        if (badger && !isLauncher) {
+            badgeIndicator = parseInt(badger.value);
+        } else {
+            badgeIndicator = 0;
+        }
+    }
+
     Connections {
         target: pulseAudio.item
         ignoreUnknownSignals: true // Plasma-PA might not be available
@@ -1187,7 +1189,6 @@ MouseArea{
         //after dragging an existent task with audio
         onDragSourceChanged: mainItemContainer.updateAudioStreams()
     }
-
 
     ///REMOVE
     //fix wrong positioning of launchers....

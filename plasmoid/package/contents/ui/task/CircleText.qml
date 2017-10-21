@@ -53,9 +53,9 @@ Rectangle {
     border.color: root.minimizedDotColor //alphaBackColor2
 
     onProportionChanged: {
-      //  console.log(previousProportion + " - "+proportion);
+        //  console.log(previousProportion + " - "+proportion);
         if ((proportion - 0.03 >= previousProportion) || (proportion===1)) {
-         //   console.log("request repaint...");
+            //   console.log("request repaint...");
             previousProportion = proportion;
             repaint();
         }
@@ -110,23 +110,25 @@ Rectangle {
         text: numberValue > 0 ? numberValue : ""
         font.pixelSize: 0.6 * parent.height
         font.bold: true
-        color: (( (mainItemContainer.badgeIndicator > 0)
-                || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) ))
-               && proportion>0 ? theme.backgroundColor : theme.textColor
+        color: useBackgroundColor ? theme.backgroundColor : theme.textColor
         visible: showNumber
+
+        property bool useBackgroundColor: ( (mainItemContainer.badgeIndicator > 0)
+                                           || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )
+                                          && proportion>0
     }
 
 
     Rectangle{
-       anchors.fill: parent
-       anchors.topMargin: parent.border.width
-       anchors.bottomMargin: parent.border.width
-       anchors.leftMargin: parent.border.width
-       anchors.rightMargin: parent.border.width
-       color: "transparent"
-       border.width: parent.border.width
-       border.color: parent.alphaBackColor2
-       radius: parent.radius
+        anchors.fill: parent
+        anchors.topMargin: parent.border.width
+        anchors.bottomMargin: parent.border.width
+        anchors.leftMargin: parent.border.width
+        anchors.rightMargin: parent.border.width
+        color: "transparent"
+        border.width: parent.border.width
+        border.color: parent.alphaBackColor2
+        radius: parent.radius
     }
 
     Rectangle{
