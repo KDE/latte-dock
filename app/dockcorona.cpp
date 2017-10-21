@@ -425,6 +425,10 @@ QRegion DockCorona::availableScreenRegion(int id) const
                     }
 
                     break;
+
+                default:
+                    //! bypass clang warnings
+                    break;
             }
         }
     }
@@ -476,6 +480,10 @@ QRect DockCorona::availableScreenRect(int id) const
 
                 case Plasma::Types::BottomEdge:
                     available.setBottomLeft({available.x(), dockRect.top()});
+                    break;
+
+                default:
+                    //! bypass clang warnings
                     break;
             }
         }

@@ -388,7 +388,7 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
     //! as a start point
     if (dockCorona && dockCorona->layoutManager() && dockCorona->layoutManager()->currentLayout()) {
         if ((group == Dock::LayoutLaunchers && dockCorona->layoutManager()->currentLayout()->launchers().isEmpty())
-            || group == Dock::GlobalLaunchers && dockCorona->universalSettings()->launchers().isEmpty()) {
+            || (group == Dock::GlobalLaunchers && dockCorona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_dockView->containment();
 

@@ -568,6 +568,10 @@ QRect DockView::maximumNormalGeometry()
 
             maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
             break;
+
+        default:
+            //! bypass clang warnings
+            break;
     }
 
     //! this is needed in order to preserve that the top dock will be above
