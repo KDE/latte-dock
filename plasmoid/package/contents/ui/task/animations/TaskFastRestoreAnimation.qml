@@ -69,15 +69,12 @@ ParallelAnimation{
     }
 
     onStopped: {
+        if (latteDock)
+            latteDock.setGlobalDirectRender(false);
+        else
+            icList.directRender = false;
+
         if (newWindowAnimation.paused){
-
-            if(mainItemContainer.containsMouse) {
-                if (latteDock)
-                    latteDock.setGlobalDirectRender(false);
-                else
-                    icList.directRender = false;
-            }
-
             newWindowAnimation.stop();
             wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
         }
