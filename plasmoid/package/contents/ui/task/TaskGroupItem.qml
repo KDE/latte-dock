@@ -65,8 +65,7 @@ Item{
                                 glowFrame.isActiveColor : glowFrame.notActiveColor
 
                 roundCorners: true
-                showAttention: mainItemContainer.isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
-                                   true : false
+                showAttention: mainItemContainer.showAttention
 
                 opacity: (!mainItemContainer.hasActive && root.showPreviews
                           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1

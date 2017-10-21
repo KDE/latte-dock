@@ -41,7 +41,6 @@ SequentialAnimation {
 
     ScriptAction{
         script:{
-            root.mouseWasEntered.disconnect(signalMouseWasEntered);
             root.draggingFinished.disconnect(handlerDraggingFinished);
             root.clearZoomSignal.disconnect(clearZoom);
             root.publishTasksGeometries.disconnect(slotPublishGeometries);

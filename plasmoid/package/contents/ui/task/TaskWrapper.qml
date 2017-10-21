@@ -69,6 +69,8 @@ Item{
     //size needed fom the states below icons
     //property int statesLineSize: root.statesLineSize
     property int addedSpace: root.statesLineSize //7
+    property int maxThickness: addedSpace + root.zoomFactor*root.iconSize
+
     property real showDelegateWidth: root.vertical ? basicScalingWidth+addedSpace :
                                                      basicScalingWidth
     property real showDelegateheight: root.vertical ? basicScalingHeight :
@@ -76,7 +78,7 @@ Item{
 
     //scales which are used mainly for activating InLauncher
     ////Scalers///////
-    property bool inTempScaling: (((tempScaleWidth !== 1) || (tempScaleHeight !== 1) ) && (!mainItemContainer.mouseEntered) )
+    property bool inTempScaling: ((tempScaleWidth !== 1) || (tempScaleHeight !== 1) )
 
     property real mScale: 1
     property real tempScaleWidth: 1
@@ -97,14 +99,14 @@ Item{
 
     //property int curIndex: icList.hoveredIndex
     //  property int index: mainItemContainer.Positioner.index
-    property real center: !mainItemContainer.inAttentionAnimation ? (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
-                                                                    (width + hiddenSpacerLeft.width+hiddenSpacerRight.width)
+    //property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    property real center: (width + hiddenSpacerLeft.nHiddenSize + hiddenSpacerRight.nHiddenSize) / 2
 
     property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
 
     signal runLauncherAnimation();
 
-    /*   Rectangle{
+     /*  Rectangle{
             anchors.fill: parent
             border.width: 1
             border.color: "green"
@@ -149,7 +151,37 @@ Item{
             }
         }
 
+        //! This is used from bouncing attention animation in order to played correctly
+        Loader{
+            id: firstPadding
+
+            active: secondIndicator.active && mainItemContainer.inAttentionAnimation
+            visible: active
+
+            sourceComponent: Component{
+                Item{
+                    width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
+                    height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
+                }
+            }
+        }
+
         TaskIconItem{ id: taskIconItem}
+
+        //! This is used from bouncing attention animation in order to played correctly
+        Loader{
+            id: secondPadding
+
+            active: firstIndicator.active && mainItemContainer.inAttentionAnimation
+            visible: active
+
+            sourceComponent: Component{
+                Item{
+                    width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
+                    height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
+                }
+            }
+        }
 
         Loader{
             id: secondIndicator
@@ -206,7 +238,7 @@ Item{
             }*/
 
             if (mainItemContainer.inAttentionAnimation) {
-                var subSpacerScale = nScale;
+                var subSpacerScale = (nScale-1)/2;
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
             } else {

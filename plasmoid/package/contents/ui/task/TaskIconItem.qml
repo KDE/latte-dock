@@ -599,19 +599,11 @@ Item{
 
     Connections{
         target: mainItemContainer
-        onContainsMouseChanged: {
-            //if (mainItemContainer.containsMouse && newWindowAnimation.running) {
-            //    newWindowAnimation.pause();
-            //   fastRestoreAnimation.start();
-            //}
-        }
 
-        onIsActiveChanged:{
-            if (mainItemContainer.isActive && newWindowAnimation.running && mainItemContainer.inAttentionAnimation) {
+        onShowAttentionChanged:{
+            if (!mainItemContainer.showAttention && newWindowAnimation.running && mainItemContainer.inAttentionAnimation) {
                 newWindowAnimation.pause();
                 fastRestoreAnimation.start();
-                /*newWindowAnimation.fastRestoreAfterEnd = true;
-                newWindowAnimation.clear();*/
             }
         }
     }

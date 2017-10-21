@@ -200,7 +200,6 @@ Item {
 
     signal clearZoomSignal();
     signal draggingFinished();
-    signal mouseWasEntered(int delegateIndex, bool value);
     signal presentWindows(variant winIds);
     signal requestLayout;
     signal signalActionsBlockHiding(int value);

@@ -51,10 +51,14 @@ MouseArea{
         if (isSeparator)
             return root.vertical ? separatorItem.width : (root.dragSource ? 5+root.iconMargin : 0);
 
-        if (root.vertical)
-            return wrapper.width;
-        else
+        if (root.vertical) {
+            if (!inAttentionAnimation)
+                return wrapper.width;
+            else
+                return wrapper.maxThickness;
+        } else {
             return hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width;
+        }
     }
 
     height: {
@@ -64,10 +68,14 @@ MouseArea{
         if (isSeparator)
             return !root.vertical ? separatorItem.height : (root.dragSource ? 5+root.iconMargin: 0);
 
-        if (root.vertical)
+        if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
-        else
-            wrapper.height;
+        } else {
+            if (!inAttentionAnimation)
+                return wrapper.height;
+            else
+                return wrapper.maxThickness;
+        }
     }
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
@@ -102,8 +110,9 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
-    property bool mouseEntered: false
     property bool pressed: false
+    readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
+                                             true : false
 
     property int animationTime: root.durationTime * 1.2 * units.shortDuration
     property int badgeIndicator: 0 //it is used from external apps
@@ -308,7 +317,14 @@ MouseArea{
                                           || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
-            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+            property real nHiddenSize: {
+                if (!inAttentionAnimation) {
+                    return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
+                } else {
+                    return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
+                }
+            }
+
             property real nScale: 0
 
             function updateNeighbour() {
@@ -353,7 +369,7 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-             Rectangle{
+           /*  Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -361,7 +377,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            }
+            } */
         }
 
         TaskWrapper{ id: wrapper }
@@ -385,9 +401,15 @@ MouseArea{
                                           || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
                                              (2+root.iconMargin/2) : 0
 
-            property real nHiddenSize: (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace
-            property real nScale: 0
+            property real nHiddenSize: {
+                if (!inAttentionAnimation) {
+                    return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
+                } else {
+                    return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
+                }
+            }
 
+            property real nScale: 0
 
             function updateNeighbour() {
                 //index===-1 indicates that this item is removed
@@ -433,7 +455,7 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-             Rectangle{
+           /*  Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -441,7 +463,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            }
+            } */
         }
 
     }// Flow with hidden spacers inside
@@ -556,12 +578,6 @@ MouseArea{
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
             if (!inBlockingAnimation || inAttentionAnimation) {
-                /*mouseEntered = true;
-                root.mouseWasEntered(index-2, false);
-                root.mouseWasEntered(index+2, false);
-                root.mouseWasEntered(index-1, true);
-                root.mouseWasEntered(index+1, true);*/
-
                 if (icList.orientation == Qt.Horizontal){
                     icList.currentSpot = mouseX;
                     wrapper.calculateScales(mouseX);
@@ -576,8 +592,6 @@ MouseArea{
 
     // IMPORTANT: This must be improved ! even for small miliseconds  it reduces performance
     onExited: {
-        mouseEntered = false;
-
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.hideTooltipLabel();
         }
@@ -789,7 +803,6 @@ MouseArea{
         //positive direction
         if (angle > 12) {
             if (isLauncher) {
-                mouseEntered = false;
                 inWheelAction = true;
                 wrapper.runLauncherAnimation();
             } else if (isGroupParent) {
@@ -828,11 +841,6 @@ MouseArea{
     ///////////////// End Of Mouse Area Events ///////////////////
 
     ///// Handlers for Signals /////
-    function signalMouseWasEntered(nIndex, value){
-        if( index === nIndex)
-            mouseEntered = value;
-    }
-
     function animationStarted(){
         //    console.log("Animation started: " + index);
         inAnimation = true;
@@ -868,7 +876,6 @@ MouseArea{
 
     function activateTask() {
         if( mainItemContainer.isLauncher){
-            mouseEntered = false;
             wrapper.runLauncherAnimation();
         }
         else{
@@ -1204,7 +1211,6 @@ MouseArea{
     ///// End of Helper functions ////
 
     Component.onCompleted: {
-        root.mouseWasEntered.connect(signalMouseWasEntered);
         root.draggingFinished.connect(handlerDraggingFinished);
         root.clearZoomSignal.connect(clearZoom);
         root.publishTasksGeometries.connect(slotPublishGeometries);
