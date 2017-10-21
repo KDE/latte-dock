@@ -97,7 +97,8 @@ Item{
 
     //property int curIndex: icList.hoveredIndex
     //  property int index: mainItemContainer.Positioner.index
-    property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
+    property real center: !mainItemContainer.inAttentionAnimation ? (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2 :
+                                                                    (width + hiddenSpacerLeft.width+hiddenSpacerRight.width)
 
     property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
 
@@ -189,7 +190,8 @@ Item{
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
-            mScale = root.zoomFactor;
+            if (!mainItemContainer.inAttentionAnimation)
+                mScale = root.zoomFactor;
         }
 
     } //nScale
@@ -203,10 +205,16 @@ Item{
                 }
             }*/
 
-            if(nScale >= 0) {
-                mScale = nScale + step;
+            if (mainItemContainer.inAttentionAnimation) {
+                var subSpacerScale = nScale;
+                hiddenSpacerLeft.nScale = subSpacerScale;
+                hiddenSpacerRight.nScale = subSpacerScale;
             } else {
-                mScale = mScale + step;
+                if(nScale >= 0) {
+                    mScale = nScale + step;
+                } else {
+                    mScale = mScale + step;
+                }
             }
             //     console.log(index+ ", "+mScale);
         }

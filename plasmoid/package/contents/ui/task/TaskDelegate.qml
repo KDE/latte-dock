@@ -84,6 +84,7 @@ MouseArea{
     property bool hasShown: (IsGroupParent === true) ? tasksWindows.hasShown : !isMinimized
     property bool inAddRemoveAnimation: true
     property bool inAnimation: true
+    property bool inAttentionAnimation: false
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
     property bool inPopup: false
@@ -295,7 +296,7 @@ MouseArea{
             width: root.vertical ? wrapper.width : nHiddenSize
             height: root.vertical ? nHiddenSize : wrapper.height
 
-            visible: (index === 0) || (separatorSpace > 0)
+            visible: (index === 0) || (separatorSpace > 0) || mainItemContainer.inAttentionAnimation
 
             property bool neighbourSeparator: false
             //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
@@ -352,7 +353,7 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-            /* Rectangle{
+             Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -360,7 +361,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            }*/
+            }
         }
 
         TaskWrapper{ id: wrapper }
@@ -372,7 +373,7 @@ MouseArea{
             width: root.vertical ? wrapper.width : nHiddenSize
             height: root.vertical ? nHiddenSize : wrapper.height
 
-            visible: (index === icList.count - 1) ||  (separatorSpace > 0)
+            visible: (index === icList.count - 1) ||  (separatorSpace > 0) || mainItemContainer.inAttentionAnimation
 
             property bool neighbourSeparator: false
             //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
@@ -432,7 +433,7 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-            /* Rectangle{
+             Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -440,7 +441,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            }*/
+            }
         }
 
     }// Flow with hidden spacers inside
@@ -554,12 +555,12 @@ MouseArea{
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
-            if (!inBlockingAnimation) {
-                mouseEntered = true;
+            if (!inBlockingAnimation || inAttentionAnimation) {
+                /*mouseEntered = true;
                 root.mouseWasEntered(index-2, false);
                 root.mouseWasEntered(index+2, false);
                 root.mouseWasEntered(index-1, true);
-                root.mouseWasEntered(index+1, true);
+                root.mouseWasEntered(index+1, true);*/
 
                 if (icList.orientation == Qt.Horizontal){
                     icList.currentSpot = mouseX;
@@ -598,7 +599,7 @@ MouseArea{
     }
 
     onPositionChanged: {
-        if (root.editMode || inBlockingAnimation)
+        if (root.editMode || (inBlockingAnimation && !inAttentionAnimation))
             return;
 
         if(!root.latteDock)
@@ -724,7 +725,7 @@ MouseArea{
             draggingResistaner = null;
         }
 
-        if(pressed && !inBlockingAnimation && !isSeparator){
+        if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
 
             if (modifierAccepted(mouse)){
                 if( !mainItemContainer.isLauncher){
