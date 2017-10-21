@@ -26,7 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 ParallelAnimation{
     id: fastRestoreAnimation
 
-    property int speed: 7*mainItemContainer.animationTime
+    property int speed: 5*mainItemContainer.animationTime
 
     PropertyAnimation {
         target: wrapper

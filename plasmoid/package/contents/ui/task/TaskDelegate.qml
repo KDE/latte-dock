@@ -112,7 +112,7 @@ MouseArea{
 
     property bool pressed: false
     readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
-                                             true : false
+                                              true : false
 
     property int animationTime: root.durationTime * 1.2 * units.shortDuration
     property int badgeIndicator: 0 //it is used from external apps
@@ -369,7 +369,7 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-           /*  Rectangle{
+            /*  Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -455,7 +455,7 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-           /*  Rectangle{
+            /*  Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -577,6 +577,12 @@ MouseArea{
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             icList.hoveredIndex = index;
+            if (inAttentionAnimation) {
+                var subSpacerScale = (root.zoomFactor-1)/2;
+                hiddenSpacerLeft.nScale = subSpacerScale;
+                hiddenSpacerRight.nScale = subSpacerScale;
+            }
+
             if (!inBlockingAnimation || inAttentionAnimation) {
                 if (icList.orientation == Qt.Horizontal){
                     icList.currentSpot = mouseX;

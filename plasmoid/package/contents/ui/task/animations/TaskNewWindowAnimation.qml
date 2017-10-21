@@ -32,7 +32,6 @@ SequentialAnimation{
     property bool isDemandingAttention: (IsDemandingAttention === true)
     property bool containsMouse: mainItemContainer.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
-    property bool fastRestoreAfterEnd: false
 
     SequentialAnimation{
         alwaysRunToEnd: true
@@ -62,18 +61,6 @@ SequentialAnimation{
             duration: 3*root.durationTime*newWindowAnimation.speed
             easing.type: Easing.OutBounce
         }
-
-        ScriptAction{
-            script:{
-                //if (mainItemContainer.containsMouse) {
-                //     newWindowAnimation.stop();
-                // }
-                /*if (!newWindowAnimation.isDemandingAttention
-                        || (plasmoid.status === PlasmaCore.Types.PassiveStatus && newWindowAnimation.loops > 2)){
-                    newWindowAnimation.clear();
-                }*/
-            }
-        }
     }
 
     function clear(){
@@ -91,11 +78,6 @@ SequentialAnimation{
     onStopped: {
         sendEndOfNeedThicknessAnimation();
         clear();
-        if (fastRestoreAfterEnd) {
-            fastRestoreAfterEnd = false;
-            if (mainItemContainer.containsMouse)
-                fastRestoreAnimation.start();
-        }
     }
 
     onIsDemandingAttentionChanged: {
