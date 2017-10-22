@@ -120,13 +120,18 @@ SequentialAnimation{
 
         var animation3 = ((!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher));
 
+        var activities = tasksModel.launcherActivities(mainItemContainer.launcherUrl);
+        var animation6 = (root.inActivityChange && mainItemContainer.isWindow
+                          && activities.indexOf(activityInfo.currentActivity)>=0
+                          && activities.indexOf(activityInfo.previousActivity) === -1)
+
         //startup without launcher, animation should be blocked
         var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                               && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
                              || !launcherIsPresent(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
 
-        if (( animation2 || animation3) && (root.durationTime !== 0)){
+        if (( animation2 || animation3 || animation6) && (root.durationTime !== 0)){
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             start();

@@ -62,6 +62,7 @@ Item {
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     readonly property bool internalSeparatorHidden: parabolicManager.internalSeparatorHidden
+    property bool inActivityChange: false
     property bool initializationStep: false //true
     property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
@@ -459,6 +460,15 @@ Item {
         }
     }
 
+    Timer {
+        id: activityChangeDelayer
+        interval: 150
+        onTriggered: {
+            root.inActivityChange = false;
+            activityInfo.previousActivity = activityInfo.currentActivity;
+        }
+    }
+
 
     /////Window Previews/////////
 
@@ -655,6 +665,14 @@ Item {
 
     TaskManager.ActivityInfo {
         id: activityInfo
+
+        property string previousActivity: ""
+        onCurrentActivityChanged: {
+            root.inActivityChange = true;
+            activityChangeDelayer.start();
+        }
+
+        Component.onCompleted: previousActivity = currentActivity;
     }
 
     PlasmaCore.DataSource {
