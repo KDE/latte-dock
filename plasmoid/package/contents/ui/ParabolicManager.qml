@@ -217,6 +217,22 @@ Item {
         }
     }
 
+    function neighbourToHovered(index) {
+        if (icList.hoveredIndex<0)
+            return;
+
+        if (Math.abs(index - icList.hoveredIndex)<=1)
+            return true;
+
+        if (root.hasInternalSeparator && Math.abs(index - icList.hoveredIndex) === 2) {
+            if ( (index === root.hoveredIndex - 2 && root.internalSeparatorPos === root.hoveredIndex - 1)
+                    || (index === root.hoveredIndex + 2 && root.internalSeparatorPos === root.hoveredIndex + 1))
+                return true;
+        }
+
+        return false;
+    }
+
     function getFrozenTask(identifier) {
         for(var i=0; i<frozenTasks.length; ++i) {
             if (frozenTasks[i].id === identifier) {
