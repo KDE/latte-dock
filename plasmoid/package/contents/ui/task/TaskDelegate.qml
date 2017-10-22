@@ -1204,17 +1204,6 @@ MouseArea{
         //after dragging an existent task with audio
         onDragSourceChanged: mainItemContainer.updateAudioStreams()
     }
-
-    ///REMOVE
-    //fix wrong positioning of launchers....
-    onActivityChanged:{
-        /*for(var i=0; i<tasksModel.launcherList.length; ++i){
-            if ((tasksModel.launcherList[i] == LauncherUrlWithoutIcon) && (i != index)){
-                updatePosition.restart();
-            }
-        }*/
-    }
-
     ///// End of Helper functions ////
 
     Component.onCompleted: {
@@ -1238,14 +1227,6 @@ MouseArea{
             visible = true;
         }
 
-        ///REMOVE
-        //fix wrong positioning of launchers....
-        /*for(var i=0; i<tasksModel.launcherList.length; ++i){
-            if ((tasksModel.launcherList[i] == LauncherUrlWithoutIcon) && (i != index)){
-                updatePosition.restart();
-            }
-        }*/
-
         showWindowAnimation.showWindow();
         updateAudioStreams();
     }
@@ -1253,22 +1234,6 @@ MouseArea{
     Component.onDestruction: {
         wrapper.sendEndOfNeedBothAxisAnimation();
         root.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
-    }
-
-    ///REMOVE
-    Timer{
-        id:updatePosition
-        interval: 800
-
-        onTriggered: {
-            /*for(var i=0; i<tasksModel.launcherList.length; ++i){
-                if ((tasksModel.launcherList[i] == LauncherUrlWithoutIcon) && (i != index)){
-                    //   console.log("Launch List:"+tasksModel.launcherList);
-                    //    console.log("Move from timer "+AppId+" - from:"+ index + " to:" + i + " - total:"+tasksModel.count);
-                    tasksModel.move(index, i);
-                }
-            }*/
-        }
     }
 
     /////Animations
