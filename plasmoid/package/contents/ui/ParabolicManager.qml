@@ -32,6 +32,11 @@ Item {
     property bool internalSeparatorHidden: (internalSeparatorPos === 0) || (internalSeparatorPos === root.tasksCount - 1)
     property int internalSeparatorPos: -1
 
+    //tasks that change state (launcher,startup,window) and
+    //at the next state must look the same
+    //(id, mScale)
+    property variant frozenTasks: []
+
     onInternalSeparatorPosChanged: {
         if (internalSeparatorPos>-1)
             hasInternalSeparator = true;
@@ -209,6 +214,39 @@ Item {
         if (index>0 && root.tasksCount>2) {
             for(var i=0; i<index; ++i)
                 root.updateScale(i, 1, 0);
+        }
+    }
+
+    function getFrozenTask(identifier) {
+        for(var i=0; i<frozenTasks.length; ++i) {
+            if (frozenTasks[i].id === identifier) {
+                return frozenTasks[i];
+            }
+        }
+    }
+
+    function removeFrozenTask(identifier) {
+        var taskIndex = -1;
+        for(var i=0; i<frozenTasks.length; ++i) {
+            if (frozenTasks[i].id === identifier) {
+                taskIndex = i;
+            }
+        }
+
+        if (taskIndex > -1) {
+            frozenTasks.splice(taskIndex, 1);
+        }
+    }
+
+    function setFrozenTask(identifier, scale) {
+        var frozenTaskExists = false;
+        console.log("SET FROZEN :: "+identifier+" - "+scale);
+        var frozenTask = getFrozenTask(identifier);
+
+        if (frozenTask) {
+            frozenTask.mScale = scale;
+        } else {
+            frozenTasks.push({id: identifier, mScale: scale});
         }
     }
 }

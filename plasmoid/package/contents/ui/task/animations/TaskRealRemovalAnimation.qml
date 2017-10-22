@@ -67,6 +67,10 @@ SequentialAnimation {
             // console.log("2." + root.launcherForRemoval + " - " + mainItemContainer.isLauncher);
 
             root.signalAnimationsNeedLength(1);
+
+            if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation) {
+                parabolicManager.setFrozenTask(mainItemContainer.launcherUrl, wrapper.mScale);
+            }
         }
     }
 

@@ -137,8 +137,16 @@ SequentialAnimation{
             wrapper.opacity = 0;
             mainItemContainer.inAnimation = false;
         } else {
-            wrapper.tempScaleWidth = 1;
-            wrapper.tempScaleHeight = 1;
+            var frozenTask = parabolicManager.getFrozenTask(mainItemContainer.launcherUrl);
+
+            if (frozenTask && frozenTask.mScale>1) {
+                wrapper.mScale = frozenTask.mScale;
+                parabolicManager.removeFrozenTask(mainItemContainer.launcherUrl);
+            } else {
+                wrapper.tempScaleWidth = 1;
+                wrapper.tempScaleHeight = 1;
+            }
+
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
         }
