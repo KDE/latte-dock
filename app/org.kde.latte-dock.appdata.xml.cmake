@@ -33,6 +33,7 @@
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
     <p xml:lang="ca">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
     <p xml:lang="ca-valencia">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
+    <p xml:lang="de">Latte-Dock ist ein auf Plasma-Framework-Technologie basierendes Dock für  Anwendungen und Plasmoide, das ein elegantes und intuitives Nutzererlebnis bietet.Seine Inhalte werden mithilfe parabolischer Zoom-Effekte animiert. Latte versucht, immer zur Stelle zu sein, wenn es benötigt wird.</p>
     <p xml:lang="el">Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στις βιβλιοθήκες plasma που εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες και τα γραφικά συστατικά σας. Χρησιμοποιεί το παραβολικό εφέ έτσι ώστε να απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το χρειάζεστε.</p>
     <p xml:lang="nl">Latte is een dock gebaseerd op plasma frameworks die een elegante en intuïtieve ervaring voor uw taken en plasmoids is. Het animeert zijn inhoud door een parabolisch zoomeffect te gebruiken en probeert er alleen te zijn wanneer nodig.</p>
     <p xml:lang="pt">O Latte é uma área acoplável baseada nas plataformas do Plasma que oferece uma experiência elegante e intuitiva para as suas tarefas e plasmóides. Ele anima o seu conteúdo, usando um efeito de ampliação parabólico e tenta estar apenas onde for necessário.</p>
@@ -44,7 +45,7 @@
     <p> "Art In Coffee" </p>
     <p xml:lang="ca">"Art al cafè"</p>
     <p xml:lang="ca-valencia">"Art al cafè"</p>
-    <p xml:lang="de">"Art In Coffee"</p>
+    <p xml:lang="de">„Art In Coffee“</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
     <p xml:lang="es">"El arte en el café"</p>
     <p xml:lang="nl">"Kunst in koffie"</p>
@@ -66,6 +67,7 @@
   <developer_name>@AUTHOR@</developer_name>
   <developer_name xml:lang="ca">@AUTHOR@</developer_name>
   <developer_name xml:lang="ca-valencia">@AUTHOR@</developer_name>
+  <developer_name xml:lang="de">@AUTHOR@</developer_name>
   <developer_name xml:lang="el">@AUTHOR@</developer_name>
   <developer_name xml:lang="es">@AUTOR@</developer_name>
   <developer_name xml:lang="nl">@AUTHOR@</developer_name>
