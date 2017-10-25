@@ -96,6 +96,8 @@ DockConfigView::~DockConfigView()
 
 void DockConfigView::init()
 {
+    qDebug() << "dock config view : initialization started...";
+
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
@@ -116,6 +118,8 @@ void DockConfigView::init()
     setSource(source);
     syncGeometry();
     syncSlideEffect();
+
+    qDebug() << "dock config view : initialization ended...";
 }
 
 inline Qt::WindowFlags DockConfigView::wFlags() const
