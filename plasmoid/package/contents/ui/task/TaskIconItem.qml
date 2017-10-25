@@ -593,8 +593,6 @@ Item{
 
         if(removingAnimation.removingItem)
             removingAnimation.removingItem.destroy();
-
-        gc();
     }
 
     Connections{

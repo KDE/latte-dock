@@ -131,7 +131,6 @@ Item{
 
                 onStopped: {
                     removeTask.destroy();
-                    gc();
                 }
             }
 
