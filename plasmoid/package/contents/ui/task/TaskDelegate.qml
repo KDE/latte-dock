@@ -1232,8 +1232,14 @@ MouseArea{
     }
 
     Component.onDestruction: {
-        wrapper.sendEndOfNeedBothAxisAnimation();
         root.waitingLauncherRemoved.disconnect(slotWaitingLauncherRemoved);
+        root.draggingFinished.disconnect(handlerDraggingFinished);
+        root.clearZoomSignal.disconnect(clearZoom);
+        root.publishTasksGeometries.disconnect(slotPublishGeometries);
+        root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
+        root.updateScale.disconnect(wrapper.signalUpdateScale);
+
+        wrapper.sendEndOfNeedBothAxisAnimation();
     }
 
     /////Animations

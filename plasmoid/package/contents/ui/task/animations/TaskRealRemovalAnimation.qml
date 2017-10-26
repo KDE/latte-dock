@@ -41,12 +41,6 @@ SequentialAnimation {
 
     ScriptAction{
         script:{
-            root.draggingFinished.disconnect(handlerDraggingFinished);
-            root.clearZoomSignal.disconnect(clearZoom);
-            root.publishTasksGeometries.disconnect(slotPublishGeometries);
-            root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
-            root.updateScale.disconnect(wrapper.signalUpdateScale);
-
             mainItemContainer.inAnimation = true;
             icList.delayingRemoval = true;
             mainItemContainer.inAddRemoveAnimation = true;
