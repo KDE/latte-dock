@@ -275,4 +275,8 @@ Item{
     Component.onCompleted: {
         root.updateScale.connect(signalUpdateScale);
     }
+
+    Component.onDestruction: {
+        root.updateScale.disconnect(signalUpdateScale);
+    }
 }// Main task area // id:wrapper

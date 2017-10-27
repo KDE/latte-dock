@@ -1247,7 +1247,6 @@ MouseArea{
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
-        root.updateScale.disconnect(wrapper.signalUpdateScale);
 
         wrapper.sendEndOfNeedBothAxisAnimation();
     }
