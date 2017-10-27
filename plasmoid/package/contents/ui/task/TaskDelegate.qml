@@ -205,7 +205,7 @@ MouseArea{
 
         onWindowsCountChanged: {
             if ((windowsCount >= 2) && (windowsCount > previousCount)
-                    && !(mainItemContainer.containsMouse || parabolicManager.neighbourToHovered(itemIndex)) ){
+                    && !(mainItemContainer.containsMouse || parabolicManager.neighbourIsHovered(itemIndex)) ){
                 if(root.dragSource == null)
                     mainItemContainer.groupWindowAdded();
             }

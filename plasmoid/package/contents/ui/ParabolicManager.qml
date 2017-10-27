@@ -217,7 +217,7 @@ Item {
         }
     }
 
-    function neighbourToHovered(index) {
+    function neighbourIsHovered(index) {
         if (icList.hoveredIndex<0)
             return;
 
