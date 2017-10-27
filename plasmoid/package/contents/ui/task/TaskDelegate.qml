@@ -365,7 +365,7 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            Behavior on separatorSpace {
+            Behavior on nHiddenSize {
                 enabled: wrapper.opacity > 0
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
@@ -451,7 +451,7 @@ MouseArea{
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            Behavior on separatorSpace {
+            Behavior on nHiddenSize {
                 enabled: wrapper.opacity > 0
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
