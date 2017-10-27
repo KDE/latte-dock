@@ -1077,6 +1077,14 @@ MouseArea{
         inBlockingAnimation = value;
     }
 
+    function slotMimicEnterForParabolic(){
+        if (containsMouse) {
+            if (!inBlockingAnimation || inAttentionAnimation) {
+                wrapper.calculateScales(icList.currentSpot);
+            }
+        }
+    }
+
     function slotShowPreviewForTasks(group) {
         if (group === mainItemContainer) {
             preparePreviewWindow(true);
@@ -1211,6 +1219,7 @@ MouseArea{
         root.clearZoomSignal.connect(clearZoom);
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
+        root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
 
         //startup without launcher
         var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
@@ -1237,6 +1246,7 @@ MouseArea{
         root.clearZoomSignal.disconnect(clearZoom);
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
+        root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
         root.updateScale.disconnect(wrapper.signalUpdateScale);
 
         wrapper.sendEndOfNeedBothAxisAnimation();

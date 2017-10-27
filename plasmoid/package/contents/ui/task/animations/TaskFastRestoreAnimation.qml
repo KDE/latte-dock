@@ -76,7 +76,8 @@ ParallelAnimation{
 
         if (newWindowAnimation.paused){
             newWindowAnimation.stop();
-            wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
+            root.mimicEnterForParabolic();
+            //wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
         }
     }
 
