@@ -95,6 +95,8 @@ MouseArea{
     property bool inAttentionAnimation: false
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
+    property bool inMimicParabolicAnimation: false
+    property real mimicParabolicScale: -1
     property bool inPopup: false
     property bool inRemoveStage: false
     property bool inWheelAction: false
@@ -360,14 +362,19 @@ MouseArea{
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-            Behavior on nScale {
+            /*Behavior on nScale {
                 enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
+            }*/
+
+            Behavior on nHiddenSize {
+                enabled: !root.globalDirectRender || mainItemContainer.inMimicParabolicAnimation
+                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
             Behavior on nHiddenSize {
-                enabled: wrapper.opacity > 0
-                NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+                enabled: root.globalDirectRender && !mainItemContainer.inMimicParabolicAnimation
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             /*  Rectangle{
@@ -452,8 +459,13 @@ MouseArea{
             }
 
             Behavior on nHiddenSize {
-                enabled: wrapper.opacity > 0
+                enabled: !root.globalDirectRender || mainItemContainer.inMimicParabolicAnimation
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+            }
+
+            Behavior on nHiddenSize {
+                enabled: root.globalDirectRender && !mainItemContainer.inMimicParabolicAnimation
+                NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
             /*  Rectangle{
@@ -1080,6 +1092,10 @@ MouseArea{
     function slotMimicEnterForParabolic(){
         if (containsMouse) {
             if (!inBlockingAnimation || inAttentionAnimation) {
+                if (inMimicParabolicAnimation) {
+                    mimicParabolicScale = root.zoomFactor;
+                }
+
                 wrapper.calculateScales(icList.currentSpot);
             }
         }

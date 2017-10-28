@@ -106,7 +106,7 @@ Item{
 
     signal runLauncherAnimation();
 
-     /*  Rectangle{
+    /*  Rectangle{
             anchors.fill: parent
             border.width: 1
             border.color: "green"
@@ -114,12 +114,12 @@ Item{
         }*/
 
     Behavior on mScale {
-        enabled: !root.globalDirectRender
+        enabled: !root.globalDirectRender || inMimicParabolicAnimation
         NumberAnimation { duration: 3 * mainItemContainer.animationTime }
     }
 
     Behavior on mScale {
-        enabled: root.globalDirectRender
+        enabled: root.globalDirectRender && !inMimicParabolicAnimation
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
@@ -242,11 +242,19 @@ Item{
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
             } else if (!inBlockingAnimation) {
+                var newScale = 1;
+
                 if(nScale >= 0) {
-                    mScale = nScale + step;
+                    newScale = nScale + step;
                 } else {
-                    mScale = mScale + step;
+                    newScale = mScale + step;
                 }
+
+                if (inMimicParabolicAnimation && mimicParabolicScale === -1) {
+                    mimicParabolicScale = newScale;
+                }
+
+                mScale = newScale;
             }
             //     console.log(index+ ", "+mScale);
         }
@@ -263,6 +271,12 @@ Item{
         if ((mScale === root.zoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
             root.startEnableDirectRenderTimer();
         }
+
+        if (inMimicParabolicAnimation && mScale === mimicParabolicScale){
+            inMimicParabolicAnimation = false;
+            mimicParabolicScale = -1;
+        }
+
 
         if ((mScale > 1) && !mainItemContainer.isZoomed) {
             mainItemContainer.isZoomed = true;

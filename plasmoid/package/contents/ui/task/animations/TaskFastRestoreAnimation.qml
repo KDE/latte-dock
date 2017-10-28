@@ -23,61 +23,67 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 
 ///////Restore Zoom Animation/////
-ParallelAnimation{
+SequentialAnimation{
     id: fastRestoreAnimation
 
     property int speed: 5*mainItemContainer.animationTime
 
-    PropertyAnimation {
-        target: wrapper
-        property: "mScale"
-        to: 1
-        duration: fastRestoreAnimation.speed
-        easing.type: Easing.Linear
+    ScriptAction {
+        script: {
+            mainItemContainer.inMimicParabolicAnimation = true;
+        }
     }
 
-    PropertyAnimation {
-        target: wrapper
-        property: "tempScaleWidth"
-        to: 1
-        duration: fastRestoreAnimation.speed
-        easing.type: Easing.Linear
-    }
+    ParallelAnimation {
+        PropertyAnimation {
+            target: wrapper
+            property: "mScale"
+            to: 1
+            duration: fastRestoreAnimation.speed
+            easing.type: Easing.Linear
+        }
 
-    PropertyAnimation {
-        target: wrapper
-        property: "tempScaleHeight"
-        to: 1
-        duration: fastRestoreAnimation.speed
-        easing.type: Easing.Linear
-    }
+        PropertyAnimation {
+            target: wrapper
+            property: "tempScaleWidth"
+            to: 1
+            duration: fastRestoreAnimation.speed
+            easing.type: Easing.Linear
+        }
 
-    PropertyAnimation {
-        target: hiddenSpacerLeft
-        property: "nScale"
-        to: 0
-        duration: fastRestoreAnimation.speed
-        easing.type: Easing.Linear
-    }
+        PropertyAnimation {
+            target: wrapper
+            property: "tempScaleHeight"
+            to: 1
+            duration: fastRestoreAnimation.speed
+            easing.type: Easing.Linear
+        }
 
-    PropertyAnimation {
-        target: hiddenSpacerRight
-        property: "nScale"
-        to: 0
-        duration: fastRestoreAnimation.speed
-        easing.type: Easing.Linear
+        PropertyAnimation {
+            target: hiddenSpacerLeft
+            property: "nScale"
+            to: 0
+            duration: fastRestoreAnimation.speed
+            easing.type: Easing.Linear
+        }
+
+        PropertyAnimation {
+            target: hiddenSpacerRight
+            property: "nScale"
+            to: 0
+            duration: fastRestoreAnimation.speed
+            easing.type: Easing.Linear
+        }
     }
 
     onStopped: {
-        if (latteDock)
-            latteDock.setGlobalDirectRender(false);
-        else
-            icList.directRender = false;
-
         if (newWindowAnimation.paused){
+            if (!mainItemContainer.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+               mainItemContainer.inMimicParabolicAnimation = false;
+            }
+
             newWindowAnimation.stop();
             root.mimicEnterForParabolic();
-            //wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
         }
     }
 
