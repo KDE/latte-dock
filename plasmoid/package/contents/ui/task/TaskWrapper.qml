@@ -272,7 +272,7 @@ Item{
             root.startEnableDirectRenderTimer();
         }
 
-        if (inMimicParabolicAnimation && mScale === mimicParabolicScale){
+        if (inMimicParabolicAnimation && mScale >= mimicParabolicScale){
             inMimicParabolicAnimation = false;
             mimicParabolicScale = -1;
         }
