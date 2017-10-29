@@ -69,7 +69,8 @@ Item{
     //size needed fom the states below icons
     //property int statesLineSize: root.statesLineSize
     property int addedSpace: root.statesLineSize //7
-    property int maxThickness: addedSpace + root.zoomFactor*root.iconSize
+    property int maxThickness: !root.vertical ? addedSpace + root.zoomFactor*(root.iconSize+root.heightMargins)
+                                              : addedSpace + root.zoomFactor*(root.iconSize+root.widthMargins)
 
     property real showDelegateWidth: root.vertical ? basicScalingWidth+addedSpace :
                                                      basicScalingWidth
@@ -162,6 +163,16 @@ Item{
                 Item{
                     width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
                     height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
+
+                  /*  Rectangle{
+                        width: !root.vertical ? 1 : parent.width
+                        height: !root.vertical ? parent.height : 1
+                        x: !root.vertical ? wrapper.width /2 : 0
+                        y: root.vertical ? wrapper.height /2 : 0
+                        border.width: 1
+                        border.color: "blue"
+                        color: "transparent"
+                    } */
                 }
             }
         }
@@ -179,6 +190,16 @@ Item{
                 Item{
                     width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
                     height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
+
+                  /*  Rectangle{
+                        width: !root.vertical ? 1 : parent.width
+                        height: !root.vertical ? parent.height : 1
+                        x: !root.vertical ? wrapper.width/2 : 0
+                        y: root.vertical ? wrapper.height/2 : 0
+                        border.width: 1
+                        border.color: "blue"
+                        color: "transparent"
+                    } */
                 }
             }
         }

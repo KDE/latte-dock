@@ -67,12 +67,13 @@ Item{
     property QtObject smartLauncherItem: null
 
     property Item titleTooltipVisualParent: titleTooltipParent
-    /*Rectangle{
+
+   /* Rectangle{
         anchors.fill: parent
         border.width: 1
         border.color: "green"
         color: "transparent"
-    }*/
+    } */
 
     onSmartLauncherEnabledChanged: {
         if (smartLauncherEnabled && !smartLauncherItem) {
