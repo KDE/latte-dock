@@ -44,7 +44,7 @@ SequentialAnimation{
                 duration: newWindowAnimation.speed
                 easing.type: Easing.OutQuad
 
-                property real thickPercentage: mainItemContainer.inAttentionAnimation ? 0.9 : 0.6
+                property real thickPercentage: mainItemContainer.inAttentionAnimation ? 1 : 0.6
             }
 
             PropertyAnimation {
@@ -118,7 +118,7 @@ SequentialAnimation{
 
     function bounceNewWindow(){
         //if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
-        if (!root.dockIsHidden && (root.zoomFactor > 1) && (root.durationTime>0)){
+        if (!root.dockIsHidden && (root.zoomFactor > 1) && (root.durationTime>0) && !root.reverseLinesPositionasfa){
             newWindowAnimation.init();
             start();
         }
@@ -129,6 +129,7 @@ SequentialAnimation{
     }
 
     Component.onDestruction: {
+        mainItemContainer.groupWindowAdded.disconnect(bounceNewWindow);
         sendEndOfNeedThicknessAnimation();
     }
 }

@@ -62,7 +62,7 @@ SequentialAnimation {
 
             root.signalAnimationsNeedLength(1);
 
-            if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation) {
+            if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation && !mainItemContainer.inBouncingAnimation) {
                 parabolicManager.setFrozenTask(mainItemContainer.launcherUrl, wrapper.mScale);
             }
         }

@@ -156,7 +156,7 @@ Item{
         Loader{
             id: firstPadding
 
-            active: secondIndicator.active && mainItemContainer.inAttentionAnimation
+            active: secondIndicator.active && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
             visible: active
 
             sourceComponent: Component{
@@ -164,7 +164,7 @@ Item{
                     width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
                     height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
 
-                  /*  Rectangle{
+                   /* Rectangle{
                         width: !root.vertical ? 1 : parent.width
                         height: !root.vertical ? parent.height : 1
                         x: !root.vertical ? wrapper.width /2 : 0
@@ -183,7 +183,7 @@ Item{
         Loader{
             id: secondPadding
 
-            active: firstIndicator.active && mainItemContainer.inAttentionAnimation
+            active: firstIndicator.active && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
             visible: active
 
             sourceComponent: Component{
@@ -191,7 +191,7 @@ Item{
                     width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
                     height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
 
-                  /*  Rectangle{
+                    /*Rectangle{
                         width: !root.vertical ? 1 : parent.width
                         height: !root.vertical ? parent.height : 1
                         x: !root.vertical ? wrapper.width/2 : 0
@@ -199,7 +199,7 @@ Item{
                         border.width: 1
                         border.color: "blue"
                         color: "transparent"
-                    } */
+                    }*/
                 }
             }
         }
@@ -234,12 +234,14 @@ Item{
             var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
             //Left hiddenSpacer
-            if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer){
+            if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer
+                    && !inMimicParabolicAnimation && !inFastRestoreAnimation){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer
-            if(((index === icList.count - 1 )&&(icList.count>1)) && (!root.disableRightSpacer)){
+            if(((index === icList.count - 1 )&&(icList.count>1)) && !root.disableRightSpacer
+                    && !inMimicParabolicAnimation && !inFastRestoreAnimation){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
@@ -249,20 +251,14 @@ Item{
 
     } //nScale
 
-
     function signalUpdateScale(nIndex, nScale, step){
-        if ((index === nIndex)&&(mainItemContainer.hoverEnabled)&&(waitingLaunchers.length===0)){
-            /*if (nScale !== 1){
-                if (isSeparator){
-                    console.log("WRONG TASK SIGNAL for internal separator at pos:"+ index +" and zoom:"+nScale);
-                }
-            }*/
-
+        if ((index === nIndex)&&(mainItemContainer.hoverEnabled || inMimicParabolicAnimation)&&(waitingLaunchers.length===0)){
             if (mainItemContainer.inAttentionAnimation) {
                 var subSpacerScale = (nScale-1)/2;
+
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
-            } else if (!inBlockingAnimation) {
+            } else if (!inBlockingAnimation || mainItemContainer.inMimicParabolicAnimation) {
                 var newScale = 1;
 
                 if(nScale >= 0) {
@@ -277,7 +273,6 @@ Item{
 
                 mScale = newScale;
             }
-            //     console.log(index+ ", "+mScale);
         }
     }
 
@@ -293,11 +288,19 @@ Item{
             root.startEnableDirectRenderTimer();
         }
 
-        if (inMimicParabolicAnimation && mScale >= mimicParabolicScale){
-            inMimicParabolicAnimation = false;
-            mimicParabolicScale = -1;
-        }
+        if (inMimicParabolicAnimation){
+            if (mScale >= mimicParabolicScale) {
+                inMimicParabolicAnimation = false;
+                inAnimation = false;
+                inBlockingAnimation = false;
+                mimicParabolicScale = -1;
+            } else {
+                var tempScale = (root.zoomFactor - mScale) / 2;
 
+                hiddenSpacerLeft.nScale = tempScale;
+                hiddenSpacerRight.nScale = tempScale;
+            }
+        }
 
         if ((mScale > 1) && !mainItemContainer.isZoomed) {
             mainItemContainer.isZoomed = true;

@@ -30,7 +30,8 @@ SequentialAnimation{
 
     ScriptAction {
         script: {
-            mainItemContainer.inMimicParabolicAnimation = true;
+            mainItemContainer.inFastRestoreAnimation = true;
+            mainItemContainer.inBlockingAnimation = true;
         }
     }
 
@@ -58,33 +59,25 @@ SequentialAnimation{
             duration: fastRestoreAnimation.speed
             easing.type: Easing.Linear
         }
-
-        PropertyAnimation {
-            target: hiddenSpacerLeft
-            property: "nScale"
-            to: 0
-            duration: fastRestoreAnimation.speed
-            easing.type: Easing.Linear
-        }
-
-        PropertyAnimation {
-            target: hiddenSpacerRight
-            property: "nScale"
-            to: 0
-            duration: fastRestoreAnimation.speed
-            easing.type: Easing.Linear
-        }
     }
 
     onStopped: {
-        if (newWindowAnimation.paused){
-            if (!mainItemContainer.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
-               mainItemContainer.inMimicParabolicAnimation = false;
-            }
-
-            newWindowAnimation.stop();
-            root.mimicEnterForParabolic();
+        if (!mainItemContainer.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+            mainItemContainer.inMimicParabolicAnimation = false;
+        } else {
+            mainItemContainer.inMimicParabolicAnimation = true;
         }
+
+        newWindowAnimation.stop();
+
+        if (!mainItemContainer.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+            mainItemContainer.inBlockingAnimation = false;
+        }
+
+        root.mimicEnterForParabolic();
+
+        mainItemContainer.inFastRestoreAnimation = false;
+        // console.log("Fast Restore Animation ended...");
     }
 
 }

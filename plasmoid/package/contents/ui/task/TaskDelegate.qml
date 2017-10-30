@@ -79,7 +79,7 @@ MouseArea{
     }
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
-    hoverEnabled: visible && (inAnimation !== true) && (!IsStartup) && (!root.taskInAnimation)
+    hoverEnabled: visible && (!inAnimation) && (!IsStartup) && (!root.taskInAnimation)
                   && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation) && !isSeparator
     // hoverEnabled: false
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
@@ -95,6 +95,7 @@ MouseArea{
     property bool inAttentionAnimation: false
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
+    property bool inFastRestoreAnimation: false
     property bool inMimicParabolicAnimation: false
     property real mimicParabolicScale: -1
     property bool inPopup: false
@@ -309,6 +310,7 @@ MouseArea{
             height: root.vertical ? nHiddenSize : wrapper.height
 
             visible: (index === 0) || (separatorSpace > 0) || mainItemContainer.inAttentionAnimation
+                     || mainItemContainer.inFastRestoreAnimation || mainItemContainer.inMimicParabolicAnimation
 
             property bool neighbourSeparator: false
             //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
@@ -321,7 +323,7 @@ MouseArea{
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: {
-                if (!inAttentionAnimation) {
+                if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
                     return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
                 } else {
                     return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
@@ -357,27 +359,27 @@ MouseArea{
 
             Component.onCompleted: hiddenSpacerLeft.updateNeighbour();
 
-            Behavior on nScale {
+            /*Behavior on nScale {
                 enabled: !root.globalDirectRender
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-            /*Behavior on nScale {
+            Behavior on nScale {
                 enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }*/
 
-            Behavior on nHiddenSize {
-                enabled: !root.globalDirectRender || mainItemContainer.inMimicParabolicAnimation
+            Behavior on separatorSpace {
+                enabled: !root.globalDirectRender
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-            Behavior on nHiddenSize {
-                enabled: root.globalDirectRender && !mainItemContainer.inMimicParabolicAnimation
+            Behavior on separatorSpace {
+                enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /*  Rectangle{
+            /*Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -385,7 +387,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            } */
+            }*/
         }
 
         TaskWrapper{ id: wrapper }
@@ -398,6 +400,7 @@ MouseArea{
             height: root.vertical ? nHiddenSize : wrapper.height
 
             visible: (index === icList.count - 1) ||  (separatorSpace > 0) || mainItemContainer.inAttentionAnimation
+                     || mainItemContainer.inFastRestoreAnimation || mainItemContainer.inMimicParabolicAnimation
 
             property bool neighbourSeparator: false
             //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
@@ -410,7 +413,7 @@ MouseArea{
                                              (2+root.iconMargin/2) : 0
 
             property real nHiddenSize: {
-                if (!inAttentionAnimation) {
+                if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
                     return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
                 } else {
                     return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
@@ -448,7 +451,7 @@ MouseArea{
 
             Component.onCompleted: hiddenSpacerRight.updateNeighbour();
 
-            Behavior on nScale {
+            /*Behavior on nScale {
                 enabled: !root.globalDirectRender
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
@@ -456,19 +459,19 @@ MouseArea{
             Behavior on nScale {
                 enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
-            }
+            }*/
 
-            Behavior on nHiddenSize {
-                enabled: !root.globalDirectRender || mainItemContainer.inMimicParabolicAnimation
+            Behavior on separatorSpace {
+                enabled: !root.globalDirectRender
                 NumberAnimation { duration: 3 * mainItemContainer.animationTime }
             }
 
-            Behavior on nHiddenSize {
-                enabled: root.globalDirectRender && !mainItemContainer.inMimicParabolicAnimation
+            Behavior on separatorSpace {
+                enabled: root.globalDirectRender
                 NumberAnimation { duration: root.directRenderAnimationTime }
             }
 
-            /*  Rectangle{
+            /*Rectangle{
                 width: !root.vertical ? parent.width : 1
                 height: !root.vertical ? 1 : parent.height
                 x: root.vertical ? parent.width /2 : 0
@@ -476,7 +479,7 @@ MouseArea{
                 border.width: 1
                 border.color: "red"
                 color: "transparent"
-            } */
+            }*/
         }
 
     }// Flow with hidden spacers inside
@@ -524,7 +527,7 @@ MouseArea{
                 wrapper.mScale = 1;
         }*/
 
-        if (distanceFromHovered >= 1) {
+        if (distanceFromHovered >= 1 && !inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation) {
             hiddenSpacerLeft.nScale = 0;
             hiddenSpacerRight.nScale = 0;
         }
@@ -632,7 +635,7 @@ MouseArea{
     }
 
     onPositionChanged: {
-        if (root.editMode || (inBlockingAnimation && !inAttentionAnimation))
+        if (root.editMode || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
         if(!root.latteDock)
@@ -877,7 +880,7 @@ MouseArea{
 
         if (root.globalDirectRender)
             wrapper.mScale = 1;
-        else
+        else if (!inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation)
             restoreAnimation.start();
     }
 
@@ -1091,13 +1094,11 @@ MouseArea{
 
     function slotMimicEnterForParabolic(){
         if (containsMouse) {
-            if (!inBlockingAnimation || inAttentionAnimation) {
-                if (inMimicParabolicAnimation) {
-                    mimicParabolicScale = root.zoomFactor;
-                }
-
-                wrapper.calculateScales(icList.currentSpot);
+            if (inMimicParabolicAnimation) {
+                mimicParabolicScale = root.zoomFactor;
             }
+
+            wrapper.calculateScales(icList.currentSpot);
         }
     }
 

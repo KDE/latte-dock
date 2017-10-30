@@ -49,4 +49,8 @@ ParallelAnimation{
         duration: 3 * mainItemContainer.animationTime
         easing.type: Easing.Linear
     }
+
+    onStarted: {
+        // console.log("restore animation started...");
+    }
 }

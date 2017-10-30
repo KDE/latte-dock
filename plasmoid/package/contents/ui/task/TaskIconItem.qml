@@ -68,7 +68,7 @@ Item{
 
     property Item titleTooltipVisualParent: titleTooltipParent
 
-   /* Rectangle{
+    /* Rectangle{
         anchors.fill: parent
         border.width: 1
         border.color: "green"
@@ -140,22 +140,38 @@ Item{
         Latte.IconItem{
             id: iconImageBuffer
 
-            anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned
-                                 || (root.position === PlasmaCore.Types.LeftPositioned
-                                     && mainItemContainer.inAddRemoveAnimation)
-                                 ? root.thickMarginBase : 0
-            anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned
-                                || (root.position === PlasmaCore.Types.RightPositioned
-                                    && mainItemContainer.inAddRemoveAnimation)
-                                ? root.thickMarginBase : 0
-            anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned
-                               || (root.position === PlasmaCore.Types.BottomPositioned
-                                   && mainItemContainer.inAddRemoveAnimation)
-                               ? root.thickMarginBase : 0
-            anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned
-                                  || (root.position === PlasmaCore.Types.TopPositioned
-                                      && mainItemContainer.inAddRemoveAnimation)
-                                  ? root.thickMarginBase : 0
+            anchors.rightMargin:{
+                if (root.position === PlasmaCore.Types.RightPositioned)
+                    return root.thickMarginBase;
+                else if (root.position === PlasmaCore.Types.LeftPositioned)
+                    return wrapper.mScale * root.thickMarginHigh;
+                else
+                    return 0;
+            }
+            anchors.leftMargin: {
+                if (root.position === PlasmaCore.Types.LeftPositioned)
+                    return root.thickMarginBase;
+                else if (root.position === PlasmaCore.Types.RightPositioned)
+                    return wrapper.mScale * root.thickMarginHigh;
+                else
+                    return 0;
+            }
+            anchors.topMargin: {
+                if (root.position === PlasmaCore.Types.TopPositioned)
+                    return root.thickMarginBase;
+                else if (root.position === PlasmaCore.Types.BottomPositioned)
+                    return wrapper.mScale * root.thickMarginHigh;
+                else
+                    return 0;
+            }
+            anchors.bottomMargin:{
+                if (root.position === PlasmaCore.Types.BottomPositioned)
+                    return root.thickMarginBase;
+                else if (root.position === PlasmaCore.Types.TopPositioned)
+                    return wrapper.mScale * root.thickMarginHigh;
+                else
+                    return 0;
+            }
 
             width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
             height: Math.round(width)
@@ -199,7 +215,7 @@ Item{
             states: [
                 State{
                     name: "*"
-                    when:  !launcherAnimation.running && !newWindowAnimation.running && !mainItemContainer.inAddRemoveAnimation
+                    when:  !launcherAnimation.running && !newWindowAnimation.running && !mainItemContainer.inAddRemoveAnimation && !fastRestoreAnimation.running
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -229,7 +245,7 @@ Item{
 
                 State{
                     name: "animating"
-                    when: (launcherAnimation.running || newWindowAnimation.running) && !mainItemContainer.inAddRemoveAnimation
+                    when: (launcherAnimation.running || newWindowAnimation.running || fastRestoreAnimation.running) && !mainItemContainer.inAddRemoveAnimation
 
                     AnchorChanges{
                         target:iconImageBuffer;
