@@ -37,7 +37,7 @@ PlasmaComponents.Page {
 
         width: dialog.maxWidth - Layout.leftMargin * 2
         spacing: dialog.subGroupSpacing
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
         Layout.rightMargin: units.smallSpacing * 2
 
@@ -45,6 +45,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
+            Layout.topMargin: units.smallSpacing
 
             Header {
                 text: i18n("Appearance")

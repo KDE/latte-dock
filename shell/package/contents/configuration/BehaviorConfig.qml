@@ -40,7 +40,7 @@ PlasmaComponents.Page {
 
         width: dialog.maxWidth - Layout.leftMargin * 2
         spacing: dialog.subGroupSpacing
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
 
         //! BEGIN: Location
@@ -48,6 +48,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
+            Layout.topMargin: units.smallSpacing
 
             Header {
                 text: i18n("Location")

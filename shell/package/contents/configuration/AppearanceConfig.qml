@@ -48,13 +48,14 @@ PlasmaComponents.Page {
 
         width: dialog.maxWidth - Layout.leftMargin * 2
         spacing: dialog.subGroupSpacing
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
 
         //! BEGIN: Layout
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            Layout.topMargin: units.smallSpacing
 
             Header {
                 text: i18n("Layout")
