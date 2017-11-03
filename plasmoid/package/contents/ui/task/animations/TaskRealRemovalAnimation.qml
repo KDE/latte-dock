@@ -22,6 +22,8 @@ import QtQuick 2.0
 
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.latte 0.1 as Latte
+
 SequentialAnimation {
     id: taskRealRemovalAnimation
     PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
@@ -32,10 +34,11 @@ SequentialAnimation {
     property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                                  && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
                                 || !launcherIsPresent(mainItemContainer.launcherUrl))
-                               && !mainItemContainer.isStartup)
+                               && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
 
     property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
-                                || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval ) && !mainItemContainer.isStartup)
+                                || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )
+                               && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
 
     property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0) && !mainItemContainer.inBouncingAnimation;
 
@@ -62,7 +65,8 @@ SequentialAnimation {
 
             root.signalAnimationsNeedLength(1);
 
-            if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation && !mainItemContainer.inBouncingAnimation) {
+            if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
+                    && !mainItemContainer.inBouncingAnimation && Latte.WindowSystem.compositingActive) {
                 parabolicManager.setFrozenTask(mainItemContainer.launcherUrl, wrapper.mScale);
             }
         }

@@ -22,6 +22,8 @@ import QtQuick 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.latte 0.1 as Latte
+
 Item{
     id: wrapper
 
@@ -311,6 +313,10 @@ Item{
     }
 
     Component.onCompleted: {
+        if (!Latte.WindowSystem.compositingActive) {
+            opacity = 1;
+        }
+
         root.updateScale.connect(signalUpdateScale);
     }
 

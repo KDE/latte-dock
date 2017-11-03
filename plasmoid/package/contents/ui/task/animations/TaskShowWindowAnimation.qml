@@ -116,14 +116,18 @@ SequentialAnimation{
         var animation2 = ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                             && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
                            || !launcherIsPresent(mainItemContainer.launcherUrl))
-                          && mainItemContainer.isWindow);
+                          && mainItemContainer.isWindow
+                          && Latte.WindowSystem.compositingActive);
 
-        var animation3 = ((!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher));
+        var animation3 = (!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher
+                          && Latte.WindowSystem.compositingActive);
 
         var activities = tasksModel.launcherActivities(mainItemContainer.launcherUrl);
         var animation6 = (root.inActivityChange && mainItemContainer.isWindow
                           && activities.indexOf(activityInfo.currentActivity)>=0
-                          && activities.indexOf(activityInfo.previousActivity) === -1)
+                          && activities.indexOf(activityInfo.previousActivity) === -1
+                          && Latte.WindowSystem.compositingActive);
+
 
         //startup without launcher, animation should be blocked
         var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
@@ -131,7 +135,14 @@ SequentialAnimation{
                              || !launcherIsPresent(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
 
-        if (( animation2 || animation3 || animation6) && (root.durationTime !== 0)){
+        if (!Latte.WindowSystem.compositingActive) {
+            mainItemContainer.visible = true;
+            wrapper.tempScaleWidth = 1;
+            wrapper.tempScaleHeight = 1;
+            wrapper.mScale = 1;
+            wrapper.opacity = 1;
+            mainItemContainer.inAnimation = false;
+        } else if (( animation2 || animation3 || animation6) && (root.durationTime !== 0)){
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             start();

@@ -898,7 +898,11 @@ MouseArea{
 
     function activateTask() {
         if( mainItemContainer.isLauncher){
-            wrapper.runLauncherAnimation();
+            if (Latte.WindowSystem.compositingActive) {
+                wrapper.runLauncherAnimation();
+            } else {
+                launcherAction();
+            }
         }
         else{
             if (model.IsGroupParent) {
@@ -999,8 +1003,10 @@ MouseArea{
 
     function launcherAction(){
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
-        inBouncingAnimation = true;
-        root.addWaitingLauncher(mainItemContainer.launcherUrl);
+        if (Latte.WindowSystem.compositingActive) {
+            inBouncingAnimation = true;
+            root.addWaitingLauncher(mainItemContainer.launcherUrl);
+        }
         tasksModel.requestActivate(modelIndex());
         // }
     }
@@ -1244,7 +1250,9 @@ MouseArea{
                              || !launcherIsPresent(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
 
-        if ( (isWindow || isStartup) && root.waitingLauncherExists(launcherUrl)) {
+        if (!Latte.WindowSystem.compositingActive) {
+            visible = true;
+        } else if ( (isWindow || isStartup) && root.waitingLauncherExists(launcherUrl)) {
             root.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);
             visible = false;
         } else if (hideStartup){
