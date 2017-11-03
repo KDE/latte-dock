@@ -103,7 +103,7 @@ DragDrop.DropArea {
     //has been dropped from the Dock Configuration Window
     //property bool smallAutomaticIconJumps: plasmoid.configuration.smallAutomaticIconJumps
     property bool smallAutomaticIconJumps: true
-    property bool useThemePanel: noApplets === 0 ? true : plasmoid.configuration.useThemePanel
+    property bool useThemePanel: noApplets === 0 || !Latte.WindowSystem.compositingActive ? true : plasmoid.configuration.useThemePanel
 
     property alias hoveredIndex: layoutsContainer.hoveredIndex
 
