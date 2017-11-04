@@ -76,7 +76,17 @@ Item{
     property int smallSize: Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
-        NumberAnimation { duration: 150 }
+        enabled: Latte.WindowSystem.compositingActive
+        NumberAnimation {
+            duration: 200
+        }
+    }
+
+    Behavior on opacity{
+        enabled: !Latte.WindowSystem.compositingActive
+        NumberAnimation {
+            duration: 0
+        }
     }
 
     Binding {
@@ -136,7 +146,14 @@ Item{
         enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
         Behavior on opacity {
+            enabled: Latte.WindowSystem.compositingActive
             NumberAnimation { duration: 8*root.durationTime*units.shortDuration }
+        }
+
+
+        Behavior on opacity{
+            enabled: !Latte.WindowSystem.compositingActive
+            NumberAnimation { duration: 0 }
         }
 
         property int marginsWidth: {
@@ -201,7 +218,13 @@ Item{
         }
 
         Behavior on opacity{
+            enabled: Latte.WindowSystem.compositingActive
             NumberAnimation { duration: 200 }
+        }
+
+        Behavior on opacity{
+            enabled: !Latte.WindowSystem.compositingActive
+            NumberAnimation { duration: 0 }
         }
 
         Binding {
