@@ -13,7 +13,7 @@ fi
 
 cd build
 
-if [ "$1" == "-translations" ] ; then
+if [ "$1" == "--translations" ] ; then
     if [ -a po ] ; then
         sudo rm -fr po
     fi
@@ -22,6 +22,15 @@ if [ "$1" == "-translations" ] ; then
     fi
     cmake -DCMAKE_INSTALL_PREFIX=/usr -DKDE_L10N_BRANCH=trunk -DKDE_L10N_AUTO_TRANSLATIONS=ON -DCMAKE_BUILD_TYPE=$build_type ..
     make fetch-translations
+elif [ "$1" == "--translations-stable" ] ; then
+    if [ -a po ] ; then
+        sudo rm -fr po
+    fi
+    if [ -a locale ] ; then
+        sudo rm -fr locale
+    fi
+    cmake -DCMAKE_INSTALL_PREFIX=/usr -DKDE_L10N_BRANCH=stable -DKDE_L10N_AUTO_TRANSLATIONS=ON -DCMAKE_BUILD_TYPE=$build_type ..
+    make fetch-translations    
 else
     cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=$build_type ..
     make

@@ -1,5 +1,16 @@
 #**CHANGELOG**#
 
+#### Version 0.7.2
+
+* fix crash introduced with qt 5.9.2 when the user hovers the dock
+* highly improve the attention bouncing animation
+* fix coloring for shortcut badges
+* various fixes for animations and glitches
+* hide internal tasks separator at the edges
+* improvements for window manager !compositing window state
+* pass kde review process
+* move source to kde infrastructure
+
 #### Version 0.7.1
 
 * added “New” button in Layouts manager
