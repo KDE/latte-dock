@@ -56,11 +56,11 @@ include(WriteBasicConfigVersionFile)
 
 include(Definitions.cmake)
 
+add_subdirectory(liblattedock)
 add_subdirectory(app)
 add_subdirectory(applets)
 add_subdirectory(containment)
 add_subdirectory(icons)
-add_subdirectory(liblattedock)
 add_subdirectory(plasmoid)
 add_subdirectory(shell)
 
