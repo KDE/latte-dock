@@ -58,7 +58,7 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### openSUSE
 
-- [openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Aaudoban&package=latte-dock)
+- [openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Apsifidotos&package=latte-dock)
 
 ### Fedora
 
