@@ -160,7 +160,11 @@ PlasmaComponents.Page {
                     }
 
                     Component.onCompleted: {
-                        valueChanged.connect(updateIconSize)
+                        valueChanged.connect(updateIconSize);
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateIconSize);
                     }
                 }
 
@@ -209,6 +213,10 @@ PlasmaComponents.Page {
                     Component.onCompleted: {
                         valueChanged.connect(updateZoomLevel)
                     }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateZoomLevel)
+                    }
                 }
 
                 PlasmaComponents.Label {
@@ -256,6 +264,10 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: {
                         valueChanged.connect(updateProportionIconSize)
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateProportionIconSize)
                     }
                 }
 
@@ -429,6 +441,10 @@ PlasmaComponents.Page {
                     Component.onCompleted: {
                         valueChanged.connect(updatePanelSize)
                     }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updatePanelSize)
+                    }
                 }
 
                 PlasmaComponents.Label {
@@ -472,6 +488,10 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: {
                         valueChanged.connect(updatePanelTransparency);
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updatePanelTransparency);
                     }
                 }
 
@@ -712,6 +732,10 @@ PlasmaComponents.Page {
                             Component.onCompleted: {
                                 valueChanged.connect(updateShadowOpacity);
                             }
+
+                            Component.onDestruction: {
+                                valueChanged.disconnect(updateShadowOpacity);
+                            }
                         }
 
                         PlasmaComponents.Label {
@@ -756,6 +780,10 @@ PlasmaComponents.Page {
 
                             Component.onCompleted: {
                                 valueChanged.connect(updateShadowSize);
+                            }
+
+                            Component.onDestruction: {
+                                valueChanged.disconnect(updateShadowSize);
                             }
                         }
 
@@ -843,6 +871,10 @@ PlasmaComponents.Page {
                     Component.onCompleted: {
                         valueChanged.connect(updateMaxLength)
                     }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateMaxLength)
+                    }
                 }
 
                 PlasmaComponents.Label {
@@ -900,6 +932,10 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: {
                         valueChanged.connect(updateOffset);
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateOffset);
                     }
                 }
 

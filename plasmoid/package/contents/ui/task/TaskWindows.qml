@@ -240,6 +240,10 @@ Item{
         updateCounter();
     }
 
+    Component.onDestruction: {
+        mainItemContainer.checkWindowsStates.disconnect(initializeStates);
+    }
+
     function updateCounter(){
         //    console.log("--------- "+ index+" -------");
         if(index>=0){

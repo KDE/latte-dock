@@ -267,6 +267,7 @@ Item{
             onHeightChanged: updateEffectsArea();
 
             Component.onCompleted: root.updateEffectsArea.connect(updateEffectsArea);
+            Component.onDestruction: root.updateEffectsArea.disconnect(updateEffectsArea);
 
             Connections{
                 target: root

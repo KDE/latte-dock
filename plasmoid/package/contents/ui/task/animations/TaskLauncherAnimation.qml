@@ -168,6 +168,7 @@ SequentialAnimation{
 
     Component.onDestruction: {
         clearAnimationsSignals();
+        wrapper.runLauncherAnimation.disconnect(bounceLauncher);
     }
 }
 /////////////////// end of launcher animation

@@ -467,17 +467,6 @@ DragDrop.DropArea {
         //dndSpacer.parent = root;
     }
 
-    onLatteAppletChanged: {
-        if (latteApplet) {
-            latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
-            latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
-            latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
-            latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
-            latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
-            latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
-        }
-    }
-
     onMaxLengthChanged: layoutsContainer.updateSizeForAppletsInFill();
 
     onToolBoxChanged: {
@@ -541,6 +530,22 @@ DragDrop.DropArea {
 
     Component.onDestruction: {
         console.debug("Destroying Latte Dock Containment ui...");
+
+        if (dock) {
+            dock.onAddInternalViewSplitter.disconnect(addInternalViewSplitters);
+            dock.onRemoveInternalViewSplitter.disconnect(removeInternalViewSplitters);
+
+            dock.onXChanged.disconnect(visibilityManager.updateMaskArea);
+            dock.onYChanged.disconnect(visibilityManager.updateMaskArea);
+            dock.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
+            dock.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
+
+            if (dock.visibility) {
+                dock.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);
+                dock.visibility.onMustBeHide.disconnect(visibilityManager.slotMustBeHide);
+                dock.visibility.onMustBeShown.disconnect(visibilityManager.slotMustBeShown);
+            }
+        }
     }
 
     Containment.onAppletAdded: {
@@ -1218,6 +1223,10 @@ DragDrop.DropArea {
 
         Component.onCompleted: {
             root.clearZoomSignal.connect(titleTooltipDialog.hide);
+        }
+
+        Component.onDestruction: {
+            root.clearZoomSignal.disconnect(titleTooltipDialog.hide);
         }
 
         function hide(debug){
