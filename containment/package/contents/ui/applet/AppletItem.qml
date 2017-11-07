@@ -309,8 +309,15 @@ Item {
             root.latteApplet = container.latteApplet;
             root.latteAppletContainer = container;
             root.latteAppletPos = index;
-            latteApplet.latteDock = root;
-            latteApplet.forceHidePanel = true;
+            container.latteApplet.latteDock = root;
+            container.latteApplet.forceHidePanel = true;
+
+            container.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
+            container.latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
+            container.latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
+            container.latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
+            container.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
+            container.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
         }
     }
 
@@ -350,8 +357,16 @@ Item {
 
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
-    }
 
+        if (container.latteApplet) {
+            container.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);
+            container.latteApplet.signalAnimationsNeedLength.disconnect(slotAnimationsNeedLength);
+            container.latteApplet.signalAnimationsNeedThickness.disconnect(slotAnimationsNeedThickness);
+            container.latteApplet.signalActionsBlockHiding.disconnect(slotActionsBlockHiding);
+            container.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
+            container.latteApplet.clearZoomSignal.disconnect(titleTooltipDialog.hide);
+        }
+    }
 
     Connections{
         target: root

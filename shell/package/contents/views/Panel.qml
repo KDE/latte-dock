@@ -74,6 +74,10 @@ PlasmaCore.FrameSvgItem {
 
     Component.onDestruction: {
         console.log("dock view qml source deleting...");
+
+        if (containment) {
+            containment.locationChanged.disconnect(adjustPrefix);
+        }
     }
 
     onContainmentChanged: {

@@ -119,6 +119,10 @@ Item{
             root.onIconSizeChanged.connect(updateInitialSizes);
         }
 
+        Component.onDestruction: {
+            root.onIconSizeChanged.disconnect(updateInitialSizes);
+        }
+
         NumberAnimation{
             id: activeAndReverseAnimation
             target: activePoint

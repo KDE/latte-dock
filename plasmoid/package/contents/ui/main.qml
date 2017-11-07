@@ -1542,8 +1542,13 @@ Item {
 
         root.presentWindows.connect(backend.presentWindows);
         root.windowsHovered.connect(backend.windowsHovered);
-        //    mouseHandler.urlDropped.connect(backend.urlDropped);
         dragHelper.dropped.connect(resetDragSource);
+    }
+
+    Component.onDestruction: {
+        root.presentWindows.disconnect(backend.presentWindows);
+        root.windowsHovered.disconnect(backend.windowsHovered);
+        dragHelper.dropped.disconnect(resetDragSource);
     }
 
     //BEGIN states
