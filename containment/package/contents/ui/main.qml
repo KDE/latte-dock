@@ -1270,7 +1270,9 @@ DragDrop.DropArea {
         id: showTitleTooltipTimer
         interval: 100
         onTriggered: {
-            titleTooltipDialog.update();
+            if (dock && dock.visibility && dock.visibility.containsMouse) {
+                titleTooltipDialog.update();
+            }
 
             if (root.debugModeTimers) {
                 console.log("containment timer: showTitleTooltipTimer called...");
@@ -1284,6 +1286,10 @@ DragDrop.DropArea {
         onTriggered: {
             if (!titleTooltipDialog.activeItemHovered) {
                 titleTooltipDialog.visible = false;
+                if (dock && dock.visibility && !dock.visibility.containsMouse) {
+                    enableDirectRenderTimer.stop();
+                    setGlobalDirectRender(false);
+                }
             }
 
             if (root.debugModeTimers) {
