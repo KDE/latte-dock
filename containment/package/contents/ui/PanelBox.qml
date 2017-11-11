@@ -38,6 +38,8 @@ Item{
 
     opacity: root.useThemePanel ? 1 : 0
 
+    property int animationTime: 6*root.durationTime*units.shortDuration
+
     property int panelWidth: {
         if (root.behaveAsPlasmaPanel) {
             return root.width;
@@ -78,7 +80,7 @@ Item{
     Behavior on opacity{
         enabled: Latte.WindowSystem.compositingActive
         NumberAnimation {
-            duration: 200
+            duration: barLine.animationTime
         }
     }
 
@@ -147,7 +149,7 @@ Item{
 
         Behavior on opacity {
             enabled: Latte.WindowSystem.compositingActive
-            NumberAnimation { duration: 8*root.durationTime*units.shortDuration }
+            NumberAnimation { duration: barLine.animationTime }
         }
 
 
@@ -219,7 +221,7 @@ Item{
 
         Behavior on opacity{
             enabled: Latte.WindowSystem.compositingActive
-            NumberAnimation { duration: 200 }
+            NumberAnimation { duration: barLine.animationTime }
         }
 
         Behavior on opacity{
@@ -354,6 +356,16 @@ Item{
             }
 
             enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+
+            Behavior on opacity{
+                enabled: Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: barLine.animationTime }
+            }
+
+            Behavior on opacity{
+                enabled: !Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: 0 }
+            }
 
             function adjustPrefix() {
                 if (!plasmoid) {
