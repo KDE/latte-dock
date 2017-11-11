@@ -1264,7 +1264,12 @@ DragDrop.DropArea {
     Timer {
         id: showTitleTooltipTimer
         interval: 100
-        onTriggered: titleTooltipDialog.update();
+
+        onTriggered: {
+            if (dock && dock.visibility && dock.visibility.containsMouse) {
+                titleTooltipDialog.update();
+            }
+        }
     }
 
     Timer {
@@ -1273,6 +1278,10 @@ DragDrop.DropArea {
         onTriggered: {
             if (!titleTooltipDialog.activeItemHovered) {
                 titleTooltipDialog.visible = false;
+                if (dock && dock.visibility && !dock.visibility.containsMouse) {
+                    enableDirectRenderTimer.stop();
+                    setGlobalDirectRender(false);
+                }
             }
         }
     }
