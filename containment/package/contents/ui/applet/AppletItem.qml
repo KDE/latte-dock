@@ -131,7 +131,13 @@ Item {
     Timer {
         id: fakeInitTimer
         interval: 4000
-        onTriggered: AppletIndetifier.reconsiderAppletIconItem();
+        onTriggered: {
+            AppletIndetifier.reconsiderAppletIconItem();
+
+            if (root.debugModeTimers) {
+                console.log("containment timer: appletItem fakeInitTimer called...");
+            }
+        }
     }
 
     //set up the fake containers and properties for when a fakeIconItem must be presented to the user

@@ -81,10 +81,11 @@ int main(int argc, char **argv)
     parser.addOptions({
         {{"r", "replace"}, i18nc("command line", "Replace the current dock instance.")}
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
-        , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
         , {"import", i18nc("command line", "Import configuration."), i18nc("command line: import", "file_name")}
+        , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
+        , {"timers", i18nc("command line", "Show messages for debugging the timers (Only useful to devs).")}
     });
 
     parser.process(app);

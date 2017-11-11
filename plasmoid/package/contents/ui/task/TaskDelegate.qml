@@ -502,6 +502,11 @@ MouseArea{
             onTriggered: {
                 //      mainItemContainer.hoverEnabled = true;
                 slotPublishGeometries();
+
+                if (latteDock && latteDock.debugModeTimers) {
+                    console.log("plasmoid timer: taskInitComponentTimer called...");
+                }
+
                 timer.destroy();
             }
 
@@ -1326,6 +1331,11 @@ MouseArea{
                 if (!mainItemContainer.inBlockingAnimation){
                     mainItemContainer.isDragged = true;
                 }
+
+                if (latteDock && latteDock.debugModeTimers) {
+                    console.log("plasmoid timer: resistanerTimer called...");
+                }
+
                 resistanerTimer.destroy();
             }
 
@@ -1371,6 +1381,10 @@ MouseArea{
                 else
                     showWindowAnimation.execute();
 
+                if (latteDock && latteDock.debugModeTimers) {
+                    console.log("plasmoid timer: timerWindow called...");
+                }
+
                 timerWindow.destroy();
             }
 
@@ -1389,6 +1403,10 @@ MouseArea{
         onTriggered: {
             if (mainItemContainer.itemIndex >= 0)
                 mainItemContainer.lastValidIndex = mainItemContainer.itemIndex;
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: lastValidTimer called...");
+            }
         }
     }
 
@@ -1398,7 +1416,13 @@ MouseArea{
     Timer {
         id: wheelActionDelayer
         interval: 200
-        onTriggered: mainItemContainer.inWheelAction = false;
+        onTriggered: {
+            mainItemContainer.inWheelAction = false;
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: wheelActionDelayer called...");
+            }
+        }
     }
 
     ///Item's Removal Animation

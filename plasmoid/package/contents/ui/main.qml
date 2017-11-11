@@ -424,7 +424,13 @@ Item {
     Timer {
         id: showPreviewWinTimer
         interval: 50
-        onTriggered: windowsPreviewDlg.visible = true;
+        onTriggered: {
+            windowsPreviewDlg.visible = true;
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: showPreviewTimer called...");
+            }
+        }
     }
 
     //! Timer to fix a crash that when going to Alternative Session through Context Menu,
@@ -444,6 +450,10 @@ Item {
             }
 
             latteDock.universalLayoutManager.switchToLayout(toLayout);
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: switchLayoutTimer called...");
+            }
         }
     }
 
@@ -458,6 +468,10 @@ Item {
 
         onTriggered: {
             tasksModel.requestClose(delayWindowRemovalTimer.modelIndex)
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: delayWindowRemovalTimer called...");
+            }
         }
     }
 
@@ -467,6 +481,10 @@ Item {
         onTriggered: {
             root.inActivityChange = false;
             activityInfo.previousActivity = activityInfo.currentActivity;
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: activityChangeDelayer called...");
+            }
         }
     }
 
@@ -752,6 +770,10 @@ Item {
             onTriggered: {
                 plasmoid.status = PlasmaCore.Types.PassiveStatus;
                 destroy();
+
+                if (latteDock && latteDock.debugModeTimers) {
+                    console.log("plasmoid timer: attentionTimer called...");
+                }
             }
             Component.onCompleted: {
                 start();
@@ -787,6 +809,10 @@ Item {
             }
 
             interval = normalInterval;
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: checkListHovered called...");
+            }
         }
 
         function startNormal(){
@@ -818,6 +844,10 @@ Item {
                 restart();
             else
                 icList.directRender = true;
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: enableDirectRenderTimer called...");
+            }
         }
     }
 
@@ -1099,6 +1129,10 @@ Item {
         onTriggered: {
             //    console.debug("Found children: "+icList.contentItem.children.length);
             TaskTools.publishIconGeometries(icList.contentItem.children);
+
+            if (latteDock && latteDock.debugModeTimers) {
+                console.log("plasmoid timer: iconGeometryTimer called...");
+            }
         }
     }
 

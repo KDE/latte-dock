@@ -49,6 +49,7 @@ DragDrop.DropArea {
     ////BEGIN properties
     property bool debugMode: Qt.application.arguments.indexOf("--graphics")>=0
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
+    property bool debugModeTimers: Qt.application.arguments.indexOf("--timers")>=0
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
     property bool directRenderTimerIsRunning: enableDirectRenderTimer.running
     property int directRenderAnimationTime: 0
@@ -1268,7 +1269,13 @@ DragDrop.DropArea {
     Timer {
         id: showTitleTooltipTimer
         interval: 100
-        onTriggered: titleTooltipDialog.update();
+        onTriggered: {
+            titleTooltipDialog.update();
+
+            if (root.debugModeTimers) {
+                console.log("containment timer: showTitleTooltipTimer called...");
+            }
+        }
     }
 
     Timer {
@@ -1278,6 +1285,11 @@ DragDrop.DropArea {
             if (!titleTooltipDialog.activeItemHovered) {
                 titleTooltipDialog.visible = false;
             }
+
+            if (root.debugModeTimers) {
+                console.log("containment timer: hideTitleTooltipTimer called...");
+            }
+
         }
     }
     /////END: Title Tooltip///////////
@@ -1431,6 +1443,10 @@ DragDrop.DropArea {
                 root.globalDirectRender = false;
                 root.clearZoom();
             }
+
+            if (root.debugModeTimers) {
+                console.log("containment timer: checkRestoreZoom called...");
+            }
         }
     }
 
@@ -1446,6 +1462,10 @@ DragDrop.DropArea {
 
             if (dock.visibility.containsMouse)
                 root.globalDirectRender = true;
+
+            if (root.debugModeTimers) {
+                console.log("containment timer: enableDirectRenderTimer called...");
+            }
         }
     }
 
@@ -1465,6 +1485,10 @@ DragDrop.DropArea {
             }
 
             visibilityManager.updateMaskArea();
+
+            if (root.debugModeTimers) {
+                console.log("containment timer: delayUpdateMaskArea called...");
+            }
         }
     }
 
