@@ -259,7 +259,7 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
-            opacity: root.solidPanel || root.forceSolidPanel
+            opacity: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
                      || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100) ?
                          1 : plasmoid.configuration.panelTransparency / 100
 

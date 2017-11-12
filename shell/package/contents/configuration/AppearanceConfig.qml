@@ -464,13 +464,16 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     text: i18n("Opacity: ")
                     horizontalAlignment: Text.AlignLeft
-                    enabled: showBackground.checked && !solidBackground.checked
+                    enabled: transparencySlider.enabled
                 }
 
                 PlasmaComponents.Slider {
                     id: transparencySlider
                     Layout.fillWidth: true
-                    enabled: showBackground.checked && !solidBackground.checked
+                    //! transparency can be set when the user doesnt want solidness all the time
+                    //! or when the user wants solidness only for maximized windows
+                    enabled: showBackground.checked &&
+                             (!solidBackground.checked || plasmoid.configuration.solidBackgroundForMaximized)
 
                     value: plasmoid.configuration.panelTransparency
                     minimumValue: 0
@@ -496,7 +499,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    enabled: showBackground.checked && !solidBackground.checked
+                    enabled: transparencySlider.enabled
                     text: transparencySlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
