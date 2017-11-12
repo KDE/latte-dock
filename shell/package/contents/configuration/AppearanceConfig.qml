@@ -472,13 +472,17 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     //! transparency can be set when the user doesnt want solidness all the time
                     //! or when the user wants solidness only for maximized windows
-                    enabled: showBackground.checked &&
-                             (!solidBackground.checked || plasmoid.configuration.solidBackgroundForMaximized)
+                    enabled: showBackground.checked && !blockOpacityAdjustment
 
                     value: plasmoid.configuration.panelTransparency
                     minimumValue: 0
                     maximumValue: 100
                     stepSize: 5
+
+                    property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
+                                                          || (solidBackground.checked
+                                                              && !plasmoid.configuration.solidBackgroundForMaximized
+                                                              && !plasmoid.configuration.backgroundOnlyOnMaximized)
 
                     function updatePanelTransparency() {
                         if (!pressed)
