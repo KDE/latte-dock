@@ -46,7 +46,7 @@ Item{
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
     property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ?
-                    -thicknessNormal : thicknessNormal;
+                                      -thicknessNormal : thicknessNormal;
 
     property int statesLineSizeOriginal: root.latteApplet ? Math.ceil( root.maxIconSize/13 ) : 0
 
@@ -103,7 +103,8 @@ Item{
         target: dock
         property: "drawEffects"
         when: dock
-        value: root.blurEnabled && root.useThemePanel && !root.solidPanel
+        value: (root.blurEnabled && root.useThemePanel && !root.solidPanel)
+               || (root.forceSolidPanel && windowsModel.hasMaximizedWindow && Latte.WindowSystem.compositingActive)
     }
 
     Binding{
@@ -220,7 +221,7 @@ Item{
             //console.log("entered normal state...");
             //count panel length
 
-           var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
+            var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
             //used when !compositing and in editMode
             if (noCompositingEdit) {
                 tempLength = root.isHorizontal ? root.width : root.height;
