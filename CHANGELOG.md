@@ -2,14 +2,16 @@
 
 #### Version 0.7.2
 
-* fix crash introduced with qt 5.9.2 when the user hovers the dock
+* fix crashes introduced with qt 5.9.2 when the user hovers the dock
 * highly improve the attention bouncing animation
 * fix coloring for shortcut badges
 * various fixes for animations and glitches
 * hide internal tasks separator at the edges
 * improvements for window manager !compositing window state
+* fix small issues with title tooltips
 * pass kde review process
 * move source to kde infrastructure
+* more translations from kde localization teams
 
 #### Version 0.7.1
 
