@@ -37,12 +37,9 @@ Item {
     //(id, mScale)
     property variant frozenTasks: []
 
-    onInternalSeparatorPosChanged: {
-        if (internalSeparatorPos>-1)
-            hasInternalSeparator = true;
-        else
-            hasInternalSeparator = false;
-    }
+    //the internal separators in the form
+    //(launcherUrl, index)
+    property variant separators: []
 
     //!this is used in order to update the index when the signal is for applets
     //!outside the latte plasmoid
@@ -233,6 +230,8 @@ Item {
         return false;
     }
 
+    //! Frozen Tasks functions
+
     function getFrozenTask(identifier) {
         for(var i=0; i<frozenTasks.length; ++i) {
             if (frozenTasks[i].id === identifier) {
@@ -264,5 +263,69 @@ Item {
         } else {
             frozenTasks.push({id: identifier, mScale: scale});
         }
+    }
+
+    //! SEPARATORS functions
+
+    // update the registered separators
+    // launcherUrl, no = add/update separator
+    // launcherUrl, -1 = remove separator
+
+    function setSeparator(launcher, taskIndex) {
+        var currentPos = separatorArrayPos(launcher);
+        var updated = false;
+
+        if (currentPos === -1 && taskIndex >=0){
+            //add that separator
+            separators.push({launcherUrl: launcher, index: taskIndex});
+            updated = true;
+        } else if (currentPos>-1 && taskIndex === -1) {
+            //remove that separator
+            separators.splice(currentPos,1);
+            updated = true;
+        } else if (currentPos>-1 && taskIndex>-1 && separators[currentPos].index !== taskIndex) {
+            //update that separator
+            separators[currentPos].index = taskIndex;
+            updated = true;
+        }
+
+        if (updated) {
+            hasInternalSeparator = separators.length > 0;
+            internalSeparatorPos = hasInternalSeparator ? separators[0].index : -1;
+            root.separatorsUpdated();
+        }
+    }
+
+    function separatorArrayPos(launcher) {
+        var res = -1;
+
+        for (var i=0; i<separators.length; ++i) {
+            if (separators[i].launcherUrl === launcher)
+                return i;
+        }
+
+        return res;
+    }
+
+    function availableLowerIndex(from) {
+        var next = from;
+
+        while (separators.indexOf(next) !== -1 || hidden.indexOf(next) !== -1)
+            next = next - 1;
+
+        return next;
+    }
+
+    function availableHigherIndex(from) {
+        var next = from;
+
+        while (separators.indexOf(next) !== -1 || hidden.indexOf(next) !== -1)
+            next = next + 1;
+
+        return next;
+    }
+
+    function isSeparator(launcher){
+        return (launcher.indexOf("latte-separator")!==-1 && launcher.indexOf(".desktop")!==1);
     }
 }

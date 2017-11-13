@@ -203,6 +203,7 @@ Item {
     signal draggingFinished();
     signal presentWindows(variant winIds);
     signal requestLayout;
+    signal separatorsUpdated();
     signal signalActionsBlockHiding(int value);
     signal signalAnimationsNeedBothAxis(int value);
     signal signalAnimationsNeedLength(int value);
@@ -531,20 +532,6 @@ Item {
         groupMode: TaskManager.TasksModel.GroupApplications
         sortMode: TaskManager.TasksModel.SortManual
 
-        function checkSeparator() {
-            var hasSep = false;
-            for(var i=0; i<launcherList.length; ++i){
-                var rec1 = launcherList[i];
-                if (rec1.indexOf("latte-separator.desktop") >= 0) {
-                    hasSep = true;
-                    break;
-                }
-            }
-
-            if (!hasSep)
-                parabolicManager.internalSeparatorPos = -1;
-        }
-
         function updateLaunchersList(){
             if (latteDock.universalSettings
                     && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
@@ -578,7 +565,6 @@ Item {
                 } else {
                     plasmoid.configuration.launchers59 = launcherList;
                 }
-                checkSeparator();
             }
         }
 
@@ -624,8 +610,6 @@ Item {
 
             icList.model = tasksModel;
             tasksStarting = count;
-
-            checkSeparator();
 
             ///Plasma 5.9 enforce grouping at all cases
             if (Latte.WindowSystem.frameworksVersion >= 335104) {

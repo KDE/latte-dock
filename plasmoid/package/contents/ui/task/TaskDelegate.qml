@@ -147,9 +147,8 @@ MouseArea{
         if (modelLauncherUrl !== "")
             launcherUrl = modelLauncherUrl;
 
-        if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0){
+        if (parabolicManager.isSeparator(modelLauncherUrl)){
             isSeparator = true;
-            parabolicManager.internalSeparatorPos = index;
         } else {
             isSeparator = false;
         }
@@ -543,7 +542,7 @@ MouseArea{
             lastValidTimer.start();
 
         if (isSeparator){
-            parabolicManager.internalSeparatorPos = itemIndex;
+            parabolicManager.setSeparator(launcherUrl, itemIndex);
         }
     }
 
@@ -569,6 +568,14 @@ MouseArea{
 
     onIsActiveChanged: {
         checkWindowsStates();
+    }
+
+    onIsSeparatorChanged: {
+        if (isSeparator) {
+            parabolicManager.setSeparator(launcherUrl, itemIndex);
+        } else {
+            parabolicManager.setSeparator(launcherUrl, -1);
+        }
     }
 
     onLauncherUrlChanged: updateBadge();
