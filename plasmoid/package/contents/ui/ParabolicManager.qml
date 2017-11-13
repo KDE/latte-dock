@@ -328,4 +328,10 @@ Item {
     function isSeparator(launcher){
         return (launcher.indexOf("latte-separator")!==-1 && launcher.indexOf(".desktop")!==1);
     }
+
+    function taskIsSeparator(index){
+        var child = icList.childAtIndex(index);
+
+        return (child !== undefined ? child.isSeparator : false);
+    }
 }

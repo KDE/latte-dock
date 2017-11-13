@@ -442,57 +442,7 @@ Item {
 
         // a hidden spacer for the first element to add stability
         // IMPORTANT: hidden spacers must be tested on vertical !!!
-        Item{
-            id: hiddenSpacerLeft
-            //we add one missing pixel from calculations
-            width: root.isHorizontal ? nHiddenSize : wrapper.width
-            height: root.isHorizontal ? wrapper.height : nHiddenSize
-
-            ///check also if this is the first plasmoid in anylayout
-            visible: container.startEdge || separatorSpace>0
-
-            property bool neighbourSeparator: false;
-
-            //in case there is a neighbour internal separator
-            property int separatorSpace: ((root.latteApplet && root.latteApplet.hasInternalSeparator && !root.latteApplet.internalSeparatorHidden
-                                           && (root.latteApplet.internalSeparatorPos === root.tasksCount-1) && index===root.latteAppletPos+1)
-                                          || neighbourSeparator) && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
-            property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
-
-            property real nScale: 0
-
-            Behavior on nScale {
-                enabled: !root.globalDirectRender
-                NumberAnimation { duration: 3*container.animationTime }
-            }
-
-            Behavior on nScale {
-                enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
-            }
-
-            Connections{
-                target: root
-                onSeparatorsUpdated: {
-                    hiddenSpacerLeft.neighbourSeparator = parabolicManager.isSeparator(index-1);
-                }
-            }
-
-            Loader{
-                width: !root.isVertical ? parent.width : 1
-                height: !root.isVertical ? 1 : parent.height
-                x: root.isVertical ? parent.width /2 : 0
-                y: !root.isVertical ? parent.height /2 : 0
-
-                active: root.debugMode
-
-                sourceComponent: Rectangle{
-                    border.width: 1
-                    border.color: "red"
-                    color: "transparent"
-                }
-            }
-        }
+        AppletHiddenSpacer{id: hiddenSpacerLeft}
 
         AppletItemWrapper{
             id: wrapper
@@ -502,58 +452,8 @@ Item {
             }
         }
 
-
         // a hidden spacer on the right for the last item to add stability
-        Item{
-            id: hiddenSpacerRight
-            //we add one missing pixel from calculations
-            width: root.isHorizontal ? nHiddenSize : wrapper.width
-            height: root.isHorizontal ? wrapper.height : nHiddenSize
-
-            //check if this last plasmoid in any layout
-            visible: container.endEdge || separatorSpace>0
-
-            property bool neighbourSeparator: false;
-            //in case there is a neighbour internal separator
-            property int separatorSpace: ((root.latteApplet &&  root.latteApplet.hasInternalSeparator && !root.latteApplet.internalSeparatorHidden
-                                           && root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1)
-                                          || neighbourSeparator) && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
-            property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
-
-            property real nScale: 0
-
-            Behavior on nScale {
-                enabled: !root.globalDirectRender
-                NumberAnimation { duration: 3*container.animationTime }
-            }
-
-            Behavior on nScale {
-                enabled: root.globalDirectRender
-                NumberAnimation { duration: root.directRenderAnimationTime }
-            }
-
-            Connections{
-                target: root
-                onSeparatorsUpdated: {
-                    hiddenSpacerRight.neighbourSeparator = parabolicManager.isSeparator(index+1);
-                }
-            }
-
-            Loader{
-                width: !root.isVertical ? parent.width : 1
-                height: !root.isVertical ? 1 : parent.height
-                x: root.isVertical ? parent.width /2 : 0
-                y: !root.isVertical ? parent.height /2 : 0
-
-                active: root.debugMode
-
-                sourceComponent: Rectangle{
-                    border.width: 1
-                    border.color: "red"
-                    color: "transparent"
-                }
-            }
-        }
+        AppletHiddenSpacer{id: hiddenSpacerRight; rightSpacer: true}
 
     }// Flow with hidden spacers inside
 
