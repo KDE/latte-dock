@@ -4,6 +4,7 @@
   <name>Latte</name>
   <name xml:lang="ca">Latte</name>
   <name xml:lang="ca-valencia">Latte</name>
+  <name xml:lang="cs">Latte</name>
   <name xml:lang="de">Latte</name>
   <name xml:lang="el">Latte</name>
   <name xml:lang="es">Latte</name>
