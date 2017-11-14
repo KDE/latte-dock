@@ -347,6 +347,28 @@ Item {
         return false;
     }
 
+    //! the real index task after we take into account the separators before it
+    //! for example the first task if there is a separator before it is 1, it isnt 0
+    function realTaskIndex(pseudoIndex) {
+        if (hasInternalSeparator) {
+            var steps = pseudoIndex + 1;
+            var pos = 0;
+
+            while (steps > 0) {
+                if (!taskIsSeparator(pos)) {
+                    steps = steps - 1;
+                }
+
+                if (steps > 0)
+                    pos = pos + 1;
+            }
+
+            return pos;
+        } else {
+            return pseudoIndex;
+        }
+    }
+
     //! first available task index found after consequent internal separators in the start
     function firstRealTask() {
         if (hasInternalSeparator) {

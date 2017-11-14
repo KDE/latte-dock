@@ -1270,8 +1270,8 @@ Item {
 
         var tasks = icList.contentItem.children;
 
-        //! this is used to bypass the internal separator if it exists
-        var confirmedIndex = parabolicManager.hasInternalSeparator && (index>=parabolicManager.internalSeparatorPos) ? index+1 : index;
+        //! this is used to bypass the internal separators if they exist
+        var confirmedIndex = parabolicManager.realTaskIndex(index);
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
@@ -1291,8 +1291,8 @@ Item {
 
         var tasks = icList.contentItem.children;
 
-        //! this is used to bypass the internal separator if it exists
-        var confirmedIndex = parabolicManager.hasInternalSeparator && (index>=parabolicManager.internalSeparatorPos) ? index+1 : index;
+        //! this is used to bypass the internal separators if they exist
+        var confirmedIndex = parabolicManager.realTaskIndex(index);
 
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
