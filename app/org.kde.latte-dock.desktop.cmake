@@ -2,6 +2,7 @@
 Name=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
+Name[cs]=Latte
 Name[de]=Latte
 Name[el]=Latte
 Name[es]=Latte
@@ -28,6 +29,7 @@ Comment[zh_TW]=給大眾使用的 Dock
 GenericName=Dock
 GenericName[ca]=Acobla
 GenericName[ca@valencia]=Acobla
+GenericName[cs]=Dok
 GenericName[de]=Dock
 GenericName[el]=Πίνακας
 GenericName[es]=Dock

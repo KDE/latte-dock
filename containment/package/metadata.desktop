@@ -3,6 +3,7 @@ Encoding=UTF-8
 Name=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
+Name[cs]=Latte
 Name[de]=Latte
 Name[el]=Latte
 Name[es]=Latte
