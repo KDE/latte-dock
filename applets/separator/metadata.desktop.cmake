@@ -2,6 +2,7 @@
 Name=Separator
 Name[ca]=Separador
 Name[ca@valencia]=Separador
+Name[cs]=Oddělovač
 Name[de]=Abstandshalter
 Name[el]=Διαχωριστικό
 Name[es]=Separador
@@ -34,6 +35,7 @@ Icon=filename-divider
 Keywords=separator
 Keywords[ca]=separador
 Keywords[ca@valencia]=separador
+Keywords[cs]=oddělovač
 Keywords[de]=Abstandshalter
 Keywords[el]=διαχωριστικό
 Keywords[es]=separador
