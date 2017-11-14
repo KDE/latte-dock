@@ -35,10 +35,8 @@ Item{
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
     //when the task is removed
     property int indexUsed: index === -1 ? lastValidIndex : index
-    property int separatorSpace: ((parabolicManager.internalSeparatorPos !== -1
-                                   && !root.internalSeparatorHidden
-                                   && parabolicManager.internalSeparatorPos === (rightSpacer ? indexUsed + 1 : indexUsed-1))
-                                  || neighbourSeparator) && !isSeparator && !showWindowAnimation.running ?
+    property int separatorSpace: neighbourSeparator && !isSeparator && !showWindowAnimation.running
+                                 && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
                                      (2+root.iconMargin/2) : 0
 
     property bool rightSpacer: false
@@ -57,23 +55,27 @@ Item{
         //index===-1 indicates that this item is removed
         if (latteDock && index!==-1) {
             if (!rightSpacer) {
-                hiddenSpacer.neighbourSeparator = (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1)
-                        && (indexUsed===0 || (indexUsed===1 && root.internalSeparatorPos===0 && root.internalSeparatorHidden)))
-                        || (parabolicManager.taskIsSeparator(itemIndex-1) && !isSeparator);
+                neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex-1) && !isSeparator)
+                        || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
             } else {
-                hiddenSpacer.neighbourSeparator = (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1)
-                        && ( indexUsed===root.tasksCount-1 || (indexUsed===root.tasksCount-2 && indexUsed>=0
-                                                               && root.internalSeparatorPos===root.tasksCount-1
-                                                               && root.internalSeparatorHidden)))
-                        || (parabolicManager.taskIsSeparator(itemIndex+1));
+                neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex+1) && !isSeparator)
+                        || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
             }
+
+            /* if (launcherUrl.indexOf("kwrite") > -1 || launcherUrl.indexOf("dolphin") > -1 ) {
+                var spacerName = "left";
+                if (rightSpacer)
+                    spacerName = "right";
+
+                console.log(launcherUrl +":" + itemIndex +"," + spacerName + " _-_- " +neighbourSeparator);
+            }*/
         }
     }
 
     Connections{
         target: root
         onLatteDockChanged: hiddenSpacer.updateNeighbour();
-        onInternalSeparatorHiddenChanged: hiddenSpacer.updateNeighbour();
+        // onInternalSeparatorHiddenChanged: hiddenSpacer.updateNeighbour();
         onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
     }
 
@@ -110,7 +112,7 @@ Item{
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
-    /*Rectangle{
+    Rectangle{
         width: !root.vertical ? parent.width : 1
         height: !root.vertical ? 1 : parent.height
         x: root.vertical ? parent.width /2 : 0
@@ -118,5 +120,5 @@ Item{
         border.width: 1
         border.color: "red"
         color: "transparent"
-    }*/
+    }
 }

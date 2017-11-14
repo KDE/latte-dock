@@ -34,19 +34,7 @@ Item{
 
     property bool neighbourSeparator: false;
 
-    //in case there is a neighbour internal separator
-    property int separatorSpace: ((root.latteApplet && root.latteApplet.hasInternalSeparator && !root.latteApplet.internalSeparatorHidden
-                                   && neighbourTaskInternalSeparator) || neighbourSeparator)
-                                 && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
-
-    property bool neighbourTaskInternalSeparator: {
-        if (!root.latteApplet){
-            return false;
-        }
-
-        return rightSpacer ? root.latteApplet.internalSeparatorPos === 0 && index===root.latteAppletPos-1 :
-                             root.latteApplet.internalSeparatorPos === root.tasksCount-1 && index===root.latteAppletPos+1;
-    }
+    property int separatorSpace: neighbourSeparator && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
 
     property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 

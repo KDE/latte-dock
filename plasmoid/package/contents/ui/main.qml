@@ -61,7 +61,6 @@ Item {
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
-    readonly property bool internalSeparatorHidden: parabolicManager.internalSeparatorHidden
     property bool inActivityChange: false
     property bool initializationStep: false //true
     property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false

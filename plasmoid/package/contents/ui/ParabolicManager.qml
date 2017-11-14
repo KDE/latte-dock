@@ -29,8 +29,10 @@ Item {
     id: parManager
 
     property bool hasInternalSeparator: false
-    property bool internalSeparatorHidden: (internalSeparatorPos === 0) || (internalSeparatorPos === root.tasksCount - 1)
     property int internalSeparatorPos: -1
+
+    property int firstRealTaskIndex: -1
+    property int lastRealTaskIndex: -1
 
     //tasks that change state (launcher,startup,window) and
     //at the next state must look the same
@@ -289,9 +291,16 @@ Item {
             updated = true;
         }
 
+        //if (separators.length > 0)
+        //    console.log(separators[0].launcherUrl+ " _________ " + separators[0].index);
+
         if (updated) {
+            //console.log("message sent...");
             hasInternalSeparator = separators.length > 0;
             internalSeparatorPos = hasInternalSeparator ? separators[0].index : -1;
+            firstRealTaskIndex = firstRealTask();
+            lastRealTaskIndex = lastRealTask();
+
             root.separatorsUpdated();
         }
     }
@@ -329,9 +338,46 @@ Item {
         return (launcher.indexOf("latte-separator")!==-1 && launcher.indexOf(".desktop")!==1);
     }
 
-    function taskIsSeparator(index){
-        var child = icList.childAtIndex(index);
+    function taskIsSeparator(taskIndex){
+        for (var i=0; i<separators.length; ++i) {
+            if (separators[i].index === taskIndex)
+                return true;
+        }
 
-        return (child !== undefined ? child.isSeparator : false);
+        return false;
+    }
+
+    //! first available task index found after consequent internal separators in the start
+    function firstRealTask() {
+        if (hasInternalSeparator) {
+            var i=0;
+
+            while (i<=root.tasksCount-1) {
+                if (!taskIsSeparator(i)) {
+                    return i;
+                }
+
+                i = i + 1;
+            }
+        }
+
+        return -1;
+    }
+
+    //! last available task index found after consequent internal separators in the end
+    function lastRealTask() {
+        if (hasInternalSeparator) {
+            var i=root.tasksCount - 1;
+
+            while (i>=0) {
+                if (!taskIsSeparator(i)) {
+                    return i;
+                }
+
+                i = i - 1;
+            }
+        }
+
+        return -1;
     }
 }

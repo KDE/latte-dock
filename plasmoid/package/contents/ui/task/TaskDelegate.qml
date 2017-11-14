@@ -239,7 +239,9 @@ MouseArea{
         anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
         anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
-        opacity: separatorShadow.active || root.internalSeparatorHidden ? 0 : 0.4
+        //opacity: separatorShadow.active || root.internalSeparatorHidden ? 0 : 0.4
+        opacity: separatorShadow.active ? 0 : 0.4
+
         visible: mainItemContainer.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
@@ -272,7 +274,8 @@ MouseArea{
         id: separatorShadow
         anchors.fill: separatorItem
         active: root.enableShadows && isSeparator
-        opacity: root.internalSeparatorHidden ? 0 : 0.4
+        //opacity: root.internalSeparatorHidden ? 0 : 0.4
+        opacity: 0.4
 
         Behavior on opacity {
             NumberAnimation { duration: root.durationTime*units.longDuration }
