@@ -60,18 +60,14 @@ Item{
         }
     }
 
-    Loader{
+    Rectangle{
         width: !root.isVertical ? parent.width : 1
         height: !root.isVertical ? 1 : parent.height
         x: root.isVertical ? parent.width /2 : 0
         y: !root.isVertical ? parent.height /2 : 0
 
-        active: root.debugMode
-
-        sourceComponent: Rectangle{
-            border.width: 1
-            border.color: "red"
-            color: "transparent"
-        }
+        border.width: 1
+        border.color: "red"
+        color: "transparent"
     }
 }

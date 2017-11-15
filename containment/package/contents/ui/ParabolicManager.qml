@@ -35,6 +35,7 @@ Item {
     property var separators: []
 
     //!this is used in order to update the index when the signal is for the internal latte plasmoid
+    //!this is used in order to update the index when the signal is for the internal latte plasmoid
     function updateIdSendScale(appIndex, index, zScale, zStep){
         // console.log(appIndex + " _ "+index+ " _ "+zScale + " _ "+ zStep);
         if(root.latteApplet && ((appIndex<root.latteAppletPos && index>=root.latteAppletPos)
@@ -45,23 +46,23 @@ Item {
             var taskIndex = -1;
             var internSepStep = 0;
             if(appIndex<root.latteAppletPos){
-                if (root.latteApplet.internalSeparatorPos === 0)
-                    internSepStep = 1;
+                if (root.latteApplet.parabolicManager.taskIsSeparator(0))
+                    internSepStep = root.latteApplet.parabolicManager.availableHigherIndex(0);
 
                 taskIndex = signalStep-appStep+internSepStep;
-                if (taskIndex === root.latteApplet.internalSeparatorPos)
-                    taskIndex = taskIndex + 1;
+                if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
+                    taskIndex = root.latteApplet.parabolicManager.availableHigherIndex(taskIndex + 1);
 
-              //  console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+                  console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
-                if (root.latteApplet.internalSeparatorPos === root.tasksCount-1)
-                    internSepStep = 1;
+                if (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))
+                    internSepStep = Math.abs(root.tasksCount-1 - root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1));
 
                 taskIndex = root.tasksCount-1 - (signalStep-appStep) - internSepStep;
-                if (taskIndex === root.latteApplet.internalSeparatorPos)
-                    taskIndex = taskIndex - 1;
+                if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
+                    taskIndex = root.latteApplet.parabolicManager.availableLowerIndex(taskIndex - 1);
 
-               // console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+                 console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             }
 
             root.latteApplet.updateScale(taskIndex, zScale,zStep);
@@ -125,11 +126,11 @@ Item {
 
         if(!root.latteApplet || !latteNeighbour || !root.hasInternalSeparator
                 || (root.latteApplet && root.hasInternalSeparator
-                    && ((root.latteApplet.internalSeparatorPos>0 && root.latteApplet.internalSeparatorPos<root.tasksCount-1)
-                        || (root.latteApplet.internalSeparatorPos===0 && index>root.latteAppletPos)
-                        || (root.latteApplet.internalSeparatorPos===root.tasksCount-1 && index<root.latteAppletPos)))
+                    && ((!root.latteApplet.parabolicManager.taskIsSeparator(0) && !root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))
+                        || (root.latteApplet.parabolicManager.taskIsSeparator(0) && index>root.latteAppletPos)
+                        || (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1) && index<root.latteAppletPos)))
                 ){
-            //console.log("style 1...");
+            console.log("style 1...");
             gAppletIndex = gAppN;
             lAppletIndex = lAppN;
 
@@ -142,8 +143,8 @@ Item {
             gTaskIndex = updateIdSendScale(index, tHIndex, 1 ,0);
             lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
         } else{
-            if(root.latteApplet.internalSeparatorPos === 0){
-                //console.log("style 2...");
+            if(gAppN === root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(0)){
+                console.log("style 2...");
                 gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
@@ -152,11 +153,10 @@ Item {
                 tLIndex = availableLowerId(lAppletIndex-1);
                 gTaskIndex = updateIdSendScale(index, gAppletIndex+1, 1, 0);
                 lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
-
-            } else if(root.hasInternalSeparator && root.latteApplet.internalSeparatorPos === root.tasksCount-1) {
-                //console.log("style 3...");
-                gAppletIndex = availableHigherId(index+1);
-                lAppletIndex= availableLowerId(index-1);
+            } else if(lAppN === root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))  {
+                console.log("style 3...");
+                gAppletIndex = gAppN;
+                lAppletIndex= lAppN;
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
 
@@ -170,10 +170,10 @@ Item {
             if (gTaskIndex === -1 && lTaskIndex === -1){
                 latteApplet.parabolicManager.clearTasksGreaterThan(0);
             } else {
-                if (gTaskIndex > -1)
+                /*  if (gTaskIndex > -1)
                     latteApplet.parabolicManager.clearTasksGreaterThan(gTaskIndex);
                 if (lTaskIndex > -1)
-                    latteApplet.parabolicManager.clearTasksLowerThan(lTaskIndex);
+                    latteApplet.parabolicManager.clearTasksLowerThan(lTaskIndex);*/
             }
         }
 
