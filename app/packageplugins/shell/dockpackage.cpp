@@ -58,8 +58,6 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("preset3", QStringLiteral("presets/Unity.layout.latte"), i18n("unity preset file"));
     package->addFileDefinition("preset4", QStringLiteral("presets/Extended.layout.latte"), i18n("extended preset file"));
 
-    package->addFileDefinition("separator0", QStringLiteral("controls/latte-separator.desktop"), i18n("tasks plasmoid separator"));
-
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();
 }
