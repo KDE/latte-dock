@@ -302,6 +302,18 @@ Item {
         return false;
     }
 
+    function separatorExists(separator){
+        if (!isSeparator(separator))
+            return false;
+
+        for (var i=0; i<separators.length; ++i) {
+            if (separators[i].launcherUrl.indexOf(separator)>=0)
+                return true;
+        }
+
+        return false;
+    }
+
     //! the real index task after we take into account the separators before it
     //! for example the first task if there is a separator before it is 1, it isnt 0
     function realTaskIndex(pseudoIndex) {
@@ -357,4 +369,45 @@ Item {
 
         return -1;
     }
+
+    function freeAvailableSeparatorName() {
+        var available = false;
+        var no = 1;
+
+        var separatorName = "";
+
+        while(!available && no
+              <20) {
+            separatorName = "file:///latte-separator"+no+".desktop";
+            if (separatorExists(separatorName)) {
+                no = no + 1;
+            } else {
+                available = true;
+            }
+        }
+
+        if (available) {
+            return separatorName;
+        } else {
+            return "";
+        }
+    }
+
+    function lastPresentSeparatorName() {
+        var max = -1;
+        var arrayPos = -1;
+
+        for (var i=0; i<separators.length; ++i) {
+            if (separators[i].index > max) {
+                max = separators[i].index;
+                arrayPos = i;
+            }
+        }
+
+        if (arrayPos>-1)
+            return separators[arrayPos].launcherUrl;
+        else
+            return "";
+    }
+
 }

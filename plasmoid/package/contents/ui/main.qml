@@ -1435,11 +1435,17 @@ Item {
     //! it is used to add the fake desktop file which represents
     //! the separator (fake launcher)
     function addSeparator(){
-        tasksModel.requestAddLauncher("file:///latte-separator.desktop");
+        var separatorName = parabolicManager.freeAvailableSeparatorName();
+
+        if (separatorName !== "")
+            tasksModel.requestAddLauncher(separatorName);
     }
 
-    function removeSeparator(){
-        tasksModel.requestRemoveLauncher("file:///latte-separator.desktop");
+    function removeLastSeparator(){
+        var separatorName = parabolicManager.lastPresentSeparatorName();
+
+        if (separatorName !== "")
+            tasksModel.requestRemoveLauncher(separatorName);
     }
 
     function setShowTasksNumbers(showNumbers){

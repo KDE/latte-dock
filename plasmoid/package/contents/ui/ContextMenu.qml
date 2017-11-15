@@ -766,24 +766,32 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        id: internalSeparatorItem
+        id: addInternalSeparatorItem
         visible: root.editMode
 
-        icon: "view-split-left-right"
-        text: i18n("Internal Separator")
-        checkable: true
-
-        Component.onCompleted: {
-            checked = root.hasInternalSeparator;
-        }
+        icon: "add"
+        text: i18n("Add Internal Separator")
 
         onClicked: {
-            if (checked) {
-                root.addSeparator();
-            } else {
-                root.removeSeparator();
-            }
+            root.addSeparator();
         }
+    }
+
+    PlasmaComponents.MenuItem {
+        id: removeInternalSeparatorItem
+        visible: root.editMode
+
+        icon: "remove"
+        text: i18n("Remove Last Internal Separator")
+
+        onClicked: {
+            root.removeLastSeparator();
+        }
+    }
+
+    PlasmaComponents.MenuItem {
+        separator: true
+        visible: root.editMode
     }
 
     PlasmaComponents.MenuItem {
