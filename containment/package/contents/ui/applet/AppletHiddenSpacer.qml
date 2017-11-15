@@ -54,13 +54,28 @@ Item{
 
     Connections{
         target: root
-        onSeparatorsUpdated: {
-            hiddenSpacer.neighbourSeparator = hiddenSpacer.rightSpacer ?
-                        parabolicManager.isSeparator(index+1) : parabolicManager.isSeparator(index-1);
-        }
+        onSeparatorsUpdated: updateNeighbour();
     }
 
-    Rectangle{
+    Connections{
+        target: root.latteApplet ? root.latteApplet : null
+        onSeparatorsUpdated: updateNeighbour();
+    }
+
+    function updateNeighbour() {
+        var gAppN = parabolicManager.availableHigherId(index+1);
+        var lAppN = parabolicManager.availableLowerId(index-1);
+
+        var latteNeighbour = root.latteApplet && ((gAppN === root.latteAppletPos) || (lAppN === root.latteAppletPos ));
+
+        hiddenSpacer.neighbourSeparator = hiddenSpacer.rightSpacer ?
+                    parabolicManager.isSeparator(index+1)
+                    || (latteNeighbour && gAppN===root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(0)) :
+                    parabolicManager.isSeparator(index-1)
+                    || (latteNeighbour && lAppN===root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1)) ;
+    }
+
+    /* Rectangle{
         width: !root.isVertical ? parent.width : 1
         height: !root.isVertical ? 1 : parent.height
         x: root.isVertical ? parent.width /2 : 0
@@ -69,5 +84,5 @@ Item{
         border.width: 1
         border.color: "red"
         color: "transparent"
-    }
+    }*/
 }

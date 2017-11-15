@@ -112,7 +112,7 @@ Item{
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
-    Rectangle{
+    /*Rectangle{
         width: !root.vertical ? parent.width : 1
         height: !root.vertical ? 1 : parent.height
         x: root.vertical ? parent.width /2 : 0
@@ -120,5 +120,5 @@ Item{
         border.width: 1
         border.color: "red"
         color: "transparent"
-    }
+    }*/
 }
