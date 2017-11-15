@@ -382,14 +382,19 @@ Item {
                 //for Tasks plasmoid distance of 2 is not always safe there are
                 //cases that needs to be 3, when an internal separator there is
                 //between the hovered task and the current applet
-                if (root.latteInternalSeparatorPos>=0) {
-                    if ((index < root.latteAppletPos && root.latteInternalSeparatorPos < root.latteAppletHoveredIndex)
-                            || (index > root.latteAppletPos && root.latteInternalSeparatorPos > root.latteAppletHoveredIndex)) {
-                        distance = 3;
+                if (root.hasInternalSeparator) {
+                    if (index < root.latteAppletPos) {
+                        var firstTaskIndex = root.latteApplet.parabolicManager.availableHigherIndex(0);
+
+                        distance = firstTaskIndex+2;
+                    } else if (index > root.latteAppletPos) {
+                        var lastTaskIndex = root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1);
+
+                        distance = root.tasksCount-1-lastTaskIndex+2;
                     }
                 }
 
-                if(Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=distance) {
+                if(Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=Math.max(2,distance)) {
                     container.clearZoom();
                 }
             }

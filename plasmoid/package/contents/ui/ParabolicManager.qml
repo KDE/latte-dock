@@ -29,7 +29,6 @@ Item {
     id: parManager
 
     property bool hasInternalSeparator: false
-    property int internalSeparatorPos: -1
 
     property int firstRealTaskIndex: -1
     property int lastRealTaskIndex: -1
@@ -132,7 +131,7 @@ Item {
 
             clearTasksGreaterThan(index+1);
             clearTasksLowerThan(index-1);
-        } else if(root.internalSeparatorPos>=0) {
+        } else if(hasInternalSeparator) {
                 //console.log("--- task style 2...");
                 var aGId1 = availableHigherIndex(index+1);
                 var aLId1 = availableLowerIndex(index-1);
@@ -277,7 +276,6 @@ Item {
         if (updated) {
             //console.log("message sent...");
             hasInternalSeparator = separators.length > 0;
-            internalSeparatorPos = hasInternalSeparator ? separators[0].index : -1;
             firstRealTaskIndex = firstRealTask();
             lastRealTaskIndex = lastRealTask();
 

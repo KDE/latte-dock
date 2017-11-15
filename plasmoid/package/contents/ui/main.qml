@@ -76,7 +76,6 @@ Item {
     property int clearWidth
     property int clearHeight
 
-    readonly property int internalSeparatorPos: parabolicManager.internalSeparatorPos
     property int newLocationDebugUse: PlasmaCore.Types.BottomPositioned
     property int newDroppedPosition: -1
     property int noInitCreatedBuffers: 0

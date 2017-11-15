@@ -257,7 +257,6 @@ DragDrop.DropArea {
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: plasmoid.configuration.titleTooltips
 
-    readonly property int latteInternalSeparatorPos: latteApplet ? latteApplet.internalSeparatorPos : -1
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int launchersGroup: plasmoid.configuration.launchersGroup
