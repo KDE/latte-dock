@@ -49,7 +49,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return root.vertical ? separatorItem.width : (root.dragSource ? 5+root.iconMargin : 0);
+            return root.vertical ? separatorItem.width : (root.dragSource || root.editMode ? 5+root.iconMargin : 0);
 
         if (root.vertical) {
             if (!inAttentionAnimation)
@@ -66,7 +66,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return !root.vertical ? separatorItem.height : (root.dragSource ? 5+root.iconMargin: 0);
+            return !root.vertical ? separatorItem.height : (root.dragSource || root.editMode ? 5+root.iconMargin: 0);
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
@@ -244,8 +244,8 @@ MouseArea{
 
         visible: mainItemContainer.isSeparator
 
-        width: root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
-        height: !root.vertical ? root.iconSize : (root.dragSource) ? 5+root.iconMargin: 1
+        width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
+        height: !root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
 
         property int localThickMargin: root.statesLineSize + root.thickMarginBase + 4
 

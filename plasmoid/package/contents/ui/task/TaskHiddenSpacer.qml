@@ -53,7 +53,9 @@ Item{
 
     function updateNeighbour() {
         //index===-1 indicates that this item is removed
-        if (latteDock && index!==-1) {
+        if (root.editMode) {
+            neighbourSeparator = false;
+        } else if (latteDock && index!==-1) {
             if (!rightSpacer) {
                 neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex-1) && !isSeparator)
                         || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
@@ -74,6 +76,7 @@ Item{
 
     Connections{
         target: root
+        onEditModeChanged: hiddenSpacer.updateNeighbour();
         onLatteDockChanged: hiddenSpacer.updateNeighbour();
         // onInternalSeparatorHiddenChanged: hiddenSpacer.updateNeighbour();
         onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
