@@ -109,35 +109,60 @@ Item {
         var gStep = 1;
         var lStep = 1;
 
+        if(!hasInternalSeparator || !(taskIsSeparator(index) || taskIsSeparator(index-1) || taskIsSeparator(index+1))){
+            //console.log("--- task style 1...");
+            gPAppletId = updateIdSendScale(index+1, rightScale, 0);
+            lPAppletId = updateIdSendScale(index-1, leftScale, 0);
 
+            //console.log("index:"+index + " lattePos:"+latteDock.latteAppletPos);
+            //console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId);
 
-        var nextG1 = availableHigherIndex(index+1);
-        var nextL1 = availableLowerIndex(index-1);
+            if (latteDock) {
+                if (gPAppletId > -1)
+                    gStep = Math.abs(gPAppletId - latteDock.latteAppletPos);
+                else if (lPAppletId > -1)
+                    lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
+            }
+            //console.log("gs:"+gStep+" ls:"+lStep);
 
-        gPAppletId = updateIdSendScale(nextG1, rightScale, 0);
-        lPAppletId = updateIdSendScale(nextL1, leftScale, 0);
+            gAppletId = updateIdSendScale(index+gStep+1, 1, 0);
+            lAppletId = updateIdSendScale(index-lStep-1, 1, 0);
 
+            //console.log(" cgApp:"+gAppletId+" clApp:"+lAppletId);
 
-        if (latteDock) {
-            if (gPAppletId > -1)
-                gStep = Math.abs(gPAppletId - latteDock.latteAppletPos);
-            else if (lPAppletId > -1)
-                lStep = Math.abs(lPAppletId - latteDock.latteAppletPos);
+            clearTasksGreaterThan(index+1);
+            clearTasksLowerThan(index-1);
+        } else if(root.internalSeparatorPos>=0) {
+                //console.log("--- task style 2...");
+                var aGId1 = availableHigherIndex(index+1);
+                var aLId1 = availableLowerIndex(index-1);
+
+                gPAppletId = updateIdSendScale(aGId1, rightScale, 0);
+                lPAppletId = updateIdSendScale(aLId1, leftScale, 0);
+
+               // console.log("index:"+index + " lattePos:"+latteDock.latteAppletPos);
+               // console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId+ " aG1:"+aGId1+" aLId1:"+aLId1);
+
+                gStep = aGId1 - index;
+                lStep = index - aLId1;
+
+                if (latteDock) {
+                    if (gPAppletId > -1)
+                        gStep = Math.abs(gPAppletId - latteDock.latteAppletPos + (root.tasksCount-1-index));
+                    else if (lPAppletId > -1)
+                        lStep = Math.abs(lPAppletId - latteDock.latteAppletPos - index);
+                }
+
+                //console.log("gs:"+gStep+" ls:"+lStep);
+
+                gAppletId = updateIdSendScale(index+gStep+1, 1, 0);
+                lAppletId = updateIdSendScale(index-lStep-1, 1, 0);
+
+                //console.log(" cgApp:"+gAppletId+" clApp:"+lAppletId);
+
+                clearTasksGreaterThan(aGId1+1);
+                clearTasksLowerThan(aLId1-1);
         }
-
-        if (gPAppletId === -1) {
-            nextG1 = availableHigherIndex(nextG1+1);
-        }
-
-        if (lPAppletId === -1) {
-            nextL1 = availableLowerIndex(nextL1-1);
-        }
-
-        gAppletId = updateIdSendScale(nextG1+gStep, 1, 0);
-        lAppletId = updateIdSendScale(nextL1-lStep, 1, 0);
-
-        clearTasksGreaterThan(nextG1+1);
-        clearTasksLowerThan(nextL1-1);
 
         if (latteDock){
             if (gAppletId > -1)
