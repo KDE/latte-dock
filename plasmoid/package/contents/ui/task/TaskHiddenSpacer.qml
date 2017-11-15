@@ -35,7 +35,7 @@ Item{
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
     //when the task is removed
     property int indexUsed: index === -1 ? lastValidIndex : index
-    property int separatorSpace: neighbourSeparator && !isSeparator && !showWindowAnimation.running
+    property int separatorSpace: neighbourSeparator && !isSeparator
                                  && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
                                      (2+root.iconMargin/2) : 0
 
@@ -95,23 +95,14 @@ Item{
 
     Component.onCompleted: hiddenSpacer.updateNeighbour();
 
-    /*Behavior on nScale {
-        enabled: !root.globalDirectRender
-        NumberAnimation { duration: 3 * mainItemContainer.animationTime }
-    }
-
-    Behavior on nScale {
-        enabled: root.globalDirectRender
-        NumberAnimation { duration: root.directRenderAnimationTime }
-    }*/
 
     Behavior on separatorSpace {
-        enabled: !root.globalDirectRender
+        enabled: mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running
         NumberAnimation { duration: 3 * mainItemContainer.animationTime }
     }
 
     Behavior on separatorSpace {
-        enabled: root.globalDirectRender
+        enabled: !mainItemContainer.inFastRestoreAnimation && !showWindowAnimation.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
