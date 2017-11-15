@@ -496,11 +496,11 @@ Item{
             active: opacityN>0 && !launcherAnimation.running
             asynchronous: true
 
-            property int fixedIndex: {
-                if (root.hasInternalSeparator && index > root.internalSeparatorPos ) {
-                    return index;
-                } else {
-                    return index+1;
+            property int fixedIndex:-1
+
+            onActiveChanged: {
+                if (active) {
+                    fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
                 }
             }
 

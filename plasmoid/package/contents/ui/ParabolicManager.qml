@@ -359,6 +359,22 @@ Item {
         }
     }
 
+    //! the pseudo index task after we take into account the separators before it
+    //! for example the third task if there is a separator before it is 1, it isnt 2
+    function pseudoTaskIndex(realIndex) {
+        var pseudoIndex = realIndex;
+
+        if (hasInternalSeparator) {
+            for (var i=0; i<realIndex; i++){
+                if (taskIsSeparator(i)) {
+                    pseudoIndex = pseudoIndex-1;
+                }
+            }
+        }
+
+        return pseudoIndex;
+    }
+
     //! first available task index found after consequent internal separators in the start
     function firstRealTask() {
         if (hasInternalSeparator) {
