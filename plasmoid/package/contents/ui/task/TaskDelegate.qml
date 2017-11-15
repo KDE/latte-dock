@@ -240,7 +240,7 @@ MouseArea{
         anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
 
         //opacity: separatorShadow.active || root.internalSeparatorHidden ? 0 : 0.4
-        opacity: separatorShadow.active ? 0 : 0.4
+        opacity: separatorShadow.active || forceHiddenState ? 0 : 0.4
 
         visible: mainItemContainer.isSeparator
 
@@ -249,8 +249,31 @@ MouseArea{
 
         property int localThickMargin: root.statesLineSize + root.thickMarginBase + 4
 
+        property bool forceHiddenState: false
+
         Behavior on opacity {
             NumberAnimation { duration: root.durationTime*units.longDuration }
+        }
+
+        function updateForceHiddenState() {
+            if (!isSeparator || root.editMode || root.dragSource) {
+                forceHiddenState = false;
+            } else {
+                var firstPosition = (index === 0);
+                var sepNeighbour = parabolicManager.taskIsSeparator(index-1);
+                var firstSepFromLastSeparatorsGroup = (itemIndex === parabolicManager.lastRealTaskIndex+1);
+
+                forceHiddenState = (firstPosition || sepNeighbour || firstSepFromLastSeparatorsGroup);
+            }
+        }
+
+        onForceHiddenStateChanged: root.separatorsUpdated();
+
+        Connections{
+            target: root
+            onEditModeChanged: separatorItem.updateForceHiddenState();
+            onDragSourceChanged: separatorItem.updateForceHiddenState();
+            onSeparatorsUpdated: separatorItem.updateForceHiddenState();
         }
 
         Rectangle {
@@ -274,8 +297,7 @@ MouseArea{
         id: separatorShadow
         anchors.fill: separatorItem
         active: root.enableShadows && isSeparator
-        //opacity: root.internalSeparatorHidden ? 0 : 0.4
-        opacity: 0.4
+        opacity: separatorItem.forceHiddenState ? 0 : 0.4
 
         Behavior on opacity {
             NumberAnimation { duration: root.durationTime*units.longDuration }

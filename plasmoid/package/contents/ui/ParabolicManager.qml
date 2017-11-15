@@ -42,6 +42,16 @@ Item {
     //(launcherUrl, index)
     property variant separators: []
 
+    Connections{
+        target: root
+        onTasksCountChanged:{
+            firstRealTaskIndex = firstRealTask();
+            lastRealTaskIndex = lastRealTask();
+
+            root.separatorsUpdated();
+        }
+    }
+
     //!this is used in order to update the index when the signal is for applets
     //!outside the latte plasmoid
     function updateIdSendScale(index, zScale, zStep){
@@ -285,8 +295,13 @@ Item {
 
     function separatorArrayPos(launcher) {
         var res = -1;
+        var sLength = separators.length;
 
-        for (var i=0; i<separators.length; ++i) {
+        for (var i=0; i<sLength; ++i) {
+            //!safety checker
+            if (i>=separators.length)
+                return false;
+
             if (separators[i].launcherUrl === launcher)
                 return i;
         }
@@ -317,7 +332,13 @@ Item {
     }
 
     function taskIsSeparator(taskIndex){
-        for (var i=0; i<separators.length; ++i) {
+        var sLength = separators.length;
+
+        for (var i=0; i<sLength; ++i) {
+            //!safety checker
+            if (i>=separators.length)
+                return false;
+
             if (separators[i].index === taskIndex)
                 return true;
         }
@@ -329,7 +350,13 @@ Item {
         if (!isSeparator(separator))
             return false;
 
-        for (var i=0; i<separators.length; ++i) {
+        var sLength = separators.length;
+
+        for (var i=0; i<sLength; ++i) {
+            //!safety checker
+            if (i>=separators.length)
+                return false;
+
             if (separators[i].launcherUrl.indexOf(separator)>=0)
                 return true;
         }
@@ -436,7 +463,13 @@ Item {
         var max = -1;
         var arrayPos = -1;
 
-        for (var i=0; i<separators.length; ++i) {
+        var sLength = separators.length;
+
+        for (var i=0; i<sLength; ++i) {
+            //!safety checker
+            if (i>=separators.length)
+                return false;
+
             if (separators[i].index > max) {
                 max = separators[i].index;
                 arrayPos = i;

@@ -57,10 +57,10 @@ Item{
             neighbourSeparator = false;
         } else if (latteDock && index!==-1) {
             if (!rightSpacer) {
-                neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex-1) && !isSeparator)
+                neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex-1) && !isSeparator && itemIndex!==parabolicManager.firstRealTaskIndex)
                         || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
             } else {
-                neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex+1) && !isSeparator)
+                neighbourSeparator = (parabolicManager.taskIsSeparator(itemIndex+1) && !isSeparator && itemIndex!==parabolicManager.lastRealTaskIndex)
                         || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
             }
 
