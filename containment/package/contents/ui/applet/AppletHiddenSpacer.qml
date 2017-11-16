@@ -65,7 +65,7 @@ Item{
     Loader{
         active: root.debugModeSpacers
 
-        Rectangle{
+        sourceComponent: Rectangle{
             width: !root.isVertical ? hiddenSpacer.width : 1
             height: !root.isVertical ? 1 : hiddenSpacer.height
             x: root.isVertical ? hiddenSpacer.width/2 : 0

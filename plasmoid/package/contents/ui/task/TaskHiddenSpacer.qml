@@ -109,7 +109,7 @@ Item{
     Loader{
         active: latteDock && latteDock.debugModeSpacers
 
-        Rectangle{
+        sourceComponent: Rectangle{
             width: !root.vertical ? hiddenSpacer.width : 1
             height: !root.vertical ? 1 : hiddenSpacer.height
             x: root.vertical ? hiddenSpacer.width/2 : 0
