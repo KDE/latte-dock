@@ -53,7 +53,7 @@ Item {
                 if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
                     taskIndex = root.latteApplet.parabolicManager.availableHigherIndex(taskIndex + 1);
 
-                  //console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+                  console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
                 if (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))
                     internSepStep = Math.abs(root.tasksCount-1 - root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1));
@@ -62,7 +62,7 @@ Item {
                 if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
                     taskIndex = root.latteApplet.parabolicManager.availableLowerIndex(taskIndex - 1);
 
-                 //console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+                 console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             }
 
             root.latteApplet.updateScale(taskIndex, zScale,zStep);
@@ -118,7 +118,6 @@ Item {
         var tLIndex = -1;
         var tHIndex = -1;
 
-
         var gAppN = availableHigherId(index+1);
         var lAppN = availableLowerId(index-1);
 
@@ -130,7 +129,7 @@ Item {
                         || (root.latteApplet.parabolicManager.taskIsSeparator(0) && index>root.latteAppletPos)
                         || (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1) && index<root.latteAppletPos)))
                 ){
-            //console.log("style 1...");
+            console.log("style 1...");
             gAppletIndex = gAppN;
             lAppletIndex = lAppN;
 
@@ -144,7 +143,7 @@ Item {
             lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
         } else{
             if(gAppN === root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(0)){
-                //console.log("style 2...");
+                console.log("style 2...");
                 gAppletIndex = availableHigherId(index+1);
                 lAppletIndex= availableLowerId(index-1);
                 updateIdSendScale(index, gAppletIndex, rightScale, 0);
@@ -154,7 +153,7 @@ Item {
                 gTaskIndex = updateIdSendScale(index, gAppletIndex+1, 1, 0);
                 lTaskIndex = updateIdSendScale(index, tLIndex, 1, 0);
             } else if(lAppN === root.latteAppletPos && root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))  {
-                //console.log("style 3...");
+                console.log("style 3...");
                 gAppletIndex = gAppN;
                 lAppletIndex= lAppN;
                 updateIdSendScale(index, lAppletIndex, leftScale, 0);
@@ -166,7 +165,8 @@ Item {
             }
         }
 
-        if (latteApplet) {
+        //!when there isnt a single task
+       if (latteApplet && (root.latteApplet.parabolicManager.firstRealTaskIndex !== root.latteApplet.parabolicManager.lastRealTaskIndex)) {
             if (gTaskIndex === -1 && lTaskIndex === -1){
                 latteApplet.parabolicManager.clearTasksGreaterThan(0);
             } else {
@@ -296,7 +296,8 @@ Item {
     function availableLowerId(from) {
         var next = from;
 
-        while (separators.indexOf(next) !== -1 || hidden.indexOf(next) !== -1)
+        while (separators.indexOf(next) !== -1
+               || hidden.indexOf(next) !== -1)
             next = next - 1;
 
         return next;
@@ -305,7 +306,8 @@ Item {
     function availableHigherId(from) {
         var next = from;
 
-        while (separators.indexOf(next) !== -1 || hidden.indexOf(next) !== -1)
+        while (separators.indexOf(next) !== -1
+               || hidden.indexOf(next) !== -1)
             next = next + 1;
 
         return next;
