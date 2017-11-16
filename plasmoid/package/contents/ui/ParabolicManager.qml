@@ -44,12 +44,14 @@ Item {
 
     Connections{
         target: root
-        onTasksCountChanged:{
-            firstRealTaskIndex = firstRealTask();
-            lastRealTaskIndex = lastRealTask();
+        onTasksCountChanged:parManager.updateTasksEdgesIndexes();
+    }
 
-            root.separatorsUpdated();
-        }
+    function updateTasksEdgesIndexes() {
+        firstRealTaskIndex = firstRealTask();
+        lastRealTaskIndex = lastRealTask();
+
+        root.separatorsUpdated();
     }
 
     //!this is used in order to update the index when the signal is for applets
@@ -433,7 +435,7 @@ Item {
             }
         }
 
-        return root.tasksCount>0 ? root.tasksCount-1 : -1;;
+        return root.tasksCount>0 ? root.tasksCount-1 : -1;
     }
 
     function freeAvailableSeparatorName() {

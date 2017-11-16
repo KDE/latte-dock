@@ -236,13 +236,13 @@ Item{
             var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
             //Left hiddenSpacer
-            if(((index === 0 )&&(icList.count > 1)) && !root.disableLeftSpacer
+            if(((index === parabolicManager.firstRealTaskIndex )&&(root.tasksCount>0)) && !root.disableLeftSpacer
                     && !inMimicParabolicAnimation && !inFastRestoreAnimation){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer
-            if(((index === icList.count - 1 )&&(icList.count>1)) && !root.disableRightSpacer
+            if(((index === parabolicManager.lastRealTaskIndex )&&(root.tasksCount>0)) && !root.disableRightSpacer
                     && !inMimicParabolicAnimation && !inFastRestoreAnimation){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }

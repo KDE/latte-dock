@@ -86,6 +86,7 @@ int main(int argc, char **argv)
         , {"import", i18nc("command line", "Import configuration."), i18nc("command line: import", "file_name")}
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
         , {"timers", i18nc("command line", "Show messages for debugging the timers (Only useful to devs).")}
+        , {"spacers", i18nc("command line", "Show visual indicators for debugging spacers (Only useful to devs).")}
     });
 
     parser.process(app);

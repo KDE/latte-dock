@@ -27,7 +27,7 @@ Item{
     width: root.vertical ? wrapper.width : nHiddenSize
     height: root.vertical ? nHiddenSize : wrapper.height
 
-    visible: (rightSpacer ? index === icList.count - 1 : index === 0)
+    visible: (rightSpacer ? index === parabolicManager.lastRealTaskIndex : index === parabolicManager.firstRealTaskIndex)
              || (separatorSpace > 0) || mainItemContainer.inAttentionAnimation
              || mainItemContainer.inFastRestoreAnimation || mainItemContainer.inMimicParabolicAnimation
 
@@ -106,13 +106,18 @@ Item{
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
-    /*Rectangle{
-        width: !root.vertical ? parent.width : 1
-        height: !root.vertical ? 1 : parent.height
-        x: root.vertical ? parent.width /2 : 0
-        y: !root.vertical ? parent.height /2 : 0
-        border.width: 1
-        border.color: "red"
-        color: "transparent"
-    }*/
+    Loader{
+        active: latteDock && latteDock.debugModeSpacers
+
+        Rectangle{
+            width: !root.vertical ? hiddenSpacer.width : 1
+            height: !root.vertical ? 1 : hiddenSpacer.height
+            x: root.vertical ? hiddenSpacer.width/2 : 0
+            y: !root.vertical ? hiddenSpacer.height/2 : 0
+
+            border.width: 1
+            border.color: "red"
+            color: "transparent"
+        }
+    }
 }
