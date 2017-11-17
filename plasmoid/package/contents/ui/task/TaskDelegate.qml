@@ -225,6 +225,35 @@ MouseArea{
         }
     }
 
+    Loader {
+        id: isSeparatorRectangle
+        active: (opacityN>0)
+
+        width: mainItemContainer.width
+        height: mainItemContainer.height
+        anchors.centerIn: separatorItem
+
+        property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === mainItemContainer ? 1 : 0
+
+        Behavior on opacityN {
+            NumberAnimation { duration: root.durationTime*units.longDuration }
+        }
+
+        sourceComponent: Rectangle{
+            anchors.fill: parent
+            opacity: isSeparatorRectangle.opacityN
+            radius: 3
+
+            property color tempColor: theme.highlightColor
+            color: tempColor
+            border.width: 1
+            border.color: theme.highlightColor
+
+            onTempColorChanged: tempColor.a = 0.35;
+
+        }
+    }
+
     Item{
         id:separatorItem
         anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? localThickMargin : 0
@@ -425,6 +454,10 @@ MouseArea{
     onIsSeparatorChanged: {
         if (isSeparator) {
             parabolicManager.setSeparator(launcherUrl, itemIndex);
+
+            if (parabolicManager.hasLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
+                parabolicManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
+            }
         } else {
             parabolicManager.setSeparator(launcherUrl, -1);
         }
@@ -602,7 +635,7 @@ MouseArea{
         else if (mouse.button == Qt.RightButton && !modAccepted){
             // When we're a launcher, there's no window controls, so we can show all
             // places without the menu getting super huge.
-            if (model.IsLauncher === true) {
+            if (model.IsLauncher === true && !isSeparator) {
                 showContextMenu({showAllPlaces: true})
             } else {
                 showContextMenu();
@@ -941,7 +974,7 @@ MouseArea{
     }
 
     function showContextMenu(args) {
-        if (isSeparator)
+        if (isSeparator && !root.editMode)
             return;
 
         contextMenu = root.createContextMenu(mainItemContainer, modelIndex(), args);

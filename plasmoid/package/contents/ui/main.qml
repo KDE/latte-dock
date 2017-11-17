@@ -1433,18 +1433,31 @@ Item {
 
     //! it is used to add the fake desktop file which represents
     //! the separator (fake launcher)
-    function addSeparator(){
+    function addSeparator(pos){
         var separatorName = parabolicManager.freeAvailableSeparatorName();
 
-        if (separatorName !== "")
-            tasksModel.requestAddLauncher(separatorName);
+        if (separatorName !== "") {
+            parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
+
+            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, separatorName);
+            } else {
+                tasksModel.requestAddLauncher(separatorName);
+            }
+        }
     }
 
     function removeLastSeparator(){
         var separatorName = parabolicManager.lastPresentSeparatorName();
 
-        if (separatorName !== "")
-            tasksModel.requestRemoveLauncher(separatorName);
+        if (separatorName !== "") {
+            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, separatorName);
+            } else {
+                root.launcherForRemoval = separatorName;
+                tasksModel.requestRemoveLauncher(separatorName);
+            }
+        }
     }
 
     function setShowTasksNumbers(showNumbers){

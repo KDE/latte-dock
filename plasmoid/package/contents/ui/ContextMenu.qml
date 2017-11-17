@@ -653,7 +653,7 @@ PlasmaComponents.ContextMenu {
 
         text: i18n("&Pin")
 
-        visible: visualParent
+        visible: visualParent && !visualParent.isSeparator
         // && get(atm.IsLauncher) !== true
                  && get(atm.IsStartup) !== true
                  && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
@@ -743,7 +743,8 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
-        visible: (visualParent && get(atm.IsLauncher) === true) && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
+        visible: (visualParent && !visualParent.isSeparator && get(atm.IsLauncher) === true)
+                 && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
 
         text: i18nc("Remove launcher button for application shown while it is not running", "Unpin")
 
@@ -773,20 +774,28 @@ PlasmaComponents.ContextMenu {
         text: i18n("Add Internal Separator")
 
         onClicked: {
-            root.addSeparator();
+            root.addSeparator(visualParent.itemIndex);
         }
     }
 
     PlasmaComponents.MenuItem {
         id: removeInternalSeparatorItem
-        visible: root.editMode
+        visible: root.editMode && visualParent.isSeparator
 
         icon: "remove"
-        text: i18n("Remove Last Internal Separator")
+        text: i18n("Remove Internal Separator")
         enabled: parabolicManager.hasInternalSeparator
 
         onClicked: {
-            root.removeLastSeparator();
+            //root.removeLastSeparator();
+            var launcher = get(atm.LauncherUrlWithoutIcon);
+
+            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, launcher);
+            } else {
+                root.launcherForRemoval = launcher;
+                tasksModel.requestRemoveLauncher(launcher);
+            }
         }
     }
 
@@ -853,7 +862,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: alternativesMenuItem
-        visible: root.editMode
+        visible: root.editMode && !visualParent.isSeparator
         text: plasmoid.action("alternatives").text
         icon: plasmoid.action("alternatives").icon
 

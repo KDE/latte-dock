@@ -20,6 +20,10 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
+
+import org.kde.latte 0.1 as Latte
+
 // holds all the logic around parabolic effect signals into one place.
 // ParabolicManager is responsible for triggering all the messages to tasks
 // that are neighbour to the hovered task. This will help a lot to catch cases
@@ -41,6 +45,10 @@ Item {
     //the internal separators in the form
     //(launcherUrl, index)
     property variant separators: []
+
+    //new launchers in order to be moved in correct place
+    //(launcher, pos)
+    property variant launchersToBeMoved: []
 
     Connections{
         target: root
@@ -461,4 +469,93 @@ Item {
             return "";
     }
 
+    //! launchersToBeMoved, new launchers to have been added and must be repositioned
+    function addLauncherToBeMoved(launcherUrl, toPos) {
+        if (!hasLauncherToBeMoved(launcherUrl)) {
+            launchersToBeMoved.push({launcher: launcherUrl, pos: Math.max(0,toPos)});
+            //console.log("-add launcher-");
+            //printLaunchersToBeMoved()
+        }
+    }
+
+    function printLaunchersToBeMoved(){
+        for (var j=0; j<launchersToBeMoved.length; ++j){
+            console.log(launchersToBeMoved[j].launcher+ " - "+launchersToBeMoved[j].pos);
+        }
+    }
+
+    function moveLauncherToCorrectPos(launcherUrl, from) {
+        if (hasLauncherToBeMoved(launcherUrl)) {
+            launchersToBeMovedTimer.from = from;
+            launchersToBeMovedTimer.to = posOfLauncherToBeMoved(launcherUrl);
+            launchersToBeMovedTimer.launcherUrl = launcherUrl
+
+            removeLauncherToBeMoved(launcherUrl);
+            launchersToBeMovedTimer.start();
+        }
+    }
+
+    function removeLauncherToBeMoved(launcherUrl) {
+        if (hasLauncherToBeMoved(launcherUrl)) {
+            var sLength = launchersToBeMoved.length;
+            var index = -1;
+
+            for (var i=0; i<sLength; ++i) {
+                //!safety checker
+                if (i>=launchersToBeMoved.length)
+                    return -1;
+
+                if (launchersToBeMoved[i].launcher === launcherUrl) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index > -1) {
+                // console.log("removing launcher to be moved:: "+launcherUrl);
+                launchersToBeMoved.splice(index, 1);
+            }
+        }
+    }
+
+    function posOfLauncherToBeMoved(launcherUrl) {
+        var sLength = launchersToBeMoved.length;
+
+        for (var i=0; i<sLength; ++i) {
+            //!safety checker
+            if (i>=launchersToBeMoved.length)
+                return -1;
+
+            if (launchersToBeMoved[i].launcher === launcherUrl)
+                return launchersToBeMoved[i].pos;
+        }
+
+        return -1;
+    }
+
+    function hasLauncherToBeMoved(launcher) {
+        return (posOfLauncherToBeMoved(launcher) >= 0);
+    }
+
+    //!Trying to avoid a binding loop in TaskDelegate for modelLauncherUrl and
+    //!proper updating in separators indexes
+    Timer {
+        id: launchersToBeMovedTimer
+        interval: 50
+        property int from: -1
+        property int to: -1
+
+        property string launcherUrl: ""
+
+        onTriggered: {
+            //console.log("to be moved: "+launcherUrl + " - " + from +" -> "+to)
+
+            tasksModel.move(from, to);
+            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+               latteDock.universalLayoutManager.launchersSignals.moveTask(plasmoid.id, latteDock.launchersGroup, from, to);
+            }
+
+            tasksModel.syncLaunchers();
+        }
+    }
 }
