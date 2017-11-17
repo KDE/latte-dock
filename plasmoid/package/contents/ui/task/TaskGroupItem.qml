@@ -66,6 +66,7 @@ Item{
 
                 roundCorners: true
                 showAttention: mainItemContainer.showAttention
+                showGlow: root.showGlow
 
                 opacity: (!mainItemContainer.hasActive && root.showPreviews
                           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
@@ -165,6 +166,7 @@ Item{
 
                 basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
+                showGlow: root.showGlow
                 visible:  ( mainItemContainer.isGroupParent && root.dotsOnActive )
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
 

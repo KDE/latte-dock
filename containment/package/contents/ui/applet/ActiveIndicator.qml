@@ -48,6 +48,7 @@ Item{
 
         basicColor: theme.buttonFocusColor
         roundCorners: true
+        showGlow: root.showGlow
 
         opacity:{
             if ( (!vertical && width <= glowFrame.size)

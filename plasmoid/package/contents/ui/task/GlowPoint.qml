@@ -31,6 +31,7 @@ Item{
     property bool roundCorners: true
     property bool showAttention: false
 
+    property bool showGlow: false
     property int animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
 
     property color attentionColor: colorScopePalette.negativeTextColor // "#ffff1717"
@@ -98,7 +99,7 @@ Item{
             spread: 0.2
             color: glowItem.showAttention ? smallCircleInAttention.color : smallCircle.color
             opacity: root.showBarLine ? 0.25 : 0.45
-            visible: root.showGlow
+            visible: glowItem.showGlow
         }
     }
 }
