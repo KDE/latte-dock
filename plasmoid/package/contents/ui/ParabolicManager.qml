@@ -471,7 +471,7 @@ Item {
 
     //! launchersToBeMoved, new launchers to have been added and must be repositioned
     function addLauncherToBeMoved(launcherUrl, toPos) {
-        if (!hasLauncherToBeMoved(launcherUrl)) {
+        if (!isLauncherToBeMoved(launcherUrl)) {
             launchersToBeMoved.push({launcher: launcherUrl, pos: Math.max(0,toPos)});
             //console.log("-add launcher-");
             //printLaunchersToBeMoved()
@@ -485,7 +485,7 @@ Item {
     }
 
     function moveLauncherToCorrectPos(launcherUrl, from) {
-        if (hasLauncherToBeMoved(launcherUrl)) {
+        if (isLauncherToBeMoved(launcherUrl)) {
             launchersToBeMovedTimer.from = from;
             launchersToBeMovedTimer.to = posOfLauncherToBeMoved(launcherUrl);
             launchersToBeMovedTimer.launcherUrl = launcherUrl
@@ -496,7 +496,7 @@ Item {
     }
 
     function removeLauncherToBeMoved(launcherUrl) {
-        if (hasLauncherToBeMoved(launcherUrl)) {
+        if (isLauncherToBeMoved(launcherUrl)) {
             var sLength = launchersToBeMoved.length;
             var index = -1;
 
@@ -533,7 +533,7 @@ Item {
         return -1;
     }
 
-    function hasLauncherToBeMoved(launcher) {
+    function isLauncherToBeMoved(launcher) {
         return (posOfLauncherToBeMoved(launcher) >= 0);
     }
 
@@ -553,6 +553,10 @@ Item {
             tasksModel.move(from, to);
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
                latteDock.universalLayoutManager.launchersSignals.moveTask(plasmoid.id, latteDock.launchersGroup, from, to);
+            }
+
+            if (isSeparator(launcherUrl)) {
+                setSeparator(launcherUrl,to);
             }
 
             tasksModel.syncLaunchers();

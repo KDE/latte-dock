@@ -455,7 +455,7 @@ MouseArea{
         if (isSeparator) {
             parabolicManager.setSeparator(launcherUrl, itemIndex);
 
-            if (parabolicManager.hasLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
+            if (parabolicManager.isLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
                 parabolicManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
             }
         } else {

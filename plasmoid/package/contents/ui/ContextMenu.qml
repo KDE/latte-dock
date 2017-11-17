@@ -774,7 +774,19 @@ PlasmaComponents.ContextMenu {
         text: i18n("Add Internal Separator")
 
         onClicked: {
-            root.addSeparator(visualParent.itemIndex);
+            var pos=visualParent.itemIndex;
+
+            var separatorName = parabolicManager.freeAvailableSeparatorName();
+
+            if (separatorName !== "") {
+                parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
+
+                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                    latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, separatorName);
+                } else {
+                    tasksModel.requestAddLauncher(separatorName);
+                }
+            }
         }
     }
 

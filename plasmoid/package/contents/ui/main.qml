@@ -777,7 +777,7 @@ Item {
             if(root.latteDock)
                 console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldnt...");
 
-            if (!root.containsMouse()) {
+            if ((latteDock && !latteDock.dockContainsMouse) || !root.containsMouse()) {
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();
 
@@ -1488,8 +1488,8 @@ Item {
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
 
-            //    console.log("Checking "+i+" - "+task.index+" - "+task.containsMouse);
             if(task && task.containsMouse){
+                // console.log("Checking "+i+" - "+task.index+" - "+task.containsMouse);
                 return true;
             }
         }
