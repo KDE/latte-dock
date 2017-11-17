@@ -301,7 +301,13 @@ MouseArea{
         Connections{
             target: root
             onEditModeChanged: separatorItem.updateForceHiddenState();
-            onDragSourceChanged: separatorItem.updateForceHiddenState();
+            onDragSourceChanged: {
+                separatorItem.updateForceHiddenState();
+
+                if (isSeparator && !root.dragSource) {
+                    parabolicManager.setSeparator(launcherUrl, itemIndex);
+                }
+            }
             onSeparatorsUpdated: separatorItem.updateForceHiddenState();
         }
 

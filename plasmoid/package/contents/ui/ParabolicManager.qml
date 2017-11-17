@@ -255,14 +255,18 @@ Item {
 
         if (currentPos === -1 && taskIndex >=0){
             //add that separator
+            //console.log("add separator:"+launcher+" at:"+taskIndex);
             separators.push({launcherUrl: launcher, index: taskIndex});
             updated = true;
         } else if (currentPos>-1 && taskIndex === -1) {
             //remove that separator
+            //console.log("remove separator:"+launcher);
             separators.splice(currentPos,1);
             updated = true;
         } else if (currentPos>-1 && taskIndex>-1 && separators[currentPos].index !== taskIndex) {
             //update that separator
+            //console.log("update separator:"+launcher+" from:"+separators[currentPos].index+" -> "+taskIndex);
+
             separators[currentPos].index = taskIndex;
             updated = true;
         }
