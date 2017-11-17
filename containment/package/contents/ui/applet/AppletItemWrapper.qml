@@ -51,10 +51,13 @@ Item{
         }
 
         if (container.latteApplet) {
-            if (container.showZoomed && root.isVertical)
-                return root.statesLineSize + root.thickMargin + root.iconSize + 1;
-            else
-                return latteApplet.tasksWidth;
+            //! commented because it was breaking the context menu available area, I dont remember where
+            //! we needed this...
+
+            // if (container.showZoomed && root.isVertical)
+            //   return root.statesLineSize + root.thickMargin + root.iconSize + 1;
+            //else
+            return latteApplet.tasksWidth;
         } else {
             return scaledWidth;
         }
@@ -80,10 +83,13 @@ Item{
         }
 
         if (container.latteApplet) {
-            if (container.showZoomed && root.isHorizontal)
-                return root.statesLineSize + root.thickMargin + root.iconSize + 1;
-            else
-                return latteApplet.tasksHeight;
+            //! commented because it was breaking the context menu available area, I dont remember where
+            //! we needed this...
+
+            //if (container.showZoomed && root.isHorizontal)
+            // return root.statesLineSize + root.thickMargin + root.iconSize + 1;
+            //  else
+            return latteApplet.tasksHeight;
         } else {
             return scaledHeight;
         }
@@ -526,7 +532,7 @@ Item{
         active: container.applet
                 && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
                       && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
-                    || (plasmoid.configuration.shadows === 2 /*All Applets*/
+                     || (plasmoid.configuration.shadows === 2 /*All Applets*/
                          && (applet.pluginName !== root.plasmoidName)))
                     || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
