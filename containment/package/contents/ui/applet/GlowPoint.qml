@@ -99,7 +99,7 @@ Item{
             spread: 0.2
             color: smallCircle.color
             opacity: root.showBarLine ? 0.25 : 0.45
-            visible: mimicPlasmaPanel ? false : glowItem.showGlow
+            visible: glowItem.showGlow
         }
     }
 }

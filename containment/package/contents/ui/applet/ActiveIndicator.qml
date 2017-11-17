@@ -48,7 +48,7 @@ Item{
 
         basicColor: theme.buttonFocusColor
         roundCorners: true
-        showGlow: root.showGlow
+        showGlow: mimicPlasmaPanel ? false : root.showGlow
 
         opacity:{
             if ( (!vertical && width <= glowFrame.size)
