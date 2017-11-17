@@ -30,21 +30,189 @@ Item{
 
     property bool roundCorners: true
     property bool showAttention: false
-    property bool showGlow: false
 
+    property bool showGlow: false
     property int animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
 
     property color attentionColor: colorScopePalette.negativeTextColor // "#ffff1717"
     property color basicColor: "blue"
 
-    /*onShowAttentionChanged: {
-        if(!showAttention){
-            smallCircle.color = basicColor;
-        }
-    }*/
+    property color animationColor
+    property color currentColor: glowItem.showAttention ? animationColor : basicColor
+
+    readonly property real glowOpacity: 0.5
 
     Item{
-        id:mainGlow
+        id: mainGlow
+        anchors.fill: parent
+        opacity: glowOpacity
+        visible: glowItem.showGlow
+
+        property int halfCorner: 3*glowFrame.size
+        property int fullCorner: 6*glowFrame.size
+
+        Item {
+            id: firstGlowCorner
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.halfCorner : mainGlow.fullCorner
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : mainGlow.halfCorner
+            clip: true
+
+            Item {
+                id: firstGlowCornerFull
+                width: mainGlow.fullCorner
+                height: mainGlow.fullCorner
+
+                RadialGradient {
+                    anchors.fill: parent
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "transparent" }
+                        GradientStop { position: 0.07; color: "transparent" }
+                        GradientStop { position: 0.125; color: glowItem.currentColor }
+                        GradientStop { position: 0.4; color: "transparent" }
+                        GradientStop { position: 1; color: "transparent" }
+                    }
+                }
+            }
+        }
+
+        Item {
+            id:mainGlowPart
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.width - glowFrame.size : mainGlow.fullCorner
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : parent.height - glowFrame.size
+
+            LinearGradient {
+                anchors.fill: parent
+                start: {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                        return Qt.point(0, 0);
+                    else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                        return Qt.point(0, mainGlow.fullCorner);
+                    else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                        return Qt.point(mainGlow.fullCorner, 0);
+                    else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                        return Qt.point(0, 0);
+
+                    return Qt.point(mainGlow.fullCorner, 0);
+                }
+                end: {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                        return Qt.point(0, mainGlow.fullCorner);
+                    else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                        return Qt.point(0, 0);
+                    else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                        return Qt.point(0,0);
+                    else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                        return Qt.point(mainGlow.fullCorner, 0);
+
+                    return Qt.point(0,0);
+                }
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "transparent" }
+                    GradientStop { position: 0.08; color: "transparent" }
+                    GradientStop { position: 0.37; color: glowItem.currentColor }
+                    GradientStop { position: 0.49; color: "transparent" }
+                }
+            }
+        }
+
+        Item {
+            id:lastGlowCorner
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.halfCorner : mainGlow.fullCorner
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : mainGlow.halfCorner
+            clip: true
+
+            Item {
+                id: lastGlowCornerFull
+                width: mainGlow.fullCorner
+                height: mainGlow.fullCorner
+
+                RadialGradient {
+                    anchors.fill: parent
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "transparent" }
+                        GradientStop { position: 0.07; color: "transparent" }
+                        GradientStop { position: 0.125; color: glowItem.currentColor }
+                        GradientStop { position: 0.4; color: "transparent" }
+                        GradientStop { position: 1; color: "transparent" }
+                    }
+                }
+            }
+        }
+
+        states: [
+            State{
+                name: "*"
+                when:  plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+                AnchorChanges{
+                    target:firstGlowCorner;
+                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                }
+                AnchorChanges{
+                    target:firstGlowCornerFull;
+                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                }
+                AnchorChanges{
+                    target:mainGlowPart;
+                    anchors{ top:undefined; bottom:undefined; left:firstGlowCorner.right; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                }
+                AnchorChanges{
+                    target:lastGlowCorner;
+                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                }
+                AnchorChanges{
+                    target:lastGlowCornerFull;
+                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+                }
+
+                PropertyChanges{
+                    target: firstGlowCorner; anchors.leftMargin: -2.5*glowFrame.size; anchors.rightMargin:0; anchors.topMargin:0; anchors.bottomMargin:0
+                }
+                PropertyChanges{
+                    target: lastGlowCorner; anchors.leftMargin: 0; anchors.rightMargin:-2.5*glowFrame.size; anchors.topMargin:0; anchors.bottomMargin:0
+                }
+            },
+            State{
+                name: "vertical"
+                when:  plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+                AnchorChanges{
+                    target:firstGlowCorner;
+                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                }
+                AnchorChanges{
+                    target:firstGlowCornerFull;
+                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                }
+                AnchorChanges{
+                    target:mainGlowPart;
+                    anchors{ top:firstGlowCorner.bottom; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                }
+                AnchorChanges{
+                    target:lastGlowCorner;
+                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                }
+
+                AnchorChanges{
+                    target:lastGlowCornerFull;
+                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                }
+
+                PropertyChanges{
+                    target: firstGlowCorner; anchors.leftMargin: 0; anchors.rightMargin:0; anchors.topMargin:-2.5*glowFrame.size; anchors.bottomMargin: 0
+                }
+
+                PropertyChanges{
+                    target: lastGlowCorner; anchors.leftMargin: 0; anchors.rightMargin:0; anchors.topMargin:0; anchors.bottomMargin: -2.5*glowFrame.size
+                }
+            }
+        ]
+
+    }
+
+    Item{
+        id:mainElement
         anchors.fill: parent
 
         Rectangle {
@@ -65,7 +233,7 @@ Item{
             sourceComponent:Rectangle {
                 id: smallCircleInAttention
 
-                color: glowItem.basicColor
+                color: glowItem.animationColor
                 radius: smallCircle.radius
 
                 SequentialAnimation{
@@ -74,16 +242,16 @@ Item{
                     alwaysRunToEnd: true
 
                     PropertyAnimation {
-                        target: smallCircleInAttention
-                        property: "color"
+                        target: glowItem
+                        property: "animationColor"
                         to: glowItem.attentionColor
                         duration: glowItem.animation
                         easing.type: Easing.InOutQuad
                     }
 
                     PropertyAnimation {
-                        target: smallCircleInAttention
-                        property: "color"
+                        target: glowItem
+                        property: "animationColor"
                         to: glowItem.basicColor
                         duration: glowItem.animation
                         easing.type: Easing.InOutQuad
@@ -92,14 +260,36 @@ Item{
             }
         }
 
-        RectangularGlow {
-            id:recGlow
-            anchors.fill: smallCircle
-            glowRadius: 2 * Math.min(smallCircle.width, smallCircle.height)
-            spread: 0.2
-            color: smallCircle.color
-            opacity: root.showBarLine ? 0.25 : 0.45
+        Rectangle {
             visible: glowItem.showGlow
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+
+            anchors.horizontalCenterOffset: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Horizontal)
+                    return 0;
+                else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                    return -glowItem.width / 5;
+                else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                    return glowItem.width / 5;
+            }
+            anchors.verticalCenterOffset: {
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical)
+                    return 0;
+                else if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                    return glowItem.height / 5;
+                else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                    return -glowItem.height / 5;
+            }
+
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Math.max(mainGlowPart.width, shadow) : shadow
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadow : Math.max(mainGlowPart.height, shadow)
+            radius: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? height/2 : width/2
+
+            property int shadow: glowFrame.size / 3
+
+            color: root.appShadowColor
+            opacity: 0.2
         }
     }
 }
