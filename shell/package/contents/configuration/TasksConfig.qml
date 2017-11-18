@@ -52,17 +52,6 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                id: showGlow
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show glow around windows points")
-                checked: plasmoid.configuration.showGlow
-
-                onClicked: {
-                    plasmoid.configuration.showGlow = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
                 id: threeColorsWindows
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Different color for minimized windows")

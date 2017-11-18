@@ -806,6 +806,150 @@ PlasmaComponents.Page {
         }
         //! END: Shadows
 
+        //! BEGIN: Glow
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+            visible: plasmoid.configuration.advanced
+
+            Header {
+                text: i18n("Glow")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
+
+                ColumnLayout{
+                    Layout.leftMargin: units.smallSpacing * 2
+                    Layout.rightMargin: units.smallSpacing * 2
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
+
+                        PlasmaComponents.CheckBox {
+                            id: showGlowChk
+                            text: i18nc("show glow","Show")
+                            checked: plasmoid.configuration.showGlow
+
+                            onClicked: {
+                                plasmoid.configuration.showGlow = checked
+                            }
+                        }
+
+                        PlasmaComponents.Label {
+                            text: " | "
+                            horizontalAlignment: Text.AlignLeft
+                            opacity: 0.35
+                            enabled: showGlowChk.checked
+                        }
+
+                        property int option: plasmoid.configuration.glowOption
+
+                        ExclusiveGroup {
+                            id: glowGroup
+                            onCurrentChanged: {
+                                if (current.checked)
+                                    plasmoid.configuration.glowOption = current.option
+                            }
+                        }
+
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18nc("add glow only to active task/applet indicators","Only On Active")
+                            checked: parent.option === option
+                            checkable: true
+                            enabled: showGlowChk.checked
+                            exclusiveGroup:  glowGroup
+                            tooltip: i18n("Add glow only to active task/applet indicator and disable the active line")
+
+                            readonly property int option: 0
+                        }
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18nc("Add glow to all task/applet indicators","All")
+                            checked: parent.option === option
+                            checkable: true
+                            enabled: showGlowChk.checked
+                            exclusiveGroup: glowGroup
+                            tooltip: i18n("Add glow to all task/applet indicators")
+
+                            readonly property int option: 1
+                        }
+                    }
+
+
+
+                    RowLayout{
+                        PlasmaComponents.Label {
+                            enabled: showGlowChk.checked
+                            text: i18n("Opacity: ")
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        PlasmaComponents.Slider {
+                            id: glowOpacitySlider
+                            Layout.fillWidth: true
+                            enabled: showGlowChk.checked
+
+                            value: plasmoid.configuration.glowOpacity
+                            minimumValue: 0
+                            maximumValue: 100
+                            stepSize: 5
+
+                            function updateGlowOpacity() {
+                                if (!pressed)
+                                    plasmoid.configuration.glowOpacity = value;
+                            }
+
+                            onPressedChanged: {
+                                updateGlowOpacity();
+                            }
+
+                            Component.onCompleted: {
+                                valueChanged.connect(updateGlowOpacity);
+                            }
+
+                            Component.onDestruction: {
+                                valueChanged.disconnect(updateGlowOpacity);
+                            }
+                        }
+
+                        PlasmaComponents.Label {
+                            enabled: showGlowChk.checked
+                            text: glowOpacitySlider.value + " %"
+                            horizontalAlignment: Text.AlignRight
+                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        }
+
+                        PlasmaComponents.Label {
+                            text: " | "
+                            horizontalAlignment: Text.AlignLeft
+                            enabled: showGlowChk.checked
+                            opacity: 0.35
+                        }
+
+                        PlasmaComponents.CheckBox {
+                            id: showGlow3D
+                            Layout.leftMargin: units.smallSpacing * 2
+                            text: " " + i18n("3D")
+                            checked: plasmoid.configuration.glow3D
+                            enabled: showGlowChk.checked
+                            tooltip: i18n("Use a 3D style glow")
+
+                            onClicked: {
+                                plasmoid.configuration.showGlow3D = checked
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //! END: Glow
+
         //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true

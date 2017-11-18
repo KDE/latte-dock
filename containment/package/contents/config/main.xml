@@ -99,6 +99,23 @@
     <entry name="shadowColor" type="String">
       <default>080808</default>
     </entry>
+    <entry name="showGlow" type="Bool">
+       <default>false</default>
+    </entry>
+    <entry name="glowOption" type="Enum">
+      <label>Show active indicator</label>
+        <choices>
+          <choice name="OnActive"/>
+          <choice name="All"/>
+        </choices>
+      <default>1</default>
+    </entry>
+    <entry name="glow3D" type="Bool">
+       <default>false</default>
+    </entry>
+    <entry name="glowOpacity" type="Int">
+       <default>30</default>
+    </entry>
     <entry name="activeIndicator" type="Enum">
       <label>Show active indicator</label>
         <choices>
@@ -161,9 +178,6 @@
         <default>false</default>
     </entry>
 <!-- Tasks properties  -->
-    <entry name="showGlow" type="Bool">
-       <default>false</default>
-    </entry>
     <entry name="threeColorsWindows" type="Bool">
       <default>false</default>
     </entry>
