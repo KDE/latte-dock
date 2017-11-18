@@ -941,7 +941,7 @@ PlasmaComponents.Page {
                             tooltip: i18n("Use a 3D style glow")
 
                             onClicked: {
-                                plasmoid.configuration.showGlow3D = checked
+                                plasmoid.configuration.glow3D = checked;
                             }
                         }
                     }

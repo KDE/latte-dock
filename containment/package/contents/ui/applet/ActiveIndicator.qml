@@ -24,6 +24,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import org.kde.latte 0.1 as Latte
+
 Item{
     id:glowFrame
     width: !root.isVertical ? parent.width : size
@@ -32,7 +34,6 @@ Item{
     property int size: mimicPlasmaPanel ? 4 : root.statesLineSize
 
     property bool mimicPlasmaPanel: !root.latteApplet && plasmoid.configuration.panelSize===100 ? true : false
-
 
     /*Rectangle{
         anchors.fill: parent
@@ -51,8 +52,8 @@ Item{
         showGlow: mimicPlasmaPanel ? false : root.showGlow
 
         opacity:{
-            if ( (!vertical && width <= glowFrame.size)
-                    || (vertical && height <= glowFrame.size))
+            if ( (!vertical && width <= glowFrame.size && !isActive)
+                    || (vertical && height <= glowFrame.size && !isActive))
                 return 0;
 
             return 1;
@@ -63,8 +64,8 @@ Item{
         property bool vertical: root.isVertical
 
         property int animationTime: root.durationTime * (1.2*units.longDuration)
-        property int stateWidth: glowFrame.width
-        property int stateHeight: glowFrame.height
+        property int stateWidth: root.glowOption === Latte.Dock.GlowOnlyOnActive ? glowFrame.size : glowFrame.width
+        property int stateHeight: root.glowOption === Latte.Dock.GlowOnlyOnActive ? glowFrame.size : glowFrame.height
 
         property real scaleFactor: wrapper.zoomScale
 
@@ -94,21 +95,21 @@ Item{
         }
 
         onScaleFactorChanged: {
-            if(!activeAndReverseAnimation.running && !root.vertical && isActive){
+            if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.glowOption){
                 width = stateWidth;
             }
-            else if (!activeAndReverseAnimation.running && root.vertical && isActive){
+            else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.glowOption){
                 height = stateHeight;
             }
         }
 
         onStateWidthChanged:{
-            if(!activeAndReverseAnimation.running && !vertical && isActive)
+            if(!activeAndReverseAnimation.running && !vertical && isActive && root.glowOption)
                 width = stateWidth;
         }
 
         onStateHeightChanged:{
-            if(!activeAndReverseAnimation.running && vertical && isActive)
+            if(!activeAndReverseAnimation.running && vertical && isActive && root.glowOption)
                 height = stateHeight;
         }
 
