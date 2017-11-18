@@ -148,6 +148,7 @@ Item {
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: latteDock ? latteDock.titleTooltips : false
 
+    property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Dock.LineIndicator
     property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize

@@ -64,8 +64,8 @@ Item{
         property bool vertical: root.isVertical
 
         property int animationTime: root.durationTime * (1.2*units.longDuration)
-        property int stateWidth: root.glowOption === Latte.Dock.GlowOnlyOnActive ? glowFrame.size : glowFrame.width
-        property int stateHeight: root.glowOption === Latte.Dock.GlowOnlyOnActive ? glowFrame.size : glowFrame.height
+        property int stateWidth: root.activeIndicatorType === Latte.Dock.DotIndicator ? glowFrame.size : glowFrame.width
+        property int stateHeight: root.activeIndicatorType === Latte.Dock.DotIndicator ? glowFrame.size : glowFrame.height
 
         property real scaleFactor: wrapper.zoomScale
 

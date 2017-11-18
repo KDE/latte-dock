@@ -858,7 +858,7 @@ PlasmaComponents.Page {
                             checkable: true
                             enabled: showGlowChk.checked
                             exclusiveGroup:  glowGroup
-                            tooltip: i18n("Add glow only to active task/applet indicator and disable the active line")
+                            tooltip: i18n("Add glow only to active task/applet indicator")
 
                             readonly property int option: Latte.Dock.GlowOnlyOnActive
                         }

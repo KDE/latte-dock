@@ -262,6 +262,7 @@ DragDrop.DropArea {
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
+    property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
     property int glowOption: plasmoid.configuration.glowOption
     property real glowOpacity: plasmoid.configuration.glowOpacity/100
 

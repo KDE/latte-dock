@@ -99,12 +99,12 @@ Item{
                         else
                             height = glowFrame.size;
 
-                        if(vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
+                        if(vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                             height = stateHeight;
                         else
                             height = glowFrame.size;
 
-                        if(!vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
+                        if(!vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                             width = stateWidth;
                         else
                             width = glowFrame.size;
@@ -114,26 +114,26 @@ Item{
 
                 onIsActiveChanged: {
                     // if(mainItemContainer.hasActive || windowsPreviewDlg.visible)
-                    if (root.glowOption !== Latte.Dock.GlowOnlyOnActive)
+                    if (root.activeIndicatorType === Latte.Dock.LineIndicator)
                         activeAndReverseAnimation.start();
                 }
 
                 onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive){
+                    if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator){
                         width = stateWidth;
                     }
-                    else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive){
+                    else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator){
                         height = stateHeight;
                     }
                 }
 
                 onStateWidthChanged:{
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                         width = stateWidth;
                 }
 
                 onStateHeightChanged:{
-                    if(!activeAndReverseAnimation.running && vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
+                    if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                         height = stateHeight;
                 }
 
@@ -153,7 +153,7 @@ Item{
                     id: activeAndReverseAnimation
                     target: firstPoint
                     property: root.vertical ? "height" : "width"
-                    to: (mainItemContainer.hasActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
+                    to: (mainItemContainer.hasActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                         || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
                         ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
                     duration: firstPoint.animationTime
