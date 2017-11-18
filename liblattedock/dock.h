@@ -93,6 +93,12 @@ public:
     };
     Q_ENUM(ActiveAppletIndicator)
 
+    enum ActiveIndicatorType {
+        LineIndicator = 0,
+        DotIndicator = 1
+    };
+    Q_ENUM(ActiveIndicatorType)
+
     enum LaunchersGroup {
         UniqueLaunchers = 0,
         LayoutLaunchers = 1,

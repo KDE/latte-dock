@@ -125,6 +125,14 @@
         </choices>
       <default>1</default>
     </entry>
+    <entry name="activeIndicatorType" type="Enum">
+      <label>Active indicator style</label>
+        <choices>
+          <choice name="LineIndicator"/>
+          <choice name="DotIndicator"/>
+        </choices>
+      <default>0</default>
+    </entry>
     <entry name="maxLength" type="Int">
       <default>100</default>
     </entry>

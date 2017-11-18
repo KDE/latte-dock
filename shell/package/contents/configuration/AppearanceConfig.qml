@@ -563,8 +563,6 @@ PlasmaComponents.Page {
                 spacing: 2
 
                 ColumnLayout{
-                    Layout.leftMargin: units.smallSpacing * 2
-                    Layout.rightMargin: units.smallSpacing * 2
                     PlasmaComponents.CheckBox {
                         id: showAppletShadow
                         text: i18nc("show applet shadow","Show")
@@ -577,7 +575,6 @@ PlasmaComponents.Page {
                                 plasmoid.configuration.shadows = 0;
                         }
                     }
-
 
                     PlasmaComponents.Button{
                         id: backColorBtn
@@ -823,9 +820,6 @@ PlasmaComponents.Page {
                 spacing: 2
 
                 ColumnLayout{
-                    Layout.leftMargin: units.smallSpacing * 2
-                    Layout.rightMargin: units.smallSpacing * 2
-
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 2
