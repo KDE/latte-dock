@@ -866,7 +866,7 @@ PlasmaComponents.Page {
                             exclusiveGroup:  glowGroup
                             tooltip: i18n("Add glow only to active task/applet indicator and disable the active line")
 
-                            readonly property int option: 0
+                            readonly property int option: Latte.Dock.GlowOnlyOnActive
                         }
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
@@ -877,7 +877,7 @@ PlasmaComponents.Page {
                             exclusiveGroup: glowGroup
                             tooltip: i18n("Add glow to all task/applet indicators")
 
-                            readonly property int option: 1
+                            readonly property int option: Latte.Dock.GlowAll
                         }
                     }
 

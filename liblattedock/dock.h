@@ -99,6 +99,12 @@ public:
         GlobalLaunchers = 2
     };
     Q_ENUM(LaunchersGroup)
+
+    enum GlowGroup {
+        GlowOnlyOnActive = 0,
+        GlowAll = 1
+    };
+    Q_ENUM(GlowGroup)
 };
 
 }//end of namespace

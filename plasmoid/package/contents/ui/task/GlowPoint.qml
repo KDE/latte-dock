@@ -40,7 +40,7 @@ Item{
     property color animationColor
     property color currentColor: glowItem.showAttention ? animationColor : basicColor
 
-    readonly property real glowOpacity: 0.5
+    readonly property real glowOpacity: root.glowOpacity
 
     Item{
         id: mainGlow
@@ -261,7 +261,7 @@ Item{
         }
 
         Rectangle {
-            visible: glowItem.showGlow
+            visible: glowItem.showGlow && root.glow3D
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
 

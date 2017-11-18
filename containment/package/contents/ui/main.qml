@@ -249,6 +249,7 @@ DragDrop.DropArea {
     property bool highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: !latteApplet && plasmoid.configuration.panelSize===100 ? true : plasmoid.configuration.reverseLinesPosition
     property bool showGlow: plasmoid.configuration.showGlow
+    property bool glow3D: plasmoid.configuration.glow3D
     property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
@@ -260,6 +261,10 @@ DragDrop.DropArea {
     property bool titleTooltips: plasmoid.configuration.titleTooltips
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
+
+    property int glowOption: plasmoid.configuration.glowOption
+    property real glowOpacity: plasmoid.configuration.glowOpacity/100
+
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int launchersGroup: plasmoid.configuration.launchersGroup
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0

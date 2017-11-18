@@ -25,6 +25,8 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import org.kde.latte 0.1 as Latte
+
 Item{
     id:glowFrame
     width: ( icList.orientation === Qt.Horizontal ) ? wrapper.regulatorWidth : size
@@ -66,7 +68,14 @@ Item{
 
                 roundCorners: true
                 showAttention: mainItemContainer.showAttention
-                showGlow: root.showGlow
+                showGlow: {
+                    if (root.showGlow && root.glowOption === Latte.Dock.GlowAll)
+                        return true;
+                    else if (root.showGlow && root.glowOption === Latte.Dock.GlowOnlyOnActive && mainItemContainer.hasActive)
+                        return true;
+                    else
+                        return false;
+                }
 
                 opacity: (!mainItemContainer.hasActive && root.showPreviews
                           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
@@ -90,12 +99,12 @@ Item{
                         else
                             height = glowFrame.size;
 
-                        if(vertical && isActive)
+                        if(vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
                             height = stateHeight;
                         else
                             height = glowFrame.size;
 
-                        if(!vertical && isActive)
+                        if(!vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
                             width = stateWidth;
                         else
                             width = glowFrame.size;
@@ -104,26 +113,27 @@ Item{
 
 
                 onIsActiveChanged: {
-                   // if(mainItemContainer.hasActive || windowsPreviewDlg.visible)
+                    // if(mainItemContainer.hasActive || windowsPreviewDlg.visible)
+                    if (root.glowOption !== Latte.Dock.GlowOnlyOnActive)
                         activeAndReverseAnimation.start();
                 }
 
                 onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !root.vertical && isActive){
+                    if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive){
                         width = stateWidth;
                     }
-                    else if (!activeAndReverseAnimation.running && root.vertical && isActive){
+                    else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive){
                         height = stateHeight;
                     }
                 }
 
                 onStateWidthChanged:{
-                    if(!activeAndReverseAnimation.running && !vertical && isActive)
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
                         width = stateWidth;
                 }
 
                 onStateHeightChanged:{
-                    if(!activeAndReverseAnimation.running && vertical && isActive)
+                    if(!activeAndReverseAnimation.running && vertical && isActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
                         height = stateHeight;
                 }
 
@@ -143,7 +153,7 @@ Item{
                     id: activeAndReverseAnimation
                     target: firstPoint
                     property: root.vertical ? "height" : "width"
-                    to: mainItemContainer.hasActive
+                    to: (mainItemContainer.hasActive && root.glowOption !== Latte.Dock.GlowOnlyOnActive)
                         || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
                         ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
                     duration: firstPoint.animationTime
@@ -166,7 +176,7 @@ Item{
 
                 basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
-                showGlow: root.showGlow
+                showGlow: root.showGlow  && root.glowOption === Latte.Dock.GlowAll
                 visible:  ( mainItemContainer.isGroupParent && root.dotsOnActive )
                           || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
 

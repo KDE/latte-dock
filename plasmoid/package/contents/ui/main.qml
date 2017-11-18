@@ -138,6 +138,7 @@ Item {
     property bool reverseLinesPosition: latteDock ? latteDock.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: latteDock ? latteDock.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: latteDock ? latteDock.showGlow : plasmoid.configuration.showGlow
+    property bool glow3D: latteDock ? latteDock.glow3D : false
     property bool showOnlyCurrentScreen: latteDock ? latteDock.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: latteDock ? latteDock.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: latteDock ? latteDock.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
@@ -151,6 +152,9 @@ Item {
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int glowOption: latteDock ? latteDock.glowOption : Latte.Dock.GlowEverywhere
+    property real glowOpacity: latteDock ? latteDock.glowOpacity : 0.35
+
     property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
     property int modifier: latteDock ? latteDock.modifier : -1
     property int modifierClickAction: latteDock ? latteDock.modifierClickAction : -1
