@@ -69,20 +69,7 @@
   <url type="homepage">@WEBSITE@</url>
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
-  <developer_name>@AUTHOR@</developer_name>
-  <developer_name xml:lang="ca">@AUTHOR@</developer_name>
-  <developer_name xml:lang="ca-valencia">@AUTHOR@</developer_name>
-  <developer_name xml:lang="de">@AUTHOR@</developer_name>
-  <developer_name xml:lang="el">@AUTHOR@</developer_name>
-  <developer_name xml:lang="es">@AUTOR@</developer_name>
-  <developer_name xml:lang="nl">@AUTHOR@</developer_name>
-  <developer_name xml:lang="pl">@AUTHOR@</developer_name>
-  <developer_name xml:lang="pt">@AUTHOR@</developer_name>
-  <developer_name xml:lang="sk">@AUTHOR@</developer_name>
-  <developer_name xml:lang="sv">@Upphovsman@</developer_name>
-  <developer_name xml:lang="uk">@AUTHOR@</developer_name>
-  <developer_name xml:lang="x-test">xx@AUTHOR@xx</developer_name>
-  <developer_name xml:lang="zh-TW">@作者@</developer_name>
+  <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <icon type="stock">latte-dock</icon>
   <project_license>GPL v2+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
