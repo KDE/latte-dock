@@ -269,17 +269,17 @@ Item{
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal)
                     return 0;
                 else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
-                    return -glowItem.width / 5;
+                    return -glowItem.width / 7;
                 else if (plasmoid.location === PlasmaCore.Types.RightEdge)
-                    return glowItem.width / 5;
+                    return glowItem.width / 7;
             }
             anchors.verticalCenterOffset: {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical)
                     return 0;
                 else if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                    return glowItem.height / 5;
+                    return glowItem.height / 7;
                 else if (plasmoid.location === PlasmaCore.Types.TopEdge)
-                    return -glowItem.height / 5;
+                    return -glowItem.height / 7;
             }
 
             width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Math.max(mainGlowPart.width, shadow) : shadow
