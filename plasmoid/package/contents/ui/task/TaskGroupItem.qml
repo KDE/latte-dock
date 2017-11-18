@@ -69,7 +69,7 @@ Item{
                 roundCorners: true
                 showAttention: mainItemContainer.showAttention
                 showGlow: {
-                    if (root.showGlow && root.glowOption === Latte.Dock.GlowAll)
+                    if (root.showGlow && (root.glowOption === Latte.Dock.GlowAll || showAttention ))
                         return true;
                     else if (root.showGlow && root.glowOption === Latte.Dock.GlowOnlyOnActive && mainItemContainer.hasActive)
                         return true;
