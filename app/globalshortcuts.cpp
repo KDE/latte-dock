@@ -165,6 +165,14 @@ GlobalShortcuts::~GlobalShortcuts()
 
 void GlobalShortcuts::init()
 {
+    KActionCollection *generalActions = new KActionCollection(m_corona);
+    QAction *settingsAction = generalActions->addAction(QStringLiteral("show settings window"));
+    settingsAction->setText(i18n("Show Settings Window"));
+    KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
+    connect(settingsAction, &QAction::triggered, this, [this] {
+        showSettings();
+    });
+
     KActionCollection *taskbarActions = new KActionCollection(m_corona);
 
     //activate actions
@@ -432,6 +440,137 @@ void GlobalShortcuts::showDock()
             m_hideDock->visibility()->setBlockHiding(true);
             m_hideDockTimer.start();
             return;
+        }
+    }
+}
+
+bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)
+{
+    if (!base || ! test) {
+        return true;
+    }
+
+    if (base->screen() == test->screen()) {
+        return false;
+    } else if (base->screen() != qGuiApp->primaryScreen() && test->screen() == qGuiApp->primaryScreen()) {
+        return false;
+    } else if (base->screen() == qGuiApp->primaryScreen() && test->screen() != qGuiApp->primaryScreen()) {
+        return true;
+    } else {
+        int basePriority = -1;
+        int testPriority = -1;
+
+        for (int i = 0; i < qGuiApp->screens().count(); ++i) {
+            if (base->screen() == qGuiApp->screens()[i]) {
+                basePriority = i;
+            }
+
+            if (test->screen() == qGuiApp->screens()[i]) {
+                testPriority = i;
+            }
+        }
+
+        if (testPriority <= basePriority) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    qDebug() << "dockAtLowerScreenPriority : shouldnt had reached here...";
+    return false;
+}
+
+bool GlobalShortcuts::dockAtLowerEdgePriority(DockView *test, DockView *base)
+{
+    if (!base || ! test) {
+        return true;
+    }
+
+    QList<Plasma::Types::Location> edges{Plasma::Types::RightEdge, Plasma::Types::TopEdge,
+                                         Plasma::Types::LeftEdge, Plasma::Types::BottomEdge};
+
+    int testPriority = -1;
+    int basePriority = -1;
+
+    for (int i = 0; i < edges.count(); ++i) {
+        if (edges[i] == base->location()) {
+            basePriority = i;
+        }
+
+        if (edges[i] == test->location()) {
+            testPriority = i;
+        }
+    }
+
+    if (testPriority < basePriority)
+        return true;
+    else
+        return false;
+}
+
+
+void GlobalShortcuts::showSettings()
+{
+    QList<DockView *> docks;
+
+    //! create a docks list to sorted out
+    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+        docks.append(it.value());
+    }
+
+    qDebug() << " -------- ";
+
+    for (int i = 0; i < docks.count(); ++i) {
+        qDebug() << i << ". " << docks[i]->screen()->name() << " - " << docks[i]->location();
+    }
+
+    //! sort the docks based on screens and edges priorities
+    //! docks on primary screen have higher priority and
+    //! for docks in the same screen the priority goes to
+    //! Bottom,Left,Top,Right
+    for (int i = 0; i < docks.size(); ++i) {
+        for (int j = 0; j < docks.size() - i - 1; ++j) {
+            if (dockAtLowerScreenPriority(docks[j], docks[j + 1])
+                || (docks[j]->screen() == docks[j + 1]->screen()
+                    && dockAtLowerEdgePriority(docks[j], docks[j + 1]))) {
+                DockView *temp = docks[j + 1];
+                docks[j + 1] = docks[j];
+                docks[j] = temp;
+            }
+        }
+    }
+
+    qDebug() << " -------- sorted -----";
+
+    for (int i = 0; i < docks.count(); ++i) {
+        qDebug() << i << ". " << docks[i]->screen()->name() << " - " << docks[i]->location();
+    }
+
+
+    //! find which is the next dock to show its settings
+    if (docks.count() > 0) {
+        int openSettings = -1;
+
+        //! check if there is a dock with opened settings window
+        for (int i = 0; i < docks.size(); ++i) {
+            if (docks[i]->settingsWindowIsShown()) {
+                openSettings = i;
+                break;
+            }
+        }
+
+        if (openSettings >= 0 && docks.count() > 1) {
+            openSettings = openSettings + 1;
+
+            if (openSettings >= docks.size()) {
+                openSettings = 0;
+            }
+
+            docks[openSettings]->showSettingsWindow();
+        } else {
+            docks[0]->showSettingsWindow();
         }
     }
 }

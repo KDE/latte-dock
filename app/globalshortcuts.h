@@ -51,6 +51,10 @@ private:
     void activateTaskManagerEntry(int index, Qt::Key modifier);
     void showDock();
     void hideDock();
+    void showSettings();
+
+    bool dockAtLowerEdgePriority(DockView *test, DockView *base);
+    bool dockAtLowerScreenPriority(DockView *test, DockView *base);
 
     QAction *m_lastInvokedAction;
     QTimer m_hideDockTimer;

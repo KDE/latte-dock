@@ -458,6 +458,16 @@ QString DockView::currentScreen() const
     return m_screenToFollowId;
 }
 
+bool DockView::settingsWindowIsShown() const
+{
+    return (m_configView != nullptr);
+}
+
+void DockView::showSettingsWindow()
+{
+    showConfigurationInterface(containment());
+}
+
 void DockView::showConfigurationInterface(Plasma::Applet *applet)
 {
     if (!applet || !applet->containment())

@@ -160,6 +160,9 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
+    bool settingsWindowIsShown() const;
+    void showSettingsWindow();
+
     VisibilityManager *visibility() const;
 
     QQmlListProperty<QScreen> screens();
