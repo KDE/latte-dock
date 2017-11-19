@@ -177,7 +177,7 @@ Item{
             height: Math.round(width)
             source: decoration
 
-            visible: !mainItemContainer.isSeparator
+            visible: !mainItemContainer.isSeparator && !badgesLoader.active
             //visible: !root.enableShadows
 
             onValidChanged: {
@@ -270,16 +270,20 @@ Item{
             ]
         }
 
-        //////
+        ////! Combined Loader for Progress and Audio badges
         Loader{
-            id: progressLoader
+            id: badgesLoader
             anchors.fill: iconImageBuffer
             active: opacityN > 0
             asynchronous: true
 
-            property real opacityN: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !mainItemContainer.isSeparator
-                                     && (centralItem.smartLauncherItem.countVisible || centralItem.smartLauncherItem.progressVisible
-                                         || mainItemContainer.badgeIndicator > 0)) ? 1 : 0
+            property real opacityN: showProgress || showAudio ? 1 : 0
+
+            property bool showProgress: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !mainItemContainer.isSeparator
+                                         && (centralItem.smartLauncherItem.countVisible || centralItem.smartLauncherItem.progressVisible
+                                             || mainItemContainer.badgeIndicator > 0))
+
+            property bool showAudio: mainItemContainer.hasAudioStream && !mainItemContainer.isSeparator
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
@@ -291,18 +295,23 @@ Item{
                     enabled: false
                     anchors.fill: parent
                     property var source: ShaderEffectSource {
-                        sourceItem: iconImageBuffer
-                        hideSource: true
+                        sourceItem: Latte.IconItem{
+                            width: iconImageBuffer.width
+                            height: iconImageBuffer.height
+                            source: iconImageBuffer.source
+                        }
                     }
                     property var mask: ShaderEffectSource {
                         sourceItem: Item{
                             width: iconImageBuffer.width
                             height: iconImageBuffer.height
+
                             Rectangle{
                                 id: maskRect
                                 width: parent.width/2
                                 height: width
                                 radius: width
+                                visible: badgesLoader.showProgress
 
                                 Rectangle{
                                     id: maskCorner
@@ -338,87 +347,14 @@ Item{
                                         }
                                     }
                                 ]
+                            } // progressMask
 
-                                Connections{
-                                    target: plasmoid
-                                    onLocationChanged: iconOverlay.mask.scheduleUpdate();
-                                }
-                            }
-                            //badgeMask
-                        }
-                        hideSource: true
-                        live: mainItemContainer.badgeIndicator > 0 ? true : false
-                    }
-
-                    //  onWidthChanged: mask.scheduleUpdate();
-                    //  onHeightChanged: mask.scheduleUpdate();
-
-                    supportsAtlasTextures: true
-
-                    fragmentShader: "
-            varying highp vec2 qt_TexCoord0;
-            uniform highp float qt_Opacity;
-            uniform lowp sampler2D source;
-            uniform lowp sampler2D mask;
-            void main() {
-                gl_FragColor = texture2D(source, qt_TexCoord0.st) * (1.0 - (texture2D(mask, qt_TexCoord0.st).a)) * qt_Opacity;
-            }
-        "
-                }
-
-                TaskProgressOverlay{
-                    anchors.fill:parent
-                    opacity: progressLoader.opacityN
-                }
-            }
-        }
-
-        /// Audio Loader
-
-        /*Loader {
-            id: audioStreamIconLoader
-
-            readonly property bool shown: item && item.visible
-
-            source: "AudioStream.qml"
-            width: units.roundToIconSize(Math.min(Math.min(iconImageBuffer.width, iconImageBuffer.height), units.iconSizes.smallMedium))
-            height: width
-            active: mainItemContainer.hasAudioStream
-        }*/
-
-
-        Loader{
-            id: audioStreamIconLoader
-            anchors.fill: iconImageBuffer
-            active: opacityN>0
-            asynchronous: true
-
-            readonly property bool shown: item && item.visible
-
-            property real opacityN: mainItemContainer.hasAudioStream && !mainItemContainer.isSeparator ? 1 : 0
-
-            Behavior on opacityN {
-                NumberAnimation { duration: root.durationTime*2*units.longDuration }
-            }
-
-            sourceComponent: Item{
-                ShaderEffect {
-                    id: iconOverlay2
-                    enabled: false
-                    anchors.fill: parent
-                    property var source: ShaderEffectSource {
-                        sourceItem: progressLoader.active ? progressLoader.item : iconImageBuffer
-                        hideSource: true
-                    }
-                    property var mask: ShaderEffectSource {
-                        sourceItem: Item{
-                            width: iconImageBuffer.width
-                            height: iconImageBuffer.height
                             Rectangle{
                                 id: maskRect2
                                 width: parent.width/2
                                 height: width
                                 radius: width
+                                visible: badgesLoader.showAudio
 
                                 Rectangle{
                                     id: maskCorner2
@@ -454,17 +390,23 @@ Item{
                                         }
                                     }
                                 ]
+                            } // audio mask
 
-                                Connections{
-                                    target: plasmoid
-                                    onLocationChanged: iconOverlay2.mask.scheduleUpdate();
-                                }
+                            Connections{
+                                target: plasmoid
+                                onLocationChanged: iconOverlay.mask.scheduleUpdate();
                             }
-                            //badgeMask
+
+                            Connections{
+                                target:badgesLoader
+                                onShowProgressChanged: iconOverlay.mask.scheduleUpdate();
+                                onShowAudioChanged: iconOverlay.mask.scheduleUpdate();
+                            }
+
                         }
                         hideSource: true
-                        //   live: mainItemContainer.badgeIndicator > 0 ? true : false
-                    }
+                        live: mainItemContainer.badgeIndicator > 0 ? true : false
+                    } //end of mask
 
                     supportsAtlasTextures: true
 
@@ -477,17 +419,24 @@ Item{
                 gl_FragColor = texture2D(source, qt_TexCoord0.st) * (1.0 - (texture2D(mask, qt_TexCoord0.st).a)) * qt_Opacity;
             }
         "
+                } //end of sourceComponent
+
+                TaskProgressOverlay{
+                    anchors.fill:parent
+                    opacity: badgesLoader.opacityN
+                    visible: badgesLoader.showProgress
                 }
 
                 AudioStream{
                     id: audioStreamBadge
                     anchors.fill:parent
-                    opacity: audioStreamIconLoader.opacityN
+                    opacity: badgesLoader.opacityN
+                    visible: badgesLoader.showAudio
                 }
             }
         }
+        ////!
 
-        /// END of Audio Loader
 
         /// START Task Number
         Loader{
@@ -592,7 +541,7 @@ Item{
 
     Colorize{
         id: stateColorizer
-        source: progressLoader.active ? progressLoader : iconImageBuffer
+        source: badgesLoader.active ? badgesLoader : iconImageBuffer
         anchors.fill: iconGraphic
         //visible: false
         opacity:0
