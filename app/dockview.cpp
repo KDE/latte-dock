@@ -103,6 +103,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         this->containment()->actions()->removeAction(lockWidgetsAction);
         QAction *removeAction = containment()->actions()->action("remove");
         removeAction->setVisible(false);
+        QAction *configureAction = containment()->actions()->action("configure");
+        configureAction->setShortcut(QKeySequence());
         //containment()->actions()->removeAction(removeAction);
         //FIX: hide and not delete in order to disable a nasty behavior from
         //ContainmentInterface. If only one action exists for containment the
