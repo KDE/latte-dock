@@ -1138,6 +1138,7 @@ MouseArea{
         //trying to fix #440, showing the audio icon indicator to irrelevant tasks
         //after dragging an existent task with audio
         onDragSourceChanged: mainItemContainer.updateAudioStreams()
+        onIndicateAudioStreamsChanged: mainItemContainer.updateAudioStreams()
     }
     ///// End of Helper functions ////
 
