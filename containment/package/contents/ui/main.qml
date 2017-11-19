@@ -64,7 +64,7 @@ DragDrop.DropArea {
 
         return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                 && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
-                && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !root.solidPanel);
+                && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !(root.solidPanel && panelShadowsActive));
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
@@ -145,7 +145,7 @@ DragDrop.DropArea {
     property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
                                       || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
                                       && !(disablePanelShadowMaximized && windowsModel.hasMaximizedWindow))
-                                      || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+                                      || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100 && !(root.solidPanel && !plasmoid.configuration.panelShadows) )
 
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
