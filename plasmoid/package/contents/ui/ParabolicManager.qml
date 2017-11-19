@@ -407,7 +407,7 @@ Item {
             }
         }
 
-        return -1;
+        return root.tasksCount > 0 ? 0 : -1;
     }
 
     //! last available task index found after consequent internal separators in the end
@@ -424,7 +424,7 @@ Item {
             }
         }
 
-        return -1;
+        return root.tasksCount > 0 ? root.tasksCount-1 : -1;
     }
 
     function freeAvailableSeparatorName() {
