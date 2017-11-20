@@ -100,8 +100,68 @@ FocusScope {
         Keys.onPressed: {
             if (event.key === Qt.Key_Escape) {
                 dockConfig.hideConfigWindow();
+            } else if (event.key === Qt.Key_Left) {
+                //
+                if (tabGroup.currentTab === behaviorPage) {
+                    if (plasmoid.configuration.advanced) {
+                        tabGroup.currentTab = tweaksPage;
+                        tabBar.currentTab = tweaksTabBtn;
+                    } else if (tasksTabBtn.visible) {
+                        tabGroup.currentTab = tasksPage;
+                        tabBar.currentTab = tasksTabBtn;
+                    } else {
+                        tabGroup.currentTab = appearancePage;
+                        tabBar.currentTab = appearanceTabBtn;
+                    }
+                } else if (tabGroup.currentTab === tweaksPage) {
+                    if (tasksTabBtn.visible) {
+                        tabGroup.currentTab = tasksPage;
+                        tabBar.currentTab = tasksTabBtn;
+                    } else {
+                        tabGroup.currentTab = appearancePage;
+                        tabBar.currentTab = appearanceTabBtn;
+                    }
+                } else if (tabGroup.currentTab === tasksPage) {
+                    tabGroup.currentTab = appearancePage;
+                    tabBar.currentTab = appearanceTabBtn;
+                } else if (tabGroup.currentTab === appearancePage) {
+                    tabGroup.currentTab = behaviorPage;
+                    tabBar.currentTab = behaviorTabBtn;
+                }
+                //
+            } else if (event.key === Qt.Key_Right) {
+                //
+                if (tabGroup.currentTab === behaviorPage) {
+                    tabGroup.currentTab = appearancePage;
+                    tabBar.currentTab = appearanceTabBtn;
+                } else if (tabGroup.currentTab === appearancePage) {
+                    if (tasksTabBtn.visible) {
+                        tabGroup.currentTab = tasksPage;
+                        tabBar.currentTab = tasksTabBtn;
+                    } else if (plasmoid.configuration.advanced) {
+                        tabGroup.currentTab = tweaksPage;
+                        tabBar.currentTab = tweaksTabBtn;
+                    } else {
+                        tabGroup.currentTab = behaviorPage;
+                        tabBar.currentTab = behaviorTabBtn;
+                    }
+                } else if (tabGroup.currentTab === tasksPage) {
+                    if (plasmoid.configuration.advanced) {
+                        tabGroup.currentTab = tweaksPage;
+                        tabBar.currentTab = tweaksTabBtn;
+                    } else {
+                        tabGroup.currentTab = behaviorPage;
+                        tabBar.currentTab = behaviorTabBtn;
+                    }
+                } else if (tabGroup.currentTab === tweaksPage) {
+                    tabGroup.currentTab = behaviorPage;
+                    tabBar.currentTab = behaviorTabBtn;
+                }
+                //
             }
         }
+
+        Component.onCompleted: forceActiveFocus();
 
         RowLayout {
             id: header
@@ -220,13 +280,12 @@ FocusScope {
                 visible: dock.latteTasksPresent()
             }
             PlasmaComponents.TabButton {
+                id: tweaksTabBtn
                 text: i18n("Tweaks")
                 tab: tweaksPage
 
                 visible: plasmoid.configuration.advanced
             }
-
-            Component.onCompleted: forceActiveFocus();
         }
 
         Rectangle {
