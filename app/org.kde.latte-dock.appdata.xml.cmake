@@ -5,6 +5,7 @@
   <name xml:lang="ca">Latte</name>
   <name xml:lang="ca-valencia">Latte</name>
   <name xml:lang="cs">Latte</name>
+  <name xml:lang="da">Latte</name>
   <name xml:lang="de">Latte</name>
   <name xml:lang="el">Latte</name>
   <name xml:lang="es">Latte</name>
@@ -20,6 +21,7 @@
   <summary>Dock for the masses</summary>
   <summary xml:lang="ca">Dock per a les masses</summary>
   <summary xml:lang="ca-valencia">Dock per a les masses</summary>
+  <summary xml:lang="da">Dok til masserne</summary>
   <summary xml:lang="de">Dock für die Massen</summary>
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
   <summary xml:lang="es">Un dock para las masas</summary>
@@ -36,6 +38,7 @@
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
     <p xml:lang="ca">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
     <p xml:lang="ca-valencia">El Latte és un acoblador basat en els Frameworks del Plasma que proporciona una experiència elegant i intuïtiva per a les vostres tasques i els plasmoides. Anima els seus continguts usant un efecte de zoom parabòlic i intenta mostrar-se només quan cal.</p>
+    <p xml:lang="da">Latte er en dok som er baseret på plasma-frameworks som giver en elegant og intuitiv oplevelse til dine opgaver og plasmoids. Den animerer dens indhold med parabolsk zoom og prøver på kun at være der når der er brug for det.</p>
     <p xml:lang="de">Latte-Dock ist ein auf Plasma-Framework-Technologie basierendes Dock für  Anwendungen und Plasmoide, das ein elegantes und intuitives Nutzererlebnis bietet.Seine Inhalte werden mithilfe parabolischer Zoom-Effekte animiert. Latte versucht, immer zur Stelle zu sein, wenn es benötigt wird.</p>
     <p xml:lang="el">Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στις βιβλιοθήκες plasma που εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες και τα γραφικά συστατικά σας. Χρησιμοποιεί το παραβολικό εφέ έτσι ώστε να απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το χρειάζεστε.</p>
     <p xml:lang="nl">Latte is een dock gebaseerd op plasma frameworks die een elegante en intuïtieve ervaring voor uw taken en plasmoids is. Het animeert zijn inhoud door een parabolisch zoomeffect te gebruiken en probeert er alleen te zijn wanneer nodig.</p>
@@ -49,6 +52,7 @@
     <p> "Art In Coffee" </p>
     <p xml:lang="ca">"Art al cafè"</p>
     <p xml:lang="ca-valencia">"Art al cafè"</p>
+    <p xml:lang="da">"Kunst i kaffe"</p>
     <p xml:lang="de">„Art In Coffee“</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
     <p xml:lang="es">"El arte en el café"</p>
@@ -70,6 +74,12 @@
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="nl">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="pt">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="sv">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="uk">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="x-test">xxMichail Vourlakos, Johan Smith Agudelo Rodriguezxx</developer_name>
   <icon type="stock">latte-dock</icon>
   <project_license>GPL v2+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
