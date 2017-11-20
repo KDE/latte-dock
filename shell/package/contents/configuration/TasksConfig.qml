@@ -63,17 +63,6 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                id: reverseLinesPosition
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Reverse position for lines and dots")
-                checked: plasmoid.configuration.reverseLinesPosition
-
-                onClicked: {
-                    plasmoid.configuration.reverseLinesPosition = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
                 id: dotsOnActive
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Indicator for active window group")
