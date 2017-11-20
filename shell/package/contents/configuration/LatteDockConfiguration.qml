@@ -35,9 +35,8 @@ import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.1 as Latte
 
-PlasmaCore.FrameSvgItem {
+FocusScope {
     id: dialog
-    imagePath: "dialogs/background"
 
     property int maxWidth: 34 * theme.defaultFont.pixelSize
     width: maxWidth + units.smallSpacing * 2
@@ -47,6 +46,11 @@ PlasmaCore.FrameSvgItem {
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
+
+    PlasmaCore.FrameSvgItem{
+        anchors.fill: parent
+        imagePath: "dialogs/background"
+    }
 
     PlasmaComponents.ToolButton {
         id: pinButton
@@ -92,6 +96,12 @@ PlasmaCore.FrameSvgItem {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         spacing: units.smallSpacing
+
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Escape) {
+                dockConfig.hideConfigWindow();
+            }
+        }
 
         RowLayout {
             id: header
@@ -215,6 +225,8 @@ PlasmaCore.FrameSvgItem {
 
                 visible: plasmoid.configuration.advanced
             }
+
+            Component.onCompleted: forceActiveFocus();
         }
 
         Rectangle {
