@@ -66,7 +66,7 @@ Item {
                 border.color: root.minimizedDotColor
                 radius: width/2
 
-                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted && mainItemContainer.volume>0 ? 1 : 0.85
+                //opacity: mainItemContainer.playingAudio && !mainItemContainer.muted && mainItemContainer.volume>0 ? 1 : 0.85
             }
 
             Latte.IconItem{
@@ -75,7 +75,7 @@ Item {
                 width: 0.9*parent.width
                 height: width
 
-                opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.85
+                //opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.85
                 source: {
                     if (mainItemContainer.volume <= 0 || mainItemContainer.muted) {
                         return "audio-volume-muted";
