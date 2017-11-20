@@ -230,7 +230,7 @@ PlasmaComponents.Page {
             GridLayout {
                 Layout.fillWidth: true
                 rowSpacing: units.smallSpacing * 2
-                columnSpacing: units.smallSpacing
+                columnSpacing: 2
 
                 columns: 5
 
@@ -356,7 +356,7 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
+                spacing: units.smallSpacing * 2
 
                 PlasmaComponents.Button {
                     iconSource: "distribute-horizontal-x"
