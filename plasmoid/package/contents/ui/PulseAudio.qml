@@ -58,7 +58,8 @@ QtObject {
         var streams = []
         for (var i = 0, length = instantiator.count; i < length; ++i) {
             var stream = instantiator.objectAt(i);
-            if (stream[key] == value) {
+            if (stream[key] === value
+                    || (key==="appName" && stream[key].toLowerCase() === value.toLowerCase())) {
                 streams.push(stream);
             }
         }
