@@ -140,12 +140,26 @@ MouseArea{
     property string modelLauncherUrlWithIcon: (LauncherUrl !== null) ? LauncherUrl : ""
     property string launcherUrl: ""
     property string launcherUrlWithIcon: ""
+    property string launcherName: ""
 
     property Item tooltipVisualParent: wrapper.titleTooltipVisualParent
 
     onModelLauncherUrlChanged: {
-        if (modelLauncherUrl !== "")
+        if (modelLauncherUrl !== ""){
             launcherUrl = modelLauncherUrl;
+
+            //!extract the launcherName if possible
+            var nameStarts = launcherUrl.lastIndexOf("/");
+            if (nameStarts === -1){
+                nameStarts = launcherUrl.lastIndexOf(":");
+            }
+
+            var nameEnds = launcherUrl.lastIndexOf(".desktop");
+
+            if (nameStarts!==-1 && nameEnds!==-1 && nameStarts<nameEnds) {
+                launcherName = launcherUrl.substring(nameStarts+1,nameEnds);
+            }
+        }
 
         if (modelLauncherUrl.indexOf("latte-separator.desktop")>=0){
             isSeparator = true;
@@ -1174,7 +1188,12 @@ MouseArea{
             // an application, one playing and the other not, it will look up appName
             // for the non-playing instance and erroneously show an indicator on both.
             if (!pa.hasPidMatch(mainItemContainer.appName)) {
-                streams = pa.streamsForAppName(mainItemContainer.appName);
+                var streams_result;
+                streams_result = pa.streamsForAppName(mainItemContainer.appName);
+                if (streams_result.length===0 && launcherName !== "") {
+                    streams_result = pa.streamsForAppName(launcherName);
+                }
+                streams = streams_result;
             }
         }
 
