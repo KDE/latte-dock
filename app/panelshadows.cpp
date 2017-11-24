@@ -171,6 +171,7 @@ void PanelShadows::setEnabledBorders(const QWindow *window, Plasma::FrameSvg::En
         return;
     }
 
+    d->m_windows[window] = enabledBorders;
     d->updateShadow(window, enabledBorders);
 }
 
@@ -553,7 +554,7 @@ void PanelShadows::Private::updateShadowX11(const QWindow *window, Plasma::Frame
     Display *dpy = QX11Info::display();
     Atom atom = XInternAtom(dpy, "_KDE_NET_WM_SHADOW", False);
 
-    // qDebug() << "going to set the shadow of" << window->winId() << "to" << data;
+//     qDebug() << "going to set the shadow of" << window->winId() << "to" << data;
     XChangeProperty(dpy, window->winId(), atom, XA_CARDINAL, 32, PropModeReplace,
                     reinterpret_cast<const unsigned char *>(data[enabledBorders].constData()), data[enabledBorders].size());
 #endif
