@@ -116,10 +116,10 @@ Item{
     property int iconSize: root.iconSize
 
     property int marginWidth: root.isVertical ?
-                                  (applet && (applet.pluginName === "org.kde.plasma.systemtray") ? root.thickMarginBase : root.thickMargin ) :
+                                  (container.isSystray ? root.thickMarginBase : root.thickMargin ) :
                                   (root.inFullJustify && (container.firstChildOfStartLayout || container.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
-                                   (applet && (applet.pluginName === "org.kde.plasma.systemtray") ? root.thickMarginBase : root.thickMargin ) :
+                                   (container.isSystray ? root.thickMarginBase : root.thickMargin ) :
                                    (root.inFullJustify && (container.firstChildOfStartLayout || container.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
@@ -135,9 +135,9 @@ Item{
     // property int localMoreSpace: root.reverseLinesPosition ? root.statesLineSize + 2 : appletMargin
     property int localMoreSpace: appletMargin
 
-    property int moreHeight: ((applet && (applet.pluginName === "org.kde.plasma.systemtray")) || root.reverseLinesPosition)
+    property int moreHeight: (container.isSystray || root.reverseLinesPosition)
                              && root.isHorizontal ? localMoreSpace : 0
-    property int moreWidth: ((applet && (applet.pluginName === "org.kde.plasma.systemtray")) || root.reverseLinesPosition)
+    property int moreWidth: (container.isSystray || root.reverseLinesPosition)
                             && root.isVertical ? localMoreSpace : 0
 
     property real center:(width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
@@ -259,7 +259,7 @@ Item{
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
             layoutHeight = root.iconSize + moreHeight;
         }
-        else if(applet && applet.pluginName === "org.kde.plasma.systemtray" && root.isHorizontal){
+        else if(container.isSystray && root.isHorizontal){
             layoutHeight = root.statesLineSize + root.iconSize;
         }
         else{
@@ -305,7 +305,7 @@ Item{
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
             layoutWidth = root.iconSize + moreWidth;
         }
-        else if(applet && applet.pluginName === "org.kde.plasma.systemtray" && root.isVertical){
+        else if(container.isSystray && root.isVertical){
             layoutWidth = root.statesLineSize + root.iconSize;
         }
         else{
