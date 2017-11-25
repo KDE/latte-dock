@@ -1547,7 +1547,8 @@ void DockView::mousePressEvent(QMouseEvent *event)
                 KPluginMetaData meta = applet->kPackage().metadata();
 
                 //Try to find applets inside a systray
-                if (meta.pluginId() == "org.kde.plasma.systemtray") {
+                if (meta.pluginId() == "org.kde.plasma.systemtray" ||
+                    meta.pluginId() == "org.nomad.systemtray") {
                     auto systrayId = applet->config().readEntry("SystrayContainmentId");
                     applet = 0;
                     inSystray = true;

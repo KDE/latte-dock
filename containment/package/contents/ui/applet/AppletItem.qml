@@ -62,6 +62,7 @@ Item {
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
     property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator"
+    property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
     property bool firstChildOfStartLayout: (index === layoutsContainer.startLayout.beginIndex)
     property bool lastChildOfEndLayout: ((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1))
@@ -85,7 +86,7 @@ Item {
                                || root.reverseLinesPosition ? 0 : root.statesLineSize
     property int maxWidth: root.isHorizontal ? root.height : root.width
     property int maxHeight: root.isHorizontal ? root.height : root.width
-    property int shownAppletMargin: applet && (applet.pluginName === "org.kde.plasma.systemtray") ? 0 : appletMargin
+    property int shownAppletMargin: isSystray ? 0 : appletMargin
     property int internalSplitterId: 0
 
     property int previousIndex: -1
@@ -110,7 +111,7 @@ Item {
 
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||
-                                  (applet.pluginName === "org.kde.plasma.systemtray")) ? wrapper : wrapper.wrapperContainer
+                                  isSystray) ? wrapper : wrapper.wrapperContainer
     property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
     property Item appletImageItem;
 
@@ -217,7 +218,7 @@ Item {
                (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
               && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
               && !container.fakeIconItem)
-                || (applet && applet.pluginName === "org.kde.plasma.systemtray")
+                || (isSystray)
                 || (container.needsFillSpace) ) {
             canBeHovered = false;
         }
