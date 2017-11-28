@@ -30,12 +30,7 @@ MouseArea {
 
     z: 1000
 
-    anchors {
-        fill: parent
-        rightMargin: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? toolBox.width : 0
-        bottomMargin: (plasmoid.formFactor === PlasmaCore.Types.Vertical) ? toolBox.height : 0
-    }
-
+    anchors.fill: parent
     hoverEnabled: true
 
     property bool isResizingLeft: false
