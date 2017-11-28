@@ -50,6 +50,8 @@ Item {
     Layout.minimumHeight: (userPanelPosition !== 0)&&(!latteDock) ? clearHeight : -1
     Layout.preferredWidth: (userPanelPosition !== 0)&&(!latteDock) ? tasksWidth : -1
     Layout.preferredHeight: (userPanelPosition !== 0)&&(!latteDock) ? tasksHeight : -1
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
 
     property bool debugLocation: false
 
