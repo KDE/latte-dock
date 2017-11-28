@@ -44,6 +44,8 @@ PlasmaCore.FrameSvgItem {
     height: content.height + units.smallSpacing * 2
     Layout.minimumWidth: width
     Layout.minimumHeight: height
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5

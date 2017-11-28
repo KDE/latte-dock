@@ -38,6 +38,9 @@ DragDrop.DropArea {
     id: root
     objectName: "dockLayoutView"
 
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     //// BEGIN SIGNALS
     signal clearZoomSignal();
     signal separatorsUpdated();
