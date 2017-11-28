@@ -107,7 +107,7 @@ PlasmaCore.FrameSvgItem {
                 Layout.preferredWidth: width
                 Layout.preferredHeight: height
 
-                width: logo.width + latteTxt.width + units.smallSpacing
+                width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
                 height: logo.height
 
                 PlasmaCore.IconItem {
@@ -131,6 +131,7 @@ PlasmaCore.FrameSvgItem {
                     font.family: "Tangerine"
                     font.pointSize: 2 * theme.defaultFont.pointSize
                     font.italic: true
+                    visible: Qt.application.layoutDirection !== Qt.RightToLeft
 
                     anchors.left: logo.right
                 }
