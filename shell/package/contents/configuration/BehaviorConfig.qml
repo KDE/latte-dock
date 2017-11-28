@@ -157,6 +157,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
+                LayoutMirroring.enabled: false
                 spacing: 1
 
                 Connections{
@@ -254,6 +255,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
+                LayoutMirroring.enabled: false
                 spacing: 1
 
                 property int panelPosition: plasmoid.configuration.panelPosition
