@@ -96,11 +96,15 @@ PlasmaComponents.Page {
                             var selText = "    ";
 
                             if (layouts[i] === layoutManager.currentLayoutName) {
-                                selText = "✔ ";
+                                selText = Qt.application.layoutDirection === Qt.RightToLeft ? " ✔" : "✔ ";
                                 activeLayout = i;
                             }
 
-                            layoutTexts.push(selText+layouts[i]);
+                            if (Qt.application.layoutDirection === Qt.RightToLeft) {
+                                   layoutTexts.push("    " + layouts[i] + selText);
+                            } else {
+                                layoutTexts.push(selText+layouts[i]);
+                            }
                         }
 
                         model = layoutTexts;
