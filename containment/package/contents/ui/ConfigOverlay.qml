@@ -459,6 +459,9 @@ MouseArea {
             width: handleRow.childrenRect.width + (2 * handleRow.spacing)
             height: Math.max(configureButton.height, label.contentHeight, closeButton.height)
             hoverEnabled: true
+            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+            LayoutMirroring.childrenInherit: true
+
             onEntered: hideTimer.stop();
             onExited:  hideTimer.restart();
             Row {
