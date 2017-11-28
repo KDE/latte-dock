@@ -576,7 +576,9 @@ Item{
         },
         State {
             name: "bottomLeft"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Left)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                  &&(((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     || ((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -595,7 +597,9 @@ Item{
         },
         State {
             name: "bottomRight"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Right)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                  &&(((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     ||((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -650,7 +654,9 @@ Item{
         },
         State {
             name: "topLeft"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Left)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+                  &&(((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     || ((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -668,7 +674,9 @@ Item{
         },
         State {
             name: "topRight"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Right)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+                  &&(((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     ||((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
