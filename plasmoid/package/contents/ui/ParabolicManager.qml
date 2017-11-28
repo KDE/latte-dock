@@ -88,6 +88,10 @@ Item {
         //check if the mouse goes right or down according to the center
         var positiveDirection =  ((currentMousePosition  - center) >= 0 );
 
+        if (Qt.application.layoutDirection === Qt.RightToLeft) {
+            positiveDirection = !positiveDirection;
+        }
+
         var minimumZoom = 1;
 
         //finding the zoom center e.g. for zoom:1.7, calculates 0.35
