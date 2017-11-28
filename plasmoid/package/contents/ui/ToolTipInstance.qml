@@ -106,6 +106,7 @@ Column {
                 text: appName
                 opacity: flatIndex == 0
                 textFormat: Text.PlainText
+                horizontalAlignment: Text.AlignLeft
             }
             // window title
             PlasmaComponents.Label {
@@ -116,6 +117,7 @@ Column {
                 elide: Text.ElideRight
                 text: generateTitle()
                 textFormat: Text.PlainText
+                horizontalAlignment: Text.AlignLeft
                 opacity: 0.75
             }
             // subtext
@@ -127,6 +129,7 @@ Column {
                 elide: Text.ElideRight
                 text: isWin ? generateSubText() : ""
                 textFormat: Text.PlainText
+                horizontalAlignment: Text.AlignLeft
                 opacity: 0.6
                 visible: text !== ""
             }
