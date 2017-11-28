@@ -40,6 +40,7 @@ PlasmaComponents.TextField {
     font.italic: true
     inputMethodHints: Qt.ImhDigitsOnly
     placeholderText: i18n("none")
+    horizontalAlignment: Text.AlignLeft
 
     width: internalContent.width + theme.mSize(theme.defaultFont).width * 3.5
 
@@ -61,11 +62,13 @@ PlasmaComponents.TextField {
 
     RowLayout {
         id: internalContent
-
         spacing: 0
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+
+        LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+        LayoutMirroring.childrenInherit: true
 
         PlasmaComponents.Label {
             Layout.alignment: Qt.AlignVCenter
@@ -80,7 +83,9 @@ PlasmaComponents.TextField {
             Layout.fillHeight: true
             Layout.preferredWidth: height
             Layout.maximumWidth: height
-            Layout.leftMargin: 0.7 * theme.mSize(theme.defaultFont).width
+            Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : 0.7 * theme.mSize(theme.defaultFont).width
+            Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0.7 * theme.mSize(theme.defaultFont).width : 0
+
             text: "-"
             onClicked: decrement()
         }
