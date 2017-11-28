@@ -408,6 +408,10 @@ FocusScope {
                 //overlayed button
                 PlasmaComponents.Button {
                     id: addDock
+                    anchors.left: Qt.application.layoutDirection === Qt.RightToLeft ? undefined : parent.left
+                    anchors.right: Qt.application.layoutDirection === Qt.RightToLeft ? parent.right : undefined
+                    LayoutMirroring.enabled: false
+
                     width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
                     height: parent.height
 

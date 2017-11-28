@@ -69,8 +69,9 @@ PlasmaComponents.Page {
                         screenRow.visible = false;
 
                     var screens = []
+                    var rtlSpace = Qt.application.layoutDirection === Qt.RightToLeft ? "    " : "";
 
-                    screens.push(i18n("On Primary"));
+                    screens.push(rtlSpace + i18n("On Primary"));
 
                     //check if the screen exists, it is used in cases Latte is moving
                     //the dock automatically to primaryScreen in order for the user
@@ -82,10 +83,10 @@ PlasmaComponents.Page {
                     }
 
                     if (!screenExists && !dock.onPrimary)
-                        screens.push(dock.currentScreen);
+                        screens.push(rtlSpace + dock.currentScreen);
 
                     for (var i = 0; i < dock.screens.length; i++) {
-                        screens.push(dock.screens[i].name)
+                        screens.push(rtlSpace + dock.screens[i].name)
                     }
 
                     screenCmb.model = screens;
