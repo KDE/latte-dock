@@ -303,7 +303,7 @@ Item{
                     }
                     property var mask: ShaderEffectSource {
                         sourceItem: Item{
-                            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+                            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
                             LayoutMirroring.childrenInherit: true
 
                             width: iconImageBuffer.width

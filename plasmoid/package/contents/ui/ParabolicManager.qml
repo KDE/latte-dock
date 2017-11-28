@@ -88,7 +88,7 @@ Item {
         //check if the mouse goes right or down according to the center
         var positiveDirection =  ((currentMousePosition  - center) >= 0 );
 
-        if (Qt.application.layoutDirection === Qt.RightToLeft) {
+        if (Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical) {
             positiveDirection = !positiveDirection;
         }
 
