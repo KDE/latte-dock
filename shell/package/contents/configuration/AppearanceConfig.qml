@@ -87,24 +87,21 @@ PlasmaComponents.Page {
 
                         //if current layout isnt at the menu layouts
                         if (layouts.indexOf(layoutManager.currentLayoutName) === -1) {
-                            layoutTexts.push( "✔ "+layoutManager.currentLayoutName);
+                            layoutTexts.push( " ✔ "+layoutManager.currentLayoutName);
                         }
 
                         var activeLayout = 0;
 
                         for(var i=0; i<layouts.length; ++i){
-                            var selText = "    ";
+                            var selText1 = "    ";
+                            var selText2 = "    ";
 
                             if (layouts[i] === layoutManager.currentLayoutName) {
-                                selText = Qt.application.layoutDirection === Qt.RightToLeft ? " ✔" : "✔ ";
+                                selText1 = "✔ ";
                                 activeLayout = i;
                             }
 
-                            if (Qt.application.layoutDirection === Qt.RightToLeft) {
-                                   layoutTexts.push("    " + layouts[i] + selText);
-                            } else {
-                                layoutTexts.push(selText+layouts[i]);
-                            }
+                            layoutTexts.push(selText1+layouts[i]+selText2);
                         }
 
                         model = layoutTexts;
