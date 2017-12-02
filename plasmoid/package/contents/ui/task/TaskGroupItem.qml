@@ -165,8 +165,8 @@ Item{
 
             Item{
                 id:spacer
-                width: mainItemContainer.isGroupParent ? 0.5*glowFrame.size : 0
-                height: mainItemContainer.isGroupParent ? 0.5*glowFrame.size : 0
+                width: secondPoint.visible ? 0.5*glowFrame.size : 0
+                height: secondPoint.visible ? 0.5*glowFrame.size : 0
             }
 
             GlowPoint{
@@ -177,8 +177,9 @@ Item{
                 basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
                 showGlow: root.showGlow  && root.glowOption === Latte.Dock.GlowAll
-                visible:  ( mainItemContainer.isGroupParent && root.dotsOnActive )
-                          || (mainItemContainer.isGroupParent && !mainItemContainer.hasActive)? true: false
+                visible:  ( mainItemContainer.isGroupParent && ((root.dotsOnActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+                                                                || root.activeIndicatorType === Latte.Dock.DotIndicator
+                                                                || !mainItemContainer.hasActive) )? true: false
 
                 //when there is no active window
                 property color state1Color: mainItemContainer.hasShown ? glowFrame.isActiveColor : glowFrame.minimizedColor

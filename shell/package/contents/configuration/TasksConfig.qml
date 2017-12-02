@@ -67,8 +67,9 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Indicator for active window group")
                 checked: plasmoid.configuration.dotsOnActive
-                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active")
+                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active and the Line Active Indicator \nis enabled")
                 visible: plasmoid.configuration.advanced
+                enabled: plasmoid.configuration.activeIndicatorType === Latte.Dock.LineIndicator
 
                 onClicked: {
                     plasmoid.configuration.dotsOnActive = checked
