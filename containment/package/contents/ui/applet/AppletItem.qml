@@ -685,6 +685,14 @@ Item {
         }
 
         onPressed: {
+            //if the event is at the active indicator or spacers area then try to expand the applet,
+            //unfortunately for other applets there is no other way to activate them yet
+            //for example the icon-only applets
+            var choords = mapToItem(container.appletWrapper, mouse.x, mouse.y);
+            if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=container.appletWrapper.height) {
+                dock.toggleAppletExpanded(applet.id);
+            }
+
             pressed = true;
             mouse.accepted = false;
         }
