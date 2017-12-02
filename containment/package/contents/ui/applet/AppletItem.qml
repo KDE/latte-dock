@@ -161,6 +161,16 @@ Item {
     }
 
     /// BEGIN functions
+    function activateAppletForNeutralAreas(mouse){
+        //if the event is at the active indicator or spacers area then try to expand the applet,
+        //unfortunately for other applets there is no other way to activate them yet
+        //for example the icon-only applets
+        var choords = mapToItem(container.appletWrapper, mouse.x, mouse.y);
+        if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=container.appletWrapper.height) {
+            dock.toggleAppletExpanded(applet.id);
+        }
+    }
+
     function checkIndex(){
         index = -1;
 
@@ -430,6 +440,18 @@ Item {
         border.color: "green"
         border.width: 1
     }*/
+    MouseArea{
+        id: appletMouseAreaBottom
+        anchors.fill: parent
+        propagateComposedEvents: true
+        visible: !appletMouseArea.visible && !root.editMode
+
+        onPressed: {
+            container.activateAppletForNeutralAreas(mouse);
+            mouse.accepted = false;
+        }
+    }
+
 
     Flow{
         id: appletFlow
@@ -596,13 +618,7 @@ Item {
         }
 
         onPressed: {
-            //if the event is at the active indicator or spacers area then try to expand the applet,
-            //unfortunately for other applets there is no other way to activate them yet
-            //for example the icon-only applets
-            var choords = mapToItem(container.appletWrapper, mouse.x, mouse.y);
-            if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=container.appletWrapper.height) {
-                dock.toggleAppletExpanded(applet.id);
-            }
+            container.activateAppletForNeutralAreas(mouse);
 
             pressed = true;
             mouse.accepted = false;
