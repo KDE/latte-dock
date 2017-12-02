@@ -1420,7 +1420,11 @@ void DockView::toggleAppletExpanded(const int id)
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
-                ai->setExpanded(!ai->isExpanded());
+                if (!ai->isActivationTogglesExpanded()) {
+                    ai->setActivationTogglesExpanded(true);
+                }
+
+                emit applet->activated();
             }
         }
     }
