@@ -33,7 +33,8 @@ Item{
 
     property int size: mimicPlasmaPanel ? 4 : root.statesLineSize
 
-    property bool mimicPlasmaPanel: !root.latteApplet && plasmoid.configuration.panelSize===100 ? true : false
+    property bool mimicPlasmaPanel: !root.latteApplet && plasmoid.configuration.panelSize===100 ?
+                                        !plasmoid.configuration.reverseLinesPosition : false
 
     /*Rectangle{
         anchors.fill: parent
