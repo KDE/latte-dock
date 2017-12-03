@@ -78,8 +78,8 @@ PlasmaComponents.Page {
                     text: i18nc("dock type","Dock")
                     exclusiveGroup: dockTypeGroup
 
-                    onClicked: {
-                        if (checked) {
+                    onPressedChanged: {
+                        if (pressed && !checked) {
                             dock.visibility.mode = Latte.Dock.DodgeActive;
                             plasmoid.configuration.panelPosition = Latte.Dock.Center;
                             plasmoid.configuration.useThemePanel = true;
@@ -100,8 +100,8 @@ PlasmaComponents.Page {
                     text: i18nc("panel type","Panel")
                     exclusiveGroup: dockTypeGroup
 
-                    onClicked: {
-                        if (checked) {
+                    onPressedChanged: {
+                        if (pressed && !checked) {
                             dock.visibility.mode = Latte.Dock.AlwaysVisible;
                             plasmoid.configuration.panelPosition = Latte.Dock.Justify;
                             plasmoid.configuration.useThemePanel = true;
