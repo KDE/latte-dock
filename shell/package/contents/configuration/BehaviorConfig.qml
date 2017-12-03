@@ -87,6 +87,7 @@ PlasmaComponents.Page {
                             plasmoid.configuration.panelSize = 0;
                             plasmoid.configuration.zoomLevel = 16;
                             plasmoid.configuration.autoDecreaseIconSize = true;
+                            plasmoid.configuration.shrinkThickMargins = false;
                         }
                     }
                 }
