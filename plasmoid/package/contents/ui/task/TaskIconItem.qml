@@ -483,7 +483,7 @@ Item{
                     anchors.centerIn: parent
                     //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
 
-                    width: 0.5 * parent.width
+                    width: 0.4 * parent.width
                     height: width
                     numberValue: taskNumberLoader.fixedIndex
                     showNumber: true
