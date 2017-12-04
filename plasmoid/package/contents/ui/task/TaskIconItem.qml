@@ -456,6 +456,8 @@ Item{
                 }
             }
 
+            Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
+
             property real opacityN: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<10 ? 1 : 0
 
             Behavior on opacityN {
