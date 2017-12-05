@@ -357,7 +357,8 @@ QRegion DockCorona::availableScreenRegion(int id) const
     QRegion available(screen->geometry());
 
     for (const auto *view : m_dockViews) {
-        if (view && view->containment() && view->screen() == screen) {
+        if (view && view->containment() && view->screen() == screen
+            && view->visibility() && (view->visibility()->mode() != Latte::Dock::AutoHide)) {
             int realThickness = view->normalThickness() - view->shadow();
 
             // Usually availableScreenRect is used by the desktop,

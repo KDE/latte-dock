@@ -562,6 +562,11 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     : d(new VisibilityManagerPrivate(view, this))
 {
+    DockView *dockView = qobject_cast<DockView *>(view);
+
+    if (dockView) {
+        connect(this, &VisibilityManager::modeChanged, dockView->corona(), &Plasma::Corona::availableScreenRectChanged);
+    }
 }
 
 VisibilityManager::~VisibilityManager()
