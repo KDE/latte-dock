@@ -222,6 +222,7 @@ Item{
 
             color: glowItem.basicColor
             radius: glowItem.roundCorners ? Math.min(width,height) / 2 : 0
+            visible: !glowItem.showAttention
         }
 
         Loader{
