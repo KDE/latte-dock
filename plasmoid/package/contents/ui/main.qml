@@ -1430,7 +1430,7 @@ Item {
     }
 
     function extSignalMoveTask(group, from, to) {
-        if (group === latteDock.launchersGroup) {
+        if (group === latteDock.launchersGroup && !root.dragSource) {
             tasksModel.move(from, to);
         }
     }
