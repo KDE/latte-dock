@@ -81,7 +81,7 @@ DragDrop.DropArea {
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
-    property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel
+    property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: plasmoid.userConfiguring
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && windowsModel.hasMaximizedWindow
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow && Latte.WindowSystem.compositingActive
@@ -275,6 +275,10 @@ DragDrop.DropArea {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     property real durationTime: {
+        if (dock && dock.blockAnimations) {
+            return 0;
+        }
+
         if (plasmoid.configuration.durationTime === 0 || plasmoid.configuration.durationTime === 2 )
             return plasmoid.configuration.durationTime;
 
@@ -388,6 +392,9 @@ DragDrop.DropArea {
             dock.onYChanged.connect(visibilityManager.updateMaskArea);
             dock.onWidthChanged.connect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.connect(visibilityManager.updateMaskArea);
+
+            dock.hideDockDuringLocationChangeSignal.connect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.showDockAfterLocationChangeSignal.connect(visibilityManager.slotShowDockAfterLocationChange);
 
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
@@ -555,6 +562,8 @@ DragDrop.DropArea {
             dock.onYChanged.disconnect(visibilityManager.updateMaskArea);
             dock.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
+            dock.hideDockDuringLocationChangeSignal.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.showDockAfterLocationChangeSignal.disconnect(visibilityManager.slotShowDockAfterLocationChange);
 
             if (dock.visibility) {
                 dock.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);
@@ -1025,7 +1034,7 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if ((visibilityManager.normalState && !root.editMode
+        if ((visibilityManager.normalState && !root.editMode && !visibilityManager.inTempHiding
              && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             var layoutLength;
@@ -1191,6 +1200,8 @@ DragDrop.DropArea {
                 root.globalDirectRender = false;
             }
         }
+
+        onDockLocationChanged:setGlobalDirectRender(false);
     }
 
     Connections{

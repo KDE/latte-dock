@@ -209,6 +209,10 @@ void DockView::init()
 
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
+
+    initSignalingForLocationChangeSliding();
+
+    ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
 
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
@@ -228,6 +232,37 @@ void DockView::init()
 
     qDebug() << "SOURCE:" << source();
 }
+
+void DockView::initSignalingForLocationChangeSliding()
+{
+    connect(this, &DockView::hideDockDuringLocationChangeSignal, this, [&]() {
+        setBlockHiding(false);
+
+        if (m_configView) {
+            auto configDialog = qobject_cast<DockConfigView *>(m_configView);
+
+            if (configDialog) {
+                configDialog->hideConfigWindow();
+            }
+        }
+    });
+
+    connect(this, &DockView::hideDockDuringLocationChangeFinished, this, [&]() {
+        setBlockAnimations(true);
+        setLocation(m_goToLocation);
+    });
+
+    connect(this, &DockView::dockLocationChanged, this, [&]() {
+        if (blockAnimations()) {
+            QTimer::singleShot(100, [this]() {
+                setBlockAnimations(false);
+                emit showDockAfterLocationChangeSignal();
+                showSettingsWindow();
+            });
+        }
+    });
+}
+
 
 void DockView::availableScreenRectChanged()
 {
@@ -1045,6 +1080,21 @@ void DockView::setAlignment(int alignment)
     emit alignmentChanged();
 }
 
+bool DockView::blockAnimations() const
+{
+    return m_blockAnimations;
+}
+
+void DockView::setBlockAnimations(bool block)
+{
+    if (m_blockAnimations == block) {
+        return;
+    }
+
+    m_blockAnimations = block;
+    emit blockAnimationsChanged();
+}
+
 QRect DockView::maskArea() const
 {
     return m_maskArea;
@@ -1171,6 +1221,13 @@ void DockView::setShadow(int shadow)
 
     emit shadowChanged();
 }
+
+void DockView::hideDockDuringLocationChange(int goToLocation)
+{
+    m_goToLocation = static_cast<Plasma::Types::Location>(goToLocation);
+    emit hideDockDuringLocationChangeSignal();
+}
+
 
 void DockView::setBlockHiding(bool block)
 {

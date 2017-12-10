@@ -35,6 +35,7 @@ Item{
 
     property bool debugMagager: Qt.application.arguments.indexOf("--mask") >= 0
 
+    property bool blockUpdateMask: false
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
@@ -43,6 +44,7 @@ Item{
     property int animationSpeed: Latte.WindowSystem.compositingActive ? root.durationTime * 1.2 * units.longDuration : 0
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
+    property bool inTempHiding: false
     property int length: root.isVertical ?  Screen.height : Screen.width   //screenGeometry.height : screenGeometry.width
 
     property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ?
@@ -165,7 +167,7 @@ Item{
 
     function slotMustBeShown() {
         //  console.log("show...");
-        if (!slidingAnimationAutoHiddenIn.running){
+        if (!slidingAnimationAutoHiddenIn.running && !inTempHiding){
             slidingAnimationAutoHiddenIn.init();
         }
     }
@@ -178,9 +180,24 @@ Item{
         }
     }
 
+    function slotHideDockDuringLocationChange() {
+        inTempHiding = true;
+        blockUpdateMask = true;
+        slotMustBeHide();
+    }
+
+    function slotShowDockAfterLocationChange() {
+        slidingAnimationAutoHiddenIn.init();
+    }
+
+    function sendHideDockDuringLocationChangeFinished(){
+        blockUpdateMask = false;
+        dock.hideDockDuringLocationChangeFinished();
+    }
+
     ///test maskArea
     function updateMaskArea() {
-        if (!dock) {
+        if (!dock || blockUpdateMask) {
             return;
         }
 
@@ -460,7 +477,11 @@ Item{
                 console.log("hiding animation ended...");
             }
 
-            updateMaskArea();
+            if (!manager.inTempHiding) {
+                updateMaskArea();
+            } else if (plasmoid.configuration.durationTime === 0) {
+                sendHideDockDuringLocationChangeFinished();
+            }
         }
 
         function init() {
@@ -494,6 +515,8 @@ Item{
 
         onStopped: {
             inSlidingIn = false;
+            manager.inTempHiding = false;
+
             if (manager.debugMagager) {
                 console.log("showing animation ended...");
             }

@@ -34,11 +34,11 @@ Image{
     source: "../icons/"+layoutColor+"print.jpg"
     opacity: 0
 
-    property int speed: root.durationTime*4*units.longDuration
+    property int speed: root.durationTime*3*units.longDuration
     property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength) :
-                                               (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
+                                                 (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
@@ -247,7 +247,7 @@ Image{
                         property: root.isHorizontal ? "y" : "x"
                         to: editVisual.farEdge ? editVisual.rootThickness - editVisual.thickness : 0
                         duration: editVisual.speed
-                        easing.type: Easing.OutBounce
+                        easing.type: Easing.OutQuad
 
 
                     }
@@ -272,7 +272,7 @@ Image{
                         property: root.isHorizontal ? "y" : "x"
                         to: editVisual.farEdge ? editVisual.rootThickness : -editVisual.thickness
                         duration: editVisual.speed
-                        easing.type: Easing.OutBounce
+                        easing.type: Easing.OutQuad
                     }
                     PropertyAnimation {
                         target: editVisual
@@ -289,6 +289,10 @@ Image{
                         if (editVisual.animationSent) {
                             root.slotAnimationsNeedLength(-1);
                             editVisual.animationSent = false;
+                        }
+
+                        if (visibilityManager.inTempHiding) {
+                            visibilityManager.sendHideDockDuringLocationChangeFinished();
                         }
                     }
                 }

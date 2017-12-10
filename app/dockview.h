@@ -54,6 +54,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
+    Q_PROPERTY(bool blockAnimations READ blockAnimations WRITE setBlockAnimations NOTIFY blockAnimationsChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
@@ -111,6 +112,9 @@ public:
 
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
+
+    bool blockAnimations() const;
+    void setBlockAnimations(bool block);
 
     bool contextMenuIsShown() const;
 
@@ -184,6 +188,8 @@ public slots:
     Q_INVOKABLE void toggleAppletExpanded(const int id);
     Q_INVOKABLE void updateEnabledBorders();
 
+    Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);
+
     Q_INVOKABLE int docksWithTasks();
 
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
@@ -208,9 +214,17 @@ signals:
     void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
 
+    //! these two signals are used from config ui and containment ui
+    //! in order to orchestrate an animated hiding/showing of dock
+    //! during changing location
+    void hideDockDuringLocationChangeSignal();
+    void hideDockDuringLocationChangeFinished();
+    void showDockAfterLocationChangeSignal();
+
     void alternativesIsShownChanged();
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
+    void blockAnimationsChanged();
     void contextMenuIsShownChanged();
     void currentScreenChanged();
     void dockLocationChanged();
@@ -252,6 +266,7 @@ private slots:
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
+    void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
     void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
@@ -264,6 +279,7 @@ private:
 
     bool m_alternativesIsShown{false};
     bool m_behaveAsPlasmaPanel{false};
+    bool m_blockAnimations{false};
     bool m_forceDrawCenteredBorders{false};
     bool m_dockWinBehavior{true};
     bool m_drawShadows{true};
@@ -293,6 +309,8 @@ private:
     QString m_screenToFollowId;
 
     QTimer m_screenSyncTimer;
+
+    Plasma::Types::Location m_goToLocation;
 
     Plasma::Theme m_theme;
     //only for the mask on disabled compositing, not to actually paint

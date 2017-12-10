@@ -247,11 +247,13 @@ PlasmaComponents.Page {
 
                 ExclusiveGroup {
                     id: locationGroup
+                    property bool inStartup: true
+
                     onCurrentChanged: {
-                        if (current.checked) {
-                            dock.location = current.edge
-                            locationLayout.lockReservedEdges()
+                        if (current.checked && !inStartup) {
+                            dock.hideDockDuringLocationChange(current.edge);
                         }
+                        inStartup = false;
                     }
                 }
 
