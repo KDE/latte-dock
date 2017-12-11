@@ -1054,6 +1054,7 @@ DragDrop.DropArea {
             var toShrinkLimit = maxLength-((root.zoomFactor-1)*(iconSize+2*iconMargin));
             var toGrowLimit = maxLength-1.5*((root.zoomFactor-1)*(iconSize+2*iconMargin));
 
+            var newIconSizeFound = false;
             if (layoutLength > toShrinkLimit) { //must shrink
                 //  console.log("step3");
                 var nextIconSize = root.maxIconSize;
@@ -1066,6 +1067,7 @@ DragDrop.DropArea {
                 } while ( (nextLength>toShrinkLimit) && (nextIconSize !== 16));
 
                 automaticIconSizeBasedSize = nextIconSize;
+                newIconSizeFound = true;
                 console.log("Step 3 - found:"+automaticIconSizeBasedSize);
             } else if ((layoutLength<toGrowLimit
                         && (iconSize === automaticIconSizeBasedSize)) ) { //must grow probably
@@ -1089,10 +1091,15 @@ DragDrop.DropArea {
                     } else {
                         automaticIconSizeBasedSize = foundGoodSize;
                     }
+                    newIconSizeFound = true
                     //        console.log("Step 4 - found:"+automaticIconSizeBasedSize);
                 } else {
                     //       console.log("Step 4 - did not found...");
                 }
+            }
+
+            if (newIconSizeFound){
+                setGlobalDirectRender(false);
             }
         }
     }
@@ -1200,8 +1207,6 @@ DragDrop.DropArea {
                 root.globalDirectRender = false;
             }
         }
-
-        onDockLocationChanged:setGlobalDirectRender(false);
     }
 
     Connections{
