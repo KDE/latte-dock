@@ -1117,7 +1117,9 @@ void DockView::setMaskArea(QRect area)
         //! this is used when compositing is disabled and provides
         //! the correct way for the mask to be painted in order for
         //! rounded corners to be shown correctly
-        if (!m_background) {
+        //! the enabledBorders check was added because there was cases
+        //! that the mask region wasnt calculated correctly after location changes
+        if (!m_background || m_background->enabledBorders() != enabledBorders()) {
             m_background = new Plasma::FrameSvg(this);
         }
 
