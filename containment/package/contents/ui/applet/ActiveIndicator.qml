@@ -96,21 +96,23 @@ Item{
         }
 
         onScaleFactorChanged: {
-            if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.glowOption){
-                width = stateWidth;
-            }
-            else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.glowOption){
-                height = stateHeight;
+            if ( root.activeIndicatorType === Latte.Dock.LineIndicator ) {
+                if(!activeAndReverseAnimation.running && !root.vertical && isActive){
+                    width = stateWidth;
+                }
+                else if (!activeAndReverseAnimation.running && root.vertical && isActive){
+                    height = stateHeight;
+                }
             }
         }
 
         onStateWidthChanged:{
-            if(!activeAndReverseAnimation.running && !vertical && isActive && root.glowOption)
+            if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                 width = stateWidth;
         }
 
         onStateHeightChanged:{
-            if(!activeAndReverseAnimation.running && vertical && isActive && root.glowOption)
+            if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
                 height = stateHeight;
         }
 
