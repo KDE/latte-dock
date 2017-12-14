@@ -22,6 +22,8 @@ function reconsiderAppletIconItem(){
         identifySimpleMenu();
     } else if (applet.pluginName === "org.kde.plasma.userswitcher"&& !root.behaveAsPlasmaPanel && !container.lockZoom) {
         identifyUserSwitcher();
+    } else if (applet.pluginName === "org.kde.comexpertise.plasma.kdeconnect.sms") {
+        identifyKdeConnectSms();
     } else if (applet.pluginName === "org.kde.redshiftControl") {
         //blacklist
     } else {
@@ -48,6 +50,28 @@ function identifyGeneric() {
                 return;
             }
         }
+    }
+}
+
+function identifyKdeConnectSms()
+{
+    if (applet.pluginName !== "org.kde.comexpertise.plasma.kdeconnect.sms")
+        return;
+
+    var level0 = applet.children;
+
+    for(var i=0; i<level0.length; ++i){
+        var level1 = level0[i].children;
+        for(var j=0; j<level1.length; ++j){
+            var level2 = level1[j].children;
+            for(var k=0; k<level2.length; ++k){
+                if (typeOf(level2[k], "IconItem")) {
+                    container.appletIconItem = level2[k];
+                    return;
+                }
+            }
+        }
+
     }
 }
 
@@ -140,7 +164,7 @@ function identifyKicker() {
                 }
 
                 if (imageIt){
-                   container.appletImageItem = imageIt;
+                    container.appletImageItem = imageIt;
                 }
 
                 return;
