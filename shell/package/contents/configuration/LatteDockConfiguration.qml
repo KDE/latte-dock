@@ -26,6 +26,7 @@ import QtQuick.Window 2.2
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import QtQuick.Controls.Styles.Plasma 2.0 as Styles
 
@@ -366,7 +367,7 @@ FocusScope {
                 Layout.fillWidth: true
                 text:" "
 
-                PlasmaComponents.ComboBox {
+                PlasmaComponents3.ComboBox {
                     id: actionsCmb
                     anchors.fill: parent
                     enabled: addDock.enabled
