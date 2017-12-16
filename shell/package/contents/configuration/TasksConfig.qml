@@ -24,7 +24,6 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
@@ -170,7 +169,7 @@ PlasmaComponents.Page {
                     Layout.alignment: Qt.AlignRight
                 }
 
-                PlasmaComponents3.ComboBox {
+                PlasmaComponents.ComboBox {
                     id: middleClickAction
                     Layout.fillWidth: true
                     model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
@@ -186,7 +185,7 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
                 visible: plasmoid.configuration.advanced
 
-                PlasmaComponents3.ComboBox {
+                PlasmaComponents.ComboBox {
                     id: modifier
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 5
                     model: ["Shift", "Ctrl", "Alt", "Meta"]
@@ -199,7 +198,7 @@ PlasmaComponents.Page {
                     text: "+"
                 }
 
-                PlasmaComponents3.ComboBox {
+                PlasmaComponents.ComboBox {
                     id: modifierClick
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 10
                     model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
@@ -212,7 +211,7 @@ PlasmaComponents.Page {
                     text: "="
                 }
 
-                PlasmaComponents3.ComboBox {
+                PlasmaComponents.ComboBox {
                     id: modifierClickAction
                     Layout.fillWidth: true
                     model: [i18nc("The click action", "None"), i18n("Close Window or Group"),

@@ -25,7 +25,6 @@ import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
@@ -189,7 +188,7 @@ PlasmaComponents.Page {
                     Layout.alignment: Qt.AlignRight
                 }
 
-                PlasmaComponents3.ComboBox {
+                PlasmaComponents.ComboBox {
                     id: screenCmb
                     Layout.fillWidth: true
                     Component.onCompleted: screenRow.updateScreens();
