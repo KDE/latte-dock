@@ -213,6 +213,15 @@ void GlobalShortcuts::init()
         showDock();
     });
 
+    //show the layouts editor
+    QAction *layoutsAction = taskbarActions->addAction(QStringLiteral("show layouts editor"));
+    layoutsAction->setText(i18n("Show Layouts Editor"));
+    layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
+    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_E));
+    connect(layoutsAction, &QAction::triggered, this, [this]() {
+        showLayoutsEditor();
+    });
+
 }
 
 //! Activate launcher menu through dbus interface
@@ -442,6 +451,11 @@ void GlobalShortcuts::showDock()
             return;
         }
     }
+}
+
+void GlobalShortcuts::showLayoutsEditor()
+{
+    m_corona->layoutManager()->showLayoutConfigDialog();
 }
 
 bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)

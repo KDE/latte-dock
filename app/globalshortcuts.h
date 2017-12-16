@@ -51,6 +51,7 @@ private:
     void activateTaskManagerEntry(int index, Qt::Key modifier);
     void showDock();
     void hideDock();
+    void showLayoutsEditor();
     void showSettings();
 
     bool dockAtLowerEdgePriority(DockView *test, DockView *base);
