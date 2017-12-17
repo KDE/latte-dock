@@ -84,7 +84,8 @@ int main(int argc, char **argv)
         , {"default-layout", i18nc("command line", "Import and load default layout on startup.")}
         , {"available-layouts", i18nc("command line", "Print available layouts")}
         , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
-        , {"import", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
+        , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "file_name")}
+        , {"import-full", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
@@ -130,7 +131,7 @@ int main(int argc, char **argv)
 
     int timeout {100};
 
-    if (parser.isSet(QStringLiteral("replace")) || parser.isSet(QStringLiteral("import"))) {
+    if (parser.isSet(QStringLiteral("replace")) || parser.isSet(QStringLiteral("import-full"))) {
         qint64 pid{ -1};
 
         if (lockFile.getLockInfo(&pid, nullptr, nullptr)) {
@@ -145,13 +146,25 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    if (parser.isSet(QStringLiteral("import"))) {
-        bool imported = Latte::Importer::importHelper(parser.value(QStringLiteral("import")));
+    if (parser.isSet(QStringLiteral("import-full"))) {
+        bool imported = Latte::Importer::importHelper(parser.value(QStringLiteral("import-full")));
 
         if (!imported) {
             qInfo() << i18n("The configuration cannot be imported");
             qGuiApp->exit();
             return 0;
+        }
+    }
+
+    if (parser.isSet(QStringLiteral("import-layout"))) {
+        QString importedLayout = Latte::Importer::importLayoutHelper(parser.value(QStringLiteral("import-layout")));
+
+        if (importedLayout.isEmpty()) {
+            qInfo() << i18n("The layout cannot be imported");
+            qGuiApp->exit();
+            return 0;
+        } else {
+            layoutNameOnStartup = importedLayout;
         }
     }
 

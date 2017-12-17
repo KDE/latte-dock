@@ -69,6 +69,9 @@ public:
     static bool importHelper(QString fileName);
     //! check if this layout exists already in the latte directory
     static bool layoutExists(QString layoutName);
+    //! imports the specific layout and return the new layout name.
+    //! if the function didnt succeed return an empty string
+    static QString importLayoutHelper(QString fileName);
 
     static QString nameOfConfigFile(const QString &fileName);
     static QString uniqueLayoutName(QString name);

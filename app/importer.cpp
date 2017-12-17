@@ -343,7 +343,7 @@ Importer::LatteFileVersion Importer::fileVersion(QString file)
         return UnknownFileType;
 
     if (file.endsWith(".layout.latte")) {
-        KSharedConfigPtr lConfig = KSharedConfig::openConfig(file);
+        KSharedConfigPtr lConfig = KSharedConfig::openConfig(QFileInfo(file).absoluteFilePath());
         KConfigGroup layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
         int version = layoutGroup.readEntry("version", 1);
 
@@ -448,6 +448,23 @@ bool Importer::importHelper(QString fileName)
     archive.directory()->copyTo(QString(QDir::homePath() + "/.config"));
 
     return true;
+}
+
+QString Importer::importLayoutHelper(QString fileName)
+{
+    LatteFileVersion version = fileVersion(fileName);
+
+    if (version != LayoutVersion2) {
+        return QString();
+    }
+
+    QString newLayoutName = LayoutSettings::layoutName(fileName);
+    newLayoutName = uniqueLayoutName(newLayoutName);
+
+    QFile(fileName).copy(QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte");
+
+    return newLayoutName;
+
 }
 
 QStringList Importer::availableLayouts()
