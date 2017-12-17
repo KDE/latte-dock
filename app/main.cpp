@@ -126,6 +126,7 @@ int main(int argc, char **argv)
     if (!lockFile.tryLock(timeout)) {
         qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
         qGuiApp->exit();
+        return 0;
     }
 
     if (parser.isSet(QStringLiteral("import"))) {
@@ -133,7 +134,8 @@ int main(int argc, char **argv)
 
         if (!imported) {
             qInfo() << i18n("The configuration cannot be imported");
-            app.quit();
+            qGuiApp->exit();
+            return 0;
         }
     }
 
