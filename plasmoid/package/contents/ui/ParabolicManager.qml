@@ -55,6 +55,8 @@ Item {
         onTasksCountChanged:parManager.updateTasksEdgesIndexes();
     }
 
+    Component.onCompleted:  updateTasksEdgesIndexes();
+
     function updateTasksEdgesIndexes() {
         firstRealTaskIndex = firstRealTask();
         lastRealTaskIndex = lastRealTask();
