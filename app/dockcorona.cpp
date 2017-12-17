@@ -148,14 +148,25 @@ void DockCorona::load()
 
         QString assignedLayout = m_layoutManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());
 
+        QString loadLayoutName = "";
+
         if (!assignedLayout.isEmpty() && assignedLayout != m_universalSettings->currentLayoutName()) {
-            m_layoutManager->switchToLayout(assignedLayout);
+            loadLayoutName = assignedLayout;
         } else {
-            m_layoutManager->switchToLayout(m_universalSettings->currentLayoutName());
+            loadLayoutName = m_universalSettings->currentLayoutName();
         }
 
-        /*foreach (auto containment, containments())
-            addDock(containment);*/
+        if (!m_layoutManager->layoutExists(loadLayoutName)) {
+            QString defaultLayoutName = m_layoutManager->defaultLayoutName();
+
+            if (!m_layoutManager->layoutExists(defaultLayoutName)) {
+                m_layoutManager->importDefaultLayout();
+            }
+
+            loadLayoutName = defaultLayoutName;
+        }
+
+        m_layoutManager->switchToLayout(loadLayoutName);
     }
 }
 

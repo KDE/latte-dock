@@ -130,6 +130,22 @@ QString LayoutManager::currentLayoutName() const
     return QString();
 }
 
+QString LayoutManager::defaultLayoutName() const
+{
+    QByteArray presetNameOrig = QString("preset" + QString::number(1)).toUtf8();
+    QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
+    QString presetName = LayoutSettings::layoutName(presetPath);
+    QByteArray presetNameChars = presetName.toUtf8();
+    presetName = i18n(presetNameChars);
+
+    return presetName;
+}
+
+bool LayoutManager::layoutExists(QString layoutName) const
+{
+    return m_layouts.contains(layoutName);
+}
+
 QStringList LayoutManager::layouts() const
 {
     return m_layouts;
@@ -341,6 +357,11 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     return newLayoutPath;
 }
 
+void LayoutManager::importDefaultLayout()
+{
+    importPreset(1);
+}
+
 void LayoutManager::importPresets(bool includeDefault)
 {
     int start = 1;
@@ -350,17 +371,22 @@ void LayoutManager::importPresets(bool includeDefault)
     }
 
     for (int i = start; i <= 4; ++i) {
-        QByteArray presetNameOrig = QString("preset" + QString::number(i)).toUtf8();
-        QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-        QString presetName = LayoutSettings::layoutName(presetPath);
-        QByteArray presetNameChars = presetName.toUtf8();
-        presetName = i18n(presetNameChars);
+        importPreset(i);
+    }
+}
 
-        QString newLayoutFile = QDir::homePath() + "/.config/latte/" + presetName + ".layout.latte";
+void LayoutManager::importPreset(int presetNo)
+{
+    QByteArray presetNameOrig = QString("preset" + QString::number(presetNo)).toUtf8();
+    QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
+    QString presetName = LayoutSettings::layoutName(presetPath);
+    QByteArray presetNameChars = presetName.toUtf8();
+    presetName = i18n(presetNameChars);
 
-        if (!QFile(newLayoutFile).exists()) {
-            QFile(presetPath).copy(newLayoutFile);
-        }
+    QString newLayoutFile = QDir::homePath() + "/.config/latte/" + presetName + ".layout.latte";
+
+    if (!QFile(newLayoutFile).exists()) {
+        QFile(presetPath).copy(newLayoutFile);
     }
 }
 

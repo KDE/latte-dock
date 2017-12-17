@@ -63,9 +63,12 @@ public:
 
     void load();
 
+    bool layoutExists(QString layoutName) const;
+
     QString shouldSwitchToLayout(QString activityId);
 
     QString currentLayoutName() const;
+    QString defaultLayoutName() const;
 
     QStringList layouts() const;
     QStringList menuLayouts() const;
@@ -78,6 +81,7 @@ public:
 
     QStringList activities();
 
+    void importDefaultLayout();
     void importPresets(bool includeDefault = false);
 
 public slots:
@@ -106,6 +110,8 @@ private:
     void confirmDynamicSwitch();
     void setMenuLayouts(QStringList layouts);
     void showInfoWindow(QString info, int duration);
+    void importPreset(int presetNo);
+
     QString layoutPath(QString layoutName);
 
     void loadLayouts();
