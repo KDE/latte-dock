@@ -84,7 +84,7 @@ int main(int argc, char **argv)
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
         , {"default-layout", i18nc("command line", "Import and load default layout.")}
-        , {"import", i18nc("command line", "Import configuration."), i18nc("command line: import", "file_name")}
+        , {"import", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
         , {"timers", i18nc("command line", "Show messages for debugging the timers (Only useful to devs).")}
         , {"spacers", i18nc("command line", "Show visual indicators for debugging spacers (Only useful to devs).")}
