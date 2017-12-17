@@ -81,11 +81,12 @@ int main(int argc, char **argv)
     parser.addOptions({
         {{"r", "replace"}, i18nc("command line", "Replace the current dock instance.")}
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
+        , {"default-layout", i18nc("command line", "Import and load default layout on startup.")}
+        , {"available-layouts", i18nc("command line", "Print available layouts")}
+        , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
+        , {"import", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
-        , {"layouts", i18nc("command line", "Print available layouts")}
-        , {"default-layout", i18nc("command line", "Import and load default layout.")}
-        , {"import", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
         , {"timers", i18nc("command line", "Show messages for debugging the timers (Only useful to devs).")}
         , {"spacers", i18nc("command line", "Show visual indicators for debugging spacers (Only useful to devs).")}
@@ -93,7 +94,7 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
-    if (parser.isSet(QStringLiteral("layouts"))) {
+    if (parser.isSet(QStringLiteral("available-layouts"))) {
         QStringList layouts = Latte::Importer::availableLayouts();
 
         if (layouts.count() > 0) {
@@ -108,6 +109,21 @@ int main(int argc, char **argv)
 
         qGuiApp->exit();
         return 0;
+    }
+
+    bool defaultLayoutOnStartup = false;
+    QString layoutNameOnStartup = "";
+
+    if (parser.isSet(QStringLiteral("default-layout"))) {
+        defaultLayoutOnStartup = true;
+    } else if (parser.isSet(QStringLiteral("layout"))) {
+        layoutNameOnStartup = parser.value(QStringLiteral("layout"));
+
+        if (!Latte::Importer::layoutExists(layoutNameOnStartup)) {
+            qInfo() << i18nc("layout missing", "This layout doesnt exist in the system.");
+            qGuiApp->exit();
+            return 0;
+        }
     }
 
     QLockFile lockFile {QDir::tempPath() + "/latte-dock.lock"};
@@ -167,13 +183,7 @@ int main(int argc, char **argv)
     KCrash::setDrKonqiEnabled(true);
     KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
-    bool defaultLayoutOnStartup = false;
-
-    if (parser.isSet(QStringLiteral("default-layout"))) {
-        defaultLayoutOnStartup = true;
-    }
-
-    Latte::DockCorona corona(defaultLayoutOnStartup);
+    Latte::DockCorona corona(defaultLayoutOnStartup, layoutNameOnStartup);
     KDBusService service(KDBusService::Unique);
 
     return app.exec();

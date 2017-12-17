@@ -57,9 +57,10 @@
 
 namespace Latte {
 
-DockCorona::DockCorona(bool defaultLayoutOnStartup, QObject *parent)
+DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, QObject *parent)
     : Plasma::Corona(parent),
       m_defaultLayoutOnStartup(defaultLayoutOnStartup),
+      m_layoutNameOnStartUp(layoutNameOnStartUp),
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
@@ -151,7 +152,7 @@ void DockCorona::load()
 
         QString loadLayoutName = "";
 
-        if (!m_defaultLayoutOnStartup) {
+        if (!m_defaultLayoutOnStartup && m_layoutNameOnStartUp.isEmpty()) {
             if (!assignedLayout.isEmpty() && assignedLayout != m_universalSettings->currentLayoutName()) {
                 loadLayoutName = assignedLayout;
             } else {
@@ -162,9 +163,11 @@ void DockCorona::load()
                 loadLayoutName = m_layoutManager->defaultLayoutName();
                 m_layoutManager->importDefaultLayout(false);
             }
-        } else {
+        } else if (m_defaultLayoutOnStartup) {
             loadLayoutName = m_layoutManager->importer()->uniqueLayoutName(m_layoutManager->defaultLayoutName());
             m_layoutManager->importDefaultLayout(true);
+        } else {
+            loadLayoutName = m_layoutNameOnStartUp;
         }
 
         m_layoutManager->switchToLayout(loadLayoutName);

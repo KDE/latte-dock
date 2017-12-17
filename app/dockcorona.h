@@ -62,7 +62,7 @@ class DockCorona : public Plasma::Corona {
     Q_CLASSINFO("D-Bus Interface", "org.kde.LatteDock")
 
 public:
-    DockCorona(bool defaultLayoutOnStartup = false, QObject *parent = nullptr);
+    DockCorona(bool defaultLayoutOnStartup = false, QString layoutNameOnStartUp = QString(), QObject *parent = nullptr);
     virtual ~DockCorona();
 
     int numScreens() const override;
@@ -144,6 +144,8 @@ private:
     //! to specify which dock will be loaded on startup if a case that no "dock
     //! with tasks" will be loaded otherwise. Currently the older one dock wins
     int m_firstContainmentWithTasks{ -1};
+
+    QString m_layoutNameOnStartUp;
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
