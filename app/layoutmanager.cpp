@@ -360,6 +360,10 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
 void LayoutManager::importDefaultLayout(bool newInstanceIfPresent)
 {
     importPreset(1, newInstanceIfPresent);
+
+    if (newInstanceIfPresent) {
+        loadLayouts();
+    }
 }
 
 void LayoutManager::importPresets(bool includeDefault)
