@@ -450,6 +450,22 @@ bool Importer::importHelper(QString fileName)
     return true;
 }
 
+QStringList Importer::availableLayouts()
+{
+    QDir layoutDir(QDir::homePath() + "/.config/latte");
+    QStringList filter;
+    filter.append(QString("*.layout.latte"));
+    QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    QStringList layoutNames;
+
+    foreach (auto file, files) {
+        layoutNames.append(LayoutSettings::layoutName(file));
+    }
+
+    return layoutNames;
+}
+
 
 QString Importer::nameOfConfigFile(const QString &fileName)
 {

@@ -83,6 +83,7 @@ int main(int argc, char **argv)
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
+        , {"layouts", i18nc("command line", "Print available layouts")}
         , {"default-layout", i18nc("command line", "Import and load default layout.")}
         , {"import", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
@@ -91,6 +92,23 @@ int main(int argc, char **argv)
     });
 
     parser.process(app);
+
+    if (parser.isSet(QStringLiteral("layouts"))) {
+        QStringList layouts = Latte::Importer::availableLayouts();
+
+        if (layouts.count() > 0) {
+            qInfo() << i18n("Available layouts that can be used to start Latte:");
+
+            foreach (auto layout, layouts) {
+                qInfo() << "     " << layout;
+            }
+        } else {
+            qInfo() << i18n("There are no available layouts, during startup Default will be used.");
+        }
+
+        qGuiApp->exit();
+        return 0;
+    }
 
     QLockFile lockFile {QDir::tempPath() + "/latte-dock.lock"};
 

@@ -69,6 +69,7 @@ public:
     static bool importHelper(QString fileName);
     static QString nameOfConfigFile(const QString &fileName);
     static QString uniqueLayoutName(QString name);
+    static QStringList availableLayouts();
 
 private:
     //! check if this layout exists already in the latte directory
