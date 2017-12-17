@@ -62,7 +62,7 @@ class DockCorona : public Plasma::Corona {
     Q_CLASSINFO("D-Bus Interface", "org.kde.LatteDock")
 
 public:
-    DockCorona(QObject *parent = nullptr);
+    DockCorona(bool defaultLayoutOnStartup = false, QObject *parent = nullptr);
     virtual ~DockCorona();
 
     int numScreens() const override;
@@ -136,6 +136,8 @@ private:
     QStringList appletsIds();
 
     bool m_activitiesStarting{true};
+    //! this is used to enforce loading the default layout on startup
+    bool m_defaultLayoutOnStartup{false};
     //! this is used to check if a dock with tasks in it will be loaded on startup
     bool m_tasksWillBeLoaded{false};
     //! this is used to record the first dock having tasks in it. It is used

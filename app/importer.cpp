@@ -463,4 +463,29 @@ QString Importer::nameOfConfigFile(const QString &fileName)
     return layoutName;
 }
 
+bool Importer::layoutExists(QString layoutName)
+{
+    return QFile::exists(QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte");
+}
+
+QString Importer::uniqueLayoutName(QString name)
+{
+    int pos_ = name.lastIndexOf(QRegExp(QString("[-][0-9]+")));
+
+    if (layoutExists(name) && pos_ > 0) {
+        name = name.left(pos_);
+    }
+
+    int i = 2;
+
+    QString namePart = name;
+
+    while (layoutExists(name)) {
+        name = namePart + "-" + QString::number(i);
+        i++;
+    }
+
+    return name;
+}
+
 }

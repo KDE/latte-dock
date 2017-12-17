@@ -357,9 +357,9 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     return newLayoutPath;
 }
 
-void LayoutManager::importDefaultLayout()
+void LayoutManager::importDefaultLayout(bool newInstanceIfPresent)
 {
-    importPreset(1);
+    importPreset(1, newInstanceIfPresent);
 }
 
 void LayoutManager::importPresets(bool includeDefault)
@@ -371,11 +371,11 @@ void LayoutManager::importPresets(bool includeDefault)
     }
 
     for (int i = start; i <= 4; ++i) {
-        importPreset(i);
+        importPreset(i, false);
     }
 }
 
-void LayoutManager::importPreset(int presetNo)
+void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
 {
     QByteArray presetNameOrig = QString("preset" + QString::number(presetNo)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
@@ -383,7 +383,13 @@ void LayoutManager::importPreset(int presetNo)
     QByteArray presetNameChars = presetName.toUtf8();
     presetName = i18n(presetNameChars);
 
-    QString newLayoutFile = QDir::homePath() + "/.config/latte/" + presetName + ".layout.latte";
+    QString newLayoutFile = "";
+
+    if (newInstanceIfPresent) {
+        newLayoutFile = QDir::homePath() + "/.config/latte/" + m_importer->uniqueLayoutName(presetName) + ".layout.latte";
+    } else {
+        newLayoutFile = QDir::homePath() + "/.config/latte/" + presetName + ".layout.latte";
+    }
 
     if (!QFile(newLayoutFile).exists()) {
         QFile(presetPath).copy(newLayoutFile);

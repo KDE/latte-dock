@@ -81,7 +81,7 @@ public:
 
     QStringList activities();
 
-    void importDefaultLayout();
+    void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);
 
 public slots:
@@ -110,7 +110,7 @@ private:
     void confirmDynamicSwitch();
     void setMenuLayouts(QStringList layouts);
     void showInfoWindow(QString info, int duration);
-    void importPreset(int presetNo);
+    void importPreset(int presetNo, bool newInstanceIfPresent = false);
 
     QString layoutPath(QString layoutName);
 

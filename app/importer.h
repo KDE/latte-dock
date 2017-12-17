@@ -65,9 +65,15 @@ public:
     bool exportFullConfiguration(QString file);
 
     static Importer::LatteFileVersion fileVersion(QString file);
-    static QString nameOfConfigFile(const QString &fileName);
+
     static bool importHelper(QString fileName);
+    static QString nameOfConfigFile(const QString &fileName);
+    static QString uniqueLayoutName(QString name);
+
 private:
+    //! check if this layout exists already in the latte directory
+    static bool layoutExists(QString layoutName);
+
     //! checks if this old layout can be imported. If it can it returns
     //! the new layout path and an empty string if it cant
     QString layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory = QString());

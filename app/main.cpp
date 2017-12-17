@@ -83,6 +83,7 @@ int main(int argc, char **argv)
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
         , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
         , {"with-window", i18nc("command line", "Open a window with much debug information.")}
+        , {"default-layout", i18nc("command line", "Import and load default layout.")}
         , {"import", i18nc("command line", "Import configuration."), i18nc("command line: import", "file_name")}
         , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
         , {"timers", i18nc("command line", "Show messages for debugging the timers (Only useful to devs).")}
@@ -146,7 +147,13 @@ int main(int argc, char **argv)
     KCrash::setDrKonqiEnabled(true);
     KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
-    Latte::DockCorona corona;
+    bool defaultLayoutOnStartup = false;
+
+    if (parser.isSet(QStringLiteral("default-layout"))) {
+        defaultLayoutOnStartup = true;
+    }
+
+    Latte::DockCorona corona(defaultLayoutOnStartup);
     KDBusService service(KDBusService::Unique);
 
     return app.exec();
