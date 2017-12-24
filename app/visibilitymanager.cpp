@@ -34,6 +34,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     : QObject(nullptr), q(q), view(view), wm(&WindowSystem::self())
 {
     DockView *dockView = qobject_cast<DockView *>(view);
+    dockCorona = qobject_cast<DockCorona *>(view->corona());
 
     if (dockView) {
         connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
@@ -62,7 +63,6 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     wm->setDockExtraFlags(*view);
     wm->addDock(view->winId());
     restoreConfig();
-
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
@@ -82,6 +82,10 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     // clear mode
     for (auto &c : connections) {
         disconnect(c);
+    }
+
+    if (mode != Dock::DodgeAllWindows && !enabledDynamicBackgroundFlag) {
+        windows.clear();
     }
 
     if (this->mode == Dock::AlwaysVisible) {
@@ -556,6 +560,232 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
             break;
     }
 }
+
+//! Dynamic Background functions
+void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
+{
+    if (enabledDynamicBackgroundFlag == active) {
+        return;
+    }
+
+    enabledDynamicBackgroundFlag = active;
+
+    if (active) {
+        if (mode != Dock::DodgeAllWindows) {
+            for (const auto &wid : wm->windows()) {
+                windows.insert(wid, wm->requestInfo(wid));
+            }
+        }
+
+        connectionsDynBackground[0] = connect(view->corona(), &Plasma::Corona::availableScreenRectChanged,
+                                              this, &VisibilityManagerPrivate::updateAvailableScreenGeometry);
+
+        connectionsDynBackground[1] = connect(wm, &WindowSystem::windowChanged, this, [&](WindowId wid) {
+            windows[wid] = wm->requestInfo(wid);
+            updateDynamicBackgroundWindowFlags();
+        });
+
+        connectionsDynBackground[2] = connect(wm, &WindowSystem::windowRemoved, this, [&](WindowId wid) {
+            windows.remove(wid);
+        });
+
+        connectionsDynBackground[3] = connect(wm, &WindowSystem::windowAdded, this, [&](WindowId wid) {
+            windows.insert(wid, wm->requestInfo(wid));
+            updateDynamicBackgroundWindowFlags();
+        });
+
+        connectionsDynBackground[4] = connect(wm, &WindowSystem::activeWindowChanged, this, [&](WindowId wid) {
+            if (windows.contains(lastActiveWindowWid)) {
+                windows[lastActiveWindowWid] = wm->requestInfo(lastActiveWindowWid);
+            }
+
+            windows[wid] = wm->requestInfo(wid);
+            lastActiveWindowWid = wid;
+
+            updateDynamicBackgroundWindowFlags();
+        });
+
+        connectionsDynBackground[5] = connect(wm, &WindowSystem::currentDesktopChanged, this, [&] {
+            updateDynamicBackgroundWindowFlags();
+        });
+
+        connectionsDynBackground[6] = connect(wm, &WindowSystem::currentActivityChanged, this, [&] {
+            updateDynamicBackgroundWindowFlags();
+        });
+
+        updateAvailableScreenGeometry();
+        updateDynamicBackgroundWindowFlags();
+    } else {
+        // clear mode
+        for (auto &c : connectionsDynBackground) {
+            disconnect(c);
+        }
+
+        if (mode != Dock::DodgeAllWindows) {
+            windows.clear();
+        }
+
+        setExistsWindowMaximized(false);
+        setExistsWindowSnapped(false);
+    }
+
+    emit q->enabledDynamicBackgroundChanged();
+}
+
+void VisibilityManagerPrivate::setExistsWindowMaximized(bool windowMaximized)
+{
+    if (windowIsMaximizedFlag == windowMaximized) {
+        return;
+    }
+
+    windowIsMaximizedFlag = windowMaximized;
+
+    emit q->existsWindowMaximizedChanged();
+}
+
+void VisibilityManagerPrivate::setExistsWindowSnapped(bool windowSnapped)
+{
+    if (windowIsSnappedFlag == windowSnapped) {
+        return;
+    }
+
+    windowIsSnappedFlag = windowSnapped;
+
+    emit q->existsWindowSnappedChanged();
+}
+
+void VisibilityManagerPrivate::updateAvailableScreenGeometry()
+{
+    if (!view || !view->containment()) {
+        return;
+    }
+
+    QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectFromDocks(view->containment()->screen(), true);
+
+    if (tempAvailableScreenGeometry != availableScreenGeometry) {
+        availableScreenGeometry = tempAvailableScreenGeometry;
+
+        snappedWindowsGeometries.clear();
+
+        //! for top dock the snapped geometries would be
+        int halfWidth1 = std::floor(availableScreenGeometry.width() / 2);
+        int halfWidth2 = availableScreenGeometry.width() - halfWidth1;
+        int halfHeight1 = std::floor((availableScreenGeometry.height()) / 2);
+        int halfHeight2 = availableScreenGeometry.height() - halfHeight1;
+
+        int x1 = availableScreenGeometry.x();
+        int x2 = availableScreenGeometry.x() + halfWidth1;
+        int y1 = availableScreenGeometry.y();
+        int y2 = availableScreenGeometry.y() + halfHeight1;
+
+        QRect snap1;
+        QRect snap2;
+        QRect snap3;
+        QRect snap4;
+
+        if (view->formFactor() == Plasma::Types::Horizontal) {
+            if (view->location() == Plasma::Types::TopEdge) {
+                snap1 = QRect(x1, y1, halfWidth1, halfHeight1);
+                snap3 = QRect(x2, y1, halfWidth2, halfHeight1);
+            } else if ((view->location() == Plasma::Types::BottomEdge)) {
+                snap1 = QRect(x1, y2, halfWidth1, halfHeight2);
+                snap3 = QRect(x2, y2, halfWidth2, halfHeight2);
+            }
+
+            snap2 = QRect(x1, y1, halfWidth1, availableScreenGeometry.height());
+            snap4 = QRect(x2, y1, halfWidth2, availableScreenGeometry.height());
+        } else if (view->formFactor() == Plasma::Types::Vertical) {
+            QRect snap5;
+
+            if (view->location() == Plasma::Types::LeftEdge) {
+                snap1 = QRect(x1, y1, halfWidth1, halfHeight1);
+                snap3 = QRect(x1, y2, halfWidth1, halfHeight2);
+                snap5 = QRect(x1, y1, halfWidth1, availableScreenGeometry.height());
+            } else if ((view->location() == Plasma::Types::RightEdge)) {
+                snap1 = QRect(x2, y1, halfWidth2, halfHeight1);
+                snap3 = QRect(x2, y2, halfWidth2, halfHeight2);
+                snap5 = QRect(x2, y1, halfWidth2, availableScreenGeometry.height());
+            }
+
+            snap2 = QRect(x1, y1, availableScreenGeometry.width(), halfHeight1);
+            snap4 = QRect(x1, y2, availableScreenGeometry.width(), halfHeight2);
+
+            snappedWindowsGeometries.append(snap5);
+        }
+
+        snappedWindowsGeometries.append(snap1);
+        snappedWindowsGeometries.append(snap2);
+        snappedWindowsGeometries.append(snap3);
+        snappedWindowsGeometries.append(snap4);
+
+        updateDynamicBackgroundWindowFlags();
+    }
+}
+
+void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
+{
+    bool foundSnap{false};
+    bool foundMaximized{false};
+
+    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
+    //! maybe a garbage collector here is a good idea!!!
+    bool existsFaultyWindow{false};
+
+    for (const auto &winfo : windows) {
+        if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
+            if (winfo.isMaximized()) {
+                foundMaximized = true;
+            }
+
+            bool touchingPanelEdge{false};
+
+            if (view->location() == Plasma::Types::TopEdge) {
+                touchingPanelEdge = (winfo.geometry().y() == availableScreenGeometry.y());
+            } else if (view->location() == Plasma::Types::BottomEdge) {
+                touchingPanelEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
+            } else if (view->location() == Plasma::Types::LeftEdge) {
+                touchingPanelEdge = (winfo.geometry().x() == availableScreenGeometry.x());
+            } else if (view->location() == Plasma::Types::RightEdge) {
+                touchingPanelEdge = (winfo.geometry().right() == availableScreenGeometry.right());
+            }
+
+            if (((winfo.isActive() || winfo.isKeepAbove()) && touchingPanelEdge)
+                || (!winfo.isActive() && snappedWindowsGeometries.contains(winfo.geometry()))) {
+                foundSnap = true;
+            }
+        }
+
+        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
+            existsFaultyWindow = true;
+        }
+
+        //qDebug() << "window geometry ::: " << winfo.geometry();
+    }
+
+    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
+    //! maybe a garbage collector here is a good idea!!!
+    if (existsFaultyWindow) {
+        foreach (auto key, windows.keys()) {
+            auto winfo = windows[key];
+
+            //! garbage windows removing
+            if (winfo.geometry() == QRect(0, 0, 0, 0)) {
+                //qDebug() << "Faulty Geometry ::: " << winfo.wid();
+                windows.remove(key);
+            }
+        }
+    }
+
+    /*if (!foundMaximized && !foundSnap) {
+        qDebug() << "SCREEN GEOMETRY : " << availableScreenGeometry;
+        qDebug() << "SNAPS ::: " << snappedWindowsGeometries;
+    }
+
+    qDebug() << " FOUND ::: " << foundMaximized << foundSnap;*/
+
+    setExistsWindowMaximized(foundMaximized);
+    setExistsWindowSnapped(foundSnap);
+}
 //! END: VisibilityManagerPrivate implementation
 
 //! BEGIN: VisiblityManager implementation
@@ -648,6 +878,37 @@ int VisibilityManager::timerHide() const
 void VisibilityManager::setTimerHide(int msec)
 {
     d->setTimerHide(msec);
+}
+
+//! Dynamic Background functions
+bool VisibilityManager::enabledDynamicBackground() const
+{
+    return d->enabledDynamicBackgroundFlag;
+}
+
+void VisibilityManager::setEnabledDynamicBackground(bool active)
+{
+    d->setEnabledDynamicBackground(active);
+}
+
+bool VisibilityManager::existsWindowMaximized() const
+{
+    return d->windowIsMaximizedFlag;
+}
+
+void VisibilityManager::setExistsWindowMaximized(bool windowMaximized)
+{
+    d->setExistsWindowMaximized(windowMaximized);
+}
+
+bool VisibilityManager::existsWindowSnapped() const
+{
+    return d->windowIsSnappedFlag;
+}
+
+void VisibilityManager::setExistsWindowSnapped(bool windowSnapped)
+{
+    d->setExistsWindowSnapped(windowSnapped);
 }
 
 //! END: VisibilityManager implementation

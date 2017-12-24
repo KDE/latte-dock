@@ -41,7 +41,7 @@ public:
         , m_isFullscreen(false)
         , m_isShaded(false)
         , m_isPlasmaDesktop(false)
-    {
+        , m_isKeepAbove(false) {
     }
 
     WindowInfoWrap(const WindowInfoWrap &o) noexcept
@@ -55,7 +55,7 @@ public:
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
-    {
+        , m_isKeepAbove(o.m_isKeepAbove) {
     }
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
@@ -69,7 +69,7 @@ public:
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
-    {
+        , m_isKeepAbove(o.m_isKeepAbove) {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
@@ -104,6 +104,9 @@ public:
     inline bool isPlasmaDesktop() const noexcept;
     inline void setIsPlasmaDesktop(bool isPlasmaDesktop) noexcept;
 
+    inline bool isKeepAbove() const noexcept;
+    inline void setIsKeepAbove(bool isKeepAbove) noexcept;
+
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
@@ -122,6 +125,7 @@ private:
     bool m_isFullscreen : 1;
     bool m_isShaded : 1;
     bool m_isPlasmaDesktop : 1;
+    bool m_isKeepAbove: 1;
 };
 
 // BEGIN: definitions
@@ -137,6 +141,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isFullscreen = rhs.m_isFullscreen;
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
+    m_isKeepAbove = rhs.m_isKeepAbove;
     return *this;
 }
 
@@ -152,6 +157,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isFullscreen = rhs.m_isFullscreen;
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
+    m_isKeepAbove = rhs.m_isKeepAbove;
     return *this;
 }
 
@@ -253,6 +259,16 @@ inline bool WindowInfoWrap::isPlasmaDesktop() const noexcept
 inline void WindowInfoWrap::setIsPlasmaDesktop(bool isPlasmaDesktop) noexcept
 {
     m_isPlasmaDesktop = isPlasmaDesktop;
+}
+
+inline bool WindowInfoWrap::isKeepAbove() const noexcept
+{
+    return m_isKeepAbove;
+}
+
+inline void WindowInfoWrap::setIsKeepAbove(bool isKeepAbove) noexcept
+{
+    m_isKeepAbove = isKeepAbove;
 }
 
 inline QRect WindowInfoWrap::geometry() const noexcept

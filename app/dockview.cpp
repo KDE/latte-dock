@@ -699,6 +699,12 @@ void DockView::updateAbsDockGeometry(bool bypassChecks)
     m_absGeometry = absGeometry;
     syncGeometry();
     emit absGeometryChanged(m_absGeometry);
+
+    //! this is needed in order to update correctly the screenGeometries
+    if (visibility() && corona() && visibility()->mode() == Dock::AlwaysVisible) {
+        emit corona()->availableScreenRectChanged();
+        emit corona()->availableScreenRegionChanged();
+    }
 }
 
 void DockView::updatePosition(QRect availableScreenRect)

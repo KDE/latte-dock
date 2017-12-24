@@ -113,6 +113,7 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
             strut.bottom_end = rect.x() + rect.width() - 1;
             break;
         }
+
         case Plasma::Types::LeftEdge: {
             const int leftOffset = {screen->geometry().left()};
             strut.left_width = rect.width() + leftOffset;
@@ -120,6 +121,7 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
             strut.left_end = rect.y() + rect.height() - 1;
             break;
         }
+
         case Plasma::Types::RightEdge: {
             const int rightOffset = {wholeScreen.right() - currentScreen.right()};
             strut.right_width = rect.width() + rightOffset;
@@ -127,6 +129,7 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
             strut.right_end = rect.y() + rect.height() - 1;
             break;
         }
+
         default:
             qWarning() << "wrong location:" << qEnumToStr(location);
             return;
@@ -209,7 +212,7 @@ bool XWindowInterface::isOnCurrentActivity(WindowId wid) const
     KWindowInfo winfo(wid.value<WId>(), 0, NET::WM2Activities);
 
     return winfo.valid()
-            && (winfo.activities().contains(m_activities->currentActivity()) || winfo.activities().empty());
+           && (winfo.activities().contains(m_activities->currentActivity()) || winfo.activities().empty());
 }
 
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
@@ -231,6 +234,7 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsFullscreen(winfo.hasState(NET::FullScreen));
         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
         winfoWrap.setGeometry(winfo.frameGeometry());
+        winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
     } else if (m_desktopId == wid) {
         winfoWrap.setIsValid(true);
         winfoWrap.setIsPlasmaDesktop(true);

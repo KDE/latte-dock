@@ -83,18 +83,27 @@ PlasmaComponents.Page {
                     plasmoid.configuration.shrinkThickMargins = checked
                 }
             }
+        }
+        //! END: Appearance
+
+        //! BEGIN: Dynamic Background
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+
+            Header {
+                text: i18n("Dynamic Background")
+            }
 
             PlasmaComponents.CheckBox {
                 id: solidForMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Force solid background for maximized windows")
+                text: i18n("Force solid background for maximized or snapped windows")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
-                tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized window")
+                tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized or snapped window")
 
                 onClicked: {
                     plasmoid.configuration.solidBackgroundForMaximized = checked;
-                    //  plasmoid.configuration.disablePanelShadowForMaximized = false;
-                    //  hideShadowsOnMaximizedChk.checked = false;
                 }
             }
 
@@ -103,12 +112,10 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Hide background for not maximized windows")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                tooltip: i18n("The panel background becomes transparent but is shown \nwhen there is a maximized window")
+                tooltip: i18n("The panel background becomes transparent except if \nthere is a maximized or snapped window")
 
                 onClicked: {
                     plasmoid.configuration.backgroundOnlyOnMaximized = checked;
-                    //  plasmoid.configuration.disablePanelShadowForMaximized = false;
-                    //  hideShadowsOnMaximizedChk.checked = false;
                 }
             }
 
@@ -120,12 +127,10 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.disablePanelShadowForMaximized = checked;
-                    //   plasmoid.configuration.backgroundOnlyOnMaximized = false;
-                    //   onlyOnMaximizedChk.checked = false;
                 }
             }
         }
-        //! END: Appearance
+        //! END: Dynamic Background
 
         //! BEGIN: Behavior
         ColumnLayout {

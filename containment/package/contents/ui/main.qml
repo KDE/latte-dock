@@ -83,8 +83,8 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: plasmoid.userConfiguring
-    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && windowsModel.hasMaximizedWindow
-    property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !windowsModel.hasMaximizedWindow && Latte.WindowSystem.compositingActive
+    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+    property bool forceTransparentPanel: root.backgroundOnlyOnMaximized && !dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
@@ -154,7 +154,7 @@ DragDrop.DropArea {
     property int panelTransparency: plasmoid.configuration.panelTransparency
     property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
                                       || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                                      && !(disablePanelShadowMaximized && windowsModel.hasMaximizedWindow))
+                                      && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized))
                                       || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100 && !(root.solidPanel && !plasmoid.configuration.panelShadows) )
 
 
@@ -1390,16 +1390,6 @@ DragDrop.DropArea {
             source: "../icons/wheatprint.jpg"
         }
     }
-
-    Loader{
-        id: windowsModel
-
-        active: (plasmoid.configuration.backgroundOnlyOnMaximized || root.disablePanelShadowMaximized || plasmoid.configuration.solidBackgroundForMaximized) && dock
-
-        property bool hasMaximizedWindow: active && item ? item.maximizedWindowOnScreen : false
-        sourceComponent: WindowsModel{}
-    }
-
 
     EditModeVisual{
         id:editModeVisual

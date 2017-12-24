@@ -106,7 +106,7 @@ Item{
         property: "drawEffects"
         when: dock
         value: (root.blurEnabled && root.useThemePanel && !root.solidPanel)
-               || (root.forceSolidPanel && windowsModel.hasMaximizedWindow && Latte.WindowSystem.compositingActive)
+               || (root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive)
     }
 
     Binding{
@@ -136,6 +136,15 @@ Item{
         property: "alignment"
         when: dock
         value: root.panelAlignment
+    }
+
+    Binding{
+        target: dock.visibility
+        property: "enabledDynamicBackground"
+        when: dock && dock.visibility
+        value: root.backgroundOnlyOnMaximized
+               || plasmoid.configuration.solidBackgroundForMaximized
+               || root.disablePanelShadowMaximized
     }
 
     Connections{

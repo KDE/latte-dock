@@ -42,30 +42,26 @@ class Private::GhostWindow : public QRasterWindow {
 
 public:
     GhostWindow(WaylandInterface *waylandInterface)
-    : m_waylandInterface(waylandInterface)
-    {
+        : m_waylandInterface(waylandInterface) {
         setFlags(Qt::FramelessWindowHint
-            | Qt::WindowStaysOnTopHint
-            | Qt::NoDropShadowWindowHint
-            | Qt::WindowDoesNotAcceptFocus);
+                 | Qt::WindowStaysOnTopHint
+                 | Qt::NoDropShadowWindowHint
+                 | Qt::WindowDoesNotAcceptFocus);
 
         setupWaylandIntegration();
         show();
     }
 
-    ~GhostWindow()
-    {
+    ~GhostWindow() {
         delete m_shellSurface;
     }
 
-    void setGeometry(const QRect &rect)
-    {
+    void setGeometry(const QRect &rect) {
         QWindow::setGeometry(rect);
         m_shellSurface->setPosition(rect.topLeft());
     }
 
-    void setupWaylandIntegration()
-    {
+    void setupWaylandIntegration() {
         using namespace KWayland::Client;
 
         if (m_shellSurface)
@@ -85,8 +81,8 @@ public:
         m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
     }
 
-    KWayland::Client::PlasmaShellSurface * m_shellSurface{nullptr};
-    WaylandInterface * m_waylandInterface{nullptr};
+    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+    WaylandInterface *m_waylandInterface{nullptr};
 };
 
 WaylandInterface::WaylandInterface(QObject *parent)
@@ -100,6 +96,7 @@ WaylandInterface::WaylandInterface(QObject *parent)
         qWarning() << "Failed getting Wayland connection from QPA";
         return;
     }
+
     m_registry = new Registry(this);
     m_registry->create(m_connection);
 
@@ -165,7 +162,7 @@ void WaylandInterface::setDockStruts(QWindow &view, const QRect &rect , Plasma::
 
     auto w = m_ghostWindows[view.winId()];
 
-    switch(location) {
+    switch (location) {
         case Plasma::Types::TopEdge:
         case Plasma::Types::BottomEdge:
             w->setGeometry({rect.x() + rect.width() / 2, rect.y(), 1, rect.height()});
@@ -244,15 +241,26 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
     if (!w) return {};
 
     WindowInfoWrap winfoWrap;
+
     winfoWrap.setIsValid(true);
+
     winfoWrap.setWid(w->internalId());
+
     winfoWrap.setIsActive(w->isActive());
+
     winfoWrap.setIsMinimized(w->isMinimized());
+
     winfoWrap.setIsMaxVert(w->isMaximized());
+
     winfoWrap.setIsMaxHoriz(w->isMaximized());
+
     winfoWrap.setIsFullscreen(w->isFullscreen());
+
     winfoWrap.setIsShaded(w->isShaded());
+
     winfoWrap.setGeometry(w->geometry());
+
+    winfoWrap.setIsKeepAbove(w->isKeepAbove());
 
     return winfoWrap;
 }
@@ -265,7 +273,7 @@ bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 
     //qDebug() << "desktop:" << (it != m_wm->windows().constEnd() ? (*it)->virtualDesktop() : -1) << KWindowSystem::currentDesktop();
     //return true;
-    return it != m_wm->windows().constEnd() && ( (*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
+    return it != m_wm->windows().constEnd() && ((*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
 }
 
 bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
@@ -289,6 +297,7 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
         return {};
 
     WindowInfoWrap winfoWrap;
+
     auto w = *it;
 
     if (isValidWindow(w)) {
@@ -324,7 +333,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 
     mapper->setMapping(w, w);
 
-    connect(w, &PlasmaWindow::unmapped, this, [&, win = w]() noexcept {
+    connect(w, &PlasmaWindow::unmapped, this, [ &, win = w]() noexcept {
         mapper->removeMappings(win);
         m_windows.remove(win->internalId());
         emit windowRemoved(win->internalId());
@@ -341,8 +350,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     connect(w, SIGNAL(virtualDesktopChanged()), mapper, SLOT(map()));
 
     connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
-        , this, [&](QObject *w) noexcept
-    {
+    , this, [&](QObject * w) noexcept {
         qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         emit windowChanged(qobject_cast<PlasmaWindow *>(w)->internalId());
     });

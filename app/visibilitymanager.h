@@ -42,6 +42,12 @@ class VisibilityManager : public QObject {
     Q_PROPERTY(bool isHidden READ isHidden WRITE setIsHidden NOTIFY isHiddenChanged)
     Q_PROPERTY(bool blockHiding READ blockHiding WRITE setBlockHiding NOTIFY blockHidingChanged)
     Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
+
+    //! Dynamic Background Feature (needed options)
+    Q_PROPERTY(bool enabledDynamicBackground READ enabledDynamicBackground WRITE setEnabledDynamicBackground NOTIFY enabledDynamicBackgroundChanged)
+    Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
+    Q_PROPERTY(bool existsWindowSnapped READ existsWindowSnapped NOTIFY existsWindowSnappedChanged)
+
     Q_PROPERTY(int timerShow READ timerShow WRITE setTimerShow NOTIFY timerShowChanged)
     Q_PROPERTY(int timerHide READ timerHide WRITE setTimerHide NOTIFY timerHideChanged)
 
@@ -72,6 +78,16 @@ public:
     int timerHide() const;
     void setTimerHide(int msec);
 
+    //! Dynamic Background functions
+    bool enabledDynamicBackground() const;
+    void setEnabledDynamicBackground(bool active);
+
+    bool existsWindowMaximized() const;
+    void setExistsWindowMaximized(bool windowMaximized);
+
+    bool existsWindowSnapped() const;
+    void setExistsWindowSnapped(bool windowSnapped);
+
 signals:
     void mustBeShown(QPrivateSignal);
     void mustBeHide(QPrivateSignal);
@@ -84,6 +100,11 @@ signals:
     void containsMouseChanged();
     void timerShowChanged();
     void timerHideChanged();
+
+    //! Dynamic Background signals (from options)
+    void enabledDynamicBackgroundChanged();
+    void existsWindowMaximizedChanged();
+    void existsWindowSnappedChanged();
 
 private:
     VisibilityManagerPrivate *const d;

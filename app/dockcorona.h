@@ -69,6 +69,7 @@ public:
     QRect screenGeometry(int id) const override;
     QRegion availableScreenRegion(int id) const override;
     QRect availableScreenRect(int id) const override;
+    QRect availableScreenRectFromDocks(int id, bool alwaysVisibleDocks = false) const;
 
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
@@ -131,6 +132,7 @@ private:
     bool heuresticForLoadingDockWithTasks();
     int noOfDocks();
     int primaryScreenId() const;
+
     QString availableId(QStringList all, QStringList assigned, int base);
     QStringList containmentsIds();
     QStringList appletsIds();

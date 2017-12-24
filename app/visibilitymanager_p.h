@@ -18,6 +18,7 @@
 
 namespace Latte {
 
+class DockCorona;
 class VisibilityManager;
 
 /*!
@@ -43,6 +44,13 @@ public:
     void raiseDockTemporarily();
     void updateHiddenState();
 
+    //! Dynamic Background Feature
+    void setEnabledDynamicBackground(bool active);
+    void setExistsWindowMaximized(bool windowMaximized);
+    void setExistsWindowSnapped(bool windowSnapped);
+    void updateAvailableScreenGeometry();
+    void updateDynamicBackgroundWindowFlags();
+
     void setDockGeometry(const QRect &rect);
 
     void windowAdded(WindowId id);
@@ -64,6 +72,7 @@ public:
     Dock::Visibility mode{Dock::None};
     std::array<QMetaObject::Connection, 5> connections;
     QMap<WindowId, WindowInfoWrap> windows;
+
     QTimer timerShow;
     QTimer timerHide;
     QTimer timerCheckWindows;
@@ -77,6 +86,16 @@ public:
     bool raiseOnDesktopChange{false};
     bool raiseOnActivityChange{false};
     bool hideNow{false};
+
+    //! Dynamic Background flags and needed information
+    bool enabledDynamicBackgroundFlag{false};
+    bool windowIsSnappedFlag{false};
+    bool windowIsMaximizedFlag{false};
+    QRect availableScreenGeometry;
+    QList<QRect> snappedWindowsGeometries;
+    std::array<QMetaObject::Connection, 7> connectionsDynBackground;
+    WindowId lastActiveWindowWid;
+    DockCorona *dockCorona;
 };
 
 }

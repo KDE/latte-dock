@@ -462,6 +462,11 @@ QRegion DockCorona::availableScreenRegion(int id) const
 
 QRect DockCorona::availableScreenRect(int id) const
 {
+    return availableScreenRectFromDocks(id);
+}
+
+QRect DockCorona::availableScreenRectFromDocks(int id, bool alwaysVisibleDocks) const
+{
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
 
@@ -482,7 +487,10 @@ QRect DockCorona::availableScreenRect(int id) const
     auto available = screen->geometry();
 
     for (const auto *view : m_dockViews) {
-        if (view && view->containment() && view->screen() == screen) {
+        if (view && view->containment() && view->screen() == screen
+            && (!alwaysVisibleDocks
+                || (alwaysVisibleDocks && view->visibility() && view->visibility()->mode() == Dock::AlwaysVisible))) {
+
             auto dockRect = view->absGeometry();
 
             // Usually availableScreenRect is used by the desktop,
@@ -491,11 +499,25 @@ QRect DockCorona::availableScreenRect(int id) const
             // because the left and right are those who dodge others docks
             switch (view->location()) {
                 case Plasma::Types::TopEdge:
-                    available.setTopLeft({available.x(), dockRect.bottom()});
+                    available.setTop(dockRect.bottom() + 1);
                     break;
 
                 case Plasma::Types::BottomEdge:
-                    available.setBottomLeft({available.x(), dockRect.top()});
+                    available.setBottom(dockRect.top() - 1);
+                    break;
+
+                case Plasma::Types::LeftEdge:
+                    if (alwaysVisibleDocks) {
+                        available.setLeft(dockRect.right() + 1);
+                    }
+
+                    break;
+
+                case Plasma::Types::RightEdge:
+                    if (alwaysVisibleDocks) {
+                        available.setRight(dockRect.left() - 1);
+                    }
+
                     break;
 
                 default:
@@ -999,6 +1021,8 @@ void DockCorona::destroyedChanged(bool destroyed)
     }
 
     emit docksCountChanged();
+    emit availableScreenRectChanged();
+    emit availableScreenRegionChanged();
 }
 
 void DockCorona::dockContainmentDestroyed(QObject *cont)
@@ -1015,6 +1039,8 @@ void DockCorona::dockContainmentDestroyed(QObject *cont)
     }
 
     emit docksCountChanged();
+    emit availableScreenRectChanged();
+    emit availableScreenRegionChanged();
 }
 
 void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
