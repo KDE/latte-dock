@@ -94,6 +94,7 @@
   <developer_name xml:lang="sv">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="uk">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="x-test">xxMichail Vourlakos, Johan Smith Agudelo Rodriguezxx</developer_name>
+  <developer_name xml:lang="zh-CN">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <icon type="stock">latte-dock</icon>
   <project_license>GPL v2+</project_license>
   <metadata_license>CC0-1.0</metadata_license>
