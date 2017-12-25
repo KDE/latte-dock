@@ -89,7 +89,12 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
-    QLockFile lockFile {QDir::tempPath() + "/latte-dock.lock"};
+    QString username = qgetenv("USER");
+
+    if (username.isEmpty())
+        username = qgetenv("USERNAME");
+
+    QLockFile lockFile {QDir::tempPath() + "/latte-dock." + username + ".lock"};
 
     int timeout {100};
 
