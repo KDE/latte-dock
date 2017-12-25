@@ -135,7 +135,7 @@ SequentialAnimation{
                              || !launcherIsPresent(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
 
-        if (!Latte.WindowSystem.compositingActive) {
+        if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase) {
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;

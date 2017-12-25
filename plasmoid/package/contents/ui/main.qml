@@ -64,6 +64,7 @@ Item {
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool inActivityChange: false
+    property bool inDraggingPhase: false
     property bool initializationStep: false //true
     property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
@@ -337,6 +338,7 @@ Item {
 
     onDragSourceChanged: {
         if (dragSource == null) {
+            restoreDraggingPhaseTimer.start();
             root.draggingFinished();
             root.signalActionsBlockHiding(-1);
             //root.signalDraggingState(false);
@@ -344,6 +346,7 @@ Item {
             //updateLaunchersNewArchitecture();
             tasksModel.syncLaunchers();
         } else {
+            inDraggingPhase = true;
             root.signalActionsBlockHiding(1);
             //root.signalDraggingState(true);
         }
@@ -840,7 +843,15 @@ Item {
         }
     }
 
-
+    //this timer restores the draggingPhase flag to false
+    //after a dragging has finished... This delay is needed
+    //in order to not animate any tasks are added after a
+    //dragging
+    Timer {
+        id: restoreDraggingPhaseTimer
+        interval: 150
+        onTriggered: inDraggingPhase = false;
+    }
 
     ///Red Liner!!! show the upper needed limit for annimations
     Rectangle{
