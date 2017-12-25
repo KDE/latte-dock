@@ -194,8 +194,8 @@ DragDrop.DropArea {
 
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
-    property int thickMarginBase: shrinkThickMargins ? 1 : Math.ceil(0.06 * iconSize)
-    property int thickMarginHigh: shrinkThickMargins ? 1 : Math.ceil(0.06 * iconSize)
+    property int thickMarginBase: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) : Math.ceil(0.06 * iconSize)
+    property int thickMarginHigh: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) : Math.ceil(0.06 * iconSize)
     property int thickMargin: thickMarginBase + thickMarginHigh
 
     //it is used in order to not break the calculations for the thickness placement
