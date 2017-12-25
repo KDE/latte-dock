@@ -1301,6 +1301,10 @@ DragDrop.DropArea {
                 titleTooltipDialog.update();
             }
 
+            if (titleTooltipDialog.visible) {
+                titleTooltipCheckerToNotShowTimer.start();
+            }
+
             if (root.debugModeTimers) {
                 console.log("containment timer: showTitleTooltipTimer called...");
             }
@@ -1323,6 +1327,19 @@ DragDrop.DropArea {
                 console.log("containment timer: hideTitleTooltipTimer called...");
             }
 
+        }
+    }
+
+    //! Timer to fix #811, rare cases that both a window preview and context menu are
+    //! shown
+    Timer {
+        id: titleTooltipCheckerToNotShowTimer
+        interval: 250
+
+        onTriggered: {
+            if (titleTooltipDialog.visible && latteApplet && (latteApplet.contextMenu || latteApplet.windowPreviewIsShown)) {
+                titleTooltipDialog.visible = false;
+            }
         }
     }
     /////END: Title Tooltip///////////

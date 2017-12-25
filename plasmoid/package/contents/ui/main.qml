@@ -137,7 +137,7 @@ Item {
     property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
     property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
     property bool indicateAudioStreams: latteDock ? latteDock.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
-    property bool  mouseWheelActions: latteDock ? latteDock.mouseWheelActions : true
+    property bool mouseWheelActions: latteDock ? latteDock.mouseWheelActions : true
     property bool reverseLinesPosition: latteDock ? latteDock.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: latteDock ? latteDock.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: latteDock ? latteDock.showGlow : plasmoid.configuration.showGlow
@@ -150,6 +150,7 @@ Item {
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: latteDock ? latteDock.titleTooltips : false
+    property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
     property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Dock.LineIndicator
     property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
@@ -375,6 +376,12 @@ Item {
         property bool signalSent: false
         property Item activeItem: null
 
+        onVisibleChanged: {
+            if (visible) {
+                windowsPreviewCheckerToNotShowTimer.start();
+            }
+        }
+
         function hide(debug){
             //console.log("on hide event called: "+debug);
 
@@ -438,6 +445,19 @@ Item {
 
             if (latteDock && latteDock.debugModeTimers) {
                 console.log("plasmoid timer: showPreviewTimer called...");
+            }
+        }
+    }
+
+    //! Timer to fix #811, rare cases that both a window preview and context menu are
+    //! shown
+    Timer {
+        id: windowsPreviewCheckerToNotShowTimer
+        interval: 250
+
+        onTriggered: {
+            if (windowsPreviewDlg.visible && root.contextMenu) {
+                windowsPreviewDlg.hide();
             }
         }
     }
