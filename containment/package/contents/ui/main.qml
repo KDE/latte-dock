@@ -88,7 +88,7 @@ DragDrop.DropArea {
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
-        return (item.status >= PlasmaCore.Types.NeedsAttentionStatus
+        return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.pluginName !== root.plasmoidName
                 && item.status !== PlasmaCore.Types.HiddenStatus);
     })
 
