@@ -547,7 +547,10 @@ Item{
     Colorize{
         id: stateColorizer
         source: badgesLoader.active ? badgesLoader : iconImageBuffer
-        anchors.fill: iconGraphic
+        anchors.centerIn: iconGraphic
+        width: source.width
+        height: source.height
+
         //visible: false
         opacity:0
 
@@ -619,16 +622,17 @@ Item{
                         }
 
                         mainItemContainer.inBlockingAnimation = true;
+                        root.clearZoom();
                     }
                 }
 
-                PropertyAnimation {
+                /*PropertyAnimation {
                     target: wrapper
                     property: "mScale"
                     to: 1 + ((root.zoomFactor - 1) / 2)
                     duration: isDraggedTransition.speed / 2
                     easing.type: Easing.OutQuad
-                }
+                }*/
 
                 ParallelAnimation{
                     PropertyAnimation {
@@ -708,13 +712,13 @@ Item{
                     }
                 }
 
-                PropertyAnimation {
+              /*  PropertyAnimation {
                     target: wrapper
                     property: "mScale"
                     to: 1;
                     duration: isDraggedTransition.speed
                     easing.type: Easing.OutQuad
-                }
+                }*/
 
                 ScriptAction{
                     script: {
