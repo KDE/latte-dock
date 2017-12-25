@@ -42,11 +42,15 @@ Item{
 
     readonly property real glowOpacity: root.glowOpacity
 
-    Item{
+    Grid{
         id: mainGlow
-        anchors.fill: parent
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
         opacity: glowOpacity
         visible: glowItem.showGlow
+
+        rows: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : 0
+        columns: plasmoid.formFactor === PlasmaCore.Types.Vertical ? 1 : 0
 
         property int halfCorner: 3*glowFrame.size
         property int fullCorner: 6*glowFrame.size
@@ -77,8 +81,8 @@ Item{
 
         Item {
             id:mainGlowPart
-            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.width - glowFrame.size : mainGlow.fullCorner
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : parent.height - glowFrame.size
+            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? glowItem.width - glowFrame.size : mainGlow.fullCorner
+            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : glowItem.height - glowFrame.size
 
             LinearGradient {
                 anchors.fill: parent
@@ -124,6 +128,7 @@ Item{
 
             Item {
                 id: lastGlowCornerFull
+                anchors.right: parent.right
                 width: mainGlow.fullCorner
                 height: mainGlow.fullCorner
 
@@ -137,78 +142,29 @@ Item{
                         GradientStop { position: 1; color: "transparent" }
                     }
                 }
+
+                states: [
+                    State{
+                        name: "*"
+                        when:  plasmoid.formFactor === PlasmaCore.Types.Horizontal
+
+                        AnchorChanges{
+                            target:lastGlowCornerFull;
+                            anchors{ bottom: undefined; right:parent.right;}
+                        }
+                    },
+                    State{
+                        name: "vertical"
+                        when:  plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+                        AnchorChanges{
+                            target:lastGlowCornerFull;
+                            anchors{ bottom: parent.bottom; right:undefined;}
+                        }
+                    }
+                ]
             }
         }
-
-        states: [
-            State{
-                name: "*"
-                when:  plasmoid.formFactor === PlasmaCore.Types.Horizontal
-
-                AnchorChanges{
-                    target:firstGlowCorner;
-                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-                AnchorChanges{
-                    target:firstGlowCornerFull;
-                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-                AnchorChanges{
-                    target:mainGlowPart;
-                    anchors{ top:undefined; bottom:undefined; left:firstGlowCorner.right; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-                AnchorChanges{
-                    target:lastGlowCorner;
-                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-                AnchorChanges{
-                    target:lastGlowCornerFull;
-                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-                }
-
-                PropertyChanges{
-                    target: firstGlowCorner; anchors.leftMargin: -2.5*glowFrame.size; anchors.rightMargin:0; anchors.topMargin:0; anchors.bottomMargin:0
-                }
-                PropertyChanges{
-                    target: lastGlowCorner; anchors.leftMargin: 0; anchors.rightMargin:-2.5*glowFrame.size; anchors.topMargin:0; anchors.bottomMargin:0
-                }
-            },
-            State{
-                name: "vertical"
-                when:  plasmoid.formFactor === PlasmaCore.Types.Vertical
-
-                AnchorChanges{
-                    target:firstGlowCorner;
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-                AnchorChanges{
-                    target:firstGlowCornerFull;
-                    anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-                AnchorChanges{
-                    target:mainGlowPart;
-                    anchors{ top:firstGlowCorner.bottom; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-                AnchorChanges{
-                    target:lastGlowCorner;
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-
-                AnchorChanges{
-                    target:lastGlowCornerFull;
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-
-                PropertyChanges{
-                    target: firstGlowCorner; anchors.leftMargin: 0; anchors.rightMargin:0; anchors.topMargin:-2.5*glowFrame.size; anchors.bottomMargin: 0
-                }
-
-                PropertyChanges{
-                    target: lastGlowCorner; anchors.leftMargin: 0; anchors.rightMargin:0; anchors.topMargin:0; anchors.bottomMargin: -2.5*glowFrame.size
-                }
-            }
-        ]
-
     }
 
     Item{
