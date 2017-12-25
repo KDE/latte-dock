@@ -302,13 +302,15 @@ MouseArea{
             if (!isSeparator || root.editMode || root.dragSource) {
                 forceHiddenState = false;
             } else {
-                var firstPosition = (index === 0);
+                var firstPosition = (index>=0) && (index < parabolicManager.firstRealTaskIndex);
                 var sepNeighbour = parabolicManager.taskIsSeparator(index-1);
-                var firstSepFromLastSeparatorsGroup = (itemIndex === parabolicManager.lastRealTaskIndex+1);
+                var firstSepFromLastSeparatorsGroup = (index>=0) && (index > parabolicManager.lastRealTaskIndex);
 
                 forceHiddenState = (firstPosition || sepNeighbour || firstSepFromLastSeparatorsGroup);
             }
         }
+
+        Component.onCompleted: updateForceHiddenState();
 
         onForceHiddenStateChanged: root.separatorsUpdated();
 

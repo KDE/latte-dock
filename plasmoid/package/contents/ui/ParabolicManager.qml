@@ -58,10 +58,15 @@ Item {
     Component.onCompleted:  updateTasksEdgesIndexes();
 
     function updateTasksEdgesIndexes() {
-        firstRealTaskIndex = firstRealTask();
-        lastRealTaskIndex = lastRealTask();
+        var newFirstTask = firstRealTask();
+        var newLastTask = lastRealTask();
 
-        root.separatorsUpdated();
+        if (newFirstTask !== firstRealTaskIndex || newLastTask !== lastRealTaskIndex ){
+            firstRealTaskIndex = newFirstTask;
+            lastRealTaskIndex = newLastTask;
+
+            root.separatorsUpdated();
+        }
     }
 
     //!this is used in order to update the index when the signal is for applets
@@ -283,8 +288,8 @@ Item {
         if (updated) {
             //console.log("message sent...");
             hasInternalSeparator = separators.length > 0;
-            firstRealTaskIndex = firstRealTask();
-            lastRealTaskIndex = lastRealTask();
+
+            updateTasksEdgesIndexes();
 
             root.separatorsUpdated();
         }
