@@ -653,7 +653,7 @@ PlasmaComponents.ContextMenu {
 
         text: i18n("&Pin")
 
-        visible: visualParent && !visualParent.isSeparator
+        visible: visualParent && (!visualParent.isSeparator || (visualParent.isSeparator && root.editMode))
         // && get(atm.IsLauncher) !== true
                  && get(atm.IsStartup) !== true
                  && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable

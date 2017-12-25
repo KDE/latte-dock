@@ -344,21 +344,7 @@ Item {
     }
 
     function separatorExists(separator){
-        if (!isSeparator(separator))
-            return false;
-
-        var sLength = separators.length;
-
-        for (var i=0; i<sLength; ++i) {
-            //!safety checker
-            if (i>=separators.length)
-                return false;
-
-            if (separators[i].launcherUrl.indexOf(separator)>=0)
-                return true;
-        }
-
-        return false;
+        return (tasksModel.launcherPosition(separator)>=0);
     }
 
     //! the real index task after we take into account the separators before it
