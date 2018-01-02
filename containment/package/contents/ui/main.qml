@@ -143,7 +143,7 @@ DragDrop.DropArea {
     property int modifierClickAction: plasmoid.configuration.modifierClickAction
     property int modifierClick: plasmoid.configuration.modifierClick
 
-    property int panelEdgeSpacing: iconSize / 3
+    property int panelEdgeSpacing: Math.max(iconSize / 3, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency
     property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
                                       || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
@@ -152,7 +152,7 @@ DragDrop.DropArea {
 
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
-    property int appShadowSize: (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100)
+    property int appShadowSize: enableShadows ? (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
     property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + plasmoid.configuration.shadowColor
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
@@ -195,12 +195,13 @@ DragDrop.DropArea {
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
     property int thickMarginBase: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) : Math.ceil(0.06 * iconSize)
-    property int thickMarginHigh: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) : Math.ceil(0.06 * iconSize)
+    property int thickMarginHigh: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) :
+                                                       Math.max( Math.ceil(0.06 * iconSize), 0.6 * appShadowSize)
     property int thickMargin: thickMarginBase + thickMarginHigh
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int thickMarginOriginal: Math.ceil(0.12 * maxIconSize)
+    property int thickMarginOriginal: Math.ceil(0.06 * maxIconSize + Math.max( Math.ceil(0.06 * maxIconSize), 0.6 * appShadowSize))
 
     //! iconMargin from configuration is a percentage. The calculation provides a length
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
