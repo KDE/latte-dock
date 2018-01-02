@@ -29,11 +29,12 @@ Rectangle {
 
     property double previousProportion: 0
 
-    property string valueLabel
     property int numberValue
+    property string textValue
 
     property bool fullCircle: true
     property bool showNumber: true
+    property bool showText: false
 
     property int radiusPerCentage: 100
 
@@ -107,11 +108,19 @@ Rectangle {
     Text {
         id: valueText
         anchors.centerIn: parent
-        text: numberValue > 0 ? numberValue : ""
+        text: {
+            if (showNumber) {
+                return numberValue > 0 ? numberValue : ""
+            }
+
+            if (showText) {
+                return textValue;
+            }
+        }
         font.pixelSize: 0.6 * parent.height
         font.bold: true
         color: useBackgroundColor ? theme.backgroundColor : theme.textColor
-        visible: showNumber
+        visible: showNumber || showText
 
         property bool useBackgroundColor: ( (mainItemContainer.badgeIndicator > 0)
                                            || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )

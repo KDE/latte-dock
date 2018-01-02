@@ -458,7 +458,7 @@ Item{
 
             Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
 
-            property real opacityN: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<10 ? 1 : 0
+            property real opacityN: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<20 ? 1 : 0
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
@@ -485,10 +485,17 @@ Item{
 
                     width: 0.4 * parent.width
                     height: width
-                    numberValue: taskNumberLoader.fixedIndex
-                    showNumber: true
+                    numberValue: taskNumberLoader.fixedIndex < 10 ? taskNumberLoader.fixedIndex : 0
+                    textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
+
+                    showNumber: taskNumberLoader.fixedIndex < 10
+                    showText: taskNumberLoader.fixedIndex>=10 && taskNumberLoader.fixedIndex<20
+
                     proportion: 0
                     radiusPerCentage: 50
+
+                    property int keysArrayIndex: taskNumberLoader.fixedIndex-10;
+                    property var keysAboveTen: ['0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.']
                 }
             }
         }

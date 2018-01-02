@@ -39,6 +39,8 @@
 #include <X11/keysymdef.h>
 #include <X11/Xlib.h>
 
+#include <array>
+
 //this code is used by activityswitcher in plasma in order to check if the
 //user has release all the modifier keys from the globalshortcut
 namespace {
@@ -166,6 +168,17 @@ GlobalShortcuts::~GlobalShortcuts()
 void GlobalShortcuts::init()
 {
     KActionCollection *generalActions = new KActionCollection(m_corona);
+
+    //show-hide the main dock in the primary screen
+    QAction *showAction = generalActions->addAction(QStringLiteral("show latte dock"));
+    showAction->setText(i18n("Show Latte Dock"));
+    showAction->setShortcut(QKeySequence(Qt::META + '`'));
+    KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
+    connect(showAction, &QAction::triggered, this, [this]() {
+        showDock();
+    });
+
+    //show-cycle between Latte settings windows
     QAction *settingsAction = generalActions->addAction(QStringLiteral("show settings window"));
     settingsAction->setText(i18n("Show Settings Window"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
@@ -173,12 +186,22 @@ void GlobalShortcuts::init()
         showSettings();
     });
 
+    //show the layouts editor
+    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show layouts editor"));
+    layoutsAction->setText(i18n("Show Layouts Editor"));
+    layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
+    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_E));
+    connect(layoutsAction, &QAction::triggered, this, [this]() {
+        showLayoutsEditor();
+    });
+
+
     KActionCollection *taskbarActions = new KActionCollection(m_corona);
 
-    //activate actions
-    for (int i = 0; i < 10; ++i) {
-        const int entryNumber = i + 1;
-        const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + (entryNumber % 10));
+    //activate actions [1-9]
+    for (int i = 1; i < 10; ++i) {
+        const int entryNumber = i;
+        const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + i);
 
         QAction *action = taskbarActions->addAction(QStringLiteral("activate task manager entry %1").arg(QString::number(entryNumber)));
         action->setText(i18n("Activate Task Manager Entry %1", entryNumber));
@@ -190,10 +213,24 @@ void GlobalShortcuts::init()
         });
     }
 
-    //new instance actions
-    for (int i = 0; i < 10; ++i) {
-        const int entryNumber = i + 1;
-        const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + (entryNumber % 10));
+    //! Array that is used to register correctly actions for task index>=10 and <19
+    std::array<Qt::Key, 10> keysAboveTen{  Qt::Key_0,  Qt::Key_Z,  Qt::Key_X, Qt::Key_C, Qt::Key_V, Qt::Key_B, Qt::Key_N, Qt::Key_M, Qt::Key_Comma, Qt::Key_Period };
+
+    //activate actions [10-19]
+    for (int i = 10; i < 20; ++i) {
+        QAction *action = taskbarActions->addAction(QStringLiteral("activate task manager entry %1").arg(QString::number(i)));
+        action->setText(i18n("Activate Task Manager Entry %1", i));
+        action->setShortcut(QKeySequence(Qt::META + keysAboveTen[i - 10]));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + keysAboveTen[i - 10]));
+        connect(action, &QAction::triggered, this, [this, i] {
+            activateTaskManagerEntry(i, static_cast<Qt::Key>(Qt::META));
+        });
+    }
+
+    //new instance actions [1-9]
+    for (int i = 1; i < 9; ++i) {
+        const int entryNumber = i;
+        const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + i);
 
         QAction *action = taskbarActions->addAction(QStringLiteral("new instance for task manager entry %1").arg(QString::number(entryNumber)));
         action->setText(i18n("New Instance for Task Manager Entry %1", entryNumber));
@@ -204,23 +241,15 @@ void GlobalShortcuts::init()
         });
     }
 
-    //show-hide the main dock in the primary screen
-    QAction *showAction = taskbarActions->addAction(QStringLiteral("show latte dock"));
-    showAction->setText(i18n("Show Latte Dock"));
-    showAction->setShortcut(QKeySequence(Qt::META + '`'));
-    KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
-    connect(showAction, &QAction::triggered, this, [this]() {
-        showDock();
-    });
-
-    //show the layouts editor
-    QAction *layoutsAction = taskbarActions->addAction(QStringLiteral("show layouts editor"));
-    layoutsAction->setText(i18n("Show Layouts Editor"));
-    layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
-    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_E));
-    connect(layoutsAction, &QAction::triggered, this, [this]() {
-        showLayoutsEditor();
-    });
+    //new instance actions [10-19]
+    for (int i = 10; i < 20; ++i) {
+        QAction *action = taskbarActions->addAction(QStringLiteral("new instance for task manager entry %1").arg(QString::number(i)));
+        action->setText(i18n("New Instance for Task Manager Entry %1", i));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + keysAboveTen[i - 10]));
+        connect(action, &QAction::triggered, this, [this, i] {
+            activateTaskManagerEntry(i, static_cast<Qt::Key>(Qt::CTRL));
+        });
+    }
 
 }
 
