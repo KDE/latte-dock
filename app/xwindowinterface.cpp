@@ -278,8 +278,9 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         return;
     }
 
-    //! ignore when, eg: the user presses a key
-    if (prop1 == 0 && prop2 == NET::WM2UserTime) {
+    //! ignore when, eg: the user presses a key, or a window is sending X events
+    //! without needing to (e.g. Firefox, https://bugzilla.mozilla.org/show_bug.cgi?id=1389953)
+    if (prop1 == 0 && (prop2 == NET::WM2UserTime || prop2 == NET::WM2IconPixmap)) {
         return;
     }
 
