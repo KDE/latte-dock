@@ -237,7 +237,7 @@ Item{
             if (root.useThemePanel){
                 space = root.totalPanelEdgeSpacing + root.panelMarginLength + 1;
             } else {
-                space = 2;
+                space = root.totalPanelEdgeSpacing + 1;
             }
         } else {
             space = root.totalPanelEdgeSpacing + root.panelMarginLength;
