@@ -21,6 +21,7 @@
 import QtQuick 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as Components
+import org.kde.plasma.plasmoid 2.0
 
 import QtGraphicalEffects 1.0
 
@@ -28,37 +29,45 @@ Item{
     //   property string color
     id: glowItem
 
+    property bool glow3D: true
     property bool roundCorners: true
     property bool showAttention: false
-
     property bool showGlow: false
-    property int animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
 
-    property color attentionColor: colorScopePalette.negativeTextColor // "#ffff1717"
+    property int animation: 250
+    property int location: PlasmaCore.Types.BottomEdge
+    property real glowOpacity: 0.75
+
+    property color attentionColor: "red"
     property color basicColor: "blue"
+    property color contrastColor: "#b0b0b0"
+    property color currentColor: glowItem.showAttention ? animationColorAlpha : basicColorAlpha
 
-    property color animationColor
-    property color currentColor: glowItem.showAttention ? animationColor : basicColor
+    property color animationColor: "red" // it is used only internally for the animation
+    readonly property color basicColorAlpha: Qt.rgba(basicColor.r, basicColor.g, basicColor.b, glowOpacity)
+    readonly property color animationColorAlpha: Qt.rgba(animationColor.r, animationColor.g, animationColor.b, glowOpacity)
+    readonly property color contrastColorAlpha: Qt.rgba(contrastColor.r, contrastColor.g, contrastColor.b, Math.min(glowOpacity+0.4,1))
 
-    readonly property real glowOpacity: root.glowOpacity
+    readonly property bool isVertical: (location === PlasmaCore.Types.LeftEdge) || (location === PlasmaCore.Types.RightEdge)
+    readonly property bool isHorizontal: !isVertical
+
 
     Grid{
         id: mainGlow
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        opacity: glowOpacity
         visible: glowItem.showGlow
 
-        rows: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : 0
-        columns: plasmoid.formFactor === PlasmaCore.Types.Vertical ? 1 : 0
+        rows: isHorizontal ? 1 : 0
+        columns: isVertical ? 1 : 0
 
         property int halfCorner: 3*glowFrame.size
         property int fullCorner: 6*glowFrame.size
 
         Item {
             id: firstGlowCorner
-            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.halfCorner : mainGlow.fullCorner
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : mainGlow.halfCorner
+            width: isHorizontal ? mainGlow.halfCorner : mainGlow.fullCorner
+            height: isHorizontal ? mainGlow.fullCorner : mainGlow.halfCorner
             clip: true
 
             Item {
@@ -70,9 +79,9 @@ Item{
                     anchors.fill: parent
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "transparent" }
-                        GradientStop { position: 0.07; color: "transparent" }
+                        GradientStop { position: 0.07; color: glowItem.contrastColorAlpha }
                         GradientStop { position: 0.125; color: glowItem.currentColor }
-                        GradientStop { position: 0.4; color: "transparent" }
+                        GradientStop { position: 0.4; color:  "transparent" }
                         GradientStop { position: 1; color: "transparent" }
                     }
                 }
@@ -81,31 +90,31 @@ Item{
 
         Item {
             id:mainGlowPart
-            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? glowItem.width - glowFrame.size : mainGlow.fullCorner
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : glowItem.height - glowFrame.size
+            width: isHorizontal ? glowItem.width - glowFrame.size : mainGlow.fullCorner
+            height: isHorizontal ? mainGlow.fullCorner : glowItem.height - glowFrame.size
 
             LinearGradient {
                 anchors.fill: parent
                 start: {
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                    if (location === PlasmaCore.Types.BottomEdge)
                         return Qt.point(0, 0);
-                    else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                    else if (location === PlasmaCore.Types.TopEdge)
                         return Qt.point(0, mainGlow.fullCorner);
-                    else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                    else if (location === PlasmaCore.Types.LeftEdge)
                         return Qt.point(mainGlow.fullCorner, 0);
-                    else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                    else if (location === PlasmaCore.Types.RightEdge)
                         return Qt.point(0, 0);
 
                     return Qt.point(mainGlow.fullCorner, 0);
                 }
                 end: {
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                    if (location === PlasmaCore.Types.BottomEdge)
                         return Qt.point(0, mainGlow.fullCorner);
-                    else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                    else if (location === PlasmaCore.Types.TopEdge)
                         return Qt.point(0, 0);
-                    else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                    else if (location === PlasmaCore.Types.LeftEdge)
                         return Qt.point(0,0);
-                    else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                    else if (location === PlasmaCore.Types.RightEdge)
                         return Qt.point(mainGlow.fullCorner, 0);
 
                     return Qt.point(0,0);
@@ -115,15 +124,15 @@ Item{
                     GradientStop { position: 0.0; color: "transparent" }
                     GradientStop { position: 0.08; color: "transparent" }
                     GradientStop { position: 0.37; color: glowItem.currentColor }
-                    GradientStop { position: 0.49; color: "transparent" }
+                    GradientStop { position: 0.43; color: glowItem.contrastColorAlpha }
                 }
             }
         }
 
         Item {
             id:lastGlowCorner
-            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.halfCorner : mainGlow.fullCorner
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? mainGlow.fullCorner : mainGlow.halfCorner
+            width: isHorizontal ? mainGlow.halfCorner : mainGlow.fullCorner
+            height: isHorizontal ? mainGlow.fullCorner : mainGlow.halfCorner
             clip: true
 
             Item {
@@ -136,9 +145,9 @@ Item{
                     anchors.fill: parent
                     gradient: Gradient {
                         GradientStop { position: 0.0; color: "transparent" }
-                        GradientStop { position: 0.07; color: "transparent" }
+                        GradientStop { position: 0.07; color: glowItem.contrastColorAlpha }
                         GradientStop { position: 0.125; color: glowItem.currentColor }
-                        GradientStop { position: 0.4; color: "transparent" }
+                        GradientStop { position: 0.4; color:  "transparent"}
                         GradientStop { position: 1; color: "transparent" }
                     }
                 }
@@ -146,7 +155,7 @@ Item{
                 states: [
                     State{
                         name: "*"
-                        when:  plasmoid.formFactor === PlasmaCore.Types.Horizontal
+                        when:  isHorizontal
 
                         AnchorChanges{
                             target:lastGlowCornerFull;
@@ -155,7 +164,7 @@ Item{
                     },
                     State{
                         name: "vertical"
-                        when:  plasmoid.formFactor === PlasmaCore.Types.Vertical
+                        when:  isVertical
 
                         AnchorChanges{
                             target:lastGlowCornerFull;
@@ -201,7 +210,7 @@ Item{
                     PropertyAnimation {
                         target: glowItem
                         property: "animationColor"
-                        to: glowItem.attentionColor
+                        to: glowItem.animationColor
                         duration: glowItem.animation
                         easing.type: Easing.InOutQuad
                     }
@@ -218,34 +227,34 @@ Item{
         }
 
         Rectangle {
-            visible: glowItem.showGlow && root.glow3D
+            visible: glowItem.showGlow && glowItem.glow3D
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
 
             anchors.horizontalCenterOffset: {
-                if (plasmoid.formFactor === PlasmaCore.Types.Horizontal)
+                if (isHorizontal)
                     return 0;
-                else if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                else if (location === PlasmaCore.Types.LeftEdge)
                     return -glowItem.width / 7;
-                else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                else if (location === PlasmaCore.Types.RightEdge)
                     return glowItem.width / 7;
             }
             anchors.verticalCenterOffset: {
-                if (plasmoid.formFactor === PlasmaCore.Types.Vertical)
+                if (isVertical)
                     return 0;
-                else if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                else if (location === PlasmaCore.Types.BottomEdge)
                     return glowItem.height / 7;
-                else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                else if (location === PlasmaCore.Types.TopEdge)
                     return -glowItem.height / 7;
             }
 
-            width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Math.max(mainGlowPart.width, shadow) : shadow
-            height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadow : Math.max(mainGlowPart.height, shadow)
-            radius: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? height/2 : width/2
+            width: isHorizontal ? Math.max(mainGlowPart.width, shadow) : shadow
+            height: isHorizontal ? shadow : Math.max(mainGlowPart.height, shadow)
+            radius: isHorizontal ? height/2 : width/2
 
             property int shadow: glowFrame.size / 3
 
-            color: root.appShadowColor
+            color: glowItem.contrastColorAlpha
             opacity: 0.2
         }
     }

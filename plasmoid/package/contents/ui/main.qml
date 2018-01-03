@@ -192,6 +192,7 @@ Item {
 
     property int appShadowSize: latteDock ? latteDock.appShadowSize : Math.ceil(0.12*iconSize)
     property string appShadowColor: latteDock ? latteDock.appShadowColor : "#ff080808"
+    property string appShadowColorSolid: latteDock ? latteDock.appShadowColorSolid : "#ff080808"
 
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex

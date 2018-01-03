@@ -66,6 +66,13 @@ Item{
                 basicColor: IsActive===true || (mainItemContainer.isGroupParent && mainItemContainer.hasShown)?
                                 glowFrame.isActiveColor : glowFrame.notActiveColor
 
+                glow3D: root.glow3D
+                animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
+                location: plasmoid.location
+                glowOpacity: root.glowOpacity
+                contrastColor: root.appShadowColorSolid
+                attentionColor: colorScopePalette.negativeTextColor
+
                 roundCorners: true
                 showAttention: mainItemContainer.showAttention
                 showGlow: {
@@ -77,8 +84,8 @@ Item{
                         return false;
                 }
 
-                opacity: (!mainItemContainer.hasActive && root.showPreviews
-                          && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
+               // opacity: (!mainItemContainer.hasActive && root.showPreviews
+               //           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
 
                 property int stateWidth: mainItemContainer.isGroupParent ? (wrapper.regulatorWidth - secondPoint.width) : wrapper.regulatorWidth - spacer.width
                 property int stateHeight: mainItemContainer.isGroupParent ? wrapper.regulatorHeight - secondPoint.height : wrapper.regulatorHeight - spacer.height
@@ -173,6 +180,12 @@ Item{
                 id:secondPoint
                 width: visible ? glowFrame.size : 0
                 height: width
+
+                glow3D: root.glow3D
+                animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
+                location: plasmoid.location
+                glowOpacity: root.glowOpacity
+                contrastColor: root.appShadowColorSolid
 
                 basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true

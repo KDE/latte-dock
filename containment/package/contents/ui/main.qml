@@ -163,6 +163,7 @@ DragDrop.DropArea {
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
     property int appShadowSize: enableShadows ? (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
     property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + plasmoid.configuration.shadowColor
+    property string appShadowColorSolid: "#" + plasmoid.configuration.shadowColor
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably

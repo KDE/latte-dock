@@ -52,6 +52,12 @@ Item{
         roundCorners: true
         showGlow: mimicPlasmaPanel ? false : root.showGlow
 
+        glow3D: root.glow3D
+        animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
+        location: plasmoid.location
+        glowOpacity: root.glowOpacity
+        contrastColor: root.appShadowColorSolid
+
         opacity:{
             if ( (!vertical && width <= glowFrame.size && !isActive)
                     || (vertical && height <= glowFrame.size && !isActive))
