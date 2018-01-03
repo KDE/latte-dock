@@ -44,7 +44,7 @@ Item{
         opacity:0.6
     }*/
 
-    GlowPoint{
+    Latte.GlowPoint{
         id:activePoint
         anchors.centerIn: parent
 

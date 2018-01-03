@@ -24,4 +24,7 @@ if(HAVE_X11)
 endif()
 
 install(TARGETS lattedockplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
+
+install(DIRECTORY qml/ DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
+
 install(FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)

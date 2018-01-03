@@ -59,7 +59,7 @@ Item{
             id: flowItem
             flow: ( icList.orientation === Qt.Vertical ) ? Flow.TopToBottom : Flow.LeftToRight
 
-            GlowPoint{
+            Latte.GlowPoint{
                 id:firstPoint
                 visible: ( !IsLauncher ) ? true: false
 
@@ -169,7 +169,7 @@ Item{
                 height: secondPoint.visible ? 0.5*glowFrame.size : 0
             }
 
-            GlowPoint{
+            Latte.GlowPoint{
                 id:secondPoint
                 width: visible ? glowFrame.size : 0
                 height: width
