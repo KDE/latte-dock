@@ -72,6 +72,10 @@ We recommend that you use at least **Plasma 5.9.0**
 
 - [Gentoo package](https://packages.gentoo.org/packages/kde-misc/latte-dock)
 
+### Void Linux
+
+- [Void Linux package](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/latte-dock)
+
 
 See the [installation instruction](INSTALLATION.md) for others Linux distribution or development build
 
