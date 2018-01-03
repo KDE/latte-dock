@@ -73,6 +73,10 @@ We recommend that you use at least **Plasma 5.9.0**
 - [Gentoo package](https://github.com/redcorelinux/redcore-desktop/blob/master/kde-apps/latte-dock/latte-dock-0.6.0.ebuild)
 - in the portage, as `kde-misc/latte-dock`. If you need the live (git master), unmask the 9999 ebuild and emerge as usual (may be unstable).
 
+### Void Linux
+
+- [Void Linux package](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/latte-dock)
+
 
 See the [installation instruction](INSTALLATION.md) for others Linux distribution or development build
 
