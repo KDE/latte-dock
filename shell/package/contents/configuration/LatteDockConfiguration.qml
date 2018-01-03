@@ -447,6 +447,7 @@ FocusScope {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
+                opacity: plasmoid.configuration.advanced ? 1 : 0
 
                 text: i18n("Quit")
                 iconSource: "application-exit"
