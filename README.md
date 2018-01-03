@@ -38,6 +38,7 @@ We recommend that you use at least **Plasma 5.9.0**
  KF5IconThemes >= 5.29.0
  KF5I18n >= 5.29.0
  KF5Notifications >= 5.29.0
+ KF5NewStuff >= 5.29.0
  KF5Archive >= 5.29.0
  KF5GlobalAccel >= 5.29.0
  KF5Crash >= 5.29.0

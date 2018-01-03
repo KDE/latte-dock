@@ -1,0 +1,8 @@
+[KNewStuff3]
+Name=Latte Layouts
+
+ProvidersUrl=https://download.kde.org/ocs/providers.xml
+Categories=Latte Layouts
+TargetDir=latte-layouts
+Uncompress=archive
+

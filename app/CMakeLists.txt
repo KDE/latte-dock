@@ -52,6 +52,7 @@ target_link_libraries(latte-dock
     KF5::PlasmaQuick
     KF5::Activities
     KF5::Notifications
+    KF5::NewStuff
     KF5::QuickAddons
     KF5::WaylandClient
 )
@@ -73,3 +74,4 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.latte-dock.desktop DESTINATION
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.latte-dock.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 install(FILES dbus/org.kde.LatteDock.xml DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 install(FILES lattedock.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
+install(FILES latte-layouts.knsrc DESTINATION  ${CONFIG_INSTALL_DIR})

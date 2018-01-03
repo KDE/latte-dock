@@ -41,7 +41,7 @@
 #include <KArchive/KArchiveDirectory>
 #include <KLocalizedString>
 #include <KNotification>
-
+#include <KNewStuff3/KNS3/DownloadDialog>
 
 namespace Latte {
 
@@ -109,6 +109,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->switchButton->setText(i18nc("switch button", "Switch"));
     ui->importButton->setText(i18nc("import button", "Import"));
     ui->exportButton->setText(i18nc("export button", "Export"));
+    ui->downloadButton->setText(i18nc("download button", "Download"));
 
     connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
@@ -192,6 +193,34 @@ void LayoutConfigDialog::on_copyButton_clicked()
     insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
 
     ui->layoutsView->selectRow(row + 1);
+}
+
+void LayoutConfigDialog::on_downloadButton_clicked()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    KNS3::DownloadDialog dialog(QStringLiteral("latte-layouts.knsrc"), this);
+    dialog.exec();
+
+    bool layoutAdded{false};
+
+    if (!dialog.changedEntries().isEmpty() || !dialog.installedEntries().isEmpty()) {
+        foreach (auto entry, dialog.installedEntries()) {
+            foreach (auto entryFile, entry.installedFiles()) {
+                Importer::LatteFileVersion version = Importer::fileVersion(entryFile);
+
+                if (version == Importer::LayoutVersion2) {
+                    layoutAdded = true;
+                    addLayoutForFile(entryFile);
+                    break;
+                }
+            }
+        }
+    }
+
+    if (layoutAdded) {
+        apply();
+    }
 }
 
 void LayoutConfigDialog::on_removeButton_clicked()

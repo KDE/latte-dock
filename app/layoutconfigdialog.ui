@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>554</width>
+    <width>580</width>
     <height>445</height>
    </rect>
   </property>
@@ -56,7 +56,8 @@
              <string>New</string>
             </property>
             <property name="icon">
-             <iconset theme="add"/>
+             <iconset theme="add">
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </widget>
           </item>
@@ -178,6 +179,16 @@
             <property name="icon">
              <iconset theme="document-export">
               <normaloff>.</normaloff>.</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="downloadButton">
+            <property name="text">
+             <string>Download</string>
+            </property>
+            <property name="icon">
+             <iconset theme="favorites"/>
             </property>
            </widget>
           </item>
