@@ -93,6 +93,7 @@
   <developer_name xml:lang="sv">@Upphovsman@</developer_name>
   <developer_name xml:lang="uk">@AUTHOR@</developer_name>
   <developer_name xml:lang="x-test">xx@AUTHOR@xx</developer_name>
+  <developer_name xml:lang="zh-CN">@AUTHOR@</developer_name>
   <developer_name xml:lang="zh-TW">@作者@</developer_name>
   <icon type="stock">latte-dock</icon>
   <project_license>GPL v2+</project_license>
