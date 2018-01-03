@@ -97,6 +97,7 @@ signals:
     void addWidgetsActionChanged();
     void currentLayoutChanged();
     void currentLayoutNameChanged();
+    void currentLayoutIsChanging();
     void launchersSignalsChanged();
     void layoutsChanged();
     void menuLayoutsChanged();

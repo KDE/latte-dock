@@ -36,6 +36,7 @@ Item{
     property bool debugMagager: Qt.application.arguments.indexOf("--mask") >= 0
 
     property bool blockUpdateMask: false
+    property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
@@ -153,6 +154,16 @@ Item{
         onPanelMarginChanged: updateMaskArea();
     }
 
+    Connections{
+        target: universalLayoutManager
+        onCurrentLayoutIsChanging: {
+            manager.inTempHiding = true;
+            manager.inForceHiding = true;
+            root.clearZoom();
+            manager.slotMustBeHide();
+        }
+    }
+
     onInStartupChanged: {
         if (!inStartup) {
             delayAnimationTimer.start();
@@ -176,15 +187,15 @@ Item{
 
     function slotMustBeShown() {
         //  console.log("show...");
-        if (!slidingAnimationAutoHiddenIn.running && !inTempHiding){
+        if (!slidingAnimationAutoHiddenIn.running && !inTempHiding && !inForceHiding){
             slidingAnimationAutoHiddenIn.init();
         }
     }
 
     function slotMustBeHide() {
         // console.log("hide....");
-        if(!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
-                && !dock.visibility.containsMouse) {
+        if((!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
+                && !dock.visibility.containsMouse) || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
