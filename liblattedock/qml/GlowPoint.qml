@@ -31,6 +31,7 @@ Item{
 
     property bool glow3D: true
     property bool roundCorners: true
+    property bool showBorder: false
     property bool showAttention: false
     property bool showGlow: false
 
@@ -46,7 +47,8 @@ Item{
     property color animationColor: "red" // it is used only internally for the animation
     readonly property color basicColorAlpha: Qt.rgba(basicColor.r, basicColor.g, basicColor.b, glowOpacity)
     readonly property color animationColorAlpha: Qt.rgba(animationColor.r, animationColor.g, animationColor.b, glowOpacity)
-    readonly property color contrastColorAlpha: Qt.rgba(contrastColor.r, contrastColor.g, contrastColor.b, Math.min(glowOpacity+0.4,1))
+    readonly property color contrastColorAlpha: Qt.rgba(contrastColor.r, contrastColor.g, contrastColor.b, Math.min(glowOpacity+0.25,1))
+    readonly property color contrastColorAlpha2: Qt.rgba(contrastColor.r, contrastColor.g, contrastColor.b, 0.3)
 
     readonly property bool isVertical: (location === PlasmaCore.Types.LeftEdge) || (location === PlasmaCore.Types.RightEdge)
     readonly property bool isHorizontal: !isVertical
@@ -173,6 +175,24 @@ Item{
                     }
                 ]
             }
+        }
+    }
+
+    //! add border around indicator without reducing its size
+    Loader{
+        anchors.centerIn: mainElement
+        active: glowItem.showBorder && !glowItem.showGlow
+
+        sourceComponent:Rectangle {
+            width: size
+            height: size
+            anchors.centerIn: parent
+
+            color: contrastColorAlpha2
+            radius: glowItem.roundCorners ? Math.min(width,height) / 2 : 0
+
+            property int size: Math.min(mainElement.width + 2*Math.max(1,mainElement.width/5 ),
+                                        mainElement.height + 2*Math.max(1,mainElement.height/5 ))
         }
     }
 

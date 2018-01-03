@@ -83,6 +83,7 @@ Item{
                     else
                         return false;
                 }
+                showBorder: root.showGlow && root.glow3D
 
                // opacity: (!mainItemContainer.hasActive && root.showPreviews
                //           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
@@ -186,6 +187,7 @@ Item{
                 location: plasmoid.location
                 glowOpacity: root.glowOpacity
                 contrastColor: root.appShadowColorSolid
+                showBorder: root.showGlow && root.glow3D
 
                 basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
