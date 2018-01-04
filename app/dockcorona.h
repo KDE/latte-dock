@@ -69,7 +69,13 @@ public:
     QRect screenGeometry(int id) const override;
     QRegion availableScreenRegion(int id) const override;
     QRect availableScreenRect(int id) const override;
-    QRect availableScreenRectFromDocks(int id, bool alwaysVisibleDocks = false) const;
+
+    //! This is a very generic function in order to return the availableScreenRect of specific screen
+    //! by calculating only the user specified visibility modes and edges. Empty QLists for both
+    //! arguments mean that all choices are accepted in calculations
+    QRect availableScreenRectWithCriteria(int id,
+                                          QList<Dock::Visibility> modes = QList<Dock::Visibility>(),
+                                          QList<Plasma::Types::Location> edges = QList<Plasma::Types::Location>()) const;
 
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;

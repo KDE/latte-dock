@@ -660,7 +660,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
         return;
     }
 
-    QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectFromDocks(view->containment()->screen(), true);
+    QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectWithCriteria(view->containment()->screen(), {Dock::AlwaysVisible}, {});
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {
         availableScreenGeometry = tempAvailableScreenGeometry;

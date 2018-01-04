@@ -462,10 +462,10 @@ QRegion DockCorona::availableScreenRegion(int id) const
 
 QRect DockCorona::availableScreenRect(int id) const
 {
-    return availableScreenRectFromDocks(id);
+    return availableScreenRectWithCriteria(id);
 }
 
-QRect DockCorona::availableScreenRectFromDocks(int id, bool alwaysVisibleDocks) const
+QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility> modes, QList<Plasma::Types::Location> edges) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -484,12 +484,16 @@ QRect DockCorona::availableScreenRectFromDocks(int id, bool alwaysVisibleDocks) 
     if (!screen)
         return {};
 
+    bool allModes = modes.isEmpty();
+
+    bool allEdges = edges.isEmpty();
+
     auto available = screen->geometry();
 
     for (const auto *view : m_dockViews) {
         if (view && view->containment() && view->screen() == screen
-            && (!alwaysVisibleDocks
-                || (alwaysVisibleDocks && view->visibility() && view->visibility()->mode() == Dock::AlwaysVisible))) {
+            && ((allEdges || edges.contains(view->location()))
+                && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
 
             auto dockRect = view->absGeometry();
 
@@ -507,16 +511,12 @@ QRect DockCorona::availableScreenRectFromDocks(int id, bool alwaysVisibleDocks) 
                     break;
 
                 case Plasma::Types::LeftEdge:
-                    if (alwaysVisibleDocks) {
-                        available.setLeft(dockRect.right() + 1);
-                    }
+                    available.setLeft(dockRect.right() + 1);
 
                     break;
 
                 case Plasma::Types::RightEdge:
-                    if (alwaysVisibleDocks) {
-                        available.setRight(dockRect.left() - 1);
-                    }
+                    available.setRight(dockRect.left() - 1);
 
                     break;
 
