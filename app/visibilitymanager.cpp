@@ -434,9 +434,14 @@ void VisibilityManagerPrivate::checkAllWindows()
         return;
 
     bool raise{true};
+    bool existsFaultyWindow{false};
 
     for (const auto &winfo : windows) {
         // <WindowId, WindowInfoWrap>
+        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
+            existsFaultyWindow = true;
+        }
+
         if (!winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()) || !wm->isOnCurrentActivity(winfo.wid()))
             continue;
 
@@ -449,6 +454,7 @@ void VisibilityManagerPrivate::checkAllWindows()
         }
     }
 
+    cleanupFaultyWindows();
     raiseDock(raise);
 }
 
@@ -558,6 +564,19 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
 
         default:
             break;
+    }
+}
+
+void VisibilityManagerPrivate::cleanupFaultyWindows()
+{
+    foreach (auto key, windows.keys()) {
+        auto winfo = windows[key];
+
+        //! garbage windows removing
+        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
+            //qDebug() << "Faulty Geometry ::: " << winfo.wid();
+            windows.remove(key);
+        }
     }
 }
 
@@ -762,18 +781,8 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
         //qDebug() << "window geometry ::: " << winfo.geometry();
     }
 
-    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
-    //! maybe a garbage collector here is a good idea!!!
     if (existsFaultyWindow) {
-        foreach (auto key, windows.keys()) {
-            auto winfo = windows[key];
-
-            //! garbage windows removing
-            if (winfo.geometry() == QRect(0, 0, 0, 0)) {
-                //qDebug() << "Faulty Geometry ::: " << winfo.wid();
-                windows.remove(key);
-            }
-        }
+        cleanupFaultyWindows();
     }
 
     /*if (!foundMaximized && !foundSnap) {

@@ -44,6 +44,10 @@ public:
     void raiseDockTemporarily();
     void updateHiddenState();
 
+    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
+    //! this is a garbage collector to collect such windows in order to not break the windows array validity.
+    void cleanupFaultyWindows();
+
     //! Dynamic Background Feature
     void setEnabledDynamicBackground(bool active);
     void setExistsWindowMaximized(bool windowMaximized);
