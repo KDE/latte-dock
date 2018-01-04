@@ -56,6 +56,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
+            visible: plasmoid.configuration.advanced
 
             Header {
                 text: i18n("Layout")
@@ -127,10 +128,11 @@ PlasmaComponents.Page {
         //! BEGIN: Applet Size
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.topMargin: plasmoid.configuration.advanced ? 0 : units.smallSpacing
             spacing: units.smallSpacing
 
             Header {
-                text: i18n("Applets Size")
+                text: i18n("Applets")
             }
 
             RowLayout {
@@ -139,6 +141,11 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 enabled: plasmoid.configuration.proportionIconSize === -1
+
+                PlasmaComponents.Label {
+                    text: i18n("Size:")
+                    horizontalAlignment: Text.AlignLeft
+                }
 
                 PlasmaComponents.Slider {
                     id: appletsSizeSlider

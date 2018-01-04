@@ -54,6 +54,15 @@ FocusScope {
         imagePath: "dialogs/background"
     }
 
+    TypeSelection{
+        x: dialog.width/2 - width/2
+        y: plasmoid.configuration.advanced ? 0 : -height-18
+
+        Behavior on y {
+            NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
+        }
+    }
+
     PlasmaComponents.ToolButton {
         id: pinButton
 
@@ -447,7 +456,6 @@ FocusScope {
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
-                opacity: plasmoid.configuration.advanced ? 1 : 0
 
                 text: i18n("Quit")
                 iconSource: "application-exit"

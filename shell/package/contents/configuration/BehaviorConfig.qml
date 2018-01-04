@@ -43,84 +43,6 @@ PlasmaComponents.Page {
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
 
-        //! BEGIN: Type
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            Layout.topMargin: units.smallSpacing
-
-            Header {
-                text: i18n("Type")
-            }
-
-            RowLayout {
-                id: typeRow
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 1
-
-                readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
-                                                && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
-                                                && (plasmoid.configuration.zoomLevel === 0) && !plasmoid.configuration.autoDecreaseIconSize
-
-                ExclusiveGroup {
-                    id: dockTypeGroup
-                }
-
-                PlasmaComponents.Button {
-                    id: dockTypeButton
-                    Layout.alignment: Qt.AlignLeft
-                    Layout.fillWidth: true
-                    checkable: true
-                    checked: !typeRow.isPanel
-                    text: i18nc("dock type","Dock")
-                    exclusiveGroup: dockTypeGroup
-
-                    onPressedChanged: {
-                        if (pressed && !checked) {
-                            dock.visibility.mode = Latte.Dock.DodgeActive;
-                            plasmoid.configuration.panelPosition = Latte.Dock.Center;
-                            plasmoid.configuration.useThemePanel = true;
-                            plasmoid.configuration.solidPanel = false;
-                            plasmoid.configuration.panelSize = 0;
-                            plasmoid.configuration.shadows = 2;
-                            plasmoid.configuration.zoomLevel = 16;
-                            plasmoid.configuration.autoDecreaseIconSize = true;
-                            plasmoid.configuration.shrinkThickMargins = false;
-                        }
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    id: panelTypeButton
-                    Layout.alignment: Qt.AlignLeft
-                    Layout.fillWidth: true
-                    checkable: true
-                    checked: typeRow.isPanel
-                    text: i18nc("panel type","Panel")
-                    exclusiveGroup: dockTypeGroup
-
-                    onPressedChanged: {
-                        if (pressed && !checked) {
-                            dock.visibility.mode = Latte.Dock.AlwaysVisible;
-                            plasmoid.configuration.panelPosition = Latte.Dock.Justify;
-                            plasmoid.configuration.useThemePanel = true;
-                            plasmoid.configuration.solidPanel = false;
-                            plasmoid.configuration.panelSize = 100;
-                            plasmoid.configuration.panelShadows = true;
-                            plasmoid.configuration.shadows = 0;
-                            plasmoid.configuration.zoomLevel = 0;
-                            plasmoid.configuration.autoDecreaseIconSize = false;
-                            plasmoid.configuration.shrinkThickMargins = true;
-                        }
-                    }
-                }
-
-            }
-        }
-
         //! BEGIN: Location
         ColumnLayout {
             Layout.fillWidth: true
@@ -221,10 +143,10 @@ PlasmaComponents.Page {
                             var succeed = dock.setCurrentScreen(textAt(index));
 
                             if(succeed) {
-                               dock.onPrimary = false;
+                                dock.onPrimary = false;
                             } else {
-                               console.log("the edge is already occupied!!!");
-                               acceptedIndex = false;
+                                console.log("the edge is already occupied!!!");
+                                acceptedIndex = false;
                             }
                         }
                     }
@@ -502,7 +424,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
 
             enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
-                     || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+                       || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
 
             Header {
                 Layout.fillWidth: true
