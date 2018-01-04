@@ -302,12 +302,14 @@ bool LayoutManager::switchToLayout(QString layoutName)
     }
 
     if (!lPath.isEmpty()) {
+        emit currentLayoutIsChanging();
+
         //! this code must be called asynchronously because it is called
         //! also from qml (Tasks plasmoid). This change fixes a very important
         //! crash when switching sessions through the Tasks plasmoid Context menu
         //! Latte was unstable and was crashing very often during changing
         //! sessions.
-        QTimer::singleShot(0, [this, layoutName, lPath]() {
+        QTimer::singleShot(250, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
 
             m_corona->loadLatteLayout(lPath);
