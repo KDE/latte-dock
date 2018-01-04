@@ -399,6 +399,8 @@ DragDrop.DropArea {
 
             dock.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
             dock.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
 
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
             dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
@@ -566,8 +568,11 @@ DragDrop.DropArea {
             dock.onYChanged.disconnect(visibilityManager.updateMaskArea);
             dock.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
+
             dock.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
             dock.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
 
             if (dock.visibility) {
                 dock.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);

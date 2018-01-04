@@ -190,7 +190,7 @@ void DockView::init()
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
-    connect(this, &DockView::onPrimaryChanged, this, &DockView::reconsiderScreen);
+
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
@@ -248,13 +248,9 @@ void DockView::initSignalingForLocationChangeSliding()
         }
     });
 
-    connect(this, &DockView::hideDockDuringLocationChangeFinished, this, [&]() {
-        setBlockAnimations(true);
-        setLocation(m_goToLocation);
-    });
-
-    connect(this, &DockView::dockLocationChanged, this, [&]() {
-        if (blockAnimations()) {
+    connect(this, &DockView::locationChanged, this, [&]() {
+        if (m_goToLocation != Plasma::Types::Floating) {
+            m_goToLocation = Plasma::Types::Floating;
             QTimer::singleShot(100, [this]() {
                 setBlockAnimations(false);
                 emit showDockAfterLocationChangeFinished();
@@ -262,8 +258,44 @@ void DockView::initSignalingForLocationChangeSliding()
             });
         }
     });
-}
 
+    //! signals to handle the sliding-in/out during screen changes
+    connect(this, &DockView::hideDockDuringScreenChangeStarted, this, [&]() {
+        setBlockHiding(false);
+
+        if (m_configView) {
+            auto configDialog = qobject_cast<DockConfigView *>(m_configView);
+
+            if (configDialog) {
+                configDialog->hideConfigWindow();
+            }
+        }
+    });
+
+    connect(this, &DockView::currentScreenChanged, this, [&]() {
+        if (m_goToScreen) {
+            m_goToScreen = nullptr;
+            QTimer::singleShot(100, [this]() {
+                setBlockAnimations(false);
+                emit showDockAfterScreenChangeFinished();
+                showSettingsWindow();
+            });
+        }
+    });
+
+    //!    ----  both cases   ----  !//
+    //! this is used for both location and screen change cases, this signal
+    //! is send when the sliding-out animation has finished
+    connect(this, &DockView::hideDockDuringLocationChangeFinished, this, [&]() {
+        setBlockAnimations(true);
+
+        if (m_goToLocation != Plasma::Types::Floating) {
+            setLocation(m_goToLocation);
+        } else if (m_goToScreen) {
+            setScreenToFollow(m_goToScreen);
+        }
+    });
+}
 
 void DockView::availableScreenRectChanged()
 {
@@ -327,7 +359,13 @@ bool DockView::setCurrentScreen(const QString id)
             if (!freeEdges.contains(location())) {
                 return false;
             } else {
-                setScreenToFollow(nextScreen);
+                m_goToScreen = nextScreen;
+
+                //! asynchronous call in order to not crash from configwindow
+                //! deletion from sliding out animation
+                QTimer::singleShot(100, [this]() {
+                    emit hideDockDuringScreenChangeStarted();
+                });
             }
         }
     }
@@ -365,6 +403,7 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
     syncGeometry();
     updateAbsDockGeometry(true);
     emit screenGeometryChanged();
+    emit currentScreenChanged();
 }
 
 //! the main function which decides if this dock is at the

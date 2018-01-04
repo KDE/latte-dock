@@ -313,7 +313,9 @@ private:
 
     QTimer m_screenSyncTimer;
 
-    Plasma::Types::Location m_goToLocation;
+    //!used at sliding out/in animation
+    Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
+    QScreen *m_goToScreen{nullptr};
 
     Plasma::Theme m_theme;
     //only for the mask on disabled compositing, not to actually paint

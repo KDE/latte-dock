@@ -200,6 +200,7 @@ Item{
         }
     }
 
+    //! functions used for sliding out/in during location/screen changes
     function slotHideDockDuringLocationChange() {
         inTempHiding = true;
         blockUpdateMask = true;

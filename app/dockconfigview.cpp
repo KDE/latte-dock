@@ -57,7 +57,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
-    connections << connect(dockView, SIGNAL(screenChanged(QScreen *)), &m_screenSyncTimer, SLOT(start()));
+
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_dockView->screen());
         setFlags(wFlags());
