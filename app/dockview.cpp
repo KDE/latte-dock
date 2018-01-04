@@ -235,7 +235,8 @@ void DockView::init()
 
 void DockView::initSignalingForLocationChangeSliding()
 {
-    connect(this, &DockView::hideDockDuringLocationChangeSignal, this, [&]() {
+    //! signals to handle the sliding-in/out during location changes
+    connect(this, &DockView::hideDockDuringLocationChangeStarted, this, [&]() {
         setBlockHiding(false);
 
         if (m_configView) {
@@ -256,7 +257,7 @@ void DockView::initSignalingForLocationChangeSliding()
         if (blockAnimations()) {
             QTimer::singleShot(100, [this]() {
                 setBlockAnimations(false);
-                emit showDockAfterLocationChangeSignal();
+                emit showDockAfterLocationChangeFinished();
                 showSettingsWindow();
             });
         }
@@ -1233,7 +1234,7 @@ void DockView::setShadow(int shadow)
 void DockView::hideDockDuringLocationChange(int goToLocation)
 {
     m_goToLocation = static_cast<Plasma::Types::Location>(goToLocation);
-    emit hideDockDuringLocationChangeSignal();
+    emit hideDockDuringLocationChangeStarted();
 }
 
 

@@ -217,9 +217,12 @@ signals:
     //! these two signals are used from config ui and containment ui
     //! in order to orchestrate an animated hiding/showing of dock
     //! during changing location
-    void hideDockDuringLocationChangeSignal();
+    void hideDockDuringLocationChangeStarted();
     void hideDockDuringLocationChangeFinished();
-    void showDockAfterLocationChangeSignal();
+    void hideDockDuringScreenChangeStarted();
+    void hideDockDuringScreenChangeFinished();
+    void showDockAfterLocationChangeFinished();
+    void showDockAfterScreenChangeFinished();
 
     void alternativesIsShownChanged();
     void alignmentChanged();
