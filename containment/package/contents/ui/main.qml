@@ -375,6 +375,7 @@ DragDrop.DropArea {
         } else {
             updateAutomaticIconSize();
             layoutsContainer.updateSizeForAppletsInFill();
+            setGlobalDirectRender(false);
         }
 
         updateLayouts();
@@ -1105,10 +1106,6 @@ DragDrop.DropArea {
                 } else {
                     //       console.log("Step 4 - did not found...");
                 }
-            }
-
-            if (newIconSizeFound){
-                setGlobalDirectRender(false);
             }
         }
     }
