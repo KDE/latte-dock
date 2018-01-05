@@ -1,5 +1,11 @@
 [KNewStuff3]
 Name=Latte Layouts
+Name[ca]=Disposicions del Latte
+Name[nl]=Latte-indelingen
+Name[pt]=Disposições do Latte
+Name[sv]=Latte layouter
+Name[uk]=Компонування Латте
+Name[x-test]=xxLatte Layoutsxx
 
 ProvidersUrl=https://download.kde.org/ocs/providers.xml
 Categories=Latte Layouts
