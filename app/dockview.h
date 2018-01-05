@@ -250,6 +250,7 @@ signals:
     void maskAreaChanged();
     void screenGeometryChanged();
     void shadowChanged();
+    void themeChanged();
     void totalDocksCountChanged();
     void xChanged();
     void yChanged();

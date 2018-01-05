@@ -199,7 +199,7 @@ void DockView::init()
     connect(this, &DockView::drawEffectsChanged, this, &DockView::updateEffects);
     connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
 
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::updateEffects);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
 
     connect(this, &DockView::normalThicknessChanged, this, [&]() {
         if (m_behaveAsPlasmaPanel) {

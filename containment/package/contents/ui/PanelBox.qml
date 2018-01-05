@@ -250,7 +250,6 @@ Item{
             value: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
         }
 
-
         PlasmaCore.FrameSvgItem{
             id: solidBackground
             anchors.leftMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.left - leftIncreaser : 0
@@ -280,6 +279,18 @@ Item{
                     if (!root.editMode){
                         solidBackground.updateEffectsArea();
                     }
+                }
+            }
+
+            //! Fix for FrameSvgItem QML version not updating its margins after a theme change
+            //! with this hack we enforce such update. I could use the repaintNeeded signal but
+            //! it is called more often than the themeChanged one.
+            Connections{
+                target: dock
+                onThemeChanged: {
+                    plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
+                    plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
+                    updateEffectsArea();
                 }
             }
 
