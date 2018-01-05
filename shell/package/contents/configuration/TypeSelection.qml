@@ -56,7 +56,7 @@ Row {
         checked: !typeRow.isPanel
         text: i18nc("dock type","Dock")
         exclusiveGroup: dockTypeGroup
-        tooltip: i18n("Change the bevavior and appearance to Dock type")
+        tooltip: i18n("Change the behavior and appearance to Dock type")
 
         onPressedChanged: {
             if (pressed && !checked) {
@@ -80,7 +80,7 @@ Row {
         checked: typeRow.isPanel
         text: i18nc("panel type","Panel")
         exclusiveGroup: dockTypeGroup
-        tooltip: i18n("Change the bevavior and appearance to Panel type")
+        tooltip: i18n("Change the behavior and appearance to Panel type")
 
         onPressedChanged: {
             if (pressed && !checked) {
