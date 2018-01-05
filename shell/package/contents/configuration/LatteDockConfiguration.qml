@@ -239,6 +239,14 @@ FocusScope {
                     text: i18n("Advanced")
                     Layout.alignment: Qt.AlignRight
                     opacity: plasmoid.configuration.advanced ? 1 : 0.3
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            plasmoid.configuration.advanced = !advancedSwitch.checked;
+                            advancedSwitch.checked = plasmoid.configuration.advanced;
+                        }
+                    }
                 }
 
                 Switch {
