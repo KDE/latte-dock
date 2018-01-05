@@ -590,6 +590,8 @@ void LayoutConfigDialog::loadLayouts()
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
 
+    ui->layoutsView->resizeColumnsToContents();
+
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
         auto msg = new QMessageBox(this);
