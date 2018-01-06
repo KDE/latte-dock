@@ -58,8 +58,9 @@ FocusScope {
     }
 
     TypeSelection{
+        id: typeSettings
         x: dialog.width/2 - width/2
-        y: plasmoid.configuration.advanced ? -marginHeight : -height
+        y: plasmoid.configuration.advanced ? 0 : -height
 
         Behavior on y {
             NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
@@ -104,7 +105,7 @@ FocusScope {
         Layout.minimumHeight: height
         Layout.preferredWidth: width
         Layout.preferredHeight: height
-        height: header.height + tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
+        height: header.height + headerSpacer.height+ tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
         width: dialog.maxWidth
 
         anchors.horizontalCenter: parent.horizontalCenter
@@ -228,7 +229,13 @@ FocusScope {
                 }
             }
 
+            Item{
+                id: headerSpacer
+                Layout.minimumHeight: typeSettings.height + advancedSettings.height + 2*units.smallSpacing
+            }
+
             RowLayout {
+                id: advancedSettings
                 Layout.fillWidth: true
                 Layout.rightMargin: units.smallSpacing
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom

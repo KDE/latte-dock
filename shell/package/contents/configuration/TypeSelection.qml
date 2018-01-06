@@ -34,7 +34,7 @@ Rectangle {
     height: typeRow.height + 2*marginHeight
 
     property int marginHeight: 0.3 * typeRow.height
-    property int marginWidth: 0.5 * typeRow.height
+    property int marginWidth: 2 * typeRow.height
 
     color: transparentBackgroundColor
     border.width: 1
