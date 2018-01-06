@@ -49,6 +49,9 @@ FocusScope {
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
 
+    property color bC: theme.backgroundColor
+    property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
+
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
         imagePath: "dialogs/background"
@@ -56,7 +59,7 @@ FocusScope {
 
     TypeSelection{
         x: dialog.width/2 - width/2
-        y: plasmoid.configuration.advanced ? 0 : -height-18
+        y: plasmoid.configuration.advanced ? -marginHeight : -height
 
         Behavior on y {
             NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
@@ -319,11 +322,7 @@ FocusScope {
             width: maxWidth - units.smallSpacing
             height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 4
 
-            property color bC: theme.backgroundColor
-            property color transparentBack: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
-
-            color: transparentBack
-
+            color: transparentBackgroundColor
             border.width: 1
             border.color: theme.backgroundColor
 
