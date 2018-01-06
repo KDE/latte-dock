@@ -1,5 +1,19 @@
 #**CHANGELOG**#
 
+#### Version 0.7.3
+
+* support RTL languages
+* fix crash occuring from badges
+* improve shadow behavior and calculations for corner cases
+* support "nomad systray" and "kdeconnect sms" in Latte heuristics
+* expand applets when clicked at neutral areas
+* shrink a bit the task number
+* support Fitt's Law in more corner cases
+* execute Latte at the same time between different users
+* ignore X11 signals that are sent with no reason
+    (e.g. Firefox 57 upstream bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1389953)
+* take into account the applets shadow size for mask calculations
+
 #### Version 0.7.2
 
 * fix crashes introduced with qt 5.9.2 when the user hovers the dock
