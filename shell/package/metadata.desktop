@@ -49,6 +49,7 @@ Keywords[sk]=shell
 Keywords[sv]=skal
 Keywords[uk]=оболонка
 Keywords[x-test]=xxshellxx
+Keywords[zh_CN]=shell
 Keywords[zh_TW]=shell
 Type=Service
 
