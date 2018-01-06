@@ -185,7 +185,7 @@ FocusScope {
             spacing: 0
 
             Item {
-                Layout.alignment: Qt.AlignLeft | Qt.AlignHCenter
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 Layout.fillWidth: false
                 Layout.preferredWidth: width
                 Layout.preferredHeight: height
