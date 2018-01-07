@@ -35,6 +35,8 @@ Item{
     property int currentSpot: -1000
     property int hoveredIndex: -1
 
+    readonly property int fillApplets: _startLayout.fillApplets + _mainLayout.fillApplets + _endLayout.fillApplets
+
     property Item startLayout : _startLayout
     property Item mainLayout: _mainLayout
     property Item endLayout: _endLayout

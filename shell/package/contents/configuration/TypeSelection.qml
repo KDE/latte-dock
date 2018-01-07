@@ -48,16 +48,7 @@ Rectangle {
 
         readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
                                         && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
-                                        && (plasmoid.configuration.zoomLevel === 0) && !plasmoid.configuration.autoDecreaseIconSize
-
-        /*layer.enabled: true
-    layer.effect: DropShadow {
-        radius: dockTypeButton.height / 10
-        samples: radius
-        color: "#0a0a0a"
-        horizontalOffset: -1
-        //opacity: 0.5
-    }*/
+                                        && (plasmoid.configuration.zoomLevel === 0)
 
         ExclusiveGroup {
             id: dockTypeGroup
@@ -81,8 +72,6 @@ Rectangle {
                     plasmoid.configuration.panelSize = 0;
                     plasmoid.configuration.shadows = 2;
                     plasmoid.configuration.zoomLevel = 16;
-                    plasmoid.configuration.autoDecreaseIconSize = true;
-                    plasmoid.configuration.shrinkThickMargins = false;
                 }
             }
         }
@@ -106,7 +95,6 @@ Rectangle {
                     plasmoid.configuration.panelShadows = true;
                     plasmoid.configuration.shadows = 0;
                     plasmoid.configuration.zoomLevel = 0;
-                    plasmoid.configuration.autoDecreaseIconSize = false;
                     plasmoid.configuration.shrinkThickMargins = true;
                 }
             }
