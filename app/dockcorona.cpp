@@ -98,7 +98,7 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
 
     m_docksScreenSyncTimer.setSingleShot(true);
     m_docksScreenSyncTimer.setInterval(2500);
-    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViews);
+    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViewsToScreens);
 
     //! Dbus adaptor initialization
     new LatteDockAdaptor(this);
@@ -583,7 +583,7 @@ void DockCorona::screenCountChanged()
 
 //! the central functions that updates loading/unloading dockviews
 //! concerning screen changed (for multi-screen setups mainly)
-void DockCorona::syncDockViews()
+void DockCorona::syncDockViewsToScreens()
 {
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
