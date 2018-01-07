@@ -127,6 +127,10 @@ Item{
                     GradientStop { position: 0.08; color: "transparent" }
                     GradientStop { position: 0.37; color: glowItem.currentColor }
                     GradientStop { position: 0.43; color: glowItem.contrastColorAlpha }
+                    GradientStop { position: 0.57; color: glowItem.contrastColorAlpha }
+                    GradientStop { position: 0.63; color: glowItem.currentColor }
+                    GradientStop { position: 0.92; color: "transparent" }
+                    GradientStop { position: 1; color: "transparent" }
                 }
             }
         }
