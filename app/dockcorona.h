@@ -91,7 +91,6 @@ public:
 
     void addDock(Plasma::Containment *containment, int expDockScreen = -1);
     void recreateDock(Plasma::Containment *containment);
-    void copyDock(Plasma::Containment *containment);
 
     void aboutApplication();
     void closeApplication();
@@ -139,7 +138,6 @@ private:
     int noOfDocks();
     int primaryScreenId() const;
 
-    QString availableId(QStringList all, QStringList assigned, int base);
     QStringList containmentsIds();
     QStringList appletsIds();
 
@@ -172,6 +170,7 @@ private:
     KWayland::Client::PlasmaShell *m_waylandDockCorona{nullptr};
 
     friend class GlobalShortcuts;
+    friend class Layout;
     friend class LayoutManager;
     friend class LaunchersSignals;
 };

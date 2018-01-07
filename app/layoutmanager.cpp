@@ -324,6 +324,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
             }
 
             m_currentLayout = new Layout(this, lPath, layoutName);
+            m_currentLayout->setCorona(m_corona);
 
             emit currentLayoutChanged();
         });

@@ -496,7 +496,7 @@ void DockView::copyDock()
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona) {
-        dockCorona->copyDock(containment());
+        dockCorona->layoutManager()->currentLayout()->copyDock(containment());
     }
 }
 

@@ -28,9 +28,9 @@
 
 #include "dockcorona.h"
 
-class DockCorona;
-
 namespace Latte {
+
+class DockCorona;
 
 //! This class is responsible to hold the settings for a specific layout.
 //! It also updates always the relevant layout configuration concerning
@@ -67,6 +67,10 @@ public:
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
+    void setCorona(DockCorona *corona);
+    //! this function needs the layout to have first set the corona through setCorona() function
+    void copyDock(Plasma::Containment *containment);
+
     static QString layoutName(const QString &fileName);
 
 signals:
@@ -86,6 +90,8 @@ private:
     void init();
     void setName(QString name);
     void setFile(QString file);
+
+    QString availableId(QStringList all, QStringList assigned, int base);
 
 private:
     bool m_showInMenu{false};
