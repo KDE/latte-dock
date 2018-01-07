@@ -23,7 +23,7 @@
 
 #include "dockcorona.h"
 #include "importer.h"
-#include "layoutsettings.h"
+#include "layout.h"
 #include "layoutconfigdialog.h"
 #include "launcherssignals.h"
 
@@ -33,7 +33,7 @@
 #include <KLocalizedString>
 
 class Importer;
-class LayoutSettings;
+class Layout;
 class LayoutConfigDialog;
 class LaunchersSignals;
 
@@ -51,7 +51,7 @@ class LayoutManager : public QObject {
 
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
-    Q_PROPERTY(LayoutSettings *currentLayout READ currentLayout NOTIFY currentLayoutChanged)
+    Q_PROPERTY(Layout *currentLayout READ currentLayout NOTIFY currentLayoutChanged)
     Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
 
 public:
@@ -76,7 +76,7 @@ public:
 
     QAction *addWidgetsAction();
 
-    LayoutSettings *currentLayout();
+    Layout *currentLayout();
     LaunchersSignals *launchersSignals();
 
     QStringList activities();
@@ -121,7 +121,7 @@ private:
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
 
-    LayoutSettings *m_currentLayout{nullptr};
+    Layout *m_currentLayout{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
 
     QString m_shouldSwitchToLayout;

@@ -111,7 +111,7 @@ QAction *LayoutManager::addWidgetsAction()
     return m_addWidgetsAction;
 }
 
-LayoutSettings *LayoutManager::currentLayout()
+Layout *LayoutManager::currentLayout()
 {
     return m_currentLayout;
 }
@@ -134,7 +134,7 @@ QString LayoutManager::defaultLayoutName() const
 {
     QByteArray presetNameOrig = QString("preset" + QString::number(1)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-    QString presetName = LayoutSettings::layoutName(presetPath);
+    QString presetName = Layout::layoutName(presetPath);
     QByteArray presetNameChars = presetName.toUtf8();
     presetName = i18n(presetNameChars);
 
@@ -264,7 +264,7 @@ void LayoutManager::loadLayouts()
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
     foreach (auto layout, files) {
-        LayoutSettings layoutSets(this, layoutDir.absolutePath() + "/" + layout);
+        Layout layoutSets(this, layoutDir.absolutePath() + "/" + layout);
 
         QStringList validActivityIds = validActivities(layoutSets.activities());
         layoutSets.setActivities(validActivityIds);
@@ -323,7 +323,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
                 m_currentLayout->deleteLater();
             }
 
-            m_currentLayout = new LayoutSettings(this, lPath, layoutName);
+            m_currentLayout = new Layout(this, lPath, layoutName);
 
             emit currentLayoutChanged();
         });
@@ -384,7 +384,7 @@ void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
 {
     QByteArray presetNameOrig = QString("preset" + QString::number(presetNo)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
-    QString presetName = LayoutSettings::layoutName(presetPath);
+    QString presetName = Layout::layoutName(presetPath);
     QByteArray presetNameChars = presetName.toUtf8();
     presetName = i18n(presetNameChars);
 

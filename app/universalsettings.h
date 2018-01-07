@@ -26,7 +26,7 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-#include "layoutsettings.h"
+#include "layout.h"
 
 namespace Latte {
 

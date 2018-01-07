@@ -21,7 +21,7 @@
 #include "importer.h"
 
 #include "layoutmanager.h"
-#include "layoutsettings.h"
+#include "layout.h"
 #include "screenpool.h"
 #include "../liblattedock/dock.h"
 
@@ -164,7 +164,7 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     }
 
     //! update also the layout settings correctly
-    LayoutSettings newLayout(this, newLayoutPath, newName);
+    Layout newLayout(this, newLayoutPath, newName);
     newLayout.setVersion(2);
     newLayout.setLaunchers(layoutLaunchers);
 
@@ -458,7 +458,7 @@ QString Importer::importLayoutHelper(QString fileName)
         return QString();
     }
 
-    QString newLayoutName = LayoutSettings::layoutName(fileName);
+    QString newLayoutName = Layout::layoutName(fileName);
     newLayoutName = uniqueLayoutName(newLayoutName);
 
     QFile(fileName).copy(QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte");
@@ -477,7 +477,7 @@ QStringList Importer::availableLayouts()
     QStringList layoutNames;
 
     foreach (auto file, files) {
-        layoutNames.append(LayoutSettings::layoutName(file));
+        layoutNames.append(Layout::layoutName(file));
     }
 
     return layoutNames;

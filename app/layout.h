@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef LAYOUTSETTINGS_H
-#define LAYOUTSETTINGS_H
+#ifndef LAYOUT_H
+#define LAYOUT_H
 
 #include <QObject>
 
@@ -35,7 +35,7 @@ namespace Latte {
 //! This class is responsible to hold the settings for a specific layout.
 //! It also updates always the relevant layout configuration concerning
 //! its general settings (no the containments)
-class LayoutSettings : public QObject {
+class Layout : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
@@ -44,8 +44,8 @@ class LayoutSettings : public QObject {
     Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
 public:
-    LayoutSettings(QObject *parent, QString layoutFile, QString layoutName = QString());
-    ~LayoutSettings() override;
+    Layout(QObject *parent, QString layoutFile, QString layoutName = QString());
+    ~Layout() override;
 
     bool showInMenu() const;
     void setShowInMenu(bool show);
@@ -104,4 +104,4 @@ private:
 
 }
 
-#endif // LAYOUTSETTINGS_H
+#endif // LAYOUT_H

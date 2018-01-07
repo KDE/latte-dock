@@ -21,7 +21,7 @@
 
 #include "ui_layoutconfigdialog.h"
 #include "layoutconfigdialog.h"
-#include "layoutsettings.h"
+#include "layout.h"
 #include "layoutsDelegates/checkboxdelegate.h"
 #include "layoutsDelegates/colorcmbboxdelegate.h"
 #include "layoutsDelegates/activitycmbboxdelegate.h"
@@ -154,7 +154,7 @@ void LayoutConfigDialog::on_newButton_clicked()
 
     //! find Default preset path
     foreach (auto preset, m_manager->presetsPaths()) {
-        QString presetName = LayoutSettings::layoutName(preset);
+        QString presetName = Layout::layoutName(preset);
 
         if (presetName == "Default") {
             QByteArray presetNameChars = presetName.toUtf8();
@@ -187,7 +187,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
     QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
     QFile(id).copy(copiedId);
 
-    LayoutSettings *settings = new LayoutSettings(this, copiedId);
+    Layout *settings = new Layout(this, copiedId);
     m_layouts[copiedId] = settings;
 
     insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
@@ -427,7 +427,7 @@ void LayoutConfigDialog::on_exportButton_clicked()
                 return;
             }
 
-            LayoutSettings layoutS(this, file);
+            Layout layoutS(this, file);
             layoutS.setActivities(QStringList());
 
             //NOTE: The pointer is automatically deleted when the event is closed
@@ -499,7 +499,7 @@ void LayoutConfigDialog::restoreDefaults()
     qDebug() << Q_FUNC_INFO;
 
     foreach (auto preset, m_manager->presetsPaths()) {
-        QString presetName = LayoutSettings::layoutName(preset);
+        QString presetName = Layout::layoutName(preset);
         QByteArray presetNameChars = presetName.toUtf8();
         const char *prset_str = presetNameChars.data();
         presetName = i18n(prset_str);
@@ -513,7 +513,7 @@ void LayoutConfigDialog::restoreDefaults()
 void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory, bool showNotification)
 {
     if (layoutName.isEmpty()) {
-        layoutName = LayoutSettings::layoutName(file);
+        layoutName = Layout::layoutName(file);
     }
 
     QString copiedId;
@@ -526,7 +526,7 @@ void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool
         copiedId = file;
     }
 
-    LayoutSettings *settings = new LayoutSettings(this, copiedId);
+    Layout *settings = new Layout(this, copiedId);
     m_layouts[copiedId] = settings;
 
     QString id = copiedId;
@@ -560,7 +560,7 @@ void LayoutConfigDialog::loadLayouts()
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
 
-        LayoutSettings *layoutSets = new LayoutSettings(this, layoutPath);
+        Layout *layoutSets = new Layout(this, layoutPath);
         m_layouts[layoutPath] = layoutSets;
 
         insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), layoutSets->name(),
@@ -820,7 +820,7 @@ bool LayoutConfigDialog::saveAllChanges()
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
 
-        LayoutSettings *layout = name == m_manager->currentLayoutName() ? m_manager->currentLayout() : m_layouts[id];
+        Layout *layout = name == m_manager->currentLayoutName() ? m_manager->currentLayout() : m_layouts[id];
 
         if (layout->color() != color) {
             layout->setColor(color);
@@ -862,7 +862,7 @@ bool LayoutConfigDialog::saveAllChanges()
         QString newFile = QDir::homePath() + "/.config/latte/" + toRenameNames[i] + ".layout.latte";
         QFile(toRenamePaths[i]).rename(newFile);
 
-        LayoutSettings *nLayout = new LayoutSettings(this, newFile);
+        Layout *nLayout = new Layout(this, newFile);
         m_layouts[newFile] = nLayout;
 
         for (int j = 0; j < m_model->rowCount(); ++j) {

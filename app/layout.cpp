@@ -18,14 +18,14 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "layoutsettings.h"
+#include "layout.h"
 
 #include <QFile>
 #include <KSharedConfig>
 
 namespace Latte {
 
-LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString assignedName)
+Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
     : QObject(parent)
 {
     qDebug() << "Layout file to create object: " << layoutFile << " with name: " << assignedName;
@@ -45,7 +45,7 @@ LayoutSettings::LayoutSettings(QObject *parent, QString layoutFile, QString assi
     }
 }
 
-LayoutSettings::~LayoutSettings()
+Layout::~Layout()
 {
     if (!m_layoutFile.isEmpty()) {
         //saveConfig();
@@ -53,21 +53,21 @@ LayoutSettings::~LayoutSettings()
     }
 }
 
-void LayoutSettings::init()
+void Layout::init()
 {
-    connect(this, &LayoutSettings::activitiesChanged, this, &LayoutSettings::saveConfig);
-    connect(this, &LayoutSettings::versionChanged, this, &LayoutSettings::saveConfig);
-    connect(this, &LayoutSettings::colorChanged, this, &LayoutSettings::saveConfig);
-    connect(this, &LayoutSettings::showInMenuChanged, this, &LayoutSettings::saveConfig);
-    connect(this, &LayoutSettings::launchersChanged, this, &LayoutSettings::saveConfig);
+    connect(this, &Layout::activitiesChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::versionChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::colorChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::showInMenuChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::launchersChanged, this, &Layout::saveConfig);
 }
 
-int LayoutSettings::version() const
+int Layout::version() const
 {
     return m_version;
 }
 
-void LayoutSettings::setVersion(int ver)
+void Layout::setVersion(int ver)
 {
     if (m_version == ver) {
         return;
@@ -78,12 +78,12 @@ void LayoutSettings::setVersion(int ver)
     emit versionChanged();
 }
 
-bool LayoutSettings::showInMenu() const
+bool Layout::showInMenu() const
 {
     return m_showInMenu;
 }
 
-void LayoutSettings::setShowInMenu(bool show)
+void Layout::setShowInMenu(bool show)
 {
     if (m_showInMenu == show) {
         return;
@@ -93,12 +93,12 @@ void LayoutSettings::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
-QString LayoutSettings::name() const
+QString Layout::name() const
 {
     return m_layoutName;
 }
 
-void LayoutSettings::setName(QString name)
+void Layout::setName(QString name)
 {
     if (m_layoutName == name) {
         return;
@@ -111,12 +111,12 @@ void LayoutSettings::setName(QString name)
     emit nameChanged();
 }
 
-QString LayoutSettings::color() const
+QString Layout::color() const
 {
     return m_color;
 }
 
-void LayoutSettings::setColor(QString color)
+void Layout::setColor(QString color)
 {
     if (m_color == color) {
         return;
@@ -127,12 +127,12 @@ void LayoutSettings::setColor(QString color)
 }
 
 
-QString LayoutSettings::file() const
+QString Layout::file() const
 {
     return m_layoutFile;
 }
 
-void LayoutSettings::setFile(QString file)
+void Layout::setFile(QString file)
 {
     if (m_layoutFile == file) {
         return;
@@ -144,12 +144,12 @@ void LayoutSettings::setFile(QString file)
     emit fileChanged();
 }
 
-QStringList LayoutSettings::launchers() const
+QStringList Layout::launchers() const
 {
     return m_launchers;
 }
 
-void LayoutSettings::setLaunchers(QStringList launcherList)
+void Layout::setLaunchers(QStringList launcherList)
 {
     if (m_launchers == launcherList)
         return;
@@ -159,12 +159,12 @@ void LayoutSettings::setLaunchers(QStringList launcherList)
     emit launchersChanged();
 }
 
-QStringList LayoutSettings::activities() const
+QStringList Layout::activities() const
 {
     return m_activities;
 }
 
-void  LayoutSettings::setActivities(QStringList activities)
+void  Layout::setActivities(QStringList activities)
 {
     if (m_activities == activities) {
         return;
@@ -175,7 +175,7 @@ void  LayoutSettings::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
-bool LayoutSettings::fileIsBroken() const
+bool Layout::fileIsBroken() const
 {
     if (m_layoutFile.isEmpty() || !QFile(m_layoutFile).exists()) {
         return false;
@@ -230,7 +230,7 @@ bool LayoutSettings::fileIsBroken() const
 }
 
 
-QString LayoutSettings::layoutName(const QString &fileName)
+QString Layout::layoutName(const QString &fileName)
 {
     int lastSlash = fileName.lastIndexOf("/");
     QString tempLayoutFile = fileName;
@@ -242,7 +242,7 @@ QString LayoutSettings::layoutName(const QString &fileName)
     return layoutName;
 }
 
-void LayoutSettings::loadConfig()
+void Layout::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
@@ -251,7 +251,7 @@ void LayoutSettings::loadConfig()
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
 }
 
-void LayoutSettings::saveConfig()
+void Layout::saveConfig()
 {
     qDebug() << "layout is saving... for layout:" << m_layoutName;
     m_layoutGroup.writeEntry("version", m_version);
