@@ -264,6 +264,7 @@ Item{
                 Transition{
                     from: "animating"
                     to: "*"
+                    enabled: !fastRestoreAnimation.running && !mainItemContainer.inMimicParabolicAnimation
 
                     AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
                 }
