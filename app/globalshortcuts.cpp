@@ -256,7 +256,9 @@ void GlobalShortcuts::init()
 //! Activate launcher menu through dbus interface
 void GlobalShortcuts::activateLauncherMenu()
 {
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_corona->dockViews();
+
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         const auto applets = it.key()->applets();
 
         for (auto applet : applets) {
@@ -331,9 +333,11 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
         return false;
     };
 
+    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_corona->dockViews();
+
     // To avoid overly complex configuration, we'll try to get the 90% usecase to work
     // which is activating a task on the task manager on a panel on the primary screen.
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         if (it.value()->screen() != qGuiApp->primaryScreen()) {
             continue;
         }
@@ -347,7 +351,7 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
     }
 
     // we didn't find anything on primary, try all the panels
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         if (activateTaskManagerEntryOnContainment(it.key(), index, modifier)) {
             m_hideDock = it.value();
             m_hideDock->visibility()->setBlockHiding(true);
@@ -403,8 +407,10 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
         return false;
     };
 
+    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_corona->dockViews();
+
     // update badges in all Latte Tasks plasmoids
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         updateBadgeForTaskInContainment(it.key(), identifier, value);
     }
 }
@@ -456,9 +462,11 @@ void GlobalShortcuts::showDock()
         return false;
     };
 
+    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_corona->dockViews();
+
     // To avoid overly complex configuration, we'll try to get the 90% usecase to work
     // which is activating a task on the task manager on a panel on the primary screen.
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         if (it.value()->screen() != qGuiApp->primaryScreen()) {
             continue;
         }
@@ -472,7 +480,7 @@ void GlobalShortcuts::showDock()
     }
 
     // we didn't find anything on primary, try all the panels
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         if (containsLattePlasmoid(it.key())) {
             m_hideDock = it.value();
             m_hideDock->visibility()->setBlockHiding(true);
@@ -558,8 +566,10 @@ void GlobalShortcuts::showSettings()
 {
     QList<DockView *> docks;
 
+    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_corona->dockViews();
+
     //! create a docks list to sorted out
-    for (auto it = m_corona->m_dockViews.constBegin(), end = m_corona->m_dockViews.constEnd(); it != end; ++it) {
+    for (auto it = dockViewsSet->constBegin(), end = dockViewsSet->constEnd(); it != end; ++it) {
         docks.append(it.value());
     }
 

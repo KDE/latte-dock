@@ -312,19 +312,19 @@ bool LayoutManager::switchToLayout(QString layoutName)
         QTimer::singleShot(250, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
 
+            if (m_currentLayout) {
+                m_currentLayout->deleteLater();
+            }
+
+            m_currentLayout = new Layout(this, lPath, layoutName);
+            m_currentLayout->initToCorona(m_corona);
+
             m_corona->loadLatteLayout(lPath);
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
 
             if (!layoutIsAssigned(layoutName)) {
                 m_corona->universalSettings()->setLastNonAssignedLayoutName(layoutName);
             }
-
-            if (m_currentLayout) {
-                m_currentLayout->deleteLater();
-            }
-
-            m_currentLayout = new Layout(this, lPath, layoutName);
-            m_currentLayout->setCorona(m_corona);
 
             emit currentLayoutChanged();
         });

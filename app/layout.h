@@ -47,6 +47,9 @@ public:
     Layout(QObject *parent, QString layoutFile, QString layoutName = QString());
     ~Layout() override;
 
+    void initToCorona(DockCorona *corona);
+    void unloadDockViews();
+
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
@@ -67,11 +70,15 @@ public:
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
-    void setCorona(DockCorona *corona);
-    //! this function needs the layout to have first set the corona through setCorona() function
-    void copyDock(Plasma::Containment *containment);
-
     static QString layoutName(const QString &fileName);
+
+    //! this function needs the layout to have first set the corona through initToCorona() function
+    void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
+    void copyDock(Plasma::Containment *containment);
+    void recreateDock(Plasma::Containment *containment);
+    void syncDockViewsToScreens();
+
+    QHash<const Plasma::Containment *, DockView *> *dockViews();
 
 signals:
     void activitiesChanged();
@@ -85,6 +92,9 @@ signals:
 private slots:
     void loadConfig();
     void saveConfig();
+
+    void destroyedChanged(bool destroyed);
+    void dockContainmentDestroyed(QObject *cont);
 
 private:
     void init();
@@ -106,6 +116,9 @@ private:
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;
+
+    QHash<const Plasma::Containment *, DockView *> m_dockViews;
+    QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
 };
 
 }

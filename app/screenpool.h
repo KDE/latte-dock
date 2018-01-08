@@ -38,6 +38,8 @@ public:
     void load();
     ~ScreenPool() override;
 
+    int primaryScreenId() const;
+
     QString primaryConnector() const;
     void setPrimaryConnector(const QString &primary);
 

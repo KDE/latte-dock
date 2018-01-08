@@ -89,7 +89,8 @@ public:
     int noDocksWithTasks() const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 
-    void addDock(Plasma::Containment *containment, int expDockScreen = -1);
+    QHash<const Plasma::Containment *, DockView *> *dockViews();
+
     void recreateDock(Plasma::Containment *containment);
 
     void aboutApplication();
@@ -104,7 +105,6 @@ public:
 public slots:
     void activateLauncherMenu();
     void loadDefaultLayout() override;
-    void dockContainmentDestroyed(QObject *cont);
     void updateDockItemBadge(QString identifier, QString value);
     void unload();
 
@@ -115,7 +115,6 @@ signals:
     void raiseDocksTemporaryChanged();
 
 private slots:
-    void destroyedChanged(bool destroyed);
     void showAlternativesForApplet(Plasma::Applet *applet);
     void alternativesVisibilityChanged(bool visible);
     void load();
@@ -153,8 +152,6 @@ private:
 
     QString m_layoutNameOnStartUp;
 
-    QHash<const Plasma::Containment *, DockView *> m_dockViews;
-    QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
     QList<KDeclarative::QmlObject *> m_alternativesObjects;
 
     QTimer m_docksScreenSyncTimer;

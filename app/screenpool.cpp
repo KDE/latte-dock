@@ -99,7 +99,7 @@ void ScreenPool::reload(QString path)
 {
     QFile rcfile(QString(path + "/lattedockrc"));
 
-    if (rcfile.exists()){
+    if (rcfile.exists()) {
         qDebug() << "load screen connectors from ::: " << rcfile.fileName();
         KSharedConfigPtr newFile = KSharedConfig::openConfig(rcfile.fileName());
         m_configGroup = KConfigGroup(newFile, QStringLiteral("ScreenConnectors"));
@@ -108,6 +108,11 @@ void ScreenPool::reload(QString path)
 
 
 
+}
+
+int ScreenPool::primaryScreenId() const
+{
+    return id(qGuiApp->primaryScreen()->name());
 }
 
 QString ScreenPool::primaryConnector() const
