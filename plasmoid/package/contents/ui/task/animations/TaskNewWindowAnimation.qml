@@ -118,7 +118,7 @@ SequentialAnimation{
 
     function bounceNewWindow(){
         //if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
-        if (!root.dockIsHidden && (root.zoomFactor > 1) && (root.durationTime>0) && !root.reverseLinesPositionasfa){
+        if (!root.dockIsHidden && (root.zoomFactor > 1) && (root.durationTime>0) && !root.reverseLinesPosition){
             newWindowAnimation.init();
             start();
         }

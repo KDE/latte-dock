@@ -158,7 +158,8 @@ Item{
         Loader{
             id: firstPadding
 
-            active: secondIndicator.active && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
+            active: secondIndicator.active && !root.reverseLinesPosition
+                    && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
             visible: active
 
             sourceComponent: Component{
@@ -185,7 +186,8 @@ Item{
         Loader{
             id: secondPadding
 
-            active: firstIndicator.active && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
+            active: firstIndicator.active && !root.reverseLinesPosition
+                    && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
             visible: active
 
             sourceComponent: Component{
