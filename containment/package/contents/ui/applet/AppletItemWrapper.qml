@@ -387,7 +387,7 @@ Item{
 
         opacity: appletShadow.active ? 0 : 1
 
-        property int lowThickUsed: root.reverseLinesPosition ? root.thickMarginHigh : root.thickMarginBase
+        property int lowThickUsed: root.thickMarginBase
 
         //BEGIN states
         states: [
