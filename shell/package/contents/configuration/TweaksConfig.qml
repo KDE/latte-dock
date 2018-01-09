@@ -98,9 +98,11 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: solidForMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.maximumWidth: dialog.maxWidth - 3*units.smallSpacing
                 text: i18n("Force solid background for maximized or snapped windows")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized or snapped window")
+                style: LatteCheckBoxStyle{}
 
                 onClicked: {
                     plasmoid.configuration.solidBackgroundForMaximized = checked;
