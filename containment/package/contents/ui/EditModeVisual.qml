@@ -46,8 +46,7 @@ Image{
 
     property rect efGeometry
 
-    property string layoutColor: universalLayoutManager && universalLayoutManager.currentLayout ?
-                                     universalLayoutManager.currentLayout.color : "blue"
+    property string layoutColor: root.dockManagedLayout ? root.dockManagedLayout.color : "blue"
 
     layer.enabled: true
     layer.effect: DropShadow {

@@ -244,6 +244,7 @@ DragDrop.DropArea {
     property QtObject dock
     property QtObject universalSettings
     property QtObject universalLayoutManager
+    property QtObject dockManagedLayout: dock && dock.managedLayout ? dock.managedLayout : null
 
 
     // TO BE DELETED, if not needed: property int counter:0;

@@ -27,6 +27,7 @@
 
 #include <QQuickItem>
 #include <QMetaMethod>
+#include <QTimer>
 
 class DockCorona;
 class DockView;

@@ -457,6 +457,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
     auto dockView = new DockView(m_corona, nextScreen, dockWin);
     dockView->init();
     dockView->setContainment(containment);
+    dockView->setManagedLayout(this);
 
     //! force this special dock case to become primary
     //! even though it isnt

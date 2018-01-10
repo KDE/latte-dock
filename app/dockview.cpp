@@ -1272,6 +1272,21 @@ void DockView::setShadow(int shadow)
     emit shadowChanged();
 }
 
+Layout *DockView::managedLayout() const
+{
+    return m_managedLayout;
+}
+
+void DockView::setManagedLayout(Layout *layout)
+{
+    if (m_managedLayout == layout) {
+        return;
+    }
+
+    m_managedLayout = layout;
+    emit managedLayoutChanged();
+}
+
 void DockView::hideDockDuringLocationChange(int goToLocation)
 {
     m_goToLocation = static_cast<Plasma::Types::Location>(goToLocation);

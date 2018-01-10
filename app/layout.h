@@ -31,6 +31,7 @@
 namespace Latte {
 
 class DockCorona;
+class DockView;
 
 //! This class is responsible to hold the settings for a specific layout.
 //! It also updates always the relevant layout configuration concerning

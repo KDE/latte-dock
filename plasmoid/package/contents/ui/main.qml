@@ -197,8 +197,7 @@ Item {
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    property QtObject currentLayout : latteDock && latteDock.universalLayoutManager && latteDock.universalLayoutManager.currentLayout ?
-                                          latteDock.universalLayoutManager.currentLayout : null
+    property QtObject currentLayout : latteDock && latteDock.dockManagedLayout ? latteDock.dockManagedLayout : null
 
     property Item latteDock: null
     //END Now Dock Panel properties
@@ -566,7 +565,7 @@ Item {
                     && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
                         || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
                 if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                    tasksModel.launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
+                    tasksModel.launcherList = latteDock.dockManagedLayout.launchers;
                 } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
                     tasksModel.launcherList = latteDock.universalSettings.launchers;
                 }
@@ -582,12 +581,12 @@ Item {
         onLauncherListChanged: {
             if (currentLayout) {
                 if (latteDock && latteDock.universalLayoutManager
-                        && latteDock.universalLayoutManager.currentLayout && latteDock.universalSettings
+                        && latteDock.dockManagedLayout && latteDock.universalSettings
                         && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
                             || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
 
                     if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                        latteDock.universalLayoutManager.currentLayout.launchers = launcherList;
+                        latteDock.dockManagedLayout.launchers = launcherList;
                     } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
                         latteDock.universalSettings.launchers = launcherList;
                     }
@@ -626,7 +625,7 @@ Item {
                         || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
 
                 if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
-                    launcherList = latteDock.universalLayoutManager.currentLayout.launchers;
+                    launcherList = latteDock.dockManagedLayout.launchers;
                 } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
                     launcherList = latteDock.universalSettings.launchers;
                 }

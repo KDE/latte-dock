@@ -23,6 +23,7 @@
 
 #include "plasmaquick/containmentview.h"
 #include "plasmaquick/configview.h"
+#include "layout.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/dock.h"
 
@@ -49,6 +50,8 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
+
+class Layout;
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT
@@ -81,6 +84,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
+    Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
     Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
@@ -169,6 +173,9 @@ public:
 
     VisibilityManager *visibility() const;
 
+    Layout *managedLayout() const;
+    void setManagedLayout(Layout *layout);
+
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
@@ -241,6 +248,7 @@ signals:
     void widthChanged();
     void heightChanged();
     void localGeometryChanged();
+    void managedLayoutChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
     void normalThicknessChanged();
@@ -308,6 +316,7 @@ private:
     QQuickItem *m_appletContainsMethodItem{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
+    QPointer<Layout> m_managedLayout;
     QPointer<QScreen> m_screenToFollow;
 
     QString m_screenToFollowId;
