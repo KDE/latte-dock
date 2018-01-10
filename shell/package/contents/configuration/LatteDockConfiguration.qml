@@ -102,15 +102,16 @@ FocusScope {
         id: content
 
         Layout.minimumWidth: width
-        Layout.minimumHeight: height
+        Layout.minimumHeight: calculatedHeight
         Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        height: header.height + headerSpacer.height+ tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
+        Layout.preferredHeight: calculatedHeight
         width: dialog.maxWidth
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         spacing: units.smallSpacing
+
+        property int calculatedHeight: header.height + headerSpacer.height+ tabBar.height + pagesBackground.height + actionButtons.height + spacing * 3
 
         Keys.onPressed: {
             if (event.key === Qt.Key_Escape) {
