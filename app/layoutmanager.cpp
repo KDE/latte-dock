@@ -313,6 +313,8 @@ bool LayoutManager::switchToLayout(QString layoutName)
             qDebug() << layoutName << " - " << lPath;
 
             if (m_currentLayout) {
+                m_currentLayout->unloadContainments();
+                m_currentLayout->unloadDockViews();
                 m_currentLayout->deleteLater();
             }
 

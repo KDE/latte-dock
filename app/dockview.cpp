@@ -114,6 +114,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         //containment()->actions()->removeAction(addWidgetsAction);
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
+
+
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona) {

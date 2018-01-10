@@ -48,6 +48,7 @@ public:
     ~Layout() override;
 
     void initToCorona(DockCorona *corona);
+    void unloadContainments();
     void unloadDockViews();
 
     bool showInMenu() const;
@@ -93,8 +94,9 @@ private slots:
     void loadConfig();
     void saveConfig();
 
+    void addContainment(Plasma::Containment *containment);
     void destroyedChanged(bool destroyed);
-    void dockContainmentDestroyed(QObject *cont);
+    void containmentDestroyed(QObject *cont);
 
 private:
     void init();
@@ -116,6 +118,8 @@ private:
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;
+
+    QList<Plasma::Containment *> m_containments;
 
     QHash<const Plasma::Containment *, DockView *> m_dockViews;
     QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;

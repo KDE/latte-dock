@@ -111,7 +111,7 @@ DockCorona::~DockCorona()
     m_docksScreenSyncTimer.stop();
     cleanConfig();
 
-    //qDebug() << "corona config file:" << config()->name();
+    qDebug() << "Latte Corona - unload: containments ...";
 
     while (!containments().isEmpty()) {
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
@@ -178,15 +178,17 @@ void DockCorona::unload()
         //this form doesn't crash, while qDeleteAll(containments()) does
         delete containments().first();
     }
-
-    // m_layoutManager->currentLayout()->unloadDockViews();
 }
 
 void DockCorona::loadLatteLayout(QString layoutPath)
 {
-    if (!layoutPath.isEmpty()) {
+    if (containments().size() > 0) {
+        qDebug() << "There are still containments present :::: " << containments().size();
+    }
+
+    if (!layoutPath.isEmpty() && containments().size() == 0) {
         qDebug() << "corona is unloading the interface...";
-        unload();
+        // unload();
         qDebug() << "loading layout:" << layoutPath;
         loadLayout(layoutPath);
 

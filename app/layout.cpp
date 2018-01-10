@@ -54,16 +54,30 @@ Layout::~Layout()
         //saveConfig();
         m_layoutGroup.sync();
     }
+}
 
-    qDeleteAll(m_dockViews);
-    qDeleteAll(m_waitingDockViews);
-    m_dockViews.clear();
-    m_waitingDockViews.clear();
+void Layout::unloadContainments()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    qDebug() << "Layout - " + name() + " unload: containments ... size: " << m_containments.size();
+
+    while (!m_containments.isEmpty()) {
+        Plasma::Containment *containment = m_containments.at(0);
+        m_containments.removeFirst();
+        delete containment;
+    }
 }
 
 void Layout::unloadDockViews()
 {
-    qDebug() << "unload: dockViews ...";
+    if (!m_corona) {
+        return;
+    }
+
+    qDebug() << "Layout - " + name() + " unload: dockViews ... size: " << m_dockViews.size();
 
     qDeleteAll(m_dockViews);
     qDeleteAll(m_waitingDockViews);
@@ -83,6 +97,15 @@ void Layout::init()
 void Layout::initToCorona(DockCorona *corona)
 {
     m_corona = corona;
+
+    foreach (auto containment, m_corona->containments()) {
+        // QString layout = containment->config().readEntry("layout", QString());
+        addContainment(containment);
+    }
+
+    qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
+
+    connect(m_corona, &Plasma::Corona::containmentAdded, this, &Layout::addContainment);
 }
 
 int Layout::version() const
@@ -288,6 +311,16 @@ void Layout::saveConfig()
 
 //! Containments Actions
 
+void Layout::addContainment(Plasma::Containment *containment)
+{
+    if (m_containments.contains(containment)) {
+        return;
+    }
+
+    m_containments.append(containment);
+    connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
+}
+
 QHash<const Plasma::Containment *, DockView *> *Layout::dockViews()
 {
     return &m_dockViews;
@@ -317,26 +350,36 @@ void Layout::destroyedChanged(bool destroyed)
     emit m_corona->availableScreenRegionChanged();
 }
 
-void Layout::dockContainmentDestroyed(QObject *cont)
+void Layout::containmentDestroyed(QObject *cont)
 {
     if (!m_corona) {
         return;
     }
 
-    qDebug() << "dock containment destroyed!!!!";
-    auto view = m_dockViews.take(static_cast<Plasma::Containment *>(cont));
+    Plasma::Containment *containment = static_cast<Plasma::Containment *>(cont);
 
-    if (!view) {
-        view = m_waitingDockViews.take(static_cast<Plasma::Containment *>(cont));
+    if (containment) {
+        int containmentIndex = m_containments.indexOf(containment);
+
+        if (containmentIndex >= 0) {
+            m_containments.removeAt(containmentIndex);
+        }
+
+        qDebug() << "Layout " << name() << " :: containment destroyed!!!!";
+        auto view = m_dockViews.take(containment);
+
+        if (!view) {
+            view = m_waitingDockViews.take(containment);
+        }
+
+        if (view) {
+            view->deleteLater();
+
+            emit m_corona->docksCountChanged();
+            emit m_corona->availableScreenRectChanged();
+            emit m_corona->availableScreenRegionChanged();
+        }
     }
-
-    if (view) {
-        view->deleteLater();
-    }
-
-    emit m_corona->docksCountChanged();
-    emit m_corona->availableScreenRectChanged();
-    emit m_corona->availableScreenRegionChanged();
 }
 
 void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
@@ -421,7 +464,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
         dockView->setOnPrimary(true);
     }
 
-    connect(containment, &QObject::destroyed, this, &Layout::dockContainmentDestroyed);
+    //  connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
     connect(containment, &Plasma::Applet::locationChanged, m_corona, &DockCorona::dockLocationChanged);
     connect(containment, &Plasma::Containment::appletAlternativesRequested
