@@ -60,8 +60,12 @@ LayoutManager::~LayoutManager()
     m_importer->deleteLater();
     m_launchersSignals->deleteLater();
 
-    if (m_currentLayout) {
-        m_currentLayout->deleteLater();
+    while (!m_activeLayouts.isEmpty()) {
+        Layout *layout = m_activeLayouts.at(0);
+        m_activeLayouts.removeFirst();
+        layout->unloadContainments();
+        layout->unloadDockViews();
+        layout->deleteLater();
     }
 }
 
@@ -109,11 +113,6 @@ Importer *LayoutManager::importer()
 QAction *LayoutManager::addWidgetsAction()
 {
     return m_addWidgetsAction;
-}
-
-Layout *LayoutManager::currentLayout()
-{
-    return m_currentLayout;
 }
 
 LaunchersSignals *LayoutManager::launchersSignals()
@@ -193,6 +192,39 @@ QString LayoutManager::layoutPath(QString layoutName)
     }
 
     return path;
+}
+
+void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
+{
+    m_activeLayouts.at(0)->addDock(containment, forceLoading, expDockScreen);
+}
+
+void LayoutManager::recreateDock(Plasma::Containment *containment)
+{
+    m_activeLayouts.at(0)->recreateDock(containment);
+}
+
+void LayoutManager::syncDockViewsToScreens()
+{
+    m_activeLayouts.at(0)->syncDockViewsToScreens();
+}
+
+QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews() const
+{
+    return m_activeLayouts.at(0)->dockViews();
+}
+
+Layout *LayoutManager::activeLayout(QString id) const
+{
+    for (int i = 0; i < m_activeLayouts.size(); ++i) {
+        Layout *layout = m_activeLayouts.at(i);
+
+        if (layout->name() == id) {
+            return layout;
+        }
+    }
+
+    return nullptr;
 }
 
 void LayoutManager::currentActivityChanged(const QString &id)
@@ -312,14 +344,17 @@ bool LayoutManager::switchToLayout(QString layoutName)
         QTimer::singleShot(250, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
 
-            if (m_currentLayout) {
-                m_currentLayout->unloadContainments();
-                m_currentLayout->unloadDockViews();
-                m_currentLayout->deleteLater();
+            while (!m_activeLayouts.isEmpty()) {
+                Layout *layout = m_activeLayouts.at(0);
+                m_activeLayouts.removeFirst();
+                layout->unloadContainments();
+                layout->unloadDockViews();
+                layout->deleteLater();
             }
 
-            m_currentLayout = new Layout(this, lPath, layoutName);
-            m_currentLayout->initToCorona(m_corona);
+            Layout *newLayout = new Layout(this, lPath, layoutName);
+            m_activeLayouts.append(newLayout);
+            newLayout->initToCorona(m_corona);
 
             m_corona->loadLatteLayout(lPath);
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
@@ -328,7 +363,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
                 m_corona->universalSettings()->setLastNonAssignedLayoutName(layoutName);
             }
 
-            emit currentLayoutChanged();
+            emit activeLayoutsChanged();
         });
     }
 

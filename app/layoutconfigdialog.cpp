@@ -235,7 +235,7 @@ void LayoutConfigDialog::on_removeButton_clicked()
 
     QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
 
-    if (layoutName == m_manager->currentLayoutName()) {
+    if (m_manager->activeLayout(layoutName)) {
         return;
     }
 
@@ -647,7 +647,7 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
 
     QFont font;
 
-    if (name == m_manager->currentLayoutName()) {
+    if (m_manager->activeLayout(name)) {
         font.setBold(true);
     } else {
         font.setBold(false);
@@ -819,8 +819,9 @@ bool LayoutConfigDialog::saveAllChanges()
         }
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
+        Layout *activeLayout = m_manager->activeLayout(name);
 
-        Layout *layout = name == m_manager->currentLayoutName() ? m_manager->currentLayout() : m_layouts[id];
+        Layout *layout = activeLayout ? activeLayout : m_layouts[id];
 
         if (layout->color() != color) {
             layout->setColor(color);
@@ -841,7 +842,7 @@ bool LayoutConfigDialog::saveAllChanges()
 
             if (layout->name() == m_manager->currentLayoutName()) {
                 switchToLayout = name;
-                m_manager->corona()->unload();
+                //m_manager->corona()->unload();
             }
 
             layout = m_layouts.take(id);

@@ -51,7 +51,6 @@ class LayoutManager : public QObject {
 
     Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
 
-    Q_PROPERTY(Layout *currentLayout READ currentLayout NOTIFY currentLayoutChanged)
     Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
 
 public:
@@ -62,6 +61,9 @@ public:
     Importer *importer();
 
     void load();
+    void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
+    void recreateDock(Plasma::Containment *containment);
+    void syncDockViewsToScreens();
 
     bool layoutExists(QString layoutName) const;
 
@@ -76,7 +78,11 @@ public:
 
     QAction *addWidgetsAction();
 
-    Layout *currentLayout();
+    QHash<const Plasma::Containment *, DockView *> *currentDockViews() const;
+    //! returns an active layout with that #id (name), it returns null if such
+    //! layout cant be found
+    Layout *activeLayout(QString id) const;
+
     LaunchersSignals *launchersSignals();
 
     QStringList activities();
@@ -94,6 +100,7 @@ public slots:
     Q_INVOKABLE void showLayoutConfigDialog();
 
 signals:
+    void activeLayoutsChanged();
     void addWidgetsActionChanged();
     void currentLayoutChanged();
     void currentLayoutNameChanged();
@@ -122,6 +129,7 @@ private:
     Importer *m_importer{nullptr};
 
     Layout *m_currentLayout{nullptr};
+    QList<Layout *> m_activeLayouts;
     LaunchersSignals *m_launchersSignals{nullptr};
 
     QString m_shouldSwitchToLayout;

@@ -203,9 +203,9 @@ void DockCorona::loadLatteLayout(QString layoutPath)
             //! and it forcefully becomes primary dock
             if (!m_tasksWillBeLoaded && m_firstContainmentWithTasks == containment->id()) {
                 m_tasksWillBeLoaded = true; //this protects by loading more than one dock at startup
-                m_layoutManager->currentLayout()->addDock(containment, true);
+                m_layoutManager->addDock(containment, true);
             } else {
-                m_layoutManager->currentLayout()->addDock(containment);
+                m_layoutManager->addDock(containment);
             }
         }
     }
@@ -373,11 +373,11 @@ QRegion DockCorona::availableScreenRegion(int id) const
     if (!screen)
         return QRegion();
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
     QRegion available(screen->geometry());
 
-    for (const auto *view : *dockViewsSet) {
+    for (const auto *view : *views) {
         if (view && view->containment() && view->screen() == screen
             && view->visibility() && (view->visibility()->mode() != Latte::Dock::AutoHide)) {
             int realThickness = view->normalThickness() - view->shadow();
@@ -498,9 +498,9 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
 
     auto available = screen->geometry();
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    for (const auto *view : *dockViewsSet) {
+    for (const auto *view : *views) {
         if (view && view->containment() && view->screen() == screen
             && ((allEdges || edges.contains(view->location()))
                 && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
@@ -544,11 +544,11 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
 //! tasks plasmoid
 int DockCorona::noDocksWithTasks() const
 {
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
     int result = 0;
 
-    foreach (auto view, *dockViewsSet) {
+    foreach (auto view, *views) {
         if (view->tasksPresent()) {
             result++;
         }
@@ -597,7 +597,7 @@ void DockCorona::screenCountChanged()
 //! concerning screen changed (for multi-screen setups mainly)
 void DockCorona::syncDockViewsToScreens()
 {
-    m_layoutManager->currentLayout()->syncDockViewsToScreens();
+    m_layoutManager->syncDockViewsToScreens();
 }
 
 int DockCorona::primaryScreenId() const
@@ -605,19 +605,14 @@ int DockCorona::primaryScreenId() const
     return m_screenPool->id(qGuiApp->primaryScreen()->name());
 }
 
-QHash<const Plasma::Containment *, DockView *> *DockCorona::dockViews()
-{
-    return m_layoutManager->currentLayout()->dockViews();
-}
-
 int DockCorona::docksCount(int screen) const
 {
     QScreen *scr = m_screenPool->screenForId(screen);
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
     int docks{0};
 
-    for (const auto &view : *dockViewsSet) {
+    for (const auto &view : *views) {
         if (view && view->screen() == scr && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -631,9 +626,9 @@ int DockCorona::docksCount() const
 {
     int docks{0};
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    for (const auto &view : *dockViewsSet) {
+    for (const auto &view : *views) {
         if (view && view->containment() && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -647,9 +642,9 @@ int DockCorona::docksCount(QScreen *screen) const
 {
     int docks{0};
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    for (const auto &view : *dockViewsSet) {
+    for (const auto &view : *views) {
         if (view && view->screen() == screen && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -680,9 +675,9 @@ void DockCorona::aboutApplication()
 
 int DockCorona::noOfDocks()
 {
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    return dockViewsSet->count();
+    return views->count();
 }
 
 QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
@@ -691,9 +686,9 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                  Types::TopEdge, Types::RightEdge};
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    for (auto *view : *dockViewsSet) {
+    for (auto *view : *views) {
         if (view && view->currentScreen() == screen->name()) {
             edges.removeOne(view->location());
         }
@@ -710,9 +705,9 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
 
     QScreen *scr = m_screenPool->screenForId(screen);
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    for (auto *view : *dockViewsSet) {
+    for (auto *view : *views) {
         if (view && scr && view->currentScreen() == scr->name()) {
             edges.removeOne(view->location());
         }
@@ -743,10 +738,11 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
         }
     }
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
     //if the panel views already exist, base upon them
-    DockView *view = dockViewsSet->value(containment);
+
+    DockView *view = views->value(containment);
 
     if (view && view->screen()) {
         return m_screenPool->id(view->screen()->name());
@@ -789,7 +785,7 @@ bool DockCorona::explicitDockOccupyEdge(int screen, Plasma::Types::Location loca
 
 void DockCorona::recreateDock(Plasma::Containment *containment)
 {
-    m_layoutManager->currentLayout()->recreateDock(containment);
+    m_layoutManager->recreateDock(containment);
 }
 
 void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
@@ -800,9 +796,9 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    QHash<const Plasma::Containment *, DockView *> *dockViewsSet = m_layoutManager->currentLayout()->dockViews();
+    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
 
-    DockView *dockView = (*dockViewsSet)[applet->containment()];
+    DockView *dockView = (*views)[applet->containment()];
 
     KDeclarative::QmlObject *qmlObj{nullptr};
 
@@ -902,7 +898,7 @@ void DockCorona::loadDefaultLayout()
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
 
-    m_layoutManager->currentLayout()->addDock(defaultContainment);
+    m_layoutManager->addDock(defaultContainment);
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }

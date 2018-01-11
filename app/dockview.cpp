@@ -495,11 +495,7 @@ void DockView::addNewDock()
 
 void DockView::copyDock()
 {
-    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-    if (dockCorona) {
-        dockCorona->layoutManager()->currentLayout()->copyDock(containment());
-    }
+    m_managedLayout->copyDock(containment());
 }
 
 void DockView::removeDock()

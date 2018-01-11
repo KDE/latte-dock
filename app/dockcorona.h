@@ -89,8 +89,6 @@ public:
     int noDocksWithTasks() const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 
-    QHash<const Plasma::Containment *, DockView *> *dockViews();
-
     void recreateDock(Plasma::Containment *containment);
 
     void aboutApplication();

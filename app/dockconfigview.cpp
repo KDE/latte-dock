@@ -390,8 +390,8 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
 
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
-    if (dockCorona && dockCorona->layoutManager() && dockCorona->layoutManager()->currentLayout()) {
-        if ((group == Dock::LayoutLaunchers && dockCorona->layoutManager()->currentLayout()->launchers().isEmpty())
+    if (dockCorona &&  m_dockView->managedLayout()) {
+        if ((group == Dock::LayoutLaunchers && m_dockView->managedLayout()->launchers().isEmpty())
             || (group == Dock::GlobalLaunchers && dockCorona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_dockView->containment();
@@ -428,7 +428,7 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
 
                                 if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
                                     if (group == Dock::LayoutLaunchers) {
-                                        dockCorona->layoutManager()->currentLayout()->setLaunchers(launchers.toStringList());
+                                        m_dockView->managedLayout()->setLaunchers(launchers.toStringList());
                                     } else if (group == Dock::GlobalLaunchers) {
                                         dockCorona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }
