@@ -64,6 +64,30 @@ void Layout::unloadContainments()
 
     qDebug() << "Layout - " + name() + " unload: containments ... size: " << m_containments.size();
 
+    foreach (auto view, m_dockViews) {
+        view->disconnectSensitiveSignals();
+    }
+
+    foreach (auto view, m_waitingDockViews) {
+        view->disconnectSensitiveSignals();
+    }
+
+    QList<Plasma::Containment *> systrays;
+
+    //!identify systrays and unload them first
+    foreach (auto containment, m_containments) {
+        if (Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent())) {
+            systrays.append(containment);
+        }
+    }
+
+    while (!systrays.isEmpty()) {
+        Plasma::Containment *systray = systrays.at(0);
+        systrays.removeFirst();
+        m_containments.removeAll(systray);
+        delete systray;
+    }
+
     while (!m_containments.isEmpty()) {
         Plasma::Containment *containment = m_containments.at(0);
         m_containments.removeFirst();

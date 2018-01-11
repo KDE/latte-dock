@@ -299,6 +299,15 @@ void DockView::initSignalingForLocationChangeSliding()
     });
 }
 
+void DockView::disconnectSensitiveSignals()
+{
+    disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
+
+    if (visibility()) {
+        visibility()->setEnabledDynamicBackground(false);
+    }
+}
+
 void DockView::availableScreenRectChanged()
 {
     if (m_inDelete)

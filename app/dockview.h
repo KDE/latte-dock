@@ -181,6 +181,10 @@ public:
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
     void reconsiderScreen();
 
+    //! these are signals that create crashes, such a example is the availableScreenRectChanged from corona
+    //! when its containment is destroyed
+    void disconnectSensitiveSignals();
+
 public slots:
     Q_INVOKABLE void addNewDock();
     Q_INVOKABLE void removeDock();
