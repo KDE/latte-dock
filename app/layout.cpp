@@ -38,8 +38,8 @@ Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
             assignedName =  layoutName(layoutFile);
         }
 
-        KSharedConfigPtr lConfig = KSharedConfig::openConfig(layoutFile);
-        m_layoutGroup = KConfigGroup(lConfig, "LayoutSettings");
+        m_filePtr = KSharedConfig::openConfig(layoutFile);
+        m_layoutGroup = KConfigGroup(m_filePtr, "LayoutSettings");
 
         setFile(layoutFile);
         setName(assignedName);

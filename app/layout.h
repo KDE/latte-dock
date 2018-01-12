@@ -119,6 +119,7 @@ private:
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;
+    KSharedConfigPtr m_filePtr;
 
     QList<Plasma::Containment *> m_containments;
 
