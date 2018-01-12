@@ -32,6 +32,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
@@ -185,6 +186,21 @@ void UniversalSettings::setAutostart(bool state)
     }
 }
 
+Dock::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
+{
+    return m_memoryUsage;
+}
+
+void UniversalSettings::setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage)
+{
+    if (m_memoryUsage != layoutsMemoryUsage) {
+        return;
+    }
+
+    m_memoryUsage = layoutsMemoryUsage;
+    emit layoutsMemoryUsageChanged();
+}
+
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
@@ -193,6 +209,7 @@ void UniversalSettings::loadConfig()
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
+    m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
 }
 
 void UniversalSettings::saveConfig()
@@ -203,6 +220,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
+    m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
 
     m_universalGroup.sync();
 }

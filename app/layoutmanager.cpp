@@ -194,6 +194,16 @@ QString LayoutManager::layoutPath(QString layoutName)
     return path;
 }
 
+Dock::LayoutsMemoryUsage LayoutManager::memoryUsage() const
+{
+    return m_corona->universalSettings()->layoutsMemoryUsage();
+}
+
+void LayoutManager::setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage)
+{
+    m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
+}
+
 void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
 {
     m_activeLayouts.at(0)->addDock(containment, forceLoading, expDockScreen);

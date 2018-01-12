@@ -26,9 +26,11 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-#include "layout.h"
+#include "../liblattedock/dock.h"
 
 namespace Latte {
+
+class LayoutManager;
 
 //! This class holds all the settings that are universally available
 //! independent of layouts
@@ -73,6 +75,7 @@ signals:
     void lastNonAssignedLayoutNameChanged();
     void layoutsWindowSizeChanged();
     void launchersChanged();
+    void layoutsMemoryUsageChanged();
     void showInfoWindowChanged();
     void versionChanged();
 
@@ -82,6 +85,9 @@ private slots:
 
 private:
     void cleanupSettings();
+
+    Dock::LayoutsMemoryUsage layoutsMemoryUsage() const;
+    void setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage);
 
 private:
     bool m_showInfoWindow{true};
@@ -93,10 +99,12 @@ private:
     QString m_lastNonAssignedLayoutName;
     QSize m_layoutsWindowSize{700, 450};
     QStringList m_launchers;
+    Dock::LayoutsMemoryUsage m_memoryUsage;
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
 
+    friend class LayoutManager;
 };
 
 }

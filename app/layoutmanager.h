@@ -21,7 +21,6 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
-#include "dockcorona.h"
 #include "importer.h"
 #include "layout.h"
 #include "layoutconfigdialog.h"
@@ -32,6 +31,7 @@
 
 #include <KLocalizedString>
 
+class DockCorona;
 class Importer;
 class Layout;
 class LayoutConfigDialog;
@@ -76,6 +76,9 @@ public:
     QStringList menuLayouts() const;
     QStringList presetsPaths() const;
 
+    Dock::LayoutsMemoryUsage memoryUsage() const;
+    void setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage);
+
     QAction *addWidgetsAction();
 
     QHash<const Plasma::Containment *, DockView *> *currentDockViews() const;
@@ -107,6 +110,7 @@ signals:
     void currentLayoutIsChanging();
     void launchersSignalsChanged();
     void layoutsChanged();
+    void memoryUsageChanged();
     void menuLayoutsChanged();
 
 private slots:
