@@ -324,6 +324,11 @@ QRect DockCorona::screenGeometry(int id) const
 
 QRegion DockCorona::availableScreenRegion(int id) const
 {
+    return availableScreenRegionWithCriteria(id);
+}
+
+QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout) const
+{
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
 
@@ -342,7 +347,13 @@ QRegion DockCorona::availableScreenRegion(int id) const
     if (!screen)
         return QRegion();
 
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, DockView *> *views;
+
+    if (forLayout.isEmpty()) {
+        views = m_layoutManager->currentDockViews();
+    } else {
+        views = m_layoutManager->layoutDockViews(forLayout);
+    }
 
     QRegion available(screen->geometry());
 

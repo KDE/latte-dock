@@ -83,6 +83,7 @@ public:
     QAction *addWidgetsAction();
 
     QHash<const Plasma::Containment *, DockView *> *currentDockViews() const;
+    QHash<const Plasma::Containment *, DockView *> *layoutDockViews(const QString &layoutName) const;
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
     Layout *activeLayout(QString id) const;

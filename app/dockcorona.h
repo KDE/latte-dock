@@ -77,6 +77,8 @@ public:
                                           QList<Dock::Visibility> modes = QList<Dock::Visibility>(),
                                           QList<Plasma::Types::Location> edges = QList<Plasma::Types::Location>()) const;
 
+    QRegion availableScreenRegionWithCriteria(int id, QString forLayout = QString()) const;
+
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 

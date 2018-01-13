@@ -331,6 +331,17 @@ QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews(
     }
 }
 
+QHash<const Plasma::Containment *, DockView *> *LayoutManager::layoutDockViews(const QString &layoutName) const
+{
+    Layout *layout = activeLayout(layoutName);
+
+    if (layout) {
+        return layout->dockViews();
+    }
+
+    return nullptr;
+}
+
 Layout *LayoutManager::activeLayout(QString id) const
 {
     for (int i = 0; i < m_activeLayouts.size(); ++i) {
