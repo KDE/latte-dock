@@ -1290,6 +1290,7 @@ void DockView::setManagedLayout(Layout *layout)
 
     m_managedLayout = layout;
 
+    qDebug() << "DOCK VIEW FROM LAYOUT ::: " << layout->name() << " - activities: " << layout->appliedActivities();
     m_visibility->setDockOnActivities(layout->appliedActivities());
 
     emit managedLayoutChanged();

@@ -33,7 +33,7 @@ namespace Latte {
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
     : QObject(nullptr), q(q), view(view), wm(&WindowSystem::self())
 {
-    DockView *dockView = qobject_cast<DockView *>(view);
+    dockView = qobject_cast<DockView *>(view);
     dockCorona = qobject_cast<DockCorona *>(view->corona());
 
     if (dockView) {
@@ -126,6 +126,27 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                 if (!configuring && view->screen())
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
+
+
+            if (dockCorona && dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+                if (dockView->managedLayout() && (dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName())) {
+                    wm->setDockStruts(*view, dockGeometry, view->location());
+                } else {
+                    wm->removeDockStruts(*view);
+                }
+
+                connections[2] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+                    Layout *mLayout = dockView->managedLayout();
+
+                    if (mLayout && (mLayout->name() == dockCorona->layoutManager()->currentLayoutName())) {
+                        wm->setDockStruts(*view, dockGeometry, view->location());
+                    } else {
+                        wm->removeDockStruts(*view);
+                    }
+                });
+
+            }
+
             raiseDock(true);
         }
         break;

@@ -318,9 +318,9 @@ private:
     QMenu *m_contextMenu;
     QMetaMethod m_appletContainsMethod;
     QQuickItem *m_appletContainsMethodItem{nullptr};
+    Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<VisibilityManager> m_visibility;
-    QPointer<Layout> m_managedLayout;
     QPointer<QScreen> m_screenToFollow;
 
     QString m_screenToFollowId;

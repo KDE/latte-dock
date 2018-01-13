@@ -346,7 +346,7 @@ void Layout::saveConfig()
 
 void Layout::addContainment(Plasma::Containment *containment)
 {
-    if (m_containments.contains(containment)) {
+    if (!containment || m_containments.contains(containment)) {
         return;
     }
 
@@ -365,6 +365,7 @@ void Layout::addContainment(Plasma::Containment *containment)
     }
 
     if (containmentInLayout) {
+        addDock(containment);
         connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
     }
 }
@@ -449,6 +450,8 @@ void Layout::containmentDestroyed(QObject *cont)
 
 void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
 {
+    qDebug() << "Layout :::: " << m_layoutName << " ::: addDock was called... m_containments :: " << m_containments.size();
+
     if (!containment || !m_corona || !containment->kPackage().isValid()) {
         qWarning() << "the requested containment plugin can not be located or loaded";
         return;
@@ -456,13 +459,19 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
 
     auto metadata = containment->kPackage().metadata();
 
+    qDebug() << "step 1...";
+
     if (metadata.pluginId() != "org.kde.latte.containment")
         return;
+
+    qDebug() << "step 2...";
 
     for (auto *dock : m_dockViews) {
         if (dock->containment() == containment)
             return;
     }
+
+    qDebug() << "step 3...";
 
     QScreen *nextScreen{qGuiApp->primaryScreen()};
 
@@ -493,11 +502,12 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
         }
 
         if (!found) {
-            qDebug() << "adding dock rejected, screen not available : " << connector;
+            qDebug() << "adding dock rejected, screen not available ! : " << connector;
             return;
         }
     } else if (onPrimary) {
         if (m_corona->explicitDockOccupyEdge(m_corona->screenPool()->primaryScreenId(), containment->location())) {
+            qDebug() << "CORONA ::: adding dock rejected, the edge is occupied by explicit dock ! : " <<  containment->location();
             //we must check that an onPrimary dock should never catch up the same edge on
             //the same screen with an explicit dock
             return;
@@ -535,6 +545,10 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
     connect(containment, &Plasma::Applet::locationChanged, m_corona, &DockCorona::dockLocationChanged);
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , m_corona, &DockCorona::showAlternativesForApplet, Qt::QueuedConnection);
+
+    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
+    }
 
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
@@ -693,6 +707,62 @@ void Layout::copyDock(Plasma::Containment *containment)
         qDebug() << "Copy Dock in current screen...";
         addDock(newContainment, dockScrId);
     }
+}
+
+void Layout::appletCreated(Plasma::Applet *applet)
+{
+    //! In Multiple Layout the orphaned systrays must be assigned to layouts
+    //! when the user adds them
+    KConfigGroup appletSettings = applet->containment()->config().group("Applets").group(QString::number(applet->id())).group("Configuration");
+
+    QString systrayId = appletSettings.readEntry("SystrayContainmentId", "-1");
+
+    if (systrayId != "-1") {
+        uint sId = systrayId.toUInt();
+
+        foreach (auto containment, m_corona->containments()) {
+            if (containment->id() == sId) {
+                containment->config().writeEntry("layoutId", m_layoutName);
+            }
+
+            addContainment(containment);
+        }
+    }
+}
+
+void Layout::importToCorona()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    //! Settting mutable for create a containment
+    m_corona->setImmutability(Plasma::Types::Mutable);
+
+    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
+
+    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
+    QFile copyFile(temp1File);
+
+    if (copyFile.exists())
+        copyFile.remove();
+
+    // QFile(m_layoutFile).copy(temp1File);
+
+    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
+    KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
+    KConfigGroup current_containments = KConfigGroup(m_filePtr, "Containments");
+
+    current_containments.copyTo(&copyGroup);
+
+    copyGroup.sync();
+
+    //! update ids to unique ones
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
+
+
+    //! Finally import the configuration
+    importLayoutFile(temp2File);
 }
 
 QString Layout::availableId(QStringList all, QStringList assigned, int base)

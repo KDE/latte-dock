@@ -92,6 +92,7 @@ public:
     void aboutApplication();
     void closeApplication();
 
+    KActivities::Consumer *activitiesConsumer() const;
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
     LayoutManager *layoutManager() const;

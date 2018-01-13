@@ -81,6 +81,7 @@ public:
     void copyDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
     void syncDockViewsToScreens();
+    void importToCorona();
     const QStringList appliedActivities();
 
     QHash<const Plasma::Containment *, DockView *> *dockViews();
@@ -99,6 +100,7 @@ private slots:
     void saveConfig();
 
     void addContainment(Plasma::Containment *containment);
+    void appletCreated(Plasma::Applet *applet);
     void destroyedChanged(bool destroyed);
     void containmentDestroyed(QObject *cont);
 

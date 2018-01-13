@@ -19,6 +19,7 @@
 namespace Latte {
 
 class DockCorona;
+class DockView;
 class VisibilityManager;
 
 /*!
@@ -101,6 +102,7 @@ public:
     std::array<QMetaObject::Connection, 7> connectionsDynBackground;
     WindowId lastActiveWindowWid;
     DockCorona *dockCorona;
+    DockView *dockView;
 };
 
 }

@@ -88,8 +88,6 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
     qmlRegisterTypes();
     QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
 
-    //connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
-
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running)) {
         load();
     }
@@ -277,6 +275,11 @@ bool DockCorona::appletExists(uint containmentId, uint appletId) const
     }
 
     return false;
+}
+
+KActivities::Consumer *DockCorona::activitiesConsumer() const
+{
+    return m_activityConsumer;
 }
 
 ScreenPool *DockCorona::screenPool() const
@@ -855,6 +858,10 @@ void DockCorona::loadDefaultLayout()
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
 
+    if (m_layoutManager->memoryUsage() == Dock::MultipleLayouts) {
+        config.writeEntry("layoutId", m_layoutManager->currentLayoutName());
+    }
+
     defaultContainment->updateConstraints(Plasma::Types::StartupCompletedConstraint);
 
     defaultContainment->save(config);
@@ -864,7 +871,7 @@ void DockCorona::loadDefaultLayout()
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
 
-    m_layoutManager->addDock(defaultContainment);
+    //m_layoutManager->addDock(defaultContainment);
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }

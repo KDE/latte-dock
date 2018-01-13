@@ -55,6 +55,8 @@ LayoutManager::LayoutManager(QObject *parent)
         m_dynamicSwitchTimer.setSingleShot(true);
         showInfoWindowChanged();
         connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &LayoutManager::confirmDynamicSwitch);
+
+        m_currentActivityId = m_corona->m_activityConsumer->currentActivity();
     }
 }
 
@@ -115,6 +117,24 @@ void LayoutManager::unload()
         layout->unloadDockViews();
         layout->deleteLater();
     }
+
+    if (memoryUsage() == Dock::MultipleLayouts) {
+        auto containmentsEntries = m_corona->config()->group("Containments");
+        containmentsEntries.deleteGroup();
+        containmentsEntries.sync();
+    }
+
+    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
+    QString temp2File = QDir::homePath() + "/.config/lattedock.copy2.bak";
+
+    QFile file1(temp1File);
+    QFile file2(temp2File);
+
+    if (file1.exists())
+        file1.remove();
+
+    if (file2.exists())
+        file2.remove();
 }
 
 DockCorona *LayoutManager::corona()
@@ -139,8 +159,20 @@ LaunchersSignals *LayoutManager::launchersSignals()
 
 QString LayoutManager::currentLayoutName() const
 {
-    if (m_corona && m_corona->universalSettings()) {
+    if (memoryUsage() == Dock::SingleLayout) {
         return m_corona->universalSettings()->currentLayoutName();
+    } else if (memoryUsage() == Dock::MultipleLayouts) {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->activities().contains(m_currentActivityId)) {
+                return layout->name();
+            }
+        }
+
+        foreach (auto layout, m_activeLayouts) {
+            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+                return layout->name();
+            }
+        }
     }
 
     return QString();
@@ -282,7 +314,21 @@ void LayoutManager::syncDockViewsToScreens()
 
 QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews() const
 {
-    return m_activeLayouts.at(0)->dockViews();
+    if (memoryUsage() == Dock::SingleLayout) {
+        return m_activeLayouts.at(0)->dockViews();
+    } else {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->activities().contains(m_currentActivityId)) {
+                return layout->dockViews();
+            }
+        }
+
+        foreach (auto layout, m_activeLayouts) {
+            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+                return layout->dockViews();
+            }
+        }
+    }
 }
 
 Layout *LayoutManager::activeLayout(QString id) const
@@ -300,11 +346,15 @@ Layout *LayoutManager::activeLayout(QString id) const
 
 void LayoutManager::currentActivityChanged(const QString &id)
 {
-    qDebug() << "activity changed :: " << id;
+    m_currentActivityId = id;
 
-    m_shouldSwitchToLayout = shouldSwitchToLayout(id);
+    if (memoryUsage() == Dock::SingleLayout) {
+        qDebug() << "activity changed :: " << id;
 
-    m_dynamicSwitchTimer.start();
+        m_shouldSwitchToLayout = shouldSwitchToLayout(id);
+
+        m_dynamicSwitchTimer.start();
+    }
 }
 
 void LayoutManager::showInfoWindowChanged()
@@ -433,7 +483,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
 
 void LayoutManager::importLatteLayout(QString layoutPath)
 {
-
+//! This might not be needed as it is Layout responsibility
 }
 
 bool LayoutManager::switchToLayout(QString layoutName)
@@ -458,31 +508,127 @@ bool LayoutManager::switchToLayout(QString layoutName)
         //! sessions.
         QTimer::singleShot(250, [this, layoutName, lPath]() {
             qDebug() << layoutName << " - " << lPath;
+            QString fixedLPath = lPath;
+            QString fixedLayoutName = layoutName;
 
-            while (!m_activeLayouts.isEmpty()) {
-                Layout *layout = m_activeLayouts.at(0);
-                m_activeLayouts.removeFirst();
-                layout->unloadContainments();
-                layout->unloadDockViews();
-                layout->deleteLater();
+            bool initializingMultipleLayouts{false};
+
+            if (memoryUsage() == Dock::MultipleLayouts && !activeLayout(Layout::MultipleLayoutsName)) {
+                initializingMultipleLayouts = true;
             }
 
-            Layout *newLayout = new Layout(this, lPath, layoutName);
-            m_activeLayouts.append(newLayout);
-            newLayout->initToCorona(m_corona);
+            if (memoryUsage() == Dock::SingleLayout || initializingMultipleLayouts) {
+                while (!m_activeLayouts.isEmpty()) {
+                    Layout *layout = m_activeLayouts.at(0);
+                    m_activeLayouts.removeFirst();
+                    layout->unloadContainments();
+                    layout->unloadDockViews();
+                    layout->deleteLater();
+                }
 
-            loadLatteLayout(lPath);
+                if (initializingMultipleLayouts) {
+                    fixedLayoutName = QString(Layout::MultipleLayoutsName);
+                    fixedLPath = layoutPath(fixedLayoutName);
+                }
+
+                Layout *newLayout = new Layout(this, fixedLPath, fixedLayoutName);
+                m_activeLayouts.append(newLayout);
+                newLayout->initToCorona(m_corona);
+
+                loadLatteLayout(fixedLPath);
+
+                emit activeLayoutsChanged();
+            }
+
+            if (memoryUsage() == Dock::MultipleLayouts)  {
+                syncMultipleLayoutsToActivities(layoutName);
+            }
+
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
 
             if (!layoutIsAssigned(layoutName)) {
                 m_corona->universalSettings()->setLastNonAssignedLayoutName(layoutName);
             }
-
-            emit activeLayoutsChanged();
         });
     }
 
     return true;
+}
+
+void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
+{
+    QList<Layout *> layoutsToUnload;
+    QStringList layoutsToLoad;
+
+    bool allRunningActivitiesWillBeReserved{true};
+
+    if (layoutForOrphans.isEmpty() || m_assignedLayouts.values().contains(layoutForOrphans)) {
+        layoutForOrphans = m_corona->universalSettings()->lastNonAssignedLayoutName();
+    }
+
+    foreach (auto activity, runningActivities()) {
+        if (!m_assignedLayouts[activity].isEmpty()) {
+            if (!layoutsToLoad.contains(m_assignedLayouts[activity])) {
+                layoutsToLoad.append(m_assignedLayouts[activity]);
+            }
+        } else {
+            allRunningActivitiesWillBeReserved = false;
+        }
+    }
+
+    foreach (auto layout, m_activeLayouts) {
+        Layout *tempLayout{nullptr};
+
+        if (!layoutsToLoad.contains(layout->name())) {
+            tempLayout = layout;
+        } else if (layout->activities().isEmpty() && allRunningActivitiesWillBeReserved) {
+            //! in such case the layout for the orphaned must be unloaded
+            tempLayout = layout;
+        }
+
+        if (tempLayout && !layoutsToUnload.contains(tempLayout)) {
+            layoutsToUnload << tempLayout;
+        }
+    }
+
+    //! Unload no needed Layouts
+    foreach (auto layout, layoutsToUnload) {
+        if (layout->name() != Layout::MultipleLayoutsName) {
+            Layout *tempLayout = layoutsToUnload.at(0);
+            layoutsToUnload.removeFirst();
+            tempLayout->unloadContainments();
+            tempLayout->unloadDockViews();
+            tempLayout->deleteLater();
+        }
+    }
+
+    //! Add Layout for orphan activities
+    if (!allRunningActivitiesWillBeReserved) {
+        if (!activeLayout(layoutForOrphans)) {
+            Layout *newLayout = new Layout(this, layoutPath(layoutForOrphans), layoutForOrphans);
+
+            if (newLayout) {
+                m_activeLayouts.append(newLayout);
+                newLayout->initToCorona(m_corona);
+                newLayout->importToCorona();
+            }
+        }
+    }
+
+    //! Add needed Layouts based on Activities
+    foreach (auto layoutName, layoutsToLoad) {
+        if (!activeLayout(layoutName)) {
+            Layout *newLayout = new Layout(this, QString(layoutPath(layoutName)), layoutName);
+
+            if (newLayout) {
+                m_activeLayouts.append(newLayout);
+                newLayout->initToCorona(m_corona);
+                newLayout->importToCorona();
+            }
+        }
+    }
+
+    emit activeLayoutsChanged();
 }
 
 QString LayoutManager::newLayout(QString layoutName, QString preset)
