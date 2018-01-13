@@ -67,6 +67,8 @@ public:
 
     bool intersects(const WindowInfoWrap &winfo);
 
+    void updateStrutsBasedOnLayoutsAndActivities();
+
     void saveConfig();
     void restoreConfig();
 

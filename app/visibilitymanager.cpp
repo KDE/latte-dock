@@ -113,7 +113,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     switch (this->mode) {
         case Dock::AlwaysVisible: {
             if (view->containment() && !view->containment()->isUserConfiguring() && view->screen()) {
-                wm->setDockStruts(*view, dockGeometry, view->location());
+                updateStrutsBasedOnLayoutsAndActivities();
             }
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
@@ -129,20 +129,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
 
             if (dockCorona && dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-                if (dockView->managedLayout() && (dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName())) {
-                    wm->setDockStruts(*view, dockGeometry, view->location());
-                } else {
-                    wm->removeDockStruts(*view);
-                }
-
                 connections[2] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
-                    Layout *mLayout = dockView->managedLayout();
-
-                    if (mLayout && (mLayout->name() == dockCorona->layoutManager()->currentLayoutName())) {
-                        wm->setDockStruts(*view, dockGeometry, view->location());
-                    } else {
-                        wm->removeDockStruts(*view);
-                    }
+                    updateStrutsBasedOnLayoutsAndActivities();
                 });
 
             }
@@ -206,6 +194,19 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     view->containment()->config().writeEntry("visibility", static_cast<int>(mode));
 
     emit q->modeChanged();
+}
+
+void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
+{
+    bool multipleLayoutsAndCurrent = (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+                                      && dockView->managedLayout()
+                                      && dockCorona->layoutManager()->currentLayoutName() == dockView->managedLayout()->name());
+
+    if (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
+        wm->setDockStruts(*view, dockGeometry, view->location());
+    } else {
+        wm->removeDockStruts(*view);
+    }
 }
 
 void VisibilityManagerPrivate::setRaiseOnDesktop(bool enable)
@@ -349,7 +350,7 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
     this->dockGeometry = geometry;
 
     if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring() && view->screen()) {
-        wm->setDockStruts(*view, this->dockGeometry, view->containment()->location());
+        updateStrutsBasedOnLayoutsAndActivities();
     }
 }
 

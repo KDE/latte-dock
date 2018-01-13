@@ -444,15 +444,16 @@ void LayoutManager::loadLayouts()
 
 void LayoutManager::loadLatteLayout(QString layoutPath)
 {
+    qDebug() << " -------------------------------------------------------------------- ";
+    qDebug() << " -------------------------------------------------------------------- ";
+
     if (m_corona->containments().size() > 0) {
-        qDebug() << "There are still containments present :::: " << m_corona->containments().size();
+        qDebug() << "LOAD LATTE LAYOUT ::: There are still containments present !!!! :: " << m_corona->containments().size();
     }
 
     if (!layoutPath.isEmpty() && m_corona->containments().size() == 0) {
-        if (!layoutPath.isEmpty()) {
-            qDebug() << "loading layout:" << layoutPath;
-            m_corona->loadLayout(layoutPath);
-        }
+        qDebug() << "LOADING CORONA LAYOUT:" << layoutPath;
+        m_corona->loadLayout(layoutPath);
 
         //! ~~~ ADDING DOCKVIEWS AND ENFORCE LOADING IF TASKS ARENT PRESENT BASED ON SCREENS ~~~ !//
 
@@ -523,7 +524,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
                     m_activeLayouts.removeFirst();
                     layout->unloadContainments();
                     layout->unloadDockViews();
-                    layout->deleteLater();
+                    delete layout;
                 }
 
                 if (initializingMultipleLayouts) {
@@ -598,7 +599,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
             layoutsToUnload.removeFirst();
             tempLayout->unloadContainments();
             tempLayout->unloadDockViews();
-            tempLayout->deleteLater();
+            delete tempLayout;
         }
     }
 

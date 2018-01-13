@@ -1193,7 +1193,7 @@ void DockView::setMaskArea(QRect area)
         setMask(fixedMask);
     }
 
-    qDebug() << "dock mask set:" << m_maskArea;
+    //  qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
 }
 
