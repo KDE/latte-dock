@@ -195,6 +195,24 @@ QStringList LayoutManager::activities()
     return m_corona->m_activityConsumer->activities();
 }
 
+QStringList LayoutManager::runningActivities()
+{
+    return m_corona->m_activityConsumer->runningActivities();
+}
+
+QStringList LayoutManager::orphanedActivities()
+{
+    QStringList orphans;
+
+    foreach (auto activity, activities()) {
+        if (m_assignedLayouts[activity].isEmpty()) {
+            orphans.append(activity);
+        }
+    }
+
+    return orphans;
+}
+
 QStringList LayoutManager::presetsPaths() const
 {
     return m_presetsPaths;

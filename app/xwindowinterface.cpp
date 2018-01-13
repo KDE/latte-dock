@@ -84,7 +84,6 @@ void XWindowInterface::setDockExtraFlags(QWindow &view)
     KWindowSystem::setType(view.winId(), NET::Dock);
     KWindowSystem::setState(view.winId(), NET::SkipTaskbar | NET::SkipPager);
     KWindowSystem::setOnAllDesktops(view.winId(), true);
-    KWindowSystem::setOnActivities(view.winId(), {"0"});
 }
 
 void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
@@ -141,6 +140,11 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
                                     strut.top_width,    strut.top_start,    strut.top_end,
                                     strut.bottom_width, strut.bottom_start, strut.bottom_end
                                    );
+}
+
+void XWindowInterface::setOnActivities(QWindow &view, const QStringList &activities)
+{
+    KWindowSystem::setOnActivities(view.winId(), activities);
 }
 
 void XWindowInterface::removeDockStruts(QWindow &view) const

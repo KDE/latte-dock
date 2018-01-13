@@ -41,6 +41,7 @@ public:
     void setDockExtraFlags(QWindow &view) override;
     void setDockStruts(QWindow &view, const QRect &rect
                        , Plasma::Types::Location location) override;
+    void setOnActivities(QWindow &view, const QStringList &activities) override;
 
     void removeDockStruts(QWindow &view) const override;
 

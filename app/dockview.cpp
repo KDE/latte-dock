@@ -1289,6 +1289,9 @@ void DockView::setManagedLayout(Layout *layout)
     }
 
     m_managedLayout = layout;
+
+    m_visibility->setDockOnActivities(layout->appliedActivities());
+
     emit managedLayoutChanged();
 }
 

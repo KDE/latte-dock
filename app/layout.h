@@ -81,6 +81,7 @@ public:
     void copyDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
     void syncDockViewsToScreens();
+    const QStringList appliedActivities();
 
     QHash<const Plasma::Containment *, DockView *> *dockViews();
 

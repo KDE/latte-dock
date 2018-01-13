@@ -374,6 +374,23 @@ QHash<const Plasma::Containment *, DockView *> *Layout::dockViews()
     return &m_dockViews;
 }
 
+const QStringList Layout::appliedActivities()
+{
+    if (!m_corona) {
+        return {};
+    }
+
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+        return {"0"};
+    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        if (m_activities.isEmpty()) {
+            return m_corona->layoutManager()->orphanedActivities();
+        } else {
+            return m_activities;
+        }
+    }
+}
+
 void Layout::destroyedChanged(bool destroyed)
 {
     if (!m_corona) {

@@ -90,6 +90,8 @@ public:
     LaunchersSignals *launchersSignals();
 
     QStringList activities();
+    QStringList runningActivities();
+    QStringList orphanedActivities(); //! These are activities that havent been assigned to specific layout
 
     void importDefaultLayout(bool newInstanceIfPresent = false);
     void importPresets(bool includeDefault = false);

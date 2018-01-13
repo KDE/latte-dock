@@ -332,6 +332,11 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
     }
 }
 
+void VisibilityManagerPrivate::setDockOnActivities(const QStringList &activities)
+{
+    wm->setOnActivities(*view, activities);
+}
+
 void VisibilityManagerPrivate::dodgeActive(WindowId wid)
 {
     if (raiseTemporarily)
@@ -822,6 +827,11 @@ Dock::Visibility VisibilityManager::mode() const
 void VisibilityManager::setMode(Dock::Visibility mode)
 {
     d->setMode(mode);
+}
+
+void VisibilityManager::setDockOnActivities(const QStringList &activities)
+{
+    d->setDockOnActivities(activities);
 }
 
 bool VisibilityManager::raiseOnDesktop() const
