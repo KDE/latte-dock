@@ -123,7 +123,7 @@ DockCorona::~DockCorona()
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
 
-    qDebug() << "latte corona deleted..." << this;
+    qDebug() << "Latte Corona - deleted...";
 }
 
 void DockCorona::load()
@@ -174,37 +174,6 @@ void DockCorona::unload()
         //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
         //this form doesn't crash, while qDeleteAll(containments()) does
         delete containments().first();
-    }
-}
-
-void DockCorona::loadLatteLayout(QString layoutPath)
-{
-    if (containments().size() > 0) {
-        qDebug() << "There are still containments present :::: " << containments().size();
-    }
-
-    if (!layoutPath.isEmpty() && containments().size() == 0) {
-        qDebug() << "corona is unloading the interface...";
-        // unload();
-        qDebug() << "loading layout:" << layoutPath;
-        loadLayout(layoutPath);
-
-        m_firstContainmentWithTasks = -1;
-        m_tasksWillBeLoaded =  heuresticForLoadingDockWithTasks();
-        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << m_tasksWillBeLoaded;
-
-        foreach (auto containment, containments()) {
-            //! forceDockLoading is used when a latte configuration based on the
-            //! current running screens does not provide a dock containing tasks.
-            //! in such case the lowest latte containment containing tasks is loaded
-            //! and it forcefully becomes primary dock
-            if (!m_tasksWillBeLoaded && m_firstContainmentWithTasks == containment->id()) {
-                m_tasksWillBeLoaded = true; //this protects by loading more than one dock at startup
-                m_layoutManager->addDock(containment, true);
-            } else {
-                m_layoutManager->addDock(containment);
-            }
-        }
     }
 }
 
@@ -919,55 +888,6 @@ QStringList DockCorona::appletsIds()
     }
 
     return ids;
-}
-
-//! This function figures in the beginning if a dock with tasks
-//! in it will be loaded taking into account also the screens are present.
-bool DockCorona::heuresticForLoadingDockWithTasks()
-{
-    foreach (auto containment, containments()) {
-        QString plugin = containment->pluginMetaData().pluginId();
-
-        if (plugin == "org.kde.latte.containment") {
-            bool onPrimary = containment->config().readEntry("onPrimary", true);
-            int lastScreen =  containment->lastScreen();
-
-            qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
-
-
-            bool containsTasks = false;
-
-            foreach (auto applet, containment->applets()) {
-                const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
-
-                if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
-                    containsTasks = true;
-                    break;
-                }
-            }
-
-            if (containsTasks) {
-                m_firstContainmentWithTasks = containment->id();
-
-                if (onPrimary) {
-                    return true;
-                } else {
-                    if (lastScreen >= 0) {
-                        QString connector = m_screenPool->connector(lastScreen);
-
-                        foreach (auto scr, qGuiApp->screens()) {
-                            if (scr && scr->name() == connector) {
-                                return true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    return false;
 }
 
 //! Activate launcher menu through dbus interface

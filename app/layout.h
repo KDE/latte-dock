@@ -48,6 +48,8 @@ public:
     Layout(QObject *parent, QString layoutFile, QString layoutName = QString());
     ~Layout() override;
 
+    static const QString MultipleLayoutsName;
+
     void initToCorona(DockCorona *corona);
     void unloadContainments();
     void unloadDockViews();

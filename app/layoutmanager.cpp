@@ -20,6 +20,7 @@
 
 #include "layoutmanager.h"
 #include "infoview.h"
+#include "screenpool.h"
 
 #include <QDir>
 #include <QFile>
@@ -31,6 +32,8 @@
 #include <KNotification>
 
 namespace Latte {
+
+const int MultipleLayoutsPresetId = 10;
 
 LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent),
@@ -90,6 +93,11 @@ void LayoutManager::load()
         importPresets(false);
         m_corona->universalSettings()->setCurrentLayoutName(i18n("My Layout"));
         m_corona->universalSettings()->setVersion(2);
+    }
+
+    //! Check if the multiple-layouts hidden file is present, add it if it isnt
+    if (!QFile(QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte").exists()) {
+        importPreset(MultipleLayoutsPresetId, false);
     }
 
     qDebug() << "Latte is loading  its layouts...";
@@ -215,17 +223,43 @@ void LayoutManager::setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage)
 
 void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
 {
-    m_activeLayouts.at(0)->addDock(containment, forceLoading, expDockScreen);
+    if (memoryUsage() == Dock::SingleLayout) {
+        m_activeLayouts.at(0)->addDock(containment, forceLoading, expDockScreen);
+    } else if (memoryUsage() == Dock::MultipleLayouts) {
+        QString layoutId = containment->config().readEntry("layoutId", QString());
+
+        if (!layoutId.isEmpty()) {
+            auto layout = activeLayout(layoutId);
+
+            if (layout) {
+                layout->addDock(containment, forceLoading, expDockScreen);
+            }
+        }
+    }
 }
 
 void LayoutManager::recreateDock(Plasma::Containment *containment)
 {
-    m_activeLayouts.at(0)->recreateDock(containment);
+    if (memoryUsage() == Dock::SingleLayout) {
+        m_activeLayouts.at(0)->recreateDock(containment);
+    } else if (memoryUsage() == Dock::MultipleLayouts) {
+        QString layoutId = containment->config().readEntry("layoutId", QString());
+
+        if (!layoutId.isEmpty()) {
+            auto layout = activeLayout(layoutId);
+
+            if (layout) {
+                layout->recreateDock(containment);
+            }
+        }
+    }
 }
 
 void LayoutManager::syncDockViewsToScreens()
 {
-    m_activeLayouts.at(0)->syncDockViewsToScreens();
+    foreach (auto layout, m_activeLayouts) {
+        layout->syncDockViewsToScreens();
+    }
 }
 
 QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews() const
@@ -340,6 +374,50 @@ void LayoutManager::loadLayouts()
     emit menuLayoutsChanged();
 }
 
+void LayoutManager::loadLatteLayout(QString layoutPath)
+{
+    if (m_corona->containments().size() > 0) {
+        qDebug() << "There are still containments present :::: " << m_corona->containments().size();
+    }
+
+    if (!layoutPath.isEmpty() && m_corona->containments().size() == 0) {
+        if (!layoutPath.isEmpty()) {
+            qDebug() << "loading layout:" << layoutPath;
+            m_corona->loadLayout(layoutPath);
+        }
+
+        //! ~~~ ADDING DOCKVIEWS AND ENFORCE LOADING IF TASKS ARENT PRESENT BASED ON SCREENS ~~~ !//
+
+        //! this is used to record the first dock having tasks in it. It is used
+        //! to specify which dock will be loaded on startup if a case that no "dock
+        //! with tasks" will be loaded otherwise. Currently the older one dock wins
+        int firstContainmentWithTasks = -1;
+
+        //! this is used to check if a dock with tasks in it will be loaded on startup
+        bool tasksWillBeLoaded =  heuresticForLoadingDockWithTasks(&firstContainmentWithTasks);
+
+        qDebug() << "TASKS WILL BE PRESENT AFTER LOADING ::: " << tasksWillBeLoaded;
+
+        foreach (auto containment, m_corona->containments()) {
+            //! forceDockLoading is used when a latte configuration based on the
+            //! current running screens does not provide a dock containing tasks.
+            //! in such case the lowest latte containment containing tasks is loaded
+            //! and it forcefully becomes primary dock
+            if (!tasksWillBeLoaded && firstContainmentWithTasks == containment->id()) {
+                tasksWillBeLoaded = true; //this protects by loading more than one dock at startup
+                addDock(containment, true);
+            } else {
+                addDock(containment);
+            }
+        }
+    }
+}
+
+void LayoutManager::importLatteLayout(QString layoutPath)
+{
+
+}
+
 bool LayoutManager::switchToLayout(QString layoutName)
 {
     if (m_currentLayout && m_currentLayout->name() == layoutName) {
@@ -375,7 +453,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
             m_activeLayouts.append(newLayout);
             newLayout->initToCorona(m_corona);
 
-            m_corona->loadLatteLayout(lPath);
+            loadLatteLayout(lPath);
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
 
             if (!layoutIsAssigned(layoutName)) {
@@ -415,6 +493,56 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     return newLayoutPath;
 }
 
+//! This function figures in the beginning if a dock with tasks
+//! in it will be loaded taking into account also the screens are present.
+bool LayoutManager::heuresticForLoadingDockWithTasks(int *firstContainmentWithTasks)
+{
+    foreach (auto containment, m_corona->containments()) {
+        QString plugin = containment->pluginMetaData().pluginId();
+
+        if (plugin == "org.kde.latte.containment") {
+            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            int lastScreen =  containment->lastScreen();
+
+            qDebug() << "containment values: " << onPrimary << " - " << lastScreen;
+
+
+            bool containsTasks = false;
+
+            foreach (auto applet, containment->applets()) {
+                const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+
+                if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
+                    containsTasks = true;
+                    break;
+                }
+            }
+
+            if (containsTasks) {
+                *firstContainmentWithTasks = containment->id();
+
+                if (onPrimary) {
+                    return true;
+                } else {
+                    if (lastScreen >= 0) {
+                        QString connector = m_corona->screenPool()->connector(lastScreen);
+
+                        foreach (auto scr, qGuiApp->screens()) {
+                            if (scr && scr->name() == connector) {
+                                return true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+
 void LayoutManager::importDefaultLayout(bool newInstanceIfPresent)
 {
     importPreset(1, newInstanceIfPresent);
@@ -444,6 +572,9 @@ void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
     QString presetName = Layout::layoutName(presetPath);
     QByteArray presetNameChars = presetName.toUtf8();
     presetName = i18n(presetNameChars);
+
+    //! hide the multiple layouts layout file from user
+    presetName = (presetNo == MultipleLayoutsPresetId) ? "." + presetName : presetName;
 
     QString newLayoutFile = "";
 

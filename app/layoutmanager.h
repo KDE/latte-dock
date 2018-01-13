@@ -121,9 +121,16 @@ private slots:
 
 private:
     void confirmDynamicSwitch();
+    //! This function figures in the beginning if a dock with tasks
+    //! in it will be loaded taking into account also the screens are present.
+    //! returns true if it will be loaded, false otherwise
+    //! firstContainmentWithTasks = the first containment containing a taskmanager plasmoid
+    bool heuresticForLoadingDockWithTasks(int *firstContainmentWithTasks);
+    void importLatteLayout(QString layoutPath);
+    void importPreset(int presetNo, bool newInstanceIfPresent = false);
+    void loadLatteLayout(QString layoutPath);
     void setMenuLayouts(QStringList layouts);
     void showInfoWindow(QString info, int duration);
-    void importPreset(int presetNo, bool newInstanceIfPresent = false);
 
     QString layoutPath(QString layoutName);
 

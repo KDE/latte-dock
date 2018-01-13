@@ -28,6 +28,8 @@
 
 namespace Latte {
 
+const QString Layout::MultipleLayoutsName = ".multiple-layouts_hidden";
+
 Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
     : QObject(parent)
 {
@@ -123,8 +125,15 @@ void Layout::initToCorona(DockCorona *corona)
     m_corona = corona;
 
     foreach (auto containment, m_corona->containments()) {
-        // QString layout = containment->config().readEntry("layout", QString());
-        addContainment(containment);
+        if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+            addContainment(containment);
+        } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+            QString layoutId = containment->config().readEntry("layoutId", QString());
+
+            if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
+                addContainment(containment);
+            }
+        }
     }
 
     qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
@@ -341,8 +350,23 @@ void Layout::addContainment(Plasma::Containment *containment)
         return;
     }
 
-    m_containments.append(containment);
-    connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
+    bool containmentInLayout{false};
+
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+        m_containments.append(containment);
+        containmentInLayout = true;
+    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        QString layoutId = containment->config().readEntry("layoutId", QString());
+
+        if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
+            m_containments.append(containment);
+            containmentInLayout = true;
+        }
+    }
+
+    if (containmentInLayout) {
+        connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
+    }
 }
 
 QHash<const Plasma::Containment *, DockView *> *Layout::dockViews()
@@ -748,7 +772,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 
     qDebug() << "full assignments ::: " << assigned;
 
-    //! update applet ids in their contaiment order
+    //! update applet ids in their contaiment order and in MultipleLayouts update also the layoutId
     foreach (auto cId, investigate_conts.groupList()) {
         QString order1 = investigate_conts.group(cId).group("General").readEntry("appletOrder", QString());
 
@@ -764,6 +788,10 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
             QString fixedOrder1 = fixedOrder1Ids.join(";");
             //qDebug() << "fixed order ::: " << fixedOrder1;
             investigate_conts.group(cId).group("General").writeEntry("appletOrder", fixedOrder1);
+        }
+
+        if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+            investigate_conts.group(cId).writeEntry("layoutId", m_layoutName);
         }
     }
 
@@ -813,15 +841,15 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
 {
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
-    auto nConts = m_corona->importLayout(KConfigGroup(filePtr, ""));
+    auto newContainments = m_corona->importLayout(KConfigGroup(filePtr, ""));
 
     ///Find latte and systray containments
-    qDebug() << " imported containments ::: " << nConts.length();
+    qDebug() << " imported containments ::: " << newContainments.length();
 
     QList<Plasma::Containment *> importedDocks;
     //QList<Plasma::Containment *> systrays;
 
-    foreach (auto containment, nConts) {
+    foreach (auto containment, newContainments) {
         KPluginMetaData meta = containment->kPackage().metadata();
 
         if (meta.pluginId() == "org.kde.latte.containment") {

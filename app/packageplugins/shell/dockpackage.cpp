@@ -57,6 +57,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("preset2", QStringLiteral("presets/Plasma.layout.latte"), i18n("plasma preset file"));
     package->addFileDefinition("preset3", QStringLiteral("presets/Unity.layout.latte"), i18n("unity preset file"));
     package->addFileDefinition("preset4", QStringLiteral("presets/Extended.layout.latte"), i18n("extended preset file"));
+    package->addFileDefinition("preset10", QStringLiteral("presets/multiple-layouts_hidden.layout.latte"), i18n("multiple layouts hidden file"));
 
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();

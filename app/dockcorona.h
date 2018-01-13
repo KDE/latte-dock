@@ -80,8 +80,6 @@ public:
     QList<Plasma::Types::Location> freeEdges(int screen) const;
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
 
-    void loadLatteLayout(QString layoutPath);
-
     int docksCount() const;
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;
@@ -131,7 +129,7 @@ private:
     bool appletExists(uint containmentId, uint appletId) const;
     bool containmentExists(uint id) const;
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location)const;
-    bool heuresticForLoadingDockWithTasks();
+
     int noOfDocks();
     int primaryScreenId() const;
 
@@ -141,12 +139,6 @@ private:
     bool m_activitiesStarting{true};
     //! this is used to enforce loading the default layout on startup
     bool m_defaultLayoutOnStartup{false};
-    //! this is used to check if a dock with tasks in it will be loaded on startup
-    bool m_tasksWillBeLoaded{false};
-    //! this is used to record the first dock having tasks in it. It is used
-    //! to specify which dock will be loaded on startup if a case that no "dock
-    //! with tasks" will be loaded otherwise. Currently the older one dock wins
-    int m_firstContainmentWithTasks{ -1};
 
     QString m_layoutNameOnStartUp;
 
