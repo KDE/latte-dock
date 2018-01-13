@@ -113,10 +113,7 @@ DockCorona::~DockCorona()
 
     qDebug() << "Latte Corona - unload: containments ...";
 
-    while (!containments().isEmpty()) {
-        //deleting a containment will remove it from the list due to QObject::destroyed connect in Corona
-        delete containments().first();
-    }
+    m_layoutManager->unload();
 
     m_globalShortcuts->deleteLater();
     m_layoutManager->deleteLater();

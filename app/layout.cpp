@@ -516,29 +516,22 @@ void Layout::copyDock(Plasma::Containment *containment)
     //! Settting mutable for create a containment
     m_corona->setImmutability(Plasma::Types::Mutable);
 
-    QStringList toCopyContainmentIds;
-    QStringList toCopyAppletIds;
-
     QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
-    QString temp2File = QDir::homePath() + "/.config/lattedock.copy2.bak";
 
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
     QFile copyFile(temp1File);
-    QFile copyFile2(temp2File);
 
     if (copyFile.exists())
         copyFile.remove();
 
-    if (copyFile2.exists())
-        copyFile2.remove();
 
     KSharedConfigPtr newFile = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock.copy1.bak");
     KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
     KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
     KConfigGroup copied_systray;
 
-    toCopyContainmentIds << QString::number(containment->id());
-    toCopyAppletIds << containment->config().group("Applets").groupList();
+    // toCopyContainmentIds << QString::number(containment->id());
+    //  toCopyAppletIds << containment->config().group("Applets").groupList();
     containment->config().copyTo(&copied_c1);
 
     //!investigate if there is a systray in the containment to copy also
@@ -554,7 +547,7 @@ void Layout::copyDock(Plasma::Containment *containment)
         if (tSysId != -1) {
             systrayId = tSysId;
             systrayAppletId = applet;
-            qDebug() << "systray was found in the containment...";
+            qDebug() << "systray was found in the containment... ::: " << tSysId;
             break;
         }
     }
@@ -571,134 +564,25 @@ void Layout::copyDock(Plasma::Containment *containment)
 
         if (systray) {
             copied_systray = KConfigGroup(&copied_conts, QString::number(systray->id()));
-            toCopyContainmentIds << QString::number(systray->id());
-            toCopyAppletIds << systray->config().group("Applets").groupList();
+            //  toCopyContainmentIds << QString::number(systray->id());
+            //  toCopyAppletIds << systray->config().group("Applets").groupList();
             systray->config().copyTo(&copied_systray);
         }
     }
 
     //! end of systray specific code
 
-    //! BEGIN updating the ids in the temp file
-    QStringList allIds;
-    allIds << m_corona->containmentsIds();
-    allIds << m_corona->appletsIds();
+    //! update ids to unique ones
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
 
-    //qDebug() << "Ids:" << allIds;
-
-    //qDebug() << "to copy containments: " << toCopyContainmentIds;
-    //qDebug() << "to copy applets: " << toCopyAppletIds;
-
-    QStringList assignedIds;
-    QHash<QString, QString> assigned;
-
-    foreach (auto contId, toCopyContainmentIds) {
-        QString newId = availableId(allIds, assignedIds, 12);
-        assignedIds << newId;
-        assigned[contId] = newId;
-    }
-
-    foreach (auto appId, toCopyAppletIds) {
-        QString newId = availableId(allIds, assignedIds, 40);
-        assignedIds << newId;
-        assigned[appId] = newId;
-    }
-
-    qDebug() << "full assignments ::: " << assigned;
-
-    QString order1 = copied_c1.group("General").readEntry("appletOrder", QString());
-    QStringList order1Ids = order1.split(";");
-    QStringList fixedOrder1Ids;
-
-    //qDebug() << "order1 :: " << order1;
-
-    for (int i = 0; i < order1Ids.count(); ++i) {
-        fixedOrder1Ids.append(assigned[order1Ids[i]]);
-    }
-
-    QString fixedOrder1 = fixedOrder1Ids.join(";");
-    //qDebug() << "fixed order ::: " << fixedOrder1;
-    copied_c1.group("General").writeEntry("appletOrder", fixedOrder1);
-
-    //! must update also the systray id in its applet
-    if (systrayId > -1) {
-        copied_c1.group("Applets").group(systrayAppletId).group("Configuration").writeEntry("SystrayContainmentId", assigned[QString::number(systrayId)]);
-        copied_systray.sync();
-    }
-
-    copied_c1.sync();
-
-    QFile(temp1File).copy(temp2File);
-
-    QFile f(temp2File);
-
-    if (!f.open(QFile::ReadOnly)) {
-        qDebug() << "temp file couldnt be opened...";
-        return;
-    }
-
-    QTextStream in(&f);
-    QString fileText = in.readAll();
-
-    foreach (auto contId, toCopyContainmentIds) {
-        fileText = fileText.replace("[Containments][" + contId + "]", "[Containments][" + assigned[contId] + "]");
-    }
-
-    foreach (auto appId, toCopyAppletIds) {
-        fileText = fileText.replace("][Applets][" + appId + "]", "][Applets][" + assigned[appId] + "]");
-    }
-
-    f.close();
-
-    if (!f.open(QFile::WriteOnly)) {
-        qDebug() << "temp file couldnt be opened for writing...";
-        return;
-    }
-
-    QTextStream outputStream(&f);
-    outputStream << fileText;
-    f.close();
-    //! END of updating the ids in the temp file
 
     //! Finally import the configuration
-    KSharedConfigPtr newFile2 = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock.copy2.bak");
-    auto nConts = m_corona->importLayout(KConfigGroup(newFile2, ""));
-
-    ///Find latte and systray containments
-    qDebug() << " imported containments ::: " << nConts.length();
+    QList<Plasma::Containment *> importedDocks = importLayoutFile(temp2File);
 
     Plasma::Containment *newContainment{nullptr};
-    int newSystrayId = -1;
 
-    foreach (auto containment, nConts) {
-        KPluginMetaData meta = containment->kPackage().metadata();
-
-        if (meta.pluginId() == "org.kde.latte.containment") {
-            qDebug() << "new latte containment id: " << containment->id();
-            newContainment = containment;
-        } else if (meta.pluginId() == "org.kde.plasma.private.systemtray") {
-            qDebug() << "new systray containment id: " << containment->id();
-            newSystrayId = containment->id();
-        }
-    }
-
-    if (!newContainment)
-        return;
-
-    ///after systray was found we must update in latte the relevant id
-    if (newSystrayId != -1) {
-        applets = newContainment->config().group("Applets");
-
-        qDebug() << "systray found with id : " << newSystrayId << " and applets in the containment :" << applets.groupList().count();
-
-        foreach (auto applet, applets.groupList()) {
-            KConfigGroup appletSettings = applets.group(applet).group("Configuration");
-
-            if (appletSettings.hasKey("SystrayContainmentId")) {
-                qDebug() << "!!! updating systray id to : " << newSystrayId;
-                appletSettings.writeEntry("SystrayContainmentId", newSystrayId);
-            }
-        }
+    if (importedDocks.size() == 1) {
+        newContainment = importedDocks[0];
     }
 
     if (!newContainment || !newContainment->kPackage().isValid()) {
@@ -776,7 +660,7 @@ QString Layout::availableId(QStringList all, QStringList assigned, int base)
 
     int i = base;
 
-    while (!found && i < 30000) {
+    while (!found && i < 32000) {
         QString iStr = QString::number(i);
 
         if (!all.contains(iStr) && !assigned.contains(iStr)) {
@@ -787,6 +671,183 @@ QString Layout::availableId(QStringList all, QStringList assigned, int base)
     }
 
     return QString("");
+}
+
+QString Layout::newUniqueIdsLayoutFromFile(QString file)
+{
+    if (!m_corona) {
+        return QString();
+    }
+
+    QString tempFile = QDir::homePath() + "/.config/lattedock.copy2.bak";
+
+    QFile copyFile(tempFile);
+
+    if (copyFile.exists())
+        copyFile.remove();
+
+    //! BEGIN updating the ids in the temp file
+    QStringList allIds;
+    allIds << m_corona->containmentsIds();
+    allIds << m_corona->appletsIds();
+
+    QStringList toInvestigateContainmentIds;
+    QStringList toInvestigateAppletIds;
+    QStringList toInvestigateSystrayContIds;
+
+    //! first is the systray containment id
+    QHash<QString, QString> systrayParentContainmentIds;
+    QHash<QString, QString> systrayAppletIds;
+
+    //qDebug() << "Ids:" << allIds;
+
+    //qDebug() << "to copy containments: " << toCopyContainmentIds;
+    //qDebug() << "to copy applets: " << toCopyAppletIds;
+
+    QStringList assignedIds;
+    QHash<QString, QString> assigned;
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
+    KConfigGroup investigate_conts = KConfigGroup(filePtr, "Containments");
+    //KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
+
+    //! Record the containment and applet ids
+    foreach (auto cId, investigate_conts.groupList()) {
+        toInvestigateContainmentIds << cId;
+        auto appletsEntries = investigate_conts.group(cId).group("Applets");
+        toInvestigateAppletIds << appletsEntries.groupList();
+
+        //! investigate for systrays
+        foreach (auto appletId, appletsEntries.groupList()) {
+            KConfigGroup appletSettings = appletsEntries.group(appletId).group("Configuration");
+
+            QString tSysId = appletSettings.readEntry("SystrayContainmentId", "-1");
+
+            //! It is a systray !!!
+            if (tSysId != "-1") {
+                toInvestigateSystrayContIds << tSysId;
+                systrayParentContainmentIds[tSysId] = cId;
+                systrayAppletIds[tSysId] = appletId;
+                qDebug() << "systray was found in the containment...";
+            }
+        }
+    }
+
+    //! Reassign containment and applet ids to unique ones
+    foreach (auto contId, toInvestigateContainmentIds) {
+        QString newId = availableId(allIds, assignedIds, 12);
+        assignedIds << newId;
+        assigned[contId] = newId;
+    }
+
+    foreach (auto appId, toInvestigateAppletIds) {
+        QString newId = availableId(allIds, assignedIds, 40);
+        assignedIds << newId;
+        assigned[appId] = newId;
+    }
+
+    qDebug() << "full assignments ::: " << assigned;
+
+    //! update applet ids in their contaiment order
+    foreach (auto cId, investigate_conts.groupList()) {
+        QString order1 = investigate_conts.group(cId).group("General").readEntry("appletOrder", QString());
+
+        if (!order1.isEmpty()) {
+            QStringList order1Ids = order1.split(";");
+            QStringList fixedOrder1Ids;
+
+            //qDebug() << "order1 :: " << order1;
+            for (int i = 0; i < order1Ids.count(); ++i) {
+                fixedOrder1Ids.append(assigned[order1Ids[i]]);
+            }
+
+            QString fixedOrder1 = fixedOrder1Ids.join(";");
+            //qDebug() << "fixed order ::: " << fixedOrder1;
+            investigate_conts.group(cId).group("General").writeEntry("appletOrder", fixedOrder1);
+        }
+    }
+
+    //! must update also the systray id in its applet
+    foreach (auto systrayId, toInvestigateSystrayContIds) {
+        KConfigGroup systrayParentContainment = investigate_conts.group(systrayParentContainmentIds[systrayId]);
+        systrayParentContainment.group("Applets").group(systrayAppletIds[systrayId]).group("Configuration").writeEntry("SystrayContainmentId", assigned[systrayId]);
+        systrayParentContainment.sync();
+    }
+
+    investigate_conts.sync();
+
+    QFile(file).copy(tempFile);
+
+    QFile f(tempFile);
+
+    if (!f.open(QFile::ReadOnly)) {
+        qDebug() << "temp file couldnt be opened...";
+        return QString();
+    }
+
+    QTextStream in(&f);
+    QString fileText = in.readAll();
+
+    foreach (auto contId, toInvestigateContainmentIds) {
+        fileText = fileText.replace("[Containments][" + contId + "]", "[Containments][" + assigned[contId] + "]");
+    }
+
+    foreach (auto appId, toInvestigateAppletIds) {
+        fileText = fileText.replace("][Applets][" + appId + "]", "][Applets][" + assigned[appId] + "]");
+    }
+
+    f.close();
+
+    if (!f.open(QFile::WriteOnly)) {
+        qDebug() << "temp file couldnt be opened for writing...";
+        return QString();
+    }
+
+    QTextStream outputStream(&f);
+    outputStream << fileText;
+    f.close();
+
+    return tempFile;
+}
+
+QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
+{
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
+    auto nConts = m_corona->importLayout(KConfigGroup(filePtr, ""));
+
+    ///Find latte and systray containments
+    qDebug() << " imported containments ::: " << nConts.length();
+
+    QList<Plasma::Containment *> importedDocks;
+    //QList<Plasma::Containment *> systrays;
+
+    foreach (auto containment, nConts) {
+        KPluginMetaData meta = containment->kPackage().metadata();
+
+        if (meta.pluginId() == "org.kde.latte.containment") {
+            qDebug() << "new latte containment id: " << containment->id();
+            importedDocks << containment;
+        }
+    }
+
+    ///after systrays were found we must update in latte the relevant ids
+    /*if (!systrays.isEmpty()) {
+        foreach (auto systray, systrays) {
+            qDebug() << "systray found with id : " << systray->id();
+            Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(systray->parent());
+
+            if (parentApplet) {
+                KConfigGroup appletSettings = parentApplet->config().group("Configuration");
+
+                if (appletSettings.hasKey("SystrayContainmentId")) {
+                    qDebug() << "!!! updating systray id to : " << systray->id();
+                    appletSettings.writeEntry("SystrayContainmentId", systray->id());
+                }
+            }
+        }
+    }*/
+
+    return importedDocks;
 }
 
 void Layout::recreateDock(Plasma::Containment *containment)

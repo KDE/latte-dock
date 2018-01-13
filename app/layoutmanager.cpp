@@ -100,6 +100,15 @@ void LayoutManager::load()
     loadLayouts();
 }
 
+void LayoutManager::unload()
+{
+    foreach (auto layout, m_activeLayouts) {
+        layout->unloadContainments();
+        layout->unloadDockViews();
+        layout->deleteLater();
+    }
+}
+
 DockCorona *LayoutManager::corona()
 {
     return m_corona;

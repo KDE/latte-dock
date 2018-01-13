@@ -100,11 +100,18 @@ private slots:
     void containmentDestroyed(QObject *cont);
 
 private:
+    void importLocalLayout(QString file);
     void init();
     void setName(QString name);
     void setFile(QString file);
 
     QString availableId(QStringList all, QStringList assigned, int base);
+    //! provides a new file path based the provided file. The new file
+    //! has updated ids for containments and applets based on the corona
+    //! loaded ones
+    QString newUniqueIdsLayoutFromFile(QString file);
+    //! imports a layout file and returns the containments for the docks
+    QList<Plasma::Containment *> importLayoutFile(QString file);
 
 private:
     bool m_showInMenu{false};
