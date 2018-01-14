@@ -188,5 +188,10 @@ bool InfoView::event(QEvent *e)
     return QQuickWindow::event(e);
 }
 
+void InfoView::setOnActivities(QStringList activities)
+{
+    KWindowSystem::setOnActivities(winId(), activities);
+}
+
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

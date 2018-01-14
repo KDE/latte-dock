@@ -49,6 +49,8 @@ public:
     void init();
     Qt::WindowFlags wFlags() const;
 
+    void setOnActivities(QStringList activities = {"0"});
+
 public slots:
     Q_INVOKABLE void syncGeometry();
 

@@ -681,6 +681,10 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
                 m_activeLayouts.append(newLayout);
                 newLayout->initToCorona(m_corona);
                 newLayout->importToCorona();
+
+                if (newLayout->isOriginalLayout()) {
+                    showInfoWindow(i18n("Adding layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
+                }
             }
         }
     }
@@ -877,12 +881,13 @@ void LayoutManager::showLayoutConfigDialog()
     m_layoutConfigDialog->activateWindow();
 }
 
-void LayoutManager::showInfoWindow(QString info, int duration)
+void LayoutManager::showInfoWindow(QString info, int duration, QStringList activities)
 {
     foreach (auto screen, qGuiApp->screens()) {
         InfoView *infoView = new InfoView(m_corona, info, screen);
 
         infoView->show();
+        infoView->setOnActivities(activities);
 
         QTimer::singleShot(duration, [this, infoView]() {
             infoView->deleteLater();

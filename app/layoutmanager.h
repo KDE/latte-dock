@@ -136,7 +136,7 @@ private:
     void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);
     void setMenuLayouts(QStringList layouts);
-    void showInfoWindow(QString info, int duration);
+    void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
 
     QString layoutPath(QString layoutName);
 
