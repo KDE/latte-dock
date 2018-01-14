@@ -1331,24 +1331,18 @@ void DockView::setManagedLayout(Layout *layout)
         connect(this, &QWindow::visibleChanged, this, [&]() {
             if (!isVisible() && m_managedLayout) {
                 QTimer::singleShot(100, [this]() {
-                    if (containment() && !containment()->destroyed()) {
+                    if (m_managedLayout && containment() && !containment()->destroyed()) {
                         setVisible(true);
-
-                        if (m_managedLayout) {
-                            m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
-                            emit activitiesChanged();
-                        }
+                        m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                        emit activitiesChanged();
                     }
                 });
 
                 QTimer::singleShot(1500, [this]() {
-                    if (containment() && !containment()->destroyed()) {
+                    if (m_managedLayout && containment() && !containment()->destroyed()) {
                         setVisible(true);
-
-                        if (m_managedLayout) {
-                            m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
-                            emit activitiesChanged();
-                        }
+                        m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                        emit activitiesChanged();
                     }
                 });
             }
