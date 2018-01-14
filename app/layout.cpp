@@ -630,7 +630,7 @@ void Layout::copyDock(Plasma::Containment *containment)
         copyFile.remove();
 
 
-    KSharedConfigPtr newFile = KSharedConfig::openConfig(QDir::homePath() + "/.config/lattedock.copy1.bak");
+    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
     KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
     KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
     KConfigGroup copied_systray;
@@ -797,7 +797,6 @@ void Layout::importToCorona()
     if (copyFile.exists())
         copyFile.remove();
 
-    // QFile(m_layoutFile).copy(temp1File);
 
     KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
     KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
@@ -975,40 +974,24 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 
     investigate_conts.sync();
 
-    QFile(file).copy(tempFile);
+    //! Copy To Temp 2 File And Update Correctly The Ids
+    KSharedConfigPtr file2Ptr = KSharedConfig::openConfig(tempFile);
+    KConfigGroup fixedNewContainmets = KConfigGroup(file2Ptr, "Containments");
 
-    QFile f(tempFile);
+    foreach (auto contId, investigate_conts.groupList()) {
+        KConfigGroup newContainmentGroup = fixedNewContainmets.group(assigned[contId]);
+        investigate_conts.group(contId).copyTo(&newContainmentGroup);
 
-    if (!f.open(QFile::ReadOnly)) {
-        qDebug() << "temp file couldnt be opened...";
-        return QString();
-    }
+        newContainmentGroup.group("Applets").deleteGroup();
 
-    QTextStream in(&f);
-    QString fileText = in.readAll();
-
-    foreach (auto contId, toInvestigateContainmentIds) {
-        if (contId != assigned[contId]) {
-            fileText = fileText.replace("[Containments][" + contId + "]", "[Containments][" + assigned[contId] + "]");
+        foreach (auto appId, investigate_conts.group(contId).group("Applets").groupList()) {
+            KConfigGroup appletGroup = investigate_conts.group(contId).group("Applets").group(appId);
+            KConfigGroup newAppletGroup = fixedNewContainmets.group(assigned[contId]).group("Applets").group(assigned[appId]);
+            appletGroup.copyTo(&newAppletGroup);
         }
     }
 
-    foreach (auto appId, toInvestigateAppletIds) {
-        if (appId != assigned[appId]) {
-            fileText = fileText.replace("][Applets][" + appId + "]", "][Applets][" + assigned[appId] + "]");
-        }
-    }
-
-    f.close();
-
-    if (!f.open(QFile::WriteOnly)) {
-        qDebug() << "temp file couldnt be opened for writing...";
-        return QString();
-    }
-
-    QTextStream outputStream(&f);
-    outputStream << fileText;
-    f.close();
+    fixedNewContainmets.sync();
 
     return tempFile;
 }
