@@ -125,14 +125,19 @@ void LayoutManager::unload()
 
         layout->unloadContainments();
         layout->unloadDockViews();
+
+        if (memoryUsage() == Dock::MultipleLayouts && layout->isOriginalLayout()) {
+            clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
+        }
+
         layout->deleteLater();
     }
 
     //! Cleanup pseudo-layout from Containments
     if (memoryUsage() == Dock::MultipleLayouts) {
-        auto containmentsEntries = m_corona->config()->group("Containments");
-        containmentsEntries.deleteGroup();
-        containmentsEntries.sync();
+        //    auto containmentsEntries = m_corona->config()->group("Containments");
+        //  containmentsEntries.deleteGroup();
+        //  containmentsEntries.sync();
     }
 
 
@@ -336,6 +341,8 @@ QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews(
             }
         }
     }
+
+    return nullptr;
 }
 
 QHash<const Plasma::Containment *, DockView *> *LayoutManager::layoutDockViews(const QString &layoutName) const
@@ -643,6 +650,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
                 layout->unloadContainments();
                 layout->unloadDockViews();
+                clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
                 delete layout;
             }
         }
@@ -679,6 +687,24 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     emit activeLayoutsChanged();
 }
+
+void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds)
+{
+    if (!m_corona || memoryUsage() == Dock::SingleLayout) {
+        return;
+    }
+
+    auto containments = m_corona->config()->group("Containments");
+
+    foreach (auto conId, containmentsIds) {
+        qDebug() << "unloads ::: " << conId;
+        KConfigGroup containment = containments.group(conId);
+        containment.deleteGroup();
+    }
+
+    containments.sync();
+}
+
 
 void LayoutManager::syncDockViewsToScreens()
 {

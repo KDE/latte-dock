@@ -106,6 +106,7 @@ void Layout::unloadContainments()
 
     while (!systrays.isEmpty()) {
         Plasma::Containment *systray = systrays.at(0);
+        m_unloadedContainmentsIds << QString::number(systray->id());
         systrays.removeFirst();
         m_containments.removeAll(systray);
         delete systray;
@@ -113,6 +114,7 @@ void Layout::unloadContainments()
 
     while (!m_containments.isEmpty()) {
         Plasma::Containment *containment = m_containments.at(0);
+        m_unloadedContainmentsIds << QString::number(containment->id());
         m_containments.removeFirst();
         delete containment;
     }
@@ -273,6 +275,11 @@ void Layout::setActivities(QStringList activities)
     m_activities = activities;
 
     emit activitiesChanged();
+}
+
+QStringList Layout::unloadedContainmentsIds()
+{
+    return m_unloadedContainmentsIds;
 }
 
 bool Layout::isActiveLayout() const
@@ -640,7 +647,7 @@ void Layout::copyDock(Plasma::Containment *containment)
     foreach (auto applet, applets.groupList()) {
         KConfigGroup appletSettings = applets.group(applet).group("Configuration");
 
-        int tSysId = appletSettings.readEntry("SystrayContainmentId", "-1").toInt();
+        int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
 
         if (tSysId != -1) {
             systrayId = tSysId;
@@ -758,10 +765,10 @@ void Layout::appletCreated(Plasma::Applet *applet)
     //! when the user adds them
     KConfigGroup appletSettings = applet->containment()->config().group("Applets").group(QString::number(applet->id())).group("Configuration");
 
-    QString systrayId = appletSettings.readEntry("SystrayContainmentId", "-1");
+    int systrayId = appletSettings.readEntry("SystrayContainmentId", -1);
 
-    if (systrayId != "-1") {
-        uint sId = systrayId.toUInt();
+    if (systrayId != -1) {
+        uint sId = (uint)systrayId;
 
         foreach (auto containment, m_corona->containments()) {
             if (containment->id() == sId) {
@@ -801,7 +808,7 @@ void Layout::importToCorona()
     copyGroup.sync();
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1File, false);
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
 
 
     //! Finally import the configuration
@@ -827,7 +834,7 @@ QString Layout::availableId(QStringList all, QStringList assigned, int base)
     return QString("");
 }
 
-QString Layout::newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds)
+QString Layout::newUniqueIdsLayoutFromFile(QString file)
 {
     if (!m_corona) {
         return QString();
@@ -875,13 +882,14 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds)
         foreach (auto appletId, appletsEntries.groupList()) {
             KConfigGroup appletSettings = appletsEntries.group(appletId).group("Configuration");
 
-            QString tSysId = appletSettings.readEntry("SystrayContainmentId", "-1");
+            int tSysId = appletSettings.readEntry("SystrayContainmentId", -1);
 
             //! It is a systray !!!
-            if (tSysId != "-1") {
-                toInvestigateSystrayContIds << tSysId;
-                systrayParentContainmentIds[tSysId] = cId;
-                systrayAppletIds[tSysId] = appletId;
+            if (tSysId != -1) {
+                QString tSysIdStr = QString::number(tSysId);
+                toInvestigateSystrayContIds << tSysIdStr;
+                systrayParentContainmentIds[tSysIdStr] = cId;
+                systrayAppletIds[tSysIdStr] = appletId;
                 qDebug() << "systray was found in the containment...";
             }
         }
@@ -889,28 +897,51 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds)
 
     //! Reassign containment and applet ids to unique ones
     foreach (auto contId, toInvestigateContainmentIds) {
-        QString newId = contId;
-
-        if (enforceNewIds || assignedIds.contains(newId)) {
-            newId = availableId(allIds, assignedIds, 12);
-        }
+        QString newId = availableId(allIds, assignedIds, 12);
 
         assignedIds << newId;
         assigned[contId] = newId;
     }
 
     foreach (auto appId, toInvestigateAppletIds) {
-        QString newId = appId;
-
-        if (enforceNewIds || assignedIds.contains(newId)) {
-            newId = availableId(allIds, assignedIds, 40);
-        }
+        QString newId = availableId(allIds, assignedIds, 40);
 
         assignedIds << newId;
         assigned[appId] = newId;
     }
 
-    qDebug() << "full assignments ::: " << assigned;
+    qDebug() << "ALL CORONA IDS ::: " << allIds;
+    qDebug() << "FULL ASSIGNMENTS ::: " << assigned;
+
+    foreach (auto cId, toInvestigateContainmentIds) {
+        QString value = assigned[cId];
+
+        if (assigned.contains(value)) {
+            QString value2 = assigned[value];
+
+            if (cId != assigned[cId] && !value2.isEmpty() && cId == value2) {
+                qDebug() << "PROBLEM APPEARED !!!! FOR :::: " << cId << " .. fixed ..";
+                assigned[cId] = cId;
+                assigned[value] = value;
+            }
+        }
+    }
+
+    foreach (auto aId, toInvestigateAppletIds) {
+        QString value = assigned[aId];
+
+        if (assigned.contains(value)) {
+            QString value2 = assigned[value];
+
+            if (aId != assigned[aId] && !value2.isEmpty() && aId == value2) {
+                qDebug() << "PROBLEM APPEARED !!!! FOR :::: " << aId << " .. fixed ..";
+                assigned[aId] = aId;
+                assigned[value] = value;
+            }
+        }
+    }
+
+    qDebug() << "FIXED FULL ASSIGNMENTS ::: " << assigned;
 
     //! update applet ids in their contaiment order and in MultipleLayouts update also the layoutId
     foreach (auto cId, investigate_conts.groupList()) {

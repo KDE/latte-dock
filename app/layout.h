@@ -82,6 +82,8 @@ public:
 
     static QString layoutName(const QString &fileName);
 
+    QStringList unloadedContainmentsIds();
+
     //! this function needs the layout to have first set the corona through initToCorona() function
     void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
     void copyDock(Plasma::Containment *containment);
@@ -120,7 +122,7 @@ private:
     //! provides a new file path based the provided file. The new file
     //! has updated ids for containments and applets based on the corona
     //! loaded ones
-    QString newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds = true);
+    QString newUniqueIdsLayoutFromFile(QString file);
     //! imports a layout file and returns the containments for the docks
     QList<Plasma::Containment *> importLayoutFile(QString file);
 
@@ -134,6 +136,8 @@ private:
     QString m_layoutName;
     QStringList m_activities;
     QStringList m_launchers;
+
+    QStringList m_unloadedContainmentsIds;
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;

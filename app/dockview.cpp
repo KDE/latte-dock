@@ -1296,9 +1296,15 @@ void DockView::setManagedLayout(Layout *layout)
     m_managedLayout = layout;
 
     if (m_managedLayout) {
-        qDebug() << "DOCK VIEW FROM LAYOUT ::: " << layout->name() << " - activities: " << layout->appliedActivities();
-        m_visibility->setDockOnActivities(layout->appliedActivities());
-        emit activitiesChanged();
+        //! Sometimes the activity isnt completely ready, by adding a delay
+        //! we try to catch up
+        QTimer::singleShot(100, [this]() {
+            if (m_managedLayout) {
+                qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_managedLayout->name() << " - activities: " << m_managedLayout->appliedActivities();
+                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                emit activitiesChanged();
+            }
+        });
     }
 
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
@@ -1306,6 +1312,8 @@ void DockView::setManagedLayout(Layout *layout)
     if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout) {
+                qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
+                         << " - activities: " << m_managedLayout->appliedActivities();
                 m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
                 emit activitiesChanged();
             }
@@ -1322,7 +1330,7 @@ void DockView::setManagedLayout(Layout *layout)
         //! disappearing! With this they reappear!!!
         connect(this, &QWindow::visibleChanged, this, [&]() {
             if (!isVisible() && m_managedLayout) {
-                QTimer::singleShot(1, [this]() {
+                QTimer::singleShot(100, [this]() {
                     if (containment() && !containment()->destroyed()) {
                         setVisible(true);
 
@@ -1333,6 +1341,16 @@ void DockView::setManagedLayout(Layout *layout)
                     }
                 });
 
+                QTimer::singleShot(1500, [this]() {
+                    if (containment() && !containment()->destroyed()) {
+                        setVisible(true);
+
+                        if (m_managedLayout) {
+                            m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                            emit activitiesChanged();
+                        }
+                    }
+                });
             }
         });
     }

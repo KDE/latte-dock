@@ -125,6 +125,7 @@ private slots:
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
+    void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds);
     void confirmDynamicSwitch();
     //! This function figures in the beginning if a dock with tasks
     //! in it will be loaded taking into account also the screens are present.
