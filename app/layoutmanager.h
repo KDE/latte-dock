@@ -157,7 +157,6 @@ private:
     bool layoutIsAssigned(QString layoutName);
     QStringList validActivities(QStringList currentList);
 
-    QString m_currentActivityId;
     QStringList m_layouts;
     QStringList m_menuLayouts;
     QStringList m_presetsPaths;

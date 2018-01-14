@@ -1298,6 +1298,7 @@ void DockView::setManagedLayout(Layout *layout)
     if (m_managedLayout) {
         qDebug() << "DOCK VIEW FROM LAYOUT ::: " << layout->name() << " - activities: " << layout->appliedActivities();
         m_visibility->setDockOnActivities(layout->appliedActivities());
+        emit activitiesChanged();
     }
 
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
@@ -1306,14 +1307,16 @@ void DockView::setManagedLayout(Layout *layout)
         connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout) {
                 m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                emit activitiesChanged();
             }
         });
 
-        /* connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
-             if (m_managedLayout) {
-                 m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
-             }
-         });*/
+        connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
+            if (m_managedLayout) {
+                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                emit activitiesChanged();
+            }
+        });
 
         //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
         //! disappearing! With this they reappear!!!
@@ -1325,6 +1328,7 @@ void DockView::setManagedLayout(Layout *layout)
 
                         if (m_managedLayout) {
                             m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                            emit activitiesChanged();
                         }
                     }
                 });

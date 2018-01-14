@@ -235,6 +235,7 @@ signals:
     void showDockAfterLocationChangeFinished();
     void showDockAfterScreenChangeFinished();
 
+    void activitiesChanged();
     void alternativesIsShownChanged();
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();

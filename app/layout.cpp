@@ -369,6 +369,8 @@ void Layout::loadConfig()
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
+
+    emit activitiesChanged();
 }
 
 void Layout::saveConfig()

@@ -133,6 +133,9 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
+                connections[3] = connect(dockView, &DockView::activitiesChanged, this, [&]() {
+                    updateStrutsBasedOnLayoutsAndActivities();
+                });
             }
 
             raiseDock(true);
@@ -200,7 +203,7 @@ void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
 {
     bool multipleLayoutsAndCurrent = (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
                                       && dockView->managedLayout()
-                                      && dockCorona->layoutManager()->currentLayoutName() == dockView->managedLayout()->name());
+                                      && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName());
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
         wm->setDockStruts(*view, dockGeometry, view->location());

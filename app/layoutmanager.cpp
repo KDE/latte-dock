@@ -55,8 +55,6 @@ LayoutManager::LayoutManager(QObject *parent)
         m_dynamicSwitchTimer.setSingleShot(true);
         showInfoWindowChanged();
         connect(&m_dynamicSwitchTimer, &QTimer::timeout, this, &LayoutManager::confirmDynamicSwitch);
-
-        m_currentActivityId = m_corona->m_activityConsumer->currentActivity();
     }
 }
 
@@ -178,7 +176,7 @@ QString LayoutManager::currentLayoutName() const
         return m_corona->universalSettings()->currentLayoutName();
     } else if (memoryUsage() == Dock::MultipleLayouts) {
         foreach (auto layout, m_activeLayouts) {
-            if (layout->activities().contains(m_currentActivityId)) {
+            if (layout->isOriginalLayout() && layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
                 return layout->name();
             }
         }
@@ -190,6 +188,7 @@ QString LayoutManager::currentLayoutName() const
         }
     }
 
+    qDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  CURRENT LAYOUT NAME :::: ";
     return QString();
 }
 
@@ -326,7 +325,7 @@ QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews(
         return m_activeLayouts.at(0)->dockViews();
     } else {
         foreach (auto layout, m_activeLayouts) {
-            if (layout->activities().contains(m_currentActivityId)) {
+            if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
                 return layout->dockViews();
             }
         }
@@ -380,8 +379,6 @@ int LayoutManager::activeLayoutPos(QString id) const
 
 void LayoutManager::currentActivityChanged(const QString &id)
 {
-    m_currentActivityId = id;
-
     if (memoryUsage() == Dock::SingleLayout) {
         qDebug() << "activity changed :: " << id;
 
