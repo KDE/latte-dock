@@ -955,11 +955,15 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds)
     QString fileText = in.readAll();
 
     foreach (auto contId, toInvestigateContainmentIds) {
-        fileText = fileText.replace("[Containments][" + contId + "]", "[Containments][" + assigned[contId] + "]");
+        if (contId != assigned[contId]) {
+            fileText = fileText.replace("[Containments][" + contId + "]", "[Containments][" + assigned[contId] + "]");
+        }
     }
 
     foreach (auto appId, toInvestigateAppletIds) {
-        fileText = fileText.replace("][Applets][" + appId + "]", "][Applets][" + assigned[appId] + "]");
+        if (appId != assigned[appId]) {
+            fileText = fileText.replace("][Applets][" + appId + "]", "][Applets][" + assigned[appId] + "]");
+        }
     }
 
     f.close();
