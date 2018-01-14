@@ -58,6 +58,25 @@ Layout::~Layout()
     }
 }
 
+void Layout::syncToLayoutFile()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    KConfigGroup oldContainments = KConfigGroup(m_filePtr, "Containments");
+    oldContainments.deleteGroup();
+    oldContainments.sync();
+
+    foreach (auto containment, m_containments) {
+        containment->config().writeEntry("layoutId", "");
+        KConfigGroup newGroup = oldContainments.group(QString::number(containment->id()));
+        containment->config().copyTo(&newGroup);
+    }
+
+    oldContainments.sync();
+}
+
 void Layout::unloadContainments()
 {
     if (!m_corona) {
@@ -254,6 +273,26 @@ void Layout::setActivities(QStringList activities)
     m_activities = activities;
 
     emit activitiesChanged();
+}
+
+bool Layout::isActiveLayout() const
+{
+    if (!m_corona) {
+        return false;
+    }
+
+    Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layoutName);
+
+    if (activeLayout) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Layout::isOriginalLayout() const
+{
+    return m_layoutName != MultipleLayoutsName;
 }
 
 bool Layout::fileIsBroken() const
@@ -760,7 +799,7 @@ void Layout::importToCorona()
     copyGroup.sync();
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1File, false);
 
 
     //! Finally import the configuration
@@ -786,7 +825,7 @@ QString Layout::availableId(QStringList all, QStringList assigned, int base)
     return QString("");
 }
 
-QString Layout::newUniqueIdsLayoutFromFile(QString file)
+QString Layout::newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds)
 {
     if (!m_corona) {
         return QString();
@@ -848,13 +887,23 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 
     //! Reassign containment and applet ids to unique ones
     foreach (auto contId, toInvestigateContainmentIds) {
-        QString newId = availableId(allIds, assignedIds, 12);
+        QString newId = contId;
+
+        if (enforceNewIds || assignedIds.contains(newId)) {
+            newId = availableId(allIds, assignedIds, 12);
+        }
+
         assignedIds << newId;
         assigned[contId] = newId;
     }
 
     foreach (auto appId, toInvestigateAppletIds) {
-        QString newId = availableId(allIds, assignedIds, 40);
+        QString newId = appId;
+
+        if (enforceNewIds || assignedIds.contains(newId)) {
+            newId = availableId(allIds, assignedIds, 40);
+        }
+
         assignedIds << newId;
         assigned[appId] = newId;
     }

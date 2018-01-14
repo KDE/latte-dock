@@ -51,6 +51,7 @@ public:
     static const QString MultipleLayoutsName;
 
     void initToCorona(DockCorona *corona);
+    void syncToLayoutFile();
     void unloadContainments();
     void unloadDockViews();
 
@@ -58,6 +59,11 @@ public:
     void setShowInMenu(bool show);
 
     bool fileIsBroken() const;
+
+    //!this layout is loaded and running
+    bool isActiveLayout() const;
+    //!it is original layout compared to pseudo-layouts that are combinations of multiple-original layouts
+    bool isOriginalLayout() const;
 
     int version() const;
     void setVersion(int ver);
@@ -114,7 +120,7 @@ private:
     //! provides a new file path based the provided file. The new file
     //! has updated ids for containments and applets based on the corona
     //! loaded ones
-    QString newUniqueIdsLayoutFromFile(QString file);
+    QString newUniqueIdsLayoutFromFile(QString file, bool enforceNewIds = true);
     //! imports a layout file and returns the containments for the docks
     QList<Plasma::Containment *> importLayoutFile(QString file);
 

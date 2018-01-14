@@ -119,18 +119,26 @@ void LayoutManager::load()
 
 void LayoutManager::unload()
 {
+    //! Unload all Layouts
     foreach (auto layout, m_activeLayouts) {
+        if (memoryUsage() == Dock::MultipleLayouts && layout->isOriginalLayout()) {
+            layout->syncToLayoutFile();
+        }
+
         layout->unloadContainments();
         layout->unloadDockViews();
         layout->deleteLater();
     }
 
+    //! Cleanup pseudo-layout from Containments
     if (memoryUsage() == Dock::MultipleLayouts) {
         auto containmentsEntries = m_corona->config()->group("Containments");
         containmentsEntries.deleteGroup();
         containmentsEntries.sync();
     }
 
+
+    //! Remove no-needed temp files
     QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
     QString temp2File = QDir::homePath() + "/.config/lattedock.copy2.bak";
 
@@ -309,13 +317,6 @@ void LayoutManager::recreateDock(Plasma::Containment *containment)
                 layout->recreateDock(containment);
             }
         }
-    }
-}
-
-void LayoutManager::syncDockViewsToScreens()
-{
-    foreach (auto layout, m_activeLayouts) {
-        layout->syncDockViewsToScreens();
     }
 }
 
@@ -638,6 +639,11 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
             if (posLayout >= 0) {
                 qDebug() << "REMOVING LAYOUT ::::: " << layoutName;
                 m_activeLayouts.removeAt(posLayout);
+
+                if (layout->isOriginalLayout()) {
+                    layout->syncToLayoutFile();
+                }
+
                 layout->unloadContainments();
                 layout->unloadDockViews();
                 delete layout;
@@ -675,6 +681,13 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     }
 
     emit activeLayoutsChanged();
+}
+
+void LayoutManager::syncDockViewsToScreens()
+{
+    foreach (auto layout, m_activeLayouts) {
+        layout->syncDockViewsToScreens();
+    }
 }
 
 QString LayoutManager::newLayout(QString layoutName, QString preset)
