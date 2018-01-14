@@ -41,6 +41,8 @@
 #include <KWindowEffects>
 #include <KWindowSystem>
 
+#include <KActivities/Consumer>
+
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
 #include <PlasmaQuick/AppletQuickItem>
@@ -302,6 +304,7 @@ void DockView::initSignalingForLocationChangeSliding()
 void DockView::disconnectSensitiveSignals()
 {
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
+    setManagedLayout(nullptr);
 
     if (visibility()) {
         visibility()->setEnabledDynamicBackground(false);
@@ -1195,7 +1198,7 @@ void DockView::setMaskArea(QRect area)
         setMask(fixedMask);
     }
 
-    //  qDebug() << "dock mask set:" << m_maskArea;
+    // qDebug() << "dock mask set:" << m_maskArea;
     emit maskAreaChanged();
 }
 
@@ -1292,8 +1295,35 @@ void DockView::setManagedLayout(Layout *layout)
 
     m_managedLayout = layout;
 
-    qDebug() << "DOCK VIEW FROM LAYOUT ::: " << layout->name() << " - activities: " << layout->appliedActivities();
-    m_visibility->setDockOnActivities(layout->appliedActivities());
+    if (m_managedLayout) {
+        qDebug() << "DOCK VIEW FROM LAYOUT ::: " << layout->name() << " - activities: " << layout->appliedActivities();
+        m_visibility->setDockOnActivities(layout->appliedActivities());
+    }
+
+    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+    if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+            if (m_managedLayout) {
+                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+            }
+        });
+
+        //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
+        //! disappearing! With this they reappear!!!
+        connect(this, &QWindow::visibleChanged, this, [&]() {
+            if (!isVisible() && m_managedLayout) {
+                QTimer::singleShot(1, [this]() {
+                    setVisible(true);
+
+                    if (m_managedLayout) {
+                        m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                    }
+                });
+
+            }
+        });
+    }
 
     emit managedLayoutChanged();
 }

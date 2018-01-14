@@ -87,6 +87,7 @@ public:
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
     Layout *activeLayout(QString id) const;
+    int activeLayoutPos(QString id) const;
 
     LaunchersSignals *launchersSignals();
 
@@ -121,7 +122,7 @@ private slots:
     void currentActivityChanged(const QString &id);
     void showInfoWindowChanged();
     void showWidgetsExplorer();
-    void syncMultipleLayoutsToActivities(QString layoutForOrphans);
+    void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
     void confirmDynamicSwitch();

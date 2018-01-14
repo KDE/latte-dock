@@ -64,7 +64,9 @@ void Layout::unloadContainments()
         return;
     }
 
-    qDebug() << "Layout - " + name() + " unload: containments ... size: " << m_containments.size();
+    qDebug() << "Layout - " + name() + " unload: containments ... size ::: " << m_containments.size()
+             << " ,dockViews in memory ::: " << m_dockViews.size()
+             << " ,hidden dockViews in memory :::  " << m_waitingDockViews.size();
 
     foreach (auto view, m_dockViews) {
         view->disconnectSensitiveSignals();
