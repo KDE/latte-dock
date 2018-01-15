@@ -180,20 +180,9 @@ QString LayoutManager::currentLayoutName() const
     if (memoryUsage() == Dock::SingleLayout) {
         return m_corona->universalSettings()->currentLayoutName();
     } else if (memoryUsage() == Dock::MultipleLayouts) {
-        foreach (auto layout, m_activeLayouts) {
-            if (layout->isOriginalLayout() && layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
-                return layout->name();
-            }
-        }
-
-        foreach (auto layout, m_activeLayouts) {
-            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
-                return layout->name();
-            }
-        }
+        return m_currentLayoutNameInMultiEnvironment;
     }
 
-    qDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  CURRENT LAYOUT NAME :::: ";
     return QString();
 }
 
@@ -384,6 +373,25 @@ int LayoutManager::activeLayoutPos(QString id) const
     return -1;
 }
 
+void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
+{
+    foreach (auto layout, m_activeLayouts) {
+        if (layout->isOriginalLayout() && layout->activities().contains(m_corona->activitiesConsumer()->currentActivity())) {
+            m_currentLayoutNameInMultiEnvironment = layout->name();
+            emit currentLayoutNameChanged();
+            return;
+        }
+    }
+
+    foreach (auto layout, m_activeLayouts) {
+        if (layout->isOriginalLayout() && layout->activities().isEmpty()) {
+            m_currentLayoutNameInMultiEnvironment = layout->name();
+            emit currentLayoutNameChanged();
+            return;
+        }
+    }
+}
+
 void LayoutManager::currentActivityChanged(const QString &id)
 {
     if (memoryUsage() == Dock::SingleLayout) {
@@ -392,6 +400,8 @@ void LayoutManager::currentActivityChanged(const QString &id)
         m_shouldSwitchToLayout = shouldSwitchToLayout(id);
 
         m_dynamicSwitchTimer.start();
+    } else if (memoryUsage() == Dock::MultipleLayouts) {
+        updateCurrentLayoutNameInMultiEnvironment();
     }
 }
 
@@ -689,6 +699,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
         }
     }
 
+    updateCurrentLayoutNameInMultiEnvironment();
     emit activeLayoutsChanged();
 }
 

@@ -127,6 +127,8 @@ private slots:
 private:
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds);
     void confirmDynamicSwitch();
+    //! it is used just in order to provide translations for the presets
+    void ghostForTranslatedPresets();
     //! This function figures in the beginning if a dock with tasks
     //! in it will be loaded taking into account also the screens are present.
     //! returns true if it will be loaded, false otherwise
@@ -135,28 +137,20 @@ private:
     void importLatteLayout(QString layoutPath);
     void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);
+    void loadLayouts();
     void setMenuLayouts(QStringList layouts);
     void showInfoWindow(QString info, int duration, QStringList activities = {"0"});
+    void updateCurrentLayoutNameInMultiEnvironment();
+
+    bool layoutIsAssigned(QString layoutName);
 
     QString layoutPath(QString layoutName);
 
-    void loadLayouts();
+    QStringList validActivities(QStringList currentList);
 
 private:
-    DockCorona *m_corona{nullptr};
-    Importer *m_importer{nullptr};
-
-    Layout *m_currentLayout{nullptr};
-    QList<Layout *> m_activeLayouts;
-    LaunchersSignals *m_launchersSignals{nullptr};
-
+    QString m_currentLayoutNameInMultiEnvironment;
     QString m_shouldSwitchToLayout;
-
-    //! it is used just in order to provide translations for the presets
-    void ghostForTranslatedPresets();
-
-    bool layoutIsAssigned(QString layoutName);
-    QStringList validActivities(QStringList currentList);
 
     QStringList m_layouts;
     QStringList m_menuLayouts;
@@ -169,6 +163,12 @@ private:
     QHash<const QString, QString> m_assignedLayouts;
 
     QTimer m_dynamicSwitchTimer;
+
+    DockCorona *m_corona{nullptr};
+    Importer *m_importer{nullptr};
+    LaunchersSignals *m_launchersSignals{nullptr};
+    Layout *m_currentLayout{nullptr};
+    QList<Layout *> m_activeLayouts;
 
     friend class LayoutConfigDialog;
 };
