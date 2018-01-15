@@ -967,20 +967,22 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 
     //! update applet ids in their contaiment order and in MultipleLayouts update also the layoutId
     foreach (auto cId, investigate_conts.groupList()) {
-        QString order1 = investigate_conts.group(cId).group("General").readEntry("appletOrder", QString());
+        //! Update (appletOrder) and (lockedZoomApplets)
+        for (int i = 1; i <= 2; ++i) {
+            QString settingStr = (i == 1) ? "appletOrder" : "lockedZoomApplets";
+            QString order1 = investigate_conts.group(cId).group("General").readEntry(settingStr, QString());
 
-        if (!order1.isEmpty()) {
-            QStringList order1Ids = order1.split(";");
-            QStringList fixedOrder1Ids;
+            if (!order1.isEmpty()) {
+                QStringList order1Ids = order1.split(";");
+                QStringList fixedOrder1Ids;
 
-            //qDebug() << "order1 :: " << order1;
-            for (int i = 0; i < order1Ids.count(); ++i) {
-                fixedOrder1Ids.append(assigned[order1Ids[i]]);
+                for (int i = 0; i < order1Ids.count(); ++i) {
+                    fixedOrder1Ids.append(assigned[order1Ids[i]]);
+                }
+
+                QString fixedOrder1 = fixedOrder1Ids.join(";");
+                investigate_conts.group(cId).group("General").writeEntry(settingStr, fixedOrder1);
             }
-
-            QString fixedOrder1 = fixedOrder1Ids.join(";");
-            //qDebug() << "fixed order ::: " << fixedOrder1;
-            investigate_conts.group(cId).group("General").writeEntry("appletOrder", fixedOrder1);
         }
 
         if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
