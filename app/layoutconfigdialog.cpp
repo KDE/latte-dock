@@ -574,6 +574,10 @@ void LayoutConfigDialog::loadLayouts()
     int i = 0;
     QStringList brokenLayouts;
 
+    if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+        m_manager->syncActiveLayoutsToOriginalFiles();
+    }
+
     foreach (auto layout, m_manager->layouts()) {
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
