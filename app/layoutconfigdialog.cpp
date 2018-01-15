@@ -178,6 +178,19 @@ void LayoutConfigDialog::on_copyButton_clicked()
         return;
     }
 
+    //! Update original layout before copying if this layout is active
+    if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+        QString lName = (m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole)).toString();
+
+        if (Importer::layoutExists(lName)) {
+            Layout *layout = m_manager->activeLayout(lName);
+
+            if (layout->isOriginalLayout()) {
+                layout->syncToLayoutFile();
+            }
+        }
+    }
+
     QString tempDir = uniqueTempDirectory();
 
     QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
@@ -725,8 +738,9 @@ void LayoutConfigDialog::currentRowChanged(const QModelIndex &current, const QMo
 void LayoutConfigDialog::updateButtonsState()
 {
     QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
+    QString name = m_layouts[id]->name();
 
-    if (m_layouts[id]->name() == m_manager->currentLayoutName()) {
+    if (name == m_manager->currentLayoutName() || m_manager->activeLayout(name)) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);

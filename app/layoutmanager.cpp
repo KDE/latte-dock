@@ -218,8 +218,14 @@ QStringList LayoutManager::menuLayouts() const
 
     //! in case the current layout isnt checked to be shown in the menus
     //! we must add it on top
-    if (!fixedMenuLayouts.contains(currentLayoutName())) {
+    if (!fixedMenuLayouts.contains(currentLayoutName()) && memoryUsage() == Dock::SingleLayout) {
         fixedMenuLayouts.prepend(currentLayoutName());
+    } else if (memoryUsage() == Dock::MultipleLayouts) {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->isOriginalLayout() && !fixedMenuLayouts.contains(layout->name())) {
+                fixedMenuLayouts.prepend(layout->name());
+            }
+        }
     }
 
     return fixedMenuLayouts;
