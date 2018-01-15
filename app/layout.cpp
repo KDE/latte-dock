@@ -40,9 +40,7 @@ Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
             assignedName =  layoutName(layoutFile);
         }
 
-        m_filePtr = KSharedConfig::openConfig(layoutFile);
-        m_layoutGroup = KConfigGroup(m_filePtr, "LayoutSettings");
-
+        //!this order is important because setFile initializes also the m_layoutGroup
         setFile(layoutFile);
         setName(assignedName);
         loadConfig();
@@ -53,7 +51,6 @@ Layout::Layout(QObject *parent, QString layoutFile, QString assignedName)
 Layout::~Layout()
 {
     if (!m_layoutFile.isEmpty()) {
-        //saveConfig();
         m_layoutGroup.sync();
     }
 }
@@ -64,7 +61,9 @@ void Layout::syncToLayoutFile()
         return;
     }
 
-    KConfigGroup oldContainments = KConfigGroup(m_filePtr, "Containments");
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layoutFile);
+
+    KConfigGroup oldContainments = KConfigGroup(filePtr, "Containments");
     oldContainments.deleteGroup();
     oldContainments.sync();
 
@@ -215,6 +214,24 @@ void Layout::setName(QString name)
     emit nameChanged();
 }
 
+void Layout::renameLayout(QString newName)
+{
+    if (m_layoutFile != Importer::layoutFilePath(newName)) {
+        setFile(Importer::layoutFilePath(newName));
+    }
+
+    if (m_layoutName != newName) {
+        setName(newName);
+    }
+
+    //! thus this is a linked file
+    if (m_corona) {
+        foreach (auto containment, m_containments) {
+            containment->config().writeEntry("layoutId", m_layoutName);
+        }
+    }
+}
+
 QString Layout::color() const
 {
     return m_color;
@@ -245,6 +262,10 @@ void Layout::setFile(QString file)
     qDebug() << "Layout file:" << file;
 
     m_layoutFile = file;
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layoutFile);
+    m_layoutGroup = KConfigGroup(filePtr, "LayoutSettings");
+
     emit fileChanged();
 }
 
@@ -799,10 +820,10 @@ void Layout::importToCorona()
     if (copyFile.exists())
         copyFile.remove();
 
-
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layoutFile);
     KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
     KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
-    KConfigGroup current_containments = KConfigGroup(m_filePtr, "Containments");
+    KConfigGroup current_containments = KConfigGroup(filePtr, "Containments");
 
     current_containments.copyTo(&copyGroup);
 

@@ -669,6 +669,9 @@ bool LayoutManager::switchToLayout(QString layoutName)
 
 void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 {
+    qDebug() << "   ----  --------- ------    syncMultipleLayoutsToActivities       -------   ";
+    qDebug() << "   ----  --------- ------    -------------------------------       -------   ";
+
     QStringList layoutsToUnload;
     QStringList layoutsToLoad;
     layoutsToLoad << Layout::MultipleLayoutsName;
@@ -703,9 +706,6 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
             layoutsToUnload << tempLayoutName;
         }
     }
-
-    qDebug() << "   ----  --------- ------    syncMultipleLayoutsToActivities       -------   ";
-    qDebug() << "   ----  --------- ------    -------------------------------       -------   ";
 
     //! Unload no needed Layouts
     foreach (auto layoutName, layoutsToUnload) {

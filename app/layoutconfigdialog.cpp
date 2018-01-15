@@ -828,6 +828,8 @@ bool LayoutConfigDialog::saveAllChanges()
 
     QString switchToLayout;
 
+    QHash<QString, Layout *> activeLayoutsToRename;
+
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
@@ -845,7 +847,7 @@ bool LayoutConfigDialog::saveAllChanges()
         }
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
-        Layout *activeLayout = m_manager->activeLayout(name);
+        Layout *activeLayout = m_manager->activeLayout(m_layouts[id]->name());
 
         Layout *layout = activeLayout ? activeLayout : m_layouts[id];
 
@@ -861,14 +863,19 @@ bool LayoutConfigDialog::saveAllChanges()
             layout->setActivities(cleanedActivities);
         }
 
-        //!if the layout name changed or when the layout path is a temporary one
+        //! If the layout name changed OR the layout path is a temporary one
         if (layout->name() != name || (id.startsWith("/tmp/"))) {
+            //! If the layout is Active in MultipleLayouts
+            if (m_manager->memoryUsage() == Dock::MultipleLayouts && activeLayout) {
+                qDebug() << " Active Layout Should Be Renamed From : " << layout->name() << " TO :: " << name;
+                activeLayoutsToRename[name] = layout;
+            }
+
             QString tempFile = layoutTempDir.path() + "/" + QString(layout->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
-            if (layout->name() == m_manager->currentLayoutName()) {
+            if ((m_manager->memoryUsage() == Dock::SingleLayout) && (layout->name() == m_manager->currentLayoutName())) {
                 switchToLayout = name;
-                //m_manager->corona()->unload();
             }
 
             layout = m_layouts.take(id);
@@ -911,6 +918,13 @@ bool LayoutConfigDialog::saveAllChanges()
     foreach (auto initLayout, m_initLayoutPaths) {
         if (!idExistsInModel(initLayout)) {
             QFile(initLayout).remove();
+        }
+    }
+
+    if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+        foreach (auto newLayoutName, activeLayoutsToRename.keys()) {
+            qDebug() << " Active Layout Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
+            activeLayoutsToRename[newLayoutName]->renameLayout(newLayoutName);
         }
     }
 

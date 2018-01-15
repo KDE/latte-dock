@@ -82,6 +82,8 @@ public:
 
     static QString layoutName(const QString &fileName);
 
+    void renameLayout(QString newName);
+
     QStringList unloadedContainmentsIds();
 
     //! this function needs the layout to have first set the corona through initToCorona() function
@@ -141,7 +143,6 @@ private:
 
     DockCorona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;
-    KSharedConfigPtr m_filePtr;
 
     QList<Plasma::Containment *> m_containments;
 
