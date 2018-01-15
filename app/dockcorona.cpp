@@ -163,7 +163,7 @@ void DockCorona::load()
             loadLayoutName = m_layoutNameOnStartUp;
         }
 
-        m_layoutManager->switchToLayout(loadLayoutName);
+        m_layoutManager->loadLayoutOnStartup(loadLayoutName);
     }
 }
 

@@ -73,9 +73,17 @@ public:
     //! if the function didnt succeed return an empty string
     static QString importLayoutHelper(QString fileName);
 
+    //! return the file path of a layout either existing or not
+    static QString layoutFilePath(QString layoutName);
     static QString nameOfConfigFile(const QString &fileName);
     static QString uniqueLayoutName(QString name);
+
     static QStringList availableLayouts();
+    //! it checks the linked file if there are Containments in it that belong
+    //! to Original Layouts and moves them accordingly. This is used mainly on
+    //! startup and if such state occurs, it basically means that the app didnt
+    //! close correctly, e.g. there was a crash.
+    static QStringList checkRepairMultipleLayoutsLinkedFile();
 
 private:
     //! checks if this old layout can be imported. If it can it returns

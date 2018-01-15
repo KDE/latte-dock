@@ -24,6 +24,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QMessageBox>
 #include <QQmlProperty>
 #include <QtDBus/QtDBus>
 
@@ -488,6 +489,27 @@ void LayoutManager::loadLayouts()
 
     emit layoutsChanged();
     emit menuLayoutsChanged();
+}
+
+void LayoutManager::loadLayoutOnStartup(QString layoutName)
+{
+    if (memoryUsage() == Dock::MultipleLayouts) {
+        QStringList layouts = m_importer->checkRepairMultipleLayoutsLinkedFile();
+
+        //! Latte didnt close correctly, maybe a crash
+        if (layouts.size() > 0) {
+            QMessageBox *msg = new QMessageBox();
+            msg->setAttribute(Qt::WA_DeleteOnClose);
+            msg->setIcon(QMessageBox::Warning);
+            msg->setWindowTitle(i18n("Mutliple Layouts Warning"));
+            msg->setText(i18n("Latte did not close properly in the previous session.The following layout(s) <b>[%0]</b> were updated for consistency !!!").arg(layouts.join(",")));
+            msg->setStandardButtons(QMessageBox::Ok);
+
+            msg->open();
+        }
+    }
+
+    switchToLayout(layoutName);
 }
 
 void LayoutManager::loadLatteLayout(QString layoutPath)

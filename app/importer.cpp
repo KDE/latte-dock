@@ -31,6 +31,7 @@
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
+#include <KConfigGroup>
 #include <KLocalizedString>
 #include <KNotification>
 
@@ -498,7 +499,13 @@ QString Importer::nameOfConfigFile(const QString &fileName)
 
 bool Importer::layoutExists(QString layoutName)
 {
-    return QFile::exists(QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte");
+    return QFile::exists(layoutFilePath(layoutName));
+}
+
+
+QString Importer::layoutFilePath(QString layoutName)
+{
+    return QString(QDir::homePath() + "/.config/latte/" + layoutName + ".layout.latte");
 }
 
 QString Importer::uniqueLayoutName(QString name)
@@ -519,6 +526,57 @@ QString Importer::uniqueLayoutName(QString name)
     }
 
     return name;
+}
+
+QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
+{
+    QString linkedFilePath = QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte";
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
+    KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
+
+    //! layoutName and its Containments
+    QHash<QString, QStringList> linkedLayoutContainmentGroups;
+
+    foreach (auto cId, linkedContainments.groupList()) {
+        QString layoutName = linkedContainments.group(cId).readEntry("layoutId", QString());
+
+        if (!layoutName.isEmpty()) {
+            qDebug() << layoutName;
+            linkedLayoutContainmentGroups[layoutName].append(cId);
+            linkedContainments.group(cId).writeEntry("layoutId", QString());
+        }
+    }
+
+    QStringList updatedLayouts;
+
+    foreach (auto layoutName, linkedLayoutContainmentGroups.uniqueKeys()) {
+        if (layoutName != Layout::MultipleLayoutsName && layoutExists(layoutName)) {
+            updatedLayouts << layoutName;
+            KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath(layoutName));
+            KConfigGroup origLayoutContainments = KConfigGroup(layoutFilePtr, "Containments");
+
+            //Clear old containments
+            origLayoutContainments.deleteGroup();
+
+            //Update containments
+            foreach (auto cId, linkedLayoutContainmentGroups[layoutName]) {
+                KConfigGroup newContainment = origLayoutContainments.group(cId);
+                linkedContainments.group(cId).copyTo(&newContainment);
+                linkedContainments.group(cId).deleteGroup();
+            }
+
+            origLayoutContainments.sync();
+        }
+    }
+
+    //! clear all remaining ghost containments
+    foreach (auto cId, linkedContainments.groupList()) {
+        linkedContainments.group(cId).deleteGroup();
+    }
+
+    linkedContainments.sync();
+
+    return updatedLayouts;
 }
 
 }
