@@ -68,6 +68,8 @@ void Layout::syncToLayoutFile()
     oldContainments.deleteGroup();
     oldContainments.sync();
 
+    qDebug() << " LAYOUT :: " << m_layoutName << " is syncing its original file.";
+
     foreach (auto containment, m_containments) {
         containment->config().writeEntry("layoutId", "");
         KConfigGroup newGroup = oldContainments.group(QString::number(containment->id()));

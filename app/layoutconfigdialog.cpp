@@ -401,7 +401,11 @@ void LayoutConfigDialog::on_exportButton_clicked()
 
     QString layoutExported = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
 
+    //! Update ALL active original layouts before exporting,
+    //! this is needed because the export method can export also the full configuration
     qDebug() << Q_FUNC_INFO;
+
+    m_manager->syncActiveLayoutsToOriginalFiles();
 
     QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
             , QDir::homePath() , QStringLiteral("layout.latte"));

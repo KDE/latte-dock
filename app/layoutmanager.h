@@ -70,6 +70,7 @@ public:
     void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
     void recreateDock(Plasma::Containment *containment);
     void syncDockViewsToScreens();
+    void syncActiveLayoutsToOriginalFiles();
 
     bool layoutExists(QString layoutName) const;
 

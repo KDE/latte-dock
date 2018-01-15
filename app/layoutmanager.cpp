@@ -766,6 +766,17 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
     emit activeLayoutsChanged();
 }
 
+void LayoutManager::syncActiveLayoutsToOriginalFiles()
+{
+    if (memoryUsage() == Dock::MultipleLayouts) {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->isOriginalLayout()) {
+                layout->syncToLayoutFile();
+            }
+        }
+    }
+}
+
 void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds)
 {
     if (!m_corona || memoryUsage() == Dock::SingleLayout) {
