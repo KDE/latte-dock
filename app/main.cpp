@@ -199,7 +199,7 @@ int main(int argc, char **argv)
     std::signal(SIGINT, signal_handler);
 
     KCrash::setDrKonqiEnabled(true);
-    //KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
+    KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
     Latte::DockCorona corona(defaultLayoutOnStartup, layoutNameOnStartup);
     KDBusService service(KDBusService::Unique);
