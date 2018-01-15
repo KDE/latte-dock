@@ -1036,7 +1036,12 @@ MouseArea{
     }
 
     function slotPublishGeometries() {
-        if ((isWindow || isStartup || isGroupParent) && icList && !icList.delayingRemoval) {
+        //! this way we make sure that layouts that are in different activities that the current layout
+        //! dont publish their geometries
+        if ((isWindow || isStartup || isGroupParent) && icList && !icList.delayingRemoval
+                && (!latteDock
+                    || (latteDock && currentLayout && latteDock.universalLayoutManager &&
+                        currentLayout.name === latteDock.universalLayoutManager.currentLayoutName))) {
             var globalChoords = backend.globalRect(mainItemContainer);
 
             //! Magic Lamp effect doesnt like coordinates outside the screen and

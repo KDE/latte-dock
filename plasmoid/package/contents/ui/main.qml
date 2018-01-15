@@ -264,7 +264,22 @@ Item {
                 windowsPreviewDlg.hide();
             }
         }
+
+        onLaunchersGroupChanged:{
+            if( latteDock && latteDock.editMode) {
+                tasksModel.updateLaunchersList();
+            }
+        }
     }
+
+
+    Connections{
+        target: latteDock && latteDock.universalLayoutManager ? latteDock.universalLayoutManager : null
+
+        onCurrentLayoutNameChanged: root.publishTasksGeometries();
+
+    }
+
 
     /////
     PlasmaCore.ColorScope{
@@ -527,16 +542,6 @@ Item {
         if (currentLayout && !loadLaunchersFirstTime) {
             tasksModel.updateLaunchersList();
             loadLaunchersFirstTime = true;
-        }
-    }
-
-    Connections{
-        target: latteDock
-
-        onLaunchersGroupChanged:{
-            if( latteDock && latteDock.editMode) {
-                tasksModel.updateLaunchersList();
-            }
         }
     }
 
