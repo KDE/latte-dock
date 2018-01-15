@@ -36,6 +36,7 @@
 #include <QStandardItemModel>
 #include <QTemporaryDir>
 
+#include <KActivities/Controller>
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
@@ -684,13 +685,20 @@ void LayoutConfigDialog::currentLayoutNameChanged()
         QVariant value = m_model->data(nameIndex);
 
         if (value.isValid()) {
+            QString name = value.toString();
             QFont font;
 
-            if (m_manager->currentLayoutName() == value.toString()) {
+            if (m_manager->currentLayoutName() == name) {
                 font.setBold(true);
                 ui->layoutsView->selectRow(i);
             } else {
-                font.setBold(false);
+                Layout *layout = m_manager->activeLayout(name);
+
+                if (layout && (m_manager->memoryUsage() == Dock::MultipleLayouts)) {
+                    font.setBold(true);
+                } else {
+                    font.setBold(false);
+                }
             }
 
             m_model->setData(nameIndex, font, Qt::FontRole);
@@ -892,6 +900,8 @@ bool LayoutConfigDialog::saveAllChanges()
 
     if (!switchToLayout.isNull()) {
         m_manager->switchToLayout(switchToLayout);
+    } else if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+        m_manager->syncMultipleLayoutsToActivities();
     }
 
     return true;

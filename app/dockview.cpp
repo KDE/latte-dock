@@ -1326,6 +1326,13 @@ void DockView::setManagedLayout(Layout *layout)
             }
         });
 
+        connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+            if (m_managedLayout) {
+                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                emit activitiesChanged();
+            }
+        });
+
         //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
         //! disappearing! With this they reappear!!!
         connect(this, &QWindow::visibleChanged, this, [&]() {

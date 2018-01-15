@@ -37,6 +37,10 @@ class Layout;
 class LayoutConfigDialog;
 class LaunchersSignals;
 
+namespace KActivities {
+class Controller;
+}
+
 namespace Latte {
 
 //! This class is responsible to manipulate all layouts.
@@ -170,6 +174,8 @@ private:
     LaunchersSignals *m_launchersSignals{nullptr};
     Layout *m_currentLayout{nullptr};
     QList<Layout *> m_activeLayouts;
+
+    KActivities::Controller *m_activitiesController;
 
     friend class LayoutConfigDialog;
 };

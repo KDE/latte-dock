@@ -34,6 +34,10 @@ namespace Ui {
 class LayoutConfigDialog;
 }
 
+namespace KActivities {
+class Controller;
+}
+
 namespace Latte {
 class LayoutManager;
 class Layout;

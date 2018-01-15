@@ -29,6 +29,7 @@
 #include <QtDBus/QtDBus>
 
 #include <KActivities/Consumer>
+#include <KActivities/Controller>
 #include <KLocalizedString>
 #include <KNotification>
 
@@ -39,7 +40,8 @@ const int MultipleLayoutsPresetId = 10;
 LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent),
       m_importer(new Importer(this)),
-      m_launchersSignals(new LaunchersSignals(this))
+      m_launchersSignals(new LaunchersSignals(this)),
+      m_activitiesController(new KActivities::Controller(this))
 {
     m_corona = qobject_cast<DockCorona *>(parent);
 
@@ -71,6 +73,8 @@ LayoutManager::~LayoutManager()
         layout->unloadDockViews();
         layout->deleteLater();
     }
+
+    m_activitiesController->deleteLater();
 }
 
 void LayoutManager::load()
@@ -563,6 +567,20 @@ bool LayoutManager::switchToLayout(QString layoutName)
         return false;
     }
 
+    //! First Check If that Layout is already present
+    if (memoryUsage() == Dock::MultipleLayouts) {
+        Layout *layout = activeLayout(layoutName);
+
+        if (layout) {
+            QStringList appliedActivities = layout->appliedActivities();
+
+            if (!appliedActivities.contains(m_corona->activitiesConsumer()->currentActivity())) {
+                m_activitiesController->setCurrentActivity(appliedActivities[0]);
+                return true;
+            }
+        }
+    }
+
     QString lPath = layoutPath(layoutName);
 
     if (lPath.isEmpty() && layoutName == i18n("Alternative")) {
@@ -570,7 +588,9 @@ bool LayoutManager::switchToLayout(QString layoutName)
     }
 
     if (!lPath.isEmpty()) {
-        emit currentLayoutIsChanging();
+        if (memoryUsage() == Dock::SingleLayout) {
+            emit currentLayoutIsChanging();
+        }
 
         //! this code must be called asynchronously because it is called
         //! also from qml (Tasks plasmoid). This change fixes a very important
@@ -611,8 +631,23 @@ bool LayoutManager::switchToLayout(QString layoutName)
                 emit activeLayoutsChanged();
             }
 
-            if (memoryUsage() == Dock::MultipleLayouts)  {
-                syncMultipleLayoutsToActivities(layoutName);
+            if (memoryUsage() == Dock::MultipleLayouts) {
+                if (!initializingMultipleLayouts && !activeLayout(layoutName)
+                    && m_assignedLayouts.values().contains(layoutName)) {
+                    //! When we are in Multiple Layouts Environment and the user activates
+                    //! a Layout that is assigned to specific activities but this
+                    //! layout isnt loaded (this means neither of its activities are running)
+                    //! is such case we just activate these Activities
+                    Layout layout(this, Importer::layoutFilePath(layoutName));
+
+                    foreach (auto assignedActivity, layout.activities()) {
+                        m_activitiesController->startActivity(assignedActivity);
+                    }
+
+                    m_activitiesController->setCurrentActivity(layout.activities()[0]);
+                } else {
+                    syncMultipleLayoutsToActivities(layoutName);
+                }
             }
 
             m_corona->universalSettings()->setCurrentLayoutName(layoutName);
