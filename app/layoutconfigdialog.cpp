@@ -543,7 +543,7 @@ void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool
     if (showNotification) {
         //NOTE: The pointer is automatically deleted when the event is closed
         auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
-        notification->setText(i18nc("import-done", "Layout: <b>%0</b> imported successfully\n").arg(layoutName));
+        notification->setText(i18nc("import-done", "Layout: <b>%0</b> imported successfully<br>").arg(layoutName));
         notification->sendEvent();
     }
 }
