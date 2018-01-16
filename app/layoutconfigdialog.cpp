@@ -834,6 +834,13 @@ bool LayoutConfigDialog::saveAllChanges()
 
     QHash<QString, Layout *> activeLayoutsToRename;
 
+    //! remove layouts that have been removed from the user
+    foreach (auto initLayout, m_initLayoutPaths) {
+        if (!idExistsInModel(initLayout)) {
+            QFile(initLayout).remove();
+        }
+    }
+
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
@@ -915,13 +922,6 @@ bool LayoutConfigDialog::saveAllChanges()
                 font.setItalic(false);
                 m_model->setData(m_model->index(j, NAMECOLUMN), font, Qt::FontRole);
             }
-        }
-    }
-
-    //! remove layouts that have been removed from the user
-    foreach (auto initLayout, m_initLayoutPaths) {
-        if (!idExistsInModel(initLayout)) {
-            QFile(initLayout).remove();
         }
     }
 
