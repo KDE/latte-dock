@@ -511,8 +511,8 @@ void LayoutManager::loadLayoutOnStartup(QString layoutName)
             QMessageBox *msg = new QMessageBox();
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->setIcon(QMessageBox::Warning);
-            msg->setWindowTitle(i18n("Mutliple Layouts Warning"));
-            msg->setText(i18n("Latte did not close properly in the previous session.The following layout(s) <b>[%0]</b> were updated for consistency !!!").arg(layouts.join(",")));
+            msg->setWindowTitle(i18n("Multiple Layouts Warning"));
+            msg->setText(i18n("Latte did not close properly in the previous session. The following layout(s) <b>[%0]</b> were updated for consistency!!!").arg(layouts.join(",")));
             msg->setStandardButtons(QMessageBox::Ok);
 
             msg->open();
