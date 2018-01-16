@@ -156,11 +156,13 @@ Item{
 
     Connections{
         target: universalLayoutManager
-        onCurrentLayoutIsChanging: {
-            manager.inTempHiding = true;
-            manager.inForceHiding = true;
-            root.clearZoom();
-            manager.slotMustBeHide();
+        onCurrentLayoutIsSwitching: {
+            if (root.dockManagedLayout && root.dockManagedLayout.name === layoutName) {
+                manager.inTempHiding = true;
+                manager.inForceHiding = true;
+                root.clearZoom();
+                manager.slotMustBeHide();
+            }
         }
     }
 

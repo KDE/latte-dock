@@ -448,7 +448,7 @@ void LayoutManager::confirmDynamicSwitch()
     if (m_shouldSwitchToLayout == tempShouldSwitch && m_shouldSwitchToLayout != currentLayoutName()) {
         qDebug() << "dynamic switch to layout :: " << m_shouldSwitchToLayout;
 
-        emit currentLayoutIsChanging();
+        emit currentLayoutIsSwitching(currentLayoutName());
 
         if (m_corona->universalSettings()->showInfoWindow()) {
             showInfoWindow(i18n("Switching to layout <b>%0</b> ...").arg(m_shouldSwitchToLayout), 4000);
@@ -595,7 +595,24 @@ bool LayoutManager::switchToLayout(QString layoutName)
 
     if (!lPath.isEmpty()) {
         if (memoryUsage() == Dock::SingleLayout) {
-            emit currentLayoutIsChanging();
+            emit currentLayoutIsSwitching(currentLayoutName());
+        } else if (memoryUsage() == Dock::MultipleLayouts && layoutName != Layout::MultipleLayoutsName) {
+            Layout toLayout(this, lPath);
+
+            QStringList toActivities = toLayout.activities();
+
+            Layout *activeForOrphans{nullptr};
+
+            foreach (auto fromLayout, m_activeLayouts) {
+                if (fromLayout->isOriginalLayout() && fromLayout->activities().isEmpty()) {
+                    activeForOrphans = fromLayout;
+                    break;
+                }
+            }
+
+            if (toActivities.isEmpty() && activeForOrphans) {
+                emit currentLayoutIsSwitching(activeForOrphans->name());
+            }
         }
 
         //! this code must be called asynchronously because it is called

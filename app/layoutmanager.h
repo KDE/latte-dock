@@ -118,11 +118,12 @@ signals:
     void addWidgetsActionChanged();
     void currentLayoutChanged();
     void currentLayoutNameChanged();
-    void currentLayoutIsChanging();
     void launchersSignalsChanged();
     void layoutsChanged();
     void memoryUsageChanged();
     void menuLayoutsChanged();
+
+    void currentLayoutIsSwitching(QString layoutName);
 
 private slots:
     void currentActivityChanged(const QString &id);
