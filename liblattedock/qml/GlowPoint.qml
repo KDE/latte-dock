@@ -53,7 +53,6 @@ Item{
     readonly property bool isVertical: (location === PlasmaCore.Types.LeftEdge) || (location === PlasmaCore.Types.RightEdge)
     readonly property bool isHorizontal: !isVertical
 
-
     Grid{
         id: mainGlow
         anchors.horizontalCenter: parent.horizontalCenter
@@ -87,6 +86,27 @@ Item{
                         GradientStop { position: 1; color: "transparent" }
                     }
                 }
+
+                states: [
+                    State{
+                        name: "*"
+                        when:  isHorizontal
+
+                        AnchorChanges{
+                            target:firstGlowCornerFull;
+                            anchors{ bottom: undefined; left:parent.left;}
+                        }
+                    },
+                    State{
+                        name: "vertical"
+                        when:  isVertical
+
+                        AnchorChanges{
+                            target:firstGlowCornerFull;
+                            anchors{ top: parent.top; left:undefined;}
+                        }
+                    }
+                ]
             }
         }
 
@@ -143,7 +163,6 @@ Item{
 
             Item {
                 id: lastGlowCornerFull
-                anchors.right: parent.right
                 width: mainGlow.fullCorner
                 height: mainGlow.fullCorner
 
