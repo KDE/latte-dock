@@ -357,7 +357,10 @@ bool Layout::fileIsBroken() const
     }
 
     if (idsSet.count() != ids.count()) {
-        qDebug() << "   ----   ERROR: BROKEN LAYOUT ----";
+        qDebug() << "   ----   ERROR - BROKEN LAYOUT :: " << m_layoutName << " ----";
+        qDebug() << "   ---- file : " << m_layoutFile;
+        qDebug() << "Contaiments :: " << conts;
+        qDebug() << "Applets :: " << applets;
 
         foreach (QString c, conts) {
             if (applets.contains(c)) {
@@ -372,6 +375,15 @@ bool Layout::fileIsBroken() const
                 }
             }
         }
+
+        qDebug() << "  -- - -- - -- - -- - - -- - - - - -- - - - - ";
+
+        foreach (auto cId, containmentsEntries.groupList()) {
+            auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+            qDebug() << " CONTAINMENT : " << cId << " APPLETS : " << appletsEntries.groupList();
+        }
+
 
         return true;
     }

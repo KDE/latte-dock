@@ -596,7 +596,7 @@ void LayoutConfigDialog::loadLayouts()
             ui->layoutsView->selectRow(i - 1);
         }
 
-        if (layoutSets->fileIsBroken()) {
+        if (!(m_manager->memoryUsage() == Dock::MultipleLayouts && m_manager->activeLayout(layout)) && layoutSets->fileIsBroken()) {
             brokenLayouts.append(layoutSets->name());
         }
     }
