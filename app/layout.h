@@ -58,7 +58,7 @@ public:
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
-    bool fileIsBroken() const;
+    bool layoutIsBroken() const;
 
     //!this layout is loaded and running
     bool isActiveLayout() const;

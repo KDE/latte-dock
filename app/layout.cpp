@@ -325,40 +325,60 @@ bool Layout::isOriginalLayout() const
     return m_layoutName != MultipleLayoutsName;
 }
 
-bool Layout::fileIsBroken() const
+bool Layout::layoutIsBroken() const
 {
     if (m_layoutFile.isEmpty() || !QFile(m_layoutFile).exists()) {
         return false;
     }
 
-    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layoutFile);
-    KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
-
     QStringList ids;
-
-    ids << containmentsEntries.groupList();
     QStringList conts;
-    conts << ids;
     QStringList applets;
 
-    foreach (auto cId, containmentsEntries.groupList()) {
-        auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(m_layoutFile);
 
-        ids << appletsEntries.groupList();
-        applets << appletsEntries.groupList();
+
+    if (!m_corona) {
+        KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
+        ids << containmentsEntries.groupList();
+        conts << ids;
+
+        foreach (auto cId, containmentsEntries.groupList()) {
+            auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+            ids << appletsEntries.groupList();
+            applets << appletsEntries.groupList();
+        }
+    } else {
+        foreach (auto containment, m_containments) {
+            ids << QString::number(containment->id());
+            conts << ids;
+
+            foreach (auto applet, containment->applets()) {
+                ids << QString::number(applet->id());
+                applets << QString::number(applet->id());
+            }
+        }
     }
 
     QSet<QString> idsSet = QSet<QString>::fromList(ids);
 
+    /* a different way to count duplicates
     QMap<QString, int> countOfStrings;
 
     for (int i = 0; i < ids.count(); i++) {
         countOfStrings[ids[i]]++;
-    }
+    }*/
 
     if (idsSet.count() != ids.count()) {
         qDebug() << "   ----   ERROR - BROKEN LAYOUT :: " << m_layoutName << " ----";
-        qDebug() << "   ---- file : " << m_layoutFile;
+
+        if (!m_corona) {
+            qDebug() << "   ---- file : " << m_layoutFile;
+        } else {
+            qDebug() << "   ---- in multiple layouts hidden file : " << Importer::layoutFilePath(Layout::MultipleLayoutsName);
+        }
+
         qDebug() << "Contaiments :: " << conts;
         qDebug() << "Applets :: " << applets;
 
@@ -378,12 +398,25 @@ bool Layout::fileIsBroken() const
 
         qDebug() << "  -- - -- - -- - -- - - -- - - - - -- - - - - ";
 
-        foreach (auto cId, containmentsEntries.groupList()) {
-            auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+        if (!m_corona) {
+            KConfigGroup containmentsEntries = KConfigGroup(lFile, "Containments");
 
-            qDebug() << " CONTAINMENT : " << cId << " APPLETS : " << appletsEntries.groupList();
+            foreach (auto cId, containmentsEntries.groupList()) {
+                auto appletsEntries = containmentsEntries.group(cId).group("Applets");
+
+                qDebug() << " CONTAINMENT : " << cId << " APPLETS : " << appletsEntries.groupList();
+            }
+        } else {
+            foreach (auto containment, m_containments) {
+                QStringList appletsIds;
+
+                foreach (auto applet, containment->applets()) {
+                    appletsIds << QString::number(applet->id());
+                }
+
+                qDebug() << " CONTAINMENT : " << containment->id() << " APPLETS : " << appletsIds.join(",");
+            }
         }
-
 
         return true;
     }
