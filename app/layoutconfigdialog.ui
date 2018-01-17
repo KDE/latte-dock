@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
-    <height>445</height>
+    <width>840</width>
+    <height>608</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -114,6 +114,62 @@
             <widget class="QWidget" name="widget" native="true">
              <layout class="QVBoxLayout" name="verticalLayout">
               <item>
+               <widget class="QPushButton" name="switchButton">
+                <property name="text">
+                 <string>Switch</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="user-identity">
+                  <normaloff>.</normaloff>.</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="Line" name="line_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Preferred</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
                <widget class="QPushButton" name="newButton">
                 <property name="text">
                  <string>New</string>
@@ -145,17 +201,6 @@
                 </property>
                 <property name="icon">
                  <iconset theme="list-remove">
-                  <normaloff>.</normaloff>.</iconset>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="switchButton">
-                <property name="text">
-                 <string>Switch</string>
-                </property>
-                <property name="icon">
-                 <iconset theme="user-identity">
                   <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
