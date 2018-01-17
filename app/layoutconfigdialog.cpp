@@ -207,7 +207,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
         if (Importer::layoutExists(lName)) {
             Layout *layout = m_manager->activeLayout(lName);
 
-            if (layout->isOriginalLayout()) {
+            if (layout && layout->isOriginalLayout()) {
                 layout->syncToLayoutFile();
             }
         }
