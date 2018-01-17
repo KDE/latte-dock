@@ -193,7 +193,7 @@ Dock::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
 
 void UniversalSettings::setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage)
 {
-    if (m_memoryUsage != layoutsMemoryUsage) {
+    if (m_memoryUsage == layoutsMemoryUsage) {
         return;
     }
 

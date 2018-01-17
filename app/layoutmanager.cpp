@@ -593,14 +593,14 @@ void LayoutManager::importLatteLayout(QString layoutPath)
 //! This might not be needed as it is Layout responsibility
 }
 
-bool LayoutManager::switchToLayout(QString layoutName)
+bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 {
-    if (m_currentLayout && m_currentLayout->name() == layoutName) {
+    if (m_activeLayouts.size() > 0 && currentLayoutName() == layoutName && previousMemoryUsage == -1) {
         return false;
     }
 
     //! First Check If that Layout is already present
-    if (memoryUsage() == Dock::MultipleLayouts) {
+    if (memoryUsage() == Dock::MultipleLayouts && previousMemoryUsage == -1) {
         Layout *layout = activeLayout(layoutName);
 
         if (layout) {
@@ -609,6 +609,17 @@ bool LayoutManager::switchToLayout(QString layoutName)
             if (!appliedActivities.contains(m_corona->activitiesConsumer()->currentActivity())) {
                 m_activitiesController->setCurrentActivity(appliedActivities[0]);
                 return true;
+            }
+        }
+    }
+
+    //! When going from memory usage to different memory usage we first
+    //! send the layouts that will be changed. This signal creates the
+    //! nice animation that hides these docks/panels
+    if (previousMemoryUsage != -1) {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->isOriginalLayout()) {
+                emit currentLayoutIsSwitching(layout->name());
             }
         }
     }
@@ -646,7 +657,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
         //! crash when switching sessions through the Tasks plasmoid Context menu
         //! Latte was unstable and was crashing very often during changing
         //! sessions.
-        QTimer::singleShot(250, [this, layoutName, lPath]() {
+        QTimer::singleShot(250, [this, layoutName, lPath, previousMemoryUsage]() {
             qDebug() << layoutName << " - " << lPath;
             QString fixedLPath = lPath;
             QString fixedLayoutName = layoutName;
@@ -657,12 +668,22 @@ bool LayoutManager::switchToLayout(QString layoutName)
                 initializingMultipleLayouts = true;
             }
 
-            if (memoryUsage() == Dock::SingleLayout || initializingMultipleLayouts) {
+            if (memoryUsage() == Dock::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == Dock::MultipleLayouts) {
                 while (!m_activeLayouts.isEmpty()) {
                     Layout *layout = m_activeLayouts.at(0);
                     m_activeLayouts.removeFirst();
+
+                    if (layout->isOriginalLayout() && previousMemoryUsage == Dock::MultipleLayouts) {
+                        layout->syncToLayoutFile();
+                    }
+
                     layout->unloadContainments();
                     layout->unloadDockViews();
+
+                    if (layout->isOriginalLayout() && previousMemoryUsage == Dock::MultipleLayouts) {
+                        clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
+                    }
+
                     delete layout;
                 }
 
@@ -820,9 +841,9 @@ void LayoutManager::syncActiveLayoutsToOriginalFiles()
     }
 }
 
-void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds)
+void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks)
 {
-    if (!m_corona || memoryUsage() == Dock::SingleLayout) {
+    if (!m_corona || (memoryUsage() == Dock::SingleLayout && !bypassChecks)) {
         return;
     }
 

@@ -107,8 +107,8 @@ public:
 public slots:
     Q_INVOKABLE void showLayoutConfigDialog();
 
-    //! switch to specified layout
-    Q_INVOKABLE bool switchToLayout(QString layoutName);
+    //! switch to specified layout, default previousMemoryUsage means that it didnt change
+    Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
 
     Q_INVOKABLE int layoutsMemoryUsage();
 
@@ -135,7 +135,7 @@ private slots:
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
-    void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds);
+    void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();
     //! it is used just in order to provide translations for the presets
     void ghostForTranslatedPresets();
@@ -177,7 +177,6 @@ private:
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
-    Layout *m_currentLayout{nullptr};
     QList<Layout *> m_activeLayouts;
 
     KActivities::Controller *m_activitiesController;

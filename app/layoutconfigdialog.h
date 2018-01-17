@@ -70,7 +70,7 @@ private slots:
     void apply();
     void restoreDefaults();
 
-    void currentLayoutNameChanged();
+    void layoutsChanged();
     void currentRowChanged(const QModelIndex &current, const QModelIndex &previous);
     void itemChanged(QStandardItem *item);
 

@@ -82,7 +82,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 
-    connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::currentLayoutNameChanged);
+    connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::layoutsChanged);
+    connect(m_manager, &LayoutManager::activeLayoutsChanged, this, &LayoutConfigDialog::layoutsChanged);
 
     loadLayouts();
 
@@ -148,6 +149,8 @@ LayoutConfigDialog::~LayoutConfigDialog()
     if (m_manager && m_manager->corona() && m_manager->corona()->universalSettings()) {
         m_manager->corona()->universalSettings()->setLayoutsWindowSize(size());
     }
+
+    m_inMemoryButtons->deleteLater();
 
     foreach (auto tempDir, m_tempDirectories) {
         QDir tDir(tempDir);
@@ -715,16 +718,22 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
 
 void LayoutConfigDialog::on_switchButton_clicked()
 {
-    QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
+    Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
-    if (value.isValid()) {
-        m_manager->switchToLayout(value.toString());
+    if (m_manager->memoryUsage() != inMemoryOption) {
+        saveAllChanges();
     } else {
-        qDebug() << "not valid layout";
+        QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
+
+        if (value.isValid()) {
+            m_manager->switchToLayout(value.toString());
+        } else {
+            qDebug() << "not valid layout";
+        }
     }
 }
 
-void LayoutConfigDialog::currentLayoutNameChanged()
+void LayoutConfigDialog::layoutsChanged()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QModelIndex nameIndex = m_model->index(i, NAMECOLUMN);
@@ -959,10 +968,22 @@ bool LayoutConfigDialog::saveAllChanges()
 
     m_manager->loadLayouts();
 
-    if (!switchToLayout.isNull()) {
-        m_manager->switchToLayout(switchToLayout);
-    } else if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
-        m_manager->syncMultipleLayoutsToActivities();
+    Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+
+    if (m_manager->memoryUsage() != inMemoryOption) {
+        Dock::LayoutsMemoryUsage previousMemoryUsage = m_manager->memoryUsage();
+        m_manager->setMemoryUsage(inMemoryOption);
+
+        QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
+        QString layoutName = value.toString();
+
+        m_manager->switchToLayout(layoutName, previousMemoryUsage);
+    } else {
+        if (!switchToLayout.isNull()) {
+            m_manager->switchToLayout(switchToLayout);
+        } else if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+            m_manager->syncMultipleLayoutsToActivities();
+        }
     }
 
     return true;
