@@ -26,6 +26,7 @@
 #include "layoutsDelegates/colorcmbboxdelegate.h"
 #include "layoutsDelegates/activitycmbboxdelegate.h"
 
+#include <QButtonGroup>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
@@ -112,8 +113,26 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->exportButton->setText(i18nc("export button", "Export"));
     ui->downloadButton->setText(i18nc("download button", "Download"));
 
+    ui->singleToolBtn->setText(i18nc("single layout in memory", "Single"));
+    ui->singleToolBtn->setToolTip(i18n("Only one layout can be present in memory at all cases"));
+    ui->multipleToolBtn->setText(i18nc("multiple layouts in memory", "Multiple"));
+    ui->multipleToolBtn->setToolTip(i18n("Multiple layouts can be present in memory."));
+
+    m_inMemoryButtons = new QButtonGroup(this);
+    m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Dock::SingleLayout);
+    m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Dock::MultipleLayouts);
+    m_inMemoryButtons->setExclusive(true);
+
+
     connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
+
+    connect(m_inMemoryButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonPressed),
+    [ = ](QAbstractButton * button) {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+    });
+
 }
 
 LayoutConfigDialog::~LayoutConfigDialog()
@@ -613,6 +632,12 @@ void LayoutConfigDialog::loadLayouts()
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
 
     ui->layoutsView->resizeColumnsToContents();
+
+    if (m_manager->memoryUsage() == Dock::SingleLayout) {
+        ui->singleToolBtn->setChecked(true);
+    } else if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+        ui->multipleToolBtn->setChecked(true);
+    }
 
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {

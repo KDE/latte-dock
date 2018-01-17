@@ -26,6 +26,7 @@
 #include "layout.h"
 
 #include <QObject>
+#include <QButtonGroup>
 #include <QDialog>
 #include <QDebug>
 #include <QStandardItemModel>
@@ -94,6 +95,8 @@ private:
     QStringList m_availableActivities;
     QStringList m_tempDirectories;
     QStringList m_initLayoutPaths;
+
+    QButtonGroup *m_inMemoryButtons;
 
     LayoutManager *m_manager{nullptr};
 
