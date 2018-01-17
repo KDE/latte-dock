@@ -839,15 +839,21 @@ PlasmaComponents.ContextMenu {
                 }
 
                 var layouts = latteDock.universalLayoutManager.menuLayouts;
+                var activeLayouts = latteDock.universalLayoutManager.activeLayoutsNames();
+                var memoryUsage = latteDock.universalLayoutManager.layoutsMemoryUsage();
+                var currentName = latteDock.universalLayoutManager.currentLayoutName;
+
                 for (var i = 0; i < layouts.length; ++i) {
                     var layout = layouts[i];
+                    var currentText = (memoryUsage === Latte.Dock.MultipleLayouts && layout === currentName)
+                            ? " " + i18nc("current layout", "(Current)"): ""
 
                     var menuItem = menu.newMenuItem(layoutsMenu);
-                    menuItem.text = layout;
+                    menuItem.text = layout + currentText;
                     menuItem.checkable = true;
                     menuItem.checked = Qt.binding( (function(layout) {
                         return function() {
-                            return (layout===latteDock.universalSettings.currentLayoutName);
+                            return (activeLayouts.indexOf(layout)>=0);
                         };
                     })(layout));
                     menuItem.clicked.connect((function(layout) {

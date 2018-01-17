@@ -2067,11 +2067,20 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             layoutsAction->setText(i18n("Layouts"));
             layoutsAction->setStatusTip(i18n("Switch to another layout"));
 
+            QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
+            Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
+            QString currentName = dockCorona->layoutManager()->currentLayoutName();
+
             foreach (auto layout, dockCorona->layoutManager()->menuLayouts()) {
-                QAction *layoutAction = new QAction(layout, layoutsMenu);
+                QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
+                                      (" " + i18nc("current layout", "(Current)")) : "";
+                QString layoutName = layout + currentText;
+
+                QAction *layoutAction = new QAction(layoutName, layoutsMenu);
+
                 layoutAction->setCheckable(true);
 
-                if (layout == dockCorona->universalSettings()->currentLayoutName()) {
+                if (activeLayouts.contains(layout)) {
                     layoutAction->setChecked(true);
                 } else {
                     layoutAction->setChecked(false);

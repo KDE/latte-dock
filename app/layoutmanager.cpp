@@ -285,6 +285,11 @@ Dock::LayoutsMemoryUsage LayoutManager::memoryUsage() const
     return m_corona->universalSettings()->layoutsMemoryUsage();
 }
 
+int LayoutManager::layoutsMemoryUsage()
+{
+    return (int)m_corona->universalSettings()->layoutsMemoryUsage();
+}
+
 void LayoutManager::setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage)
 {
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
@@ -355,6 +360,27 @@ QHash<const Plasma::Containment *, DockView *> *LayoutManager::layoutDockViews(c
 
     return nullptr;
 }
+
+QStringList LayoutManager::activeLayoutsNames()
+{
+    QStringList names;
+
+    if (memoryUsage() == Dock::SingleLayout) {
+        names << currentLayoutName();
+    } else {
+        for (int i = 0; i < m_activeLayouts.size(); ++i) {
+            Layout *layout = m_activeLayouts.at(i);
+
+            if (layout->isOriginalLayout()) {
+                names << layout->name();
+            }
+        }
+    }
+
+    return names;
+
+}
+
 
 Layout *LayoutManager::activeLayout(QString id) const
 {
@@ -610,7 +636,7 @@ bool LayoutManager::switchToLayout(QString layoutName)
                 }
             }
 
-            if (toActivities.isEmpty() && activeForOrphans) {
+            if (toActivities.isEmpty() &&  activeForOrphans && (toLayout.name() != activeForOrphans->name())) {
                 emit currentLayoutIsSwitching(activeForOrphans->name());
             }
         }

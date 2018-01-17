@@ -105,13 +105,17 @@ public:
     void importPresets(bool includeDefault = false);
 
 public slots:
+    Q_INVOKABLE void showLayoutConfigDialog();
+
     //! switch to specified layout
     Q_INVOKABLE bool switchToLayout(QString layoutName);
+
+    Q_INVOKABLE int layoutsMemoryUsage();
 
     //! creates a new layout with layoutName based on the preset
     Q_INVOKABLE QString newLayout(QString layoutName, QString preset = i18n("Default"));
 
-    Q_INVOKABLE void showLayoutConfigDialog();
+    Q_INVOKABLE QStringList activeLayoutsNames();
 
 signals:
     void activeLayoutsChanged();
@@ -120,7 +124,6 @@ signals:
     void currentLayoutNameChanged();
     void launchersSignalsChanged();
     void layoutsChanged();
-    void memoryUsageChanged();
     void menuLayoutsChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
