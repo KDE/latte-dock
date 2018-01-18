@@ -3,6 +3,7 @@
   <id>org.kde.latte-dock.desktop</id>
   <name>Latte</name>
   <name xml:lang="ar">لاتيه</name>
+  <name xml:lang="ast">Latte</name>
   <name xml:lang="ca">Latte</name>
   <name xml:lang="ca-valencia">Latte</name>
   <name xml:lang="cs">Latte</name>
