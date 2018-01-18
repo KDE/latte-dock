@@ -57,16 +57,6 @@ FocusScope {
         imagePath: "dialogs/background"
     }
 
-    TypeSelection{
-        id: typeSettings
-        x: dialog.width/2 - width/2
-        y: plasmoid.configuration.advanced ? 0 : -height
-
-        Behavior on y {
-            NumberAnimation { duration: plasmoid.configuration.durationTime*units.longDuration }
-        }
-    }
-
     PlasmaComponents.ToolButton {
         id: pinButton
 
@@ -232,7 +222,7 @@ FocusScope {
 
             Item{
                 id: headerSpacer
-                Layout.minimumHeight: typeSettings.height + advancedSettings.height + 2*units.smallSpacing
+                Layout.minimumHeight: advancedSettings.height + 2*units.smallSpacing
             }
 
             RowLayout {

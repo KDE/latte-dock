@@ -21,6 +21,7 @@
 import QtQuick 2.7
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -29,76 +30,82 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
 
-Rectangle {
-    width: typeRow.width + 2*marginWidth
-    height: typeRow.height + 2*marginHeight
+Grid {
+    id: typeRow
 
-    property int marginHeight: 0.3 * typeRow.height
-    property int marginWidth: 2 * typeRow.height
+    width: maxWidth - 2*units.smallSpacing
+    anchors.leftMargin: units.smallSpacing
+    anchors.rightMargin: units.smallSpacing
 
-    color: transparentBackgroundColor
-    border.width: 1
-    border.color: theme.backgroundColor
+    Layout.minimumWidth: width
+    Layout.maximumWidth: width
+    Layout.minimumHeight: height
+    Layout.maximumHeight: height
 
-    Row {
-        id: typeRow
-        anchors.centerIn: parent
+    Layout.leftMargin: units.smallSpacing * 2
+    Layout.rightMargin: units.smallSpacing * 2
 
-        spacing: 1
+    rows: panelIsVertical ? 0 : 1
+    columns: panelIsVertical ? 1 : 0
 
-        readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
-                                        && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
-                                        && (plasmoid.configuration.zoomLevel === 0)
+    spacing: 1
 
-        ExclusiveGroup {
-            id: dockTypeGroup
-        }
+    verticalItemAlignment: Grid.AlignVCenter
 
-        PlasmaComponents.Button {
-            id: dockTypeButton
-            width: dialog.width / 6
-            checkable: true
-            checked: !typeRow.isPanel
-            text: i18nc("dock type","Dock")
-            exclusiveGroup: dockTypeGroup
-            tooltip: i18n("Change the behavior and appearance to Dock type")
+    readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
+                                    && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
+                                    && (plasmoid.configuration.zoomLevel === 0)
 
-            onPressedChanged: {
-                if (pressed && !checked) {
-                    dock.visibility.mode = Latte.Dock.DodgeActive;
-                    plasmoid.configuration.panelPosition = Latte.Dock.Center;
-                    plasmoid.configuration.useThemePanel = true;
-                    plasmoid.configuration.solidPanel = false;
-                    plasmoid.configuration.panelSize = 0;
-                    plasmoid.configuration.shadows = 2;
-                    plasmoid.configuration.zoomLevel = 16;
-                }
-            }
-        }
+    ExclusiveGroup {
+        id: dockTypeGroup
+    }
 
-        PlasmaComponents.Button {
-            id: panelTypeButton
-            width: dockTypeButton.width
-            checkable: true
-            checked: typeRow.isPanel
-            text: i18nc("panel type","Panel")
-            exclusiveGroup: dockTypeGroup
-            tooltip: i18n("Change the behavior and appearance to Panel type")
+    PlasmaComponents.Button {
+        id: dockTypeButton
+        width: panelIsVertical ? parent.width : parent.width / 2
 
-            onPressedChanged: {
-                if (pressed && !checked) {
-                    dock.visibility.mode = Latte.Dock.AlwaysVisible;
-                    plasmoid.configuration.panelPosition = Latte.Dock.Justify;
-                    plasmoid.configuration.useThemePanel = true;
-                    plasmoid.configuration.solidPanel = false;
-                    plasmoid.configuration.panelSize = 100;
-                    plasmoid.configuration.panelShadows = true;
-                    plasmoid.configuration.shadows = 0;
-                    plasmoid.configuration.zoomLevel = 0;
-                    plasmoid.configuration.shrinkThickMargins = true;
-                }
+        checkable: true
+        checked: !typeRow.isPanel
+        text: i18nc("dock type","Dock")
+        exclusiveGroup: dockTypeGroup
+        tooltip: i18n("Change the behavior and appearance to Dock type")
+
+        onPressedChanged: {
+            if (pressed && !checked) {
+                dock.visibility.mode = Latte.Dock.DodgeActive;
+                plasmoid.configuration.panelPosition = Latte.Dock.Center;
+                plasmoid.configuration.useThemePanel = true;
+                plasmoid.configuration.solidPanel = false;
+                plasmoid.configuration.panelSize = 0;
+                plasmoid.configuration.shadows = 2;
+                plasmoid.configuration.zoomLevel = 16;
             }
         }
     }
 
+    PlasmaComponents.Button {
+        id: panelTypeButton
+        width: dockTypeButton.width
+
+        checkable: true
+        checked: typeRow.isPanel
+        text: i18nc("panel type","Panel")
+        exclusiveGroup: dockTypeGroup
+        tooltip: i18n("Change the behavior and appearance to Panel type")
+
+        onPressedChanged: {
+            if (pressed && !checked) {
+                dock.visibility.mode = Latte.Dock.AlwaysVisible;
+                plasmoid.configuration.panelPosition = Latte.Dock.Justify;
+                plasmoid.configuration.useThemePanel = true;
+                plasmoid.configuration.solidPanel = false;
+                plasmoid.configuration.panelSize = 100;
+                plasmoid.configuration.panelShadows = true;
+                plasmoid.configuration.shadows = 0;
+                plasmoid.configuration.zoomLevel = 0;
+                plasmoid.configuration.shrinkThickMargins = true;
+            }
+        }
+    }
 }
+

@@ -44,6 +44,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("lattedockui", QStringLiteral("views/Panel.qml"), i18n("Latte Dock panel"));
     //Configuration
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
+    package->addFileDefinition("lattedocksecondaryconfigurationui", QStringLiteral("configuration/LatteDockSecondaryConfiguration.qml"), i18n("Dock secondary configuration UI"));
     package->addFileDefinition("configmodel", QStringLiteral("configuration/config.qml"), i18n("Config model"));
     package->addFileDefinition("tangerineFont", QStringLiteral("fonts/tangerine.ttf"), i18n("Tangerine Font"));
     package->addFileDefinition("infoviewui", QStringLiteral("views/InfoView.qml"), i18n("Info View Window"));

@@ -25,6 +25,7 @@
 #include "../liblattedock/dock.h"
 
 #include <plasma/package.h>
+#include <Plasma/FrameSvg>
 
 #include <QObject>
 #include <QWindow>
@@ -34,6 +35,7 @@
 namespace Plasma {
 class Applet;
 class Containment;
+class FrameSvg;
 class Types;
 }
 
@@ -49,9 +51,15 @@ class DockView;
 
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
+    Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent = nullptr);
+    enum ConfigViewType {
+        PrimaryConfig = 0,
+        SecondaryConfig
+    };
+
+    DockConfigView(Plasma::Containment *containment, DockView *dockView, ConfigViewType type = PrimaryConfig, QWindow *parent = nullptr);
     ~DockConfigView() override;
 
     void init() override;
@@ -59,14 +67,18 @@ public:
 
     bool sticker() const;
 
+    Plasma::FrameSvg::EnabledBorders enabledBorders() const;
+
 public slots:
     Q_INVOKABLE void addPanelSpacer();
     Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void setSticker(bool blockFocusLost);
+    Q_INVOKABLE void setVisibleWindow(bool visible);
     Q_INVOKABLE void syncGeometry();
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
 
 signals:
+    void enabledBordersChanged();
     void raiseDocksTemporaryChanged();
     void showSignal();
 
@@ -80,6 +92,7 @@ protected:
 
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
+    void updateEnabledBorders();
 
 signals:
     void aboutApplication();
@@ -87,11 +100,22 @@ signals:
 private:
     void setupWaylandIntegration();
 
-    bool m_blockFocusLost;
+    bool m_blockFocusLost{false};
+    bool m_blockFocusLostOnStartup{true};
+
+    //! it is used by the borders
+    bool m_inReverse{false};
+
+    int m_largeSpacing;
 
     QPointer<DockView> m_dockView;
     QTimer m_screenSyncTimer;
+    QTimer m_thicknessSyncTimer;
     QList<QMetaObject::Connection> connections;
+
+    Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
+
+    ConfigViewType m_configType{PrimaryConfig};
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };

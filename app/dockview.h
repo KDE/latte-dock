@@ -26,6 +26,7 @@
 #include "layout.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/dock.h"
+#include "dockconfigview.h"
 
 #include <QQuickView>
 #include <QQmlListProperty>
@@ -168,7 +169,9 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
+    void setConfigWindowsSticker(bool sticker);
     bool settingsWindowIsShown() const;
+    bool settingsWindowsAreActive() const;
     void showSettingsWindow();
 
     VisibilityManager *visibility() const;
@@ -285,6 +288,9 @@ private:
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
+    void showConfigurationInterfaceForConfigView(PlasmaQuick::ConfigView *configView,
+            DockConfigView::ConfigViewType configType,
+            Plasma::Applet *applet);
     void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
     void updateAppletContainsMethod();
@@ -321,6 +327,8 @@ private:
     QQuickItem *m_appletContainsMethodItem{nullptr};
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
+    QPointer<PlasmaQuick::ConfigView> m_secondaryConfigView;
+
     QPointer<VisibilityManager> m_visibility;
     QPointer<QScreen> m_screenToFollow;
 

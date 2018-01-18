@@ -25,6 +25,7 @@
 #include "abstractwindowinterface.h"
 #include "../liblattedock/dock.h"
 
+#include <QFontMetrics>
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -42,9 +43,9 @@
 
 namespace Latte {
 
-DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
+DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, ConfigViewType type, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
-      m_blockFocusLost(false),
+      m_configType(type),
       m_dockView(dockView)
 {
     setupWaylandIntegration();
@@ -66,14 +67,24 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     });
     connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
-    connections << connect(containment, &Plasma::Containment::locationChanged, [&]() {
-        syncSlideEffect();
-        QTimer::singleShot(200, this, &DockConfigView::syncGeometry);
+    // connections << connect(containment, &Plasma::Containment::locationChanged, [&]() {
+    //   syncSlideEffect();
+    //   QTimer::singleShot(200, this, &DockConfigView::syncGeometry);
+    //});
+
+    m_thicknessSyncTimer.setSingleShot(true);
+    m_thicknessSyncTimer.setInterval(200);
+    connections << connect(&m_thicknessSyncTimer, &QTimer::timeout, this, [this]() {
+        syncGeometry();
+    });
+
+    connections << connect(dockView, &DockView::normalThicknessChanged, [&]() {
+        m_thicknessSyncTimer.start();
     });
 
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
-    if (dockCorona) {
+    if (dockCorona && m_configType == PrimaryConfig) {
         connections << connect(this, &DockConfigView::aboutApplication, dockCorona, &DockCorona::aboutApplication);
         connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
     }
@@ -114,7 +125,14 @@ void DockConfigView::init()
     kdeclarative.setDeclarativeEngine(engine());
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
     kdeclarative.setupBindings();
-    auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath("lattedockconfigurationui"));
+
+    QByteArray tempFilePath = m_configType == PrimaryConfig ? "lattedockconfigurationui" : "lattedocksecondaryconfigurationui";
+
+    m_largeSpacing = QFontMetrics(QGuiApplication::font()).boundingRect(QStringLiteral("M")).height();
+
+    updateEnabledBorders();
+
+    auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
     syncSlideEffect();
@@ -137,6 +155,8 @@ void DockConfigView::syncGeometry()
 
     int clearThickness = m_dockView->normalThickness();
 
+    int secondaryConfigSpacing = 2 * m_largeSpacing;
+
     QPoint position{0, 0};
 
     switch (m_dockView->containment()->formFactor()) {
@@ -146,14 +166,35 @@ void DockConfigView::syncGeometry()
             setMinimumSize(size);
             resize(size);
 
+
             if (location == Plasma::Types::TopEdge) {
-                position = {sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + clearThickness
-                           };
+                if (m_configType == PrimaryConfig) {
+                    position = {sGeometry.center().x() - size.width() / 2
+                                , sGeometry.y() + clearThickness
+                               };
+                } else {
+                    int yPos = m_dockView->y() + clearThickness;
+
+                    position = {m_dockView->x() + secondaryConfigSpacing, yPos};
+                }
             } else if (location == Plasma::Types::BottomEdge) {
-                position = {sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
-                           };
+                if (m_configType == PrimaryConfig) {
+                    position = {sGeometry.center().x() - size.width() / 2
+                                , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
+                               };
+                } else {
+                    int yPos;
+
+                    if (clearThickness >= 2 * size.height()) {
+                        yPos = sGeometry.y() + sGeometry.height() - clearThickness;
+                        m_inReverse = true;
+                    } else {
+                        yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
+                        m_inReverse = false;
+                    }
+
+                    position = {m_dockView->x() + secondaryConfigSpacing, yPos};
+                }
             }
         }
         break;
@@ -165,13 +206,26 @@ void DockConfigView::syncGeometry()
             resize(size);
 
             if (location == Plasma::Types::LeftEdge) {
-                position = {sGeometry.x() + clearThickness
-                            , sGeometry.center().y() - size.height() / 2
-                           };
+                if (m_configType == PrimaryConfig) {
+                    position = {sGeometry.x() + clearThickness
+                                , sGeometry.center().y() - size.height() / 2
+                               };
+                } else {
+                    position = {sGeometry.x() + clearThickness
+                                , m_dockView->y() + secondaryConfigSpacing
+                               };
+                }
+
             } else if (location == Plasma::Types::RightEdge) {
-                position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                            , sGeometry.center().y() - size.height() / 2
-                           };
+                if (m_configType == PrimaryConfig) {
+                    position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
+                                , sGeometry.center().y() - size.height() / 2
+                               };
+                } else {
+                    position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
+                                , m_dockView->y() + secondaryConfigSpacing
+                               };
+                }
             }
         }
         break;
@@ -179,6 +233,10 @@ void DockConfigView::syncGeometry()
         default:
             qWarning() << "no sync geometry, wrong formFactor";
             break;
+    }
+
+    if (m_configType == SecondaryConfig) {
+        updateEnabledBorders();
     }
 
     setPosition(position);
@@ -218,6 +276,17 @@ void DockConfigView::syncSlideEffect()
     }
 
     WindowSystem::self().slideWindow(*this, slideLocation);
+}
+
+void DockConfigView::setVisibleWindow(bool visible)
+{
+    if (visible) {
+        setMask(QRect());
+        PanelShadows::self()->addWindow(this, enabledBorders());
+    } else {
+        PanelShadows::self()->removeWindow(this);
+        setMask(QRect(0, 0, 1, 1));
+    }
 }
 
 void DockConfigView::showEvent(QShowEvent *ev)
@@ -261,15 +330,17 @@ void DockConfigView::hideEvent(QHideEvent *ev)
         }
     };
 
-    const auto mode = m_dockView->visibility()->mode();
-    const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
+    if (m_configType == PrimaryConfig) {
+        const auto mode = m_dockView->visibility()->mode();
+        const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
 
-    if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
-        if (!previousDockWinBehavior) {
+        if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
+            if (!previousDockWinBehavior) {
+                recreateDock();
+            }
+        } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
             recreateDock();
         }
-    } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
-        recreateDock();
     }
 
     deleteLater();
@@ -278,13 +349,23 @@ void DockConfigView::hideEvent(QHideEvent *ev)
 void DockConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
+
+    /*if (m_configType != PrimaryConfig) {
+        return;
+    }*/
+
     const auto *focusWindow = qGuiApp->focusWindow();
 
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
 
-    if (!m_blockFocusLost)
+    if (!m_blockFocusLost && !m_dockView->settingsWindowsAreActive() && !(m_configType == SecondaryConfig && m_blockFocusLostOnStartup)) {
         hideConfigWindow();
+    }
+
+    if (m_blockFocusLostOnStartup) {
+        m_blockFocusLostOnStartup = false;
+    }
 }
 
 void DockConfigView::setupWaylandIntegration()
@@ -363,6 +444,8 @@ void DockConfigView::setSticker(bool blockFocusLost)
         return;
 
     m_blockFocusLost = blockFocusLost;
+
+    m_dockView->setConfigWindowsSticker(blockFocusLost);
 }
 
 void DockConfigView::addPanelSpacer()
@@ -442,6 +525,54 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
     }
 
 }
+
+//!BEGIN borders
+Plasma::FrameSvg::EnabledBorders DockConfigView::enabledBorders() const
+{
+    return m_enabledBorders;
+}
+
+void DockConfigView::updateEnabledBorders()
+{
+    if (!this->screen() || m_configType != DockConfigView::SecondaryConfig) {
+        return;
+    }
+
+    Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
+
+    switch (m_dockView->location()) {
+        case Plasma::Types::TopEdge:
+            borders &= m_inReverse ? ~Plasma::FrameSvg::BottomBorder : ~Plasma::FrameSvg::TopBorder;
+            break;
+
+        case Plasma::Types::LeftEdge:
+            borders &= ~Plasma::FrameSvg::LeftBorder;
+            break;
+
+        case Plasma::Types::RightEdge:
+            borders &= ~Plasma::FrameSvg::RightBorder;
+            break;
+
+        case Plasma::Types::BottomEdge:
+            borders &= m_inReverse ? ~Plasma::FrameSvg::TopBorder : ~Plasma::FrameSvg::BottomBorder;
+            break;
+
+        default:
+            break;
+    }
+
+    if (m_enabledBorders != borders) {
+        m_enabledBorders = borders;
+
+        if (mask() == QRect()) {
+            PanelShadows::self()->addWindow(this, m_enabledBorders);
+        }
+
+        emit enabledBordersChanged();
+    }
+}
+
+//!END borders
 
 
 }
