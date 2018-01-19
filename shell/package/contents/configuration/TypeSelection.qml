@@ -45,8 +45,8 @@ Grid {
     Layout.leftMargin: units.smallSpacing * 2
     Layout.rightMargin: units.smallSpacing * 2
 
-    rows: panelIsVertical ? 0 : 1
-    columns: panelIsVertical ? 1 : 0
+    rows: 0
+    columns: 1
 
     spacing: 1
 
@@ -62,7 +62,7 @@ Grid {
 
     PlasmaComponents.Button {
         id: dockTypeButton
-        width: panelIsVertical ? parent.width : parent.width / 2
+        width: parent.width
 
         checkable: true
         checked: !typeRow.isPanel

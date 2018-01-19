@@ -38,7 +38,7 @@ import org.kde.latte 0.1 as Latte
 FocusScope {
     id: dialog
 
-    property int maxWidth: panelIsVertical ?  9 * theme.defaultFont.pixelSize : 16 * theme.defaultFont.pixelSize
+    property int maxWidth: 9 * theme.defaultFont.pixelSize
 
     width: maxWidth + units.smallSpacing * 2
     height: typeSettings.height + units.smallSpacing * 2
@@ -49,10 +49,6 @@ FocusScope {
 
     property bool advanced: plasmoid.configuration.advanced
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
-    property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
-
-    property color bC: theme.backgroundColor
-    property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
 
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent

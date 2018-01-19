@@ -67,10 +67,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     });
     connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
-    // connections << connect(containment, &Plasma::Containment::locationChanged, [&]() {
-    //   syncSlideEffect();
-    //   QTimer::singleShot(200, this, &DockConfigView::syncGeometry);
-    //});
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -184,16 +180,9 @@ void DockConfigView::syncGeometry()
                                };
                 } else {
                     int yPos;
+                    yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
 
-                    if (clearThickness >= 2 * size.height()) {
-                        yPos = sGeometry.y() + sGeometry.height() - clearThickness;
-                        m_inReverse = true;
-                    } else {
-                        yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
-                        m_inReverse = false;
-                    }
-
-                    position = {m_dockView->x() + secondaryConfigSpacing, yPos};
+                    position = {m_dockView->x() + m_dockView->width() - secondaryConfigSpacing - size.width(), yPos};
                 }
             }
         }
