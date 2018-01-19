@@ -204,14 +204,34 @@ DragDrop.DropArea {
 
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
-    property int thickMarginBase: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) : Math.ceil(0.06 * iconSize)
-    property int thickMarginHigh: shrinkThickMargins ? (behaveAsPlasmaPanel ? 0 : 1) :
-                                                       Math.max( Math.ceil(0.06 * iconSize), 0.6 * appShadowSize)
+    property int thickMarginBase: {
+        if (shrinkThickMargins) {
+            if (behaveAsPlasmaPanel){
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return Math.ceil(0.06 * iconSize);
+        }
+    }
+
+    property int thickMarginHigh: {
+        if (shrinkThickMargins) {
+            if (behaveAsPlasmaPanel){
+                return 0;
+            } else {
+                return Math.max(1, 0.5 * appShadowSize);
+            }
+        } else {
+            return Math.max( Math.ceil(0.06 * iconSize), 0.5 * appShadowSize);
+        }
+    }
     property int thickMargin: thickMarginBase + thickMarginHigh
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int thickMarginOriginal: Math.ceil(0.06 * maxIconSize + Math.max( Math.ceil(0.06 * maxIconSize), 0.6 * appShadowSize))
+    property int thickMarginOriginal: Math.ceil(0.06 * maxIconSize + Math.max( Math.ceil(0.06 * maxIconSize), 0.5 * appShadowSize))
 
     //! iconMargin from configuration is a percentage. The calculation provides a length
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means

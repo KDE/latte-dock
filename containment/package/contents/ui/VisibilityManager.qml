@@ -52,19 +52,23 @@ Item{
                                       -thicknessNormal : thicknessNormal;
 
     property int statesLineSizeOriginal: root.latteApplet ? Math.ceil( root.maxIconSize/13 ) : 0
+    property int thickReverseAndGlowExtraSize: (root.reverseLinesPosition && root.showGlow && !behaveAsPlasmaPanel) ? 2*statesLineSize : 0;
+    property int thickReverseAndGlowExtraSizeOriginal: Math.ceil(2*root.maxIconSize/13 )
 
     property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ? 2 : 1
-    property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargin) //needed in some animations
-    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.thickMargin + 1, root.realPanelSize + root.panelShadow)
-    property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.thickMargin) * root.zoomFactor) + 2
+    property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargin + thickReverseAndGlowExtraSize) //needed in some animations
+    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.thickMargin + thickReverseAndGlowExtraSize +1,
+                                           root.realPanelSize + root.panelShadow)
+    property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.thickMargin + thickReverseAndGlowExtraSize) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, statesLineSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.thickMarginOriginal)) //needed in some animations
+    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.thickMarginOriginal)) //needed in some animations
     property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel ?
-                                              Math.max(thicknessNormalOriginalValue, root.realPanelSize + root.panelShadow) :
+                                              Math.max(thicknessNormalOriginalValue + thickReverseAndGlowExtraSizeOriginal, root.realPanelSize + root.panelShadow) :
                                               root.realPanelSize + root.panelShadow
 
-    property int thicknessNormalOriginalValue: statesLineSizeOriginal + root.maxIconSize + root.thickMarginOriginal + 1
-    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2,
+    property int thicknessNormalOriginalValue: statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal +
+                                               root.maxIconSize + root.thickMarginOriginal + thickReverseAndGlowExtraSize + 1
+    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2,
                                                  root.realPanelSize + root.panelShadow)
 
     Binding{
