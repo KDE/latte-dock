@@ -1373,6 +1373,11 @@ void DockView::setManagedLayout(Layout *layout)
         return;
     }
 
+    // clear mode
+    for (auto &c : connectionsManagedLayout) {
+        disconnect(c);
+    }
+
     m_managedLayout = layout;
 
     if (m_managedLayout) {
@@ -1390,7 +1395,7 @@ void DockView::setManagedLayout(Layout *layout)
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-        connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+        connectionsManagedLayout[0] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
                          << " - activities: " << m_managedLayout->appliedActivities();
@@ -1399,14 +1404,14 @@ void DockView::setManagedLayout(Layout *layout)
             }
         });
 
-        connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
+        connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
             if (m_managedLayout) {
                 m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
                 emit activitiesChanged();
             }
         });
 
-        connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+        connectionsManagedLayout[2] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
             if (m_managedLayout) {
                 m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
                 emit activitiesChanged();
@@ -1415,7 +1420,7 @@ void DockView::setManagedLayout(Layout *layout)
 
         //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
         //! disappearing! With this they reappear!!!
-        connect(this, &QWindow::visibleChanged, this, [&]() {
+        connectionsManagedLayout[3] = connect(this, &QWindow::visibleChanged, this, [&]() {
             if (!isVisible() && m_managedLayout) {
                 QTimer::singleShot(100, [this]() {
                     if (m_managedLayout && containment() && !containment()->destroyed()) {

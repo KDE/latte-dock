@@ -336,6 +336,9 @@ private:
 
     QTimer m_screenSyncTimer;
 
+    //! Connections to release and bound for the managed layout
+    std::array<QMetaObject::Connection, 4> connectionsManagedLayout;
+
     //!used at sliding out/in animation
     Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
     QScreen *m_goToScreen{nullptr};
