@@ -143,7 +143,7 @@ inline Qt::WindowFlags DockConfigView::wFlags() const
 
 void DockConfigView::syncGeometry()
 {
-    if (!m_dockView->containment() || !rootObject())
+    if (!m_dockView->managedLayout() || !m_dockView->containment() || !rootObject())
         return;
 
     const auto location = m_dockView->containment()->location();

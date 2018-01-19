@@ -557,6 +557,7 @@ void Layout::containmentDestroyed(QObject *cont)
         }
 
         if (view) {
+            view->disconnectSensitiveSignals();
             view->deleteLater();
 
             emit m_corona->docksCountChanged();
