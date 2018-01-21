@@ -604,10 +604,13 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
         Layout *layout = activeLayout(layoutName);
 
         if (layout) {
-            QStringList appliedActivities = layout->appliedActivities();
 
+            QStringList appliedActivities = layout->appliedActivities();
+            QString nextActivity = layout->lastUsedActivityId() != "0" ? layout->lastUsedActivityId() : appliedActivities[0];
+
+            //! it means we are at a foreign activity
             if (!appliedActivities.contains(m_corona->activitiesConsumer()->currentActivity())) {
-                m_activitiesController->setCurrentActivity(appliedActivities[0]);
+                m_activitiesController->setCurrentActivity(nextActivity);
                 return true;
             }
         }

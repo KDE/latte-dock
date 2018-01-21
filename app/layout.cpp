@@ -26,6 +26,8 @@
 #include <QFile>
 #include <KSharedConfig>
 
+#include <KActivities/Consumer>
+
 namespace Latte {
 
 const QString Layout::MultipleLayoutsName = ".multiple-layouts_hidden";
@@ -164,7 +166,12 @@ void Layout::initToCorona(DockCorona *corona)
 
     qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
 
+    updateLastUsedActivity();
+
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &Layout::addContainment);
+
+    connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
+            this, &Layout::updateLastUsedActivity);
 }
 
 int Layout::version() const
@@ -509,6 +516,24 @@ const QStringList Layout::appliedActivities()
         } else {
             return m_activities;
         }
+    }
+}
+
+QString Layout::lastUsedActivityId()
+{
+    return m_lastUsedActivityId;
+}
+
+void Layout::updateLastUsedActivity()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    QString currentId = m_corona->activitiesConsumer()->currentActivity();
+
+    if (appliedActivities().contains(currentId)) {
+        m_lastUsedActivityId = currentId;
     }
 }
 

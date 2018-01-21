@@ -68,11 +68,13 @@ public:
     int version() const;
     void setVersion(int ver);
 
-    QString name() const;
-    QString file() const;
-
     QString color() const;
     void setColor(QString color);
+
+    QString lastUsedActivityId();
+
+    QString name() const;
+    QString file() const;
 
     QStringList activities() const;
     void setActivities(QStringList activities);
@@ -124,6 +126,7 @@ private slots:
     void appletCreated(Plasma::Applet *applet);
     void destroyedChanged(bool destroyed);
     void containmentDestroyed(QObject *cont);
+    void updateLastUsedActivity();
 
 private:
     void importLocalLayout(QString file);
@@ -145,6 +148,7 @@ private:
     int m_version{2};
 
     QString m_color;
+    QString m_lastUsedActivityId{"0"}; //the last used activity for this layout
     QString m_layoutFile;
     QString m_layoutName;
     QStringList m_activities;
