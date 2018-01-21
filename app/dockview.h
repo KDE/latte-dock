@@ -197,12 +197,14 @@ public slots:
     Q_INVOKABLE QVariantList containmentActions();
 
     Q_INVOKABLE void deactivateApplets();
+    Q_INVOKABLE void moveToLayout(QString layoutName);
     Q_INVOKABLE void removeTasksPlasmoid();
     Q_INVOKABLE void setBlockHiding(bool block);
     Q_INVOKABLE void toggleAppletExpanded(const int id);
     Q_INVOKABLE void updateEnabledBorders();
 
     Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);
+    Q_INVOKABLE void hideDockDuringMovingToLayout(QString layoutName);
 
     Q_INVOKABLE int docksWithTasks();
 
@@ -235,8 +237,11 @@ signals:
     void hideDockDuringLocationChangeFinished();
     void hideDockDuringScreenChangeStarted();
     void hideDockDuringScreenChangeFinished();
+    void hideDockDuringMovingToLayoutStarted();
+    void hideDockDuringMovingToLayoutFinished();
     void showDockAfterLocationChangeFinished();
     void showDockAfterScreenChangeFinished();
+    void showDockAfterMovingToLayoutFinished();
 
     void activitiesChanged();
     void alternativesIsShownChanged();
@@ -275,6 +280,7 @@ signals:
 
 private slots:
     void availableScreenRectChanged();
+    void hideWindowsForSlidingOut();
     void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
@@ -340,6 +346,7 @@ private:
     std::array<QMetaObject::Connection, 4> connectionsManagedLayout;
 
     //!used at sliding out/in animation
+    QString m_moveToLayout;
     Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
     QScreen *m_goToScreen{nullptr};
 

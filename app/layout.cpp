@@ -96,6 +96,8 @@ void Layout::unloadContainments()
         view->disconnectSensitiveSignals();
     }
 
+    m_unloadedContainmentsIds.clear();
+
     QList<Plasma::Containment *> systrays;
 
     //!identify systrays and unload them first
@@ -1254,6 +1256,58 @@ void Layout::syncDockViewsToScreens()
     }
 
     qDebug() << "end of screens count change....";
+}
+
+void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> containments)
+{
+    if (!m_corona) {
+        return;
+    }
+
+    if (dockView) {
+        m_dockViews[dockView->containment()] = dockView;
+        m_containments << containments;
+
+        foreach (auto containment, containments) {
+            containment->config().writeEntry("layoutId", name());
+        }
+
+        dockView->setManagedLayout(this);
+
+        emit m_corona->docksCountChanged();
+        emit m_corona->availableScreenRectChanged();
+        emit m_corona->availableScreenRegionChanged();
+    }
+}
+
+QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
+{
+    QList<Plasma::Containment *> containments;
+
+    if (!m_corona) {
+        return containments;
+    }
+
+    containments << dockView->containment();
+
+    foreach (auto containment, m_containments) {
+        Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
+
+        //! add systrays from that dockView
+        if (parentApplet && parentApplet->containment() && parentApplet->containment() == dockView->containment()) {
+            containments << containment;
+        }
+    }
+
+    foreach (auto containment, containments) {
+        m_containments.removeAll(containment);
+    }
+
+    if (containments.size() > 0) {
+        m_dockViews.remove(dockView->containment());
+    }
+
+    return containments;
 }
 
 }

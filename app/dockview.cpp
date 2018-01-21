@@ -242,27 +242,32 @@ void DockView::init()
     qDebug() << "SOURCE:" << source();
 }
 
+void DockView::hideWindowsForSlidingOut()
+{
+    setBlockHiding(false);
+
+    if (m_configView) {
+        auto configDialog = qobject_cast<DockConfigView *>(m_configView);
+
+        if (configDialog) {
+            configDialog->hideConfigWindow();
+        }
+    }
+
+    if (m_secondaryConfigView) {
+        auto configDialog = qobject_cast<DockConfigView *>(m_secondaryConfigView);
+
+        if (configDialog) {
+            configDialog->hideConfigWindow();
+        }
+    }
+}
+
 void DockView::initSignalingForLocationChangeSliding()
 {
     //! signals to handle the sliding-in/out during location changes
     connect(this, &DockView::hideDockDuringLocationChangeStarted, this, [&]() {
-        setBlockHiding(false);
-
-        if (m_configView) {
-            auto configDialog = qobject_cast<DockConfigView *>(m_configView);
-
-            if (configDialog) {
-                configDialog->hideConfigWindow();
-            }
-        }
-
-        if (m_secondaryConfigView) {
-            auto configDialog = qobject_cast<DockConfigView *>(m_secondaryConfigView);
-
-            if (configDialog) {
-                configDialog->hideConfigWindow();
-            }
-        }
+        hideWindowsForSlidingOut();
     });
 
     connect(this, &DockView::locationChanged, this, [&]() {
@@ -278,23 +283,7 @@ void DockView::initSignalingForLocationChangeSliding()
 
     //! signals to handle the sliding-in/out during screen changes
     connect(this, &DockView::hideDockDuringScreenChangeStarted, this, [&]() {
-        setBlockHiding(false);
-
-        if (m_configView) {
-            auto configDialog = qobject_cast<DockConfigView *>(m_configView);
-
-            if (configDialog) {
-                configDialog->hideConfigWindow();
-            }
-        }
-
-        if (m_secondaryConfigView) {
-            auto configDialog = qobject_cast<DockConfigView *>(m_secondaryConfigView);
-
-            if (configDialog) {
-                configDialog->hideConfigWindow();
-            }
-        }
+        hideWindowsForSlidingOut();
     });
 
     connect(this, &DockView::currentScreenChanged, this, [&]() {
@@ -303,6 +292,22 @@ void DockView::initSignalingForLocationChangeSliding()
             QTimer::singleShot(100, [this]() {
                 setBlockAnimations(false);
                 emit showDockAfterScreenChangeFinished();
+                showSettingsWindow();
+            });
+        }
+    });
+
+    //! signals to handle the sliding-in/out during moving to another layout
+    connect(this, &DockView::hideDockDuringMovingToLayoutStarted, this, [&]() {
+        hideWindowsForSlidingOut();
+    });
+
+    connect(this, &DockView::managedLayoutChanged, this, [&]() {
+        if (!m_moveToLayout.isEmpty() && m_managedLayout) {
+            m_moveToLayout = "";
+            QTimer::singleShot(100, [this]() {
+                setBlockAnimations(false);
+                emit showDockAfterMovingToLayoutFinished();
                 showSettingsWindow();
             });
         }
@@ -318,6 +323,8 @@ void DockView::initSignalingForLocationChangeSliding()
             setLocation(m_goToLocation);
         } else if (m_goToScreen) {
             setScreenToFollow(m_goToScreen);
+        } else if (!m_moveToLayout.isEmpty()) {
+            moveToLayout(m_moveToLayout);
         }
     });
 }
@@ -1444,12 +1451,36 @@ void DockView::setManagedLayout(Layout *layout)
     emit managedLayoutChanged();
 }
 
+void DockView::moveToLayout(QString layoutName)
+{
+    if (!m_managedLayout) {
+        return;
+    }
+
+    QList<Plasma::Containment *> containments = m_managedLayout->unassignFromLayout(this);
+
+    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+
+    if (dockCorona && containments.size() > 0) {
+        Layout *newLayout = dockCorona->layoutManager()->activeLayout(layoutName);
+
+        if (newLayout) {
+            newLayout->assignToLayout(this, containments);
+        }
+    }
+}
+
 void DockView::hideDockDuringLocationChange(int goToLocation)
 {
     m_goToLocation = static_cast<Plasma::Types::Location>(goToLocation);
     emit hideDockDuringLocationChangeStarted();
 }
 
+void DockView::hideDockDuringMovingToLayout(QString layoutName)
+{
+    m_moveToLayout = layoutName;
+    emit hideDockDuringMovingToLayoutStarted();
+}
 
 void DockView::setBlockHiding(bool block)
 {

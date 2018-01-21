@@ -385,9 +385,25 @@ FocusScope {
                     anchors.fill: parent
                     enabled: addDock.enabled
 
+                    property var activeLayoutsNames;
+
                     function addModel() {
                         var actions = []
                         actions.push("    " + i18n("Copy Dock"));
+
+                        var tempActiveLayouts = layoutManager.activeLayoutsNames();
+                        var currentLayoutIndex = tempActiveLayouts.indexOf(dock.managedLayout.name);
+
+                        tempActiveLayouts.splice(currentLayoutIndex,1);
+
+                        if (tempActiveLayouts.length > 0) {
+                            activeLayoutsNames = tempActiveLayouts;
+                            actions.push("  ------  ");
+                            for(var i=0; i<activeLayoutsNames.length; ++i) {
+                                actions.push("    " + i18n("Move to:") + " " + activeLayoutsNames[i]);
+                            }
+                        }
+
                         actionsCmb.model = actions;
                         actionsCmb.currentIndex = -1;
                     }
@@ -406,6 +422,8 @@ FocusScope {
                     onActivated: {
                         if (index==0) {
                             dock.copyDock();
+                        } else if (index>=2) {
+                            dock.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
                         }
 
                         actionsCmb.currentIndex = -1;

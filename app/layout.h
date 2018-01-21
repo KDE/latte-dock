@@ -90,11 +90,22 @@ public:
     void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
     void copyDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
+
     void syncDockViewsToScreens();
     void importToCorona();
+
     const QStringList appliedActivities();
 
     QHash<const Plasma::Containment *, DockView *> *dockViews();
+
+    //! Bind this dockView and its relevant containments(including systrays)
+    //! to this layout. It is used for moving a dockView from layout to layout)
+    void assignToLayout(DockView *dockView, QList<Plasma::Containment *> containments);
+
+    //! Unassign that dockView from this layout (this is used for moving a dockView
+    //! from layout to layout) and returns all the containments relevant to
+    //! that dockView
+    QList<Plasma::Containment *> unassignFromLayout(DockView *dockView);
 
 signals:
     void activitiesChanged();
