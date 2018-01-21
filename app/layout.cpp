@@ -1270,6 +1270,10 @@ void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> con
 
         foreach (auto containment, containments) {
             containment->config().writeEntry("layoutId", name());
+
+            connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
+            connect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
+            connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
         }
 
         dockView->setManagedLayout(this);
@@ -1296,6 +1300,9 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
         //! add systrays from that dockView
         if (parentApplet && parentApplet->containment() && parentApplet->containment() == dockView->containment()) {
             containments << containment;
+            disconnect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
+            disconnect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
+            disconnect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
         }
     }
 
