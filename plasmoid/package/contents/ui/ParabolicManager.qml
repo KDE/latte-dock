@@ -553,7 +553,8 @@ Item {
 
             tasksModel.move(from, to);
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-               latteDock.universalLayoutManager.launchersSignals.moveTask(plasmoid.id, latteDock.launchersGroup, from, to);
+               latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
+                                                                          plasmoid.id, latteDock.launchersGroup, from, to);
             }
 
             if (isSeparator(launcherUrl)) {

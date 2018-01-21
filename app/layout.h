@@ -98,6 +98,7 @@ public:
 
     const QStringList appliedActivities();
 
+    QList<Plasma::Containment *> *containments();
     QHash<const Plasma::Containment *, DockView *> *dockViews();
 
     //! Bind this dockView and its relevant containments(including systrays)

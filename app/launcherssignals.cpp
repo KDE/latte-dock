@@ -32,11 +32,20 @@ LaunchersSignals::~LaunchersSignals()
 {
 }
 
-QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids()
+QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
 {
     QList<Plasma::Applet *> applets;
 
-    foreach (auto containment, m_manager->corona()->containments()) {
+    Layout *layout = m_manager->activeLayout(layoutName);
+    QList<Plasma::Containment *> containments;
+
+    if (layoutName.isEmpty()) {
+        containments = m_manager->corona()->containments();
+    } else if (layout) {
+        containments = *(layout->containments());
+    }
+
+    foreach (auto containment, containments) {
         for (auto *applet : containment->applets()) {
             KPluginMetaData meta = applet->kPackage().metadata();
 
@@ -49,13 +58,17 @@ QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids()
     return applets;
 }
 
-void LaunchersSignals::addLauncher(int launcherGroup, QString launcher)
+void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
-    if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
         return;
     }
 
-    foreach (auto applet, lattePlasmoids()) {
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -79,13 +92,17 @@ void LaunchersSignals::addLauncher(int launcherGroup, QString launcher)
     }
 }
 
-void LaunchersSignals::removeLauncher(int launcherGroup, QString launcher)
+void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
-    if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
         return;
     }
 
-    foreach (auto applet, lattePlasmoids()) {
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -109,13 +126,17 @@ void LaunchersSignals::removeLauncher(int launcherGroup, QString launcher)
     }
 }
 
-void LaunchersSignals::addLauncherToActivity(int launcherGroup, QString launcher, QString activity)
+void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
-    if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
         return;
     }
 
-    foreach (auto applet, lattePlasmoids()) {
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -139,13 +160,17 @@ void LaunchersSignals::addLauncherToActivity(int launcherGroup, QString launcher
     }
 }
 
-void LaunchersSignals::removeLauncherFromActivity(int launcherGroup, QString launcher, QString activity)
+void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
-    if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
         return;
     }
 
-    foreach (auto applet, lattePlasmoids()) {
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -169,13 +194,17 @@ void LaunchersSignals::removeLauncherFromActivity(int launcherGroup, QString lau
     }
 }
 
-void LaunchersSignals::urlsDropped(int launcherGroup, QStringList urls)
+void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStringList urls)
 {
-    if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
         return;
     }
 
-    foreach (auto applet, lattePlasmoids()) {
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = appletInterface->childItems();
 
@@ -199,13 +228,17 @@ void LaunchersSignals::urlsDropped(int launcherGroup, QStringList urls)
     }
 }
 
-void LaunchersSignals::moveTask(int senderId, int launcherGroup, int from, int to)
+void LaunchersSignals::moveTask(QString layoutName, int senderId, int launcherGroup, int from, int to)
 {
-    if ((Dock::LaunchersGroup)launcherGroup == Dock::UniqueLaunchers) {
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
         return;
     }
 
-    foreach (auto applet, lattePlasmoids()) {
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
         if (applet->id() != senderId) {
             if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
                 const auto &childItems = appletInterface->childItems();

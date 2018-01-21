@@ -44,15 +44,15 @@ public:
     ~LaunchersSignals() override;
 
 public slots:
-    Q_INVOKABLE void addLauncher(int launcherGroup, QString launcher);
-    Q_INVOKABLE void removeLauncher(int launcherGroup, QString launcher);
-    Q_INVOKABLE void addLauncherToActivity(int launcherGroup, QString launcher, QString activity);
-    Q_INVOKABLE void removeLauncherFromActivity(int launcherGroup, QString launcher, QString activity);
-    Q_INVOKABLE void urlsDropped(int launcherGroup, QStringList urls);
-    Q_INVOKABLE void moveTask(int senderId, int launcherGroup, int from, int to);
+    Q_INVOKABLE void addLauncher(QString layoutName, int launcherGroup, QString launcher);
+    Q_INVOKABLE void removeLauncher(QString layoutName, int launcherGroup, QString launcher);
+    Q_INVOKABLE void addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
+    Q_INVOKABLE void removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
+    Q_INVOKABLE void urlsDropped(QString layoutName, int launcherGroup, QStringList urls);
+    Q_INVOKABLE void moveTask(QString layoutName, int senderId, int launcherGroup, int from, int to);
 
 private:
-    QList<Plasma::Applet *> lattePlasmoids();
+    QList<Plasma::Applet *> lattePlasmoids(QString layoutName);
 
 private:
     LayoutManager *m_manager{nullptr};

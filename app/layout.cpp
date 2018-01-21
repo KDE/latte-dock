@@ -502,6 +502,11 @@ QHash<const Plasma::Containment *, DockView *> *Layout::dockViews()
     return &m_dockViews;
 }
 
+QList<Plasma::Containment *> *Layout::containments()
+{
+    return &m_containments;
+}
+
 const QStringList Layout::appliedActivities()
 {
     if (!m_corona) {

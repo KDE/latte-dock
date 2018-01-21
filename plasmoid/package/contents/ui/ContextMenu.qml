@@ -631,7 +631,8 @@ PlasmaComponents.ContextMenu {
                 var launcher = get(atm.LauncherUrl);
 
                 if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, launcher);
+                    latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                     latteDock.launchersGroup, launcher);
                 } else {
                     root.launcherForRemoval = launcher;
                     tasksModel.requestRemoveLauncher(launcher);
@@ -640,7 +641,8 @@ PlasmaComponents.ContextMenu {
             } else {
                 var launcher = get(atm.LauncherUrl);
                 if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, launcher);
+                    latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
+                                                                                  latteDock.launchersGroup, launcher);
                 } else {
                     tasksModel.requestAddLauncher(launcher);
                 }
@@ -686,7 +688,8 @@ PlasmaComponents.ContextMenu {
                                 function() {
                                     if (result.checked) {
                                         if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                                            latteDock.universalLayoutManager.launchersSignals.addLauncherToActivity(latteDock.launchersGroup, url, id);
+                                            latteDock.universalLayoutManager.launchersSignals.addLauncherToActivity(root.managedLayoutName,
+                                                                                                                    latteDock.launchersGroup, url, id);
                                         } else {
                                             if (id !== tasksModel.activity && (activities[0] === "00000000-0000-0000-0000-000000000000")) {
                                                 root.launcherForRemoval = url;
@@ -696,7 +699,8 @@ PlasmaComponents.ContextMenu {
                                         }
                                     } else {
                                         if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                                            latteDock.universalLayoutManager.launchersSignals.removeLauncherFromActivity(latteDock.launchersGroup, url, id);
+                                            latteDock.universalLayoutManager.launchersSignals.removeLauncherFromActivity(root.managedLayoutName,
+                                                                                                                         latteDock.launchersGroup, url, id);
                                         } else {
                                             if (id === tasksModel.activity) {
                                                 root.launcherForRemoval = url;
@@ -752,7 +756,8 @@ PlasmaComponents.ContextMenu {
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, launcher);
+                latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                 latteDock.launchersGroup, launcher);
             } else {
                 root.launcherForRemoval = launcher
                 tasksModel.requestRemoveLauncher(launcher);
@@ -782,7 +787,8 @@ PlasmaComponents.ContextMenu {
                 parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
                 if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, separatorName);
+                    latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
+                                                                                  latteDock.launchersGroup, separatorName);
                 } else {
                     tasksModel.requestAddLauncher(separatorName);
                 }
@@ -803,7 +809,8 @@ PlasmaComponents.ContextMenu {
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, launcher);
+                latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                 latteDock.launchersGroup, launcher);
             } else {
                 root.launcherForRemoval = launcher;
                 tasksModel.requestRemoveLauncher(launcher);

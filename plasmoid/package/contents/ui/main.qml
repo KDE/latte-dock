@@ -198,6 +198,7 @@ Item {
     property alias hoveredIndex: icList.hoveredIndex
 
     property QtObject currentLayout : latteDock && latteDock.dockManagedLayout ? latteDock.dockManagedLayout : null
+    property var managedLayoutName: currentLayout ? currentLayout.name : ""
 
     property Item latteDock: null
     //END Now Dock Panel properties
@@ -277,7 +278,6 @@ Item {
         target: latteDock && latteDock.universalLayoutManager ? latteDock.universalLayoutManager : null
 
         onCurrentLayoutNameChanged: root.publishTasksGeometries();
-
     }
 
 
@@ -1036,7 +1036,8 @@ Item {
 
             onUrlsDropped: {
                 if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.urlsDropped(latteDock.launchersGroup, urls);
+                    latteDock.universalLayoutManager.launchersSignals.urlsDropped(root.managedLayoutName,
+                                                                                  latteDock.launchersGroup, urls);
                 } else {
                     urlsDroppedOnArea(urls);
                 }
@@ -1496,7 +1497,8 @@ Item {
 
         if (separatorName !== "") {
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.removeLauncher(latteDock.launchersGroup, separatorName);
+                latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                 latteDock.launchersGroup, separatorName);
             } else {
                 root.launcherForRemoval = separatorName;
                 tasksModel.requestRemoveLauncher(separatorName);
