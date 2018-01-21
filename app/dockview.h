@@ -292,6 +292,7 @@ private slots:
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
     void addContainmentActions(QMenu *desktopMenu, QEvent *event);
+    void applyActivitiesToWindows();
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
     void showConfigurationInterfaceForConfigView(PlasmaQuick::ConfigView *configView,

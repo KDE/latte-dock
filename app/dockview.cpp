@@ -678,6 +678,7 @@ void DockView::showConfigurationInterfaceForConfigView(PlasmaQuick::ConfigView *
 
     if (configView) {
         configView->init();
+        applyActivitiesToWindows();
     }
 
     if (!delayConfigView) {
@@ -1369,6 +1370,22 @@ void DockView::setShadow(int shadow)
     emit shadowChanged();
 }
 
+void DockView::applyActivitiesToWindows()
+{
+    if (m_visibility) {
+        QStringList activities = m_managedLayout->appliedActivities();
+        m_visibility->setWindowOnActivities(*this, activities);
+
+        if (m_configView) {
+            m_visibility->setWindowOnActivities(*m_configView, activities);
+        }
+
+        if (m_secondaryConfigView) {
+            m_visibility->setWindowOnActivities(*m_secondaryConfigView, activities);
+        }
+    }
+}
+
 Layout *DockView::managedLayout() const
 {
     return m_managedLayout;
@@ -1393,7 +1410,7 @@ void DockView::setManagedLayout(Layout *layout)
         QTimer::singleShot(100, [this]() {
             if (m_managedLayout) {
                 qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_managedLayout->name() << " - activities: " << m_managedLayout->appliedActivities();
-                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
@@ -1406,21 +1423,21 @@ void DockView::setManagedLayout(Layout *layout)
             if (m_managedLayout) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
                          << " - activities: " << m_managedLayout->appliedActivities();
-                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
 
         connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
             if (m_managedLayout) {
-                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
 
         connectionsManagedLayout[2] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
             if (m_managedLayout) {
-                m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
@@ -1432,7 +1449,7 @@ void DockView::setManagedLayout(Layout *layout)
                 QTimer::singleShot(100, [this]() {
                     if (m_managedLayout && containment() && !containment()->destroyed()) {
                         setVisible(true);
-                        m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                        applyActivitiesToWindows();
                         emit activitiesChanged();
                     }
                 });
@@ -1440,7 +1457,7 @@ void DockView::setManagedLayout(Layout *layout)
                 QTimer::singleShot(1500, [this]() {
                     if (m_managedLayout && containment() && !containment()->destroyed()) {
                         setVisible(true);
-                        m_visibility->setDockOnActivities(m_managedLayout->appliedActivities());
+                        applyActivitiesToWindows();
                         emit activitiesChanged();
                     }
                 });

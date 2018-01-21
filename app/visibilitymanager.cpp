@@ -357,9 +357,9 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
     }
 }
 
-void VisibilityManagerPrivate::setDockOnActivities(const QStringList &activities)
+void VisibilityManagerPrivate::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
-    wm->setOnActivities(*view, activities);
+    wm->setWindowOnActivities(window, activities);
 }
 
 void VisibilityManagerPrivate::dodgeActive(WindowId wid)
@@ -854,9 +854,9 @@ void VisibilityManager::setMode(Dock::Visibility mode)
     d->setMode(mode);
 }
 
-void VisibilityManager::setDockOnActivities(const QStringList &activities)
+void VisibilityManager::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
-    d->setDockOnActivities(activities);
+    d->setWindowOnActivities(window, activities);
 }
 
 bool VisibilityManager::raiseOnDesktop() const

@@ -179,7 +179,7 @@ void WaylandInterface::setDockStruts(QWindow &view, const QRect &rect , Plasma::
 
 }
 
-void WaylandInterface::setOnActivities(QWindow &view, const QStringList &activities)
+void WaylandInterface::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
     //! needs to updated to wayland case
     // KWindowSystem::setOnActivities(view.winId(), activities);

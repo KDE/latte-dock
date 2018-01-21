@@ -57,7 +57,7 @@ public:
     void updateDynamicBackgroundWindowFlags();
 
     void setDockGeometry(const QRect &rect);
-    void setDockOnActivities(const QStringList &activities);
+    void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
     void windowAdded(WindowId id);
     void dodgeActive(WindowId id);

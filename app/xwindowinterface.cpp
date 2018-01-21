@@ -142,9 +142,9 @@ void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
                                    );
 }
 
-void XWindowInterface::setOnActivities(QWindow &view, const QStringList &activities)
+void XWindowInterface::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
-    KWindowSystem::setOnActivities(view.winId(), activities);
+    KWindowSystem::setOnActivities(window.winId(), activities);
 }
 
 void XWindowInterface::removeDockStruts(QWindow &view) const

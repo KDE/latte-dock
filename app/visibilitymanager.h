@@ -58,7 +58,7 @@ public:
     Latte::Dock::Visibility mode() const;
     void setMode(Latte::Dock::Visibility mode);
 
-    void setDockOnActivities(const QStringList &activities);
+    void setWindowOnActivities(QWindow &window, const QStringList &activities);
 
     bool raiseOnDesktop() const;
     void setRaiseOnDesktop(bool enable);
