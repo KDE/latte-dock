@@ -60,6 +60,14 @@ FocusScope {
     TypeSelection{
         id: typeSettings
         anchors.centerIn: parent
+
+        Component.onCompleted: forceActiveFocus();
+
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Escape) {
+                dockConfig.hideConfigWindow();
+            }
+        }
     }
 
     Component.onCompleted: dockConfig.setVisibleWindow(advanced);
