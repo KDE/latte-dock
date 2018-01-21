@@ -55,6 +55,7 @@ FocusScope {
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
         imagePath: "dialogs/background"
+        enabledBorders: dockConfig.enabledBorders
     }
 
     PlasmaComponents.ToolButton {

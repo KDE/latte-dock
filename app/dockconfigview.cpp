@@ -224,9 +224,7 @@ void DockConfigView::syncGeometry()
             break;
     }
 
-    if (m_configType == SecondaryConfig) {
-        updateEnabledBorders();
-    }
+    updateEnabledBorders();
 
     setPosition(position);
 
@@ -523,7 +521,7 @@ Plasma::FrameSvg::EnabledBorders DockConfigView::enabledBorders() const
 
 void DockConfigView::updateEnabledBorders()
 {
-    if (!this->screen() || m_configType != DockConfigView::SecondaryConfig) {
+    if (!this->screen()) {
         return;
     }
 
