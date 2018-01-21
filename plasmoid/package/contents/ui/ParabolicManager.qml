@@ -53,6 +53,57 @@ Item {
     Connections{
         target: root
         onTasksCountChanged:parManager.updateTasksEdgesIndexes();
+        onDragSourceChanged: {
+            if (!root.dragSource && parManager.hasInternalSeparator) {
+                //! Send the internal separators to other docks
+                var tasks = icList.contentItem.children;
+                var size = icList.contentItem.children.length;
+                var tempSeparatorsArray = [];
+                var tempSeparatorsIndexes = [];
+
+                for(var i=0; i<size; ++i){
+                    if (i>=icList.contentItem.children.length) {
+                        break;
+                    }
+
+                    if (tasks[i] && tasks[i].isSeparator) {
+                        tempSeparatorsArray.push(tasks[i].launcherUrl);
+                        tempSeparatorsIndexes.push(tasks[i].itemIndex);
+                    }
+                }
+
+                if (tempSeparatorsArray.length > 0) {
+                    if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                        //reorder to lowest
+                        for(var i=0; i<tempSeparatorsIndexes.length; ++i) {
+                            var lowIndex = i;
+                            for(var j=i; j<tempSeparatorsIndexes.length; ++j) {
+                                if (tempSeparatorsIndexes[j]<tempSeparatorsIndexes[lowIndex]) {
+                                    lowIndex = j;
+                                }
+                            }
+
+                            if (lowIndex !== i) {
+                                //moving
+                                var tempInd = tempSeparatorsIndexes[lowIndex];
+                                tempSeparatorsIndexes.splice(lowIndex, 1);
+                                tempSeparatorsIndexes.splice(i, 0, tempInd);
+
+                                var tempName = tempSeparatorsArray[lowIndex];
+                                tempSeparatorsArray.splice(lowIndex, 1);
+                                tempSeparatorsArray.splice(i, 0, tempName);
+                            }
+                        }
+
+                        latteDock.universalLayoutManager.launchersSignals.internalSeparators(root.managedLayoutName,
+                                                                                             plasmoid.id,
+                                                                                             latteDock.launchersGroup,
+                                                                                             tempSeparatorsArray,
+                                                                                             tempSeparatorsIndexes);
+                    }
+                }
+            }
+        }
     }
 
     Component.onCompleted:  updateTasksEdgesIndexes();
@@ -553,8 +604,8 @@ Item {
 
             tasksModel.move(from, to);
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-               latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
-                                                                          plasmoid.id, latteDock.launchersGroup, from, to);
+                latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
+                                                                           plasmoid.id, latteDock.launchersGroup, from, to);
             }
 
             if (isSeparator(launcherUrl)) {

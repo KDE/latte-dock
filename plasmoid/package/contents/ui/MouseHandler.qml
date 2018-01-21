@@ -148,7 +148,9 @@ Item {
                     var pos = root.dragSource.itemIndex;
                     tasksModel.move(pos, insertAt);
                     if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                        latteDock.universalLayoutManager.launchersSignals.moveTask(plasmoid.id, latteDock.launchersGroup, pos, insertAt);
+                        latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
+                                                                                   plasmoid.id,
+                                                                                   latteDock.launchersGroup, pos, insertAt);
                     }
 
                     ignoreItemTimer.restart();

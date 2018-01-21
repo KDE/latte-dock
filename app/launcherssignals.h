@@ -50,6 +50,8 @@ public slots:
     Q_INVOKABLE void removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
     Q_INVOKABLE void urlsDropped(QString layoutName, int launcherGroup, QStringList urls);
     Q_INVOKABLE void moveTask(QString layoutName, int senderId, int launcherGroup, int from, int to);
+    Q_INVOKABLE void internalSeparators(QString layoutName, int senderId, int launcherGroup,
+                                        QStringList separators, QStringList indexes);
 
 private:
     QList<Plasma::Applet *> lattePlasmoids(QString layoutName);
