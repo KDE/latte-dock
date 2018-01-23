@@ -21,6 +21,7 @@
   <name xml:lang="sv">Latte</name>
   <name xml:lang="uk">Латте</name>
   <name xml:lang="x-test">xxLattexx</name>
+  <name xml:lang="zh-CN">Latte</name>
   <name xml:lang="zh-TW">Latte</name>
   <summary>Dock for the masses</summary>
   <summary xml:lang="ar">رصيف للأمور الكبيرة</summary>
@@ -40,6 +41,7 @@
   <summary xml:lang="sv">Dockningsfönster för alla</summary>
   <summary xml:lang="uk">Панель для усіх</summary>
   <summary xml:lang="x-test">xxDock for the massesxx</summary>
+  <summary xml:lang="zh-CN">给大众使用的停靠栏</summary>
   <summary xml:lang="zh-TW">給大眾使用的 Dock</summary>
   <description>
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
@@ -60,6 +62,7 @@
     <p xml:lang="sv">Latte är ett dockningsfönster baserat på Plasma ramverk som erbjuder en elegant och intuitiv upplevelse för aktiviteter och Plasmoider. Det animerar innehållet genom att använda en paraboleffekt för zoomning, och försöker bara vara där när det behövs.</p>
     <p xml:lang="uk">Латте — панель на основі бібліотек Плазми, яка забезпечує елегантний і інтуїтивно зрозумілий доступ до ваших завдань та плазмоїдів. Вміст панелі анімується за допомогою ефекту параболічного збільшення і показується лише тоді, коли це потрібно.</p>
     <p xml:lang="x-test">xxLatte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.xx</p>
+    <p xml:lang="zh-CN">Latte 是一个基于 plasma 框架的停靠栏，它为您的任务及 plasmoid 提供了优雅直观的体验。它为它的内容赋予抛物线缩放动画效果，并尽可能仅在它被需要时出现。</p>
     <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
     <p> "Art In Coffee" </p>
     <p xml:lang="ar">”الفنّ في القهوة“</p>
@@ -79,6 +82,7 @@
     <p xml:lang="sv">"Konst i kaffe"</p>
     <p xml:lang="uk">«Мистецтво кави»</p>
     <p xml:lang="x-test">xx"Art In Coffee"xx</p>
+    <p xml:lang="zh-CN">“咖啡中的艺术”</p>
     <p xml:lang="zh-TW">「咖啡中的藝術」</p>
   </description>
   <categories>
