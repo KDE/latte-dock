@@ -49,6 +49,7 @@ Name[pt]=A configuração foi importada com sucesso
 Name[sv]=Inställning importerad med lyckat resultat
 Name[uk]=Налаштування успішно імпортовано
 Name[x-test]=xxConfiguration imported successfullyxx
+Name[zh_CN]=配置成功导入
 Name[zh_TW]=設定匯入成功
 Action=Popup
 
@@ -68,6 +69,7 @@ Name[pt]=Não foi possível importar a configuração
 Name[sv]=Misslyckades importera inställning
 Name[uk]=Не вдалося імпортувати налаштування
 Name[x-test]=xxFailed to import configurationxx
+Name[zh_CN]=配置导入失败
 Name[zh_TW]=匯入設定失敗
 Action=Popup
 
@@ -87,6 +89,7 @@ Name[pt]=A configuração foi exportada com sucesso
 Name[sv]=Inställning exporterad med lyckat resultat
 Name[uk]=Налаштування успішно експортовано
 Name[x-test]=xxConfiguration exported successfullyxx
+Name[zh_CN]=配置成功导出
 Name[zh_TW]=設定匯出成功
 Action=Popup
 
@@ -106,6 +109,7 @@ Name[pt]=Não foi possível exportar a configuração
 Name[sv]=Misslyckades exportera inställning
 Name[uk]=Не вдалося експортувати налаштування
 Name[x-test]=xxFailed to export configurationxx
+Name[zh_CN]=配置导出失败
 Name[zh_TW]=匯出設定失敗
 Action=Popup
 
@@ -125,5 +129,6 @@ Name[pt]=Mudar para a disposição
 Name[sv]=Byt till layout
 Name[uk]=Перемкнутися на компонування
 Name[x-test]=xxSwitch to layoutxx
+Name[zh_CN]=切换布局
 Name[zh_TW]=切換至佈局
 Action=Popup

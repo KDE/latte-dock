@@ -30,6 +30,7 @@ Comment[pt]=Reservar espaços em branco dentro da área acoplável.
 Comment[sv]=Reservera tomt utrymme inne i dockningsfönstret.
 Comment[uk]=Створює прогалини на панелі.
 Comment[x-test]=xxReserve empty spaces within the dock.xx
+Comment[zh_CN]=在停靠栏中保留空间。
 Comment[zh_TW]=在 dock 中保留空間。
 
 Encoding=UTF-8
@@ -49,6 +50,7 @@ Keywords[pt]=espaço
 Keywords[sv]=mellanrum
 Keywords[uk]=розпірка
 Keywords[x-test]=xxspacerxx
+Keywords[zh_CN]=spacer，空白，留空，分隔
 Keywords[zh_TW]=空白
 NoDisplay=true
 

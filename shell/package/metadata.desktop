@@ -15,6 +15,7 @@ Name[pt]=Consola do Latte
 Name[sv]=Latte skal
 Name[uk]=Оболонка Латте
 Name[x-test]=xxLatte Shellxx
+Name[zh_CN]=Latte Shell
 Name[zh_TW]=Latte Shell
 Comment=Shell provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat pel Latte Dock

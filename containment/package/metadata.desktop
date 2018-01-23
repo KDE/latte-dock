@@ -17,6 +17,7 @@ Name[pt]=Latte
 Name[sv]=Latte
 Name[uk]=Латте
 Name[x-test]=xxLattexx
+Name[zh_CN]=Latte
 Name[zh_TW]=Latte
 Comment=Containment provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat pel Latte Dock
