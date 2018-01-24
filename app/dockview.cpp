@@ -52,6 +52,9 @@
 
 namespace Latte {
 
+const int MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN = 1024;
+const int MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN = 768;
+
 //! both alwaysVisible and dockWinBehavior are passed through corona because
 //! during the dock window creation containment hasnt been set, but these variables
 //! are needed in order for window flags to be set correctly
@@ -615,7 +618,11 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     //! the Primary configuration window should be created last!
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
-    if (c) {
+    QRect geometry = screenGeometry();
+
+    if (c && ((formFactor() == Plasma::Types::Horizontal && geometry.width() > MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN)
+              || (formFactor() == Plasma::Types::Vertical && geometry.height() > MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN))) {
+        //qDebug() << "create secondary config win...";
         showConfigurationInterfaceForConfigView(m_secondaryConfigView, DockConfigView::SecondaryConfig, applet);
     }
 
