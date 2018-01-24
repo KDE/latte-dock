@@ -153,6 +153,7 @@ Item {
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
     property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Dock.LineIndicator
+    property int animationStep: latteDock ? latteDock.animationStep : 1
     property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize

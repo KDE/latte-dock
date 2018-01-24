@@ -292,6 +292,7 @@ DragDrop.DropArea {
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
     property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
+    property int animationStep: 1 // Math.min(3, root.iconSize / 8) // TO BE UPDATED WITH NEW UNIVERSAL SETTINGS OPTIONS IN EDITOR WINDOW
     property int glowOption: plasmoid.configuration.glowOption
     property real glowOpacity: plasmoid.configuration.glowOpacity/100
 

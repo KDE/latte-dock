@@ -128,8 +128,6 @@ MouseArea{
     property int resistanceDelay: 450
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
 
-    property real animationStep: Math.min(3, root.iconSize / 8)
-
     property string activity: tasksModel.activity
 
     readonly property var m: model
@@ -569,7 +567,7 @@ MouseArea{
                 if(root.dragSource == null){
                     if (icList.orientation == Qt.Horizontal){
                         var step = Math.abs(icList.currentSpot-mouse.x);
-                        if (step >= animationStep){
+                        if (step >= root.animationStep){
                             icList.hoveredIndex = index;
                             icList.currentSpot = mouse.x;
 
@@ -578,7 +576,7 @@ MouseArea{
                     }
                     else{
                         var step = Math.abs(icList.currentSpot-mouse.y);
-                        if (step >= animationStep){
+                        if (step >= root.animationStep){
                             icList.hoveredIndex = index;
                             icList.currentSpot = mouse.y;
 

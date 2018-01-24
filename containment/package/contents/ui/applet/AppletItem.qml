@@ -94,7 +94,6 @@ Item {
     property int spacersMaxSize: Math.max(0,Math.ceil(0.5*root.iconSize) - root.iconMargin)
     property int status: applet ? applet.status : -1
 
-    property real animationStep: Math.min(3, root.iconSize / 8)
     property real computeWidth: root.isVertical ? wrapper.width :
                                                   hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width
 
@@ -596,7 +595,7 @@ Item {
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
                 if (root.isHorizontal){
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
-                    if (step >= container.animationStep){
+                    if (step >= root.animationStep){
                         layoutsContainer.hoveredIndex = index;
                         layoutsContainer.currentSpot = mouse.x;
 
@@ -605,7 +604,7 @@ Item {
                 }
                 else{
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
-                    if (step >= container.animationStep){
+                    if (step >= root.animationStep){
                         layoutsContainer.hoveredIndex = index;
                         layoutsContainer.currentSpot = mouse.y;
 
