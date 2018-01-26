@@ -22,7 +22,7 @@
 #ifndef LATTECONFIGDIALOG_H
 #define LATTECONFIGDIALOG_H
 
-#include "layoutmanager.h"
+#include "dockcorona.h"
 #include "layout.h"
 
 #include <QObject>
@@ -40,7 +40,7 @@ class Controller;
 }
 
 namespace Latte {
-class LayoutManager;
+class DockCorona;
 class Layout;
 }
 
@@ -49,7 +49,7 @@ namespace Latte {
 class LatteConfigDialog : public QDialog {
     Q_OBJECT
 public:
-    LatteConfigDialog(QWidget *parent, LayoutManager *corona);
+    LatteConfigDialog(QWidget *parent, DockCorona *corona);
     ~LatteConfigDialog();
 
     QStringList activities();
@@ -98,7 +98,7 @@ private:
 
     QButtonGroup *m_inMemoryButtons;
 
-    LayoutManager *m_manager{nullptr};
+    DockCorona *m_corona{nullptr};
 
     QStandardItemModel *m_model{nullptr};
     Ui::LatteConfigDialog *ui;

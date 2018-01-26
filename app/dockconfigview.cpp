@@ -81,7 +81,6 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
     if (dockCorona && m_configType == PrimaryConfig) {
-        connections << connect(this, &DockConfigView::aboutApplication, dockCorona, &DockCorona::aboutApplication);
         connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
     }
 }

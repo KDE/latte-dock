@@ -91,7 +91,6 @@ public:
 
     void recreateDock(Plasma::Containment *containment);
 
-    void aboutApplication();
     void closeApplication();
 
     KActivities::Consumer *activitiesConsumer() const;
@@ -102,6 +101,7 @@ public:
     KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
 
 public slots:
+    void aboutApplication();
     void activateLauncherMenu();
     void loadDefaultLayout() override;
     void updateDockItemBadge(QString identifier, QString value);

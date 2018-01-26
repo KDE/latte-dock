@@ -55,23 +55,23 @@ const int MENUCOLUMN = 3;
 const int ACTIVITYCOLUMN = 4;
 const QChar CheckMark{0x2714};
 
-LatteConfigDialog::LatteConfigDialog(QWidget *parent, LayoutManager *manager)
+LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
     : QDialog(parent),
       ui(new Ui::LatteConfigDialog),
-      m_manager(manager)
+      m_corona(corona)
 {
     ui->setupUi(this);
 
     setAttribute(Qt::WA_DeleteOnClose, true);
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-    resize(m_manager->corona()->universalSettings()->layoutsWindowSize());
+    resize(m_corona->universalSettings()->layoutsWindowSize());
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
             , this, &LatteConfigDialog::apply);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &LatteConfigDialog::restoreDefaults);
 
-    m_model = new QStandardItemModel(manager->layouts().count(), 5, this);
+    m_model = new QStandardItemModel(m_corona->layoutManager()->layouts().count(), 5, this);
 
     ui->layoutsView->setModel(m_model);
     ui->layoutsView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -81,12 +81,12 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 
-    connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LatteConfigDialog::layoutsChanged);
-    connect(m_manager, &LayoutManager::activeLayoutsChanged, this, &LatteConfigDialog::layoutsChanged);
+    connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &LatteConfigDialog::layoutsChanged);
+    connect(m_corona->layoutManager(), &LayoutManager::activeLayoutsChanged, this, &LatteConfigDialog::layoutsChanged);
 
     loadLayouts();
 
-    QString iconsPath(m_manager->corona()->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
+    QString iconsPath(m_corona->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
 
     //!find the available colors
     QDir layoutDir(iconsPath);
@@ -132,7 +132,7 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, LayoutManager *manager)
     QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
     aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
 
-    connect(aboutAction, &QAction::triggered, m_manager, &LayoutManager::showAboutDialog);
+    connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
 }
 
 LatteConfigDialog::~LatteConfigDialog()
@@ -145,8 +145,8 @@ LatteConfigDialog::~LatteConfigDialog()
         delete m_model;
     }
 
-    if (m_manager && m_manager->corona() && m_manager->corona()->universalSettings()) {
-        m_manager->corona()->universalSettings()->setLayoutsWindowSize(size());
+    if (m_corona && m_corona->universalSettings()) {
+        m_corona->universalSettings()->setLayoutsWindowSize(size());
     }
 
     m_inMemoryButtons->deleteLater();
@@ -162,7 +162,7 @@ LatteConfigDialog::~LatteConfigDialog()
 
 QStringList LatteConfigDialog::activities()
 {
-    return m_manager->activities();
+    return m_corona->layoutManager()->activities();
 }
 
 QStringList LatteConfigDialog::availableActivities()
@@ -175,7 +175,7 @@ void LatteConfigDialog::on_newButton_clicked()
     qDebug() << Q_FUNC_INFO;
 
     //! find Default preset path
-    foreach (auto preset, m_manager->presetsPaths()) {
+    foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
         QString presetName = Layout::layoutName(preset);
 
         if (presetName == "Default") {
@@ -200,11 +200,11 @@ void LatteConfigDialog::on_copyButton_clicked()
     }
 
     //! Update original layout before copying if this layout is active
-    if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         QString lName = (m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole)).toString();
 
         if (Importer::layoutExists(lName)) {
-            Layout *layout = m_manager->activeLayout(lName);
+            Layout *layout = m_corona->layoutManager()->activeLayout(lName);
 
             if (layout && layout->isOriginalLayout()) {
                 layout->syncToLayoutFile();
@@ -270,7 +270,7 @@ void LatteConfigDialog::on_removeButton_clicked()
 
     QString layoutName = m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString();
 
-    if (m_manager->activeLayout(layoutName)) {
+    if (m_corona->layoutManager()->activeLayout(layoutName)) {
         return;
     }
 
@@ -394,13 +394,13 @@ bool LatteConfigDialog::importLayoutsFromV1ConfigFile(QString file)
         QString applets(tempDir.absolutePath() + "/" + "lattedock-appletsrc");
 
         if (QFile(applets).exists()) {
-            if (m_manager->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
+            if (m_corona->layoutManager()->importer()->importOldLayout(applets, name, false, tempDir.absolutePath())) {
                 addLayoutForFile(tempDir.absolutePath() + "/" + name + ".layout.latte", name, false);
             }
 
             QString alternativeName = name + "-" + i18nc("layout", "Alternative");
 
-            if (m_manager->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
+            if (m_corona->layoutManager()->importer()->importOldLayout(applets, alternativeName, false, tempDir.absolutePath())) {
                 addLayoutForFile(tempDir.absolutePath() + "/" + alternativeName + ".layout.latte", alternativeName, false);
             }
         }
@@ -426,7 +426,7 @@ void LatteConfigDialog::on_exportButton_clicked()
     //! this is needed because the export method can export also the full configuration
     qDebug() << Q_FUNC_INFO;
 
-    m_manager->syncActiveLayoutsToOriginalFiles();
+    m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
 
     QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
             , QDir::homePath() , QStringLiteral("layout.latte"));
@@ -487,7 +487,7 @@ void LatteConfigDialog::on_exportButton_clicked()
                 notification->sendEvent();
             };
 
-            if (m_manager->importer()->exportFullConfiguration(file)) {
+            if (m_corona->layoutManager()->importer()->exportFullConfiguration(file)) {
 
                 auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
                 notification->setActions({i18nc("import/export config", "Open location")});
@@ -537,7 +537,7 @@ void LatteConfigDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 
-    foreach (auto preset, m_manager->presetsPaths()) {
+    foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
         QString presetName = Layout::layoutName(preset);
         QByteArray presetNameChars = presetName.toUtf8();
         const char *prset_str = presetNameChars.data();
@@ -595,11 +595,11 @@ void LatteConfigDialog::loadLayouts()
     int i = 0;
     QStringList brokenLayouts;
 
-    if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
-        m_manager->syncActiveLayoutsToOriginalFiles();
+    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
     }
 
-    foreach (auto layout, m_manager->layouts()) {
+    foreach (auto layout, m_corona->layoutManager()->layouts()) {
         QString layoutPath = QDir::homePath() + "/.config/latte/" + layout + ".layout.latte";
         m_initLayoutPaths.append(layoutPath);
 
@@ -613,11 +613,11 @@ void LatteConfigDialog::loadLayouts()
 
         i++;
 
-        if (layoutSets->name() == m_manager->currentLayoutName()) {
+        if (layoutSets->name() == m_corona->layoutManager()->currentLayoutName()) {
             ui->layoutsView->selectRow(i - 1);
         }
 
-        Layout *activeLayout = m_manager->activeLayout(layoutSets->name());
+        Layout *activeLayout = m_corona->layoutManager()->activeLayout(layoutSets->name());
 
         if ((activeLayout && activeLayout->layoutIsBroken()) || (!activeLayout && layoutSets->layoutIsBroken())) {
             brokenLayouts.append(layoutSets->name());
@@ -637,9 +637,9 @@ void LatteConfigDialog::loadLayouts()
 
     ui->layoutsView->resizeColumnsToContents();
 
-    if (m_manager->memoryUsage() == Dock::SingleLayout) {
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
         ui->singleToolBtn->setChecked(true);
-    } else if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         ui->multipleToolBtn->setChecked(true);
     }
 
@@ -698,7 +698,7 @@ void LatteConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString col
 
     QFont font;
 
-    if (m_manager->activeLayout(name)) {
+    if (m_corona->layoutManager()->activeLayout(name)) {
         font.setBold(true);
     } else {
         font.setBold(false);
@@ -721,13 +721,13 @@ void LatteConfigDialog::on_switchButton_clicked()
 {
     Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
-    if (m_manager->memoryUsage() != inMemoryOption) {
+    if (m_corona->layoutManager()->memoryUsage() != inMemoryOption) {
         saveAllChanges();
     } else {
         QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
 
         if (value.isValid()) {
-            m_manager->switchToLayout(value.toString());
+            m_corona->layoutManager()->switchToLayout(value.toString());
         } else {
             qDebug() << "not valid layout";
         }
@@ -744,13 +744,13 @@ void LatteConfigDialog::layoutsChanged()
             QString name = value.toString();
             QFont font;
 
-            if (m_manager->currentLayoutName() == name) {
+            if (m_corona->layoutManager()->currentLayoutName() == name) {
                 font.setBold(true);
                 ui->layoutsView->selectRow(i);
             } else {
-                Layout *layout = m_manager->activeLayout(name);
+                Layout *layout = m_corona->layoutManager()->activeLayout(name);
 
-                if (layout && (m_manager->memoryUsage() == Dock::MultipleLayouts)) {
+                if (layout && (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts)) {
                     font.setBold(true);
                 } else {
                     font.setBold(false);
@@ -783,7 +783,7 @@ void LatteConfigDialog::updateButtonsState()
     QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_layouts[id]->name();
 
-    if (name == m_manager->currentLayoutName() || m_manager->activeLayout(name)) {
+    if (name == m_corona->layoutManager()->currentLayoutName() || m_corona->layoutManager()->activeLayout(name)) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
@@ -798,7 +798,7 @@ void LatteConfigDialog::updateButtonsState()
 
 void LatteConfigDialog::recalculateAvailableActivities()
 {
-    QStringList tempActivities = m_manager->activities();
+    QStringList tempActivities = m_corona->layoutManager()->activities();
 
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QStringList assigned = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
@@ -893,7 +893,7 @@ bool LatteConfigDialog::saveAllChanges()
         }
 
         //qDebug() << i << ". " << id << " - " << color << " - " << name << " - " << menu << " - " << lActivities;
-        Layout *activeLayout = m_manager->activeLayout(m_layouts[id]->name());
+        Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
 
         Layout *layout = activeLayout ? activeLayout : m_layouts[id];
 
@@ -912,7 +912,7 @@ bool LatteConfigDialog::saveAllChanges()
         //! If the layout name changed OR the layout path is a temporary one
         if (layout->name() != name || (id.startsWith("/tmp/"))) {
             //! If the layout is Active in MultipleLayouts
-            if (m_manager->memoryUsage() == Dock::MultipleLayouts && activeLayout) {
+            if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts && activeLayout) {
                 qDebug() << " Active Layout Should Be Renamed From : " << layout->name() << " TO :: " << name;
                 activeLayoutsToRename[name] = layout;
             }
@@ -920,7 +920,7 @@ bool LatteConfigDialog::saveAllChanges()
             QString tempFile = layoutTempDir.path() + "/" + QString(layout->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
-            if ((m_manager->memoryUsage() == Dock::SingleLayout) && (layout->name() == m_manager->currentLayoutName())) {
+            if ((m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) && (layout->name() == m_corona->layoutManager()->currentLayoutName())) {
                 switchToLayout = name;
             }
 
@@ -960,30 +960,30 @@ bool LatteConfigDialog::saveAllChanges()
         }
     }
 
-    if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         foreach (auto newLayoutName, activeLayoutsToRename.keys()) {
             qDebug() << " Active Layout Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
             activeLayoutsToRename[newLayoutName]->renameLayout(newLayoutName);
         }
     }
 
-    m_manager->loadLayouts();
+    m_corona->layoutManager()->loadLayouts();
 
     Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
-    if (m_manager->memoryUsage() != inMemoryOption) {
-        Dock::LayoutsMemoryUsage previousMemoryUsage = m_manager->memoryUsage();
-        m_manager->setMemoryUsage(inMemoryOption);
+    if (m_corona->layoutManager()->memoryUsage() != inMemoryOption) {
+        Dock::LayoutsMemoryUsage previousMemoryUsage = m_corona->layoutManager()->memoryUsage();
+        m_corona->layoutManager()->setMemoryUsage(inMemoryOption);
 
         QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
         QString layoutName = value.toString();
 
-        m_manager->switchToLayout(layoutName, previousMemoryUsage);
+        m_corona->layoutManager()->switchToLayout(layoutName, previousMemoryUsage);
     } else {
         if (!switchToLayout.isNull()) {
-            m_manager->switchToLayout(switchToLayout);
-        } else if (m_manager->memoryUsage() == Dock::MultipleLayouts) {
-            m_manager->syncMultipleLayoutsToActivities();
+            m_corona->layoutManager()->switchToLayout(switchToLayout);
+        } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+            m_corona->layoutManager()->syncMultipleLayoutsToActivities();
         }
     }
 

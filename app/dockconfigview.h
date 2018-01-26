@@ -95,9 +95,6 @@ private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     void updateEnabledBorders();
 
-signals:
-    void aboutApplication();
-
 private:
     void setupWaylandIntegration();
 
