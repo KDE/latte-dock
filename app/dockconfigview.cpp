@@ -452,6 +452,15 @@ void DockConfigView::hideConfigWindow()
     }
 }
 
+void DockConfigView::showLatteConfigWindow()
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
+
+    if (dockCorona) {
+        dockCorona->layoutManager()->showLatteConfigDialog();
+    }
+}
+
 void DockConfigView::updateLaunchersForGroup(int groupInt)
 {
     Dock::LaunchersGroup group = (Dock::LaunchersGroup)groupInt;

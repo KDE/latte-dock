@@ -217,7 +217,7 @@ FocusScope {
                     anchors.fill: parent
                     hoverEnabled: true
 
-                    onClicked: dockConfig.aboutApplication()
+                    onClicked: dockConfig.showLatteConfigWindow()
                 }
             }
 
