@@ -106,24 +106,10 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
-    ui->newButton->setText(i18nc("new button", "New"));
-    ui->copyButton->setText(i18nc("copy button", "Copy"));
-    ui->removeButton->setText(i18nc("remove button", "Remove"));
-    ui->switchButton->setText(i18nc("switch button", "Switch"));
-    ui->importButton->setText(i18nc("import button", "Import"));
-    ui->exportButton->setText(i18nc("export button", "Export"));
-    ui->downloadButton->setText(i18nc("download button", "Download"));
-
-    ui->singleToolBtn->setText(i18nc("single layout in memory", "Single"));
-    ui->singleToolBtn->setToolTip(i18n("Only one layout can be present in memory at all cases"));
-    ui->multipleToolBtn->setText(i18nc("multiple layouts in memory", "Multiple"));
-    ui->multipleToolBtn->setToolTip(i18n("Multiple layouts can be present in memory."));
-
     m_inMemoryButtons = new QButtonGroup(this);
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Dock::SingleLayout);
     m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Dock::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
-
 
     connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
     connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
