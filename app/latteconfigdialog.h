@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LAYOUTCONFIGDIALOG_H
-#define LAYOUTCONFIGDIALOG_H
+#ifndef LATTECONFIGDIALOG_H
+#define LATTECONFIGDIALOG_H
 
 #include "layoutmanager.h"
 #include "layout.h"
@@ -32,7 +32,7 @@
 #include <QStandardItemModel>
 
 namespace Ui {
-class LayoutConfigDialog;
+class LatteConfigDialog;
 }
 
 namespace KActivities {
@@ -46,11 +46,11 @@ class Layout;
 
 namespace Latte {
 
-class LayoutConfigDialog : public QDialog {
+class LatteConfigDialog : public QDialog {
     Q_OBJECT
 public:
-    LayoutConfigDialog(QWidget *parent, LayoutManager *corona);
-    ~LayoutConfigDialog();
+    LatteConfigDialog(QWidget *parent, LayoutManager *corona);
+    ~LatteConfigDialog();
 
     QStringList activities();
     QStringList availableActivities();
@@ -101,11 +101,11 @@ private:
     LayoutManager *m_manager{nullptr};
 
     QStandardItemModel *m_model{nullptr};
-    Ui::LayoutConfigDialog *ui;
+    Ui::LatteConfigDialog *ui;
 
     QHash<const QString, Layout *> m_layouts;
 };
 
 }
 
-#endif // LAYOUTCONFIGDIALOG_H
+#endif // LATTECONFIGDIALOG_H

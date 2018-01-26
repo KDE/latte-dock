@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LayoutConfigDialog</class>
- <widget class="QDialog" name="LayoutConfigDialog">
+ <class>LatteConfigDialog</class>
+ <widget class="QDialog" name="LatteConfigDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string comment="latte settings window">Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="layoutsTab">
       <attribute name="title">
@@ -102,7 +102,7 @@
               <bool>false</bool>
              </property>
              <attribute name="horizontalHeaderVisible">
-              <bool>false</bool>
+              <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderCascadingSectionResizes">
               <bool>true</bool>
@@ -176,6 +176,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="newButton">
+                <property name="toolTip">
+                 <string>New layout</string>
+                </property>
                 <property name="text">
                  <string comment="new layout">New</string>
                 </property>
@@ -187,6 +190,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="copyButton">
+                <property name="toolTip">
+                 <string>Copy layout</string>
+                </property>
                 <property name="text">
                  <string comment="copy layout">Copy</string>
                 </property>
@@ -201,6 +207,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="removeButton">
+                <property name="toolTip">
+                 <string>Remove layout</string>
+                </property>
                 <property name="text">
                  <string comment="remove layout">Remove</string>
                 </property>
@@ -290,7 +299,7 @@
               <item>
                <widget class="QPushButton" name="exportButton">
                 <property name="toolTip">
-                 <string>Export layout of full configuration</string>
+                 <string>Export layout or full configuration</string>
                 </property>
                 <property name="text">
                  <string comment="export layout">Export</string>
@@ -337,7 +346,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="settingsTab">
+     <widget class="QWidget" name="preferencesTab">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -345,7 +354,7 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Settings</string>
+       <string>Preferences</string>
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <property name="rightMargin">
@@ -576,6 +585,9 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="toolTip">
+                    <string>Low sensitivity for parabolic effect (low cpu usage)</string>
+                   </property>
                    <property name="text">
                     <string comment="low sensitivity">Low</string>
                    </property>
@@ -588,6 +600,9 @@
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>Medium sensitivity for parabolic effect (normal cpu usage)</string>
                    </property>
                    <property name="text">
                     <string comment="medium sensitivity">Medium</string>
@@ -603,7 +618,7 @@
                     </sizepolicy>
                    </property>
                    <property name="toolTip">
-                    <string/>
+                    <string>High sensitivity for parabolic effect (high cpu usage)</string>
                    </property>
                    <property name="text">
                     <string comment="high sensitivity">High</string>
@@ -654,7 +669,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>LayoutConfigDialog</receiver>
+   <receiver>LatteConfigDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -670,7 +685,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>LayoutConfigDialog</receiver>
+   <receiver>LatteConfigDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

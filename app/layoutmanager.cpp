@@ -1019,18 +1019,18 @@ bool LayoutManager::layoutIsAssigned(QString layoutName)
     return false;
 }
 
-void LayoutManager::showLayoutConfigDialog()
+void LayoutManager::showLatteConfigDialog()
 {
-    if (!m_layoutConfigDialog)
-        m_layoutConfigDialog = new LayoutConfigDialog(nullptr, this);
+    if (!m_latteConfigDialog)
+        m_latteConfigDialog = new LatteConfigDialog(nullptr, this);
 
-    m_layoutConfigDialog->show();
+    m_latteConfigDialog->show();
 
-    if (m_layoutConfigDialog->isMinimized()) {
-        m_layoutConfigDialog->showNormal();
+    if (m_latteConfigDialog->isMinimized()) {
+        m_latteConfigDialog->showNormal();
     }
 
-    m_layoutConfigDialog->activateWindow();
+    m_latteConfigDialog->activateWindow();
 }
 
 void LayoutManager::showInfoWindow(QString info, int duration, QStringList activities)

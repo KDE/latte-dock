@@ -1,7 +1,7 @@
 #ifndef ACTIVITYCMBBOXDELEGATE_H
 #define ACTIVITYCMBBOXDELEGATE_H
 
-#include "../layoutconfigdialog.h"
+#include "../latteconfigdialog.h"
 
 #include <QItemDelegate>
 
@@ -27,7 +27,7 @@ public:
 private:
     QString assignedActivitiesText(const QModelIndex &index) const;
 
-    Latte::LayoutConfigDialog *m_configDialog{nullptr};
+    Latte::LatteConfigDialog *m_configDialog{nullptr};
 };
 
 #endif

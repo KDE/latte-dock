@@ -107,6 +107,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         removeAction->setVisible(false);
         QAction *configureAction = containment()->actions()->action("configure");
         configureAction->setShortcut(QKeySequence());
+        configureAction->setText(i18nc("dock/panel settings window", "Dock/Panel Settings"));
         //containment()->actions()->removeAction(removeAction);
         //FIX: hide and not delete in order to disable a nasty behavior from
         //ContainmentInterface. If only one action exists for containment the
@@ -2234,7 +2235,7 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             QAction *editLayoutsAction = new QAction(i18n("Configure..."), layoutsMenu);
 
             connect(editLayoutsAction, &QAction::triggered, this, [this, dockCorona] {
-                dockCorona->layoutManager()->showLayoutConfigDialog();
+                dockCorona->layoutManager()->showLatteConfigDialog();
             });
 
             layoutsMenu->addAction(editLayoutsAction);

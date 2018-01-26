@@ -179,20 +179,20 @@ void GlobalShortcuts::init()
     });
 
     //show-cycle between Latte settings windows
-    QAction *settingsAction = generalActions->addAction(QStringLiteral("show settings window"));
-    settingsAction->setText(i18n("Show Settings Window"));
+    QAction *settingsAction = generalActions->addAction(QStringLiteral("show dock settings"));
+    settingsAction->setText(i18n("Show Dock Settings"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
         showSettings();
     });
 
     //show the layouts editor
-    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show layouts editor"));
-    layoutsAction->setText(i18n("Show Layouts Editor"));
+    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show latte settings"));
+    layoutsAction->setText(i18n("Show Latte Settings Window"));
     layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_E));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
-        showLayoutsEditor();
+        showLatteConfigDialog();
     });
 
 
@@ -490,9 +490,9 @@ void GlobalShortcuts::showDock()
     }
 }
 
-void GlobalShortcuts::showLayoutsEditor()
+void GlobalShortcuts::showLatteConfigDialog()
 {
-    m_corona->layoutManager()->showLayoutConfigDialog();
+    m_corona->layoutManager()->showLatteConfigDialog();
 }
 
 bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)

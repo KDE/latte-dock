@@ -13,7 +13,7 @@
 ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
-    auto *configDialog = qobject_cast<Latte::LayoutConfigDialog *>(parent);
+    auto *configDialog = qobject_cast<Latte::LatteConfigDialog *>(parent);
 
     if (configDialog) {
         m_configDialog = configDialog;

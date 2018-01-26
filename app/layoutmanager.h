@@ -23,7 +23,7 @@
 
 #include "importer.h"
 #include "layout.h"
-#include "layoutconfigdialog.h"
+#include "latteconfigdialog.h"
 #include "launcherssignals.h"
 
 #include <QAction>
@@ -34,7 +34,7 @@
 class DockCorona;
 class Importer;
 class Layout;
-class LayoutConfigDialog;
+class LatteConfigDialog;
 class LaunchersSignals;
 
 namespace KActivities {
@@ -105,7 +105,7 @@ public:
     void importPresets(bool includeDefault = false);
 
 public slots:
-    Q_INVOKABLE void showLayoutConfigDialog();
+    Q_INVOKABLE void showLatteConfigDialog();
 
     //! switch to specified layout, default previousMemoryUsage means that it didnt change
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
@@ -168,7 +168,7 @@ private:
 
     QAction *m_addWidgetsAction{nullptr};
 
-    QPointer<LayoutConfigDialog> m_layoutConfigDialog;
+    QPointer<LatteConfigDialog> m_latteConfigDialog;
 
     QHash<const QString, QString> m_assignedLayouts;
 
@@ -181,7 +181,7 @@ private:
 
     KActivities::Controller *m_activitiesController;
 
-    friend class LayoutConfigDialog;
+    friend class LatteConfigDialog;
 };
 
 }

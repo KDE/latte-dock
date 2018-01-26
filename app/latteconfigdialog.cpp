@@ -19,8 +19,8 @@
  *
  */
 
-#include "ui_layoutconfigdialog.h"
-#include "layoutconfigdialog.h"
+#include "ui_latteconfigdialog.h"
+#include "latteconfigdialog.h"
 #include "layout.h"
 #include "layoutsDelegates/checkboxdelegate.h"
 #include "layoutsDelegates/colorcmbboxdelegate.h"
@@ -54,23 +54,21 @@ const int MENUCOLUMN = 3;
 const int ACTIVITYCOLUMN = 4;
 const QChar CheckMark{0x2714};
 
-LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
+LatteConfigDialog::LatteConfigDialog(QWidget *parent, LayoutManager *manager)
     : QDialog(parent),
-      ui(new Ui::LayoutConfigDialog),
+      ui(new Ui::LatteConfigDialog),
       m_manager(manager)
 {
     ui->setupUi(this);
-
-    setWindowTitle(i18n("Layouts Editor"));
 
     setAttribute(Qt::WA_DeleteOnClose, true);
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     resize(m_manager->corona()->universalSettings()->layoutsWindowSize());
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked
-            , this, &LayoutConfigDialog::apply);
+            , this, &LatteConfigDialog::apply);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
-            , this, &LayoutConfigDialog::restoreDefaults);
+            , this, &LatteConfigDialog::restoreDefaults);
 
     m_model = new QStandardItemModel(manager->layouts().count(), 5, this);
 
@@ -82,8 +80,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 
-    connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LayoutConfigDialog::layoutsChanged);
-    connect(m_manager, &LayoutManager::activeLayoutsChanged, this, &LayoutConfigDialog::layoutsChanged);
+    connect(m_manager, &LayoutManager::currentLayoutNameChanged, this, &LatteConfigDialog::layoutsChanged);
+    connect(m_manager, &LayoutManager::activeLayoutsChanged, this, &LatteConfigDialog::layoutsChanged);
 
     loadLayouts();
 
@@ -111,8 +109,8 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
     m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Dock::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
 
-    connect(m_model, &QStandardItemModel::itemChanged, this, &LayoutConfigDialog::itemChanged);
-    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LayoutConfigDialog::currentRowChanged);
+    connect(m_model, &QStandardItemModel::itemChanged, this, &LatteConfigDialog::itemChanged);
+    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LatteConfigDialog::currentRowChanged);
 
     connect(m_inMemoryButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonPressed),
     [ = ](QAbstractButton * button) {
@@ -122,7 +120,7 @@ LayoutConfigDialog::LayoutConfigDialog(QWidget *parent, LayoutManager *manager)
 
 }
 
-LayoutConfigDialog::~LayoutConfigDialog()
+LatteConfigDialog::~LatteConfigDialog()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -147,17 +145,17 @@ LayoutConfigDialog::~LayoutConfigDialog()
     }
 }
 
-QStringList LayoutConfigDialog::activities()
+QStringList LatteConfigDialog::activities()
 {
     return m_manager->activities();
 }
 
-QStringList LayoutConfigDialog::availableActivities()
+QStringList LatteConfigDialog::availableActivities()
 {
     return m_availableActivities;
 }
 
-void LayoutConfigDialog::on_newButton_clicked()
+void LatteConfigDialog::on_newButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -176,7 +174,7 @@ void LayoutConfigDialog::on_newButton_clicked()
     }
 }
 
-void LayoutConfigDialog::on_copyButton_clicked()
+void LatteConfigDialog::on_copyButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -217,7 +215,7 @@ void LayoutConfigDialog::on_copyButton_clicked()
     ui->layoutsView->selectRow(row + 1);
 }
 
-void LayoutConfigDialog::on_downloadButton_clicked()
+void LatteConfigDialog::on_downloadButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -245,7 +243,7 @@ void LayoutConfigDialog::on_downloadButton_clicked()
     }
 }
 
-void LayoutConfigDialog::on_removeButton_clicked()
+void LatteConfigDialog::on_removeButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -272,7 +270,7 @@ void LayoutConfigDialog::on_removeButton_clicked()
     ui->layoutsView->selectRow(row);
 }
 
-void LayoutConfigDialog::on_importButton_clicked()
+void LatteConfigDialog::on_importButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -360,7 +358,7 @@ void LayoutConfigDialog::on_importButton_clicked()
     fileDialog->open();
 }
 
-bool LayoutConfigDialog::importLayoutsFromV1ConfigFile(QString file)
+bool LatteConfigDialog::importLayoutsFromV1ConfigFile(QString file)
 {
     KTar archive(file, QStringLiteral("application/x-tar"));
     archive.open(QIODevice::ReadOnly);
@@ -399,7 +397,7 @@ bool LayoutConfigDialog::importLayoutsFromV1ConfigFile(QString file)
 }
 
 
-void LayoutConfigDialog::on_exportButton_clicked()
+void LatteConfigDialog::on_exportButton_clicked()
 {
     int row = ui->layoutsView->currentIndex().row();
 
@@ -496,7 +494,7 @@ void LayoutConfigDialog::on_exportButton_clicked()
     fileDialog->open();
 }
 
-void LayoutConfigDialog::accept()
+void LatteConfigDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -506,21 +504,21 @@ void LayoutConfigDialog::accept()
     }
 }
 
-void LayoutConfigDialog::reject()
+void LatteConfigDialog::reject()
 {
     qDebug() << Q_FUNC_INFO;
 
     deleteLater();
 }
 
-void LayoutConfigDialog::apply()
+void LatteConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
     saveAllChanges();
     updateButtonsState();
 }
 
-void LayoutConfigDialog::restoreDefaults()
+void LatteConfigDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -536,7 +534,7 @@ void LayoutConfigDialog::restoreDefaults()
     }
 }
 
-void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory, bool showNotification)
+void LatteConfigDialog::addLayoutForFile(QString file, QString layoutName, bool newTempDirectory, bool showNotification)
 {
     if (layoutName.isEmpty()) {
         layoutName = Layout::layoutName(file);
@@ -574,7 +572,7 @@ void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool
     }
 }
 
-void LayoutConfigDialog::loadLayouts()
+void LatteConfigDialog::loadLayouts()
 {
     m_initLayoutPaths.clear();
     m_model->clear();
@@ -642,7 +640,7 @@ void LayoutConfigDialog::loadLayouts()
     }
 }
 
-void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
+void LatteConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
 {
     QStandardItem *pathItem = new QStandardItem(path);
 
@@ -704,7 +702,7 @@ void LayoutConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString co
 }
 
 
-void LayoutConfigDialog::on_switchButton_clicked()
+void LatteConfigDialog::on_switchButton_clicked()
 {
     Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
@@ -721,7 +719,7 @@ void LayoutConfigDialog::on_switchButton_clicked()
     }
 }
 
-void LayoutConfigDialog::layoutsChanged()
+void LatteConfigDialog::layoutsChanged()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QModelIndex nameIndex = m_model->index(i, NAMECOLUMN);
@@ -749,7 +747,7 @@ void LayoutConfigDialog::layoutsChanged()
     }
 }
 
-void LayoutConfigDialog::itemChanged(QStandardItem *item)
+void LatteConfigDialog::itemChanged(QStandardItem *item)
 {
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
@@ -760,12 +758,12 @@ void LayoutConfigDialog::itemChanged(QStandardItem *item)
     }
 }
 
-void LayoutConfigDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
+void LatteConfigDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     updateButtonsState();
 }
 
-void LayoutConfigDialog::updateButtonsState()
+void LatteConfigDialog::updateButtonsState()
 {
     QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_layouts[id]->name();
@@ -783,7 +781,7 @@ void LayoutConfigDialog::updateButtonsState()
     }
 }
 
-void LayoutConfigDialog::recalculateAvailableActivities()
+void LatteConfigDialog::recalculateAvailableActivities()
 {
     QStringList tempActivities = m_manager->activities();
 
@@ -800,7 +798,7 @@ void LayoutConfigDialog::recalculateAvailableActivities()
     m_availableActivities = tempActivities;
 }
 
-bool LayoutConfigDialog::dataAreAccepted()
+bool LatteConfigDialog::dataAreAccepted()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString layout1 = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
@@ -836,7 +834,7 @@ bool LayoutConfigDialog::dataAreAccepted()
     return true;
 }
 
-bool LayoutConfigDialog::saveAllChanges()
+bool LatteConfigDialog::saveAllChanges()
 {
     if (!dataAreAccepted()) {
         return false;
@@ -977,7 +975,7 @@ bool LayoutConfigDialog::saveAllChanges()
     return true;
 }
 
-bool LayoutConfigDialog::idExistsInModel(QString id)
+bool LatteConfigDialog::idExistsInModel(QString id)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString rowId = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
@@ -990,7 +988,7 @@ bool LayoutConfigDialog::idExistsInModel(QString id)
     return false;
 }
 
-bool LayoutConfigDialog::nameExistsInModel(QString name)
+bool LatteConfigDialog::nameExistsInModel(QString name)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString rowName = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
@@ -1003,7 +1001,7 @@ bool LayoutConfigDialog::nameExistsInModel(QString name)
     return false;
 }
 
-int LayoutConfigDialog::ascendingRowFor(QString name)
+int LatteConfigDialog::ascendingRowFor(QString name)
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString rowName = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
@@ -1016,7 +1014,7 @@ int LayoutConfigDialog::ascendingRowFor(QString name)
     return m_model->rowCount();
 }
 
-QString LayoutConfigDialog::uniqueTempDirectory()
+QString LatteConfigDialog::uniqueTempDirectory()
 {
     QTemporaryDir tempDir;
     tempDir.setAutoRemove(false);
@@ -1025,7 +1023,7 @@ QString LayoutConfigDialog::uniqueTempDirectory()
     return tempDir.path();
 }
 
-QString LayoutConfigDialog::uniqueLayoutName(QString name)
+QString LatteConfigDialog::uniqueLayoutName(QString name)
 {
     int pos_ = name.lastIndexOf(QRegExp(QString("[-][0-9]+")));
 
