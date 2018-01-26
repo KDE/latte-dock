@@ -31,6 +31,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QHeaderView>
+#include <QMenuBar>
 #include <QMessageBox>
 #include <QProcess>
 #include <QStandardItem>
@@ -118,6 +119,20 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, LayoutManager *manager)
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
     });
 
+    //! About Menu
+    QMenuBar *menuBar = new QMenuBar(this);
+    QMenuBar *rightAlignedMenuBar = new QMenuBar(menuBar);
+
+    layout()->setMenuBar(menuBar);
+    menuBar->setCornerWidget(rightAlignedMenuBar);
+
+    QMenu *helpMenu = new QMenu(i18n("Help"), rightAlignedMenuBar);
+    rightAlignedMenuBar->addMenu(helpMenu);
+
+    QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
+    aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
+
+    connect(aboutAction, &QAction::triggered, m_manager, &LayoutManager::showAboutDialog);
 }
 
 LatteConfigDialog::~LatteConfigDialog()

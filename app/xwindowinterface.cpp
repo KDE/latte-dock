@@ -162,6 +162,15 @@ const std::list<WindowId> &XWindowInterface::windows() const
     return m_windows;
 }
 
+void XWindowInterface::setKeepAbove(const QDialog &dialog, bool above) const
+{
+    if (above) {
+        KWindowSystem::setState(dialog.winId(), NET::KeepAbove);
+    } else {
+        KWindowSystem::clearState(dialog.winId(), NET::KeepAbove);
+    }
+}
+
 void XWindowInterface::skipTaskBar(const QDialog &dialog) const
 {
     KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);

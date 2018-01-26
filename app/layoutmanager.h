@@ -105,6 +105,7 @@ public:
     void importPresets(bool includeDefault = false);
 
 public slots:
+    void showAboutDialog();
     Q_INVOKABLE void showLatteConfigDialog();
 
     //! switch to specified layout, default previousMemoryUsage means that it didnt change

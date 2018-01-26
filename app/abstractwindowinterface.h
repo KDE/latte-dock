@@ -72,6 +72,7 @@ public:
     virtual bool isOnCurrentActivity(WindowId wid) const = 0;
     virtual const std::list<WindowId> &windows() const = 0;
 
+    virtual void setKeepAbove(const QDialog &dialog, bool above = true) const = 0;
     virtual void skipTaskBar(const QDialog &dialog) const = 0;
     virtual void slideWindow(QWindow &view, Slide location) const = 0;
     virtual void enableBlurBehind(QWindow &view) const = 0;

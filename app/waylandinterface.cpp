@@ -202,6 +202,15 @@ const std::list<WindowId> &WaylandInterface::windows() const
     return m_windows;
 }
 
+void WaylandInterface::setKeepAbove(const QDialog &dialog, bool above) const
+{
+    if (above) {
+        KWindowSystem::setState(dialog.winId(), NET::KeepAbove);
+    } else {
+        KWindowSystem::clearState(dialog.winId(), NET::KeepAbove);
+    }
+}
+
 void WaylandInterface::skipTaskBar(const QDialog &dialog) const
 {
     KWindowSystem::setState(dialog.winId(), NET::SkipTaskbar);

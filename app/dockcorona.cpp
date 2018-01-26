@@ -662,6 +662,7 @@ void DockCorona::aboutApplication()
     aboutDialog = new KAboutApplicationDialog(KAboutData::applicationData());
     connect(aboutDialog.data(), &QDialog::finished, aboutDialog.data(), &QObject::deleteLater);
     WindowSystem::self().skipTaskBar(*aboutDialog);
+    WindowSystem::self().setKeepAbove(*aboutDialog, true);
 
     aboutDialog->show();
 }

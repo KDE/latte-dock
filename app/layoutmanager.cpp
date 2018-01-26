@@ -588,6 +588,11 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
     }
 }
 
+void LayoutManager::showAboutDialog()
+{
+    m_corona->aboutApplication();
+}
+
 void LayoutManager::importLatteLayout(QString layoutPath)
 {
 //! This might not be needed as it is Layout responsibility
