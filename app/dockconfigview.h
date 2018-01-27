@@ -51,6 +51,9 @@ class DockView;
 
 class DockConfigView : public PlasmaQuick::ConfigView {
     Q_OBJECT
+    //! used when the secondary config window can not be shown
+    Q_PROPERTY(bool showInlineProperties READ showInlineProperties WRITE setShowInlineProperties NOTIFY showInlinePropertiesChanged)
+
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
@@ -64,6 +67,9 @@ public:
 
     void init() override;
     Qt::WindowFlags wFlags() const;
+
+    bool showInlineProperties() const;
+    void setShowInlineProperties(bool show);
 
     bool sticker() const;
 
@@ -80,6 +86,7 @@ public slots:
 signals:
     void enabledBordersChanged();
     void raiseDocksTemporaryChanged();
+    void showInlinePropertiesChanged();
     void showSignal();
 
 protected:
@@ -99,9 +106,8 @@ private:
 
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
-
-    //! it is used by the borders
-    bool m_inReverse{false};
+    bool m_inReverse{false};    //! it is used by the borders
+    bool m_showInlineProperties{false};
 
     int m_largeSpacing;
 

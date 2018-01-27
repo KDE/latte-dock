@@ -38,10 +38,30 @@ PlasmaComponents.Page {
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth - Layout.leftMargin * 2
+        width: dialog.maxWidth - 2 * Layout.leftMargin
         spacing: dialog.subGroupSpacing
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
+
+        //! BEGIN: Inline Dock/Panel Type, it is used only when the secondary window
+        //! overlaps the main dock config window
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            Layout.topMargin: units.smallSpacing
+
+            visible: plasmoid.configuration.advanced && dockConfig.showInlineProperties
+
+            Header {
+                text: i18n("Type")
+            }
+
+            TypeSelection{
+                horizontal: true
+            }
+        }
+        //! END: Inline Dock/Panel Type
 
         //! BEGIN: Location
         ColumnLayout {

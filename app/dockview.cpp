@@ -627,6 +627,14 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     }
 
     showConfigurationInterfaceForConfigView(m_configView, DockConfigView::PrimaryConfig, applet);
+
+    if (!m_secondaryConfigView) {
+        DockConfigView *mainConfigView = qobject_cast<DockConfigView *>(m_configView);
+
+        if (mainConfigView) {
+            mainConfigView->setShowInlineProperties(true);
+        }
+    }
 }
 
 //! We use this function because there are multiple settings windows

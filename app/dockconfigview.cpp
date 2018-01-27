@@ -433,6 +433,20 @@ void DockConfigView::setSticker(bool blockFocusLost)
     m_dockView->setConfigWindowsSticker(blockFocusLost);
 }
 
+bool DockConfigView::showInlineProperties() const
+{
+    return m_showInlineProperties;
+}
+void DockConfigView::setShowInlineProperties(bool show)
+{
+    if (m_showInlineProperties == show) {
+        return;
+    }
+
+    m_showInlineProperties = show;
+    emit showInlinePropertiesChanged();
+}
+
 void DockConfigView::addPanelSpacer()
 {
     if (m_dockView && m_dockView->containment()) {

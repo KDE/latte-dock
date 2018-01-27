@@ -33,7 +33,7 @@ import org.kde.latte 0.1 as Latte
 Grid {
     id: typeRow
 
-    width: maxWidth - 2*units.smallSpacing
+    width: horizontal ? content.width - 6*units.smallSpacing : maxWidth - 2*units.smallSpacing
     anchors.leftMargin: units.smallSpacing
     anchors.rightMargin: units.smallSpacing
 
@@ -45,12 +45,14 @@ Grid {
     Layout.leftMargin: units.smallSpacing * 2
     Layout.rightMargin: units.smallSpacing * 2
 
-    rows: 0
-    columns: 1
+    rows: horizontal ? 1 : 0
+    columns: horizontal ? 0 : 1
 
     spacing: 1
 
     verticalItemAlignment: Grid.AlignVCenter
+
+    property bool horizontal: false
 
     readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
                                     && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
@@ -62,7 +64,7 @@ Grid {
 
     PlasmaComponents.Button {
         id: dockTypeButton
-        width: parent.width
+        width: horizontal ? (parent.width - parent.spacing)/ 2 : parent.width
 
         checkable: true
         checked: !typeRow.isPanel
