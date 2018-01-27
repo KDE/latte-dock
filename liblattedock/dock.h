@@ -117,6 +117,13 @@ public:
         MultipleLayouts /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
     };
     Q_ENUM(LayoutsMemoryUsage)
+
+    enum MouseSensitivity {
+        LowSensitivity = 0,
+        MediumSensitivity,
+        HighSensitivity
+    };
+    Q_ENUM(MouseSensitivity)
 };
 
 }//end of namespace

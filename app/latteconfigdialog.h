@@ -97,6 +97,7 @@ private:
     QStringList m_initLayoutPaths;
 
     QButtonGroup *m_inMemoryButtons;
+    QButtonGroup *m_mouseSensitivityButtons;
 
     DockCorona *m_corona{nullptr};
 

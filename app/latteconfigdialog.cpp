@@ -84,8 +84,6 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
     connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &LatteConfigDialog::layoutsChanged);
     connect(m_corona->layoutManager(), &LayoutManager::activeLayoutsChanged, this, &LatteConfigDialog::layoutsChanged);
 
-    loadLayouts();
-
     QString iconsPath(m_corona->kPackage().path() + "../../plasmoids/org.kde.latte.containment/contents/icons/");
 
     //!find the available colors
@@ -119,6 +117,20 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
     });
 
+    m_mouseSensitivityButtons = new QButtonGroup(this);
+    m_mouseSensitivityButtons->addButton(ui->lowSensitivityBtn, Latte::Dock::LowSensitivity);
+    m_mouseSensitivityButtons->addButton(ui->mediumSensitivityBtn, Latte::Dock::MediumSensitivity);
+    m_mouseSensitivityButtons->addButton(ui->highSensitivityBtn, Latte::Dock::HighSensitivity);
+    m_mouseSensitivityButtons->setExclusive(true);
+    connect(m_mouseSensitivityButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonPressed),
+    [ = ](QAbstractButton * button) {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+    });
+
+
+    loadLayouts();
+
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
     QMenuBar *rightAlignedMenuBar = new QMenuBar(menuBar);
@@ -150,6 +162,7 @@ LatteConfigDialog::~LatteConfigDialog()
     }
 
     m_inMemoryButtons->deleteLater();
+    m_mouseSensitivityButtons->deleteLater();
 
     foreach (auto tempDir, m_tempDirectories) {
         QDir tDir(tempDir);
@@ -643,6 +656,17 @@ void LatteConfigDialog::loadLayouts()
         ui->multipleToolBtn->setChecked(true);
     }
 
+    ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
+    ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
+
+    if (m_corona->universalSettings()->mouseSensitivity() == Dock::LowSensitivity) {
+        ui->lowSensitivityBtn->setChecked(true);
+    } else if (m_corona->universalSettings()->mouseSensitivity() == Dock::MediumSensitivity) {
+        ui->mediumSensitivityBtn->setChecked(true);
+    } else if (m_corona->universalSettings()->mouseSensitivity() == Dock::HighSensitivity) {
+        ui->highSensitivityBtn->setChecked(true);
+    }
+
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
         auto msg = new QMessageBox(this);
@@ -855,6 +879,17 @@ bool LatteConfigDialog::saveAllChanges()
         return false;
     }
 
+    //! Update universal settings
+    Latte::Dock::MouseSensitivity sensitivity = static_cast<Latte::Dock::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
+    bool autostart = ui->autostartChkBox->isChecked();
+    bool showInfoWindow = ui->infoWindowChkBox->isChecked();
+
+    m_corona->universalSettings()->setMouseSensitivity(sensitivity);
+    m_corona->universalSettings()->setAutostart(autostart);
+    m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
+
+
+    //! Update Layouts
     QStringList knownActivities = activities();
 
     QTemporaryDir layoutTempDir;

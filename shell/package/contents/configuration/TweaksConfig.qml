@@ -145,16 +145,6 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Enable autostart during startup")
-                checked: universalSettings.autostart
-
-                onClicked: {
-                    universalSettings.autostart = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease applets size when it is needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
                 tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length \n\nHint: this option is disabled when only plasma taskmanagers are present")
@@ -187,17 +177,6 @@ PlasmaComponents.Page {
 
                 onCheckedChanged: {
                     dock.dockWinBehavior = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show info for layouts automatic switching")
-                checked: universalSettings.showInfoWindow
-                tooltip: i18n("It shows a Latte specific info window")
-
-                onClicked: {
-                    universalSettings.showInfoWindow = checked;
                 }
             }
 

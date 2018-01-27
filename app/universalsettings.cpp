@@ -33,6 +33,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
@@ -201,6 +202,21 @@ void UniversalSettings::setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMe
     emit layoutsMemoryUsageChanged();
 }
 
+Dock::MouseSensitivity UniversalSettings::mouseSensitivity() const
+{
+    return m_mouseSensitivity;
+}
+
+void UniversalSettings::setMouseSensitivity(Dock::MouseSensitivity sensitivity)
+{
+    if (m_mouseSensitivity == sensitivity) {
+        return;
+    }
+
+    m_mouseSensitivity = sensitivity;
+    emit mouseSensitivityChanged();
+}
+
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
@@ -210,6 +226,7 @@ void UniversalSettings::loadConfig()
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
+    m_mouseSensitivity = static_cast<Dock::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Dock::HighSensitivity));
 }
 
 void UniversalSettings::saveConfig()
@@ -221,6 +238,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
+    m_universalGroup.writeEntry("mouseSensitivity", (int)m_mouseSensitivity);
 
     m_universalGroup.sync();
 }

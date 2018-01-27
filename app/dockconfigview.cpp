@@ -112,7 +112,6 @@ void DockConfigView::init()
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
     if (dockCorona) {
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
         rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
     }
 

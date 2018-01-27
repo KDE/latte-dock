@@ -42,6 +42,8 @@ class UniversalSettings : public QObject {
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
+
+    Q_PROPERTY(Latte::Dock::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
 public:
     UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
@@ -69,6 +71,9 @@ public:
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
+    Dock::MouseSensitivity mouseSensitivity() const;
+    void setMouseSensitivity(Dock::MouseSensitivity sensitivity);
+
 signals:
     void autostartChanged();
     void currentLayoutNameChanged();
@@ -76,6 +81,7 @@ signals:
     void layoutsWindowSizeChanged();
     void launchersChanged();
     void layoutsMemoryUsageChanged();
+    void mouseSensitivityChanged();
     void showInfoWindowChanged();
     void versionChanged();
 
@@ -100,6 +106,7 @@ private:
     QSize m_layoutsWindowSize{700, 450};
     QStringList m_launchers;
     Dock::LayoutsMemoryUsage m_memoryUsage;
+    Dock::MouseSensitivity m_mouseSensitivity{Dock::HighSensitivity};
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
