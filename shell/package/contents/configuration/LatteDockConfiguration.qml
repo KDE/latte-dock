@@ -217,7 +217,8 @@ FocusScope {
                     anchors.fill: parent
                     hoverEnabled: true
 
-                    onClicked: dockConfig.showLatteConfigWindow()
+                    readonly property int preferencesPage: Latte.Dock.PreferencesPage
+                    onClicked: layoutManager.showLatteConfigDialog(preferencesPage)
                 }
             }
 

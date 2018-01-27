@@ -171,7 +171,7 @@ void GlobalShortcuts::init()
 
     //show-hide the main dock in the primary screen
     QAction *showAction = generalActions->addAction(QStringLiteral("show latte dock"));
-    showAction->setText(i18n("Show Latte Dock"));
+    showAction->setText(i18n("Show Dock"));
     showAction->setShortcut(QKeySequence(Qt::META + '`'));
     KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
     connect(showAction, &QAction::triggered, this, [this]() {
@@ -187,14 +187,22 @@ void GlobalShortcuts::init()
     });
 
     //show the layouts editor
-    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show latte settings"));
-    layoutsAction->setText(i18n("Show Latte Settings Window"));
-    layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
-    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_E));
+    QAction *layoutsAction = generalActions->addAction(QStringLiteral("show layout settings"));
+    layoutsAction->setText(i18n("Show Layout Settings"));
+    layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_W));
+    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
-        showLatteConfigDialog();
+        m_corona->layoutManager()->showLatteConfigDialog(Dock::LayoutPage);
     });
 
+    //show the latter universal settings
+    QAction *universalSettingsAction = generalActions->addAction(QStringLiteral("show latte universal settings"));
+    universalSettingsAction->setText(i18n("Show Latte Settings"));
+    universalSettingsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
+    KGlobalAccel::setGlobalShortcut(universalSettingsAction, QKeySequence(Qt::META + Qt::Key_E));
+    connect(universalSettingsAction, &QAction::triggered, this, [this]() {
+        m_corona->layoutManager()->showLatteConfigDialog(Dock::PreferencesPage);
+    });
 
     KActionCollection *taskbarActions = new KActionCollection(m_corona);
 
@@ -488,11 +496,6 @@ void GlobalShortcuts::showDock()
             return;
         }
     }
-}
-
-void GlobalShortcuts::showLatteConfigDialog()
-{
-    m_corona->layoutManager()->showLatteConfigDialog();
 }
 
 bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)

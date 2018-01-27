@@ -1024,7 +1024,7 @@ bool LayoutManager::layoutIsAssigned(QString layoutName)
     return false;
 }
 
-void LayoutManager::showLatteConfigDialog()
+void LayoutManager::showLatteConfigDialog(int page)
 {
     if (!m_latteConfigDialog) {
         m_latteConfigDialog = new LatteConfigDialog(nullptr, m_corona);
@@ -1036,6 +1036,9 @@ void LayoutManager::showLatteConfigDialog()
     if (m_latteConfigDialog->isMinimized()) {
         m_latteConfigDialog->showNormal();
     }
+
+    Dock::LatteConfigPage configPage = static_cast<Dock::LatteConfigPage>(page);
+    m_latteConfigDialog->setCurrentPage(configPage);
 
     m_latteConfigDialog->activateWindow();
 }

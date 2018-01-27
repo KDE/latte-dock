@@ -74,7 +74,6 @@ public slots:
     Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void setVisibleWindow(bool visible);
-    Q_INVOKABLE void showLatteConfigWindow();
     Q_INVOKABLE void syncGeometry();
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
 

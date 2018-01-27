@@ -52,6 +52,8 @@ public:
     LatteConfigDialog(QWidget *parent, DockCorona *corona);
     ~LatteConfigDialog();
 
+    void setCurrentPage(Dock::LatteConfigPage page);
+
     QStringList activities();
     QStringList availableActivities();
 

@@ -124,6 +124,12 @@ public:
         HighSensitivity
     };
     Q_ENUM(MouseSensitivity)
+
+    enum LatteConfigPage {
+        LayoutPage = 0,
+        PreferencesPage
+    };
+    Q_ENUM(LatteConfigPage)
 };
 
 }//end of namespace

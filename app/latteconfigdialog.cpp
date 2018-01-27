@@ -183,6 +183,15 @@ QStringList LatteConfigDialog::availableActivities()
     return m_availableActivities;
 }
 
+void LatteConfigDialog::setCurrentPage(Dock::LatteConfigPage page)
+{
+    if (page == Dock::LayoutPage) {
+        ui->tabWidget->setCurrentIndex(0);
+    } else if (page == Dock::PreferencesPage) {
+        ui->tabWidget->setCurrentIndex(1);
+    }
+}
+
 void LatteConfigDialog::on_newButton_clicked()
 {
     qDebug() << Q_FUNC_INFO;
