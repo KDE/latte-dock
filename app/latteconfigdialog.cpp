@@ -1004,10 +1004,18 @@ bool LatteConfigDialog::saveAllChanges()
         }
     }
 
+    QString orphanedLayout;
+
     if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         foreach (auto newLayoutName, activeLayoutsToRename.keys()) {
             qDebug() << " Active Layout Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
-            activeLayoutsToRename[newLayoutName]->renameLayout(newLayoutName);
+            Layout *layout = activeLayoutsToRename[newLayoutName];
+            layout->renameLayout(newLayoutName);
+
+            //! that means it is an active layout for orphaned Activities
+            if (layout->activities().isEmpty()) {
+                orphanedLayout = newLayoutName;
+            }
         }
     }
 
@@ -1024,10 +1032,10 @@ bool LatteConfigDialog::saveAllChanges()
 
         m_corona->layoutManager()->switchToLayout(layoutName, previousMemoryUsage);
     } else {
-        if (!switchToLayout.isNull()) {
+        if (!switchToLayout.isEmpty()) {
             m_corona->layoutManager()->switchToLayout(switchToLayout);
         } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-            m_corona->layoutManager()->syncMultipleLayoutsToActivities();
+            m_corona->layoutManager()->syncMultipleLayoutsToActivities(orphanedLayout);
         }
     }
 
