@@ -292,7 +292,15 @@ DragDrop.DropArea {
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
     property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
-    property int animationStep: 1 // Math.min(3, root.iconSize / 8) // TO BE UPDATED WITH NEW UNIVERSAL SETTINGS OPTIONS IN EDITOR WINDOW
+    property int animationStep: {
+        if (!universalSettings || universalSettings.mouseSensitivity === Latte.Dock.HighSensitivity) {
+            return 1;
+        } else if (universalSettings.mouseSensitivity === Latte.Dock.MediumSensitivity) {
+            return Math.max(3, root.iconSize / 18);
+        } else if (universalSettings.mouseSensitivity === Latte.Dock.LowSensitivity) {
+            return Math.max(5, root.iconSize / 10);
+        }
+    }
     property int glowOption: plasmoid.configuration.glowOption
     property real glowOpacity: plasmoid.configuration.glowOpacity/100
 

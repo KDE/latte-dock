@@ -586,7 +586,7 @@
                     </sizepolicy>
                    </property>
                    <property name="toolTip">
-                    <string>Low sensitivity for parabolic effect (low cpu usage)</string>
+                    <string>Low sensitivity for parabolic effect (low cpu usage and performance)</string>
                    </property>
                    <property name="text">
                     <string comment="low sensitivity">Low</string>
@@ -605,7 +605,7 @@
                     </sizepolicy>
                    </property>
                    <property name="toolTip">
-                    <string>Medium sensitivity for parabolic effect (normal cpu usage)</string>
+                    <string>Medium sensitivity for parabolic effect (normal cpu usage and performance)</string>
                    </property>
                    <property name="text">
                     <string comment="medium sensitivity">Medium</string>
@@ -624,7 +624,7 @@
                     </sizepolicy>
                    </property>
                    <property name="toolTip">
-                    <string>High sensitivity for parabolic effect (high cpu usage)</string>
+                    <string>High sensitivity for parabolic effect (high cpu usage and performance)</string>
                    </property>
                    <property name="text">
                     <string comment="high sensitivity">High</string>
