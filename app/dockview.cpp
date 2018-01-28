@@ -1678,6 +1678,10 @@ bool DockView::event(QEvent *e)
         emit eventTriggered(e);
 
         switch (e->type()) {
+            case QEvent::Leave:
+                engine()->trimComponentCache();
+                break;
+
             case QEvent::PlatformSurface:
                 if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
                     switch (pe->surfaceEventType()) {
