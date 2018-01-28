@@ -237,15 +237,15 @@ Item{
             //use the new parabolicManager in order to handle all parabolic effect messages
             var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
 
-            //Left hiddenSpacer
+            //Left hiddenSpacer for first task
             if(((index === parabolicManager.firstRealTaskIndex )&&(root.tasksCount>0)) && !root.disableLeftSpacer
-                    && !inMimicParabolicAnimation && !inFastRestoreAnimation){
+                    && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
-            //Right hiddenSpacer
+            //Right hiddenSpacer for last task
             if(((index === parabolicManager.lastRealTaskIndex )&&(root.tasksCount>0)) && !root.disableRightSpacer
-                    && !inMimicParabolicAnimation && !inFastRestoreAnimation){
+                    && !inMimicParabolicAnimation && !inFastRestoreAnimation && !inAttentionAnimation){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
