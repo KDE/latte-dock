@@ -7,6 +7,7 @@
 #include <QModelIndex>
 #include <QPainter>
 #include <QString>
+#include <QTextDocument>
 
 #include <KActivities/Info>
 
@@ -95,15 +96,28 @@ void ActivityCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleO
 
 void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem myOption = option;
+    QStyleOptionViewItem myOptions = option;
+    painter->save();
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
 
     if (assignedActivities.count() > 0) {
-        myOption.text = assignedActivitiesText(index);
+        myOptions.text = assignedActivitiesText(index);
+
+        QTextDocument doc;
+        doc.setHtml(myOptions.text);
+
+        myOptions.text = "";
+        myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
+
+        painter->translate(myOptions.rect.left(), myOptions.rect.top());
+        QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
+        doc.drawContents(painter, clip);
+    } else {
+        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
     }
 
-    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    painter->restore();
 }
 
 QString ActivityCmbBoxDelegate::assignedActivitiesText(const QModelIndex &index) const
@@ -121,7 +135,13 @@ QString ActivityCmbBoxDelegate::assignedActivitiesText(const QModelIndex &index)
                     finalText += ", ";
                 }
 
-                finalText += info.name();
+                bool isActive{false};
+
+                if ((info.state() == KActivities::Info::Running) || (info.state() == KActivities::Info::Starting)) {
+                    isActive = true;
+                }
+
+                finalText += isActive ? "<b>" + info.name() + "</b>" : info.name();
             }
         }
     }
