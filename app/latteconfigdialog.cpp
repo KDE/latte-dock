@@ -791,7 +791,22 @@ void LatteConfigDialog::on_switchButton_clicked()
 {
     if (ui->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
         //! thus there are changes in the settings
+
+        QString lName;
+        QStringList lActivities;
+
+        if (m_inMemoryButtons->checkedId() == Latte::Dock::MultipleLayouts) {
+            lName = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole).toString();
+            lActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+        }
+
         apply();
+
+        if (!lName.isEmpty() && !lActivities.isEmpty()) {
+            //! an activities-assigned layout is chosen and at the same time we are moving
+            //! to multiple layouts state
+            m_corona->layoutManager()->switchToLayout(lName);
+        }
     } else {
         QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
 
