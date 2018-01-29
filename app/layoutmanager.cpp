@@ -1028,7 +1028,6 @@ void LayoutManager::showLatteConfigDialog(int page)
 {
     if (!m_latteConfigDialog) {
         m_latteConfigDialog = new LatteConfigDialog(nullptr, m_corona);
-        m_latteConfigDialog->setAttribute(Qt::WA_DeleteOnClose);
     }
 
     m_latteConfigDialog->show();

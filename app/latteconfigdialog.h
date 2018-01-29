@@ -78,6 +78,10 @@ private slots:
 
 private:
     void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
+    //! When an activity is closed for some reason the window manager hides and reshows
+    //! the windows. This function prevents this because we dont want to delete the window
+    //! on reject in such case.
+    void blockDeleteOnActivityStopped();
     void loadSettings();
     void recalculateAvailableActivities();
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
@@ -106,6 +110,9 @@ private:
 
     QButtonGroup *m_inMemoryButtons;
     QButtonGroup *m_mouseSensitivityButtons;
+
+    QTimer m_activityClosedTimer;
+    bool m_blockDeleteOnReject{false};
 
     DockCorona *m_corona{nullptr};
 

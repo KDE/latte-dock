@@ -142,6 +142,8 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
     });
 
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
+
+    blockDeleteOnActivityStopped();
 }
 
 LatteConfigDialog::~LatteConfigDialog()
@@ -168,6 +170,21 @@ LatteConfigDialog::~LatteConfigDialog()
             tDir.removeRecursively();
         }
     }
+}
+
+void LatteConfigDialog::blockDeleteOnActivityStopped()
+{
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
+    this, [&]() {
+        m_blockDeleteOnReject = true;
+        m_activityClosedTimer.start();
+    });
+
+    m_activityClosedTimer.setSingleShot(true);
+    m_activityClosedTimer.setInterval(500);
+    connect(&m_activityClosedTimer, &QTimer::timeout, this, [&]() {
+        m_blockDeleteOnReject = false;
+    });
 }
 
 QStringList LatteConfigDialog::activities()
@@ -530,7 +547,6 @@ void LatteConfigDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;
 
-    //setVisible(false);
     if (saveAllChanges()) {
         deleteLater();
     }
@@ -540,7 +556,9 @@ void LatteConfigDialog::reject()
 {
     qDebug() << Q_FUNC_INFO;
 
-    deleteLater();
+    if (!m_blockDeleteOnReject) {
+        deleteLater();
+    }
 }
 
 void LatteConfigDialog::apply()
