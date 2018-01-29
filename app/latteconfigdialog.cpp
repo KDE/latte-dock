@@ -841,6 +841,16 @@ void LatteConfigDialog::on_switchButton_clicked()
     updatePauseButtonState();
 }
 
+void LatteConfigDialog::on_pauseButton_clicked()
+{
+    QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
+    Layout *layout = m_layouts[id];
+
+    if (layout) {
+        m_corona->layoutManager()->pauseLayout(layout->name());
+    }
+}
+
 void LatteConfigDialog::layoutsChanged()
 {
     for (int i = 0; i < m_model->rowCount(); ++i) {

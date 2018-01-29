@@ -68,6 +68,7 @@ public:
     void loadLayoutOnStartup(QString layoutName);
     void unload();
     void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
+    void pauseLayout(QString layoutName);
     void recreateDock(Plasma::Containment *containment);
     void syncDockViewsToScreens();
     void syncActiveLayoutsToOriginalFiles();

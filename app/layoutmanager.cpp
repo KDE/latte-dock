@@ -718,8 +718,16 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     //! is such case we just activate these Activities
                     Layout layout(this, Importer::layoutFilePath(layoutName));
 
+                    int i = 0;
+
                     foreach (auto assignedActivity, layout.activities()) {
-                        m_activitiesController->startActivity(assignedActivity);
+                        //! Starting the activities must be done asynchronous because otherwise
+                        //! the activity manager cant close multiple activities
+                        QTimer::singleShot(i * 1000, [this, assignedActivity]() {
+                            m_activitiesController->startActivity(assignedActivity);
+                        });
+
+                        i = i + 1;
                     }
 
                     m_activitiesController->setCurrentActivity(layout.activities()[0]);
@@ -836,6 +844,27 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
     updateCurrentLayoutNameInMultiEnvironment();
     emit activeLayoutsChanged();
+}
+
+void LayoutManager::pauseLayout(QString layoutName)
+{
+    if (memoryUsage() == Dock::MultipleLayouts) {
+        Layout *layout = activeLayout(layoutName);
+
+        if (layout && !layout->activities().isEmpty()) {
+            int i = 0;
+
+            foreach (auto activityId, layout->activities()) {
+                //! Stopping the activities must be done asynchronous because otherwise
+                //! the activity manager cant close multiple activities
+                QTimer::singleShot(i * 1000, [this, activityId]() {
+                    m_activitiesController->stopActivity(activityId);
+                });
+
+                i = i + 1;
+            }
+        }
+    }
 }
 
 void LayoutManager::syncActiveLayoutsToOriginalFiles()
