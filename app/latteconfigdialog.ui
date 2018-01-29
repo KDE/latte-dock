@@ -130,6 +130,19 @@
                </widget>
               </item>
               <item>
+               <widget class="QPushButton" name="pauseButton">
+                <property name="toolTip">
+                 <string>Pause all activities from the selected layout</string>
+                </property>
+                <property name="text">
+                 <string>Pause</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="media-playback-pause"/>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="verticalSpacer_5">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>

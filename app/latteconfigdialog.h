@@ -82,6 +82,7 @@ private:
     void recalculateAvailableActivities();
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
     void updateApplyButtonsState();
+    void updatePauseButtonState();
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);

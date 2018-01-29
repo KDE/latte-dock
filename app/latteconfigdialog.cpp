@@ -552,6 +552,7 @@ void LatteConfigDialog::apply()
     o_settingsLayouts = currentLayoutsSettings();
 
     updateApplyButtonsState();
+    updatePauseButtonState();
 }
 
 void LatteConfigDialog::restoreDefaults()
@@ -663,6 +664,8 @@ void LatteConfigDialog::loadSettings()
     } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         ui->multipleToolBtn->setChecked(true);
     }
+
+    updatePauseButtonState();
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
@@ -816,6 +819,8 @@ void LatteConfigDialog::on_switchButton_clicked()
             qDebug() << "not valid layout";
         }
     }
+
+    updatePauseButtonState();
 }
 
 void LatteConfigDialog::layoutsChanged()
@@ -860,6 +865,7 @@ void LatteConfigDialog::currentRowChanged(const QModelIndex &current, const QMod
 {
     QString id = m_model->data(m_model->index(current.row(), IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_layouts[id]->name();
+    QStringList activities = m_model->data(m_model->index(current.row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
     if (name == m_corona->layoutManager()->currentLayoutName() || m_corona->layoutManager()->activeLayout(name)) {
         ui->removeButton->setEnabled(false);
@@ -872,6 +878,8 @@ void LatteConfigDialog::currentRowChanged(const QModelIndex &current, const QMod
     } else {
         ui->switchButton->setEnabled(true);
     }
+
+    updatePauseButtonState();
 }
 
 void LatteConfigDialog::updateApplyButtonsState()
@@ -889,6 +897,23 @@ void LatteConfigDialog::updateApplyButtonsState()
     } else {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+    }
+}
+
+void LatteConfigDialog::updatePauseButtonState()
+{
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+        ui->pauseButton->setVisible(false);
+    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        ui->pauseButton->setVisible(true);
+
+        QStringList lActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+
+        if (!lActivities.isEmpty()) {
+            ui->pauseButton->setEnabled(true);
+        } else {
+            ui->pauseButton->setEnabled(false);
+        }
     }
 }
 
