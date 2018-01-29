@@ -843,6 +843,8 @@ void LatteConfigDialog::on_switchButton_clicked()
 
 void LatteConfigDialog::on_pauseButton_clicked()
 {
+    ui->pauseButton->setEnabled(false);
+
     QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
     Layout *layout = m_layouts[id];
 
@@ -935,9 +937,12 @@ void LatteConfigDialog::updatePauseButtonState()
     } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         ui->pauseButton->setVisible(true);
 
+        QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
         QStringList lActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
-        if (!lActivities.isEmpty()) {
+        Layout *layout = m_layouts[id];
+
+        if (!lActivities.isEmpty() && layout && m_corona->layoutManager()->activeLayout(layout->name())) {
             ui->pauseButton->setEnabled(true);
         } else {
             ui->pauseButton->setEnabled(false);
