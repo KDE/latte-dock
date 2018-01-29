@@ -78,9 +78,6 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
     ui->layoutsView->verticalHeader()->setVisible(false);
 
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
-
     connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, &LatteConfigDialog::layoutsChanged);
     connect(m_corona->layoutManager(), &LayoutManager::activeLayoutsChanged, this, &LatteConfigDialog::layoutsChanged);
 
@@ -108,28 +105,11 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
     m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Dock::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
 
-    connect(m_model, &QStandardItemModel::itemChanged, this, &LatteConfigDialog::itemChanged);
-    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LatteConfigDialog::currentRowChanged);
-
-    connect(m_inMemoryButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonPressed),
-    [ = ](QAbstractButton * button) {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
-    });
-
     m_mouseSensitivityButtons = new QButtonGroup(this);
     m_mouseSensitivityButtons->addButton(ui->lowSensitivityBtn, Latte::Dock::LowSensitivity);
     m_mouseSensitivityButtons->addButton(ui->mediumSensitivityBtn, Latte::Dock::MediumSensitivity);
     m_mouseSensitivityButtons->addButton(ui->highSensitivityBtn, Latte::Dock::HighSensitivity);
     m_mouseSensitivityButtons->setExclusive(true);
-    connect(m_mouseSensitivityButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonPressed),
-    [ = ](QAbstractButton * button) {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
-    });
-
-
-    loadLayouts();
 
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
@@ -143,6 +123,23 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
 
     QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
     aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
+
+    loadSettings();
+
+    //! SIGNALS
+
+    connect(m_model, &QStandardItemModel::itemChanged, this, &LatteConfigDialog::itemChanged);
+    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &LatteConfigDialog::currentRowChanged);
+
+    connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
+    [ = ](int id, bool checked) {
+        updateApplyButtonsState();
+    });
+
+    connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
+    [ = ](int id, bool checked) {
+        updateApplyButtonsState();
+    });
 
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
 }
@@ -298,9 +295,7 @@ void LatteConfigDialog::on_removeButton_clicked()
 
     m_model->removeRow(row);
 
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
-
+    updateApplyButtonsState();
 
     row = qMax(row - 1, 0);
 
@@ -552,7 +547,11 @@ void LatteConfigDialog::apply()
 {
     qDebug() << Q_FUNC_INFO;
     saveAllChanges();
-    updateButtonsState();
+
+    o_settings = currentSettings();
+    o_settingsLayouts = currentLayoutsSettings();
+
+    updateApplyButtonsState();
 }
 
 void LatteConfigDialog::restoreDefaults()
@@ -609,7 +608,7 @@ void LatteConfigDialog::addLayoutForFile(QString file, QString layoutName, bool 
     }
 }
 
-void LatteConfigDialog::loadLayouts()
+void LatteConfigDialog::loadSettings()
 {
     m_initLayoutPaths.clear();
     m_model->clear();
@@ -676,6 +675,10 @@ void LatteConfigDialog::loadLayouts()
         ui->highSensitivityBtn->setChecked(true);
     }
 
+    o_settings = currentSettings();
+    o_settingsLayouts = currentLayoutsSettings();
+    updateApplyButtonsState();
+
     //! there are broken layouts and the user must be informed!
     if (brokenLayouts.count() > 0) {
         auto msg = new QMessageBox(this);
@@ -687,6 +690,40 @@ void LatteConfigDialog::loadLayouts()
         msg->open();
     }
 }
+
+QList<int> LatteConfigDialog::currentSettings()
+{
+    QList<int> settings;
+    settings << m_inMemoryButtons->checkedId();
+    settings << (int)ui->autostartChkBox->isChecked();
+    settings << (int)ui->infoWindowChkBox->isChecked();
+    settings << m_mouseSensitivityButtons->checkedId();
+    settings << m_model->rowCount();
+
+    return settings;
+}
+
+QStringList LatteConfigDialog::currentLayoutsSettings()
+{
+    QStringList layoutSettings;
+
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+        QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
+        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+        QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+
+        layoutSettings << id;
+        layoutSettings << color;
+        layoutSettings << name;
+        layoutSettings << QString::number((int)menu);
+        layoutSettings << lActivities;
+    }
+
+    return layoutSettings;
+}
+
 
 void LatteConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
 {
@@ -752,10 +789,9 @@ void LatteConfigDialog::insertLayoutInfoAtRow(int row, QString path, QString col
 
 void LatteConfigDialog::on_switchButton_clicked()
 {
-    Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
-
-    if (m_corona->layoutManager()->memoryUsage() != inMemoryOption) {
-        saveAllChanges();
+    if (ui->buttonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+        //! thus there are changes in the settings
+        apply();
     } else {
         QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
 
@@ -797,8 +833,7 @@ void LatteConfigDialog::layoutsChanged()
 
 void LatteConfigDialog::itemChanged(QStandardItem *item)
 {
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+    updateApplyButtonsState();
 
     if (item->column() == ACTIVITYCOLUMN) {
         //! recalculate the available activities
@@ -808,12 +843,7 @@ void LatteConfigDialog::itemChanged(QStandardItem *item)
 
 void LatteConfigDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    updateButtonsState();
-}
-
-void LatteConfigDialog::updateButtonsState()
-{
-    QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
+    QString id = m_model->data(m_model->index(current.row(), IDCOLUMN), Qt::DisplayRole).toString();
     QString name = m_layouts[id]->name();
 
     if (name == m_corona->layoutManager()->currentLayoutName() || m_corona->layoutManager()->activeLayout(name)) {
@@ -826,6 +856,24 @@ void LatteConfigDialog::updateButtonsState()
         ui->switchButton->setEnabled(false);
     } else {
         ui->switchButton->setEnabled(true);
+    }
+}
+
+void LatteConfigDialog::updateApplyButtonsState()
+{
+    bool changed{false};
+
+    if ((o_settings != currentSettings())
+        || (o_settingsLayouts != currentLayoutsSettings())) {
+        changed = true;
+    }
+
+    if (changed) {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+    } else {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
     }
 }
 

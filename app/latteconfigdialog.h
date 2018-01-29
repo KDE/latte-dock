@@ -78,10 +78,10 @@ private slots:
 
 private:
     void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
-    void loadLayouts();
+    void loadSettings();
     void recalculateAvailableActivities();
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
-    void updateButtonsState();
+    void updateApplyButtonsState();
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
@@ -93,6 +93,11 @@ private:
 
     QString uniqueTempDirectory();
     QString uniqueLayoutName(QString name);
+
+    QList<int> currentSettings();
+    QStringList currentLayoutsSettings();
+
+private:
 
     QStringList m_availableActivities;
     QStringList m_tempDirectories;
@@ -107,6 +112,9 @@ private:
     Ui::LatteConfigDialog *ui;
 
     QHash<const QString, Layout *> m_layouts;
+
+    QList<int> o_settings;
+    QStringList o_settingsLayouts;
 };
 
 }
