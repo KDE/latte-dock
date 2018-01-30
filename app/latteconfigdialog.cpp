@@ -613,6 +613,11 @@ void LatteConfigDialog::addLayoutForFile(QString file, QString layoutName, bool 
         copiedId = file;
     }
 
+    if (m_layouts.contains(copiedId)) {
+        Layout *oldSettings = m_layouts.take(copiedId);
+        delete oldSettings;
+    }
+
     Layout *settings = new Layout(this, copiedId);
     m_layouts[copiedId] = settings;
 
@@ -1046,6 +1051,11 @@ bool LatteConfigDialog::saveAllChanges()
     foreach (auto initLayout, m_initLayoutPaths) {
         if (!idExistsInModel(initLayout)) {
             QFile(initLayout).remove();
+
+            if (m_layouts.contains(initLayout)) {
+                Layout *removedLayout = m_layouts.take(initLayout);
+                delete removedLayout;
+            }
         }
     }
 
