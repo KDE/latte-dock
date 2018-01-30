@@ -384,6 +384,7 @@ DragDrop.DropArea {
 
     //// BEGIN OF Behaviors
     Behavior on iconSize {
+        enabled: !(root.editMode && root.behaveAsPlasmaPanel)
         NumberAnimation {
             duration: 200
 
