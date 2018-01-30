@@ -143,6 +143,13 @@ LatteConfigDialog::LatteConfigDialog(QWidget *parent, DockCorona *corona)
 
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
 
+    //! update all layouts view when runningActivities changed. This way we update immediately
+    //! the running Activities in Activities checkboxes which are shown as bold
+    connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
+    this, [&]() {
+        ui->layoutsView->update();
+    });
+
     blockDeleteOnActivityStopped();
 }
 
