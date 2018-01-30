@@ -71,7 +71,8 @@ public:
     QString color() const;
     void setColor(QString color);
 
-    QString lastUsedActivityId();
+    QString lastUsedActivity();
+    void clearLastUsedActivity(); //!e.g. when we export a layout
 
     QString name() const;
     QString file() const;
@@ -114,6 +115,7 @@ signals:
     void activitiesChanged();
     void colorChanged();
     void fileChanged();
+    void lastUsedActivityChanged();
     void launchersChanged();
     void nameChanged();
     void versionChanged();
@@ -149,7 +151,7 @@ private:
     int m_version{2};
 
     QString m_color;
-    QString m_lastUsedActivityId{"0"}; //the last used activity for this layout
+    QString m_lastUsedActivity; //the last used activity for this layout
     QString m_layoutFile;
     QString m_layoutName;
     QStringList m_activities;

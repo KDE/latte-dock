@@ -611,7 +611,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
         if (layout) {
 
             QStringList appliedActivities = layout->appliedActivities();
-            QString nextActivity = layout->lastUsedActivityId() != "0" ? layout->lastUsedActivityId() : appliedActivities[0];
+            QString nextActivity = !layout->lastUsedActivity().isEmpty() ? layout->lastUsedActivity() : appliedActivities[0];
 
             //! it means we are at a foreign activity
             if (!appliedActivities.contains(m_corona->activitiesConsumer()->currentActivity())) {
@@ -719,18 +719,30 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     Layout layout(this, Importer::layoutFilePath(layoutName));
 
                     int i = 0;
+                    bool lastUsedActivityFound{false};
+                    QString lastUsedActivity = layout.lastUsedActivity();
 
                     foreach (auto assignedActivity, layout.activities()) {
                         //! Starting the activities must be done asynchronous because otherwise
                         //! the activity manager cant close multiple activities
-                        QTimer::singleShot(i * 1000, [this, assignedActivity]() {
+                        QTimer::singleShot(i * 1000, [this, assignedActivity, lastUsedActivity]() {
                             m_activitiesController->startActivity(assignedActivity);
+
+                            if (lastUsedActivity == assignedActivity) {
+                                m_activitiesController->setCurrentActivity(lastUsedActivity);
+                            }
                         });
+
+                        if (lastUsedActivity == assignedActivity) {
+                            lastUsedActivityFound = true;
+                        }
 
                         i = i + 1;
                     }
 
-                    m_activitiesController->setCurrentActivity(layout.activities()[0]);
+                    if (!lastUsedActivityFound) {
+                        m_activitiesController->setCurrentActivity(layout.activities()[0]);
+                    }
                 } else {
                     syncMultipleLayoutsToActivities(layoutName);
                 }

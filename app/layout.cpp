@@ -146,6 +146,7 @@ void Layout::init()
     connect(this, &Layout::colorChanged, this, &Layout::saveConfig);
     connect(this, &Layout::showInMenuChanged, this, &Layout::saveConfig);
     connect(this, &Layout::launchersChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::lastUsedActivityChanged, this, &Layout::saveConfig);
 }
 
 void Layout::initToCorona(DockCorona *corona)
@@ -453,6 +454,7 @@ void Layout::loadConfig()
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
+    m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
 
     emit activitiesChanged();
 }
@@ -465,6 +467,7 @@ void Layout::saveConfig()
     m_layoutGroup.writeEntry("color", m_color);
     m_layoutGroup.writeEntry("launchers", m_launchers);
     m_layoutGroup.writeEntry("activities", m_activities);
+    m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
 
     m_layoutGroup.sync();
 }
@@ -524,9 +527,15 @@ const QStringList Layout::appliedActivities()
     }
 }
 
-QString Layout::lastUsedActivityId()
+QString Layout::lastUsedActivity()
 {
-    return m_lastUsedActivityId;
+    return m_lastUsedActivity;
+}
+
+void Layout::clearLastUsedActivity()
+{
+    m_lastUsedActivity = "";
+    emit lastUsedActivityChanged();
 }
 
 void Layout::updateLastUsedActivity()
@@ -535,10 +544,16 @@ void Layout::updateLastUsedActivity()
         return;
     }
 
+    if (!m_lastUsedActivity.isEmpty() && !m_corona->layoutManager()->activities().contains(m_lastUsedActivity)) {
+        clearLastUsedActivity();
+    }
+
     QString currentId = m_corona->activitiesConsumer()->currentActivity();
 
-    if (appliedActivities().contains(currentId)) {
-        m_lastUsedActivityId = currentId;
+    if (appliedActivities().contains(currentId) && m_lastUsedActivity != currentId) {
+        m_lastUsedActivity = currentId;
+
+        emit lastUsedActivityChanged();
     }
 }
 

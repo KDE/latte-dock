@@ -502,6 +502,7 @@ void LatteConfigDialog::on_exportButton_clicked()
 
             Layout layoutS(this, file);
             layoutS.setActivities(QStringList());
+            layoutS.clearLastUsedActivity();
 
             //NOTE: The pointer is automatically deleted when the event is closed
             auto notification = new KNotification("export-done", KNotification::CloseOnTimeout);
