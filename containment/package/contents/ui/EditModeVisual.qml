@@ -32,7 +32,7 @@ Item{
 
     opacity: 0
 
-    property int speed: root.durationTime*3*units.longDuration
+    property int speed: root.durationTime*2.8*units.longDuration
     property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength) :
@@ -345,14 +345,14 @@ Item{
                         property: root.isHorizontal ? "y" : "x"
                         to: editVisual.farEdge ? editVisual.rootThickness : -editVisual.thickness
                         duration: editVisual.speed
-                        easing.type: Easing.OutQuad
+                        easing.type: Easing.InQuad
                     }
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
                         to: 0
                         duration: editVisual.speed
-                        easing.type: Easing.OutQuad
+                        easing.type: Easing.InQuad
                     }
                 }
 

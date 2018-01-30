@@ -68,7 +68,9 @@ Item{
 
     property int thicknessNormalOriginalValue: statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal +
                                                root.maxIconSize + root.thickMarginOriginal + 1
-    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2,
+    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal
+                                                 + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2
+                                                 + root.editShadow,
                                                  root.realPanelSize + root.panelShadow)
 
     Binding{
@@ -201,7 +203,7 @@ Item{
     function slotMustBeHide() {
         // console.log("hide....");
         if((!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
-                && !dock.visibility.containsMouse) || inForceHiding) {
+            && !dock.visibility.containsMouse) || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
@@ -338,10 +340,8 @@ Item{
 
                 //this is used to fix a bug with shadow showing when the animation of edit mode
                 //is triggered
-                var editModeThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + root.editShadow :
+                tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + root.editShadow :
                                                                             thicknessNormalOriginal
-
-                tempThickness = root.editMode ? editModeThickness : thicknessNormalOriginal;
 
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;
@@ -359,9 +359,9 @@ Item{
 
             //configure the x,y position based on thickness
             if(plasmoid.location === PlasmaCore.Types.RightEdge)
-                localX = dock.width - tempThickness;
+                localX = Math.max(0,dock.width - tempThickness);
             else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
-                localY = dock.height - tempThickness;
+                localY = Math.max(0,dock.height - tempThickness);
         }
         var maskArea = dock.maskArea;
 
