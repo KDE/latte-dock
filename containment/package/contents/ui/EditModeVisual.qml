@@ -81,6 +81,10 @@ Image{
         initializeEditPosition();
     }
 
+    onThicknessChanged: {
+        initializeEditPosition();
+    }
+
     onEditAnimationEndedChanged: {
         if (!dock) {
             return;
