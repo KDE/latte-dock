@@ -25,13 +25,11 @@ import QtGraphicalEffects 1.0
 
 import org.kde.latte 0.1 as Latte
 
-Image{
+Item{
     id: editVisual
     width: root.isHorizontal ? editLength : visibilityManager.thicknessNormalOriginal
     height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal
 
-    fillMode: Image.Tile
-    source: "../icons/"+layoutColor+"print.jpg"
     opacity: 0
 
     property int speed: root.durationTime*3*units.longDuration
@@ -39,6 +37,8 @@ Image{
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
+
+    property real editStateOpacity: root.behaveAsPlasmaPanel  ? 0.5 : root.blurEnabled ? 0.8 : 0.9
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
@@ -48,11 +48,80 @@ Image{
 
     property string layoutColor: root.dockManagedLayout ? root.dockManagedLayout.color : "blue"
 
-    layer.enabled: true
-    layer.effect: DropShadow {
-        radius: root.editShadow
-        samples: 2 * radius
-        color: "#aa080808"
+
+    Item{
+        id:topShadow
+        height: root.editShadow
+        width: imageTiler.width + 2*root.editShadow
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: imageTiler.top
+        clip: true
+
+        visible: !editTransition.running
+
+        EditShadow{
+            anchors.top: parent.top
+            anchors.topMargin: root.editShadow
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Item{
+        id:leftShadow
+        width: root.editShadow
+        height: imageTiler.height
+        anchors.right: imageTiler.left
+        anchors.verticalCenter: imageTiler.verticalCenter
+        clip: true
+
+        visible: !editTransition.running
+
+        EditShadow{
+            anchors.left: parent.left
+            anchors.leftMargin: root.editShadow
+        }
+    }
+
+    Item{
+        id:rightShadow
+        width: root.editShadow
+        height: imageTiler.height
+        anchors.left: imageTiler.right
+        anchors.verticalCenter: imageTiler.verticalCenter
+        clip: true
+        visible: !editTransition.running
+
+        EditShadow{
+            anchors.right: parent.right
+            anchors.rightMargin: root.editShadow
+        }
+    }
+
+    Item{
+        id:bottomShadow
+        height: root.editShadow
+        width: imageTiler.width + 2*root.editShadow
+        anchors.horizontalCenter: imageTiler.horizontalCenter
+        anchors.top: imageTiler.bottom
+        clip: true
+        visible: !editTransition.running
+
+        EditShadow{
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: root.editShadow
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Image{
+        id: imageTiler
+        anchors.centerIn: parent
+        width: parent.width
+        height: parent.height
+        opacity: editVisual.editStateOpacity
+
+        fillMode: Image.Tile
+        source: "../icons/"+editVisual.layoutColor+"print.jpg"
     }
 
     /*Behavior on width {
@@ -222,6 +291,7 @@ Image{
             to: "edit"
 
             SequentialAnimation{
+                id:normalAnimationTransition
                 ScriptAction{
                     script:{
                         editVisual.opacity = 0
@@ -240,7 +310,7 @@ Image{
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
-                        to: root.behaveAsPlasmaPanel  ? 0.4 : root.blurEnabled ? 0.7 : 0.8
+                        to: 1
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }

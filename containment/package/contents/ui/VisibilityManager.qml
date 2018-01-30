@@ -63,11 +63,11 @@ Item{
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.thickMarginOriginal)) //needed in some animations
     property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel ?
-                                              Math.max(thicknessNormalOriginalValue + thickReverseAndGlowExtraSizeOriginal, root.realPanelSize + root.panelShadow) :
+                                              Math.max(thicknessNormalOriginalValue, root.realPanelSize + root.panelShadow) :
                                               root.realPanelSize + root.panelShadow
 
     property int thicknessNormalOriginalValue: statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal +
-                                               root.maxIconSize + root.thickMarginOriginal + thickReverseAndGlowExtraSize + 1
+                                               root.maxIconSize + root.thickMarginOriginal + 1
     property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2,
                                                  root.realPanelSize + root.panelShadow)
 
