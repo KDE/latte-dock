@@ -258,7 +258,7 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use a unique set of launchers for this dock")
+                    tooltip: i18n("Use a unique set of launchers for this dock which is independent from any other dock")
 
                     readonly property int group: Latte.Dock.UniqueLaunchers
                 }
@@ -269,7 +269,7 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use the current layout set of launchers for this dock")
+                    tooltip: i18n("Use the current layout set of launchers for this dock. This group provides launchers <b>synchronization</b> between different docks in the <b>same layout</b>")
                     visible: plasmoid.configuration.advanced || plasmoid.configuration.launchersGroup === group;
 
                     readonly property int group: Latte.Dock.LayoutLaunchers
@@ -281,7 +281,7 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use the global set of launchers for this dock")
+                    tooltip: i18n("Use the global set of launchers for this dock. This group provides launchers <b>synchronization</b> between different docks and between <b>different layouts</b>")
 
                     readonly property int group: Latte.Dock.GlobalLaunchers
                 }
