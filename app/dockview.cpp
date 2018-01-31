@@ -1082,9 +1082,7 @@ int DockView::totalDocksCount() const
 
 int DockView::docksWithTasks()
 {
-    auto dockCorona = qobject_cast<DockCorona *>(corona());
-
-    if (!dockCorona || !m_managedLayout)
+    if (!m_managedLayout)
         return 0;
 
     return m_managedLayout->noDocksWithTasks();

@@ -134,7 +134,6 @@ private:
     bool appletExists(uint containmentId, uint appletId) const;
     bool containmentExists(uint id) const;
 
-    int noOfDocks();
     int primaryScreenId() const;
 
     QStringList containmentsIds();

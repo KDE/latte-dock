@@ -655,17 +655,6 @@ void DockCorona::aboutApplication()
     aboutDialog->show();
 }
 
-int DockCorona::noOfDocks()
-{
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    if (views) {
-        return views->count();
-    } else {
-        return 0;
-    }
-}
-
 QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
 {
     using Plasma::Types;
