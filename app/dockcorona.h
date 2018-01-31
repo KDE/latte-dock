@@ -82,9 +82,6 @@ public:
 
     QRegion availableScreenRegionWithCriteria(int id, QString forLayout = QString()) const;
 
-    QList<Plasma::Types::Location> freeEdges(int screen) const;
-    QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
-
     int docksCount() const;
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;

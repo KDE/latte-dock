@@ -655,7 +655,7 @@ void DockCorona::aboutApplication()
     aboutDialog->show();
 }
 
-QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
+/*QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -693,7 +693,7 @@ QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
     }
 
     return edges;
-}
+}*/
 
 int DockCorona::screenForContainment(const Plasma::Containment *containment) const
 {
@@ -845,7 +845,16 @@ void DockCorona::loadDefaultLayout()
 
     auto config = defaultContainment->config();
     defaultContainment->restore(config);
-    QList<Plasma::Types::Location> edges = freeEdges(defaultContainment->screen());
+
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                 Types::TopEdge, Types::RightEdge};
+
+    Layout *currentLayout = m_layoutManager->activeLayout(m_layoutManager->currentLayoutName());
+
+    if (currentLayout) {
+        edges = currentLayout->freeEdges(defaultContainment->screen());
+    }
 
     if ((edges.count() > 0)) {
         defaultContainment->setLocation(edges.at(0));

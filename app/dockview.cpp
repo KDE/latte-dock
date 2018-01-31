@@ -398,10 +398,8 @@ bool DockView::setCurrentScreen(const QString id)
     }
 
     if (nextScreen) {
-        auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-        if (dockCorona) {
-            auto freeEdges = dockCorona->freeEdges(nextScreen);
+        if (m_managedLayout) {
+            auto freeEdges = m_managedLayout->freeEdges(nextScreen);
 
             if (!freeEdges.contains(location())) {
                 return false;
@@ -1734,14 +1732,12 @@ bool DockView::event(QEvent *e)
 
 QList<int> DockView::freeEdges() const
 {
-    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-    if (!dockCorona) {
+    if (!m_managedLayout) {
         const QList<int> emptyEdges;
         return emptyEdges;
     }
 
-    const auto edges = dockCorona->freeEdges(screen());
+    const auto edges = m_managedLayout->freeEdges(screen());
     QList<int> edgesInt;
 
     foreach (Plasma::Types::Location edge, edges) {
