@@ -1201,7 +1201,7 @@ void Layout::syncDockViewsToScreens()
     foreach (auto scr, qGuiApp->screens()) {
         qDebug() << "Found screen: " << scr->name();
 
-        foreach (auto cont, m_corona->containments()) {
+        foreach (auto cont, m_containments) {
             int id = cont->screen();
 
             if (id == -1) {
