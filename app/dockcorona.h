@@ -133,7 +133,6 @@ private:
 
     bool appletExists(uint containmentId, uint appletId) const;
     bool containmentExists(uint id) const;
-    bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location)const;
 
     int noOfDocks();
     int primaryScreenId() const;

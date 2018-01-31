@@ -672,7 +672,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
             return;
         }
     } else if (onPrimary) {
-        if (m_corona->explicitDockOccupyEdge(m_corona->screenPool()->primaryScreenId(), containment->location())) {
+        if (explicitDockOccupyEdge(m_corona->screenPool()->primaryScreenId(), containment->location())) {
             qDebug() << "CORONA ::: adding dock rejected, the edge is occupied by explicit dock ! : " <<  containment->location();
             //we must check that an onPrimary dock should never catch up the same edge on
             //the same screen with an explicit dock
@@ -1403,8 +1403,34 @@ QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
     return edges;
 }
 
+bool Layout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const
+{
+    if (!m_corona) {
+        return false;
+    }
+
+    foreach (auto containment, m_containments) {
+        if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
+            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            int id = containment->lastScreen();
+            Plasma::Types::Location contLocation = containment->location();
+
+            if (!onPrimary && id == screen && contLocation == location) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
 int Layout::noDocksWithTasks() const
 {
+    if (!m_corona) {
+        return 0;
+    }
+
     int result = 0;
 
     foreach (auto view, m_dockViews) {

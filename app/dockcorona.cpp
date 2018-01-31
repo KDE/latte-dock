@@ -758,22 +758,6 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     return -1;
 }
 
-bool DockCorona::explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const
-{
-    foreach (auto containment, containments()) {
-        bool onPrimary = containment->config().readEntry("onPrimary", true);
-        int id = containment->lastScreen();
-        Plasma::Types::Location contLocation = containment->location();
-
-        if (!onPrimary && id == screen && contLocation == location) {
-            return true;
-        }
-
-    }
-
-    return false;
-}
-
 void DockCorona::recreateDock(Plasma::Containment *containment)
 {
     m_layoutManager->recreateDock(containment);

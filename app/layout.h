@@ -142,6 +142,8 @@ private:
     void setName(QString name);
     void setFile(QString file);
 
+    bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
+
     QString availableId(QStringList all, QStringList assigned, int base);
     //! provides a new file path based the provided file. The new file
     //! has updated ids for containments and applets based on the corona
