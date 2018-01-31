@@ -82,10 +82,6 @@ public:
 
     QRegion availableScreenRegionWithCriteria(int id, QString forLayout = QString()) const;
 
-    int docksCount() const;
-    int docksCount(int screen) const;
-    int docksCount(QScreen *screen) const;
-
     int screenForContainment(const Plasma::Containment *containment) const override;
 
     void recreateDock(Plasma::Containment *containment);

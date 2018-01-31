@@ -115,6 +115,9 @@ public:
     QList<Plasma::Types::Location> freeEdges(int screen) const;
 
     int noDocksWithTasks() const;
+    int docksCount() const;
+    int docksCount(int screen) const;
+    int docksCount(QScreen *screen) const;
 
 signals:
     void activitiesChanged();

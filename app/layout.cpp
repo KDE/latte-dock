@@ -1442,4 +1442,57 @@ int Layout::noDocksWithTasks() const
     return result;
 }
 
+int Layout::docksCount(int screen) const
+{
+    if (!m_corona) {
+        return 0;
+    }
+
+    QScreen *scr = m_corona->screenPool()->screenForId(screen);
+
+    int docks{0};
+
+    foreach (auto view, m_dockViews) {
+        if (view && view->screen() == scr && !view->containment()->destroyed()) {
+            ++docks;
+        }
+    }
+
+    return docks;
+}
+
+int Layout::docksCount() const
+{
+    if (!m_corona) {
+        return 0;
+    }
+
+    int docks{0};
+
+    foreach (auto view, m_dockViews) {
+        if (view && view->containment() && !view->containment()->destroyed()) {
+            ++docks;
+        }
+    }
+
+    return docks;
+}
+
+int Layout::docksCount(QScreen *screen) const
+{
+    if (!m_corona) {
+        return 0;
+    }
+
+    int docks{0};
+
+    foreach (auto view, m_dockViews) {
+        if (view && view->screen() == screen && !view->containment()->destroyed()) {
+            ++docks;
+        }
+    }
+
+    return docks;
+}
+
 }

@@ -580,61 +580,6 @@ int DockCorona::primaryScreenId() const
     return m_screenPool->id(qGuiApp->primaryScreen()->name());
 }
 
-int DockCorona::docksCount(int screen) const
-{
-    QScreen *scr = m_screenPool->screenForId(screen);
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    int docks{0};
-
-    if (views) {
-        for (const auto &view : *views) {
-            if (view && view->screen() == scr && !view->containment()->destroyed()) {
-                ++docks;
-            }
-        }
-    }
-
-    // qDebug() << docks << "docks on screen:" << screen;
-    return docks;
-}
-
-int DockCorona::docksCount() const
-{
-    int docks{0};
-
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    if (views) {
-        for (const auto &view : *views) {
-            if (view && view->containment() && !view->containment()->destroyed()) {
-                ++docks;
-            }
-        }
-    }
-
-    // qDebug() << docks << "docks on screen:" << screen;
-    return docks;
-}
-
-int DockCorona::docksCount(QScreen *screen) const
-{
-    int docks{0};
-
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    if (views) {
-        for (const auto &view : *views) {
-            if (view && view->screen() == screen && !view->containment()->destroyed()) {
-                ++docks;
-            }
-        }
-    }
-
-    // qDebug() << docks << "docks on screen:" << screen;
-    return docks;
-}
-
 void DockCorona::closeApplication()
 {
     qGuiApp->quit();
@@ -654,46 +599,6 @@ void DockCorona::aboutApplication()
 
     aboutDialog->show();
 }
-
-/*QList<Plasma::Types::Location> DockCorona::freeEdges(QScreen *screen) const
-{
-    using Plasma::Types;
-    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
-
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    if (views) {
-        for (auto *view : *views) {
-            if (view && view->currentScreen() == screen->name()) {
-                edges.removeOne(view->location());
-            }
-        }
-    }
-
-    return edges;
-}
-
-QList<Plasma::Types::Location> DockCorona::freeEdges(int screen) const
-{
-    using Plasma::Types;
-    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                 Types::TopEdge, Types::RightEdge};
-
-    QScreen *scr = m_screenPool->screenForId(screen);
-
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    if (views) {
-        for (auto *view : *views) {
-            if (view && scr && view->currentScreen() == scr->name()) {
-                edges.removeOne(view->location());
-            }
-        }
-    }
-
-    return edges;
-}*/
 
 int DockCorona::screenForContainment(const Plasma::Containment *containment) const
 {

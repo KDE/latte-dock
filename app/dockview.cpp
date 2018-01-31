@@ -1060,22 +1060,20 @@ void DockView::setNormalThickness(int thickness)
 
 int DockView::docksCount() const
 {
-    auto dockCorona = qobject_cast<DockCorona *>(corona());
-
-    if (!dockCorona)
+    if (!m_managedLayout) {
         return 0;
+    }
 
-    return dockCorona->docksCount(screen());
+    return m_managedLayout->docksCount(screen());
 }
 
 int DockView::totalDocksCount() const
 {
-    auto dockCorona = qobject_cast<DockCorona *>(corona());
-
-    if (!dockCorona)
+    if (!m_managedLayout) {
         return 0;
+    }
 
-    return dockCorona->docksCount();
+    return m_managedLayout->docksCount();
 }
 
 int DockView::docksWithTasks()
