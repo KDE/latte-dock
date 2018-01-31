@@ -22,6 +22,7 @@
 #include "dockconfigview.h"
 #include "dockcorona.h"
 #include "panelshadows_p.h"
+#include "screenpool.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/extras.h"
 
@@ -481,12 +482,18 @@ void DockView::reconsiderScreen()
     if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1 && !screenExists))
         && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
             || m_screenToFollow != qGuiApp->primaryScreen())) {
+        using Plasma::Types;
+        QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                     Types::TopEdge, Types::RightEdge};
+
+        edges = m_managedLayout ? m_managedLayout->freeEdges(qGuiApp->primaryScreen()) : edges;
+
         //change to primary screen only if the specific edge is free
         qDebug() << "updating the primary screen for dock...";
-        qDebug() << "available primary screen edges:" << dockCorona->freeEdges(qGuiApp->primaryScreen());
+        qDebug() << "available primary screen edges:" << edges;
         qDebug() << "dock location:" << location();
 
-        if (dockCorona->freeEdges(qGuiApp->primaryScreen()).contains(location())) {
+        if (edges.contains(location())) {
             //! case 2
             if (!m_onPrimary && !screenExists && tasksPresent() && (dockCorona->noDocksWithTasks() == 1)) {
                 qDebug() << "reached case 2 of updating dock primary screen...";
@@ -955,7 +962,9 @@ inline void DockView::syncGeometry()
         if (formFactor() == Plasma::Types::Vertical) {
             QString layoutName = m_managedLayout ? m_managedLayout->name() : QString();
             auto dockCorona = qobject_cast<DockCorona *>(corona());
-            freeRegion = dockCorona->availableScreenRegionWithCriteria(this->containment()->screen(), layoutName);
+            int fixedScreen = onPrimary() ? dockCorona->screenPool()->primaryScreenId() : this->containment()->screen();
+
+            freeRegion = dockCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName);
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
