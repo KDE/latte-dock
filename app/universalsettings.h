@@ -112,6 +112,7 @@ private:
     KSharedConfig::Ptr m_config;
 
     friend class LayoutManager;
+    friend class DockCorona;
 };
 
 }

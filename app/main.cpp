@@ -21,6 +21,7 @@
 #include "dockcorona.h"
 #include "config-latte.h"
 #include "importer.h"
+#include "../liblattedock/dock.h"
 
 #include <memory>
 #include <csignal>
@@ -86,6 +87,8 @@ int main(int argc, char **argv)
         , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
         , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "file_name")}
         , {"import-full", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
+        , {"single", i18nc("command line", "Single layout memory mode. Only one layout is active at any case.")}
+        , {"multiple", i18nc("command line", "Multiple layouts memory mode. Multiple layouts can be active at any time based on Activities running.")}
     });
 
     //! START: Hidden options for Developer and Debugging usage
@@ -135,6 +138,7 @@ int main(int argc, char **argv)
     }
 
     bool defaultLayoutOnStartup = false;
+    int memoryUsage = -1;
     QString layoutNameOnStartup = "";
 
     if (parser.isSet(QStringLiteral("default-layout"))) {
@@ -195,6 +199,12 @@ int main(int argc, char **argv)
         }
     }
 
+    if (parser.isSet(QStringLiteral("multiple"))) {
+        memoryUsage = (int)(Latte::Dock::MultipleLayouts);
+    } else if (parser.isSet(QStringLiteral("single"))) {
+        memoryUsage = (int)(Latte::Dock::SingleLayout);
+    }
+
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {
         //! set pattern for debug messages
         //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
@@ -223,7 +233,7 @@ int main(int argc, char **argv)
     KCrash::setDrKonqiEnabled(true);
     KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
-    Latte::DockCorona corona(defaultLayoutOnStartup, layoutNameOnStartup);
+    Latte::DockCorona corona(defaultLayoutOnStartup, layoutNameOnStartup, memoryUsage);
     KDBusService service(KDBusService::Unique);
 
     return app.exec();

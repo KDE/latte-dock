@@ -113,8 +113,8 @@ public:
     Q_ENUM(GlowGroup)
 
     enum LayoutsMemoryUsage {
-        SingleLayout = 0, /* a single Layout is loaded in each time */
-        MultipleLayouts /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
+        SingleLayout = 0,  /* a single Layout is loaded in each time */
+        MultipleLayouts  /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
     };
     Q_ENUM(LayoutsMemoryUsage)
 

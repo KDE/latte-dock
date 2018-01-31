@@ -57,9 +57,10 @@
 
 namespace Latte {
 
-DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, QObject *parent)
+DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int userSetMemoryUsage, QObject *parent)
     : Plasma::Corona(parent),
       m_defaultLayoutOnStartup(defaultLayoutOnStartup),
+      m_userSetMemoryUsage(userSetMemoryUsage),
       m_layoutNameOnStartUp(layoutNameOnStartUp),
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
@@ -161,6 +162,12 @@ void DockCorona::load()
             m_layoutManager->importDefaultLayout(true);
         } else {
             loadLayoutName = m_layoutNameOnStartUp;
+        }
+
+        if (m_userSetMemoryUsage != -1) {
+            Dock::LayoutsMemoryUsage usage = static_cast<Dock::LayoutsMemoryUsage>(m_userSetMemoryUsage);
+
+            m_universalSettings->setLayoutsMemoryUsage(usage);
         }
 
         m_layoutManager->loadLayoutOnStartup(loadLayoutName);

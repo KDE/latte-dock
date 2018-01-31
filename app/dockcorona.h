@@ -62,7 +62,10 @@ class DockCorona : public Plasma::Corona {
     Q_CLASSINFO("D-Bus Interface", "org.kde.LatteDock")
 
 public:
-    DockCorona(bool defaultLayoutOnStartup = false, QString layoutNameOnStartUp = QString(), QObject *parent = nullptr);
+    DockCorona(bool defaultLayoutOnStartup = false,
+               QString layoutNameOnStartUp = QString(),
+               int userSetMemoryUsage = -1,
+               QObject *parent = nullptr);
     virtual ~DockCorona();
 
     int numScreens() const override;
@@ -142,6 +145,9 @@ private:
     bool m_activitiesStarting{true};
     //! this is used to enforce loading the default layout on startup
     bool m_defaultLayoutOnStartup{false};
+
+    //!it can be used on startup to change memory usage from command line
+    int m_userSetMemoryUsage{ -1};
 
     QString m_layoutNameOnStartUp;
 

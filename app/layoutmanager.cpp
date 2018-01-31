@@ -529,21 +529,22 @@ void LayoutManager::loadLayouts()
 
 void LayoutManager::loadLayoutOnStartup(QString layoutName)
 {
-    if (memoryUsage() == Dock::MultipleLayouts) {
-        QStringList layouts = m_importer->checkRepairMultipleLayoutsLinkedFile();
+    // if (memoryUsage() == Dock::MultipleLayouts) {
+    QStringList layouts = m_importer->checkRepairMultipleLayoutsLinkedFile();
 
-        //! Latte didnt close correctly, maybe a crash
-        if (layouts.size() > 0) {
-            QMessageBox *msg = new QMessageBox();
-            msg->setAttribute(Qt::WA_DeleteOnClose);
-            msg->setIcon(QMessageBox::Warning);
-            msg->setWindowTitle(i18n("Multiple Layouts Warning"));
-            msg->setText(i18n("Latte did not close properly in the previous session. The following layout(s) <b>[%0]</b> were updated for consistency!!!").arg(layouts.join(",")));
-            msg->setStandardButtons(QMessageBox::Ok);
+    //! Latte didnt close correctly, maybe a crash
+    if (layouts.size() > 0) {
+        QMessageBox *msg = new QMessageBox();
+        msg->setAttribute(Qt::WA_DeleteOnClose);
+        msg->setIcon(QMessageBox::Warning);
+        msg->setWindowTitle(i18n("Multiple Layouts Warning"));
+        msg->setText(i18n("Latte did not close properly in the previous session. The following layout(s) <b>[%0]</b> were updated for consistency!!!").arg(layouts.join(",")));
+        msg->setStandardButtons(QMessageBox::Ok);
 
-            msg->open();
-        }
+        msg->open();
     }
+
+    //}
 
     switchToLayout(layoutName);
 }
