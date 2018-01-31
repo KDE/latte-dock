@@ -331,7 +331,12 @@ bool Importer::exportFullConfiguration(QString file)
     }
 
     archive.addLocalFile(QString(QDir::homePath() + "/.config/lattedockrc"), QStringLiteral("lattedockrc"));
-    archive.addLocalDirectory(QString(QDir::homePath() + "/.config/latte"), QStringLiteral("latte"));
+
+    foreach (auto layoutName, availableLayouts()) {
+        archive.addLocalFile(layoutFilePath(layoutName), QString("latte/" + layoutName + ".layout.latte"));
+    }
+
+    //archive.addLocalDirectory(QString(QDir::homePath() + "/.config/latte"), QStringLiteral("latte"));
 
     archive.close();
 

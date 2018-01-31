@@ -386,7 +386,7 @@ void LatteConfigDialog::on_importButton_clicked()
             connect(fullBtn, &QPushButton::clicked
             , this, [ &, file](bool check) {
                 //!NOTE: Restart latte for import the new configuration
-                QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
+                QProcess::startDetached(qGuiApp->applicationFilePath() + " --import-full \"" + file + "\"");
                 qGuiApp->exit();
             });
         } else if (version == Importer::ConfigVersion2) {
@@ -402,7 +402,7 @@ void LatteConfigDialog::on_importButton_clicked()
                 if (result == QMessageBox::Yes) {
                     //!NOTE: Restart latte for import the new configuration
                     msg->deleteLater();
-                    QProcess::startDetached(qGuiApp->applicationFilePath() + " --import \"" + file + "\"");
+                    QProcess::startDetached(qGuiApp->applicationFilePath() + " --import-full \"" + file + "\"");
                     qGuiApp->exit();
                 }
             });
