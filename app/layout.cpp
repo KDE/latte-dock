@@ -1250,7 +1250,7 @@ void Layout::syncDockViewsToScreens()
         }
 
         if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
-            && !(view->tasksPresent() && m_corona->noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
+            && !(view->tasksPresent() && noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
             if (view->tasksPresent()) {
                 if (preserveContainmentId == -1)
                     preserveContainmentId = view->containment()->id();
@@ -1280,7 +1280,7 @@ void Layout::syncDockViewsToScreens()
 
         //! which explicit docks can be deleted
         if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
-            && !(view->tasksPresent() && m_corona->noDocksWithTasks() == 1)) {
+            && !(view->tasksPresent() && noDocksWithTasks() == 1)) {
             //do not delete last dock containing tasks
             if (dockWithTasksWillBeShown || preserveContainmentId != view->containment()->id()) {
                 qDebug() << "screen Count signal: view must be deleted... for:" << view->currentScreen();
@@ -1401,6 +1401,19 @@ QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
     }
 
     return edges;
+}
+
+int Layout::noDocksWithTasks() const
+{
+    int result = 0;
+
+    foreach (auto view, m_dockViews) {
+        if (view->tasksPresent()) {
+            result++;
+        }
+    }
+
+    return result;
 }
 
 }

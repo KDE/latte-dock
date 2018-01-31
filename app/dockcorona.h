@@ -89,7 +89,6 @@ public:
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;
 
-    int noDocksWithTasks() const;
     int screenForContainment(const Plasma::Containment *containment) const override;
 
     void recreateDock(Plasma::Containment *containment);

@@ -532,25 +532,6 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
     return available;
 }
 
-//! the number of currently running docks containing
-//! tasks plasmoid
-int DockCorona::noDocksWithTasks() const
-{
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
-
-    int result = 0;
-
-    if (views) {
-        foreach (auto view, *views) {
-            if (view->tasksPresent()) {
-                result++;
-            }
-        }
-    }
-
-    return result;
-}
-
 void DockCorona::addOutput(QScreen *screen)
 {
     Q_ASSERT(screen);

@@ -476,10 +476,12 @@ void DockView::reconsiderScreen()
 
     qDebug() << "dock screen exists  ::: " << screenExists;
 
+    int docksWithTasks = m_managedLayout ? m_managedLayout->noDocksWithTasks() : 0;
+
     //! 1.a primary dock must be always on the primary screen
     //! 2.the last tasks dock must also always on the primary screen
     //! even though it has been configured as an explicit
-    if ((m_onPrimary || (tasksPresent() && dockCorona->noDocksWithTasks() == 1 && !screenExists))
+    if ((m_onPrimary || (tasksPresent() && docksWithTasks == 1 && !screenExists))
         && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
             || m_screenToFollow != qGuiApp->primaryScreen())) {
         using Plasma::Types;
@@ -495,7 +497,7 @@ void DockView::reconsiderScreen()
 
         if (edges.contains(location())) {
             //! case 2
-            if (!m_onPrimary && !screenExists && tasksPresent() && (dockCorona->noDocksWithTasks() == 1)) {
+            if (!m_onPrimary && !screenExists && tasksPresent() && (docksWithTasks == 1)) {
                 qDebug() << "reached case 2 of updating dock primary screen...";
                 setScreenToFollow(qGuiApp->primaryScreen(), false);
             } else {
@@ -1082,10 +1084,10 @@ int DockView::docksWithTasks()
 {
     auto dockCorona = qobject_cast<DockCorona *>(corona());
 
-    if (!dockCorona)
+    if (!dockCorona || !m_managedLayout)
         return 0;
 
-    return dockCorona->noDocksWithTasks();
+    return m_managedLayout->noDocksWithTasks();
 }
 
 void DockView::updateFormFactor()

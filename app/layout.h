@@ -114,6 +114,8 @@ public:
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
     QList<Plasma::Types::Location> freeEdges(int screen) const;
 
+    int noDocksWithTasks() const;
+
 signals:
     void activitiesChanged();
     void colorChanged();
