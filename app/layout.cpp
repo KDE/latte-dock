@@ -832,7 +832,7 @@ void Layout::copyDock(Plasma::Containment *containment)
 
                 //the screen must exist and not be the same with the original dock
                 if (copyScrId > -1 && copyScrId != dockScrId) {
-                    QList<Plasma::Types::Location> fEdges = m_corona->freeEdges(copyScrId);
+                    QList<Plasma::Types::Location> fEdges = freeEdges(copyScrId);
 
                     if (fEdges.contains((Plasma::Types::Location)containment->location())) {
                         ///set this containment to an explicit screen
@@ -851,7 +851,7 @@ void Layout::copyDock(Plasma::Containment *containment)
     }
 
     if (!setOnExplicitScreen) {
-        QList<Plasma::Types::Location> edges = m_corona->freeEdges(newContainment->screen());
+        QList<Plasma::Types::Location> edges = freeEdges(newContainment->screen());
 
         if (edges.count() > 0) {
             newContainment->setLocation(edges.at(0));
@@ -1192,6 +1192,7 @@ void Layout::syncDockViewsToScreens()
         return;
     }
 
+    qDebug() << "LAYOUT ::: " << name();
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
     qDebug() << "adding consideration....";
@@ -1214,7 +1215,7 @@ void Layout::syncDockViewsToScreens()
             //! 1. when a dock is primary, not running and the edge for which is associated is free
             //! 2. when a dock in explicit, not running and the associated screen currently exists
             //! e.g. the screen has just been added
-            if (((onPrimary && m_corona->freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary && (m_corona->screenPool()->connector(id) == scr->name())))
+            if (((onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary && (m_corona->screenPool()->connector(id) == scr->name())))
                 && (!m_dockViews.contains(cont))) {
                 qDebug() << "screen Count signal: view must be added... for:" << scr->name();
                 addDock(cont);
@@ -1289,7 +1290,7 @@ void Layout::syncDockViewsToScreens()
 
             //!which primary docks can be deleted
         } else if (view->onPrimary() && !found
-                   && !m_corona->freeEdges(qGuiApp->primaryScreen()).contains(view->location())) {
+                   && !freeEdges(qGuiApp->primaryScreen()).contains(view->location())) {
             qDebug() << "screen Count signal: primary view must be deleted... for:" << view->currentScreen();
             auto viewToDelete = m_dockViews.take(view->containment());
             viewToDelete->deleteLater();
@@ -1360,6 +1361,46 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
     }
 
     return containments;
+}
+
+QList<Plasma::Types::Location> Layout::freeEdges(QScreen *screen) const
+{
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                 Types::TopEdge, Types::RightEdge};
+
+    if (!m_corona) {
+        return edges;
+    }
+
+    foreach (auto view, m_dockViews) {
+        if (view && view->currentScreen() == screen->name()) {
+            edges.removeOne(view->location());
+        }
+    }
+
+    return edges;
+}
+
+QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
+{
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                 Types::TopEdge, Types::RightEdge};
+
+    if (!m_corona) {
+        return edges;
+    }
+
+    QScreen *scr = m_corona->screenPool()->screenForId(screen);
+
+    foreach (auto view, m_dockViews) {
+        if (view && scr && view->currentScreen() == scr->name()) {
+            edges.removeOne(view->location());
+        }
+    }
+
+    return edges;
 }
 
 }

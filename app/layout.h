@@ -111,6 +111,9 @@ public:
     //! that dockView
     QList<Plasma::Containment *> unassignFromLayout(DockView *dockView);
 
+    QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
+    QList<Plasma::Types::Location> freeEdges(int screen) const;
+
 signals:
     void activitiesChanged();
     void colorChanged();
