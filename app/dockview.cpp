@@ -746,7 +746,8 @@ inline void DockView::syncGeometry()
         QRect availableScreenRect{this->screen()->geometry()};
 
         if (formFactor() == Plasma::Types::Vertical) {
-            freeRegion = corona()->availableScreenRegion(this->containment()->screen());
+            int fixedScreen = onPrimary() ? dockCorona->screenPool()->primaryScreenId() : this->containment()->screen();
+            freeRegion = corona()->availableScreenRegion(fixedScreen);
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
