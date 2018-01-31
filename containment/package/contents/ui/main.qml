@@ -1080,9 +1080,12 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if ((visibilityManager.normalState && !root.editMode && !visibilityManager.inTempHiding
+        if ( !blockAutomaticUpdateIconSize.running
+             && (visibilityManager.normalState && !root.editMode && !visibilityManager.inTempHiding
              && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
+            blockAutomaticUpdateIconSize.start();
+
             var layoutLength;
             var maxLength = root.maxLength;
 
@@ -1572,6 +1575,15 @@ DragDrop.DropArea {
                 console.log("containment timer: delayUpdateMaskArea called...");
             }
         }
+    }
+
+    // This function is very costly! This timer makes sure that it can be called
+    // only once every 1sec.
+    Timer{
+        id:blockAutomaticUpdateIconSize
+        interval: 1000
+        repeat: false
+        onTriggered: root.updateAutomaticIconSize();
     }
 
     ///////////////END TIMER elements
