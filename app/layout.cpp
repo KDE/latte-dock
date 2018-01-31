@@ -167,12 +167,16 @@ void Layout::initToCorona(DockCorona *corona)
 
     qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
 
-    updateLastUsedActivity();
+    if (m_layoutName != MultipleLayoutsName) {
+        updateLastUsedActivity();
+    }
 
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &Layout::addContainment);
 
-    connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
-            this, &Layout::updateLastUsedActivity);
+    if (m_layoutName != MultipleLayoutsName) {
+        connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
+                this, &Layout::updateLastUsedActivity);
+    }
 }
 
 int Layout::version() const
