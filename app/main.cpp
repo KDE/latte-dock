@@ -86,12 +86,34 @@ int main(int argc, char **argv)
         , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
         , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "file_name")}
         , {"import-full", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
-        , {"graphics", i18nc("command line", "Draw boxes around of the applets.")}
-        , {"with-window", i18nc("command line", "Open a window with much debug information.")}
-        , {"mask", i18nc("command line" , "Show messages of debugging for the mask (Only useful to devs).")}
-        , {"timers", i18nc("command line", "Show messages for debugging the timers (Only useful to devs).")}
-        , {"spacers", i18nc("command line", "Show visual indicators for debugging spacers (Only useful to devs).")}
     });
+
+    //! START: Hidden options for Developer and Debugging usage
+    QCommandLineOption graphicsOption(QStringList() << QStringLiteral("graphics"));
+    graphicsOption.setDescription(QStringLiteral("Draw boxes around of the applets."));
+    graphicsOption.setHidden(true);
+    parser.addOption(graphicsOption);
+
+    QCommandLineOption withWindowOption(QStringList() << QStringLiteral("with-window"));
+    withWindowOption.setDescription(QStringLiteral("Open a window with much debug information"));
+    withWindowOption.setHidden(true);
+    parser.addOption(withWindowOption);
+
+    QCommandLineOption maskOption(QStringList() << QStringLiteral("mask"));
+    maskOption.setDescription(QStringLiteral("Show messages of debugging for the mask (Only useful to devs)."));
+    maskOption.setHidden(true);
+    parser.addOption(maskOption);
+
+    QCommandLineOption timersOption(QStringList() << QStringLiteral("timers"));
+    timersOption.setDescription(QStringLiteral("Show messages for debugging the timers (Only useful to devs)."));
+    timersOption.setHidden(true);
+    parser.addOption(timersOption);
+
+    QCommandLineOption spacersOption(QStringList() << QStringLiteral("spacers"));
+    spacersOption.setDescription(QStringLiteral("Show visual indicators for debugging spacers (Only useful to devs)."));
+    spacersOption.setHidden(true);
+    parser.addOption(spacersOption);
+    //! END: Hidden options
 
     parser.process(app);
 
