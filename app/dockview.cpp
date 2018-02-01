@@ -461,7 +461,6 @@ void DockView::reconsiderScreen()
         qDebug() << "      D, found screen: " << scr->name();
     }
 
-    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
     bool screenExists{false};
 
     //!check if the associated screen is running
