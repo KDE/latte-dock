@@ -560,7 +560,7 @@ Item {
                 return;
             }
 
-            if ((wrapper.zoomScale > 1) && !enableDirectRenderTimer.running && !root.globalDirectRender) {
+            if ((wrapper.zoomScale>=root.midZoomFactor) && !enableDirectRenderTimer.running && !root.globalDirectRender) {
                 root.setGlobalDirectRender(true);
                 enableDirectRenderTimer.start();
             }

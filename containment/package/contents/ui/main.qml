@@ -249,6 +249,7 @@ DragDrop.DropArea {
                                                        Latte.Dock.Center : plasmoid.configuration.panelPosition )
 
     property real zoomFactor: (Latte.WindowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real midZoomFactor: (1 + (zoomFactor-1)/2)
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 

@@ -504,7 +504,7 @@ MouseArea{
             return;
         }
 
-        if ((wrapper.mScale>1) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+        if ((wrapper.mScale>=root.midZoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
             root.startEnableDirectRenderTimer();
         }
 
