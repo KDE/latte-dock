@@ -560,6 +560,11 @@ Item {
                 return;
             }
 
+            if ((wrapper.zoomScale > 1) && !enableDirectRenderTimer.running && !root.globalDirectRender) {
+                root.setGlobalDirectRender(true);
+                enableDirectRenderTimer.start();
+            }
+
             if (root.isHorizontal){
                 layoutsContainer.currentSpot = mouseX;
                 wrapper.calculateScales(mouseX);

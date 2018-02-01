@@ -504,6 +504,10 @@ MouseArea{
             return;
         }
 
+        if ((wrapper.mScale>1) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+            root.startEnableDirectRenderTimer();
+        }
+
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
         }
