@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Separator
+Name[ar]=فاصل
 Name[ca]=Separador
 Name[ca@valencia]=Separador
 Name[cs]=Oddělovač

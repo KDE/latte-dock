@@ -1,5 +1,6 @@
 [Global]
 Name=Latte Dock
+Name[ar]=رصيف لاتيه
 Name[ca]=Latte Dock
 Name[ca@valencia]=Latte Dock
 Name[da]=Latte-dok
@@ -16,6 +17,7 @@ Name[uk]=Панель Латте
 Name[x-test]=xxLatte Dockxx
 Name[zh_TW]=Latte Dock
 Comment=Latte Dock
+Comment[ar]=رصيف لاتيه
 Comment[ca]=Acoblable del Latte
 Comment[ca@valencia]=Acoblable del Latte
 Comment[da]=Latte-dok
@@ -35,6 +37,7 @@ IconName=latte-dock
 
 [Event/import-done]
 Name=Configuration imported successfully
+Name[ar]=استوردتُ الضّّبط بنجاح
 Name[ca]=La configuració s'ha importat amb èxit
 Name[ca@valencia]=La configuració s'ha importat amb èxit
 Name[da]=Import af konfiguration gennemført
@@ -55,6 +58,7 @@ Action=Popup
 
 [Event/import-fail]
 Name=Failed to import configuration
+Name[ar]=فشل استيراد الضّبط
 Name[ca]=Ha fallat en importar la configuració
 Name[ca@valencia]=Ha fallat en importar la configuració
 Name[da]=Kunne ikke importere konfiguration
@@ -75,6 +79,7 @@ Action=Popup
 
 [Event/export-done]
 Name=Configuration exported successfully
+Name[ar]=صدّرتُ الضّبط بنجاح
 Name[ca]=La configuració s'ha exportat amb èxit
 Name[ca@valencia]=La configuració s'ha exportat amb èxit
 Name[da]=Eksport af konfiguration gennemført
@@ -95,6 +100,7 @@ Action=Popup
 
 [Event/export-fail]
 Name=Failed to export configuration
+Name[ar]=فشل تصدير الضّبط
 Name[ca]=Ha fallat en exportar la configuració
 Name[ca@valencia]=Ha fallat en exportar la configuració
 Name[da]=Kunne ikke eksportere konfiguration
