@@ -256,7 +256,8 @@ Item{
     } //nScale
 
     function signalUpdateScale(nIndex, nScale, step){
-        if ((index === nIndex)&&(mainItemContainer.hoverEnabled || inMimicParabolicAnimation)&&(waitingLaunchers.length===0)){
+        if (!mainItemContainer.containsMouse && (index === nIndex)
+                && (mainItemContainer.hoverEnabled || inMimicParabolicAnimation)&&(waitingLaunchers.length===0)){
             if (mainItemContainer.inAttentionAnimation) {
                 var subSpacerScale = (nScale-1)/2;
 
