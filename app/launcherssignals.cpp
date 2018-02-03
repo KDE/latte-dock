@@ -20,7 +20,13 @@
 
 #include "launcherssignals.h"
 
+#include "dockcorona.h"
+#include "layout.h"
+
 #include <QQuickItem>
+
+#include <Plasma/Applet>
+#include <Plasma/Containment>
 
 namespace Latte {
 

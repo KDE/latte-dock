@@ -22,8 +22,6 @@
 #ifndef LATTECONFIGDIALOG_H
 #define LATTECONFIGDIALOG_H
 
-#include "dockcorona.h"
-#include "layout.h"
 #include "../liblattedock/dock.h"
 
 #include <QObject>
@@ -31,6 +29,7 @@
 #include <QDialog>
 #include <QDebug>
 #include <QStandardItemModel>
+#include <QTimer>
 
 namespace Ui {
 class LatteConfigDialog;

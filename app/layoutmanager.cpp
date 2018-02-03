@@ -22,6 +22,7 @@
 
 #include "importer.h"
 #include "infoview.h"
+#include "latteconfigdialog.h"
 #include "launcherssignals.h"
 #include "layout.h"
 #include "screenpool.h"

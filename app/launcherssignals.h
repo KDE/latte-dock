@@ -26,7 +26,13 @@
 
 #include <QObject>
 
+namespace Plasma {
+class Applet;
+}
+
+namespace Latte {
 class LayoutManager;
+}
 
 namespace Latte {
 

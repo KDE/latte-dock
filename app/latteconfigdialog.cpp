@@ -27,6 +27,7 @@
 #include "importer.h"
 #include "universalsettings.h"
 #include "ui_latteconfigdialog.h"
+#include "../liblattedock/dock.h"
 #include "layoutsDelegates/checkboxdelegate.h"
 #include "layoutsDelegates/colorcmbboxdelegate.h"
 #include "layoutsDelegates/activitycmbboxdelegate.h"

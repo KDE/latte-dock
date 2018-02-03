@@ -20,6 +20,7 @@
 
 #include "importer.h"
 
+#include "dockcorona.h"
 #include "layoutmanager.h"
 #include "layout.h"
 #include "screenpool.h"

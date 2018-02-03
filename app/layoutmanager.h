@@ -21,11 +21,11 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
-#include "../liblattedock/dock.h"
 #include "latteconfigdialog.h"
 
 #include <QAction>
 #include <QObject>
+#include <QPointer>
 
 #include <KLocalizedString>
 
@@ -40,9 +40,9 @@ class Controller;
 
 namespace Latte {
 class DockCorona;
+class DockView;
 class Importer;
 class Layout;
-class LatteConfigDialog;
 class LaunchersSignals;
 }
 
@@ -175,18 +175,20 @@ private:
 
     QAction *m_addWidgetsAction{nullptr};
 
-    QPointer<LatteConfigDialog> m_latteConfigDialog;
-
     QHash<const QString, QString> m_assignedLayouts;
 
     QTimer m_dynamicSwitchTimer;
 
+    QPointer<Latte::LatteConfigDialog> m_latteConfigDialog;
+
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
+
     QList<Layout *> m_activeLayouts;
 
     KActivities::Controller *m_activitiesController;
+
 
     friend class LatteConfigDialog;
 };
