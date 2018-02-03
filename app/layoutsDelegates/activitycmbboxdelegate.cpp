@@ -1,5 +1,7 @@
 #include "activitycmbboxdelegate.h"
 
+#include "../settingsdialog.h"
+
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
@@ -14,10 +16,10 @@
 ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
-    auto *configDialog = qobject_cast<Latte::LatteConfigDialog *>(parent);
+    auto *settingsDialog = qobject_cast<Latte::SettingsDialog *>(parent);
 
-    if (configDialog) {
-        m_configDialog = configDialog;
+    if (settingsDialog) {
+        m_settingsDialog = settingsDialog;
     }
 }
 
@@ -26,8 +28,8 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
     QComboBox *editor = new QComboBox(parent);
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
-    QStringList availableActivities = m_configDialog->availableActivities();
-    QStringList activities = m_configDialog->activities();
+    QStringList availableActivities = m_settingsDialog->availableActivities();
+    QStringList activities = m_settingsDialog->activities();
 
     QStringList shownActivities;
 

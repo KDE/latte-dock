@@ -120,7 +120,7 @@ PlasmaComponents.Page {
                     iconSource: "document-edit"
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
-                    onClicked: layoutManager.showLatteConfigDialog()
+                    onClicked: layoutManager.showLatteSettingsDialog()
                 }
             }
         }

@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef LATTECONFIGDIALOG_H
-#define LATTECONFIGDIALOG_H
+#ifndef SETTINGSDIALOG_H
+#define SETTINGSDIALOG_H
 
 #include "../liblattedock/dock.h"
 
@@ -32,7 +32,7 @@
 #include <QTimer>
 
 namespace Ui {
-class LatteConfigDialog;
+class SettingsDialog;
 }
 
 namespace KActivities {
@@ -46,11 +46,11 @@ class Layout;
 
 namespace Latte {
 
-class LatteConfigDialog : public QDialog {
+class SettingsDialog : public QDialog {
     Q_OBJECT
 public:
-    LatteConfigDialog(QWidget *parent, DockCorona *corona);
-    ~LatteConfigDialog();
+    SettingsDialog(QWidget *parent, DockCorona *corona);
+    ~SettingsDialog();
 
     void setCurrentPage(Dock::LatteConfigPage page);
 
@@ -118,7 +118,7 @@ private:
     DockCorona *m_corona{nullptr};
 
     QStandardItemModel *m_model{nullptr};
-    Ui::LatteConfigDialog *ui;
+    Ui::SettingsDialog *ui;
 
     QHash<const QString, Layout *> m_layouts;
 
@@ -128,4 +128,4 @@ private:
 
 }
 
-#endif // LATTECONFIGDIALOG_H
+#endif // SETTINGSDIALOG_H

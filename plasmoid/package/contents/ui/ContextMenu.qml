@@ -876,7 +876,7 @@ PlasmaComponents.ContextMenu {
                 var configureItem = menu.newMenuItem(layoutsMenu);
                 configureItem.text = i18n("Configure...");
                 configureItem.clicked.connect(function() {
-                    latteDock.universalLayoutManager.showLatteConfigDialog();
+                    latteDock.universalLayoutManager.showLatteSettingsDialog();
                 });
 
             }

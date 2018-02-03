@@ -21,7 +21,7 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
-#include "latteconfigdialog.h"
+#include "settingsdialog.h"
 
 #include <QAction>
 #include <QObject>
@@ -112,7 +112,7 @@ public:
 
 public slots:
     void showAboutDialog();
-    Q_INVOKABLE void showLatteConfigDialog(int page = Latte::Dock::LayoutPage);
+    Q_INVOKABLE void showLatteSettingsDialog(int page = Latte::Dock::LayoutPage);
 
     //! switch to specified layout, default previousMemoryUsage means that it didnt change
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);
@@ -179,7 +179,7 @@ private:
 
     QTimer m_dynamicSwitchTimer;
 
-    QPointer<Latte::LatteConfigDialog> m_latteConfigDialog;
+    QPointer<Latte::SettingsDialog> m_latteSettingsDialog;
 
     DockCorona *m_corona{nullptr};
     Importer *m_importer{nullptr};
@@ -190,7 +190,7 @@ private:
     KActivities::Controller *m_activitiesController;
 
 
-    friend class LatteConfigDialog;
+    friend class SettingsDialog;
 };
 
 }

@@ -219,7 +219,7 @@ FocusScope {
                     hoverEnabled: true
 
                     readonly property int preferencesPage: Latte.Dock.PreferencesPage
-                    onClicked: layoutManager.showLatteConfigDialog(preferencesPage)
+                    onClicked: layoutManager.showLatteSettingsDialog(preferencesPage)
                 }
             }
 

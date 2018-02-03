@@ -2261,7 +2261,7 @@ void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             QAction *editLayoutsAction = new QAction(i18n("Configure..."), layoutsMenu);
 
             connect(editLayoutsAction, &QAction::triggered, this, [this, dockCorona] {
-                dockCorona->layoutManager()->showLatteConfigDialog(Dock::LayoutPage);
+                dockCorona->layoutManager()->showLatteSettingsDialog(Dock::LayoutPage);
             });
 
             layoutsMenu->addAction(editLayoutsAction);

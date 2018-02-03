@@ -1,8 +1,6 @@
 #ifndef ACTIVITYCMBBOXDELEGATE_H
 #define ACTIVITYCMBBOXDELEGATE_H
 
-#include "../latteconfigdialog.h"
-
 #include <QItemDelegate>
 
 class QModelIndex;
@@ -11,6 +9,7 @@ class QVariant;
 
 namespace Latte {
 class LayoutManager;
+class SettingsDialog;
 }
 
 class ActivityCmbBoxDelegate : public QItemDelegate {
@@ -27,7 +26,7 @@ public:
 private:
     QString assignedActivitiesText(const QModelIndex &index) const;
 
-    Latte::LatteConfigDialog *m_configDialog{nullptr};
+    Latte::SettingsDialog *m_settingsDialog{nullptr};
 };
 
 #endif

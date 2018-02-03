@@ -22,7 +22,7 @@
 
 #include "importer.h"
 #include "infoview.h"
-#include "latteconfigdialog.h"
+#include "settingsdialog.h"
 #include "launcherssignals.h"
 #include "layout.h"
 #include "screenpool.h"
@@ -1072,22 +1072,22 @@ bool LayoutManager::layoutIsAssigned(QString layoutName)
     return false;
 }
 
-void LayoutManager::showLatteConfigDialog(int page)
+void LayoutManager::showLatteSettingsDialog(int page)
 {
-    if (!m_latteConfigDialog) {
-        m_latteConfigDialog = new LatteConfigDialog(nullptr, m_corona);
+    if (!m_latteSettingsDialog) {
+        m_latteSettingsDialog = new SettingsDialog(nullptr, m_corona);
     }
 
-    m_latteConfigDialog->show();
+    m_latteSettingsDialog->show();
 
-    if (m_latteConfigDialog->isMinimized()) {
-        m_latteConfigDialog->showNormal();
+    if (m_latteSettingsDialog->isMinimized()) {
+        m_latteSettingsDialog->showNormal();
     }
 
     Dock::LatteConfigPage configPage = static_cast<Dock::LatteConfigPage>(page);
-    m_latteConfigDialog->setCurrentPage(configPage);
+    m_latteSettingsDialog->setCurrentPage(configPage);
 
-    m_latteConfigDialog->activateWindow();
+    m_latteSettingsDialog->activateWindow();
 }
 
 void LayoutManager::showInfoWindow(QString info, int duration, QStringList activities)
