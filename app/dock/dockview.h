@@ -51,6 +51,7 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
+class DockMenuManager;
 class Layout;
 }
 
@@ -225,7 +226,6 @@ protected slots:
 protected:
     bool event(QEvent *ev) override;
     void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
     void addInternalViewSplitter();
@@ -283,7 +283,6 @@ signals:
 private slots:
     void availableScreenRectChanged();
     void hideWindowsForSlidingOut();
-    void menuAboutToHide();
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
     void updateEffects();
@@ -292,8 +291,6 @@ private slots:
     void saveConfig();
 
 private:
-    void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
-    void addContainmentActions(QMenu *desktopMenu, QEvent *event);
     void applyActivitiesToWindows();
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
@@ -331,14 +328,12 @@ private:
     QRect m_localGeometry;
     QRect m_absGeometry;
     QRect m_maskArea;
-    QMenu *m_contextMenu;
-    QMetaMethod m_appletContainsMethod;
-    QQuickItem *m_appletContainsMethodItem{nullptr};
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
     QPointer<PlasmaQuick::ConfigView> m_secondaryConfigView;
 
     QPointer<VisibilityManager> m_visibility;
+    QPointer<DockMenuManager> m_menuManager;
     QPointer<QScreen> m_screenToFollow;
 
     QString m_screenToFollowId;

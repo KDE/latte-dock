@@ -21,6 +21,7 @@
 #include "dockview.h"
 
 #include "dockconfigview.h"
+#include "dockmenumanager.h"
 
 #include "panelshadows_p.h"
 #include "visibilitymanager.h"
@@ -66,7 +67,7 @@ const int MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN = 768;
 //! are needed in order for window flags to be set correctly
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
-      m_contextMenu(nullptr)
+      m_menuManager(new DockMenuManager(this))
 {
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -174,6 +175,10 @@ DockView::~DockView()
         m_secondaryConfigView->setVisible(false);
     }
 
+    if (m_menuManager) {
+        m_menuManager->deleteLater();
+    }
+
     if (m_visibility)
         delete m_visibility;
 
@@ -228,6 +233,8 @@ void DockView::init()
 
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
+
+    connect(m_menuManager, &DockMenuManager::contextMenuChanged, this, &DockView::contextMenuIsShownChanged);
 
     initSignalingForLocationChangeSliding();
 
@@ -1035,7 +1042,11 @@ void DockView::setAlternativesIsShown(bool show)
 
 bool DockView::contextMenuIsShown() const
 {
-    return m_contextMenu;
+    if (!m_menuManager) {
+        return false;
+    }
+
+    return m_menuManager->contextMenu();
 }
 
 int DockView::currentThickness() const
@@ -1832,459 +1843,14 @@ QVariantList DockView::containmentActions()
 
 
 //!BEGIN overriding context menus behavior
-void DockView::menuAboutToHide()
-{
-    m_contextMenu = 0;
-    m_visibility->setBlockHiding(false);
-    emit contextMenuIsShownChanged();
-}
-
-
-void DockView::mouseReleaseEvent(QMouseEvent *event)
-{
-    if (!event || !this->containment()) {
-        return;
-    }
-
-    PlasmaQuick::ContainmentView::mouseReleaseEvent(event);
-    event->setAccepted(this->containment()->containmentActions().contains(Plasma::ContainmentActions::eventToString(event)));
-}
-
 void DockView::mousePressEvent(QMouseEvent *event)
 {
-    //qDebug() << "Step -1 ...";
-    if (!event || !this->containment()) {
-        return;
-    }
-
-    //qDebug() << "Step 0...";
-
-    //even if the menu is executed synchronously, other events may be processed
-    //by the qml incubator when plasma is loading, so we need to guard there
-    if (m_contextMenu) {
-        //qDebug() << "Step 0.5 ...";
-        m_contextMenu->close();
-        m_contextMenu = 0;
-        emit contextMenuIsShownChanged();
-        PlasmaQuick::ContainmentView::mousePressEvent(event);
-        return;
-    }
-
-    //qDebug() << "1 ...";
-    const QString trigger = Plasma::ContainmentActions::eventToString(event);
-
-    if (trigger == "RightButton;NoModifier") {
-        Plasma::ContainmentActions *plugin = this->containment()->containmentActions().value(trigger);
-
-        if (!plugin || plugin->contextualActions().isEmpty()) {
-            event->setAccepted(false);
-            return;
-        }
-
-        //qDebug() << "2 ...";
-        //the plugin can be a single action or a context menu
-        //Don't have an action list? execute as single action
-        //and set the event position as action data
-        /*if (plugin->contextualActions().length() == 1) {
-            QAction *action = plugin->contextualActions().at(0);
-            action->setData(event->pos());
-            action->trigger();
-            event->accept();
-            return;
-        }*/
-        //FIXME: very inefficient appletAt() implementation
-        Plasma::Applet *applet = 0;
-        bool inSystray = false;
-
-        //! initialize the appletContainsMethod on the first right click
-        if (!m_appletContainsMethod.isValid()) {
-            updateAppletContainsMethod();
-        }
-
-        foreach (Plasma::Applet *appletTemp, this->containment()->applets()) {
-            PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-            bool appletContainsMouse = false;
-
-            if (m_appletContainsMethod.isValid()) {
-                QVariant retVal;
-                m_appletContainsMethod.invoke(m_appletContainsMethodItem, Qt::DirectConnection, Q_RETURN_ARG(QVariant, retVal)
-                                              , Q_ARG(QVariant, appletTemp->id()), Q_ARG(QVariant, event->pos()));
-                appletContainsMouse = retVal.toBool();
-            } else {
-                appletContainsMouse = ai->contains(ai->mapFromItem(contentItem(), event->pos()));
-            }
-
-            if (ai && ai->isVisible() && appletContainsMouse) {
-                applet = ai->applet();
-                KPluginMetaData meta = applet->kPackage().metadata();
-
-                //Try to find applets inside a systray
-                if (meta.pluginId() == "org.kde.plasma.systemtray" ||
-                    meta.pluginId() == "org.nomad.systemtray") {
-                    auto systrayId = applet->config().readEntry("SystrayContainmentId");
-                    applet = 0;
-                    inSystray = true;
-                    Plasma::Containment *cont = containmentById(systrayId.toInt());
-
-                    if (cont) {
-                        foreach (Plasma::Applet *appletCont, cont->applets()) {
-                            PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-                            if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(contentItem(), event->pos()))) {
-                                applet = ai2->applet();
-                                break;
-                            }
-                        }
-                    }
-
-                    break;
-                } else {
-                    ai = 0;
-                }
-            }
-        }
-
-        if (!applet && !inSystray) {
-            applet = this->containment();
-        }
-
-        //qDebug() << "3 ...";
-
-        if (applet) {
-            const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
-
-            //qDebug() << "3.5 ...";
-
-            if (!provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
-                //qDebug() << "4...";
-                QMenu *desktopMenu = new QMenu;
-                desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
-                m_contextMenu = desktopMenu;
-
-                //! deprecated old code that can be removed if the following plasma approach doesnt
-                //! create any issues with context menu creation in Latte
-                /*if (this->mouseGrabberItem()) {
-                    //workaround, this fixes for me most of the right click menu behavior
-                    this->mouseGrabberItem()->ungrabMouse();
-                    return;
-                }*/
-
-                //!plasma official code
-                //this is a workaround where Qt will fail to realise a mouse has been released
-
-                // this happens if a window which does not accept focus spawns a new window that takes focus and X grab
-                // whilst the mouse is depressed
-                // https://bugreports.qt.io/browse/QTBUG-59044
-                // this causes the next click to go missing
-
-                //by releasing manually we avoid that situation
-                auto ungrabMouseHack = [this]() {
-                    if (this->mouseGrabberItem()) {
-                        this->mouseGrabberItem()->ungrabMouse();
-                    }
-                };
-
-                //pre 5.8.0 QQuickWindow code is "item->grabMouse(); sendEvent(item, mouseEvent)"
-                //post 5.8.0 QQuickWindow code is sendEvent(item, mouseEvent); item->grabMouse()
-                if (QVersionNumber::fromString(qVersion()) > QVersionNumber(5, 8, 0)) {
-                    QTimer::singleShot(0, this, ungrabMouseHack);
-                } else {
-                    ungrabMouseHack();
-                }
-
-                //end workaround
-                //!end of plasma official code(workaround)
-
-                //qDebug() << "5 ...";
-
-                if (applet) {
-                    //qDebug() << "5.3 ...";
-                    emit applet->contextualActionsAboutToShow();
-                    addAppletActions(desktopMenu, applet, event);
-                } else {
-                    //qDebug() << "5.6 ...";
-                    emit this->containment()->contextualActionsAboutToShow();
-                    addContainmentActions(desktopMenu, event);
-                }
-
-                //this is a workaround where Qt now creates the menu widget
-                //in .exec before oxygen can polish it and set the following attribute
-                desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
-                //end workaround
-                QPoint pos = event->globalPos();
-
-                if (applet) {
-                    //qDebug() << "6 ...";
-                    desktopMenu->adjustSize();
-
-                    if (this->screen()) {
-                        const QRect scr = this->screen()->geometry();
-                        int smallStep = 3;
-                        int x = event->globalPos().x() + smallStep;
-                        int y = event->globalPos().y() + smallStep;
-
-                        //qDebug()<<x << " - "<<y;
-
-                        if (event->globalPos().x() > scr.center().x()) {
-                            x = event->globalPos().x() - desktopMenu->width() - smallStep;
-                        }
-
-                        if (event->globalPos().y() > scr.center().y()) {
-                            y = event->globalPos().y() - desktopMenu->height() - smallStep;
-                        }
-
-                        pos = QPoint(x, y);
-                    }
-                }
-
-                //qDebug() << "7...";
-
-                if (desktopMenu->isEmpty()) {
-                    //qDebug() << "7.5 ...";
-                    delete desktopMenu;
-                    event->accept();
-                    return;
-                }
-
-                connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
-                m_visibility->setBlockHiding(true);
-                desktopMenu->popup(pos);
-                event->setAccepted(true);
-                emit contextMenuIsShownChanged();
-                return;
-            }
-
-            //qDebug() << "8 ...";
-        }
-
-        //qDebug() << "9 ...";
-    }
-
-    //qDebug() << "10 ...";
+    bool result = m_menuManager->mousePressEvent(event);
     emit contextMenuIsShownChanged();
-    PlasmaQuick::ContainmentView::mousePressEvent(event);
-}
 
-//! update the appletContainsPos method from Panel view
-void DockView::updateAppletContainsMethod()
-{
-    for (QQuickItem *item : contentItem()->childItems()) {
-        if (auto *metaObject = item->metaObject()) {
-            // not using QMetaObject::invokeMethod to avoid warnings when calling
-            // this on applets that don't have it or other child items since this
-            // is pretty much trial and error.
-            // Also, "var" arguments are treated as QVariant in QMetaObject
-
-            int methodIndex = metaObject->indexOfMethod("appletContainsPos(QVariant,QVariant)");
-
-            if (methodIndex == -1) {
-                continue;
-            }
-
-            m_appletContainsMethod = metaObject->method(methodIndex);
-            m_appletContainsMethodItem = item;
-        }
+    if (result) {
+        PlasmaQuick::ContainmentView::mousePressEvent(event);
     }
-}
-
-void DockView::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
-{
-    if (!this->containment()) {
-        return;
-    }
-
-    foreach (QAction *action, applet->contextualActions()) {
-        if (action) {
-            desktopMenu->addAction(action);
-        }
-    }
-
-    if (!applet->failedToLaunch()) {
-        QAction *runAssociatedApplication = applet->actions()->action(QStringLiteral("run associated application"));
-
-        if (runAssociatedApplication && runAssociatedApplication->isEnabled()) {
-            desktopMenu->addAction(runAssociatedApplication);
-        }
-
-        QAction *configureApplet = applet->actions()->action(QStringLiteral("configure"));
-
-        if (configureApplet && configureApplet->isEnabled()) {
-            desktopMenu->addAction(configureApplet);
-        }
-
-        QAction *appletAlternatives = applet->actions()->action(QStringLiteral("alternatives"));
-
-        if (appletAlternatives && appletAlternatives->isEnabled() && containment()->isUserConfiguring()) {
-            desktopMenu->addAction(appletAlternatives);
-        }
-    }
-
-    QMenu *containmentMenu = new QMenu(i18nc("%1 is the name of the containment", "%1 Options", this->containment()->title()), desktopMenu);
-    addContainmentActions(containmentMenu, event);
-
-    if (!containmentMenu->isEmpty()) {
-        int enabled = 0;
-        //count number of real actions
-        QListIterator<QAction *> actionsIt(containmentMenu->actions());
-
-        while (enabled < 3 && actionsIt.hasNext()) {
-            QAction *action = actionsIt.next();
-
-            if (action->isVisible() && !action->isSeparator()) {
-                ++enabled;
-            }
-        }
-
-        desktopMenu->addSeparator();
-
-        if (enabled) {
-            //if there is only one, don't create a submenu
-            // if (enabled < 2) {
-            foreach (QAction *action, containmentMenu->actions()) {
-                if (action->isVisible()) {
-                    desktopMenu->addAction(action);
-                }
-            }
-
-            // } else {
-            //     desktopMenu->addMenu(containmentMenu);
-            // }
-        }
-    }
-
-    if (this->containment()->immutability() == Plasma::Types::Mutable &&
-        (this->containment()->containmentType() != Plasma::Types::PanelContainment || this->containment()->isUserConfiguring())) {
-        QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
-
-        //qDebug() << "checking for removal" << closeApplet;
-        if (closeApplet) {
-            if (!desktopMenu->isEmpty()) {
-                desktopMenu->addSeparator();
-            }
-
-            //qDebug() << "adding close action" << closeApplet->isEnabled() << closeApplet->isVisible();
-            desktopMenu->addAction(closeApplet);
-        }
-    }
-}
-
-void DockView::addContainmentActions(QMenu *desktopMenu, QEvent *event)
-{
-    if (!this->containment()) {
-        return;
-    }
-
-    if (this->containment()->corona()->immutability() != Plasma::Types::Mutable &&
-        !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
-        //qDebug() << "immutability";
-        return;
-    }
-
-    //this is what ContainmentPrivate::prepareContainmentActions was
-    const QString trigger = Plasma::ContainmentActions::eventToString(event);
-    //"RightButton;NoModifier"
-    Plasma::ContainmentActions *plugin = this->containment()->containmentActions().value(trigger);
-
-    if (!plugin) {
-        return;
-    }
-
-    if (plugin->containment() != this->containment()) {
-        plugin->setContainment(this->containment());
-        // now configure it
-        KConfigGroup cfg(this->containment()->corona()->config(), "ActionPlugins");
-        cfg = KConfigGroup(&cfg, QString::number(this->containment()->containmentType()));
-        KConfigGroup pluginConfig = KConfigGroup(&cfg, trigger);
-        plugin->restore(pluginConfig);
-    }
-
-    QList<QAction *> actions = plugin->contextualActions();
-
-    if (actions.isEmpty()) {
-        //it probably didn't bother implementing the function. give the user a chance to set
-        //a better plugin.  note that if the user sets no-plugin this won't happen...
-        if ((this->containment()->containmentType() != Plasma::Types::PanelContainment &&
-             this->containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
-            this->containment()->actions()->action(QStringLiteral("configure"))) {
-            auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-            if (dockCorona) {
-                desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
-            }
-
-            desktopMenu->addAction(this->containment()->actions()->action(QStringLiteral("configure")));
-        }
-    } else {
-        auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-        desktopMenu->addSeparator();
-
-        if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
-            const QIcon identityIcon = QIcon::fromTheme("user-identity");
-            QMenu *layoutsMenu = new QMenu(desktopMenu);
-
-            QAction *layoutsAction = desktopMenu->addMenu(layoutsMenu); //  new QAction(identityIcon, i18n("Layouts"), desktopMenu);
-            layoutsAction->setIcon(identityIcon);
-            layoutsAction->setCheckable(false);
-            layoutsAction->setText(i18n("Layouts"));
-            layoutsAction->setStatusTip(i18n("Switch to another layout"));
-
-            QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
-            Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
-            QString currentName = dockCorona->layoutManager()->currentLayoutName();
-
-            foreach (auto layout, dockCorona->layoutManager()->menuLayouts()) {
-                QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
-                                      (" " + i18nc("current layout", "(Current)")) : "";
-                QString layoutName = layout + currentText;
-
-                QAction *layoutAction = new QAction(layoutName, layoutsMenu);
-
-                layoutAction->setCheckable(true);
-
-                if (activeLayouts.contains(layout)) {
-                    layoutAction->setChecked(true);
-                } else {
-                    layoutAction->setChecked(false);
-                }
-
-                connect(layoutAction, &QAction::triggered, this, [this, dockCorona, layout] {
-                    dockCorona->layoutManager()->switchToLayout(layout);
-                });
-
-                layoutsMenu->addAction(layoutAction);
-            }
-
-            layoutsMenu->addSeparator();
-
-            QAction *editLayoutsAction = new QAction(i18n("Configure..."), layoutsMenu);
-
-            connect(editLayoutsAction, &QAction::triggered, this, [this, dockCorona] {
-                dockCorona->layoutManager()->showLatteSettingsDialog(Dock::LayoutPage);
-            });
-
-            layoutsMenu->addAction(editLayoutsAction);
-
-        }
-
-        desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
-
-        desktopMenu->addActions(actions);
-    }
-
-    return;
-}
-
-Plasma::Containment *DockView::containmentById(uint id)
-{
-    foreach (auto containment, corona()->containments()) {
-        if (id == containment->id()) {
-            return containment;
-        }
-    }
-
-    return 0;
 }
 //!END overriding context menus behavior
 
