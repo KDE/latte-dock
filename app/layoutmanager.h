@@ -59,8 +59,6 @@ class LayoutManager : public QObject {
     Q_PROPERTY(QStringList layouts READ layouts NOTIFY layoutsChanged)
     Q_PROPERTY(QStringList menuLayouts READ menuLayouts NOTIFY menuLayoutsChanged)
 
-    Q_PROPERTY(QAction *addWidgetsAction READ addWidgetsAction NOTIFY addWidgetsActionChanged)
-
     Q_PROPERTY(LaunchersSignals *launchersSignals READ launchersSignals NOTIFY launchersSignalsChanged)
 
 public:
@@ -94,8 +92,6 @@ public:
     Dock::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage);
 
-    QAction *addWidgetsAction();
-
     QHash<const Plasma::Containment *, DockView *> *currentDockViews() const;
     QHash<const Plasma::Containment *, DockView *> *layoutDockViews(const QString &layoutName) const;
     //! returns an active layout with that #id (name), it returns null if such
@@ -128,7 +124,6 @@ public slots:
 
 signals:
     void activeLayoutsChanged();
-    void addWidgetsActionChanged();
     void currentLayoutChanged();
     void currentLayoutNameChanged();
     void launchersSignalsChanged();
@@ -140,7 +135,6 @@ signals:
 private slots:
     void currentActivityChanged(const QString &id);
     void showInfoWindowChanged();
-    void showWidgetsExplorer();
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
@@ -174,8 +168,6 @@ private:
     QStringList m_layouts;
     QStringList m_menuLayouts;
     QStringList m_presetsPaths;
-
-    QAction *m_addWidgetsAction{nullptr};
 
     QHash<const QString, QString> m_assignedLayouts;
 

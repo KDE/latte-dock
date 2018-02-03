@@ -896,18 +896,16 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: addWidgets
-        visible: latteDock && latteDock.universalLayoutManager.addWidgetsAction
 
-        icon: "add"
-        text: i18n("Add Widgets...")
-
-        onClicked: latteDock.universalLayoutManager.addWidgetsAction.trigger();
+        action: latteDock.containmentActions()[1]
+        visible:  latteDock
     }
+
 
     PlasmaComponents.MenuItem {
         id: configureItem
 
-        action: latteDock ? latteDock.containmentActions()[1] : plasmoid.action("configure")
+        action: latteDock ? latteDock.containmentActions()[2] : plasmoid.action("configure")
     }
 
     PlasmaComponents.MenuItem {

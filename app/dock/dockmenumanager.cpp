@@ -427,15 +427,15 @@ void DockMenuManager::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
             if (dockCorona) {
-                desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
+                //desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
             }
 
-            desktopMenu->addAction(m_dockView->containment()->actions()->action(QStringLiteral("configure")));
+            //  desktopMenu->addAction(m_dockView->containment()->actions()->action(QStringLiteral("configure")));
         }
     } else {
-        auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
         desktopMenu->addSeparator();
+
+        auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
         if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
             const QIcon identityIcon = QIcon::fromTheme("user-identity");
@@ -481,11 +481,11 @@ void DockMenuManager::addContainmentActions(QMenu *desktopMenu, QEvent *event)
                 dockCorona->layoutManager()->showLatteSettingsDialog(Dock::LayoutPage);
             });
 
-            layoutsMenu->addAction(editLayoutsAction);
+            // layoutsMenu->addAction(editLayoutsAction);
 
         }
 
-        desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
+        //desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
 
         desktopMenu->addActions(actions);
     }

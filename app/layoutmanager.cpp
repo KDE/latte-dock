@@ -52,12 +52,6 @@ LayoutManager::LayoutManager(QObject *parent)
     m_corona = qobject_cast<DockCorona *>(parent);
 
     if (m_corona) {
-        //! create the add widgets action
-        const QIcon addWidIcon = QIcon::fromTheme("add");
-        m_addWidgetsAction = new QAction(addWidIcon, i18n("Add Widgets..."), this);
-        m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
-        connect(m_addWidgetsAction, &QAction::triggered, this, &LayoutManager::showWidgetsExplorer);
-
         connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
         connect(m_corona->universalSettings(), &UniversalSettings::showInfoWindowChanged, this, &LayoutManager::showInfoWindowChanged);
 
@@ -174,11 +168,6 @@ DockCorona *LayoutManager::corona()
 Importer *LayoutManager::importer()
 {
     return m_importer;
-}
-
-QAction *LayoutManager::addWidgetsAction()
-{
-    return m_addWidgetsAction;
 }
 
 LaunchersSignals *LayoutManager::launchersSignals()
@@ -1110,15 +1099,6 @@ void LayoutManager::showInfoWindow(QString info, int duration, QStringList activ
         QTimer::singleShot(duration, [this, infoView]() {
             infoView->deleteLater();
         });
-    }
-}
-
-void LayoutManager::showWidgetsExplorer()
-{
-    QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
-
-    if (iface.isValid()) {
-        iface.call("toggleWidgetExplorer");
     }
 }
 

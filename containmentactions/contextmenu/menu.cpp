@@ -21,6 +21,10 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QtDBus/QtDBus>
+
+#include <KActionCollection>
+#include <KLocalizedString>
 
 #include <Plasma/Containment>
 #include <Plasma/Corona>
@@ -29,6 +33,7 @@
 Menu::Menu(QObject *parent, const QVariantList &args)
     : Plasma::ContainmentActions(parent, args)
 {
+    makeActions();
 }
 
 Menu::~Menu()
@@ -36,17 +41,30 @@ Menu::~Menu()
     qDeleteAll(m_actions);
 }
 
-void Menu::makeMenu()
+void Menu::makeActions()
 {
     qDeleteAll(m_actions);
     m_actions.clear();
 
-    QAction *action = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
-    connect(action, &QAction::triggered, [ = ]() {
+    m_printAction = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
+    connect(m_printAction, &QAction::triggered, [ = ]() {
         qDebug() << "Action Trigerred !!!";
     });
 
-    m_actions << action;
+    m_addWidgetsAction = new QAction(QIcon::fromTheme("add"), i18n("Add Widgets..."), this);
+    m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
+    connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
+        QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
+
+        if (iface.isValid()) {
+            iface.call("toggleWidgetExplorer");
+        }
+    });
+
+    m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("dock/panel settings window", "Dock/Panel Settings"), this);
+    m_configureAction->setShortcut(QKeySequence());
+    connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
+
     /*foreach (const QString &id, m_consumer.activities(KActivities::Info::Running)) {
         KActivities::Info info(id);
         QAction *action = new QAction(QIcon::fromTheme(info.icon()), info.name(), this);
@@ -67,12 +85,33 @@ void Menu::makeMenu()
 }
 
 
+void Menu::requestConfiguration()
+{
+    if (this->containment()) {
+        emit this->containment()->configureRequested(containment());
+    }
+}
+
 
 QList<QAction *> Menu::contextualActions()
 {
-    makeMenu();
+    QList<QAction *> actions;
+    actions << m_printAction;
+    actions << m_addWidgetsAction;
+    actions << m_configureAction;
 
-    return m_actions;
+    return actions;
+}
+
+QAction *Menu::action(const QString &name)
+{
+    if (name == "add widgets") {
+        return m_addWidgetsAction;
+    } else if (name == "configure") {
+        return m_configureAction;
+    }
+
+    return nullptr;
 }
 
 K_EXPORT_PLASMA_CONTAINMENTACTIONS_WITH_JSON(lattecontextmenu, Menu, "plasma-containmentactions-lattecontextmenu.json")

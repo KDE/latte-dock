@@ -35,11 +35,17 @@ public:
 
     QList<QAction *> contextualActions() override;
 
+    QAction *action(const QString &name);
 private Q_SLOTS:
-    void makeMenu();
+    void makeActions();
+    void requestConfiguration();
 
 private:
     QList<QAction *>m_actions;
+
+    QAction *m_addWidgetsAction{nullptr};
+    QAction *m_configureAction{nullptr};
+    QAction *m_printAction{nullptr};
 };
 
 #endif
