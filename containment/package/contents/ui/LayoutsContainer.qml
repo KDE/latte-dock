@@ -31,6 +31,8 @@ import "../code/HeuristicTools.js" as HeuristicTools
 Item{
     id: layoutsContainer
 
+    readonly property bool isHidden: root.inStartup || (dock && dock.visibility && dock.visibility.isHidden)
+
     property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
     property int currentSpot: -1000
     property int hoveredIndex: -1
@@ -50,7 +52,7 @@ Item{
                 return;
             }
 
-            if (dock && dock.visibility && dock.visibility.isHidden && root.isVertical) {
+            if (layoutsContainer.isHidden && root.isVertical) {
                 if (Latte.WindowSystem.compositingActive) {
                     return visibilityManager.slidingOutToPos;
                 } else {
@@ -75,7 +77,7 @@ Item{
                 return;
             }
 
-            if (dock && dock.visibility && dock.visibility.isHidden && root.isHorizontal) {
+            if (layoutsContainer.isHidden && root.isHorizontal) {
                 if (Latte.WindowSystem.compositingActive) {
                     return visibilityManager.slidingOutToPos;
                 } else {

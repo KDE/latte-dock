@@ -588,9 +588,7 @@ DragDrop.DropArea {
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
 
-        if (!plasmoid.immutable) {
-            inStartup = false;
-        }
+        inStartupTimer.start();
     }
 
     Component.onDestruction: {
@@ -1585,6 +1583,18 @@ DragDrop.DropArea {
         interval: 1000
         repeat: false
         onTriggered: root.updateAutomaticIconSize();
+    }
+
+    //! It is used in order to slide-in the dock on startup
+    Timer{
+        id: inStartupTimer
+        interval: 1500
+        repeat: false
+        onTriggered: {
+            if (inStartup) {
+                visibilityManager.slotMustBeShown();
+            }
+        }
     }
 
     ///////////////END TIMER elements

@@ -37,7 +37,6 @@ Item{
 
     property bool blockUpdateMask: false
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
-    property bool inStartup: root.inStartup
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= root.iconSize)
@@ -172,12 +171,6 @@ Item{
         }
     }
 
-    onInStartupChanged: {
-        if (!inStartup) {
-            delayAnimationTimer.start();
-        }
-    }
-
     onNormalStateChanged: {
         if (normalState) {
             root.updateAutomaticIconSize();
@@ -201,6 +194,11 @@ Item{
     }
 
     function slotMustBeHide() {
+        //! prevent sliding-in on startup if the dodge modes have sent a hide signal
+        if (inStartupTimer.running && root.inStartup) {
+            root.inStartup = false;
+        }
+
         // console.log("hide....");
         if((!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
             && !dock.visibility.containsMouse) || inForceHiding) {
@@ -531,6 +529,7 @@ Item{
         ScriptAction{
             script: {
                 root.isHalfShown = false;
+                root.inStartup = false;
             }
         }
 
@@ -563,17 +562,4 @@ Item{
             start();
         }
     }
-
-    ////////////// Timers //////
-    Timer {
-        id: delayAnimationTimer
-        interval: manager.inStartup ? 1000 : 500
-        onTriggered: {
-            layoutsContainer.opacity = 1;
-            if (dock.visibility.mode !== Latte.Dock.AutoHide) {
-                slidingAnimationAutoHiddenIn.init();
-            }
-        }
-    }
-
 }
