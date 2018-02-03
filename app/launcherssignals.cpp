@@ -20,6 +20,8 @@
 
 #include "launcherssignals.h"
 
+#include <QQuickItem>
+
 namespace Latte {
 
 LaunchersSignals::LaunchersSignals(QObject *parent)

@@ -21,8 +21,8 @@
 #ifndef DOCKCONFIGVIEW_H
 #define DOCKCONFIGVIEW_H
 
-#include "plasmaquick/configview.h"
-#include "../liblattedock/dock.h"
+#include "../plasmaquick/configview.h"
+#include "../../liblattedock/dock.h"
 
 #include <plasma/package.h>
 #include <Plasma/FrameSvg>

@@ -21,8 +21,8 @@
 #ifndef VISIBILITYMANAGER_H
 #define VISIBILITYMANAGER_H
 
-#include "plasmaquick/containmentview.h"
-#include "../liblattedock/dock.h"
+#include "../plasmaquick/containmentview.h"
+#include "../../liblattedock/dock.h"
 
 #include <QObject>
 #include <QTimer>

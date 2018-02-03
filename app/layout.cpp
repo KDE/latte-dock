@@ -20,12 +20,20 @@
 
 #include "layout.h"
 
+#include "dockcorona.h"
+#include "importer.h"
+#include "layoutmanager.h"
 #include "screenpool.h"
+#include "dock/dockview.h"
 
 #include <QDir>
 #include <QFile>
-#include <KSharedConfig>
 
+#include <Plasma>
+#include <Plasma/Applet>
+#include <Plasma/Containment>
+
+#include <KSharedConfig>
 #include <KActivities/Consumer>
 
 namespace Latte {

@@ -21,24 +21,29 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
-#include "importer.h"
-#include "layout.h"
+#include "../liblattedock/dock.h"
 #include "latteconfigdialog.h"
-#include "launcherssignals.h"
 
 #include <QAction>
 #include <QObject>
 
 #include <KLocalizedString>
 
+namespace Plasma {
+class Containment;
+class Types;
+}
+
+namespace KActivities {
+class Controller;
+}
+
+namespace Latte {
 class DockCorona;
 class Importer;
 class Layout;
 class LatteConfigDialog;
 class LaunchersSignals;
-
-namespace KActivities {
-class Controller;
 }
 
 namespace Latte {

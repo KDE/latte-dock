@@ -19,11 +19,18 @@
 */
 
 #include "dockcorona.h"
-#include "dockview.h"
-#include "packageplugins/shell/dockpackage.h"
+
 #include "abstractwindowinterface.h"
 #include "alternativeshelper.h"
+#include "globalshortcuts.h"
+#include "importer.h"
+#include "launcherssignals.h"
+#include "layoutmanager.h"
 #include "screenpool.h"
+#include "universalsettings.h"
+#include "dock/dockview.h"
+#include "packageplugins/shell/dockpackage.h"
+
 //dbus adaptor
 #include "lattedockadaptor.h"
 

@@ -21,11 +21,11 @@
 #ifndef IMPORTER_H
 #define IMPORTER_H
 
-#include "layoutmanager.h"
-
 #include <QObject>
 
+namespace Latte {
 class LayoutManager;
+}
 
 namespace Latte {
 

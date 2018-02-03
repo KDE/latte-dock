@@ -1,9 +1,9 @@
 #ifndef VISIBILITYMANAGERPRIVATE_H
 #define VISIBILITYMANAGERPRIVATE_H
 
-#include "../liblattedock/dock.h"
-#include "windowinfowrap.h"
-#include "abstractwindowinterface.h"
+#include "../windowinfowrap.h"
+#include "../abstractwindowinterface.h"
+#include "../../liblattedock/dock.h"
 
 #include <array>
 #include <memory>

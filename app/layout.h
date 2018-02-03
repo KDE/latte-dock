@@ -22,16 +22,25 @@
 #define LAYOUT_H
 
 #include <QObject>
+#include <QScreen>
+
+#include <Plasma>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-#include "dockcorona.h"
+namespace Plasma {
+class Applet;
+class Containment;
+class Types;
+}
 
 namespace Latte {
-
 class DockCorona;
 class DockView;
+}
+
+namespace Latte {
 
 //! This class is responsible to hold the settings for a specific layout.
 //! It also updates always the relevant layout configuration concerning

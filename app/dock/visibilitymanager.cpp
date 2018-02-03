@@ -20,10 +20,12 @@
 
 #include "visibilitymanager.h"
 #include "visibilitymanager_p.h"
-#include "windowinfowrap.h"
+
 #include "dockview.h"
-#include "dockcorona.h"
-#include "../liblattedock/extras.h"
+#include "../dockcorona.h"
+#include "../layoutmanager.h"
+#include "../windowinfowrap.h"
+#include "../../liblattedock/extras.h"
 
 #include <QDebug>
 

@@ -5,26 +5,26 @@ set(lattedock-app_SRCS
     xwindowinterface.cpp
     waylandinterface.cpp
     windowinfowrap.cpp
-    visibilitymanager.cpp
-    dockcorona.cpp
-    dockview.cpp
-    dockconfigview.cpp
-    packageplugins/shell/dockpackage.cpp
-    panelshadows.cpp
-    alternativeshelper.cpp
     screenpool.cpp
+    packageplugins/shell/dockpackage.cpp
+    alternativeshelper.cpp
+    dockcorona.cpp
     globalshortcuts.cpp
     universalsettings.cpp
     layoutmanager.cpp
     layout.cpp
     latteconfigdialog.cpp
     importer.cpp
+    infoview.cpp
+    launcherssignals.cpp
     layoutsDelegates/checkboxdelegate.cpp
     layoutsDelegates/colorcmbboxdelegate.cpp
     layoutsDelegates/colorcmbboxitemdelegate.cpp
     layoutsDelegates/activitycmbboxdelegate.cpp
-    infoview.cpp
-    launcherssignals.cpp
+    dock/dockview.cpp
+    dock/dockconfigview.cpp
+    dock/panelshadows.cpp
+    dock/visibilitymanager.cpp
     main.cpp
 )
 

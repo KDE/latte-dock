@@ -21,12 +21,12 @@
 #ifndef DOCKVIEW_H
 #define DOCKVIEW_H
 
-#include "plasmaquick/containmentview.h"
-#include "plasmaquick/configview.h"
-#include "layout.h"
-#include "visibilitymanager.h"
-#include "../liblattedock/dock.h"
 #include "dockconfigview.h"
+#include "visibilitymanager.h"
+#include "../layout.h"
+#include "../plasmaquick/containmentview.h"
+#include "../plasmaquick/configview.h"
+#include "../../liblattedock/dock.h"
 
 #include <QQuickView>
 #include <QQmlListProperty>
@@ -51,8 +51,10 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
-
 class Layout;
+}
+
+namespace Latte {
 
 class DockView : public PlasmaQuick::ContainmentView {
     Q_OBJECT

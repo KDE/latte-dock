@@ -19,12 +19,17 @@
 */
 
 #include "dockview.h"
+
 #include "dockconfigview.h"
-#include "dockcorona.h"
+
 #include "panelshadows_p.h"
-#include "screenpool.h"
 #include "visibilitymanager.h"
-#include "../liblattedock/extras.h"
+#include "../dockcorona.h"
+#include "../layout.h"
+#include "../layoutmanager.h"
+#include "../screenpool.h"
+#include "../universalsettings.h"
+#include "../../liblattedock/extras.h"
 
 #include <QAction>
 #include <QQmlContext>

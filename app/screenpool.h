@@ -30,6 +30,8 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+namespace Latte {
+
 class ScreenPool : public QObject, public QAbstractNativeEventFilter {
     Q_OBJECT
 
@@ -74,5 +76,7 @@ private:
 
     QTimer m_configSaveTimer;
 };
+
+}
 
 #endif // SCREENPOOL_H

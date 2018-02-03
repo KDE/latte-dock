@@ -23,6 +23,7 @@
 #include "layoutmanager.h"
 #include "layout.h"
 #include "screenpool.h"
+#include "universalsettings.h"
 #include "../liblattedock/dock.h"
 
 #include <QFile>

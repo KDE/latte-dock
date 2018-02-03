@@ -32,6 +32,8 @@
     #include <xcb/xcb_event.h>
 #endif
 
+namespace Latte {
+
 ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
       m_configGroup(KConfigGroup(config, QStringLiteral("ScreenConnectors")))
@@ -276,5 +278,6 @@ bool ScreenPool::nativeEventFilter(const QByteArray &eventType, void *message, l
     return false;
 }
 
+}
 
 #include "moc_screenpool.cpp"

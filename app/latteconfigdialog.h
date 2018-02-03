@@ -24,6 +24,7 @@
 
 #include "dockcorona.h"
 #include "layout.h"
+#include "../liblattedock/dock.h"
 
 #include <QObject>
 #include <QButtonGroup>

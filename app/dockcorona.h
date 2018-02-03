@@ -21,27 +21,16 @@
 #ifndef DOCKCORONA_H
 #define DOCKCORONA_H
 
-#include "dockview.h"
-#include "globalshortcuts.h"
-#include "layoutmanager.h"
-#include "universalsettings.h"
 #include "../liblattedock/dock.h"
-#include "launcherssignals.h"
 
 #include <QObject>
+#include <QTimer>
+
+#include <Plasma/Corona>
+#include <PlasmaQuick/ConfigView>
 
 #include <KAboutApplicationDialog>
 #include <KDeclarative/QmlObject>
-
-class ScreenPool;
-class GlobalShortcuts;
-class UniversalSettings;
-class LayoutManager;
-class LaunchersSignals;
-
-namespace KActivities {
-class Consumer;
-}
 
 namespace Plasma {
 class Corona;
@@ -49,10 +38,22 @@ class Containment;
 class Types;
 }
 
+namespace KActivities {
+class Consumer;
+}
+
 namespace KWayland {
 namespace Client {
 class PlasmaShell;
 }
+}
+
+namespace Latte {
+class ScreenPool;
+class GlobalShortcuts;
+class UniversalSettings;
+class LayoutManager;
+class LaunchersSignals;
 }
 
 namespace Latte {

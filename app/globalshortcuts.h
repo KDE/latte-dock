@@ -21,16 +21,16 @@
 #ifndef GLOBALSHORTCUTS_H
 #define GLOBALSHORTCUTS_H
 
-#include "dockcorona.h"
-#include "dockview.h"
 #include "../liblattedock/dock.h"
 
 #include <QQuickItem>
 #include <QMetaMethod>
 #include <QTimer>
 
+namespace Latte {
 class DockCorona;
 class DockView;
+}
 
 namespace Latte {
 

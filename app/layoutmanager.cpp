@@ -19,8 +19,13 @@
 */
 
 #include "layoutmanager.h"
+
+#include "importer.h"
 #include "infoview.h"
+#include "launcherssignals.h"
+#include "layout.h"
 #include "screenpool.h"
+#include "universalsettings.h"
 
 #include <QDir>
 #include <QFile>

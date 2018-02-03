@@ -19,11 +19,13 @@
 */
 
 #include "dockconfigview.h"
+
 #include "dockview.h"
-#include "dockcorona.h"
 #include "panelshadows_p.h"
-#include "abstractwindowinterface.h"
-#include "../liblattedock/dock.h"
+#include "../abstractwindowinterface.h"
+#include "../dockcorona.h"
+#include "../layoutmanager.h"
+#include "../universalsettings.h"
 
 #include <QFontMetrics>
 #include <QQuickItem>

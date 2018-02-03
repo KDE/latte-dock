@@ -18,7 +18,10 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "dockcorona.h"
 #include "globalshortcuts.h"
+#include "layoutmanager.h"
+#include "dock/dockview.h"
 
 #include <QAction>
 #include <QDebug>
