@@ -826,63 +826,9 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: layoutsMenuItem
 
-        visible: latteDock && latteDock.universalLayoutManager.menuLayouts.length>1
+        action: latteDock ?  latteDock.containmentActions()[1] : plasmoid.action("configure")
         enabled: visible
-
-        icon: "user-identity"
-        text: i18n("Layouts")
-
-
-        PlasmaComponents.ContextMenu {
-            id: layoutsMenu
-
-            visualParent: layoutsMenuItem.action
-
-            function refresh() {
-                clearMenuItems();
-
-                if (latteDock.universalLayoutManager.menuLayouts.length <= 1) {
-                    return;
-                }
-
-                var layouts = latteDock.universalLayoutManager.menuLayouts;
-                var activeLayouts = latteDock.universalLayoutManager.activeLayoutsNames();
-                var memoryUsage = latteDock.universalLayoutManager.layoutsMemoryUsage();
-                var currentName = latteDock.universalLayoutManager.currentLayoutName;
-
-                for (var i = 0; i < layouts.length; ++i) {
-                    var layout = layouts[i];
-                    var currentText = (memoryUsage === Latte.Dock.MultipleLayouts && layout === currentName)
-                            ? " " + i18nc("current layout", "(Current)"): ""
-
-                    var menuItem = menu.newMenuItem(layoutsMenu);
-                    menuItem.text = layout + currentText;
-                    menuItem.checkable = true;
-                    menuItem.checked = Qt.binding( (function(layout) {
-                        return function() {
-                            return (activeLayouts.indexOf(layout)>=0);
-                        };
-                    })(layout));
-                    menuItem.clicked.connect((function(layout) {
-                        return function () {
-                            switchLayoutTimer.toLayout = layout;
-                            return switchLayoutTimer.start();
-                        };
-                    })(layout));
-                }
-
-                menu.addMenuItem(newSeparator(layoutsMenu), layoutsMenuItem);
-
-                var configureItem = menu.newMenuItem(layoutsMenu);
-                configureItem.text = i18n("Configure...");
-                configureItem.clicked.connect(function() {
-                    latteDock.universalLayoutManager.showLatteSettingsDialog();
-                });
-
-            }
-
-            Component.onCompleted: refresh()
-        }
+        visible: latteDock && latteDock.universalLayoutManager.menuLayouts.length>1
     }
 
     PlasmaComponents.MenuItem {
@@ -897,7 +843,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addWidgets
 
-        action: latteDock.containmentActions()[1]
+        action: latteDock ? latteDock.containmentActions()[2] : plasmoid.action("configure");
         visible:  latteDock
     }
 
@@ -905,7 +851,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: configureItem
 
-        action: latteDock ? latteDock.containmentActions()[2] : plasmoid.action("configure")
+        action: latteDock ? latteDock.containmentActions()[3] : plasmoid.action("configure")
     }
 
     PlasmaComponents.MenuItem {

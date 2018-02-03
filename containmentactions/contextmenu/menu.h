@@ -25,6 +25,7 @@
 #include <Plasma/ContainmentActions>
 
 class QAction;
+class QMenu;
 
 class Menu : public Plasma::ContainmentActions {
     Q_OBJECT
@@ -38,15 +39,22 @@ public:
     QAction *action(const QString &name);
 private Q_SLOTS:
     void makeActions();
+    void populateLayouts();
     void requestConfiguration();
-    void populateLayoutsMenu();
+    void switchToLayout(QAction *action);
+
 
 private:
     QList<QAction *>m_actions;
 
+    QAction *m_separator1{nullptr};
+
     QAction *m_addWidgetsAction{nullptr};
     QAction *m_configureAction{nullptr};
     QAction *m_printAction{nullptr};
+    QAction *m_layoutsAction{nullptr};
+
+    QMenu *m_switchLayoutsMenu{nullptr};
 };
 
 #endif

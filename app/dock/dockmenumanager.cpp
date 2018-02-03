@@ -418,77 +418,7 @@ void DockMenuManager::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
     QList<QAction *> actions = plugin->contextualActions();
 
-    if (actions.isEmpty()) {
-        //it probably didn't bother implementing the function. give the user a chance to set
-        //a better plugin.  note that if the user sets no-plugin this won't happen...
-        if ((m_dockView->containment()->containmentType() != Plasma::Types::PanelContainment &&
-             m_dockView->containment()->containmentType() != Plasma::Types::CustomPanelContainment) &&
-            m_dockView->containment()->actions()->action(QStringLiteral("configure"))) {
-            auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-            if (dockCorona) {
-                //desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
-            }
-
-            //  desktopMenu->addAction(m_dockView->containment()->actions()->action(QStringLiteral("configure")));
-        }
-    } else {
-        desktopMenu->addSeparator();
-
-        auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-        if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
-            const QIcon identityIcon = QIcon::fromTheme("user-identity");
-            QMenu *layoutsMenu = new QMenu(desktopMenu);
-
-            QAction *layoutsAction = desktopMenu->addMenu(layoutsMenu); //  new QAction(identityIcon, i18n("Layouts"), desktopMenu);
-            layoutsAction->setIcon(identityIcon);
-            layoutsAction->setCheckable(false);
-            layoutsAction->setText(i18n("Layouts"));
-            layoutsAction->setStatusTip(i18n("Switch to another layout"));
-
-            QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
-            Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
-            QString currentName = dockCorona->layoutManager()->currentLayoutName();
-
-            foreach (auto layout, dockCorona->layoutManager()->menuLayouts()) {
-                QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
-                                      (" " + i18nc("current layout", "(Current)")) : "";
-                QString layoutName = layout + currentText;
-
-                QAction *layoutAction = new QAction(layoutName, layoutsMenu);
-
-                layoutAction->setCheckable(true);
-
-                if (activeLayouts.contains(layout)) {
-                    layoutAction->setChecked(true);
-                } else {
-                    layoutAction->setChecked(false);
-                }
-
-                connect(layoutAction, &QAction::triggered, this, [this, dockCorona, layout] {
-                    dockCorona->layoutManager()->switchToLayout(layout);
-                });
-
-                layoutsMenu->addAction(layoutAction);
-            }
-
-            layoutsMenu->addSeparator();
-
-            QAction *editLayoutsAction = new QAction(i18n("Configure..."), layoutsMenu);
-
-            connect(editLayoutsAction, &QAction::triggered, this, [this, dockCorona] {
-                dockCorona->layoutManager()->showLatteSettingsDialog(Dock::LayoutPage);
-            });
-
-            // layoutsMenu->addAction(editLayoutsAction);
-
-        }
-
-        //desktopMenu->addAction(dockCorona->layoutManager()->addWidgetsAction());
-
-        desktopMenu->addActions(actions);
-    }
+    desktopMenu->addActions(actions);
 
     return;
 }

@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <QMenu>
 #include <QtDBus/QtDBus>
+#include <QTimer>
 
 #include <KActionCollection>
 #include <KLocalizedString>
@@ -43,13 +44,18 @@ Menu::Menu(QObject *parent, const QVariantList &args)
 
 Menu::~Menu()
 {
-    qDeleteAll(m_actions);
+    m_separator1->deleteLater();
+    m_addWidgetsAction->deleteLater();
+    m_configureAction->deleteLater();
+    m_printAction->deleteLater();
+    m_switchLayoutsMenu->deleteLater();
+    m_layoutsAction->deleteLater();
 }
 
 void Menu::makeActions()
 {
-    qDeleteAll(m_actions);
-    m_actions.clear();
+    m_separator1 = new QAction(this);
+    m_separator1->setSeparator(true);
 
     m_printAction = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
     connect(m_printAction, &QAction::triggered, [ = ]() {
@@ -69,6 +75,15 @@ void Menu::makeActions()
     m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("dock/panel settings window", "Dock/Panel Settings"), this);
     m_configureAction->setShortcut(QKeySequence());
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
+
+    m_switchLayoutsMenu = new QMenu;
+    m_layoutsAction = m_switchLayoutsMenu->menuAction();
+    m_layoutsAction->setText(i18n("Layouts"));
+    m_layoutsAction->setIcon(QIcon::fromTheme("user-identity"));
+    m_layoutsAction->setStatusTip(i18n("Switch to another layout"));
+
+    connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
+    connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
 }
 
 
@@ -83,11 +98,19 @@ void Menu::requestConfiguration()
 QList<QAction *> Menu::contextualActions()
 {
     QList<QAction *> actions;
-    actions << m_printAction;
+    actions << m_separator1;
+    //actions << m_printAction;
+    actions << m_layoutsAction;
     actions << m_addWidgetsAction;
     actions << m_configureAction;
 
-    populateLayoutsMenu();
+    auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+
+    if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
+        m_layoutsAction->setVisible(true);
+    } else {
+        m_layoutsAction->setVisible(false);
+    }
 
     return actions;
 }
@@ -98,25 +121,20 @@ QAction *Menu::action(const QString &name)
         return m_addWidgetsAction;
     } else if (name == "configure") {
         return m_configureAction;
+    } else if (name == "layouts") {
+        return m_layoutsAction;
     }
 
     return nullptr;
 }
 
-void Menu::populateLayoutsMenu()
+void Menu::populateLayouts()
 {
+    m_switchLayoutsMenu->clear();
+
     auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
 
     if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
-        const QIcon identityIcon = QIcon::fromTheme("user-identity");
-        QMenu *layoutsMenu = new QMenu; //(desktopMenu);
-
-        QAction *layoutsAction = new QAction(identityIcon, i18n("Layouts"), this);
-        layoutsAction->setIcon(identityIcon);
-        layoutsAction->setCheckable(false);
-        layoutsAction->setText(i18n("Layouts"));
-        layoutsAction->setStatusTip(i18n("Switch to another layout"));
-
         QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
         Latte::Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
         QString currentName = dockCorona->layoutManager()->currentLayoutName();
@@ -126,7 +144,7 @@ void Menu::populateLayoutsMenu()
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
 
-            QAction *layoutAction = new QAction(layoutName, layoutsMenu);
+            QAction *layoutAction = new QAction(layoutName, m_switchLayoutsMenu);
 
             layoutAction->setCheckable(true);
 
@@ -136,16 +154,35 @@ void Menu::populateLayoutsMenu()
                 layoutAction->setChecked(false);
             }
 
-            connect(layoutAction, &QAction::triggered, this, [this, dockCorona, layout] {
-                dockCorona->layoutManager()->switchToLayout(layout);
-            });
+            layoutAction->setData(layout);
 
-            layoutsMenu->addAction(layoutAction);
-
-            qDebug() << layout;
+            m_switchLayoutsMenu->addAction(layoutAction);
         }
 
-        layoutsMenu->addSeparator();
+        m_switchLayoutsMenu->addSeparator();
+
+        QAction *editLayoutsAction = new QAction(i18n("Configure..."), m_switchLayoutsMenu);
+        editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
+        m_switchLayoutsMenu->addAction(editLayoutsAction);
+    }
+}
+
+void Menu::switchToLayout(QAction *action)
+{
+    auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+
+    if (dockCorona && dockCorona->layoutManager()) {
+        const QString layout = action->data().toString();
+
+        if (layout == " _show_latte_settings_dialog_") {
+            QTimer::singleShot(400, [this, dockCorona]() {
+                dockCorona->layoutManager()->showLatteSettingsDialog(Latte::Dock::LayoutPage);
+            });
+        } else {
+            QTimer::singleShot(400, [this, dockCorona, layout]() {
+                dockCorona->layoutManager()->switchToLayout(layout);
+            });
+        }
     }
 }
 

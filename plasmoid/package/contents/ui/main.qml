@@ -479,30 +479,6 @@ Item {
         }
     }
 
-    //! Timer to fix a crash that when going to Alternative Session through Context Menu,
-    //! animations are played during the destruction and because of that Latte.IconItem is crashing.
-    //! the timer makes sure that the animations will have ended and then change to alternative
-    //! session
-    Timer {
-        id: switchLayoutTimer
-        //this is the animation time needed in order for tasks to restore their zoom first
-        interval: 7 * (root.durationTime * units.shortDuration)
-        property string toLayout
-
-        onTriggered: {
-            if (root.contextMenu) {
-                root.contextMenu.destroy();
-                root.contextMenu = null;
-            }
-
-            latteDock.universalLayoutManager.switchToLayout(toLayout);
-
-            if (latteDock && latteDock.debugModeTimers) {
-                console.log("plasmoid timer: switchLayoutTimer called...");
-            }
-        }
-    }
-
     //! Timer to delay the removal of the window through the context menu in case the
     //! the window is zoomed
     Timer{

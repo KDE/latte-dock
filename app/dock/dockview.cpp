@@ -115,20 +115,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         //! an alternative would be for Layout to remove on startup ActionPlugins that are old style...
         this->containment()->setContainmentActions(QString("RightButton;NoModifier"), QString("org.kde.latte.contextmenu"));
 
-        QAction *lockWidgetsAction = this->containment()->actions()->action("lock widgets");
-        this->containment()->actions()->removeAction(lockWidgetsAction);
-        QAction *removeAction = containment()->actions()->action("remove");
-        removeAction->setVisible(false);
-        QAction *configureAction = containment()->actions()->action("configure");
-        configureAction->setShortcut(QKeySequence());
-        configureAction->setText(i18nc("dock/panel settings window", "Dock/Panel Settings"));
-        //containment()->actions()->removeAction(removeAction);
-        //FIX: hide and not delete in order to disable a nasty behavior from
-        //ContainmentInterface. If only one action exists for containment the
-        //this action is triggered directly
-        QAction *addWidgetsAction = this->containment()->actions()->action("add widgets");
-        addWidgetsAction->setVisible(false);
-        //containment()->actions()->removeAction(addWidgetsAction);
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
