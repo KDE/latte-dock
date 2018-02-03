@@ -114,6 +114,19 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
 
 DockCorona::~DockCorona()
 {
+    //! BEGIN: Give the time to slide-out docks when closing
+    m_layoutManager->hideAllDocks();
+
+    QTimer::singleShot(400, [this]() {
+        m_quitTimedEnded = true;
+    });
+
+    while (!m_quitTimedEnded) {
+        QGuiApplication::processEvents(QEventLoop::AllEvents, 50);
+    }
+
+    //! END: slide-out docks when closing
+
     m_docksScreenSyncTimer.stop();
 
     if (m_layoutManager->memoryUsage() == Dock::SingleLayout) {
@@ -143,10 +156,9 @@ void DockCorona::load()
 
         m_activitiesStarting = false;
 
-        //  connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
         connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockCorona::primaryOutputChanged, Qt::UniqueConnection);
-        //  connect(qGuiApp, &QGuiApplication::screenRemoved, this, &DockCorona::screenRemoved, Qt::UniqueConnection);
         connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &DockCorona::screenCountChanged);
+
         connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
 
         QString assignedLayout = m_layoutManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());

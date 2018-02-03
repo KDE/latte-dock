@@ -21,6 +21,7 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
+#include "launcherssignals.h"
 #include "settingsdialog.h"
 
 #include <QAction>
@@ -73,6 +74,7 @@ public:
     void loadLayoutOnStartup(QString layoutName);
     void unload();
     void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
+    void hideAllDocks();
     void pauseLayout(QString layoutName);
     void recreateDock(Plasma::Containment *containment);
     void syncDockViewsToScreens();

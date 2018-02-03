@@ -605,6 +605,15 @@ void LayoutManager::importLatteLayout(QString layoutPath)
 //! This might not be needed as it is Layout responsibility
 }
 
+void LayoutManager::hideAllDocks()
+{
+    foreach (auto layout, m_activeLayouts) {
+        if (layout->isOriginalLayout()) {
+            emit currentLayoutIsSwitching(layout->name());
+        }
+    }
+}
+
 bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 {
     if (m_activeLayouts.size() > 0 && currentLayoutName() == layoutName && previousMemoryUsage == -1) {

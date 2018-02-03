@@ -110,8 +110,8 @@ signals:
     void raiseDocksTemporaryChanged();
 
 private slots:
-    void showAlternativesForApplet(Plasma::Applet *applet);
     void alternativesVisibilityChanged(bool visible);
+    void showAlternativesForApplet(Plasma::Applet *applet);
     void load();
 
     void addOutput(QScreen *screen);
@@ -134,8 +134,8 @@ private:
     QStringList appletsIds();
 
     bool m_activitiesStarting{true};
-    //! this is used to enforce loading the default layout on startup
-    bool m_defaultLayoutOnStartup{false};
+    bool m_defaultLayoutOnStartup{false}; //! this is used to enforce loading the default layout on startup
+    bool m_quitTimedEnded{false}; //! this is used on destructor in order to delay it and slide-out the docks
 
     //!it can be used on startup to change memory usage from command line
     int m_userSetMemoryUsage{ -1};
