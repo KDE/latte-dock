@@ -39,6 +39,7 @@ public:
 private Q_SLOTS:
     void makeActions();
     void requestConfiguration();
+    void populateLayoutsMenu();
 
 private:
     QList<QAction *>m_actions;

@@ -19,8 +19,13 @@
 
 #include "menu.h"
 
+#include "../../app/dockcorona.h"
+#include "../../app/layoutmanager.h"
+#include "../../liblattedock/dock.h"
+
 #include <QAction>
 #include <QDebug>
+#include <QMenu>
 #include <QtDBus/QtDBus>
 
 #include <KActionCollection>
@@ -64,24 +69,6 @@ void Menu::makeActions()
     m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("dock/panel settings window", "Dock/Panel Settings"), this);
     m_configureAction->setShortcut(QKeySequence());
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
-
-    /*foreach (const QString &id, m_consumer.activities(KActivities::Info::Running)) {
-        KActivities::Info info(id);
-        QAction *action = new QAction(QIcon::fromTheme(info.icon()), info.name(), this);
-        action->setData(id);
-
-        if (id == m_consumer.currentActivity()) {
-            QFont font = action->font();
-            font.setBold(true);
-            action->setFont(font);
-        }
-
-        connect(action, &QAction::triggered, [ = ]() {
-            switchTo(action);
-        });
-
-        m_actions << action;
-    }*/
 }
 
 
@@ -100,6 +87,8 @@ QList<QAction *> Menu::contextualActions()
     actions << m_addWidgetsAction;
     actions << m_configureAction;
 
+    populateLayoutsMenu();
+
     return actions;
 }
 
@@ -112,6 +101,52 @@ QAction *Menu::action(const QString &name)
     }
 
     return nullptr;
+}
+
+void Menu::populateLayoutsMenu()
+{
+    auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+
+    if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
+        const QIcon identityIcon = QIcon::fromTheme("user-identity");
+        QMenu *layoutsMenu = new QMenu; //(desktopMenu);
+
+        QAction *layoutsAction = new QAction(identityIcon, i18n("Layouts"), this);
+        layoutsAction->setIcon(identityIcon);
+        layoutsAction->setCheckable(false);
+        layoutsAction->setText(i18n("Layouts"));
+        layoutsAction->setStatusTip(i18n("Switch to another layout"));
+
+        QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
+        Latte::Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
+        QString currentName = dockCorona->layoutManager()->currentLayoutName();
+
+        foreach (auto layout, dockCorona->layoutManager()->menuLayouts()) {
+            QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
+                                  (" " + i18nc("current layout", "(Current)")) : "";
+            QString layoutName = layout + currentText;
+
+            QAction *layoutAction = new QAction(layoutName, layoutsMenu);
+
+            layoutAction->setCheckable(true);
+
+            if (activeLayouts.contains(layout)) {
+                layoutAction->setChecked(true);
+            } else {
+                layoutAction->setChecked(false);
+            }
+
+            connect(layoutAction, &QAction::triggered, this, [this, dockCorona, layout] {
+                dockCorona->layoutManager()->switchToLayout(layout);
+            });
+
+            layoutsMenu->addAction(layoutAction);
+
+            qDebug() << layout;
+        }
+
+        layoutsMenu->addSeparator();
+    }
 }
 
 K_EXPORT_PLASMA_CONTAINMENTACTIONS_WITH_JSON(lattecontextmenu, Menu, "plasma-containmentactions-lattecontextmenu.json")

@@ -48,6 +48,8 @@
 #include <Plasma/Corona>
 #include <Plasma/Containment>
 
+#include <PlasmaQuick/ConfigView>
+
 #include <KActionCollection>
 #include <KPluginMetaData>
 #include <KGlobalAccel>
@@ -56,6 +58,7 @@
 #include <KPackage/PackageLoader>
 #include <KAboutData>
 #include <KActivities/Consumer>
+#include <KDeclarative/QmlObject>
 
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>

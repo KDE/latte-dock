@@ -27,15 +27,23 @@
 #include <QTimer>
 
 #include <Plasma/Corona>
-#include <PlasmaQuick/ConfigView>
+//#include <PlasmaQuick/ConfigView>
 
 #include <KAboutApplicationDialog>
-#include <KDeclarative/QmlObject>
+//#include <KDeclarative/QmlObject>
+
+namespace KDeclarative {
+class QmlObject;
+}
 
 namespace Plasma {
 class Corona;
 class Containment;
 class Types;
+}
+
+namespace PlasmaQuick {
+class ConfigView;
 }
 
 namespace KActivities {
