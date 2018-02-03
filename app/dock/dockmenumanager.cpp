@@ -68,6 +68,7 @@ void DockMenuManager::menuAboutToHide()
 bool DockMenuManager::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "Step -1 ...";
+
     if (!event || !m_dockView->containment()) {
         return false;
     }
@@ -86,7 +87,7 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
     }
 
     //qDebug() << "1 ...";
-    const QString trigger = Plasma::ContainmentActions::eventToString(event);
+    QString trigger = Plasma::ContainmentActions::eventToString(event);
 
     if (trigger == "RightButton;NoModifier") {
         Plasma::ContainmentActions *plugin = m_dockView->containment()->containmentActions().value(trigger);

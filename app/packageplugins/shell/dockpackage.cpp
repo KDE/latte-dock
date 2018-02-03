@@ -41,6 +41,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     auto fallback = KPackage::PackageLoader::self()->loadPackage("Plasma/Shell", "org.kde.plasma.desktop");
     package->setDefaultPackageRoot(QStringLiteral("plasma/shells/"));
     package->setPath("org.kde.latte.shell");
+    package->addFileDefinition("defaults", QStringLiteral("defaults"), i18n("Latte Dock defaults"));
     package->addFileDefinition("lattedockui", QStringLiteral("views/Panel.qml"), i18n("Latte Dock panel"));
     //Configuration
     package->addFileDefinition("lattedockconfigurationui", QStringLiteral("configuration/LatteDockConfiguration.qml"), i18n("Dock configuration UI"));
