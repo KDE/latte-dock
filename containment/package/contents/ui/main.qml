@@ -446,6 +446,12 @@ DragDrop.DropArea {
         }
     }
 
+    onDockContainsMouseChanged: {
+        if (!dockContainsMouse) {
+            initializeHoveredIndexes();
+        }
+    }
+
     onDragEnter: {
         if (plasmoid.immutable) {
             event.ignore();
@@ -875,8 +881,8 @@ DragDrop.DropArea {
     }
 
     function clearZoom(){
-        layoutsContainer.currentSpot = -1000;
-        layoutsContainer.hoveredIndex = -1;
+        //layoutsContainer.currentSpot = -1000;
+        //layoutsContainer.hoveredIndex = -1;
 
         if (latteApplet){
             latteApplet.clearZoom();
@@ -931,6 +937,13 @@ DragDrop.DropArea {
         return splitters;
     }
 
+    function initializeHoveredIndexes() {
+        layoutsContainer.hoveredIndex = -1;
+        layoutsContainer.currentSpot = -1000;
+        if (latteApplet) {
+            latteApplet.initializeHoveredIndex();
+        }
+    }
 
     function mouseInCanBeHoveredApplet(){
         if (latteApplet && latteApplet.containsMouse())
@@ -1248,7 +1261,7 @@ DragDrop.DropArea {
             if (!dock.contextMenuIsShown) {
                 checkRestoreZoom.start();
             } else {
-                root.globalDirectRender = false;
+                root.setGlobalDirectRender(false);
             }
         }
     }
@@ -1414,6 +1427,8 @@ DragDrop.DropArea {
         anchors.fill: parent
         hoverEnabled: true
         onEntered: {
+            initializeHoveredIndexes();
+
             if(!root.editMode)
                 checkRestoreZoom.start();
         }
@@ -1507,8 +1522,7 @@ DragDrop.DropArea {
     //Timer to check if the mouse is still outside the dock in order to restore zooms to 1.0
     Timer{
         id:checkRestoreZoom
-        repeat:false;
-        interval: 150;
+        interval: 25
 
         onTriggered: {
             if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
@@ -1539,13 +1553,14 @@ DragDrop.DropArea {
     //during first hovering phase
     Timer {
         id: enableDirectRenderTimer
-        interval: 4 * root.durationTime * units.shortDuration
+        interval: checkRestoreZoom.interval //4 * root.durationTime * units.shortDuration
         onTriggered: {
             if (latteApplet && latteApplet.waitingLaunchers.length > 0)
                 return;
 
-            if (dock.visibility.containsMouse)
-                root.globalDirectRender = true;
+            if (dock.visibility.containsMouse && !rootMouseArea.containsMouse){
+                setGlobalDirectRender(true);
+            }
 
             if (root.debugModeTimers) {
                 console.log("containment timer: enableDirectRenderTimer called...");

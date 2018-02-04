@@ -550,19 +550,22 @@ Item {
 
             root.showTooltipLabel(container, applet.title);
 
-            if (lockZoom || !canBeHovered) {
-                return;
+            //console.log("entered applet:" + layoutsContainer.hoveredIndex);
+
+            if ((wrapper.zoomScale>=root.midZoomFactor) && (layoutsContainer.hoveredIndex !== -1)
+                    && !enableDirectRenderTimer.running && !root.globalDirectRender) {
+                root.setGlobalDirectRender(true);
+                enableDirectRenderTimer.start();
             }
 
             layoutsContainer.hoveredIndex = index;
 
-            if (root.isHalfShown || (root.latteApplet && root.latteApplet.noTasksInAnimation>0)) {
+            if (lockZoom || !canBeHovered) {
                 return;
             }
 
-            if ((wrapper.zoomScale>=root.midZoomFactor) && !enableDirectRenderTimer.running && !root.globalDirectRender) {
-                root.setGlobalDirectRender(true);
-                enableDirectRenderTimer.start();
+            if (root.isHalfShown || (root.latteApplet && root.latteApplet.noTasksInAnimation>0)) {
+                return;
             }
 
             if (root.isHorizontal){

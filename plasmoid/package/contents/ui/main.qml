@@ -289,6 +289,11 @@ Item {
     }
     /////
 
+    function initializeHoveredIndex() {
+        icList.hoveredIndex = -1;
+        icList.currentSpot = -1000;
+    }
+
     function launchersDropped(urls){
         mouseHandler.urlsDroppedOnArea(urls);
     }
@@ -796,8 +801,7 @@ Item {
 
                 icList.directRender = false;
                 if(root.latteDock) {
-                    root.latteDock.globalDirectRender = false;
-                    root.latteDock.clearZoom();
+                    root.latteDock.startEnableDirectRenderTimer();
                 }
 
                 root.clearZoom();
@@ -1563,8 +1567,9 @@ Item {
         if (!previewContainsMouse())
             windowsPreviewDlg.hide(4);
 
-        icList.currentSpot = -1000;
-        icList.hoveredIndex = -1;
+        if (!latteDock) {
+            initializeHoveredIndex();
+        }
 
         root.clearZoomSignal();
     }
@@ -1591,7 +1596,7 @@ Item {
 
     function startEnableDirectRenderTimer() {
         if (latteDock) {
-            latteDock.setGlobalDirectRender(true);
+          //  latteDock.setGlobalDirectRender(true);
             latteDock.startEnableDirectRenderTimer();
         } else {
             enableDirectRenderTimer.start();

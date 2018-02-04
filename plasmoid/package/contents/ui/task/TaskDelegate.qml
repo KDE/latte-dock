@@ -493,6 +493,15 @@ MouseArea{
         if (root.editMode)
             return;
 
+        // console.log("entered task:" + icList.hoveredIndex);
+
+        if ((wrapper.mScale>=root.midZoomFactor) && (icList.hoveredIndex!==-1 || icList.hoveredIndex===index)
+                && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+            root.startEnableDirectRenderTimer();
+        }
+
+        icList.hoveredIndex = index;
+
         if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
         }
@@ -504,16 +513,11 @@ MouseArea{
             return;
         }
 
-        if ((wrapper.mScale>=root.midZoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
-            root.startEnableDirectRenderTimer();
-        }
-
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
         }
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
-            icList.hoveredIndex = index;
             if (inAttentionAnimation) {
                 var subSpacerScale = (root.zoomFactor-1)/2;
                 hiddenSpacerLeft.nScale = subSpacerScale;
@@ -567,12 +571,12 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
+            icList.hoveredIndex = index;
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
                 if(root.dragSource == null){
                     if (icList.orientation == Qt.Horizontal){
                         var step = Math.abs(icList.currentSpot-mouse.x);
                         if (step >= root.animationStep){
-                            icList.hoveredIndex = index;
                             icList.currentSpot = mouse.x;
 
                             wrapper.calculateScales(mouse.x);
@@ -581,7 +585,6 @@ MouseArea{
                     else{
                         var step = Math.abs(icList.currentSpot-mouse.y);
                         if (step >= root.animationStep){
-                            icList.hoveredIndex = index;
                             icList.currentSpot = mouse.y;
 
                             wrapper.calculateScales(mouse.y);
