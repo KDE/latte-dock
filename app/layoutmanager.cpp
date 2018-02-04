@@ -554,6 +554,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
     }
 
     if (!layoutPath.isEmpty() && m_corona->containments().size() == 0) {
+        cleanupOnStartup(layoutPath);
         qDebug() << "LOADING CORONA LAYOUT:" << layoutPath;
         m_corona->loadLayout(layoutPath);
 
@@ -583,6 +584,31 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
         }
     }
 }
+
+void LayoutManager::cleanupOnStartup(QString path)
+{
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(path);
+
+    KConfigGroup actionGroups = KConfigGroup(filePtr, "ActionPlugins");
+
+    QStringList deprecatedActionGroup;
+
+    foreach (auto actId, actionGroups.groupList()) {
+        QString pluginId = actionGroups.group(actId).readEntry("RightButton;NoModifier", "");
+
+        if (pluginId == "org.kde.contextmenu") {
+            deprecatedActionGroup << actId;
+        }
+    }
+
+    foreach (auto pId, deprecatedActionGroup) {
+        qDebug() << "!!!!!!!!!!!!!!!!  !!!!!!!!!!!! !!!!!!! REMOVING :::: " << pId;
+        actionGroups.group(pId).deleteGroup();
+    }
+
+    actionGroups.sync();
+}
+
 
 void LayoutManager::showAboutDialog()
 {

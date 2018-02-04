@@ -138,6 +138,7 @@ private slots:
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
+    void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();
     //! it is used just in order to provide translations for the presets

@@ -111,10 +111,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
             m_visibility = new VisibilityManager(this);
         }
 
-        //! Only way to be sure that actions are set correctly because of the old way to expose the menu actions
-        //! an alternative would be for Layout to remove on startup ActionPlugins that are old style...
-        this->containment()->setContainmentActions(QString("RightButton;NoModifier"), QString("org.kde.latte.contextmenu"));
-
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
