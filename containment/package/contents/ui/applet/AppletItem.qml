@@ -221,11 +221,6 @@ Item {
         } else {
             restoreAnimation.start();
         }
-
-        //if (restoreAnimation)
-        //    restoreAnimation.start();
-        // if(wrapper)
-        //     wrapper.zoomScale = 1;
     }
 
     function checkCanBeHovered(){
@@ -386,6 +381,15 @@ Item {
 
     Connections{
         target: root
+
+        onGlobalDirectRenderChanged:{
+            if (root.globalDirectRender && restoreAnimation.running) {
+                // console.log("CLEAR APPLET SCALE !!!!");
+                restoreAnimation.stop();
+                wrapper.zoomScale = 1;
+            }
+        }
+
         onLatteAppletHoveredIndexChanged: {
             if ( (root.zoomFactor>1) && (root.latteAppletHoveredIndex >= 0) ){
                 var distance = 2;
@@ -676,7 +680,6 @@ Item {
         }
     ]
     //END states
-
 
     //BEGIN animations
     ///////Restore Zoom Animation/////

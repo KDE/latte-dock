@@ -323,6 +323,14 @@ MouseArea{
                 }
             }
             onSeparatorsUpdated: separatorItem.updateForceHiddenState();
+
+            onGlobalDirectRenderChanged:{
+                if (root.globalDirectRender && restoreAnimation.running) {
+                    // console.log("CLEAR TASK SCALE !!!!");
+                    restoreAnimation.stop();
+                    wrapper.mScale = 1;
+                }
+            }
         }
 
         Rectangle {

@@ -249,7 +249,7 @@ DragDrop.DropArea {
                                                        Latte.Dock.Center : plasmoid.configuration.panelPosition )
 
     property real zoomFactor: (Latte.WindowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
-    property real midZoomFactor: (1 + (zoomFactor-1)/3)
+    property real midZoomFactor: 1 //(1 + (zoomFactor-1)/3)
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -1088,7 +1088,13 @@ DragDrop.DropArea {
         if (latteApplet && latteApplet.waitingLaunchers.length > 0)
             return;
 
-        root.globalDirectRender = value;
+        if (value === true) {
+            if (dockContainsMouse && !rootMouseArea.containsMouse) {
+                root.globalDirectRender = true;
+            }
+        } else {
+            root.globalDirectRender = false;
+        }
     }
 
     function updateAutomaticIconSize() {
@@ -1374,10 +1380,6 @@ DragDrop.DropArea {
         onTriggered: {
             if (!titleTooltipDialog.activeItemHovered) {
                 titleTooltipDialog.visible = false;
-                if (dock && dock.visibility && !dock.visibility.containsMouse) {
-                    enableDirectRenderTimer.stop();
-                    setGlobalDirectRender(false);
-                }
             }
 
             if (root.debugModeTimers) {
