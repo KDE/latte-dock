@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QFont>
 #include <QMenu>
 #include <QtDBus/QtDBus>
 #include <QTimer>
@@ -155,6 +156,12 @@ void Menu::populateLayouts()
             }
 
             layoutAction->setData(layout);
+
+            if (dockCorona->layoutManager()->activeLayout(layout)) {
+                QFont font = layoutAction->font();
+                font.setBold(true);
+                layoutAction->setFont(font);
+            }
 
             m_switchLayoutsMenu->addAction(layoutAction);
         }
