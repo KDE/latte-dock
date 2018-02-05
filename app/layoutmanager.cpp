@@ -878,7 +878,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
                 newLayout->initToCorona(m_corona);
                 newLayout->importToCorona();
 
-                if (newLayout->isOriginalLayout()) {
+                if (newLayout->isOriginalLayout() && m_corona->universalSettings()->showInfoWindow()) {
                     showInfoWindow(i18n("Adding layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
                 }
             }
