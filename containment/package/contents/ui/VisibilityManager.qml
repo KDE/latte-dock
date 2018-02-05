@@ -104,7 +104,7 @@ Item{
         target: dock
         property: "drawShadows"
         when: dock
-        value: root.drawShadowsExternal
+        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding)
     }
 
     Binding{
@@ -113,7 +113,7 @@ Item{
         when: dock
         value: ((root.blurEnabled && root.useThemePanel && !root.solidPanel)
                 || (root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
-               && (!root.inStartup || inForceHiding)
+               && (!root.inStartup || inForceHiding || inTempHiding)
     }
 
     Binding{
