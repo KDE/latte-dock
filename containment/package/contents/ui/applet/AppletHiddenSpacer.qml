@@ -44,7 +44,10 @@ Item{
 
     Behavior on nScale {
         enabled: !root.globalDirectRender
-        NumberAnimation { duration: 3*container.animationTime }
+        NumberAnimation {
+            duration: 4 * container.animationTime;
+            easing.type: Easing.OutCubic
+        }
     }
 
     Behavior on nScale {

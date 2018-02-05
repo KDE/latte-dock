@@ -98,7 +98,10 @@ Item{
 
     Behavior on separatorSpace {
         enabled: mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running
-        NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+        NumberAnimation {
+            duration: 4 * mainItemContainer.animationTime;
+            easing.type: Easing.OutCubic
+        }
     }
 
     Behavior on separatorSpace {
