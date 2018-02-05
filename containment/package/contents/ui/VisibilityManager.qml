@@ -111,8 +111,9 @@ Item{
         target: dock
         property: "drawEffects"
         when: dock
-        value: (root.blurEnabled && root.useThemePanel && !root.solidPanel)
-               || (root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive)
+        value: ((root.blurEnabled && root.useThemePanel && !root.solidPanel)
+                || (root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
+               && (!root.inStartup || inForceHiding)
     }
 
     Binding{
@@ -339,7 +340,7 @@ Item{
                 //this is used to fix a bug with shadow showing when the animation of edit mode
                 //is triggered
                 tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + root.editShadow :
-                                                                            thicknessNormalOriginal
+                                                                    thicknessNormalOriginal
 
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;

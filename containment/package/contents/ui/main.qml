@@ -74,7 +74,7 @@ DragDrop.DropArea {
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
-                               || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+                                || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
@@ -155,8 +155,8 @@ DragDrop.DropArea {
     property int panelEdgeSpacing: Math.max(iconSize / 3, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency
     property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
-                                      || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                                      && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized))
+                                        || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
+                                       && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized))
                                       || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100 && !(root.solidPanel && !plasmoid.configuration.panelShadows) )
 
 
@@ -1099,8 +1099,8 @@ DragDrop.DropArea {
 
     function updateAutomaticIconSize() {
         if ( !blockAutomaticUpdateIconSize.running
-             && (visibilityManager.normalState && !root.editMode && !visibilityManager.inTempHiding
-             && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
+                && (visibilityManager.normalState && !root.editMode && !visibilityManager.inTempHiding
+                    && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             blockAutomaticUpdateIconSize.start();
 
