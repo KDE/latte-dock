@@ -118,11 +118,14 @@ Item{
 
     Behavior on mScale {
         enabled: !root.globalDirectRender || inMimicParabolicAnimation
-        NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+        NumberAnimation{
+            duration: 4 * mainItemContainer.animationTime
+            easing.type: Easing.OutCubic
+        }
     }
 
     Behavior on mScale {
-        enabled: root.globalDirectRender && !inMimicParabolicAnimation
+        enabled: root.globalDirectRender && !inMimicParabolicAnimation && !restoreAnimation.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 

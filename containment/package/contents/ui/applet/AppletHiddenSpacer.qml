@@ -44,11 +44,11 @@ Item{
 
     Behavior on nScale {
         enabled: !root.globalDirectRender
-        NumberAnimation { duration: 3*container.animationTime }
+        NumberAnimation { duration: 3 * container.animationTime }
     }
 
     Behavior on nScale {
-        enabled: root.globalDirectRender
+        enabled: root.globalDirectRender && !restoreAnimation.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 

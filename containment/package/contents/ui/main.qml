@@ -1540,7 +1540,7 @@ DragDrop.DropArea {
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();
 
-                root.globalDirectRender = false;
+                setGlobalDirectRender(false);
                 root.clearZoom();
             }
 
@@ -1560,7 +1560,7 @@ DragDrop.DropArea {
             if (latteApplet && latteApplet.waitingLaunchers.length > 0)
                 return;
 
-            if (dock.visibility.containsMouse && !rootMouseArea.containsMouse){
+            if (dock.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet()){
                 setGlobalDirectRender(true);
             }
 

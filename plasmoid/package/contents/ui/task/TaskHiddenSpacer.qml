@@ -20,6 +20,7 @@
 
 import QtQuick 2.0
 
+import org.kde.latte 0.1 as Latte
 
 Item{
     id: hiddenSpacer
@@ -98,11 +99,11 @@ Item{
 
     Behavior on separatorSpace {
         enabled: mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running
-        NumberAnimation { duration: 3 * mainItemContainer.animationTime }
+        NumberAnimation{ duration: 3 * mainItemContainer.animationTime }
     }
 
     Behavior on separatorSpace {
-        enabled: !mainItemContainer.inFastRestoreAnimation && !showWindowAnimation.running
+        enabled: !mainItemContainer.inFastRestoreAnimation && !showWindowAnimation.running && !restoreAnimation.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
