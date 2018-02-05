@@ -1524,7 +1524,7 @@ DragDrop.DropArea {
     //Timer to check if the mouse is still outside the dock in order to restore zooms to 1.0
     Timer{
         id:checkRestoreZoom
-        interval: 25
+        interval: 50
 
         onTriggered: {
             if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
@@ -1536,7 +1536,7 @@ DragDrop.DropArea {
             //! dropped because was creating a glitch when the user was clicking the area
             //! underneath the applet until the screen edge and the applet was zoomed
             // || (rootMouseArea.containsMouse && !root.editMode)
-            if (!dock.visibility.containsMouse || !mouseInCanBeHoveredApplet()) {
+            if (!dock.visibility.containsMouse || rootMouseArea.containsMouse || !mouseInCanBeHoveredApplet()) {
                 if (enableDirectRenderTimer.running)
                     enableDirectRenderTimer.stop();
 
@@ -1555,7 +1555,7 @@ DragDrop.DropArea {
     //during first hovering phase
     Timer {
         id: enableDirectRenderTimer
-        interval: checkRestoreZoom.interval //4 * root.durationTime * units.shortDuration
+        interval: checkRestoreZoom.interval + 20 //4 * root.durationTime * units.shortDuration
         onTriggered: {
             if (latteApplet && latteApplet.waitingLaunchers.length > 0)
                 return;
