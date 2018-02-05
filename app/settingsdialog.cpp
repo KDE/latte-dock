@@ -147,6 +147,14 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
         updateApplyButtonsState();
     });
 
+    connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, [&]() {
+        updateApplyButtonsState();
+    });
+
+    connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, [&]() {
+        updateApplyButtonsState();
+    });
+
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
