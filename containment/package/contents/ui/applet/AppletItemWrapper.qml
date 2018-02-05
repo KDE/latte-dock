@@ -609,10 +609,7 @@ Item{
 
     Behavior on zoomScale {
         enabled: !root.globalDirectRender
-        NumberAnimation {
-            duration: 4 * container.animationTime;
-            easing.type: Easing.OutCubic
-        }
+        NumberAnimation { duration: 3*container.animationTime }
     }
 
     Behavior on zoomScale {
