@@ -216,10 +216,12 @@ Item {
     //outside the LatteApplet Plasmoid
     //property int debCounter: 0;
     function clearZoom(){
-        if (root.globalDirectRender){
-            wrapper.zoomScale = 1;
-        } else {
-            restoreAnimation.start();
+        if (layoutsContainer.hoveredIndex === -1) {
+            if (root.globalDirectRender){
+                wrapper.zoomScale = 1;
+            } else {
+                restoreAnimation.start();
+            }
         }
     }
 

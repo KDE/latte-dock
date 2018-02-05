@@ -326,9 +326,8 @@ MouseArea{
 
             onGlobalDirectRenderChanged:{
                 if (root.globalDirectRender && restoreAnimation.running) {
-                    // console.log("CLEAR TASK SCALE !!!!");
+                    // console.log("Cleat Task Scale !!!!");
                     restoreAnimation.stop();
-                    wrapper.mScale = 1;
                 }
             }
         }
@@ -812,8 +811,13 @@ MouseArea{
 
         if (root.globalDirectRender)
             wrapper.mScale = 1;
-        else if (!inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation)
-            restoreAnimation.start();
+        else if (!inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation){
+            if (icList.hoveredIndex === -1) {
+                restoreAnimation.start();
+            } else {
+                console.log("Clear zoom signal ignored...");
+            }
+        }
     }
 
     function handlerDraggingFinished(){

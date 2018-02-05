@@ -881,9 +881,6 @@ DragDrop.DropArea {
     }
 
     function clearZoom(){
-        //layoutsContainer.currentSpot = -1000;
-        //layoutsContainer.hoveredIndex = -1;
-
         if (latteApplet){
             latteApplet.clearZoom();
         }
@@ -1091,6 +1088,8 @@ DragDrop.DropArea {
         if (value === true) {
             if (dockContainsMouse && !rootMouseArea.containsMouse) {
                 root.globalDirectRender = true;
+            } else {
+            //    console.log("direct render true ignored...");
             }
         } else {
             root.globalDirectRender = false;
@@ -1541,6 +1540,7 @@ DragDrop.DropArea {
                     enableDirectRenderTimer.stop();
 
                 setGlobalDirectRender(false);
+                root.initializeHoveredIndexes();
                 root.clearZoom();
             }
 
