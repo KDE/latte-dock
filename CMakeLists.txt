@@ -10,7 +10,7 @@ set(BUG_ADDRESS "https://github.com/psifidotos/Latte-Dock/issues")
 set(FAQS "https://github.com/psifidotos/Latte-Dock/wiki/F.A.Q.")
 
 set(QT_MIN_VERSION "5.7.0")
-set(KF5_MIN_VERSION "5.33.0")
+set(KF5_MIN_VERSION "5.29.0")
 
 set(KF5_LOCALE_PREFIX "")
 

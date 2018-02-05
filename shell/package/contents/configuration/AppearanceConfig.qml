@@ -26,7 +26,6 @@ import QtQuick.Dialogs 1.2
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
@@ -69,7 +68,7 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
-                PlasmaComponents3.ComboBox {
+                PlasmaComponents.ComboBox {
                     id: layoutCmb
                     Layout.fillWidth: true
 
@@ -863,7 +862,7 @@ PlasmaComponents.Page {
                         text:" "
                         enabled: showAppletShadow.checked
 
-                        PlasmaComponents3.ComboBox {
+                        PlasmaComponents.ComboBox {
                             id: restoreCmb
                             anchors.fill: parent
                             enabled: backColorBtn.enabled
