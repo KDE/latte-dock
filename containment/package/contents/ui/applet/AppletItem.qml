@@ -690,24 +690,24 @@ Item {
             target: wrapper
             property: "zoomScale"
             to: 1
-            duration: 3 * container.animationTime
-            easing.type: Easing.Linear
+            duration: 4 * container.animationTime
+            easing.type: Easing.InCubic
         }
 
         PropertyAnimation {
             target: hiddenSpacerLeft
             property: "nScale"
             to: 0
-            duration: 3 * container.animationTime
-            easing.type: Easing.Linear
+            duration: 4 * container.animationTime
+            easing.type: Easing.InCubic
         }
 
         PropertyAnimation {
             target: hiddenSpacerRight
             property: "nScale"
             to: 0
-            duration: 3 * container.animationTime
-            easing.type: Easing.Linear
+            duration: 4 * container.animationTime
+            easing.type: Easing.InCubic
         }
     }
 

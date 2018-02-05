@@ -30,24 +30,24 @@ ParallelAnimation{
         target: wrapper
         property: "mScale"
         to: 1
-        duration: 3 * mainItemContainer.animationTime
-        easing.type: Easing.Linear
+        duration: 4 * mainItemContainer.animationTime
+        easing.type: Easing.InCubic
     }
 
     PropertyAnimation {
         target: hiddenSpacerLeft
         property: "nScale"
         to: 0
-        duration: 3 * mainItemContainer.animationTime
-        easing.type: Easing.Linear
+        duration: 4 * mainItemContainer.animationTime
+        easing.type: Easing.InCubic
     }
 
     PropertyAnimation {
         target: hiddenSpacerRight
         property: "nScale"
         to: 0
-        duration: 3 * mainItemContainer.animationTime
-        easing.type: Easing.Linear
+        duration: 4 * mainItemContainer.animationTime
+        easing.type: Easing.InCubic
     }
 
     onStarted: {

@@ -41,7 +41,7 @@ SequentialAnimation{
             property: "mScale"
             to: 1
             duration: fastRestoreAnimation.speed
-            easing.type: Easing.Linear
+            easing.type: Easing.InCubic
         }
 
         PropertyAnimation {
@@ -49,7 +49,7 @@ SequentialAnimation{
             property: "tempScaleWidth"
             to: 1
             duration: fastRestoreAnimation.speed
-            easing.type: Easing.Linear
+            easing.type: Easing.InCubic
         }
 
         PropertyAnimation {
@@ -57,7 +57,7 @@ SequentialAnimation{
             property: "tempScaleHeight"
             to: 1
             duration: fastRestoreAnimation.speed
-            easing.type: Easing.Linear
+            easing.type: Easing.InCubic
         }
     }
 
