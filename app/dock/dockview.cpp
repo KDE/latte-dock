@@ -622,10 +622,22 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     //! the Primary configuration window should be created last!
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
+    //! indicate systrays in order to call their configuration window only once
+    bool isSystray{false};
+
+    if (c) {
+        Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(c->parent());
+
+        if (parentApplet) {
+            isSystray = true;
+        }
+    }
+
     QRect geometry = screenGeometry();
 
-    if (c && ((formFactor() == Plasma::Types::Horizontal && geometry.width() > MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN)
-              || (formFactor() == Plasma::Types::Vertical && geometry.height() > MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN))) {
+    if (c && !isSystray
+        && ((formFactor() == Plasma::Types::Horizontal && geometry.width() > MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN)
+            || (formFactor() == Plasma::Types::Vertical && geometry.height() > MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN))) {
         //qDebug() << "create secondary config win...";
         showConfigurationInterfaceForConfigView(m_secondaryConfigView, DockConfigView::SecondaryConfig, applet);
     }
