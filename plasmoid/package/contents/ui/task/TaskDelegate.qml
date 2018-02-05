@@ -507,10 +507,12 @@ MouseArea{
             root.startEnableDirectRenderTimer();
         }
 
-        icList.hoveredIndex = index;
-
         if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
             windowsPreviewDlg.hide(1);
+        }
+
+        if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
+            icList.hoveredIndex = index;
         }
 
         if(!root.latteDock)
@@ -578,7 +580,10 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
-            icList.hoveredIndex = index;
+            if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
+                icList.hoveredIndex = index;
+            }
+
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
                 if(root.dragSource == null){
                     if (icList.orientation == Qt.Horizontal){

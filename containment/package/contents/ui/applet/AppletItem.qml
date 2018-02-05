@@ -564,7 +564,9 @@ Item {
                 enableDirectRenderTimer.start();
             }
 
-            layoutsContainer.hoveredIndex = index;
+            if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+                layoutsContainer.hoveredIndex = index;
+            }
 
             if (lockZoom || !canBeHovered) {
                 return;
@@ -607,10 +609,13 @@ Item {
             }
 
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
+                if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+                    layoutsContainer.hoveredIndex = index;
+                }
+
                 if (root.isHorizontal){
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
                     if (step >= root.animationStep){
-                        layoutsContainer.hoveredIndex = index;
                         layoutsContainer.currentSpot = mouse.x;
 
                         wrapper.calculateScales(mouse.x);
@@ -619,7 +624,6 @@ Item {
                 else{
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.y);
                     if (step >= root.animationStep){
-                        layoutsContainer.hoveredIndex = index;
                         layoutsContainer.currentSpot = mouse.y;
 
                         wrapper.calculateScales(mouse.y);
