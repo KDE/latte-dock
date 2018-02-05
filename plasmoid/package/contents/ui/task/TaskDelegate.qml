@@ -812,8 +812,7 @@ MouseArea{
 
         if (root.globalDirectRender)
             wrapper.mScale = 1;
-        else if ((!inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation)
-                 || (latteDock && !latteDock.dockContainsMouse))
+        else if (!inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation)
             restoreAnimation.start();
     }
 
