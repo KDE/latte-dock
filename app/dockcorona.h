@@ -104,6 +104,9 @@ public:
 
     KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
 
+    void switchToLayout(QString layout);
+    void showSettingsWindow(int page);
+
 public slots:
     void aboutApplication();
     void activateLauncherMenu();

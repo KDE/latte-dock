@@ -7,5 +7,11 @@
         <arg name="identifier" type="s" direction="in"/>
         <arg name="value" type="s" direction="in"/>
     </method>
+    <method name="switchToLayout">
+        <arg name="layout" type="s" direction="in"/>
+    </method>
+    <method name="showSettingsWindow">
+        <arg name="page" type="i" direction="in"/>
+    </method>
   </interface>
 </node>

@@ -785,6 +785,8 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                 m_corona->universalSettings()->setLastNonAssignedLayoutName(layoutName);
             }
         });
+    } else {
+        qDebug() << "Layout : " << layoutName << " was not found...";
     }
 
     return true;

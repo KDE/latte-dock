@@ -844,6 +844,23 @@ void DockCorona::updateDockItemBadge(QString identifier, QString value)
     m_globalShortcuts->updateDockItemBadge(identifier, value);
 }
 
+
+void DockCorona::switchToLayout(QString layout)
+{
+    m_layoutManager->switchToLayout(layout);
+}
+
+void DockCorona::showSettingsWindow(int page)
+{
+    Dock::LatteConfigPage p = Dock::LayoutPage;
+
+    if (page >= Dock::LayoutPage && page <= Dock::PreferencesPage) {
+        p = static_cast<Dock::LatteConfigPage>(page);
+    }
+
+    m_layoutManager->showLatteSettingsDialog(p);
+}
+
 inline void DockCorona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();
