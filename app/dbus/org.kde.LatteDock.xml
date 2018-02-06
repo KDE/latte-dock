@@ -13,5 +13,8 @@
     <method name="showSettingsWindow">
         <arg name="page" type="i" direction="in"/>
     </method>
+    <method name="contextMenuData">
+        <arg name="data" type="as" direction="out"/>
+    </method>
   </interface>
 </node>

@@ -861,6 +861,24 @@ void DockCorona::showSettingsWindow(int page)
     m_layoutManager->showLatteSettingsDialog(p);
 }
 
+QStringList DockCorona::contextMenuData()
+{
+    QStringList data;
+
+    data << QString::number((int)m_layoutManager->memoryUsage());
+    data << m_layoutManager->currentLayoutName();
+
+    foreach (auto layoutName, m_layoutManager->menuLayouts()) {
+        if (m_layoutManager->activeLayout(layoutName)) {
+            data << QString("1," + layoutName);
+        } else {
+            data << QString("0," + layoutName);
+        }
+    }
+
+    return data;
+}
+
 inline void DockCorona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();

@@ -104,8 +104,10 @@ public:
 
     KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
 
+    //! these functions are used from context menu through containmentactions
     void switchToLayout(QString layout);
     void showSettingsWindow(int page);
+    QStringList contextMenuData();
 
 public slots:
     void aboutApplication();
