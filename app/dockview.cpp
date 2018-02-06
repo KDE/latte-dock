@@ -746,6 +746,8 @@ inline void DockView::syncGeometry()
         QRect availableScreenRect{this->screen()->geometry()};
 
         if (formFactor() == Plasma::Types::Vertical) {
+            auto dockCorona = qobject_cast<DockCorona *>(corona());
+
             int fixedScreen = onPrimary() ? dockCorona->screenPool()->primaryScreenId() : this->containment()->screen();
             freeRegion = corona()->availableScreenRegion(fixedScreen);
             maximumRect = maximumNormalGeometry();
