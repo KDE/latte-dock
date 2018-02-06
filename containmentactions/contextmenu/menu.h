@@ -45,6 +45,8 @@ private Q_SLOTS:
 
 
 private:
+    QStringList m_layoutsData;
+
     QList<QAction *>m_actions;
 
     QAction *m_separator1{nullptr};

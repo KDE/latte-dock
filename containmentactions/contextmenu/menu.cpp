@@ -19,8 +19,6 @@
 
 #include "menu.h"
 
-#include "../../app/dockcorona.h"
-#include "../../app/layoutmanager.h"
 #include "../../liblattedock/dock.h"
 
 #include <QAction>
@@ -105,9 +103,16 @@ QList<QAction *> Menu::contextualActions()
     actions << m_addWidgetsAction;
     actions << m_configureAction;
 
-    Latte::DockCorona *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+    m_layoutsData.clear();
+    QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
-    if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
+    if (iface.isValid()) {
+        QDBusReply<QStringList> replyData = iface.call("contextMenuData");
+
+        m_layoutsData = replyData.value();
+    }
+
+    if (m_layoutsData.size() > 3) {
         m_layoutsAction->setVisible(true);
     } else {
         m_layoutsAction->setVisible(false);
@@ -133,14 +138,16 @@ void Menu::populateLayouts()
 {
     m_switchLayoutsMenu->clear();
 
-    Latte::DockCorona *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+    if (m_layoutsData.size() > 3) {
+        //when there are more than 1 layouts present
+        Latte::Dock::LayoutsMemoryUsage memoryUsage = static_cast<Latte::Dock::LayoutsMemoryUsage>((m_layoutsData[0]).toInt());
+        QString currentName = m_layoutsData[1];
 
-    if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
-        QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
-        Latte::Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
-        QString currentName = dockCorona->layoutManager()->currentLayoutName();
+        for (int i = 2; i < m_layoutsData.size(); ++i) {
+            bool isActive = m_layoutsData[i].startsWith("0") ? false : true;
 
-        foreach (QString layout, dockCorona->layoutManager()->menuLayouts()) {
+            QString layout = m_layoutsData[i].right(m_layoutsData[i].length() - 2);
+
             QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
@@ -149,7 +156,7 @@ void Menu::populateLayouts()
 
             layoutAction->setCheckable(true);
 
-            if (activeLayouts.contains(layout)) {
+            if (isActive) {
                 layoutAction->setChecked(true);
             } else {
                 layoutAction->setChecked(false);
@@ -157,7 +164,7 @@ void Menu::populateLayouts()
 
             layoutAction->setData(layout);
 
-            if (dockCorona->layoutManager()->activeLayout(layout)) {
+            if (isActive) {
                 QFont font = layoutAction->font();
                 font.setBold(true);
                 layoutAction->setFont(font);
@@ -176,20 +183,24 @@ void Menu::populateLayouts()
 
 void Menu::switchToLayout(QAction *action)
 {
-    Latte::DockCorona *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+    const QString layout = action->data().toString();
 
-    if (dockCorona && dockCorona->layoutManager()) {
-        const QString layout = action->data().toString();
+    if (layout == " _show_latte_settings_dialog_") {
+        QTimer::singleShot(400, [this]() {
+            QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
-        if (layout == " _show_latte_settings_dialog_") {
-            QTimer::singleShot(400, [this, dockCorona]() {
-                dockCorona->layoutManager()->showLatteSettingsDialog(Latte::Dock::LayoutPage);
-            });
-        } else {
-            QTimer::singleShot(400, [this, dockCorona, layout]() {
-                dockCorona->layoutManager()->switchToLayout(layout);
-            });
-        }
+            if (iface.isValid()) {
+                iface.call("showSettingsWindow", (int)Latte::Dock::LayoutPage);
+            }
+        });
+    } else {
+        QTimer::singleShot(400, [this, layout]() {
+            QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+
+            if (iface.isValid()) {
+                iface.call("switchToLayout", layout);
+            }
+        });
     }
 }
 
