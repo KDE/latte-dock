@@ -22,6 +22,7 @@
 #include "dockconfigview.h"
 #include "dockcorona.h"
 #include "panelshadows_p.h"
+#include "screenpool.h"
 #include "visibilitymanager.h"
 #include "../liblattedock/extras.h"
 
@@ -748,7 +749,14 @@ inline void DockView::syncGeometry()
         if (formFactor() == Plasma::Types::Vertical) {
             auto dockCorona = qobject_cast<DockCorona *>(corona());
 
-            int fixedScreen = onPrimary() ? dockCorona->screenPool()->primaryScreenId() : this->containment()->screen();
+            int screenId = -1;
+
+            if (qGuiApp->primaryScreen()) {
+                QString screenName = qGuiApp->primaryScreen()->name();
+                screenId = dockCorona->screenPool()->id(screenName);
+            }
+
+            int fixedScreen = (onPrimary() && screenId != -1) ? screenId : this->containment()->screen();
             freeRegion = corona()->availableScreenRegion(fixedScreen);
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
