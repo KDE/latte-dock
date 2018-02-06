@@ -105,7 +105,7 @@ QList<QAction *> Menu::contextualActions()
     actions << m_addWidgetsAction;
     actions << m_configureAction;
 
-    auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+    Latte::DockCorona *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
 
     if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
         m_layoutsAction->setVisible(true);
@@ -133,14 +133,14 @@ void Menu::populateLayouts()
 {
     m_switchLayoutsMenu->clear();
 
-    auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+    Latte::DockCorona *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
 
     if (dockCorona && dockCorona->layoutManager()->menuLayouts().count() > 1) {
         QStringList activeLayouts = dockCorona->layoutManager()->activeLayoutsNames();
         Latte::Dock::LayoutsMemoryUsage memoryUsage = dockCorona->layoutManager()->memoryUsage();
         QString currentName = dockCorona->layoutManager()->currentLayoutName();
 
-        foreach (auto layout, dockCorona->layoutManager()->menuLayouts()) {
+        foreach (QString layout, dockCorona->layoutManager()->menuLayouts()) {
             QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
@@ -176,7 +176,7 @@ void Menu::populateLayouts()
 
 void Menu::switchToLayout(QAction *action)
 {
-    auto *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
+    Latte::DockCorona *dockCorona = qobject_cast<Latte::DockCorona *>(containment()->corona());
 
     if (dockCorona && dockCorona->layoutManager()) {
         const QString layout = action->data().toString();
