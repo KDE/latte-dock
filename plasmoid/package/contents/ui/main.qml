@@ -66,7 +66,6 @@ Item {
     property bool inActivityChange: false
     property bool inDraggingPhase: false
     property bool initializationStep: false //true
-    property bool initializatedBuffers: true // noInitCreatedBuffers >= tasksStarting ? true : false
     property bool isHovered: false
     property bool showBarLine: plasmoid.configuration.showBarLine
     property bool showTasksNumbers: false
@@ -910,8 +909,6 @@ Item {
 
     Item{
         id:barLine
-
-        opacity: (tasksModel.count > 0) && root.initializatedBuffers ? 1 : 0
 
         /*    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
         anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined

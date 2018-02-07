@@ -1322,7 +1322,7 @@ MouseArea{
             onTriggered: {
                 //console.log("I am in here: "+mainItemContainer.windowDelay);
                 // showWindowAnimation.execute();
-                if(!mainItemContainer.buffersAreReady && !root.initializatedBuffers)
+                if(!mainItemContainer.buffersAreReady)
                     showWindowAnimation.showWindow();
                 else
                     showWindowAnimation.execute();
