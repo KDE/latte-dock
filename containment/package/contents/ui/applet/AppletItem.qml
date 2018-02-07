@@ -638,7 +638,7 @@ Item {
             container.activateAppletForNeutralAreas(mouse);
 
             pressed = true;
-            mouse.accepted = false;
+           // mouse.accepted = false;
         }
 
         onReleased: {
