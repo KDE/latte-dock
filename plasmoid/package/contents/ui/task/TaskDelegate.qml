@@ -777,7 +777,7 @@ MouseArea{
                 tasksModel.requestActivate(taskIndex);
             }
             //negative direction
-        } else if (angle < 12) {
+        } else if (angle < -12) {
             if (isLauncher) {
                 // do nothing
             } else if (isGroupParent) {
