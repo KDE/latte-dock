@@ -40,7 +40,9 @@ SequentialAnimation {
                                 || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )
                                && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
 
-    property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0) && !mainItemContainer.inBouncingAnimation;
+    property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0)
+                                    && !mainItemContainer.inBouncingAnimation
+                                    && !mainItemContainer.isSeparator;
 
     ScriptAction{
         script:{
@@ -81,7 +83,7 @@ SequentialAnimation {
 
         //this duration must be a bit less than the bouncing animation. Otherwise the
         //smooth trasition between removals is breaking
-        duration:  mainItemContainer.inBouncingAnimation ? 4*launcherSpeedStep + 50 : 0
+        duration:  mainItemContainer.inBouncingAnimation  && !mainItemContainer.isSeparator? 4*launcherSpeedStep + 50 : 0
         easing.type: Easing.InQuad
 
         property int launcherSpeedStep: root.durationTime * 0.8 * units.longDuration
