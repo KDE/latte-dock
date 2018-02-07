@@ -51,6 +51,13 @@ SequentialAnimation {
             mainItemContainer.inAddRemoveAnimation = true;
             mainItemContainer.inRemoveStage = true;
 
+            //! When a window is removed and afterwards its launcher must be shown immediately!
+            if (!enabledAnimation && mainItemContainer.isWindow && !mainItemContainer.isSeparator
+                    && tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1
+                    && !root.immediateLauncherExists(mainItemContainer.launcherUrl)){
+                root.addImmediateLauncher(mainItemContainer.launcherUrl);
+            }
+
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
             var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);

@@ -102,6 +102,10 @@ Item {
     property variant launchersOnActivities: []
     property variant waitingLaunchers: []
 
+    //! launchers that are shown after a window removal and must be shown
+    //! immediately because they are already present!
+    property variant immediateLaunchers: []
+
     //global plasmoid reference to the context menu
     property QtObject contextMenu: null
     property QtObject contextMenuComponent: Qt.createComponent("ContextMenu.qml");
@@ -352,6 +356,34 @@ Item {
     function waitingLauncherExists(launch){
         for(var i=0; i<waitingLaunchers.length; ++i){
             if (waitingLaunchers[i]===launch) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //! ImmediateLaunchers
+    function addImmediateLauncher(launch){
+        if (!immediateLauncherExists(launch)) {
+            console.log("Immediate Launcher Added::: "+launch);
+            immediateLaunchers.push(launch);
+        }
+    }
+
+    function removeImmediateLauncher(launch){
+        for(var i=0; i<immediateLaunchers.length; ++i){
+            if (immediateLaunchers[i]===launch) {
+                immediateLaunchers.splice(i,1);
+                console.log("Immediate Launcher Removed::: "+launch);
+                return;
+            }
+        }
+    }
+
+    function immediateLauncherExists(launch){
+        for(var i=0; i<immediateLaunchers.length; ++i){
+            if (immediateLaunchers[i]===launch) {
                 return true;
             }
         }

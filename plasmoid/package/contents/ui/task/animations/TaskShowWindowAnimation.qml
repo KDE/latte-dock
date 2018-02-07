@@ -119,7 +119,8 @@ SequentialAnimation{
                           && mainItemContainer.isWindow
                           && Latte.WindowSystem.compositingActive);
 
-        var animation3 = (!root.taskExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher
+        var animation3 = (!root.immediateLauncherExists(mainItemContainer.launcherUrl)
+                          && mainItemContainer.isLauncher
                           && Latte.WindowSystem.compositingActive);
 
         var activities = tasksModel.launcherActivities(mainItemContainer.launcherUrl);
@@ -134,6 +135,10 @@ SequentialAnimation{
                               && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
                              || !launcherIsPresent(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
+
+        if (root.immediateLauncherExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher) {
+            root.removeImmediateLauncher(mainItemContainer.launcherUrl);
+        }
 
         if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase || mainItemContainer.isSeparator) {
             mainItemContainer.visible = true;
