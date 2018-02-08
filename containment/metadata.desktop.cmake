@@ -10,6 +10,7 @@ Name[de]=Latte
 Name[el]=Latte
 Name[en_GB]=Latte
 Name[es]=Latte
+Name[fi]=Latte
 Name[it]=Latte
 Name[nl]=Latte
 Name[pl]=Latte
