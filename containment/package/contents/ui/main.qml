@@ -102,6 +102,7 @@ DragDrop.DropArea {
     property bool inStartup: true
     property bool isHalfShown: false //is used to disable the zoom hovering effect at sliding in-out the dock
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
+    property bool isReady: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool isVertical: !isHorizontal
     property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
                                          : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
@@ -558,6 +559,12 @@ DragDrop.DropArea {
         if (((iconSize === automaticIconSizeBasedSize) || (iconSize === root.maxIconSize)) && automaticSizeAnimation){
             slotAnimationsNeedBothAxis(-1);
             automaticSizeAnimation=false;
+        }
+    }
+
+    onIsReadyChanged: {
+        if (isReady && !titleTooltipDialog.visible && titleTooltipDialog.activeItemHovered){
+            titleTooltipDialog.show(titleTooltipDialog.activeItem, titleTooltipDialog.activeItemText);
         }
     }
 
@@ -1344,7 +1351,10 @@ DragDrop.DropArea {
                 activeItemText = text;
             }
 
-            showTitleTooltipTimer.start();
+            if (isReady) {
+                showTitleTooltipTimer.start();
+            }
+
         }
 
         function update() {
