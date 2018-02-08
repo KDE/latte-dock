@@ -106,6 +106,7 @@ Item{
     property real center: (width + hiddenSpacerLeft.nHiddenSize + hiddenSpacerRight.nHiddenSize) / 2
 
     property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
+    property Item previewsTooltipVisualParent: taskIconItem.previewsTootipVisualParent
 
     signal runLauncherAnimation();
 

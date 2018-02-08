@@ -1361,6 +1361,10 @@ DragDrop.DropArea {
             activeItemHovered = true
             title = activeItemText;
             visualParent = activeItemTooltipParent;
+            if (latteApplet && latteApplet.windowPreviewIsShown) {
+                latteApplet.hidePreview();
+            }
+
             visible = true;
         }
     }

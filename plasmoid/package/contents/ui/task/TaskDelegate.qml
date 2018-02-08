@@ -141,6 +141,7 @@ MouseArea{
     property string launcherName: ""
 
     property Item tooltipVisualParent: wrapper.titleTooltipVisualParent
+    property Item previewsVisualParent: wrapper.previewsTooltipVisualParent
 
     onModelLauncherUrlChanged: {
         if (modelLauncherUrl !== ""){
@@ -518,12 +519,12 @@ MouseArea{
         if(!root.latteDock)
             checkListHovered.stop();
 
-        if (root.latteDock && root.latteDock.isHalfShown) {
-            return;
-        }
-
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
+        }
+
+        if (root.latteDock && root.latteDock.isHalfShown) {
+            return;
         }
 
         if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
@@ -872,7 +873,7 @@ MouseArea{
     }
 
     function preparePreviewWindow(hideClose){
-        windowsPreviewDlg.visualParent = tooltipVisualParent;
+        windowsPreviewDlg.visualParent = previewsVisualParent;
 
         toolTipDelegate.parentTask = mainItemContainer;
         toolTipDelegate.parentIndex = itemIndex;

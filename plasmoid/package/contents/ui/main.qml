@@ -390,6 +390,12 @@ Item {
         return false;
     }
 
+    //!
+
+    function hidePreview(){
+        windowsPreviewDlg.hide(11);
+    }
+
     onDragSourceChanged: {
         if (dragSource == null) {
             restoreDraggingPhaseTimer.start();
@@ -1567,8 +1573,11 @@ Item {
             disableRestoreZoom = false;
         }
 
-        if (!previewContainsMouse())
-            windowsPreviewDlg.hide(4);
+        //if (previewContainsMouse())
+          //  windowsPreviewDlg.hide(4);
+
+        if (previewContainsMouse())
+            return true;
 
         //console.log("s3...");
         var tasks = icList.contentItem.children;
@@ -1594,7 +1603,7 @@ Item {
         }
 
         if (!previewContainsMouse())
-            windowsPreviewDlg.hide(4);
+            windowsPreviewDlg.hide(4.2);
 
         if (!latteDock) {
             initializeHoveredIndex();
