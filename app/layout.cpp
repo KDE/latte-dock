@@ -1109,15 +1109,19 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     KConfigGroup fixedNewContainmets = KConfigGroup(file2Ptr, "Containments");
 
     foreach (auto contId, investigate_conts.groupList()) {
-        KConfigGroup newContainmentGroup = fixedNewContainmets.group(assigned[contId]);
-        investigate_conts.group(contId).copyTo(&newContainmentGroup);
+        QString pluginId = investigate_conts.group(contId).readEntry("plugin", "");
 
-        newContainmentGroup.group("Applets").deleteGroup();
+        if (pluginId != "org.kde.desktopcontainment") { //!dont add ghost containments
+            KConfigGroup newContainmentGroup = fixedNewContainmets.group(assigned[contId]);
+            investigate_conts.group(contId).copyTo(&newContainmentGroup);
 
-        foreach (auto appId, investigate_conts.group(contId).group("Applets").groupList()) {
-            KConfigGroup appletGroup = investigate_conts.group(contId).group("Applets").group(appId);
-            KConfigGroup newAppletGroup = fixedNewContainmets.group(assigned[contId]).group("Applets").group(assigned[appId]);
-            appletGroup.copyTo(&newAppletGroup);
+            newContainmentGroup.group("Applets").deleteGroup();
+
+            foreach (auto appId, investigate_conts.group(contId).group("Applets").groupList()) {
+                KConfigGroup appletGroup = investigate_conts.group(contId).group("Applets").group(appId);
+                KConfigGroup newAppletGroup = fixedNewContainmets.group(assigned[contId]).group("Applets").group(assigned[appId]);
+                appletGroup.copyTo(&newAppletGroup);
+            }
         }
     }
 

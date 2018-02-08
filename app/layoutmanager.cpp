@@ -606,7 +606,25 @@ void LayoutManager::cleanupOnStartup(QString path)
         actionGroups.group(pId).deleteGroup();
     }
 
+    KConfigGroup containmentGroups = KConfigGroup(filePtr, "Containments");
+
+    QStringList removeContaimentsList;
+
+    foreach (auto cId, containmentGroups.groupList()) {
+        QString pluginId = containmentGroups.group(cId).readEntry("plugin", "");
+
+        if (pluginId == "org.kde.desktopcontainment") { //!must remove ghost containments first
+            removeContaimentsList << cId;
+        }
+    }
+
+    foreach (auto cId, removeContaimentsList) {
+        containmentGroups.group(cId).deleteGroup();
+    }
+
+
     actionGroups.sync();
+    containmentGroups.sync();
 }
 
 
