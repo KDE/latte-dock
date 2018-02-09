@@ -45,9 +45,11 @@
 
 namespace Latte {
 
-DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, ConfigViewType type, QWindow *parent)
+const int MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN = 1024;
+const int MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN = 768;
+
+DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
-      m_configType(type),
       m_dockView(dockView)
 {
     setupWaylandIntegration();
@@ -82,7 +84,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
-    if (dockCorona && m_configType == PrimaryConfig) {
+    if (dockCorona) {
         connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
     }
 }
@@ -90,6 +92,8 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
 DockConfigView::~DockConfigView()
 {
     qDebug() << "DockConfigView deleting ...";
+
+    deleteSecondaryWindow();
 
     foreach (auto var, connections) {
         QObject::disconnect(var);
@@ -122,7 +126,7 @@ void DockConfigView::init()
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
     kdeclarative.setupBindings();
 
-    QByteArray tempFilePath = m_configType == PrimaryConfig ? "lattedockconfigurationui" : "lattedocksecondaryconfigurationui";
+    QByteArray tempFilePath = "lattedockconfigurationui";
 
     m_largeSpacing = QFontMetrics(QGuiApplication::font()).boundingRect(QStringLiteral("M")).height();
 
@@ -141,10 +145,59 @@ inline Qt::WindowFlags DockConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
+QWindow *DockConfigView::secondaryWindow()
+{
+    return m_secConfigView;
+}
+
+void DockConfigView::createSecondaryWindow()
+{
+    if (m_secConfigView) {
+        return;
+    }
+
+    QRect geometry = m_dockView->screenGeometry();
+
+    if ((m_dockView->containment()->formFactor() == Plasma::Types::Horizontal
+         && geometry.width() > MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN)
+        || (m_dockView->containment()->formFactor() == Plasma::Types::Vertical
+            && geometry.height() > MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN)) {
+        qDebug() << "create secondary config win...";
+
+        m_secConfigView = new DockSecConfigView(m_dockView, this);
+        m_secConfigView->init();
+
+        if (!KWindowSystem::isPlatformWayland()) {
+            QTimer::singleShot(150, m_secConfigView, SLOT(show()));
+        } else {
+            QTimer::singleShot(150, [this]() {
+                m_secConfigView->setVisible(true);
+            });
+        }
+
+        setShowInlineProperties(false);
+    } else {
+        setShowInlineProperties(true);
+    }
+}
+
+void DockConfigView::deleteSecondaryWindow()
+{
+    if (m_secConfigView) {
+        m_secConfigView->deleteLater();
+    }
+}
+
+
 void DockConfigView::syncGeometry()
 {
     if (!m_dockView->managedLayout() || !m_dockView->containment() || !rootObject())
         return;
+
+    const QSize size(rootObject()->width(), rootObject()->height());
+    setMaximumSize(size);
+    setMinimumSize(size);
+    resize(size);
 
     const auto location = m_dockView->containment()->location();
     const auto sGeometry = screen()->geometry();
@@ -157,64 +210,29 @@ void DockConfigView::syncGeometry()
 
     switch (m_dockView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
-            const QSize size(rootObject()->width(), rootObject()->height());
-            setMaximumSize(size);
-            setMinimumSize(size);
-            resize(size);
-
-
             if (location == Plasma::Types::TopEdge) {
-                if (m_configType == PrimaryConfig) {
-                    position = {sGeometry.center().x() - size.width() / 2
-                                , sGeometry.y() + clearThickness
-                               };
-                } else {
-                    int yPos = m_dockView->y() + clearThickness;
+                position = {sGeometry.center().x() - size.width() / 2
+                            , sGeometry.y() + clearThickness
+                           };
 
-                    position = {m_dockView->x() + secondaryConfigSpacing, yPos};
-                }
             } else if (location == Plasma::Types::BottomEdge) {
-                if (m_configType == PrimaryConfig) {
-                    position = {sGeometry.center().x() - size.width() / 2
-                                , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
-                               };
-                } else {
-                    int yPos;
-                    yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
+                position = {sGeometry.center().x() - size.width() / 2
+                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
+                           };
 
-                    position = {m_dockView->x() + m_dockView->width() - secondaryConfigSpacing - size.width(), yPos};
-                }
             }
         }
         break;
 
         case Plasma::Types::Vertical: {
-            const QSize size(rootObject()->width(), rootObject()->height());
-            setMaximumSize(size);
-            setMinimumSize(size);
-            resize(size);
-
             if (location == Plasma::Types::LeftEdge) {
-                if (m_configType == PrimaryConfig) {
-                    position = {sGeometry.x() + clearThickness
-                                , sGeometry.center().y() - size.height() / 2
-                               };
-                } else {
-                    position = {sGeometry.x() + clearThickness
-                                , m_dockView->y() + secondaryConfigSpacing
-                               };
-                }
-
+                position = {sGeometry.x() + clearThickness
+                            , sGeometry.center().y() - size.height() / 2
+                           };
             } else if (location == Plasma::Types::RightEdge) {
-                if (m_configType == PrimaryConfig) {
-                    position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                                , sGeometry.center().y() - size.height() / 2
-                               };
-                } else {
-                    position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                                , m_dockView->y() + secondaryConfigSpacing
-                               };
-                }
+                position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
+                            , sGeometry.center().y() - size.height() / 2
+                           };
             }
         }
         break;
@@ -265,17 +283,6 @@ void DockConfigView::syncSlideEffect()
     WindowSystem::self().slideWindow(*this, slideLocation);
 }
 
-void DockConfigView::setVisibleWindow(bool visible)
-{
-    if (visible) {
-        setMask(QRect());
-        PanelShadows::self()->addWindow(this, enabledBorders());
-    } else {
-        PanelShadows::self()->removeWindow(this);
-        setMask(QRect(0, 0, 1, 1));
-    }
-}
-
 void DockConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
@@ -317,17 +324,15 @@ void DockConfigView::hideEvent(QHideEvent *ev)
         }
     };
 
-    if (m_configType == PrimaryConfig) {
-        const auto mode = m_dockView->visibility()->mode();
-        const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
+    const auto mode = m_dockView->visibility()->mode();
+    const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
 
-        if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
-            if (!previousDockWinBehavior) {
-                recreateDock();
-            }
-        } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
+    if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
+        if (!previousDockWinBehavior) {
             recreateDock();
         }
+    } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
+        recreateDock();
     }
 
     deleteLater();
@@ -337,21 +342,13 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
 
-    /*if (m_configType != PrimaryConfig) {
-        return;
-    }*/
-
     const auto *focusWindow = qGuiApp->focusWindow();
 
     if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
         return;
 
-    if (!m_blockFocusLost && !m_dockView->settingsWindowsAreActive() && !(m_configType == SecondaryConfig && m_blockFocusLostOnStartup)) {
+    if (!m_blockFocusLost && (!m_secConfigView || (m_secConfigView && !m_secConfigView->isActive()))) {
         hideConfigWindow();
-    }
-
-    if (m_blockFocusLostOnStartup) {
-        m_blockFocusLostOnStartup = false;
     }
 }
 
@@ -431,8 +428,6 @@ void DockConfigView::setSticker(bool blockFocusLost)
         return;
 
     m_blockFocusLost = blockFocusLost;
-
-    m_dockView->setConfigWindowsSticker(blockFocusLost);
 }
 
 bool DockConfigView::showInlineProperties() const
@@ -565,9 +560,7 @@ void DockConfigView::updateEnabledBorders()
     if (m_enabledBorders != borders) {
         m_enabledBorders = borders;
 
-        if (mask() == QRect()) {
-            PanelShadows::self()->addWindow(this, m_enabledBorders);
-        }
+        PanelShadows::self()->addWindow(this, m_enabledBorders);
 
         emit enabledBordersChanged();
     }

@@ -24,6 +24,7 @@ set(lattedock-app_SRCS
     dock/dockmenumanager.cpp
     dock/dockview.cpp
     dock/dockconfigview.cpp
+    dock/docksecconfigview.cpp
     dock/panelshadows.cpp
     dock/visibilitymanager.cpp
     main.cpp

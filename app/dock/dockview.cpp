@@ -59,9 +59,6 @@
 
 namespace Latte {
 
-const int MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN = 1024;
-const int MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN = 768;
-
 //! both alwaysVisible and dockWinBehavior are passed through corona because
 //! during the dock window creation containment hasnt been set, but these variables
 //! are needed in order for window flags to be set correctly
@@ -157,10 +154,6 @@ DockView::~DockView()
         m_configView->setVisible(false);//hide();
     }
 
-    if (m_secondaryConfigView) {
-        m_secondaryConfigView->setVisible(false);
-    }
-
     if (m_menuManager) {
         m_menuManager->deleteLater();
     }
@@ -251,14 +244,6 @@ void DockView::hideWindowsForSlidingOut()
 
     if (m_configView) {
         auto configDialog = qobject_cast<DockConfigView *>(m_configView);
-
-        if (configDialog) {
-            configDialog->hideConfigWindow();
-        }
-    }
-
-    if (m_secondaryConfigView) {
-        auto configDialog = qobject_cast<DockConfigView *>(m_secondaryConfigView);
 
         if (configDialog) {
             configDialog->hideConfigWindow();
@@ -579,36 +564,11 @@ QString DockView::currentScreen() const
     return m_screenToFollowId;
 }
 
-void DockView::setConfigWindowsSticker(bool sticker)
+bool DockView::settingsWindowIsShown()
 {
-    DockConfigView *configView = static_cast<DockConfigView *>(m_configView.data());
-    DockConfigView *secondaryConfigView = static_cast<DockConfigView *>(m_secondaryConfigView.data());
+    auto configView = qobject_cast<DockConfigView *>(m_configView);
 
-    if (configView) {
-        configView->setSticker(sticker);
-    }
-
-    if (secondaryConfigView) {
-        secondaryConfigView->setSticker(sticker);
-    }
-}
-
-bool DockView::settingsWindowIsShown() const
-{
-    return (m_configView != nullptr);
-}
-
-bool DockView::settingsWindowsAreActive() const
-{
-    if (m_configView && m_configView->isActive()) {
-        return true;
-    }
-
-    if (m_secondaryConfigView && m_secondaryConfigView->isActive()) {
-        return true;
-    }
-
-    return false;
+    return (configView != nullptr);
 }
 
 void DockView::showSettingsWindow()
@@ -618,118 +578,61 @@ void DockView::showSettingsWindow()
 
 void DockView::showConfigurationInterface(Plasma::Applet *applet)
 {
-    //! The order of settings window creation is very important because of the focusOut Event
-    //! the Primary configuration window should be created last!
-    Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
-
-    //! indicate systrays in order to call their configuration window only once
-    bool isSystray{false};
-
-    if (c) {
-        Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(c->parent());
-
-        if (parentApplet) {
-            isSystray = true;
-        }
-    }
-
-    QRect geometry = screenGeometry();
-
-    if (c && !isSystray
-        && ((formFactor() == Plasma::Types::Horizontal && geometry.width() > MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN)
-            || (formFactor() == Plasma::Types::Vertical && geometry.height() > MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN))) {
-        //qDebug() << "create secondary config win...";
-        showConfigurationInterfaceForConfigView(m_secondaryConfigView, DockConfigView::SecondaryConfig, applet);
-    }
-
-    showConfigurationInterfaceForConfigView(m_configView, DockConfigView::PrimaryConfig, applet);
-
-    if (!m_secondaryConfigView) {
-        DockConfigView *mainConfigView = qobject_cast<DockConfigView *>(m_configView);
-
-        if (mainConfigView) {
-            mainConfigView->setShowInlineProperties(true);
-        }
-    }
-}
-
-//! We use this function because there are multiple settings windows
-void DockView::showConfigurationInterfaceForConfigView(PlasmaQuick::ConfigView *configView,
-        DockConfigView::ConfigViewType configType,
-        Plasma::Applet *applet)
-{
     if (!applet || !applet->containment())
         return;
 
     Plasma::Containment *c = qobject_cast<Plasma::Containment *>(applet);
 
-    if (configView && c && c->isContainment() && c == this->containment()) {
-        if (configView->isVisible()) {
-            configView->setVisible(false);
+    if (m_configView && c && c->isContainment() && c == this->containment()) {
+        if (m_configView->isVisible()) {
+            m_configView->setVisible(false);
+            //m_configView->hide();
         } else {
-            configView->setVisible(true);
+            m_configView->setVisible(true);
+            //m_configView->show();
         }
 
         return;
-    } else if (configView) {
-        if (configView->applet() == applet) {
-            configView->setVisible(true);
-            configView->requestActivate();
+    } else if (m_configView) {
+        if (m_configView->applet() == applet) {
+            m_configView->setVisible(true);
+            //m_configView->show();
+            m_configView->requestActivate();
             return;
         } else {
-            configView->setVisible(false);
-            configView->deleteLater();
+            m_configView->setVisible(false);
+            //m_configView->hide();
+            m_configView->deleteLater();
         }
     }
-
-    //! The settings window isnt shown
 
     bool delayConfigView = false;
 
     if (c && containment() && c->isContainment() && c->id() == this->containment()->id()) {
-        if (configType == DockConfigView::PrimaryConfig) {
-            DockConfigView *dockConfigView = new DockConfigView(c, this, DockConfigView::PrimaryConfig);
-            configView = new DockConfigView(c, this);
-            m_configView = configView;
-
-            if (m_secondaryConfigView) {
-                connect(m_configView, &QObject::destroyed, m_secondaryConfigView, &QObject::deleteLater);
-                connect(m_secondaryConfigView, &QObject::destroyed, m_configView, &QObject::deleteLater);
-            }
-        } else {
-            DockConfigView *dockConfigView = new DockConfigView(c, this, DockConfigView::SecondaryConfig);
-            configView = static_cast<PlasmaQuick::ConfigView *>(dockConfigView);
-            m_secondaryConfigView = configView;
-        }
-
+        m_configView = new DockConfigView(c, this);
         delayConfigView = true;
     } else {
-        configView = new PlasmaQuick::ConfigView(applet);
-        m_configView = configView;
+        m_configView = new PlasmaQuick::ConfigView(applet);
     }
 
-    if (configView) {
-        configView->init();
-        applyActivitiesToWindows();
-    }
+    m_configView.data()->init();
 
     if (!delayConfigView) {
-        configView->setVisible(true);
+        m_configView->setVisible(true);
         //m_configView.data()->show();
     } else {
         //add a timer for showing the configuration window the first time it is
         //created in order to give the containmnent's layouts the time to
         //calculate the window's height
         if (!KWindowSystem::isPlatformWayland()) {
-            QTimer::singleShot(150, configView, SLOT(show()));
+            QTimer::singleShot(150, m_configView, SLOT(show()));
         } else {
-            QTimer::singleShot(150, [this, configView]() {
-                configView->setVisible(true);
+            QTimer::singleShot(150, [this]() {
+                m_configView->setVisible(true);
             });
         }
     }
 }
-
 
 //! this is used mainly from vertical panels in order to
 //! to get the maximum geometry that can be used from the dock
@@ -1412,10 +1315,12 @@ void DockView::applyActivitiesToWindows()
 
         if (m_configView) {
             m_visibility->setWindowOnActivities(*m_configView, activities);
-        }
 
-        if (m_secondaryConfigView) {
-            m_visibility->setWindowOnActivities(*m_secondaryConfigView, activities);
+            auto configView = qobject_cast<DockConfigView *>(m_configView);
+
+            if (configView && configView->secondaryWindow()) {
+                m_visibility->setWindowOnActivities(*configView->secondaryWindow(), activities);
+            }
         }
     }
 }
@@ -1762,11 +1667,13 @@ void DockView::closeApplication()
 {
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
-    if (m_configView)
-        m_configView->close();
+    DockConfigView *configView = qobject_cast<DockConfigView *>(m_configView);
 
-    if (m_secondaryConfigView)
-        m_secondaryConfigView->close();
+    if (configView) {
+        configView->hideConfigWindow();
+    } else if (m_configView) {
+        m_configView->close();
+    }
 
     if (dockCorona)
         dockCorona->closeApplication();

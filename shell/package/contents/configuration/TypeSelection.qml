@@ -81,6 +81,7 @@ Grid {
                 plasmoid.configuration.panelSize = 0;
                 plasmoid.configuration.shadows = 2;
                 plasmoid.configuration.zoomLevel = 16;
+                plasmoid.configuration.shrinkThickMargins = false;
             }
         }
     }

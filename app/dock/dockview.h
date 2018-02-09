@@ -172,9 +172,7 @@ public:
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
 
-    void setConfigWindowsSticker(bool sticker);
-    bool settingsWindowIsShown() const;
-    bool settingsWindowsAreActive() const;
+    bool settingsWindowIsShown();
     void showSettingsWindow();
 
     VisibilityManager *visibility() const;
@@ -294,9 +292,6 @@ private:
     void applyActivitiesToWindows();
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
-    void showConfigurationInterfaceForConfigView(PlasmaQuick::ConfigView *configView,
-            DockConfigView::ConfigViewType configType,
-            Plasma::Applet *applet);
     void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
     void updateAppletContainsMethod();
@@ -330,7 +325,6 @@ private:
     QRect m_maskArea;
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
-    QPointer<PlasmaQuick::ConfigView> m_secondaryConfigView;
 
     QPointer<VisibilityManager> m_visibility;
     QPointer<DockMenuManager> m_menuManager;

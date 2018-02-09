@@ -69,9 +69,4 @@ FocusScope {
             }
         }
     }
-
-    Component.onCompleted: dockConfig.setVisibleWindow(advanced);
-
-    onAdvancedChanged: dockConfig.setVisibleWindow(advanced);
-
 }

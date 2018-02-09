@@ -276,6 +276,12 @@ FocusScope {
                                 tabBar.currentTab = appearanceTabBtn;
                             }
                         }
+
+                        if (checked) {
+                            dockConfig.createSecondaryWindow();
+                        } else {
+                            dockConfig.deleteSecondaryWindow();
+                        }
                     }
                 }
             }
