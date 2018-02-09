@@ -82,7 +82,7 @@ Item{
                         " import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet; TaskManagerApplet.SmartLauncherItem { }",
                         centralItem);
 
-            smartLauncher.launcherUrl = Qt.binding(function() { return model.LauncherUrlWithoutIcon; });
+            smartLauncher.launcherUrl = Qt.binding(function() { return mainItemContainer.launcherUrlWithIcon; });
 
             smartLauncherItem = smartLauncher;
         } else if (!smartLauncherEnabled && smartLauncherItem) {

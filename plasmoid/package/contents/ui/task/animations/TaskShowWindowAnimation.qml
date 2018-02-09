@@ -140,7 +140,8 @@ SequentialAnimation{
             root.removeImmediateLauncher(mainItemContainer.launcherUrl);
         }
 
-        if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase || mainItemContainer.isSeparator) {
+        if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
+                || mainItemContainer.isSeparator || mainItemContainer.launcherUrl === "") { //when launcherUrl hasnt catch up yet
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;

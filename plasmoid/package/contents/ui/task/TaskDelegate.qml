@@ -134,8 +134,8 @@ MouseArea{
     readonly property int pid: model && model.AppPid ? model.AppPid : -1
     readonly property string appName: model && model.AppName ? model.AppName : ""
 
-    property string modelLauncherUrl: (LauncherUrlWithoutIcon !== null) ? LauncherUrlWithoutIcon : ""
-    property string modelLauncherUrlWithIcon: (LauncherUrl !== null) ? LauncherUrl : ""
+    property string modelLauncherUrl: (LauncherUrlWithoutIcon && LauncherUrlWithoutIcon !== null) ? LauncherUrlWithoutIcon : ""
+    property string modelLauncherUrlWithIcon: (LauncherUrl && LauncherUrl !== null) ? LauncherUrl : ""
     property string launcherUrl: ""
     property string launcherUrlWithIcon: ""
     property string launcherName: ""

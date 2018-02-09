@@ -42,8 +42,7 @@ SequentialAnimation {
 
     property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0)
                                     && !mainItemContainer.inBouncingAnimation
-                                    && !mainItemContainer.isSeparator;
-
+                                    && !mainItemContainer.isSeparator && mainItemContainer.launcherUrl !== "";
     ScriptAction{
         script:{
             mainItemContainer.inAnimation = true;
