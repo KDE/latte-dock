@@ -514,6 +514,7 @@ Item{
             layer.enabled: true
             layer.effect: DropShadow {
                 radius: root.appShadowSize
+                fast: true
                 samples: 2 * radius
                 color: root.appShadowColor
 
@@ -547,6 +548,7 @@ Item{
         sourceComponent: DropShadow{
             anchors.fill: parent
             color: root.appShadowColor //"#ff080808"
+            fast: true
             samples: 2 * radius
             source: container.fakeIconItem ? _wrapperContainer : container.applet
             radius: shadowSize

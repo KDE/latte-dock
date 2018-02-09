@@ -291,6 +291,7 @@ Item {
     DropShadow {
         id:shadowText
         anchors.fill: inLatteDockLabel
+        fast: true
         enabled: isInLatteDock
         radius: 3
         samples: 5

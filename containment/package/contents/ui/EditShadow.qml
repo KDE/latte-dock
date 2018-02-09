@@ -33,6 +33,7 @@ Rectangle{
     layer.enabled: true
     layer.effect: DropShadow {
         radius: root.editShadow
+        fast: true
         samples: 2 * radius
         color: "#040404"
     }

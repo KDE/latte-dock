@@ -481,6 +481,7 @@ Item{
 
                     sourceComponent: DropShadow{
                         color: root.appShadowColor
+                        fast: true
                         samples: 2 * radius
                         source: taskNumber
                         radius: root.appShadowSize/2
@@ -523,6 +524,7 @@ Item{
         sourceComponent: DropShadow{
             anchors.fill: parent
             color: root.appShadowColor
+            fast: true
             samples: 2 * radius
             source: iconGraphic
             radius: root.appShadowSize

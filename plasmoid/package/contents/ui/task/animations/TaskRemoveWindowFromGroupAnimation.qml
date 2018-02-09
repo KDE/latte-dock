@@ -94,6 +94,7 @@ Item{
                 sourceComponent: DropShadow{
                     anchors.fill: parent
                     color: "#ff080808"
+                    fast: true
                     samples: 2 * radius
                     source: tempRemoveIcon
                     radius: centralItem.shadowSize

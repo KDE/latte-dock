@@ -150,6 +150,7 @@ Item {
         id:shadowText
         anchors.fill: inNowDockLabel
         enabled: isInNowDockPanel
+        fast: true
         radius: 3
         samples: 5
         color: "#cc080808"
