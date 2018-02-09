@@ -141,7 +141,7 @@ SequentialAnimation{
         }
 
         if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
-                || mainItemContainer.isSeparator || mainItemContainer.launcherUrl === "") { //when launcherUrl hasnt catch up yet
+                || mainItemContainer.isSeparator) {
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;

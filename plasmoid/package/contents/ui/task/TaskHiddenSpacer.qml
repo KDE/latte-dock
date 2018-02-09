@@ -37,7 +37,8 @@ Item{
     //when the task is removed
     property int indexUsed: index === -1 ? lastValidIndex : index
     property int separatorSpace: neighbourSeparator && !isSeparator
-                                 && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
+                                 && !(parabolicManager.hasInternalSeparator && root.dragSource)
+                                 && !root.inActivityChange ? //fix for #846
                                      (2+root.iconMargin/2) : 0
 
     property bool rightSpacer: false
@@ -98,12 +99,13 @@ Item{
 
 
     Behavior on separatorSpace {
-        enabled: mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running
+        enabled: mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running || root.inActivityChange
         NumberAnimation{ duration: 3 * mainItemContainer.animationTime }
     }
 
     Behavior on separatorSpace {
-        enabled: !mainItemContainer.inFastRestoreAnimation && !showWindowAnimation.running && !restoreAnimation.running
+        enabled: !mainItemContainer.inFastRestoreAnimation && !showWindowAnimation.running
+                 && !restoreAnimation.running && !root.inActivityChange
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
