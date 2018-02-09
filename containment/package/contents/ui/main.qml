@@ -91,7 +91,7 @@ DragDrop.DropArea {
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.pluginName !== root.plasmoidName
-                && item.status !== PlasmaCore.Types.HiddenStatus);
+                && item.status !== PlasmaCore.Types.HiddenStatus && item.pluginName !== "org.kde.activeWindowControl");
     })
 
     property bool immutable: plasmoid.immutable
