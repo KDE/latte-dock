@@ -1488,6 +1488,28 @@ DragDrop.DropArea {
         PanelBox{}
     }
 
+    Ruler{
+        width: {
+            if (root.isHorizontal) {
+                return behaveAsPlasmaPanel ? panelBox.width : root.maxLength;
+            } else {
+                return;
+            }
+        }
+
+        height: {
+            if (root.isVertical) {
+                return behaveAsPlasmaPanel ? panelBox.height : root.maxLength;
+            } else {
+                return;
+            }
+        }
+
+        z: 2
+
+        opacity: root.editMode ? 1 : 0
+    }
+
     Item {
         id: lastSpacer
         parent: layoutsContainer.mainLayout
@@ -1538,28 +1560,6 @@ DragDrop.DropArea {
     VisibilityManager{ id: visibilityManager }
 
     LayoutsContainer { id: layoutsContainer }
-
-    Ruler{
-        width: {
-            if (root.isHorizontal) {
-                return behaveAsPlasmaPanel ? panelBox.width : root.maxLength;
-            } else {
-                return;
-            }
-        }
-
-        height: {
-            if (root.isVertical) {
-                return behaveAsPlasmaPanel ? panelBox.height : root.maxLength;
-            } else {
-                return;
-            }
-        }
-
-        opacity: root.editMode && plasmoid.configuration.advanced ? 1 : 0
-
-        z: 15
-    }
 
     ///////////////END UI elements
 

@@ -127,12 +127,12 @@ Item{
         }
     }
 
-    Behavior on opacity {
+   /* Behavior on opacity {
         NumberAnimation {
             duration: 250
             easing.type: Easing.OutCubic
         }
-    }
+    }*/
 
     GridLayout{
         width: root.isHorizontal ? parent.width : undefined
