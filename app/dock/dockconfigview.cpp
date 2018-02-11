@@ -202,9 +202,7 @@ void DockConfigView::syncGeometry()
     const auto location = m_dockView->containment()->location();
     const auto sGeometry = screen()->geometry();
 
-    int clearThickness = m_dockView->normalThickness();
-
-    int secondaryConfigSpacing = 2 * m_largeSpacing;
+    int clearThickness = m_dockView->normalThickness() + m_largeSpacing;
 
     QPoint position{0, 0};
 

@@ -339,8 +339,8 @@ Item{
 
                 //this is used to fix a bug with shadow showing when the animation of edit mode
                 //is triggered
-                tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + root.editShadow :
-                                                                    thicknessNormalOriginal
+                tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + theme.defaultFont.pixelSize + root.editShadow :
+                                                                    thicknessNormalOriginal + theme.defaultFont.pixelSize
 
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;

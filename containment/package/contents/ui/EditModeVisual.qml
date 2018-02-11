@@ -28,14 +28,14 @@ import org.kde.latte 0.1 as Latte
 
 Item{
     id: editVisual
-    width: root.isHorizontal ? editLength : visibilityManager.thicknessNormalOriginal
-    height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal
+    width: root.isHorizontal ? editLength : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+    height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
 
     opacity: 0
 
     property int speed: root.durationTime*2.8*units.longDuration
     property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
-    property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow
+    property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow - theme.defaultFont.pixelSize
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.height)
 
@@ -123,13 +123,6 @@ Item{
 
         fillMode: Image.Tile
         source: "../icons/"+editVisual.layoutColor+"print.jpg"
-    }
-
-    Ruler{
-        width: root.maxLength
-        anchors.topMargin: 0.2*theme.defaultFont.pixelSize
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     /*Behavior on width {

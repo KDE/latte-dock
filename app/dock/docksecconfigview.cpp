@@ -149,7 +149,7 @@ void DockSecConfigView::syncGeometry()
     const auto location = m_dockView->containment()->location();
     const auto sGeometry = screen()->geometry();
 
-    int clearThickness = m_dockView->normalThickness();
+    int clearThickness = m_dockView->normalThickness() + m_largeSpacing;
 
     int secondaryConfigSpacing = 2 * m_largeSpacing;
 
