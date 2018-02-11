@@ -134,14 +134,25 @@ Item{
         }
     }*/
 
-    GridLayout{
+    Grid{
+        id: rulerGrid
         width: root.isHorizontal ? parent.width : undefined
         height: root.isVertical ? parent.height : undefined
 
         rows: root.isHorizontal ? 1 : 0
         columns: root.isVertical ? 1 : 0
+        rowSpacing: 2
+        columnSpacing: 2
 
         flow: root.isHorizontal ? GridLayout.TopToBottom : GridLayout.LeftToRight
+
+        property int freeSpace: {
+            if (root.isHorizontal) {
+                return rulerItem.width - (startLine.width + startArrow.width + labelItem.width + endArrow.width + endArrow.width);
+            } else {
+                return rulerItem.height - (startLine.height + startArrow.height + labelItem.height + endArrow.height + endArrow.height);
+            }
+        }
 
         layer.enabled: true
         layer.effect: DropShadow{
@@ -152,23 +163,17 @@ Item{
         }
 
         Rectangle{
+            id: startLine
             width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
-            Layout.minimumWidth: width
-            Layout.minimumHeight: height
-            Layout.maximumWidth: width
-            Layout.maximumHeight: height
 
             color: foregroundColor
         }
 
         Item{
+            id: startArrow
             width: root.isHorizontal ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
             height: root.isVertical ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
-            Layout.minimumWidth: width
-            Layout.minimumHeight: height
-            Layout.maximumWidth: width
-            Layout.maximumHeight: height
 
             clip:true
 
@@ -184,11 +189,9 @@ Item{
         }
 
         Item{
-            Layout.fillWidth: root.isHorizontal ? true : false
-            Layout.fillHeight: root.isVertical ? true : false
-
-            Layout.minimumHeight: theme.defaultFont.pixelSize
-            Layout.minimumWidth: theme.defaultFont.pixelSize
+            id: startSpacer
+            width: root.isHorizontal ? rulerGrid.freeSpace / 2 : theme.defaultFont.pixelSize
+            height: root.isVertical ? rulerGrid.freeSpace / 2 : theme.defaultFont.pixelSize
 
             Rectangle{
                 height: root.isHorizontal ? 2 : parent.height
@@ -201,13 +204,9 @@ Item{
         }
 
         Item {
+            id: labelItem
             width: root.isHorizontal ? labelMetricsRec.width : labelMetricsRec.height / 2
             height: root.isVertical ? labelMetricsRec.width : labelMetricsRec.height / 2
-
-            Layout.minimumWidth: width
-            Layout.minimumHeight: height
-            Layout.maximumWidth: width
-            Layout.maximumHeight: height
 
             PlasmaComponents.Label{
                 id: maxLengthLbl
@@ -238,11 +237,9 @@ Item{
         }
 
         Item{
-            Layout.fillWidth: root.isHorizontal ? true : false
-            Layout.fillHeight: root.isVertical ? true : false
-
-            Layout.minimumHeight: theme.defaultFont.pixelSize
-            Layout.minimumWidth: theme.defaultFont.pixelSize
+            id: endSpacer
+            width: startSpacer.width
+            height: startSpacer.height
 
             Rectangle{
                 height: root.isHorizontal ? 2 : parent.height
@@ -255,12 +252,9 @@ Item{
         }
 
         Item{
+            id: endArrow
             width: root.isHorizontal ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
             height: root.isVertical ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
-            Layout.minimumWidth: width
-            Layout.minimumHeight: height
-            Layout.maximumWidth: width
-            Layout.maximumHeight: height
             clip:true
 
             Rectangle{
@@ -275,12 +269,9 @@ Item{
         }
 
         Rectangle{
+            id: endLine
             width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
-            Layout.minimumWidth: width
-            Layout.minimumHeight: height
-            Layout.maximumWidth: width
-            Layout.maximumHeight: height
 
             color: foregroundColor
         }
