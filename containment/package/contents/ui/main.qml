@@ -1540,49 +1540,25 @@ DragDrop.DropArea {
     LayoutsContainer { id: layoutsContainer }
 
     Ruler{
-        width: behaveAsPlasmaPanel ? panelBox.width : root.maxLength
-       // anchors.top: editModeVisual.top
-       // anchors.topMargin: 0.2*theme.defaultFont.pixelSize
-      //  anchors.horizontalCenter: parent.horizontalCenter
+        width: {
+            if (root.isHorizontal) {
+                return behaveAsPlasmaPanel ? panelBox.width : root.maxLength;
+            } else {
+                return;
+            }
+        }
+
+        height: {
+            if (root.isVertical) {
+                return behaveAsPlasmaPanel ? panelBox.height : root.maxLength;
+            } else {
+                return;
+            }
+        }
 
         opacity: root.editMode && plasmoid.configuration.advanced ? 1 : 0
 
         z: 15
-
-        Behavior on width {
-            NumberAnimation {
-                duration: 250
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on height {
-            NumberAnimation {
-                duration: 250
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on x {
-            NumberAnimation {
-                duration: 250
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on y {
-            NumberAnimation {
-                duration: 250
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 250
-                easing.type: Easing.OutCubic
-            }
-        }
     }
 
     ///////////////END UI elements

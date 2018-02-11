@@ -33,8 +33,37 @@ Item{
 
     opacity: behaveAsPlasmaPanel ? 0.7 : 1
 
+    x: {
+        if (root.isHorizontal) {
+            return xL;
+        } else {
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge){
+                return editModeVisual.x + editModeVisual.width - theme.defaultFont.pixelSize - rMargin ;
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge){
+                return editModeVisual.x + rMargin ;
+            }
+        }
+    }
+
+    y: {
+        if (root.isVertical) {
+            return yL;
+        } else {
+            if (plasmoid.location === PlasmaCore.Types.BottomEdge){
+                return editModeVisual.y + rMargin;
+            } else if (plasmoid.location === PlasmaCore.Types.TopEdge){
+                return editModeVisual.y + editModeVisual.height - theme.defaultFont.pixelSize - rMargin;
+            }
+        }
+
+    }
+
     property int length: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength):
                                              (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
+
+    property int rMargin: 3
+    property int xL: 0
+    property int yL: 0
 
     property color foregroundColor: "#d7e3ff"
 
@@ -68,8 +97,51 @@ Item{
         }
     }
 
-    RowLayout{
-        width: parent.width
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on height {
+        NumberAnimation {
+            duration: 250
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on x {
+        enabled: root.isHorizontal
+        NumberAnimation {
+            duration: 250
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on y {
+        enabled: root.isVertical
+        NumberAnimation {
+            duration: 250
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 250
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    GridLayout{
+        width: root.isHorizontal ? parent.width : undefined
+        height: root.isVertical ? parent.height : undefined
+
+        rows: root.isHorizontal ? 1 : 0
+        columns: root.isVertical ? 1 : 0
+
+        flow: root.isHorizontal ? GridLayout.TopToBottom : GridLayout.LeftToRight
 
         layer.enabled: true
         layer.effect: DropShadow{
@@ -80,20 +152,120 @@ Item{
         }
 
         Rectangle{
-            width: 2
-            height: theme.defaultFont.pixelSize
+            width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
+            height: root.isVertical ? 2 : theme.defaultFont.pixelSize
+            Layout.minimumWidth: width
+            Layout.minimumHeight: height
+            Layout.maximumWidth: width
+            Layout.maximumHeight: height
 
             color: foregroundColor
         }
 
         Item{
-            width: 0.6 * theme.defaultFont.pixelSize
-            height: theme.defaultFont.pixelSize
+            width: root.isHorizontal ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
+            height: root.isVertical ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
+            Layout.minimumWidth: width
+            Layout.minimumHeight: height
+            Layout.maximumWidth: width
+            Layout.maximumHeight: height
+
             clip:true
 
             Rectangle{
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.right
+                anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : parent.bottom
+                anchors.horizontalCenter: root.isHorizontal ? parent.right : parent.horizontalCenter
+                width: 0.75*theme.defaultFont.pixelSize
+                height: width
+                rotation: 45
+
+                color: foregroundColor
+            }
+        }
+
+        Item{
+            Layout.fillWidth: root.isHorizontal ? true : false
+            Layout.fillHeight: root.isVertical ? true : false
+
+            Layout.minimumHeight: theme.defaultFont.pixelSize
+            Layout.minimumWidth: theme.defaultFont.pixelSize
+
+            Rectangle{
+                height: root.isHorizontal ? 2 : parent.height
+                width: root.isVertical ? 2 : parent.width
+
+                anchors.centerIn: parent
+
+                color: foregroundColor
+            }
+        }
+
+        Item {
+            width: root.isHorizontal ? labelMetricsRec.width : labelMetricsRec.height / 2
+            height: root.isVertical ? labelMetricsRec.width : labelMetricsRec.height / 2
+
+            Layout.minimumWidth: width
+            Layout.minimumHeight: height
+            Layout.maximumWidth: width
+            Layout.maximumHeight: height
+
+            PlasmaComponents.Label{
+                id: maxLengthLbl
+
+                anchors.centerIn: parent
+
+                text: i18n("Maximum Length")
+                color: foregroundColor
+
+                transformOrigin: Item.Center
+
+                rotation: {
+                    if (root.isHorizontal) {
+                        return 0;
+                    } else if (plasmoid.location === PlasmaCore.Types.LeftEdge){
+                        return 90;
+                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge){
+                        return -90;
+                    }
+                }
+
+                Rectangle {
+                    id: labelMetricsRec
+                    anchors.fill: parent
+                    visible: false
+                }
+            }
+        }
+
+        Item{
+            Layout.fillWidth: root.isHorizontal ? true : false
+            Layout.fillHeight: root.isVertical ? true : false
+
+            Layout.minimumHeight: theme.defaultFont.pixelSize
+            Layout.minimumWidth: theme.defaultFont.pixelSize
+
+            Rectangle{
+                height: root.isHorizontal ? 2 : parent.height
+                width: root.isVertical ? 2 : parent.width
+
+                anchors.centerIn: parent
+
+                color: foregroundColor
+            }
+        }
+
+        Item{
+            width: root.isHorizontal ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
+            height: root.isVertical ? 0.6 * theme.defaultFont.pixelSize : theme.defaultFont.pixelSize
+            Layout.minimumWidth: width
+            Layout.minimumHeight: height
+            Layout.maximumWidth: width
+            Layout.maximumHeight: height
+            clip:true
+
+            Rectangle{
+                anchors.verticalCenter: root.isHorizontal ? parent.verticalCenter : parent.top
+                anchors.horizontalCenter: root.isHorizontal ? parent.left : parent.horizontalCenter
                 width: 0.75*theme.defaultFont.pixelSize
                 height: width
                 rotation: 45
@@ -103,42 +275,12 @@ Item{
         }
 
         Rectangle{
-            Layout.fillWidth: true
-            height: 2
-            color: foregroundColor
-        }
-
-        PlasmaComponents.Label{
-            id: maxLengthLbl
-            text: i18n("Maximum Length")
-            color: foregroundColor
-        }
-
-        Rectangle{
-            Layout.fillWidth: true
-            height: 2
-            color: foregroundColor
-        }
-
-        Item{
-            width: 0.6 * theme.defaultFont.pixelSize
-            height: theme.defaultFont.pixelSize
-            clip:true
-
-            Rectangle{
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.left
-                width: 0.75*theme.defaultFont.pixelSize
-                height: width
-                rotation: 45
-
-                color: foregroundColor
-            }
-        }
-
-        Rectangle{
-            width: 2
-            height: theme.defaultFont.pixelSize
+            width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
+            height: root.isVertical ? 2 : theme.defaultFont.pixelSize
+            Layout.minimumWidth: width
+            Layout.minimumHeight: height
+            Layout.maximumWidth: width
+            Layout.maximumHeight: height
 
             color: foregroundColor
         }
@@ -147,7 +289,7 @@ Item{
 
     function initializeEditPosition() {
         if (root.editMode) {
-            if (plasmoid.location === PlasmaCore.Types.LeftEdge){
+            /* if (plasmoid.location === PlasmaCore.Types.LeftEdge){
                 x = 0;
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                 y =editModeVisual.thickness - 1.5 *theme.defaultFont.pixelSize;
@@ -155,27 +297,27 @@ Item{
                 y = editModeVisual.rootThickness - editModeVisual.thickness + 0.5 * theme.defaultFont.pixelSize;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                 x = editModeVisual.rootThickness - editModeVisual.thickness + 0.5 * theme.defaultFont.pixelSize;
-            }
+            }*/
 
             if (root.isHorizontal) {
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    x = root.width/2 - rulerItem.length/2 + root.offset;
+                    xL = root.width/2 - rulerItem.length/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Left) {
-                    x = root.offset;
+                    xL = root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    x = root.width/2 - rulerItem.length/2 + root.offset;
+                    xL = root.width/2 - rulerItem.length/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Right) {
-                    x = root.width - rulerItem.length - root.offset;
+                    xL = root.width - rulerItem.length - root.offset;
                 }
             } else if (root.isVertical) {
                 if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    y = root.height/2 - rulerItem.length/2 + root.offset;
+                    yL = root.height/2 - rulerItem.length/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Top) {
-                    y = root.offset;
+                    yL = root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Center) {
-                    y = root.height/2 - rulerItem.length/2 + root.offset;
+                    yL = root.height/2 - rulerItem.length/2 + root.offset;
                 } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    y = root.height - rulerItem.length - root.offset;
+                    yL = root.height - rulerItem.length - root.offset;
                 }
             }
         }
