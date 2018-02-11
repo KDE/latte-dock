@@ -340,6 +340,7 @@ Item{
                     script:{
                         editVisual.editAnimationEnded = true;
                         updateEffectsArea();
+                        updateAutomaticIconSize();
                         visibilityManager.updateMaskArea();
                     }
                 }
