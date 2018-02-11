@@ -31,7 +31,10 @@ import org.kde.latte 0.1 as Latte
 Item{
     id: rulerItem
 
-    opacity: behaveAsPlasmaPanel ? 0.7 : 1
+    width: root.isHorizontal ? root.maxLength : theme.defaultFont.pixelSize
+    height: root.isVertical ? root.maxLength : theme.defaultFont.pixelSize
+
+    opacity: root.editMode ? 1 : 0
 
     x: {
         if (root.isHorizontal) {
@@ -58,8 +61,8 @@ Item{
 
     }
 
-    property int length: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength):
-                                             (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
+    property int length: root.maxLength/* root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength):
+                                             (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)*/
 
     property int rMargin: 3
     property int xL: 0
@@ -141,16 +144,17 @@ Item{
 
         rows: root.isHorizontal ? 1 : 0
         columns: root.isVertical ? 1 : 0
-        rowSpacing: 2
-        columnSpacing: 2
+        spacing: 2
 
         flow: root.isHorizontal ? GridLayout.TopToBottom : GridLayout.LeftToRight
 
         property int freeSpace: {
             if (root.isHorizontal) {
-                return rulerItem.width - (startLine.width + startArrow.width + labelItem.width + endArrow.width + endArrow.width);
+                return rulerItem.width - rulerGrid.spacing - 1 //((rulerGrid.children.length-2) * rulerGrid.spacing)
+                        - (startLine.width + startArrow.width + labelItem.width + endArrow.width + endArrow.width);
             } else {
-                return rulerItem.height - (startLine.height + startArrow.height + labelItem.height + endArrow.height + endArrow.height);
+                return rulerItem.height - rulerGrid.spacing - 1 //((rulerGrid.children.length-2) * rulerGrid.spacing)
+                        - (startLine.height + startArrow.height + labelItem.height + endArrow.height + endArrow.height);
             }
         }
 

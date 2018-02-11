@@ -173,10 +173,9 @@ DragDrop.DropArea {
     //FIXME: this is not needed any more probably
     property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
     property int offset: {
-        if (behaveAsPlasmaPanel) {
+        /*if (behaveAsPlasmaPanel) {
             return 0;
-        }
-
+        }*/
         if (root.isHorizontal) {
             return width * (plasmoid.configuration.offset/100);
         } else {
@@ -1479,25 +1478,7 @@ DragDrop.DropArea {
      //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
-    Ruler{
-        width: {
-            if (root.isHorizontal) {
-                return behaveAsPlasmaPanel ? panelBox.width : root.maxLength;
-            } else {
-                return;
-            }
-        }
-
-        height: {
-            if (root.isVertical) {
-                return behaveAsPlasmaPanel ? panelBox.height : root.maxLength;
-            } else {
-                return;
-            }
-        }
-
-        opacity: root.editMode ? 1 : 0
-    }
+    Ruler{id: ruler}
 
     Item{
         id: panelBox
