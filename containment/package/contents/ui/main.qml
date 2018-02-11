@@ -407,6 +407,7 @@ DragDrop.DropArea {
     onEditModeChanged: {
         if (editMode) {
             visibilityManager.updateMaskArea();
+            updateAutomaticIconSize();
         } else {
             updateAutomaticIconSize();
             layoutsContainer.updateSizeForAppletsInFill();
@@ -541,7 +542,12 @@ DragDrop.DropArea {
         //dndSpacer.parent = root;
     }
 
-    onMaxLengthChanged: layoutsContainer.updateSizeForAppletsInFill();
+    onMaxLengthChanged: {
+        layoutsContainer.updateSizeForAppletsInFill();
+        if (root.editMode) {
+            updateAutomaticIconSize();
+        }
+    }
 
     onToolBoxChanged: {
         if (toolBox) {
@@ -1107,7 +1113,7 @@ DragDrop.DropArea {
 
     function updateAutomaticIconSize() {
         if ( !blockAutomaticUpdateIconSize.running
-                && (visibilityManager.normalState && !root.editMode && !visibilityManager.inTempHiding
+                && ((visibilityManager.normalState || root.editMode) && !visibilityManager.inTempHiding
                     && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             blockAutomaticUpdateIconSize.start();
