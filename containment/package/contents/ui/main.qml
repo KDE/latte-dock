@@ -165,6 +165,7 @@ DragDrop.DropArea {
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
     property int appShadowSize: enableShadows ? (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSizeOriginal: enableShadows ? (0.4*maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
     property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + plasmoid.configuration.shadowColor
     property string appShadowColorSolid: "#" + plasmoid.configuration.shadowColor
 
@@ -234,7 +235,7 @@ DragDrop.DropArea {
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int thickMarginOriginal: Math.ceil(0.06 * maxIconSize + Math.max( Math.ceil(0.06 * maxIconSize), 0.5 * appShadowSize))
+    property int thickMarginOriginal: Math.ceil(0.06 * maxIconSize + Math.max( Math.ceil(0.06 * maxIconSize), 0.5 * appShadowSizeOriginal))
 
     //! iconMargin from configuration is a percentage. The calculation provides a length
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
