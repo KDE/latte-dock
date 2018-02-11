@@ -39,11 +39,13 @@ Item{
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.height)
 
-    property real editStateOpacity: root.behaveAsPlasmaPanel  ? 0.5 : 0.95// root.blurEnabled ? 0.8 : 0.9
+    property real editStateOpacity: 0.95 //root.behaveAsPlasmaPanel  ? 0.5 : 0.95// root.blurEnabled ? 0.8 : 0.9
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
     property bool editAnimationEnded: false
+    property bool plasmaEditMode: plasmoid.userConfiguring
+    property bool inEditMode: false
 
     property rect efGeometry
 
@@ -284,12 +286,12 @@ Item{
     states: [
         State{
             name: "*"
-            when:  !root.editMode
+            when:  !plasmaEditMode
         },
 
         State{
             name: "edit"
-            when: root.editMode
+            when: plasmaEditMode
         }
     ]
 
@@ -303,6 +305,7 @@ Item{
                 id:normalAnimationTransition
                 ScriptAction{
                     script:{
+                        editVisual.inEditMode = true;
                         editVisual.opacity = 0
                         editVisual.editAnimationEnded = false;
 
@@ -365,6 +368,7 @@ Item{
 
                 ScriptAction{
                     script:{
+                        editVisual.inEditMode = false;
                         editVisual.editAnimationEnded = false;
                         if (editVisual.animationSent) {
                             root.slotAnimationsNeedLength(-1);

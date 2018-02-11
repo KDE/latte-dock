@@ -82,7 +82,7 @@ DragDrop.DropArea {
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
-    property bool editMode: plasmoid.userConfiguring
+    property bool editMode: editModeVisual.inEditMode
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
@@ -1476,16 +1476,7 @@ DragDrop.DropArea {
 
     EditModeVisual{
         id:editModeVisual
-        z: root.behaveAsPlasmaPanel ? 1 : 0
-    }
-
-    Item{
-        id: panelBox
-
-        anchors.fill:layoutsContainer
-        z: root.behaveAsPlasmaPanel ? 0 : 1
-
-        PanelBox{}
+     //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
     Ruler{
@@ -1505,9 +1496,16 @@ DragDrop.DropArea {
             }
         }
 
-        z: 2
-
         opacity: root.editMode ? 1 : 0
+    }
+
+    Item{
+        id: panelBox
+
+        anchors.fill:layoutsContainer
+       // z: root.behaveAsPlasmaPanel ? 0 : 1
+
+        PanelBox{}
     }
 
     Item {

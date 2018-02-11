@@ -90,7 +90,7 @@ Item{
         target: dock
         property: "behaveAsPlasmaPanel"
         when: dock
-        value: root.behaveAsPlasmaPanel
+        value: root.editMode ? false : root.behaveAsPlasmaPanel
     }
 
     Binding{
@@ -391,7 +391,7 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            if (dock.behaveAsPlasmaPanel) {
+            if (dock.behaveAsPlasmaPanel && !root.editMode) {
                 dock.maskArea = Qt.rect(0,0,root.width,root.height);
             } else {
                 dock.maskArea = newMaskArea;
@@ -404,7 +404,7 @@ Item{
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
-            if (!dock.behaveAsPlasmaPanel) {
+            if (!dock.behaveAsPlasmaPanel || root.editMode) {
                 var fixedThickness = root.realPanelThickness;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
