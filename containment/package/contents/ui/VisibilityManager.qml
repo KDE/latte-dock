@@ -61,16 +61,17 @@ Item{
     property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.thickMargin + thickReverseAndGlowExtraSize) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
     property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.thickMarginOriginal)) //needed in some animations
-    property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel ?
-                                              Math.max(thicknessNormalOriginalValue, root.realPanelSize + root.panelShadow) :
-                                              root.realPanelSize + root.panelShadow
+    property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
+                                              thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow
 
     property int thicknessNormalOriginalValue: statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal +
                                                root.maxIconSize + root.thickMarginOriginal + 1
     property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal
-                                                 + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2
-                                                 + root.editShadow,
-                                                 root.realPanelSize + root.panelShadow)
+                                                 + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2,
+                                                 root.realPanelSize + root.panelShadow,
+                                                 thicknessEditMode)
+
+    property int thicknessEditMode: thicknessNormalOriginalValue + theme.defaultFont.pixelSize + root.editShadow
 
     Binding{
         target: dock
@@ -179,7 +180,9 @@ Item{
         }
     }
 
-    onThicknessZoomOriginalChanged: updateMaskArea();
+    onThicknessZoomOriginalChanged: {
+        updateMaskArea();
+    }
 
     function slotContainsMouseChanged() {
         if(dock.visibility.containsMouse) {
