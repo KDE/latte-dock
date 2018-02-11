@@ -28,8 +28,8 @@ import org.kde.latte 0.1 as Latte
 
 Item{
     id: editVisual
-    width: root.isHorizontal ? editLength : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
-    height: root.isVertical ? editLength : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+    width: root.isHorizontal ? dock.width : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+    height: root.isVertical ? dock.height : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
 
     opacity: 0
 
@@ -322,8 +322,6 @@ Item{
                         to: editVisual.farEdge ? editVisual.rootThickness - editVisual.thickness : 0
                         duration: editVisual.speed
                         easing.type: Easing.OutQuad
-
-
                     }
                 }
 

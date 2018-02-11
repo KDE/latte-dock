@@ -128,6 +128,8 @@ DragDrop.DropArea {
     property int animationsNeedLength: 0 // animations need length, e.g. adding a task
     property int animationsNeedThickness: 0 // animations need thickness, e.g. bouncing animation
 
+    property int animationTime: durationTime*2.8*units.longDuration
+
     property int automaticIconSizeBasedSize: -1 //it is not set, this is the defautl
 
     //what is the highest icon size based on what icon size is used, screen calculated or user specified
@@ -1532,9 +1534,9 @@ DragDrop.DropArea {
 
     Ruler{
         width: behaveAsPlasmaPanel ? panelBox.width : root.maxLength
-        anchors.top: editModeVisual.top
-        anchors.topMargin: 0.2*theme.defaultFont.pixelSize
-        anchors.horizontalCenter: parent.horizontalCenter
+       // anchors.top: editModeVisual.top
+       // anchors.topMargin: 0.2*theme.defaultFont.pixelSize
+      //  anchors.horizontalCenter: parent.horizontalCenter
 
         opacity: root.editMode && plasmoid.configuration.advanced ? 1 : 0
 
@@ -1542,14 +1544,35 @@ DragDrop.DropArea {
 
         Behavior on width {
             NumberAnimation {
-                duration: 4 * container.animationTime
+                duration: 250
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        Behavior on height {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        Behavior on x {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        Behavior on y {
+            NumberAnimation {
+                duration: 250
                 easing.type: Easing.OutCubic
             }
         }
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 4 * container.animationTime
+                duration: 250
                 easing.type: Easing.OutCubic
             }
         }

@@ -127,7 +127,7 @@ Item{
         target: dock
         property: "maxLength"
         when: dock
-        value: plasmoid.configuration.maxLength/100
+        value: root.editMode ? 1 : plasmoid.configuration.maxLength/100
     }
 
 

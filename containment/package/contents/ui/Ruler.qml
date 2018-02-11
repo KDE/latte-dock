@@ -26,9 +26,47 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+import org.kde.latte 0.1 as Latte
+
 Item{
-    property color foregroundColor: "#d7e3ff"
+    id: rulerItem
+
     opacity: behaveAsPlasmaPanel ? 0.7 : 1
+
+    property int length: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength):
+                                             (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)
+
+    property color foregroundColor: "#d7e3ff"
+
+    Connections{
+        target: plasmoid
+        onLocationChanged: initializeEditPosition();
+    }
+
+    Connections{
+        target: root
+        onMaxIconSizeChanged: initializeEditPosition();
+        onPanelAlignmentChanged: initializeEditPosition();
+        onOffsetChanged: initializeEditPosition();
+        onMaxLengthChanged: initializeEditPosition();
+        onEditModeChanged: {
+            if (editMode) {
+                initializeEditPosition();
+            }
+        }
+    }
+
+    Connections{
+        target: editModeVisual
+
+        onRootThicknessChanged: {
+            rulerItem.initializeEditPosition();
+        }
+
+        onThicknessChanged: {
+            rulerItem.initializeEditPosition();
+        }
+    }
 
     RowLayout{
         width: parent.width
@@ -106,4 +144,40 @@ Item{
         }
     }
 
+
+    function initializeEditPosition() {
+        if (root.editMode) {
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge){
+                x = 0;
+            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                y =editModeVisual.thickness - 1.5 *theme.defaultFont.pixelSize;
+            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                y = editModeVisual.rootThickness - editModeVisual.thickness + 0.5 * theme.defaultFont.pixelSize;
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                x = editModeVisual.rootThickness - editModeVisual.thickness + 0.5 * theme.defaultFont.pixelSize;
+            }
+
+            if (root.isHorizontal) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                    x = root.width/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Left) {
+                    x = root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Center) {
+                    x = root.width/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Right) {
+                    x = root.width - rulerItem.length - root.offset;
+                }
+            } else if (root.isVertical) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                    y = root.height/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Top) {
+                    y = root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Center) {
+                    y = root.height/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Bottom) {
+                    y = root.height - rulerItem.length - root.offset;
+                }
+            }
+        }
+    }
 }

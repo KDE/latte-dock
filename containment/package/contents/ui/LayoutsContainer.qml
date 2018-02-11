@@ -353,6 +353,13 @@ Item{
         onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
 
 
+        transitions: Transition {
+            NumberAnimation {
+                duration: root.animationTime
+                easing.type: Easing.OutQuad
+            }
+        }
+
         //////////////////////////BEGIN states
         //user set Panel Positions
         // 0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom
