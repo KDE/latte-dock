@@ -32,7 +32,8 @@ Item{
     z: 9999
     property bool horizontal: plasmoid.formFactor != PlasmaCore.Types.Vertical
 
-    property int step: 10
+    property int pixelStep: 10
+    property int percentageStep: 20
 
     property Item latteDock
 
@@ -61,16 +62,16 @@ Item{
 
     function increaseLength() {
         if (plasmoid.configuration.usePercentage)
-            plasmoid.configuration.lengthPercentage = plasmoid.configuration.lengthPercentage + step;
+            plasmoid.configuration.lengthPercentage = plasmoid.configuration.lengthPercentage + percentageStep;
         else
-            plasmoid.configuration.lengthPixels = plasmoid.configuration.lengthPixels + step;
+            plasmoid.configuration.lengthPixels = plasmoid.configuration.lengthPixels + pixelStep;
     }
 
     function decreaseLength() {
         if (plasmoid.configuration.usePercentage)
-            plasmoid.configuration.lengthPercentage = Math.max(10, plasmoid.configuration.lengthPercentage - step);
+            plasmoid.configuration.lengthPercentage = Math.max(10, plasmoid.configuration.lengthPercentage - percentageStep);
         else
-            plasmoid.configuration.lengthPixels = Math.max(5, plasmoid.configuration.lengthPixels - step);
+            plasmoid.configuration.lengthPixels = Math.max(5, plasmoid.configuration.lengthPixels - pixelStep);
     }
 
     Loader{

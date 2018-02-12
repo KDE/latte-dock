@@ -33,6 +33,14 @@ MouseArea {
     anchors.fill: parent
     hoverEnabled: true
 
+    cursorShape: {
+        if (currentApplet && tooltip.visible && (currentApplet.applet.pluginName === "org.kde.latte.spacer")) {
+            return root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor;
+        }
+
+        return Qt.ArrowCursor;
+    }
+
     property bool isResizingLeft: false
     property bool isResizingRight: false
     property Item currentApplet
