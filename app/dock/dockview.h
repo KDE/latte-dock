@@ -171,6 +171,8 @@ public:
     QRect absGeometry() const;
     QRect screenGeometry() const;
 
+    bool inLocationChangeAnimation();
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QString currentScreen() const;

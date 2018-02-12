@@ -1443,6 +1443,11 @@ void DockView::moveToLayout(QString layoutName)
     }
 }
 
+bool DockView::inLocationChangeAnimation()
+{
+    return ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
+}
+
 void DockView::hideDockDuringLocationChange(int goToLocation)
 {
     m_goToLocation = static_cast<Plasma::Types::Location>(goToLocation);

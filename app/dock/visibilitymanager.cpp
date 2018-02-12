@@ -125,10 +125,9 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             });
             connections[1] = connect(dockView, &DockView::inEditModeChanged
             , this, [&]() {
-                if (!dockView->inEditMode() && view->screen())
+                if (!dockView->inEditMode() && !dockView->inLocationChangeAnimation() && view->screen())
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
-
 
             if (dockCorona && dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
                 connections[2] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
@@ -204,7 +203,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
 {
     bool multipleLayoutsAndCurrent = (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                      && dockView->managedLayout()
+                                      && dockView->managedLayout() && !dockView->inLocationChangeAnimation()
                                       && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName());
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
