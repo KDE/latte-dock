@@ -312,5 +312,5 @@ Item{
 
             color: foregroundColor
         }
-    }
+    } // end of grid
 }

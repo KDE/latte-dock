@@ -1491,6 +1491,11 @@ DragDrop.DropArea {
 
     Ruler{id: ruler}
 
+    RulerMouseArea{
+        anchors.fill: ruler
+        z:1100
+    }
+
     Item{
         id: panelBox
 
