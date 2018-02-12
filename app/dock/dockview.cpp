@@ -1101,6 +1101,23 @@ void DockView::setDrawEffects(bool draw)
     emit drawEffectsChanged();
 }
 
+bool DockView::inEditMode() const
+{
+    return m_inEditMode;
+}
+
+void DockView::setInEditMode(bool edit)
+{
+    if (m_inEditMode == edit) {
+        return;
+    }
+
+    m_inEditMode = edit;
+
+    emit inEditModeChanged();
+}
+
+
 bool DockView::onPrimary() const
 {
     return m_onPrimary;

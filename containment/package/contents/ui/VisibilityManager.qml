@@ -119,6 +119,13 @@ Item{
 
     Binding{
         target: dock
+        property:"inEditMode"
+        when: dock
+        value: root.editMode
+    }
+
+    Binding{
+        target: dock
         property:"shadow"
         when: dock
         value: root.panelShadow

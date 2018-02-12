@@ -114,18 +114,18 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
     switch (this->mode) {
         case Dock::AlwaysVisible: {
-            if (view->containment() && !view->containment()->isUserConfiguring() && view->screen()) {
+            if (view->containment() && !dockView->inEditMode() && view->screen()) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
-                if (view->containment()->isUserConfiguring())
+                if (dockView->inEditMode())
                     wm->removeDockStruts(*view);
             });
-            connections[1] = connect(view->containment(), &Plasma::Containment::userConfiguringChanged
-            , this, [&](bool configuring) {
-                if (!configuring && view->screen())
+            connections[1] = connect(dockView, &DockView::inEditModeChanged
+            , this, [&]() {
+                if (!dockView->inEditMode() && view->screen())
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
 
@@ -354,7 +354,7 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 
     this->dockGeometry = geometry;
 
-    if (mode == Dock::AlwaysVisible && !view->containment()->isUserConfiguring() && view->screen()) {
+    if (mode == Dock::AlwaysVisible && !dockView->inEditMode() && view->screen()) {
         updateStrutsBasedOnLayoutsAndActivities();
     }
 }
