@@ -222,12 +222,16 @@ DragDrop.DropArea {
     property int thickMarginHigh: {
         if (shrinkThickMargins) {
             if (behaveAsPlasmaPanel){
-                return 0;
+                return (reverseLinesPosition ? Math.max(root.statesLineSize/2, 1) : 1);
             } else {
                 return Math.max(1, 0.5 * appShadowSize);
             }
         } else {
-            return Math.max( Math.ceil(0.06 * iconSize), 0.5 * appShadowSize);
+            if (behaveAsPlasmaPanel) {
+                return (reverseLinesPosition ? Math.max(root.statesLineSize, 4) : 4);
+            } else {
+                return Math.max( Math.ceil(0.06 * iconSize), 0.5 * appShadowSize);
+            }
         }
     }
     property int thickMargin: thickMarginBase + thickMarginHigh
