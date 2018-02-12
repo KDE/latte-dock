@@ -68,7 +68,43 @@ Item{
     property int xL: 0
     property int yL: 0
 
-    property color foregroundColor: "#d7e3ff"
+    property int foregroundTextShadow: {
+        if ((editModeVisual.layoutColor === "gold")
+                || (editModeVisual.layoutColor === "pink")
+                || (editModeVisual.layoutColor === "wheat"))  {
+            return 1;
+        } else {
+            return 6;
+        }
+    }
+
+    property color foregroundColor:{
+        if (editModeVisual.layoutColor === "blue") {
+            return "#D7E3FF";
+        } else if (editModeVisual.layoutColor === "brown") {
+            return "#F0D7BA";
+        } else if (editModeVisual.layoutColor === "darkgrey") {
+            return "#ECECEC";
+        } else if (editModeVisual.layoutColor === "gold") {
+            return "#78573B";
+        } else if (editModeVisual.layoutColor === "green") {
+            return "#D0E7CD";
+        } else if (editModeVisual.layoutColor === "lightskyblue") {
+            return "#E3F8FF";
+        } else if (editModeVisual.layoutColor === "orange") {
+            return "#FFEADE";
+        } else if (editModeVisual.layoutColor === "pink") {
+            return "#743C46";
+        } else if (editModeVisual.layoutColor === "purple") {
+            return "#ECD9FF";
+        } else if (editModeVisual.layoutColor === "red") {
+            return "#FFCACA";
+        } else if (editModeVisual.layoutColor === "wheat") {
+            return "#705548";
+        } else {
+            return "#D7E3FF";
+        }
+    }
 
     Connections{
         target: plasmoid
@@ -160,7 +196,7 @@ Item{
 
         layer.enabled: true
         layer.effect: DropShadow{
-            radius: 6
+            radius: foregroundTextShadow
             fast: true
             samples: 2 * radius
             color: "#040404"
