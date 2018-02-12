@@ -50,7 +50,7 @@ Item{
 
         basicColor: theme.buttonFocusColor
         roundCorners: true
-        showGlow: mimicPlasmaPanel ? false : root.showGlow
+        showGlow: root.showGlow
 
         glow3D: root.glow3D
         animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
