@@ -115,7 +115,7 @@ Item{
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: (root.zoomFactor * root.realSize) + root.statesLineSize - root.thickMarginHigh
+        thickness: (root.zoomFactor * (root.thickMarginBase + root.iconSize)) + root.statesLineSize + 1
     }
 
     // KQuickControlAddons.QIconItem{
