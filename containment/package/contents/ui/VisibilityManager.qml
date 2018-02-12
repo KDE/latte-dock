@@ -409,7 +409,8 @@ Item{
         }
 
         //console.log("reached updating geometry ::: "+dock.maskArea);
-        if((normalState && !dock.visibility.isHidden) || root.editMode){
+        if((normalState && !dock.visibility.isHidden)
+                && !(root.behaveAsPlasmaPanel && root.editMode)){
             var tempGeometry = Qt.rect(dock.maskArea.x, dock.maskArea.y, dock.maskArea.width, dock.maskArea.height);
 
             //the shadows size must be removed from the maskArea
