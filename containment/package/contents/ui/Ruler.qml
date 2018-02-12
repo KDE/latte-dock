@@ -36,6 +36,8 @@ Item{
 
     opacity: root.editMode ? 1 : 0
 
+    property int rulerAnimationTime: 0.8 * root.animationTime
+
     x: {
         if (root.isHorizontal) {
             return xL;
@@ -61,12 +63,42 @@ Item{
 
     }
 
-    property int length: root.maxLength/* root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.maxLength):
-                                             (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.maxLength)*/
+    property int length: root.maxLength
 
     property int rMargin: 3
-    property int xL: 0
-    property int yL: 0
+    property int xL: {
+        if (root.isHorizontal) {
+            if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                return root.width/2 - rulerItem.length/2 + root.offset;
+            } else if (root.panelAlignment === Latte.Dock.Left) {
+                return root.offset;
+            } else if (root.panelAlignment === Latte.Dock.Center) {
+                return root.width/2 - rulerItem.length/2 + root.offset;
+            } else if (root.panelAlignment === Latte.Dock.Right) {
+                return root.width - rulerItem.length - root.offset;
+            }
+        } else {
+            return ;
+        }
+    }
+
+    property int yL: {
+        if (root.isVertical) {
+            if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                return root.height/2 - rulerItem.length/2 + root.offset;
+            } else if (root.panelAlignment === Latte.Dock.Top) {
+                return root.offset;
+            } else if (root.panelAlignment === Latte.Dock.Center) {
+                return root.height/2 - rulerItem.length/2 + root.offset;
+            } else if (root.panelAlignment === Latte.Dock.Bottom) {
+                return root.height - rulerItem.length - root.offset;
+            }
+        } else {
+            return;
+        }
+
+    }
+
 
     property int foregroundTextShadow: {
         if ((editModeVisual.layoutColor === "gold")
@@ -106,72 +138,37 @@ Item{
         }
     }
 
-    Connections{
-        target: plasmoid
-        onLocationChanged: initializeEditPosition();
-    }
-
-    Connections{
-        target: root
-        onMaxIconSizeChanged: initializeEditPosition();
-        onPanelAlignmentChanged: initializeEditPosition();
-        onOffsetChanged: initializeEditPosition();
-        onMaxLengthChanged: initializeEditPosition();
-        onEditModeChanged: {
-            if (editMode) {
-                initializeEditPosition();
-            }
-        }
-    }
-
-    Connections{
-        target: editModeVisual
-
-        onRootThicknessChanged: {
-            rulerItem.initializeEditPosition();
-        }
-
-        onThicknessChanged: {
-            rulerItem.initializeEditPosition();
-        }
-    }
-
     Behavior on width {
         NumberAnimation {
-            duration: 250
+            id: horizontalAnimation
+            duration: rulerAnimationTime
             easing.type: Easing.OutCubic
         }
     }
 
     Behavior on height {
         NumberAnimation {
-            duration: 250
+            id: verticalAnimation
+            duration: rulerAnimationTime
             easing.type: Easing.OutCubic
         }
     }
 
     Behavior on x {
-        enabled: root.isHorizontal
+        enabled: root.isHorizontal && !offsetAnimation.running
         NumberAnimation {
-            duration: 250
+            duration: rulerAnimationTime
             easing.type: Easing.OutCubic
         }
     }
 
     Behavior on y {
-        enabled: root.isVertical
+        enabled: root.isVertical && !offsetAnimation.running
         NumberAnimation {
-            duration: 250
+            duration: rulerAnimationTime
             easing.type: Easing.OutCubic
         }
     }
-
-   /* Behavior on opacity {
-        NumberAnimation {
-            duration: 250
-            easing.type: Easing.OutCubic
-        }
-    }*/
 
     Grid{
         id: rulerGrid
@@ -314,43 +311,6 @@ Item{
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
 
             color: foregroundColor
-        }
-    }
-
-
-    function initializeEditPosition() {
-        if (root.editMode) {
-            /* if (plasmoid.location === PlasmaCore.Types.LeftEdge){
-                x = 0;
-            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                y =editModeVisual.thickness - 1.5 *theme.defaultFont.pixelSize;
-            } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                y = editModeVisual.rootThickness - editModeVisual.thickness + 0.5 * theme.defaultFont.pixelSize;
-            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                x = editModeVisual.rootThickness - editModeVisual.thickness + 0.5 * theme.defaultFont.pixelSize;
-            }*/
-
-            if (root.isHorizontal) {
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    xL = root.width/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Left) {
-                    xL = root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
-                    xL = root.width/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Right) {
-                    xL = root.width - rulerItem.length - root.offset;
-                }
-            } else if (root.isVertical) {
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    yL = root.height/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Top) {
-                    yL = root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
-                    yL = root.height/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    yL = root.height - rulerItem.length - root.offset;
-                }
-            }
         }
     }
 }

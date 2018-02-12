@@ -416,6 +416,14 @@ Item{
         }
     }
 
+    transitions: Transition {
+        enabled: editModeVisual.plasmaEditMode
+        AnchorAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
+
     //BEGIN states
     //user set Panel Positions
     //0-Center, 1-Left, 2-Right, 3-Top, 4-Bottom

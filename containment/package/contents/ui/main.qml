@@ -74,7 +74,7 @@ DragDrop.DropArea {
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
-                                || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+                               || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
@@ -387,9 +387,6 @@ DragDrop.DropArea {
 
     ////////////////END properties
 
-
-
-
     //// BEGIN OF Behaviors
     Behavior on iconSize {
         enabled: !(root.editMode && root.behaveAsPlasmaPanel)
@@ -401,6 +398,16 @@ DragDrop.DropArea {
                     delayUpdateMaskArea.start();
                 }
             }
+        }
+    }
+
+    Behavior on offset {
+        enabled: editModeVisual.plasmaEditMode
+        NumberAnimation {
+            id: offsetAnimation
+
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
         }
     }
     //// END OF Behaviors
@@ -1108,7 +1115,7 @@ DragDrop.DropArea {
             if (dockContainsMouse && !rootMouseArea.containsMouse) {
                 root.globalDirectRender = true;
             } else {
-            //    console.log("direct render true ignored...");
+                //    console.log("direct render true ignored...");
             }
         } else {
             root.globalDirectRender = false;
@@ -1479,7 +1486,7 @@ DragDrop.DropArea {
 
     EditModeVisual{
         id:editModeVisual
-     //   z: root.behaveAsPlasmaPanel ? 1 : 0
+        //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
     Ruler{id: ruler}
@@ -1488,7 +1495,7 @@ DragDrop.DropArea {
         id: panelBox
 
         anchors.fill:layoutsContainer
-       // z: root.behaveAsPlasmaPanel ? 0 : 1
+        // z: root.behaveAsPlasmaPanel ? 0 : 1
 
         PanelBox{}
     }

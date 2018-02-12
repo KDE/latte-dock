@@ -351,6 +351,13 @@ Item{
         onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
         onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
 
+        transitions: Transition {
+            enabled: editModeVisual.plasmaEditMode
+            AnchorAnimation {
+                duration: 0.8 * root.animationTime
+                easing.type: Easing.OutCubic
+            }
+        }
 
         //////////////////////////BEGIN states
         //user set Panel Positions
