@@ -82,6 +82,7 @@ Grid {
                 plasmoid.configuration.shadows = 2;
                 plasmoid.configuration.zoomLevel = 16;
                 plasmoid.configuration.shrinkThickMargins = false;
+                plasmoid.configuration.autoDecreaseIconSize = true;
             }
         }
     }
@@ -107,6 +108,7 @@ Grid {
                 plasmoid.configuration.shadows = 0;
                 plasmoid.configuration.zoomLevel = 0;
                 plasmoid.configuration.shrinkThickMargins = true;
+                plasmoid.configuration.autoDecreaseIconSize = false;
             }
         }
     }
