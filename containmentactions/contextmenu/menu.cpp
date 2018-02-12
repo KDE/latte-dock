@@ -113,6 +113,7 @@ QList<QAction *> Menu::contextualActions()
     }
 
     if (m_layoutsData.size() > 3) {
+        m_layoutsAction->setEnabled(true);
         m_layoutsAction->setVisible(true);
     } else {
         m_layoutsAction->setVisible(false);
