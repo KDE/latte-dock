@@ -514,7 +514,7 @@ MouseArea{
         }
 
         if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
-            icList.hoveredIndex = (index===-1) ? lastValidIndex : index;
+            icList.hoveredIndex = index;
         }
 
         if(!root.latteDock)
@@ -583,7 +583,7 @@ MouseArea{
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
             if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
-                icList.hoveredIndex = (index===-1) ? lastValidIndex : index;
+                icList.hoveredIndex = index;
             }
 
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {

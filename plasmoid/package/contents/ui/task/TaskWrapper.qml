@@ -234,9 +234,10 @@ Item{
 
         // A new algorithm tryig to make the zoom calculation only once
         // and at the same time fixing glitches
-        if ((distanceFromHovered == 0)&&
-                (currentMousePosition  > 0)&&
-                (root.dragSource == null) ){
+        if ((distanceFromHovered === 0)&&
+                //! IMPORTANT: IS FIXING A BUG THAT NEGATIVE VALUES ARE SENT onEntered EVENT OF MOUSEAREA
+                //! (currentMousePosition  > 0)&&
+                (root.dragSource === null) ){
 
             //use the new parabolicManager in order to handle all parabolic effect messages
             var scales = parabolicManager.applyParabolicEffect(index, currentMousePosition, center);
