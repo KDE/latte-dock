@@ -34,7 +34,7 @@ Item{
     opacity: 0
 
     property int speed: root.durationTime*2.8*units.longDuration
-    property int thickness: visibilityManager.thicknessNormalOriginal + root.editShadow
+    property int thickness: visibilityManager.thicknessNormalOriginalValue + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow - theme.defaultFont.pixelSize
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.height)
