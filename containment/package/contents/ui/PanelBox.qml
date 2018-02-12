@@ -41,10 +41,10 @@ Item{
     property int animationTime: 6*root.durationTime*units.shortDuration
 
     property int panelWidth: {
-        if (root.behaveAsPlasmaPanel) {
+        if (root.behaveAsPlasmaPanel && !root.editMode) {
             return root.width;
         } else {
-            if ((root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal && !root.editMode) {
+            if ((root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal) {
                 return root.maxLength;
             } else {
                 return layoutsContainer.mainLayout.width + spacing;
@@ -53,10 +53,10 @@ Item{
     }
 
     property int panelHeight: {
-        if (root.behaveAsPlasmaPanel) {
+        if (root.behaveAsPlasmaPanel && !root.editMode) {
             return root.height;
         } else {
-            if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical && !root.editMode) {
+            if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical) {
                 return root.maxLength;
             } else {
                 return layoutsContainer.mainLayout.height + spacing;
@@ -492,7 +492,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Right
@@ -565,7 +565,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Bottom
@@ -643,7 +643,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
         ///Top
@@ -720,7 +720,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }
     ]

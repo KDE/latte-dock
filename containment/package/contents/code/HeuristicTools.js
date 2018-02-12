@@ -49,7 +49,7 @@ function computeStep2ForLayout(layout, sizePerApplet) {
 
         if (curApplet.needsFillSpace && curApplet.inFillCalculations) {
             curApplet.sizeForFill = sizePerApplet;
-           // console.log("s4_1  "+ sizePerApplet);
+            // console.log("s4_1  "+ sizePerApplet);
             curApplet.inFillCalculations = false;
         }
     }
@@ -86,7 +86,8 @@ function initializationPhase(availableSpace, sizePerApplet, noOfApplets){
 
 
 function updateSizeForAppletsInFill() {
-    if (visibilityManager.normalState && !root.editMode) {
+    if ((visibilityManager.normalState && !root.editMode)
+            || (behaveAsPlasmaPanel && root.editMode)) {
         // console.log("-------------");
         // console.log("s1...");
         var noA = startLayout.fillApplets + mainLayout.fillApplets + endLayout.fillApplets;

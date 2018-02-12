@@ -32,6 +32,9 @@ Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (dock && dock.visibility && dock.visibility.isHidden)
+    readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
+                                         && ((!root.editMode && !root.behaveAsPlasmaPanel )
+                                             || (behaveAsPlasmaPanel && root.editMode))
 
     property int allCount: root.latteApplet ? _mainLayout.count-1+latteApplet.tasksCount : _mainLayout.count
     property int currentSpot: -1000
@@ -44,9 +47,8 @@ Item{
     property Item endLayout: _endLayout
 
     x: {
-        if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal
-                && !root.editMode && !root.behaveAsPlasmaPanel ){
-            return ((dock.width/2) - (root.maxLength/2) + root.offset)
+        if ( dock && root.isHorizontal && useMaxLength ){
+            return ((dock.width/2) - (root.maxLength/2)); // + root.offset)
         } else {
             if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
                 return;
@@ -69,9 +71,8 @@ Item{
     }
 
     y: {
-        if ( dock && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical
-                && !root.editMode && !root.behaveAsPlasmaPanel ) {
-            return ((dock.height/2) - (root.maxLength/2) + root.offset);
+        if ( dock && root.isVertical && useMaxLength ) {
+            return ((dock.height/2) - (root.maxLength/2));// + root.offset);
         } else {
             if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                 return;
@@ -93,10 +94,8 @@ Item{
         }
     }
 
-    width: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isHorizontal && !root.editMode && !root.behaveAsPlasmaPanel ?
-               root.maxLength : parent.width
-    height: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && root.isVertical && !root.editMode && !root.behaveAsPlasmaPanel ?
-                root.maxLength : parent.height
+    width:  root.isHorizontal && useMaxLength ? root.maxLength : parent.width
+    height: root.isVertical && useMaxLength ? root.maxLength : parent.height
     z:10
 
     property bool animationSent: false
