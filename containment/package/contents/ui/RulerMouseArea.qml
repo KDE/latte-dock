@@ -25,8 +25,17 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.1 as Latte
 
 MouseArea{
-    cursorShape: root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
-    hoverEnabled: true
+    enabled: root.editMode && !dock.visibility.isHidden
+
+    cursorShape: {
+        if (enabled) {
+            return root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
+        } else {
+            return Qt.ArrowCursor;
+        }
+    }
+
+    hoverEnabled: enabled
 
     onWheel: {
         var angle = wheel.angleDelta.y / 8;
