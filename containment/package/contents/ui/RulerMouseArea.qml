@@ -26,6 +26,7 @@ import org.kde.latte 0.1 as Latte
 
 MouseArea{
     cursorShape: root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
+    hoverEnabled: true
 
     onWheel: {
         var angle = wheel.angleDelta.y / 8;

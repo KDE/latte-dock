@@ -31,21 +31,26 @@ import org.kde.latte 0.1 as Latte
 Item{
     id: rulerItem
 
-    width: root.isHorizontal ? root.maxLength : theme.defaultFont.pixelSize
-    height: root.isVertical ? root.maxLength : theme.defaultFont.pixelSize
+    width: root.isHorizontal ? root.maxLength : thickness
+    height: root.isVertical ? root.maxLength : thickness
 
     opacity: root.editMode ? 1 : 0
 
     property int rulerAnimationTime: 0.8 * root.animationTime
+
+    readonly property bool containsMouse: rulerMouseArea.containsMouse
+    readonly property int thickness: theme.defaultFont.pixelSize + rMargin
+
+    readonly property string tooltip: i18n("You can use mouse wheel to change the maximum length")
 
     x: {
         if (root.isHorizontal) {
             return xL;
         } else {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge){
-                return editModeVisual.x + editModeVisual.width - theme.defaultFont.pixelSize - rMargin ;
+                return editModeVisual.x + editModeVisual.width - theme.defaultFont.pixelSize;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge){
-                return editModeVisual.x + rMargin ;
+                return editModeVisual.x;
             }
         }
     }
@@ -55,9 +60,9 @@ Item{
             return yL;
         } else {
             if (plasmoid.location === PlasmaCore.Types.BottomEdge){
-                return editModeVisual.y + rMargin;
+                return editModeVisual.y;
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge){
-                return editModeVisual.y + editModeVisual.height - theme.defaultFont.pixelSize - rMargin;
+                return editModeVisual.y + editModeVisual.height - theme.defaultFont.pixelSize;
             }
         }
 
@@ -172,14 +177,34 @@ Item{
 
     Grid{
         id: rulerGrid
-        width: root.isHorizontal ? parent.width : undefined
-        height: root.isVertical ? parent.height : undefined
+        width: root.isHorizontal ? parent.length : undefined
+        height: root.isVertical ? parent.length : undefined
 
         rows: root.isHorizontal ? 1 : 0
         columns: root.isVertical ? 1 : 0
         spacing: 2
 
         flow: root.isHorizontal ? GridLayout.TopToBottom : GridLayout.LeftToRight
+
+        x: {
+            if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                return -rMargin;
+            } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                return rMargin;
+            } else {
+                return 0;
+            }
+        }
+
+        y: {
+            if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                return rMargin;
+            } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                return -rMargin;
+            } else {
+                return 0;
+            }
+        }
 
         property int freeSpace: {
             if (root.isHorizontal) {

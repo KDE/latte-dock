@@ -1492,6 +1492,7 @@ DragDrop.DropArea {
     Ruler{id: ruler}
 
     RulerMouseArea{
+        id: rulerMouseArea
         anchors.fill: ruler
         z:1100
     }

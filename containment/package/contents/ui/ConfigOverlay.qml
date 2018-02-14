@@ -181,8 +181,10 @@ MouseArea {
 
         if (!currentApplet
                 || !root.dragOverlay.currentApplet
-                || (currentApplet &&currentApplet.isInternalViewSplitter)) {
+                || (currentApplet && currentApplet.isInternalViewSplitter)) {
             hideTimer.restart();
+            return;
+        } else if (currentApplet === ruler) {
             return;
         }
 
@@ -312,7 +314,11 @@ MouseArea {
     Timer {
         id: hideTimer
         interval: units.longDuration * 2
-        onTriggered: tooltip.visible = false;
+        onTriggered: {
+            if (!ruler.containsMouse && !tooltipMouseArea.containsMouse) {
+                tooltip.visible = false;
+            }
+        }
     }
 
     Connections {
@@ -329,7 +335,7 @@ MouseArea {
 
         //BEGIN functions
         function updatePlacement(){
-            if(currentApplet){
+            if(currentApplet && currentApplet !== ruler){
                 var transformChoords = root.mapFromItem(currentApplet, 0, 0)
 
                 handle.x = transformChoords.x;
@@ -441,7 +447,7 @@ MouseArea {
         location: plasmoid.location
 
         onVisualParentChanged: {
-            if (visualParent && currentApplet && currentApplet.applet) {
+            if (visualParent && currentApplet && currentApplet.applet && currentApplet !== ruler) {
                 configureButton.visible = (currentApplet.applet.pluginName !== root.plasmoidName)
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
                 closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
@@ -453,6 +459,15 @@ MouseArea {
                         && !currentApplet.isInternalViewSplitter
 
                 label.text = currentApplet.applet.title;
+            } else {
+                configureButton.visible = false;
+                closeButton.visible = false;
+                lockButton.visible = false;
+
+                if (currentApplet === ruler) {
+                    label.text = ruler.tooltip;
+                    tooltip.visible = true;
+                }
             }
         }
 
@@ -466,7 +481,17 @@ MouseArea {
             LayoutMirroring.childrenInherit: true
 
             onEntered: hideTimer.stop();
-            onExited:  hideTimer.restart();
+            onExited: hideTimer.restart();
+
+            Connections {
+                target: ruler
+                onContainsMouseChanged: {
+                    if (ruler.containsMouse) {
+                        configurationArea.currentApplet = ruler;
+                    }
+                }
+            }
+
             Row {
                 id: handleRow
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -492,10 +517,7 @@ MouseArea {
                         textFormat: Text.PlainText
                         maximumLineCount: 1
                     }
-                }
 
-                Row{
-                    spacing: 0
                     PlasmaComponents.ToolButton{
                         id: lockButton
                         checkable: true
@@ -520,7 +542,6 @@ MouseArea {
                         }
                     }
                 }
-
             }
         }
     }
