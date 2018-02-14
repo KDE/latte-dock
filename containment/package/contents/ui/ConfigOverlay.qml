@@ -57,57 +57,7 @@ MouseArea {
     onWidthChanged: tooltip.visible = false;
 
     onPositionChanged: {
-        /*if (currentApplet && currentApplet.applet &&
-                currentApplet.applet.pluginName == "org.kde.plasma.panelspacer") {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                if ((mouse.y - handle.y) < spacerHandleSize ||
-                        (mouse.y - handle.y) > (handle.height - spacerHandleSize)) {
-                    configurationArea.cursorShape = Qt.SizeVerCursor;
-                } else {
-                    configurationArea.cursorShape = Qt.ArrowCursor;
-                }
-            } else {
-                if ((mouse.x - handle.x) < spacerHandleSize ||
-                        (mouse.x - handle.x) > (handle.width - spacerHandleSize)) {
-                    configurationArea.cursorShape = Qt.SizeHorCursor;
-                } else {
-                    configurationArea.cursorShape = Qt.ArrowCursor;
-                }
-            }
-        } else {
-            configurationArea.cursorShape = Qt.ArrowCursor;
-        }*/
-
         if (pressed) {
-            /* if (currentApplet && currentApplet.applet &&
-                    currentApplet.applet.pluginName == "org.kde.plasma.panelspacer") {
-
-                if (isResizingLeft) {
-                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        handle.y += (mouse.y - lastY);
-                        //      handle.height = currentApplet.height + (currentApplet.y - handle.y);
-                    } else {
-                        handle.x += (mouse.x - lastX);
-                        //     handle.width = currentApplet.width + (currentApplet.x - handle.x);
-                    }
-
-                    lastX = mouse.x;
-                    lastY = mouse.y;
-                    return;
-
-                } else if (isResizingRight) {
-                    /*  if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        handle.height = mouse.y - handle.y;
-                    } else {
-                        handle.width = mouse.x - handle.x;
-                    } */
-
-            /*      lastX = mouse.x;
-                    lastY = mouse.y;
-                    return;
-                }
-            }*/
-
             var padding = units.gridUnit * 3;
             if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
                                   mouse.x > width + padding || mouse.y > height + padding)) {
@@ -158,6 +108,7 @@ MouseArea {
             if (root.dragOverlay && item && item !== lastSpacer) {
                 root.dragOverlay.currentApplet = item;
             } else {
+                currentApplet = null;
                 root.dragOverlay.currentApplet = null;
             }
         }
@@ -317,6 +268,7 @@ MouseArea {
         onTriggered: {
             if (!ruler.containsMouse && !tooltipMouseArea.containsMouse) {
                 tooltip.visible = false;
+                currentApplet = null;
             }
         }
     }
@@ -331,7 +283,8 @@ MouseArea {
 
     Item {
         id: handle
-        visible: configurationArea.containsMouse || tooltipMouseArea.containsMouse
+        visible: currentApplet && currentApplet !== ruler
+                 && (configurationArea.containsMouse || tooltipMouseArea.containsMouse)
 
         //BEGIN functions
         function updatePlacement(){
@@ -460,12 +413,12 @@ MouseArea {
 
                 label.text = currentApplet.applet.title;
             } else {
-                configureButton.visible = false;
-                closeButton.visible = false;
-                lockButton.visible = false;
-
                 if (currentApplet === ruler) {
+                    configureButton.visible = false;
+                    closeButton.visible = false;
+                    lockButton.visible = false;
                     label.text = ruler.tooltip;
+
                     tooltip.visible = true;
                 }
             }
