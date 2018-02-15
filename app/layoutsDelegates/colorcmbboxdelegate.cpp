@@ -51,7 +51,11 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
 
             if (dialog.exec()) {
                 QStringList files = dialog.selectedFiles();
-                qDebug() << files;
+
+                if (files.count() > 0) {
+                    qDebug() << files;
+                    editor->setItemData(index, files[0], Qt::BackgroundRole);
+                }
             }
         }
     });
