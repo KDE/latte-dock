@@ -34,7 +34,8 @@ MouseArea {
     hoverEnabled: true
 
     cursorShape: {
-        if (currentApplet && tooltip.visible && (currentApplet.applet.pluginName === "org.kde.latte.spacer")) {
+        if (currentApplet && tooltip.visible && currentApplet.applet
+                && (currentApplet.applet.pluginName === "org.kde.latte.spacer")) {
             return root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor;
         }
 
