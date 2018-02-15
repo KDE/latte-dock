@@ -201,21 +201,27 @@ Item{
             }
         }
 
-        property int shadowsSize: {
-            if (shadowsSvgItem && !root.behaveAsPlasmaPanel && root.useThemePanel && root.panelShadowsActive){
-                if (root.isVertical){
-                    if (plasmoid.location === PlasmaCore.Types.LeftEdge)
-                        return shadowsSvgItem.margins.right;
-                    else if (plasmoid.location === PlasmaCore.Types.RightEdge)
-                        return shadowsSvgItem.margins.left;
+        property int shadowsSize: 0
+
+        Binding{
+            target: shadowsSvgItem
+            property: "shadowsSize"
+            value:{
+                if (shadowsSvgItem && !root.behaveAsPlasmaPanel && root.useThemePanel && root.panelShadowsActive){
+                    if (root.isVertical){
+                        if (plasmoid.location === PlasmaCore.Types.LeftEdge)
+                            return shadowsSvgItem.margins.right;
+                        else if (plasmoid.location === PlasmaCore.Types.RightEdge)
+                            return shadowsSvgItem.margins.left;
+                    } else {
+                        if (plasmoid.location === PlasmaCore.Types.BottomEdge)
+                            return shadowsSvgItem.margins.top;
+                        else if (plasmoid.location === PlasmaCore.Types.TopEdge)
+                            return shadowsSvgItem.margins.bottom;
+                    }
                 } else {
-                    if (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                        return shadowsSvgItem.margins.top;
-                    else if (plasmoid.location === PlasmaCore.Types.TopEdge)
-                        return shadowsSvgItem.margins.bottom;
+                    return 0;
                 }
-            } else {
-                return 0;
             }
         }
 
