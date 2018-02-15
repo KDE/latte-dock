@@ -48,8 +48,10 @@ namespace Latte {
 class Layout : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
+    Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+    Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
     Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
@@ -77,6 +79,9 @@ public:
     int version() const;
     void setVersion(int ver);
 
+    QString background() const;
+    void setBackground(QString path);
+
     QString color() const;
     void setColor(QString color);
 
@@ -85,6 +90,9 @@ public:
 
     QString name() const;
     QString file() const;
+
+    QString textColor() const;
+    void setTextColor(QString color);
 
     QStringList activities() const;
     void setActivities(QStringList activities);
@@ -130,6 +138,7 @@ public:
 
 signals:
     void activitiesChanged();
+    void backgroundChanged();
     void colorChanged();
     void fileChanged();
     void lastUsedActivityChanged();
@@ -137,6 +146,7 @@ signals:
     void nameChanged();
     void versionChanged();
     void showInMenuChanged();
+    void textColorChanged();
 
 private slots:
     void loadConfig();
@@ -169,10 +179,12 @@ private:
     //if version doesnt exist it is and old layout file
     int m_version{2};
 
+    QString m_background;
     QString m_color;
     QString m_lastUsedActivity; //the last used activity for this layout
     QString m_layoutFile;
     QString m_layoutName;
+    QString m_textColor;
     QStringList m_activities;
     QStringList m_launchers;
 

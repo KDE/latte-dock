@@ -150,9 +150,11 @@ void Layout::unloadDockViews()
 void Layout::init()
 {
     connect(this, &Layout::activitiesChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::backgroundChanged, this, &Layout::saveConfig);
     connect(this, &Layout::versionChanged, this, &Layout::saveConfig);
-    connect(this, &Layout::colorChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::colorChanged, this, &Layout::textColorChanged);
     connect(this, &Layout::showInMenuChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::textColorChanged, this, &Layout::saveConfig);
     connect(this, &Layout::launchersChanged, this, &Layout::saveConfig);
     connect(this, &Layout::lastUsedActivityChanged, this, &Layout::saveConfig);
 }
@@ -218,6 +220,25 @@ void Layout::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
+QString Layout::background() const
+{
+    return m_background;
+}
+
+void Layout::setBackground(QString path)
+{
+    if (path == m_background) {
+        return;
+    }
+
+    if (!path.isEmpty() && !QFileInfo(path).exists()) {
+        return;
+    }
+
+    m_background = path;
+    emit backgroundChanged();
+}
+
 QString Layout::name() const
 {
     return m_layoutName;
@@ -269,6 +290,49 @@ void Layout::setColor(QString color)
     emit colorChanged();
 }
 
+QString Layout::textColor() const
+{
+    //! the user is in default layout theme
+    if (m_background.isEmpty()) {
+        if (m_color == "blue") {
+            return "#D7E3FF";
+        } else if (m_color == "brown") {
+            return "#F0D7BA";
+        } else if (m_color == "darkgrey") {
+            return "#ECECEC";
+        } else if (m_color == "gold") {
+            return "#78573B";
+        } else if (m_color == "green") {
+            return "#D0E7CD";
+        } else if (m_color == "lightskyblue") {
+            return "#E3F8FF";
+        } else if (m_color == "orange") {
+            return "#FFEADE";
+        } else if (m_color == "pink") {
+            return "#743C46";
+        } else if (m_color == "purple") {
+            return "#ECD9FF";
+        }  else if (m_color == "red") {
+            return "#FFCACA";
+        }  else if (m_color == "wheat") {
+            return "#705548";
+        }  else {
+            return "#FCFCFC";
+        }
+    }
+
+    return m_textColor;
+}
+
+void Layout::setTextColor(QString color)
+{
+    if (m_textColor == color) {
+        return;
+    }
+
+    m_textColor = color;
+    emit textColorChanged();
+}
 
 QString Layout::file() const
 {
@@ -464,9 +528,20 @@ void Layout::loadConfig()
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
+    m_textColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
     m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
+
+    QString back = m_layoutGroup.readEntry("background", "");
+
+    if (!back.isEmpty()) {
+        if (QFileInfo(back).exists()) {
+            m_background = back;
+        } else {
+            m_layoutGroup.writeEntry("background", QString());
+        }
+    }
 
     emit activitiesChanged();
 }
@@ -478,8 +553,10 @@ void Layout::saveConfig()
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("color", m_color);
     m_layoutGroup.writeEntry("launchers", m_launchers);
+    m_layoutGroup.writeEntry("background", m_background);
     m_layoutGroup.writeEntry("activities", m_activities);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
+    m_layoutGroup.writeEntry("textColor", m_textColor);
 
     m_layoutGroup.sync();
 }

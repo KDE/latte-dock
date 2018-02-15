@@ -115,43 +115,17 @@ Item{
     }
 
 
-    property int foregroundTextShadow: {
-        if ((editModeVisual.layoutColor === "gold")
-                || (editModeVisual.layoutColor === "pink")
-                || (editModeVisual.layoutColor === "wheat"))  {
+    property int textShadow: {
+        if (textColorIsDark)  {
             return 1;
         } else {
             return 6;
         }
     }
 
-    property color foregroundColor:{
-        if (editModeVisual.layoutColor === "blue") {
-            return "#D7E3FF";
-        } else if (editModeVisual.layoutColor === "brown") {
-            return "#F0D7BA";
-        } else if (editModeVisual.layoutColor === "darkgrey") {
-            return "#ECECEC";
-        } else if (editModeVisual.layoutColor === "gold") {
-            return "#78573B";
-        } else if (editModeVisual.layoutColor === "green") {
-            return "#D0E7CD";
-        } else if (editModeVisual.layoutColor === "lightskyblue") {
-            return "#E3F8FF";
-        } else if (editModeVisual.layoutColor === "orange") {
-            return "#FFEADE";
-        } else if (editModeVisual.layoutColor === "pink") {
-            return "#743C46";
-        } else if (editModeVisual.layoutColor === "purple") {
-            return "#ECD9FF";
-        } else if (editModeVisual.layoutColor === "red") {
-            return "#FFCACA";
-        } else if (editModeVisual.layoutColor === "wheat") {
-            return "#705548";
-        } else {
-            return "#D7E3FF";
-        }
-    }
+    readonly property bool textColorIsDark: textColorLuma < 0.6
+    readonly property real textColorLuma: 0.2126*textColor.r + 0.7152*textColor.g + 0.0722*textColor.b
+    readonly property color textColor: dock && dock.managedLayout ? dock.managedLayout.textColor : "#D7E3FF"
 
     Behavior on width {
         NumberAnimation {
@@ -228,10 +202,10 @@ Item{
 
         layer.enabled: true
         layer.effect: DropShadow{
-            radius: foregroundTextShadow
+            radius: textShadow
             fast: true
             samples: 2 * radius
-            color: "#040404"
+            color: root.appShadowColorSolid
         }
 
         Rectangle{
@@ -239,7 +213,7 @@ Item{
             width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
 
-            color: foregroundColor
+            color: textColor
         }
 
         Item{
@@ -256,7 +230,7 @@ Item{
                 height: width
                 rotation: 45
 
-                color: foregroundColor
+                color: textColor
             }
         }
 
@@ -271,7 +245,7 @@ Item{
 
                 anchors.centerIn: parent
 
-                color: foregroundColor
+                color: textColor
             }
         }
 
@@ -286,7 +260,7 @@ Item{
                 anchors.centerIn: parent
 
                 text: i18n("Maximum Length")
-                color: foregroundColor
+                color: textColor
 
                 transformOrigin: Item.Center
 
@@ -319,7 +293,7 @@ Item{
 
                 anchors.centerIn: parent
 
-                color: foregroundColor
+                color: textColor
             }
         }
 
@@ -336,7 +310,7 @@ Item{
                 height: width
                 rotation: 45
 
-                color: foregroundColor
+                color: textColor
             }
         }
 
@@ -345,7 +319,7 @@ Item{
             width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
 
-            color: foregroundColor
+            color: textColor
         }
     } // end of grid
 }
