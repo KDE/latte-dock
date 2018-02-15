@@ -4,11 +4,14 @@
 #include <QComboBox>
 #include <QDebug>
 #include <QDir>
+#include <QFileDialog>
 #include <QWidget>
 #include <QModelIndex>
 #include <QApplication>
 #include <QPainter>
 #include <QString>
+
+#include <KLocalizedString>
 
 ColorCmbBoxDelegate::ColorCmbBoxDelegate(QObject *parent, QString iconsPath, QStringList colors)
     : QItemDelegate(parent),
@@ -32,8 +35,25 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
         }
     }
 
+    editor->addItem(i18n("Select image..."), "select_image");
+    editor->addItem(i18n("Text color..."), "text_color");
+
     connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
         editor->clearFocus();
+
+        if (index == editor->count() - 2) {
+            QStringList mimeTypeFilters;
+            mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
+                            << "image/png";  // will show "PNG image (*.png)"
+
+            QFileDialog dialog(parent);
+            dialog.setMimeTypeFilters(mimeTypeFilters);
+
+            if (dialog.exec()) {
+                QStringList files = dialog.selectedFiles();
+                qDebug() << files;
+            }
+        }
     });
 
     return editor;
@@ -61,15 +81,21 @@ void ColorCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 {
     QStyleOptionViewItem myOption = option;
     QVariant value = index.data(Qt::BackgroundRole);
+    QVariant data = index.data(Qt::UserRole);
+    QString dataStr = data.toString();
 
-    if (value.isValid()) {
+    if (value.isValid() && (dataStr != "select_image") && (dataStr != "text_color")) {
+
         QString colorPath = m_iconsPath + value.toString() + "print.jpg";
-        QBrush colorBrush;
-        colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
 
-        painter->setBrush(colorBrush);
-        painter->drawRect(QRect(option.rect.x(), option.rect.y(),
-                                option.rect.width(), option.rect.height()));
+        if (QFileInfo(colorPath).exists()) {
+            QBrush colorBrush;
+            colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
+
+            painter->setBrush(colorBrush);
+            painter->drawRect(QRect(option.rect.x(), option.rect.y(),
+                                    option.rect.width(), option.rect.height()));
+        }
     }
 
     //QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
