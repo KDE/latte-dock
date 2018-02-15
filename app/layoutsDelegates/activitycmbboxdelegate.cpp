@@ -112,7 +112,10 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         myOptions.text = "";
         myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
 
-        painter->translate(myOptions.rect.left(), myOptions.rect.top());
+        //we need an offset to be in the same vertical center of TextEdit
+        int offsetY = 1 + (myOptions.rect.height() - doc.size().height()) / 2;
+
+        painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY);
         QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
         doc.drawContents(painter, clip);
     } else {
