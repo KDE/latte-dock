@@ -154,7 +154,7 @@ Item{
     }
 
     Binding{
-        target: dock.visibility
+        target: dock && dock.visibility ? dock.visibility : null
         property: "enabledDynamicBackground"
         when: dock && dock.visibility
         value: root.backgroundOnlyOnMaximized

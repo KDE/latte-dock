@@ -28,8 +28,10 @@ import org.kde.latte 0.1 as Latte
 
 Item{
     id: editVisual
-    width: root.isHorizontal ? dock.width : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
-    height: root.isVertical ? dock.height : visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+    width: root.isHorizontal ? (dock ? dock.width : root.width) :
+                               visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+    height: root.isVertical ? (dock ? dock.height : root.height) :
+                              visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
 
     opacity: 0
 

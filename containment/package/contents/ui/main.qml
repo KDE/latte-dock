@@ -83,7 +83,8 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
-    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
+                                    &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
                                          && Latte.WindowSystem.compositingActive
