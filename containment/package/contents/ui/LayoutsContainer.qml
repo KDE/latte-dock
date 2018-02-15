@@ -46,50 +46,58 @@ Item{
     property Item mainLayout: _mainLayout
     property Item endLayout: _endLayout
 
-    x: {
-        if ( dock && root.isHorizontal && useMaxLength ){
-            return ((dock.width/2) - (root.maxLength/2)); // + root.offset)
-        } else {
-            if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
-                return;
-            }
-
-            if (layoutsContainer.isHidden && root.isVertical) {
-                if (Latte.WindowSystem.compositingActive) {
-                    return visibilityManager.slidingOutToPos;
-                } else {
-                    if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
-                        return visibilityManager.slidingOutToPos + 1;
-                    } else {
-                        return visibilityManager.slidingOutToPos - 1;
-                    }
-                }
+    Binding {
+        target: layoutsContainer
+        property: "x"
+        value: {
+            if ( dock && root.isHorizontal && useMaxLength ){
+                return ((dock.width/2) - (root.maxLength/2)); // + root.offset)
             } else {
-                return 0;
+                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
+                    return;
+                }
+
+                if (layoutsContainer.isHidden && root.isVertical) {
+                    if (Latte.WindowSystem.compositingActive) {
+                        return visibilityManager.slidingOutToPos;
+                    } else {
+                        if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
+                            return visibilityManager.slidingOutToPos + 1;
+                        } else {
+                            return visibilityManager.slidingOutToPos - 1;
+                        }
+                    }
+                } else {
+                    return 0;
+                }
             }
         }
     }
 
-    y: {
-        if ( dock && root.isVertical && useMaxLength ) {
-            return ((dock.height/2) - (root.maxLength/2));// + root.offset);
-        } else {
-            if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
-                return;
-            }
-
-            if (layoutsContainer.isHidden && root.isHorizontal) {
-                if (Latte.WindowSystem.compositingActive) {
-                    return visibilityManager.slidingOutToPos;
-                } else {
-                    if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
-                        return visibilityManager.slidingOutToPos + 1;
-                    } else {
-                        return visibilityManager.slidingOutToPos - 1;
-                    }
-                }
+    Binding{
+        target: layoutsContainer
+        property: "y"
+        value: {
+            if ( dock && root.isVertical && useMaxLength ) {
+                return ((dock.height/2) - (root.maxLength/2));// + root.offset);
             } else {
-                return 0;
+                if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
+                    return;
+                }
+
+                if (layoutsContainer.isHidden && root.isHorizontal) {
+                    if (Latte.WindowSystem.compositingActive) {
+                        return visibilityManager.slidingOutToPos;
+                    } else {
+                        if ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) {
+                            return visibilityManager.slidingOutToPos + 1;
+                        } else {
+                            return visibilityManager.slidingOutToPos - 1;
+                        }
+                    }
+                } else {
+                    return 0;
+                }
             }
         }
     }
