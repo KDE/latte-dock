@@ -71,37 +71,47 @@ Item{
     property int length: root.maxLength
 
     property int rMargin: 3
-    property int xL: {
-        if (root.isHorizontal) {
-            if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                return root.width/2 - rulerItem.length/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Left) {
-                return root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Center) {
-                return root.width/2 - rulerItem.length/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Right) {
-                return root.width - rulerItem.length - root.offset;
+    property int xL: 0
+    property int yL: 0
+
+    Binding{
+        target: ruler
+        property: "xL"
+        value: {
+            if (root.isHorizontal) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                    return root.width/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Left) {
+                    return root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Center) {
+                    return root.width/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Right) {
+                    return root.width - rulerItem.length - root.offset;
+                }
+            } else {
+                return ;
             }
-        } else {
-            return ;
         }
     }
 
-    property int yL: {
-        if (root.isVertical) {
-            if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                return root.height/2 - rulerItem.length/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Top) {
-                return root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Center) {
-                return root.height/2 - rulerItem.length/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                return root.height - rulerItem.length - root.offset;
+    Binding{
+        target: ruler
+        property: "yL"
+        value: {
+            if (root.isVertical) {
+                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                    return root.height/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Top) {
+                    return root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Center) {
+                    return root.height/2 - rulerItem.length/2 + root.offset;
+                } else if (root.panelAlignment === Latte.Dock.Bottom) {
+                    return root.height - rulerItem.length - root.offset;
+                }
+            } else {
+                return;
             }
-        } else {
-            return;
         }
-
     }
 
 
