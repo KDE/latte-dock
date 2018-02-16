@@ -288,11 +288,6 @@ QString Layout::color() const
 
 void Layout::setColor(QString color)
 {
-    //! remove # if someone is trying to set it this way
-    if (color.startsWith("#")) {
-        color.remove(0, 1);
-    }
-
     if (m_color == color) {
         return;
     }
@@ -337,6 +332,11 @@ QString Layout::textColor() const
 
 void Layout::setTextColor(QString color)
 {
+    //! remove # if someone is trying to set it this way
+    if (color.startsWith("#")) {
+        color.remove(0, 1);
+    }
+
     if (m_textColor == color) {
         return;
     }

@@ -274,6 +274,7 @@ void SettingsDialog::on_copyButton_clicked()
 
     QString id = m_model->data(m_model->index(row, IDCOLUMN), Qt::DisplayRole).toString();
     QString color = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
+    QString textColor = m_model->data(m_model->index(row, COLORCOLUMN), Qt::UserRole).toString();
     QString layoutName = uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString());
     bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
 
@@ -283,7 +284,7 @@ void SettingsDialog::on_copyButton_clicked()
     Layout *settings = new Layout(this, copiedId);
     m_layouts[copiedId] = settings;
 
-    insertLayoutInfoAtRow(row + 1, copiedId, color, layoutName, menu, QStringList());
+    insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, QStringList());
 
     ui->layoutsView->selectRow(row + 1);
 }
@@ -575,6 +576,12 @@ void SettingsDialog::requestImagesDialog(int row)
     QFileDialog dialog(this);
     dialog.setMimeTypeFilters(mimeTypeFilters);
 
+    QString background = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
+
+    if (background.startsWith("/")) {
+        dialog.selectFile(background);
+    }
+
     if (dialog.exec()) {
         QStringList files = dialog.selectedFiles();
 
@@ -587,9 +594,12 @@ void SettingsDialog::requestImagesDialog(int row)
 void SettingsDialog::requestColorsDialog(int row)
 {
     QColorDialog dialog(this);
+    QString textColor = m_model->data(m_model->index(row, COLORCOLUMN), Qt::UserRole).toString();
+    dialog.setCurrentColor(QColor(textColor));
 
     if (dialog.exec()) {
         qDebug() << dialog.selectedColor().name();
+        m_model->setData(m_model->index(row, COLORCOLUMN), dialog.selectedColor().name(), Qt::UserRole);
     }
 }
 
@@ -666,6 +676,7 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
 
     QString id = copiedId;
     QString color = settings->color();
+    QString textColor = settings->textColor();
     QString background = settings->background();
     bool menu = settings->showInMenu();
 
@@ -674,9 +685,9 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
     int row = ascendingRowFor(layoutName);
 
     if (background.isEmpty()) {
-        insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
+        insertLayoutInfoAtRow(row, copiedId, color, QString(), layoutName, menu, QStringList());
     } else {
-        insertLayoutInfoAtRow(row, copiedId, background, layoutName, menu, QStringList());
+        insertLayoutInfoAtRow(row, copiedId, background, textColor, layoutName, menu, QStringList());
     }
 
     ui->layoutsView->selectRow(row);
@@ -711,10 +722,10 @@ void SettingsDialog::loadSettings()
         QString background = layoutSets->background();
 
         if (background.isEmpty()) {
-            insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), layoutSets->name(),
+            insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), QString(), layoutSets->name(),
                                   layoutSets->showInMenu(), layoutSets->activities());
         } else {
-            insertLayoutInfoAtRow(i, layoutPath, background, layoutSets->name(),
+            insertLayoutInfoAtRow(i, layoutPath, background, layoutSets->textColor(), layoutSets->name(),
                                   layoutSets->showInMenu(), layoutSets->activities());
         }
 
@@ -800,12 +811,14 @@ QStringList SettingsDialog::currentLayoutsSettings()
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
+        QString textColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         layoutSettings << id;
         layoutSettings << color;
+        layoutSettings << textColor;
         layoutSettings << name;
         layoutSettings << QString::number((int)menu);
         layoutSettings << lActivities;
@@ -815,7 +828,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
 }
 
 
-void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities)
+void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, QStringList activities)
 {
     QStandardItem *pathItem = new QStandardItem(path);
 
@@ -854,6 +867,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 
     m_model->setData(m_model->index(row, IDCOLUMN), path, Qt::DisplayRole);
     m_model->setData(m_model->index(row, COLORCOLUMN), color, Qt::BackgroundRole);
+    m_model->setData(m_model->index(row, COLORCOLUMN), textColor, Qt::UserRole);
 
     QFont font;
 
@@ -1117,6 +1131,7 @@ bool SettingsDialog::saveAllChanges()
     for (int i = 0; i < m_model->rowCount(); ++i) {
         QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
+        QString textColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
@@ -1137,10 +1152,19 @@ bool SettingsDialog::saveAllChanges()
 
         if (color.startsWith("/")) {
             //it is image file in such case
-            layout->setBackground(color);
+            if (color != layout->background()) {
+                layout->setBackground(color);
+            }
+
+            if (layout->textColor() != textColor) {
+                layout->setTextColor(textColor);
+            }
         } else {
-            layout->setColor(color);
-            layout->setBackground(QString());
+            if (color != layout->color()) {
+                layout->setColor(color);
+                layout->setBackground(QString());
+                layout->setTextColor(QString());
+            }
         }
 
         if (layout->showInMenu() != menu) {

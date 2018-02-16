@@ -88,7 +88,7 @@ private:
     void blockDeleteOnActivityStopped();
     void loadSettings();
     void recalculateAvailableActivities();
-    void insertLayoutInfoAtRow(int row, QString path, QString color, QString name, bool menu, QStringList activities);
+    void insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, QStringList activities);
     void updateApplyButtonsState();
     void updatePauseButtonState();
 
