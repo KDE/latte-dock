@@ -35,6 +35,14 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
         }
     }
 
+    QString value = index.model()->data(index, Qt::BackgroundRole).toString();
+
+    //! add the background if exists
+    if (value.startsWith("/")) {
+        QIcon icon(value);
+        editor->addItem(icon, value);
+    }
+
     editor->addItem(i18n("Select image..."), "select_image");
     editor->addItem(i18n("Text color..."), "text_color");
 
@@ -67,7 +75,14 @@ void ColorCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
     QString value = index.model()->data(index, Qt::BackgroundRole).toString();
-    comboBox->setCurrentIndex(Colors.indexOf(value));
+
+    int pos = Colors.indexOf(value);
+
+    if (pos == -1 && value.startsWith("/")) {
+        comboBox->setCurrentIndex(Colors.count());
+    } else {
+        comboBox->setCurrentIndex(Colors.indexOf(value));
+    }
 }
 
 void ColorCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
@@ -89,8 +104,9 @@ void ColorCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     QString dataStr = data.toString();
 
     if (value.isValid() && (dataStr != "select_image") && (dataStr != "text_color")) {
+        QString valueStr = value.toString();
 
-        QString colorPath = m_iconsPath + value.toString() + "print.jpg";
+        QString colorPath = valueStr.startsWith("/") ? valueStr : m_iconsPath + value.toString() + "print.jpg";
 
         if (QFileInfo(colorPath).exists()) {
             QBrush colorBrush;

@@ -33,7 +33,7 @@ void ColorCmbBoxItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
             myOption.text = valueStr;
             QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
         } else {
-            QString colorPath = m_iconsPath + valueStr + "print.jpg";
+            QString colorPath = valueStr.startsWith("/") ? valueStr : m_iconsPath + valueStr + "print.jpg";
             QBrush colorBrush;
             colorBrush.setTextureImage(QImage(colorPath).scaled(QSize(50, 50)));
 
