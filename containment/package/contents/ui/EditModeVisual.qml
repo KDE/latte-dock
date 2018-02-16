@@ -158,7 +158,10 @@ Item{
         opacity: editVisual.editStateOpacity
 
         fillMode: Image.Tile
-        source: "../icons/"+editVisual.layoutColor+"print.jpg"
+        source: hasBackground ? dock.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
+
+        readonly property bool hasBackground: (dock && dock.managedLayout && dock.managedLayout.background.startsWith("/")) ?
+                                                  true : false
     }
 
     Connections{
