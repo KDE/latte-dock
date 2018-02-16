@@ -26,25 +26,25 @@ We recommend that you use at least **Plasma 5.9.0**
  Qt5Gui >= 5.7.0
  Qt5Dbus >= 5.7.0
 
- KF5Plasma >= 5.33.0
- KF5PlasmaQuick >= 5.33.0
- KF5Activities >= 5.33.0
- KF5CoreAddons >= 5.39.0
- KF5DBusAddons >= 5.33.0
- KF5Declarative >= 5.33.0
- KF5Wayland >= 5.33.0
- KF5Package >= 5.33.0
- KF5XmlGui >= 5.33.0
- KF5IconThemes >= 5.33.0
- KF5I18n >= 5.33.0
- KF5Notifications >= 5.33.0
- KF5NewStuff >= 5.33.0
- KF5Archive >= 5.339.0
- KF5GlobalAccel >= 5.33.0
- KF5Crash >= 5.33.0
+ KF5Plasma >= 5.38.0
+ KF5PlasmaQuick >= 5.38.0
+ KF5Activities >= 5.38.0
+ KF5CoreAddons >= 5.38.0
+ KF5DBusAddons >= 5.38.0
+ KF5Declarative >= 5.38.0
+ KF5Wayland >= 5.38.0
+ KF5Package >= 5.38.0
+ KF5XmlGui >= 5.38.0
+ KF5IconThemes >= 5.38.0
+ KF5I18n >= 5.38.0
+ KF5Notifications >= 5.38.0
+ KF5NewStuff >= 5.38.0
+ KF5Archive >= 5.38.0
+ KF5GlobalAccel >= 5.38.0
+ KF5Crash >= 5.38.0
 
  For X11 support:
-    KF5WindowSystem >= 5.33.0
+    KF5WindowSystem >= 5.38.0
     Qt5X11Extras >= 5.7.0
     libxcb
     libSM

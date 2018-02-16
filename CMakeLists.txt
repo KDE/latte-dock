@@ -10,11 +10,11 @@ set(BUG_ADDRESS "https://github.com/psifidotos/Latte-Dock/issues")
 set(FAQS "https://github.com/psifidotos/Latte-Dock/wiki/F.A.Q.")
 
 set(QT_MIN_VERSION "5.7.0")
-set(KF5_MIN_VERSION "5.33.0")
+set(KF5_MIN_VERSION "5.38.0")
 
 set(KF5_LOCALE_PREFIX "")
 
-find_package(ECM 1.8.0 REQUIRED NO_MODULE)
+find_package(ECM ${KF5_MIN_VER} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
@@ -43,6 +43,16 @@ endif()
 if(X11_FOUND AND XCB_XCB_FOUND)
     set(HAVE_X11 ON)
 endif()
+
+include(ECMQMLModules)
+ecm_find_qmlmodule(QtQuick 2.7)
+ecm_find_qmlmodule(QtQuick.Layouts 1.3)
+ecm_find_qmlmodule(QtQuick.Controls 1.4)
+ecm_find_qmlmodule(QtQuick.Controls.Styles.Plasma 2.0)
+ecm_find_qmlmodule(QtGraphicalEffects 1.0)
+ecm_find_qmlmodule(org.kde.kquickcontrolsaddons 2.0)
+ecm_find_qmlmodule(org.kde.plasma.core 2.0)
+ecm_find_qmlmodule(org.kde.plasma.components 2.0)
 
 include(CheckIncludeFiles)
 include(CMakePackageConfigHelpers)
