@@ -55,67 +55,99 @@ Item{
 
 
     Item{
-        id:topShadow
-        height: root.editShadow
-        width: imageTiler.width + 2*root.editShadow
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: imageTiler.top
-        clip: true
+        id: shadow
+        width: root.isHorizontal ? imageTiler.width + 2*root.editShadow : root.editShadow
+        height: root.isHorizontal ? root.editShadow : imageTiler.height + 2*root.editShadow
 
-        visible: !editTransition.running
-
-        EditShadow{
-            anchors.top: parent.top
-            anchors.topMargin: root.editShadow
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-    }
-
-    Item{
-        id:leftShadow
-        width: root.editShadow
-        height: imageTiler.height
-        anchors.right: imageTiler.left
-        anchors.verticalCenter: imageTiler.verticalCenter
-        clip: true
-
-        visible: !editTransition.running
-
-        EditShadow{
-            anchors.left: parent.left
-            anchors.leftMargin: root.editShadow
-        }
-    }
-
-    Item{
-        id:rightShadow
-        width: root.editShadow
-        height: imageTiler.height
-        anchors.left: imageTiler.right
-        anchors.verticalCenter: imageTiler.verticalCenter
         clip: true
         visible: !editTransition.running
 
         EditShadow{
-            anchors.right: parent.right
-            anchors.rightMargin: root.editShadow
+            id: editShadow
         }
-    }
 
-    Item{
-        id:bottomShadow
-        height: root.editShadow
-        width: imageTiler.width + 2*root.editShadow
-        anchors.horizontalCenter: imageTiler.horizontalCenter
-        anchors.top: imageTiler.bottom
-        clip: true
-        visible: !editTransition.running
+        states: [
+            ///topShadow
+            State {
+                name: "topShadow"
+                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
 
-        EditShadow{
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: root.editShadow
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
+                AnchorChanges {
+                    target: shadow
+                    anchors{ top:undefined; bottom:imageTiler.top; left:undefined; right:undefined;
+                        horizontalCenter:imageTiler.horizontalCenter; verticalCenter:undefined}
+                }
+                AnchorChanges {
+                    target: editShadow
+                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;
+                        horizontalCenter:parent.horizontalCenter; verticalCenter:parent.undefined}
+                }
+                PropertyChanges{
+                    target: editShadow
+                    anchors{ leftMargin: 0; rightMargin:0; topMargin:root.editShadow; bottomMargin:0}
+                }
+            },
+            ///bottomShadow
+            State {
+                name: "bottomShadow"
+                when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+
+                AnchorChanges {
+                    target: shadow
+                    anchors{ top:imageTiler.bottom; bottom:undefined; left:undefined; right:undefined;
+                        horizontalCenter:imageTiler.horizontalCenter; verticalCenter:undefined}
+                }
+                AnchorChanges {
+                    target: editShadow
+                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
+                        horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+                }
+                PropertyChanges{
+                    target: editShadow
+                    anchors{ leftMargin: 0; rightMargin:0; topMargin:0; bottomMargin:root.editShadow}
+                }
+            },
+            ///leftShadow
+            State {
+                name: "leftShadow"
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+                AnchorChanges {
+                    target: shadow
+                    anchors{ top:undefined; bottom:undefined; left:undefined; right:imageTiler.left;
+                        horizontalCenter:undefined; verticalCenter:imageTiler.verticalCenter}
+                }
+                AnchorChanges {
+                    target: editShadow
+                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
+                        horizontalCenter:undefined; verticalCenter:undefined}
+                }
+                PropertyChanges{
+                    target: editShadow
+                    anchors{ leftMargin: root.editShadow; rightMargin:0; topMargin:0; bottomMargin:0}
+                }
+            },
+            ///rightShadow
+            State {
+                name: "rightShadow"
+                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
+
+                AnchorChanges {
+                    target: shadow
+                    anchors{ top:undefined; bottom:undefined; left:imageTiler.right; right:undefined;
+                        horizontalCenter:undefined; verticalCenter:imageTiler.verticalCenter}
+                }
+                AnchorChanges {
+                    target: editShadow
+                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
+                        horizontalCenter:undefined; verticalCenter:undefined}
+                }
+                PropertyChanges{
+                    target: editShadow
+                    anchors{ leftMargin: 0; rightMargin:root.editShadow; topMargin:0; bottomMargin:0}
+                }
+            }
+        ]
     }
 
     Image{
@@ -129,27 +161,10 @@ Item{
         source: "../icons/"+editVisual.layoutColor+"print.jpg"
     }
 
-    /*Behavior on width {
-        NumberAnimation { duration: 300 }
-        enabled: root.isHorizontal
-    }
-
-    Behavior on height {
-        NumberAnimation { duration: 300 }
-        enabled: root.isVertical
-    }*/
-
     Connections{
         target: plasmoid
         onLocationChanged: initializeEditPosition();
     }
-
-   /* Connections{
-        target: root
-        onIconSizeChanged: initializeEditPosition();
-        onPanelAlignmentChanged: initializeEditPosition();
-        onOffsetChanged: initializeEditPosition();
-    }*/
 
     onRootThicknessChanged: {
         initializeEditPosition();
@@ -219,28 +234,6 @@ Item{
             y = -editVisual.thickness;
             x = 0;
         }
-
-       /* if (root.isHorizontal) {
-            if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                x = root.width/2 - editVisual.editLength/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Left) {
-                x = root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Center) {
-                x = root.width/2 - editVisual.editLength/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Right) {
-                x = root.width - editVisual.editLength - root.offset;
-            }
-        } else if (root.isVertical) {
-            if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                y = root.height/2 - editVisual.editLength/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Top) {
-                y = root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Center) {
-                y = root.height/2 - editVisual.editLength/2 + root.offset;
-            } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                y = root.height - editVisual.editLength - root.offset;
-            }
-        }*/
     }
 
     function initializeEditPosition() {
@@ -258,28 +251,6 @@ Item{
                 x = rootThickness - thickness;
                 y = 0;
             }
-
-          /* if (root.isHorizontal) {
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    x = root.width/2 - editVisual.width/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Left) {
-                    x = root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
-                    x = root.width/2 - editVisual.width/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Right) {
-                    x = root.width - editVisual.width - root.offset;
-                }
-            } else if (root.isVertical) {
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    y = root.height/2 - editVisual.height/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Top) {
-                    y = root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
-                    y = root.height/2 - editVisual.height/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    y = root.height - editVisual.height - root.offset;
-                }
-            }*/
         }
     }
 
