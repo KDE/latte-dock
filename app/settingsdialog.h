@@ -58,6 +58,7 @@ public:
     QStringList availableActivities();
 
     void requestImagesDialog(int row);
+    void requestColorsDialog(int row);
 
 private slots:
     // auto connections

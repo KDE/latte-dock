@@ -42,23 +42,36 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
 
     const QModelIndex &indexOriginal = index;
 
+    bool showTextColor{false};
+
     //! add the background if exists
     if (value.startsWith("/")) {
         QIcon icon(value);
         editor->addItem(icon, value);
+        showTextColor = true;
     }
 
     editor->addItem(" " + i18n("Select image..."), "select_image");
-    editor->addItem(" " + i18n("Text color..."), "text_color");
+
+    if (showTextColor) {
+        editor->addItem(" " + i18n("Text color..."), "text_color");
+    }
 
     connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
         editor->clearFocus();
 
-        if (index == editor->count() - 2) {
+        if ((showTextColor && index == editor->count() - 2)
+            || (!showTextColor && index == editor->count() - 1)) {
             Latte::SettingsDialog *settings = qobject_cast<Latte::SettingsDialog *>(m_parent);
 
             if (settings) {
                 settings->requestImagesDialog(indexOriginal.row());
+            }
+        } else if (showTextColor && index == editor->count() - 1) {
+            Latte::SettingsDialog *settings = qobject_cast<Latte::SettingsDialog *>(m_parent);
+
+            if (settings) {
+                settings->requestColorsDialog(indexOriginal.row());
             }
         }
     });

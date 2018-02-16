@@ -33,6 +33,7 @@
 #include "layoutsDelegates/activitycmbboxdelegate.h"
 
 #include <QButtonGroup>
+#include <QColorDialog>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
@@ -580,6 +581,15 @@ void SettingsDialog::requestImagesDialog(int row)
         if (files.count() > 0) {
             m_model->setData(m_model->index(row, COLORCOLUMN), files[0], Qt::BackgroundRole);
         }
+    }
+}
+
+void SettingsDialog::requestColorsDialog(int row)
+{
+    QColorDialog dialog(this);
+
+    if (dialog.exec()) {
+        qDebug() << dialog.selectedColor().name();
     }
 }
 
