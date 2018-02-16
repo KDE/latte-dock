@@ -19,6 +19,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
+    QObject *m_parent{nullptr};
+
     QStringList Colors;
 
     QString m_iconsPath;

@@ -565,6 +565,25 @@ void SettingsDialog::on_exportButton_clicked()
     fileDialog->open();
 }
 
+void SettingsDialog::requestImagesDialog(int row)
+{
+    QStringList mimeTypeFilters;
+    mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
+                    << "image/png";  // will show "PNG image (*.png)"
+
+    QFileDialog dialog(this);
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+
+    if (dialog.exec()) {
+        QStringList files = dialog.selectedFiles();
+
+        if (files.count() > 0) {
+            m_model->setData(m_model->index(row, COLORCOLUMN), files[0], Qt::BackgroundRole);
+        }
+    }
+}
+
+
 void SettingsDialog::accept()
 {
     qDebug() << Q_FUNC_INFO;

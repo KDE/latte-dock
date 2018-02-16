@@ -1,6 +1,8 @@
 #include "colorcmbboxdelegate.h"
 #include "colorcmbboxitemdelegate.h"
 
+#include "../settingsdialog.h"
+
 #include <QComboBox>
 #include <QDebug>
 #include <QDir>
@@ -15,6 +17,7 @@
 
 ColorCmbBoxDelegate::ColorCmbBoxDelegate(QObject *parent, QString iconsPath, QStringList colors)
     : QItemDelegate(parent),
+      m_parent(parent),
       m_iconsPath(iconsPath),
       Colors(colors)
 {
@@ -37,33 +40,25 @@ QWidget *ColorCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionVi
 
     QString value = index.model()->data(index, Qt::BackgroundRole).toString();
 
+    const QModelIndex &indexOriginal = index;
+
     //! add the background if exists
     if (value.startsWith("/")) {
         QIcon icon(value);
         editor->addItem(icon, value);
     }
 
-    editor->addItem(i18n("Select image..."), "select_image");
-    editor->addItem(i18n("Text color..."), "text_color");
+    editor->addItem(" " + i18n("Select image..."), "select_image");
+    editor->addItem(" " + i18n("Text color..."), "text_color");
 
     connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
         editor->clearFocus();
 
         if (index == editor->count() - 2) {
-            QStringList mimeTypeFilters;
-            mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
-                            << "image/png";  // will show "PNG image (*.png)"
+            Latte::SettingsDialog *settings = qobject_cast<Latte::SettingsDialog *>(m_parent);
 
-            QFileDialog dialog(parent);
-            dialog.setMimeTypeFilters(mimeTypeFilters);
-
-            if (dialog.exec()) {
-                QStringList files = dialog.selectedFiles();
-
-                if (files.count() > 0) {
-                    qDebug() << files;
-                    editor->setItemData(index, files[0], Qt::BackgroundRole);
-                }
+            if (settings) {
+                settings->requestImagesDialog(indexOriginal.row());
             }
         }
     });
@@ -75,11 +70,12 @@ void ColorCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
     QString value = index.model()->data(index, Qt::BackgroundRole).toString();
+    QString userData = index.model()->data(index, Qt::UserRole).toString();
 
     int pos = Colors.indexOf(value);
 
     if (pos == -1 && value.startsWith("/")) {
-        comboBox->setCurrentIndex(Colors.count());
+        comboBox->setCurrentIndex(Colors.count() - 1);
     } else {
         comboBox->setCurrentIndex(Colors.indexOf(value));
     }
@@ -88,7 +84,10 @@ void ColorCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
 void ColorCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
-    model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
+
+    if (comboBox->currentIndex() < comboBox->count() - 2) {
+        model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
+    }
 }
 
 void ColorCmbBoxDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
