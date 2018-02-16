@@ -637,12 +637,18 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
 
     QString id = copiedId;
     QString color = settings->color();
+    QString background = settings->background();
     bool menu = settings->showInMenu();
 
     layoutName = uniqueLayoutName(layoutName);
 
     int row = ascendingRowFor(layoutName);
-    insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
+
+    if (background.isEmpty()) {
+        insertLayoutInfoAtRow(row, copiedId, color, layoutName, menu, QStringList());
+    } else {
+        insertLayoutInfoAtRow(row, copiedId, background, layoutName, menu, QStringList());
+    }
 
     ui->layoutsView->selectRow(row);
 
@@ -673,8 +679,15 @@ void SettingsDialog::loadSettings()
         Layout *layoutSets = new Layout(this, layoutPath);
         m_layouts[layoutPath] = layoutSets;
 
-        insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), layoutSets->name(),
-                              layoutSets->showInMenu(), layoutSets->activities());
+        QString background = layoutSets->background();
+
+        if (background.isEmpty()) {
+            insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), layoutSets->name(),
+                                  layoutSets->showInMenu(), layoutSets->activities());
+        } else {
+            insertLayoutInfoAtRow(i, layoutPath, background, layoutSets->name(),
+                                  layoutSets->showInMenu(), layoutSets->activities());
+        }
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
 
@@ -694,7 +707,7 @@ void SettingsDialog::loadSettings()
     recalculateAvailableActivities();
 
     m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
-    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18n("Color"))));
+    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18n("Background"))));
     m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18n("Name"))));
     m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18n("In Menu"))));
     m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18n("Activities"))));
@@ -811,7 +824,6 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     }
 
     m_model->setData(m_model->index(row, IDCOLUMN), path, Qt::DisplayRole);
-
     m_model->setData(m_model->index(row, COLORCOLUMN), color, Qt::BackgroundRole);
 
     QFont font;
@@ -1094,8 +1106,12 @@ bool SettingsDialog::saveAllChanges()
 
         Layout *layout = activeLayout ? activeLayout : m_layouts[id];
 
-        if (layout->color() != color) {
+        if (color.startsWith("/")) {
+            //it is image file in such case
+            layout->setBackground(color);
+        } else {
             layout->setColor(color);
+            layout->setBackground(QString());
         }
 
         if (layout->showInMenu() != menu) {

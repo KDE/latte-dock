@@ -236,6 +236,12 @@ void Layout::setBackground(QString path)
     }
 
     m_background = path;
+
+    //! initialize the text color also
+    if (path.isEmpty()) {
+        setTextColor(QString());
+    }
+
     emit backgroundChanged();
 }
 
