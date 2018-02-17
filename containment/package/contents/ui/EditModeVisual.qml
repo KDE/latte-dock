@@ -326,6 +326,13 @@ Item{
             from: "edit"
             to: "*"
             SequentialAnimation{
+                ScriptAction{
+                    script: {
+                        //! remove kwin effects when starting the animation
+                        dock.effectsArea = Qt.rect(-1, -1, 0, 0);
+                    }
+                }
+
                 ParallelAnimation{
                     PropertyAnimation {
                         target: editVisual
