@@ -190,6 +190,20 @@ Item{
             }
         }
 
+        Behavior on width {
+            NumberAnimation {
+                duration: rulerAnimationTime
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        Behavior on height {
+            NumberAnimation {
+                duration: rulerAnimationTime
+                easing.type: Easing.OutCubic
+            }
+        }
+
         property int freeSpace: {
             if (root.isHorizontal) {
                 return rulerItem.width - rulerGrid.spacing - 1 //((rulerGrid.children.length-2) * rulerGrid.spacing)
