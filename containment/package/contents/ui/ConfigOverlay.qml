@@ -114,7 +114,7 @@ MouseArea {
             }
         }
 
-        if (root.dragOverlay.currentApplet && !currentApplet.isInternalViewSplitter) {
+        if (root.dragOverlay.currentApplet) {
             hideTimer.stop();
 
             tooltip.visible = true;
@@ -401,18 +401,19 @@ MouseArea {
         location: plasmoid.location
 
         onVisualParentChanged: {
-            if (visualParent && currentApplet && currentApplet.applet && currentApplet !== ruler) {
-                configureButton.visible = (currentApplet.applet.pluginName !== root.plasmoidName)
+            if (visualParent && currentApplet && currentApplet !== ruler
+                    && (currentApplet.applet || currentApplet.isSeparator || currentApplet.isInternalViewSplitter)) {
+
+                configureButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
-                closeButton.visible = currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
+                closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
                         && !(currentApplet.applet.pluginName===root.plasmoidName && dock && dock.docksWithTasks()===1 && dock.tasksPresent());
-                lockButton.visible = (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
+                lockButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
                         && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isSeparator
-                        && !currentApplet.isInternalViewSplitter
 
-                label.text = currentApplet.applet.title;
+                label.text = currentApplet.isInternalViewSplitter ? i18n("Justify Splitter") : currentApplet.applet.title;
             } else {
                 if (currentApplet === ruler) {
                     configureButton.visible = false;
