@@ -74,6 +74,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int dockTransparency READ dockTransparency WRITE setDockTransparency NOTIFY dockTransparencyChanged)
+    Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize NOTIFY fontPixelSizeChanged)
     Q_PROPERTY(int totalDocksCount READ totalDocksCount NOTIFY totalDocksCountChanged)
     Q_PROPERTY(int x READ x NOTIFY xChanged)
     Q_PROPERTY(int y READ y NOTIFY yChanged)
@@ -146,6 +147,9 @@ public:
 
     int dockTransparency() const;
     void setDockTransparency(int transparency);
+
+    int fontPixelSize() const;
+    void setFontPixelSize(int size);
 
     int maxThickness() const;
     void setMaxThickness(int thickness);
@@ -266,6 +270,7 @@ signals:
     void drawEffectsChanged();
     void effectsAreaChanged();
     void enabledBordersChanged();
+    void fontPixelSizeChanged();
     void widthChanged();
     void heightChanged();
     void inEditModeChanged();
@@ -321,6 +326,7 @@ private:
     bool m_inEditMode{false};
     bool m_onPrimary{true};
     int m_dockTransparency{100};
+    int m_fontPixelSize{-1};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_offset{0};

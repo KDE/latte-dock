@@ -113,8 +113,6 @@ private:
     bool m_inReverse{false};    //! it is used by the borders
     bool m_showInlineProperties{false};
 
-    int m_largeSpacing;
-
     QPointer<DockView> m_dockView;
     QPointer<DockSecConfigView> m_secConfigView;
     QTimer m_screenSyncTimer;

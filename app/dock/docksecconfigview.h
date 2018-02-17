@@ -82,8 +82,6 @@ private slots:
 private:
     void setupWaylandIntegration();
 
-    int m_largeSpacing;
-
     QPointer<DockView> m_dockView;
     QPointer<QWindow> m_parent;
     QTimer m_screenSyncTimer;

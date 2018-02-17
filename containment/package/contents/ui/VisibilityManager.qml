@@ -119,6 +119,13 @@ Item{
 
     Binding{
         target: dock
+        property: "fontPixelSize"
+        when: theme
+        value: theme.defaultFont.pixelSize
+    }
+
+    Binding{
+        target: dock
         property:"inEditMode"
         when: dock
         value: root.editMode

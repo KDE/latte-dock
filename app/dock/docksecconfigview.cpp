@@ -118,8 +118,6 @@ void DockSecConfigView::init()
 
     QByteArray tempFilePath = "lattedocksecondaryconfigurationui";
 
-    m_largeSpacing = QFontMetrics(QGuiApplication::font()).boundingRect(QStringLiteral("M")).height();
-
     updateEnabledBorders();
 
     auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath(tempFilePath));
@@ -149,9 +147,9 @@ void DockSecConfigView::syncGeometry()
     const auto location = m_dockView->containment()->location();
     const auto sGeometry = screen()->geometry();
 
-    int clearThickness = m_dockView->normalThickness() + m_largeSpacing;
+    int clearThickness = m_dockView->normalThickness() + m_dockView->fontPixelSize();
 
-    int secondaryConfigSpacing = 2 * m_largeSpacing;
+    int secondaryConfigSpacing = 2 * m_dockView->fontPixelSize();
 
     QPoint position{0, 0};
 

@@ -1324,6 +1324,22 @@ void DockView::setShadow(int shadow)
     emit shadowChanged();
 }
 
+int DockView::fontPixelSize() const
+{
+    return m_fontPixelSize;
+}
+
+void DockView::setFontPixelSize(int size)
+{
+    if (m_fontPixelSize == size) {
+        return;
+    }
+
+    m_fontPixelSize = size;
+
+    emit fontPixelSizeChanged();
+}
+
 void DockView::applyActivitiesToWindows()
 {
     if (m_visibility) {
