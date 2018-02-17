@@ -214,7 +214,7 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
 
                 //qDebug() << "5 ...";
 
-                if (applet) {
+                if (applet && applet != m_dockView->containment()) {
                     //qDebug() << "5.3 ...";
                     emit applet->contextualActionsAboutToShow();
                     addAppletActions(desktopMenu, applet, event);
