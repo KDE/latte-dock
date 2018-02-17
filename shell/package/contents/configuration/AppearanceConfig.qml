@@ -162,8 +162,9 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.iconSize
                     minimumValue: 16
                     maximumValue: 128
-                    stepSize: !plasmoid.configuration.autoDecreaseIconSize
-                              && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)) ? 1 : 8
+                    stepSize: (!plasmoid.configuration.autoDecreaseIconSize
+                              && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
+                              || dialog.dockIsPanel ? 1 : 8
 
                     function updateIconSize() {
                         if (!pressed) {

@@ -36,6 +36,8 @@ PlasmaComponents.Page {
     //fix the height binding loop when showing the configuration window
     Layout.maximumHeight: 26*theme.mSize(theme.defaultFont).height + units.smallSpacing * 2
 
+    property alias dockTypeSelection: _dockTypeSelection
+
     ColumnLayout {
         id: content
 
@@ -59,6 +61,7 @@ PlasmaComponents.Page {
             }
 
             TypeSelection{
+                id: _dockTypeSelection
                 horizontal: true
             }
         }
