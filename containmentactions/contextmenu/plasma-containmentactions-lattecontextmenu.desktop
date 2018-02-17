@@ -2,6 +2,7 @@
 Name=Standard Latte Menu
 Name[ca]=Menú estàndard del Latte
 Name[ca@valencia]=Menú estàndard del Latte
+Name[es]=Menú estándar de Latte
 Name[it]=Menu standard di Latte
 Name[nl]=Standaard menu van Latte
 Name[pt]=Menu Normal do Latte
@@ -12,6 +13,7 @@ Name[zh_CN]=标准 Latte 菜单
 Comment=The latte menu that normally shows on right-click
 Comment[ca]=El menú Latte que es mostra normalment amb un clic del botó dret
 Comment[ca@valencia]=El menú Latte que es mostra normalment amb un clic del botó dret
+Comment[es]=Este es el menú de Latte que normalmente se muestra tras un clic derecho
 Comment[it]=Il menu di Latte che normalmente viene mostrato al clic destro
 Comment[nl]=Het menu van latte dat normaal getoond wordt bij rechtsklikken
 Comment[pt]=O menu do Latte que normalmente aparece com o botão direito do rato
