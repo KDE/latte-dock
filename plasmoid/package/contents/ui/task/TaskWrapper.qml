@@ -171,7 +171,7 @@ Item{
                     width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
                     height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
 
-                   /* Rectangle{
+                    /* Rectangle{
                         width: !root.vertical ? 1 : parent.width
                         height: !root.vertical ? parent.height : 1
                         x: !root.vertical ? wrapper.width /2 : 0
@@ -256,6 +256,8 @@ Item{
 
             if (!mainItemContainer.inAttentionAnimation)
                 mScale = root.zoomFactor;
+
+            mainItemContainer.scalesUpdatedOnce = false;
         }
 
     } //nScale
@@ -295,7 +297,7 @@ Item{
 
     onMScaleChanged: {
         if ((mScale === root.zoomFactor) && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
-            root.startEnableDirectRenderTimer();
+            root.setGlobalDirectRender(true);
         }
 
         if (inMimicParabolicAnimation){

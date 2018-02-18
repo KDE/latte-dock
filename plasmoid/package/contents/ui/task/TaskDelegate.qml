@@ -87,6 +87,7 @@ MouseArea{
     property bool buffersAreReady: false
     property bool fastEnteringFlag: false //!flag to check if the mouse entered the dock very fast
     property bool delayingRemove: ListView.delayRemove
+    property bool scalesUpdatedOnce: false
     //states that exist in windows in a Group of windows
     property bool hasActive: isActive
     property bool hasMinimized: (IsGroupParent === true) ? tasksWindows.hasMinimized : isMinimized
@@ -503,12 +504,16 @@ MouseArea{
         if (root.editMode)
             return;
 
+        if (restoreAnimation.running) {
+            restoreAnimation.stop();
+        }
+
         // console.log("entered task:" + icList.hoveredIndex);
         if (fastEnteringFlag) {
             fastEnteringFlag = false;
         }
 
-        if (icList.hoveredIndex!==-1 && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+        if (icList.hoveredIndex!==-1 && !root.globalDirectRender) {
             fastEnteringFlag = true;
         }
 
@@ -531,7 +536,7 @@ MouseArea{
             return;
         }
 
-      /*  if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
+        /*  if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             if (inAttentionAnimation) {
                 var subSpacerScale = (root.zoomFactor-1)/2;
                 hiddenSpacerLeft.nScale = subSpacerScale;
@@ -553,6 +558,12 @@ MouseArea{
 
     // IMPORTANT: This must be improved ! even for small miliseconds  it reduces performance
     onExited: {
+        mainItemContainer.scalesUpdatedOnce = false;
+
+        if (fastEnteringFlag) {
+            fastEnteringFlag = false;
+        }
+
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.hideTooltipLabel();
         }
@@ -584,33 +595,34 @@ MouseArea{
             return;
         }
 
-        if (fastEnteringFlag) {
-            var lengthPos;
-            if (root.vertical) {
-                lengthPos = mouse.x;
-            } else {
-                lengthPos = mouse.y;
-            }
-
-            //! check if the mouse enters a second task and it is near the center
-            //! this way the directRendering isnt activated too fast or when the
-            //! mouse enters between two tasks at start
-            if (lengthPos >= (wrapper.center - root.iconSize/2)
-                    && lengthPos <= (wrapper.center + root.iconSize/2)) {
-                if (!root.directRenderTimerIsRunning && !root.globalDirectRender) {
-                    root.startEnableDirectRenderTimer();
-                }
-
-                fastEnteringFlag = false;
-            }
-        }
-
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
             if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
                 icList.hoveredIndex = index;
             }
 
-            if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
+            if (fastEnteringFlag) {
+                var lengthPos;
+                if (root.vertical) {
+                    lengthPos = mouse.x;
+                } else {
+                    lengthPos = mouse.y;
+                }
+
+                //! check if the mouse enters a second task and it is near the center
+                //! this way the directRendering isnt activated too fast or when the
+                //! mouse enters between two tasks at start
+                if (lengthPos >= (wrapper.center - root.iconSize/2)
+                        && lengthPos <= (wrapper.center + root.iconSize/2)) {
+                    if (!root.globalDirectRender) {
+                        root.setGlobalDirectRender(true);
+                    }
+
+                    fastEnteringFlag = false;
+                }
+            }
+
+            if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender)
+                    || root.globalDirectRender || !scalesUpdatedOnce) {
                 if(root.dragSource == null){
                     if (icList.orientation == Qt.Horizontal){
                         var step = Math.abs(icList.currentSpot-mouse.x);
@@ -840,15 +852,7 @@ MouseArea{
         if(!root)
             return;
 
-        if (root.globalDirectRender)
-            wrapper.mScale = 1;
-        else if (!inAttentionAnimation && !inFastRestoreAnimation && !inMimicParabolicAnimation){
-            if (icList.hoveredIndex === -1) {
-                restoreAnimation.start();
-            } else {
-                console.log("Clear zoom signal ignored...");
-            }
-        }
+        restoreAnimation.start();
     }
 
     function handlerDraggingFinished(){
@@ -1213,6 +1217,23 @@ MouseArea{
         onDragSourceChanged: mainItemContainer.updateAudioStreams()
         onIndicateAudioStreamsChanged: mainItemContainer.updateAudioStreams()
     }
+
+    Connections {
+        target: root
+        onHoveredIndexChanged: {
+            if ((restoreAnimation.running) && (root.hoveredIndex !== -1)) {
+                restoreAnimation.stop();
+            }
+        }
+
+        onDockHoveredIndexChanged: {
+            if ((restoreAnimation.running) && (root.dockHoveredIndex !== -1)) {
+                restoreAnimation.stop();
+            }
+        }
+    }
+
+
     ///// End of Helper functions ////
 
     Component.onCompleted: {

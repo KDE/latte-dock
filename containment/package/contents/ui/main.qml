@@ -425,10 +425,10 @@ DragDrop.DropArea {
         if (editMode) {
             visibilityManager.updateMaskArea();
             updateAutomaticIconSize();
+            clearZoom();
         } else {
             updateAutomaticIconSize();
             layoutsContainer.updateSizeForAppletsInFill();
-          //  setGlobalDirectRender(false);
         }
 
         updateLayouts();

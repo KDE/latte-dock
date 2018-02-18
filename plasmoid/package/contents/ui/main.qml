@@ -57,7 +57,6 @@ Item {
 
     //it is used to check both the applet and the containment for direct render
     property bool globalDirectRender: latteDock ? latteDock.globalDirectRender : icList.directRender
-    property bool directRenderTimerIsRunning: latteDock ? latteDock.directRenderTimerIsRunning : enableDirectRenderTimer.running
 
     property bool editMode: latteDock ? latteDock.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
@@ -831,14 +830,9 @@ Item {
             if(root.latteDock)
                 console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldnt...");
 
-            if ((latteDock && !latteDock.dockContainsMouse) || !root.containsMouse()) {
-                if (enableDirectRenderTimer.running)
-                    enableDirectRenderTimer.stop();
+            if (!root.containsMouse()) {
 
                 icList.directRender = false;
-                if(root.latteDock) {
-                    root.latteDock.startEnableDirectRenderTimer();
-                }
 
                 root.clearZoom();
             }
@@ -860,29 +854,6 @@ Item {
             interval = duration;
 
             start();
-        }
-    }
-
-    //this timer adds a delay into enabling direct rendering...
-    //it gives the time to neighbour tasks to complete their animation
-    //during first hovering phase
-    //IMPORTANT ::: This timer should be used only when the Latte plasmoid
-    //is not inside a Latte dock
-    Timer {
-        id: enableDirectRenderTimer
-        interval: 4 * root.durationTime * units.shortDuration
-        onTriggered: {
-            if(root.latteDock)
-                console.log("Plasmoid, enableDirectRenderTimer was called, even though it shouldnt...");
-
-            if (waitingLaunchers.length > 0)
-                restart();
-            else
-                icList.directRender = true;
-
-            if (latteDock && latteDock.debugModeTimers) {
-                console.log("plasmoid timer: enableDirectRenderTimer called...");
-            }
         }
     }
 
@@ -1573,7 +1544,7 @@ Item {
         }
 
         //if (previewContainsMouse())
-          //  windowsPreviewDlg.hide(4);
+        //  windowsPreviewDlg.hide(4);
 
         if (previewContainsMouse())
             return true;
@@ -1631,12 +1602,22 @@ Item {
         dragSource = null;
     }
 
-    function startEnableDirectRenderTimer() {
+    function setGlobalDirectRender(value) {
+        if (waitingLaunchers.length > 0)
+            return;
+
         if (latteDock) {
-          //  latteDock.setGlobalDirectRender(true);
-            latteDock.startEnableDirectRenderTimer();
+            latteDock.setGlobalDirectRender(value);
         } else {
-            enableDirectRenderTimer.start();
+            if (value === true) {
+                if (root.containsMouse()) {
+                    icList.directRender = true;
+                } else {
+                    //    console.log("direct render true ignored...");
+                }
+            } else {
+                icList.directRender = false;
+            }
         }
     }
 

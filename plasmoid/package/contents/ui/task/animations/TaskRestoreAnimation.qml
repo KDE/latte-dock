@@ -68,9 +68,10 @@ SequentialAnimation{
     onStopped: {
         //! VERY IMPORTANT CODE, fixes a bug when cycling the mouse very fast inside
         //! and outside the dock, in some rare cases the restoreAnimation didnt end!!
-        if (latteDock && (!latteDock.dockContainsMouse || icList.hoveredIndex === -1)) {
-            wrapper.mScale = 1;
-        }
+
+        //if (latteDock && (!latteDock.dockContainsMouse || icList.hoveredIndex === -1)) {
+        //    wrapper.mScale = 1;
+        //}
         // if (index === 2)
         //    console.log("restore animation stopped... ind:"+index+" zoom:"+wrapper.mScale);
     }
