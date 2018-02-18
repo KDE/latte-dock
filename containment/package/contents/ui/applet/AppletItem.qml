@@ -218,11 +218,11 @@ Item {
     //property int debCounter: 0;
     function clearZoom(){
         if (layoutsContainer.hoveredIndex === -1) {
-            if (root.globalDirectRender){
-                wrapper.zoomScale = 1;
-            } else {
+         //   if (root.globalDirectRender){
+              //  wrapper.zoomScale = 1;
+            //} else {
                 restoreAnimation.start();
-            }
+          //  }
         }
     }
 
@@ -388,8 +388,8 @@ Item {
         onGlobalDirectRenderChanged:{
             if (root.globalDirectRender && restoreAnimation.running) {
                 // console.log("CLEAR APPLET SCALE !!!!");
-                restoreAnimation.stop();
-                wrapper.zoomScale = 1;
+                //restoreAnimation.stop();
+                //wrapper.zoomScale = 1;
             }
         }
 
@@ -426,6 +426,10 @@ Item {
             if ( (root.zoomFactor>1) && (layoutsContainer.hoveredIndex>=0)
                     && (Math.abs(index-layoutsContainer.hoveredIndex)>=2))
                 container.clearZoom();
+
+            if ((layoutsContainer.hoveredIndex !== -1) && (restoreAnimation.running)) {
+                restoreAnimation.stop();
+            }
         }
     }
 
@@ -555,6 +559,9 @@ Item {
 
         onEntered: {
             //AppletIndetifier.reconsiderAppletIconItem();
+            if (restoreAnimation.running) {
+                restoreAnimation.stop();
+            }
 
             root.showTooltipLabel(container, applet.title);
 
@@ -592,6 +599,10 @@ Item {
         }
 
         onExited:{
+            if (fastEnteringFlag) {
+                fastEnteringFlag = false;
+            }
+
             if (appletIconItem && appletIconItem.visible)
                 appletIconItem.active = false;
 
@@ -628,7 +639,7 @@ Item {
                         && lengthPos <= (wrapper.center + root.iconSize/2)) {
                     if (!enableDirectRenderTimer.running && !root.globalDirectRender) {
                         root.setGlobalDirectRender(true);
-                        enableDirectRenderTimer.start();
+                       // enableDirectRenderTimer.start();
                     }
 
                     fastEnteringFlag = false;
