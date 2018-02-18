@@ -564,7 +564,7 @@ Item {
                 fastEnteringFlag = false;
             }
 
-            if ((layoutsContainer.hoveredIndex !== -1 || layoutsContainer.hoveredIndex===index)
+            if ((layoutsContainer.hoveredIndex !== -1)
                     && !enableDirectRenderTimer.running && !root.globalDirectRender) {
                 fastEnteringFlag = true;
             }
@@ -581,14 +581,14 @@ Item {
                 return;
             }
 
-          /*  if (root.isHorizontal){
+            if (root.isHorizontal){
                 layoutsContainer.currentSpot = mouseX;
                 wrapper.calculateScales(mouseX);
             }
             else{
                 layoutsContainer.currentSpot = mouseY;
                 wrapper.calculateScales(mouseY);
-            }*/
+            }
         }
 
         onExited:{
