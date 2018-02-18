@@ -388,10 +388,17 @@ DragDrop.DropArea {
     ////////////////END properties
 
     //// BEGIN OF Behaviors
+    Behavior on iconMargin {
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
+
     Behavior on iconSize {
         enabled: !(root.editMode && root.behaveAsPlasmaPanel)
         NumberAnimation {
-            duration: 200
+            duration: 0.8 * root.animationTime
 
             onRunningChanged: {
                 if (!running) {
