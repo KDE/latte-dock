@@ -581,14 +581,14 @@ Item {
                 return;
             }
 
-            if (root.isHorizontal){
+          /*  if (root.isHorizontal){
                 layoutsContainer.currentSpot = mouseX;
                 wrapper.calculateScales(mouseX);
             }
             else{
                 layoutsContainer.currentSpot = mouseY;
                 wrapper.calculateScales(mouseY);
-            }
+            }*/
         }
 
         onExited:{

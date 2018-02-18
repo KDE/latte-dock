@@ -532,7 +532,7 @@ MouseArea{
             return;
         }
 
-        if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
+      /*  if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
             if (inAttentionAnimation) {
                 var subSpacerScale = (root.zoomFactor-1)/2;
                 hiddenSpacerLeft.nScale = subSpacerScale;
@@ -549,7 +549,7 @@ MouseArea{
                     wrapper.calculateScales(mouseY);
                 }
             }
-        }
+        }*/
     }
 
     // IMPORTANT: This must be improved ! even for small miliseconds  it reduces performance
