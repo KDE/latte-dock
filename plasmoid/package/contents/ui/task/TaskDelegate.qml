@@ -508,8 +508,7 @@ MouseArea{
             fastEnteringFlag = false;
         }
 
-        if ((icList.hoveredIndex!==-1 || icList.hoveredIndex===index)
-                && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
+        if (icList.hoveredIndex!==-1 && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
             fastEnteringFlag = true;
         }
 
