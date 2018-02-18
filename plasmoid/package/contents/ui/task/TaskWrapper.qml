@@ -120,7 +120,7 @@ Item{
     Behavior on mScale {
         enabled: !root.globalDirectRender || inMimicParabolicAnimation
         NumberAnimation{
-            duration: 4 * mainItemContainer.animationTime
+            duration: 3 * mainItemContainer.animationTime
             easing.type: Easing.OutCubic
         }
     }
