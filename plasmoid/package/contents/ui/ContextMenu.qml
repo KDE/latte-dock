@@ -854,6 +854,7 @@ PlasmaComponents.ContextMenu {
         action: latteDock ? latteDock.containmentActions()[3] : plasmoid.action("configure")
     }
 
+    //! BEGIN: Plasmoid actions when it isnt inside a Latte dock
     PlasmaComponents.MenuItem {
         id: removePlasmoid
         visible: !latteDock && !plasmoid.immutable
@@ -863,6 +864,17 @@ PlasmaComponents.ContextMenu {
 
         onClicked: plasmoid.action("remove").trigger();
     }
+
+    PlasmaComponents.MenuItem {
+        id: configurePlasmoid
+        visible: !latteDock && !plasmoid.immutable
+
+        text: plasmoid.action("configure").text
+        icon: plasmoid.action("configure").icon
+
+        onClicked: plasmoid.action("configure").trigger();
+    }
+    //! END: Plasmoid actions when it isnt inside a Latte dock
 
     PlasmaComponents.MenuItem {
         separator: true
