@@ -208,9 +208,8 @@ Item{
     }
 
     onZoomScaleChanged: {
-        if ((zoomScale === root.zoomFactor) && !enableDirectRenderTimer.running && !root.globalDirectRender) {
+        if ((zoomScale === root.zoomFactor) && !root.globalDirectRender) {
             root.setGlobalDirectRender(true);
-           // enableDirectRenderTimer.start();
         }
 
         if ((zoomScale > 1) && !container.isZoomed) {

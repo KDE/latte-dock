@@ -218,11 +218,7 @@ Item {
     //property int debCounter: 0;
     function clearZoom(){
         if (layoutsContainer.hoveredIndex === -1) {
-         //   if (root.globalDirectRender){
-              //  wrapper.zoomScale = 1;
-            //} else {
-                restoreAnimation.start();
-          //  }
+            restoreAnimation.start();
         }
     }
 
@@ -385,13 +381,13 @@ Item {
     Connections{
         target: root
 
-        onGlobalDirectRenderChanged:{
+       /* onGlobalDirectRenderChanged:{
             if (root.globalDirectRender && restoreAnimation.running) {
                 // console.log("CLEAR APPLET SCALE !!!!");
                 //restoreAnimation.stop();
                 //wrapper.zoomScale = 1;
             }
-        }
+        }*/
 
         onLatteAppletHoveredIndexChanged: {
             if ( (root.zoomFactor>1) && (root.latteAppletHoveredIndex >= 0) ){
@@ -427,7 +423,16 @@ Item {
                     && (Math.abs(index-layoutsContainer.hoveredIndex)>=2))
                 container.clearZoom();
 
-            if ((layoutsContainer.hoveredIndex !== -1) && (restoreAnimation.running)) {
+            if ((restoreAnimation.running) && (layoutsContainer.hoveredIndex !== -1)) {
+                restoreAnimation.stop();
+            }
+        }
+    }
+
+    Connections{
+        target: root
+        onLatteAppletHoveredIndexChanged: {
+            if ((restoreAnimation.running) && (root.latteAppletHoveredIndex !== -1)) {
                 restoreAnimation.stop();
             }
         }
@@ -571,8 +576,7 @@ Item {
                 fastEnteringFlag = false;
             }
 
-            if ((layoutsContainer.hoveredIndex !== -1)
-                    && !enableDirectRenderTimer.running && !root.globalDirectRender) {
+            if ((layoutsContainer.hoveredIndex !== -1) && !root.globalDirectRender) {
                 fastEnteringFlag = true;
             }
 
@@ -637,9 +641,8 @@ Item {
                 //! mouse enters between two tasks at start
                 if (lengthPos >= (wrapper.center - root.iconSize/2)
                         && lengthPos <= (wrapper.center + root.iconSize/2)) {
-                    if (!enableDirectRenderTimer.running && !root.globalDirectRender) {
+                    if (!root.globalDirectRender) {
                         root.setGlobalDirectRender(true);
-                       // enableDirectRenderTimer.start();
                     }
 
                     fastEnteringFlag = false;
@@ -676,7 +679,7 @@ Item {
             container.activateAppletForNeutralAreas(mouse);
 
             pressed = true;
-           // mouse.accepted = false;
+            // mouse.accepted = false;
         }
 
         onReleased: {

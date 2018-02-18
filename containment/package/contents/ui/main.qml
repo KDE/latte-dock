@@ -56,7 +56,6 @@ DragDrop.DropArea {
     property bool debugModeWindow: Qt.application.arguments.indexOf("--with-window")>=0
 
     property bool globalDirectRender: false //it is used as a globalDirectRender for all elements in the dock
-    property bool directRenderTimerIsRunning: enableDirectRenderTimer.running
     property int directRenderAnimationTime: 0
 
     property bool addLaunchersMessage: false
@@ -1107,11 +1106,6 @@ DragDrop.DropArea {
         if (dock) {
             dock.deactivateApplets();
         }
-    }
-
-    function startEnableDirectRenderTimer(){
-        if (!enableDirectRenderTimer.running)
-            enableDirectRenderTimer.start();
     }
 
     function startCheckRestoreZoomTimer(){
