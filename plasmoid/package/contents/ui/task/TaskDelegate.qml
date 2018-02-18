@@ -85,6 +85,7 @@ MouseArea{
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
     property bool buffersAreReady: false
+    property bool fastEnteringFlag: false //!flag to check if the mouse entered the dock very fast
     property bool delayingRemove: ListView.delayRemove
     //states that exist in windows in a Group of windows
     property bool hasActive: isActive
@@ -503,10 +504,13 @@ MouseArea{
             return;
 
         // console.log("entered task:" + icList.hoveredIndex);
+        if (fastEnteringFlag) {
+            fastEnteringFlag = false;
+        }
 
-        if ((wrapper.mScale>=root.midZoomFactor) && (icList.hoveredIndex!==-1 || icList.hoveredIndex===index)
+        if ((icList.hoveredIndex!==-1 || icList.hoveredIndex===index)
                 && !root.directRenderTimerIsRunning && !root.globalDirectRender) {
-            root.startEnableDirectRenderTimer();
+            fastEnteringFlag = true;
         }
 
         if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
@@ -579,6 +583,27 @@ MouseArea{
 
         if (root.latteDock && root.latteDock.isHalfShown) {
             return;
+        }
+
+        if (fastEnteringFlag) {
+            var lengthPos;
+            if (root.vertical) {
+                lengthPos = mouse.x;
+            } else {
+                lengthPos = mouse.y;
+            }
+
+            //! check if the mouse enters a second task and it is near the center
+            //! this way the directRendering isnt activated too fast or when the
+            //! mouse enters between two tasks at start
+            if (lengthPos >= (wrapper.center - root.iconSize/2)
+                    && lengthPos <= (wrapper.center + root.iconSize/2)) {
+                if (!root.directRenderTimerIsRunning && !root.globalDirectRender) {
+                    root.startEnableDirectRenderTimer();
+                }
+
+                fastEnteringFlag = false;
+            }
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){

@@ -193,7 +193,6 @@ Item {
 
     property real durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteDock ? latteDock.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
-    property real midZoomFactor: latteDock ? latteDock.midZoomFactor : (1 + (zoomFactor-1)/2)
 
     property int appShadowSize: latteDock ? latteDock.appShadowSize : Math.ceil(0.12*iconSize)
     property string appShadowColor: latteDock ? latteDock.appShadowColor : "#ff080808"
