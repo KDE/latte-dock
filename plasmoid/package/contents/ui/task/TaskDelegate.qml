@@ -504,6 +504,8 @@ MouseArea{
         if (root.editMode)
             return;
 
+        root.stopCheckRestoreZoomTimer();
+
         if (restoreAnimation.running) {
             restoreAnimation.stop();
         }
@@ -524,9 +526,6 @@ MouseArea{
         if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
             icList.hoveredIndex = index;
         }
-
-        if(!root.latteDock)
-            checkListHovered.stop();
 
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
@@ -588,8 +587,7 @@ MouseArea{
         if (root.editMode || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
-        if(!root.latteDock)
-            checkListHovered.stop();
+        root.stopCheckRestoreZoomTimer();
 
         if (root.latteDock && root.latteDock.isHalfShown) {
             return;
@@ -784,8 +782,9 @@ MouseArea{
 
         pressed = false;
 
-        if(!inAnimation && !root.latteDock)
-            checkListHovered.startDuration(3*units.longDuration);
+        if(!inAnimation) {
+            startCheckRestoreZoomTimer(3*units.longDuration);
+        }
     }
 
     onWheel: {
@@ -845,7 +844,6 @@ MouseArea{
     function animationEnded(){
         //   console.log("Animation ended: " + index);
         inAnimation = false;
-        // checkListHovered.startDuration(3*units.longDuration);
     }
 
     function clearZoom(){

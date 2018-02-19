@@ -564,6 +564,10 @@ Item {
 
         onEntered: {
             //AppletIndetifier.reconsiderAppletIconItem();
+            if (containsMouse && !container.lockZoom && container.canBeHovered){
+                root.stopCheckRestoreZoomTimer();
+            }
+
             if (restoreAnimation.running) {
                 restoreAnimation.stop();
             }
@@ -613,7 +617,7 @@ Item {
             root.hideTooltipLabel();
 
             if (root.zoomFactor>1){
-                checkRestoreZoom.start();
+                root.startCheckRestoreZoomTimer();
             }
         }
 

@@ -1112,6 +1112,10 @@ DragDrop.DropArea {
         checkRestoreZoom.start();
     }
 
+    function stopCheckRestoreZoomTimer(){
+        checkRestoreZoom.stop();
+    }
+
     function setGlobalDirectRender(value) {
         if (latteApplet && latteApplet.waitingLaunchers.length > 0)
             return;
@@ -1308,11 +1312,10 @@ DragDrop.DropArea {
         ignoreUnknownSignals : true
 
         onContainsMouseChanged: {
-            if (dock.visibility.containsMouse) {
-                if (checkRestoreZoom.running)
-                    checkRestoreZoom.stop();
+            if (mouseInHoverableArea()) {
+                stopCheckRestoreZoomTimer();
             } else {
-                checkRestoreZoom.start();
+                startCheckRestoreZoomTimer();
             }
         }
     }
@@ -1465,11 +1468,14 @@ DragDrop.DropArea {
         id: rootMouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: {
-            initializeHoveredIndexes();
 
-            if(!root.editMode)
-                checkRestoreZoom.start();
+        onContainsMouseChanged: {
+            if (mouseInHoverableArea()) {
+                stopCheckRestoreZoomTimer();
+            } else {
+                initializeHoveredIndexes();
+                startCheckRestoreZoomTimer()
+            }
         }
     }
 
@@ -1580,9 +1586,6 @@ DragDrop.DropArea {
                 return;
 
             if (!mouseInHoverableArea()) {
-                if (enableDirectRenderTimer.running)
-                    enableDirectRenderTimer.stop();
-
                 setGlobalDirectRender(false);
                 root.initializeHoveredIndexes();
                 root.clearZoom();
@@ -1593,27 +1596,6 @@ DragDrop.DropArea {
             }
         }
     }
-
-    //this timer adds a delay into enabling direct rendering...
-    //it gives the time to neighbour tasks to complete their animation
-    //during first hovering phase
-    Timer {
-        id: enableDirectRenderTimer
-        interval: 0 //checkRestoreZoom.interval + 20 //4 * root.durationTime * units.shortDuration
-        onTriggered: {
-          /*  if (latteApplet && latteApplet.waitingLaunchers.length > 0)
-                return;
-
-            if (dock.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet()){
-                setGlobalDirectRender(true);
-            }
-
-            if (root.debugModeTimers) {
-                console.log("containment timer: enableDirectRenderTimer called...");
-            }*/
-        }
-    }
-
 
     //this is a delayer to update mask area, it is used in cases
     //that animations can not catch up with animations signals

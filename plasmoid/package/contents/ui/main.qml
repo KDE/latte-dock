@@ -1621,11 +1621,23 @@ Item {
         }
     }
 
-    function startCheckRestoreZoomTimer() {
+    function startCheckRestoreZoomTimer(duration) {
         if (latteDock) {
             latteDock.startCheckRestoreZoomTimer();
         } else {
-            checkListHovered.startNormal();
+            if (duration > 0) {
+                checkListHovered.startDuration(duration);
+            } else {
+                checkListHovered.startNormal();
+            }
+        }
+    }
+
+    function stopCheckRestoreZoomTimer() {
+        if (latteDock) {
+            latteDock.stopCheckRestoreZoomTimer();
+        } else {
+            checkListHovered.stop();
         }
     }
 
