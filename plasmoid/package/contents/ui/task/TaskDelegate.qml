@@ -852,7 +852,9 @@ MouseArea{
         if(!root)
             return;
 
-        restoreAnimation.start();
+        if (root.hoveredIndex === -1 && root.dockHoveredIndex === -1) {
+            restoreAnimation.start();
+        }
     }
 
     function handlerDraggingFinished(){

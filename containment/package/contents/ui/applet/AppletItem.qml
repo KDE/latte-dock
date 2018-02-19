@@ -217,7 +217,7 @@ Item {
     //outside the LatteApplet Plasmoid
     //property int debCounter: 0;
     function clearZoom(){
-        if (layoutsContainer.hoveredIndex === -1) {
+        if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex === -1) {
             restoreAnimation.start();
         }
     }
