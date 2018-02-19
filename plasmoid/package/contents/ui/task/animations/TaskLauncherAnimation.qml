@@ -91,15 +91,16 @@ SequentialAnimation{
     }
 
     onStopped: {
-        clearAnimationsSignals();
-
-        mainItemContainer.setBlockingAnimation(false);
-        mainItemContainer.animationEnded();
-
         if (!mainItemContainer.inRemoveStage) {
             mainItemContainer.inBouncingAnimation = false;
             root.removeWaitingLauncher(mainItemContainer.launcherUrl);
         }
+
+        root.setGlobalDirectRender(false);
+        clearAnimationsSignals();
+
+        mainItemContainer.setBlockingAnimation(false);
+        mainItemContainer.animationEnded();
     }
 
     function clearAnimationsSignals() {

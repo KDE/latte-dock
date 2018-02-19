@@ -156,6 +156,7 @@ SequentialAnimation {
             if (mainItemContainer.inBouncingAnimation) {
                 mainItemContainer.visible = false;
                 root.removeWaitingLauncher(mainItemContainer.launcherUrl);
+                root.setGlobalDirectRender(false);
             }
         }
     }
