@@ -1570,7 +1570,7 @@ DragDrop.DropArea {
     //Timer to check if the mouse is still outside the dock in order to restore zooms to 1.0
     Timer{
         id:checkRestoreZoom
-        interval: 120
+        interval: 90
 
         onTriggered: {
             if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
