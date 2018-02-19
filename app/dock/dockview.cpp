@@ -574,6 +574,7 @@ bool DockView::settingsWindowIsShown()
 void DockView::showSettingsWindow()
 {
     showConfigurationInterface(containment());
+    applyActivitiesToWindows();
 }
 
 void DockView::showConfigurationInterface(Plasma::Applet *applet)
