@@ -759,8 +759,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
             }
 
             if (memoryUsage() == Dock::MultipleLayouts) {
-                if (!initializingMultipleLayouts && !activeLayout(layoutName)
-                    && m_assignedLayouts.values().contains(layoutName)) {
+                if (!initializingMultipleLayouts && !activeLayout(layoutName)) {
                     //! When we are in Multiple Layouts Environment and the user activates
                     //! a Layout that is assigned to specific activities but this
                     //! layout isnt loaded (this means neither of its activities are running)
@@ -771,25 +770,50 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     bool lastUsedActivityFound{false};
                     QString lastUsedActivity = layout.lastUsedActivity();
 
-                    foreach (auto assignedActivity, layout.activities()) {
-                        //! Starting the activities must be done asynchronous because otherwise
-                        //! the activity manager cant close multiple activities
-                        QTimer::singleShot(i * 1000, [this, assignedActivity, lastUsedActivity]() {
-                            m_activitiesController->startActivity(assignedActivity);
+                    bool orphanedLayout = !layoutIsAssigned(layoutName);
+
+                    QStringList assignedActivities = orphanedLayout ? orphanedActivities() : layout.activities();
+
+                    if (!orphanedLayout) {
+                        foreach (auto assignedActivity, assignedActivities) {
+                            //! Starting the activities must be done asynchronous because otherwise
+                            //! the activity manager cant close multiple activities
+                            QTimer::singleShot(i * 1000, [this, assignedActivity, lastUsedActivity]() {
+                                m_activitiesController->startActivity(assignedActivity);
+
+                                if (lastUsedActivity == assignedActivity) {
+                                    m_activitiesController->setCurrentActivity(lastUsedActivity);
+                                }
+                            });
 
                             if (lastUsedActivity == assignedActivity) {
-                                m_activitiesController->setCurrentActivity(lastUsedActivity);
+                                lastUsedActivityFound = true;
                             }
-                        });
 
-                        if (lastUsedActivity == assignedActivity) {
-                            lastUsedActivityFound = true;
+                            i = i + 1;
+                        }
+                    } else {
+                        //! orphaned layout
+                        foreach (auto assignedActivity, assignedActivities) {
+                            if (lastUsedActivity == assignedActivity) {
+                                lastUsedActivityFound = true;
+                            }
                         }
 
-                        i = i + 1;
+                        //! Starting the activities must be done asynchronous because otherwise
+                        //! the activity manager cant close multiple activities
+                        QTimer::singleShot(1000, [this, lastUsedActivity, lastUsedActivityFound]() {
+                            if (!lastUsedActivityFound) {
+                                m_activitiesController->startActivity(lastUsedActivity);
+                            }
+
+                            m_activitiesController->setCurrentActivity(lastUsedActivity);
+                        });
                     }
 
-                    if (!lastUsedActivityFound) {
+                    if (orphanedLayout) {
+                        syncMultipleLayoutsToActivities(layoutName);
+                    } else if (!orphanedLayout && !lastUsedActivityFound) {
                         m_activitiesController->setCurrentActivity(layout.activities()[0]);
                     }
                 } else {
