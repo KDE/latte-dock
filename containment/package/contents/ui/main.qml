@@ -329,7 +329,7 @@ DragDrop.DropArea {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     property real durationTime: {
-        if (dock && dock.blockAnimations) {
+        if ((dock && dock.blockAnimations) || !Latte.WindowSystem.compositingActive) {
             return 0;
         }
 

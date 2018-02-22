@@ -503,6 +503,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
+            enabled: Latte.WindowSystem.compositingActive
 
             Header {
                 text: i18n("Animations")

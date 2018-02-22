@@ -35,7 +35,7 @@ Item{
 
     opacity: 0
 
-    property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*2.8*units.longDuration : 0
+    property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*2.8*units.longDuration : 10
     property int thickness: visibilityManager.thicknessNormalOriginalValue + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow - theme.defaultFont.pixelSize
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :

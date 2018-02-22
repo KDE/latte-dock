@@ -179,7 +179,7 @@ Item{
     Connections{
         target: universalLayoutManager
         onCurrentLayoutIsSwitching: {
-            if (root.dockManagedLayout && root.dockManagedLayout.name === layoutName) {
+            if (Latte.WindowSystem.compositingActive && root.dockManagedLayout && root.dockManagedLayout.name === layoutName) {
                 manager.inTempHiding = true;
                 manager.inForceHiding = true;
                 root.clearZoom();
