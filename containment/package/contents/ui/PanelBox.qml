@@ -256,6 +256,24 @@ Item{
             value: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
         }
 
+        //! This is used to provide real solidness without any transparency from the plasma theme
+        Rectangle{
+            id: solidBackgroundRectangle
+            anchors.fill: solidBackground
+            color: theme.backgroundColor
+            opacity: behaveAsPlasmaPanel && solidBackground.forceSolidness && plasmoid.configuration.maxLength === 100 ? 1 : 0
+
+            Behavior on opacity{
+                enabled: Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: 2 * barLine.animationTime }
+            }
+
+            Behavior on opacity{
+                enabled: !Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: 0 }
+            }
+        }
+
         PlasmaCore.FrameSvgItem{
             id: solidBackground
             anchors.leftMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.left - leftIncreaser : 0
@@ -264,10 +282,11 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
-            opacity: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
-                     || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100)
-                     || !Latte.WindowSystem.compositingActive ?
-                         1 : plasmoid.configuration.panelTransparency / 100
+            opacity: forceSolidness ? 1 : plasmoid.configuration.panelTransparency / 100
+
+            readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
+                                                   || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100)
+                                                   || !Latte.WindowSystem.compositingActive
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
