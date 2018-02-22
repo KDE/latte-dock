@@ -200,7 +200,7 @@ DragDrop.DropArea {
     property int panelMarginLength: 0
     property int panelShadow: 0 //shadowsSize
     property int editShadow: {
-        if (Latte.WindowSystem.compositingActive) {
+        if (!Latte.WindowSystem.compositingActive) {
             return 0;
         } else if (dock && dock.screenGeometry) {
             return (dock.screenGeometry.height/90);
