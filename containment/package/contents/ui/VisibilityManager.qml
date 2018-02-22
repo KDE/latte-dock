@@ -250,7 +250,6 @@ Item{
         var localY = 0;
 
         normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
-                || !Latte.WindowSystem.compositingActive //in no compositing we must try to avoid showing full window mask
                 || (dock.visibility.isHidden && !dock.visibility.containsMouse && root.animationsNeedThickness == 0);
 
         // debug maskArea criteria
@@ -279,106 +278,109 @@ Item{
             space = root.totalPanelEdgeSpacing + root.panelMarginLength;
         }
 
-        if (normalState) {
-            //console.log("entered normal state...");
-            //count panel length
+        if (Latte.WindowSystem.compositingActive) {
+            if (normalState) {
+                //console.log("entered normal state...");
+                //count panel length
 
-            var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
-            //used when !compositing and in editMode
-            if (noCompositingEdit) {
-                tempLength = root.isHorizontal ? root.width : root.height;
-            } else {
-                if(root.isHorizontal) {
-                    tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                layoutsContainer.width + space : layoutsContainer.mainLayout.width + space;
+                var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
+                //used when !compositing and in editMode
+                if (noCompositingEdit) {
+                    tempLength = root.isHorizontal ? root.width : root.height;
                 } else {
-                    tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                layoutsContainer.height + space : layoutsContainer.mainLayout.height + space;
-                }
-            }
-
-            tempThickness = thicknessNormal;
-
-            if (root.animationsNeedThickness > 0) {
-                tempThickness = Latte.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
-            }
-
-            if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                tempThickness = thicknessAutoHidden;
-            }
-
-            //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
-            if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
-                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    localY = dock.height - tempThickness;
-                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    localY = 0;
+                    if(root.isHorizontal) {
+                        tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                                    layoutsContainer.width + space : layoutsContainer.mainLayout.width + space;
+                    } else {
+                        tempLength = plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                                    layoutsContainer.height + space : layoutsContainer.mainLayout.height + space;
+                    }
                 }
 
-                if (noCompositingEdit) {
-                    localX = 0;
-                } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    localX = (dock.width/2) - tempLength/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Left) {
-                    localX = root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localX = (dock.width/2) - tempLength/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Right) {
-                    localX = dock.width - layoutsContainer.mainLayout.width - space - root.offset;
-                }
-            } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
-                if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    localX = 0;
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = dock.width - tempThickness;
-                }
+                tempThickness = thicknessNormal;
 
-                if (noCompositingEdit) {
-                    localY = 0;
-                } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
-                    localY = (dock.height/2) - tempLength/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Top) {
-                    localY = root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
-                    localY = (dock.height/2) - tempLength/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Bottom) {
-                    localY = dock.height - layoutsContainer.mainLayout.height - space - root.offset;
+                if (root.animationsNeedThickness > 0) {
+                    tempThickness = Latte.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
                 }
-            }
-        } else {
-            if(root.isHorizontal)
-                tempLength = Screen.width; //screenGeometry.width;
-            else
-                tempLength = Screen.height; //screenGeometry.height;
-
-            //grow only on length and not thickness
-            if(root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0) {
-
-                //this is used to fix a bug with shadow showing when the animation of edit mode
-                //is triggered
-                tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + theme.defaultFont.pixelSize + root.editShadow :
-                                                                    thicknessNormalOriginal + theme.defaultFont.pixelSize
 
                 if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;
-                } else if (root.animationsNeedThickness > 0) {
-                    tempThickness = thicknessZoomOriginal;
                 }
-            } else{
-                //use all thickness space
-                if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
-                    tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
-                } else {
-                    tempThickness = thicknessZoomOriginal;
-                }
-            }
 
-            //configure the x,y position based on thickness
-            if(plasmoid.location === PlasmaCore.Types.RightEdge)
-                localX = Math.max(0,dock.width - tempThickness);
-            else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
-                localY = Math.max(0,dock.height - tempThickness);
-        }
+                //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
+                if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                        localY = dock.height - tempThickness;
+                    } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                        localY = 0;
+                    }
+
+                    if (noCompositingEdit) {
+                        localX = 0;
+                    } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                        localX = (dock.width/2) - tempLength/2 + root.offset;
+                    } else if (root.panelAlignment === Latte.Dock.Left) {
+                        localX = root.offset;
+                    } else if (root.panelAlignment === Latte.Dock.Center) {
+                        localX = (dock.width/2) - tempLength/2 + root.offset;
+                    } else if (root.panelAlignment === Latte.Dock.Right) {
+                        localX = dock.width - layoutsContainer.mainLayout.width - space - root.offset;
+                    }
+                } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
+                    if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                        localX = 0;
+                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                        localX = dock.width - tempThickness;
+                    }
+
+                    if (noCompositingEdit) {
+                        localY = 0;
+                    } else if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                        localY = (dock.height/2) - tempLength/2 + root.offset;
+                    } else if (root.panelAlignment === Latte.Dock.Top) {
+                        localY = root.offset;
+                    } else if (root.panelAlignment === Latte.Dock.Center) {
+                        localY = (dock.height/2) - tempLength/2 + root.offset;
+                    } else if (root.panelAlignment === Latte.Dock.Bottom) {
+                        localY = dock.height - layoutsContainer.mainLayout.height - space - root.offset;
+                    }
+                }
+            } else {
+                if(root.isHorizontal)
+                    tempLength = Screen.width; //screenGeometry.width;
+                else
+                    tempLength = Screen.height; //screenGeometry.height;
+
+                //grow only on length and not thickness
+                if(root.animationsNeedLength>0 && root.animationsNeedBothAxis === 0) {
+
+                    //this is used to fix a bug with shadow showing when the animation of edit mode
+                    //is triggered
+                    tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + theme.defaultFont.pixelSize + root.editShadow :
+                                                                        thicknessNormalOriginal + theme.defaultFont.pixelSize
+
+                    if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
+                        tempThickness = thicknessAutoHidden;
+                    } else if (root.animationsNeedThickness > 0) {
+                        tempThickness = thicknessZoomOriginal;
+                    }
+                } else{
+                    //use all thickness space
+                    if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
+                        tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
+                    } else {
+                        tempThickness = thicknessZoomOriginal;
+                    }
+                }
+
+                //configure the x,y position based on thickness
+                if(plasmoid.location === PlasmaCore.Types.RightEdge)
+                    localX = Math.max(0,dock.width - tempThickness);
+                else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
+                    localY = Math.max(0,dock.height - tempThickness);
+            }
+        } // end of compositing calculations
+
         var maskArea = dock.maskArea;
 
         var maskLength = maskArea.width; //in Horizontal
@@ -408,10 +410,14 @@ Item{
                 newMaskArea.height = tempLength;
             }
 
-            if (dock.behaveAsPlasmaPanel && !root.editMode) {
-                dock.maskArea = Qt.rect(0,0,root.width,root.height);
+            if (!Latte.WindowSystem.compositingActive) {
+                dock.maskArea = dock.effectsArea;
             } else {
-                dock.maskArea = newMaskArea;
+                if (dock.behaveAsPlasmaPanel && !root.editMode) {
+                    dock.maskArea = Qt.rect(0,0,root.width,root.height);
+                } else {
+                    dock.maskArea = newMaskArea;
+                }
             }
         }
 
@@ -422,7 +428,8 @@ Item{
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
-            if (!dock.behaveAsPlasmaPanel || root.editMode) {
+            if ((!dock.behaveAsPlasmaPanel || root.editMode)
+                    && Latte.WindowSystem.compositingActive) {
                 var fixedThickness = root.realPanelThickness;
 
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
@@ -446,7 +453,11 @@ Item{
             }
 
             //console.log("update geometry ::: "+tempGeometry);
-            dock.localGeometry = tempGeometry;
+            if (!Latte.WindowSystem.compositingActive) {
+                dock.localGeometry = dock.effectsArea;
+            } else {
+                dock.localGeometry = tempGeometry;
+            }
         }
 
     }
