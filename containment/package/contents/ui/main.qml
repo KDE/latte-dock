@@ -95,6 +95,9 @@ DragDrop.DropArea {
                 && item.status !== PlasmaCore.Types.HiddenStatus);
     })
 
+    readonly property bool hasUserSpecifiedBackground: (dock && dock.managedLayout && dock.managedLayout.background.startsWith("/")) ?
+                                                           true : false
+
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
     property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (plasmoid.configuration.maxLength===100)
@@ -196,7 +199,16 @@ DragDrop.DropArea {
     property int panelMargin: 0
     property int panelMarginLength: 0
     property int panelShadow: 0 //shadowsSize
-    property int editShadow:  dock && dock.screenGeometry ? (dock.screenGeometry.height/90) : 7 //behaveAsPlasmaPanel ? 5 : Math.max(7, root.maxIconSize / 4)
+    property int editShadow: {
+        if (Latte.WindowSystem.compositingActive) {
+            return 0;
+        } else if (dock && dock.screenGeometry) {
+            return (dock.screenGeometry.height/90);
+        } else {
+            return 7;
+        }
+    }
+
     property int themePanelSize: {
         //root.statesLineSize + root.iconSize + root.iconMargin + 1
         var panelBase = root.statesLineSize + root.panelMargin;
@@ -938,7 +950,7 @@ DragDrop.DropArea {
 
 
     function disableDirectRender(){
-      //  root.globalDirectRender = false;
+        //  root.globalDirectRender = false;
     }
 
     function internalViewSplittersCount(){
@@ -1492,7 +1504,7 @@ DragDrop.DropArea {
         sourceComponent: Image{
             anchors.fill: parent
             fillMode: Image.Tile
-            source: "../icons/wheatprint.jpg"
+            source: root.hasUserSpecifiedBackground ? dock.managedLayout.background : "../icons/wheatprint.jpg"
         }
     }
 
