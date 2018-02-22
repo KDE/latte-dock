@@ -635,7 +635,7 @@ void LayoutManager::showAboutDialog()
 
 void LayoutManager::importLatteLayout(QString layoutPath)
 {
-//! This might not be needed as it is Layout responsibility
+    //! This might not be needed as it is Layout responsibility
 }
 
 void LayoutManager::hideAllDocks()
@@ -800,15 +800,16 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                             }
                         }
 
-                        //! Starting the activities must be done asynchronous because otherwise
-                        //! the activity manager cant close multiple activities
-                        QTimer::singleShot(1000, [this, lastUsedActivity, lastUsedActivityFound]() {
-                            if (!lastUsedActivityFound) {
-                                m_activitiesController->startActivity(lastUsedActivity);
-                            }
+                        if ((!lastUsedActivityFound && assignedActivities.count() == 0)
+                            || !assignedActivities.contains(m_corona->m_activityConsumer->currentActivity())) {
 
-                            m_activitiesController->setCurrentActivity(lastUsedActivity);
-                        });
+                            //! Starting the activities must be done asynchronous because otherwise
+                            //! the activity manager cant close multiple activities
+                            QTimer::singleShot(1000, [this, lastUsedActivity, lastUsedActivityFound]() {
+                                m_activitiesController->startActivity(lastUsedActivity);
+                                m_activitiesController->setCurrentActivity(lastUsedActivity);
+                            });
+                        }
                     }
 
                     if (orphanedLayout) {
