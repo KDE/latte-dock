@@ -551,9 +551,9 @@ Item{
             samples: 2 * radius
             source: container.fakeIconItem ? _wrapperContainer : container.applet
             radius: shadowSize
-            verticalOffset: forcedShadow ? 1 : 2
+            verticalOffset: forcedShadow ? 0 : 2
 
-            property int shadowSize : forcedShadow? 8 : root.appShadowSize //Math.ceil(root.iconSize / 12)
+            property int shadowSize : root.appShadowSize //Math.ceil(root.iconSize / 12)
 
             property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName ? true : false
         }
