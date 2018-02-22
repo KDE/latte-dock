@@ -313,6 +313,10 @@ Item{
                 efGeometry.height = height;
 
                 dock.effectsArea = efGeometry;
+
+                if (!Latte.WindowSystem.compositingActive) {
+                    visibilityManager.updateMaskArea();
+                }
             }
 
             //! the increases used when the user forces a solid background and the background
