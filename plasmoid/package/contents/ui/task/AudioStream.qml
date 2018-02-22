@@ -74,6 +74,7 @@ Item {
                 anchors.centerIn: parent
                 width: 0.9*parent.width
                 height: width
+                usesPlasmaTheme: true
 
                 //opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.85
                 source: {
