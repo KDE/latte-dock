@@ -164,9 +164,10 @@ Item{
         target: dock && dock.visibility ? dock.visibility : null
         property: "enabledDynamicBackground"
         when: dock && dock.visibility
-        value: root.backgroundOnlyOnMaximized
+        value: (root.backgroundOnlyOnMaximized
                || plasmoid.configuration.solidBackgroundForMaximized
-               || root.disablePanelShadowMaximized
+               || root.disablePanelShadowMaximized)
+               && Latte.WindowSystem.compositingActive
     }
 
     Connections{

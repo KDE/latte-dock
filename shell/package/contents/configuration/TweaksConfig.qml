@@ -90,6 +90,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
+            enabled: Latte.WindowSystem.compositingActive
 
             Header {
                 text: i18n("Dynamic Background")

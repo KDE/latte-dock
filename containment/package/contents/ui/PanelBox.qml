@@ -265,7 +265,8 @@ Item{
             anchors.fill:parent
 
             opacity: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
-                     || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100) ?
+                     || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100)
+                     || !Latte.WindowSystem.compositingActive ?
                          1 : plasmoid.configuration.panelTransparency / 100
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)

@@ -79,10 +79,11 @@ DragDrop.DropArea {
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
     property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
 
-    property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized
+    property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && Latte.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
+                                    && Latte.WindowSystem.compositingActive
                                     &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
