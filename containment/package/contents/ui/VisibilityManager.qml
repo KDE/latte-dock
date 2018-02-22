@@ -165,8 +165,8 @@ Item{
         property: "enabledDynamicBackground"
         when: dock && dock.visibility
         value: (root.backgroundOnlyOnMaximized
-               || plasmoid.configuration.solidBackgroundForMaximized
-               || root.disablePanelShadowMaximized)
+                || plasmoid.configuration.solidBackgroundForMaximized
+                || root.disablePanelShadowMaximized)
                && Latte.WindowSystem.compositingActive
     }
 
@@ -384,14 +384,27 @@ Item{
 
         var maskArea = dock.maskArea;
 
-        var maskLength = maskArea.width; //in Horizontal
-        if (root.isVertical) {
-            maskLength = maskArea.height;
-        }
+        if (Latte.WindowSystem.compositingActive) {
+            var maskLength = maskArea.width; //in Horizontal
+            if (root.isVertical) {
+                maskLength = maskArea.height;
+            }
 
-        var maskThickness = maskArea.height; //in Horizontal
-        if (root.isVertical) {
-            maskThickness = maskArea.width;
+            var maskThickness = maskArea.height; //in Horizontal
+            if (root.isVertical) {
+                maskThickness = maskArea.width;
+            }
+        } else {
+            //! no compositing case
+            localX = dock.effectsArea.x;
+            localY = dock.effectsArea.y;
+            if (root.isHorizontal) {
+                tempThickness = dock.effectsArea.height;
+                tempLength = dock.effectsArea.width;
+            } else {
+                tempThickness = dock.effectsArea.width;
+                tempLength = dock.effectsArea.height;
+            }
         }
 
         //  console.log("Not updating mask...");
