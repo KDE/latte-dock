@@ -29,6 +29,7 @@ Comment[it]=Plasmoide da Latte Dock
 Comment[nl]=Plasmoid uit de Latte Dock
 Comment[pl]=Plazmoid dla doku Latte
 Comment[pt]=Plasmóide da Área Acoplável do Latte
+Comment[pt_BR]=Plasmoide do Latte Dock
 Comment[sv]=Plasmoid för Latte dockningsfönster
 Comment[uk]=Плазмоїд для панелі Латте
 Comment[x-test]=xxPlasmoid from the Latte Dockxx
