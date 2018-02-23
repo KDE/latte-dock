@@ -65,7 +65,7 @@ PlasmaComponents.ContextMenu {
             launcherToggleAction.checked = (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1);
             activitiesDesktopsMenu.refresh();
         } else if (status == PlasmaComponents.DialogStatus.Closed) {
-            checkListHovered.startDuration(100);
+            root.startCheckRestoreZoomTimer(100);
             menu.destroy();
             backend.ungrabMouse(visualParent);
         }
@@ -280,7 +280,7 @@ PlasmaComponents.ContextMenu {
             root.signalActionsBlockHiding(-1);
             //root.signalDraggingState(false);
             root.disableRestoreZoom = false;
-            checkListHovered.startDuration(100);
+            root.startCheckRestoreZoomTimer(100);
         }
     }
 
