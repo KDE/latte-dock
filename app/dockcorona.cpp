@@ -604,7 +604,10 @@ int DockCorona::primaryScreenId() const
 
 void DockCorona::closeApplication()
 {
-    qGuiApp->quit();
+    //! give the time for the docks to hide themselves
+    QTimer::singleShot(400, [this]() {
+        qGuiApp->quit();
+    });
 }
 
 void DockCorona::aboutApplication()
