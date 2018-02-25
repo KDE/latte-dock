@@ -583,8 +583,12 @@ MouseArea{
             }*/
     }
 
-    onPositionChanged: {
-        if (root.editMode || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
+    //! mouseX-Y values are delayed to be updated onEntered events and at the same time
+    //! onPositionChanged signal may be delayed. we can fix this by dont delay at all
+    //! when mouseX-Y is updated based on the plasmoid formFactor
+    function mousePosChanged(mousePos) {
+        if (root.editMode || mousePos<0 ||
+               (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
         root.stopCheckRestoreZoomTimer();
@@ -599,12 +603,7 @@ MouseArea{
             }
 
             if (fastEnteringFlag) {
-                var lengthPos;
-                if (root.vertical) {
-                    lengthPos = mouse.x;
-                } else {
-                    lengthPos = mouse.y;
-                }
+                var lengthPos = mousePos;
 
                 //! check if the mouse enters a second task and it is near the center
                 //! this way the directRendering isnt activated too fast or when the
@@ -622,25 +621,40 @@ MouseArea{
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender)
                     || root.globalDirectRender || !scalesUpdatedOnce) {
                 if(root.dragSource == null){
-                    if (icList.orientation == Qt.Horizontal){
-                        var step = Math.abs(icList.currentSpot-mouse.x);
-                        if (step >= root.animationStep){
-                            icList.currentSpot = mouse.x;
+                    var step = Math.abs(icList.currentSpot-mousePos);
+                    if (step >= root.animationStep){
+                        icList.currentSpot = mousePos;
 
-                            wrapper.calculateScales(mouse.x);
-                        }
-                    }
-                    else{
-                        var step = Math.abs(icList.currentSpot-mouse.y);
-                        if (step >= root.animationStep){
-                            icList.currentSpot = mouse.y;
-
-                            wrapper.calculateScales(mouse.y);
-                        }
+                        wrapper.calculateScales(mousePos);
                     }
                 }
             }
+        }
+    }
 
+    onMouseXChanged: {
+        if (!root.vertical) {
+            mousePosChanged(mouseX);
+        }
+    }
+
+    onMouseYChanged: {
+        if (root.vertical) {
+            mousePosChanged(mouseY);
+        }
+    }
+
+
+
+    onPositionChanged: {
+        if (root.editMode || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
+            return;
+
+        if (root.latteDock && root.latteDock.isHalfShown) {
+            return;
+        }
+
+        if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
             // mouse.button is always 0 here, hence checking with mouse.buttons
             if (pressX != -1 && mouse.buttons == Qt.LeftButton
                     && isDragged
@@ -651,13 +665,6 @@ MouseArea{
                                      model.LauncherUrlWithoutIcon, model.decoration);
                 pressX = -1;
                 pressY = -1;
-            }
-            else{
-                /*    if(draggingResistaner != null){
-                        draggingResistaner.destroy();
-                        draggingResistaner = null;
-                    }
-                    isDragged = false;*/
             }
         }
     }
