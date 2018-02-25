@@ -489,7 +489,7 @@ Item{
                     }
                 }
 
-                CircleText {
+                Latte.BadgeText {
                     id: taskNumber
                     anchors.centerIn: parent
                     //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0

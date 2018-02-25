@@ -22,6 +22,8 @@ import QtQuick 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.latte 0.1 as Latte
+
 Item {
     id: background
 
@@ -51,7 +53,7 @@ Item {
             }
         ]
 
-        CircleText {
+        Latte.BadgeText {
             id: progressCircle
             anchors.centerIn: parent
             width: 0.8 * parent.width
@@ -59,6 +61,11 @@ Item {
             numberValue: mainItemContainer.badgeIndicator > 0 ? mainItemContainer.badgeIndicator : centralItem.smartLauncherItem.count
             fullCircle: true
             showNumber: true
+
+            textWithBackgroundColor: ( (mainItemContainer.badgeIndicator > 0)
+                                      || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )
+                                     && proportion>0
+
             proportion: {
                 if (mainItemContainer.badgeIndicator > 0 ||
                         (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible)) {

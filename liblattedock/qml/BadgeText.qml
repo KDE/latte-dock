@@ -35,6 +35,7 @@ Rectangle {
     property bool fullCircle: true
     property bool showNumber: true
     property bool showText: false
+    property bool textWithBackgroundColor: false
 
     property int radiusPerCentage: 100
 
@@ -119,12 +120,8 @@ Rectangle {
         }
         font.pixelSize: 0.6 * parent.height
         font.bold: true
-        color: useBackgroundColor ? theme.backgroundColor : theme.textColor
+        color: textWithBackgroundColor ? theme.backgroundColor : theme.textColor
         visible: showNumber || showText
-
-        property bool useBackgroundColor: ( (mainItemContainer.badgeIndicator > 0)
-                                           || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )
-                                          && proportion>0
     }
 
 
