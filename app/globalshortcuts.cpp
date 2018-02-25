@@ -323,7 +323,7 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
 
                         QMetaMethod method = metaObject->method(methodIndex);
 
-                        if (method.invoke(item, Q_ARG(QVariant, index))) {
+                        if (method.invoke(item, Q_ARG(QVariant, index - 1))) {
                             if (methodIndex2 != -1) {
                                 m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
                             }
