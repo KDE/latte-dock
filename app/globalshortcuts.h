@@ -54,6 +54,8 @@ private:
     void hideDock();
     void showSettings();
 
+    bool activateLatteEntryAtContainment(const DockView *view, int index, Qt::Key modifier);
+    bool activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier);
     bool dockAtLowerEdgePriority(DockView *test, DockView *base);
     bool dockAtLowerScreenPriority(DockView *test, DockView *base);
 

@@ -283,95 +283,100 @@ void GlobalShortcuts::activateLauncherMenu()
     }
 }
 
-
-//! Activate task manager entry
-void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
+bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier)
 {
-    m_lastInvokedAction = dynamic_cast<QAction *>(sender());
+    const auto &applets = c->applets();
 
-    auto activatePlasmaTaskManagerEntryOnContainment = [this](const Plasma::Containment * c, int index, Qt::Key modifier) {
-        const auto &applets = c->applets();
+    for (auto *applet : applets) {
+        const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
 
-        for (auto *applet : applets) {
-            const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+        if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
+            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                const auto &childItems = appletInterface->childItems();
 
-            if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
-                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                    const auto &childItems = appletInterface->childItems();
+                if (childItems.isEmpty()) {
+                    continue;
+                }
 
-                    if (childItems.isEmpty()) {
-                        continue;
-                    }
+                KPluginMetaData meta = applet->kPackage().metadata();
 
-                    KPluginMetaData meta = applet->kPackage().metadata();
+                for (QQuickItem *item : childItems) {
+                    if (auto *metaObject = item->metaObject()) {
+                        // not using QMetaObject::invokeMethod to avoid warnings when calling
+                        // this on applets that don't have it or other child items since this
+                        // is pretty much trial and error.
 
-                    for (QQuickItem *item : childItems) {
-                        if (auto *metaObject = item->metaObject()) {
-                            // not using QMetaObject::invokeMethod to avoid warnings when calling
-                            // this on applets that don't have it or other child items since this
-                            // is pretty much trial and error.
+                        // Also, "var" arguments are treated as QVariant in QMetaObject
+                        int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
+                                          metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
+                                          metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
 
-                            // Also, "var" arguments are treated as QVariant in QMetaObject
-                            int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
-                                              metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
-                                              metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
+                        int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
 
-                            int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
+                        if (methodIndex == -1 || (methodIndex2 == -1 && meta.pluginId() == "org.kde.latte.plasmoid")) {
+                            continue;
+                        }
 
-                            if (methodIndex == -1 || (methodIndex2 == -1 && meta.pluginId() == "org.kde.latte.plasmoid")) {
-                                continue;
+                        m_calledItem = item;
+                        m_numbersMethodIndex = methodIndex;
+                        m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
+
+                        QMetaMethod method = metaObject->method(methodIndex);
+
+                        if (method.invoke(item, Q_ARG(QVariant, index))) {
+                            if (methodIndex2 != -1) {
+                                m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
                             }
 
-                            m_calledItem = item;
-                            m_numbersMethodIndex = methodIndex;
-                            m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
-
-                            QMetaMethod method = metaObject->method(methodIndex);
-
-                            if (method.invoke(item, Q_ARG(QVariant, index))) {
-                                if (methodIndex2 != -1) {
-                                    m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
-                                }
-
-                                return true;
-                            }
+                            return true;
                         }
                     }
                 }
             }
         }
+    }
 
-        return false;
-    };
+    return false;
+}
 
+bool GlobalShortcuts::activateLatteEntryAtContainment(const DockView *view, int index, Qt::Key modifier)
+{
+    if (QQuickItem *containmentInterface = view->containment()->property("_plasma_graphicObject").value<QQuickItem *>()) {
+        const auto &childItems = containmentInterface->childItems();
 
-    auto activateLatteEntryOnContainment = [this](const Plasma::Containment * c, int index, Qt::Key modifier) {
-        if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
-            const auto &childItems = containmentInterface->childItems();
+        for (QQuickItem *item : childItems) {
+            if (auto *metaObject = item->metaObject()) {
+                // not using QMetaObject::invokeMethod to avoid warnings when calling
+                // this on applets that don't have it or other child items since this
+                // is pretty much trial and error.
 
-            for (QQuickItem *item : childItems) {
-                if (auto *metaObject = item->metaObject()) {
-                    // not using QMetaObject::invokeMethod to avoid warnings when calling
-                    // this on applets that don't have it or other child items since this
-                    // is pretty much trial and error.
+                // Also, "var" arguments are treated as QVariant in QMetaObject
+                int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
+                                  metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
+                                  metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
 
-                    // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
-                                      metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
-                                      metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
+                int methodIndex2 = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant)");
 
-                    int methodIndex2 = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant)");
+                if (methodIndex == -1 || (methodIndex2 == -1)) {
+                    continue;
+                }
 
-                    if (methodIndex == -1 || (methodIndex2 == -1)) {
-                        continue;
+                m_calledItem = item;
+                m_numbersMethodIndex = methodIndex2;
+                m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
+
+                QMetaMethod method = metaObject->method(methodIndex);
+
+                if (view->visibility()->isHidden()) {
+                    //! delay the execution in order to show first the dock
+                    if (m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
+                        QTimer::singleShot(400, [this, item, method, index]() {
+                            method.invoke(item, Q_ARG(QVariant, index));
+                        });
                     }
 
-                    m_calledItem = item;
-                    m_numbersMethodIndex = methodIndex2;
-                    m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
-
-                    QMetaMethod method = metaObject->method(methodIndex);
-
+                    return true;
+                } else {
                     if (method.invoke(item, Q_ARG(QVariant, index))) {
                         m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
 
@@ -380,9 +385,16 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
                 }
             }
         }
+    }
 
-        return false;
-    };
+    return false;
+}
+
+
+//! Activate task manager entry
+void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
+{
+    m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
     QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
 
@@ -393,9 +405,9 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
             continue;
         }
 
-        if ((it.value()->latteTasksPresent() && activateLatteEntryOnContainment(it.key(), index, modifier))
+        if ((it.value()->latteTasksPresent() && activateLatteEntryAtContainment(it.value(), index, modifier))
             || (!it.value()->latteTasksPresent() && it.value()->tasksPresent() &&
-                activatePlasmaTaskManagerEntryOnContainment(it.key(), index, modifier))) {
+                activatePlasmaTaskManagerEntryAtContainment(it.key(), index, modifier))) {
             m_hideDock = it.value();
             m_hideDock->visibility()->setBlockHiding(true);
             m_hideDockTimer.start();
@@ -405,9 +417,9 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 
     // we didn't find anything on primary, try all the panels
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        if ((it.value()->latteTasksPresent() && activateLatteEntryOnContainment(it.key(), index, modifier))
+        if ((it.value()->latteTasksPresent() && activateLatteEntryAtContainment(it.value(), index, modifier))
             || (!it.value()->latteTasksPresent() && it.value()->tasksPresent() &&
-                activatePlasmaTaskManagerEntryOnContainment(it.key(), index, modifier))) {
+                activatePlasmaTaskManagerEntryAtContainment(it.key(), index, modifier))) {
             m_hideDock = it.value();
             m_hideDock->visibility()->setBlockHiding(true);
             m_hideDockTimer.start();
