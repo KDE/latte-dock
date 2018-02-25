@@ -617,6 +617,8 @@ Item {
                 } else {
                     plasmoid.configuration.launchers59 = launcherList;
                 }
+            } else {
+                plasmoid.configuration.launchers59 = launcherList;
             }
         }
 

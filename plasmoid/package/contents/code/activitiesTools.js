@@ -25,7 +25,7 @@ var indicator = 'multi';
 var plasmoid;
 
 function importLaunchersToNewArchitecture(){
-    if (plasmoid.configuration.launchers59.length>0)
+    if (plasmoid.configuration.launchers59.length>0 || plasmoid.configuration.launchers.length===0)
         return;
 
     console.log("------------- Importing Launchers To New Architecture --------------");
