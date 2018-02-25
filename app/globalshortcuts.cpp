@@ -214,8 +214,8 @@ void GlobalShortcuts::init()
         const int entryNumber = i;
         const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + i);
 
-        QAction *action = taskbarActions->addAction(QStringLiteral("activate task manager entry %1").arg(QString::number(entryNumber)));
-        action->setText(i18n("Activate Task Manager Entry %1", entryNumber));
+        QAction *action = taskbarActions->addAction(QStringLiteral("activate entry %1").arg(QString::number(entryNumber)));
+        action->setText(i18n("Activate Entry %1", entryNumber));
         action->setShortcut(QKeySequence(Qt::META + key));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + key));
         connect(action, &QAction::triggered, this, [this, i] {
@@ -229,8 +229,8 @@ void GlobalShortcuts::init()
 
     //activate actions [10-19]
     for (int i = 10; i < 20; ++i) {
-        QAction *action = taskbarActions->addAction(QStringLiteral("activate task manager entry %1").arg(QString::number(i)));
-        action->setText(i18n("Activate Task Manager Entry %1", i));
+        QAction *action = taskbarActions->addAction(QStringLiteral("activate entry %1").arg(QString::number(i)));
+        action->setText(i18n("Activate Entry %1", i));
         action->setShortcut(QKeySequence(Qt::META + keysAboveTen[i - 10]));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + keysAboveTen[i - 10]));
         connect(action, &QAction::triggered, this, [this, i] {
@@ -243,8 +243,8 @@ void GlobalShortcuts::init()
         const int entryNumber = i;
         const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + i);
 
-        QAction *action = taskbarActions->addAction(QStringLiteral("new instance for task manager entry %1").arg(QString::number(entryNumber)));
-        action->setText(i18n("New Instance for Task Manager Entry %1", entryNumber));
+        QAction *action = taskbarActions->addAction(QStringLiteral("new instance for entry %1").arg(QString::number(entryNumber)));
+        action->setText(i18n("New Instance for Entry %1", entryNumber));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + key));
         connect(action, &QAction::triggered, this, [this, i] {
             // qDebug() << "meta + ctrl + action...";
@@ -254,8 +254,8 @@ void GlobalShortcuts::init()
 
     //new instance actions [10-19]
     for (int i = 10; i < 20; ++i) {
-        QAction *action = taskbarActions->addAction(QStringLiteral("new instance for task manager entry %1").arg(QString::number(i)));
-        action->setText(i18n("New Instance for Task Manager Entry %1", i));
+        QAction *action = taskbarActions->addAction(QStringLiteral("new instance for entry %1").arg(QString::number(i)));
+        action->setText(i18n("New Instance for Entry %1", i));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + keysAboveTen[i - 10]));
         connect(action, &QAction::triggered, this, [this, i] {
             activateEntry(i, static_cast<Qt::Key>(Qt::CTRL));
