@@ -36,6 +36,7 @@ Item {
 
     property int firstRealTaskIndex: -1
     property int lastRealTaskIndex: -1
+    property int countRealTasks: -1
 
     //tasks that change state (launcher,startup,window) and
     //at the next state must look the same
@@ -118,6 +119,8 @@ Item {
 
             root.separatorsUpdated();
         }
+
+        countRealTasks = realTasks();
     }
 
     //!this is used in order to update the index when the signal is for applets
@@ -438,7 +441,7 @@ Item {
             }
         }
 
-        return pseudoIndex;
+        return pseudoIndex + root.tasksNumbersBase;
     }
 
     //! first available task index found after consequent internal separators in the start
@@ -473,6 +476,24 @@ Item {
         }
 
         return root.tasksCount > 0 ? root.tasksCount-1 : -1;
+    }
+
+    //! the real number of tasks if we remove the internal separators
+    function realTasks() {
+        var space = lastRealTaskIndex - firstRealTaskIndex;
+
+        if (space >= 0) {
+            var internseparators = 0;
+            for(var i=firstRealTaskIndex; i<lastRealTaskIndex; ++i) {
+                if (taskIsSeparator(i)) {
+                    internseparators = internseparators + 1;
+                }
+            }
+
+            return space + 1 - internseparators;
+        }
+
+        return 0;
     }
 
     function freeAvailableSeparatorName() {

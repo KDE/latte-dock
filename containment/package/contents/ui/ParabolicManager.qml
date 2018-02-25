@@ -41,7 +41,7 @@ Item {
         if(root.latteApplet
                 && root.latteApplet.parabolicManager.firstRealTaskIndex !== -1
                 && ((appIndex<root.latteAppletPos && index>=root.latteAppletPos)
-                                || (appIndex>root.latteAppletPos && index<=root.latteAppletPos)) ){
+                    || (appIndex>root.latteAppletPos && index<=root.latteAppletPos)) ){
             var appStep = Math.abs(root.latteAppletPos-appIndex);
             var signalStep = Math.abs(index - appIndex);
 
@@ -55,7 +55,7 @@ Item {
                 if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
                     taskIndex = root.latteApplet.parabolicManager.availableHigherIndex(taskIndex + 1);
 
-                  //console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+                //console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
                 if (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))
                     internSepStep = Math.abs(root.tasksCount-1 - root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1));
@@ -64,7 +64,7 @@ Item {
                 if (root.latteApplet.parabolicManager.taskIsSeparator(taskIndex))
                     taskIndex = root.latteApplet.parabolicManager.availableLowerIndex(taskIndex - 1);
 
-                 //console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
+                //console.log("reverse:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             }
 
             root.latteApplet.updateScale(taskIndex, zScale,zStep);
@@ -172,7 +172,7 @@ Item {
         }
 
         //!when there isnt a single task
-       if (latteApplet && (root.latteApplet.parabolicManager.firstRealTaskIndex !== root.latteApplet.parabolicManager.lastRealTaskIndex)) {
+        if (latteApplet && (root.latteApplet.parabolicManager.firstRealTaskIndex !== root.latteApplet.parabolicManager.lastRealTaskIndex)) {
             if (gTaskIndex === -1 && lTaskIndex === -1){
                 latteApplet.parabolicManager.clearTasksGreaterThan(0);
             } else {
@@ -323,5 +323,75 @@ Item {
 
     function isSeparator(index){
         return (separators.indexOf(index) !== -1)
+    }
+
+    function isHidden(index) {
+        return (hidden.indexOf(index) !== -1)
+    }
+
+    //! the pseudo index applet after we take into account the separators before it, hidden applets,
+    //! spacers etc. for example the third applet if there is a separator before it is 1, it isnt 2
+    function pseudoAppletIndex(realIndex) {
+        //var pseudoIndex = realIndex;
+
+        var counter = 0;
+        var originalAppletFound = false;
+
+        for (var i=0; i<layoutsContainer.startLayout.children.length; ++i){
+            var applet = layoutsContainer.startLayout.children[i];
+
+            if (applet) {
+                if (applet.index < realIndex) {
+                    if (applet.isLattePlasmoid) {
+                        counter = counter + root.latteApplet.parabolicManager.countRealTasks;
+                    } else if (!applet.isSeparator && !applet.isSpacer && !applet.isHidden) {
+                        counter = counter + 1;
+                    }
+                } else if (applet.index === realIndex) {
+                    originalAppletFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!originalAppletFound) {
+            for (var j=0; j<layoutsContainer.mainLayout.children.length; ++j){
+                var applet = layoutsContainer.mainLayout.children[j];
+
+                if (applet) {
+                    if (applet.index < realIndex) {
+                        if (applet.isLattePlasmoid) {
+                            counter = counter + root.latteApplet.parabolicManager.countRealTasks;
+                        } else if (!applet.isSeparator && !applet.isSpacer && !applet.isHidden) {
+                            counter = counter + 1;
+                        }
+                    } else if (applet.index === realIndex) {
+                        originalAppletFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!originalAppletFound) {
+            for (var k=0; j<layoutsContainer.endLayout.children.length; ++k){
+                var applet = layoutsContainer.endLayout.children[k];
+
+                if (applet) {
+                    if (applet.index < realIndex) {
+                        if (applet.isLattePlasmoid) {
+                            counter = counter + root.latteApplet.parabolicManager.countRealTasks;
+                        } else if (!applet.isSeparator && !applet.isSpacer && !applet.isHidden) {
+                            counter = counter + 1;
+                        }
+                    } else if (applet.index === realIndex) {
+                        originalAppletFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return counter + 1;
     }
 }

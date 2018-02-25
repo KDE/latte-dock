@@ -61,8 +61,10 @@ Item {
                               && applet.pluginName !== "org.kde.activeWindowControl"
     property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
+    property bool isLattePlasmoid: latteApplet !== null
     property bool isZoomed: false
     property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator"
+    property bool isSpacer: latteSpacer !== null
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
     property bool firstChildOfStartLayout: (index === layoutsContainer.startLayout.beginIndex)

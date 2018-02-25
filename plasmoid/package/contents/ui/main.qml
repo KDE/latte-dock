@@ -68,6 +68,7 @@ Item {
     property bool isHovered: false
     property bool showBarLine: plasmoid.configuration.showBarLine
     property bool showTasksNumbers: false
+    property int tasksNumbersBase: 0
     property bool useThemePanel: plasmoid.configuration.useThemePanel
     property bool taskInAnimation: noTasksInAnimation > 0 ? true : false
     property bool transparentPanel: plasmoid.configuration.transparentPanel
@@ -1524,8 +1525,15 @@ Item {
         }
     }
 
+    //! show/hide tasks numbered badges e.g. from global shortcuts
     function setShowTasksNumbers(showNumbers){
-        root.showTasksNumbers = showNumbers;
+        showTasksNumbers = showNumbers;
+    }
+
+    //! setup the tasks first index based on the fact that this is a plasmoid
+    //! and applets could exist before it
+    function setTasksNumbersBase(base){
+        tasksNumbersBase = base;
     }
 
     function previewContainsMouse() {

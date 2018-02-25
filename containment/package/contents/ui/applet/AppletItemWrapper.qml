@@ -559,6 +559,68 @@ Item{
         }
     }
 
+    /// START Applets Number
+    Loader{
+        id: appletNumberLoader
+        anchors.fill: container.appletWrapper
+        active: opacityN>0
+        asynchronous: true
+
+        property int fixedIndex:-1
+
+        onActiveChanged: {
+            if (active) {
+                fixedIndex = parabolicManager.pseudoAppletIndex(index);
+            }
+        }
+
+        Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
+
+        property real opacityN: root.showAppletsNumbers && !container.isSeparator && !container.isHidden
+                                && !container.isLattePlasmoid && !container.isSpacer && fixedIndex<20 ? 1 : 0
+
+        Behavior on opacityN {
+            NumberAnimation { duration: root.durationTime*2*units.longDuration }
+        }
+
+        sourceComponent: Item{
+            Loader{
+                anchors.fill: appletNumber
+                active: root.enableShadows
+
+                sourceComponent: DropShadow{
+                    color: root.appShadowColor
+                    fast: true
+                    samples: 2 * radius
+                    source: appletNumber
+                    radius: root.appShadowSize/2
+                    verticalOffset: 2
+                }
+            }
+
+            Latte.BadgeText {
+                id: appletNumber
+                anchors.centerIn: parent
+
+                width: 0.4 * (root.iconSize)
+                height: width
+                numberValue: appletNumberLoader.fixedIndex < 10 ? appletNumberLoader.fixedIndex : 0
+                textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
+
+                showNumber: appletNumberLoader.fixedIndex < 10
+                showText: appletNumberLoader.fixedIndex>=10 && appletNumberLoader.fixedIndex<20
+
+                proportion: 0
+                radiusPerCentage: 50
+
+                property int keysArrayIndex: appletNumberLoader.fixedIndex-10;
+                property var keysAboveTen: ['0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.']
+            }
+        }
+    }
+    //END of Applets number
+
+
     BrightnessContrast{
         id:hoveredImage
         anchors.fill: _wrapperContainer

@@ -1046,6 +1046,12 @@ DragDrop.DropArea {
 
     //! this is called from globalshortcuts c++ side
     function setShowAppletsNumbers(showNumbers){
+        if (latteApplet) {
+            var base = parabolicManager.pseudoAppletIndex(latteAppletPos);
+            latteApplet.setTasksNumbersBase(base - 1);
+            latteApplet.setShowTasksNumbers(showNumbers);
+        }
+
         showAppletsNumbers = showNumbers;
     }
 
