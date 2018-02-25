@@ -114,6 +114,7 @@ DragDrop.DropArea {
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
+    property bool showAppletsNumbers: false
     property bool solidPanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
 
     //FIXME: possibly this is going to be the default behavior, this user choice
@@ -1041,6 +1042,11 @@ DragDrop.DropArea {
 
     function hideTooltipLabel(debug){
         titleTooltipDialog.hide(debug);
+    }
+
+    //! this is called from globalshortcuts c++ side
+    function setShowAppletsNumbers(showNumbers){
+        showAppletsNumbers = showNumbers;
     }
 
     function showTooltipLabel(taskItem, text){

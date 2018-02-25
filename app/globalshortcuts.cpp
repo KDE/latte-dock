@@ -322,9 +322,9 @@ void GlobalShortcuts::activateTaskManagerEntry(int index, Qt::Key modifier)
                                 continue;
                             }
 
-                            m_tasksPlasmoid = item;
-                            m_tasksMethodIndex = methodIndex2;
-                            m_methodShowNumbers = metaObject->method(m_tasksMethodIndex);
+                            m_calledItem = item;
+                            m_numbersMethodIndex = methodIndex;
+                            m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
 
                             QMetaMethod method = metaObject->method(methodIndex);
 
@@ -437,8 +437,8 @@ void GlobalShortcuts::showDock()
             KPluginMetaData meta = applet->kPackage().metadata();
 
             if (meta.pluginId() == "org.kde.latte.plasmoid") {
-                if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
-                    const auto &childItems = appletInterface->childItems();
+                if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                    const auto &childItems = containmentInterface->childItems();
 
                     if (childItems.isEmpty()) {
                         continue;
@@ -451,15 +451,15 @@ void GlobalShortcuts::showDock()
                             // is pretty much trial and error.
 
                             // Also, "var" arguments are treated as QVariant in QMetaObject
-                            int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
+                            int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant)");
 
-                            if (methodIndex2 == -1) {
+                            if (methodIndex == -1) {
                                 continue;
                             }
 
-                            m_tasksPlasmoid = item;
-                            m_tasksMethodIndex = methodIndex2;
-                            m_methodShowNumbers = metaObject->method(m_tasksMethodIndex);
+                            m_calledItem = item;
+                            m_numbersMethodIndex = methodIndex;
+                            m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
 
                             if (m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
                                 return true;
@@ -646,10 +646,10 @@ void GlobalShortcuts::hideDockTimerSlot()
             m_hideDock->visibility()->setBlockHiding(false);
             m_hideDock = Q_NULLPTR;
 
-            if (m_tasksPlasmoid) {
-                m_methodShowNumbers.invoke(m_tasksPlasmoid, Q_ARG(QVariant, false));
-                m_tasksPlasmoid = Q_NULLPTR;
-                m_tasksMethodIndex = -1;
+            if (m_calledItem) {
+                m_methodShowNumbers.invoke(m_calledItem, Q_ARG(QVariant, false));
+                m_calledItem = Q_NULLPTR;
+                m_numbersMethodIndex = -1;
             }
 
             return;
@@ -662,10 +662,10 @@ void GlobalShortcuts::hideDockTimerSlot()
         m_hideDock->visibility()->setBlockHiding(false);
         m_hideDock = Q_NULLPTR;
 
-        if (m_tasksPlasmoid) {
-            m_methodShowNumbers.invoke(m_tasksPlasmoid, Q_ARG(QVariant, false));
-            m_tasksPlasmoid = Q_NULLPTR;
-            m_tasksMethodIndex = -1;
+        if (m_calledItem) {
+            m_methodShowNumbers.invoke(m_calledItem, Q_ARG(QVariant, false));
+            m_calledItem = Q_NULLPTR;
+            m_numbersMethodIndex = -1;
         }
     }
 

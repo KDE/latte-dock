@@ -61,8 +61,8 @@ private:
     QTimer m_hideDockTimer;
     DockView *m_hideDock;
 
-    int m_tasksMethodIndex{ -1};
-    QQuickItem *m_tasksPlasmoid{nullptr};
+    int m_numbersMethodIndex{ -1};
+    QQuickItem *m_calledItem{nullptr};
     QMetaMethod m_methodShowNumbers;
 
     DockCorona *m_corona{nullptr};
