@@ -414,6 +414,22 @@ Item {
                 }
             }
         }
+
+        onSignalActivateEntryAtIndex: {
+            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && container.isLattePlasmoid) {
+                latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
+            } else if (entryIndex === parabolicManager.pseudoAppletIndex(container.index)) {
+                dock.toggleAppletExpanded(applet.id);
+            }
+        }
+
+        onSignalNewInstanceForEntryAtIndex: {
+            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && container.isLattePlasmoid) {
+                latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
+            } else if (entryIndex === parabolicManager.pseudoAppletIndex(container.index)) {
+                dock.toggleAppletExpanded(applet.id);
+            }
+        }
     }
 
     Connections{

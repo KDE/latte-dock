@@ -1304,7 +1304,6 @@ Item {
         //! this is used to bypass the internal separators if they exist
         var confirmedIndex = parabolicManager.realTaskIndex(index - 1);
 
-
         for(var i=0; i<tasks.length; ++i){
             var task = tasks[i];
 

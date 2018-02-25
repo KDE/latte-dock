@@ -49,7 +49,7 @@ private slots:
 
 private:
     void init();
-    void activateTaskManagerEntry(int index, Qt::Key modifier);
+    void activateEntry(int index, Qt::Key modifier);
     void showDock();
     void hideDock();
     void showSettings();

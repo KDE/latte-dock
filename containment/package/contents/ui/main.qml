@@ -44,6 +44,8 @@ DragDrop.DropArea {
     //// BEGIN SIGNALS
     signal clearZoomSignal();
     signal separatorsUpdated();
+    signal signalActivateEntryAtIndex(int entryIndex);
+    signal signalNewInstanceForEntryAtIndex(int entryIndex);
     signal updateEffectsArea();
     signal updateIndexes();
     signal updateScale(int delegateIndex, real newScale, real step);
@@ -1054,6 +1056,35 @@ DragDrop.DropArea {
 
         showAppletsNumbers = showNumbers;
     }
+
+    // This is called by dockcorona in response to a Meta+number shortcut.
+    function activateEntryAtIndex(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        if (latteApplet) {
+            var base = parabolicManager.pseudoAppletIndex(latteAppletPos);
+            latteApplet.setTasksNumbersBase(base - 1);
+        }
+
+        signalActivateEntryAtIndex(index);
+    }
+
+    // This is called by dockcorona in response to a Meta+Alt+number shortcut.
+    function newInstanceForEntryAtIndex(index) {
+        if (typeof index !== "number") {
+            return;
+        }
+
+        if (latteApplet) {
+            var base = parabolicManager.pseudoAppletIndex(latteAppletPos);
+            latteApplet.setTasksNumbersBase(base - 1);
+        }
+
+        signalNewInstanceForEntryAtIndex(index);
+    }
+
 
     function showTooltipLabel(taskItem, text){
         titleTooltipDialog.show(taskItem, text);

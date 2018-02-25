@@ -106,6 +106,12 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
         if (!m_visibility) {
             m_visibility = new VisibilityManager(this);
+
+            connect(m_visibility, &VisibilityManager::isHiddenChanged, this, [&]() {
+                if (m_visibility->isHidden()) {
+                    deactivateApplets();
+                }
+            });
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));

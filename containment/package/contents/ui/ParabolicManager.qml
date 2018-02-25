@@ -394,4 +394,14 @@ Item {
 
         return counter + 1;
     }
+
+    function pseudoIndexBelongsToLatteApplet(index) {
+        if (root.latteApplet) {
+            var lastTaskIndex = root.latteApplet.tasksNumbersBase + root.latteApplet.parabolicManager.countRealTasks;
+            return (index>root.latteApplet.tasksNumbersBase && index<=lastTaskIndex);
+        }
+
+        return false;
+    }
+
 }
