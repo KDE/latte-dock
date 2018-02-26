@@ -576,8 +576,7 @@ Item{
 
         Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
 
-        property real opacityN: root.showAppletsNumbers && !container.isSeparator && !container.isHidden
-                                && !container.isLattePlasmoid && !container.isSpacer && fixedIndex<20 ? 1 : 0
+        property real opacityN: root.showAppletsNumbers && container.canShowAppletNumberBadge && fixedIndex<20 ? 1 : 0
 
         Behavior on opacityN {
             NumberAnimation { duration: root.durationTime*2*units.longDuration }

@@ -42,6 +42,8 @@ Item {
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
     property bool canBeHovered: true
+    property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
+                                            && !isSpacer && !isInternalViewSplitter
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool needsFillSpace: { //fill flag, it is used in calculations for fillWidth,fillHeight applets
         if (!applet || !applet.Layout ||  (applet && applet.pluginName === "org.kde.plasma.panelspacer"))

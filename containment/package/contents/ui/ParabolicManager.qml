@@ -332,8 +332,6 @@ Item {
     //! the pseudo index applet after we take into account the separators before it, hidden applets,
     //! spacers etc. for example the third applet if there is a separator before it is 1, it isnt 2
     function pseudoAppletIndex(realIndex) {
-        //var pseudoIndex = realIndex;
-
         var counter = 0;
         var originalAppletFound = false;
 
@@ -344,7 +342,7 @@ Item {
                 if (applet.index < realIndex) {
                     if (applet.isLattePlasmoid) {
                         counter = counter + root.latteApplet.parabolicManager.countRealTasks;
-                    } else if (!applet.isSeparator && !applet.isSpacer && !applet.isHidden) {
+                    } else if (applet.canShowAppletNumberBadge) {
                         counter = counter + 1;
                     }
                 } else if (applet.index === realIndex) {
@@ -362,7 +360,7 @@ Item {
                     if (applet.index < realIndex) {
                         if (applet.isLattePlasmoid) {
                             counter = counter + root.latteApplet.parabolicManager.countRealTasks;
-                        } else if (!applet.isSeparator && !applet.isSpacer && !applet.isHidden) {
+                        } else if (applet.canShowAppletNumberBadge) {
                             counter = counter + 1;
                         }
                     } else if (applet.index === realIndex) {
@@ -381,7 +379,7 @@ Item {
                     if (applet.index < realIndex) {
                         if (applet.isLattePlasmoid) {
                             counter = counter + root.latteApplet.parabolicManager.countRealTasks;
-                        } else if (!applet.isSeparator && !applet.isSpacer && !applet.isHidden) {
+                        } else if (applet.canShowAppletNumberBadge) {
                             counter = counter + 1;
                         }
                     } else if (applet.index === realIndex) {
