@@ -1504,6 +1504,12 @@ void DockView::setBlockHiding(bool block)
 
 void DockView::updateEffects()
 {
+    //! CRASH: Dont update effects under wayland
+    //! because they arent supported yet
+    if (KWindowSystem::isPlatformWayland()) {
+        return;
+    }
+
     if (!m_behaveAsPlasmaPanel) {
         if (m_drawEffects && !m_effectsArea.isNull() && !m_effectsArea.isEmpty()) {
             //! this is used when compositing is disabled and provides

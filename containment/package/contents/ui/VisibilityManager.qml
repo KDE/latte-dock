@@ -76,7 +76,8 @@ Item{
     Binding{
         target: dock
         property:"maxThickness"
-        when: dock
+        //! prevents updating window geometry during closing window in wayland and such fixes a crash
+        when: dock && !inTempHiding && !inForceHiding
         value: thicknessZoomOriginal
     }
 
