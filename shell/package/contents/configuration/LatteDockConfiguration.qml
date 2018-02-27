@@ -104,26 +104,28 @@ PlasmaCore.FrameSvgItem {
             Item {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignHCenter
                 Layout.fillWidth: false
+                Layout.topMargin: units.smallSpacing
                 Layout.preferredWidth: width
                 Layout.preferredHeight: height
 
                 width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
                 height: logo.height
 
-                PlasmaCore.IconItem {
+                Latte.IconItem {
                     id: logo
 
-                    width: 1.5 * latteTxtMetrics.font.pixelSize
+                    width: 1.4 * latteTxtMetrics.font.pixelSize
                     height: width
 
                     source: "latte-dock"
-                    animated: true
+                   // animated: true
                     usesPlasmaTheme: false
                     active: aboutMouseArea.containsMouse
                 }
                 PlasmaComponents.Label {
                      id: latteTxtMetrics
                      text: "Latte"
+                     width: 0
                      font.pointSize: 2 * theme.defaultFont.pointSize
                      visible: false
                 }
@@ -132,12 +134,11 @@ PlasmaCore.FrameSvgItem {
                     id: latteTxt
 
                     width: 2.2 * height
-                    height: 0.42 * latteTxtMetrics.font.pixelSize
+                    height: 0.4 * latteTxtMetrics.font.pixelSize
 
                     visible: Qt.application.layoutDirection !== Qt.RightToLeft
 
                     anchors.left: logo.right
-                    anchors.leftMargin: -3
                     anchors.verticalCenter: logo.verticalCenter
 
                     svg: PlasmaCore.Svg{
