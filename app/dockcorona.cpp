@@ -97,7 +97,6 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
     m_universalSettings->load();
 
     qmlRegisterTypes();
-    QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
 
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running)) {
         load();

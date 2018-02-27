@@ -87,6 +87,7 @@ public slots:
     Q_INVOKABLE void syncGeometry();
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
 
+    Q_INVOKABLE QString trademarkPath();
 signals:
     void enabledBordersChanged();
     void raiseDocksTemporaryChanged();

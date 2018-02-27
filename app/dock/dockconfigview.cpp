@@ -143,6 +143,11 @@ inline Qt::WindowFlags DockConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
+QString DockConfigView::trademarkPath()
+{
+    return m_dockView->containment()->corona()->kPackage().filePath("trademark");
+}
+
 QWindow *DockConfigView::secondaryWindow()
 {
     return m_secConfigView;
@@ -563,7 +568,6 @@ void DockConfigView::updateEnabledBorders()
 }
 
 //!END borders
-
 
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
