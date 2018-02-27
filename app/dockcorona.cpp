@@ -84,7 +84,6 @@ DockCorona::DockCorona(QObject *parent)
     m_universalSettings->load();
 
     qmlRegisterTypes();
-    QFontDatabase::addApplicationFont(kPackage().filePath("tangerineFont"));
 
     //connect(this, &Corona::containmentAdded, this, &DockCorona::addDock);
 

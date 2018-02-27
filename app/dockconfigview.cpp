@@ -127,6 +127,11 @@ inline Qt::WindowFlags DockConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
+QString DockConfigView::trademarkPath()
+{
+    return m_dockView->containment()->corona()->kPackage().filePath("trademark");
+}
+
 void DockConfigView::syncGeometry()
 {
     if (!m_dockView->containment() || !rootObject())
@@ -442,7 +447,6 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
     }
 
 }
-
 
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

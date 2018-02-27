@@ -113,7 +113,7 @@ PlasmaCore.FrameSvgItem {
                 PlasmaCore.IconItem {
                     id: logo
 
-                    width: 1.5 * latteTxt.font.pixelSize
+                    width: 1.5 * latteTxtMetrics.font.pixelSize
                     height: width
 
                     source: "latte-dock"
@@ -121,19 +121,28 @@ PlasmaCore.FrameSvgItem {
                     usesPlasmaTheme: false
                     active: aboutMouseArea.containsMouse
                 }
-
                 PlasmaComponents.Label {
+                     id: latteTxtMetrics
+                     text: "Latte"
+                     font.pointSize: 2 * theme.defaultFont.pointSize
+                     visible: false
+                }
+
+                PlasmaCore.SvgItem{
                     id: latteTxt
 
-                    height: logo.height
-                    verticalAlignment: Text.AlignVCenter
-                    text: "atte"
-                    font.family: "Tangerine"
-                    font.pointSize: 2 * theme.defaultFont.pointSize
-                    font.italic: true
+                    width: 2.2 * height
+                    height: 0.42 * latteTxtMetrics.font.pixelSize
+
                     visible: Qt.application.layoutDirection !== Qt.RightToLeft
 
                     anchors.left: logo.right
+                    anchors.leftMargin: -3
+                    anchors.verticalCenter: logo.verticalCenter
+
+                    svg: PlasmaCore.Svg{
+                        imagePath: dockConfig.trademarkPath()
+                    }
                 }
 
                 MouseArea {
