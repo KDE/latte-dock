@@ -228,13 +228,6 @@ void DockCorona::setupWaylandIntegration()
         m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
     });
 
-    /* connect(qApp, &QCoreApplication::aboutToQuit, this, [this, registry]() {
-         if (m_waylandDockCorona)
-             m_waylandDockCorona->release();
-
-         registry->release();
-     });*/
-
     registry->setup();
     connection->roundtrip();
 }

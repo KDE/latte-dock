@@ -400,6 +400,7 @@ bool DockConfigView::event(QEvent *e)
                     if (m_shellSurface) {
                         delete m_shellSurface;
                         m_shellSurface = nullptr;
+                        qDebug() << "WAYLAND config window surface was deleted...";
                         PanelShadows::self()->removeWindow(this);
                     }
 

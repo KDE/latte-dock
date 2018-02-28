@@ -141,6 +141,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 DockView::~DockView()
 {
     m_inDelete = true;
+
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
 
@@ -360,7 +361,7 @@ void DockView::setupWaylandIntegration()
             return;
 
         m_shellSurface = interface->createSurface(s, this);
-        qDebug() << "wayland dock window surface was created...";
+        qDebug() << "WAYLAND dock window surface was created...";
 
         m_shellSurface->setSkipTaskbar(true);
         m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
@@ -1675,7 +1676,7 @@ bool DockView::event(QEvent *e)
                             if (m_shellSurface) {
                                 delete m_shellSurface;
                                 m_shellSurface = nullptr;
-                                qDebug() << "wayland dock window surface was deleted...";
+                                qDebug() << "WAYLAND dock window surface was deleted...";
                                 PanelShadows::self()->removeWindow(this);
                             }
 
