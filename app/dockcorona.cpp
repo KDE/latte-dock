@@ -208,16 +208,17 @@ void DockCorona::unload()
 
 void DockCorona::setupWaylandIntegration()
 {
-    using namespace KWayland::Client;
-
     if (!KWindowSystem::isPlatformWayland()) {
         return;
     }
 
+    using namespace KWayland::Client;
+
     auto connection = ConnectionThread::fromApplication(this);
 
-    if (!connection)
+    if (!connection) {
         return;
+    }
 
     Registry *registry{new Registry(this)};
     registry->create(connection);
@@ -227,14 +228,15 @@ void DockCorona::setupWaylandIntegration()
         m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
     });
 
-    connect(qApp, &QCoreApplication::aboutToQuit, this, [this, registry]() {
-        if (m_waylandDockCorona)
-            m_waylandDockCorona->release();
+    /* connect(qApp, &QCoreApplication::aboutToQuit, this, [this, registry]() {
+         if (m_waylandDockCorona)
+             m_waylandDockCorona->release();
 
-        registry->release();
-    });
+         registry->release();
+     });*/
 
     registry->setup();
+    connection->roundtrip();
 }
 
 KWayland::Client::PlasmaShell *DockCorona::waylandDockCoronaInterface() const

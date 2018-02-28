@@ -344,12 +344,11 @@ void DockView::availableScreenRectChanged()
 
 void DockView::setupWaylandIntegration()
 {
-    using namespace KWayland::Client;
-
     if (m_shellSurface)
         return;
 
     if (DockCorona *c = qobject_cast<DockCorona *>(corona())) {
+        using namespace KWayland::Client;
         PlasmaShell *interface{c->waylandDockCoronaInterface()};
 
         if (!interface)
@@ -1674,7 +1673,6 @@ bool DockView::event(QEvent *e)
 
                         case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
                             if (m_shellSurface) {
-                                m_shellSurface->release();
                                 delete m_shellSurface;
                                 m_shellSurface = nullptr;
                                 qDebug() << "wayland dock window surface was deleted...";

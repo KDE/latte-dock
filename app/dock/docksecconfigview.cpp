@@ -309,9 +309,9 @@ bool DockSecConfigView::event(QEvent *e)
                     if (m_shellSurface) {
                         delete m_shellSurface;
                         m_shellSurface = nullptr;
+                        PanelShadows::self()->removeWindow(this);
                     }
 
-                    PanelShadows::self()->removeWindow(this);
                     break;
             }
         }
