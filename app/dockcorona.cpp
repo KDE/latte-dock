@@ -180,6 +180,7 @@ void DockCorona::loadLatteLayout(QString layoutPath)
         qDebug() << "corona is unloading the interface...";
         unload();
         qDebug() << "loading layout:" << layoutPath;
+        cleanupOnStartup(layoutPath);
         loadLayout(layoutPath);
 
         m_firstContainmentWithTasks = -1;
@@ -189,6 +190,50 @@ void DockCorona::loadLatteLayout(QString layoutPath)
         foreach (auto containment, containments())
             addDock(containment);
     }
+}
+
+//! support Latte v0.8 layout file that have different Action Plugin
+//! and at the same time cleaup deprecated containments
+void DockCorona::cleanupOnStartup(QString path)
+{
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(path);
+
+    KConfigGroup actionGroups = KConfigGroup(filePtr, "ActionPlugins");
+
+    QStringList deprecatedActionGroup;
+
+    foreach (auto actId, actionGroups.groupList()) {
+        QString pluginId = actionGroups.group(actId).readEntry("RightButton;NoModifier", "");
+
+        if (pluginId == "org.kde.latte.contextmenu") {
+            deprecatedActionGroup << actId;
+        }
+    }
+
+    foreach (auto pId, deprecatedActionGroup) {
+        qDebug() << "!!!!!!!!!!!!!!!!  !!!!!!!!!!!! !!!!!!! REMOVING :::: " << pId;
+        actionGroups.group(pId).deleteGroup();
+    }
+
+    KConfigGroup containmentGroups = KConfigGroup(filePtr, "Containments");
+
+    QStringList removeContaimentsList;
+
+    foreach (auto cId, containmentGroups.groupList()) {
+        QString pluginId = containmentGroups.group(cId).readEntry("plugin", "");
+
+        if (pluginId == "org.kde.desktopcontainment") { //!must remove ghost containments first
+            removeContaimentsList << cId;
+        }
+    }
+
+    foreach (auto cId, removeContaimentsList) {
+        containmentGroups.group(cId).deleteGroup();
+    }
+
+
+    actionGroups.sync();
+    containmentGroups.sync();
 }
 
 void DockCorona::setupWaylandIntegration()

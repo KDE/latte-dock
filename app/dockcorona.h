@@ -122,6 +122,7 @@ private slots:
 
 private:
     void cleanConfig();
+    void cleanupOnStartup(QString path);
     void qmlRegisterTypes() const;
     void setupWaylandIntegration();
 
