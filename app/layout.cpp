@@ -303,25 +303,25 @@ QString Layout::textColor() const
         if (m_color == "blue") {
             return "#D7E3FF";
         } else if (m_color == "brown") {
-            return "#F0D7BA";
+            return "#4D1B00";
         } else if (m_color == "darkgrey") {
             return "#ECECEC";
         } else if (m_color == "gold") {
-            return "#78573B";
+            return "#7C3636";
         } else if (m_color == "green") {
-            return "#D0E7CD";
+            return "#4D7549";
         } else if (m_color == "lightskyblue") {
-            return "#E3F8FF";
+            return "#0C2A43";
         } else if (m_color == "orange") {
-            return "#FFEADE";
+            return "#6F3902";
         } else if (m_color == "pink") {
             return "#743C46";
         } else if (m_color == "purple") {
             return "#ECD9FF";
         }  else if (m_color == "red") {
-            return "#FFCACA";
+            return "#F3E4E4";
         }  else if (m_color == "wheat") {
-            return "#705548";
+            return "#6A4E25";
         }  else {
             return "#FCFCFC";
         }
