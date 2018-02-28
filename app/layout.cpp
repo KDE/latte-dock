@@ -303,7 +303,7 @@ QString Layout::textColor() const
         if (m_color == "blue") {
             return "#D7E3FF";
         } else if (m_color == "brown") {
-            return "#4D1B00";
+            return "#F1DECB";
         } else if (m_color == "darkgrey") {
             return "#ECECEC";
         } else if (m_color == "gold") {
