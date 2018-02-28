@@ -98,7 +98,9 @@ void ColorCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *mode
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
 
-    if (comboBox->currentIndex() < comboBox->count() - 2) {
+    QString itemData = comboBox->currentData().toString();
+
+    if (itemData != "select_image" && itemData != "text_color") {
         model->setData(index, comboBox->currentText(), Qt::BackgroundRole);
     }
 }
