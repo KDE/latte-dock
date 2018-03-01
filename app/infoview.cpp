@@ -119,10 +119,10 @@ void InfoView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
-    WindowSystem::self().setDockExtraFlags(*this);
+    m_corona->wm()->setDockExtraFlags(*this);
     setFlags(wFlags());
 
-    WindowSystem::self().enableBlurBehind(*this);
+    m_corona->wm()->enableBlurBehind(*this);
 
     syncGeometry();
 

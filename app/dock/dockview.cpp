@@ -167,12 +167,6 @@ DockView::~DockView()
 
     if (m_visibility)
         delete m_visibility;
-
-    if (m_shellSurface) {
-        m_shellSurface->release();
-        delete m_shellSurface;
-        m_shellSurface = nullptr;
-    }
 }
 
 void DockView::init()

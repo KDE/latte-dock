@@ -33,10 +33,11 @@ namespace Latte {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
-    : QObject(nullptr), q(q), view(view), wm(&WindowSystem::self())
+    : QObject(nullptr), q(q), view(view)
 {
     dockView = qobject_cast<DockView *>(view);
     dockCorona = qobject_cast<DockCorona *>(view->corona());
+    wm = dockCorona->wm();
 
     if (dockView) {
         connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);

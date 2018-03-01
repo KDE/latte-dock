@@ -80,8 +80,6 @@ public:
     void addDock(WindowId wid);
     void removeDock(WindowId wid);
 
-    static AbstractWindowInterface &self();
-
 signals:
     void activeWindowChanged(WindowId wid);
     void windowChanged(WindowId winfo);
@@ -94,8 +92,6 @@ protected:
     std::list<WindowId> m_windows;
     std::list<WindowId> m_docks;
     QPointer<KActivities::Consumer> m_activities;
-
-    static std::unique_ptr<AbstractWindowInterface> m_wm;
 };
 
 // namespace alias

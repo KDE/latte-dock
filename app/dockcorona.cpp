@@ -28,6 +28,8 @@
 #include "layoutmanager.h"
 #include "screenpool.h"
 #include "universalsettings.h"
+#include "waylandinterface.h"
+#include "xwindowinterface.h"
 #include "dock/dockview.h"
 #include "packageplugins/shell/dockpackage.h"
 
@@ -64,6 +66,7 @@
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/registry.h>
 #include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/plasmawindowmanagement.h>
 
 namespace Latte {
 
@@ -78,6 +81,14 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
       m_layoutManager(new LayoutManager(this))
 {
+    //! create the window manager
+
+    if (KWindowSystem::isPlatformWayland()) {
+        m_wm = new WaylandInterface(this);
+    } else {
+        m_wm = new XWindowInterface(this);
+    }
+
     setupWaylandIntegration();
 
     KPackage::Package package(new DockPackage(this));
@@ -139,6 +150,7 @@ DockCorona::~DockCorona()
 
     m_layoutManager->unload();
 
+    m_wm->deleteLater();
     m_globalShortcuts->deleteLater();
     m_layoutManager->deleteLater();
     m_screenPool->deleteLater();
@@ -226,6 +238,17 @@ void DockCorona::setupWaylandIntegration()
     connect(registry, &Registry::plasmaShellAnnounced, this
     , [this, registry](quint32 name, quint32 version) {
         m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
+    });
+
+    QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced,
+    [this, registry](quint32 name, quint32 version) {
+        KWayland::Client::PlasmaWindowManagement *pwm = registry->createPlasmaWindowManagement(name, version, this);
+
+        WaylandInterface *wI = qobject_cast<WaylandInterface *>(m_wm);
+
+        if (wI) {
+            wI->initWindowManagement(pwm);
+        }
     });
 
     registry->setup();
@@ -321,6 +344,11 @@ UniversalSettings *DockCorona::universalSettings() const
 LayoutManager *DockCorona::layoutManager() const
 {
     return m_layoutManager;
+}
+
+AbstractWindowInterface *DockCorona::wm() const
+{
+    return m_wm;
 }
 
 int DockCorona::numScreens() const
@@ -613,8 +641,8 @@ void DockCorona::aboutApplication()
 
     aboutDialog = new KAboutApplicationDialog(KAboutData::applicationData());
     connect(aboutDialog.data(), &QDialog::finished, aboutDialog.data(), &QObject::deleteLater);
-    WindowSystem::self().skipTaskBar(*aboutDialog);
-    WindowSystem::self().setKeepAbove(*aboutDialog, true);
+    m_wm->skipTaskBar(*aboutDialog);
+    m_wm->setKeepAbove(*aboutDialog, true);
 
     aboutDialog->show();
 }

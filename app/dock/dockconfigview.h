@@ -48,6 +48,7 @@ class PlasmaShellSurface;
 
 namespace Latte {
 
+class DockCorona;
 class DockView;
 
 class DockConfigView : public PlasmaQuick::ConfigView {
@@ -122,6 +123,7 @@ private:
 
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
 
+    DockCorona *m_corona{nullptr};
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 

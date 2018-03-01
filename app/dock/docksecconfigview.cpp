@@ -48,6 +48,8 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
       m_parent(parent),
       m_dockView(dockView)
 {
+    m_corona = qobject_cast<DockCorona *>(m_dockView->containment()->corona());
+
     setupWaylandIntegration();
 
     setResizeMode(QQuickView::SizeViewToRootObject);
@@ -225,17 +227,17 @@ void DockSecConfigView::syncSlideEffect()
             break;
     }
 
-    WindowSystem::self().slideWindow(*this, slideLocation);
+    m_corona->wm()->slideWindow(*this, slideLocation);
 }
 
 void DockSecConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
-    WindowSystem::self().setDockExtraFlags(*this);
+    m_corona->wm()->setDockExtraFlags(*this);
     setFlags(wFlags());
 
-    WindowSystem::self().enableBlurBehind(*this);
+    m_corona->wm()->enableBlurBehind(*this);
 
     syncGeometry();
     syncSlideEffect();

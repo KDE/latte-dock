@@ -39,6 +39,8 @@
 
 namespace Latte {
 
+class DockCorona;
+
 namespace Private {
 /**
  * @brief this class is use for create the struts inside wayland
@@ -72,20 +74,22 @@ public:
     void slideWindow(QWindow &view, Slide location) const override;
     void enableBlurBehind(QWindow &view) const override;
 
+    void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);
+
 private:
     void init();
     inline bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
     void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
+    KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
 
     QSignalMapper *mapper{nullptr};
 
     friend class Private::GhostWindow;
     mutable QMap<WindowId, Private::GhostWindow *> m_ghostWindows;
 
-    KWayland::Client::Registry *m_registry{nullptr};
-    KWayland::Client::ConnectionThread *m_connection{nullptr};
-    KWayland::Client::PlasmaWindowManagement *m_wm{nullptr};
-    KWayland::Client::PlasmaShell *m_plasmaShell{nullptr};
+    KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
+
+    DockCorona *m_corona{nullptr};
 };
 
 

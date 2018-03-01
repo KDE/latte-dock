@@ -19,6 +19,7 @@
 */
 
 #include "waylandinterface.h"
+#include "dockcorona.h"
 #include "../liblattedock/extras.h"
 
 #include <QDebug>
@@ -72,7 +73,7 @@ public:
         if (!s)
             return;
 
-        m_shellSurface = m_waylandInterface->m_plasmaShell->createSurface(s, this);
+        m_shellSurface = m_waylandInterface->waylandDockCoronaInterface()->createSurface(s, this);
         qDebug() << "wayland ghost window surface was created...";
 
         m_shellSurface->setSkipTaskbar(true);
@@ -88,58 +89,13 @@ public:
 WaylandInterface::WaylandInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
+    m_corona = qobject_cast<DockCorona *>(parent);
+
     m_activities = new KActivities::Consumer(this);
 
-    m_connection = ConnectionThread::fromApplication(this);
-
-    if (!m_connection) {
-        qWarning() << "Failed getting Wayland connection from QPA";
-        return;
-    }
-
-    m_registry = new Registry(this);
-    m_registry->create(m_connection);
-
-    connect(qApp, &QCoreApplication::aboutToQuit, this, [&]() {
-        if (m_wm)
-            m_wm->release();
-
-        if (m_plasmaShell)
-            m_plasmaShell->release();
-
-        m_registry->release();
-    });
-
-    m_registry->setup();
-    m_connection->roundtrip();
-
-    const auto wmInterface = m_registry->interface(Registry::Interface::PlasmaWindowManagement);
-
-    if (wmInterface.name == 0) {
-        qWarning() << "This compositor does not support the Plasma Window Management interface";
-        return;
-    }
-
-    m_wm = m_registry->createPlasmaWindowManagement(wmInterface.name, wmInterface.version, this);
-    connect(m_wm, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
-    connect(m_wm, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
-        auto w = m_wm->activeWindow();
-        emit activeWindowChanged(w ? w->internalId() : 0);
-    }, Qt::QueuedConnection);
-
-
-    const auto shellInterface = m_registry->interface(Registry::Interface::PlasmaShell);
-
-    if (shellInterface.name == 0) {
-        qWarning() << "Plasma Shell interface can't be created";
-        return;
-    }
-
-    m_plasmaShell = m_registry->createPlasmaShell(shellInterface.name, shellInterface.version, this);
 
     connect(m_activities.data(), &KActivities::Consumer::currentActivityChanged
             , this, &WaylandInterface::currentActivityChanged);
-
 }
 
 WaylandInterface::~WaylandInterface()
@@ -148,6 +104,22 @@ WaylandInterface::~WaylandInterface()
 
 void WaylandInterface::init()
 {
+}
+
+void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement)
+{
+    m_windowManagement = windowManagement;
+
+    connect(m_windowManagement, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
+    connect(m_windowManagement, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
+        auto w = m_windowManagement->activeWindow();
+        emit activeWindowChanged(w ? w->internalId() : 0);
+    }, Qt::QueuedConnection);
+}
+
+KWayland::Client::PlasmaShell *WaylandInterface::waylandDockCoronaInterface() const
+{
+    return m_corona->waylandDockCoronaInterface();
 }
 
 void WaylandInterface::setDockExtraFlags(QWindow &view)
@@ -192,7 +164,11 @@ void WaylandInterface::removeDockStruts(QWindow &view) const
 
 WindowId WaylandInterface::activeWindow() const
 {
-    auto wid = m_wm->activeWindow();
+    if (!m_windowManagement) {
+        return 0;
+    }
+
+    auto wid = m_windowManagement->activeWindow();
 
     return wid ? wid->internalId() : 0;
 }
@@ -251,7 +227,11 @@ void WaylandInterface::enableBlurBehind(QWindow &view) const
 
 WindowInfoWrap WaylandInterface::requestInfoActive() const
 {
-    auto w = m_wm->activeWindow();
+    if (!m_windowManagement) {
+        return {};
+    }
+
+    auto w = m_windowManagement->activeWindow();
 
     if (!w) return {};
 
@@ -282,33 +262,37 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 
 bool WaylandInterface::isOnCurrentDesktop(WindowId wid) const
 {
-    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
+    if (!m_windowManagement) {
+        return false;
+    }
+
+    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
         return w->isValid() && w->internalId() == wid;
     });
 
-    //qDebug() << "desktop:" << (it != m_wm->windows().constEnd() ? (*it)->virtualDesktop() : -1) << KWindowSystem::currentDesktop();
+    //qDebug() << "desktop:" << (it != m_windowManagement->windows().constEnd() ? (*it)->virtualDesktop() : -1) << KWindowSystem::currentDesktop();
     //return true;
-    return it != m_wm->windows().constEnd() && ((*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
+    return it != m_windowManagement->windows().constEnd() && ((*it)->virtualDesktop() == KWindowSystem::currentDesktop() || (*it)->isOnAllDesktops());
 }
 
 bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
 {
-    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
+    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
         return w->isValid() && w->internalId() == wid;
     });
 
     //TODO: Not yet implemented
-    return it != m_wm->windows().constEnd() && true;
+    return it != m_windowManagement->windows().constEnd() && true;
 
 }
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 {
-    auto it = std::find_if(m_wm->windows().constBegin(), m_wm->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
+    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
         return w->isValid() && w->internalId() == wid;
     });
 
-    if (it == m_wm->windows().constEnd())
+    if (it == m_windowManagement->windows().constEnd())
         return {};
 
     WindowInfoWrap winfoWrap;

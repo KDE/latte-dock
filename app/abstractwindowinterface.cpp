@@ -51,21 +51,5 @@ void AbstractWindowInterface::removeDock(WindowId wid)
         m_docks.erase(it);
 }
 
-AbstractWindowInterface &AbstractWindowInterface::self()
-{
-    if (m_wm)
-        return *m_wm;
-
-    if (KWindowSystem::isPlatformWayland()) {
-        //! TODO: WaylandWindowInterface
-        m_wm = std::make_unique<WaylandInterface>();
-    } else { /* if(KWindowSystem::isPlatformX11) */
-        m_wm = std::make_unique<XWindowInterface>();
-    }
-
-    return *m_wm;
 }
 
-}
-
-std::unique_ptr<Latte::AbstractWindowInterface> Latte::AbstractWindowInterface::m_wm;

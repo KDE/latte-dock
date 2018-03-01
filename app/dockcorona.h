@@ -57,6 +57,7 @@ class PlasmaShell;
 }
 
 namespace Latte {
+class AbstractWindowInterface;
 class ScreenPool;
 class GlobalShortcuts;
 class UniversalSettings;
@@ -97,6 +98,7 @@ public:
 
     void closeApplication();
 
+    AbstractWindowInterface *wm() const;
     KActivities::Consumer *activitiesConsumer() const;
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
@@ -162,6 +164,7 @@ private:
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;
 
+    AbstractWindowInterface *m_wm{nullptr};
     ScreenPool *m_screenPool{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
