@@ -51,7 +51,7 @@ MouseArea{
     function updateMaxLength(step) {
         var tempML = plasmoid.configuration.maxLength + step;
 
-        var value = Math.max(Math.min(tempML,100),0);
+        var value = Math.max(Math.min(tempML,100),30);
 
         plasmoid.configuration.maxLength = value;
 
