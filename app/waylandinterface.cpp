@@ -350,7 +350,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 
     connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
     , this, [&](QObject * w) noexcept {
-        qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
+        //qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         emit windowChanged(qobject_cast<PlasmaWindow *>(w)->internalId());
     });
 
