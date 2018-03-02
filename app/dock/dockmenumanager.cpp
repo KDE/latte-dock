@@ -83,7 +83,7 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
         m_contextMenu = 0;
         emit contextMenuChanged();
         // PlasmaQuick::ContainmentView::mousePressEvent(event);
-        return true;
+        return false;
     }
 
     //qDebug() << "1 ...";
@@ -175,6 +175,16 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
             if (!provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
                 //qDebug() << "4...";
                 QMenu *desktopMenu = new QMenu;
+
+                //this is a workaround where Qt now creates the menu widget
+                //in .exec before oxygen can polish it and set the following attribute
+                desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
+                //end workaround
+
+                if (desktopMenu->winId()) {
+                    desktopMenu->windowHandle()->setTransientParent(m_dockView);
+                }
+
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
                 m_contextMenu = desktopMenu;
 
@@ -337,13 +347,15 @@ void DockMenuManager::addAppletActions(QMenu *desktopMenu, Plasma::Applet *apple
         }
     }
 
-    QMenu *containmentMenu = new QMenu(i18nc("%1 is the name of the containment", "%1 Options", m_dockView->containment()->title()), desktopMenu);
-    addContainmentActions(containmentMenu, event);
+    QAction *containmentAction = desktopMenu->menuAction();
+    containmentAction->setText(i18nc("%1 is the name of the containment", "%1 Options", m_dockView->containment()->title()));
 
-    if (!containmentMenu->isEmpty()) {
+    addContainmentActions(containmentAction->menu(), event);
+
+    if (!containmentAction->menu()->isEmpty()) {
         int enabled = 0;
         //count number of real actions
-        QListIterator<QAction *> actionsIt(containmentMenu->actions());
+        QListIterator<QAction *> actionsIt(containmentAction->menu()->actions());
 
         while (enabled < 3 && actionsIt.hasNext()) {
             QAction *action = actionsIt.next();
@@ -358,7 +370,7 @@ void DockMenuManager::addAppletActions(QMenu *desktopMenu, Plasma::Applet *apple
         if (enabled) {
             //if there is only one, don't create a submenu
             // if (enabled < 2) {
-            foreach (QAction *action, containmentMenu->actions()) {
+            foreach (QAction *action, containmentAction->menu()->actions()) {
                 if (action->isVisible()) {
                     desktopMenu->addAction(action);
                 }
@@ -417,6 +429,19 @@ void DockMenuManager::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     }
 
     QList<QAction *> actions = plugin->contextualActions();
+
+    foreach (auto act, actions) {
+        if (act->menu()) {
+            //this is a workaround where Qt now creates the menu widget
+            //in .exec before oxygen can polish it and set the following attribute
+            act->menu()->setAttribute(Qt::WA_TranslucentBackground);
+            //end workaround
+
+            if (act->menu()->winId()) {
+                act->menu()->windowHandle()->setTransientParent(m_dockView);
+            }
+        }
+    }
 
     desktopMenu->addActions(actions);
 

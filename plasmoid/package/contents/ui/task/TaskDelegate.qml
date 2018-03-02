@@ -1057,8 +1057,12 @@ MouseArea{
         if (isSeparator && !root.editMode)
             return;
 
-        contextMenu = root.createContextMenu(mainItemContainer, modelIndex(), args);
-        contextMenu.show();
+        if (!root.contextMenu) {
+            contextMenu = root.createContextMenu(mainItemContainer, modelIndex(), args);
+            contextMenu.show();
+        } else {
+            root.contextMenu.close();
+        }
     }
 
     function modifierAccepted(mouse){
