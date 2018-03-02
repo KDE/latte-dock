@@ -34,13 +34,25 @@ import org.kde.draganddrop 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 
+import org.kde.latte 0.1 as Latte
+
 Column {
-    property var submodelIndex: tasksModel.makeModelIndex(parentIndex, isGroup ? index : -1)
-    property int flatIndex: isGroup && index != undefined ? index : 0
+    id: instance
+    property var submodelIndex: tasksModel.makeModelIndex(parentIndex, isGroup ? itemIndex : -1)
+    property int flatIndex: isGroup && itemIndex>=0 ? itemIndex : 0
+
+    property bool isActive: IsActive ? IsActive : false
+    property bool isMinimized: IsMinimized ? IsMinimized : false
+
+    property int appPid: AppPid ? AppPid : 0
+    property int itemIndex: index ? index : 0
+    property int virtualDesktop: VirtualDesktop ? VirtualDesktop : 0
+    property var activities : Activities ? Activities : []
+
 
     spacing: units.smallSpacing
 
-    property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(toolTipDelegate.launcherUrl, isGroup ? AppPid : pidParent)
+    property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(toolTipDelegate.launcherUrl, isGroup ? appPid : pidParent)
     property var playerData: mprisSourceName != "" ? mpris2Source.data[mprisSourceName] : 0
     property bool hasPlayer: !!mprisSourceName && !!playerData
     property bool playing: hasPlayer && playerData.PlaybackStatus === "Playing"
@@ -73,7 +85,7 @@ Column {
     //
     function containsMouse() {
         return area1.containsMouse || area2.containsMouse || area3.containsMouse || area4.containsMouse;
-                //|| ( area5 && area5.containsMouse) || (area6 && area6.containsMouse) || (area7 && area7.containsMouse);
+        //|| ( area5 && area5.containsMouse) || (area6 && area6.containsMouse) || (area7 && area7.containsMouse);
     }
 
     // launcher icon + text labels + close button
@@ -181,7 +193,7 @@ Column {
             anchors.fill: parent
             anchors.bottomMargin: 2
 
-            readonly property bool isMinimized: isGroup ? IsMinimized == true : isMinimizedParent
+            readonly property bool isMinimized: isGroup ? isMinimized : isMinimizedParent
             // TODO: this causes XCB error message when being visible the first time
             property int winId: isWin && windows[flatIndex] != undefined ? windows[flatIndex] : 0
 
@@ -195,7 +207,7 @@ Column {
                 ToolTipWindowMouseArea {
                     id: area2
 
-                    anchors.fill: parent
+                    anchors.fill: Latte.WindowSystem.isPlatformWayland ? parent : previewThumb
                     rootTask: parentTask
                     modelIndex: submodelIndex
                     winId: thumbnailSourceItem.winId
@@ -219,7 +231,7 @@ Column {
 
                     anchors.fill: parent
                     rootTask: parentTask
-                    modelIndex: submodelIndex
+                    modelIndex: instance.submodelIndex
                     winId: thumbnailSourceItem.winId
                 }
             }
@@ -257,13 +269,13 @@ Column {
 
                 // TODO: When could this really be the case? A not-launcher-task always has a window!?
                 // if there's no window associated with this task, we might still be able to raise the player
-//                MouseArea {
-//                    id: raisePlayerArea
-//                    anchors.fill: parent
+                //                MouseArea {
+                //                    id: raisePlayerArea
+                //                    anchors.fill: parent
 
-//                    visible: !isWin || !windows[0] && canRaise
-//                    onClicked: mpris2Source.raise(mprisSourceName)
-//                }
+                //                    visible: !isWin || !windows[0] && canRaise
+                //                    onClicked: mpris2Source.raise(mprisSourceName)
+                //                }
 
                 Item {
                     id: playerControlsFrostedGlass
@@ -401,7 +413,7 @@ Column {
             height: 2
             color: theme.buttonFocusColor
             anchors.bottom: parent.bottom
-            visible: isGroup ? IsActive === true : (parentTask ? parentTask.isActive : false)
+            visible: isGroup ? isActive : (parentTask ? parentTask.isActive : false)
         }
     }
 
@@ -411,8 +423,10 @@ Column {
         }
 
         var text;
-        if (isGroup) {
-            if (model.display == undefined) {
+        var modelExists = (typeof model !== 'undefined');
+
+        if (isGroup && modelExists) {
+            if (model.display === undefined) {
                 return "";
             }
             text = model.display.toString();
@@ -454,27 +468,28 @@ Column {
 
         var subTextEntries = [];
 
-        var vd = isGroup ? VirtualDesktop : virtualDesktopParent;
+        var vd = isGroup ? virtualDesktop : virtualDesktopParent;
 
         if (!plasmoid.configuration.showOnlyCurrentDesktop
-            && virtualDesktopInfo.numberOfDesktops > 1
-            && (isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent) !== true
-            && vd != -1
-            && vd != undefined
-            && virtualDesktopInfo.desktopNames[vd - 1] != undefined) {
+                && virtualDesktopInfo.numberOfDesktops > 1
+                && (isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent) !== true
+                && vd != -1
+                && vd != undefined
+                && virtualDesktopInfo.desktopNames[vd - 1] != undefined) {
             subTextEntries.push(i18n("On %1", virtualDesktopInfo.desktopNames[vd - 1]));
         }
 
-        var act = isGroup ? Activities : activitiesParent;
-        if (act == undefined) {
+        var act = isGroup ? activities : activitiesParent;
+
+        if (act === undefined) {
             return subTextEntries.join("\n");
         }
 
         if (act.length == 0 && activityInfo.numberOfRunningActivities > 1) {
             subTextEntries.push(i18nc("Which virtual desktop a window is currently on",
-                "Available on all activities"));
+                                      "Available on all activities"));
         } else if (act.length > 0) {
-           var activityNames = [];
+            var activityNames = [];
 
             for (var i = 0; i < act.length; i++) {
                 var activity = act[i];
@@ -494,11 +509,11 @@ Column {
             if (plasmoid.configuration.showOnlyCurrentActivity) {
                 if (activityNames.length > 0) {
                     subTextEntries.push(i18nc("Activities a window is currently on (apart from the current one)",
-                        "Also available on %1", activityNames.join(", ")));
+                                              "Also available on %1", activityNames.join(", ")));
                 }
             } else if (activityNames.length > 0) {
                 subTextEntries.push(i18nc("Which activities a window is currently on",
-                    "Available on %1", activityNames.join(", ")));
+                                          "Available on %1", activityNames.join(", ")));
             }
         }
 

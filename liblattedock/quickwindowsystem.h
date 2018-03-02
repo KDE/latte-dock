@@ -35,6 +35,8 @@ class QuickWindowSystem final : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged FINAL)
+    Q_PROPERTY(bool isPlatformWayland READ isPlatformWayland NOTIFY isPlatformWaylandChanged FINAL)
+
     Q_PROPERTY(uint frameworksVersion READ frameworksVersion NOTIFY frameworksVersionChanged)
 
 public:
@@ -42,11 +44,14 @@ public:
     virtual ~QuickWindowSystem();
 
     bool compositingActive() const;
+    bool isPlatformWayland() const;
+
     uint frameworksVersion() const;
 
 signals:
     void compositingChanged();
     void frameworksVersionChanged();
+    void isPlatformWaylandChanged();
 
 private:
     bool m_compositing : 1;

@@ -61,6 +61,11 @@ bool QuickWindowSystem::compositingActive() const
     return m_compositing;
 }
 
+bool QuickWindowSystem::isPlatformWayland() const
+{
+    return KWindowSystem::isPlatformWayland();
+}
+
 uint QuickWindowSystem::frameworksVersion() const
 {
     return Plasma::version();

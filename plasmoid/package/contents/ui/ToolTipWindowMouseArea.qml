@@ -18,50 +18,11 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*import QtQuick 2.0
-
-import org.kde.plasma.components 2.0 as PlasmaComponents
-
-MouseArea {
-    property var modelIndex
-    property int winId // FIXME Legacy
-    property Item thumbnailItem
-
-    acceptedButtons: Qt.LeftButton
-    hoverEnabled: true
-    enabled: winId != 0
-
-    onClicked: {
-        tasksModel.requestActivate(modelIndex);
-        windowsPreviewDlg.hide();
-        //toolTip.hideToolTip();
-    }
-
-    onContainsMouseChanged: {
-        tooltipContentItem.checkMouseInside();
-
-        root.windowsHovered([winId], containsMouse);
-    }
-
-    PlasmaComponents.ToolButton {
-        anchors {
-            top: parent.top
-            topMargin: thumbnailItem ? (thumbnailItem.height - thumbnailItem.paintedHeight) / 2 : 0
-            right: parent.right
-            rightMargin: thumbnailItem ? (thumbnailItem.width - thumbnailItem.paintedWidth) / 2 : 0
-        }
-
-        iconSource: "window-close"
-        visible: parent.containsMouse && winId != 0
-        tooltip: i18nc("close this window", "Close")
-
-        onClicked: tasksModel.requestClose(modelIndex);
-    }
-}*/
-
 import QtQuick 2.0
 
 import org.kde.plasma.components 2.0 as PlasmaComponents
+
+import org.kde.latte 0.1 as Latte
 
 MouseArea {
     property var modelIndex
@@ -70,7 +31,8 @@ MouseArea {
 
     acceptedButtons: Qt.LeftButton | Qt.RightButton
     hoverEnabled: true
-    enabled: winId != 0
+    enabled: Latte.WindowSystem.isPlatformWayland ||
+             (!Latte.WindowSystem.isPlatformWayland && winId != 0)
 
     onClicked: {
         if (mouse.button == Qt.LeftButton) {
