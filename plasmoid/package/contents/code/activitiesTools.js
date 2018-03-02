@@ -52,6 +52,7 @@ function importLaunchersToNewArchitecture(){
     }
 
     plasmoid.configuration.launchers59 = newLaunchers;
+    plasmoid.configuration.launchers = "";
 }
 
 function restoreLaunchers(){
