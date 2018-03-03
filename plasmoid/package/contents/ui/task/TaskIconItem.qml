@@ -294,6 +294,7 @@ Item{
                                              || mainItemContainer.badgeIndicator > 0))
 
             property bool showAudio: mainItemContainer.hasAudioStream && !mainItemContainer.isSeparator
+                                     && !(mainItemContainer.hasPlayer && !mainItemContainer.playing)
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }

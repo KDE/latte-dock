@@ -744,6 +744,9 @@ Item {
             // MPRIS spec explicitly mentions that "DesktopEntry" is with .desktop extension trimmed
             // Moreover, remove URL parameters, like wmClass (part after the question mark)
             var desktopFileName = launcherUrl.toString().split('/').pop().split('?')[0].replace(".desktop", "")
+            if (desktopFileName.indexOf("applications:") === 0) {
+                desktopFileName = desktopFileName.substr(13)
+            }
 
             for (var i = 0, length = connectedSources.length; i < length; ++i) {
                 var source = connectedSources[i];
@@ -751,9 +754,22 @@ Item {
                 if (source === "@multiplex") {
                     continue;
                 }
+
                 var sourceData = data[source];
-                if (sourceData && sourceData.DesktopEntry === desktopFileName && (pid === undefined || sourceData.InstancePid === pid)) {
+                if (!sourceData || sourceData.DesktopEntry !== desktopFileName) {
+                    continue;
+                }
+
+                if (pid === undefined || sourceData.InstancePid === pid) {
                     return source;
+                }
+
+                var metadata = sourceData.Metadata;
+                if (metadata) {
+                    var kdePid = metadata["kde:pid"];
+                    if (kdePid && pid === kdePid) {
+                        return source;
+                    }
                 }
             }
 
