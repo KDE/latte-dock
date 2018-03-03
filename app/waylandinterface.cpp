@@ -59,6 +59,7 @@ public:
 
     void setGeometry(const QRect &rect) {
         QWindow::setGeometry(rect);
+        setMaximumSize(rect.size());
         m_shellSurface->setPosition(rect.topLeft());
     }
 
