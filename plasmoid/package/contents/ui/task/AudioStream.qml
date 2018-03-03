@@ -90,17 +90,38 @@ Item {
                 }
 
                 MouseArea{
+                    id: audioBadgeMouseArea
                     anchors.fill: parent
 
                     onClicked: mainItemContainer.toggleMuted();
+                    property bool blockWheel: false;
 
                     onWheel: {
+                        if (blockWheel) {
+                            return;
+                        }
+
                         var angle = wheel.angleDelta.y / 8;
 
                         if (angle > 12)
                             mainItemContainer.increaseVolume();
-                        else if (angle < 12)
+                        else if (angle < -12)
                             mainItemContainer.decreaseVolume();
+
+                        blockWheel = true;
+                        scrollDelayer.start();
+                    }
+
+                    //! A timer is needed in order to handle also touchpads that probably
+                    //! send too many signals very fast. This way the signals per sec are ten.
+                    //! The user needs to have a steady normal scroll in order to not
+                    //! notice a annoying delay
+                    Timer{
+                        id: scrollDelayer
+
+                        interval: 100
+
+                        onTriggered: audioBadgeMouseArea.blockWheel = false;
                     }
                 }
             }
