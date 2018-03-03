@@ -103,9 +103,9 @@ Item {
 
                         var angle = wheel.angleDelta.y / 8;
 
-                        if (angle > 12)
+                        if (angle > 2)
                             mainItemContainer.increaseVolume();
-                        else if (angle < -12)
+                        else if (angle < -2)
                             mainItemContainer.decreaseVolume();
 
                         blockWheel = true;
@@ -113,13 +113,13 @@ Item {
                     }
 
                     //! A timer is needed in order to handle also touchpads that probably
-                    //! send too many signals very fast. This way the signals per sec are ten.
+                    //! send too many signals very fast. This way the signals per sec are limited.
                     //! The user needs to have a steady normal scroll in order to not
                     //! notice a annoying delay
                     Timer{
                         id: scrollDelayer
 
-                        interval: 100
+                        interval: 80
 
                         onTriggered: audioBadgeMouseArea.blockWheel = false;
                     }
