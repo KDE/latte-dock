@@ -180,6 +180,12 @@ SettingsDialog::~SettingsDialog()
 
     if (m_corona && m_corona->universalSettings()) {
         m_corona->universalSettings()->setLayoutsWindowSize(size());
+
+        QStringList columnWidths;
+        columnWidths << QString::number(ui->layoutsView->columnWidth(COLORCOLUMN));
+        columnWidths << QString::number(ui->layoutsView->columnWidth(NAMECOLUMN));
+        columnWidths << QString::number(ui->layoutsView->columnWidth(MENUCOLUMN));
+        m_corona->universalSettings()->setLayoutsColumnWidths(columnWidths);
     }
 
     m_inMemoryButtons->deleteLater();
@@ -756,6 +762,14 @@ void SettingsDialog::loadSettings()
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
 
     ui->layoutsView->resizeColumnsToContents();
+
+    QStringList columnWidths = m_corona->universalSettings()->layoutsColumnWidths();
+
+    if (!columnWidths.isEmpty() && columnWidths.count() == 3) {
+        ui->layoutsView->setColumnWidth(COLORCOLUMN, columnWidths[0].toInt());
+        ui->layoutsView->setColumnWidth(NAMECOLUMN, columnWidths[1].toInt());
+        ui->layoutsView->setColumnWidth(MENUCOLUMN, columnWidths[2].toInt());
+    }
 
     if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
         ui->singleToolBtn->setChecked(true);

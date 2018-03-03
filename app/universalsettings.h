@@ -68,6 +68,9 @@ public:
     QSize layoutsWindowSize() const;
     void setLayoutsWindowSize(QSize);
 
+    QStringList layoutsColumnWidths() const;
+    void setLayoutsColumnWidths(QStringList widths);
+
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
@@ -78,6 +81,7 @@ signals:
     void autostartChanged();
     void currentLayoutNameChanged();
     void lastNonAssignedLayoutNameChanged();
+    void layoutsColumnWidthsChanged();
     void layoutsWindowSizeChanged();
     void launchersChanged();
     void layoutsMemoryUsageChanged();
@@ -104,7 +108,10 @@ private:
     QString m_currentLayoutName;
     QString m_lastNonAssignedLayoutName;
     QSize m_layoutsWindowSize{700, 450};
+
+    QStringList m_layoutsColumnWidths;
     QStringList m_launchers;
+
     Dock::LayoutsMemoryUsage m_memoryUsage;
     Dock::MouseSensitivity m_mouseSensitivity{Dock::HighSensitivity};
 

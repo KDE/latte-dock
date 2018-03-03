@@ -32,7 +32,9 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::layoutsColumnWidthsChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::layoutsWindowSizeChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
@@ -133,6 +135,21 @@ void UniversalSettings::setLayoutsWindowSize(QSize size)
     emit layoutsWindowSizeChanged();
 }
 
+QStringList UniversalSettings::layoutsColumnWidths() const
+{
+    return m_layoutsColumnWidths;
+}
+
+void UniversalSettings::setLayoutsColumnWidths(QStringList widths)
+{
+    if (m_layoutsColumnWidths == widths) {
+        return;
+    }
+
+    m_layoutsColumnWidths = widths;
+    emit layoutsColumnWidthsChanged();
+}
+
 QStringList UniversalSettings::launchers() const
 {
     return m_launchers;
@@ -223,6 +240,7 @@ void UniversalSettings::loadConfig()
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
+    m_layoutsColumnWidths = m_universalGroup.readEntry("layoutsColumnWidths", QStringList());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
@@ -235,6 +253,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
+    m_universalGroup.writeEntry("layoutsColumnWidths", m_layoutsColumnWidths);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
