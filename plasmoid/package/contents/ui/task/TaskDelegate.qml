@@ -115,13 +115,6 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
-    //! BEGIN: MPRIS data
-    property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(launcherUrl, pid)
-    property var playerData: mprisSourceName != "" ? mpris2Source.data[mprisSourceName] : 0
-    property bool hasPlayer: !!mprisSourceName && !!playerData
-    property bool playing: hasPlayer && playerData.PlaybackStatus === "Playing"
-    //! END: MPRIS data
-
     property bool pressed: false
     readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
                                               true : false
@@ -189,6 +182,7 @@ MouseArea{
     readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
         return !item.corked
     })
+
     readonly property bool muted: hasAudioStream && audioStreams.every(function (item) {
         return item.muted
     })

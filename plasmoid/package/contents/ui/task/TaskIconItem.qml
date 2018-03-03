@@ -293,8 +293,8 @@ Item{
                                          && (centralItem.smartLauncherItem.countVisible || centralItem.smartLauncherItem.progressVisible
                                              || mainItemContainer.badgeIndicator > 0))
 
-            property bool showAudio: mainItemContainer.hasAudioStream && !mainItemContainer.isSeparator
-                                     && !(mainItemContainer.hasPlayer && !mainItemContainer.playing)
+            property bool showAudio: mainItemContainer.hasAudioStream && mainItemContainer.playingAudio &&
+                                     !mainItemContainer.isSeparator
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
