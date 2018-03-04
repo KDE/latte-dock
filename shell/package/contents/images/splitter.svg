@@ -59,7 +59,10 @@
     <style
        id="current-color-scheme"
        type="text/css">
-   .ColorScheme-Text { color:#d3dae3; } .ColorScheme-Highlight { color:#5294e2; } .ColorScheme-ButtonBackground { color:#4f4f4f; }
+   .ColorScheme-Text { color:#d3dae3; }
+   .ColorScheme-Highlight { color:#5294e2; }
+   .ColorScheme-ButtonFocus { color:#5294e2; }
+   .ColorScheme-ButtonBackground { color:#4f4f4f; }
   </style>
   </defs>
   <g
@@ -68,13 +71,13 @@
      id="layer1"
      transform="translate(0,-540.36208)">
     <path
-       class="ColorScheme-Highlight"
+       class="ColorScheme-ButtonFocus"
        style="opacity:1;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:2, 2;stroke-dashoffset:5.81371117;stroke-opacity:1"
        d="m 104.78516,656.36206 c -43.556551,0 -78.622897,35.08209 -78.622897,78.6582 l 0,122.68555 c 0,43.57611 35.066346,78.65625 78.622897,78.65625 l 95.3771,0 0,-280 -95.3771,0 z"
        id="rect4163"
        inkscape:connector-curvature="0" />
     <path
-       class="ColorScheme-Highlight"
+       class="ColorScheme-ButtonFocus"
        style="opacity:1;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:2, 2;stroke-dashoffset:6;stroke-opacity:1"
        d="M 200 26 L 200 116 L 104.78516 116 C 61.228605 116 26.162109 151.08209 26.162109 194.6582 L 26.162109 317.34375 C 26.162109 360.91986 61.228605 396 104.78516 396 L 200 396 L 200 486 L 246 486 L 246 26 L 200 26 z "
        transform="translate(0,540.36208)"
@@ -83,11 +86,11 @@
        style="fill:#f2f2f2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.89378166pt;stroke-opacity:1"
        d="m 98.011205,762.61298 -45.978532,33.74909 45.978532,33.74907 0,-67.49816 z m 2.681525,16.96074 0,33.57669 83.92944,0 0,-33.57669 -83.92944,0 z"
        id="path4289"
-       class="ColorScheme-Highlight"
+       class="ColorScheme-ButtonFocus"
        inkscape:connector-curvature="0" />
     <path
        id="path4189"
-       class="ColorScheme-Highlight"
+       class="ColorScheme-ButtonFocus"
        d="m 312,566.36208 0,90 95.21484,0 c 43.55655,0 78.62305,35.08209 78.62305,78.6582 l 0,122.68555 c 0,43.57611 -35.0665,78.65625 -78.62305,78.65625 l -95.21484,0 0,90.00002 -46,0 0,-460.00002 46,0 z"
        style="opacity:1;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:2, 2;stroke-dashoffset:6;stroke-opacity:1"
        inkscape:connector-curvature="0" />

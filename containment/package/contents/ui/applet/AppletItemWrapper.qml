@@ -521,7 +521,15 @@ Item{
                 verticalOffset: 2
             }
 
-            Component.onCompleted: wrapper.zoomScale = 1.1
+            Component.onCompleted: {
+                if (root.isVertical)  {
+                    wrapper.updateLayoutHeight();
+                    wrapper.updateLayoutWidth();
+                } else {
+                    wrapper.updateLayoutWidth();
+                    wrapper.updateLayoutHeight();
+                }
+            }
         }
     }
 
