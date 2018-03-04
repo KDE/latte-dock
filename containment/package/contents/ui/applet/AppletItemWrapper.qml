@@ -253,7 +253,7 @@ Item{
             if(!root.editMode)
                 layoutHeight = 0;
             else
-                layoutHeight = root.iconSize;// + moreHeight + root.statesLineSize;
+                layoutHeight = root.iconSize + moreHeight + root.statesLineSize;
         }
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
             layoutHeight = root.iconSize + moreHeight;
@@ -299,7 +299,7 @@ Item{
             if(!root.editMode)
                 layoutWidth = 0;
             else
-                layoutWidth = root.iconSize; //+ moreWidth+ root.statesLineSize;
+                layoutWidth = root.iconSize + moreWidth + root.statesLineSize;
         }
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
             layoutWidth = root.iconSize + moreWidth;
@@ -499,16 +499,17 @@ Item{
 
     Loader{
         anchors.fill: _wrapperContainer
-        active: container.isInternalViewSplitter
-                && root.editMode
+        active: container.isInternalViewSplitter && root.editMode
 
         rotation: root.isVertical ? 90 : 0
 
-        sourceComponent: Image{
+        sourceComponent: PlasmaCore.SvgItem{
             id:splitterImage
             anchors.fill: parent
 
-            source: (container.internalSplitterId===1) ? "../../icons/splitter.png" : "../../icons/splitter2.png"
+            svg: PlasmaCore.Svg{
+                imagePath: root.universalSettings.splitterIconPath()
+            }
 
             layer.enabled: true
             layer.effect: DropShadow {

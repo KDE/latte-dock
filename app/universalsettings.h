@@ -77,6 +77,10 @@ public:
     Dock::MouseSensitivity mouseSensitivity() const;
     void setMouseSensitivity(Dock::MouseSensitivity sensitivity);
 
+public slots:
+    Q_INVOKABLE QString splitterIconPath();
+    Q_INVOKABLE QString trademarkIconPath();
+
 signals:
     void autostartChanged();
     void currentLayoutNameChanged();

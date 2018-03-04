@@ -220,7 +220,7 @@ FocusScope {
                     anchors.verticalCenter: logo.verticalCenter
 
                     svg: PlasmaCore.Svg{
-                        imagePath: dockConfig.trademarkPath()
+                        imagePath: universalSettings.trademarkIconPath()
                     }
                 }
 

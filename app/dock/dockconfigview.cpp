@@ -120,6 +120,7 @@ void DockConfigView::init()
     auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
     if (dockCorona) {
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
         rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
     }
 
@@ -143,11 +144,6 @@ void DockConfigView::init()
 inline Qt::WindowFlags DockConfigView::wFlags() const
 {
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
-}
-
-QString DockConfigView::trademarkPath()
-{
-    return m_dockView->containment()->corona()->kPackage().filePath("trademark");
 }
 
 QWindow *DockConfigView::secondaryWindow()

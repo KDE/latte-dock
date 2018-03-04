@@ -19,6 +19,7 @@
 */
 
 #include "universalsettings.h"
+#include "dockcorona.h"
 
 #include <QDir>
 
@@ -268,6 +269,28 @@ void UniversalSettings::cleanupSettings()
     containments.deleteGroup();
 
     containments.sync();
+}
+
+QString UniversalSettings::splitterIconPath()
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(parent());
+
+    if (dockCorona) {
+        return dockCorona->kPackage().filePath("splitter");
+    }
+
+    return "";
+}
+
+QString UniversalSettings::trademarkIconPath()
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(parent());
+
+    if (dockCorona) {
+        return dockCorona->kPackage().filePath("trademark");
+    }
+
+    return "";
 }
 
 }
