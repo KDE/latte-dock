@@ -21,6 +21,7 @@
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
+import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -86,11 +87,13 @@ DragDrop.DropArea {
     property bool editMode: editModeVisual.inEditMode
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
                                     && Latte.WindowSystem.compositingActive
-                                    &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+                                    &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet)
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
                                          && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+
+    property bool forceColorizer: plasmoid.configuration.colorizeTransparentPanels
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.pluginName !== root.plasmoidName
@@ -1622,7 +1625,35 @@ DragDrop.DropArea {
 
     VisibilityManager{ id: visibilityManager }
 
-    LayoutsContainer { id: layoutsContainer }
+    LayoutsContainer {
+        id: layoutsContainer
+        opacity: !layoutsColorizer.isShown ? 1 : 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 0.8 * root.animationTime
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    Loader{
+        id: layoutsColorizer
+        anchors.fill: layoutsContainer
+        active: forceColorizer
+        z: layoutsContainer.z + 1
+
+        property bool isShown: active && !forceSolidPanel && plasmoid.configuration.solidBackgroundForMaximized && !root.editMode
+
+        sourceComponent: ColorOverlay {
+            source: layoutsContainer
+            opacity: layoutsColorizer.isShown ? 1 : 0
+
+            color: theme.backgroundColor
+        }
+    }
+
+
 
     ///////////////END UI elements
 
