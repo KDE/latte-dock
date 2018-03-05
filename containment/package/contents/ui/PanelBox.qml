@@ -282,7 +282,15 @@ Item{
             anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
             anchors.fill:parent
 
-            opacity: forceSolidness ? 1 : plasmoid.configuration.panelTransparency / 100
+            opacity: {
+                if (forceSolidness) {
+                    return 1;
+                } else if (!plasmoid.configuration.useThemePanel && plasmoid.configuration.solidBackgroundForMaximized) {
+                    return 0;
+                } else {
+                    return plasmoid.configuration.panelTransparency / 100;
+                }
+            }
 
             readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
                                                    || (root.hasExpandedApplet && root.zoomFactor===1 && plasmoid.configuration.panelSize===100)
