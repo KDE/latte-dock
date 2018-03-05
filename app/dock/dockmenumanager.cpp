@@ -61,7 +61,11 @@ void DockMenuManager::menuAboutToHide()
     }
 
     m_contextMenu = 0;
-    m_dockView->visibility()->setBlockHiding(false);
+
+    if (!m_dockView->containment()->isUserConfiguring()) {
+        m_dockView->visibility()->setBlockHiding(false);
+    }
+
     emit contextMenuChanged();
 }
 
