@@ -111,6 +111,23 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: colorizeTransparentPanelsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.bottomMargin: units.smallSpacing
+                Layout.maximumWidth: dialog.maxWidth - 3*units.smallSpacing
+                text: i18n("Background color for contents when panel is transparent")
+                checked: plasmoid.configuration.colorizeTransparentPanels
+                tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
+                style: LatteCheckBoxStyle{}
+
+                enabled: solidForMaximizedChk.checked
+
+                onClicked: {
+                    plasmoid.configuration.colorizeTransparentPanels = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: onlyOnMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Hide background for not maximized windows")
@@ -119,20 +136,6 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.backgroundOnlyOnMaximized = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: colorizeTransparentPanelsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.maximumWidth: dialog.maxWidth - 3*units.smallSpacing
-                text: i18n("Background color for contents when panel is transparent")
-                checked: plasmoid.configuration.colorizeTransparentPanels
-                tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
-                style: LatteCheckBoxStyle{}
-
-                onClicked: {
-                    plasmoid.configuration.colorizeTransparentPanels = checked;
                 }
             }
 
