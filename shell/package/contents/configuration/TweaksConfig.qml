@@ -115,7 +115,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.bottomMargin: units.smallSpacing
                 Layout.maximumWidth: dialog.maxWidth - 3*units.smallSpacing
-                text: i18n("Background color for contents when panel is transparent")
+                text: i18n("Improve contents visibility when panel is transparent")
                 checked: plasmoid.configuration.colorizeTransparentPanels
                 tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
                 style: LatteCheckBoxStyle{}

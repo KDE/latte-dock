@@ -97,6 +97,13 @@ Item{
 
     Binding{
         target: dock
+        property: "colorizerSupport"
+        when: dock
+        value: root.forceColorizer && plasmoid.configuration.solidBackgroundForMaximized
+    }
+
+    Binding{
+        target: dock
         property: "dockTransparency"
         when: dock
         value: root.panelTransparency

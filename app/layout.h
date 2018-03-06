@@ -50,6 +50,7 @@ class Layout : public QObject {
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
@@ -140,6 +141,7 @@ signals:
     void activitiesChanged();
     void backgroundChanged();
     void colorChanged();
+    void dockColorizerSupportChanged();
     void fileChanged();
     void lastUsedActivityChanged();
     void launchersChanged();

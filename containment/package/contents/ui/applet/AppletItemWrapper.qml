@@ -538,7 +538,7 @@ Item{
         id: appletShadow
         anchors.fill: container.appletWrapper
 
-        active: container.applet
+        active: container.applet && !colorizerLoader.isShown
                 && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
                       && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
                      || (plasmoid.configuration.shadows === 2 /*All Applets*/

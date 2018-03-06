@@ -163,6 +163,8 @@ void Layout::initToCorona(DockCorona *corona)
 {
     m_corona = corona;
 
+    connect(this, &Layout::dockColorizerSupportChanged, m_corona->layoutManager(), &LayoutManager::updateColorizerSupport);
+
     foreach (auto containment, m_corona->containments()) {
         if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
             addContainment(containment);
@@ -710,6 +712,7 @@ void Layout::containmentDestroyed(QObject *cont)
             emit m_corona->docksCountChanged();
             emit m_corona->availableScreenRectChanged();
             emit m_corona->availableScreenRegionChanged();
+            emit dockColorizerSupportChanged();
         }
     }
 }
@@ -796,6 +799,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
     }
 
     auto dockView = new DockView(m_corona, nextScreen, dockWin);
+
     dockView->init();
     dockView->setContainment(containment);
     dockView->setManagedLayout(this);
@@ -816,6 +820,8 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
         connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
     }
 
+    connect(dockView, &DockView::colorizerSupportChanged, this, &Layout::dockColorizerSupportChanged);
+
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
     //! the copied dock under X11
@@ -825,6 +831,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
 
     m_dockViews[containment] = dockView;
 
+    emit dockColorizerSupportChanged();
     emit m_corona->docksCountChanged();
 }
 

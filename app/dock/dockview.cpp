@@ -1196,6 +1196,21 @@ void DockView::setBlockAnimations(bool block)
     emit blockAnimationsChanged();
 }
 
+bool DockView::colorizerSupport() const
+{
+    return m_colorizerSupport;
+}
+
+void DockView::setColorizerSupport(bool support)
+{
+    if (m_colorizerSupport == support) {
+        return;
+    }
+
+    m_colorizerSupport = support;
+    emit colorizerSupportChanged();
+}
+
 QRect DockView::maskArea() const
 {
     return m_maskArea;

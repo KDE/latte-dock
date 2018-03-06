@@ -1628,7 +1628,7 @@ DragDrop.DropArea {
 
     LayoutsContainer {
         id: layoutsContainer
-        opacity: !layoutsColorizer.isShown ? 1 : 0
+        opacity: colorizerLoader.isShown ? 0 : 1
 
         Behavior on opacity {
             NumberAnimation {
@@ -1639,22 +1639,34 @@ DragDrop.DropArea {
     }
 
     Loader{
-        id: layoutsColorizer
-        anchors.fill: layoutsContainer
+        id: colorizerLoader
+
         active: forceColorizer
+        anchors.fill: layoutsContainer
         z: layoutsContainer.z + 1
+
+        readonly property real themeBackgroundColorLuma: 0.2126*theme.backgroundColor.r + 0.7152*theme.backgroundColor.g + 0.0722*theme.backgroundColor.b
+        readonly property real themeTextColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
 
         property bool isShown: active && !forceSolidPanel && plasmoid.configuration.solidBackgroundForMaximized && !root.editMode
 
-        sourceComponent: ColorOverlay {
-            source: layoutsContainer
-            opacity: layoutsColorizer.isShown ? 1 : 0
+        property real currentBackgroundLuminas: -1000
 
-            color: theme.backgroundColor
+        property color applyColor: {
+            if (currentBackgroundLuminas>=0) {
+                var textAbs = Math.abs(themeTextColorLuma - currentBackgroundLuminas);
+                var backAbs = Math.abs(themeBackgroundColorLuma - currentBackgroundLuminas);
+
+                if (textAbs > backAbs) {
+                    return theme.textColor;
+                }
+            }
+
+            return theme.backgroundColor;
         }
+
+        sourceComponent: ColorizerManager{}
     }
-
-
 
     ///////////////END UI elements
 

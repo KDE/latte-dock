@@ -10,6 +10,7 @@ set(lattedock-app_SRCS
     alternativeshelper.cpp
     dockcorona.cpp
     globalshortcuts.cpp
+    sortedactivitiesmodel.cpp
     universalsettings.cpp
     layoutmanager.cpp
     layout.cpp

@@ -27,6 +27,7 @@
 #include "layout.h"
 #include "screenpool.h"
 #include "universalsettings.h"
+#include "dock/dockview.h"
 
 #include <QDir>
 #include <QFile>
@@ -1170,6 +1171,30 @@ void LayoutManager::showInfoWindow(QString info, int duration, QStringList activ
         QTimer::singleShot(duration, [this, infoView]() {
             infoView->deleteLater();
         });
+    }
+}
+
+void LayoutManager::updateColorizerSupport()
+{
+    bool enable{false};
+
+    foreach (auto layout, m_activeLayouts) {
+        for (const auto *view : *layout->dockViews()) {
+            if (view->colorizerSupport()) {
+                enable = true;
+                break;
+            }
+        }
+
+        if (enable) {
+            break;
+        }
+    }
+
+    if (enable) {
+        m_corona->universalSettings()->enableActivitiesModel();
+    } else {
+        m_corona->universalSettings()->disableActivitiesModel();
     }
 }
 

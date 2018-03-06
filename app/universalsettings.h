@@ -22,11 +22,14 @@
 #define UNIVERSALSETTINGS_H
 
 #include <QObject>
+#include <QAbstractItemModel>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
 
 #include "../liblattedock/dock.h"
+
+class SortedActivitiesModel;
 
 namespace Latte {
 
@@ -44,6 +47,8 @@ class UniversalSettings : public QObject {
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
     Q_PROPERTY(Latte::Dock::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
+
+    Q_PROPERTY(QAbstractItemModel *runningActivitiesModel  READ runningActivitiesModel NOTIFY runningActivitiesModelChanged)
 public:
     UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
@@ -77,9 +82,16 @@ public:
     Dock::MouseSensitivity mouseSensitivity() const;
     void setMouseSensitivity(Dock::MouseSensitivity sensitivity);
 
+    QAbstractItemModel *runningActivitiesModel() const;
+    void setRunningActivitiesModel(SortedActivitiesModel *model);
+    void enableActivitiesModel();
+    void disableActivitiesModel();
+
 public slots:
     Q_INVOKABLE QString splitterIconPath();
     Q_INVOKABLE QString trademarkIconPath();
+
+    Q_INVOKABLE float luminasFromFile(QString imageFile, int edge);
 
 signals:
     void autostartChanged();
@@ -90,6 +102,7 @@ signals:
     void launchersChanged();
     void layoutsMemoryUsageChanged();
     void mouseSensitivityChanged();
+    void runningActivitiesModelChanged();
     void showInfoWindowChanged();
     void versionChanged();
 
@@ -121,6 +134,8 @@ private:
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
+
+    SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 
     friend class LayoutManager;
     friend class DockCorona;
