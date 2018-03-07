@@ -141,7 +141,7 @@ public:
             // or if the screen ID is closer to zero
             const bool processed = !ghostActivities.contains(activity) &&
                                    newForActivity.contains(activity) &&
-                                   (lastScreenForActivity[activity] <= lastScreen);
+                                   (lastScreenForActivity[activity] < lastScreen);
 
             // qDebug() << "GREPME Searching containment " << containmentId
             //          << "for the wallpaper of the " << activity << " activity - "
