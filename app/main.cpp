@@ -56,14 +56,20 @@ inline void configureAboutData();
 
 int main(int argc, char **argv)
 {
-    //    Devive pixel ratio has some problems in latte (plasmashell) currently.
-    //     - dialog continually expands (347951)
-    //     - Text element text is screwed (QTBUG-42606)
-    //     - Panel struts (350614)
-    //  This variable should possibly be removed when all are fixed
-    qunsetenv("QT_DEVICE_PIXEL_RATIO");
-    //  qputenv("QT_QUICK_CONTROLS_1_STYLE", "Desktop");
-    QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    //Plasma scales itself to font DPI
+    //on X, where we don't have compositor scaling, this generally works fine.
+    //also there are bugs on older Qt, especially when it comes to fractional scaling
+    //there's advantages to disabling, and (other than small context menu icons) few advantages in enabling
+
+    //On wayland, it's different. Everything is simpler as all co-ordinates are in the same co-ordinate system
+    //we don't have fractional scaling on the client so don't hit most the remaining bugs and
+    //even if we don't use Qt scaling the compositor will try to scale us anyway so we have no choice
+    if (!qEnvironmentVariableIsSet("PLASMA_USE_QT_SCALING")) {
+        qunsetenv("QT_DEVICE_PIXEL_RATIO");
+        QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    } else {
+        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    }
 
     QQuickWindow::setDefaultAlphaBuffer(true);
     QApplication app(argc, argv);
