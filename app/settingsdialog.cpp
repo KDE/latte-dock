@@ -500,7 +500,7 @@ void SettingsDialog::on_exportButton_clicked()
 
     QStringList filters;
     QString filter1(i18nc("export layout", "Latte Dock Layout file v0.2") + "(*.layout.latte)");
-    QString filter2(i18nc("export full configuraion", "Latte Dock Full Configuration file v0.2") + "(*.latterc)");
+    QString filter2(i18nc("export full configuration", "Latte Dock Full Configuration file v0.2") + "(*.latterc)");
 
     filters << filter1
             << filter2;

@@ -856,7 +856,7 @@ inline void DockView::syncGeometry()
     //! before updating the positioning and geometry of the dock
     //! we make sure that the dock is at the correct screen
     if (this->screen() != m_screenToFollow) {
-        qDebug() << "Sync Geometry screens incosistent!!!!";
+        qDebug() << "Sync Geometry screens inconsistent!!!!";
         m_screenSyncTimer.start();
     } else {
         found = true;
