@@ -778,7 +778,7 @@ DragDrop.DropArea {
 
     //////////////START OF FUNCTIONS
     function addApplet(applet, x, y) {
-        var container = appletContainerComponent.createObject(root)
+        var container = appletContainerComponent.createObject(dndSpacer.parent)
 
         container.applet = applet;
         applet.parent = container.appletWrapper;
