@@ -385,7 +385,7 @@ Item {
     Connections{
         target: root
 
-       /* onGlobalDirectRenderChanged:{
+        /* onGlobalDirectRenderChanged:{
             if (root.globalDirectRender && restoreAnimation.running) {
                 // console.log("CLEAR APPLET SCALE !!!!");
                 //restoreAnimation.stop();
@@ -574,6 +574,7 @@ Item {
         //! plasma tooltips are disabled
         visible: !container.latteApplet && !lockZoom && canBeHovered && !(container.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
 
+        property bool blockWheel: false
         property bool fastEnteringFlag: false
         property bool pressed: false
 
@@ -710,6 +711,42 @@ Item {
 
         onReleased: {
             pressed = false;
+        }
+
+        onWheel: {
+            if (isSeparator || !root.mouseWheelActions || blockWheel
+                    || (root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+                return;
+            }
+
+            var angle = wheel.angleDelta.y / 8;
+
+            blockWheel = true;
+            scrollDelayer.start();
+
+            if (angle > 12) {
+                //positive direction
+                if (!isExpanded) {
+                    dock.toggleAppletExpanded(applet.id);
+                }
+            } else if (angle < -12) {
+                //negative direction
+                if (isExpanded) {
+                    dock.toggleAppletExpanded(applet.id);
+                }
+            }
+        }
+
+        //! A timer is needed in order to handle also touchpads that probably
+        //! send too many signals very fast. This way the signals per sec are limited.
+        //! The user needs to have a steady normal scroll in order to not
+        //! notice a annoying delay
+        Timer{
+            id: scrollDelayer
+
+            interval: 700
+
+            onTriggered: appletMouseArea.blockWheel = false;
         }
     }
 
