@@ -417,15 +417,15 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
     }
 
     auto isMaxVert = [&]() noexcept -> bool {
-        return winfo.isMaxVert()
-               || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()
-                   && intersects(winfo));
+        return ((winfo.isMaxVert()
+                 || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
+                && intersects(winfo));
     };
 
     auto isMaxHoriz = [&]() noexcept -> bool {
-        return winfo.isMaxHoriz()
-               || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()
-                   && intersects(winfo));
+        return ((winfo.isMaxHoriz()
+                 || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
+                && intersects(winfo));
     };
 
     //!dont send false raiseDock signal when containing mouse
