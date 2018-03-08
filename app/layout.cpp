@@ -185,10 +185,8 @@ void Layout::initToCorona(DockCorona *corona)
 
     connect(m_corona, &Plasma::Corona::containmentAdded, this, &Layout::addContainment);
 
-    if (m_layoutName != MultipleLayoutsName) {
-        connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
-                this, &Layout::updateLastUsedActivity);
-    }
+    connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
+            this, &Layout::updateLastUsedActivity);
 }
 
 int Layout::version() const
@@ -652,7 +650,11 @@ void Layout::updateLastUsedActivity()
 
     QString currentId = m_corona->activitiesConsumer()->currentActivity();
 
-    if (appliedActivities().contains(currentId) && m_lastUsedActivity != currentId) {
+    QStringList appliedActivitiesIds = appliedActivities();
+
+    if (m_lastUsedActivity != currentId
+        && (appliedActivitiesIds.contains(currentId)
+            || m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout)) {
         m_lastUsedActivity = currentId;
 
         emit lastUsedActivityChanged();
