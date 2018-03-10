@@ -67,6 +67,7 @@ include(WriteBasicConfigVersionFile)
 include(Definitions.cmake)
 
 add_subdirectory(liblattedock)
+add_subdirectory(kwin_scripts)
 add_subdirectory(app)
 add_subdirectory(containmentactions)
 add_subdirectory(applets)
