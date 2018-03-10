@@ -44,6 +44,9 @@ public:
     bool compositingActive() const;
     uint frameworksVersion() const;
 
+public slots:
+    Q_INVOKABLE void activateLatteLauncherMenu();
+
 signals:
     void compositingChanged();
     void frameworksVersionChanged();
