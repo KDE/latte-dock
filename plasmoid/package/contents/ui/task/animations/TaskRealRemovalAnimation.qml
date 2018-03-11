@@ -115,14 +115,15 @@ SequentialAnimation {
             target: wrapper;
             property: "opacity";
             to: 0;
-            duration: taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
-            easing.type: Easing.InQuad }
+            duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
+            easing.type: Easing.InQuad
+        }
 
         PropertyAnimation {
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 0
-            duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
+            duration:  taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
             easing.type: Easing.InQuad
         }
     }
@@ -132,7 +133,7 @@ SequentialAnimation {
         target: wrapper
         property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
         to: 0
-        duration:  taskRealRemovalAnimation.enabledAnimation ? showWindowAnimation.speed : 0
+        duration:  taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
         easing.type: Easing.InQuad
     }
 
