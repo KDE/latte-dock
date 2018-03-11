@@ -235,12 +235,12 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing * 2
+                spacing: units.smallSpacing
 
                 PlasmaComponents.Button {
                     iconSource: "distribute-horizontal-x"
                     text: i18n("Add Spacer")
-                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0.5 * (parent.width - units.smallSpacing)
                     Layout.alignment: Qt.AlignLeft
                     tooltip: i18n("Add a spacer to separate applets")
 
@@ -250,10 +250,11 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Button {
+                    Layout.fillWidth: true
                     iconSource: "edit-delete"
-                    text: i18n("Remove Tasks")
+                    text: i18n("Remove Tasks Applet")
                     enabled: dock.tasksPresent()
-                    tooltip: i18n("Remove Latte plasmoid")
+                    tooltip: i18n("Remove Latte Tasks plasmoid")
 
                     onClicked: {
                         dock.removeTasksPlasmoid();
