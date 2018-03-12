@@ -1,6 +1,14 @@
 [Desktop Entry]
 Name=Activate Latte Launcher Menu
+Name[ca]=Activa el menú del llançador del Latte
+Name[nl]=Latte-startprogramma activeren
+Name[uk]=Активувати меню запуску Латте
+Name[x-test]=xxActivate Latte Launcher Menuxx
 Comment=Activate Latte Launcher Menu from screen edge
+Comment[ca]=Activa el menú del llançador del Latte des de la vora de la pantalla
+Comment[nl]=Latte-startprogramma activeren vanaf de schermrand
+Comment[uk]=Активувати меню запуску Латте з краю екрана
+Comment[x-test]=xxActivate Latte Launcher Menu from screen edgexx
 Icon=latte-dock
 Type=Service
 
