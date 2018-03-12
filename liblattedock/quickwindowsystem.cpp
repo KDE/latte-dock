@@ -22,8 +22,6 @@
 #include "../app/config-latte.h"
 
 #include <QDebug>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusPendingCall>
 
 #include <plasma/version.h>
 
@@ -71,17 +69,6 @@ bool QuickWindowSystem::isPlatformWayland() const
 uint QuickWindowSystem::frameworksVersion() const
 {
     return Plasma::version();
-}
-
-void QuickWindowSystem::activateLatteLauncherMenu()
-{
-    QDBusConnection::sessionBus().asyncCall(
-        QDBusMessage::createMethodCall(QStringLiteral("org.kde.lattedock"),
-                                       QStringLiteral("/Latte"),
-                                       QStringLiteral("org.kde.LatteDock"),
-                                       QStringLiteral("activateLauncherMenu")
-                                      )
-    );
 }
 
 } //end of namespace
