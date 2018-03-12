@@ -92,7 +92,38 @@ Item {
     property int widthMargins: root.vertical ? thickMargin : iconMargin
     property int heightMargins: !root.vertical ? thickMargin : iconMargin
 
-    property real textColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
+
+    // formula for luminance according to:
+    // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+    property real textColorRs: {
+        var color = theme.textColor.r;
+        if (color <= 0.03928) {
+            return color / 12.92;
+        } else {
+            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+        }
+    }
+
+    property real textColorGs: {
+        var color = theme.textColor.g;
+        if (color <= 0.03928) {
+            return color / 12.92;
+        } else {
+            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+        }
+    }
+
+    property real textColorBs: {
+        var color = theme.textColor.b;
+        if (color <= 0.03928) {
+            return color / 12.92;
+        } else {
+            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+        }
+    }
+
+    property real textColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
+    property color minimizedDotColor: textColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
     //a small badgers record (id,value)
     //in order to track badgers when there are changes
@@ -111,7 +142,6 @@ Item {
     property Item dragSource: null
     property Item parabolicManager: _parabolicManager
 
-    property color minimizedDotColor: textColorLuma > 0.5 ? Qt.darker(theme.textColor, 1+ (1-textColorLuma)) : Qt.lighter(theme.textColor, 1+(1-textColorLuma))
 
     //separator calculations based on audoban's design
     property int maxSeparatorLength: {

@@ -1645,8 +1645,65 @@ DragDrop.DropArea {
         anchors.fill: layoutsContainer
         z: layoutsContainer.z + 1
 
-        readonly property real themeBackgroundColorLuma: 0.2126*theme.backgroundColor.r + 0.7152*theme.backgroundColor.g + 0.0722*theme.backgroundColor.b
-        readonly property real themeTextColorLuma: 0.2126*theme.textColor.r + 0.7152*theme.textColor.g + 0.0722*theme.textColor.b
+        // formula for luminance according to:
+        // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+        property real textColorRs: {
+            var color = theme.textColor.r;
+            if (color <= 0.03928) {
+                return color / 12.92;
+            } else {
+                return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+            }
+        }
+
+        property real textColorGs: {
+            var color = theme.textColor.g;
+            if (color <= 0.03928) {
+                return color / 12.92;
+            } else {
+                return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+            }
+        }
+
+        property real textColorBs: {
+            var color = theme.textColor.b;
+            if (color <= 0.03928) {
+                return color / 12.92;
+            } else {
+                return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+            }
+        }
+
+        //! -------
+        property real backColorRs: {
+            var color = theme.backgroundColor.r;
+            if (color <= 0.03928) {
+                return color / 12.92;
+            } else {
+                return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+            }
+        }
+
+        property real backColorGs: {
+            var color = theme.backgroundColor.g;
+            if (color <= 0.03928) {
+                return color / 12.92;
+            } else {
+                return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+            }
+        }
+
+        property real backColorBs: {
+            var color = theme.backgroundColor.b;
+            if (color <= 0.03928) {
+                return color / 12.92;
+            } else {
+                return Math.pow( ((color + 0.055) / 1.055), 2.4 );
+            }
+        }
+
+        readonly property real themeBackgroundColorLuma: 0.2126*backColorRs + 0.7152*backColorGs + 0.0722*backColorBs
+        readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
 
         property bool isShown: active && !forceSolidPanel && plasmoid.configuration.solidBackgroundForMaximized && !root.editMode
 
