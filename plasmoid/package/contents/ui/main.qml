@@ -394,7 +394,7 @@ Item {
     //! ImmediateLaunchers
     function addImmediateLauncher(launch){
         if (!immediateLauncherExists(launch)) {
-            console.log("Immediate Launcher Added::: "+launch);
+            //console.log("Immediate Launcher Added::: "+launch);
             immediateLaunchers.push(launch);
         }
     }
@@ -403,7 +403,7 @@ Item {
         for(var i=0; i<immediateLaunchers.length; ++i){
             if (immediateLaunchers[i]===launch) {
                 immediateLaunchers.splice(i,1);
-                console.log("Immediate Launcher Removed::: "+launch);
+                //console.log("Immediate Launcher Removed::: "+launch);
                 return;
             }
         }
