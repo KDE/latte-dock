@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=Latte Shell
 Name[ca]=Intèrpret d'ordres del Latte
-Name[ca@valencia]=Intèrpret d'ordes del Latte
+Name[ca@valencia]=Intèrpret d'ordres del Latte
 Name[da]=Latte-skal
 Name[de]=Latte-Shell
 Name[el]=Κέλυφος Latte
@@ -20,7 +20,7 @@ Name[zh_CN]=Latte Shell
 Name[zh_TW]=Latte Shell
 Comment=Shell provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat pel Latte Dock
-Comment[ca@valencia]=Intèrpret d'ordes proporcionat pel Latte Dock
+Comment[ca@valencia]=Intèrpret d'ordres proporcionat pel Latte Dock
 Comment[da]=Skal til Latte-dokken
 Comment[de]=Shell für Latte-Dock
 Comment[el]=Κέλυφος που παρέχεται από την εφαρμογή Latte
@@ -38,7 +38,7 @@ Comment[zh_TW]=由 Latte Dock 提供的 Shell
 
 Keywords=shell
 Keywords[ca]=intèrpret d'ordres
-Keywords[ca@valencia]=intèrpret d'ordes
+Keywords[ca@valencia]=intèrpret d'ordres
 Keywords[da]=skal
 Keywords[de]=Shell
 Keywords[el]=κέλυφος
