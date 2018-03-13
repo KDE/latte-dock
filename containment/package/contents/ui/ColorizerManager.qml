@@ -34,7 +34,7 @@ Item{
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 0.8 * root.animationTime
+                duration: 1.2 * root.animationTime
                 easing.type: Easing.OutCubic
             }
         }
@@ -45,7 +45,8 @@ Item{
         id: colorizedAppletShadow
         anchors.fill: colorizer
 
-        active: colorizerLoader.isShown && (plasmoid.configuration.shadows >= 1) && (colorizer.opacity > 0)
+        active: (plasmoid.configuration.shadows >= 1) && (colorizer.opacity>0)
+        opacity: colorizer.opacity
 
         sourceComponent: DropShadow{
             anchors.fill: parent
