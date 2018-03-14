@@ -601,7 +601,8 @@ Item {
                 fastEnteringFlag = false;
             }
 
-            if ((layoutsContainer.hoveredIndex !== -1) && !root.globalDirectRender) {
+            if ((layoutsContainer.hoveredIndex !== -1 || root.latteAppletHoveredIndex!==-1)
+                    && !root.globalDirectRender) {
                 fastEnteringFlag = true;
             }
 
