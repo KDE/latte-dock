@@ -575,7 +575,6 @@ Item {
         visible: !container.latteApplet && !lockZoom && canBeHovered && !(container.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
 
         property bool blockWheel: false
-        property bool fastEnteringFlag: false
         property bool pressed: false
 
         onClicked: {
@@ -597,13 +596,9 @@ Item {
 
             //console.log("entered applet:" + layoutsContainer.hoveredIndex);
 
-            if (fastEnteringFlag) {
-                fastEnteringFlag = false;
-            }
 
-            if ((layoutsContainer.hoveredIndex !== -1 || root.latteAppletHoveredIndex!==-1)
-                    && !root.globalDirectRender) {
-                fastEnteringFlag = true;
+            if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex===-1) {
+                root.startDirectRenderDelayerDuringEntering();
             }
 
             if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
@@ -630,10 +625,6 @@ Item {
         }
 
         onExited:{
-            if (fastEnteringFlag) {
-                fastEnteringFlag = false;
-            }
-
             if (appletIconItem && appletIconItem.visible)
                 appletIconItem.active = false;
 
@@ -656,25 +647,8 @@ Item {
                 return;
             }
 
-            if (fastEnteringFlag) {
-                var lengthPos;
-                if (root.vertical) {
-                    lengthPos = mouse.x;
-                } else {
-                    lengthPos = mouse.y;
-                }
-
-                //! check if the mouse enters a second applet and it is near the center
-                //! this way the directRendering isnt activated too fast or when the
-                //! mouse enters between two tasks at start
-                if (lengthPos >= (wrapper.center - root.iconSize/2)
-                        && lengthPos <= (wrapper.center + root.iconSize/2)) {
-                    if (!root.globalDirectRender) {
-                        root.setGlobalDirectRender(true);
-                    }
-
-                    fastEnteringFlag = false;
-                }
+            if (!root.globalDirectRender && !root.directRenderDelayerIsRunning) {
+                root.setGlobalDirectRender(true);
             }
 
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {

@@ -85,7 +85,6 @@ MouseArea{
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
     property bool buffersAreReady: false
-    property bool fastEnteringFlag: false //!flag to check if the mouse entered the dock very fast
     property bool delayingRemove: ListView.delayRemove
     property bool scalesUpdatedOnce: false
     //states that exist in windows in a Group of windows
@@ -512,13 +511,8 @@ MouseArea{
         }
 
         // console.log("entered task:" + icList.hoveredIndex);
-        if (fastEnteringFlag) {
-            fastEnteringFlag = false;
-        }
-
-        if ((icList.hoveredIndex!==-1 || root.dockHoveredIndex!==-1)
-                && !root.globalDirectRender) {
-            fastEnteringFlag = true;
+        if (icList.hoveredIndex === -1 && root.dockHoveredIndex ===-1) {
+            root.startDirectRenderDelayerDuringEntering();
         }
 
         if ((icList.hoveredIndex !== itemIndex) && isLauncher && windowsPreviewDlg.visible) {
@@ -561,10 +555,6 @@ MouseArea{
     onExited: {
         mainItemContainer.scalesUpdatedOnce = false;
 
-        if (fastEnteringFlag) {
-            fastEnteringFlag = false;
-        }
-
         if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteDock.hideTooltipLabel();
         }
@@ -604,20 +594,8 @@ MouseArea{
                 icList.hoveredIndex = index;
             }
 
-            if (fastEnteringFlag) {
-                var lengthPos = mousePos;
-
-                //! check if the mouse enters a second task and it is near the center
-                //! this way the directRendering isnt activated too fast or when the
-                //! mouse enters between two tasks at start
-                if (lengthPos >= (wrapper.center - root.iconSize/2)
-                        && lengthPos <= (wrapper.center + root.iconSize/2)) {
-                    if (!root.globalDirectRender) {
-                        root.setGlobalDirectRender(true);
-                    }
-
-                    fastEnteringFlag = false;
-                }
+            if (!root.globalDirectRender && !root.directRenderDelayerIsRunning) {
+                root.setGlobalDirectRender(true);
             }
 
             if( ((wrapper.mScale == 1 || wrapper.mScale === root.zoomFactor) && !root.globalDirectRender)

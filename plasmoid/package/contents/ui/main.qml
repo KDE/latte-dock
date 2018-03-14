@@ -165,6 +165,7 @@ Item {
     //BEGIN Latte Dock properties
     property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
+    property bool directRenderDelayerIsRunning: latteDock ? latteDock.directRenderDelayerIsRunning : directRenderDelayerForEnteringTimer.running
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
@@ -904,6 +905,14 @@ Item {
 
             start();
         }
+    }
+
+    //! Delayer in order to not activate directRendering when the mouse
+    //! enters until the timer has ended. This way we make sure that the
+    //! zoom-in animations will have ended.
+    Timer{
+        id:directRenderDelayerForEnteringTimer
+        interval: 3.2 * root.durationTime * units.shortDuration
     }
 
     //this timer restores the draggingPhase flag to false
@@ -1693,6 +1702,14 @@ Item {
             latteDock.stopCheckRestoreZoomTimer();
         } else {
             checkListHovered.stop();
+        }
+    }
+
+    function startDirectRenderDelayerDuringEntering(){
+        if (latteDock) {
+            latteDock.startDirectRenderDelayerDuringEntering();
+        } else {
+            directRenderDelayerForEnteringTimer.start();
         }
     }
 

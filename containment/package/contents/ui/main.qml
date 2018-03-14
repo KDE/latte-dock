@@ -130,6 +130,7 @@ DragDrop.DropArea {
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
 
     property alias hoveredIndex: layoutsContainer.hoveredIndex
+    property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
     property int activeIndicator: plasmoid.configuration.activeIndicator
 
@@ -1176,6 +1177,10 @@ DragDrop.DropArea {
         checkRestoreZoom.stop();
     }
 
+    function startDirectRenderDelayerDuringEntering(){
+        directRenderDelayerForEnteringTimer.start();
+    }
+
     function setGlobalDirectRender(value) {
         if (latteApplet && latteApplet.waitingLaunchers.length > 0)
             return;
@@ -1752,6 +1757,14 @@ DragDrop.DropArea {
                 console.log("containment timer: checkRestoreZoom called...");
             }
         }
+    }
+
+    //! Delayer in order to not activate directRendering when the mouse
+    //! enters until the timer has ended. This way we make sure that the
+    //! zoom-in animations will have ended.
+    Timer{
+        id:directRenderDelayerForEnteringTimer
+        interval: 3.2 * root.durationTime * units.shortDuration
     }
 
     //this is a delayer to update mask area, it is used in cases
