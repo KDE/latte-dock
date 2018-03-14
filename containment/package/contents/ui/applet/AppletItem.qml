@@ -647,15 +647,19 @@ Item {
                 return;
             }
 
+            if (layoutsContainer.hoveredIndex === -1 && root.latteAppletHoveredIndex===-1) {
+                root.startDirectRenderDelayerDuringEntering();
+            }
+
+            if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+                layoutsContainer.hoveredIndex = index;
+            }
+
             if (!root.globalDirectRender && !root.directRenderDelayerIsRunning) {
                 root.setGlobalDirectRender(true);
             }
 
             if( ((wrapper.zoomScale == 1 || wrapper.zoomScale === root.zoomFactor) && !root.globalDirectRender) || root.globalDirectRender) {
-                if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
-                    layoutsContainer.hoveredIndex = index;
-                }
-
                 if (root.isHorizontal){
                     var step = Math.abs(layoutsContainer.currentSpot-mouse.x);
                     if (step >= root.animationStep){

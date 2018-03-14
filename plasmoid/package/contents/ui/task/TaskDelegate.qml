@@ -590,6 +590,10 @@ MouseArea{
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
+            if (icList.hoveredIndex === -1 && root.dockHoveredIndex ===-1) {
+                root.startDirectRenderDelayerDuringEntering();
+            }
+
             if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
                 icList.hoveredIndex = index;
             }
