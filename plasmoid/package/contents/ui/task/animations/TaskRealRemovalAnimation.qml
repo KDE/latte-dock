@@ -153,6 +153,11 @@ SequentialAnimation {
             if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
                 root.launcherForRemoval="";
 
+            if (windowsPreviewDlg.visible && windowsPreviewDlg.mainItem.parentTask === mainItemContainer
+                    && isWindow && !isGroupParent){
+                hidePreview();
+            }
+
             //send signal that the launcher is really removing
             if (mainItemContainer.inBouncingAnimation) {
                 mainItemContainer.visible = false;
