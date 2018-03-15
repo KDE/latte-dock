@@ -1047,6 +1047,10 @@ DragDrop.DropArea {
         layoutManager.save();
     }
 
+    function setHoveredIndex(ind) {
+        layoutsContainer.hoveredIndex = ind;
+    }
+
     function hideTooltipLabel(debug){
         titleTooltipDialog.hide(debug);
     }
@@ -1381,6 +1385,16 @@ DragDrop.DropArea {
                 stopCheckRestoreZoomTimer();
             } else {
                 startCheckRestoreZoomTimer();
+            }
+        }
+    }
+
+    Connections{
+        target: layoutsContainer
+
+        onHoveredIndexChanged: {
+            if (latteApplet && layoutsContainer.hoveredIndex>-1){
+                latteApplet.setHoveredIndex(-1);
             }
         }
     }

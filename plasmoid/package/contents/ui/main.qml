@@ -315,6 +315,16 @@ Item {
         onCurrentLayoutNameChanged: root.publishTasksGeometries();
     }
 
+    Connections{
+        target: icList
+
+        onHoveredIndexChanged:{
+            if (latteDock && icList.hoveredIndex>-1){
+                latteDock.setHoveredIndex(-1);
+            }
+        }
+    }
+
 
     /////
     PlasmaCore.ColorScope{
@@ -1392,6 +1402,9 @@ Item {
         }
     }
 
+    function setHoveredIndex(ind) {
+        icList.hoveredIndex = ind;
+    }
 
     function updatePosition(){
         var newPosition;
