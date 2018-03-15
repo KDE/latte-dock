@@ -1396,6 +1396,10 @@ DragDrop.DropArea {
             if (latteApplet && layoutsContainer.hoveredIndex>-1){
                 latteApplet.setHoveredIndex(-1);
             }
+
+            if (latteApplet && latteApplet.windowPreviewIsShown && layoutsContainer.hoveredIndex>-1) {
+                latteApplet.hidePreview();
+            }
         }
     }
 
