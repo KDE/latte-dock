@@ -1201,8 +1201,8 @@ DragDrop.DropArea {
     }
 
     function updateAutomaticIconSize() {
-        if ( !blockAutomaticUpdateIconSize.running
-                && ((visibilityManager.normalState || root.editMode) && !visibilityManager.inTempHiding
+        if ( !blockAutomaticUpdateIconSize.running && !visibilityManager.inTempHiding
+                && ((visibilityManager.normalState || root.editMode)
                     && (root.autoDecreaseIconSize || (!root.autoDecreaseIconSize && root.iconSize!=root.maxIconSize)))
                 && (iconSize===root.maxIconSize || iconSize === automaticIconSizeBasedSize) ) {
             blockAutomaticUpdateIconSize.start();
