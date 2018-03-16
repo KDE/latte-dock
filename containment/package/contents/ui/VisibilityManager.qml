@@ -570,6 +570,10 @@ Item{
     SequentialAnimation{
         id: slidingAnimationAutoHiddenIn
 
+        PauseAnimation{
+            duration: manager.inTempHiding && root.durationTime>0 ? 500 : 0
+        }
+
         PropertyAnimation {
             target: layoutsContainer
             property: root.isVertical ? "x" : "y"
@@ -593,7 +597,14 @@ Item{
 
         onStopped: {
             inSlidingIn = false;
+
+            if (manager.inTempHiding) {
+                manager.inTempHiding = false;
+                updateAutomaticIconSize();
+            }
+
             manager.inTempHiding = false;
+            updateAutomaticIconSize();
 
             if (manager.debugMagager) {
                 console.log("showing animation ended...");
