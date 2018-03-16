@@ -42,13 +42,15 @@ Item{
 
     property real nScale: 0
 
-    Behavior on nScale {
-        enabled: !root.globalDirectRender
+    Behavior on nHiddenSize {
+        id: animatedBehavior
+        enabled: !root.globalDirectRender || restoreAnimation.running
         NumberAnimation { duration: 3 * container.animationTime }
     }
 
-    Behavior on nScale {
-        enabled: root.globalDirectRender && !restoreAnimation.running
+    Behavior on nHiddenSize {
+        id: directBehavior
+        enabled: !animatedBehavior.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 

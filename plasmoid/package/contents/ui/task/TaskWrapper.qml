@@ -254,8 +254,14 @@ Item{
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
-            if (!mainItemContainer.inAttentionAnimation)
+            if (!mainItemContainer.inAttentionAnimation) {
                 mScale = root.zoomFactor;
+            } else {
+                var subSpacerScale = (root.zoomFactor-1)/2;
+
+                hiddenSpacerLeft.nScale = subSpacerScale;
+                hiddenSpacerRight.nScale = subSpacerScale;
+            }
 
             mainItemContainer.scalesUpdatedOnce = false;
         }

@@ -47,7 +47,7 @@ Item{
     property int separatorSpace: neighbourSeparator && !isSeparator
                                  && !(parabolicManager.hasInternalSeparator && root.dragSource)
                                  && !root.inActivityChange ? //fix for #846
-                                     (2+root.iconMargin/2) : 0
+                                                             (2+root.iconMargin/2) : 0
 
     property bool rightSpacer: false
 
@@ -105,15 +105,17 @@ Item{
 
     Component.onCompleted: hiddenSpacer.updateNeighbour();
 
-
-    Behavior on separatorSpace {
-        enabled: mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running || root.inActivityChange
+    Behavior on nHiddenSize {
+        id: animatedBehavior
+        enabled: (mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
+                  || root.inActivityChange || mainItemContainer.inRemoveStage)
+                 || (mainItemContainer.containsMouse && inAttentionAnimation && wrapper.mScale!==root.zoomFactor)
         NumberAnimation{ duration: 3 * mainItemContainer.animationTime }
     }
 
-    Behavior on separatorSpace {
-        enabled: !mainItemContainer.inFastRestoreAnimation && !showWindowAnimation.running
-                 && !restoreAnimation.running && !root.inActivityChange
+    Behavior on nHiddenSize {
+        id: directBehavior
+        enabled: !animatedBehavior.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
