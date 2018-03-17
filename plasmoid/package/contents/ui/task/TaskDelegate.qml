@@ -580,13 +580,26 @@ MouseArea{
     //! when mouseX-Y is updated based on the plasmoid formFactor
     function mousePosChanged(mousePos) {
         if (root.editMode || mousePos<0 ||
-               (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
+                (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
         root.stopCheckRestoreZoomTimer();
 
         if (root.latteDock && root.latteDock.isHalfShown) {
             return;
+        }
+
+        //! show previews
+        if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== mainItemContainer){
+            if (hoveredTimerObj) {
+                //! dont delay showing preview in normal states,
+                //! that is when the dock wasnt hidden
+                if (!hoveredTimerObj.running) {
+                    hoveredTimerObj.start();
+                }
+            } else {
+                hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+            }
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
@@ -665,7 +678,11 @@ MouseArea{
         ////window previews/////////
         if (isWindow) {
             if(containsMouse && (root.showPreviews || (!root.showPreviews && root.highlightWindows)) && Latte.WindowSystem.compositingActive){
-                hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                if (hoveredTimerObj) {
+                    hoveredTimerObj.restart();
+                } else {
+                    hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                }
             }
             else{
                 if (hoveredTimerObj){
@@ -1290,7 +1307,7 @@ MouseArea{
             onTriggered: {
                 if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
                     //console.log("Hovered Timer....");
-                    if (root.showPreviews) {
+                    if (root.showPreviews && (!root.latteDock || (root.latteDock && !root.latteDock.isHalfShown))) {
                         mainItemContainer.preparePreviewWindow(false);
                         windowsPreviewDlg.show(mainItemContainer);
                     } else if (mainItemContainer.isWindow && root.highlightWindows) {
