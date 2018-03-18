@@ -540,7 +540,7 @@ Item{
                 }
             }
             duration: manager.animationSpeed
-            easing.type: Easing.OutQuad
+            easing.type: Easing.InQuad
         }
 
         onStarted: {
