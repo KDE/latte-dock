@@ -2,6 +2,7 @@
 Name=Activate Latte Launcher Menu
 Name[ca]=Activa el menú del llançador del Latte
 Name[ca@valencia]=Activa el menú del llançador del Latte
+Name[en_GB]=Activate Latte Launcher Menu
 Name[es]=Activar menú de lanzadores de Latte
 Name[nl]=Latte-startprogramma activeren
 Name[pt]=Activar o Menu de Lançamento do Latte
@@ -10,6 +11,7 @@ Name[x-test]=xxActivate Latte Launcher Menuxx
 Comment=Activate Latte Launcher Menu from screen edge
 Comment[ca]=Activa el menú del llançador del Latte des de la vora de la pantalla
 Comment[ca@valencia]=Activa el menú del llançador del Latte des de la vora de la pantalla
+Comment[en_GB]=Activate Latte Launcher Menu from screen edge
 Comment[es]=Activar menú de lanzadores de Latte desde el borde de la pantalla
 Comment[nl]=Latte-startprogramma activeren vanaf de schermrand
 Comment[pt]=Activar o Menu de Lançamento do Latte no extremo do ecrã
