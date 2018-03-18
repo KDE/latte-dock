@@ -72,7 +72,7 @@ Item{
 
     Repeater {
         id: activitiesList
-        model: universalSettings.runningActivitiesModel
+        model: universalSettings ? universalSettings.runningActivitiesModel : null
 
         property string currentLayoutBackground: ""
 
