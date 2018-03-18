@@ -195,7 +195,7 @@ Column {
             anchors.fill: parent
             anchors.bottomMargin: 2
 
-            readonly property bool isMinimized: isGroup ? isMinimized : isMinimizedParent
+            readonly property bool isMinimized: isGroup ? instance.isMinimized : mainToolTip.isMinimizedParent
             // TODO: this causes XCB error message when being visible the first time
             property int winId: isWin && windows[flatIndex] != undefined ? windows[flatIndex] : 0
 
