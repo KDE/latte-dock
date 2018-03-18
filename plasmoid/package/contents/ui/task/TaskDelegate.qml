@@ -523,7 +523,7 @@ MouseArea{
             icList.hoveredIndex = index;
         }
 
-        if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
+        if (root.latteDock && (!root.showPreviews)){
             root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
         }
 
@@ -920,9 +920,15 @@ MouseArea{
         toolTipDelegate.appName = Qt.binding(function() {
             return model.AppName;
         });
-        toolTipDelegate.pidParent = Qt.binding(function() {
-            return model.AppPid;
-        });
+
+        if (!isLauncher) {
+            toolTipDelegate.pidParent = Qt.binding(function() {
+                return model.AppPid;
+            });
+        } else {
+            toolTipDelegate.pidParent = -1;
+        }
+
         toolTipDelegate.windows = Qt.binding(function() {
             return model.LegacyWinIdList;
         });
