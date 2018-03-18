@@ -644,15 +644,23 @@ void SettingsDialog::restoreDefaults()
 {
     qDebug() << Q_FUNC_INFO;
 
-    foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
-        QString presetName = Layout::layoutName(preset);
-        QByteArray presetNameChars = presetName.toUtf8();
-        const char *prset_str = presetNameChars.data();
-        presetName = i18n(prset_str);
+    if (ui->tabWidget->currentIndex() == 0) {
+        //! Default layouts missing from layouts list
+        foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
+            QString presetName = Layout::layoutName(preset);
+            QByteArray presetNameChars = presetName.toUtf8();
+            const char *prset_str = presetNameChars.data();
+            presetName = i18n(prset_str);
 
-        if (!nameExistsInModel(presetName)) {
-            addLayoutForFile(preset, presetName);
+            if (!nameExistsInModel(presetName)) {
+                addLayoutForFile(preset, presetName);
+            }
         }
+    } else if (ui->tabWidget->currentIndex() == 1) {
+        //! Defaults for general Latte settings
+        ui->autostartChkBox->setChecked(true);
+        ui->infoWindowChkBox->setChecked(true);
+        ui->highSensitivityBtn->setChecked(true);
     }
 }
 
