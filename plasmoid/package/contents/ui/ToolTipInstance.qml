@@ -41,14 +41,13 @@ Column {
     property var submodelIndex: tasksModel.makeModelIndex(parentIndex, isGroup ? itemIndex : -1)
     property int flatIndex: isGroup && itemIndex>=0 ? itemIndex : 0
 
-    property bool isActive: IsActive ? IsActive : false
-    property bool isMinimized: IsMinimized ? IsMinimized : false
+    property bool isActive: isGroup || parentTask ? IsActive : false
+    property bool isMinimized: isGroup || parentTask? IsMinimized : false
 
-    property int appPid: AppPid ? AppPid : 0
-    property int itemIndex: index ? index : 0
-    property int virtualDesktop: VirtualDesktop ? VirtualDesktop : 0
-    property var activities : Activities ? Activities : []
-
+    property int appPid: isGroup || parentTask ? AppPid : -1
+    property int itemIndex: isGroup || parentTask ? index : 0
+    property int virtualDesktop: isGroup || parentTask ? VirtualDesktop : 0
+    property var activities : isGroup || parentTask ? Activities : []
 
     spacing: units.smallSpacing
 
