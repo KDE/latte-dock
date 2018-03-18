@@ -44,10 +44,7 @@ Item{
         }
 
         if (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal){
-            //! in edit mode shrink a bit the fill sizes because the splitters are shown
-            return root.editMode && container.needsFillSpace && (container.sizeForFill > 5*root.iconSize) ?
-                        container.sizeForFill - 2.5*root.iconSize : container.sizeForFill;
-            //return container.sizeForFill;
+            return container.sizeForFill;
         }
 
         if (container.latteApplet) {
@@ -75,11 +72,7 @@ Item{
         }
 
         if (container.needsFillSpace && (container.sizeForFill>-1) && root.isVertical){
-            //! in edit mode shrink a bit the fill sizes because the splitters are shown
-            return root.editMode && container.needsFillSpace && (container.sizeForFill > 5*root.iconSize) ?
-                        container.sizeForFill - 2.5*root.iconSize : container.sizeForFill;
-
-            //return container.sizeForFill;
+            return container.sizeForFill;
         }
 
         if (container.latteApplet) {

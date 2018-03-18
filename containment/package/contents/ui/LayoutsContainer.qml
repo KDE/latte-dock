@@ -313,7 +313,9 @@ Item{
             property:"sizeWithNoFillApplets"
             when: _mainLayout
             value: {
-                if (!visibilityManager || !visibilityManager.normalState)
+                //! in EditMode we must update that size because the user may add new applets
+                //! and the contents may go out of bounds
+                if (!visibilityManager || (!visibilityManager.normalState && !root.editMode))
                     return;
 
                 var space = 0;
