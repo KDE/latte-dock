@@ -101,6 +101,8 @@ Column {
 
         // launcher icon
         PlasmaCore.IconItem {
+            Layout.preferredWidth: units.iconSizes.medium
+            Layout.preferredHeight: units.iconSizes.medium
             source: icon
             animated: false
             usesPlasmaTheme: false
@@ -111,7 +113,7 @@ Column {
             spacing: 0.75 * units.smallSpacing
             PlasmaComponents.Label {
                 width: isWin ? textWidth : undefined
-                height: theme.mSize(theme.defaultFont).height
+                height: 1.25 * theme.mSize(theme.defaultFont).height
                 font.pointSize: -1
                 font.pixelSize: height
                 elide: Text.ElideRight
@@ -123,7 +125,7 @@ Column {
             // window title
             PlasmaComponents.Label {
                 width: isWin ? textWidth : undefined
-                height: 0.75 * theme.mSize(theme.defaultFont).height
+                height: theme.mSize(theme.defaultFont).height
                 font.pointSize: -1
                 font.pixelSize: height
                 elide: Text.ElideRight
@@ -135,7 +137,7 @@ Column {
             // subtext
             PlasmaComponents.Label {
                 width: isWin ? textWidth : undefined
-                height: 0.6 * theme.mSize(theme.defaultFont).height
+                height: 0.75 * theme.mSize(theme.defaultFont).height
                 font.pointSize: -1
                 font.pixelSize: height
                 elide: Text.ElideRight
