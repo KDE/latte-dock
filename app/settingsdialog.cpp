@@ -158,6 +158,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
         updateApplyButtonsState();
     });
 
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, [&]() {
+        updateApplyButtonsState();
+    });
+
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
@@ -1001,6 +1005,7 @@ void SettingsDialog::updateApplyButtonsState()
 {
     bool changed{false};
 
+    //! Ok, Apply Buttons
     if ((o_settings != currentSettings())
         || (o_settingsLayouts != currentLayoutsSettings())) {
         changed = true;
@@ -1012,6 +1017,40 @@ void SettingsDialog::updateApplyButtonsState()
     } else {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+    }
+
+    //! RestoreDefaults Button
+    if (ui->tabWidget->currentIndex() == 0) {
+        //! Check Default layouts missing from layouts list
+
+        bool layoutMissing{false};
+
+        foreach (auto preset, m_corona->layoutManager()->presetsPaths()) {
+            QString presetName = Layout::layoutName(preset);
+            QByteArray presetNameChars = presetName.toUtf8();
+            const char *prset_str = presetNameChars.data();
+            presetName = i18n(prset_str);
+
+            if (!nameExistsInModel(presetName)) {
+                layoutMissing = true;
+                break;
+            }
+        }
+
+        if (layoutMissing) {
+            ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
+        } else {
+            ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
+        }
+    } else if (ui->tabWidget->currentIndex() == 1) {
+        //! Defaults for general Latte settings
+
+        if (!ui->autostartChkBox->isChecked() || !ui->infoWindowChkBox->isChecked()
+            || !ui->highSensitivityBtn->isChecked()) {
+            ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
+        } else {
+            ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
+        }
     }
 }
 
