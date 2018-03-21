@@ -135,7 +135,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     //! SIGNALS
 
     connect(m_model, &QStandardItemModel::itemChanged, this, &SettingsDialog::itemChanged);
-    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &SettingsDialog::currentRowChanged);
+    connect(ui->layoutsView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [&]() {
+        updatePerLayoutButtonsState();
+        updateApplyButtonsState();
+    });
 
     connect(m_inMemoryButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
     [ = ](int id, bool checked) {
@@ -636,7 +639,7 @@ void SettingsDialog::apply()
     o_settingsLayouts = currentLayoutsSettings();
 
     updateApplyButtonsState();
-    updatePauseButtonState();
+    updatePerLayoutButtonsState();
 }
 
 void SettingsDialog::restoreDefaults()
@@ -784,7 +787,7 @@ void SettingsDialog::loadSettings()
         ui->multipleToolBtn->setChecked(true);
     }
 
-    updatePauseButtonState();
+    updatePerLayoutButtonsState();
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
@@ -941,7 +944,7 @@ void SettingsDialog::on_switchButton_clicked()
         }
     }
 
-    updatePauseButtonState();
+    updatePerLayoutButtonsState();
 }
 
 void SettingsDialog::on_pauseButton_clicked()
@@ -986,33 +989,12 @@ void SettingsDialog::layoutsChanged()
 
 void SettingsDialog::itemChanged(QStandardItem *item)
 {
-    updateApplyButtonsState();
+    updatePerLayoutButtonsState();
 
     if (item->column() == ACTIVITYCOLUMN) {
         //! recalculate the available activities
         recalculateAvailableActivities();
     }
-}
-
-void SettingsDialog::currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
-{
-    QString id = m_model->data(m_model->index(current.row(), IDCOLUMN), Qt::DisplayRole).toString();
-    QString name = m_layouts[id]->name();
-    QStringList activities = m_model->data(m_model->index(current.row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
-
-    if (name == m_corona->layoutManager()->currentLayoutName() || m_corona->layoutManager()->activeLayout(name)) {
-        ui->removeButton->setEnabled(false);
-    } else {
-        ui->removeButton->setEnabled(true);
-    }
-
-    if (id.startsWith("/tmp/")) {
-        ui->switchButton->setEnabled(false);
-    } else {
-        ui->switchButton->setEnabled(true);
-    }
-
-    updatePauseButtonState();
 }
 
 void SettingsDialog::updateApplyButtonsState()
@@ -1033,14 +1015,23 @@ void SettingsDialog::updateApplyButtonsState()
     }
 }
 
-void SettingsDialog::updatePauseButtonState()
+void SettingsDialog::updatePerLayoutButtonsState()
 {
+    QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
+
+    //! Switch Button
+    if (id.startsWith("/tmp/")) {
+        ui->switchButton->setEnabled(false);
+    } else {
+        ui->switchButton->setEnabled(true);
+    }
+
+    //! Pause Button
     if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
         ui->pauseButton->setVisible(false);
     } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         ui->pauseButton->setVisible(true);
 
-        QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
         QStringList lActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         Layout *layout = m_layouts[id];
@@ -1050,6 +1041,15 @@ void SettingsDialog::updatePauseButtonState()
         } else {
             ui->pauseButton->setEnabled(false);
         }
+    }
+
+    //! Remove Layout Button
+    QString name = m_layouts[id]->name();
+
+    if (name == m_corona->layoutManager()->currentLayoutName() || m_corona->layoutManager()->activeLayout(name)) {
+        ui->removeButton->setEnabled(false);
+    } else {
+        ui->removeButton->setEnabled(true);
     }
 }
 

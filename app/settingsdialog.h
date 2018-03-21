@@ -75,9 +75,9 @@ private slots:
     void reject() override;
     void apply();
     void restoreDefaults();
+    void updatePerLayoutButtonsState();
 
     void layoutsChanged();
-    void currentRowChanged(const QModelIndex &current, const QModelIndex &previous);
     void itemChanged(QStandardItem *item);
 
 private:
@@ -90,7 +90,6 @@ private:
     void recalculateAvailableActivities();
     void insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, QStringList activities);
     void updateApplyButtonsState();
-    void updatePauseButtonState();
 
     bool dataAreAccepted();
     bool idExistsInModel(QString id);
