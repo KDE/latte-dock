@@ -998,7 +998,23 @@ void SettingsDialog::itemChanged(QStandardItem *item)
     if (item->column() == ACTIVITYCOLUMN) {
         //! recalculate the available activities
         recalculateAvailableActivities();
+    } else if (item->column() == NAMECOLUMN) {
+        int currentRow = ui->layoutsView->currentIndex().row();
+
+        QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
+        QString name = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
+        QFont font = qvariant_cast<QFont>(m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::FontRole));
+
+        if (m_layouts[id]->name() != name) {
+            font.setItalic(true);
+            m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
+        } else {
+            font.setItalic(false);
+            m_model->setData(m_model->index(currentRow, NAMECOLUMN), font, Qt::FontRole);
+        }
     }
+
+    updateApplyButtonsState();
 }
 
 void SettingsDialog::updateApplyButtonsState()
@@ -1056,10 +1072,14 @@ void SettingsDialog::updateApplyButtonsState()
 
 void SettingsDialog::updatePerLayoutButtonsState()
 {
-    QString id = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), IDCOLUMN), Qt::DisplayRole).toString();
+    int currentRow = ui->layoutsView->currentIndex().row();
+
+    QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
+    QString nameInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
+    QString originalName = m_layouts.contains(id) ? m_layouts[id]->name() : "";
 
     //! Switch Button
-    if (id.startsWith("/tmp/")) {
+    if (id.startsWith("/tmp/") || originalName != nameInModel) {
         ui->switchButton->setEnabled(false);
     } else {
         ui->switchButton->setEnabled(true);
@@ -1071,7 +1091,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         ui->pauseButton->setVisible(true);
 
-        QStringList lActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
+        QStringList lActivities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         Layout *layout = m_layouts[id];
 
@@ -1083,9 +1103,9 @@ void SettingsDialog::updatePerLayoutButtonsState()
     }
 
     //! Remove Layout Button
-    QString name = m_layouts[id]->name();
-
-    if (name == m_corona->layoutManager()->currentLayoutName() || m_corona->layoutManager()->activeLayout(name)) {
+    if (originalName != nameInModel
+        || (originalName == m_corona->layoutManager()->currentLayoutName())
+        || (m_corona->layoutManager()->activeLayout(originalName))) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
