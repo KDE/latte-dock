@@ -685,11 +685,14 @@ Item {
             container.activateAppletForNeutralAreas(mouse);
 
             pressed = true;
-            // mouse.accepted = false;
+            //! this is needed for some applets is order to be activated/deactivated correctly
+            //! such case is the "Application Menu". (bug #928)
+            mouse.accepted = false;
         }
 
         onReleased: {
             pressed = false;
+            mouse.accepted = false;
         }
 
         onWheel: {
