@@ -968,7 +968,7 @@ void SettingsDialog::layoutsChanged()
 
             if (m_corona->layoutManager()->currentLayoutName() == name) {
                 font.setBold(true);
-                ui->layoutsView->selectRow(i);
+                // ui->layoutsView->selectRow(i);
             } else {
                 Layout *layout = m_corona->layoutManager()->activeLayout(name);
 
