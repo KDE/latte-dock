@@ -81,7 +81,6 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     m_model = new QStandardItemModel(m_corona->layoutManager()->layouts().count(), 5, this);
 
     ui->layoutsView->setModel(m_model);
-    ui->layoutsView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
     ui->layoutsView->verticalHeader()->setVisible(false);
 
