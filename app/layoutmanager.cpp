@@ -715,7 +715,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
         //! crash when switching sessions through the Tasks plasmoid Context menu
         //! Latte was unstable and was crashing very often during changing
         //! sessions.
-        QTimer::singleShot(250, [this, layoutName, lPath, previousMemoryUsage]() {
+        QTimer::singleShot(350, [this, layoutName, lPath, previousMemoryUsage]() {
             qDebug() << layoutName << " - " << lPath;
             QString fixedLPath = lPath;
             QString fixedLayoutName = layoutName;
