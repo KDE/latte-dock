@@ -41,7 +41,10 @@ FocusScope {
 
     property int maxWidth: 34 * theme.defaultFont.pixelSize
     width: maxWidth + units.smallSpacing * 2
-    height: content.height + units.smallSpacing * 2
+    height: Math.min(content.height + units.smallSpacing * 2,
+                     dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing)
+                     //! for small resolutions we better limit the size of the settings in order to be shown properly
+
     Layout.minimumWidth: width
     Layout.minimumHeight: height
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
