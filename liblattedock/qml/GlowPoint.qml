@@ -118,7 +118,7 @@ Item{
             LinearGradient {
                 anchors.fill: parent
                 start: {
-                    if (location === PlasmaCore.Types.BottomEdge)
+                    if (location === PlasmaCore.Types.BottomEdge || location === PlasmaCore.Types.Floating)
                         return Qt.point(0, 0);
                     else if (location === PlasmaCore.Types.TopEdge)
                         return Qt.point(0, mainGlow.fullCorner);
@@ -130,7 +130,7 @@ Item{
                     return Qt.point(mainGlow.fullCorner, 0);
                 }
                 end: {
-                    if (location === PlasmaCore.Types.BottomEdge)
+                    if (location === PlasmaCore.Types.BottomEdge || location === PlasmaCore.Types.Floating)
                         return Qt.point(0, mainGlow.fullCorner);
                     else if (location === PlasmaCore.Types.TopEdge)
                         return Qt.point(0, 0);
