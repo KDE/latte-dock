@@ -626,8 +626,15 @@ int DockCorona::primaryScreenId() const
 
 void DockCorona::closeApplication()
 {
+    //! this code must be called asynchronously because it is called
+    //! also from qml (Settings window).
+    QTimer::singleShot(5, [this]() {
+        m_layoutManager->hideLatteSettingsDialog();
+        m_layoutManager->hideAllDocks();
+    });
+
     //! give the time for the docks to hide themselves
-    QTimer::singleShot(400, [this]() {
+    QTimer::singleShot(500, [this]() {
         qGuiApp->quit();
     });
 }

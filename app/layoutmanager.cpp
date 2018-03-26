@@ -1160,6 +1160,14 @@ void LayoutManager::showLatteSettingsDialog(int page)
     m_latteSettingsDialog->activateWindow();
 }
 
+void LayoutManager::hideLatteSettingsDialog()
+{
+    if (m_latteSettingsDialog) {
+        m_latteSettingsDialog->deleteLater();
+        m_latteSettingsDialog = nullptr;
+    }
+}
+
 void LayoutManager::showInfoWindow(QString info, int duration, QStringList activities)
 {
     foreach (auto screen, qGuiApp->screens()) {

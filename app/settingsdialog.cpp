@@ -119,13 +119,21 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
 
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
-    QMenuBar *rightAlignedMenuBar = new QMenuBar(menuBar);
+    // QMenuBar *rightAlignedMenuBar = new QMenuBar(menuBar);
 
     layout()->setMenuBar(menuBar);
-    menuBar->setCornerWidget(rightAlignedMenuBar);
+    //menuBar->setCornerWidget(rightAlignedMenuBar);
 
-    QMenu *helpMenu = new QMenu(i18n("Help"), rightAlignedMenuBar);
-    rightAlignedMenuBar->addMenu(helpMenu);
+    QMenu *fileMenu = new QMenu(i18n("File"), menuBar);
+    menuBar->addMenu(fileMenu);
+
+    QMenu *helpMenu = new QMenu(i18n("Help"), menuBar);
+    //rightAlignedMenuBar->addMenu(helpMenu);
+    menuBar->addMenu(helpMenu);
+
+    QAction *quitAction = fileMenu->addAction(i18n("Quit Latte"));
+    quitAction->setIcon(QIcon::fromTheme("application-exit"));
+    quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
 
     QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
     aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
@@ -163,6 +171,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     });
 
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
+    connect(quitAction, &QAction::triggered, m_corona, &DockCorona::closeApplication);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
     //! the running Activities in Activities checkboxes which are shown as bold

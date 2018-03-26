@@ -1722,30 +1722,6 @@ QList<int> DockView::freeEdges() const
     return edgesInt;
 }
 
-void DockView::closeApplication()
-{
-    //! this code must be called asynchronously because it is called
-    //! also from qml (Settings window).
-    QTimer::singleShot(50, [this]() {
-        DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-        DockConfigView *configView = qobject_cast<DockConfigView *>(m_configView);
-
-        if (configView) {
-            configView->hideConfigWindow();
-        } else if (m_configView) {
-            m_configView->close();
-        }
-
-        if (dockCorona) {
-            dockCorona->layoutManager()->hideAllDocks();
-        }
-
-        if (dockCorona)
-            dockCorona->closeApplication();
-    });
-}
-
 void DockView::deactivateApplets()
 {
     if (!containment()) {

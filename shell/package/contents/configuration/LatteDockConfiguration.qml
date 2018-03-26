@@ -496,16 +496,16 @@ FocusScope {
             }
 
             PlasmaComponents.Button {
-                id: quit
+                id: closeButton
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignRight
 
-                text: i18n("Quit")
-                iconSource: "application-exit"
-                tooltip: i18n("Quit Latte")
+                text: i18n("Close")
+                iconSource: "dialog-close"
+                tooltip: i18n("Close settings window")
 
-                onClicked: dock.closeApplication()
+                onClicked: dockConfig.hideConfigWindow();
             }
         }
     }

@@ -230,8 +230,6 @@ public slots:
     Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE bool latteTasksPresent();
 
-    Q_INVOKABLE void closeApplication();
-
     void updateAbsDockGeometry(bool bypassChecks = false);
 
 protected slots:
