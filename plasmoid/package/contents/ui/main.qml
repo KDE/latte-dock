@@ -192,7 +192,7 @@ Item {
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
-    property int glowOption: latteDock ? latteDock.glowOption : Latte.Dock.GlowEverywhere
+    property int glowOption: latteDock ? latteDock.glowOption : Latte.Dock.GlowAll
     property real glowOpacity: latteDock ? latteDock.glowOpacity : 0.35
 
     property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
