@@ -54,7 +54,7 @@ Item{
     property int thickReverseAndGlowExtraSize: (root.reverseLinesPosition && root.showGlow && !behaveAsPlasmaPanel) ? 2*statesLineSize : 0;
     property int thickReverseAndGlowExtraSizeOriginal: Math.ceil(2*root.maxIconSize/13 )
 
-    property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ? 2 : 1
+    property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ?  2 : 1
     property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargin + thickReverseAndGlowExtraSize) //needed in some animations
     property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.thickMargin + thickReverseAndGlowExtraSize +1,
                                            root.realPanelSize + root.panelShadow)
@@ -319,9 +319,11 @@ Item{
                 //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
                 if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        localY = dock.height - tempThickness;
+                        localY = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
+                                    dock.height + tempThickness : dock.height - tempThickness;
                     } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                        localY = 0;
+                        localY = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
+                                    -tempThickness : 0;
                     }
 
                     if (noCompositingEdit) {
@@ -337,9 +339,11 @@ Item{
                     }
                 } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                        localX = 0;
+                        localX = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
+                                    -tempThickness : 0;
                     } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        localX = dock.width - tempThickness;
+                        localX = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
+                                    dock.width + tempThickness : dock.width - tempThickness;
                     }
 
                     if (noCompositingEdit) {
@@ -404,8 +408,25 @@ Item{
             }
         } else {
             //! no compositing case
-            localX = dock.effectsArea.x;
-            localY = dock.effectsArea.y;
+            if (!dock.visibility.isHidden || !dock.visibility.supportsKWinEdges) {
+                localX = dock.effectsArea.x;
+                localY = dock.effectsArea.y;
+            } else {
+                if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                    localX = dock.effectsArea.x;
+                    localY = dock.effectsArea.y+dock.effectsArea.height+thicknessAutoHidden;
+                } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                    localX = dock.effectsArea.x;
+                    localY = dock.effectsArea.y - thicknessAutoHidden;
+                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                    localX = dock.effectsArea.x - thicknessAutoHidden;
+                    localY = dock.effectsArea.y;
+                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                    localX = dock.effectsArea.x + dock.effectsArea.width + 1;
+                    localY = dock.effectsArea.y;
+                }
+            }
+
             if (root.isHorizontal) {
                 tempThickness = dock.effectsArea.height;
                 tempLength = dock.effectsArea.width;
@@ -433,7 +454,7 @@ Item{
             }
 
             if (!Latte.WindowSystem.compositingActive) {
-                dock.maskArea = dock.effectsArea;
+                dock.maskArea = newMaskArea;//dock.effectsArea;
             } else {
                 if (dock.behaveAsPlasmaPanel && !root.editMode) {
                     dock.maskArea = Qt.rect(0,0,root.width,root.height);
@@ -520,7 +541,6 @@ Item{
 
         ScriptAction{
             script: {
-                dock.visibility.isHidden = true;
                 root.isHalfShown = true;
             }
         }
@@ -543,6 +563,12 @@ Item{
             easing.type: Easing.InQuad
         }
 
+        ScriptAction{
+            script: {
+                dock.visibility.isHidden = true;
+            }
+        }
+
         onStarted: {
             if (manager.debugMagager) {
                 console.log("hiding animation started...");
@@ -550,6 +576,8 @@ Item{
         }
 
         onStopped: {
+            dock.visibility.isHidden = true;
+
             if (manager.debugMagager) {
                 console.log("hiding animation ended...");
             }

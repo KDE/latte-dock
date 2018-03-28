@@ -22,10 +22,14 @@
 #include "visibilitymanager_p.h"
 
 #include "dockview.h"
+#include "screenedgeghostwindow.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
 #include "../windowinfowrap.h"
 #include "../../liblattedock/extras.h"
+
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/surface.h>
 
 #include <QDebug>
 
@@ -51,7 +55,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     timerShow.setSingleShot(true);
     timerHide.setSingleShot(true);
     connect(&timerCheckWindows, &QTimer::timeout, this, &VisibilityManagerPrivate::checkAllWindows);
-    connect(&timerShow, &QTimer::timeout, this, [this]() {
+    connect(&timerShow, &QTimer::timeout, this, [this, q]() {
         if (isHidden) {
             //   qDebug() << "must be shown";
             emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
@@ -73,6 +77,10 @@ VisibilityManagerPrivate::~VisibilityManagerPrivate()
     qDebug() << "VisibilityManagerPrivate deleting...";
     wm->removeDockStruts(*view);
     wm->removeDock(view->winId());
+
+    if (edgeGhostWindow) {
+        edgeGhostWindow->deleteLater();
+    }
 }
 
 inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
@@ -115,6 +123,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
     switch (this->mode) {
         case Dock::AlwaysVisible: {
+            //set wayland visibility mode
+            if (dockView->surface()) {
+                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+            }
+
             if (view->containment() && !dockView->inEditMode() && view->screen()) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
@@ -145,11 +158,21 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
 
         case Dock::AutoHide: {
+            //set wayland visibility mode
+            if (dockView->surface()) {
+                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            }
+
             raiseDock(containsMouse);
         }
         break;
 
         case Dock::DodgeActive: {
+            //set wayland visibility mode
+            if (dockView->surface()) {
+                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            }
+
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
                                      , this, &VisibilityManagerPrivate::dodgeActive);
             connections[1] = connect(wm, &WindowSystem::windowChanged
@@ -159,6 +182,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
 
         case Dock::DodgeMaximized: {
+            //set wayland visibility mode
+            if (dockView->surface()) {
+                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            }
+
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
                                      , this, &VisibilityManagerPrivate::dodgeMaximized);
             connections[1] = connect(wm, &WindowSystem::windowChanged
@@ -168,6 +196,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
 
         case Dock::DodgeAllWindows: {
+            //set wayland visibility mode
+            if (dockView->surface()) {
+                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            }
+
             for (const auto &wid : wm->windows()) {
                 windows.insert(wid, wm->requestInfo(wid));
             }
@@ -190,6 +223,12 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         break;
 
         case Dock::WindowsGoBelow:
+
+            //set wayland visibility mode
+            if (dockView->surface()) {
+                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+            }
+
             break;
 
         default:
@@ -197,6 +236,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     }
 
     view->containment()->config().writeEntry("visibility", static_cast<int>(mode));
+
+    updateKWinEdgesSupport();
 
     emit q->modeChanged();
 }
@@ -243,6 +284,20 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     }
 
     this->isHidden = isHidden;
+
+    if (q->supportsKWinEdges()) {
+        bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
+                                (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+                                 && dockView->managedLayout() && !dockView->inLocationChangeAnimation()
+                                 && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
+
+        if (inCurrentLayout) {
+            wm->setEdgeStateFor(edgeGhostWindow, isHidden);
+        } else {
+            wm->setEdgeStateFor(edgeGhostWindow, false);
+        }
+    }
+
     emit q->isHiddenChanged();
 }
 
@@ -362,6 +417,13 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 void VisibilityManagerPrivate::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
     wm->setWindowOnActivities(window, activities);
+}
+
+void VisibilityManagerPrivate::applyActivitiesToHiddenWindows(const QStringList &activities)
+{
+    if (edgeGhostWindow) {
+        wm->setWindowOnActivities(*edgeGhostWindow, activities);
+    }
 }
 
 void VisibilityManagerPrivate::dodgeActive(WindowId wid)
@@ -504,10 +566,12 @@ inline void VisibilityManagerPrivate::saveConfig()
 
     auto config = view->containment()->config();
 
+    config.writeEntry("enableKWinEdges", enableKWinEdgesFromUser);
     config.writeEntry("timerShow", timerShow.interval());
     config.writeEntry("timerHide", timerHide.interval());
     config.writeEntry("raiseOnDesktopChange", raiseOnDesktopChange);
     config.writeEntry("raiseOnActivityChange", raiseOnActivityChange);
+
     view->containment()->configNeedsSaving();
 }
 
@@ -521,6 +585,9 @@ inline void VisibilityManagerPrivate::restoreConfig()
     timerHide.setInterval(config.readEntry("timerHide", 700));
     emit q->timerShowChanged();
     emit q->timerHideChanged();
+
+    enableKWinEdgesFromUser = config.readEntry("enableKWinEdges", true);
+    emit q->enableKWinEdgesChanged();
 
     setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
@@ -827,9 +894,86 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
     setExistsWindowMaximized(foundMaximized);
     setExistsWindowSnapped(foundSnap);
 }
+
+//! KWin Edges Support functions
+void VisibilityManagerPrivate::setEnableKWinEdges(bool enable)
+{
+    if (enableKWinEdgesFromUser == enable) {
+        return;
+    }
+
+    enableKWinEdgesFromUser = enable;
+
+    emit q->enableKWinEdgesChanged();
+
+    updateKWinEdgesSupport();
+}
+
+void VisibilityManagerPrivate::updateKWinEdgesSupport()
+{
+    if (mode == Dock::AutoHide
+        || mode == Dock::DodgeActive
+        || mode == Dock::DodgeAllWindows
+        || mode == Dock::DodgeMaximized) {
+        if (enableKWinEdgesFromUser) {
+            createEdgeGhostWindow();
+        } else if (!enableKWinEdgesFromUser) {
+            deleteEdgeGhostWindow();
+        }
+    } else if (mode == Dock::AlwaysVisible
+               || mode == Dock::WindowsGoBelow) {
+        deleteEdgeGhostWindow();
+    }
+}
+
+void VisibilityManagerPrivate::createEdgeGhostWindow()
+{
+    if (!edgeGhostWindow) {
+        edgeGhostWindow = new ScreenEdgeGhostWindow(dockView);
+
+        wm->setDockExtraFlags(*edgeGhostWindow);
+
+        connect(edgeGhostWindow, &ScreenEdgeGhostWindow::edgeTriggered, this, [this]() {
+            emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
+        });
+
+        connectionsKWinEdges[0] = connect(wm, &WindowSystem::currentActivityChanged,
+        this, [&]() {
+            bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
+                                    (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+                                     && dockView->managedLayout() && !dockView->inLocationChangeAnimation()
+                                     && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
+
+            if (edgeGhostWindow) {
+                if (inCurrentLayout) {
+                    wm->setEdgeStateFor(edgeGhostWindow, isHidden);
+                } else {
+                    wm->setEdgeStateFor(edgeGhostWindow, false);
+                }
+            }
+        });
+
+        emit q->supportsKWinEdgesChanged();
+    }
+}
+
+void VisibilityManagerPrivate::deleteEdgeGhostWindow()
+{
+    if (edgeGhostWindow) {
+        edgeGhostWindow->deleteLater();
+        edgeGhostWindow = nullptr;
+
+        for (auto &c : connectionsKWinEdges) {
+            disconnect(c);
+        }
+
+        emit q->supportsKWinEdgesChanged();
+    }
+}
 //! END: VisibilityManagerPrivate implementation
 
-//! BEGIN: VisiblityManager implementation
+
+//! BEGIN: VisibilityManager implementation
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     : d(new VisibilityManagerPrivate(view, this))
 {
@@ -859,6 +1003,11 @@ void VisibilityManager::setMode(Dock::Visibility mode)
 void VisibilityManager::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
     d->setWindowOnActivities(window, activities);
+}
+
+void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)
+{
+    d->applyActivitiesToHiddenWindows(activities);
 }
 
 bool VisibilityManager::raiseOnDesktop() const
@@ -955,6 +1104,22 @@ bool VisibilityManager::existsWindowSnapped() const
 void VisibilityManager::setExistsWindowSnapped(bool windowSnapped)
 {
     d->setExistsWindowSnapped(windowSnapped);
+}
+
+//! KWin Edges Support functions
+bool VisibilityManager::enableKWinEdges() const
+{
+    return d->enableKWinEdgesFromUser;
+}
+
+void VisibilityManager::setEnableKWinEdges(bool enable)
+{
+    d->setEnableKWinEdges(enable);
+}
+
+bool VisibilityManager::supportsKWinEdges() const
+{
+    return (d->edgeGhostWindow != nullptr);
 }
 
 //! END: VisibilityManager implementation

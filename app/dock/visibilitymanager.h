@@ -48,6 +48,10 @@ class VisibilityManager : public QObject {
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowSnapped READ existsWindowSnapped NOTIFY existsWindowSnappedChanged)
 
+    //! KWin Edges Support Options
+    Q_PROPERTY(bool enableKWinEdges READ enableKWinEdges WRITE setEnableKWinEdges NOTIFY enableKWinEdgesChanged)
+    Q_PROPERTY(bool supportsKWinEdges READ supportsKWinEdges NOTIFY supportsKWinEdgesChanged)
+
     Q_PROPERTY(int timerShow READ timerShow WRITE setTimerShow NOTIFY timerShowChanged)
     Q_PROPERTY(int timerHide READ timerHide WRITE setTimerHide NOTIFY timerHideChanged)
 
@@ -59,6 +63,7 @@ public:
     void setMode(Latte::Dock::Visibility mode);
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
+    void applyActivitiesToHiddenWindows(const QStringList &activities);
 
     bool raiseOnDesktop() const;
     void setRaiseOnDesktop(bool enable);
@@ -90,6 +95,12 @@ public:
     bool existsWindowSnapped() const;
     void setExistsWindowSnapped(bool windowSnapped);
 
+    //! KWin Edges Support functions
+    bool enableKWinEdges() const;
+    void setEnableKWinEdges(bool enable);
+
+    bool supportsKWinEdges() const;
+
 signals:
     void mustBeShown(QPrivateSignal);
     void mustBeHide(QPrivateSignal);
@@ -107,6 +118,10 @@ signals:
     void enabledDynamicBackgroundChanged();
     void existsWindowMaximizedChanged();
     void existsWindowSnappedChanged();
+
+    //! KWin Edges Support signals
+    void enableKWinEdgesChanged();
+    void supportsKWinEdgesChanged();
 
 private:
     VisibilityManagerPrivate *const d;

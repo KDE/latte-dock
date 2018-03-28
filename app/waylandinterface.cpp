@@ -20,6 +20,8 @@
 
 #include "waylandinterface.h"
 #include "dockcorona.h"
+#include "dock/dockview.h"
+#include "dock/screenedgeghostwindow.h"
 #include "../liblattedock/extras.h"
 
 #include <QDebug>
@@ -33,6 +35,7 @@
 #include <KWindowInfo>
 #include <NETWM>
 
+#include <KWayland/Client/surface.h>
 
 using namespace KWayland::Client;
 
@@ -224,6 +227,29 @@ void WaylandInterface::slideWindow(QWindow &view, AbstractWindowInterface::Slide
 void WaylandInterface::enableBlurBehind(QWindow &view) const
 {
     KWindowEffects::enableBlurBehind(view.winId());
+}
+
+void WaylandInterface::setEdgeStateFor(QWindow *view, bool active) const
+{
+    ScreenEdgeGhostWindow *window = qobject_cast<ScreenEdgeGhostWindow *>(view);
+
+    if (!window) {
+        return;
+    }
+
+    if (window->parentDock()->surface() && window->parentDock()->visibility()
+        && (window->parentDock()->visibility()->mode() == Dock::DodgeActive
+            || window->parentDock()->visibility()->mode() == Dock::DodgeMaximized
+            || window->parentDock()->visibility()->mode() == Dock::DodgeAllWindows
+            || window->parentDock()->visibility()->mode() == Dock::AutoHide)) {
+        if (active) {
+            window->showWithMask();
+            window->surface()->requestHideAutoHidingPanel();
+        } else {
+            window->hideWithMask();
+            window->surface()->requestShowAutoHidingPanel();
+        }
+    }
 }
 
 WindowInfoWrap WaylandInterface::requestInfoActive() const

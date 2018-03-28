@@ -21,6 +21,7 @@ namespace Latte {
 class DockCorona;
 class DockView;
 class VisibilityManager;
+class ScreenEdgeGhostWindow;
 
 /*!
  * \brief The Latte::VisibilityManagerPrivate is a class d-pointer
@@ -56,8 +57,15 @@ public:
     void updateAvailableScreenGeometry();
     void updateDynamicBackgroundWindowFlags();
 
+    //! KWin Edges Support functions
+    void createEdgeGhostWindow();
+    void deleteEdgeGhostWindow();
+    void setEnableKWinEdges(bool enable);
+    void updateKWinEdgesSupport();
+
     void setDockGeometry(const QRect &rect);
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
+    void applyActivitiesToHiddenWindows(const QStringList &activities);
 
     void windowAdded(WindowId id);
     void dodgeActive(WindowId id);
@@ -103,8 +111,14 @@ public:
     QList<QRect> snappedWindowsGeometries;
     std::array<QMetaObject::Connection, 7> connectionsDynBackground;
     WindowId lastActiveWindowWid;
-    DockCorona *dockCorona;
-    DockView *dockView;
+
+    //! KWin Edges
+    bool enableKWinEdgesFromUser{true};
+    std::array<QMetaObject::Connection, 1> connectionsKWinEdges;
+    ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
+
+    DockCorona *dockCorona{nullptr};
+    DockView *dockView{nullptr};
 };
 
 }

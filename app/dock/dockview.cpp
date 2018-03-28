@@ -363,6 +363,11 @@ void DockView::setupWaylandIntegration()
     }
 }
 
+KWayland::Client::PlasmaShellSurface *DockView::surface()
+{
+    return m_shellSurface;
+}
+
 bool DockView::setCurrentScreen(const QString id)
 {
     QScreen *nextScreen{qGuiApp->primaryScreen()};
@@ -1370,6 +1375,10 @@ void DockView::applyActivitiesToWindows()
             if (configView && configView->secondaryWindow()) {
                 m_visibility->setWindowOnActivities(*configView->secondaryWindow(), activities);
             }
+        }
+
+        if (m_visibility->supportsKWinEdges()) {
+            m_visibility->applyActivitiesToHiddenWindows(activities);
         }
     }
 }

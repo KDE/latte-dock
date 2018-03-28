@@ -196,6 +196,8 @@ public:
     Layout *managedLayout() const;
     void setManagedLayout(Layout *layout);
 
+    KWayland::Client::PlasmaShellSurface *surface();
+
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property);
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
