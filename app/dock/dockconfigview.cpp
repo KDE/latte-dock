@@ -315,23 +315,15 @@ void DockConfigView::hideEvent(QHideEvent *ev)
 
     QQuickWindow::hideEvent(ev);
 
-    auto recreateDock = [&]() noexcept {
-        auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-        if (dockCorona) {
-            dockCorona->recreateDock(m_dockView->containment());
-        }
-    };
-
     const auto mode = m_dockView->visibility()->mode();
     const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
 
     if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
         if (!previousDockWinBehavior) {
-            recreateDock();
+            m_dockView->managedLayout()->recreateDock(m_dockView->containment());
         }
     } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
-        recreateDock();
+        m_dockView->managedLayout()->recreateDock(m_dockView->containment());
     }
 
     deleteLater();

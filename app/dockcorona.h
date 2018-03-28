@@ -94,8 +94,6 @@ public:
 
     int screenForContainment(const Plasma::Containment *containment) const override;
 
-    void recreateDock(Plasma::Containment *containment);
-
     void closeApplication();
 
     AbstractWindowInterface *wm() const;

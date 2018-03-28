@@ -308,23 +308,6 @@ void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading,
     }
 }
 
-void LayoutManager::recreateDock(Plasma::Containment *containment)
-{
-    if (memoryUsage() == Dock::SingleLayout) {
-        m_activeLayouts.at(0)->recreateDock(containment);
-    } else if (memoryUsage() == Dock::MultipleLayouts) {
-        QString layoutId = containment->config().readEntry("layoutId", QString());
-
-        if (!layoutId.isEmpty()) {
-            auto layout = activeLayout(layoutId);
-
-            if (layout) {
-                layout->recreateDock(containment);
-            }
-        }
-    }
-}
-
 QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews() const
 {
     if (memoryUsage() == Dock::SingleLayout) {

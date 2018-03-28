@@ -706,11 +706,6 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     return -1;
 }
 
-void DockCorona::recreateDock(Plasma::Containment *containment)
-{
-    m_layoutManager->recreateDock(containment);
-}
-
 void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
 {
     const QString alternativesQML = kPackage().filePath("appletalternativesui");
