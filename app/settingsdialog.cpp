@@ -315,6 +315,7 @@ void SettingsDialog::on_downloadButton_clicked()
     qDebug() << Q_FUNC_INFO;
 
     KNS3::DownloadDialog dialog(QStringLiteral("latte-layouts.knsrc"), this);
+    dialog.resize(m_corona->universalSettings()->downloadWindowSize());
     dialog.exec();
 
     bool layoutAdded{false};
@@ -332,6 +333,8 @@ void SettingsDialog::on_downloadButton_clicked()
             }
         }
     }
+
+    m_corona->universalSettings()->setDownloadWindowSize(dialog.size());
 
     if (layoutAdded) {
         apply();

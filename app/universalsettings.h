@@ -70,8 +70,11 @@ public:
     QString lastNonAssignedLayoutName() const;
     void setLastNonAssignedLayoutName(QString layoutName);
 
+    QSize downloadWindowSize() const;
+    void setDownloadWindowSize(QSize size);
+
     QSize layoutsWindowSize() const;
-    void setLayoutsWindowSize(QSize);
+    void setLayoutsWindowSize(QSize size);
 
     QStringList layoutsColumnWidths() const;
     void setLayoutsColumnWidths(QStringList widths);
@@ -96,6 +99,7 @@ public slots:
 signals:
     void autostartChanged();
     void currentLayoutNameChanged();
+    void downloadWindowSizeChanged();
     void lastNonAssignedLayoutNameChanged();
     void layoutsColumnWidthsChanged();
     void layoutsWindowSizeChanged();
@@ -124,6 +128,7 @@ private:
 
     QString m_currentLayoutName;
     QString m_lastNonAssignedLayoutName;
+    QSize m_downloadWindowSize{800, 550};
     QSize m_layoutsWindowSize{700, 450};
 
     QStringList m_layoutsColumnWidths;

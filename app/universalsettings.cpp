@@ -35,6 +35,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::downloadWindowSizeChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsColumnWidthsChanged, this, &UniversalSettings::saveConfig);
@@ -128,6 +129,22 @@ void UniversalSettings::setLastNonAssignedLayoutName(QString layoutName)
     m_lastNonAssignedLayoutName = layoutName;
     emit lastNonAssignedLayoutNameChanged();
 }
+
+QSize UniversalSettings::downloadWindowSize() const
+{
+    return m_downloadWindowSize;
+}
+
+void UniversalSettings::setDownloadWindowSize(QSize size)
+{
+    if (m_downloadWindowSize == size) {
+        return;
+    }
+
+    m_downloadWindowSize = size;
+    emit downloadWindowSizeChanged();
+}
+
 
 QSize UniversalSettings::layoutsWindowSize() const
 {
@@ -247,6 +264,7 @@ void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
+    m_downloadWindowSize = m_universalGroup.readEntry("downloadWindowSize", QSize(800, 550));
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
     m_layoutsColumnWidths = m_universalGroup.readEntry("layoutsColumnWidths", QStringList());
@@ -260,6 +278,7 @@ void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
+    m_universalGroup.writeEntry("downloadWindowSize", m_downloadWindowSize);
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
     m_universalGroup.writeEntry("layoutsColumnWidths", m_layoutsColumnWidths);
