@@ -288,6 +288,7 @@ void DockSecConfigView::setupWaylandIntegration()
         qDebug() << "wayland dock window surface was created...";
 
         m_shellSurface = interface->createSurface(s, this);
+        m_shellSurface->setSkipTaskbar(true);
 
         syncGeometry();
     }
