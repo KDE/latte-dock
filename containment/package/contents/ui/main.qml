@@ -1728,7 +1728,7 @@ DragDrop.DropArea {
         readonly property real themeBackgroundColorLuma: 0.2126*backColorRs + 0.7152*backColorGs + 0.0722*backColorBs
         readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
 
-        property bool isShown: active && !forceSolidPanel && plasmoid.configuration.solidBackgroundForMaximized && !root.editMode
+        property bool isShown: active && !forceSolidPanel && plasmoid.configuration.solidBackgroundForMaximized && !root.editMode && Latte.WindowSystem.compositingActive
 
         property real currentBackgroundLuminas: -1000
 
