@@ -475,7 +475,7 @@ inline void VisibilityManagerPrivate::restoreConfig()
         return;
 
     auto config = view->containment()->config();
-    timerShow.setInterval(config.readEntry("timerShow", 200));
+    timerShow.setInterval(config.readEntry("timerShow", 0));
     timerHide.setInterval(config.readEntry("timerHide", 700));
     emit q->timerShowChanged();
     emit q->timerHideChanged();
