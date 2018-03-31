@@ -781,18 +781,7 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             var pos=visualParent.itemIndex;
 
-            var separatorName = parabolicManager.freeAvailableSeparatorName();
-
-            if (separatorName !== "") {
-                parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
-
-                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
-                                                                                  latteDock.launchersGroup, separatorName);
-                } else {
-                    tasksModel.requestAddLauncher(separatorName);
-                }
-            }
+            root.addInternalSeparatorAtPos(pos);
         }
     }
 

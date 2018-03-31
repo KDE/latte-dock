@@ -72,12 +72,19 @@ Item {
 
         property int droppedPosition: -1;
         property bool onlyLaunchers: false;
+        property bool droppingSeparator: false;
 
         property Item hoveredItem
+
+        function isDroppingSeparator(event) {
+            return ((event.mimeData.formats.indexOf("text/x-plasmoidservicename") === 0)
+                    && (String(event.mimeData.getDataAsByteArray("text/x-plasmoidservicename")) === "audoban.applet.separator"));
+        }
 
         onDragEnter:{
             if(root.dragSource == null){
                 onlyLaunchers = false;
+                droppingSeparator = false;
                 root.dropNewLauncher = false;
                 var createLaunchers = false;
 
@@ -89,6 +96,10 @@ Item {
                             return backend.isApplication(item)
                         });
                     }
+                } else if (isDroppingSeparator(event)) {
+                    droppingSeparator = true;
+                    root.dropNewLauncher = true;
+                    return;
                 } else {
                     event.ignore();
                 }
@@ -186,6 +197,16 @@ Item {
                 return;
             }
 
+            if (droppingSeparator) {
+                droppingSeparator = false;
+                if (hoveredItem && hoveredItem.itemIndex >=0){
+                    root.addInternalSeparatorAtPos(hoveredItem.itemIndex);
+                } else {
+                    root.addInternalSeparatorAtPos(0);
+                }
+                return;
+            }
+
             if (event.mimeData.hasUrls) {
                 parent.urlsDropped(event.mimeData.urls);
             }
@@ -198,7 +219,7 @@ Item {
             repeat: false
 
             onTriggered: {
-                if (dropHandler.onlyLaunchers || !root.dropNewLauncher) {
+                if (dropHandler.onlyLaunchers || !root.dropNewLauncher || dropHandler.droppingSeparator) {
                     return;
                 }
 

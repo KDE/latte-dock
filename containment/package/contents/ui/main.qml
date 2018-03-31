@@ -510,6 +510,12 @@ DragDrop.DropArea {
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
+            } else if (dock.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+                       && root.latteAppletContainer.containsPos(event)) {
+                confirmedDragEntered = true
+                dndSpacer.opacity = 0;
+                dndSpacer.parent = root;
+                return;
             }
         }
 
@@ -535,7 +541,13 @@ DragDrop.DropArea {
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
-            }
+            } else if (dock.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+                      && root.latteAppletContainer.containsPos(event)) {
+               confirmedDragEntered = true
+               dndSpacer.opacity = 0;
+               dndSpacer.parent = root;
+               return;
+           }
         }
 
         if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {

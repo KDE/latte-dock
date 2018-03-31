@@ -1359,6 +1359,20 @@ Item {
         }
     }
 
+    function addInternalSeparatorAtPos(pos) {
+        var separatorName = parabolicManager.freeAvailableSeparatorName();
+
+        if (separatorName !== "") {
+            parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
+
+            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
+                                                                              latteDock.launchersGroup, separatorName);
+            } else {
+                tasksModel.requestAddLauncher(separatorName);
+            }
+        }
+    }
 
     // This is called by dockcorona in response to a Meta+number shortcut.
     function activateTaskAtIndex(index) {
