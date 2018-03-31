@@ -197,10 +197,14 @@ void DockCorona::load()
             loadLayoutName = m_layoutNameOnStartUp;
         }
 
-        if (m_userSetMemoryUsage != -1) {
+        if (m_userSetMemoryUsage != -1 && !KWindowSystem::isPlatformWayland()) {
             Dock::LayoutsMemoryUsage usage = static_cast<Dock::LayoutsMemoryUsage>(m_userSetMemoryUsage);
 
             m_universalSettings->setLayoutsMemoryUsage(usage);
+        }
+
+        if (KWindowSystem::isPlatformWayland()) {
+            m_universalSettings->setLayoutsMemoryUsage(Dock::SingleLayout);
         }
 
         m_layoutManager->loadLayoutOnStartup(loadLayoutName);

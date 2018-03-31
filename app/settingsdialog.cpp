@@ -51,6 +51,7 @@
 #include <KArchive/KArchiveDirectory>
 #include <KLocalizedString>
 #include <KNotification>
+#include <KWindowSystem>
 #include <KNewStuff3/KNS3/DownloadDialog>
 
 namespace Latte {
@@ -110,6 +111,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Dock::SingleLayout);
     m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Dock::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
+
+    if (KWindowSystem::isPlatformWayland()) {
+        m_inMemoryButtons->button(Latte::Dock::MultipleLayouts)->setEnabled(false);
+    }
 
     m_mouseSensitivityButtons = new QButtonGroup(this);
     m_mouseSensitivityButtons->addButton(ui->lowSensitivityBtn, Latte::Dock::LowSensitivity);
