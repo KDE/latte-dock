@@ -158,6 +158,20 @@ Window{
             }
 
             Text{
+                text: "Absolute Geometry"+space
+            }
+
+            Text{
+                text: {
+                    if (dock && dock.absoluteGeometry) {
+                        return dock.absoluteGeometry.x + ", " + dock.absoluteGeometry.y + "  " + dock.absoluteGeometry.width + "x" + dock.absoluteGeometry.height;
+                    } else {
+                        return "_,_ _x_";
+                    }
+                }
+            }
+
+            Text{
                 text: "Local Geometry"+space
             }
 

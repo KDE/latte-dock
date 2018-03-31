@@ -97,6 +97,7 @@ class DockView : public PlasmaQuick::ContainmentView {
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
     Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
+    Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
     Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)

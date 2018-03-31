@@ -47,6 +47,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
 
     connect(m_dockView, &DockView::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &DockView::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_dockView, &DockView::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &QQuickView::screenChanged, this, [this]() {
         setScreen(m_dockView->screen());
     });
@@ -132,15 +133,16 @@ void ScreenEdgeGhostWindow::updateGeometry()
     }
 
     if (m_dockView->formFactor() == Plasma::Types::Horizontal) {
-        newGeometry.setWidth(m_dockView->absGeometry().width());
+        newGeometry.setWidth(qMin(m_dockView->absGeometry().width(), m_dockView->screenGeometry().width() - 1));
         newGeometry.setHeight(thickness + 1);
     } else {
         newGeometry.setWidth(thickness + 1);
-        newGeometry.setHeight(m_dockView->absGeometry().height());
+        newGeometry.setHeight(qMin(m_dockView->absGeometry().height(), m_dockView->screenGeometry().height() - 1));
     }
 
     setMinimumSize(newGeometry.size());
     setMaximumSize(newGeometry.size());
+    resize(newGeometry.size());
     setPosition(newGeometry.x(), newGeometry.y());
 
     if (m_shellSurface) {
