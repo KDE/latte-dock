@@ -495,7 +495,7 @@ DragDrop.DropArea {
     }
 
     onDragEnter: {
-        if (plasmoid.immutable) {
+        if (plasmoid.immutable || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             event.ignore();
             return;
         }
@@ -531,7 +531,8 @@ DragDrop.DropArea {
     }
 
     onDragMove: {
-        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
+        if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0
+                || dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
             return;
         }
 
@@ -569,9 +570,10 @@ DragDrop.DropArea {
     }
 
     onDrop: {
-        //var relevantLayout = layoutsContainer.mainLayout.mapFromItem(root, event.x, event.y);
-        //plasmoid.processMimeData(event.mimeData, relevantLayout.x, relevantLayout.y);
-        //launchersDropped
+        if (dockIsHidden || visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) {
+            return;
+        }
+
         if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") < 0) {
             if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
                 latteApplet.launchersDropped(event.mimeData.urls);

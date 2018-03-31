@@ -181,7 +181,7 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
 
 bool ScreenEdgeGhostWindow::event(QEvent *e)
 {
-    if (e->type() == QEvent::Enter) {
+    if (e->type() == QEvent::Enter || e->type() == QEvent::DragEnter) {
         emit edgeTriggered();
     }
 
