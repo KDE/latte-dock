@@ -38,6 +38,7 @@ Rectangle {
     property bool textWithBackgroundColor: false
 
     property int radiusPerCentage: 100
+    property int minimumWidth: 0
 
     property double circleOpacity: 1
     property double fontPixelSize: partSize // * 0.55
@@ -49,8 +50,11 @@ Rectangle {
 
     property color alphaBackColor: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.45)
     property color alphaBackColor2: Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 0.8)
+
+    width: Math.max(minimumWidth, valueText.width + 4*units.smallSpacing)
+
     color: theme.backgroundColor //mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
-    radius: (radiusPerCentage / 100) * (width / 2)
+    radius: (radiusPerCentage / 100) * (height / 2)
     border.width: Math.max(1,width/64)
     border.color: root.minimizedDotColor //alphaBackColor2
 
@@ -106,19 +110,34 @@ Rectangle {
         }
     }
 
+    Rectangle {
+        id: badgerBackground
+        anchors.fill: canvas
+        color: canvas.drawColor
+
+        visible: proportion === 100 && showNumber
+        radius: parent.radius
+    }
+
     Text {
         id: valueText
         anchors.centerIn: parent
         text: {
             if (showNumber) {
-                return numberValue > 0 ? numberValue : ""
+                if (numberValue > 9999) {
+                    return i18nc("Over 9999 new messages, overlay, keep short", "9,999+");
+                } else if (numberValue > 0) {
+                    return numberValue.toLocaleString(Qt.locale(), 'f', 0);
+                } else {
+                    return "";
+                }
             }
 
             if (showText) {
                 return textValue;
             }
         }
-        font.pixelSize: 0.6 * parent.height
+        font.pixelSize: 0.55 * parent.height
         font.bold: true
         color: textWithBackgroundColor ? theme.backgroundColor : theme.textColor
         visible: showNumber || showText

@@ -27,10 +27,12 @@ import org.kde.latte 0.1 as Latte
 Item {
     id: background
 
+    readonly property int contentWidth: progressCircle.width + 0.1*height
+
     Item {
         id: subRectangle
-        width: parent.width/ 2
-        height: width
+        width: contentWidth
+        height: parent.height / 2
 
         states: [
             State {
@@ -56,8 +58,8 @@ Item {
         Latte.BadgeText {
             id: progressCircle
             anchors.centerIn: parent
-            width: 0.8 * parent.width
-            height: width
+            minimumWidth: 0.8 * parent.height
+            height: 0.8 * parent.height
             numberValue: mainItemContainer.badgeIndicator > 0 ? mainItemContainer.badgeIndicator : centralItem.smartLauncherItem.count
             fullCircle: true
             showNumber: true

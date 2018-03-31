@@ -322,15 +322,16 @@ Item{
 
                             Rectangle{
                                 id: maskRect
-                                width: parent.width/2
-                                height: width
-                                radius: width
+                                width: Math.max(infoBadge.contentWidth, parent.width / 2)
+                                height: parent.height / 2
+                                radius: parent.height
                                 visible: badgesLoader.showProgress
 
+                                //! Removes any remainings from the icon around the roundness at the corner
                                 Rectangle{
                                     id: maskCorner
-                                    width:parent.width/2
-                                    height:parent.height/2
+                                    width: parent.width/2
+                                    height: parent.height/2
                                 }
 
                                 states: [
@@ -436,6 +437,7 @@ Item{
                 } //end of sourceComponent
 
                 TaskProgressOverlay{
+                    id: infoBadge
                     anchors.fill:parent
                     opacity: badgesLoader.opacityN
                     visible: badgesLoader.showProgress
@@ -495,7 +497,7 @@ Item{
                     anchors.centerIn: parent
                     //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
 
-                    width: 0.4 * parent.width
+                    minimumWidth: 0.4 * parent.width
                     height: width
                     numberValue: taskNumberLoader.fixedIndex < 10 ? taskNumberLoader.fixedIndex : 0
                     textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
