@@ -158,7 +158,7 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
         m_hideDockTimer.setInterval(300);
     } else {
         //on wayland in acting just as simple timer that hides the dock afterwards
-        m_hideDockTimer.setInterval(3000);
+        m_hideDockTimer.setInterval(2500);
     }
 
     connect(&m_hideDockTimer, &QTimer::timeout, this, &GlobalShortcuts::hideDockTimerSlot);
@@ -527,9 +527,15 @@ void GlobalShortcuts::showDock()
         }
 
         if (it.value()->latteTasksPresent() && invokeShowNumbers(it.key())) {
-            m_hideDock = it.value();
-            m_hideDock->visibility()->setBlockHiding(true);
-            m_hideDockTimer.start();
+            if (!m_hideDockTimer.isActive()) {
+                m_hideDock = it.value();
+                m_hideDock->visibility()->setBlockHiding(true);
+                m_hideDockTimer.start();
+            } else {
+                m_hideDockTimer.stop();
+                hideDockTimerSlot();
+            }
+
             return;
         }
     }
@@ -537,9 +543,15 @@ void GlobalShortcuts::showDock()
     // we didn't find anything on primary, try all the panels
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
         if (it.value()->latteTasksPresent() && invokeShowNumbers(it.key())) {
-            m_hideDock = it.value();
-            m_hideDock->visibility()->setBlockHiding(true);
-            m_hideDockTimer.start();
+            if (!m_hideDockTimer.isActive()) {
+                m_hideDock = it.value();
+                m_hideDock->visibility()->setBlockHiding(true);
+                m_hideDockTimer.start();
+            } else {
+                m_hideDockTimer.stop();
+                hideDockTimerSlot();
+            }
+
             return;
         }
     }
