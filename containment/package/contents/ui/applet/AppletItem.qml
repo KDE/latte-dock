@@ -541,12 +541,11 @@ Item {
             height: parent.height
 
             text: i18n("Launchers Area")
-            level: 3
-            font.bold: true
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
+            color: colorizerLoader.themeBrightColor
 
             rotation: {
                 if (root.isHorizontal)

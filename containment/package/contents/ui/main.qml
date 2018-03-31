@@ -1732,6 +1732,9 @@ DragDrop.DropArea {
 
         property real currentBackgroundLuminas: -1000
 
+        property color themeBrightColor: themeBackgroundColorLuma > themeTextColorLuma ? theme.backgroundColor : theme.textColor
+        property color themeDarkColor: themeBackgroundColorLuma > themeTextColorLuma ? theme.textColor : theme.backgroundColor
+
         property color applyColor: {
             if (currentBackgroundLuminas>=0) {
                 var textAbs = Math.abs(themeTextColorLuma - currentBackgroundLuminas);
