@@ -648,13 +648,13 @@ Item{
                     }
                 }
 
-                /*PropertyAnimation {
+                PropertyAnimation {
                     target: wrapper
                     property: "mScale"
-                    to: 1 + ((root.zoomFactor - 1) / 2)
+                    to: 1 + ((root.zoomFactor - 1) / 3)
                     duration: isDraggedTransition.speed / 2
                     easing.type: Easing.OutQuad
-                }*/
+                }
 
                 ParallelAnimation{
                     PropertyAnimation {
@@ -687,8 +687,14 @@ Item{
                 if(running){
                     mainItemContainer.animationStarted();
                     //root.animations++;
-                    root.updateScale(index-1, 1, 0);
-                    root.updateScale(index+1, 1, 0);
+
+                    parabolicManager.clearTasksGreaterThan(index);
+                    parabolicManager.clearTasksLowerThan(index);
+
+                    if (latteDock){
+                        latteDock.parabolicManager.clearAppletsGreaterThan(latteDock.latteAppletPos);
+                        latteDock.parabolicManager.clearAppletsLowerThan(latteDock.latteAppletPos);
+                    }
                 }
             }
         },
@@ -734,7 +740,7 @@ Item{
                     }
                 }
 
-              /*  PropertyAnimation {
+                /*  PropertyAnimation {
                     target: wrapper
                     property: "mScale"
                     to: 1;
