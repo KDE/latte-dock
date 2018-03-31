@@ -76,12 +76,14 @@ protected:
 
 private slots:
     void updateGeometry();
+    void fixGeometry();
 
 private:
     void setupWaylandIntegration();
 
 private:
     bool m_inDelete{false};
+    QRect m_calculatedGeometry;
 
     DockView *m_dockView{nullptr};
 

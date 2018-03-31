@@ -45,6 +45,11 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
              | Qt::NoDropShadowWindowHint
              | Qt::WindowDoesNotAcceptFocus);
 
+    connect(this, &QQuickView::xChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
+    connect(this, &QQuickView::yChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
+    connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
+    connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
+
     connect(m_dockView, &DockView::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &DockView::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &DockView::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
@@ -140,13 +145,24 @@ void ScreenEdgeGhostWindow::updateGeometry()
         newGeometry.setHeight(qMin(m_dockView->absGeometry().height(), m_dockView->screenGeometry().height() - 1));
     }
 
-    setMinimumSize(newGeometry.size());
-    setMaximumSize(newGeometry.size());
-    resize(newGeometry.size());
-    setPosition(newGeometry.x(), newGeometry.y());
+    m_calculatedGeometry = newGeometry;
 
-    if (m_shellSurface) {
-        m_shellSurface->setPosition(newGeometry.topLeft());
+    fixGeometry();
+}
+
+void ScreenEdgeGhostWindow::fixGeometry()
+{
+    if (!m_calculatedGeometry.isEmpty()
+        && (m_calculatedGeometry.x() != x() || m_calculatedGeometry.y() != y()
+            || m_calculatedGeometry.width() != width() || m_calculatedGeometry.height() != height())) {
+        setMinimumSize(m_calculatedGeometry.size());
+        setMaximumSize(m_calculatedGeometry.size());
+        resize(m_calculatedGeometry.size());
+        setPosition(m_calculatedGeometry.x(), m_calculatedGeometry.y());
+
+        if (m_shellSurface) {
+            m_shellSurface->setPosition(m_calculatedGeometry.topLeft());
+        }
     }
 }
 
