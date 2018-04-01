@@ -67,7 +67,9 @@ Item{
         }
 
         property bool isActive: (container.isExpanded && !container.isSystray
-                                 && applet.pluginName !== root.plasmoidName)
+                                 && applet.pluginName !== root.plasmoidName
+                                 && applet.pluginName !== "org.kde.activeWindowControl"
+                                 && applet.pluginName !== "org.kde.plasma.appmenu")
 
         property bool vertical: root.isVertical
 

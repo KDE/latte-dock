@@ -60,7 +60,7 @@ Item {
     property bool lockZoom: false
     property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
                               && applet.status !== PlasmaCore.Types.HiddenStatus
-                              && applet.pluginName !== "org.kde.activeWindowControl"
+
     property bool isHidden: applet && applet.status === PlasmaCore.Types.HiddenStatus ? true : false
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isLattePlasmoid: latteApplet !== null
