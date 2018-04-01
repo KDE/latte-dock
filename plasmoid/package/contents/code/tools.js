@@ -135,20 +135,6 @@ function insertIndexAt(above, x, y) {
     }
 }
 
-
-function publishIconGeometries(taskItems) {
-    for (var i = 0; i < taskItems.length - 1; ++i) {
-        var task = taskItems[i];
-
-        if (task !== undefined){
-            if (task.IsLauncher !== true && task.IsStartup !== true) {
-                tasksModel.requestPublishDelegateGeometry(tasksModel.makeModelIndex(task.itemIndex),
-                                                          backend.globalRect(task), task);
-            }
-        }
-    }
-}
-
 function taskPrefix(prefix) {
     var effectivePrefix;
 

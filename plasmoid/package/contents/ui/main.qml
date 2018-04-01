@@ -1208,8 +1208,7 @@ Item {
         repeat: false
 
         onTriggered: {
-            //    console.debug("Found children: "+icList.contentItem.children.length);
-            TaskTools.publishIconGeometries(icList.contentItem.children);
+            root.publishTasksGeometries();
 
             if (latteDock && latteDock.debugModeTimers) {
                 console.log("plasmoid timer: iconGeometryTimer called...");

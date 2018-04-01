@@ -1108,6 +1108,7 @@ MouseArea{
         //! this way we make sure that layouts that are in different activities that the current layout
         //! dont publish their geometries
         if ((isWindow || isStartup || isGroupParent) && icList && !icList.delayingRemoval
+                && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //dont publish during zoomFactor
                 && (!latteDock
                     || (latteDock && currentLayout && latteDock.universalLayoutManager &&
                         currentLayout.name === latteDock.universalLayoutManager.currentLayoutName))) {
