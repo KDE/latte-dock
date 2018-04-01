@@ -597,16 +597,7 @@ void DockCorona::addOutput(QScreen *screen)
 
 void DockCorona::primaryOutputChanged()
 {
-    /* qDebug() << "primary changed ### "<< qGuiApp->primaryScreen()->name();
-     foreach(auto scr, qGuiApp->screens()){
-         qDebug() << "Found screen: "<<scr->name();
-     }*/
-
-    //if (m_dockViews.count()==1 && qGuiApp->screens().size()==1) {
-    //  foreach(auto view, m_dockViews) {
-    //      view->setScreenToFollow(qGuiApp->primaryScreen());
-    //  }
-    // }
+    m_docksScreenSyncTimer.start();
 }
 
 void DockCorona::screenRemoved(QScreen *screen)
