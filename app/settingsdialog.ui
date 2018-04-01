@@ -220,7 +220,7 @@
               <item>
                <widget class="QPushButton" name="copyButton">
                 <property name="toolTip">
-                 <string>Copy layout</string>
+                 <string>Copy selected layout</string>
                 </property>
                 <property name="text">
                  <string comment="copy layout">Copy</string>
@@ -237,7 +237,7 @@
               <item>
                <widget class="QPushButton" name="removeButton">
                 <property name="toolTip">
-                 <string>Remove layout</string>
+                 <string>Remove selected layout</string>
                 </property>
                 <property name="text">
                  <string comment="remove layout">Remove</string>
@@ -311,7 +311,7 @@
               <item>
                <widget class="QPushButton" name="importButton">
                 <property name="toolTip">
-                 <string>Import layout or full configuration</string>
+                 <string>Import a layout or full configuration file</string>
                 </property>
                 <property name="text">
                  <string comment="import layout">Import</string>
@@ -328,7 +328,7 @@
               <item>
                <widget class="QPushButton" name="exportButton">
                 <property name="toolTip">
-                 <string>Export layout or full configuration</string>
+                 <string>Export selected layout or full configuration into a file</string>
                 </property>
                 <property name="text">
                  <string comment="export layout">Export</string>
@@ -342,7 +342,7 @@
               <item>
                <widget class="QPushButton" name="downloadButton">
                 <property name="toolTip">
-                 <string>Download online layouts</string>
+                 <string>Download community layouts from the Internet</string>
                 </property>
                 <property name="text">
                  <string comment="download layout">Download</string>
@@ -398,7 +398,7 @@
           <number>0</number>
          </property>
          <property name="verticalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOn</enum>
+          <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
          <property name="horizontalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -411,8 +411,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>785</width>
-            <height>505</height>
+            <width>794</width>
+            <height>496</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -491,6 +491,9 @@
                </item>
                <item>
                 <widget class="QCheckBox" name="autostartChkBox">
+                 <property name="toolTip">
+                  <string>Start the application automaticaly after each relogin</string>
+                 </property>
                  <property name="text">
                   <string>Enable autostart during startup</string>
                  </property>
@@ -519,7 +522,7 @@
                <item>
                 <widget class="QCheckBox" name="infoWindowChkBox">
                  <property name="toolTip">
-                  <string/>
+                  <string>Provide visual feedback when layouts are added automatically</string>
                  </property>
                  <property name="text">
                   <string>Show informative window for layouts automatic switching</string>
@@ -664,6 +667,139 @@
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="delayLbl">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Delay</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <item>
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="trackScreensDelayLbl">
+                 <property name="toolTip">
+                  <string>Different hardware can have different delays during screen changes.
+This tracker is used in order to not lose any screen related update.</string>
+                 </property>
+                 <property name="text">
+                  <string>Track screen changes after</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="screenTrackerSpinBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Different hardware can have different delays during screen changes.
+This tracker is used in order to not lose any screen related update.</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="specialValueText">
+                  <string/>
+                 </property>
+                 <property name="suffix">
+                  <string> ms.</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1000</number>
+                 </property>
+                 <property name="maximum">
+                  <number>5000</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>100</number>
+                 </property>
+                 <property name="value">
+                  <number>2500</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </item>

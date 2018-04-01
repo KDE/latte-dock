@@ -42,6 +42,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsWindowSizeChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
@@ -98,6 +99,21 @@ void UniversalSettings::setVersion(int ver)
     m_version = ver;
 
     emit versionChanged();
+}
+
+int UniversalSettings::screenTrackerInterval() const
+{
+    return m_screenTrackerInterval;
+}
+
+void UniversalSettings::setScreenTrackerInterval(int duration)
+{
+    if (m_screenTrackerInterval == duration) {
+        return;
+    }
+
+    m_screenTrackerInterval = duration;
+    emit screenTrackerIntervalChanged();
 }
 
 QString UniversalSettings::currentLayoutName() const
@@ -269,6 +285,7 @@ void UniversalSettings::loadConfig()
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
     m_layoutsColumnWidths = m_universalGroup.readEntry("layoutsColumnWidths", QStringList());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
+    m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
     m_mouseSensitivity = static_cast<Dock::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Dock::HighSensitivity));
@@ -283,6 +300,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
     m_universalGroup.writeEntry("layoutsColumnWidths", m_layoutsColumnWidths);
     m_universalGroup.writeEntry("launchers", m_launchers);
+    m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
     m_universalGroup.writeEntry("mouseSensitivity", (int)m_mouseSensitivity);

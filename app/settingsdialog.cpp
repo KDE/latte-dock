@@ -61,6 +61,9 @@ const int COLORCOLUMN = 1;
 const int NAMECOLUMN = 2;
 const int MENUCOLUMN = 3;
 const int ACTIVITYCOLUMN = 4;
+
+const int SCREENTRACKERDEFAULTVALUE = 2500;
+
 const QChar CheckMark{0x2714};
 
 SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
@@ -122,6 +125,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     m_mouseSensitivityButtons->addButton(ui->highSensitivityBtn, Latte::Dock::HighSensitivity);
     m_mouseSensitivityButtons->setExclusive(true);
 
+    ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
+
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
     // QMenuBar *rightAlignedMenuBar = new QMenuBar(menuBar);
@@ -163,17 +168,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
         updateApplyButtonsState();
     });
 
-    connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, [&]() {
+    connect(ui->screenTrackerSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [ = ](int i) {
         updateApplyButtonsState();
     });
 
-    connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, [&]() {
-        updateApplyButtonsState();
-    });
-
-    connect(ui->tabWidget, &QTabWidget::currentChanged, this, [&]() {
-        updateApplyButtonsState();
-    });
+    connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
 
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
     connect(quitAction, &QAction::triggered, m_corona, &DockCorona::closeApplication);
@@ -684,6 +685,7 @@ void SettingsDialog::restoreDefaults()
         ui->autostartChkBox->setChecked(true);
         ui->infoWindowChkBox->setChecked(true);
         ui->highSensitivityBtn->setChecked(true);
+        ui->screenTrackerSpinBox->setValue(SCREENTRACKERDEFAULTVALUE);
     }
 }
 
@@ -844,6 +846,7 @@ QList<int> SettingsDialog::currentSettings()
     settings << (int)ui->autostartChkBox->isChecked();
     settings << (int)ui->infoWindowChkBox->isChecked();
     settings << m_mouseSensitivityButtons->checkedId();
+    settings << ui->screenTrackerSpinBox->value();
     settings << m_model->rowCount();
 
     return settings;
@@ -1079,7 +1082,7 @@ void SettingsDialog::updateApplyButtonsState()
         //! Defaults for general Latte settings
 
         if (!ui->autostartChkBox->isChecked() || !ui->infoWindowChkBox->isChecked()
-            || !ui->highSensitivityBtn->isChecked()) {
+            || !ui->highSensitivityBtn->isChecked() || ui->screenTrackerSpinBox->value() != SCREENTRACKERDEFAULTVALUE) {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
         } else {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
@@ -1196,7 +1199,7 @@ bool SettingsDialog::saveAllChanges()
     m_corona->universalSettings()->setMouseSensitivity(sensitivity);
     m_corona->universalSettings()->setAutostart(autostart);
     m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
-
+    m_corona->universalSettings()->setScreenTrackerInterval(ui->screenTrackerSpinBox->value());
 
     //! Update Layouts
     QStringList knownActivities = activities();

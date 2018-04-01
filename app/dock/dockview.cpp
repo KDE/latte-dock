@@ -117,10 +117,18 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
+    m_screenSyncTimer.setSingleShot(true);
+    m_screenSyncTimer.setInterval(2000);
+    connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
 
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona) {
+        m_screenSyncTimer.setInterval(qMax(dockCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
+        connect(dockCorona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [this, dockCorona]() {
+            m_screenSyncTimer.setInterval(qMax(dockCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
+        });
+
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
         connect(this, &DockView::docksCountChanged, this, &DockView::totalDocksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
@@ -132,10 +140,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
             }
         });
     }
-
-    m_screenSyncTimer.setSingleShot(true);
-    m_screenSyncTimer.setInterval(2000);
-    connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
 }
 
 DockView::~DockView()

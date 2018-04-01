@@ -64,6 +64,9 @@ public:
     int version() const;
     void setVersion(int ver);
 
+    int screenTrackerInterval() const;
+    void setScreenTrackerInterval(int duration);
+
     QString currentLayoutName() const;
     void setCurrentLayoutName(QString layoutName);
 
@@ -107,6 +110,7 @@ signals:
     void layoutsMemoryUsageChanged();
     void mouseSensitivityChanged();
     void runningActivitiesModelChanged();
+    void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
     void versionChanged();
 
@@ -125,6 +129,8 @@ private:
 
     //when there isnt a version it is an old universal file
     int m_version{1};
+
+    int m_screenTrackerInterval{2500};
 
     QString m_currentLayoutName;
     QString m_lastNonAssignedLayoutName;

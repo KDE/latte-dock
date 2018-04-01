@@ -116,8 +116,11 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
     connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
 
     m_docksScreenSyncTimer.setSingleShot(true);
-    m_docksScreenSyncTimer.setInterval(2500);
+    m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
     connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViewsToScreens);
+    connect(m_universalSettings, &UniversalSettings::screenTrackerIntervalChanged, this, [this]() {
+        m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
+    });
 
     //! Dbus adaptor initialization
     new LatteDockAdaptor(this);
