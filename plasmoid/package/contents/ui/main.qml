@@ -707,7 +707,7 @@ Item {
             tasksStarting = count;
 
             ///Plasma 5.9 enforce grouping at all cases
-            if (Latte.WindowSystem.frameworksVersion >= 335104) {
+            if (Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,9,0)) {
                 groupingWindowTasksThreshold = -1;
             }
         }
