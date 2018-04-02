@@ -1528,7 +1528,7 @@ void DockView::updateEffects()
 {
     //! CRASH: Dont update effects under wayland
     //! because they arent supported yet
-    if (KWindowSystem::isPlatformWayland() && !m_drawEffects) {
+    if (KWindowSystem::isPlatformWayland()) {
         return;
     }
 
