@@ -121,7 +121,7 @@ Item{
         property: "drawEffects"
         when: dock
         value: ((root.blurEnabled && root.useThemePanel && !root.solidPanel)
-                || (root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
+                || (root.blurEnabled && root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
                && (!root.inStartup || inForceHiding || inTempHiding)
     }
 
