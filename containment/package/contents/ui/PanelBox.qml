@@ -468,8 +468,8 @@ Item{
     states: [
         ///Left
         State {
-            name: "leftCenter"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Center)
+            name: "leftCenterOrJustify"
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -482,7 +482,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0);
             }
         },
         ///Left
@@ -523,28 +523,10 @@ Item{
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
-        State {
-            name: "leftDouble"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-            AnchorChanges {
-                target: barLine
-                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            AnchorChanges {
-                target: shadowsSvgItem
-                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            PropertyChanges{
-                target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
         ///Right
         State {
-            name: "rightCenter"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Center)
+            name: "rightCenterOrJustify"
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -557,7 +539,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: root.offset;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0);
             }
         },
         State {
@@ -596,28 +578,10 @@ Item{
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
-        State {
-            name: "rightDouble"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-            AnchorChanges {
-                target: barLine
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            AnchorChanges {
-                target: shadowsSvgItem
-                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right; horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
-            }
-            PropertyChanges{
-                target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
         ///Bottom
         State {
-            name: "bottomCenter"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Center)
+            name: "bottomCenterOrJustify"
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -630,7 +594,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -674,28 +638,10 @@ Item{
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         },
-        State {
-            name: "bottomDouble"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-            AnchorChanges {
-                target: barLine
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            AnchorChanges {
-                target: shadowsSvgItem
-                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
         ///Top
         State {
-            name: "topCenter"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Center)
+            name: "topCenterOrJustify"
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -708,7 +654,7 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: root.offset; anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
         State {
@@ -748,24 +694,6 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:root.offset;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-            }
-        },
-        State {
-            name: "topDouble"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Justify)
-
-            AnchorChanges {
-                target: barLine
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            AnchorChanges {
-                target: shadowsSvgItem
-                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined; horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-            }
-            PropertyChanges{
-                target: barLine
-                anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
                 anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
             }
         }
