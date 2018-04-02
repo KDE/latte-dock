@@ -53,6 +53,7 @@
 #define CRED     "\e[0;31m"
 
 inline void configureAboutData();
+inline void detectPlatform(int argc, char **argv);
 
 int main(int argc, char **argv)
 {
@@ -72,7 +73,16 @@ int main(int argc, char **argv)
     }
 
     QQuickWindow::setDefaultAlphaBuffer(true);
+
+    const bool qpaVariable = qEnvironmentVariableIsSet("QT_QPA_PLATFORM");
+    detectPlatform(argc, argv);
     QApplication app(argc, argv);
+
+    if (!qpaVariable) {
+        // don't leak the env variable to processes we start
+        qunsetenv("QT_QPA_PLATFORM");
+    }
+
     KQuickAddons::QtQuickSettings::init();
 
     KLocalizedString::setApplicationDomain("latte-dock");
@@ -280,4 +290,33 @@ inline void configureAboutData()
     about.setTranslator(QStringLiteral(TRANSLATORS), QStringLiteral(TRANSLATORS_EMAIL));
 
     KAboutData::setApplicationData(about);
+}
+
+//! used the version provided by PW:KWorkspace
+inline void detectPlatform(int argc, char **argv)
+{
+    if (qEnvironmentVariableIsSet("QT_QPA_PLATFORM")) {
+        return;
+    }
+
+    for (int i = 0; i < argc; i++) {
+        if (qstrcmp(argv[i], "-platform") == 0 ||
+            qstrcmp(argv[i], "--platform") == 0 ||
+            QByteArray(argv[i]).startsWith("-platform=") ||
+            QByteArray(argv[i]).startsWith("--platform=")) {
+            return;
+        }
+    }
+
+    const QByteArray sessionType = qgetenv("XDG_SESSION_TYPE");
+
+    if (sessionType.isEmpty()) {
+        return;
+    }
+
+    if (qstrcmp(sessionType, "wayland") == 0) {
+        qputenv("QT_QPA_PLATFORM", "wayland");
+    } else if (qstrcmp(sessionType, "x11") == 0) {
+        qputenv("QT_QPA_PLATFORM", "xcb");
+    }
 }
