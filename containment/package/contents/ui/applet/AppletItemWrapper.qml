@@ -440,10 +440,20 @@ Item{
             anchors.centerIn: parent
 
             //we setup as maximum for hidden container of some applets that break
-            //the Latte experience the size:96 . This is why after that size
-            //the folder widget changes to fullRepresentation instead of compact one
-            width: Math.min(96, parent.width)
+            //the Latte experience the size:96 or units.iconSizeHints.panel.
+            //This is why after that size the folder widget changes
+            //to fullRepresentation instead of compact one
+            width: Math.min(maxSize, parent.width)
             height: width
+
+            property int maxSize:{
+                if (Latte.WindowSystem.plasmaDesktopVersion === 0 ||
+                        (Latte.WindowSystem.plasmaDesktopVersion < Latte.WindowSystem.makeVersion(5,12,80)) ) {
+                    return 96;
+                } else {
+                    return units.iconSizeHints.panel;
+                }
+            }
         }
 
         Loader{
