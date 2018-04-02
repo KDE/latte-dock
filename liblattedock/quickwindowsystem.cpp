@@ -50,8 +50,6 @@ QuickWindowSystem::QuickWindowSystem(QObject *parent)
 
         m_compositing = KWindowSystem::compositingActive();
     }
-
-    loadPlasmaDesktopVersion();
 }
 
 QuickWindowSystem::~QuickWindowSystem()
@@ -74,8 +72,12 @@ uint QuickWindowSystem::frameworksVersion() const
     return Plasma::version();
 }
 
-uint QuickWindowSystem::plasmaDesktopVersion() const
+uint QuickWindowSystem::plasmaDesktopVersion()
 {
+    if (m_plasmaDesktopVersion == -1) {
+        m_plasmaDesktopVersion = identifyPlasmaDesktopVersion();
+    }
+
     return m_plasmaDesktopVersion;
 }
 
@@ -84,10 +86,9 @@ uint QuickWindowSystem::makeVersion(uint major, uint minor, uint release) const
     return (((major) << 16) | ((minor) << 8) | (release));
 }
 
-void QuickWindowSystem::loadPlasmaDesktopVersion()
+uint QuickWindowSystem::identifyPlasmaDesktopVersion()
 {
     //! Indentify Plasma Desktop version
-
     QProcess process;
     process.start("plasmashell", QStringList() << "-v");
     process.waitForFinished();
@@ -106,17 +107,23 @@ void QuickWindowSystem::loadPlasmaDesktopVersion()
             uint rel = plasmaDesktopVersionParts[2].toUInt();
 
             if (maj > 0) {
-                m_plasmaDesktopVersion = makeVersion(maj, min, rel);
+
+                uint desktopVersion = makeVersion(maj, min, rel);
 
                 QString message("Plasma Desktop version:  " + QString::number(maj) + "."
                                 + QString::number(min) + "." + QString::number(rel)
                                 + " (" + QString::number(m_plasmaDesktopVersion) + ")");
                 qDebug() << message;
+                qDebug() << " /////////////////////////";
+
+                return desktopVersion;
             }
         }
 
         qDebug() << " /////////////////////////";
     }
+
+    return 0;
 }
 
 } //end of namespace

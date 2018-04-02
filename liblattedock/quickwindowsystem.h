@@ -48,7 +48,7 @@ public:
     bool isPlatformWayland() const;
 
     uint frameworksVersion() const;
-    uint plasmaDesktopVersion() const;
+    uint plasmaDesktopVersion();
 
 public slots:
     Q_INVOKABLE uint makeVersion(uint major, uint minor, uint release) const;
@@ -62,10 +62,12 @@ signals:
 private:
     void loadPlasmaDesktopVersion();
 
+    uint identifyPlasmaDesktopVersion();
+
 private:
     bool m_compositing{true};
 
-    uint m_plasmaDesktopVersion{0};
+    int m_plasmaDesktopVersion{ -1};
 };
 
 static QObject *windowsystem_qobject_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
