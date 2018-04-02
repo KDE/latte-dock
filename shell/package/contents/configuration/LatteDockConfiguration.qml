@@ -43,7 +43,7 @@ FocusScope {
     width: maxWidth + units.smallSpacing * 2
     height: Math.min(content.height + units.smallSpacing * 2,
                      dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing)
-                     //! for small resolutions we better limit the size of the settings in order to be shown properly
+    //! for small resolutions we better limit the size of the settings in order to be shown properly
 
     Layout.minimumWidth: width
     Layout.minimumHeight: height
@@ -199,16 +199,16 @@ FocusScope {
                     height: width
 
                     source: "latte-dock"
-                   // animated: true
+                    // animated: true
                     usesPlasmaTheme: false
                     active: aboutMouseArea.containsMouse
                 }
                 PlasmaComponents.Label {
-                     id: latteTxtMetrics
-                     text: "Latte"
-                     width: 0
-                     font.pointSize: 2 * theme.defaultFont.pointSize
-                     visible: false
+                    id: latteTxtMetrics
+                    text: "Latte"
+                    width: 0
+                    font.pointSize: 2 * theme.defaultFont.pointSize
+                    visible: false
                 }
 
                 PlasmaCore.SvgItem{
@@ -342,11 +342,17 @@ FocusScope {
             Layout.maximumHeight: height
 
             width: maxWidth - units.smallSpacing
-            height: behaviorPage.Layout.maximumHeight + units.smallSpacing * 4
+            height: availableFreeHeight + units.smallSpacing * 4
 
             color: transparentBackgroundColor
             border.width: 1
             border.color: theme.backgroundColor
+
+            //fix the height binding loop when showing the configuration window
+
+            property int availableFreeHeight: Math.min(29*theme.mSize(theme.defaultFont).height + units.smallSpacing * 2, //calculatios according to font size
+                                                       dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing - header.height - headerSpacer.height
+                                                       - tabBar.height - actionButtons.height - 36) //calculations according to screen geometry and elements heights
 
             PlasmaExtras.ScrollArea {
                 id: scrollArea

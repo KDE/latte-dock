@@ -33,11 +33,7 @@ import "../controls" as ExtraControls
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
-    //fix the height binding loop when showing the configuration window
-    Layout.maximumHeight: Math.min(28*theme.mSize(theme.defaultFont).height + units.smallSpacing * 2, availableFreeHeight)
-
-    property int availableFreeHeight: dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing
-                                      - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 36
+    Layout.maximumHeight: content.height + units.smallSpacing * 2
 
     property alias dockTypeSelection: _dockTypeSelection
 
