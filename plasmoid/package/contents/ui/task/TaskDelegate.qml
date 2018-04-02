@@ -291,7 +291,7 @@ MouseArea{
         width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
         height: !root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
 
-        property int localThickMargin: root.statesLineSize + root.thickMarginBase + 4
+        property int localThickMargin: !root.reverseLinesPosition ? root.statesLineSize + root.thickMarginBase + 4 : root.thickMarginBase + 4
 
         property bool forceHiddenState: false
 
