@@ -82,6 +82,7 @@ Grid {
                 plasmoid.configuration.shadows = 2;
                 plasmoid.configuration.zoomLevel = 16;
                 plasmoid.configuration.shrinkThickMargins = false;
+                plasmoid.configuration.activeIndicator = Latte.Dock.InternalsIndicator;
                 plasmoid.configuration.autoDecreaseIconSize = true;
             }
         }
@@ -108,6 +109,7 @@ Grid {
                 plasmoid.configuration.shadows = 0;
                 plasmoid.configuration.zoomLevel = 0;
                 plasmoid.configuration.shrinkThickMargins = true;
+                plasmoid.configuration.activeIndicator = Latte.Dock.NoneIndicator;
                 plasmoid.configuration.autoDecreaseIconSize = false;
             }
         }
