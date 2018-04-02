@@ -38,6 +38,7 @@ class QuickWindowSystem final : public QObject {
     Q_PROPERTY(bool isPlatformWayland READ isPlatformWayland NOTIFY isPlatformWaylandChanged FINAL)
 
     Q_PROPERTY(uint frameworksVersion READ frameworksVersion NOTIFY frameworksVersionChanged)
+    Q_PROPERTY(uint plasmaDesktopVersion READ plasmaDesktopVersion NOTIFY plasmaDesktopVersionChanged)
 
 public:
     explicit QuickWindowSystem(QObject *parent = nullptr);
@@ -47,14 +48,24 @@ public:
     bool isPlatformWayland() const;
 
     uint frameworksVersion() const;
+    uint plasmaDesktopVersion() const;
+
+public slots:
+    Q_INVOKABLE uint makeVersion(uint major, uint minor, uint release) const;
 
 signals:
     void compositingChanged();
     void frameworksVersionChanged();
     void isPlatformWaylandChanged();
+    void plasmaDesktopVersionChanged();
 
 private:
-    bool m_compositing : 1;
+    void loadPlasmaDesktopVersion();
+
+private:
+    bool m_compositing{true};
+
+    uint m_plasmaDesktopVersion{0};
 };
 
 static QObject *windowsystem_qobject_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)

@@ -22,6 +22,7 @@
 #include "../app/config-latte.h"
 
 #include <QDebug>
+#include <QProcess>
 
 #include <plasma/version.h>
 
@@ -49,6 +50,8 @@ QuickWindowSystem::QuickWindowSystem(QObject *parent)
 
         m_compositing = KWindowSystem::compositingActive();
     }
+
+    loadPlasmaDesktopVersion();
 }
 
 QuickWindowSystem::~QuickWindowSystem()
@@ -69,6 +72,51 @@ bool QuickWindowSystem::isPlatformWayland() const
 uint QuickWindowSystem::frameworksVersion() const
 {
     return Plasma::version();
+}
+
+uint QuickWindowSystem::plasmaDesktopVersion() const
+{
+    return m_plasmaDesktopVersion;
+}
+
+uint QuickWindowSystem::makeVersion(uint major, uint minor, uint release) const
+{
+    return (((major) << 16) | ((minor) << 8) | (release));
+}
+
+void QuickWindowSystem::loadPlasmaDesktopVersion()
+{
+    //! Indentify Plasma Desktop version
+
+    QProcess process;
+    process.start("plasmashell", QStringList() << "-v");
+    process.waitForFinished();
+    QString output(process.readAllStandardOutput());
+
+    QStringList stringSplit = output.split(" ");
+
+    if (stringSplit.count() >= 2) {
+        qDebug() << " /////////////////////////";
+        QString cleanVersionString = stringSplit[1].remove("\n");
+        QStringList plasmaDesktopVersionParts = cleanVersionString.split(".");
+
+        if (plasmaDesktopVersionParts.count() == 3) {
+            uint maj = plasmaDesktopVersionParts[0].toUInt();
+            uint min = plasmaDesktopVersionParts[1].toUInt();
+            uint rel = plasmaDesktopVersionParts[2].toUInt();
+
+            if (maj > 0) {
+                m_plasmaDesktopVersion = makeVersion(maj, min, rel);
+
+                QString message("Plasma Desktop version:  " + QString::number(maj) + "."
+                                + QString::number(min) + "." + QString::number(rel)
+                                + " (" + QString::number(m_plasmaDesktopVersion) + ")");
+                qDebug() << message;
+            }
+        }
+
+        qDebug() << " /////////////////////////";
+    }
 }
 
 } //end of namespace
