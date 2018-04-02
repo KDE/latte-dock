@@ -161,7 +161,6 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconSize
                     minimumValue: 16
-                    maximumValue: 128
                     stepSize: (!plasmoid.configuration.autoDecreaseIconSize
                               && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
                               || dialog.dockIsPanel ? 1 : 8
@@ -179,6 +178,12 @@ PlasmaComponents.Page {
 
                     Component.onCompleted: {
                         valueChanged.connect(updateIconSize);
+
+                        if (plasmoid.configuration.iconSize>128) {
+                            maximumValue = plasmoid.configuration.iconSize + 32
+                        } else {
+                            maximumValue = 128
+                        }
                     }
 
                     Component.onDestruction: {
