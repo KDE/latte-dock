@@ -492,7 +492,7 @@
                <item>
                 <widget class="QCheckBox" name="autostartChkBox">
                  <property name="toolTip">
-                  <string>Start the application automaticaly after each relogin</string>
+                  <string>Start the application automatically after each relogin</string>
                  </property>
                  <property name="text">
                   <string>Enable autostart during startup</string>
