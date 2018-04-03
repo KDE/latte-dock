@@ -254,7 +254,8 @@ void DockSecConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if (focusWindow && focusWindow->flags().testFlag(Qt::Popup))
+    if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                        || focusWindow->flags().testFlag(Qt::ToolTip)) )
         return;
 
     const auto parent = qobject_cast<DockConfigView *>(m_parent);

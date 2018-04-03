@@ -397,7 +397,7 @@ MouseArea {
         visualParent: currentApplet
 
         type: PlasmaCore.Dialog.Dock
-        flags: Qt.WindowStaysOnTopHint|Qt.WindowDoesNotAcceptFocus|Qt.BypassWindowManagerHint
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.ToolTip
         location: plasmoid.location
 
         onVisualParentChanged: {
