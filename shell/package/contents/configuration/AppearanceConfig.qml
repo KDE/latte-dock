@@ -180,7 +180,7 @@ PlasmaComponents.Page {
                         valueChanged.connect(updateIconSize);
 
                         if (plasmoid.configuration.iconSize>128) {
-                            maximumValue = plasmoid.configuration.iconSize + 32
+                            maximumValue = plasmoid.configuration.iconSize + 64
                         } else {
                             maximumValue = 128
                         }
