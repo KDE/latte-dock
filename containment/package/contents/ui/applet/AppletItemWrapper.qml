@@ -260,7 +260,9 @@ Item{
                 layoutHeight = applet.Layout.minimumHeight;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
-                    && ( (applet.Layout.maximumHeight < root.iconSize) || (applet.Layout.preferredHeight > root.iconSize))
+                    && ( applet.Layout.maximumHeight < root.iconSize
+                        || applet.Layout.preferredHeight > root.iconSize
+                        || container.lockZoom)
                     && root.isVertical
                     && !disableScaleWidth
                     && !container.fakeIconItem) {
@@ -273,15 +275,16 @@ Item{
                 else if (applet.Layout.minimumHeight > root.iconSize){
                     layoutHeight = applet.Layout.minimumHeight;
                 }
-                else if ((applet.Layout.preferredHeight > root.iconSize)){
+                else if ((applet.Layout.preferredHeight > root.iconSize)
+                         || (container.lockZoom && applet.Layout.preferredHeight !== 0 )){
                     layoutHeight = applet.Layout.preferredHeight;
                 }
                 else{
                     layoutHeight = root.iconSize + moreHeight;
                 }
-            }
-            else
+            } else {
                 layoutHeight = root.iconSize + moreHeight;
+            }
         }
         //return root.iconSize + moreHeight;
     }
@@ -319,15 +322,14 @@ Item{
                 else if (applet.Layout.minimumWidth > root.iconSize){
                     layoutWidth = applet.Layout.minimumWidth;
                 }
-                else if (applet.Layout.preferredWidth > root.iconSize){
+                else if ((applet.Layout.preferredWidth > root.iconSize)
+                         || (container.lockZoom && applet.Layout.preferredWidth !== 0 )){
                     layoutWidth = applet.Layout.preferredWidth;
                 }
                 else{
                     layoutWidth = root.iconSize + moreWidth;
                 }
-            }
-            else{
-                //return root.iconSize + moreWidth;
+            } else{
                 layoutWidth = root.iconSize + moreWidth;
             }
         }
