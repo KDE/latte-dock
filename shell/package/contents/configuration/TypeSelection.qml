@@ -84,6 +84,12 @@ Grid {
                 plasmoid.configuration.shrinkThickMargins = false;
                 plasmoid.configuration.activeIndicator = Latte.Dock.InternalsIndicator;
                 plasmoid.configuration.autoDecreaseIconSize = true;
+
+                //! Dynamic Background
+                plasmoid.configuration.solidBackgroundForMaximized = false;
+                plasmoid.configuration.colorizeTransparentPanels = false;
+                plasmoid.configuration.backgroundOnlyOnMaximized = false;
+                plasmoid.configuration.disablePanelShadowForMaximized = false;
             }
         }
     }
@@ -111,6 +117,12 @@ Grid {
                 plasmoid.configuration.shrinkThickMargins = true;
                 plasmoid.configuration.activeIndicator = Latte.Dock.NoneIndicator;
                 plasmoid.configuration.autoDecreaseIconSize = false;
+
+                //! Dynamic Background
+                plasmoid.configuration.solidBackgroundForMaximized = (plasmoid.configuration.panelTransparency !== 100 ? true : false);
+                plasmoid.configuration.colorizeTransparentPanels = false;
+                plasmoid.configuration.backgroundOnlyOnMaximized = false;
+                plasmoid.configuration.disablePanelShadowForMaximized = false;
             }
         }
     }
