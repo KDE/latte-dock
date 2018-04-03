@@ -59,7 +59,7 @@ Item{
 
             property int shadowSize : root.appShadowSize
 
-            property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName ? true : false
+            property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet && applet.pluginName !== root.plasmoidName ? true : false
         }
     }
 
