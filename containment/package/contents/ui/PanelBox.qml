@@ -40,6 +40,10 @@ Item{
 
     property int animationTime: 6*root.durationTime*units.shortDuration
 
+    property int lengthMargins: {
+        return root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
+    }
+
     property int panelWidth: {
         if (root.behaveAsPlasmaPanel && !root.editMode) {
             return root.width;

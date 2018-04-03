@@ -167,7 +167,7 @@ DragDrop.DropArea {
     property int modifierClickAction: plasmoid.configuration.modifierClickAction
     property int modifierClick: plasmoid.configuration.modifierClick
 
-    property int panelEdgeSpacing: Math.max(iconSize / 3, 1.5*appShadowSize)
+    property int panelEdgeSpacing: Math.max(panelBoxBackground.lengthMargins, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency
     property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
                                         || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
@@ -1611,7 +1611,9 @@ DragDrop.DropArea {
         anchors.fill:layoutsContainer
         // z: root.behaveAsPlasmaPanel ? 0 : 1
 
-        PanelBox{}
+        PanelBox{
+            id: panelBoxBackground
+        }
     }
 
     Item {
