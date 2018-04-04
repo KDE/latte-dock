@@ -396,7 +396,7 @@ MouseArea {
         id: tooltip
         visualParent: currentApplet
 
-        type: PlasmaCore.Dialog.PopupMenu
+        type: PlasmaCore.Dialog.Dock
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.ToolTip
         location: plasmoid.location
 
