@@ -471,6 +471,15 @@ MouseArea {
                         anchors.rightMargin: units.smallSpacing
                         textFormat: Text.PlainText
                         maximumLineCount: 1
+
+                        //! update value of maxLength in tooltip
+                        Binding{
+                            target: label
+                            property: "text"
+                            when: currentApplet === ruler
+                            value: ruler.tooltip
+                        }
+
                     }
 
                     PlasmaComponents.ToolButton{
