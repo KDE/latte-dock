@@ -411,8 +411,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>794</width>
-            <height>496</height>
+            <width>805</width>
+            <height>505</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -775,7 +775,7 @@ This tracker is used in order to not lose any screen related update.</string>
                   <number>1000</number>
                  </property>
                  <property name="maximum">
-                  <number>5000</number>
+                  <number>10000</number>
                  </property>
                  <property name="singleStep">
                   <number>100</number>
