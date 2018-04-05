@@ -85,6 +85,12 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && Latte.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
+    property bool windowIsTouching: dock && dock.visibility && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet)
+
+    property bool forceSemiTransparentPanel: ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
+                                             || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
+                                             && Latte.WindowSystem.compositingActive
+
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
                                     && Latte.WindowSystem.compositingActive
                                     &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet)
@@ -93,7 +99,7 @@ DragDrop.DropArea {
                                          && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
-    property bool forceColorizer: plasmoid.configuration.colorizeTransparentPanels
+    property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.pluginName !== root.plasmoidName
@@ -1744,7 +1750,12 @@ DragDrop.DropArea {
         readonly property real themeBackgroundColorLuma: 0.2126*backColorRs + 0.7152*backColorGs + 0.0722*backColorBs
         readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
 
-        property bool isShown: active && !forceSolidPanel && plasmoid.configuration.solidBackgroundForMaximized && !root.editMode && Latte.WindowSystem.compositingActive
+        property bool isShown: active && !forceSolidPanel
+                                  //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
+                                  //! then the colorizer could be enabled for low panel transparency levels (<40%)
+                               && (!forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
+                               && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
+                               && !root.editMode && Latte.WindowSystem.compositingActive
 
         property real currentBackgroundLuminas: -1000
 

@@ -111,6 +111,18 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: onlyOnMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Hide background for not maximized windows")
+                checked: plasmoid.configuration.backgroundOnlyOnMaximized
+                tooltip: i18n("The panel background becomes transparent except if \nthere is a maximized or snapped window")
+
+                onClicked: {
+                    plasmoid.configuration.backgroundOnlyOnMaximized = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: colorizeTransparentPanelsChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.bottomMargin: units.smallSpacing
@@ -120,22 +132,10 @@ PlasmaComponents.Page {
                 tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
                 style: LatteCheckBoxStyle{}
 
-                enabled: solidForMaximizedChk.checked
+                enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
 
                 onClicked: {
                     plasmoid.configuration.colorizeTransparentPanels = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: onlyOnMaximizedChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide background for not maximized windows")
-                checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                tooltip: i18n("The panel background becomes transparent except if \nthere is a maximized or snapped window")
-
-                onClicked: {
-                    plasmoid.configuration.backgroundOnlyOnMaximized = checked;
                 }
             }
 
