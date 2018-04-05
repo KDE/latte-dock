@@ -237,7 +237,7 @@
       <default>true</default>
     </entry>
     <entry name="titleTooltips" type="Bool">
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="indicateAudioStreams" type="Bool">
       <default>true</default>

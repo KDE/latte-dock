@@ -460,15 +460,6 @@ Item {
 
     ///END connections
 
-    PlasmaComponents.BusyIndicator {
-        z: 1000
-        visible: applet && applet.busy
-        running: visible
-        anchors.centerIn: parent
-        width: Math.min(parent.width, parent.height)
-        height: width
-    }
-
     /*  Rectangle{
         anchors.fill: parent
         color: "transparent"
@@ -520,6 +511,16 @@ Item {
 
     }// Flow with hidden spacers inside
 
+    //Busy Indicator
+    PlasmaComponents.BusyIndicator {
+        z: 1000
+        visible: applet && applet.busy
+        running: visible
+        anchors.centerIn: parent
+        width: Math.min(parent.width, parent.height)
+        height: width
+    }
+
     //! The Launchers Area Indicator
     Rectangle{
         anchors.fill: parent
@@ -563,7 +564,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: (!latteApplet)&&(canBeHovered)&&(!root.editMode)//&&(!lockZoom)
+        enabled: !latteApplet && canBeHovered && !root.editMode && !lockZoom && root.zoomFactor>1
         hoverEnabled: !root.editMode && (!latteApplet) ? true : false
         propagateComposedEvents: true
 
