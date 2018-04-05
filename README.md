@@ -73,7 +73,7 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### Solus Project
 
-- [Solus Package] (https://packages.solus-project.com/shannon/l/latte-dock/)
+- [Solus Package](https://packages.solus-project.com/shannon/l/latte-dock/)
 
 ### Void Linux
 
