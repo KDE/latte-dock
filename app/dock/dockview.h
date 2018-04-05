@@ -304,6 +304,7 @@ private slots:
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
     void updateEffects();
+    void validateDockGeometry();
 
     void restoreConfig();
     void saveConfig();
@@ -346,6 +347,9 @@ private:
     QRect m_localGeometry;
     QRect m_absGeometry;
     QRect m_maskArea;
+    //! it is used in order to enforce X11 to never miss window geometry
+    QRect m_validGeometry;
+
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
@@ -356,6 +360,7 @@ private:
     QString m_screenToFollowId;
 
     QTimer m_screenSyncTimer;
+    QTimer m_validateGeometryTimer;
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 4> connectionsManagedLayout;

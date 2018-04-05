@@ -121,6 +121,14 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     m_screenSyncTimer.setInterval(2000);
     connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
 
+    //! under X11 it was identified that windows many times especially under screen changes
+    //! dont end up at the correct position and size. This timer will enforce repositionings
+    //! and resizes every 500ms if the window hasnt end up to correct values and until this
+    //! is achieved
+    m_validateGeometryTimer.setSingleShot(true);
+    m_validateGeometryTimer.setInterval(500);
+    connect(&m_validateGeometryTimer, &QTimer::timeout, this, &DockView::syncGeometry);
+
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona) {
@@ -180,13 +188,18 @@ void DockView::init()
     connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::screenChanged);
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::screenChanged);
     connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
+
     connect(this, &QQuickWindow::xChanged, this, &DockView::xChanged);
+    connect(this, &QQuickWindow::xChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::xChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::yChanged, this, &DockView::yChanged);
+    connect(this, &QQuickWindow::yChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::yChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
+    connect(this, &QQuickWindow::widthChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
+    connect(this, &QQuickWindow::heightChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::updateAbsDockGeometry);
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
@@ -447,6 +460,10 @@ void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
 //! correct screen
 void DockView::reconsiderScreen()
 {
+    if (m_inDelete) {
+        return;
+    }
+
     qDebug() << "  Delayer  ";
 
     foreach (auto scr, qGuiApp->screens()) {
@@ -718,33 +735,37 @@ QRect DockView::maximumNormalGeometry()
 
 void DockView::resizeWindow(QRect availableScreenRect)
 {
+    QSize screenSize = this->screen()->size();
+    QSize size = (formFactor() == Plasma::Types::Vertical) ? QSize(maxThickness(), availableScreenRect.height()) : QSize(screenSize.width(), maxThickness());
+
     if (formFactor() == Plasma::Types::Vertical) {
         //qDebug() << "MAXIMUM RECT :: " << maximumRect << " - AVAILABLE RECT :: " << availableRect;
-        QSize size{maxThickness(), availableScreenRect.height()};
-
         if (m_behaveAsPlasmaPanel) {
             size.setWidth(normalThickness());
             size.setHeight(static_cast<int>(maxLength() * availableScreenRect.height()));
         }
-
-        setMinimumSize(size);
-        setMaximumSize(size);
-        resize(size);
     } else {
-        QSize screenSize = this->screen()->size();
-        QSize size{screenSize.width(), maxThickness()};
-
         if (m_behaveAsPlasmaPanel) {
             size.setWidth(static_cast<int>(maxLength() * screenSize.width()));
             size.setHeight(normalThickness());
         }
+    }
 
-        setMinimumSize(size);
-        setMaximumSize(size);
-        resize(size);
+    m_validGeometry.setSize(size);
 
-        if (corona())
-            emit corona()->availableScreenRectChanged();
+    setMinimumSize(size);
+    setMaximumSize(size);
+    resize(size);
+
+    if (formFactor() == Plasma::Types::Horizontal && corona()) {
+        emit corona()->availableScreenRectChanged();
+    }
+}
+
+void DockView::validateDockGeometry()
+{
+    if (geometry() != m_validGeometry) {
+        m_validateGeometryTimer.start();
     }
 }
 
@@ -848,6 +869,8 @@ void DockView::updatePosition(QRect availableScreenRect)
                        << location();
     }
 
+    m_validGeometry.setTopLeft(position);
+
     setPosition(position);
 
     if (m_shellSurface) {
@@ -857,7 +880,7 @@ void DockView::updatePosition(QRect availableScreenRect)
 
 inline void DockView::syncGeometry()
 {
-    if (!(this->screen() && this->containment()))
+    if (!(this->screen() && this->containment()) || m_inDelete)
         return;
 
     bool found{false};
