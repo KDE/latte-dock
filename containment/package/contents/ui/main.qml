@@ -1768,11 +1768,11 @@ DragDrop.DropArea {
                 var backAbs = Math.abs(themeBackgroundColorLuma - currentBackgroundLuminas);
 
                 if (textAbs > backAbs) {
-                    return theme.textColor;
+                    return Qt.rgba(theme.textColor.r, theme.textColor.g, theme.textColor.b , 1); //remove any transparency
                 }
             }
 
-            return theme.backgroundColor;
+            return Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 1); //remove any transparency
         }
 
         sourceComponent: ColorizerManager{}
