@@ -1438,6 +1438,10 @@ DragDrop.DropArea {
             Layout.fillHeight: true
             PlasmaComponents.Label{
                 id:titleLbl
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
+                Layout.topMargin: 2
+                Layout.bottomMargin: 2
                 text: titleTooltipDialog.title
             }
         }
