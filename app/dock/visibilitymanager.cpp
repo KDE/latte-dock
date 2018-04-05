@@ -851,7 +851,11 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
 
     for (const auto &winfo : windows) {
         if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-            if (winfo.isMaximized()) {
+            if (winfo.isMaximized()
+                && (winfo.geometry().x() == availableScreenGeometry.x())
+                && (winfo.geometry().y() == availableScreenGeometry.y())
+                && (winfo.geometry().bottom() >= availableScreenGeometry.bottom())
+                && (winfo.geometry().right() >= availableScreenGeometry.right())) {
                 foundMaximized = true;
             }
 
