@@ -1,4 +1,6 @@
 
+var blacklistedApplets = ["com.github.zren.presentwindows"];
+
 function typeOf(obj, className){
     var name = obj.toString();
     //if (applet.pluginName === "org.kde.plasma.kicker") //"set a plugin name to debug"
@@ -32,6 +34,10 @@ function reconsiderAppletIconItem(){
 }
 
 function identifyGeneric() {
+    if (blacklistedApplets.indexOf(applet.pluginName) >= 0) {
+        return;
+    }
+
     var level0 = applet.children;
 
     for(var i=0; i<level0.length; ++i){
