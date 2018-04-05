@@ -286,9 +286,6 @@ inline void configureAboutData()
     about.addCredit(QStringLiteral("Ernesto Acosta (elav)"), i18n("Reviews for Latte Dock, CandilDock and NowDock")
                     , QString(), QStringLiteral("https://github.com/elav"));
 
-    // Translators
-    about.setTranslator(QStringLiteral(TRANSLATORS), QStringLiteral(TRANSLATORS_EMAIL));
-
     KAboutData::setApplicationData(about);
 }
 

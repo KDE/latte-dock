@@ -52,35 +52,36 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### Ubuntu/Debian
 
-- [Ubuntu Vibes](https://github.com/ubuntuvibes/Debs)
+- [Ubuntu](https://packages.ubuntu.com/bionic/latte-dock)
 - [Rik Mills - ppa](https://launchpad.net/~rikmills/+archive/ubuntu/latte-dock)
 
 ### openSUSE
 
-- [openSUSE OBS](https://software.opensuse.org//download.html?project=home%3Apsifidotos&package=latte-dock)
+- [openSUSE](https://software.opensuse.org/package/latte-dock?search_term=latte+dock)
+- [psifidotos - OBS](https://software.opensuse.org//download.html?project=home%3Apsifidotos&package=latte-dock)
 
 ### Fedora
 
-- [Fedora - official](https://admin.fedoraproject.org/pkgdb/package/rpms/latte-dock/)
+- [Fedora](https://admin.fedoraproject.org/pkgdb/package/rpms/latte-dock/)
 
 ### Arch Linux
 
-- [Arch Linux - official](https://www.archlinux.org/packages/?sort=&q=latte-dock)
+- [Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
 
 ### Gentoo
 
-- [Gentoo package](https://packages.gentoo.org/packages/kde-misc/latte-dock)
+- [Gentoo](https://packages.gentoo.org/packages/kde-misc/latte-dock)
 
 ### Solus Project
 
-- [Solus Package](https://packages.solus-project.com/shannon/l/latte-dock/)
+- [Solus](https://packages.solus-project.com/shannon/l/latte-dock/)
 
 ### Void Linux
 
-- [Void Linux package](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/latte-dock)
+- [Void Linux](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/latte-dock)
 
 ### FreeBSD
-- [FreeBSD Port - official](https://www.freshports.org/deskutils/latte-dock/)
+- [FreeBSD Port](https://www.freshports.org/deskutils/latte-dock/)
 
 See the [installation instruction](INSTALLATION.md) for others Linux distribution or development build
 

@@ -9,8 +9,4 @@
 
 #cmakedefine BUG_ADDRESS "@BUG_ADDRESS@"
 
-#cmakedefine TRANSLATORS "@TRANSLATORS@"
-
-#cmakedefine TRANSLATORS_EMAIL "@TRANSLATORS_EMAIL@"
-
 #endif // CONFIG_LATTE_H
