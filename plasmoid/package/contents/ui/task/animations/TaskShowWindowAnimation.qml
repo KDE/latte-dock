@@ -143,6 +143,7 @@ SequentialAnimation{
         }
 
         if (hideStartup || hideWindow) {
+            isForcedHidden = true;
             mainItemContainer.visible = false;
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
@@ -156,7 +157,7 @@ SequentialAnimation{
             wrapper.mScale = 1;
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
-        } else if (( animation2 || animation3 || animation6) && (root.durationTime !== 0)){
+        } else if (( animation2 || animation3 || animation6 || isForcedHidden) && (root.durationTime !== 0)){
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;

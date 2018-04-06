@@ -61,6 +61,10 @@ MouseArea{
         }
     }
 
+    /*onWidthChanged: {
+        console.log("T: " + itemIndex + " - " + launcherUrl + " - " + width + " _ "+ hiddenSpacerLeft.width + " _ " + wrapper.width + " _ " + hiddenSpacerRight.width);
+    }*/
+
     height: {
         if (!visible)
             return 0;
@@ -107,6 +111,7 @@ MouseArea{
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
     property bool isDragged: false
     property bool isGroupParent: (IsGroupParent === true) ? true : false
+    property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
     property bool isMinimized: (IsMinimized === true) ? true : false
     property bool isSeparator: false
@@ -308,14 +313,21 @@ MouseArea{
                 forceHiddenState = false;
             } else {
                 var firstPosition = (index>=0) && (index < parabolicManager.firstRealTaskIndex);
-                var sepNeighbour = parabolicManager.taskIsSeparator(index-1);
+                var sepNeighbour = mainItemContainer.hasNeighbourSeparator(index-1, false);
                 var firstSepFromLastSeparatorsGroup = (index>=0) && (index > parabolicManager.lastRealTaskIndex);
 
                 forceHiddenState = (firstPosition || sepNeighbour || firstSepFromLastSeparatorsGroup);
             }
         }
 
-        Component.onCompleted: updateForceHiddenState();
+        Component.onCompleted: {
+            updateForceHiddenState();
+            root.hiddenTasksUpdated.connect(updateForceHiddenState);
+        }
+
+        Component.onDestruction: {
+            root.hiddenTasksUpdated.disconnect(updateForceHiddenState);
+        }
 
         onForceHiddenStateChanged: root.separatorsUpdated();
 
@@ -499,6 +511,8 @@ MouseArea{
     onIsActiveChanged: {
         checkWindowsStates();
     }
+
+    onIsForcedHiddenChanged: root.hiddenTasksUpdated();
 
     onIsSeparatorChanged: {
         if (isSeparator) {
@@ -927,6 +941,17 @@ MouseArea{
         }
     }
 
+    function hasNeighbourSeparator(ind, positive) {
+        var cursor = ind;
+
+        while (((!positive && cursor>=0) || (positive && cursor<=root.tasksCount-1))
+               && parabolicManager.taskIsForcedHidden(cursor) ) {
+            cursor = positive ? cursor + 1 : cursor - 1;
+        }
+
+        return parabolicManager.taskIsSeparator(cursor);
+    }
+
     function preparePreviewWindow(hideClose){
         windowsPreviewDlg.visualParent = previewsVisualParent;
 
@@ -1236,15 +1261,18 @@ MouseArea{
             var hideWindow =  !launcherExists && mainItemContainer.isWindow;
 
             if (hideWindow) {
+                isForcedHidden = true;
                 taskRealRemovalAnimation.start();
             } else if (launcherExists && mainItemContainer.isWindow && !mainItemContainer.isVisible) {
                 showWindowAnimation.showWindow();
+                isForcedHidden = false;
             }
         } else {
             var showWindow =  !launcherExists && mainItemContainer.isWindow;
 
             if (showWindow) {
                 showWindowAnimation.showWindow();
+                isForcedHidden = false;
             }
         }
     }

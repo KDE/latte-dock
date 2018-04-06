@@ -247,6 +247,7 @@ Item {
 
     signal clearZoomSignal();
     signal draggingFinished();
+    signal hiddenTasksUpdated();
     signal launchersUpdatedFor(string launcher);
     signal presentWindows(variant winIds);
     signal requestLayout;

@@ -107,7 +107,9 @@ Item {
         }
     }
 
-    Component.onCompleted:  updateTasksEdgesIndexes();
+    Component.onCompleted: {
+        updateTasksEdgesIndexes();
+    }
 
     function updateTasksEdgesIndexes() {
         var newFirstTask = firstRealTask();
@@ -369,7 +371,7 @@ Item {
         var next = from;
 
         while (next>=0
-               && (taskIsSeparator(next) || (root.showWindowsOnlyFromLaunchers && taskIsHiddenBecauseNoLauncherExists(next))) )
+               && (taskIsSeparator(next) || (root.showWindowsOnlyFromLaunchers && taskIsForcedHidden(next))) )
             next = next - 1;
 
         return next;
@@ -379,7 +381,7 @@ Item {
         var next = from;
 
         while (next<=root.tasksCount-1
-               && (taskIsSeparator(next) || (root.showWindowsOnlyFromLaunchers && taskIsHiddenBecauseNoLauncherExists(next))) ) {
+               && (taskIsSeparator(next) || (root.showWindowsOnlyFromLaunchers && taskIsForcedHidden(next))) ) {
             next = next + 1;
         }
 
@@ -405,20 +407,12 @@ Item {
         return false;
     }
 
-    function taskIsHiddenBecauseNoLauncherExists(taskIndex) {
+    function taskIsForcedHidden(taskIndex) {
         var task = icList.childAtIndex(taskIndex);
 
-        if (task && root.showWindowsOnlyFromLaunchers) {
-            var launcherExists = !(((tasksModel.launcherPosition(task.launcherUrl) == -1)
-                                    && (tasksModel.launcherPosition(task.launcherUrlWithIcon) == -1) )
-                                   || !task.launcherIsPresent(task.launcherUrl));
-
-            //console.log(task.launcherUrl + " ::: " +!launcherExists + " _ " + task.isWindow);
-
-            return (!launcherExists && task.isWindow);
-        }
-
-        return false;
+        //!tasks that become hidden there is a chance to have index===-1 and to not be
+        //!able to be tracked down
+        return ((!task && (taskIndex>=0 && taskIndex<root.tasksCount)) || task.isForcedHidden);
     }
 
     function separatorExists(separator){
@@ -469,7 +463,7 @@ Item {
             var i=0;
 
             while (i<=root.tasksCount-1) {
-                if (!taskIsSeparator(i)) {
+                if (!taskIsSeparator(i) && !taskIsForcedHidden(i)) {
                     return i;
                 }
 
@@ -486,7 +480,7 @@ Item {
             var i = tasksModel.count - 1;
 
             while (i>=0) {
-                if (!taskIsSeparator(i) && !taskIsHiddenBecauseNoLauncherExists(i) ) {
+                if (!taskIsSeparator(i) && !taskIsForcedHidden(i) ) {
                     return i;
                 }
 
