@@ -181,11 +181,13 @@ Item {
     property bool showOnlyCurrentActivity: latteDock ? latteDock.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
     property bool showPreviews:  latteDock ? latteDock.showToolTips : plasmoid.configuration.showToolTips
     property bool showWindowActions: latteDock ? latteDock.showWindowActions : plasmoid.configuration.showWindowActions
+    property bool showWindowsOnlyFromLaunchers: latteDock ? latteDock.showWindowsOnlyFromLaunchers : false
     property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: latteDock ? latteDock.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
+    property int activeIndicator: latteDock ? latteDock.activeIndicator : Latte.Dock.AllIndicator
     property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Dock.LineIndicator
     property int animationStep: latteDock ? latteDock.animationStep : 1
     property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
@@ -244,6 +246,7 @@ Item {
 
     signal clearZoomSignal();
     signal draggingFinished();
+    signal launchersUpdatedFor(string launcher);
     signal presentWindows(variant winIds);
     signal requestLayout;
     signal separatorsUpdated();
@@ -1499,6 +1502,7 @@ Item {
     function extSignalAddLauncher(group, launcher) {
         if (group === latteDock.launchersGroup) {
             tasksModel.requestAddLauncher(launcher);
+            launchersUpdatedFor(launcher);
         }
     }
 
@@ -1506,6 +1510,7 @@ Item {
         if (group === latteDock.launchersGroup) {
             root.launcherForRemoval = launcher;
             tasksModel.requestRemoveLauncher(launcher);
+            launchersUpdatedFor(launcher);
         }
     }
 
@@ -1518,6 +1523,7 @@ Item {
             }
 
             tasksModel.requestAddLauncherToActivity(launcher, activity);
+            launchersUpdatedFor(launcher);
         }
     }
 
@@ -1528,6 +1534,7 @@ Item {
             }
 
             tasksModel.requestRemoveLauncherFromActivity(launcher, activity);
+            launchersUpdatedFor(launcher);
         }
     }
 
@@ -1685,6 +1692,7 @@ Item {
         }
 
         tasksModel.requestAddLauncher(url);
+        launchersUpdatedFor(url);
     }
 
     function resetDragSource() {

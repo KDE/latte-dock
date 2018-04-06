@@ -278,7 +278,8 @@ DragDrop.DropArea {
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
     //! equal to the iconSize
     property int iconMargin: Math.ceil( ((0.5 * (plasmoid.configuration.iconMargin))/100) * iconSize)
-    property int statesLineSize: latteApplet || (activeIndicator !== Latte.Dock.NoneIndicator) ?  Math.ceil( root.iconSize/13 ) : 0
+    property int statesLineSize: (latteApplet && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator))
+                                 || (activeIndicator !== Latte.Dock.NoneIndicator) ?  Math.ceil( root.iconSize/13 ) : 0
 
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
@@ -322,6 +323,7 @@ DragDrop.DropArea {
     property bool glow3D: plasmoid.configuration.glow3D
     property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions
+    property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity

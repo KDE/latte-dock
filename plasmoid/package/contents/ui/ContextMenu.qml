@@ -636,6 +636,7 @@ PlasmaComponents.ContextMenu {
                 } else {
                     root.launcherForRemoval = launcher;
                     tasksModel.requestRemoveLauncher(launcher);
+                    root.launchersUpdatedFor(launcher);
                 }
 
             } else {
@@ -645,6 +646,7 @@ PlasmaComponents.ContextMenu {
                                                                                   latteDock.launchersGroup, launcher);
                 } else {
                     tasksModel.requestAddLauncher(launcher);
+                    root.launchersUpdatedFor(launcher);
                 }
             }
         }
@@ -696,6 +698,7 @@ PlasmaComponents.ContextMenu {
                                             }
 
                                             tasksModel.requestAddLauncherToActivity(url, id);
+                                            root.launchersUpdatedFor(url);
                                         }
                                     } else {
                                         if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
@@ -706,6 +709,7 @@ PlasmaComponents.ContextMenu {
                                                 root.launcherForRemoval = url;
                                             }
                                             tasksModel.requestRemoveLauncherFromActivity(url, id);
+                                            root.launchersUpdatedFor(url);
                                         }
                                     }
                                 }
@@ -761,6 +765,7 @@ PlasmaComponents.ContextMenu {
             } else {
                 root.launcherForRemoval = launcher
                 tasksModel.requestRemoveLauncher(launcher);
+                root.launchersUpdatedFor(launcher);
             }
         }
     }
@@ -803,6 +808,7 @@ PlasmaComponents.ContextMenu {
             } else {
                 root.launcherForRemoval = launcher;
                 tasksModel.requestRemoveLauncher(launcher);
+                root.launchersUpdatedFor(launcher);
             }
         }
     }

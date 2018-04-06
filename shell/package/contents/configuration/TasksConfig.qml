@@ -330,6 +330,17 @@ PlasmaComponents.Page {
                     plasmoid.configuration.showOnlyCurrentActivity = checked
                 }
             }
+
+            PlasmaComponents.CheckBox {
+                id: showWindowsOnlyFromLaunchersChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show only tasks from launchers")
+                checked: plasmoid.configuration.showWindowsOnlyFromLaunchers
+
+                onClicked: {
+                    plasmoid.configuration.showWindowsOnlyFromLaunchers = checked
+                }
+            }
         }
         //! END: Tasks Filters
 

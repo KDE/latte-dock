@@ -221,6 +221,10 @@ MouseArea{
         property int previousCount: 0
 
         onWindowsCountChanged: {
+            if (root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator) {
+                return;
+            }
+
             if ((windowsCount >= 2) && (windowsCount > previousCount)
                     && !(mainItemContainer.containsMouse || parabolicManager.neighbourIsHovered(itemIndex)) ){
                 if(root.dragSource == null)
@@ -331,6 +335,20 @@ MouseArea{
                 if (root.globalDirectRender && restoreAnimation.running) {
                     // console.log("Cleat Task Scale !!!!");
                     restoreAnimation.stop();
+                }
+            }
+
+            onShowWindowsOnlyFromLaunchersChanged: {
+                if (!root.editMode) {
+                    return;
+                }
+
+                mainItemContainer.updateVisibilityBasedOnLaunchers();
+            }
+
+            onInActivityChangeChanged: {
+                if (root.showWindowsOnlyFromLaunchers && !root.inActivityChange) {
+                    mainItemContainer.updateVisibilityBasedOnLaunchers();
                 }
             }
         }
@@ -876,7 +894,7 @@ MouseArea{
     }
 
     function activateTask() {
-        if( mainItemContainer.isLauncher){
+        if( mainItemContainer.isLauncher || (root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)){
             if (Latte.WindowSystem.compositingActive) {
                 wrapper.runLauncherAnimation();
             } else {
@@ -990,10 +1008,16 @@ MouseArea{
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
         if (Latte.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
-            root.addWaitingLauncher(mainItemContainer.launcherUrl);
+            if (!(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)) {
+                root.addWaitingLauncher(mainItemContainer.launcherUrl);
+            }
         }
-        tasksModel.requestActivate(modelIndex());
-        // }
+
+        if (root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator) {
+            tasksModel.requestNewInstance(modelIndex());
+        } else {
+            tasksModel.requestActivate(modelIndex());
+        }
     }
 
     ///window previews///
@@ -1197,6 +1221,34 @@ MouseArea{
         }
     }
 
+    function slotLaunchersChangedFor(launcher) {
+        if (root.showWindowsOnlyFromLaunchers && launcher === launcherUrl) {
+            updateVisibilityBasedOnLaunchers()
+        }
+    }
+
+    function updateVisibilityBasedOnLaunchers(){
+        var launcherExists = !(((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
+                                && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
+                               || !launcherIsPresent(mainItemContainer.launcherUrl));
+
+        if (root.showWindowsOnlyFromLaunchers) {
+            var hideWindow =  !launcherExists && mainItemContainer.isWindow;
+
+            if (hideWindow) {
+                taskRealRemovalAnimation.start();
+            } else if (launcherExists && mainItemContainer.isWindow && !mainItemContainer.isVisible) {
+                showWindowAnimation.showWindow();
+            }
+        } else {
+            var showWindow =  !launcherExists && mainItemContainer.isWindow;
+
+            if (showWindow) {
+                showWindowAnimation.showWindow();
+            }
+        }
+    }
+
     function toggleMuted() {
         if (muted) {
             mainItemContainer.audioStreams.forEach(function (item) { item.unmute(); });
@@ -1261,6 +1313,7 @@ MouseArea{
         root.publishTasksGeometries.connect(slotPublishGeometries);
         root.showPreviewForTasks.connect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
+        root.launchersUpdatedFor.connect(slotLaunchersChangedFor);
 
         //startup without launcher
         var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
@@ -1290,6 +1343,7 @@ MouseArea{
         root.publishTasksGeometries.disconnect(slotPublishGeometries);
         root.showPreviewForTasks.disconnect(slotShowPreviewForTasks);
         root.mimicEnterForParabolic.disconnect(slotMimicEnterForParabolic);
+        root.launchersUpdatedFor.disconnect(slotLaunchersChangedFor);
 
         wrapper.sendEndOfNeedBothAxisAnimation();
     }
@@ -1413,8 +1467,13 @@ MouseArea{
         repeat: false
 
         onTriggered: {
-            if (mainItemContainer.itemIndex >= 0)
+            if (mainItemContainer.itemIndex >= 0){
                 mainItemContainer.lastValidIndex = mainItemContainer.itemIndex;
+
+                if (root.showWindowsOnlyFromLaunchers) {
+                    parabolicManager.updateTasksEdgesIndexes();
+                }
+            }
 
             if (latteDock && latteDock.debugModeTimers) {
                 console.log("plasmoid timer: lastValidTimer called...");

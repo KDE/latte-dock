@@ -368,7 +368,8 @@ Item {
     function availableLowerIndex(from) {
         var next = from;
 
-        while (next>=0 && taskIsSeparator(next))
+        while (next>=0
+               && (taskIsSeparator(next) || (root.showWindowsOnlyFromLaunchers && taskIsHiddenBecauseNoLauncherExists(next))) )
             next = next - 1;
 
         return next;
@@ -377,8 +378,10 @@ Item {
     function availableHigherIndex(from) {
         var next = from;
 
-        while (next<=root.tasksCount-1 && taskIsSeparator(next))
+        while (next<=root.tasksCount-1
+               && (taskIsSeparator(next) || (root.showWindowsOnlyFromLaunchers && taskIsHiddenBecauseNoLauncherExists(next))) ) {
             next = next + 1;
+        }
 
         return next;
     }
@@ -397,6 +400,22 @@ Item {
 
             if (separators[i].index === taskIndex)
                 return true;
+        }
+
+        return false;
+    }
+
+    function taskIsHiddenBecauseNoLauncherExists(taskIndex) {
+        var task = icList.childAtIndex(taskIndex);
+
+        if (task && root.showWindowsOnlyFromLaunchers) {
+            var launcherExists = !(((tasksModel.launcherPosition(task.launcherUrl) == -1)
+                                    && (tasksModel.launcherPosition(task.launcherUrlWithIcon) == -1) )
+                                   || !task.launcherIsPresent(task.launcherUrl));
+
+            //console.log(task.launcherUrl + " ::: " +!launcherExists + " _ " + task.isWindow);
+
+            return (!launcherExists && task.isWindow);
         }
 
         return false;
@@ -444,7 +463,7 @@ Item {
         return pseudoIndex + root.tasksNumbersBase;
     }
 
-    //! first available task index found after consequent internal separators in the start
+    //! first available task index found after consequent internal separators or hidden tasks in the start
     function firstRealTask() {
         if (hasInternalSeparator) {
             var i=0;
@@ -463,11 +482,11 @@ Item {
 
     //! last available task index found after consequent internal separators in the end
     function lastRealTask() {
-        if (hasInternalSeparator) {
-            var i=root.tasksCount - 1;
+        if (hasInternalSeparator || root.showWindowsOnlyFromLaunchers) {
+            var i = tasksModel.count - 1;
 
             while (i>=0) {
-                if (!taskIsSeparator(i)) {
+                if (!taskIsSeparator(i) && !taskIsHiddenBecauseNoLauncherExists(i) ) {
                     return i;
                 }
 
@@ -478,7 +497,7 @@ Item {
         return root.tasksCount > 0 ? root.tasksCount-1 : -1;
     }
 
-    //! the real number of tasks if we remove the internal separators
+    //! the real number of tasks if we remove the internal separators and hidden windows in the end
     function realTasks() {
         var space = lastRealTaskIndex - firstRealTaskIndex;
 

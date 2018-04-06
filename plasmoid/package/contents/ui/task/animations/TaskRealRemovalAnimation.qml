@@ -60,7 +60,7 @@ SequentialAnimation {
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
             var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);
-            if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
+            if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation && !root.showWindowsOnlyFromLaunchers){
                 if (root.vertical) {
                     mainItemContainer.anchors.top = previousTask.bottom;
                 } else {

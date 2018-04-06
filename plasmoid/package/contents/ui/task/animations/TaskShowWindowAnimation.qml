@@ -131,17 +131,25 @@ SequentialAnimation{
 
 
         //startup without launcher, animation should be blocked
-        var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                              && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                             || !launcherIsPresent(mainItemContainer.launcherUrl))
-                            && mainItemContainer.isStartup);
+        var launcherExists = !(((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
+                                && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
+                               || !launcherIsPresent(mainItemContainer.launcherUrl));
+
+        var hideStartup =  launcherExists && mainItemContainer.isStartup;
+        var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && mainItemContainer.isWindow;
 
         if (root.immediateLauncherExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher) {
             root.removeImmediateLauncher(mainItemContainer.launcherUrl);
         }
 
-        if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
-                || mainItemContainer.isSeparator) {
+        if (hideStartup || hideWindow) {
+            mainItemContainer.visible = false;
+            wrapper.tempScaleWidth = 0;
+            wrapper.tempScaleHeight = 0;
+            wrapper.opacity = 0;
+            mainItemContainer.inAnimation = false;
+        } else if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
+                   || mainItemContainer.isSeparator) {
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;
@@ -149,15 +157,10 @@ SequentialAnimation{
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
         } else if (( animation2 || animation3 || animation6) && (root.durationTime !== 0)){
+            mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             start();
-        } else if (hideStartup) {
-            mainItemContainer.visible = false;
-            wrapper.tempScaleWidth = 0;
-            wrapper.tempScaleHeight = 0;
-            wrapper.opacity = 0;
-            mainItemContainer.inAnimation = false;
         } else {
             var frozenTask = parabolicManager.getFrozenTask(mainItemContainer.launcherUrl);
 
@@ -169,6 +172,7 @@ SequentialAnimation{
                 wrapper.tempScaleHeight = 1;
             }
 
+            mainItemContainer.visible = true;
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
         }

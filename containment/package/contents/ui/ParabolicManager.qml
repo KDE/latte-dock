@@ -48,7 +48,8 @@ Item {
             var taskIndex = -1;
             var internSepStep = 0;
             if(appIndex<root.latteAppletPos){
-                if (root.latteApplet.parabolicManager.taskIsSeparator(0))
+                if (root.latteApplet.parabolicManager.taskIsSeparator(0)
+                        || (!root.showWindowsWithNoLaunchers && root.latteApplet.parabolicManager.taskIsHiddenBecauseNoLauncherExists(0)) )
                     internSepStep = root.latteApplet.parabolicManager.availableHigherIndex(0);
 
                 taskIndex = signalStep-appStep+internSepStep;
@@ -57,7 +58,8 @@ Item {
 
                 //console.log("normal:" + taskIndex + " step:"+internSepStep + " zoom:"+zScale);
             } else if (appIndex>root.latteAppletPos){
-                if (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1))
+                if (root.latteApplet.parabolicManager.taskIsSeparator(root.tasksCount-1)
+                        || (!root.showWindowsWithNoLaunchers && root.latteApplet.parabolicManager.taskIsHiddenBecauseNoLauncherExists(root.tasksCount-1)) )
                     internSepStep = Math.abs(root.tasksCount-1 - root.latteApplet.parabolicManager.availableLowerIndex(root.tasksCount-1));
 
                 taskIndex = root.tasksCount-1 - (signalStep-appStep) - internSepStep;
