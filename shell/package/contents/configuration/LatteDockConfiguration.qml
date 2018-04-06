@@ -69,6 +69,9 @@ FocusScope {
 
         anchors.right: parent.right
         anchors.top: parent.top
+        //!avoid editMode box shadow
+        anchors.topMargin: units.smallSpacing
+        anchors.rightMargin: units.smallSpacing
 
         Layout.fillWidth: false
         Layout.fillHeight: false
@@ -246,7 +249,7 @@ FocusScope {
             RowLayout {
                 id: advancedSettings
                 Layout.fillWidth: true
-                Layout.rightMargin: units.smallSpacing
+                Layout.rightMargin: units.smallSpacing * 2
                 Layout.alignment: Qt.AlignRight | Qt.AlignBottom
 
                 PlasmaComponents.Label {
