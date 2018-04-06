@@ -29,7 +29,8 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
-import "../controls" as ExtraControls
+
+import "../controls" as LatteExtraControls
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -467,7 +468,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Show:")
                 }
-                LatteTextField {
+                LatteExtraControls.TextField {
                     Layout.preferredWidth: width
                     text: dock.visibility.timerShow
 
@@ -482,7 +483,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Hide:")
                 }
-                LatteTextField{
+                LatteExtraControls.TextField{
                     Layout.preferredWidth: width
                     text: dock.visibility.timerHide
 

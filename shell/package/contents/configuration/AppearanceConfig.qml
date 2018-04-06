@@ -31,6 +31,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.1 as Latte
 
+import "../controls" as LatteExtraControls
+
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
@@ -156,7 +158,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     id: appletsSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconSize
@@ -164,6 +166,7 @@ PlasmaComponents.Page {
                     stepSize: (!plasmoid.configuration.autoDecreaseIconSize
                               && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
                               || dialog.dockIsPanel ? 1 : 8
+                    wheelEnabled: false
 
                     function updateIconSize() {
                         if (!pressed) {
@@ -210,7 +213,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     Layout.fillWidth: true
                     id: zoomSlider
 
@@ -221,6 +224,7 @@ PlasmaComponents.Page {
                     minimumValue: 1
                     maximumValue: 2
                     stepSize: 0.05
+                    wheelEnabled: false
 
                     function updateZoomLevel() {
                         if (!pressed) {
@@ -262,13 +266,14 @@ PlasmaComponents.Page {
                     enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     id: proportionSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.proportionIconSize
                     minimumValue: 1.0
                     maximumValue: 10
                     stepSize: 0.5
+                    wheelEnabled: false
                     property real realMinimum: minimumValue + 0.5
 
                     function updateProportionIconSize() {
@@ -316,13 +321,14 @@ PlasmaComponents.Page {
                     enabled: iconMarginSlider.value > 0
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     id: iconMarginSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconMargin
                     minimumValue: 0
                     maximumValue: 100
                     stepSize: 5
+                    wheelEnabled: false
 
                     onPressedChanged: {
                         if (!pressed) {
@@ -378,7 +384,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     id: panelSizeSlider
                     Layout.fillWidth: true
                     enabled: showBackground.checked
@@ -387,6 +393,7 @@ PlasmaComponents.Page {
                     minimumValue: 0
                     maximumValue: 100
                     stepSize: 5
+                    wheelEnabled: false
 
                     function updatePanelSize() {
                         if (!pressed)
@@ -426,7 +433,7 @@ PlasmaComponents.Page {
                     enabled: transparencySlider.enabled
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     id: transparencySlider
                     Layout.fillWidth: true
                     //! transparency can be set when the user doesnt want solidness all the time
@@ -437,6 +444,7 @@ PlasmaComponents.Page {
                     minimumValue: 0
                     maximumValue: 100
                     stepSize: 5
+                    wheelEnabled: false
 
                     property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
                                                           || (solidBackground.checked
@@ -781,7 +789,7 @@ PlasmaComponents.Page {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        PlasmaComponents.Slider {
+                        LatteExtraControls.Slider {
                             id: glowOpacitySlider
                             Layout.fillWidth: true
                             enabled: showGlowChk.checked
@@ -790,6 +798,7 @@ PlasmaComponents.Page {
                             minimumValue: 0
                             maximumValue: 100
                             stepSize: 5
+                            wheelEnabled: false
 
                             function updateGlowOpacity() {
                                 if (!pressed)
@@ -1009,7 +1018,7 @@ PlasmaComponents.Page {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        PlasmaComponents.Slider {
+                        LatteExtraControls.Slider {
                             id: shadowOpacitySlider
                             Layout.fillWidth: true
                             enabled: showAppletShadow.checked
@@ -1018,6 +1027,7 @@ PlasmaComponents.Page {
                             minimumValue: 0
                             maximumValue: 100
                             stepSize: 5
+                            wheelEnabled: false
 
                             function updateShadowOpacity() {
                                 if (!pressed)
@@ -1058,7 +1068,7 @@ PlasmaComponents.Page {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        PlasmaComponents.Slider {
+                        LatteExtraControls.Slider {
                             id: shadowSizeSlider
                             Layout.fillWidth: true
                             enabled: showAppletShadow.checked
@@ -1067,6 +1077,7 @@ PlasmaComponents.Page {
                             minimumValue: 0
                             maximumValue: 100
                             stepSize: 5
+                            wheelEnabled: false
 
                             function updateShadowSize() {
                                 if (!pressed)
@@ -1119,7 +1130,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     Layout.fillWidth: true
                     id: maxLengthSlider
 
@@ -1130,6 +1141,7 @@ PlasmaComponents.Page {
                     minimumValue: 30
                     maximumValue: 100
                     stepSize: 2
+                    wheelEnabled: false
 
                     function updateMaxLength() {
                         if (!pressed) {
@@ -1194,7 +1206,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                PlasmaComponents.Slider {
+                LatteExtraControls.Slider {
                     Layout.fillWidth: true
                     id: offsetSlider
 
@@ -1207,6 +1219,7 @@ PlasmaComponents.Page {
                     maximumValue: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
                                    || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? 20 :  40
                     stepSize: 2
+                    wheelEnabled: false
 
                     function updateOffset() {
                         if (!pressed) {
