@@ -60,6 +60,7 @@ Item {
 
     property bool editMode: latteDock ? latteDock.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
+    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool inActivityChange: false

@@ -60,7 +60,7 @@ SequentialAnimation {
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
             var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);
-            if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation && !root.showWindowsOnlyFromLaunchers){
+            if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
                 if (root.vertical) {
                     mainItemContainer.anchors.top = previousTask.bottom;
                 } else {
@@ -156,6 +156,14 @@ SequentialAnimation {
             if (windowsPreviewDlg.visible && windowsPreviewDlg.mainItem.parentTask === mainItemContainer
                     && isWindow && !isGroupParent){
                 hidePreview();
+            }
+
+            if (root.showWindowsOnlyFromLaunchers) {
+                if (root.vertical) {
+                    mainItemContainer.anchors.top = undefined;
+                } else {
+                    mainItemContainer.anchors.left = undefined;
+                }
             }
 
             //send signal that the launcher is really removing

@@ -823,7 +823,7 @@ MouseArea{
 
         //positive direction
         if (angle > 12) {
-            if (isLauncher) {
+            if (isLauncher || root.disableAllWindowsFunctionality) {
                 inWheelAction = true;
                 wrapper.runLauncherAnimation();
             } else if (isGroupParent) {
@@ -841,7 +841,7 @@ MouseArea{
             }
             //negative direction
         } else if (angle < -12) {
-            if (isLauncher) {
+            if (isLauncher || root.disableAllWindowsFunctionality) {
                 // do nothing
             } else if (isGroupParent) {
                 tasksWindows.activatePreviousTask();
@@ -894,7 +894,7 @@ MouseArea{
     }
 
     function activateTask() {
-        if( mainItemContainer.isLauncher || (root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)){
+        if( mainItemContainer.isLauncher || root.disableAllWindowsFunctionality){
             if (Latte.WindowSystem.compositingActive) {
                 wrapper.runLauncherAnimation();
             } else {
@@ -1008,12 +1008,12 @@ MouseArea{
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
         if (Latte.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
-            if (!(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)) {
+            if (!root.disableAllWindowsFunctionality) {
                 root.addWaitingLauncher(mainItemContainer.launcherUrl);
             }
         }
 
-        if (root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator) {
+        if (root.disableAllWindowsFunctionality) {
             tasksModel.requestNewInstance(modelIndex());
         } else {
             tasksModel.requestActivate(modelIndex());

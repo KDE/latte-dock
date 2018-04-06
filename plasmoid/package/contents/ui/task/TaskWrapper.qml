@@ -151,7 +151,7 @@ Item{
                       && !root.reverseLinesPosition)
                     || (((root.position === PlasmaCore.Types.BottomPositioned) || (root.position === PlasmaCore.Types.RightPositioned))
                         && root.reverseLinesPosition) )
-                   && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)
+                   && !root.disableAllWindowsFunctionality
             visible: active
 
             sourceComponent: Component{
@@ -165,7 +165,7 @@ Item{
 
             active: secondIndicator.active && !root.reverseLinesPosition
                     && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
-                    && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)
+                    && !root.disableAllWindowsFunctionality
             visible: active
 
             sourceComponent: Component{
@@ -194,7 +194,7 @@ Item{
 
             active: firstIndicator.active && !root.reverseLinesPosition
                     && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
-                    && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)
+                    && !root.disableAllWindowsFunctionality
             visible: active
 
             sourceComponent: Component{
@@ -218,7 +218,7 @@ Item{
         Loader{
             id: secondIndicator
             active: !firstIndicator.active
-                    && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator)
+                    && !root.disableAllWindowsFunctionality
             visible: active
 
             sourceComponent: Component{

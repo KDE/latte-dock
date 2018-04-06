@@ -336,6 +336,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show only tasks from launchers")
                 checked: plasmoid.configuration.showWindowsOnlyFromLaunchers
+                visible: plasmoid.configuration.advanced
 
                 onClicked: {
                     plasmoid.configuration.showWindowsOnlyFromLaunchers = checked
