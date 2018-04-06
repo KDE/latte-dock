@@ -101,6 +101,13 @@ DragDrop.DropArea {
 
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
 
+    property bool maximizedWindowTitleBarBehavesAsPanelBackground: dock && dock.visibility
+                                                                   && (!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
+                                                                   && (dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+                                                                   && (plasmoid.location === PlasmaCore.Types.TopEdge)
+                                                                   && (!useThemePanel || panelTransparency<40)
+                                                                   && dock.visibility.existsWindowMaximized
+
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.pluginName !== root.plasmoidName
                 && item.status !== PlasmaCore.Types.HiddenStatus);
@@ -1758,6 +1765,7 @@ DragDrop.DropArea {
                                   //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
                                   //! then the colorizer could be enabled for low panel transparency levels (<40%)
                                && (!forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
+                               && !maximizedWindowTitleBarBehavesAsPanelBackground
                                && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
                                && !root.editMode && Latte.WindowSystem.compositingActive
 
