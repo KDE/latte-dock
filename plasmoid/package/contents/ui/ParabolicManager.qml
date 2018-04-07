@@ -523,8 +523,7 @@ Item {
         return (posOfLauncherToBeMoved(launcher) >= 0);
     }
 
-    //!Trying to avoid a binding loop in TaskDelegate for modelLauncherUrl and
-    //!proper updating in separators indexes
+    //!Trying to avoid a binding loop in TaskDelegate for modelLauncherUrl
     Timer {
         id: launchersToBeMovedTimer
         interval: 50
@@ -541,8 +540,6 @@ Item {
                 latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
                                                                            plasmoid.id, latteDock.launchersGroup, from, to);
             }
-
-            tasksModel.syncLaunchers();
         }
     }
 }

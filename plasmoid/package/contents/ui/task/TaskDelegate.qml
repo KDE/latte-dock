@@ -488,6 +488,10 @@ MouseArea{
                 parabolicManager.updateTasksEdgesIndexes();
             }
         }
+
+        if (parabolicManager.hasInternalSeparator) {
+            root.separatorsUpdated();
+        }
     }
 
     onIsDraggedChanged: {

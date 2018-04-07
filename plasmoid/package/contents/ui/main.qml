@@ -446,14 +446,11 @@ Item {
             restoreDraggingPhaseTimer.start();
             root.draggingFinished();
             root.signalActionsBlockHiding(-1);
-            //root.signalDraggingState(false);
 
-            //updateLaunchersNewArchitecture();
-            tasksModel.syncLaunchers();
+            delayedLaynchersSyncTimer.start();
         } else {
             inDraggingPhase = true;
             root.signalActionsBlockHiding(1);
-            //root.signalDraggingState(true);
         }
     }
 
@@ -601,6 +598,14 @@ Item {
         }
     }
 
+    //! delay a bit  the launchers syncing in order to avoid a crash
+    //! the crash was caused from ParabolicManager when adding and moving a launcher (e.g. internal separator)
+    //! and there were more than one synced docks
+    Timer {
+        id: delayedLaynchersSyncTimer
+        interval: 500
+        onTriggered: tasksModel.syncLaunchers();
+    }
 
     /////Window Previews/////////
 
@@ -1553,6 +1558,8 @@ Item {
     function extSignalMoveTask(group, from, to) {
         if (group === latteDock.launchersGroup && !root.dragSource) {
             tasksModel.move(from, to);
+            parabolicManager.updateTasksEdgesIndexes();
+            root.separatorsUpdated();
         }
     }
 

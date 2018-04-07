@@ -163,7 +163,7 @@ Item {
                                                                                    plasmoid.id,
                                                                                    latteDock.launchersGroup, pos, insertAt);
                     }
-
+                    root.separatorsUpdated();
                     ignoreItemTimer.restart();
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
@@ -185,6 +185,7 @@ Item {
             hoveredItem = null;
             root.dropNewLauncher = false;
             onlyLaunchers = false;
+            root.separatorsUpdated();
             activationTimer.stop();
         }
 
@@ -192,6 +193,7 @@ Item {
             // Reject internal drops.
             root.dropNewLauncher = false;
             onlyLaunchers = false;
+            root.separatorsUpdated();
 
             if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") >= 0) {
                 return;
