@@ -156,7 +156,9 @@ Item{
         if (nextAvailableWindow === -1 && lastActiveWinInGroup !==-1){
             for(var i=0; i<childs.count; ++i){
                 var kid = childs.get(i);
-                if (kid.model.LegacyWinIdList[0] === lastActiveWinInGroup) {
+                var kidId = kid.model.LegacyWinIdList ? kid.model.LegacyWinIdList[0] : 0;
+
+                if (kidId === lastActiveWinInGroup) {
                     nextAvailableWindow = i;
                     break;
                 }
@@ -228,7 +230,7 @@ Item{
             for(var i=0; i<childs.count; ++i){
                 var kid = childs.get(i);
                 if (kid.model.IsActive === true) {
-                    windowsContainer.lastActiveWinInGroup = kid.model.LegacyWinIdList[0];
+                    windowsContainer.lastActiveWinInGroup = kid.model.LegacyWinIdList ? kid.model.LegacyWinIdList[0] : 0;
                     break;
                 }
             }
