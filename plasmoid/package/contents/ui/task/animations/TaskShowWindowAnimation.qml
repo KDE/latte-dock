@@ -176,7 +176,8 @@ SequentialAnimation{
                 wrapper.tempScaleHeight = 1;
             }
 
-            mainItemContainer.visible = true;
+            //! by enabling it we break the bouncing animation
+            //mainItemContainer.visible = true;
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
         }

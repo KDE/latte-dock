@@ -1039,9 +1039,7 @@ MouseArea{
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
         if (Latte.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
-            if (!root.disableAllWindowsFunctionality) {
-                root.addWaitingLauncher(mainItemContainer.launcherUrl);
-            }
+            root.addWaitingLauncher(mainItemContainer.launcherUrl);
         }
 
         if (root.disableAllWindowsFunctionality) {
