@@ -70,8 +70,8 @@ Item{
         sourceComponent: Rectangle{
             width: !root.isVertical ? hiddenSpacer.width : 1
             height: !root.isVertical ? 1 : hiddenSpacer.height
-            x: root.isVertical ? hiddenSpacer.width/2 : 0
-            y: !root.isVertical ? hiddenSpacer.height /2 : 0
+            x: root.isVertical ? (hiddenSpacer.width + root.statesLineSize)/2 : 0
+            y: !root.isVertical ? (hiddenSpacer.height + root.statesLineSize)/2 : 0
 
             border.width: 1
             border.color: "red"
