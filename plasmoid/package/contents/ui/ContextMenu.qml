@@ -373,6 +373,7 @@ PlasmaComponents.ContextMenu {
         visible: activityInfo.numberOfRunningActivities > 1
                  && (visualParent && !visualParent.m.IsLauncher
                      && !visualParent.m.IsStartup)
+                 && !root.disableAllWindowsFunctionality
 
         enabled: visible
 
@@ -468,7 +469,8 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && root.showWindowActions)
+                  && root.showWindowActions
+                  && !root.disableAllWindowsFunctionality)
 
         enabled: visualParent && visualParent.m.IsMinimizable === true
 
@@ -484,7 +486,8 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && root.showWindowActions)
+                  && root.showWindowActions
+                  && !root.disableAllWindowsFunctionality)
 
         enabled: visualParent && visualParent.m.IsMaximizable === true
 
@@ -502,7 +505,8 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
-                  && root.showWindowActions)
+                  && root.showWindowActions
+                  && !root.disableAllWindowsFunctionality)
 
         enabled: visible
 

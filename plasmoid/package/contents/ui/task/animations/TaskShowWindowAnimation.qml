@@ -151,6 +151,7 @@ SequentialAnimation{
             mainItemContainer.inAnimation = false;
         } else if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
                    || mainItemContainer.isSeparator) {
+            isForcedHidden = false;
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;
@@ -158,11 +159,13 @@ SequentialAnimation{
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
         } else if (( animation2 || animation3 || animation6 || isForcedHidden) && (root.durationTime !== 0)){
+            isForcedHidden = false;
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             start();
         } else {
+            isForcedHidden = false;
             var frozenTask = parabolicManager.getFrozenTask(mainItemContainer.launcherUrl);
 
             if (frozenTask && frozenTask.mScale>1) {

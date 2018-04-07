@@ -630,7 +630,9 @@ MouseArea{
                     hoveredTimerObj.start();
                 }
             } else {
-                hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                if (!root.disableAllWindowsFunctionality) {
+                    hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                }
             }
         }
 
@@ -713,7 +715,9 @@ MouseArea{
                 if (hoveredTimerObj) {
                     hoveredTimerObj.restart();
                 } else {
-                    hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                    if (!root.disableAllWindowsFunctionality) {
+                        hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                    }
                 }
             }
             else{
@@ -775,7 +779,7 @@ MouseArea{
 
         if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
 
-            if (modifierAccepted(mouse)){
+            if (modifierAccepted(mouse) && !root.disableAllWindowsFunctionality){
                 if( !mainItemContainer.isLauncher){
                     if (root.modifierClickAction == Latte.Dock.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
@@ -794,7 +798,7 @@ MouseArea{
                 } else {
                     activateTask();
                 }
-            } else if (mouse.button == Qt.MidButton){
+            } else if (mouse.button == Qt.MidButton && !root.disableAllWindowsFunctionality){
                 if( !mainItemContainer.isLauncher){
                     if (root.middleClickAction == Latte.Dock.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
@@ -1394,6 +1398,10 @@ MouseArea{
             repeat: false
 
             onTriggered: {
+                if (root.disableAllWindowsFunctionality) {
+                    return;
+                }
+
                 if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
                     //console.log("Hovered Timer....");
                     if (root.showPreviews && (!root.latteDock || (root.latteDock && !root.latteDock.isHalfShown))) {

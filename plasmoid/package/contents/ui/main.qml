@@ -511,6 +511,10 @@ Item {
         }
 
         function show(taskItem){
+            if (root.disableAllWindowsFunctionality) {
+                return;
+            }
+
             //console.log("preview show called...");
             if ((!activeItem || (activeItem !== taskItem)) && !root.contextMenu) {
                 //console.log("preview show called: accepted...");

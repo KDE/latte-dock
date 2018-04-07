@@ -33,6 +33,9 @@ PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
+    property bool disableAllWindowsFunctionality: plasmoid.configuration.showWindowsOnlyFromLaunchers
+                                                  && plasmoid.configuration.activeIndicator === Latte.Dock.NoneIndicator
+
     ColumnLayout {
         id: content
 
@@ -47,6 +50,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             Layout.topMargin: units.smallSpacing
+            enabled: !disableAllWindowsFunctionality
 
             Header {
                 text: i18n("Appearance")
@@ -93,6 +97,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Preview windows on hovering")
                 checked: plasmoid.configuration.showToolTips
+                enabled: !disableAllWindowsFunctionality
 
                 onClicked: {
                     plasmoid.configuration.showToolTips = checked;
@@ -105,6 +110,7 @@ PlasmaComponents.Page {
                 text: i18n("Highlight windows on hovering")
                 checked: plasmoid.configuration.highlightWindows
                 visible: plasmoid.configuration.advanced
+                enabled: !disableAllWindowsFunctionality
 
                 onClicked: {
                     plasmoid.configuration.highlightWindows = checked
@@ -129,6 +135,7 @@ PlasmaComponents.Page {
                 text: i18n("Show window actions in the context menu")
                 checked: plasmoid.configuration.showWindowActions
                 visible: plasmoid.configuration.advanced
+                enabled: !disableAllWindowsFunctionality
 
                 onClicked: {
                     plasmoid.configuration.showWindowActions = checked
@@ -164,6 +171,7 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
                 visible: plasmoid.configuration.advanced
+                enabled: !disableAllWindowsFunctionality
 
                 PlasmaComponents.Label {
                     text: i18n("On middle-click:")
@@ -185,6 +193,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 visible: plasmoid.configuration.advanced
+                enabled: !disableAllWindowsFunctionality
 
                 PlasmaComponents3.ComboBox {
                     id: modifier
