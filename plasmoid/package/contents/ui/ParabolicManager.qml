@@ -49,7 +49,8 @@ Item {
 
     Connections{
         target: root
-        onTasksCountChanged:parManager.updateTasksEdgesIndexes();
+        onTasksCountChanged: parManager.updateTasksEdgesIndexes();
+        onHiddenTasksUpdated: parManager.updateTasksEdgesIndexes();
     }
 
     Component.onCompleted: {
