@@ -43,10 +43,6 @@ Item {
     //(id, mScale)
     property variant frozenTasks: []
 
-    //the internal separators in the form
-    //(launcherUrl, index)
-    property variant separators: []
-
     //new launchers in order to be moved in correct place
     //(launcher, pos)
     property variant launchersToBeMoved: []
@@ -54,61 +50,16 @@ Item {
     Connections{
         target: root
         onTasksCountChanged:parManager.updateTasksEdgesIndexes();
-        onDragSourceChanged: {
-            if (!root.dragSource && parManager.hasInternalSeparator) {
-                //! Send the internal separators to other docks
-                var tasks = icList.contentItem.children;
-                var size = icList.contentItem.children.length;
-                var tempSeparatorsArray = [];
-                var tempSeparatorsIndexes = [];
-
-                for(var i=0; i<size; ++i){
-                    if (i>=icList.contentItem.children.length) {
-                        break;
-                    }
-
-                    if (tasks[i] && tasks[i].isSeparator) {
-                        tempSeparatorsArray.push(tasks[i].launcherUrl);
-                        tempSeparatorsIndexes.push(tasks[i].itemIndex);
-                    }
-                }
-
-                if (tempSeparatorsArray.length > 0) {
-                    if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
-                        //reorder to lowest
-                        for(var i=0; i<tempSeparatorsIndexes.length; ++i) {
-                            var lowIndex = i;
-                            for(var j=i; j<tempSeparatorsIndexes.length; ++j) {
-                                if (tempSeparatorsIndexes[j]<tempSeparatorsIndexes[lowIndex]) {
-                                    lowIndex = j;
-                                }
-                            }
-
-                            if (lowIndex !== i) {
-                                //moving
-                                var tempInd = tempSeparatorsIndexes[lowIndex];
-                                tempSeparatorsIndexes.splice(lowIndex, 1);
-                                tempSeparatorsIndexes.splice(i, 0, tempInd);
-
-                                var tempName = tempSeparatorsArray[lowIndex];
-                                tempSeparatorsArray.splice(lowIndex, 1);
-                                tempSeparatorsArray.splice(i, 0, tempName);
-                            }
-                        }
-
-                        latteDock.universalLayoutManager.launchersSignals.internalSeparators(root.managedLayoutName,
-                                                                                             plasmoid.id,
-                                                                                             latteDock.launchersGroup,
-                                                                                             tempSeparatorsArray,
-                                                                                             tempSeparatorsIndexes);
-                    }
-                }
-            }
-        }
     }
 
     Component.onCompleted: {
+        updateHasInternalSeparator();
         updateTasksEdgesIndexes();
+        root.separatorsUpdated.connect(updateHasInternalSeparator);
+    }
+
+    Component.onDestruction: {
+        root.separatorsUpdated.disconnect(updateHasInternalSeparator);
     }
 
     function updateTasksEdgesIndexes() {
@@ -123,6 +74,20 @@ Item {
         }
 
         countRealTasks = realTasks();
+    }
+
+    function updateHasInternalSeparator() {
+        var count = icList.contentItem.children.length;
+        for (var i=0; i<count; ++i) {
+            var task = icList.childAtIndex(i);
+
+            if (task && task.isSeparator){
+                hasInternalSeparator = true;
+                return;
+            }
+        }
+
+        hasInternalSeparator = false;
     }
 
     //!this is used in order to update the index when the signal is for applets
@@ -310,63 +275,6 @@ Item {
         }
     }
 
-    //! SEPARATORS functions
-
-    // update the registered separators
-    // launcherUrl, no = add/update separator
-    // launcherUrl, -1 = remove separator
-
-    function setSeparator(launcher, taskIndex) {
-        var currentPos = separatorArrayPos(launcher);
-        var updated = false;
-
-        if (currentPos === -1 && taskIndex >=0){
-            //add that separator
-            //console.log("add separator:"+launcher+" at:"+taskIndex);
-            separators.push({launcherUrl: launcher, index: taskIndex});
-            updated = true;
-        } else if (currentPos>-1 && taskIndex === -1) {
-            //remove that separator
-            //console.log("remove separator:"+launcher);
-            separators.splice(currentPos,1);
-            updated = true;
-        } else if (currentPos>-1 && taskIndex>-1 && separators[currentPos].index !== taskIndex) {
-            //update that separator
-            //console.log("update separator:"+launcher+" from:"+separators[currentPos].index+" -> "+taskIndex);
-
-            separators[currentPos].index = taskIndex;
-            updated = true;
-        }
-
-        //if (separators.length > 0)
-        //    console.log(separators[0].launcherUrl+ " _________ " + separators[0].index);
-
-        if (updated) {
-            //console.log("message sent...");
-            hasInternalSeparator = separators.length > 0;
-
-            updateTasksEdgesIndexes();
-
-            root.separatorsUpdated();
-        }
-    }
-
-    function separatorArrayPos(launcher) {
-        var res = -1;
-        var sLength = separators.length;
-
-        for (var i=0; i<sLength; ++i) {
-            //!safety checker
-            if (i>=separators.length)
-                return false;
-
-            if (separators[i].launcherUrl === launcher)
-                return i;
-        }
-
-        return res;
-    }
-
     function availableLowerIndex(from) {
         var next = from;
 
@@ -393,18 +301,9 @@ Item {
     }
 
     function taskIsSeparator(taskIndex){
-        var sLength = separators.length;
+        var task = icList.childAtIndex(taskIndex);
 
-        for (var i=0; i<sLength; ++i) {
-            //!safety checker
-            if (i>=separators.length)
-                return false;
-
-            if (separators[i].index === taskIndex)
-                return true;
-        }
-
-        return false;
+        return (task && !task.isForcedHidden && task.isSeparator);
     }
 
     function taskIsForcedHidden(taskIndex) {
@@ -412,7 +311,7 @@ Item {
 
         //!tasks that become hidden there is a chance to have index===-1 and to not be
         //!able to be tracked down
-        return ((!task && (taskIndex>=0 && taskIndex<root.tasksCount)) || task.isForcedHidden);
+        return ((!task && (taskIndex>=0 && taskIndex<tasksModel.count)) || task.isForcedHidden);
     }
 
     function separatorExists(separator){
@@ -496,14 +395,14 @@ Item {
         var space = lastRealTaskIndex - firstRealTaskIndex;
 
         if (space >= 0) {
-            var internseparators = 0;
+            var ignored = 0;
             for(var i=firstRealTaskIndex; i<lastRealTaskIndex; ++i) {
-                if (taskIsSeparator(i)) {
-                    internseparators = internseparators + 1;
+                if (taskIsSeparator(i) || taskIsForcedHidden(i)) {
+                    ignored = ignored + 1;
                 }
             }
 
-            return space + 1 - internseparators;
+            return space + 1 - ignored;
         }
 
         return 0;
@@ -640,10 +539,6 @@ Item {
             if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
                                                                            plasmoid.id, latteDock.launchersGroup, from, to);
-            }
-
-            if (isSeparator(launcherUrl)) {
-                setSeparator(launcherUrl,to);
             }
 
             tasksModel.syncLaunchers();

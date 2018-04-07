@@ -101,6 +101,12 @@ Item{
     }
 
     Connections{
+        target: parabolicManager
+        onFirstRealTaskIndexChanged: hiddenSpacer.updateNeighbour();
+        onLastRealTaskIndexChanged: hiddenSpacer.updateNeighbour();
+    }
+
+    Connections{
         target: mainItemContainer
         onItemIndexChanged: hiddenSpacer.updateNeighbour();
     }

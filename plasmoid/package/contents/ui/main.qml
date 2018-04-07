@@ -1556,37 +1556,6 @@ Item {
         }
     }
 
-    function extSignalInternalSeparators(group, separators, indexes) {
-        if (group === latteDock.launchersGroup && !root.dragSource) {
-            var tasks = icList.contentItem.children;
-            var size = icList.contentItem.children.length;
-
-            for(var i=0; i<separators.length; ++i) {
-                var curIndex = -1;
-                var toIndex = Number(indexes[i]);
-
-                for(var j=0; j<size; ++j) {
-                    if (j>=icList.contentItem.children.length){
-                        break;
-                    }
-
-                    if (tasks[j] && tasks[j].launcherUrl === separators[i]) {
-                        curIndex = tasks[j].itemIndex;
-                    }
-                }
-
-                if ((curIndex !== -1) && (curIndex!==toIndex)) {
-                    if (toIndex>=icList.contentItem.children.length) {
-                        toIndex = icList.contentItem.children.length-1;
-                    }
-
-                    console.log("Fix internal separator pos, from :: " +curIndex + " to :: " + toIndex);
-                    tasksModel.move(curIndex, toIndex);
-                }
-            }
-        }
-    }
-
     //! END ::: external launchers signals in order to update the tasks model
 
 

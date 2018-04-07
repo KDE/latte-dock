@@ -334,13 +334,7 @@ MouseArea{
         Connections{
             target: root
             onEditModeChanged: separatorItem.updateForceHiddenState();
-            onDragSourceChanged: {
-                separatorItem.updateForceHiddenState();
-
-                if (isSeparator && !root.dragSource) {
-                    parabolicManager.setSeparator(launcherUrl, itemIndex);
-                }
-            }
+            onDragSourceChanged: separatorItem.updateForceHiddenState();
             onSeparatorsUpdated: separatorItem.updateForceHiddenState();
 
             onGlobalDirectRenderChanged:{
@@ -480,11 +474,19 @@ MouseArea{
     }
 
     onItemIndexChanged: {
+        if (isSeparator) {
+            root.separatorsUpdated();
+        }
+
         if (itemIndex>=0)
             lastValidTimer.start();
+    }
 
-        if (isSeparator){
-            parabolicManager.setSeparator(launcherUrl, itemIndex);
+    onLastValidIndexChanged: {
+        if (lastValidIndex>=0 && lastValidIndex<root.tasksCount){
+            if (!isForcedHidden && (lastValidIndex < parabolicManager.firstRealTaskIndex || lastValidIndex > parabolicManager.lastRealTaskIndex)) {
+                parabolicManager.updateTasksEdgesIndexes();
+            }
         }
     }
 
@@ -516,13 +518,13 @@ MouseArea{
 
     onIsSeparatorChanged: {
         if (isSeparator) {
-            parabolicManager.setSeparator(launcherUrl, itemIndex);
+            root.separatorsUpdated();
 
             if (parabolicManager.isLauncherToBeMoved(launcherUrl) && itemIndex>=0) {
                 parabolicManager.moveLauncherToCorrectPos(launcherUrl, itemIndex);
             }
         } else {
-            parabolicManager.setSeparator(launcherUrl, -1);
+            root.separatorsUpdated();
         }
     }
 
