@@ -1408,7 +1408,9 @@ MouseArea{
 
                 if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
                     //console.log("Hovered Timer....");
-                    if (root.showPreviews && (!root.latteDock || (root.latteDock && !root.latteDock.isHalfShown))) {
+                    if (root.showPreviews && (!root.latteDock
+                                              || (root.latteDock && !root.latteDock.isHalfShown
+                                                  && !root.latteDock.inSlidingIn && !root.latteDock.inSlidingOut))) {
                         mainItemContainer.preparePreviewWindow(false);
                         windowsPreviewDlg.show(mainItemContainer);
                     } else if (mainItemContainer.isWindow && root.highlightWindows) {
