@@ -162,9 +162,9 @@ PlasmaComponents.Page {
                     id: appletsSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconSize
-                    minimumValue: 16
+                    from: 16
                     stepSize: (!plasmoid.configuration.autoDecreaseIconSize
-                              && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
+                               && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
                               || dialog.dockIsPanel ? 1 : 8
                     wheelEnabled: false
 
@@ -183,9 +183,9 @@ PlasmaComponents.Page {
                         valueChanged.connect(updateIconSize);
 
                         if (plasmoid.configuration.iconSize>128) {
-                            maximumValue = plasmoid.configuration.iconSize + 64
+                            to = plasmoid.configuration.iconSize + 64
                         } else {
-                            maximumValue = 128
+                            to = 128
                         }
                     }
 
@@ -217,12 +217,9 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     id: zoomSlider
 
-                    valueIndicatorText: i18n("Zoom Factor")
-                    valueIndicatorVisible: true
-
                     value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
-                    minimumValue: 1
-                    maximumValue: 2
+                    from: 1
+                    to: 2
                     stepSize: 0.05
                     wheelEnabled: false
 
@@ -270,8 +267,8 @@ PlasmaComponents.Page {
                     id: proportionSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.proportionIconSize
-                    minimumValue: 1.0
-                    maximumValue: 10
+                    from: 1.0
+                    to: 10
                     stepSize: 0.5
                     wheelEnabled: false
                     property real realMinimum: minimumValue + 0.5
@@ -325,8 +322,8 @@ PlasmaComponents.Page {
                     id: iconMarginSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconMargin
-                    minimumValue: 0
-                    maximumValue: 100
+                    from: 0
+                    to: 100
                     stepSize: 5
                     wheelEnabled: false
 
@@ -390,8 +387,8 @@ PlasmaComponents.Page {
                     enabled: showBackground.checked
 
                     value: plasmoid.configuration.panelSize
-                    minimumValue: 0
-                    maximumValue: 100
+                    from: 0
+                    to: 100
                     stepSize: 5
                     wheelEnabled: false
 
@@ -441,8 +438,8 @@ PlasmaComponents.Page {
                     enabled: showBackground.checked && !blockOpacityAdjustment
 
                     value: plasmoid.configuration.panelTransparency
-                    minimumValue: 0
-                    maximumValue: 100
+                    from: 0
+                    to: 100
                     stepSize: 5
                     wheelEnabled: false
 
@@ -795,8 +792,8 @@ PlasmaComponents.Page {
                             enabled: showGlowChk.checked
 
                             value: plasmoid.configuration.glowOpacity
-                            minimumValue: 0
-                            maximumValue: 100
+                            from: 0
+                            to: 100
                             stepSize: 5
                             wheelEnabled: false
 
@@ -1024,8 +1021,8 @@ PlasmaComponents.Page {
                             enabled: showAppletShadow.checked
 
                             value: plasmoid.configuration.shadowOpacity
-                            minimumValue: 0
-                            maximumValue: 100
+                            from: 0
+                            to: 100
                             stepSize: 5
                             wheelEnabled: false
 
@@ -1074,8 +1071,8 @@ PlasmaComponents.Page {
                             enabled: showAppletShadow.checked
 
                             value: plasmoid.configuration.shadowSize
-                            minimumValue: 0
-                            maximumValue: 100
+                            from: 0
+                            to: 100
                             stepSize: 5
                             wheelEnabled: false
 
@@ -1134,12 +1131,9 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     id: maxLengthSlider
 
-                    valueIndicatorText: i18n("Length")
-                    valueIndicatorVisible: true
-
                     value: plasmoid.configuration.maxLength
-                    minimumValue: 30
-                    maximumValue: 100
+                    from: 30
+                    to: 100
                     stepSize: 2
                     wheelEnabled: false
 
@@ -1210,14 +1204,11 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     id: offsetSlider
 
-                    valueIndicatorText: i18n("Offset")
-                    valueIndicatorVisible: true
-
                     value: plasmoid.configuration.offset
-                    minimumValue: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                                   || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? -20 :  0
-                    maximumValue: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                                   || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? 20 :  40
+                    from: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                           || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? -20 :  0
+                    to: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
+                         || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? 20 :  40
                     stepSize: 2
                     wheelEnabled: false
 
