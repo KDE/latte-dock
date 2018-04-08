@@ -447,7 +447,7 @@ Item {
             root.draggingFinished();
             root.signalActionsBlockHiding(-1);
 
-            delayedLaynchersSyncTimer.start();
+            tasksModel.syncLaunchers();
         } else {
             inDraggingPhase = true;
             root.signalActionsBlockHiding(1);
@@ -596,15 +596,6 @@ Item {
                 console.log("plasmoid timer: activityChangeDelayer called...");
             }
         }
-    }
-
-    //! delay a bit  the launchers syncing in order to avoid a crash
-    //! the crash was caused from ParabolicManager when adding and moving a launcher (e.g. internal separator)
-    //! and there were more than one synced docks
-    Timer {
-        id: delayedLaynchersSyncTimer
-        interval: 500
-        onTriggered: tasksModel.syncLaunchers();
     }
 
     /////Window Previews/////////

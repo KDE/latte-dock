@@ -60,11 +60,30 @@ SequentialAnimation {
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
             var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);
+
             if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
+                //! When removing a task and there are surrounding separators then the hidden spacers
+                //! are updated immediately for the neighbour tasks. In such case in order to not break
+                //! the removal animation a small margin must applied
+                var nextTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
+                        ((mainItemContainer.hasNeighbourSeparator(lastValidIndex+1,true) && !mainItemContainer.isSeparator && lastValidIndex<parabolicManager.lastRealTaskIndex)
+                         || (latteDock && latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && lastValidIndex>parabolicManager.lastRealTaskIndex));
+
+                var previousTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
+                        ((mainItemContainer.hasNeighbourSeparator(lastValidIndex-1,false) && !mainItemContainer.isSeparator && lastValidIndex>parabolicManager.firstRealTaskIndex)
+                         || (latteDock && latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && lastValidIndex<=parabolicManager.firstRealTaskIndex));
+
+                var spacer = nextTaskIsSeparator ? -(2+root.iconMargin/2) : ( previousTaskIsSeparator ? (2+root.iconMargin/2)/2 : 0);
+
+                //console.log("EDGES ::: " + parabolicManager.firstRealTaskIndex + " _ " + parabolicManager.lastRealTaskIndex);
+                //console.log("Removing ::: " + lastValidIndex + " _ " + launcherUrl + " _ " + previousTaskIsSeparator + " _ " + nextTaskIsSeparator);
+
                 if (root.vertical) {
                     mainItemContainer.anchors.top = previousTask.bottom;
+                    mainItemContainer.anchors.topMargin = spacer;
                 } else {
                     mainItemContainer.anchors.left = previousTask.right;
+                    mainItemContainer.anchors.leftMargin = spacer;
                 }
             }
 
@@ -161,8 +180,10 @@ SequentialAnimation {
             if (root.showWindowsOnlyFromLaunchers) {
                 if (root.vertical) {
                     mainItemContainer.anchors.top = undefined;
+                    mainItemContainer.anchors.topMargin = 0;
                 } else {
                     mainItemContainer.anchors.left = undefined;
+                    mainItemContainer.anchors.leftMargin = 0;
                 }
             }
 

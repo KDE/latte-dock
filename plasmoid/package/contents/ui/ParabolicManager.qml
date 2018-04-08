@@ -540,6 +540,16 @@ Item {
                 latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
                                                                            plasmoid.id, latteDock.launchersGroup, from, to);
             }
+            delayedLaynchersSyncTimer.start();
         }
+    }
+
+    //! delay a bit  the launchers syncing in order to avoid a crash
+    //! the crash was caused from ParabolicManager when adding and moving a launcher (e.g. internal separator)
+    //! and there were more than one synced docks
+    Timer {
+        id: delayedLaynchersSyncTimer
+        interval: 200
+        onTriggered: tasksModel.syncLaunchers();
     }
 }
