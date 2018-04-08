@@ -208,19 +208,7 @@ bool ScreenEdgeGhostWindow::event(QEvent *e)
 
 void ScreenEdgeGhostWindow::hideWithMask()
 {
-    QRect maskGeometry;
-
-    if (m_dockView->formFactor() == Plasma::Types::Horizontal) {
-        maskGeometry.setX(m_dockView->absGeometry().x());
-        maskGeometry.setY(m_dockView->absGeometry().bottom() + 1);
-        maskGeometry.setWidth(m_dockView->absGeometry().width());
-        maskGeometry.setHeight(1);
-    } else {
-        maskGeometry.setX(m_dockView->absGeometry().right() + 1);
-        maskGeometry.setY(m_dockView->absGeometry().y());
-        maskGeometry.setWidth(1);
-        maskGeometry.setHeight(m_dockView->absGeometry().height());
-    }
+    QRect maskGeometry{0, 0, 1, 1};
 
     setMask(maskGeometry);
 }
