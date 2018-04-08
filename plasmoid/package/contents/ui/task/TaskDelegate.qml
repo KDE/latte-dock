@@ -337,6 +337,20 @@ MouseArea{
             onDragSourceChanged: separatorItem.updateForceHiddenState();
             onSeparatorsUpdated: separatorItem.updateForceHiddenState();
 
+            //! During dock sliding-in because the parabolic effect isnt trigerred
+            //! immediately but we wait first the dock to go to its final normal
+            //! place we might miss the activation of the parabolic effect.
+            //! By catching that signal we are trying to solve this.
+            onDockIsShownCompletelyChanged: {
+                if (dockIsShownCompletely && mainItemContainer.containsMouse) {
+                    if (root.vertical) {
+                        mainItemContainer.mousePosChanged(mainItemContainer.mouseY);
+                    } else {
+                        mainItemContainer.mousePosChanged(mainItemContainer.mouseX);
+                    }
+                }
+            }
+
             onGlobalDirectRenderChanged:{
                 if (root.globalDirectRender && restoreAnimation.running) {
                     // console.log("Cleat Task Scale !!!!");

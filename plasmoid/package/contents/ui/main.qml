@@ -164,6 +164,7 @@ Item {
     property string launcherForRemoval: ""
 
     //BEGIN Latte Dock properties
+    property bool dockIsShownCompletely: latteDock ? latteDock.dockIsShownCompletely : true
     property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
     property bool directRenderDelayerIsRunning: latteDock ? latteDock.directRenderDelayerIsRunning : directRenderDelayerForEnteringTimer.running

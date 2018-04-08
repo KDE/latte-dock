@@ -116,6 +116,7 @@ DragDrop.DropArea {
     readonly property bool hasUserSpecifiedBackground: (dock && dock.managedLayout && dock.managedLayout.background.startsWith("/")) ?
                                                            true : false
 
+    property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
     property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (plasmoid.configuration.maxLength===100)
