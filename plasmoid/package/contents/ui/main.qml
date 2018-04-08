@@ -302,7 +302,7 @@ Item {
         target: latteDock
         onDockIsHiddenChanged:{
             if (latteDock.dockIsHidden) {
-                windowsPreviewDlg.hide();
+                windowsPreviewDlg.hide("3.3");
             }
         }
 
@@ -484,7 +484,7 @@ Item {
         }
 
         function hide(debug){
-            //console.log("on hide event called: "+debug);
+            //console.log("on hide previews event called: "+debug);
 
             if (latteDock && signalSent) {
                 //it is used to unblock dock hiding
@@ -523,7 +523,9 @@ Item {
                 }
 
                 //used to initialize windows previews buffers from task to task
-                visible = false;
+                if (!Latte.WindowSystem.isPlatformWayland) {
+                    visible = false;
+                }
                 activeItem = taskItem;
                 toolTipDelegate.parentTask = taskItem;
 
@@ -534,14 +536,18 @@ Item {
                     //root.signalDraggingState(true);
                 }
 
-                showPreviewWinTimer.start();
+                if (!Latte.WindowSystem.isPlatformWayland) {
+                    showPreviewWinTimer.start();
+                } else {
+                    visible = true;
+                }
             }
         }
     }
 
     //! I cant find another way to fix the issue with window thumbnails
     //! there are many cases that not correct previews are shown are
-    //! no previews in cases that they should
+    //! no previews in cases that they should (X11 related)
     Timer {
         id: showPreviewWinTimer
         interval: 50

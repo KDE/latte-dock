@@ -198,21 +198,25 @@ Column {
             // TODO: this causes XCB error message when being visible the first time
             property int winId: isWin && windows[flatIndex] != undefined ? windows[flatIndex] : 0
 
-            PlasmaCore.WindowThumbnail {
-                id: previewThumb
+
+            Loader{
+                id:previewThumbX11Loader
                 anchors.fill: parent
-
+                active: !Latte.WindowSystem.isPlatformWayland
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
-                winId: thumbnailSourceItem.winId
 
-                ToolTipWindowMouseArea {
-                    id: area2
-
-                    anchors.fill: Latte.WindowSystem.isPlatformWayland ? parent : previewThumb
-                    rootTask: parentTask
-                    modelIndex: submodelIndex
+                sourceComponent: PlasmaCore.WindowThumbnail {
                     winId: thumbnailSourceItem.winId
                 }
+            }
+
+            ToolTipWindowMouseArea {
+                id: area2
+
+                anchors.fill: Latte.WindowSystem.isPlatformWayland ? parent : previewThumbX11Loader
+                rootTask: parentTask
+                modelIndex: submodelIndex
+                winId: thumbnailSourceItem.winId
             }
 
             Image {
@@ -243,7 +247,8 @@ Column {
                 source: icon
                 animated: false
                 usesPlasmaTheme: false
-                visible: thumbnailSourceItem.isMinimized && !albumArtImage.visible
+                visible: (thumbnailSourceItem.isMinimized && !albumArtImage.visible) //X11 case
+                         || (!previewThumbX11Loader.active && !albumArtImage.visible) //Wayland case
 
                 ToolTipWindowMouseArea {
                     id: area4
