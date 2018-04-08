@@ -126,14 +126,14 @@ PlasmaExtras.ScrollArea {
             function checkMouseInside(){
                 var isInside = containsMouse || childrenContainMouse() || (parentTask && parentTask.containsMouse);
                 if (isInside){
-                    root.disableRestoreZoom = true;
+                    //root.disableRestoreZoom = true;
                     mainToolTip.containsMouse = true;
 
                     if(!root.latteDock)
                         checkListHovered.stop();
                 }
                 else{
-                    root.disableRestoreZoom = false;
+                    //root.disableRestoreZoom = false;
                     mainToolTip.containsMouse = false;
 
                     if(!root.latteDock)
