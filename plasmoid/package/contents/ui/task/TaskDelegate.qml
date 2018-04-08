@@ -742,7 +742,7 @@ MouseArea{
 
     onPressed: {
         //console.log("Pressed Task Delegate..");
-        if (Latte.WindowSystem.compositingActive) {
+        if (Latte.WindowSystem.compositingActive && !Latte.WindowSystem.isPlatformWayland) {
             windowsPreviewDlg.hide(2);
         }
 
@@ -930,7 +930,7 @@ MouseArea{
                 if (Latte.WindowSystem.compositingActive && backend.canPresentWindows()) {
                     root.presentWindows(model.LegacyWinIdList);
                 } else {
-                    if ((windowsPreviewDlg.visualParent === mainItemContainer)&&(windowsPreviewDlg.visible)) {
+                    if ((windowsPreviewDlg.visualParent === previewsVisualParent)&&(windowsPreviewDlg.visible)) {
                         windowsPreviewDlg.hide(3);
                     } else {
                         preparePreviewWindow(false);
@@ -1015,27 +1015,6 @@ MouseArea{
         toolTipDelegate.activitiesParent = Qt.binding(function() {
             return model.Activities;
         });
-
-        /*
-        toolTipDelegate.parentIndex = index;
-
-        toolTipDelegate.windows = Qt.binding(function() {
-            return model.LegacyWinIdList;
-        });
-        toolTipDelegate.mainText = Qt.binding(function() {
-            return model.display;
-        });
-        toolTipDelegate.icon = Qt.binding(function() {
-            return model.decoration;
-        });
-        toolTipDelegate.subText = Qt.binding(function() {
-            return model.IsLauncher === true ? model.GenericName : generateSubText(model);
-        });
-        toolTipDelegate.launcherUrl = Qt.binding(function() {
-            return model.LauncherUrlWithoutIcon;
-        });
-
-        toolTipDelegate.titles = tasksWindows.windowsTitles();*/
     }
 
 
@@ -1155,7 +1134,7 @@ MouseArea{
     }
 
     function slotShowPreviewForTasks(group) {
-        if (group === mainItemContainer) {
+        if (group === mainItemContainer && !windowsPreviewDlg.visible) {
             preparePreviewWindow(true);
             windowsPreviewDlg.show(mainItemContainer);
         }
