@@ -20,9 +20,9 @@ We recommend that you use at least **Plasma 5.9.0**
 
 **development packages for:**
 ```bash
- Qt5Core >= 5.7.0
- Qt5Gui >= 5.7.0
- Qt5Dbus >= 5.7.0
+ Qt5Core >= 5.9.0
+ Qt5Gui >= 5.9.0
+ Qt5Dbus >= 5.9.0
 
  KF5Plasma >= 5.38.0
  KF5PlasmaQuick >= 5.38.0

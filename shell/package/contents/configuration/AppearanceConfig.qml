@@ -163,6 +163,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconSize
                     from: 16
+                    to: 128
                     stepSize: (!plasmoid.configuration.autoDecreaseIconSize
                                && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
                               || dialog.dockIsPanel ? 1 : 8
@@ -260,7 +261,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     text: i18n("Screen Height Proportion:")
                     horizontalAlignment: Text.AlignLeft
-                    enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
+                    enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
 
                 LatteExtraControls.Slider {
@@ -271,11 +272,10 @@ PlasmaComponents.Page {
                     to: 10
                     stepSize: 0.5
                     wheelEnabled: false
-                    property real realMinimum: minimumValue + 0.5
 
                     function updateProportionIconSize() {
                         if (!pressed) {
-                            if(value<realMinimum) {
+                            if(value===1) {
                                 plasmoid.configuration.proportionIconSize = -1;
                             } else {
                                 plasmoid.configuration.proportionIconSize = value;
@@ -297,11 +297,11 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: proportionSizeSlider.value>=proportionSizeSlider.realMinimum ?
+                    text: proportionSizeSlider.value !== proportionSizeSlider.from ?
                               proportionSizeSlider.value.toFixed(1) + "%" : "---%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    enabled: proportionSizeSlider.value >= proportionSizeSlider.realMinimum
+                    enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
             }
 

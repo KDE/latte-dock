@@ -32,7 +32,7 @@ T.Slider {
         Math.max(handle ? handle.implicitHeight : 0,
                  handle ? handle.implicitHeight : 0) + topPadding + bottomPadding)
 
-    padding: units.gridUnit
+    padding: 3*units.smallSpacing //5//units.gridUnit
     snapMode: T.Slider.SnapOnRelease
 
     PlasmaCore.Svg {
@@ -80,8 +80,10 @@ T.Slider {
             prefix: "groove-highlight"
             x: parent.horizontal ? 0 : (parent.width - width) / 2
             y: parent.horizontal ? (parent.height - height) / 2 : control.visualPosition * parent.height
-            width: parent.horizontal ? control.position * parent.width : parent.width
-            height: parent.horizontal ? parent.height : control.position * parent.height
+            width: parent.horizontal ? control.position * parent.width + invisibleSpacer : parent.width
+            height: parent.horizontal ? parent.height : control.position * parent.height + invisibleSpacer
+
+            property int invisibleSpacer: control.position === 0 ? 4 : 0
         }
     }
 }
