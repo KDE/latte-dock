@@ -1549,9 +1549,9 @@ void DockView::setBlockHiding(bool block)
 
 void DockView::updateEffects()
 {
-    //! CRASH: Dont update effects under wayland
-    //! because they arent supported yet
-    if (KWindowSystem::isPlatformWayland()) {
+    //! Dont apply any effect before the wayland surface is created under wayland
+    //! https://bugs.kde.org/show_bug.cgi?id=392890
+    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
         return;
     }
 

@@ -133,12 +133,17 @@ DockCorona::~DockCorona()
     //! BEGIN: Give the time to slide-out docks when closing
     m_layoutManager->hideAllDocks();
 
-    QTimer::singleShot(400, [this]() {
-        m_quitTimedEnded = true;
-    });
+    //! Dont delay the destruction under wayland in any case
+    //! because it creates a crash with kwin effects
+    //! https://bugs.kde.org/show_bug.cgi?id=392890
+    if (!KWindowSystem::isPlatformWayland()) {
+        QTimer::singleShot(400, [this]() {
+            m_quitTimedEnded = true;
+        });
 
-    while (!m_quitTimedEnded) {
-        QGuiApplication::processEvents(QEventLoop::AllEvents, 50);
+        while (!m_quitTimedEnded) {
+            QGuiApplication::processEvents(QEventLoop::AllEvents, 50);
+        }
     }
 
     //! END: slide-out docks when closing
