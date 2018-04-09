@@ -1,92 +1,87 @@
 /*
-*   Copyright (C) 2011 by Daker Fernandes Pinheiro <dakerfp@gmail.com>
-*   Copyright (C) 2014 by Marco Martin <mart@kde.org>
-*   Copyright (C) 2018 by Michail Vourlakos <mvourlakos@gmail.com>
-*
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU Library General Public License as
-*   published by the Free Software Foundation; either version 2, or
-*   (at your option) any later version.
-*
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details
-*
-*   You should have received a copy of the GNU Library General Public
-*   License along with this program; if not, write to the
-*   Free Software Foundation, Inc.,
-*   51 Franklin Street, Fifth Floor, Boston, MA  2.010-1301, USA.
-*/
+ *   Copyright 2016 Marco Martin <mart@kde.org>
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU Library General Public License as
+ *   published by the Free Software Foundation; either version 2, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Library General Public License for more details
+ *
+ *   You should have received a copy of the GNU Library General Public
+ *   License along with this program; if not, write to the
+ *   Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 import QtQuick 2.7
+import QtQuick.Templates 2.0 as T
 import org.kde.plasma.core 2.0 as PlasmaCore
-import QtQuick.Controls 1.6 as QtControls
-import QtQuick.Controls.Styles.Plasma 2.0 as Styles
+import "private" as Private
 
+T.Slider {
+    id: control
 
-/**
- * An interactive slider component with Plasma look and feel.
- *
- * @inherit QtQuick.Controls.Slider
- */
-QtControls.Slider {
-    id: slider
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+        Math.max(handle ? handle.implicitWidth : 0,
+                 handle ? handle.implicitWidth : 0) + leftPadding + rightPadding)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
+        Math.max(handle ? handle.implicitHeight : 0,
+                 handle ? handle.implicitHeight : 0) + topPadding + bottomPadding)
 
-    /**
-     * This property holds if a value indicator element will be shown while is
-     * dragged or not.
-     *
-     * @warning The value indicator is not implemented in the Plasma Slider.
-     *
-     * The default value is false.
-     */
-    property bool valueIndicatorVisible: false
+    padding: units.gridUnit
+    snapMode: T.Slider.SnapOnRelease
 
-    /**
-     * This property holds the text being displayed in the value indicator.
-     *
-     * @warning The value indicator is not implemented in the Plasma Slider.
-     */
-    property string valueIndicatorText: value
+    PlasmaCore.Svg {
+        id: grooveSvg
+        imagePath: "widgets/slider"
+        colorGroup: PlasmaCore.ColorScope.colorGroup
 
-    /**
-     * type:bool
-     * This property holds if the slider visualizations has an inverted
-     * direction.
-     *
-     * @warning: deprecated and not supported, here for retrocompatibility
-     */
-    property bool inverted: false
-
-    width: slider.isVertical ? theme.mSize(theme.defaultFont).height*1.6 : 200
-    height: slider.isVertical ? 200 : theme.mSize(theme.defaultFont).height*1.6
-    // TODO: needs to define if there will be specific graphics for
-    //     disabled sliders
-    opacity: enabled ? 1.0 : 0.5
-
-    activeFocusOnTab: true
-
-    //FIXME: remove those 2 functions once we can depend from 5.4*/
-    function accessibleIncreaseAction() { increase() }
-    function accessibleDecreaseAction() { decrease() }
-
-    function increase() {
-        if (!enabled)
-            return;
-        if (inverted)
-            value += stepSize;
-        else
-            value -= stepSize;
     }
-    function decrease() {
-        if (!enabled)
-            return;
-        if (inverted)
-            value -= stepSize;
-        else
-            value += stepSize;
+    handle: Item {
+        property bool horizontal: control.orientation === Qt.Horizontal
+        x: control.leftPadding + (horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
+        y: control.topPadding + (horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
+
+        width: firstHandle.naturalSize.width
+        height: firstHandle.naturalSize.height
+        Private.RoundShadow {
+            anchors.fill: parent
+            imagePath: "widgets/slider"
+            focusElement: parent.horizontal ? "horizontal-slider-focus" : "vertical-slider-focus"
+            hoverElement: parent.horizontal ? "horizontal-slider-hover" : "vertical-slider-hover"
+            shadowElement: parent.horizontal ? "horizontal-slider-shadow" : "vertical-slider-shadow"
+            state: control.activeFocus ? "focus" : (control.hovered ? "hover" : "shadow")
+        }
+        PlasmaCore.SvgItem {
+            id: firstHandle
+            anchors.fill: parent
+            svg: grooveSvg
+            elementId: parent.horizontal ? "horizontal-slider-handle" : "vertical-slider-handle"
+        }
     }
 
-    style: Styles.SliderStyle {}
+    background: PlasmaCore.FrameSvgItem {
+        imagePath: "widgets/slider"
+        prefix: "groove"
+        readonly property bool horizontal: control.orientation === Qt.Horizontal
+        implicitWidth: horizontal ? units.gridUnit * 8 : margins.left + margins.right
+        implicitHeight: horizontal ? margins.top + margins.bottom : units.gridUnit * 8
+        width: horizontal ? control.availableWidth : implicitWidth
+        height: horizontal ? implicitHeight : control.availableHeight
+        anchors.centerIn: parent
+        scale: horizontal && control.mirrored ? -1 : 1
+
+        PlasmaCore.FrameSvgItem {
+            imagePath: "widgets/slider"
+            prefix: "groove-highlight"
+            x: parent.horizontal ? 0 : (parent.width - width) / 2
+            y: parent.horizontal ? (parent.height - height) / 2 : control.visualPosition * parent.height
+            width: parent.horizontal ? control.position * parent.width : parent.width
+            height: parent.horizontal ? parent.height : control.position * parent.height
+        }
+    }
 }
