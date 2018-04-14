@@ -46,7 +46,6 @@ SequentialAnimation {
     ScriptAction{
         script:{
             mainItemContainer.inAnimation = true;
-            icList.delayingRemoval = true;
             mainItemContainer.inAddRemoveAnimation = true;
             mainItemContainer.inRemoveStage = true;
 
@@ -167,7 +166,6 @@ SequentialAnimation {
             root.signalAnimationsNeedLength(-1);
 
             mainItemContainer.inAnimation = false;
-            icList.delayingRemoval = false;
 
             if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
                 root.launcherForRemoval="";

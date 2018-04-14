@@ -1122,7 +1122,6 @@ Item {
 
             property int tasksCount: tasksModel.count
 
-            property bool delayingRemoval: false
             property bool directRender: false
 
             //   onTasksCountChanged: updateImplicits();

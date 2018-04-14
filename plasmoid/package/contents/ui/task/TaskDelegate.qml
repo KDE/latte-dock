@@ -120,6 +120,10 @@ MouseArea{
     property bool isWindow: (IsWindow === true) ? true : false
     property bool isZoomed: false
 
+    property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=root.iconSize && height>=root.iconSize
+                                        && !mainItemContainer.delayingRemove
+                                        && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //dont publish during zoomFactor
+
     property bool pressed: false
     readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
                                               true : false
@@ -474,6 +478,13 @@ MouseArea{
     onPidChanged: updateAudioStreams()
     onHasAudioStreamChanged: updateAudioStreams()
 
+    onCanPublishGeometriesChanged: {
+        if (canPublishGeometries) {
+            slotPublishGeometries();
+            taskInitComponent.createObject(mainItemContainer);
+        }
+    }
+
     onHoveredIndexChanged: {
         var distanceFromHovered = Math.abs(index - icList.hoveredIndex);
 
@@ -516,12 +527,6 @@ MouseArea{
                                  model.LauncherUrlWithoutIcon, model.decoration);
             pressX = -1;
             pressY = -1;
-        }
-    }
-
-    onIsWindowChanged: {
-        if (isWindow) {
-            taskInitComponent.createObject(mainItemContainer);
         }
     }
 
@@ -1162,8 +1167,7 @@ MouseArea{
     function slotPublishGeometries() {
         //! this way we make sure that layouts that are in different activities that the current layout
         //! dont publish their geometries
-        if ((isWindow || isStartup || isGroupParent) && icList && !icList.delayingRemoval
-                && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //dont publish during zoomFactor
+        if ( canPublishGeometries
                 && (!latteDock
                     || (latteDock && currentLayout && latteDock.universalLayoutManager &&
                         currentLayout.name === latteDock.universalLayoutManager.currentLayoutName))) {
