@@ -35,6 +35,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.1 as Latte
+import "../controls" as LatteExtraControls
 
 FocusScope {
     id: dialog
@@ -161,12 +162,19 @@ FocusScope {
                 width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
                 height: logo.height
 
+                LatteExtraControls.ToolTip{
+                    parent: logo
+                    text: i18n("Open Latte settings window")
+                    visible: aboutMouseArea.containsMouse
+                }
+
                 Latte.IconItem {
                     id: logo
 
-                    width: 1.4 * latteTxtMetrics.font.pixelSize
+                    width: Math.round(1.4 * latteTxtMetrics.font.pixelSize)
                     height: width
 
+                    smooth: true
                     source: "latte-dock"
                     // animated: true
                     usesPlasmaTheme: false
