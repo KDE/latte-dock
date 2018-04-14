@@ -1094,6 +1094,11 @@ void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
 
     if (!QFile(newLayoutFile).exists()) {
         QFile(presetPath).copy(newLayoutFile);
+        QFileInfo newFileInfo(newLayoutFile);
+
+        if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+            QFile(newLayoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+        }
     }
 }
 

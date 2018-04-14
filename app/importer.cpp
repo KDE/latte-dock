@@ -469,7 +469,14 @@ QString Importer::importLayoutHelper(QString fileName)
     QString newLayoutName = Layout::layoutName(fileName);
     newLayoutName = uniqueLayoutName(newLayoutName);
 
-    QFile(fileName).copy(QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte");
+    QString newPath = QDir::homePath() + "/.config/latte/" + newLayoutName + ".layout.latte";
+    QFile(fileName).copy(newPath);
+
+    QFileInfo newFileInfo(newPath);
+
+    if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+        QFile(newPath).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+    }
 
     return newLayoutName;
 

@@ -705,6 +705,12 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
         copiedId = file;
     }
 
+    QFileInfo newFileInfo(copiedId);
+
+    if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+        QFile(copiedId).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+    }
+
     if (m_layouts.contains(copiedId)) {
         Layout *oldSettings = m_layouts.take(copiedId);
         delete oldSettings;
