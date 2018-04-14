@@ -431,7 +431,7 @@ Item{
         ///Secret MouseArea to be used by the folder widget
         Loader{
             anchors.fill: parent
-            active: container.fakeIconItem && applet.pluginName === "org.kde.plasma.folder"
+            active: container.fakeIconItem && applet.pluginName === "org.kde.plasma.folder" && !container.disableLatteParabolicIconHeuristics
             sourceComponent: MouseArea{
                 onClicked: dock.toggleAppletExpanded(applet.id);
             }
@@ -450,7 +450,7 @@ Item{
 
         Loader{
             anchors.fill: parent
-            active: container.fakeIconItem
+            active: container.fakeIconItem && !container.disableLatteParabolicIconHeuristics
             sourceComponent: Latte.IconItem{
                 id: fakeAppletIconItem
                 anchors.fill: parent
