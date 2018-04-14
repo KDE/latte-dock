@@ -110,6 +110,7 @@ MouseArea{
     property bool isActive: (IsActive === true) ? true : false
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
     property bool isDragged: false
+    property bool isGroupable: (IsGroupable === true) ? true : false
     property bool isGroupParent: (IsGroupParent === true) ? true : false
     property bool isForcedHidden: false
     property bool isLauncher: (IsLauncher === true) ? true : false
@@ -576,7 +577,11 @@ MouseArea{
         }
 
         if (root.latteDock && (!root.showPreviews)){
-            root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
+            if (isWindow) {
+                root.latteDock.showTooltipLabel(mainItemContainer, model.display);
+            } else {
+                root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
+            }
         }
 
         if (root.latteDock && root.latteDock.isHalfShown) {
