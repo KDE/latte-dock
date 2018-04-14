@@ -9,7 +9,7 @@ function typeOf(obj, className){
 }
 
 function reconsiderAppletIconItem(){
-    if (container.appletIconItem || !applet)
+    if (container.appletIconItem || !applet || container.disableLatteParabolicIconHeuristics)
         return;
 
     //! searching to find for that applet the first IconItem

@@ -44,6 +44,7 @@ Item {
     property bool canBeHovered: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
                                             && !isSpacer && !isInternalViewSplitter
+    property bool disableLatteParabolicIconHeuristics: applet && applet.disableLatteParabolicIcon !== undefined ?  applet.disableLatteParabolicIcon : false
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool needsFillSpace: { //fill flag, it is used in calculations for fillWidth,fillHeight applets
         if (!applet || !applet.Layout ||  (applet && applet.pluginName === "org.kde.plasma.panelspacer"))
@@ -80,8 +81,7 @@ Item {
                                                                                          (((index === layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-2)&&(layoutsContainer.startLayout.count>2))
                                                                                           ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
                                                                                           ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
-
-
+    property bool supportsIsInLatte: applet && applet.isInLatte !== undefined ? true : false
 
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
     property int hoveredIndex: layoutsContainer.hoveredIndex
@@ -155,6 +155,18 @@ Item {
                 applet.parent =  wrapper.fakeIconItemContainer;
                 applet.anchors.fill = wrapper.fakeIconItemContainer;
             }
+
+            wrapper.disableScaleWidth = false;
+            wrapper.disableScaleHeight = false;
+
+            wrapper.updateLayoutWidth();
+            wrapper.updateLayoutHeight();
+        }
+    }
+
+    onDisableLatteParabolicIconHeuristicsChanged: {
+        if (disableLatteParabolicIconHeuristics && applet.opacity === 0) {
+            applet.opacity = 1;
 
             wrapper.disableScaleWidth = false;
             wrapper.disableScaleHeight = false;
@@ -352,6 +364,12 @@ Item {
         }
         else{
             wrapper.zoomScale = 1;
+        }
+    }
+
+    onSupportsIsInLatteChanged: {
+        if (supportsIsInLatte) {
+            applet.isInLatte = true;
         }
     }
 
