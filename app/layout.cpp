@@ -220,6 +220,35 @@ void Layout::setShowInMenu(bool show)
     emit showInMenuChanged();
 }
 
+bool Layout::isWritable() const
+{
+    QFileInfo layoutFileInfo(m_layoutFile);
+
+    if (layoutFileInfo.exists() && !layoutFileInfo.isWritable()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+void Layout::lock()
+{
+    QFileInfo layoutFileInfo(m_layoutFile);
+
+    if (layoutFileInfo.exists() && layoutFileInfo.isWritable()) {
+        QFile(m_layoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+    }
+}
+
+void Layout::unlock()
+{
+    QFileInfo layoutFileInfo(m_layoutFile);
+
+    if (layoutFileInfo.exists() && !layoutFileInfo.isWritable()) {
+        QFile(m_layoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+    }
+}
+
 QString Layout::background() const
 {
     return m_background;

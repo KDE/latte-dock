@@ -77,6 +77,8 @@ public:
     //!it is original layout compared to pseudo-layouts that are combinations of multiple-original layouts
     bool isOriginalLayout() const;
 
+    bool isWritable() const;
+
     int version() const;
     void setVersion(int ver);
 
@@ -131,6 +133,11 @@ public:
 
     QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
     QList<Plasma::Types::Location> freeEdges(int screen) const;
+
+    //! make it only read-only
+    void lock();
+    //! make it writable which it should be the default
+    void unlock();
 
     int noDocksWithTasks() const;
     int docksCount() const;
