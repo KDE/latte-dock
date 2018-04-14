@@ -169,8 +169,8 @@ PlasmaComponents.Page {
             }
 
             RowLayout {
-                Layout.topMargin: units.smallSpacing
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.topMargin: units.smallSpacing * 3
                 visible: plasmoid.configuration.advanced
                 enabled: !disableAllWindowsFunctionality
 
@@ -192,6 +192,7 @@ PlasmaComponents.Page {
 
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
+                Layout.topMargin: units.smallSpacing
                 spacing: units.smallSpacing
                 visible: plasmoid.configuration.advanced
                 enabled: !disableAllWindowsFunctionality
