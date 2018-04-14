@@ -64,40 +64,6 @@ FocusScope {
         enabledBorders: dockConfig.enabledBorders
     }
 
-    PlasmaComponents.ToolButton {
-        id: pinButton
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-        //!avoid editMode box shadow
-        anchors.topMargin: units.smallSpacing
-        anchors.rightMargin: units.smallSpacing
-
-        Layout.fillWidth: false
-        Layout.fillHeight: false
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-
-        iconSource: "window-pin"
-        checkable: true
-
-        width: Math.round(units.gridUnit * 1.25)
-        height: width
-
-        property bool inStartup: true
-
-        onClicked: {
-            plasmoid.configuration.configurationSticker = checked
-            dockConfig.setSticker(checked)
-        }
-
-        Component.onCompleted: {
-            checked = plasmoid.configuration.configurationSticker
-            dockConfig.setSticker(plasmoid.configuration.configurationSticker)
-        }
-    }
-
     ColumnLayout {
         id: content
 
@@ -246,59 +212,96 @@ FocusScope {
                 Layout.minimumHeight: advancedSettings.height + 2*units.smallSpacing
             }
 
-            RowLayout {
-                id: advancedSettings
-                Layout.fillWidth: true
-                Layout.rightMargin: units.smallSpacing * 2
-                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            ColumnLayout {
+                PlasmaComponents.ToolButton {
+                    id: pinButton
 
-                PlasmaComponents.Label {
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    //!avoid editMode box shadow
+                    anchors.topMargin: units.smallSpacing
+                    anchors.rightMargin: units.smallSpacing
+
+                    Layout.fillWidth: false
+                    Layout.fillHeight: false
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                    Layout.bottomMargin: units.smallSpacing * 3
+
+                    iconSource: "window-pin"
+                    checkable: true
+
+                    width: Math.round(units.gridUnit * 1.25)
+                    height: width
+
+                    property bool inStartup: true
+
+                    onClicked: {
+                        plasmoid.configuration.configurationSticker = checked
+                        dockConfig.setSticker(checked)
+                    }
+
+                    Component.onCompleted: {
+                        checked = plasmoid.configuration.configurationSticker
+                        dockConfig.setSticker(plasmoid.configuration.configurationSticker)
+                    }
+                }
+
+                RowLayout {
+                    id: advancedSettings
                     Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignRight
-                }
+                    Layout.rightMargin: units.smallSpacing * 2
+                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
 
-                PlasmaComponents.Label {
-                    text: i18n("Advanced")
-                    Layout.alignment: Qt.AlignRight
-                    opacity: plasmoid.configuration.advanced ? 1 : 0.3
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            plasmoid.configuration.advanced = !advancedSwitch.checked;
-                            advancedSwitch.checked = plasmoid.configuration.advanced;
-                        }
-                    }
-                }
-
-                Switch {
-                    id: advancedSwitch
-                    checked: plasmoid.configuration.advanced
-
-                    onPressedChanged: {
-                        if(pressed)
-                            plasmoid.configuration.advanced = !checked;
+                    PlasmaComponents.Label {
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignRight
                     }
 
-                    style: Styles.SwitchStyle {
-                        property bool checked: advancedSwitch.checked
-                    }
+                    PlasmaComponents.Label {
+                        text: i18n("Advanced")
+                        Layout.alignment: Qt.AlignRight
+                        opacity: plasmoid.configuration.advanced ? 1 : 0.3
 
-                    onCheckedChanged: {
-                        if (!checked && tabGroup.currentTab === tweaksPage) {
-                            if (tasksTabBtn.visible) {
-                                tabGroup.currentTab = tasksPage;
-                                tabBar.currentTab = tasksTabBtn;
-                            } else {
-                                tabGroup.currentTab = appearancePage;
-                                tabBar.currentTab = appearanceTabBtn;
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                plasmoid.configuration.advanced = !advancedSwitch.checked;
+                                advancedSwitch.checked = plasmoid.configuration.advanced;
                             }
                         }
+                    }
 
-                        if (checked) {
-                            dockConfig.createSecondaryWindow();
-                        } else {
-                            dockConfig.deleteSecondaryWindow();
+                    Switch {
+                        id: advancedSwitch
+                        checked: plasmoid.configuration.advanced
+
+                        onPressedChanged: {
+                            if(pressed)
+                                plasmoid.configuration.advanced = !checked;
+                        }
+
+                        style: Styles.SwitchStyle {
+                            property bool checked: advancedSwitch.checked
+                        }
+
+                        onCheckedChanged: {
+                            if (!checked && tabGroup.currentTab === tweaksPage) {
+                                if (tasksTabBtn.visible) {
+                                    tabGroup.currentTab = tasksPage;
+                                    tabBar.currentTab = tasksTabBtn;
+                                } else {
+                                    tabGroup.currentTab = appearancePage;
+                                    tabBar.currentTab = appearanceTabBtn;
+                                }
+                            }
+
+                            if (checked) {
+                                dockConfig.createSecondaryWindow();
+                            } else {
+                                dockConfig.deleteSecondaryWindow();
+                            }
                         }
                     }
                 }
