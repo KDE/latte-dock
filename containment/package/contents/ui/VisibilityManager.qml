@@ -122,7 +122,7 @@ Item{
         when: dock
         value: ((root.blurEnabled && root.useThemePanel && !root.solidPanel)
                 || (root.blurEnabled && root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
-               && (!root.inStartup || inForceHiding || inTempHiding)
+               && !(root.inStartup || inForceHiding || inTempHiding)
     }
 
     Binding{
