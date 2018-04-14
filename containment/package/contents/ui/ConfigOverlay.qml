@@ -409,7 +409,6 @@ MouseArea {
                 closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled
                         && !(currentApplet.applet.pluginName===root.plasmoidName && dock && dock.docksWithTasks()===1 && dock.tasksPresent());
                 lockButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
-                        && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isSeparator
 

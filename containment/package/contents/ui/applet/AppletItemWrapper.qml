@@ -267,7 +267,9 @@ Item{
                     && !disableScaleWidth
                     && !container.fakeIconItem) {
                 //&& !root.editMode ){
-                disableScaleHeight = true;
+                if (!container.isSpacer) {
+                    disableScaleHeight = true;
+                }
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if((applet.Layout.maximumHeight < root.iconSize)){
                     layoutHeight = applet.Layout.maximumHeight;
@@ -313,7 +315,10 @@ Item{
                     && !disableScaleHeight
                     && !container.fakeIconItem){
                 //  && !root.editMode){
-                disableScaleWidth = true;
+
+                if (!container.isSpacer) {
+                    disableScaleWidth = true;
+                }
                 //this way improves performance, probably because during animation the preferred sizes update a lot
                 if((applet.Layout.maximumWidth < root.iconSize)){
                     //   return applet.Layout.maximumWidth;

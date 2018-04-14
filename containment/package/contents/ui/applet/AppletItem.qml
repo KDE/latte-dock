@@ -241,7 +241,7 @@ Item {
     function checkCanBeHovered(){
         if ( (((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
                (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
-              && (applet && applet.pluginName !== "org.kde.plasma.panelspacer")
+              && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
               && !container.fakeIconItem)
                 || (isSystray)
                 || (container.needsFillSpace) ) {
@@ -350,7 +350,7 @@ Item {
     onLatteSpacerChanged: {
         if(container.latteSpacer){
             latteSpacer.latteDock = root;
-            container.lockZoom = true;
+            //container.lockZoom = true;
         }
     }
 
