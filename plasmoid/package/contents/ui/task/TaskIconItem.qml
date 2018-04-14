@@ -497,7 +497,7 @@ Item{
                     anchors.centerIn: parent
                     //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
 
-                    minimumWidth: 0.4 * parent.width
+                    minimumWidth: 0.4 * root.iconSize
                     height: width
                     numberValue: taskNumberLoader.fixedIndex < 10 ? taskNumberLoader.fixedIndex : 0
                     textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''

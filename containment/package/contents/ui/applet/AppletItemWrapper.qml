@@ -615,7 +615,7 @@ Item{
                 id: appletNumber
                 anchors.centerIn: parent
 
-                width: 0.4 * (root.iconSize)
+                minimumWidth: 0.4 * root.iconSize
                 height: width
                 numberValue: appletNumberLoader.fixedIndex < 10 ? appletNumberLoader.fixedIndex : 0
                 textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
