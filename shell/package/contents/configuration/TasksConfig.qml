@@ -169,12 +169,13 @@ PlasmaComponents.Page {
             }
 
             RowLayout {
+                Layout.topMargin: units.smallSpacing
                 Layout.leftMargin: units.smallSpacing * 2
                 visible: plasmoid.configuration.advanced
                 enabled: !disableAllWindowsFunctionality
 
                 PlasmaComponents.Label {
-                    text: i18n("On middle-click:")
+                    text: i18n("On middle-click")
                     Layout.alignment: Qt.AlignRight
                 }
 

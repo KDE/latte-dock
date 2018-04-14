@@ -465,8 +465,9 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
+                    Layout.rightMargin: units.smallSpacing
                     horizontalAlignment: Text.AlignRight
-                    text: i18n("Show:")
+                    text: i18n("Show")
                 }
                 LatteExtraControls.TextField {
                     Layout.preferredWidth: width
@@ -480,8 +481,9 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
                     Layout.leftMargin: units.largeSpacing
+                    Layout.rightMargin: units.smallSpacing
                     horizontalAlignment: Text.AlignRight
-                    text: i18n("Hide:")
+                    text: i18n("Hide")
                 }
                 LatteExtraControls.TextField{
                     Layout.preferredWidth: width

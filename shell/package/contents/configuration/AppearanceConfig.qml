@@ -154,7 +154,7 @@ PlasmaComponents.Page {
                 enabled: plasmoid.configuration.proportionIconSize === -1
 
                 PlasmaComponents.Label {
-                    text: i18n("Size:")
+                    text: i18n("Size")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -210,7 +210,7 @@ PlasmaComponents.Page {
                 enabled: plasmoid.configuration.durationTime > 0
 
                 PlasmaComponents.Label {
-                    text: i18n("Zoom On Hover:")
+                    text: i18n("Zoom On Hover")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -259,7 +259,7 @@ PlasmaComponents.Page {
                 visible: plasmoid.configuration.advanced || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
-                    text: i18n("Screen Height Proportion:")
+                    text: i18n("Screen Height Proportion")
                     horizontalAlignment: Text.AlignLeft
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
@@ -313,7 +313,7 @@ PlasmaComponents.Page {
                 visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
-                    text: i18n("Applets Distance:")
+                    text: i18n("Applets Distance")
                     horizontalAlignment: Text.AlignLeft
                     enabled: iconMarginSlider.value > 0
                 }
@@ -377,7 +377,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     enabled: showBackground.checked
-                    text: i18n("Size: ")
+                    text: i18n("Size")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -425,7 +425,7 @@ PlasmaComponents.Page {
                 visible: plasmoid.configuration.advanced
 
                 PlasmaComponents.Label {
-                    text: i18n("Opacity: ")
+                    text: i18n("Opacity")
                     horizontalAlignment: Text.AlignLeft
                     enabled: transparencySlider.enabled
                 }
@@ -613,7 +613,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: i18n("Style:") + " "
+                    text: i18nc("active indicator style","Style")
                     horizontalAlignment: Text.AlignLeft
                     visible: plasmoid.configuration.advanced
                 }
@@ -660,7 +660,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: i18n("Applets:") + " "
+                    text: i18n("Applets") + " "
                     horizontalAlignment: Text.AlignLeft
                     visible: plasmoid.configuration.advanced
                 }
@@ -782,7 +782,7 @@ PlasmaComponents.Page {
                     RowLayout{
                         PlasmaComponents.Label {
                             enabled: showGlowChk.checked
-                            text: i18n("Opacity: ")
+                            text: i18n("Opacity")
                             horizontalAlignment: Text.AlignLeft
                         }
 
@@ -1011,7 +1011,7 @@ PlasmaComponents.Page {
 
                         PlasmaComponents.Label {
                             enabled: showAppletShadow.checked
-                            text: i18n("Opacity: ")
+                            text: i18n("Opacity")
                             horizontalAlignment: Text.AlignLeft
                         }
 
@@ -1061,7 +1061,7 @@ PlasmaComponents.Page {
 
                         PlasmaComponents.Label {
                             enabled: showAppletShadow.checked
-                            text: i18n("Size: ")
+                            text: i18n("Size")
                             horizontalAlignment: Text.AlignLeft
                         }
 
@@ -1123,7 +1123,7 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Label {
-                    text: i18n("Maximum: ")
+                    text: i18n("Maximum")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -1196,7 +1196,7 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Label {
-                    text: i18n("Offset: ")
+                    text: i18n("Offset")
                     horizontalAlignment: Text.AlignLeft
                 }
 
