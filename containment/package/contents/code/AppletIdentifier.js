@@ -1,5 +1,6 @@
-
-var blacklistedApplets = ["com.github.zren.presentwindows"];
+//! applets that havent identified properly their Latte behavior and
+//! create broken results when used in Latte
+var blacklistedApplets = [];
 
 function typeOf(obj, className){
     var name = obj.toString();
