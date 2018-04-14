@@ -336,6 +336,12 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     if (preset == i18n("Default") && !QFile(newLayoutPath).exists()) {
         qDebug() << "adding layout : succeed";
         QFile(m_corona->kPackage().filePath("preset1")).copy(newLayoutPath);
+
+        QFileInfo newFileInfo(newLayoutPath);
+
+        if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+            QFile(newLayoutPath).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+        }
     }
 
     return newLayoutPath;
@@ -360,6 +366,12 @@ void LayoutManager::importPresets(bool includeDefault)
 
         if (!QFile(newLayoutFile).exists()) {
             QFile(presetPath).copy(newLayoutFile);
+
+            QFileInfo newFileInfo(newLayoutFile);
+
+            if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+                QFile(newLayoutFile).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+            }
         }
     }
 }

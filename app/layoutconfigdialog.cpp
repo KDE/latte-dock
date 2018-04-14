@@ -186,6 +186,12 @@ void LayoutConfigDialog::on_copyButton_clicked()
     QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
     QFile(id).copy(copiedId);
 
+    QFileInfo newFileInfo(copiedId);
+
+    if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+        QFile(copiedId).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+    }
+
     LayoutSettings *settings = new LayoutSettings(this, copiedId);
     m_layouts[copiedId] = settings;
 
@@ -398,6 +404,12 @@ void LayoutConfigDialog::on_exportButton_clicked()
                 return;
             }
 
+            QFileInfo newFileInfo(file);
+
+            if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+                QFile(file).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
+            }
+
             LayoutSettings layoutS(this, file);
             layoutS.setActivities(QStringList());
 
@@ -495,6 +507,12 @@ void LayoutConfigDialog::addLayoutForFile(QString file, QString layoutName, bool
         QFile(file).copy(copiedId);
     } else {
         copiedId = file;
+    }
+
+    QFileInfo newFileInfo(copiedId);
+
+    if (newFileInfo.exists() && !newFileInfo.isWritable()) {
+        QFile(copiedId).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
     }
 
     LayoutSettings *settings = new LayoutSettings(this, copiedId);
