@@ -169,7 +169,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>10</height>
+                  <height>15</height>
                  </size>
                 </property>
                </spacer>
@@ -198,7 +198,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>10</height>
+                  <height>15</height>
                  </size>
                 </property>
                </spacer>
@@ -249,6 +249,38 @@
                </widget>
               </item>
               <item>
+               <spacer name="verticalSpacer_10">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>1</width>
+                  <height>11</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="lockedButton">
+                <property name="toolTip">
+                 <string>Lock layout and make it read-only</string>
+                </property>
+                <property name="text">
+                 <string comment="locked layout">Locked</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="object-locked"/>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="verticalSpacer_2">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -259,7 +291,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>10</height>
+                  <height>15</height>
                  </size>
                 </property>
                </spacer>
@@ -303,7 +335,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>10</height>
+                  <height>15</height>
                  </size>
                 </property>
                </spacer>

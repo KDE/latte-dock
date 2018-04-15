@@ -58,10 +58,11 @@
 namespace Latte {
 
 const int IDCOLUMN = 0;
-const int COLORCOLUMN = 1;
-const int NAMECOLUMN = 2;
-const int MENUCOLUMN = 3;
-const int ACTIVITYCOLUMN = 4;
+const int HIDDENTEXTCOLUMN = 1;
+const int COLORCOLUMN = 2;
+const int NAMECOLUMN = 3;
+const int MENUCOLUMN = 4;
+const int ACTIVITYCOLUMN = 5;
 
 const int SCREENTRACKERDEFAULTVALUE = 2500;
 
@@ -83,7 +84,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked
             , this, &SettingsDialog::restoreDefaults);
 
-    m_model = new QStandardItemModel(m_corona->layoutManager()->layouts().count(), 5, this);
+    m_model = new QStandardItemModel(m_corona->layoutManager()->layouts().count(), 6, this);
 
     ui->layoutsView->setModel(m_model);
     ui->layoutsView->horizontalHeader()->setStretchLastSection(true);
@@ -378,6 +379,24 @@ void SettingsDialog::on_removeButton_clicked()
     row = qMax(row - 1, 0);
 
     ui->layoutsView->selectRow(row);
+}
+
+void SettingsDialog::on_lockedButton_clicked()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    int row = ui->layoutsView->currentIndex().row();
+
+    if (row < 0) {
+        return;
+    }
+
+    bool lockedModel = m_model->data(m_model->index(row, NAMECOLUMN), Qt::UserRole).toBool();
+
+    m_model->setData(m_model->index(row, NAMECOLUMN), QVariant(!lockedModel), Qt::UserRole);
+
+    updatePerLayoutButtonsState();
+    updateApplyButtonsState();
 }
 
 void SettingsDialog::on_importButton_clicked()
@@ -814,6 +833,7 @@ void SettingsDialog::loadSettings()
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
+    ui->layoutsView->setColumnHidden(HIDDENTEXTCOLUMN, true);
 
     ui->layoutsView->resizeColumnsToContents();
 
@@ -901,6 +921,8 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 {
     QStandardItem *pathItem = new QStandardItem(path);
 
+    QStandardItem *hiddenTextItem = new QStandardItem();
+
     QStandardItem *colorItem = new QStandardItem();
     colorItem->setSelectable(false);
 
@@ -918,6 +940,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     QList<QStandardItem *> items;
 
     items.append(pathItem);
+    items.append(hiddenTextItem);
     items.append(colorItem);
     items.append(nameItem);
     items.append(menuItem);
@@ -1119,6 +1142,7 @@ void SettingsDialog::updatePerLayoutButtonsState()
     QString id = m_model->data(m_model->index(currentRow, IDCOLUMN), Qt::DisplayRole).toString();
     QString nameInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::DisplayRole).toString();
     QString originalName = m_layouts.contains(id) ? m_layouts[id]->name() : "";
+    bool lockedInModel = m_model->data(m_model->index(currentRow, NAMECOLUMN), Qt::UserRole).toBool();
 
     //! Switch Button
     if (id.startsWith("/tmp/") || originalName != nameInModel) {
@@ -1151,6 +1175,12 @@ void SettingsDialog::updatePerLayoutButtonsState()
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
+    }
+
+    if (lockedInModel) {
+        ui->lockedButton->setChecked(true);
+    } else {
+        ui->lockedButton->setChecked(false);
     }
 }
 

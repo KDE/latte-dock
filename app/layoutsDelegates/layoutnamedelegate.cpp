@@ -25,6 +25,9 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QStandardItemModel>
+
+const int HIDDENTEXTCOLUMN = 1;
 
 LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -33,21 +36,41 @@ LayoutNameDelegate::LayoutNameDelegate(QObject *parent)
 
 void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItem myOption = option;
-
     bool isLocked = index.data(Qt::UserRole).toBool();
 
     if (isLocked) {
+        QStandardItemModel *model = (QStandardItemModel *) index.model();
+        QString nameText = index.data(Qt::DisplayRole).toString();
+
+        //! font metrics
+        QFontMetrics fm(option.font);
+        int textWidth = fm.width(nameText);
         int thick = option.rect.height();
-        myOption.rect.setWidth(option.rect.width() - thick);
+        int startWidth = qBound(0, option.rect.width() - textWidth - thick , thick);
 
-        QStyledItemDelegate::paint(painter, myOption, index);
+        QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
+        QRect destinationE(option.rect.x() + option.rect.width() - thick, option.rect.y(), thick, thick);
 
+        QStyleOptionViewItem myOptionS = option;
+        QStyleOptionViewItem myOptionE = option;
+        QStyleOptionViewItem myOptionMain = option;
+        myOptionS.rect = destinationS;
+        myOptionE.rect = destinationE;
+        myOptionMain.rect.setX(option.rect.x() + startWidth);
+        myOptionMain.rect.setWidth(option.rect.width() - startWidth - thick);
+
+        QStyledItemDelegate::paint(painter, myOptionMain, index);
+        //! draw background
+        QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), HIDDENTEXTCOLUMN));
+        QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), HIDDENTEXTCOLUMN));
+
+        //! draw icon
         QIcon lockIcon = QIcon::fromTheme("object-locked");
-        QRect destination(option.rect.x() + option.rect.width() - thick, option.rect.y(), thick, thick);
-        painter->drawPixmap(destination, lockIcon.pixmap(thick, thick));
-    } else {
-        QStyledItemDelegate::paint(painter, option, index);
+        painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick));
+
+        return;
     }
+
+    QStyledItemDelegate::paint(painter, option, index);
 }
 
