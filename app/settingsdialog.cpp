@@ -31,6 +31,7 @@
 #include "layoutsDelegates/checkboxdelegate.h"
 #include "layoutsDelegates/colorcmbboxdelegate.h"
 #include "layoutsDelegates/activitycmbboxdelegate.h"
+#include "layoutsDelegates/layoutnamedelegate.h"
 
 #include <QButtonGroup>
 #include <QColorDialog>
@@ -106,6 +107,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
         colors.append(color);
     }
 
+    ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new LayoutNameDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
@@ -317,7 +319,7 @@ void SettingsDialog::on_copyButton_clicked()
     Layout *settings = new Layout(this, copiedId);
     m_layouts[copiedId] = settings;
 
-    insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, QStringList());
+    insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, QStringList(), false);
 
     ui->layoutsView->selectRow(row + 1);
 }
@@ -736,15 +738,16 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
     QString textColor = settings->textColor();
     QString background = settings->background();
     bool menu = settings->showInMenu();
+    bool locked = !settings->isWritable();
 
     layoutName = uniqueLayoutName(layoutName);
 
     int row = ascendingRowFor(layoutName);
 
     if (background.isEmpty()) {
-        insertLayoutInfoAtRow(row, copiedId, color, QString(), layoutName, menu, QStringList());
+        insertLayoutInfoAtRow(row, copiedId, color, QString(), layoutName, menu, QStringList(), locked);
     } else {
-        insertLayoutInfoAtRow(row, copiedId, background, textColor, layoutName, menu, QStringList());
+        insertLayoutInfoAtRow(row, copiedId, background, textColor, layoutName, menu, QStringList(), locked);
     }
 
     ui->layoutsView->selectRow(row);
@@ -780,10 +783,10 @@ void SettingsDialog::loadSettings()
 
         if (background.isEmpty()) {
             insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), QString(), layoutSets->name(),
-                                  layoutSets->showInMenu(), layoutSets->activities());
+                                  layoutSets->showInMenu(), layoutSets->activities(), !layoutSets->isWritable());
         } else {
             insertLayoutInfoAtRow(i, layoutPath, background, layoutSets->textColor(), layoutSets->name(),
-                                  layoutSets->showInMenu(), layoutSets->activities());
+                                  layoutSets->showInMenu(), layoutSets->activities(), !layoutSets->isWritable());
         }
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
@@ -894,7 +897,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
 }
 
 
-void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, QStringList activities)
+void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, QStringList activities, bool locked)
 {
     QStandardItem *pathItem = new QStandardItem(path);
 
@@ -951,6 +954,7 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
 
     m_model->setData(m_model->index(row, NAMECOLUMN), QVariant(name), Qt::DisplayRole);
     m_model->setData(m_model->index(row, NAMECOLUMN), font, Qt::FontRole);
+    m_model->setData(m_model->index(row, NAMECOLUMN), QVariant(locked), Qt::UserRole);
 
     m_model->setData(m_model->index(row, ACTIVITYCOLUMN), activities, Qt::UserRole);
 }

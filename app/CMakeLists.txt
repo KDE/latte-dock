@@ -22,6 +22,7 @@ set(lattedock-app_SRCS
     layoutsDelegates/colorcmbboxdelegate.cpp
     layoutsDelegates/colorcmbboxitemdelegate.cpp
     layoutsDelegates/activitycmbboxdelegate.cpp
+    layoutsDelegates/layoutnamedelegate.cpp
     dock/dockmenumanager.cpp
     dock/dockview.cpp
     dock/dockconfigview.cpp
