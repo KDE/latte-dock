@@ -12,6 +12,7 @@ Name[sv]=Latte standardmeny
 Name[uk]=Стандартне меню Латте
 Name[x-test]=xxStandard Latte Menuxx
 Name[zh_CN]=标准 Latte 菜单
+Name[zh_TW]=標準的 Latte 選單
 Comment=The latte menu that normally shows on right-click
 Comment[ca]=El menú Latte que es mostra normalment amb un clic del botó dret
 Comment[ca@valencia]=El menú Latte que es mostra normalment amb un clic del botó dret
@@ -25,6 +26,7 @@ Comment[sv]=Menyn i Latte som normalt visas vid högerklick
 Comment[uk]=Меню Латте, яке буде показано у відповідь на клацання правою кнопкою миші
 Comment[x-test]=xxThe latte menu that normally shows on right-clickxx
 Comment[zh_CN]=通常在右键点击时显示的 latte 菜单
+Comment[zh_TW]=這個 Latte 選單通常在按下右鍵時顯示
 
 Type=Service
 Icon=help-contextual

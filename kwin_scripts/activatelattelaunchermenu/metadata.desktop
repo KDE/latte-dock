@@ -11,6 +11,7 @@ Name[pt]=Activar o Menu de Lançamento do Latte
 Name[sv]=Aktivera Latte startmeny
 Name[uk]=Активувати меню запуску Латте
 Name[x-test]=xxActivate Latte Launcher Menuxx
+Name[zh_TW]=啟用 Latte 啟動器選單
 Comment=Activate Latte Launcher Menu from screen edge
 Comment[ca]=Activa el menú del llançador del Latte des de la vora de la pantalla
 Comment[ca@valencia]=Activa el menú del llançador del Latte des de la vora de la pantalla
@@ -23,6 +24,7 @@ Comment[pt]=Activar o Menu de Lançamento do Latte no extremo do ecrã
 Comment[sv]=Aktivera Latte startmeny från skärmkant
 Comment[uk]=Активувати меню запуску Латте з краю екрана
 Comment[x-test]=xxActivate Latte Launcher Menu from screen edgexx
+Comment[zh_TW]=啟用來自螢幕邊緣的 Latte 啟動器選單
 Icon=latte-dock
 Type=Service
 
