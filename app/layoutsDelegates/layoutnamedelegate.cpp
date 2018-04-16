@@ -20,6 +20,7 @@
 #include "layoutnamedelegate.h"
 
 #include <QApplication>
+#include <QBitmap>
 #include <QDebug>
 #include <QEvent>
 #include <QKeyEvent>
@@ -60,13 +61,77 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         myOptionMain.rect.setWidth(option.rect.width() - startWidth - thick);
 
         QStyledItemDelegate::paint(painter, myOptionMain, index);
-        //! draw background
+
+        //! draw background at edges
         QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), HIDDENTEXTCOLUMN));
+
+        //! Lock Icon 1: Unicode character attempt
+        /*QString s = QChar(0x2318);
+          QString s = QChar(0x2757);
+          myOptionE.text = s;*/
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), HIDDENTEXTCOLUMN));
 
-        //! draw icon
+        //! Lock Icon 2: QIcon attempt that doesnt change color
         QIcon lockIcon = QIcon::fromTheme("object-locked");
         painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick));
+
+        //! Lock Icon 3: QIcon and change colors attempt
+        /*QIcon lockIcon = QIcon::fromTheme("object-locked");
+        QPixmap origPixmap = lockIcon.pixmap(thick, thick);
+        QPixmap lockPixmap = origPixmap;
+
+        QBrush nBrush;
+
+        if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
+            nBrush = option.palette.brush(QPalette::Active, QPalette::HighlightedText);
+        } else {
+            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Text);
+        }
+
+        lockPixmap.fill(nBrush.color());
+        lockPixmap.setMask(origPixmap.createMaskFromColor(Qt::transparent));
+
+        painter->drawPixmap(destinationE, lockPixmap);*/
+
+        //! Lock Icon 4: Plasma::Svg and change color group attempt
+        /*Plasma::Svg svgIcon;
+
+        svgIcon.setStatus(Plasma::Svg::Normal);
+        svgIcon.setUsingRenderingCache(false);
+        svgIcon.setDevicePixelRatio(qApp->devicePixelRatio());
+
+        //! find path
+        //try to load from iconloader an svg with Plasma::Svg
+        const auto *iconTheme = KIconLoader::global()->theme();
+        QString iconPath;
+
+        if (iconTheme) {
+            iconPath = iconTheme->iconPath("object-locked" + QLatin1String(".svg")
+                                           , thick
+                                           , KIconLoader::MatchBest);
+
+            if (iconPath.isEmpty()) {
+                iconPath = iconTheme->iconPath("object-locked" + QLatin1String(".svgz")
+                                               , thick
+                                               , KIconLoader::MatchBest);
+            }
+        } else {
+            qWarning() << "KIconLoader has no theme set";
+        }
+
+        if (!iconPath.isEmpty()) {
+            svgIcon.setImagePath(iconPath);
+
+            if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
+                svgIcon.setColorGroup(Plasma::Theme::ComplementaryColorGroup);
+            } else {
+                svgIcon.setColorGroup(Plasma::Theme::NormalColorGroup);
+            }
+
+            svgIcon.resize(thick, thick);
+        }
+
+        painter->drawPixmap(destinationE, svgIcon.pixmap());*/
 
         return;
     }

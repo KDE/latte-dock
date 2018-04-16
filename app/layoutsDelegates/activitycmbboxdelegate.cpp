@@ -126,7 +126,19 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         myOptions.text = assignedActivitiesText(index);
 
         QTextDocument doc;
-        doc.setHtml(myOptions.text);
+        QString css;
+
+        QBrush nBrush;
+
+        if ((option.state & QStyle::State_Active) && (option.state & QStyle::State_Selected)) {
+            nBrush = option.palette.brush(QPalette::Active, QPalette::HighlightedText);
+        } else {
+            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Text);
+        }
+
+        css = QString("body { color : %1; }").arg(nBrush.color().name());
+        doc.setDefaultStyleSheet(css);
+        doc.setHtml("<body>" + myOptions.text + "</body>");
 
         myOptions.text = "";
         myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
@@ -136,6 +148,7 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
         painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY);
         QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
+
         doc.drawContents(painter, clip);
     } else {
         QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);

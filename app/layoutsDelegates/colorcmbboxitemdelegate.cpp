@@ -60,5 +60,7 @@ void ColorCmbBoxItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
             painter->drawRect(option.rect - QMargins(5, 5, 5, 5));
         }
     }
+
+    painter->restore();
 }
 

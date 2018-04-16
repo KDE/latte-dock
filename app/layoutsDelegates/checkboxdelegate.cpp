@@ -25,6 +25,9 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QStandardItemModel>
+
+const int HIDDENTEXTCOLUMN = 1;
 
 CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -33,24 +36,8 @@ CheckBoxDelegate::CheckBoxDelegate(QObject *parent)
 
 void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if (option.state & QStyle::State_Selected) {
-        QPen nPen;
-        QBrush nBrush;
-
-        if (option.state & QStyle::State_Active) {
-            nBrush = option.palette.highlight();
-        } else if (option.state & QStyle::State_MouseOver) {
-            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Highlight);
-        } else {
-            nBrush = option.palette.brush(QPalette::Inactive, QPalette::Highlight);
-        }
-
-        painter->setBrush(nBrush);
-        nPen.setColor(nBrush.color());
-
-        painter->setPen(nPen);
-        painter->drawRect(option.rect);
-    }
+    QStandardItemModel *model = (QStandardItemModel *) index.model();
+    QStyledItemDelegate::paint(painter, option, model->index(index.row(), HIDDENTEXTCOLUMN));
 
     QStyledItemDelegate::paint(painter, option, index);
 }
