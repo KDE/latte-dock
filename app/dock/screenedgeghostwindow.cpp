@@ -62,25 +62,27 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
         connect(this, &QWindow::visibleChanged, this, [&]() {
             //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
             //!  disappearing! With this they reappear!!!
-            if (!isVisible()) {
-                QTimer::singleShot(100, [this]() {
-                    if (!m_inDelete && !isVisible()) {
-                        setVisible(true);
-                    }
-                });
+            if (m_dockView && m_dockView->managedLayout()) {
+                if (!isVisible()) {
+                    QTimer::singleShot(100, [this]() {
+                        if (!m_inDelete && !isVisible() && m_dockView && m_dockView->managedLayout()) {
+                            setVisible(true);
+                        }
+                    });
 
-                QTimer::singleShot(1500, [this]() {
-                    if (!m_inDelete && !isVisible()) {
-                        setVisible(true);
+                    QTimer::singleShot(1500, [this]() {
+                        if (!m_inDelete && !isVisible() && m_dockView && m_dockView->managedLayout()) {
+                            setVisible(true);
+                        }
+                    });
+                } else {
+                    //! For some reason when the window is hidden in the edge under X11 afterwards
+                    //! is losing its window flags
+                    if (!m_inDelete) {
+                        KWindowSystem::setType(winId(), NET::Dock);
+                        KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
+                        KWindowSystem::setOnAllDesktops(winId(), true);
                     }
-                });
-            } else {
-                //! For some reason when the window is hidden in the edge under X11 afterwards
-                //! is losing its window flags
-                if (!m_inDelete) {
-                    KWindowSystem::setType(winId(), NET::Dock);
-                    KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
-                    KWindowSystem::setOnAllDesktops(winId(), true);
                 }
             }
         });
