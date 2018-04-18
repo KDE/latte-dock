@@ -67,7 +67,7 @@ Layout::~Layout()
 
 void Layout::syncToLayoutFile()
 {
-    if (!m_corona) {
+    if (!m_corona || !isWritable()) {
         return;
     }
 
