@@ -902,6 +902,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
         QString textColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
@@ -909,6 +910,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
         layoutSettings << color;
         layoutSettings << textColor;
         layoutSettings << name;
+        layoutSettings << QString::number((int)locked);
         layoutSettings << QString::number((int)menu);
         layoutSettings << lActivities;
     }
@@ -1171,7 +1173,8 @@ void SettingsDialog::updatePerLayoutButtonsState()
     //! Remove Layout Button
     if (originalName != nameInModel
         || (originalName == m_corona->layoutManager()->currentLayoutName())
-        || (m_corona->layoutManager()->activeLayout(originalName))) {
+        || (m_corona->layoutManager()->activeLayout(originalName))
+        || lockedInModel) {
         ui->removeButton->setEnabled(false);
     } else {
         ui->removeButton->setEnabled(true);
@@ -1285,6 +1288,7 @@ bool SettingsDialog::saveAllChanges()
         QString color = m_model->data(m_model->index(i, COLORCOLUMN), Qt::BackgroundRole).toString();
         QString textColor = m_model->data(m_model->index(i, COLORCOLUMN), Qt::UserRole).toString();
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
@@ -1301,6 +1305,11 @@ bool SettingsDialog::saveAllChanges()
         Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
 
         Layout *layout = activeLayout ? activeLayout : m_layouts[id];
+
+        //! unlock read-only layout
+        if (!layout->isWritable()) {
+            layout->unlock();
+        }
 
         if (color.startsWith("/")) {
             //it is image file in such case
@@ -1390,6 +1399,20 @@ bool SettingsDialog::saveAllChanges()
             if (layout->activities().isEmpty()) {
                 orphanedLayout = newLayoutName;
             }
+        }
+    }
+
+    //! lock layouts in the end when the user has chosen it
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        QString id = m_model->data(m_model->index(i, IDCOLUMN), Qt::DisplayRole).toString();
+        QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
+        bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
+
+        Layout *activeLayout = m_corona->layoutManager()->activeLayout(m_layouts[id]->name());
+        Layout *layout = activeLayout ? activeLayout : m_layouts[id];
+
+        if (layout && locked && layout->isWritable()) {
+            layout->lock();
         }
     }
 
