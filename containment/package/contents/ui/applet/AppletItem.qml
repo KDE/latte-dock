@@ -564,6 +564,7 @@ Item {
             verticalAlignment: Text.AlignVCenter
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
+            fontSizeMode: Text.Fit
             color: colorizerLoader.themeBrightColor
 
             rotation: {
