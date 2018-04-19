@@ -199,6 +199,7 @@ PlasmaComponents.Page {
                     text: appletsSizeSlider.value + " px."
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -248,6 +249,7 @@ PlasmaComponents.Page {
                     text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -301,6 +303,7 @@ PlasmaComponents.Page {
                               proportionSizeSlider.value.toFixed(1) + "%" : "---%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
             }
@@ -338,6 +341,7 @@ PlasmaComponents.Page {
                     text: iconMarginSlider.value.toFixed(1) + "%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: iconMarginSlider.value > 0
                 }
             }
@@ -415,6 +419,7 @@ PlasmaComponents.Page {
                     text: panelSizeSlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -471,6 +476,7 @@ PlasmaComponents.Page {
                     text: transparencySlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -820,6 +826,7 @@ PlasmaComponents.Page {
                             text: glowOpacitySlider.value + " %"
                             horizontalAlignment: Text.AlignRight
                             Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                         }
 
                         PlasmaComponents.Label {
@@ -1049,6 +1056,7 @@ PlasmaComponents.Page {
                             text: shadowOpacitySlider.value + " %"
                             horizontalAlignment: Text.AlignRight
                             Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                         }
                     }
 
@@ -1099,6 +1107,7 @@ PlasmaComponents.Page {
                             text: shadowSizeSlider.value + " %"
                             horizontalAlignment: Text.AlignRight
                             Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                         }
                     }
                 }
@@ -1186,6 +1195,7 @@ PlasmaComponents.Page {
                     text: maxLengthSlider.value + "%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -1246,6 +1256,7 @@ PlasmaComponents.Page {
                     text: offsetSlider.value + "%"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
         }
