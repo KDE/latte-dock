@@ -44,7 +44,12 @@ ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)
 
 QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QComboBox *editor = new QComboBox(parent);
+    QComboBox *editor =  new QComboBox(parent);
+
+    //! use focusPolicy as flag in order to update activities only when the user is clicking in the popup
+    //! it was the only way I found to communicate between the activated (const) signal and the
+    //! setEditorData (const) function
+    editor->setFocusPolicy(Qt::StrongFocus);
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
     QStringList availableActivities = m_settingsDialog->availableActivities();
@@ -74,6 +79,7 @@ QWidget *ActivityCmbBoxDelegate::createEditor(QWidget *parent, const QStyleOptio
     }
 
     connect(editor, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [ = ](int index) {
+        editor->setFocusPolicy(Qt::ClickFocus);
         editor->clearFocus();
     });
 
@@ -97,6 +103,12 @@ void ActivityCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &i
 void ActivityCmbBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox *>(editor);
+
+    if (editor->focusPolicy() != Qt::ClickFocus) {
+        return;
+    }
+
+    editor->setFocusPolicy(Qt::StrongFocus);
 
     QStringList assignedActivities = index.model()->data(index, Qt::UserRole).toStringList();
     QString selectedActivity = comboBox->currentData().toString();

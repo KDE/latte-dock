@@ -61,7 +61,7 @@ bool CheckBoxDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
 //         return false;
 
     // make sure that we have the right event type
-    if (event->type() == QEvent::MouseButtonRelease) {
+    if (event->type() == QEvent::MouseButtonDblClick) {
         if (!option.rect.contains(static_cast<QMouseEvent *>(event)->pos()))
             return false;
     } else if (event->type() == QEvent::KeyPress) {

@@ -107,7 +107,7 @@ void ColorCmbBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
     int pos = Colors.indexOf(value);
 
     if (pos == -1 && value.startsWith("/")) {
-        comboBox->setCurrentIndex(Colors.count() - 1);
+        comboBox->setCurrentIndex(Colors.count());
     } else {
         comboBox->setCurrentIndex(Colors.indexOf(value));
     }
