@@ -10,6 +10,7 @@
   <name xml:lang="el">Latte</name>
   <name xml:lang="en-GB">Latte</name>
   <name xml:lang="es">Latte</name>
+  <name xml:lang="gl">Latte</name>
   <name xml:lang="it">Latte</name>
   <name xml:lang="nl">Latte</name>
   <name xml:lang="pl">Latte</name>
@@ -30,6 +31,7 @@
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
   <summary xml:lang="en-GB">Dock for the masses</summary>
   <summary xml:lang="es">Un dock para las masas</summary>
+  <summary xml:lang="gl">Doca para as masas.</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
   <summary xml:lang="nl">Dock voor de massa</summary>
   <summary xml:lang="pl">Dok dla mas</summary>
@@ -50,6 +52,7 @@
     <p xml:lang="el">Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στις βιβλιοθήκες plasma που εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες και τα γραφικά συστατικά σας. Χρησιμοποιεί το παραβολικό εφέ έτσι ώστε να απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το χρειάζεστε.</p>
     <p xml:lang="en-GB">Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
     <p xml:lang="es">Latte es un dock basado en la infraestructura plasma que proporciona una experiencia intuitiva y elegante para sus tareas y plasmoides. Anima sus contenidos usando un efecto de zoom parabólico e intenta estar presente solo cuando se le necesita.</p>
+    <p xml:lang="gl">Latte é unha doca construída coas infraestruturas de Plasma que fornece unha experiencia elegante e intuitiva para as súas tarefas e trebellos. Anima o seu contido usando o efecto de ampliación parabólico e intenta estar aí só cando se necesita.</p>
     <p xml:lang="it">Latte è un'area di aggancio basata su plasma frameworks. Offre ai tuoi processi e ai tuoi plasmoidi un'esperienza elegante ed intuitiva, animando il loro contenuto con un effetto zoom parabolico e facendosi trovare solo quando necessario.</p>
     <p xml:lang="nl">Latte is een dock gebaseerd op plasma frameworks die een elegante en intuïtieve ervaring voor uw taken en plasmoids is. Het animeert zijn inhoud door een parabolisch zoomeffect te gebruiken en probeert er alleen te zijn wanneer nodig.</p>
     <p xml:lang="pl">Latte jest dokiem opartym na szkieletach plazmy, który zapewnia przyjemne i intuicyjne odczucia w pracy z zadaniami i plazmoidami. Animuje swoją zawartośc przy użyciu efektu przybliżenia parabolicznego i próbuje być widocznym tylko wtedy, gdy jest potrzebny.</p>
@@ -69,6 +72,7 @@
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
     <p xml:lang="en-GB">"Art In Coffee"</p>
     <p xml:lang="es">"El arte en el café"</p>
+    <p xml:lang="gl">«Arte en café».</p>
     <p xml:lang="it">«Art In Coffee»</p>
     <p xml:lang="nl">"Kunst in koffie"</p>
     <p xml:lang="pl">"Sztuka w Kawie"</p>
@@ -97,6 +101,7 @@
   <developer_name xml:lang="el">@AUTHOR@</developer_name>
   <developer_name xml:lang="en-GB">@AUTHOR@</developer_name>
   <developer_name xml:lang="es">@AUTOR@</developer_name>
+  <developer_name xml:lang="gl">@AUTHOR@</developer_name>
   <developer_name xml:lang="it">@AUTHOR@</developer_name>
   <developer_name xml:lang="nl">@AUTHOR@</developer_name>
   <developer_name xml:lang="pl">@AUTHOR@</developer_name>
