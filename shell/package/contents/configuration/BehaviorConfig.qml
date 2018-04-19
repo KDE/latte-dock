@@ -465,7 +465,8 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
-                    Layout.rightMargin: units.smallSpacing
+                    Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ? 0 : units.smallSpacing
+                    Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ? units.smallSpacing : 0
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Show")
                 }
@@ -480,8 +481,10 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     Layout.fillWidth: false
-                    Layout.leftMargin: units.largeSpacing
-                    Layout.rightMargin: units.smallSpacing
+                    Layout.leftMargin: Qt.application.layoutDirection === Qt.RightToLeft ?
+                                           units.smallSpacing : units.largeSpacing
+                    Layout.rightMargin: Qt.application.layoutDirection === Qt.RightToLeft ?
+                                            units.largeSpacing : units.smallSpacing
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Hide")
                 }

@@ -127,6 +127,7 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
         QTextDocument doc;
         QString css;
+        QString activitiesText = myOptions.text;
 
         QBrush nBrush;
 
@@ -137,6 +138,7 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         }
 
         css = QString("body { color : %1; }").arg(nBrush.color().name());
+
         doc.setDefaultStyleSheet(css);
         doc.setHtml("<body>" + myOptions.text + "</body>");
 
@@ -144,11 +146,17 @@ void ActivityCmbBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
 
         //we need an offset to be in the same vertical center of TextEdit
-        int offsetY = 1 + (myOptions.rect.height() - doc.size().height()) / 2;
+        int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
 
-        painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY);
+        if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
+            int textWidth = doc.size().width();
+
+            painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
+        } else {
+            painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY + 1);
+        }
+
         QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
-
         doc.drawContents(painter, clip);
     } else {
         QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);

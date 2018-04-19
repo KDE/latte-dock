@@ -47,10 +47,11 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QFontMetrics fm(option.font);
         int textWidth = fm.width(nameText);
         int thick = option.rect.height();
-        int startWidth = qBound(0, option.rect.width() - textWidth - thick , thick);
+        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? thick : qBound(0, option.rect.width() - textWidth - thick , thick);
+        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? qBound(0, option.rect.width() - textWidth - thick , thick) : thick;
 
         QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
-        QRect destinationE(option.rect.x() + option.rect.width() - thick, option.rect.y(), thick, thick);
+        QRect destinationE(option.rect.x() + option.rect.width() - thick, option.rect.y(), endWidth, thick);
 
         QStyleOptionViewItem myOptionS = option;
         QStyleOptionViewItem myOptionE = option;
@@ -58,7 +59,7 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         myOptionS.rect = destinationS;
         myOptionE.rect = destinationE;
         myOptionMain.rect.setX(option.rect.x() + startWidth);
-        myOptionMain.rect.setWidth(option.rect.width() - startWidth - thick);
+        myOptionMain.rect.setWidth(option.rect.width() - startWidth - endWidth);
 
         QStyledItemDelegate::paint(painter, myOptionMain, index);
 
@@ -73,7 +74,12 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
         //! Lock Icon 2: QIcon attempt that doesnt change color
         QIcon lockIcon = QIcon::fromTheme("object-locked");
-        painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick));
+
+        if (qApp->layoutDirection() == Qt::RightToLeft) {
+            painter->drawPixmap(destinationS, lockIcon.pixmap(thick, thick));
+        } else {
+            painter->drawPixmap(destinationE, lockIcon.pixmap(thick, thick));
+        }
 
         //! Lock Icon 3: QIcon and change colors attempt
         /*QIcon lockIcon = QIcon::fromTheme("object-locked");

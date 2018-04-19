@@ -151,6 +151,13 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     QAction *aboutAction = helpMenu->addAction(i18n("About Latte"));
     aboutAction->setIcon(QIcon::fromTheme("latte-dock"));
 
+    //! RTL support for labels in preferences
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        ui->behaviorLbl->setAlignment(Qt::AlignRight | Qt::AlignTop);
+        ui->mouseSensetivityLbl->setAlignment(Qt::AlignRight | Qt::AlignTop);
+        ui->delayLbl->setAlignment(Qt::AlignRight | Qt::AlignTop);
+    }
+
     loadSettings();
 
     //! SIGNALS
