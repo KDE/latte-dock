@@ -166,6 +166,7 @@ FocusScope {
                     parent: logo
                     text: i18n("Open Latte settings window")
                     visible: aboutMouseArea.containsMouse
+                    delay: 7 * units.longDuration
                 }
 
                 Latte.IconItem {
