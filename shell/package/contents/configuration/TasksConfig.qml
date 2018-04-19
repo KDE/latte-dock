@@ -156,6 +156,19 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: groupTasksChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Group tasks of the same application")
+                checked: plasmoid.configuration.groupTasksByDefault
+                tooltip: i18n("By default group tasks of the same application")
+                visible: plasmoid.configuration.advanced
+
+                onClicked: {
+                    plasmoid.configuration.groupTasksByDefault = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: mouseWheelChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate tasks through mouse wheel")

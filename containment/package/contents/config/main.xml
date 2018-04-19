@@ -231,6 +231,10 @@
       <default>false</default>
       <label>show only windows that there is a launcher for them</label>
     </entry>
+    <entry name="groupTasksByDefault" type="Bool">
+      <default>true</default>
+      <label>by default group same tasks</label>
+    </entry>
     <entry name="showOnlyCurrentScreen" type="Bool">
       <default>false</default>
     </entry>

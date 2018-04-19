@@ -171,6 +171,7 @@ Item {
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
+    property bool groupTasksByDefault: latteDock ? latteDock.groupTasksByDefault: true
     property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
     property bool indicateAudioStreams: latteDock ? latteDock.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
     property bool mouseWheelActions: latteDock ? latteDock.mouseWheelActions : true
@@ -634,7 +635,7 @@ Item {
         separateLaunchers: true
         groupInline: false
 
-        groupMode: TaskManager.TasksModel.GroupApplications
+        groupMode: groupTasksByDefault ? TaskManager.TasksModel.GroupApplications : TaskManager.TasksModel.GroupDisabled
         sortMode: TaskManager.TasksModel.SortManual
 
         function updateLaunchersList(){

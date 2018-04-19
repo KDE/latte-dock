@@ -316,6 +316,7 @@ DragDrop.DropArea {
     //shadows for applets, it should be removed as the appleitems dont need it any more
     property bool enableShadows: plasmoid.configuration.shadows || root.forceTransparentPanel
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
+    property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: !latteApplet && plasmoid.configuration.panelSize===100 ?
