@@ -135,14 +135,15 @@ SequentialAnimation{
                                 && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
                                || !launcherIsPresent(mainItemContainer.launcherUrl));
 
-        var hideStartup =  launcherExists && mainItemContainer.isStartup;
+        //var hideStartup =  launcherExists && mainItemContainer.isStartup; //! fix #976
         var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && mainItemContainer.isWindow;
 
         if (root.immediateLauncherExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher) {
             root.removeImmediateLauncher(mainItemContainer.launcherUrl);
         }
 
-        if (hideStartup || hideWindow) {
+        //if (hideStartup || hideWindow) { //fix #976
+        if (hideWindow) {
             isForcedHidden = true;
             mainItemContainer.visible = false;
             wrapper.tempScaleWidth = 0;
