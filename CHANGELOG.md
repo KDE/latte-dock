@@ -1,5 +1,22 @@
 #**CHANGELOG**#
 
+#### Version 0.7.5
+
+* fix for dodge maximized in multi-screen environment
+* when copying default layouts make sure they are writable in the destination
+* new protocol to communicate between applets and Latte in order to
+inform them when they are in a Latte panel/dock and when they dont want any change in their main icon behavior.
+
+#### Version 0.7.4
+
+* new improved image patterns for edit mode
+* support v0.8 layout files in order to not break compatibility
+* use an svg file for Latte trademark in settings window instead of a font
+* fix for multi-screen environments
+* fix parabolic effect in some corner cases
+* import v0.6 launchers to v0.7 only once
+* improve bouncing anchoring
+
 #### Version 0.7.3
 
 * support RTL languages
