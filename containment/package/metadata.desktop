@@ -28,6 +28,7 @@ Comment[de]=Containment für Latte-Dock
 Comment[el]=Περιέκτης της εφαρμογής Latte
 Comment[en_GB]=Containment provided for the Latte Dock
 Comment[es]=Contención proporcionada para Latte Dock
+Comment[gl]=Contedor fornecido para a doca Latte.
 Comment[it]=Contenitore fornito per Latte Dock
 Comment[nl]=Container geleverd voor de Latte Dock
 Comment[pl]=Pojemnik dla doku Latte

@@ -53,6 +53,7 @@ Keywords[el]=διαχωριστικό
 Keywords[en_GB]=separator
 Keywords[es]=separador
 Keywords[fi]=erotin
+Keywords[gl]=separador
 Keywords[it]=separatore
 Keywords[nl]=scheiding
 Keywords[pl]=oddzielacz
