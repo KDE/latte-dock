@@ -28,6 +28,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QtDBus/QtDBus>
 
 #include <Plasma>
 #include <Plasma/Applet>
@@ -153,6 +154,7 @@ void Layout::init()
     connect(this, &Layout::backgroundChanged, this, &Layout::saveConfig);
     connect(this, &Layout::versionChanged, this, &Layout::saveConfig);
     connect(this, &Layout::colorChanged, this, &Layout::textColorChanged);
+    connect(this, &Layout::disableBordersForMaximizedWindowsChanged, this, &Layout::saveConfig);
     connect(this, &Layout::showInMenuChanged, this, &Layout::saveConfig);
     connect(this, &Layout::textColorChanged, this, &Layout::saveConfig);
     connect(this, &Layout::launchersChanged, this, &Layout::saveConfig);
@@ -179,6 +181,16 @@ void Layout::initToCorona(DockCorona *corona)
 
     qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
 
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+        kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
+    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, [&]() {
+            if (m_corona->layoutManager()->currentLayoutName() == name()) {
+                kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
+            }
+        });
+    }
+
     if (m_layoutName != MultipleLayoutsName) {
         updateLastUsedActivity();
     }
@@ -203,6 +215,56 @@ void Layout::setVersion(int ver)
     m_version = ver;
 
     emit versionChanged();
+}
+
+bool Layout::disableBordersForMaximizedWindows() const
+{
+    return m_disableBordersForMaximizedWindows;
+}
+
+void Layout::setDisableBordersForMaximizedWindows(bool disable)
+{
+    if (m_disableBordersForMaximizedWindows == disable) {
+        return;
+    }
+
+    m_disableBordersForMaximizedWindows = disable;
+
+    emit disableBordersForMaximizedWindowsChanged();
+}
+
+bool Layout::kwin_disabledMaximizedBorders() const
+{
+    //! Indentify Plasma Desktop version
+    QProcess process;
+    process.start("kreadconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows");
+    process.waitForFinished();
+    QString output(process.readAllStandardOutput());
+
+    output = output.remove("\n");
+
+    return (output == "true");
+}
+
+void Layout::kwin_setDisabledMaximizedBorders(bool disable)
+{
+    if (kwin_disabledMaximizedBorders() == disable) {
+        return;
+    }
+
+    QString disableText = disable ? "true" : "false";
+
+    QProcess process;
+    QString commandStr = "kwriteconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows --type bool " + disableText;
+    process.start(commandStr);
+    process.waitForFinished();
+
+    QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
+
+    if (iface.isValid()) {
+        iface.call("reconfigure");
+    }
+
 }
 
 bool Layout::showInMenu() const
@@ -567,6 +629,7 @@ void Layout::loadConfig()
 {
     m_version = m_layoutGroup.readEntry("version", 2);
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
+    m_disableBordersForMaximizedWindows = m_layoutGroup.readEntry("disableBordersForMaximizedWindows", false);
     m_showInMenu = m_layoutGroup.readEntry("showInMenu", false);
     m_textColor = m_layoutGroup.readEntry("textColor", QString("fcfcfc"));
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
@@ -592,6 +655,7 @@ void Layout::saveConfig()
     m_layoutGroup.writeEntry("version", m_version);
     m_layoutGroup.writeEntry("showInMenu", m_showInMenu);
     m_layoutGroup.writeEntry("color", m_color);
+    m_layoutGroup.writeEntry("disableBordersForMaximizedWindows", m_disableBordersForMaximizedWindows);
     m_layoutGroup.writeEntry("launchers", m_launchers);
     m_layoutGroup.writeEntry("background", m_background);
     m_layoutGroup.writeEntry("activities", m_activities);

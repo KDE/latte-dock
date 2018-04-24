@@ -67,6 +67,9 @@ public:
     void unloadContainments();
     void unloadDockViews();
 
+    bool disableBordersForMaximizedWindows() const;
+    void setDisableBordersForMaximizedWindows(bool disable);
+
     bool showInMenu() const;
     void setShowInMenu(bool show);
 
@@ -148,6 +151,7 @@ signals:
     void activitiesChanged();
     void backgroundChanged();
     void colorChanged();
+    void disableBordersForMaximizedWindowsChanged();
     void dockColorizerSupportChanged();
     void fileChanged();
     void lastUsedActivityChanged();
@@ -175,6 +179,9 @@ private:
 
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
 
+    bool kwin_disabledMaximizedBorders() const;
+    void kwin_setDisabledMaximizedBorders(bool disable);
+
     QString availableId(QStringList all, QStringList assigned, int base);
     //! provides a new file path based the provided file. The new file
     //! has updated ids for containments and applets based on the corona
@@ -184,6 +191,7 @@ private:
     QList<Plasma::Containment *> importLayoutFile(QString file);
 
 private:
+    bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
     //if version doesnt exist it is and old layout file
     int m_version{2};
