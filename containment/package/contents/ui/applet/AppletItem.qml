@@ -488,10 +488,18 @@ Item {
         id: appletMouseAreaBottom
         anchors.fill: parent
         propagateComposedEvents: true
-        visible: !appletMouseArea.visible && !root.editMode
+        visible: (!appletMouseArea.visible || !appletMouseArea.enabled) && !root.editMode
+
+        property bool pressed: false
 
         onPressed: {
             container.activateAppletForNeutralAreas(mouse);
+            pressed = true;
+            mouse.accepted = false;
+        }
+
+        onReleased: {
+            pressed = false;
             mouse.accepted = false;
         }
     }
@@ -827,9 +835,12 @@ Item {
     SequentialAnimation{
         id: clickedAnimation
         alwaysRunToEnd: true
-        running: appletMouseArea.pressed && (root.durationTime > 0)
+        running: (appletMouseArea.pressed || appletMouseAreaBottom.pressed) && (root.durationTime > 0)
 
-        onStopped: appletMouseArea.pressed = false;
+        onStopped: {
+            appletMouseArea.pressed = false;
+            appletMouseAreaBottom.pressed = false;
+        }
 
         ParallelAnimation{
             PropertyAnimation {
