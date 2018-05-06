@@ -65,13 +65,13 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
             if (m_dockView && m_dockView->managedLayout()) {
                 if (!isVisible()) {
                     QTimer::singleShot(100, [this]() {
-                        if (!m_inDelete && !isVisible() && m_dockView && m_dockView->managedLayout()) {
+                        if (!m_inDelete && m_dockView && m_dockView->managedLayout() && !isVisible()) {
                             setVisible(true);
                         }
                     });
 
                     QTimer::singleShot(1500, [this]() {
-                        if (!m_inDelete && !isVisible() && m_dockView && m_dockView->managedLayout()) {
+                        if (!m_inDelete && m_dockView && m_dockView->managedLayout() && !isVisible()) {
                             setVisible(true);
                         }
                     });
@@ -99,6 +99,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
 ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 {
     m_inDelete = true;
+    m_dockView = nullptr;
 
     if (m_shellSurface) {
         delete m_shellSurface;
