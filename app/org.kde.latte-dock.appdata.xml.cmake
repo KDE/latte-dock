@@ -31,7 +31,7 @@
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
   <summary xml:lang="en-GB">Dock for the masses</summary>
   <summary xml:lang="es">Un dock para las masas</summary>
-  <summary xml:lang="gl">Doca para as masas.</summary>
+  <summary xml:lang="gl">Doca para as masas</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
   <summary xml:lang="nl">Dock voor de massa</summary>
   <summary xml:lang="pl">Dok dla mas</summary>
