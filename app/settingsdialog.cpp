@@ -62,7 +62,8 @@ const int HIDDENTEXTCOLUMN = 1;
 const int COLORCOLUMN = 2;
 const int NAMECOLUMN = 3;
 const int MENUCOLUMN = 4;
-const int ACTIVITYCOLUMN = 5;
+const int BORDERSCOLUMN = 5;
+const int ACTIVITYCOLUMN = 6;
 
 const int SCREENTRACKERDEFAULTVALUE = 2500;
 
@@ -111,6 +112,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     ui->layoutsView->setItemDelegateForColumn(NAMECOLUMN, new LayoutNameDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(COLORCOLUMN, new ColorCmbBoxDelegate(this, iconsPath, colors));
     ui->layoutsView->setItemDelegateForColumn(MENUCOLUMN, new CheckBoxDelegate(this));
+    ui->layoutsView->setItemDelegateForColumn(BORDERSCOLUMN, new CheckBoxDelegate(this));
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
@@ -184,8 +186,19 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
 
     connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->noBordersForMaximizedChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
+
+    connect(ui->noBordersForMaximizedChkBox, &QCheckBox::stateChanged, this, [&]() {
+        bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
+
+        if (noBordersForMaximized) {
+            ui->layoutsView->setColumnHidden(BORDERSCOLUMN, false);
+        } else {
+            ui->layoutsView->setColumnHidden(BORDERSCOLUMN, true);
+        }
+
+        updateApplyButtonsState();
+    });
 
     connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
     connect(quitAction, &QAction::triggered, m_corona, &DockCorona::closeApplication);
@@ -217,6 +230,7 @@ SettingsDialog::~SettingsDialog()
         columnWidths << QString::number(ui->layoutsView->columnWidth(COLORCOLUMN));
         columnWidths << QString::number(ui->layoutsView->columnWidth(NAMECOLUMN));
         columnWidths << QString::number(ui->layoutsView->columnWidth(MENUCOLUMN));
+        columnWidths << QString::number(ui->layoutsView->columnWidth(BORDERSCOLUMN));
         m_corona->universalSettings()->setLayoutsColumnWidths(columnWidths);
     }
 
@@ -315,6 +329,7 @@ void SettingsDialog::on_copyButton_clicked()
     QString textColor = m_model->data(m_model->index(row, COLORCOLUMN), Qt::UserRole).toString();
     QString layoutName = uniqueLayoutName(m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole).toString());
     bool menu = m_model->data(m_model->index(row, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+    bool disabledBorders = m_model->data(m_model->index(row, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
 
     QString copiedId = tempDir + "/" + layoutName + ".layout.latte";
     QFile(id).copy(copiedId);
@@ -328,7 +343,7 @@ void SettingsDialog::on_copyButton_clicked()
     Layout *settings = new Layout(this, copiedId);
     m_layouts[copiedId] = settings;
 
-    insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, QStringList(), false);
+    insertLayoutInfoAtRow(row + 1, copiedId, color, textColor, layoutName, menu, disabledBorders, QStringList(), false);
 
     ui->layoutsView->selectRow(row + 1);
 }
@@ -766,6 +781,7 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
     QString textColor = settings->textColor();
     QString background = settings->background();
     bool menu = settings->showInMenu();
+    bool disabledBorders = settings->disableBordersForMaximizedWindows();
     bool locked = !settings->isWritable();
 
     layoutName = uniqueLayoutName(layoutName);
@@ -773,9 +789,9 @@ void SettingsDialog::addLayoutForFile(QString file, QString layoutName, bool new
     int row = ascendingRowFor(layoutName);
 
     if (background.isEmpty()) {
-        insertLayoutInfoAtRow(row, copiedId, color, QString(), layoutName, menu, QStringList(), locked);
+        insertLayoutInfoAtRow(row, copiedId, color, QString(), layoutName, menu, disabledBorders, QStringList(), locked);
     } else {
-        insertLayoutInfoAtRow(row, copiedId, background, textColor, layoutName, menu, QStringList(), locked);
+        insertLayoutInfoAtRow(row, copiedId, background, textColor, layoutName, menu, disabledBorders, QStringList(), locked);
     }
 
     ui->layoutsView->selectRow(row);
@@ -811,10 +827,12 @@ void SettingsDialog::loadSettings()
 
         if (background.isEmpty()) {
             insertLayoutInfoAtRow(i, layoutPath, layoutSets->color(), QString(), layoutSets->name(),
-                                  layoutSets->showInMenu(), layoutSets->activities(), !layoutSets->isWritable());
+                                  layoutSets->showInMenu(), layoutSets->disableBordersForMaximizedWindows(),
+                                  layoutSets->activities(), !layoutSets->isWritable());
         } else {
             insertLayoutInfoAtRow(i, layoutPath, background, layoutSets->textColor(), layoutSets->name(),
-                                  layoutSets->showInMenu(), layoutSets->activities(), !layoutSets->isWritable());
+                                  layoutSets->showInMenu(), layoutSets->disableBordersForMaximizedWindows(),
+                                  layoutSets->activities(), !layoutSets->isWritable());
         }
 
         qDebug() << "counter:" << i << " total:" << m_model->rowCount();
@@ -838,20 +856,28 @@ void SettingsDialog::loadSettings()
     m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18n("Background"))));
     m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18n("Name"))));
     m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18n("In Menu"))));
+    m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18n("Borders"))));
     m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18n("Activities"))));
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
     ui->layoutsView->setColumnHidden(HIDDENTEXTCOLUMN, true);
 
+    if (m_corona->universalSettings()->canDisableBorders()) {
+        ui->layoutsView->setColumnHidden(BORDERSCOLUMN, false);
+    } else {
+        ui->layoutsView->setColumnHidden(BORDERSCOLUMN, true);
+    }
+
     ui->layoutsView->resizeColumnsToContents();
 
     QStringList columnWidths = m_corona->universalSettings()->layoutsColumnWidths();
 
-    if (!columnWidths.isEmpty() && columnWidths.count() == 3) {
+    if (!columnWidths.isEmpty() && columnWidths.count() == 4) {
         ui->layoutsView->setColumnWidth(COLORCOLUMN, columnWidths[0].toInt());
         ui->layoutsView->setColumnWidth(NAMECOLUMN, columnWidths[1].toInt());
         ui->layoutsView->setColumnWidth(MENUCOLUMN, columnWidths[2].toInt());
+        ui->layoutsView->setColumnWidth(BORDERSCOLUMN, columnWidths[3].toInt());
     }
 
     if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
@@ -915,6 +941,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+        bool borders = m_model->data(m_model->index(i, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         layoutSettings << id;
@@ -923,6 +950,7 @@ QStringList SettingsDialog::currentLayoutsSettings()
         layoutSettings << name;
         layoutSettings << QString::number((int)locked);
         layoutSettings << QString::number((int)menu);
+        layoutSettings << QString::number((int)borders);
         layoutSettings << lActivities;
     }
 
@@ -930,7 +958,8 @@ QStringList SettingsDialog::currentLayoutsSettings()
 }
 
 
-void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu, QStringList activities, bool locked)
+void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color, QString textColor, QString name, bool menu,
+        bool disabledBorders, QStringList activities, bool locked)
 {
     QStandardItem *pathItem = new QStandardItem(path);
 
@@ -948,6 +977,12 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     menuItem->setText(menu ? CheckMark : QString());
     menuItem->setTextAlignment(Qt::AlignCenter);
 
+    QStandardItem *bordersItem = new QStandardItem();
+    bordersItem->setEditable(false);
+    bordersItem->setSelectable(true);
+    bordersItem->setText(disabledBorders ? CheckMark : QString());
+    bordersItem->setTextAlignment(Qt::AlignCenter);
+
     QStandardItem *activitiesItem = new QStandardItem(activities.join(","));
 
     QList<QStandardItem *> items;
@@ -957,10 +992,10 @@ void SettingsDialog::insertLayoutInfoAtRow(int row, QString path, QString color,
     items.append(colorItem);
     items.append(nameItem);
     items.append(menuItem);
+    items.append(bordersItem);
     items.append(activitiesItem);
 
     if (row > m_model->rowCount() - 1) {
-
         m_model->appendRow(items);
         row = m_model->rowCount() - 1;
 
@@ -1303,6 +1338,7 @@ bool SettingsDialog::saveAllChanges()
         QString name = m_model->data(m_model->index(i, NAMECOLUMN), Qt::DisplayRole).toString();
         bool locked = m_model->data(m_model->index(i, NAMECOLUMN), Qt::UserRole).toBool();
         bool menu = m_model->data(m_model->index(i, MENUCOLUMN), Qt::DisplayRole).toString() == CheckMark;
+        bool disabledBorders = m_model->data(m_model->index(i, BORDERSCOLUMN), Qt::DisplayRole).toString() == CheckMark;
         QStringList lActivities = m_model->data(m_model->index(i, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
 
         QStringList cleanedActivities;
@@ -1343,6 +1379,10 @@ bool SettingsDialog::saveAllChanges()
 
         if (layout->showInMenu() != menu) {
             layout->setShowInMenu(menu);
+        }
+
+        if (layout->disableBordersForMaximizedWindows() != disabledBorders) {
+            layout->setDisableBordersForMaximizedWindows(disabledBorders);
         }
 
         if (layout->activities() != cleanedActivities) {

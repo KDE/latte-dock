@@ -239,6 +239,7 @@ void Layout::setDisableBordersForMaximizedWindows(bool disable)
     }
 
     m_disableBordersForMaximizedWindows = disable;
+    kwin_setDisabledMaximizedBorders(disable);
 
     emit disableBordersForMaximizedWindowsChanged();
 }
