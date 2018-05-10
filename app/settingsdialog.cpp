@@ -853,11 +853,11 @@ void SettingsDialog::loadSettings()
     recalculateAvailableActivities();
 
     m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));
-    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18n("Background"))));
-    m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18n("Name"))));
-    m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18n("In Menu"))));
-    m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18n("Borders"))));
-    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18n("Activities"))));
+    m_model->setHorizontalHeaderItem(COLORCOLUMN, new QStandardItem(QString(i18nc("column for layout background", "Background"))));
+    m_model->setHorizontalHeaderItem(NAMECOLUMN, new QStandardItem(QString(i18nc("column for layout name", "Name"))));
+    m_model->setHorizontalHeaderItem(MENUCOLUMN, new QStandardItem(QString(i18nc("column for layout to show in menu", "In Menu"))));
+    m_model->setHorizontalHeaderItem(BORDERSCOLUMN, new QStandardItem(QString(i18nc("column for layout to hide borders for maximized windows", "Borderless"))));
+    m_model->setHorizontalHeaderItem(ACTIVITYCOLUMN, new QStandardItem(QString(i18n("column for layout to show which activities is assigned to", "Activities"))));
 
     //! this line should be commented for debugging layouts window functionality
     ui->layoutsView->setColumnHidden(IDCOLUMN, true);
