@@ -43,11 +43,15 @@ T.Slider {
     }
     handle: Item {
         property bool horizontal: control.orientation === Qt.Horizontal
-        x: control.leftPadding + (horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
-        y: control.topPadding + (horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
+        x: leftFixedPadding + (horizontal ? control.visualPosition * (control.availableWidth - width / 2) : (control.availableWidth - width) / 2)
+        y: topFixedPadding + (horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height / 2))
 
         width: firstHandle.naturalSize.width
         height: firstHandle.naturalSize.height
+
+        property int leftFixedPadding: horizontal && control.visualPosition === 0 ? 0 : control.leftPadding
+        property int topFixedPadding: !horizontal && control.visualPosition === 0 ? 0 : control.topPadding
+
         Private.RoundShadow {
             anchors.fill: parent
             imagePath: "widgets/slider"
