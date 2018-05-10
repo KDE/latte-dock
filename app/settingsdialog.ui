@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>840</width>
-    <height>608</height>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -273,7 +273,8 @@
                  <string comment="locked layout">Locked</string>
                 </property>
                 <property name="icon">
-                 <iconset theme="object-locked"/>
+                 <iconset theme="object-locked">
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -444,7 +445,7 @@
             <x>0</x>
             <y>0</y>
             <width>805</width>
-            <height>505</height>
+            <height>514</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -558,6 +559,36 @@
                  </property>
                  <property name="text">
                   <string>Show informative window for layouts automatic switching</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_14">
+               <item>
+                <spacer name="horizontalSpacer_10">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Maximum</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="noBordersForMaximizedChkBox">
+                 <property name="toolTip">
+                  <string>Activate support for bordeless maximized windows between different layouts</string>
+                 </property>
+                 <property name="text">
+                  <string>Support borderless maximized windows in different layouts</string>
                  </property>
                 </widget>
                </item>
