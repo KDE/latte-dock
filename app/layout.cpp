@@ -24,6 +24,7 @@
 #include "importer.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
+#include "universalsettings.h"
 #include "dock/dockview.h"
 
 #include <QDir>
@@ -181,11 +182,20 @@ void Layout::initToCorona(DockCorona *corona)
 
     qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
 
+    connect(m_corona->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, [&]() {
+        if (m_corona->universalSettings()->canDisableBorders()) {
+            kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
+        } else {
+            kwin_setDisabledMaximizedBorders(false);
+        }
+    });
+
     if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
         kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
     } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, [&]() {
-            if (m_corona->layoutManager()->currentLayoutName() == name()) {
+            if (m_corona->universalSettings()->canDisableBorders()
+                && m_corona->layoutManager()->currentLayoutName() == name()) {
                 kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
             }
         });

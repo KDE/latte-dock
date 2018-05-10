@@ -34,6 +34,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
       m_config(config),
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
+    connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::downloadWindowSizeChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::lastNonAssignedLayoutNameChanged, this, &UniversalSettings::saveConfig);
@@ -246,6 +247,21 @@ void UniversalSettings::setAutostart(bool state)
     }
 }
 
+bool UniversalSettings::canDisableBorders() const
+{
+    return m_canDisableBorders;
+}
+
+void UniversalSettings::setCanDisableBorders(bool enable)
+{
+    if (m_canDisableBorders == enable) {
+        return;
+    }
+
+    m_canDisableBorders = enable;
+    emit canDisableBordersChanged();
+}
+
 Dock::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
 {
     return m_memoryUsage;
@@ -279,6 +295,7 @@ void UniversalSettings::setMouseSensitivity(Dock::MouseSensitivity sensitivity)
 void UniversalSettings::loadConfig()
 {
     m_version = m_universalGroup.readEntry("version", 1);
+    m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
     m_currentLayoutName = m_universalGroup.readEntry("currentLayout", QString());
     m_downloadWindowSize = m_universalGroup.readEntry("downloadWindowSize", QSize(800, 550));
     m_lastNonAssignedLayoutName = m_universalGroup.readEntry("lastNonAssignedLayout", QString());
@@ -294,6 +311,7 @@ void UniversalSettings::loadConfig()
 void UniversalSettings::saveConfig()
 {
     m_universalGroup.writeEntry("version", m_version);
+    m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
     m_universalGroup.writeEntry("currentLayout", m_currentLayoutName);
     m_universalGroup.writeEntry("downloadWindowSize", m_downloadWindowSize);
     m_universalGroup.writeEntry("lastNonAssignedLayout", m_lastNonAssignedLayoutName);

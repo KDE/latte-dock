@@ -58,6 +58,9 @@ public:
     bool autostart() const;
     void setAutostart(bool state);
 
+    bool canDisableBorders() const;
+    void setCanDisableBorders(bool enable);
+
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
 
@@ -101,6 +104,7 @@ public slots:
 
 signals:
     void autostartChanged();
+    void canDisableBordersChanged();
     void currentLayoutNameChanged();
     void downloadWindowSizeChanged();
     void lastNonAssignedLayoutNameChanged();
@@ -125,6 +129,7 @@ private:
     void setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage);
 
 private:
+    bool m_canDisableBorders{false};
     bool m_showInfoWindow{true};
 
     //when there isnt a version it is an old universal file
