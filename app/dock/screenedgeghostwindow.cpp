@@ -206,7 +206,7 @@ bool ScreenEdgeGhostWindow::event(QEvent *e)
         emit edgeTriggered();
     }
 
-    QQuickView::event(e);
+    return QQuickView::event(e);
 }
 
 void ScreenEdgeGhostWindow::hideWithMask()
