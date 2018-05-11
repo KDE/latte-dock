@@ -585,7 +585,7 @@
                <item>
                 <widget class="QCheckBox" name="noBordersForMaximizedChkBox">
                  <property name="toolTip">
-                  <string>Activate support for bordeless maximized windows between different layouts</string>
+                  <string>Activate support for borderless maximized windows between different layouts</string>
                  </property>
                  <property name="text">
                   <string>Support borderless maximized windows in different layouts</string>
