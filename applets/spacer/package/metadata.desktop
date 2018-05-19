@@ -16,6 +16,7 @@ Name[pt]=Espaço da Área Acoplável do Latte
 Name[sv]=Avskiljare för Latte dockningsfönster
 Name[uk]=Розпірка панелі Латте
 Name[x-test]=xxLatte Dock Spacerxx
+Name[zh_CN]=Latte 停靠栏占位符
 Name[zh_TW]=Latte Dock 間隔器
 Comment=Reserve empty spaces within the dock.
 Comment[ca]=Reserva espais buits dins de l'acoblador.
