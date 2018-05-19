@@ -36,6 +36,7 @@ Comment[pt_BR]=Shell fornecido para o Latte Dock
 Comment[sv]=Skal tillhandahållet för Latte dockningsfönster
 Comment[uk]=Оболонка панелі Латте
 Comment[x-test]=xxShell provided for the Latte Dockxx
+Comment[zh_CN]=用于 Latte 停靠栏的 Shell
 Comment[zh_TW]=由 Latte Dock 提供的 Shell
 
 Keywords=shell

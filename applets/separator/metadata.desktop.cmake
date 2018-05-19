@@ -20,7 +20,7 @@ Name[sk]=Oddeľovač
 Name[sv]=Avskiljare
 Name[uk]=Роздільник
 Name[x-test]=xxSeparatorxx
-Name[zh_CN]=分隔符
+Name[zh_CN]=分隔栏
 Name[zh_TW]=分隔符號
 Comment=For all your separation tasks
 Comment[ca]=Per a totes les tasques de separació
@@ -39,6 +39,7 @@ Comment[pt]=Para todas as suas tarefas de separação
 Comment[sv]=För alla dina separationsuppgifter
 Comment[uk]=Для відокремлення усіх ваших завдань
 Comment[x-test]=xxFor all your separation tasksxx
+Comment[zh_CN]=用于所有需要分隔的情况
 Comment[zh_TW]=為您所有分開的工作
 
 Encoding=UTF-8
@@ -63,7 +64,7 @@ Keywords[sk]=oddeľovač
 Keywords[sv]=avskiljare
 Keywords[uk]=Роздільник
 Keywords[x-test]=xxseparatorxx
-Keywords[zh_CN]=分隔符
+Keywords[zh_CN]=分隔栏
 Keywords[zh_TW]=分隔器
 Type=Service
 

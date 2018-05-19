@@ -17,6 +17,7 @@ Name[pt_BR]=Latte Dock
 Name[sv]=Latte dockningsfönster
 Name[uk]=Панель Латте
 Name[x-test]=xxLatte Dockxx
+Name[zh_CN]=Latte 停靠栏
 Name[zh_TW]=Latte Dock
 Comment=Latte Dock
 Comment[ca]=Acoblable del Latte
@@ -36,6 +37,7 @@ Comment[pt_BR]=Latte Dock
 Comment[sv]=Latte dockningsfönster
 Comment[uk]=Панель Латте
 Comment[x-test]=xxLatte Dockxx
+Comment[zh_CN]=Latte 停靠栏
 Comment[zh_TW]=Latte Dock
 IconName=latte-dock
 
