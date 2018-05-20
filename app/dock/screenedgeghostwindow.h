@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QQuickView>
+#include <QTimer>
 
 namespace KWayland {
 namespace Client {
@@ -75,6 +76,7 @@ protected:
     bool event(QEvent *ev) override;
 
 private slots:
+    void startGeometryTimer();
     void updateGeometry();
     void fixGeometry();
 
@@ -84,6 +86,8 @@ private:
 private:
     bool m_inDelete{false};
     QRect m_calculatedGeometry;
+
+    QTimer m_fixGeometryTimer;
 
     DockView *m_dockView{nullptr};
 

@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QSurfaceFormat>
 #include <QQuickView>
+#include <QTimer>
 
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
@@ -45,16 +46,21 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
              | Qt::NoDropShadowWindowHint
              | Qt::WindowDoesNotAcceptFocus);
 
-    connect(this, &QQuickView::xChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
-    connect(this, &QQuickView::yChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
-    connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
-    connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::fixGeometry);
+    m_fixGeometryTimer.setSingleShot(true);
+    m_fixGeometryTimer.setInterval(500);
+    connect(&m_fixGeometryTimer, &QTimer::timeout, this, &ScreenEdgeGhostWindow::fixGeometry);
+
+    connect(this, &QQuickView::xChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
+    connect(this, &QQuickView::yChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
+    connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
+    connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
 
     connect(m_dockView, &DockView::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &DockView::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &DockView::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &QQuickView::screenChanged, this, [this]() {
         setScreen(m_dockView->screen());
+        updateGeometry();
     });
 
 
@@ -167,6 +173,11 @@ void ScreenEdgeGhostWindow::fixGeometry()
             m_shellSurface->setPosition(m_calculatedGeometry.topLeft());
         }
     }
+}
+
+void ScreenEdgeGhostWindow::startGeometryTimer()
+{
+    m_fixGeometryTimer.start();
 }
 
 void ScreenEdgeGhostWindow::setupWaylandIntegration()
