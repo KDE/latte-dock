@@ -582,11 +582,12 @@ MouseArea{
         }
 
         if (root.latteDock && (!root.showPreviews)){
-            if (isWindow) {
-                root.latteDock.showTooltipLabel(mainItemContainer, model.display);
-            } else {
-                root.latteDock.showTooltipLabel(mainItemContainer, model.AppName);
-            }
+            var displayText = isWindow ? model.display : model.AppName;
+            var maxCharacters = 80;
+
+            var fixedDisplayText = displayText.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : displayText;
+
+            root.latteDock.showTooltipLabel(mainItemContainer, fixedDisplayText);
         }
 
         if (root.latteDock && root.latteDock.isHalfShown) {
