@@ -887,7 +887,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
             Layout *newLayout = new Layout(this, layoutPath(layoutForOrphans), layoutForOrphans);
 
             if (newLayout) {
-                qDebug() << "ADDING ORPHANED LAYOUT ::::: " << layoutForOrphans;
+                qDebug() << "ACTIVATING ORPHANED LAYOUT ::::: " << layoutForOrphans;
 
                 m_activeLayouts.append(newLayout);
                 newLayout->initToCorona(m_corona);
@@ -902,13 +902,13 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
             Layout *newLayout = new Layout(this, QString(layoutPath(layoutName)), layoutName);
 
             if (newLayout) {
-                qDebug() << "ADDING LAYOUT ::::: " << layoutName;
+                qDebug() << "ACTIVATING LAYOUT ::::: " << layoutName;
                 m_activeLayouts.append(newLayout);
                 newLayout->initToCorona(m_corona);
                 newLayout->importToCorona();
 
                 if (newLayout->isOriginalLayout() && m_corona->universalSettings()->showInfoWindow()) {
-                    showInfoWindow(i18n("Adding layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
+                    showInfoWindow(i18n("Activating layout: <b>%0</b> ...").arg(newLayout->name()), 5000, newLayout->appliedActivities());
                 }
             }
         }

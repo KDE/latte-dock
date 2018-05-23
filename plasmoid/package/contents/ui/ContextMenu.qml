@@ -785,7 +785,7 @@ PlasmaComponents.ContextMenu {
         visible: root.editMode
 
         icon: "add"
-        text: i18n("Add Internal Separator")
+        text: i18n("Add Separator")
 
         onClicked: {
             var pos=visualParent.itemIndex;
@@ -799,7 +799,7 @@ PlasmaComponents.ContextMenu {
         visible: root.editMode && visualParent.isSeparator
 
         icon: "remove"
-        text: i18n("Remove Internal Separator")
+        text: i18n("Remove Separator")
         enabled: parabolicManager.hasInternalSeparator
 
         onClicked: {

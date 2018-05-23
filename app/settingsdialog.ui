@@ -63,7 +63,7 @@
            <item>
             <widget class="QToolButton" name="multipleToolBtn">
              <property name="toolTip">
-              <string>Multiple layouts can be present in memory</string>
+              <string>Multiple layouts can be present and active in memory at the same time</string>
              </property>
              <property name="text">
               <string comment="multiple layouts">Multiple</string>
@@ -555,10 +555,10 @@
                <item>
                 <widget class="QCheckBox" name="infoWindowChkBox">
                  <property name="toolTip">
-                  <string>Provide visual feedback when layouts are added automatically</string>
+                  <string>Provide visual feedback when layouts are activated automaticall</string>
                  </property>
                  <property name="text">
-                  <string>Show informative window for layouts automatic switching</string>
+                  <string>Show informative window for layouts automatic activation</string>
                  </property>
                 </widget>
                </item>
@@ -803,7 +803,7 @@
 This tracker is used in order to not lose any screen related update.</string>
                  </property>
                  <property name="text">
-                  <string>Track screen changes after</string>
+                  <string>React to screen changes after</string>
                  </property>
                 </widget>
                </item>

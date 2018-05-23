@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOptions({
-        {{"r", "replace"}, i18nc("command line", "Replace the current dock instance.")}
+        {{"r", "replace"}, i18nc("command line", "Replace the current Latte instance.")}
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
         , {"default-layout", i18nc("command line", "Import and load default layout on startup.")}
         , {"available-layouts", i18nc("command line", "Print available layouts")}
