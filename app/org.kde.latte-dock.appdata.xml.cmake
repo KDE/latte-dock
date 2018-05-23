@@ -103,6 +103,7 @@
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="ast">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca-valencia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="de">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
