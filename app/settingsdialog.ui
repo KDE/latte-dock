@@ -555,7 +555,7 @@
                <item>
                 <widget class="QCheckBox" name="infoWindowChkBox">
                  <property name="toolTip">
-                  <string>Provide visual feedback when layouts are activated automaticall</string>
+                  <string>Provide visual feedback when layouts are activated automatically</string>
                  </property>
                  <property name="text">
                   <string>Show informative window for layouts automatic activation</string>
