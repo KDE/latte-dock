@@ -1400,7 +1400,11 @@ Item {
             var task = tasks[i];
 
             if (task.itemIndex === confirmedIndex) {
-                task.activateTask();
+                if (task.isGroupParent) {
+                    task.activateNextTask();
+                } else {
+                    task.activateTask();
+                }
                 break;
             }
         }
