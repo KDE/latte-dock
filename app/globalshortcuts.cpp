@@ -141,6 +141,8 @@ bool x11_areModKeysDepressed(const QKeySequence &seq)
 
 namespace Latte {
 
+const int APPLETEXECUTIONDELAY = 400;
+
 GlobalShortcuts::GlobalShortcuts(QObject *parent)
     : QObject(parent)
 {
@@ -262,6 +264,8 @@ void GlobalShortcuts::init()
         });
     }
 
+    m_singleMetaAction = new QAction(this);
+    m_singleMetaAction->setShortcut(QKeySequence(Qt::META));
 }
 
 //! Activate launcher menu through dbus interface
@@ -276,7 +280,20 @@ void GlobalShortcuts::activateLauncherMenu()
             const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
 
             if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
-                emit applet->activated();
+                if (it.value()->visibility()->isHidden()) {
+                    m_lastInvokedAction = m_singleMetaAction;
+                    m_hideDock = it.value();
+                    m_hideDock->visibility()->setBlockHiding(true);
+                    m_hideDockTimer.start();
+
+                    //! delay the execution in order to show first the dock
+                    QTimer::singleShot(APPLETEXECUTIONDELAY, [this, it, applet]() {
+                        it.value()->toggleAppletExpanded(applet->id());
+                    });
+                } else {
+                    it.value()->toggleAppletExpanded(applet->id());
+                }
+
                 return;
             }
         }
@@ -370,7 +387,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const DockView *view, int 
                 if (view->visibility()->isHidden()) {
                     //! delay the execution in order to show first the dock
                     if (m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
-                        QTimer::singleShot(400, [this, item, method, index]() {
+                        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
                             method.invoke(item, Q_ARG(QVariant, index));
                         });
                     }

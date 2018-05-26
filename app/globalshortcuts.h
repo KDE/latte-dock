@@ -60,6 +60,9 @@ private:
     bool dockAtLowerScreenPriority(DockView *test, DockView *base);
 
     QAction *m_lastInvokedAction;
+    //!it is used when the dock is hidden in order to delay the app launcher showing
+    QAction *m_singleMetaAction;
+
     QTimer m_hideDockTimer;
     DockView *m_hideDock;
 
