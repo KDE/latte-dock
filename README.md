@@ -62,7 +62,7 @@ We recommend that you use at least **Plasma 5.9.0**
 
 ### Fedora
 
-- [Fedora](https://admin.fedoraproject.org/pkgdb/package/rpms/latte-dock/)
+- [Fedora](https://koji.fedoraproject.org/koji/packageinfo?packageID=24229)
 
 ### Arch Linux
 
