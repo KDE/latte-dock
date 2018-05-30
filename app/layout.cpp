@@ -728,6 +728,8 @@ const QStringList Layout::appliedActivities()
         } else {
             return m_activities;
         }
+    } else {
+        return {"0"};
     }
 }
 
