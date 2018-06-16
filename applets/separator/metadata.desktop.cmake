@@ -26,6 +26,7 @@ Name[zh_TW]=分隔符號
 Comment=For all your separation tasks
 Comment[ca]=Per a totes les tasques de separació
 Comment[ca@valencia]=Per a totes les tasques de separació
+Comment[cs]=Pro oddělování úloh
 Comment[da]=Til alle dine adskilleropgaver
 Comment[de]=Für Latte-Dock und Latte-Plasmoid
 Comment[el]=Για όλες τις εργασίες διαχωρισμού σας

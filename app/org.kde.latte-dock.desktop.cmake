@@ -24,6 +24,7 @@ Name[zh_TW]=Latte
 Comment=Dock for the masses
 Comment[ca]=Acoblador per a les masses
 Comment[ca@valencia]=Acoblador per a les masses
+Comment[cs]=Dok pro masy
 Comment[da]=Dok til masserene
 Comment[de]=Dock für die Massen
 Comment[el]=Πίνακες για όλον τον κόσμο

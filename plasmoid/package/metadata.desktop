@@ -2,6 +2,7 @@
 Name=Latte Plasmoid
 Name[ca]=Plasmoide del Latte
 Name[ca@valencia]=Plasmoide del Latte
+Name[cs]=Plasmoid Latte
 Name[da]=Latte-plasmoid
 Name[de]=Latte-Plasmoid
 Name[el]=Πρόσθετο Latte
@@ -22,6 +23,7 @@ Name[zh_TW]=Latte Plasmoid
 Comment=Plasmoid from the Latte Dock
 Comment[ca]=Plasmoide del Latte Dock
 Comment[ca@valencia]=Plasmoide del Latte Dock
+Comment[cs]=Plasmoid z doku Latte
 Comment[da]=Plasmoid fra Latte-dokken
 Comment[de]=Latte-Starterbereich als Miniprogramm
 Comment[el]=Πρόσθετο της εφαρμογής Latte

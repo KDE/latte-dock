@@ -3,6 +3,7 @@ Encoding=UTF-8
 Name=Latte Shell
 Name[ca]=Intèrpret d'ordres del Latte
 Name[ca@valencia]=Intèrpret d'ordres del Latte
+Name[cs]=Shell Latte
 Name[da]=Latte-skal
 Name[de]=Latte-Shell
 Name[el]=Κέλυφος Latte
