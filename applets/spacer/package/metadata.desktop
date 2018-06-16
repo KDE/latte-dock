@@ -2,6 +2,7 @@
 Name=Latte Dock Spacer
 Name[ca]=Espaiador pel Latte Dock
 Name[ca@valencia]=Espaiador pel Latte Dock
+Name[cs]=Oddělovač Dok Latte
 Name[da]=Afstandsstykke til Latte-dok
 Name[de]=Latte-Dock Abstandshalter
 Name[el]=Διαχωριστικό Latte
