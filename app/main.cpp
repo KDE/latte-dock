@@ -276,16 +276,6 @@ inline void configureAboutData()
     about.addAuthor(QStringLiteral("Michail Vourlakos"), QString(), QStringLiteral("mvourlakos@gmail.com"));
     about.addAuthor(QStringLiteral("Smith AR"), QString(), QStringLiteral("audoban@openmailbox.org"));
 
-    // Credits
-    about.addCredit(QStringLiteral("Alexey Varfolomeev (varlesh)"), i18n("Logo and Icons")
-                    , QString(), QStringLiteral("https://github.com/varlesh"));
-    about.addCredit(QStringLiteral("Ivan Bordoni"), i18n("Many bug reports")
-                    , QString(), QStringLiteral("https://github.com/JenaPlinsky"));
-    about.addCredit(QStringLiteral("Kupiqu"), i18n("Many bug reports")
-                    , QString(), QStringLiteral("https://github.com/kupiqu"));
-    about.addCredit(QStringLiteral("Ernesto Acosta (elav)"), i18n("Reviews for Latte Dock, CandilDock and NowDock")
-                    , QString(), QStringLiteral("https://github.com/elav"));
-
     KAboutData::setApplicationData(about);
 }
 
