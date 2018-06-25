@@ -43,6 +43,7 @@
   <summary xml:lang="nn">Dokk for massane</summary>
   <summary xml:lang="pl">Dok dla mas</summary>
   <summary xml:lang="pt">Área acoplável para as massas</summary>
+  <summary xml:lang="pt-BR">Área acoplável para todos</summary>
   <summary xml:lang="ru">Док в массы</summary>
   <summary xml:lang="sk">Dok pre masy</summary>
   <summary xml:lang="sv">Dockningsfönster för alla</summary>
@@ -67,6 +68,7 @@
     <p xml:lang="nn">Latte er ein dokk basert på Plasma-rammeverket og som gjev elegant og intuitiv tilgang til program/oppgåver og skjermelement. Innhaldet vert animerte med parabolske forstørringseffektar og programmet prøver å ikkje vera i vegen når det ikkje trengst.</p>
     <p xml:lang="pl">Latte jest dokiem opartym na szkieletach plazmy, który zapewnia przyjemne i intuicyjne odczucia w pracy z zadaniami i plazmoidami. Animuje swoją zawartośc przy użyciu efektu przybliżenia parabolicznego i próbuje być widocznym tylko wtedy, gdy jest potrzebny.</p>
     <p xml:lang="pt">O Latte é uma área acoplável baseada nas plataformas do Plasma que oferece uma experiência elegante e intuitiva para as suas tarefas e plasmóides. Ele anima o seu conteúdo, usando um efeito de ampliação parabólico e tenta estar apenas onde for necessário.</p>
+    <p xml:lang="pt-BR">O Latte é uma área acoplável baseada nos frameworks do Plasma que oferece uma experiência elegante e intuitiva para as suas tarefas e plasmoides. Ele anima o seu conteúdo, usando um efeito de zoom parabólico e tenta estar apenas onde for necessário.</p>
     <p xml:lang="ru">Latte — это док-панель, основанная на KDE Frameworks, которая обеспечивает элегантный и интуитивно понятный интерфейс для ваших задач и виджетов Plasma. Она анимирует свое содержимое с помощью эффекта параболического увеличения и пытается быть видима только тогда, когда это необходимо.</p>
     <p xml:lang="sk">Latte je dok založený na frameworkoch plasma, ktorý poskytuje elegantné a intuitívne rozhranie pre vaše úlohy a plazmoidy. Animuje svoj obsah použitím parabolického efektu priblíženia a snaží sa by tam len vtedy, keď je to treba.</p>
     <p xml:lang="sv">Latte är ett dockningsfönster baserat på Plasma ramverk som erbjuder en elegant och intuitiv upplevelse för aktiviteter och Plasmoider. Det animerar innehållet genom att använda en paraboleffekt för zoomning, och försöker bara vara där när det behövs.</p>
