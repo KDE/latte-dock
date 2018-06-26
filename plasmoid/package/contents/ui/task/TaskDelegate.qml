@@ -1200,7 +1200,7 @@ MouseArea{
     }
 
     function slotWaitingLauncherRemoved(launch) {
-        if ((isWindow || isStartup) && !visible && launch === launcherUrl) {
+        if ((isWindow || isStartup || isLauncher) && !visible && launch === launcherUrl) {
             wrapper.mScale = 1;
             visible = true;
         }
@@ -1354,15 +1354,16 @@ MouseArea{
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
         root.launchersUpdatedFor.connect(slotLaunchersChangedFor);
 
+        var hasShownLauncher = ((tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1)
+                                    || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
+
         //startup without launcher
-        var hideStartup =  ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                              && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                             || !launcherIsPresent(mainItemContainer.launcherUrl))
+        var hideStartup =  ((!hasShownLauncher || !launcherIsPresent(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
 
         if (!Latte.WindowSystem.compositingActive) {
             visible = true;
-        } else if ( (isWindow || isStartup) && root.waitingLauncherExists(launcherUrl)) {
+        } else if ( (isWindow || isStartup || isLauncher) && root.waitingLauncherExists(launcherUrl)) {
             root.waitingLauncherRemoved.connect(slotWaitingLauncherRemoved);
             visible = false;
         } else if (hideStartup){

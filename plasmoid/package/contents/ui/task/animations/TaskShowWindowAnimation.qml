@@ -111,11 +111,14 @@ SequentialAnimation{
             }
         }
 
+        var hasShownLauncher = ((tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1)
+                                    || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
+
+        var launcherIsAlreadyShown = hasShownLauncher && isLauncher && !root.inActivityChange;
+
         //Animation Add/Remove (2) - when is window with no launcher, animations enabled
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled
-        var animation2 = ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                            && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                           || !launcherIsPresent(mainItemContainer.launcherUrl))
+        var animation2 = ((!hasShownLauncher || !launcherIsPresent(mainItemContainer.launcherUrl))
                           && mainItemContainer.isWindow
                           && Latte.WindowSystem.compositingActive);
 
@@ -131,9 +134,7 @@ SequentialAnimation{
 
 
         //startup without launcher, animation should be blocked
-        var launcherExists = !(((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                                && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                               || !launcherIsPresent(mainItemContainer.launcherUrl));
+        var launcherExists = !(!hasShownLauncher || !launcherIsPresent(mainItemContainer.launcherUrl));
 
         //var hideStartup =  launcherExists && mainItemContainer.isStartup; //! fix #976
         var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && mainItemContainer.isWindow;
@@ -159,7 +160,8 @@ SequentialAnimation{
             wrapper.mScale = 1;
             wrapper.opacity = 1;
             mainItemContainer.inAnimation = false;
-        } else if (( animation2 || animation3 || animation6 || isForcedHidden) && (root.durationTime !== 0)){
+        } else if (( animation2 || animation3 || animation6 || isForcedHidden)
+                   && (root.durationTime !== 0) && !launcherIsAlreadyShown){
             isForcedHidden = false;
             mainItemContainer.visible = true;
             wrapper.tempScaleWidth = 0;
