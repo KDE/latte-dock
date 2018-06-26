@@ -15,6 +15,7 @@ Name[nl]=Latte-plasmoid
 Name[nn]=Latte-skjermelement
 Name[pl]=Plazmoid Latte
 Name[pt]=Plasmóide do Latte
+Name[pt_BR]=Plasmoide do Latte
 Name[sv]=Latte Plasmoid
 Name[uk]=Плазмоїд Латте
 Name[x-test]=xxLatte Plasmoidxx

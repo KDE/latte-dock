@@ -39,6 +39,7 @@ Comment[nl]=Voor al uw scheidingstaken
 Comment[nn]=For alle dine skiljebehov
 Comment[pl]=Dla wszystkich twoich oddzielonych zadań
 Comment[pt]=Para todas as suas tarefas de separação
+Comment[pt_BR]=Para todas as suas tarefas de separação
 Comment[sv]=För alla dina separationsuppgifter
 Comment[uk]=Для відокремлення усіх ваших завдань
 Comment[x-test]=xxFor all your separation tasksxx
