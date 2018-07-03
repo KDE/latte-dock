@@ -1576,8 +1576,7 @@ void DockView::updateEffects()
             fixedMask.translate(m_effectsArea.x(), m_effectsArea.y());
 
             //! fix1, for KF5.32 that return empty QRegion's for the mask
-            //! fix2, sometimes the calculations return too many regions!!!
-            if (fixedMask.isEmpty() || fixedMask.rectCount() > 25) {
+            if (fixedMask.isEmpty()) {
                 fixedMask = QRegion(m_effectsArea);
             }
 
