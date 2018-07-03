@@ -44,10 +44,10 @@ Item{
     //the flag !root.inActivityChange protects from this
     //and it is used later on Behaviors in order to not break
     //the activity change animations from removal/additions of tasks
+    //! && !root.inActivityChange (deprecated) in order to check if it is fixed
     property int separatorSpace: neighbourSeparator && !isSeparator
-                                 && !(parabolicManager.hasInternalSeparator && root.dragSource)
-                                 && !root.inActivityChange ? //fix for #846
-                                                             (2+root.iconMargin/2) : 0
+                                 && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
+                                     (2+root.iconMargin/2) : 0
 
     property bool rightSpacer: false
 

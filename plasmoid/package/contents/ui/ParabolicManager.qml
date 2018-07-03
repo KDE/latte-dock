@@ -379,6 +379,13 @@ Item {
         if (hasInternalSeparator || root.showWindowsOnlyFromLaunchers) {
             var i = tasksModel.count - 1;
 
+            //! in case the last task is in deleting phase
+            var task = icList.childAtIndex(i+1);
+
+            if (task) {
+                i = i + 1;
+            }
+
             while (i>=0) {
                 if (!taskIsSeparator(i) && !taskIsForcedHidden(i) ) {
                     return i;
