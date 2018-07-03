@@ -1300,11 +1300,13 @@ QRect DockView::effectsArea() const
 
 void DockView::setEffectsArea(QRect area)
 {
-    if (m_effectsArea == area) {
+    QRect inWindowRect = area.intersected(QRect(0, 0, width(), height()));
+
+    if (m_effectsArea == inWindowRect) {
         return;
     }
 
-    m_effectsArea = area;
+    m_effectsArea = inWindowRect;
     emit effectsAreaChanged();
 }
 
@@ -1573,8 +1575,9 @@ void DockView::updateEffects()
             QRegion fixedMask = m_background->mask();
             fixedMask.translate(m_effectsArea.x(), m_effectsArea.y());
 
-            //! fix for KF5.32 that return empty QRegion's for the mask
-            if (fixedMask.isEmpty()) {
+            //! fix1, for KF5.32 that return empty QRegion's for the mask
+            //! fix2, sometimes the calculations return too many regions!!!
+            if (fixedMask.isEmpty() || fixedMask.rectCount() > 25) {
                 fixedMask = QRegion(m_effectsArea);
             }
 
