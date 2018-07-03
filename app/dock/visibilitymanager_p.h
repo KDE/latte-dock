@@ -26,7 +26,8 @@ class ScreenEdgeGhostWindow;
 /*!
  * \brief The Latte::VisibilityManagerPrivate is a class d-pointer
  */
-class VisibilityManagerPrivate : public QObject {
+class VisibilityManagerPrivate : public QObject
+{
     Q_GADGET
 
 public:

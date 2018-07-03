@@ -27,7 +27,8 @@
 class QAction;
 class QMenu;
 
-class Menu : public Plasma::ContainmentActions {
+class Menu : public Plasma::ContainmentActions
+{
     Q_OBJECT
 
 public:

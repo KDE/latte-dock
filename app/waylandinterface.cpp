@@ -41,7 +41,8 @@ using namespace KWayland::Client;
 
 namespace Latte {
 
-class Private::GhostWindow : public QRasterWindow {
+class Private::GhostWindow : public QRasterWindow
+{
     Q_OBJECT
 
 public:
@@ -131,7 +132,7 @@ void WaylandInterface::setDockExtraFlags(QWindow &view)
     Q_UNUSED(view)
 }
 
-void WaylandInterface::setDockStruts(QWindow &view, const QRect &rect , Plasma::Types::Location location)
+void WaylandInterface::setDockStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
 {
     if (!m_ghostWindows.contains(view.winId()))
         m_ghostWindows[view.winId()] = new Private::GhostWindow(this);

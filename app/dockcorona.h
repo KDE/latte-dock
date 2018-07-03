@@ -67,7 +67,8 @@ class LaunchersSignals;
 
 namespace Latte {
 
-class DockCorona : public Plasma::Corona {
+class DockCorona : public Plasma::Corona
+{
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.LatteDock")
 

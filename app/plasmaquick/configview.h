@@ -43,7 +43,8 @@ class ConfigViewPrivate;
 
 class ConfigModel;
 
-class ConfigView : public QQuickView {
+class ConfigView : public QQuickView
+{
     Q_OBJECT
     Q_PROPERTY(PlasmaQuick::ConfigModel *configModel READ configModel CONSTANT)
     Q_PROPERTY(QString appletGlobalShortcut READ appletGlobalShortcut WRITE setAppletGlobalShortcut NOTIFY appletGlobalShortcutChanged)

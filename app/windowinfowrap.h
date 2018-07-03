@@ -29,7 +29,8 @@ namespace Latte {
 
 using WindowId = QVariant;
 
-class WindowInfoWrap {
+class WindowInfoWrap
+{
 
 public:
     WindowInfoWrap() noexcept

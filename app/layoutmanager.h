@@ -51,7 +51,8 @@ namespace Latte {
 
 //! This class is responsible to manipulate all layouts.
 //! add,remove,rename, update configurations etc.
-class LayoutManager : public QObject {
+class LayoutManager : public QObject
+{
     Q_OBJECT
 
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName NOTIFY currentLayoutNameChanged)

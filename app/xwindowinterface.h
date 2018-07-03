@@ -31,7 +31,8 @@
 
 namespace Latte {
 
-class XWindowInterface : public AbstractWindowInterface {
+class XWindowInterface : public AbstractWindowInterface
+{
     Q_OBJECT
 
 public:

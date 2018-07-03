@@ -39,7 +39,8 @@ namespace PlasmaQuick {
 
 class ContainmentViewPrivate;
 
-class ContainmentView : public KQuickAddons::QuickViewSharedEngine {
+class ContainmentView : public KQuickAddons::QuickViewSharedEngine
+{
     Q_OBJECT
     Q_PROPERTY(Plasma::Types::Location location READ location WRITE setLocation NOTIFY locationChanged)
     Q_PROPERTY(Plasma::Types::FormFactor formFactor READ formFactor NOTIFY formFactorChanged)

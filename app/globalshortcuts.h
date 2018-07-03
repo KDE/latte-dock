@@ -34,7 +34,8 @@ class DockView;
 
 namespace Latte {
 
-class GlobalShortcuts : public QObject {
+class GlobalShortcuts : public QObject
+{
     Q_OBJECT
 
 public:

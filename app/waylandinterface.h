@@ -48,7 +48,8 @@ namespace Private {
 class GhostWindow;
 }
 
-class WaylandInterface : public AbstractWindowInterface {
+class WaylandInterface : public AbstractWindowInterface
+{
     Q_OBJECT
 
 public:

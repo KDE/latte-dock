@@ -45,7 +45,8 @@ namespace Latte {
 //! This class is responsible to hold the settings for a specific layout.
 //! It also updates always the relevant layout configuration concerning
 //! its general settings (no the containments)
-class Layout : public QObject {
+class Layout : public QObject
+{
     Q_OBJECT
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)

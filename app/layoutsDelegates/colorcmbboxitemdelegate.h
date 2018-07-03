@@ -22,7 +22,8 @@
 
 #include <QAbstractItemDelegate>
 
-class ColorCmbBoxItemDelegate : public QAbstractItemDelegate {
+class ColorCmbBoxItemDelegate : public QAbstractItemDelegate
+{
     Q_OBJECT
 public:
     ColorCmbBoxItemDelegate(QObject *parent = 0, QString iconsPath = QString());

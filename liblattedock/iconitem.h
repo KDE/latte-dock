@@ -34,7 +34,8 @@
 
 // this file is based on PlasmaCore::IconItem class, thanks to KDE
 namespace Latte {
-class IconItem : public QQuickItem {
+class IconItem : public QQuickItem
+{
     Q_OBJECT
 
     /**

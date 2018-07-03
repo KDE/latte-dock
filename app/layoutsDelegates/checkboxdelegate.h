@@ -19,7 +19,8 @@
 
 #include <QStyledItemDelegate>
 
-class CheckBoxDelegate : public QStyledItemDelegate {
+class CheckBoxDelegate : public QStyledItemDelegate
+{
 public:
     CheckBoxDelegate(QObject *parent = 0);
 

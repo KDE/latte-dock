@@ -53,7 +53,8 @@ namespace Latte {
 //! KDE BUGS: https://bugs.kde.org/show_bug.cgi?id=382219
 //!           https://bugs.kde.org/show_bug.cgi?id=392464
 
-class ScreenEdgeGhostWindow : public QQuickView {
+class ScreenEdgeGhostWindow : public QQuickView
+{
     Q_OBJECT
 
 public:

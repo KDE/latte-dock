@@ -31,7 +31,8 @@ namespace Latte {
  * @brief The QuickWindowSystem class,
  * is a tiny class that provide basic information of WindowSystem
  */
-class QuickWindowSystem final : public QObject {
+class QuickWindowSystem final : public QObject
+{
     Q_OBJECT
 
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged FINAL)

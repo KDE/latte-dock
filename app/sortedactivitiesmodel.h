@@ -32,7 +32,8 @@
 
 typedef QHash<Plasma::Types::Location, float> EdgesHash;
 
-class SortedActivitiesModel : public QSortFilterProxyModel {
+class SortedActivitiesModel : public QSortFilterProxyModel
+{
     Q_OBJECT
 
     Q_PROPERTY(bool inhibitUpdates READ inhibitUpdates WRITE setInhibitUpdates NOTIFY inhibitUpdatesChanged)

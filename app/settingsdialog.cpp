@@ -566,7 +566,7 @@ void SettingsDialog::on_exportButton_clicked()
     m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
 
     QFileDialog *fileDialog = new QFileDialog(this, i18nc("export layout/configuration", "Export Layout/Configuration")
-            , QDir::homePath() , QStringLiteral("layout.latte"));
+            , QDir::homePath(), QStringLiteral("layout.latte"));
 
     fileDialog->setFileMode(QFileDialog::AnyFile);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);

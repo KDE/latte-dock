@@ -23,7 +23,8 @@
 
 #include <QQmlExtensionPlugin>
 
-class LatteDockPlugin : public QQmlExtensionPlugin {
+class LatteDockPlugin : public QQmlExtensionPlugin
+{
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
 

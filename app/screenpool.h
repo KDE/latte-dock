@@ -32,7 +32,8 @@
 
 namespace Latte {
 
-class ScreenPool : public QObject, public QAbstractNativeEventFilter {
+class ScreenPool : public QObject, public QAbstractNativeEventFilter
+{
     Q_OBJECT
 
 public:

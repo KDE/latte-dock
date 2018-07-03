@@ -51,7 +51,8 @@ namespace Latte {
 class DockCorona;
 class DockView;
 
-class DockConfigView : public PlasmaQuick::ConfigView {
+class DockConfigView : public PlasmaQuick::ConfigView
+{
     Q_OBJECT
     //! used when the secondary config window can not be shown
     Q_PROPERTY(bool showInlineProperties READ showInlineProperties WRITE setShowInlineProperties NOTIFY showInlinePropertiesChanged)
@@ -59,7 +60,8 @@ class DockConfigView : public PlasmaQuick::ConfigView {
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    enum ConfigViewType {
+    enum ConfigViewType
+    {
         PrimaryConfig = 0,
         SecondaryConfig
     };

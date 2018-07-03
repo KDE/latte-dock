@@ -47,8 +47,8 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QFontMetrics fm(option.font);
         int textWidth = fm.width(nameText);
         int thick = option.rect.height();
-        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? thick : qBound(0, option.rect.width() - textWidth - thick , thick);
-        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? qBound(0, option.rect.width() - textWidth - thick , thick) : thick;
+        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? thick : qBound(0, option.rect.width() - textWidth - thick, thick);
+        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? qBound(0, option.rect.width() - textWidth - thick, thick) : thick;
 
         QRect destinationS(option.rect.x(), option.rect.y(), startWidth, thick);
         QRect destinationE(option.rect.x() + option.rect.width() - thick, option.rect.y(), endWidth, thick);

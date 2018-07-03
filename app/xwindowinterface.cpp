@@ -294,9 +294,9 @@ bool XWindowInterface::isOnCurrentActivity(WindowId wid) const
 WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
 {
     const KWindowInfo winfo{wid.value<WId>(), NET::WMFrameExtents
-        | NET::WMWindowType
-        | NET::WMGeometry
-        | NET::WMState};
+                            | NET::WMWindowType
+                            | NET::WMGeometry
+                            | NET::WMState};
 
     WindowInfoWrap winfoWrap;
 

@@ -42,7 +42,8 @@ namespace Latte {
 //! crashes that occur by setting the launcherList of the tasksModel so
 //! often. The plasma devs of libtaskmanager have designed the launchers
 //! model to be initialized only once during startup
-class LaunchersSignals : public QObject {
+class LaunchersSignals : public QObject
+{
     Q_OBJECT
 
 public:

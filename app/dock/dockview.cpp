@@ -361,7 +361,7 @@ void DockView::setupWaylandIntegration()
 
     if (DockCorona *c = qobject_cast<DockCorona *>(corona())) {
         using namespace KWayland::Client;
-        PlasmaShell *interface{c->waylandDockCoronaInterface()};
+        PlasmaShell *interface {c->waylandDockCoronaInterface()};
 
         if (!interface)
             return;

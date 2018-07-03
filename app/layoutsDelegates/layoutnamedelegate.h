@@ -19,7 +19,8 @@
 
 #include <QStyledItemDelegate>
 
-class LayoutNameDelegate : public QStyledItemDelegate {
+class LayoutNameDelegate : public QStyledItemDelegate
+{
 public:
     LayoutNameDelegate(QObject *parent = 0);
 

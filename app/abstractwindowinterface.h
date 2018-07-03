@@ -43,11 +43,13 @@ namespace Latte {
 class XWindowInterface;
 class WaylandInterface;
 
-class AbstractWindowInterface : public QObject {
+class AbstractWindowInterface : public QObject
+{
     Q_OBJECT
 
 public:
-    enum class Slide {
+    enum class Slide
+    {
         None,
         Top,
         Left,

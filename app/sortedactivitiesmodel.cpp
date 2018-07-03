@@ -44,7 +44,8 @@
 
 namespace {
 
-class BackgroundCache: public QObject {
+class BackgroundCache: public QObject
+{
 public:
     BackgroundCache()
         : initialized(false)

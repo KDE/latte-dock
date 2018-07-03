@@ -27,14 +27,16 @@
 
 namespace Latte {
 
-class Dock {
+class Dock
+{
     Q_GADGET
 
 public:
     Dock() = delete;
     ~Dock() {}
 
-    enum Visibility {
+    enum Visibility
+    {
         None = -1,
         AlwaysVisible = 0,
         AutoHide,
@@ -45,7 +47,8 @@ public:
     };
     Q_ENUM(Visibility)
 
-    enum Alignment {
+    enum Alignment
+    {
         Center = 0,
         Left,
         Right,
@@ -55,13 +58,15 @@ public:
     };
     Q_ENUM(Alignment)
 
-    enum SessionType {
+    enum SessionType
+    {
         DefaultSession = 0,
         AlternativeSession
     };
     Q_ENUM(SessionType)
 
-    enum Modifier {
+    enum Modifier
+    {
         Shift = 0,
         Ctrl,
         Alt,
@@ -69,14 +74,16 @@ public:
     };
     Q_ENUM(Modifier)
 
-    enum ClickAction {
+    enum ClickAction
+    {
         LeftClick = 0,
         MiddleClick,
         RightClick
     };
     Q_ENUM(ClickAction)
 
-    enum TaskAction {
+    enum TaskAction
+    {
         NoneAction = 0,
         Close,
         NewInstance,
@@ -86,46 +93,53 @@ public:
     };
     Q_ENUM(TaskAction)
 
-    enum ActiveAppletIndicator {
+    enum ActiveAppletIndicator
+    {
         NoneIndicator = 0,
         InternalsIndicator = 1,
         AllIndicator = 2
     };
     Q_ENUM(ActiveAppletIndicator)
 
-    enum ActiveIndicatorType {
+    enum ActiveIndicatorType
+    {
         LineIndicator = 0,
         DotIndicator = 1
     };
     Q_ENUM(ActiveIndicatorType)
 
-    enum LaunchersGroup {
+    enum LaunchersGroup
+    {
         UniqueLaunchers = 0,
         LayoutLaunchers = 1,
         GlobalLaunchers = 2
     };
     Q_ENUM(LaunchersGroup)
 
-    enum GlowGroup {
+    enum GlowGroup
+    {
         GlowOnlyOnActive = 0,
         GlowAll = 1
     };
     Q_ENUM(GlowGroup)
 
-    enum LayoutsMemoryUsage {
+    enum LayoutsMemoryUsage
+    {
         SingleLayout = 0,  /* a single Layout is loaded in each time */
         MultipleLayouts  /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
     };
     Q_ENUM(LayoutsMemoryUsage)
 
-    enum MouseSensitivity {
+    enum MouseSensitivity
+    {
         LowSensitivity = 0,
         MediumSensitivity,
         HighSensitivity
     };
     Q_ENUM(MouseSensitivity)
 
-    enum LatteConfigPage {
+    enum LatteConfigPage
+    {
         LayoutPage = 0,
         PreferencesPage
     };

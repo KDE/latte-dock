@@ -48,7 +48,8 @@ namespace Latte {
 class DockCorona;
 class DockView;
 
-class DockSecConfigView : public QQuickView {
+class DockSecConfigView : public QQuickView
+{
     Q_OBJECT
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)

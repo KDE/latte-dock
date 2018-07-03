@@ -37,7 +37,8 @@ class LayoutManager;
 
 //! This class holds all the settings that are universally available
 //! independent of layouts
-class UniversalSettings : public QObject {
+class UniversalSettings : public QObject
+{
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)

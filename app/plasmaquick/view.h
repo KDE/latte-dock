@@ -39,7 +39,8 @@ namespace PlasmaQuick {
 
 class ViewPrivate;
 
-class View : public QQuickView {
+class View : public QQuickView
+{
     Q_OBJECT
     Q_PROPERTY(Plasma::Types::Location location READ location WRITE setLocation NOTIFY locationChanged)
     Q_PROPERTY(Plasma::Types::FormFactor formFactor READ formFactor NOTIFY formFactorChanged)

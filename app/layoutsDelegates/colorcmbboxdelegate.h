@@ -26,7 +26,8 @@ class QModelIndex;
 class QWidget;
 class QVariant;
 
-class ColorCmbBoxDelegate : public QItemDelegate {
+class ColorCmbBoxDelegate : public QItemDelegate
+{
     Q_OBJECT
 public:
     ColorCmbBoxDelegate(QObject *parent = 0, QString iconsPath = QString(), QStringList colors = QStringList());

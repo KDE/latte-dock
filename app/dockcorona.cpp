@@ -449,8 +449,8 @@ QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout)
 
                                 case Latte::Dock::Center:
                                 case Latte::Dock::Justify:
-                                    realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2) , view->y(),
-                                                         realWidth , realThickness);
+                                    realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2), view->y(),
+                                                         realWidth, realThickness);
                                     break;
 
                                 case Latte::Dock::Right:

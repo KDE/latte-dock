@@ -31,7 +31,8 @@ class LayoutManager;
 class SettingsDialog;
 }
 
-class ActivityCmbBoxDelegate : public QItemDelegate {
+class ActivityCmbBoxDelegate : public QItemDelegate
+{
     Q_OBJECT
 public:
     ActivityCmbBoxDelegate(QObject *parent);

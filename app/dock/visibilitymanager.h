@@ -33,7 +33,8 @@ namespace Latte {
 
 class VisibilityManagerPrivate;
 
-class VisibilityManager : public QObject {
+class VisibilityManager : public QObject
+{
     Q_OBJECT
 
     Q_PROPERTY(Latte::Dock::Visibility mode READ mode WRITE setMode NOTIFY modeChanged)

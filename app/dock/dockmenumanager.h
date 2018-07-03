@@ -39,7 +39,8 @@ class DockView;
 
 namespace Latte {
 
-class DockMenuManager : public QObject {
+class DockMenuManager : public QObject
+{
     Q_OBJECT
 
 public:

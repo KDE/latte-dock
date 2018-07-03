@@ -35,7 +35,8 @@ class PlasmaShellSurface;
 
 namespace Latte {
 
-class InfoView : public QQuickView {
+class InfoView : public QQuickView
+{
     Q_OBJECT
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)

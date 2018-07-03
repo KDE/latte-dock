@@ -25,7 +25,8 @@
 #include "plasma/svg.h"
 
 
-class PanelShadows : public Plasma::Svg {
+class PanelShadows : public Plasma::Svg
+{
     Q_OBJECT
 
 public:

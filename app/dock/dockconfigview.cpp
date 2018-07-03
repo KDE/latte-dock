@@ -336,7 +336,7 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
     const auto *focusWindow = qGuiApp->focusWindow();
 
     if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                        || focusWindow->flags().testFlag(Qt::ToolTip)) )
+                        || focusWindow->flags().testFlag(Qt::ToolTip)))
         return;
 
     if (!m_blockFocusLost && (!m_secConfigView || (m_secConfigView && !m_secConfigView->isActive()))) {

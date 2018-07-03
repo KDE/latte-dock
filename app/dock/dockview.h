@@ -57,7 +57,8 @@ class Layout;
 
 namespace Latte {
 
-class DockView : public PlasmaQuick::ContainmentView {
+class DockView : public PlasmaQuick::ContainmentView
+{
     Q_OBJECT
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)

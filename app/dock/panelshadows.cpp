@@ -40,7 +40,8 @@
 
 #include <qdebug.h>
 
-class PanelShadows::Private {
+class PanelShadows::Private
+{
 public:
     Private(PanelShadows *shadows)
         : q(shadows)
@@ -98,7 +99,8 @@ public:
     bool m_isX11;
 #endif
 
-    struct Wayland {
+    struct Wayland
+    {
         KWayland::Client::ShadowManager *manager = nullptr;
         KWayland::Client::ShmPool *shmPool = nullptr;
 
@@ -110,7 +112,8 @@ public:
     QHash<const QWindow *, Plasma::FrameSvg::EnabledBorders> m_windows;
 };
 
-class PanelShadowsSingleton {
+class PanelShadowsSingleton
+{
 public:
     PanelShadowsSingleton() {
     }
