@@ -51,17 +51,22 @@ Item{
 
     property bool rightSpacer: false
 
-    property real nHiddenSize: {
-        if (isForcedHidden) {
-            return 0;
-        } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
-            return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
-        } else {
-            return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
+    property real nScale: 0
+    property real nHiddenSize: 0
+
+    Binding{
+        target: hiddenSpacer
+        property: "nHiddenSize"
+        value: {
+            if (isForcedHidden) {
+                return 0;
+            } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
+                return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
+            } else {
+                return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
+            }
         }
     }
-
-    property real nScale: 0
 
     function updateNeighbour() {
         //index===-1 indicates that this item is removed
@@ -72,6 +77,10 @@ Item{
                 neighbourSeparator = (mainItemContainer.hasNeighbourSeparator(itemIndex-1, false) && !isSeparator && itemIndex!==parabolicManager.firstRealTaskIndex)
                         || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
             } else {
+                if (itemIndex >= root.tasksCount) {
+                    return;
+                }
+
                 neighbourSeparator = (mainItemContainer.hasNeighbourSeparator(itemIndex+1,true) && !isSeparator && itemIndex!==parabolicManager.lastRealTaskIndex)
                         || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
             }
