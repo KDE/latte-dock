@@ -112,7 +112,7 @@ uint QuickWindowSystem::identifyPlasmaDesktopVersion()
 
                 QString message("Plasma Desktop version:  " + QString::number(maj) + "."
                                 + QString::number(min) + "." + QString::number(rel)
-                                + " (" + QString::number(m_plasmaDesktopVersion) + ")");
+                                + " (" + QString::number(desktopVersion) + ")");
                 qDebug() << message;
                 qDebug() << " /////////////////////////";
 
