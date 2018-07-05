@@ -70,6 +70,10 @@ Item{
 
     function updateNeighbour() {
         //index===-1 indicates that this item is removed
+        if (mainItemContainer.inBouncingAnimation) {
+            return;
+        }
+
         if (root.editMode) {
             neighbourSeparator = false;
         } else if (latteDock && index!==-1) {
