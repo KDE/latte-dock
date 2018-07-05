@@ -2,7 +2,7 @@ About
 =====
 Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and trys to be there only when it is needed.
 
-*"Art in Coffee"*
+**"Art in Coffee"**
 
 Screenshots
 ===========
@@ -83,11 +83,15 @@ We recommend that you use at least **Plasma 5.9.0**
 ### FreeBSD
 - [FreeBSD Port](https://www.freshports.org/deskutils/latte-dock/)
 
-See the [installation instruction](INSTALLATION.md) for others Linux distribution or development build
+See the [installation instruction](./INSTALLATION.md) for others Linux distribution or development build
 
 ## Run Latte-Dock
 
-Latte is now ready to be used by executing  ```latte-dock``` or _Latte Dock_ in applications menu.
+Latte is now ready to be used by executing 
+```latte-dock
+```
+
+or activating **Latte Dock** from applications menu.
 
 
 Contributors
