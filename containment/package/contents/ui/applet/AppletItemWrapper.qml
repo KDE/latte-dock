@@ -477,6 +477,18 @@ Item{
                 }
 
                 usesPlasmaTheme: appletIconItem && appletIconItem.visible ? appletIconItem.usesPlasmaTheme : false
+
+                Loader{
+                    anchors.centerIn: parent
+                    active: root.debugModeOverloadedIcons
+                    sourceComponent: Rectangle{
+                        width: 30
+                        height: 30
+                        color: "green"
+                        opacity: 0.65
+                    }
+                }
+
                 //ActiveIndicator{}
             }
         }

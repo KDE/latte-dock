@@ -132,6 +132,11 @@ int main(int argc, char **argv)
     spacersOption.setDescription(QStringLiteral("Show visual indicators for debugging spacers (Only useful to devs)."));
     spacersOption.setHidden(true);
     parser.addOption(spacersOption);
+
+    QCommandLineOption overloadedIconsOption(QStringList() << QStringLiteral("overloaded-icons"));
+    overloadedIconsOption.setDescription(QStringLiteral("Show visual indicators for debugging overloaded applets icons (Only useful to devs)."));
+    overloadedIconsOption.setHidden(true);
+    parser.addOption(overloadedIconsOption);
     //! END: Hidden options
 
     parser.process(app);
