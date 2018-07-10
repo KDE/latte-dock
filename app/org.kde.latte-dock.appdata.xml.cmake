@@ -113,6 +113,7 @@
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca-valencia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="de">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="el">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="en-GB">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="es">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="gl">Michail Vourlakos e Johan Smith Agudelo Rodriguez</developer_name>
