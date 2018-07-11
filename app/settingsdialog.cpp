@@ -664,7 +664,8 @@ void SettingsDialog::requestImagesDialog(int row)
 
     QString background = m_model->data(m_model->index(row, COLORCOLUMN), Qt::BackgroundRole).toString();
 
-    if (background.startsWith("/")) {
+    if (background.startsWith("/") && QFileInfo(background).exists()) {
+        dialog.setDirectory(QFileInfo(background).absolutePath());
         dialog.selectFile(background);
     }
 
