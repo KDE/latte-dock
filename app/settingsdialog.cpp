@@ -850,6 +850,21 @@ void SettingsDialog::loadSettings()
         }
     }
 
+
+    //! Check Multiple Layouts Integrity
+    /*if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
+
+        QString multipleLayoutPath = QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte";
+        Layout multipleHiddenLayouts(this, multipleLayoutPath, "Multiple Layouts File");
+
+        if (multipleHiddenLayouts.layoutIsBroken()) {
+            qDebug() << "Intergrity Error ::: Multiple Layouts Hidden file is broken!!!!";
+            brokenLayouts.append(multipleHiddenLayouts.name());
+        }
+    }*/
+
+
     recalculateAvailableActivities();
 
     m_model->setHorizontalHeaderItem(IDCOLUMN, new QStandardItem(QString("#path")));

@@ -853,10 +853,8 @@ QStringList DockCorona::appletsIds()
     QStringList ids;
 
     foreach (auto containment, containments()) {
-        foreach (auto applet, containment->applets()) {
-            ids << QString::number(applet->id());
-        }
-
+        auto applets = containment->config().group("Applets");
+        ids << applets.groupList();
     }
 
     return ids;

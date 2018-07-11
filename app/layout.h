@@ -64,7 +64,7 @@ public:
     static const QString MultipleLayoutsName;
 
     void initToCorona(DockCorona *corona);
-    void syncToLayoutFile();
+    void syncToLayoutFile(bool removeLayoutId = false);
     void unloadContainments();
     void unloadDockViews();
 

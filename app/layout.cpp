@@ -67,7 +67,7 @@ Layout::~Layout()
     }
 }
 
-void Layout::syncToLayoutFile()
+void Layout::syncToLayoutFile(bool removeLayoutId)
 {
     if (!m_corona || !isWritable()) {
         return;
@@ -82,9 +82,17 @@ void Layout::syncToLayoutFile()
     qDebug() << " LAYOUT :: " << m_layoutName << " is syncing its original file.";
 
     foreach (auto containment, m_containments) {
-        containment->config().writeEntry("layoutId", "");
+        if (removeLayoutId) {
+            containment->config().writeEntry("layoutId", "");
+        }
+
         KConfigGroup newGroup = oldContainments.group(QString::number(containment->id()));
         containment->config().copyTo(&newGroup);
+
+        if (!removeLayoutId) {
+            newGroup.writeEntry("layoutId", "");
+            newGroup.sync();
+        }
     }
 
     oldContainments.sync();
@@ -1547,6 +1555,11 @@ void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> con
         emit m_corona->availableScreenRectChanged();
         emit m_corona->availableScreenRegionChanged();
     }
+
+    //! sync the original layout file for integrity
+    if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        syncToLayoutFile(false);
+    }
 }
 
 QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
@@ -1577,6 +1590,11 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
 
     if (containments.size() > 0) {
         m_dockViews.remove(dockView->containment());
+    }
+
+    //! sync the original layout file for integrity
+    if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        syncToLayoutFile(false);
     }
 
     return containments;
