@@ -126,7 +126,7 @@ void LayoutManager::unload()
     //! Unload all Layouts
     foreach (auto layout, m_activeLayouts) {
         if (memoryUsage() == Dock::MultipleLayouts && layout->isOriginalLayout()) {
-            layout->syncToLayoutFile();
+            layout->syncToLayoutFile(true);
         }
 
         layout->unloadContainments();
@@ -715,7 +715,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     m_activeLayouts.removeFirst();
 
                     if (layout->isOriginalLayout() && previousMemoryUsage == Dock::MultipleLayouts) {
-                        layout->syncToLayoutFile();
+                        layout->syncToLayoutFile(true);
                     }
 
                     layout->unloadContainments();
@@ -870,7 +870,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
                 m_activeLayouts.removeAt(posLayout);
 
                 if (layout->isOriginalLayout()) {
-                    layout->syncToLayoutFile();
+                    layout->syncToLayoutFile(true);
                 }
 
                 layout->unloadContainments();
