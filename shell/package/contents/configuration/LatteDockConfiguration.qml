@@ -225,18 +225,15 @@ FocusScope {
                 PlasmaComponents.ToolButton {
                     id: pinButton
 
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    //!avoid editMode box shadow
-                    anchors.topMargin: units.smallSpacing
-                    anchors.rightMargin: units.smallSpacing
-
                     Layout.fillWidth: false
                     Layout.fillHeight: false
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     Layout.bottomMargin: units.smallSpacing * 3
+                    //!avoid editMode box shadow
+                    Layout.topMargin: units.smallSpacing * 2
+                    Layout.rightMargin: units.smallSpacing
 
                     iconSource: "window-pin"
                     checkable: true

@@ -250,7 +250,8 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     iconSource: "distribute-horizontal-x"
                     text: i18n("Add Spacer")
-                    Layout.minimumWidth: 0.5 * (parent.width - units.smallSpacing)
+                    Layout.minimumWidth: 0.5 * (content.width - 5 * units.smallSpacing)
+                    Layout.maximumWidth: Layout.minimumWidth
                     Layout.alignment: Qt.AlignLeft
                     tooltip: i18n("Add a spacer to separate applets")
 
