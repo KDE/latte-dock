@@ -27,12 +27,14 @@ import org.kde.latte 0.1 as Latte
 SequentialAnimation {
     id: taskRealRemovalAnimation
     PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
+    PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
+    PropertyAction { target: mainItemContainer; property: "inAddRemoveAnimation"; value: true }
     PropertyAction { target: mainItemContainer; property: "inRemoveStage"; value: true }
 
     //Animation Add/Remove (1) - when is window with no launcher, animations enabled
     //Animation Add/Remove (4) - the user removes a launcher, animation enabled
-    property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                                 && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
+    property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) === -1)
+                                 && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) === -1) )
                                 || !launcherIsPresent(mainItemContainer.launcherUrl))
                                && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
 
@@ -42,13 +44,10 @@ SequentialAnimation {
 
     property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0)
                                     && !mainItemContainer.inBouncingAnimation
-                                    && !mainItemContainer.isSeparator;
+                                    && !mainItemContainer.isSeparator
+                                    && mainItemContainer.visible;
     ScriptAction{
         script:{
-            mainItemContainer.inAnimation = true;
-            mainItemContainer.inAddRemoveAnimation = true;
-            mainItemContainer.inRemoveStage = true;
-
             //! When a window is removed and afterwards its launcher must be shown immediately!
             if (!enabledAnimation && mainItemContainer.isWindow && !mainItemContainer.isSeparator
                     && tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1
@@ -139,7 +138,7 @@ SequentialAnimation {
 
         PropertyAnimation {
             target: wrapper
-            property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
+            property: (icList.orientation === Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 0
             duration:  taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
             easing.type: Easing.InQuad
@@ -149,7 +148,7 @@ SequentialAnimation {
     //smooth move into place the surrounding tasks
     PropertyAnimation {
         target: wrapper
-        property: (icList.orientation == Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
+        property: (icList.orientation === Qt.Vertical) ? "tempScaleHeight" : "tempScaleWidth"
         to: 0
         duration:  taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
         easing.type: Easing.InQuad
@@ -164,8 +163,6 @@ SequentialAnimation {
             }
 
             root.signalAnimationsNeedLength(-1);
-
-            mainItemContainer.inAnimation = false;
 
             if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
                 root.launcherForRemoval="";
@@ -185,14 +182,19 @@ SequentialAnimation {
                 }
             }
 
+            mainItemContainer.visible = false;
+
             //send signal that the launcher is really removing
             if (mainItemContainer.inBouncingAnimation) {
-                mainItemContainer.visible = false;
                 root.removeWaitingLauncher(mainItemContainer.launcherUrl);
                 root.setGlobalDirectRender(false);
             }
         }
     }
+
+    PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
+    PropertyAction { target: mainItemContainer; property: "inAddRemoveAnimation"; value: false }
+    PropertyAction { target: mainItemContainer; property: "inRemoveStage"; value: false }
 
     PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
 }
