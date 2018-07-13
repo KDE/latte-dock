@@ -1128,16 +1128,29 @@ void Layout::importToCorona()
     //! Settting mutable for create a containment
     m_corona->setImmutability(Plasma::Types::Mutable);
 
-    QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
+    QString temp1FilePath = QDir::homePath() + "/.config/lattedock.copy1.bak";
+    //! we need to copy first the layout file because the kde cache
+    //! may not have yet been updated (KSharedConfigPtr)
+    //! this way we make sure at the latest changes stored in the layout file
+    //! will be also available when changing to Myltiple Layouts
+    QString tempLayoutFilePath = QDir::homePath() + "/.config/lattedock.layout.bak";
 
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
-    QFile copyFile(temp1File);
+    QFile tempLayoutFile(tempLayoutFilePath);
+    QFile copyFile(temp1FilePath);
+    QFile layoutOriginalFile(m_layoutFile);
+
+    if (tempLayoutFile.exists()) {
+        tempLayoutFile.remove();
+    }
 
     if (copyFile.exists())
         copyFile.remove();
 
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_layoutFile);
-    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
+    layoutOriginalFile.copy(tempLayoutFilePath);
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(tempLayoutFilePath);
+    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1FilePath);
     KConfigGroup copyGroup = KConfigGroup(newFile, "Containments");
     KConfigGroup current_containments = KConfigGroup(filePtr, "Containments");
 
@@ -1146,7 +1159,7 @@ void Layout::importToCorona()
     copyGroup.sync();
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1FilePath);
 
 
     //! Finally import the configuration
