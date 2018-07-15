@@ -1,5 +1,39 @@
 #**CHANGELOG**#
 
+#### Version 0.8.0
+
+* Simultaneous Multiple Layouts in different Activities
+* Smart dynamic Background
+* Monochrome contents based on the underlying background
+Activation Global Shortcuts are taken into account the surrounding applets and increased from nine to nineteen (Meta+1..9,0,z..>)
+* New improved Edit Mode image patterns or User Set ones
+* Download community-provided Latte layouts from Latte Settings window
+* Beautiful Animations (e.g. changing alignment)
+* New Maximum Length indicator at Edit Mode that you can change its value with the mouse wheel
+* Multiple Separators between Tasks and Applets
+* Borderless maximized windows per layout, the user can use that setting in order to replicate a Unity-style layout and a Plasma one at the same time.
+* Lock/Unlock Layouts, different layouts can become read-only and writeable
+* Ungroup tasks of the same application
+* One-Click Option to change between Panel/Dock modes
+* New Appearance Settings for Active Indicator and Glow
+* Support big number of messages badge (<=9999), like the plasma taskmanager
+* Expose Latte options in the context menu when plasma taskmanagers are used
+* More command line options to handle Latte
+* Various Wayland improvements. I use it daily in my system with Plasma 5.12 and it provides a fantastic experience with fantastic painting.
+* Smoother parabolic animation
+* Support Kwin edges behavior when hiding the dock or panel
+* New improved splitters icons in Justify (Edit Mode)
+* Improve the entire experience with Layouts/Latte Settings window
+* Filter Windows by Launchers, show only windows that there is already a launcher present for the current running activity
+* Vastly improve the experience in !compositing environments. No more showing an 1px line at the screen edge when the dock is hidden.
+* New Global Shortcuts to open/hide dock settings and Latte settings (Meta+A, Meta+W, Meta+E)
+* New Kwin script to trigger the application menu from a corner-edge
+* Hide the audio badge when there no audio is coming from a pulseaudio stream
+* various fixes for RTL languages
+* New more robust animations all over the place
+* Plenty of bug fixes and improvements all over the place
+
+
 #### Version 0.7.5
 
 * fix for dodge maximized in multi-screen environment
