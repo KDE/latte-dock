@@ -16,7 +16,7 @@ Installation
 
 ## Requirements
 
-We recommend that you use at least **Plasma 5.9.0**
+We recommend that you use at least **Plasma 5.12.0**
 
 **development packages for:**
 ```bash
