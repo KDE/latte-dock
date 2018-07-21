@@ -1090,7 +1090,7 @@ DragDrop.DropArea {
     //! this is called from globalshortcuts c++ side
     function setShowAppletsNumbers(showNumbers){
         if (latteApplet) {
-            var base = parabolicManager.pseudoAppletIndex(latteAppletPos);
+            var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
             latteApplet.setShowTasksNumbers(showNumbers);
         }
@@ -1105,7 +1105,7 @@ DragDrop.DropArea {
         }
 
         if (latteApplet) {
-            var base = parabolicManager.pseudoAppletIndex(latteAppletPos);
+            var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
         }
 
@@ -1119,7 +1119,7 @@ DragDrop.DropArea {
         }
 
         if (latteApplet) {
-            var base = parabolicManager.pseudoAppletIndex(latteAppletPos);
+            var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
         }
 

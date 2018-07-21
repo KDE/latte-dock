@@ -45,6 +45,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::unifiedGlobalShortcutsChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
 }
 
@@ -84,6 +85,21 @@ void UniversalSettings::setShowInfoWindow(bool show)
 
     m_showInfoWindow = show;
     emit showInfoWindowChanged();
+}
+
+bool UniversalSettings::unifiedGlobalShortcuts() const
+{
+    return m_unifiedGlobalShortcuts;
+}
+
+void UniversalSettings::setUnifiedGlobalShortcuts(bool unified)
+{
+    if (m_unifiedGlobalShortcuts == unified) {
+        return;
+    }
+
+    m_unifiedGlobalShortcuts = unified;
+    emit unifiedGlobalShortcutsChanged();
 }
 
 int UniversalSettings::version() const
@@ -304,6 +320,7 @@ void UniversalSettings::loadConfig()
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
+    m_unifiedGlobalShortcuts = m_universalGroup.readEntry("unifiedGlobalShortcuts", true);
     m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
     m_mouseSensitivity = static_cast<Dock::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Dock::HighSensitivity));
 }
@@ -320,6 +337,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
+    m_universalGroup.writeEntry("unifiedGlobalShortcuts", m_unifiedGlobalShortcuts);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
     m_universalGroup.writeEntry("mouseSensitivity", (int)m_mouseSensitivity);
 
