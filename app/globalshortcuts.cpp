@@ -241,7 +241,7 @@ void GlobalShortcuts::init()
     }
 
     //new instance actions [1-9]
-    for (int i = 1; i < 9; ++i) {
+    for (int i = 1; i < 10; ++i) {
         const int entryNumber = i;
         const Qt::Key key = static_cast<Qt::Key>(Qt::Key_0 + i);
 
