@@ -607,8 +607,8 @@ Item{
 
         Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
 
-        property real opacityN: universalSettings && container.canShowAppletNumberBadge &&
-                                ((universalSettings.unifiedGlobalShortcuts && root.showAppletsNumbers && fixedIndex<20)
+        property real opacityN: container.canShowAppletNumberBadge &&
+                                ((root.unifiedGlobalShortcuts && root.showAppletsNumbers && fixedIndex<20)
                                  || (root.showMetaBadge && applet.id===applicationLauncherId)) ? 1 : 0
 
         Behavior on opacityN {

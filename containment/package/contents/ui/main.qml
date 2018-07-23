@@ -338,6 +338,7 @@ DragDrop.DropArea {
     property bool smartLaunchersEnabled: plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: plasmoid.configuration.titleTooltips
+    property bool unifiedGlobalShortcuts: plasmoid.configuration.unifiedGlobalShortcuts
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
@@ -1094,7 +1095,7 @@ DragDrop.DropArea {
     //! this is called from globalshortcuts c++ side
     function setShowAppletsNumbers(showNumbers, showMeta, applicationLauncher){
         if (latteApplet) {
-            var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
+            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
             latteApplet.setShowTasksNumbers(showNumbers);
         }
@@ -1111,7 +1112,7 @@ DragDrop.DropArea {
         }
 
         if (latteApplet) {
-            var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
+            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
         }
 
@@ -1125,7 +1126,7 @@ DragDrop.DropArea {
         }
 
         if (latteApplet) {
-            var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
+            var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
         }
 

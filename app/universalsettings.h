@@ -42,11 +42,6 @@ class UniversalSettings : public QObject
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
-    //! some v0.7 users wanted the previous global shortcuts behavior that applets werent taken
-    //! into account. By default unification will take place but the user will be able to change
-    //! this from latte global settings
-    Q_PROPERTY(bool unifiedGlobalShortcuts READ unifiedGlobalShortcuts NOTIFY unifiedGlobalShortcutsChanged)
-
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
@@ -70,8 +65,6 @@ public:
 
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
-
-    bool unifiedGlobalShortcuts() const;
 
     int version() const;
     void setVersion(int ver);
@@ -125,7 +118,6 @@ signals:
     void runningActivitiesModelChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
-    void unifiedGlobalShortcutsChanged();
     void versionChanged();
 
 private slots:
@@ -137,8 +129,6 @@ private:
 
     void cleanupSettings();
 
-    void setUnifiedGlobalShortcuts(bool unified);
-
     bool kwin_metaForwardedToLatte() const;
 
     Dock::LayoutsMemoryUsage layoutsMemoryUsage() const;
@@ -148,7 +138,6 @@ private:
     bool m_canDisableBorders{false};
     bool m_metaForwardedToLatte{false};
     bool m_showInfoWindow{true};
-    bool m_unifiedGlobalShortcuts{true};
 
     //when there isnt a version it is an old universal file
     int m_version{1};

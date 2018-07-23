@@ -253,5 +253,9 @@
     <entry name="mouseWheelActions" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="unifiedGlobalShortcuts" type="Bool">
+      <default>true</default>
+      <label>Global Shortcuts are combined between applets and tasks</label>
+    </entry>
   </group>
 </kcfg>

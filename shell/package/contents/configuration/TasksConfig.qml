@@ -169,6 +169,19 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: unifyGlobalShortcutsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Unify global shortcuts with applets")
+                checked: plasmoid.configuration.unifiedGlobalShortcuts
+                tooltip: i18n("Global shortcuts are used both from applets and tasks")
+                visible: plasmoid.configuration.advanced
+
+                onClicked: {
+                    plasmoid.configuration.unifiedGlobalShortcuts = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: mouseWheelChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate tasks through mouse wheel")
