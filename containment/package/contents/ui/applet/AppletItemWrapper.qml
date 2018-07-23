@@ -637,19 +637,60 @@ Item{
                 minimumWidth: 0.4 * root.iconSize
                 height: width
                 numberValue: appletNumberLoader.fixedIndex < 10 ? appletNumberLoader.fixedIndex : 0
-                textValue: {
-                    if (root.showMetaBadge && applet.id === applicationLauncherId) {
-                        return '\u2318';
-                    } else if (keysArrayIndex>=0 && keysArrayIndex<10) {
-                        return keysAboveTen[keysArrayIndex];
-                    } else {
-                        return '';
+
+                Binding{
+                    target: appletNumber
+                    property:"textValue"
+                    value: {
+                        //! dont change value on hiding/releasing
+                        if (!root.showMetaBadge && !root.showAppletsNumbers) {
+                            return;
+                        }
+
+                        if (root.showMetaBadge && applet.id === applicationLauncherId) {
+                            return '\u2318';
+                        } else if (appletNumber.keysArrayIndex>=0 && appletNumber.keysArrayIndex<10) {
+                            return appletNumber.keysAboveTen[appletNumber.keysArrayIndex];
+                        } else {
+                            return '';
+                        }
                     }
                 }
 
-                showNumber: appletNumberLoader.fixedIndex < 10 && !(root.showMetaBadge && applet.id === applicationLauncherId)
-                showText: (appletNumberLoader.fixedIndex>=10 && appletNumberLoader.fixedIndex<20) ||
-                          (root.showMetaBadge && applet.id === applicationLauncherId)
+                Binding{
+                    target: appletNumber
+                    property:"showNumber"
+                    value: {
+                        //! dont change value on hiding/releasing
+                        if (!root.showMetaBadge && !root.showAppletsNumbers) {
+                            return;
+                        }
+
+                        if (appletNumberLoader.fixedIndex < 10 && !(root.showMetaBadge && applet.id === applicationLauncherId)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+
+                Binding{
+                    target: appletNumber
+                    property:"showText"
+                    value: {
+                        //! dont change value on hiding/releasing
+                        if (!root.showMetaBadge && !root.showAppletsNumbers) {
+                            return;
+                        }
+
+                        if ((appletNumberLoader.fixedIndex>=10 && appletNumberLoader.fixedIndex<20) ||
+                              (root.showMetaBadge && applet.id === applicationLauncherId)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
 
                 proportion: 0
                 radiusPerCentage: 50

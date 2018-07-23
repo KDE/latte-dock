@@ -838,9 +838,9 @@ void GlobalShortcuts::hideDocksTimerSlot()
             }
 
             return;
+        } else {
+            m_hideDocksTimer.start();
         }
-
-        m_hideDocksTimer.start();
     } else {
         // TODO: This is needs to be fixed in wayland
         m_lastInvokedAction = Q_NULLPTR;

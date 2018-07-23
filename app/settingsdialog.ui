@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>840</width>
-    <height>617</height>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -444,8 +444,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>805</width>
-            <height>514</height>
+            <width>798</width>
+            <height>505</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -529,6 +529,36 @@
                  </property>
                  <property name="text">
                   <string>Enable autostart during startup</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <spacer name="horizontalSpacer_11">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="metaChkBox">
+                 <property name="toolTip">
+                  <string>Forwards Meta key from KWin to Latte. It is suggested to disable that option if you remove Latte.</string>
+                 </property>
+                 <property name="text">
+                  <string>Forward Meta key to Application Launcher</string>
                  </property>
                 </widget>
                </item>

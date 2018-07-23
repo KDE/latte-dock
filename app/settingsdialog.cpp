@@ -185,6 +185,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     });
 
     connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->metaChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
 
@@ -741,6 +742,7 @@ void SettingsDialog::restoreDefaults()
         //! Defaults for general Latte settings
         ui->autostartChkBox->setChecked(true);
         ui->infoWindowChkBox->setChecked(true);
+        ui->metaChkBox->setChecked(false);
         ui->noBordersForMaximizedChkBox->setChecked(false);
         ui->highSensitivityBtn->setChecked(true);
         ui->screenTrackerSpinBox->setValue(SCREENTRACKERDEFAULTVALUE);
@@ -906,6 +908,7 @@ void SettingsDialog::loadSettings()
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
+    ui->metaChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
     ui->noBordersForMaximizedChkBox->setChecked(m_corona->universalSettings()->canDisableBorders());
 
     if (m_corona->universalSettings()->mouseSensitivity() == Dock::LowSensitivity) {
@@ -938,6 +941,7 @@ QList<int> SettingsDialog::currentSettings()
     settings << m_inMemoryButtons->checkedId();
     settings << (int)ui->autostartChkBox->isChecked();
     settings << (int)ui->infoWindowChkBox->isChecked();
+    settings << (int)ui->metaChkBox->isChecked();
     settings << (int)ui->noBordersForMaximizedChkBox->isChecked();
     settings << m_mouseSensitivityButtons->checkedId();
     settings << ui->screenTrackerSpinBox->value();
@@ -1190,7 +1194,8 @@ void SettingsDialog::updateApplyButtonsState()
     } else if (ui->tabWidget->currentIndex() == 1) {
         //! Defaults for general Latte settings
 
-        if (!ui->autostartChkBox->isChecked() || !ui->infoWindowChkBox->isChecked() || ui->noBordersForMaximizedChkBox->isChecked()
+        if (!ui->autostartChkBox->isChecked() || ui->metaChkBox->isChecked()
+            || !ui->infoWindowChkBox->isChecked() || ui->noBordersForMaximizedChkBox->isChecked()
             || !ui->highSensitivityBtn->isChecked() || ui->screenTrackerSpinBox->value() != SCREENTRACKERDEFAULTVALUE) {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
         } else {
@@ -1311,11 +1316,13 @@ bool SettingsDialog::saveAllChanges()
     //! Update universal settings
     Latte::Dock::MouseSensitivity sensitivity = static_cast<Latte::Dock::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
     bool autostart = ui->autostartChkBox->isChecked();
+    bool forwardMeta = ui->metaChkBox->isChecked();
     bool showInfoWindow = ui->infoWindowChkBox->isChecked();
     bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
 
     m_corona->universalSettings()->setMouseSensitivity(sensitivity);
     m_corona->universalSettings()->setAutostart(autostart);
+    m_corona->universalSettings()->forwardMetaToLatte(forwardMeta);
     m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
     m_corona->universalSettings()->setCanDisableBorders(noBordersForMaximized);
     m_corona->universalSettings()->setScreenTrackerInterval(ui->screenTrackerSpinBox->value());

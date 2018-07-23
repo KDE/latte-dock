@@ -62,6 +62,7 @@ public:
     void setCanDisableBorders(bool enable);
 
     bool metaForwardedToLatte() const;
+    void forwardMetaToLatte(bool forward);
 
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
@@ -126,17 +127,18 @@ private slots:
 
 private:
     static const QString KWinMetaForwardToLatteString;
+    static const QString KWinMetaForwardToPlasmaString;
 
     void cleanupSettings();
 
     bool kwin_metaForwardedToLatte() const;
+    void kwin_forwardMetaToLatte(bool forward);
 
     Dock::LayoutsMemoryUsage layoutsMemoryUsage() const;
     void setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage);
 
 private:
     bool m_canDisableBorders{false};
-    bool m_metaForwardedToLatte{false};
     bool m_showInfoWindow{true};
 
     //when there isnt a version it is an old universal file

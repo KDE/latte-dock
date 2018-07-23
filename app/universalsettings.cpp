@@ -26,11 +26,15 @@
 #include <QDir>
 #include <QProcess>
 
+#include <QtDBus/QtDBus>
+
 #include <KActivities/Consumer>
 
 namespace Latte {
 
 const QString UniversalSettings::KWinMetaForwardToLatteString = "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu";
+const QString UniversalSettings::KWinMetaForwardToPlasmaString = "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu";
+
 
 UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
@@ -49,8 +53,6 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
-
-    m_metaForwardedToLatte = kwin_metaForwardedToLatte();
 }
 
 UniversalSettings::~UniversalSettings()
@@ -269,12 +271,16 @@ void UniversalSettings::setCanDisableBorders(bool enable)
 
 bool UniversalSettings::metaForwardedToLatte() const
 {
-    return m_metaForwardedToLatte;
+    return kwin_metaForwardedToLatte();
+}
+
+void UniversalSettings::forwardMetaToLatte(bool forward)
+{
+    kwin_forwardMetaToLatte(forward);
 }
 
 bool UniversalSettings::kwin_metaForwardedToLatte() const
 {
-    //! Indentify Plasma Desktop version
     QProcess process;
     process.start("kreadconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta");
     process.waitForFinished();
@@ -283,6 +289,32 @@ bool UniversalSettings::kwin_metaForwardedToLatte() const
     output = output.remove("\n");
 
     return (output == UniversalSettings::KWinMetaForwardToLatteString);
+}
+
+void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
+{
+    if (kwin_metaForwardedToLatte() == forward) {
+        return;
+    }
+
+    QProcess process;
+    QStringList parameters;
+    parameters << "--file" << "kwinrc" << "--group" << "ModifierOnlyShortcuts" << "--key" << "Meta";
+
+    if (forward) {
+        parameters << UniversalSettings::KWinMetaForwardToLatteString;
+    } else {
+        parameters << UniversalSettings::KWinMetaForwardToPlasmaString;;
+    }
+
+    process.start("kwriteconfig5", parameters);
+    process.waitForFinished();
+
+    QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
+
+    if (iface.isValid()) {
+        iface.call("reconfigure");
+    }
 }
 
 Dock::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
