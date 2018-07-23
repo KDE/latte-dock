@@ -420,15 +420,15 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 
     QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
-    m_calledItems.clear();
-    m_methodsShowNumbers.clear();
-
     foreach (auto view, sortedViews) {
         if ((view->latteTasksPresent() && activateLatteEntryAtContainment(view, index, modifier))
             || (!view->latteTasksPresent() && view->tasksPresent() &&
                 activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))) {
-            m_hideDocks.clear();
-            m_hideDocks.append(view);
+
+            if (!m_hideDocks.contains(view)) {
+                m_hideDocks.append(view);
+            }
+
             view->visibility()->setBlockHiding(true);
             m_hideDocksTimer.start();
             return;
@@ -829,19 +829,16 @@ void GlobalShortcuts::hideDocksTimerSlot()
                     dockView->visibility()->setBlockHiding(false);
                 }
 
-                m_hideDocks.clear();
-
                 if (m_calledItems.count() > 0) {
                     for (int i = 0; i < m_calledItems.count(); ++i) {
                         m_methodsShowNumbers[i].invoke(m_calledItems[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
                     }
-
-                    m_calledItems.clear();
                 }
-            } else {
-                m_hideDocks.clear();
-                m_calledItems.clear();
             }
+
+            m_hideDocks.clear();
+            m_calledItems.clear();
+            m_methodsShowNumbers.clear();
 
             return;
         } else {
@@ -856,19 +853,16 @@ void GlobalShortcuts::hideDocksTimerSlot()
                 dockView->visibility()->setBlockHiding(false);
             }
 
-            m_hideDocks.clear();
-
             if (m_calledItems.count() > 0) {
                 for (int i = 0; i < m_calledItems.count(); ++i) {
                     m_methodsShowNumbers[i].invoke(m_calledItems[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
                 }
-
-                m_calledItems.clear();
             }
-        } else {
-            m_hideDocks.clear();
-            m_calledItems.clear();
         }
+
+        m_hideDocks.clear();
+        m_calledItems.clear();
+        m_methodsShowNumbers.clear();
     }
 
 }
