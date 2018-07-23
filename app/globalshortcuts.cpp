@@ -337,16 +337,20 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
                             continue;
                         }
 
-                        m_calledItems.append(item);
-                        m_methodsShowNumbers.append(metaObject->method(methodIndex));
+                        if (!m_calledItems.contains(item)) {
+                            m_calledItems.append(item);
+                            m_methodsShowNumbers.append(metaObject->method(methodIndex));
 
-                        QMetaMethod method = metaObject->method(methodIndex);
+                            QMetaMethod method = metaObject->method(methodIndex);
 
-                        if (method.invoke(item, Q_ARG(QVariant, index - 1))) {
-                            if (methodIndex2 != -1) {
-                                m_methodsShowNumbers[m_methodsShowNumbers.count() - 1].invoke(item, Q_ARG(QVariant, true));
+                            if (method.invoke(item, Q_ARG(QVariant, index - 1))) {
+                                if (methodIndex2 != -1) {
+                                    m_methodsShowNumbers[m_methodsShowNumbers.count() - 1].invoke(item, Q_ARG(QVariant, true));
+                                }
+
+                                return true;
                             }
-
+                        } else {
                             return true;
                         }
                     }
@@ -383,27 +387,31 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const DockView *view, int 
                 int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
                                   applicationLauncherId(view->containment()) : -1;
 
-                m_calledItems.append(item);
-                m_methodsShowNumbers.append(metaObject->method(methodIndex2));
-                int lastMethod = m_methodsShowNumbers.count() - 1;
+                if (!m_calledItems.contains(item)) {
+                    m_calledItems.append(item);
+                    m_methodsShowNumbers.append(metaObject->method(methodIndex2));
+                    int lastMethod = m_methodsShowNumbers.count() - 1;
 
-                QMetaMethod method = metaObject->method(methodIndex);
+                    QMetaMethod method = metaObject->method(methodIndex);
 
-                if (view->visibility()->isHidden()) {
-                    //! delay the execution in order to show first the dock
-                    if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
-                        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
-                            method.invoke(item, Q_ARG(QVariant, index));
-                        });
-                    }
-
-                    return true;
-                } else {
-                    if (method.invoke(item, Q_ARG(QVariant, index))) {
-                        m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher));
+                    if (view->visibility()->isHidden()) {
+                        //! delay the execution in order to show first the dock
+                        if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                            QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
+                                method.invoke(item, Q_ARG(QVariant, index));
+                            });
+                        }
 
                         return true;
+                    } else {
+                        if (method.invoke(item, Q_ARG(QVariant, index))) {
+                            m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher));
+
+                            return true;
+                        }
                     }
+                } else {
+                    return true;
                 }
             }
         }
@@ -561,11 +569,16 @@ void GlobalShortcuts::showDocks()
                     int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
                                       applicationLauncherId(c) : -1;
 
-                    m_calledItems.append(item);
-                    m_methodsShowNumbers.append(metaObject->method(methodIndex));
-                    int lastMethod = m_methodsShowNumbers.count() - 1;
+                    if (!m_calledItems.contains(item)) {
+                        m_calledItems.append(item);
+                        m_methodsShowNumbers.append(metaObject->method(methodIndex));
 
-                    if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                        int lastMethod = m_methodsShowNumbers.count() - 1;
+
+                        if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                            return true;
+                        }
+                    } else {
                         return true;
                     }
                 }
@@ -595,11 +608,15 @@ void GlobalShortcuts::showDocks()
                     int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
                                       applicationLauncherId(c) : -1;
 
-                    m_calledItems.append(item);
-                    m_methodsShowNumbers.append(metaObject->method(methodIndex));
-                    int lastMethod = m_methodsShowNumbers.count() - 1;
+                    if (!m_calledItems.contains(item)) {
+                        m_calledItems.append(item);
+                        m_methodsShowNumbers.append(metaObject->method(methodIndex));
+                        int lastMethod = m_methodsShowNumbers.count() - 1;
 
-                    if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, false), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                        if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, false), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                            return true;
+                        }
+                    } else {
                         return true;
                     }
                 }
@@ -819,6 +836,8 @@ void GlobalShortcuts::hideDocksTimerSlot()
     if (!m_lastInvokedAction || m_hideDocks.count() == 0) {
         return;
     }
+
+    // qDebug() << "MEMORY ::: " << m_hideDocks.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
 
     if (isPlatformX11()) {
         if (!x11_areModKeysDepressed(m_lastInvokedAction->shortcut())) {
