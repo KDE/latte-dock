@@ -590,6 +590,29 @@ Item{
         }
     }
 
+    BrightnessContrast{
+        id:hoveredImage
+        anchors.fill: _wrapperContainer
+        source: _wrapperContainer
+
+        enabled: opacity != 0 ? true : false
+        opacity: appletMouseArea.containsMouse ? 1 : 0
+        brightness: 0.25
+        contrast: 0.15
+
+        Behavior on opacity {
+            NumberAnimation { duration: root.durationTime*units.longDuration }
+        }
+    }
+
+    BrightnessContrast {
+        id: _clickedEffect
+        anchors.fill: _wrapperContainer
+        source: _wrapperContainer
+
+        visible: clickedAnimation.running
+    }
+
     /// START Applets Number
     Loader{
         id: appletNumberLoader
@@ -703,29 +726,6 @@ Item{
     }
     //END of Applets number
 
-
-    BrightnessContrast{
-        id:hoveredImage
-        anchors.fill: _wrapperContainer
-        source: _wrapperContainer
-
-        enabled: opacity != 0 ? true : false
-        opacity: appletMouseArea.containsMouse ? 1 : 0
-        brightness: 0.25
-        contrast: 0.15
-
-        Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*units.longDuration }
-        }
-    }
-
-    BrightnessContrast {
-        id: _clickedEffect
-        anchors.fill: _wrapperContainer
-        source: _wrapperContainer
-
-        visible: clickedAnimation.running
-    }
 
     /*   onHeightChanged: {
         if ((index == 1)|| (index==3)){

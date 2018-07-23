@@ -136,7 +136,7 @@ Rectangle {
 
             return "";
         }
-        font.pixelSize: 0.55 * parent.height
+        font.pixelSize: Math.max(0.55 * parent.minimumWidth, theme.defaultFont.pixelSize)
         font.bold: true
         color: textWithBackgroundColor ? theme.backgroundColor : theme.textColor
         visible: showNumber || showText
