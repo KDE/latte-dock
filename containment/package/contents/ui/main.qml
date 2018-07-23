@@ -94,7 +94,9 @@ DragDrop.DropArea {
 
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
                                     && Latte.WindowSystem.compositingActive
-                                    &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet)
+                                    &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet
+                                       || showAppletsNumbers || showMetaBadge)
+
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
                                          && Latte.WindowSystem.compositingActive
@@ -135,6 +137,8 @@ DragDrop.DropArea {
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
     property bool showAppletsNumbers: false
+    property bool showMetaBadge: false
+    property int applicationLauncherId: -1
     property bool solidPanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
 
     //FIXME: possibly this is going to be the default behavior, this user choice
@@ -1088,7 +1092,7 @@ DragDrop.DropArea {
     }
 
     //! this is called from globalshortcuts c++ side
-    function setShowAppletsNumbers(showNumbers){
+    function setShowAppletsNumbers(showNumbers, showMeta, applicationLauncher){
         if (latteApplet) {
             var base = universalSettings.unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksNumbersBase(base - 1);
@@ -1096,6 +1100,8 @@ DragDrop.DropArea {
         }
 
         showAppletsNumbers = showNumbers;
+        showMetaBadge = showMeta;
+        applicationLauncherId = applicationLauncher;
     }
 
     // This is called by dockcorona in response to a Meta+number shortcut.

@@ -66,6 +66,8 @@ public:
     bool canDisableBorders() const;
     void setCanDisableBorders(bool enable);
 
+    bool metaForwardedToLatte() const;
+
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
 
@@ -131,15 +133,20 @@ private slots:
     void saveConfig();
 
 private:
+    static const QString KWinMetaForwardToLatteString;
+
     void cleanupSettings();
 
     void setUnifiedGlobalShortcuts(bool unified);
+
+    bool kwin_metaForwardedToLatte() const;
 
     Dock::LayoutsMemoryUsage layoutsMemoryUsage() const;
     void setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage);
 
 private:
     bool m_canDisableBorders{false};
+    bool m_metaForwardedToLatte{false};
     bool m_showInfoWindow{true};
     bool m_unifiedGlobalShortcuts{true};
 

@@ -607,8 +607,9 @@ Item{
 
         Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
 
-        property real opacityN: universalSettings && universalSettings.unifiedGlobalShortcuts && root.showAppletsNumbers
-                                && container.canShowAppletNumberBadge && fixedIndex<20 ? 1 : 0
+        property real opacityN: universalSettings && container.canShowAppletNumberBadge &&
+                                ((universalSettings.unifiedGlobalShortcuts && root.showAppletsNumbers && fixedIndex<20)
+                                 || (root.showMetaBadge && applet.id===applicationLauncherId)) ? 1 : 0
 
         Behavior on opacityN {
             NumberAnimation { duration: root.durationTime*2*units.longDuration }
@@ -636,10 +637,19 @@ Item{
                 minimumWidth: 0.4 * root.iconSize
                 height: width
                 numberValue: appletNumberLoader.fixedIndex < 10 ? appletNumberLoader.fixedIndex : 0
-                textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
+                textValue: {
+                    if (root.showMetaBadge && applet.id === applicationLauncherId) {
+                        return '\u2318';
+                    } else if (keysArrayIndex>=0 && keysArrayIndex<10) {
+                        return keysAboveTen[keysArrayIndex];
+                    } else {
+                        return '';
+                    }
+                }
 
-                showNumber: appletNumberLoader.fixedIndex < 10
-                showText: appletNumberLoader.fixedIndex>=10 && appletNumberLoader.fixedIndex<20
+                showNumber: appletNumberLoader.fixedIndex < 10 && !(root.showMetaBadge && applet.id === applicationLauncherId)
+                showText: (appletNumberLoader.fixedIndex>=10 && appletNumberLoader.fixedIndex<20) ||
+                          (root.showMetaBadge && applet.id === applicationLauncherId)
 
                 proportion: 0
                 radiusPerCentage: 50

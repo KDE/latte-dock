@@ -27,6 +27,10 @@
 #include <QMetaMethod>
 #include <QTimer>
 
+namespace Plasma {
+class Containment;
+}
+
 namespace Latte {
 class DockCorona;
 class DockView;
@@ -46,30 +50,34 @@ public:
     void updateDockItemBadge(QString identifier, QString value);
 
 private slots:
-    void hideDockTimerSlot();
+    void hideDocksTimerSlot();
 
 private:
     void init();
     void activateEntry(int index, Qt::Key modifier);
-    void showDock();
-    void hideDock();
+    void showDocks();
     void showSettings();
 
     bool activateLatteEntryAtContainment(const DockView *view, int index, Qt::Key modifier);
     bool activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier);
     bool dockAtLowerEdgePriority(DockView *test, DockView *base);
     bool dockAtLowerScreenPriority(DockView *test, DockView *base);
+    bool docksToHideAreValid();
+    bool isCapableToShowAppletsNumbers(const Plasma::Containment *c);
+
+    int applicationLauncherId(const Plasma::Containment *c);
+
+    QList<DockView *> sortedViewsList(QHash<const Plasma::Containment *, DockView *> *views);
 
     QAction *m_lastInvokedAction;
     //!it is used when the dock is hidden in order to delay the app launcher showing
     QAction *m_singleMetaAction;
 
-    QTimer m_hideDockTimer;
-    DockView *m_hideDock;
+    QTimer m_hideDocksTimer;
+    QList<DockView *> m_hideDocks;
 
-    int m_numbersMethodIndex{ -1};
-    QQuickItem *m_calledItem{nullptr};
-    QMetaMethod m_methodShowNumbers;
+    QList<QQuickItem *> m_calledItems;
+    QList<QMetaMethod> m_methodsShowNumbers;
 
     DockCorona *m_corona{nullptr};
 };

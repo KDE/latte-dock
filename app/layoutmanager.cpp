@@ -308,6 +308,19 @@ void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading,
     }
 }
 
+bool LayoutManager::dockViewExists(DockView *view) const
+{
+    foreach (auto layout, m_activeLayouts) {
+        for (auto it = layout->dockViews()->constBegin(), end = layout->dockViews()->constEnd(); it != end; ++it) {
+            if (it.value() == view) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews() const
 {
     if (memoryUsage() == Dock::SingleLayout) {

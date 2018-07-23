@@ -24,10 +24,13 @@
 #include "sortedactivitiesmodel.h"
 
 #include <QDir>
+#include <QProcess>
 
 #include <KActivities/Consumer>
 
 namespace Latte {
+
+const QString UniversalSettings::KWinMetaForwardToLatteString = "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu";
 
 UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
@@ -47,6 +50,8 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::unifiedGlobalShortcutsChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
+
+    m_metaForwardedToLatte = kwin_metaForwardedToLatte();
 }
 
 UniversalSettings::~UniversalSettings()
@@ -276,6 +281,24 @@ void UniversalSettings::setCanDisableBorders(bool enable)
 
     m_canDisableBorders = enable;
     emit canDisableBordersChanged();
+}
+
+bool UniversalSettings::metaForwardedToLatte() const
+{
+    return m_metaForwardedToLatte;
+}
+
+bool UniversalSettings::kwin_metaForwardedToLatte() const
+{
+    //! Indentify Plasma Desktop version
+    QProcess process;
+    process.start("kreadconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta");
+    process.waitForFinished();
+    QString output(process.readAllStandardOutput());
+
+    output = output.remove("\n");
+
+    return (output == UniversalSettings::KWinMetaForwardToLatteString);
 }
 
 Dock::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const

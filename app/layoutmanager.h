@@ -78,6 +78,7 @@ public:
     void syncDockViewsToScreens();
     void syncActiveLayoutsToOriginalFiles();
 
+    bool dockViewExists(DockView *view) const;
     bool layoutExists(QString layoutName) const;
 
     QString shouldSwitchToLayout(QString activityId);

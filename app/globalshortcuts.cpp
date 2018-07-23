@@ -21,6 +21,7 @@
 #include "dockcorona.h"
 #include "globalshortcuts.h"
 #include "layoutmanager.h"
+#include "universalsettings.h"
 #include "dock/dockview.h"
 
 #include <QAction>
@@ -152,18 +153,18 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
         init();
     }
 
-    m_hideDockTimer.setSingleShot(true);
+    m_hideDocksTimer.setSingleShot(true);
 
     if (isPlatformX11()) {
         //in X11 the timer is a poller that checks to see if the modifier keys
         //from user global shortcut have been released
-        m_hideDockTimer.setInterval(300);
+        m_hideDocksTimer.setInterval(300);
     } else {
         //on wayland in acting just as simple timer that hides the dock afterwards
-        m_hideDockTimer.setInterval(2500);
+        m_hideDocksTimer.setInterval(2500);
     }
 
-    connect(&m_hideDockTimer, &QTimer::timeout, this, &GlobalShortcuts::hideDockTimerSlot);
+    connect(&m_hideDocksTimer, &QTimer::timeout, this, &GlobalShortcuts::hideDocksTimerSlot);
 }
 
 GlobalShortcuts::~GlobalShortcuts()
@@ -180,7 +181,7 @@ void GlobalShortcuts::init()
     showAction->setShortcut(QKeySequence(Qt::META + '`'));
     KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
     connect(showAction, &QAction::triggered, this, [this]() {
-        showDock();
+        showDocks();
     });
 
     //show-cycle between Latte settings windows
@@ -271,27 +272,29 @@ void GlobalShortcuts::init()
 //! Activate launcher menu through dbus interface
 void GlobalShortcuts::activateLauncherMenu()
 {
-    QHash<const Plasma::Containment *, DockView *> *views = m_corona->layoutManager()->currentDockViews();
+    QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        const auto applets = it.key()->applets();
+    foreach (auto view, sortedViews) {
+        const auto applets = view->containment()->applets();
 
         for (auto applet : applets) {
             const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
 
             if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
-                if (it.value()->visibility()->isHidden()) {
+                if (view->visibility()->isHidden()) {
                     m_lastInvokedAction = m_singleMetaAction;
-                    m_hideDock = it.value();
-                    m_hideDock->visibility()->setBlockHiding(true);
-                    m_hideDockTimer.start();
+                    m_hideDocks.clear();
+
+                    m_hideDocks.append(view);
+                    view->visibility()->setBlockHiding(true);
+                    m_hideDocksTimer.start();
 
                     //! delay the execution in order to show first the dock
-                    QTimer::singleShot(APPLETEXECUTIONDELAY, [this, it, applet]() {
-                        it.value()->toggleAppletExpanded(applet->id());
+                    QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, applet]() {
+                        view->toggleAppletExpanded(applet->id());
                     });
                 } else {
-                    it.value()->toggleAppletExpanded(applet->id());
+                    view->toggleAppletExpanded(applet->id());
                 }
 
                 return;
@@ -334,15 +337,14 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
                             continue;
                         }
 
-                        m_calledItem = item;
-                        m_numbersMethodIndex = methodIndex;
-                        m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
+                        m_calledItems.append(item);
+                        m_methodsShowNumbers.append(metaObject->method(methodIndex));
 
                         QMetaMethod method = metaObject->method(methodIndex);
 
                         if (method.invoke(item, Q_ARG(QVariant, index - 1))) {
                             if (methodIndex2 != -1) {
-                                m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
+                                m_methodsShowNumbers[m_methodsShowNumbers.count() - 1].invoke(item, Q_ARG(QVariant, true));
                             }
 
                             return true;
@@ -372,21 +374,24 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const DockView *view, int 
                                   metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
                                   metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
 
-                int methodIndex2 = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant)");
+                int methodIndex2 = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
 
                 if (methodIndex == -1 || (methodIndex2 == -1)) {
                     continue;
                 }
 
-                m_calledItem = item;
-                m_numbersMethodIndex = methodIndex2;
-                m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
+                int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
+                                  applicationLauncherId(view->containment()) : -1;
+
+                m_calledItems.append(item);
+                m_methodsShowNumbers.append(metaObject->method(methodIndex2));
+                int lastMethod = m_methodsShowNumbers.count() - 1;
 
                 QMetaMethod method = metaObject->method(methodIndex);
 
                 if (view->visibility()->isHidden()) {
                     //! delay the execution in order to show first the dock
-                    if (m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
+                    if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
                         QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
                             method.invoke(item, Q_ARG(QVariant, index));
                         });
@@ -395,7 +400,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const DockView *view, int 
                     return true;
                 } else {
                     if (method.invoke(item, Q_ARG(QVariant, index))) {
-                        m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true));
+                        m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher));
 
                         return true;
                     }
@@ -413,33 +418,19 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
-    QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
+    QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
-    // To avoid overly complex configuration, we'll try to get the 90% usecase to work
-    // which is activating a task on the task manager on a panel on the primary screen.
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        if (it.value()->screen() != qGuiApp->primaryScreen()) {
-            continue;
-        }
+    m_calledItems.clear();
+    m_methodsShowNumbers.clear();
 
-        if ((it.value()->latteTasksPresent() && activateLatteEntryAtContainment(it.value(), index, modifier))
-            || (!it.value()->latteTasksPresent() && it.value()->tasksPresent() &&
-                activatePlasmaTaskManagerEntryAtContainment(it.key(), index, modifier))) {
-            m_hideDock = it.value();
-            m_hideDock->visibility()->setBlockHiding(true);
-            m_hideDockTimer.start();
-            return;
-        }
-    }
-
-    // we didn't find anything on primary, try all the panels
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        if ((it.value()->latteTasksPresent() && activateLatteEntryAtContainment(it.value(), index, modifier))
-            || (!it.value()->latteTasksPresent() && it.value()->tasksPresent() &&
-                activatePlasmaTaskManagerEntryAtContainment(it.key(), index, modifier))) {
-            m_hideDock = it.value();
-            m_hideDock->visibility()->setBlockHiding(true);
-            m_hideDockTimer.start();
+    foreach (auto view, sortedViews) {
+        if ((view->latteTasksPresent() && activateLatteEntryAtContainment(view, index, modifier))
+            || (!view->latteTasksPresent() && view->tasksPresent() &&
+                activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))) {
+            m_hideDocks.clear();
+            m_hideDocks.append(view);
+            view->visibility()->setBlockHiding(true);
+            m_hideDocksTimer.start();
             return;
         }
     }
@@ -499,7 +490,48 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
     }
 }
 
-void GlobalShortcuts::showDock()
+bool GlobalShortcuts::isCapableToShowAppletsNumbers(const Plasma::Containment *c)
+{
+    if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
+        const auto &childItems = containmentInterface->childItems();
+
+        for (QQuickItem *item : childItems) {
+            if (auto *metaObject = item->metaObject()) {
+                // not using QMetaObject::invokeMethod to avoid warnings when calling
+                // this on applets that don't have it or other child items since this
+                // is pretty much trial and error.
+
+                // Also, "var" arguments are treated as QVariant in QMetaObject
+                int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
+
+                if (methodIndex == -1) {
+                    continue;
+                }
+
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+int GlobalShortcuts::applicationLauncherId(const Plasma::Containment *c)
+{
+    const auto applets = c->applets();
+
+    for (auto applet : applets) {
+        const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
+
+        if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
+            return applet->id();
+        }
+    }
+
+    return -1;
+}
+
+void GlobalShortcuts::showDocks()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
@@ -514,17 +546,20 @@ void GlobalShortcuts::showDock()
                     // is pretty much trial and error.
 
                     // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant)");
+                    int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
 
                     if (methodIndex == -1) {
                         continue;
                     }
 
-                    m_calledItem = item;
-                    m_numbersMethodIndex = methodIndex;
-                    m_methodShowNumbers = metaObject->method(m_numbersMethodIndex);
+                    int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
+                                      applicationLauncherId(c) : -1;
 
-                    if (m_methodShowNumbers.invoke(item, Q_ARG(QVariant, true))) {
+                    m_calledItems.append(item);
+                    m_methodsShowNumbers.append(metaObject->method(methodIndex));
+                    int lastMethod = m_methodsShowNumbers.count() - 1;
+
+                    if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
                         return true;
                     }
                 }
@@ -534,44 +569,104 @@ void GlobalShortcuts::showDock()
         return false;
     };
 
-    QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
+    auto invokeShowOnlyMeta = [this](const Plasma::Containment * c) {
+        if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
+            const auto &childItems = containmentInterface->childItems();
 
-    // To avoid overly complex configuration, we'll try to get the 90% usecase to work
-    // which is activating a task on the task manager on a panel on the primary screen.
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        if (it.value()->screen() != qGuiApp->primaryScreen()) {
-            continue;
+            for (QQuickItem *item : childItems) {
+                if (auto *metaObject = item->metaObject()) {
+                    // not using QMetaObject::invokeMethod to avoid warnings when calling
+                    // this on applets that don't have it or other child items since this
+                    // is pretty much trial and error.
+
+                    // Also, "var" arguments are treated as QVariant in QMetaObject
+                    int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
+
+                    if (methodIndex == -1) {
+                        continue;
+                    }
+
+                    int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
+                                      applicationLauncherId(c) : -1;
+
+                    m_calledItems.append(item);
+                    m_methodsShowNumbers.append(metaObject->method(methodIndex));
+                    int lastMethod = m_methodsShowNumbers.count() - 1;
+
+                    if (m_methodsShowNumbers[lastMethod].invoke(item, Q_ARG(QVariant, false), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                        return true;
+                    }
+                }
+            }
         }
 
-        if (it.value()->latteTasksPresent() && invokeShowNumbers(it.key())) {
-            if (!m_hideDockTimer.isActive()) {
-                m_hideDock = it.value();
-                m_hideDock->visibility()->setBlockHiding(true);
-                m_hideDockTimer.start();
-            } else {
-                m_hideDockTimer.stop();
-                hideDockTimerSlot();
-            }
+        return false;
+    };
 
-            return;
+    QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+
+    DockView *viewWithTasks{nullptr};
+    DockView *viewWithMeta{nullptr};
+
+    foreach (auto view, sortedViews) {
+        if (!viewWithTasks && isCapableToShowAppletsNumbers(view->containment())) {
+            viewWithTasks = view;
+        }
+
+        if (!viewWithMeta && m_corona->universalSettings()->metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
+            viewWithMeta = view;
         }
     }
 
-    // we didn't find anything on primary, try all the panels
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        if (it.value()->latteTasksPresent() && invokeShowNumbers(it.key())) {
-            if (!m_hideDockTimer.isActive()) {
-                m_hideDock = it.value();
-                m_hideDock->visibility()->setBlockHiding(true);
-                m_hideDockTimer.start();
-            } else {
-                m_hideDockTimer.stop();
-                hideDockTimerSlot();
-            }
+    bool dockFound{false};
 
-            return;
+    if (!m_hideDocksTimer.isActive()) {
+        m_hideDocks.clear();
+    }
+
+    if (viewWithTasks || viewWithMeta) {
+        m_calledItems.clear();
+        m_methodsShowNumbers.clear();
+    }
+
+    if (viewWithTasks && invokeShowNumbers(viewWithTasks->containment())) {
+        dockFound = true;
+
+        if (!m_hideDocksTimer.isActive()) {
+            m_hideDocks.append(viewWithTasks);
+            viewWithTasks->visibility()->setBlockHiding(true);
         }
     }
+
+    if (viewWithMeta && viewWithMeta != viewWithTasks && invokeShowOnlyMeta(viewWithMeta->containment())) {
+        dockFound = true;
+
+        if (!m_hideDocksTimer.isActive()) {
+            m_hideDocks.append(viewWithMeta);
+            viewWithMeta->visibility()->setBlockHiding(true);
+        }
+    }
+
+    if (dockFound) {
+        if (!m_hideDocksTimer.isActive()) {
+            m_hideDocksTimer.start();
+        } else {
+            m_hideDocksTimer.stop();
+            hideDocksTimerSlot();
+        }
+    }
+}
+
+bool GlobalShortcuts::docksToHideAreValid()
+{
+    foreach (auto view, m_hideDocks) {
+        if (!m_corona->layoutManager()->dockViewExists(view)) {
+            return false;
+        }
+
+    }
+
+    return true;
 }
 
 bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)
@@ -641,11 +736,11 @@ bool GlobalShortcuts::dockAtLowerEdgePriority(DockView *test, DockView *base)
 }
 
 
-void GlobalShortcuts::showSettings()
+QList<DockView *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containment *, DockView *> *views)
 {
     QList<DockView *> docks;
 
-    QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
+    //QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
 
     //! create a docks list to sorted out
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
@@ -680,6 +775,12 @@ void GlobalShortcuts::showSettings()
         qDebug() << i << ". " << docks[i]->screen()->name() << " - " << docks[i]->location();
     }
 
+    return docks;
+}
+
+void GlobalShortcuts::showSettings()
+{
+    QList<DockView *> docks = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
     //! find which is the next dock to show its settings
     if (docks.count() > 0) {
@@ -707,38 +808,60 @@ void GlobalShortcuts::showSettings()
     }
 }
 
-void GlobalShortcuts::hideDockTimerSlot()
+void GlobalShortcuts::hideDocksTimerSlot()
 {
-    if (!m_lastInvokedAction || !m_hideDock) {
+    if (!m_lastInvokedAction || m_hideDocks.count() == 0) {
         return;
     }
 
     if (isPlatformX11()) {
         if (!x11_areModKeysDepressed(m_lastInvokedAction->shortcut())) {
             m_lastInvokedAction = Q_NULLPTR;
-            m_hideDock->visibility()->setBlockHiding(false);
-            m_hideDock = Q_NULLPTR;
 
-            if (m_calledItem) {
-                m_methodShowNumbers.invoke(m_calledItem, Q_ARG(QVariant, false));
-                m_calledItem = Q_NULLPTR;
-                m_numbersMethodIndex = -1;
+            if (docksToHideAreValid()) {
+                foreach (auto dockView, m_hideDocks) {
+                    dockView->visibility()->setBlockHiding(false);
+                }
+
+                m_hideDocks.clear();
+
+                if (m_calledItems.count() > 0) {
+                    for (int i = 0; i < m_calledItems.count(); ++i) {
+                        m_methodsShowNumbers[i].invoke(m_calledItems[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
+                    }
+
+                    m_calledItems.clear();
+                }
+            } else {
+                m_hideDocks.clear();
+                m_calledItems.clear();
             }
 
             return;
         }
 
-        m_hideDockTimer.start();
+        m_hideDocksTimer.start();
     } else {
         // TODO: This is needs to be fixed in wayland
         m_lastInvokedAction = Q_NULLPTR;
-        m_hideDock->visibility()->setBlockHiding(false);
-        m_hideDock = Q_NULLPTR;
 
-        if (m_calledItem) {
-            m_methodShowNumbers.invoke(m_calledItem, Q_ARG(QVariant, false));
-            m_calledItem = Q_NULLPTR;
-            m_numbersMethodIndex = -1;
+        if (docksToHideAreValid()) {
+            foreach (auto dockView, m_hideDocks) {
+                dockView->visibility()->setBlockHiding(false);
+            }
+
+            m_hideDocks.clear();
+
+            if (m_calledItems.count() > 0) {
+                for (int i = 0; i < m_calledItems.count(); ++i) {
+                    m_methodsShowNumbers[i].invoke(m_calledItems[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
+                }
+
+                m_calledItems.clear();
+            }
+        } else {
+            m_hideDocks.clear();
+            m_calledItems.clear();
         }
     }
 
