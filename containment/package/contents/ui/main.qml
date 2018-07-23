@@ -371,6 +371,8 @@ DragDrop.DropArea {
     }
 
     property rect screenGeometry: dock ? dock.screenGeometry : plasmoid.screenGeometry
+
+    readonly property color minimizedDotColor: colorizerLoader.minimizedDotColor
     ///END properties from latteApplet
 
     /* Layout.preferredWidth: plasmoid.immutable ?
@@ -1765,6 +1767,7 @@ DragDrop.DropArea {
 
         readonly property real themeBackgroundColorLuma: 0.2126*backColorRs + 0.7152*backColorGs + 0.0722*backColorBs
         readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
+        readonly property color minimizedDotColor: themeTextColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
         property bool isShown: active && !forceSolidPanel
                                   //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows

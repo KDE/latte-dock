@@ -56,7 +56,6 @@ Rectangle {
     color: theme.backgroundColor //mainItemContainer.badgeIndicator > 0 ? alphaBackColor2 : alphaBackColor
     radius: (radiusPerCentage / 100) * (height / 2)
     border.width: Math.max(1,width/64)
-    border.color: root.minimizedDotColor //alphaBackColor2
 
     onProportionChanged: {
         //  console.log(previousProportion + " - "+proportion);
@@ -128,14 +127,14 @@ Rectangle {
                     return i18nc("Over 9999 new messages, overlay, keep short", "9,999+");
                 } else if (numberValue > 0) {
                     return numberValue.toLocaleString(Qt.locale(), 'f', 0);
-                } else {
-                    return "";
                 }
             }
 
             if (showText) {
                 return textValue;
             }
+
+            return "";
         }
         font.pixelSize: 0.55 * parent.height
         font.bold: true

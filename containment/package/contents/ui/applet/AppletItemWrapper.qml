@@ -635,6 +635,7 @@ Item{
 
                 minimumWidth: 0.4 * root.iconSize
                 height: width
+                border.color: root.minimizedDotColor
                 numberValue: appletNumberLoader.fixedIndex < 10 ? appletNumberLoader.fixedIndex : 0
                 textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
 
