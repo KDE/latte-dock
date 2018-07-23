@@ -124,7 +124,13 @@ Item {
     }
 
     property real textColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
-    property color minimizedDotColor: textColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
+    property color minimizedDotColor: {
+        if (latteDock) {
+            return latteDock.minimizedDotColor;
+        }
+
+        return textColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
+    }
 
     //a small badgers record (id,value)
     //in order to track badgers when there are changes

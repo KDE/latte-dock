@@ -58,6 +58,7 @@ Item {
         Latte.BadgeText {
             id: progressCircle
             anchors.centerIn: parent
+            border.color: root.minimizedDotColor
             minimumWidth: 0.8 * parent.height
             height: 0.8 * parent.height
             numberValue: mainItemContainer.badgeIndicator > 0 ? mainItemContainer.badgeIndicator : centralItem.smartLauncherItem.count

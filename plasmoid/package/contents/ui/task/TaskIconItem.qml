@@ -495,6 +495,7 @@ Item{
                 Latte.BadgeText {
                     id: taskNumber
                     anchors.centerIn: parent
+                    border.color: root.minimizedDotColor
                     //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
 
                     minimumWidth: 0.4 * root.iconSize
