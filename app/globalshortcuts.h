@@ -63,7 +63,7 @@ private:
     bool dockAtLowerEdgePriority(DockView *test, DockView *base);
     bool dockAtLowerScreenPriority(DockView *test, DockView *base);
     bool docksToHideAreValid();
-    bool isCapableToShowAppletsNumbers(const Plasma::Containment *c);
+    bool isCapableToShowAppletsNumbers(DockView *view);
 
     int applicationLauncherId(const Plasma::Containment *c);
 

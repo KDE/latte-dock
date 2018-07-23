@@ -490,8 +490,14 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
     }
 }
 
-bool GlobalShortcuts::isCapableToShowAppletsNumbers(const Plasma::Containment *c)
+bool GlobalShortcuts::isCapableToShowAppletsNumbers(DockView *view)
 {
+    if (!view->latteTasksPresent() && view->tasksPresent()) {
+        return false;
+    }
+
+    const Plasma::Containment *c = view->containment();
+
     if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
         const auto &childItems = containmentInterface->childItems();
 
@@ -609,7 +615,7 @@ void GlobalShortcuts::showDocks()
     DockView *viewWithMeta{nullptr};
 
     foreach (auto view, sortedViews) {
-        if (!viewWithTasks && isCapableToShowAppletsNumbers(view->containment())) {
+        if (!viewWithTasks && isCapableToShowAppletsNumbers(view)) {
             viewWithTasks = view;
         }
 
