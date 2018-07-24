@@ -725,6 +725,7 @@ Item {
         onWheel: {
             if (isSeparator || !root.mouseWheelActions || blockWheel
                     || (root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+                wheel.accepted = false;
                 return;
             }
 
