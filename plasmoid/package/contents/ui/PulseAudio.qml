@@ -31,7 +31,7 @@ QtObject {
 
     property int maxVolumePercent: 125
     property int maxVolumeValue: Math.round(maxVolumePercent * PulseAudio.NormalVolume / 100.0)
-    property int volumeStep: Math.round(3 * PulseAudio.NormalVolume / 100.0)
+    property int volumeStep: Math.round(5 * PulseAudio.NormalVolume / 100.0)
 
     function boundVolume(volume) {
         return Math.max(PulseAudio.MinimalVolume, Math.min(volume, maxVolumeValue));
