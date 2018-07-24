@@ -547,7 +547,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
         //! this is used to record the first dock having tasks in it. It is used
         //! to specify which dock will be loaded on startup if a case that no "dock
         //! with tasks" will be loaded otherwise. Currently the older one dock wins
-        int firstContainmentWithTasks = -1;
+        /*int firstContainmentWithTasks = -1;
 
         //! this is used to check if a dock with tasks in it will be loaded on startup
         bool tasksWillBeLoaded =  heuresticForLoadingDockWithTasks(&firstContainmentWithTasks);
@@ -565,7 +565,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
             } else {
                 addDock(containment);
             }
-        }
+        }*/
     }
 }
 

@@ -222,6 +222,21 @@ QList <int> ScreenPool::knownIds() const
     return m_connectorForId.keys();
 }
 
+bool ScreenPool::screenExists(int id)
+{
+    if (id != -1 && knownIds().contains(id)) {
+        QString scrName = connector(id);
+
+        foreach (auto scr, qGuiApp->screens()) {
+            if (scr->name() == scrName) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 QScreen *ScreenPool::screenForId(int id)
 {
     const auto screens = qGuiApp->screens();

@@ -83,6 +83,8 @@ public:
 
     bool isWritable() const;
 
+    bool dockViewExists(Plasma::Containment *containment);
+
     int version() const;
     void setVersion(int ver);
 
@@ -179,6 +181,7 @@ private:
     void setFile(QString file);
 
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
+    bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
 
     bool kwin_disabledMaximizedBorders() const;
     void kwin_setDisabledMaximizedBorders(bool disable);

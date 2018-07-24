@@ -887,17 +887,49 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
         }
 
         if (!found) {
-            qDebug() << "adding dock rejected, screen not available ! : " << connector;
+            qDebug() << "reject : adding explicit dock, screen not available ! : " << connector;
             return;
         }
-    } else if (onPrimary) {
+
+        if (primaryDockOccupyEdge(containment->location())) {
+            qDebug() << "reject : adding explicit dock, primary dock occupies edge at screen ! : " << connector;
+        }
+    }
+
+    if (id >= 0 && onPrimary) {
+        QString connector = m_corona->screenPool()->connector(id);
+        qDebug() << "add dock - connector : " << connector;
+
+        foreach (auto view, m_dockViews) {
+            auto testContainment = view->containment();
+
+            int testScreenId = testContainment->screen();
+
+            if (testScreenId == -1) {
+                testScreenId = testContainment->lastScreen();
+            }
+
+            bool testOnPrimary = testContainment->config().readEntry("onPrimary", true);
+            Plasma::Types::Location testLocation = static_cast<Plasma::Types::Location>((int)testContainment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+
+            if (!testOnPrimary && m_corona->screenPool()->primaryScreenId() == testScreenId && testLocation == containment->location()) {
+                qDebug() << "Rejected explicit dockView and removing it in order add an onPrimary with higher priority at screen: " << connector;
+                auto viewToDelete = m_dockViews.take(testContainment);
+                viewToDelete->disconnectSensitiveSignals();
+                viewToDelete->deleteLater();
+            }
+        }
+    }
+
+    /* old behavior to not add primary docks on explicit one
+        else if (onPrimary) {
         if (explicitDockOccupyEdge(m_corona->screenPool()->primaryScreenId(), containment->location())) {
             qDebug() << "CORONA ::: adding dock rejected, the edge is occupied by explicit dock ! : " <<  containment->location();
             //we must check that an onPrimary dock should never catch up the same edge on
             //the same screen with an explicit dock
             return;
         }
-    }
+    }*/
 
     qDebug() << "Adding dock for container...";
     qDebug() << "onPrimary: " << onPrimary << "screen!!! :" << nextScreen->name();
@@ -1432,116 +1464,198 @@ void Layout::syncDockViewsToScreens()
         return;
     }
 
+    qDebug() << "start of, syncDockViewsToScreens ....";
     qDebug() << "LAYOUT ::: " << name();
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
-    qDebug() << "adding consideration....";
-    qDebug() << "dock view running : " << m_dockViews.count();
+    QHash<QString, QList<Plasma::Types::Location>> futureDocksLocations;
+    QList<uint> futureShownViews;
+    QString prmScreenName = qGuiApp->primaryScreen()->name();
 
-    foreach (auto scr, qGuiApp->screens()) {
-        qDebug() << "Found screen: " << scr->name();
+    //! first step: primary docks must be placed in primary screen free edges
+    foreach (auto containment, m_containments) {
+        int screenId = containment->screen();
 
-        foreach (auto cont, m_containments) {
-            int id = cont->screen();
+        if (screenId == -1) {
+            screenId = containment->lastScreen();
+        }
 
-            if (id == -1) {
-                id = cont->lastScreen();
-            }
+        bool onPrimary = containment->config().readEntry("onPrimary", true);
+        Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
 
-            bool onPrimary = cont->config().readEntry("onPrimary", true);
-            Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+        if (onPrimary && !futureDocksLocations[prmScreenName].contains(location)) {
+            futureDocksLocations[prmScreenName].append(location);
+            futureShownViews.append(containment->id());
+        }
+    }
 
-            //! two main situations that a dock must be added when it is not already running
-            //! 1. when a dock is primary, not running and the edge for which is associated is free
-            //! 2. when a dock in explicit, not running and the associated screen currently exists
-            //! e.g. the screen has just been added
-            if (((onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary && (m_corona->screenPool()->connector(id) == scr->name())))
-                && (!m_dockViews.contains(cont))) {
-                qDebug() << "screen Count signal: view must be added... for:" << scr->name();
-                addDock(cont);
+    //! second step: explicit docks must be placed in their screens if the screen edge is free
+    foreach (auto containment, m_containments) {
+        int screenId = containment->screen();
+
+        if (screenId == -1) {
+            screenId = containment->lastScreen();
+        }
+
+        bool onPrimary = containment->config().readEntry("onPrimary", true);
+        Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+
+        if (!onPrimary) {
+            QString expScreenName = m_corona->screenPool()->connector(screenId);
+
+            if (m_corona->screenPool()->screenExists(screenId) && !futureDocksLocations[expScreenName].contains(location)) {
+                futureDocksLocations[expScreenName].append(location);
+                futureShownViews.append(containment->id());
             }
         }
     }
 
-    qDebug() << "removing consideration & updating screen for always on primary docks....";
+    qDebug() << "PRIMARY SCREEN :: " << prmScreenName;
+    qDebug() << "DOCKVIEWS MUST BE PRESENT AT :: " << futureDocksLocations;
 
-    //! this code tries to find a containment that must not be deleted by
-    //! automatic algorithm. Currently the containment with the minimum id
-    //! containing tasks plasmoid wins
-    int preserveContainmentId{ -1};
-    bool dockWithTasksWillBeShown{false};
+    //! add views
+    foreach (auto containment, m_containments) {
+        int screenId = containment->screen();
 
-    //! associate correct values for preserveContainmentId and
-    //! dockWithTasksWillBeShown
-    foreach (auto view, m_dockViews) {
-        bool found{false};
-
-        foreach (auto scr, qGuiApp->screens()) {
-            if (scr->name() == view->currentScreen()
-                || (view->onPrimary() && scr == qGuiApp->primaryScreen())) {
-                found = true;
-                break;
-            }
+        if (screenId == -1) {
+            screenId = containment->lastScreen();
         }
 
-        //!check if a tasks dock will be shown (try to prevent its deletion)
-        if (found && view->tasksPresent()) {
-            dockWithTasksWillBeShown = true;
-        }
-
-        if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
-            && !(view->tasksPresent() && noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
-            if (view->tasksPresent()) {
-                if (preserveContainmentId == -1)
-                    preserveContainmentId = view->containment()->id();
-                else if (view->containment()->id() < preserveContainmentId)
-                    preserveContainmentId = view->containment()->id();
-            }
+        if (!dockViewExists(containment) && futureShownViews.contains(containment->id())) {
+            qDebug() << "syncDockViewsToScreens: view must be added... for:" << m_corona->screenPool()->connector(screenId);
+            addDock(containment);
         }
     }
 
-    //! check which docks must be deleted e.g. when the corresponding
-    //! screen does not exist any more.
-    //! The code is smart enough in order
-    //! to never delete the last tasks dock and also it makes sure that
-    //! the last tasks dock which will exist in the end will be the one
-    //! with the lowest containment id
+    //! remove views
     foreach (auto view, m_dockViews) {
-        bool found{false};
-
-        foreach (auto scr, qGuiApp->screens()) {
-            if (scr->name() == view->currentScreen()
-                || (view->onPrimary() && scr == qGuiApp->primaryScreen())) {
-                found = true;
-                break;
-            }
-        }
-
-
-        //! which explicit docks can be deleted
-        if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
-            && !(view->tasksPresent() && noDocksWithTasks() == 1)) {
-            //do not delete last dock containing tasks
-            if (dockWithTasksWillBeShown || preserveContainmentId != view->containment()->id()) {
-                qDebug() << "screen Count signal: view must be deleted... for:" << view->currentScreen();
-                auto viewToDelete = m_dockViews.take(view->containment());
-                viewToDelete->deleteLater();
-            }
-
-            //!which primary docks can be deleted
-        } else if (view->onPrimary() && !found
-                   && !freeEdges(qGuiApp->primaryScreen()).contains(view->location())) {
-            qDebug() << "screen Count signal: primary view must be deleted... for:" << view->currentScreen();
+        if (view->containment() && !futureShownViews.contains(view->containment()->id())) {
+            qDebug() << "syncDockViewsToScreens: view must be deleted... for:" << view->currentScreen();
             auto viewToDelete = m_dockViews.take(view->containment());
+            viewToDelete->disconnectSensitiveSignals();
             viewToDelete->deleteLater();
-        } else {
+        }
+    }
+
+    //! reconsider views
+    foreach (auto view, m_dockViews) {
+        if (view->containment() && futureShownViews.contains(view->containment()->id())) {
             //! if the dock will not be deleted its a very good point to reconsider
             //! if the screen in which is running is the correct one
             view->reconsiderScreen();
         }
     }
 
-    qDebug() << "end of screens count change....";
+    /*
+        qDebug() << "adding consideration....";
+        qDebug() << "dock view running : " << m_dockViews.count();
+
+        foreach (auto scr, qGuiApp->screens()) {
+            qDebug() << "Found screen: " << scr->name();
+
+            foreach (auto cont, m_containments) {
+                int id = cont->screen();
+
+                if (id == -1) {
+                    id = cont->lastScreen();
+                }
+
+                bool onPrimary = cont->config().readEntry("onPrimary", true);
+                Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)cont->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+
+                //! two main situations that a dock must be added when it is not already running
+                //! 1. when a dock is primary, not running and the edge for which is associated is free
+                //! 2. when a dock in explicit, not running and the associated screen currently exists
+                //! e.g. the screen has just been added
+                if (((onPrimary && freeEdges(qGuiApp->primaryScreen()).contains(location)) || (!onPrimary && (m_corona->screenPool()->connector(id) == scr->name())))
+                    && (!m_dockViews.contains(cont))) {
+                    qDebug() << "screen Count signal: view must be added... for:" << scr->name();
+                    addDock(cont);
+                }
+            }
+        }
+
+        qDebug() << "removing consideration & updating screen for always on primary docks....";
+
+        //! this code tries to find a containment that must not be deleted by
+        //! automatic algorithm. Currently the containment with the minimum id
+        //! containing tasks plasmoid wins
+        int preserveContainmentId{ -1};
+        bool dockWithTasksWillBeShown{false};
+
+        //! associate correct values for preserveContainmentId and
+        //! dockWithTasksWillBeShown
+        foreach (auto view, m_dockViews) {
+            bool found{false};
+
+            foreach (auto scr, qGuiApp->screens()) {
+                if (scr->name() == view->currentScreen()
+                    || (view->onPrimary() && scr == qGuiApp->primaryScreen())) {
+                    found = true;
+                    break;
+                }
+            }
+
+            //!check if a tasks dock will be shown (try to prevent its deletion)
+            if (found && view->tasksPresent()) {
+                dockWithTasksWillBeShown = true;
+            }
+
+            if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
+                && !(view->tasksPresent() && noDocksWithTasks() == 1)) { //do not delete last dock containing tasks
+                if (view->tasksPresent()) {
+                    if (preserveContainmentId == -1)
+                        preserveContainmentId = view->containment()->id();
+                    else if (view->containment()->id() < preserveContainmentId)
+                        preserveContainmentId = view->containment()->id();
+                }
+            }
+        }
+
+        //! check which docks must be deleted e.g. when the corresponding
+        //! screen does not exist any more.
+        //! The code is smart enough in order
+        //! to never delete the last tasks dock and also it makes sure that
+        //! the last tasks dock which will exist in the end will be the one
+        //! with the lowest containment id
+        foreach (auto view, m_dockViews) {
+            bool found{false};
+
+            foreach (auto scr, qGuiApp->screens()) {
+                if (scr->name() == view->currentScreen()
+                    || (view->onPrimary() && scr == qGuiApp->primaryScreen())) {
+                    found = true;
+                    break;
+                }
+            }
+
+
+            //! which explicit docks can be deleted
+            if (!found && !view->onPrimary() && (m_dockViews.size() > 1) && m_dockViews.contains(view->containment())
+                && !(view->tasksPresent() && noDocksWithTasks() == 1)) {
+                //do not delete last dock containing tasks
+                if (dockWithTasksWillBeShown || preserveContainmentId != view->containment()->id()) {
+                    qDebug() << "screen Count signal: view must be deleted... for:" << view->currentScreen();
+                    auto viewToDelete = m_dockViews.take(view->containment());
+                    viewToDelete->disconnectSensitiveSignals();
+                    viewToDelete->deleteLater();
+                }
+
+                //!which primary docks can be deleted
+            } else if (view->onPrimary() && !found
+                       && !freeEdges(qGuiApp->primaryScreen()).contains(view->location())) {
+                qDebug() << "screen Count signal: primary view must be deleted... for:" << view->currentScreen();
+                auto viewToDelete = m_dockViews.take(view->containment());
+                viewToDelete->disconnectSensitiveSignals();
+                viewToDelete->deleteLater();
+            } else {
+                //! if the dock will not be deleted its a very good point to reconsider
+                //! if the screen in which is running is the correct one
+                view->reconsiderScreen();
+            }
+        }
+    */
+    qDebug() << "end of, syncDockViewsToScreens ....";
 }
 
 void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> containments)
@@ -1613,6 +1727,15 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
     return containments;
 }
 
+bool Layout::dockViewExists(Plasma::Containment *containment)
+{
+    if (!m_corona) {
+        return false;
+    }
+
+    return m_dockViews.keys().contains(containment);
+}
+
 QList<Plasma::Types::Location> Layout::freeEdges(QScreen *screen) const
 {
     using Plasma::Types;
@@ -1674,6 +1797,25 @@ bool Layout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location
     return false;
 }
 
+bool Layout::primaryDockOccupyEdge(Plasma::Types::Location location) const
+{
+    if (!m_corona) {
+        return false;
+    }
+
+    foreach (auto containment, m_containments) {
+        if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
+            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            Plasma::Types::Location contLocation = containment->location();
+
+            if (onPrimary && contLocation == location) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
 
 int Layout::noDocksWithTasks() const
 {
