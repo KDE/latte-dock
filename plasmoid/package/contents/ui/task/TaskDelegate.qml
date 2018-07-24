@@ -88,6 +88,7 @@ MouseArea{
     // hoverEnabled: false
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
+    property bool blockWheel: false
     property bool buffersAreReady: false
     property bool delayingRemove: ListView.delayRemove
     property bool scalesUpdatedOnce: false
@@ -863,12 +864,15 @@ MouseArea{
     }
 
     onWheel: {
-        if (isSeparator || !root.mouseWheelActions || inWheelAction || inBouncingAnimation
+        if (isSeparator || !root.mouseWheelActions || blockWheel || inWheelAction || inBouncingAnimation
                 || (latteDock && (latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
             return;
         }
 
         var angle = wheel.angleDelta.y / 8;
+
+        blockWheel = true;
+        scrollDelayer.start();
 
         //positive direction
         if (angle > 12) {
@@ -906,6 +910,18 @@ MouseArea{
                 tasksModel.requestActivate(taskIndex);
             }
         }
+    }
+
+    //! A timer is needed in order to handle also touchpads that probably
+    //! send too many signals very fast. This way the signals per sec are limited.
+    //! The user needs to have a steady normal scroll in order to not
+    //! notice a annoying delay
+    Timer{
+        id: scrollDelayer
+
+        interval: 400
+
+        onTriggered: mainItemContainer.blockWheel = false;
     }
 
     ///////////////// End Of Mouse Area Events ///////////////////
