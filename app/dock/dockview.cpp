@@ -283,6 +283,10 @@ void DockView::initSignalingForLocationChangeSliding()
                 setBlockAnimations(false);
                 emit showDockAfterLocationChangeFinished();
                 showSettingsWindow();
+
+                if (m_managedLayout) {
+                    m_managedLayout->syncDockViewsToScreens();
+                }
             });
         }
     });
@@ -299,6 +303,10 @@ void DockView::initSignalingForLocationChangeSliding()
                 setBlockAnimations(false);
                 emit showDockAfterScreenChangeFinished();
                 showSettingsWindow();
+
+                if (m_managedLayout) {
+                    m_managedLayout->syncDockViewsToScreens();
+                }
             });
         }
     });
@@ -1434,7 +1442,7 @@ void DockView::setManagedLayout(Layout *layout)
         //! Sometimes the activity isnt completely ready, by adding a delay
         //! we try to catch up
         QTimer::singleShot(100, [this]() {
-            if (m_managedLayout) {
+            if (m_managedLayout && m_visibility) {
                 qDebug() << "DOCK VIEW FROM LAYOUT ::: " << m_managedLayout->name() << " - activities: " << m_managedLayout->appliedActivities();
                 applyActivitiesToWindows();
                 emit activitiesChanged();
@@ -1446,7 +1454,7 @@ void DockView::setManagedLayout(Layout *layout)
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         connectionsManagedLayout[0] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
-            if (m_managedLayout) {
+            if (m_managedLayout && m_visibility) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
                          << " - activities: " << m_managedLayout->appliedActivities();
                 applyActivitiesToWindows();

@@ -41,6 +41,7 @@ public:
     void load();
     ~ScreenPool() override;
 
+    bool screenExists(int id);
     int primaryScreenId() const;
 
     QString primaryConnector() const;
