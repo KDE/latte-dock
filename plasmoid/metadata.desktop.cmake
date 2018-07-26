@@ -8,6 +8,7 @@ Name[de]=Latte-Plasmoid
 Name[el]=Πρόσθετο Latte
 Name[en_GB]=Latte Plasmoid
 Name[es]=Plasmoide Latte
+Name[eu]=Latte plasmoidea
 Name[fi]=Latte-sovelma
 Name[gl]=Plasmoide de Latte
 Name[it]=Plasmoide Latte
