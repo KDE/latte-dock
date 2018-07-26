@@ -40,7 +40,7 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property int maxWidth: 34 * theme.defaultFont.pixelSize
+    property int maxWidth: Math.max(34 * theme.defaultFont.pixelSize, 0.85 * height)
     width: maxWidth + units.smallSpacing * 2
     height: Math.min(content.height + units.smallSpacing * 2,
                      dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing)
