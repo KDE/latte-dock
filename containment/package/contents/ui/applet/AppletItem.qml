@@ -591,7 +591,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: !latteApplet && canBeHovered && !root.editMode && !lockZoom && root.zoomFactor>1
+        enabled: !latteApplet && canBeHovered && !root.editMode && !lockZoom
         hoverEnabled: !root.editMode && (!latteApplet) ? true : false
         propagateComposedEvents: true
 
