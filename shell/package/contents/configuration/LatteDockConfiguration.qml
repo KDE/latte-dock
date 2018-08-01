@@ -40,11 +40,12 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property int maxWidth: Math.max(34 * theme.defaultFont.pixelSize, 0.85 * height)
+    property int maxWidth: Math.max(200, 0.87 * proposedHeight)
+    property int proposedHeight: Math.min(dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing,
+                                          Math.max(400, 37 * theme.mSize(theme.defaultFont).height))
+
     width: maxWidth + units.smallSpacing * 2
-    height: Math.min(content.height + units.smallSpacing * 2,
-                     dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing)
-    //! for small resolutions we better limit the size of the settings in order to be shown properly
+    height: proposedHeight
 
     Layout.minimumWidth: width
     Layout.minimumHeight: height
@@ -361,10 +362,7 @@ FocusScope {
             border.color: theme.backgroundColor
 
             //fix the height binding loop when showing the configuration window
-
-            property int availableFreeHeight: Math.min(29*theme.mSize(theme.defaultFont).height + units.smallSpacing * 2, //calculatios according to font size
-                                                       dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing - header.height - headerSpacer.height
-                                                       - tabBar.height - actionButtons.height - 36) //calculations according to screen geometry and elements heights
+            property int availableFreeHeight: dialog.proposedHeight - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 2 * units.smallSpacing
 
             PlasmaExtras.ScrollArea {
                 id: scrollArea
