@@ -28,6 +28,8 @@
 #include "../plasmaquick/configview.h"
 #include "../../liblattedock/dock.h"
 
+#include <array>
+
 #include <QQuickView>
 #include <QQmlListProperty>
 #include <QMenu>
