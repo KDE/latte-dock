@@ -168,7 +168,7 @@ int main(int argc, char **argv)
         layoutNameOnStartup = parser.value(QStringLiteral("layout"));
 
         if (!Latte::Importer::layoutExists(layoutNameOnStartup)) {
-            qInfo() << i18nc("layout missing", "This layout doesnt exist in the system.");
+            qInfo() << i18nc("layout missing", "This layout doesn't exist in the system.");
             qGuiApp->exit();
             return 0;
         }
