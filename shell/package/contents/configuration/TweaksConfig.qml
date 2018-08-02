@@ -35,7 +35,7 @@ PlasmaComponents.Page {
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth - Layout.leftMargin * 2
+        width: (dialog.appliedWidth - units.smallSpacing * 2) - Layout.leftMargin * 2
         spacing: dialog.subGroupSpacing
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
@@ -99,7 +99,7 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: solidForMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.maximumWidth: dialog.maxWidth - 3*units.smallSpacing
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
                 text: i18n("Force solid background for maximized or snapped windows")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized or snapped window")
@@ -126,7 +126,7 @@ PlasmaComponents.Page {
                 id: colorizeTransparentPanelsChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.bottomMargin: units.smallSpacing
-                Layout.maximumWidth: dialog.maxWidth - 3*units.smallSpacing
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
                 text: i18n("Monochrome contents when panel is transparent")
                 checked: plasmoid.configuration.colorizeTransparentPanels
                 tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")

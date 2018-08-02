@@ -40,12 +40,18 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property int maxWidth: Math.max(200, 0.87 * proposedHeight)
+    property int proposedWidth: Math.max(200, 0.87 * proposedHeight) + units.smallSpacing * 2
     property int proposedHeight: Math.min(dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing,
                                           Math.max(400, 36 * theme.mSize(theme.defaultFont).height))
 
-    width: maxWidth + units.smallSpacing * 2
-    height: proposedHeight
+    property int userScaleWidth: plasmoid.configuration.windowWidthScale
+    property int userScaleHeight: plasmoid.configuration.windowHeightScale
+
+    property int appliedWidth: userScaleWidth !== 100 ? Math.max(200, (userScaleWidth/100) * proposedWidth) : proposedWidth
+    property int appliedHeight: userScaleHeight !== 100 ? Math.max(400, (userScaleHeight/100) * proposedHeight) : proposedHeight
+
+    width: appliedWidth
+    height: appliedHeight
 
     Layout.minimumWidth: width
     Layout.minimumHeight: height
@@ -66,6 +72,64 @@ FocusScope {
         enabledBorders: dockConfig.enabledBorders
     }
 
+    MouseArea{
+        id: backgroundMouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+
+        property bool blockWheel: false
+        property bool wheelTriggeredOnce: false
+        property int scaleStep: 4
+
+        onContainsMouseChanged: {
+            if (!containsMouse) {
+                wheelTriggeredOnce = false;
+            }
+        }
+
+        onWheel: {
+            if (blockWheel || !(wheel.modifiers & Qt.MetaModifier)){
+                return;
+            }
+
+            blockWheel = true;
+            wheelTriggeredOnce = true;
+            scrollDelayer.start();
+
+            var angle = wheel.angleDelta.y / 8;
+
+            //positive direction
+            if (angle > 12) {
+                plasmoid.configuration.windowWidthScale = plasmoid.configuration.windowWidthScale + scaleStep;
+                plasmoid.configuration.windowHeightScale = plasmoid.configuration.windowHeightScale + scaleStep;
+                dockConfig.syncGeometry();
+                //negative direction
+            } else if (angle < -12) {
+                plasmoid.configuration.windowWidthScale = plasmoid.configuration.windowWidthScale - scaleStep;
+                plasmoid.configuration.windowHeightScale = plasmoid.configuration.windowHeightScale - scaleStep;
+                dockConfig.syncGeometry();
+            }
+        }
+    }
+
+    PlasmaComponents.Label{
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: i18nc("dock settings window scale","Window scale at %0%").arg(userScaleWidth)
+        visible: backgroundMouseArea.containsMouse && backgroundMouseArea.wheelTriggeredOnce
+    }
+
+    //! A timer is needed in order to handle also touchpads that probably
+    //! send too many signals very fast. This way the signals per sec are limited.
+    //! The user needs to have a steady normal scroll in order to not
+    //! notice a annoying delay
+    Timer{
+        id: scrollDelayer
+
+        interval: 300
+        onTriggered: backgroundMouseArea.blockWheel = false;
+    }
+
     ColumnLayout {
         id: content
 
@@ -73,7 +137,7 @@ FocusScope {
         Layout.minimumHeight: calculatedHeight
         Layout.preferredWidth: width
         Layout.preferredHeight: calculatedHeight
-        width: dialog.maxWidth
+        width: (dialog.appliedWidth - units.smallSpacing * 2)
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -318,7 +382,7 @@ FocusScope {
         PlasmaComponents.TabBar {
             id: tabBar
             Layout.fillWidth: true
-            Layout.maximumWidth: maxWidth
+            Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2)
 
             PlasmaComponents.TabButton {
                 id: behaviorTabBtn
@@ -350,11 +414,11 @@ FocusScope {
             id: pagesBackground
             Layout.fillWidth: true
             Layout.fillHeight: false
-            Layout.minimumWidth: maxWidth - 2*units.smallSpacing
+            Layout.minimumWidth: dialog.appliedWidth - units.smallSpacing * 4
             Layout.minimumHeight: height
             Layout.maximumHeight: height
 
-            width: maxWidth - units.smallSpacing
+            width: dialog.appliedWidth - units.smallSpacing * 3
             height: availableFreeHeight + units.smallSpacing * 4
 
             color: transparentBackgroundColor
@@ -362,7 +426,7 @@ FocusScope {
             border.color: theme.backgroundColor
 
             //fix the height binding loop when showing the configuration window
-            property int availableFreeHeight: dialog.proposedHeight - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 2 * units.smallSpacing
+            property int availableFreeHeight: dialog.appliedHeight - header.height - headerSpacer.height - tabBar.height - actionButtons.height - 2 * units.smallSpacing
 
             PlasmaExtras.ScrollArea {
                 id: scrollArea

@@ -49,7 +49,7 @@ PlasmaComponents.Page {
     ColumnLayout {
         id: content
 
-        width: dialog.maxWidth - Layout.leftMargin * 2
+        width: (dialog.appliedWidth - units.smallSpacing * 2) - Layout.leftMargin * 2
         spacing: dialog.subGroupSpacing
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
