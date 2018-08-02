@@ -25,6 +25,7 @@
 #include "screenedgeghostwindow.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
+#include "../screenpool.h"
 #include "../windowinfowrap.h"
 #include "../../liblattedock/extras.h"
 
@@ -778,7 +779,8 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
         return;
     }
 
-    QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectWithCriteria(view->containment()->screen(), {Dock::AlwaysVisible}, {});
+    int currentScrId = dockCorona->screenPool()->id(dockView->currentScreen());
+    QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectWithCriteria(currentScrId, {Dock::AlwaysVisible}, {});
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {
         availableScreenGeometry = tempAvailableScreenGeometry;
@@ -861,14 +863,19 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
 
             bool touchingPanelEdge{false};
 
-            if (view->location() == Plasma::Types::TopEdge) {
-                touchingPanelEdge = (winfo.geometry().y() == availableScreenGeometry.y());
-            } else if (view->location() == Plasma::Types::BottomEdge) {
-                touchingPanelEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
-            } else if (view->location() == Plasma::Types::LeftEdge) {
-                touchingPanelEdge = (winfo.geometry().x() == availableScreenGeometry.x());
-            } else if (view->location() == Plasma::Types::RightEdge) {
-                touchingPanelEdge = (winfo.geometry().right() == availableScreenGeometry.right());
+            QRect screenGeometry = dockView->screenGeometry();
+            bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
+
+            if (inCurrentScreen) {
+                if (view->location() == Plasma::Types::TopEdge) {
+                    touchingPanelEdge = (winfo.geometry().y() == availableScreenGeometry.y());
+                } else if (view->location() == Plasma::Types::BottomEdge) {
+                    touchingPanelEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
+                } else if (view->location() == Plasma::Types::LeftEdge) {
+                    touchingPanelEdge = (winfo.geometry().x() == availableScreenGeometry.x());
+                } else if (view->location() == Plasma::Types::RightEdge) {
+                    touchingPanelEdge = (winfo.geometry().right() == availableScreenGeometry.right());
+                }
             }
 
             if (((winfo.isActive() || winfo.isKeepAbove()) && touchingPanelEdge)
