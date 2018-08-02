@@ -235,6 +235,20 @@ void Layout::setVersion(int ver)
     emit versionChanged();
 }
 
+bool Layout::blockAutomaticDockViewCreation() const
+{
+    return m_blockAutomaticDockViewCreation;
+}
+
+void Layout::setBlockAutomaticDockViewCreation(bool block)
+{
+    if (m_blockAutomaticDockViewCreation == block) {
+        return;
+    }
+
+    m_blockAutomaticDockViewCreation = block;
+}
+
 bool Layout::disableBordersForMaximizedWindows() const
 {
     return m_disableBordersForMaximizedWindows;
@@ -707,7 +721,12 @@ void Layout::addContainment(Plasma::Containment *containment)
     }
 
     if (containmentInLayout) {
-        addDock(containment);
+        if (!blockAutomaticDockViewCreation()) {
+            addDock(containment);
+        } else {
+            qDebug() << "delaying DockView creation for containment :: " << containment->id();
+        }
+
         connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
     }
 }
@@ -833,7 +852,7 @@ void Layout::containmentDestroyed(QObject *cont)
     }
 }
 
-void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
+void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int expDockScreen)
 {
     qDebug() << "Layout :::: " << m_layoutName << " ::: addDock was called... m_containments :: " << m_containments.size();
 
@@ -871,9 +890,10 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
         id = expDockScreen;
     }
 
-    qDebug() << "add dock - containment id: " << containment->id() << " ,screen id : " << id << " ,onprimary:" << onPrimary << " ,forceDockLoad:" << forceLoading;
+    qDebug() << "add dock - containment id: " << containment->id() << " ,screen : " << id << " - " << m_corona->screenPool()->connector(id)
+             << " ,onprimary:" << onPrimary << " - " << qGuiApp->primaryScreen()->name() << " ,forceOnPrimary:" << forceOnPrimary;
 
-    if (id >= 0 && !onPrimary && !forceLoading) {
+    if (id >= 0 && !onPrimary && !forceOnPrimary) {
         QString connector = m_corona->screenPool()->connector(id);
         qDebug() << "add dock - connector : " << connector;
         bool found{false};
@@ -954,7 +974,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceLoading, int ex
 
     //! force this special dock case to become primary
     //! even though it isnt
-    if (forceLoading) {
+    if (forceOnPrimary) {
         dockView->setOnPrimary(true);
     }
 
@@ -1052,6 +1072,9 @@ void Layout::copyDock(Plasma::Containment *containment)
     QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
 
 
+    //! Dont create DockView when the containment is created because we must update
+    //! its screen settings first
+    setBlockAutomaticDockViewCreation(true);
     //! Finally import the configuration
     QList<Plasma::Containment *> importedDocks = importLayoutFile(temp2File);
 
@@ -1122,12 +1145,14 @@ void Layout::copyDock(Plasma::Containment *containment)
 
     if (setOnExplicitScreen && copyScrId > -1) {
         qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
-        addDock(newContainment, copyScrId);
+        addDock(newContainment, false, copyScrId);
         newContainment->reactToScreenChange();
     } else {
         qDebug() << "Copy Dock in current screen...";
-        addDock(newContainment, dockScrId);
+        addDock(newContainment, false, dockScrId);
     }
+
+    setBlockAutomaticDockViewCreation(false);
 }
 
 void Layout::appletCreated(Plasma::Applet *applet)

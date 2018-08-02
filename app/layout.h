@@ -116,7 +116,7 @@ public:
     QStringList unloadedContainmentsIds();
 
     //! this function needs the layout to have first set the corona through initToCorona() function
-    void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
+    void addDock(Plasma::Containment *containment, bool forceOnPrimary = false, int expDockScreen = -1);
     void copyDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
 
@@ -180,6 +180,11 @@ private:
     void setName(QString name);
     void setFile(QString file);
 
+    //! It can be used in order for DockViews to not be created automatically when
+    //! their corresponding containments are created e.g. copyDock functionality
+    bool blockAutomaticDockViewCreation() const;
+    void setBlockAutomaticDockViewCreation(bool block);
+
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
     bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
 
@@ -195,6 +200,7 @@ private:
     QList<Plasma::Containment *> importLayoutFile(QString file);
 
 private:
+    bool m_blockAutomaticDockViewCreation{false};
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
     //if version doesnt exist it is and old layout file
