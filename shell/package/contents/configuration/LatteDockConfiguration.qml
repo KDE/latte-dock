@@ -42,7 +42,7 @@ FocusScope {
 
     property int maxWidth: Math.max(200, 0.87 * proposedHeight)
     property int proposedHeight: Math.min(dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing,
-                                          Math.max(400, 37 * theme.mSize(theme.defaultFont).height))
+                                          Math.max(400, 36 * theme.mSize(theme.defaultFont).height))
 
     width: maxWidth + units.smallSpacing * 2
     height: proposedHeight
