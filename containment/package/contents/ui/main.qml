@@ -300,6 +300,14 @@ DragDrop.DropArea {
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
+    property var badgesForActivate: {
+        if (!universalSettings) {
+            return ['1','2','3','4','5','6','7','8','9','0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'];
+        }
+
+        return universalSettings.badgesForActivate;
+    }
+
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
     property var layoutManager: LayoutManager
 

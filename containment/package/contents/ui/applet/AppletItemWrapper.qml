@@ -617,10 +617,12 @@ Item{
     Loader{
         id: appletNumberLoader
         anchors.fill: container.appletWrapper
-        active: opacityN>0
+        active: isValidDelayer > 0
         asynchronous: true
+        visible: badgeString!==""
 
-        property int fixedIndex:-1
+        property int fixedIndex: -1
+        property string badgeString: ""
 
         onActiveChanged: {
             if (active) {
@@ -630,12 +632,31 @@ Item{
 
         Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
 
-        property real opacityN: container.canShowAppletNumberBadge &&
-                                ((root.unifiedGlobalShortcuts && root.showAppletsNumbers && fixedIndex<20)
-                                 || (root.showMetaBadge && applet.id===applicationLauncherId)) ? 1 : 0
+        property real isValidDelayer: container.canShowAppletNumberBadge &&
+                               ((root.showAppletsNumbers && root.unifiedGlobalShortcuts)
+                                || (root.showMetaBadge && applet.id===applicationLauncherId)) ? 1 : 0
 
-        Behavior on opacityN {
-            NumberAnimation { duration: root.durationTime*2*units.longDuration }
+        Behavior on isValidDelayer {
+            NumberAnimation { duration: root.durationTime*units.longDuration }
+        }
+
+        Binding{
+            target: appletNumberLoader
+            property:"badgeString"
+            value: {
+                //! dont change value on hiding/releasing
+                if (!root.showMetaBadge && !root.showAppletsNumbers) {
+                    return;
+                }
+
+                if (root.showMetaBadge && applet && applet.id === applicationLauncherId) {
+                    return '\u2318';
+                } else if (appletNumberLoader.fixedIndex>=1 && appletNumberLoader.fixedIndex<20) {
+                    return root.badgesForActivate[appletNumberLoader.fixedIndex-1];
+                } else {
+                    return "";
+                }
+            }
         }
 
         sourceComponent: Item{
@@ -660,67 +681,11 @@ Item{
                 minimumWidth: 0.4 * root.iconSize
                 height: width
                 border.color: root.minimizedDotColor
-                numberValue: appletNumberLoader.fixedIndex < 10 ? appletNumberLoader.fixedIndex : 0
-
-                Binding{
-                    target: appletNumber
-                    property:"textValue"
-                    value: {
-                        //! dont change value on hiding/releasing
-                        if (!root.showMetaBadge && !root.showAppletsNumbers) {
-                            return;
-                        }
-
-                        if (root.showMetaBadge && applet.id === applicationLauncherId) {
-                            return '\u2318';
-                        } else if (appletNumber.keysArrayIndex>=0 && appletNumber.keysArrayIndex<10) {
-                            return appletNumber.keysAboveTen[appletNumber.keysArrayIndex];
-                        } else {
-                            return '';
-                        }
-                    }
-                }
-
-                Binding{
-                    target: appletNumber
-                    property:"showNumber"
-                    value: {
-                        //! dont change value on hiding/releasing
-                        if (!root.showMetaBadge && !root.showAppletsNumbers) {
-                            return;
-                        }
-
-                        if (appletNumberLoader.fixedIndex < 10 && !(root.showMetaBadge && applet.id === applicationLauncherId)) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-
-                Binding{
-                    target: appletNumber
-                    property:"showText"
-                    value: {
-                        //! dont change value on hiding/releasing
-                        if (!root.showMetaBadge && !root.showAppletsNumbers) {
-                            return;
-                        }
-
-                        if ((appletNumberLoader.fixedIndex>=10 && appletNumberLoader.fixedIndex<20) ||
-                              (root.showMetaBadge && applet.id === applicationLauncherId)) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-
                 proportion: 0
                 radiusPerCentage: 50
-
-                property int keysArrayIndex: appletNumberLoader.fixedIndex-10;
-                property var keysAboveTen: ['0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.']
+                showNumber: false
+                showText: true
+                textValue: appletNumberLoader.badgeString
             }
         }
     }

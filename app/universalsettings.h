@@ -44,6 +44,7 @@ class UniversalSettings : public QObject
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
+    Q_PROPERTY(QStringList badgesForActivate READ badgesForActivate NOTIFY badgesForActivateChanged)
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
     Q_PROPERTY(Latte::Dock::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
@@ -85,6 +86,8 @@ public:
     QSize layoutsWindowSize() const;
     void setLayoutsWindowSize(QSize size);
 
+    QStringList badgesForActivate() const;
+
     QStringList layoutsColumnWidths() const;
     void setLayoutsColumnWidths(QStringList widths);
 
@@ -107,6 +110,7 @@ public slots:
 
 signals:
     void autostartChanged();
+    void badgesForActivateChanged();
     void canDisableBordersChanged();
     void currentLayoutNameChanged();
     void downloadWindowSizeChanged();
@@ -125,11 +129,14 @@ private slots:
     void loadConfig();
     void saveConfig();
 
-private:
-    static const QString KWinMetaForwardToLatteString;
-    static const QString KWinMetaForwardToPlasmaString;
+    void shortcutsFileChanged(const QString &file);
 
+private:
     void cleanupSettings();
+
+    void initGlobalShortcutsWatcher();
+    //! access user set global shortcuts for activate entries
+    void parseGlobalShortcuts();
 
     bool kwin_metaForwardedToLatte() const;
     void kwin_forwardMetaToLatte(bool forward);
@@ -151,6 +158,7 @@ private:
     QSize m_downloadWindowSize{800, 550};
     QSize m_layoutsWindowSize{700, 450};
 
+    QStringList m_badgesForActivate{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "z", "x", "c", "v", "b", "n", "m", ",", "."};
     QStringList m_layoutsColumnWidths;
     QStringList m_launchers;
 
@@ -159,6 +167,7 @@ private:
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
+    KSharedConfig::Ptr m_shortcutsConfigPtr;
 
     SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 

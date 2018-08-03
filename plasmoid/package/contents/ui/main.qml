@@ -244,6 +244,8 @@ Item {
     property alias hoveredIndex: icList.hoveredIndex
 
     property QtObject currentLayout : latteDock && latteDock.dockManagedLayout ? latteDock.dockManagedLayout : null
+
+    property var badgesForActivate: latteDock ? latteDock.badgesForActivate : []
     property var managedLayoutName: currentLayout ? currentLayout.name : ""
 
     property Item latteDock: null

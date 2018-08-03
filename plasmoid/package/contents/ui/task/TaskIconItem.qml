@@ -458,10 +458,13 @@ Item{
         Loader{
             id: taskNumberLoader
             anchors.fill: iconImageBuffer
-            active: opacityN>0 && !launcherAnimation.running
+            active: isValidDelayer>0 && !launcherAnimation.running
             asynchronous: true
+            visible: badgeString !== ""
 
             property int fixedIndex:-1
+            property string badgeString: (taskNumberLoader.fixedIndex>=1 && taskNumberLoader.fixedIndex<20 && root.badgesForActivate.length===19) ?
+                                             root.badgesForActivate[taskNumberLoader.fixedIndex-1] : ""
 
             onActiveChanged: {
                 if (active) {
@@ -471,10 +474,10 @@ Item{
 
             Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
 
-            property real opacityN: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<20 ? 1 : 0
+            property real isValidDelayer: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<20 ? 1 : 0
 
-            Behavior on opacityN {
-                NumberAnimation { duration: root.durationTime*2*units.longDuration }
+            Behavior on isValidDelayer {
+                NumberAnimation { duration: root.durationTime*units.longDuration }
             }
 
             sourceComponent: Item{
@@ -496,21 +499,16 @@ Item{
                     id: taskNumber
                     anchors.centerIn: parent
                     border.color: root.minimizedDotColor
-                    //opacity: taskNumberLoader.opacityN && !root.enableShadows ? 1 : 0
 
                     minimumWidth: 0.4 * root.iconSize
                     height: width
-                    numberValue: taskNumberLoader.fixedIndex < 10 ? taskNumberLoader.fixedIndex : 0
-                    textValue: (keysArrayIndex>=0 && keysArrayIndex<10) ? keysAboveTen[keysArrayIndex] : ''
+                    textValue: taskNumberLoader.badgeString
 
-                    showNumber: taskNumberLoader.fixedIndex < 10
-                    showText: taskNumberLoader.fixedIndex>=10 && taskNumberLoader.fixedIndex<20
+                    showNumber: false
+                    showText: true
 
                     proportion: 0
                     radiusPerCentage: 50
-
-                    property int keysArrayIndex: taskNumberLoader.fixedIndex-10;
-                    property var keysAboveTen: ['0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.']
                 }
             }
         }

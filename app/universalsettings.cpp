@@ -28,13 +28,14 @@
 
 #include <QtDBus/QtDBus>
 
+#include <KDirWatch>
 #include <KActivities/Consumer>
 
+#define GLOBALSHORTCUTSCONFIG "kglobalshortcutsrc"
+#define KWINMETAFORWARDTOLATTESTRING "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu"
+#define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
+
 namespace Latte {
-
-const QString UniversalSettings::KWinMetaForwardToLatteString = "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu";
-const QString UniversalSettings::KWinMetaForwardToPlasmaString = "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu";
-
 
 UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
@@ -65,6 +66,74 @@ UniversalSettings::~UniversalSettings()
     }
 }
 
+void UniversalSettings::initGlobalShortcutsWatcher()
+{
+    const QString globalShortcutsFilePath = QDir::homePath() + "/.config/" + GLOBALSHORTCUTSCONFIG;
+    m_shortcutsConfigPtr = KSharedConfig::openConfig(globalShortcutsFilePath);
+
+    KDirWatch::self()->addFile(globalShortcutsFilePath);
+
+    QObject::connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
+    QObject::connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
+}
+
+void UniversalSettings::shortcutsFileChanged(const QString &file)
+{
+    if (!file.endsWith(GLOBALSHORTCUTSCONFIG)) {
+        return;
+    }
+
+    m_shortcutsConfigPtr->reparseConfiguration();
+    parseGlobalShortcuts();
+}
+
+void UniversalSettings::parseGlobalShortcuts()
+{
+    KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
+
+    //! make sure that latte dock records in global shortcuts where found correctly
+    bool recordsExist{true};
+
+    if (!latteGroup.exists()) {
+        recordsExist = false;
+    }
+
+    if (recordsExist) {
+        for (int i = 1; i <= 19; ++i) {
+            QString entry = "activate entry " + QString::number(i);
+
+            if (!latteGroup.hasKey(entry)) {
+                recordsExist = false;
+                break;
+            }
+        }
+    }
+
+    if (recordsExist) {
+        m_badgesForActivate.clear();
+
+        for (int i = 1; i <= 19; ++i) {
+            QString entry = "activate entry " + QString::number(i);
+            QStringList records = latteGroup.readEntry(entry, QStringList());
+
+            QString badge;
+
+            if (records[0] != "none") {
+                QStringList modifiers = records[0].split("+");
+
+                if (modifiers.count() >= 1) {
+                    badge = modifiers[modifiers.count() - 1].toLower();
+                }
+            }
+
+            m_badgesForActivate << badge;
+            emit badgesForActivateChanged();
+        }
+
+        qDebug() << "badges updated to :: " << m_badgesForActivate;
+    }
+}
+
 void UniversalSettings::load()
 {
     //! check if user has set the autostart option
@@ -76,6 +145,10 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
+
+    //! load global shortcuts badges at startup
+    initGlobalShortcutsWatcher();
+    parseGlobalShortcuts();
 }
 
 bool UniversalSettings::showInfoWindow() const
@@ -185,6 +258,11 @@ void UniversalSettings::setLayoutsWindowSize(QSize size)
     emit layoutsWindowSizeChanged();
 }
 
+QStringList UniversalSettings::badgesForActivate() const
+{
+    return m_badgesForActivate;
+}
+
 QStringList UniversalSettings::layoutsColumnWidths() const
 {
     return m_layoutsColumnWidths;
@@ -288,7 +366,7 @@ bool UniversalSettings::kwin_metaForwardedToLatte() const
 
     output = output.remove("\n");
 
-    return (output == UniversalSettings::KWinMetaForwardToLatteString);
+    return (output == KWINMETAFORWARDTOLATTESTRING);
 }
 
 void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
@@ -302,9 +380,9 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
     parameters << "--file" << "kwinrc" << "--group" << "ModifierOnlyShortcuts" << "--key" << "Meta";
 
     if (forward) {
-        parameters << UniversalSettings::KWinMetaForwardToLatteString;
+        parameters << KWINMETAFORWARDTOLATTESTRING;
     } else {
-        parameters << UniversalSettings::KWinMetaForwardToPlasmaString;;
+        parameters << KWINMETAFORWARDTOPLASMASTRING;
     }
 
     process.start("kwriteconfig5", parameters);
