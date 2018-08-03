@@ -40,15 +40,27 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
-    property int proposedWidth: Math.max(200, 0.87 * proposedHeight) + units.smallSpacing * 2
-    property int proposedHeight: Math.min(dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing,
-                                          Math.max(400, 36 * theme.mSize(theme.defaultFont).height))
+    //! max size based on screen resolution
+    property int maxHeight: dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing
+    property int maxWidth: 0.6 * dock.screenGeometry.width
 
+    //! propose size based on font size
+    property int proposedWidth: 0.87 * proposedHeight + units.smallSpacing * 2
+    property int proposedHeight: 36 * theme.mSize(theme.defaultFont).height
+
+    //! user set scales based on its preference, e.g. 96% of the proposed size
     property int userScaleWidth: plasmoid.configuration.windowWidthScale
     property int userScaleHeight: plasmoid.configuration.windowHeightScale
 
-    property int appliedWidth: userScaleWidth !== 100 ? Math.max(200, (userScaleWidth/100) * proposedWidth) : proposedWidth
-    property int appliedHeight: userScaleHeight !== 100 ? Math.max(400, (userScaleHeight/100) * proposedHeight) : proposedHeight
+    //! chosen size to be applied, if the user has set or not a different scale for the settings window
+    property int chosenWidth: userScaleWidth !== 100 ? (userScaleWidth/100) * proposedWidth : proposedWidth
+    property int chosenHeight: userScaleHeight !== 100 ? (userScaleHeight/100) * proposedHeight : proposedHeight
+
+    //! applied size in order to not be out of boundaries
+    //! width can be between 200px - maxWidth
+    //! height can be between 400px - maxHeight
+    property int appliedWidth: Math.min(maxWidth, Math.max(200, chosenWidth))
+    property int appliedHeight: Math.min(maxHeight, Math.max(400, chosenHeight))
 
     width: appliedWidth
     height: appliedHeight
@@ -125,8 +137,7 @@ FocusScope {
     //! notice a annoying delay
     Timer{
         id: scrollDelayer
-
-        interval: 300
+        interval: 75
         onTriggered: backgroundMouseArea.blockWheel = false;
     }
 
