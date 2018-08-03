@@ -34,6 +34,7 @@ Comment[de]=Für Latte-Dock und Latte-Plasmoid
 Comment[el]=Για όλες τις εργασίες διαχωρισμού σας
 Comment[en_GB]=For all your separation tasks
 Comment[es]=Para todas sus tareas de separación
+Comment[eu]=Zure bereizteko ataza guztietarako
 Comment[fi]=Kaikkiin erotustehtäviisi
 Comment[gl]=Para todas as súas tarefas de separación.
 Comment[it]=Per tutti i tuoi processi di separazione

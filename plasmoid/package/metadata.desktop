@@ -31,6 +31,7 @@ Comment[de]=Latte-Starterbereich als Miniprogramm
 Comment[el]=Πρόσθετο της εφαρμογής Latte
 Comment[en_GB]=Plasmoid from the Latte Dock
 Comment[es]=Plasmoide de Latte Dock
+Comment[eu]=Plasmoidea Latte Docketik
 Comment[fi]=Latte-telakan sovelma
 Comment[gl]=Plasmoide da doca Latte.
 Comment[it]=Plasmoide da Latte Dock
