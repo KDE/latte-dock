@@ -122,14 +122,21 @@ void UniversalSettings::parseGlobalShortcuts()
                 QStringList modifiers = records[0].split("+");
 
                 if (modifiers.count() >= 1) {
-                    badge = modifiers[modifiers.count() - 1].toLower();
+                    badge = modifiers[modifiers.count() - 1];
+
+                    //! when shortcut follows Meta+"Character" scheme
+                    if (modifiers.count() == 2 && modifiers[0] == "Meta") {
+                        badge = badge.toLower();
+                    } else {
+                        badge = badge.toUpper();
+                    }
                 }
             }
 
             m_badgesForActivate << badge;
-            emit badgesForActivateChanged();
         }
 
+        emit badgesForActivateChanged();
         qDebug() << "badges updated to :: " << m_badgesForActivate;
     }
 }
