@@ -38,7 +38,7 @@ import org.kde.latte 0.1 as Latte
 
 Column {
     id: instance
-    property var submodelIndex: tasksModel.makeModelIndex(parentIndex, isGroup ? itemIndex : -1)
+    property var submodelIndex
     property int flatIndex: isGroup && itemIndex>=0 ? itemIndex : 0
 
     property bool isActive: (typeof model !== 'undefined') && (typeof model.IsActive !== 'undefined') ? IsActive : false
@@ -166,7 +166,7 @@ Column {
 
                 tasksModel.requestClose(submodelIndex)
             }
-            onContainsMouseChanged: contentItem.checkMouseInside();
+            onContainsMouseChanged: mainToolTip.mouseIsInside();
 
             PlasmaCore.IconItem {
                 anchors.fill: parent
@@ -196,7 +196,7 @@ Column {
 
             readonly property bool isMinimized: isGroup ? instance.isMinimized : mainToolTip.isMinimizedParent
             // TODO: this causes XCB error message when being visible the first time
-            property int winId: isWin && windows[flatIndex] != undefined ? windows[flatIndex] : 0
+            property int winId: isWin && windows[flatIndex] !== undefined ? windows[flatIndex] : 0
 
 
             Loader{
@@ -356,7 +356,7 @@ Column {
                         acceptedButtons: Qt.LeftButton
                         hoverEnabled: true
                         onClicked: mpris2Source.goPrevious(mprisSourceName)
-                        onContainsMouseChanged: contentItem.checkMouseInside();
+                        onContainsMouseChanged: mainToolTip.mouseIsInside();
 
                         PlasmaCore.IconItem {
                             anchors.fill: parent
@@ -377,7 +377,7 @@ Column {
                         acceptedButtons: Qt.LeftButton
                         hoverEnabled: true
                         onClicked: mpris2Source.playPause(mprisSourceName)
-                        onContainsMouseChanged: contentItem.checkMouseInside();
+                        onContainsMouseChanged: mainToolTip.mouseIsInside();
 
                         PlasmaCore.IconItem {
                             anchors.fill: parent
@@ -398,7 +398,7 @@ Column {
                         acceptedButtons: Qt.LeftButton
                         hoverEnabled: true
                         onClicked: mpris2Source.goNext(mprisSourceName)
-                        onContainsMouseChanged: contentItem.checkMouseInside();
+                        onContainsMouseChanged: mainToolTip.mouseIsInside();
 
                         PlasmaCore.IconItem {
                             anchors.fill: parent
@@ -451,8 +451,8 @@ Column {
         text = text.replace(/\s*(?:-|—)*\s*$/, "");
 
         // Add counter back at the end.
-        if (counter != null) {
-            if (text == "") {
+        if (counter !== null) {
+            if (text === "") {
                 text = counter;
             } else {
                 text = text + " " + counter;
@@ -461,14 +461,14 @@ Column {
 
         // In case the window title had only redundant informations (i.e. appName), text is now empty.
         // Add a hyphen to indicate that and avoid empty space.
-        if (text == "") {
+        if (text === "") {
             text = "—";
         }
         return text.toString();
     }
 
     function generateSubText() {
-        if (activitiesParent == undefined) {
+        if (activitiesParent === undefined) {
             return "";
         }
 
@@ -479,9 +479,9 @@ Column {
         if (!plasmoid.configuration.showOnlyCurrentDesktop
                 && virtualDesktopInfo.numberOfDesktops > 1
                 && (isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent) !== true
-                && vd != -1
-                && vd != undefined
-                && virtualDesktopInfo.desktopNames[vd - 1] != undefined) {
+                && vd !== -1
+                && vd !== undefined
+                && virtualDesktopInfo.desktopNames[vd - 1] !== undefined) {
             subTextEntries.push(i18n("On %1", virtualDesktopInfo.desktopNames[vd - 1]));
         }
 
@@ -491,7 +491,7 @@ Column {
             return subTextEntries.join("\n");
         }
 
-        if (act.length == 0 && activityInfo.numberOfRunningActivities > 1) {
+        if (act.length === 0 && activityInfo.numberOfRunningActivities > 1) {
             subTextEntries.push(i18nc("Which virtual desktop a window is currently on",
                                       "Available on all activities"));
         } else if (act.length > 0) {
@@ -500,14 +500,14 @@ Column {
             for (var i = 0; i < act.length; i++) {
                 var activity = act[i];
                 var activityName = activityInfo.activityName(act[i]);
-                if (activityName == "") {
+                if (activityName === "") {
                     continue;
                 }
                 if (plasmoid.configuration.showOnlyCurrentActivity) {
-                    if (activity != activityInfo.currentActivity) {
+                    if (activity !== activityInfo.currentActivity) {
                         activityNames.push(activityName);
                     }
-                } else if (activity != activityInfo.currentActivity) {
+                } else if (activity !== activityInfo.currentActivity) {
                     activityNames.push(activityName);
                 }
             }

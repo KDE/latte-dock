@@ -41,12 +41,11 @@ MouseArea {
             root.createContextMenu(rootTask, modelIndex).show();
         }
         icList.hoveredIndex = -1;
-        windowsPreviewDlg.hide();
-        //rootTask.hideToolTipTemporarily();
+        windowsPreviewDlg.hide("7.1");
     }
 
     onContainsMouseChanged: {
-        contentItem.checkMouseInside();
+        mainToolTip.mouseIsInside();
         root.windowsHovered([winId], containsMouse);
     }
 }

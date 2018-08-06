@@ -176,7 +176,7 @@ Item {
                 activationTimer.stop();
             }
 
-            if (hoveredItem && windowsPreviewDlg.visible && toolTipDelegate.parentIndex !== hoveredItem.itemIndex ) {
+            if (hoveredItem && windowsPreviewDlg.visible && toolTipDelegate.rootIndex !== hoveredItem.modelIndex() ) {
                 windowsPreviewDlg.hide(6);
             }
         }
