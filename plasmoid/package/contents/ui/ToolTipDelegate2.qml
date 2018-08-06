@@ -38,7 +38,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 PlasmaExtras.ScrollArea {
     id: mainToolTip
     property Item parentTask
-    property int parentIndex: -1
+    property var rootIndex
 
     property string appName
     property int pidParent
@@ -62,7 +62,7 @@ PlasmaExtras.ScrollArea {
     property bool isOnAllVirtualDesktopsParent
     property var activitiesParent
     //
-    readonly property bool isVerticalPanel: plasmoid.formFactor == PlasmaCore.Types.Vertical
+    readonly property bool isVerticalPanel: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
     Layout.minimumWidth: contentItem.width
     Layout.maximumWidth: Layout.minimumWidth
@@ -83,18 +83,17 @@ PlasmaExtras.ScrollArea {
             return isVerticalPanel ? contentItem.height > viewport.height : contentItem.width > viewport.width
         });
     }
+
     Item{
         width: contentItem.width
         height: contentItem.height
 
+        //! DropArea
         DropArea {
             id: dropMainArea
-            anchors.fill: contentItem
+            anchors.fill: parent
             enabled: isGroup
-
             preventStealing: true
-
-            property bool dragInside: false
 
             property QtObject currentWindow
 
@@ -103,120 +102,117 @@ PlasmaExtras.ScrollArea {
             }
 
             onDragMove: {
-                var current = groupTask.childAtPos(event.x, event.y);
+                var current = mainToolTip.instanceAtPos(event.x, event.y);
 
                 if (current && currentWindow !== current && current.submodelIndex) {
                     currentWindow = current;
                     tasksModel.requestActivate(current.submodelIndex);
                 }
             }
-        }
+        } //! DropArea
 
+        //! Underneath MouseArea
         MouseArea {
-            id: contentItem
-            width: childrenRect.width
-            height: childrenRect.height
-
+            id: contentItemMouseArea
+            anchors.fill: parent
             hoverEnabled: true
 
             onContainsMouseChanged: {
-                checkMouseInside();
+                mainToolTip.mouseIsInside();
             }
+        }//! MouseArea
 
-            function checkMouseInside(){
-                var isInside = containsMouse || childrenContainMouse() || (parentTask && parentTask.containsMouse);
-                if (isInside){
-                    //root.disableRestoreZoom = true;
-                    mainToolTip.containsMouse = true;
+        Loader {
+            id: contentItem
+            active: mainToolTip.rootIndex !== undefined
+            asynchronous: true
+            sourceComponent: isGroup ? groupToolTip : singleTooltip
 
-                    if(!root.latteDock)
-                        checkListHovered.stop();
-                }
-                else{
-                    //root.disableRestoreZoom = false;
-                    mainToolTip.containsMouse = false;
+            Component {
+                id: singleTooltip
 
-                    if(!root.latteDock)
-                        checkListHovered.startDuration(100);
-                    else
-                        root.latteDock.startCheckRestoreZoomTimer();
+                ToolTipInstance {
+                    submodelIndex: mainToolTip.rootIndex
                 }
             }
 
-            function childrenContainMouse() {
-                return singleTask.containsMouse() || groupTask.containsMouse();
-            }
+            Component {
+                id: groupToolTip
 
-            ToolTipInstance {
-                id: singleTask
-                visible: !isGroup
-            }
+                Grid {
+                    rows: !isVerticalPanel
+                    columns: isVerticalPanel
+                    flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
+                    spacing: units.largeSpacing
 
-            Grid {
-                id: groupTask
-                rows: !isVerticalPanel
-                columns: isVerticalPanel
-                flow: isVerticalPanel ? Grid.TopToBottom : Grid.LeftToRight
-                spacing: units.largeSpacing
-
-                width: isGroup ? childrenRect.width : 0
-                height: isGroup ? childrenRect.height : 0
-
-                visible: isGroup && parentIndex !== -1
-
-                Loader {
-                    id: modelLoader
-                    active: groupTask.visible
-
-                    sourceComponent: Repeater {
+                    Repeater {
                         id: groupRepeater
-
                         model: DelegateModel {
-                            id: delegateModel
+                            model: mainToolTip.rootIndex ? tasksModel : null
+                            rootIndex: mainToolTip.rootIndex
 
-                            model: parentIndex !== -1 && isGroup ? tasksModel : undefined
-                            rootIndex: tasksModel.makeModelIndex(parentIndex, -1)
-                            delegate: ToolTipInstance {}
-                        }
-
-                        Component.onCompleted: {
-                            parent = groupTask
+                            delegate: ToolTipInstance {
+                                submodelIndex: tasksModel.makeModelIndex(mainToolTip.rootIndex.row, index)
+                            }
                         }
                     }
-                }
-
-
-                function containsMouse(){
-                    for(var i=1; i<children.length-1; ++i) {
-                        if(children[i].containsMouse())
-                            return true;
-                    }
-
-                    return false;
-                }
-
-                function childAtPos(x, y){
-                    var tasks = groupTask.children;
-
-                    for(var i=0; i<tasks.length; ++i){
-                        var task = tasks[i];
-
-                        var choords = contentItem.mapFromItem(task,0, 0);
-
-                        if(choords.y < 0)
-                            choords.y = 0;
-                        if(choords.x < 0)
-                            choords.x = 0;
-
-                        if( (x>=choords.x) && (x<=choords.x+task.width)
-                                && (y>=choords.y) && (y<=choords.y+task.height)){
-                            return task;
-                        }
-                    }
-
-                    return null;
                 }
             }
+        } //! Loader
+    } //! Item
+
+    //! Central Functionality
+    function mouseIsInside(){
+        var isInside = contentItemMouseArea.containsMouse || instancesContainMouse() || (parentTask && parentTask.containsMouse);
+
+        if (isInside){
+            mainToolTip.containsMouse = true;
+
+            if(!root.latteDock)
+                checkListHovered.stop();
+        } else {
+            mainToolTip.containsMouse = false;
+
+            if(!root.latteDock)
+                checkListHovered.startDuration(100);
+            else
+                root.latteDock.startCheckRestoreZoomTimer();
         }
     }
+
+    function instancesContainMouse() {
+        var previewInstances = isGroup ? contentItem.children[0].children : contentItem.children;
+        var instancesLength = previewInstances.length;
+
+        for(var i=instancesLength-1; i>=0; --i) {
+            if( (typeof(previewInstances[i].containsMouse) === "function") //ignore unrelevant objects
+                    &&  previewInstances[i].containsMouse())
+                return true;
+        }
+
+        return false;
+    }
+
+    function instanceAtPos(x, y){
+        var previewInstances = isGroup ? contentItem.children[0].children : contentItem.children;
+        var instancesLength = previewInstances.length;
+
+        for(var i=0; i<instancesLength; ++i){
+            var instance = previewInstances[i];
+            var choords = contentItem.mapFromItem(instance,0, 0);
+
+            if(choords.y < 0)
+                choords.y = 0;
+            if(choords.x < 0)
+                choords.x = 0;
+
+            if( (x>=choords.x) && (x<=choords.x+instance.width)
+                    && (y>=choords.y) && (y<=choords.y+instance.height)){
+                return instance;
+            }
+        }
+        return null;
+    }
 }
+
+

@@ -1007,7 +1007,7 @@ MouseArea{
         windowsPreviewDlg.visualParent = previewsVisualParent;
 
         toolTipDelegate.parentTask = mainItemContainer;
-        toolTipDelegate.parentIndex = itemIndex;
+        toolTipDelegate.rootIndex = tasksModel.makeModelIndex(itemIndex, -1);
 
         toolTipDelegate.hideCloseButtons = hideClose;
 
