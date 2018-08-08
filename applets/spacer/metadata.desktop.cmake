@@ -50,6 +50,7 @@ Type=Service
 Keywords=spacer
 Keywords[ca]=espaiador
 Keywords[ca@valencia]=espaiador
+Keywords[cs]=oddělovač
 Keywords[da]=afstandsstykke
 Keywords[de]=Abstandshalter
 Keywords[el]=κενό
