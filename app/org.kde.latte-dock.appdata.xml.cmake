@@ -33,6 +33,7 @@
   <summary xml:lang="ar">رصيف للأمور الكبيرة</summary>
   <summary xml:lang="ca">Dock per a les masses</summary>
   <summary xml:lang="ca-valencia">Dock per a les masses</summary>
+  <summary xml:lang="cs">Dok pro masy</summary>
   <summary xml:lang="da">Dok til masserne</summary>
   <summary xml:lang="de">Dock für die Massen</summary>
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
@@ -120,6 +121,7 @@
   <developer_name xml:lang="ast">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca-valencia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="cs">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="de">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="el">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="en-GB">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
