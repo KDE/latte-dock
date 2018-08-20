@@ -106,7 +106,7 @@ Item{
         target: dock
         property: "dockTransparency"
         when: dock
-        value: root.panelTransparency
+        value: root.currentPanelTransparency
     }
 
     Binding{

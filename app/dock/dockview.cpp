@@ -1605,7 +1605,10 @@ void DockView::updateEffects()
         }
     } else if (m_behaveAsPlasmaPanel && m_drawEffects) {
         KWindowEffects::enableBlurBehind(winId(), true);
-        KWindowEffects::enableBackgroundContrast(winId(), m_theme.backgroundContrastEnabled(),
+
+        bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_dockTransparency == 100);
+
+        KWindowEffects::enableBackgroundContrast(winId(), drawBackgroundEffect,
                 m_theme.backgroundContrast(),
                 m_theme.backgroundIntensity(),
                 m_theme.backgroundSaturation());

@@ -309,6 +309,12 @@ Item{
             Component.onCompleted: root.updateEffectsArea.connect(updateEffectsArea);
             Component.onDestruction: root.updateEffectsArea.disconnect(updateEffectsArea);
 
+            Binding{
+                target: root
+                property: "currentPanelTransparency"
+                value: solidBackground.opacity * 100
+            }
+
             Connections{
                 target: root
 

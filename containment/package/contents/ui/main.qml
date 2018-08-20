@@ -187,7 +187,9 @@ DragDrop.DropArea {
     property int modifierClick: plasmoid.configuration.modifierClick
 
     property int panelEdgeSpacing: Math.max(panelBoxBackground.lengthMargins, 1.5*appShadowSize)
-    property int panelTransparency: plasmoid.configuration.panelTransparency
+    property int panelTransparency: plasmoid.configuration.panelTransparency //user set
+    property int currentPanelTransparency: 0 //application override
+
     property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
                                         || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
                                        && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized))
