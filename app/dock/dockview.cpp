@@ -490,14 +490,9 @@ void DockView::reconsiderScreen()
 
     qDebug() << "dock screen exists  ::: " << screenExists;
 
-    int docksWithTasks = m_managedLayout ? m_managedLayout->noDocksWithTasks() : 0;
-
     //! 1.a primary dock must be always on the primary screen
-    //! 2.the last tasks dock must also always on the primary screen
-    //! even though it has been configured as an explicit
-    if ((m_onPrimary || (tasksPresent() && docksWithTasks == 1 && !screenExists))
-        && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
-            || m_screenToFollow != qGuiApp->primaryScreen())) {
+    if (m_onPrimary && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
+                        || m_screenToFollow != qGuiApp->primaryScreen())) {
         using Plasma::Types;
         QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                      Types::TopEdge, Types::RightEdge};
@@ -510,25 +505,18 @@ void DockView::reconsiderScreen()
         qDebug() << "dock location:" << location();
 
         if (edges.contains(location())) {
-            //! case 2
-            if (!m_onPrimary && !screenExists && tasksPresent() && (docksWithTasks == 1)) {
-                qDebug() << "reached case 2 of updating dock primary screen...";
-                setScreenToFollow(qGuiApp->primaryScreen(), false);
-            } else {
-                //! case 1
-                qDebug() << "reached case 1 of updating dock primary screen...";
-                setScreenToFollow(qGuiApp->primaryScreen());
-            }
-
+            //! case 1
+            qDebug() << "reached case 1: of updating dock primary screen...";
+            setScreenToFollow(qGuiApp->primaryScreen());
             syncGeometry();
         }
     } else if (!m_onPrimary) {
-        //! 3.an explicit dock must be always on the correct associated screen
+        //! 2.an explicit dock must be always on the correct associated screen
         //! there are cases that window manager misplaces the dock, this function
         //! ensures that this dock will return at its correct screen
         foreach (auto scr, qGuiApp->screens()) {
             if (scr && scr->name() == m_screenToFollowId) {
-                qDebug() << "updating the explicit screen for dock...";
+                qDebug() << "reached case 2: updating the explicit screen for dock...";
                 setScreenToFollow(scr);
                 syncGeometry();
                 break;
