@@ -861,11 +861,9 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
         return;
     }
 
-    auto metadata = containment->kPackage().metadata();
-
     qDebug() << "step 1...";
 
-    if (metadata.pluginId() != "org.kde.latte.containment")
+    if (!isLatteContainment(containment))
         return;
 
     qDebug() << "step 2...";
@@ -1423,9 +1421,7 @@ QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
     //QList<Plasma::Containment *> systrays;
 
     foreach (auto containment, newContainments) {
-        KPluginMetaData meta = containment->kPackage().metadata();
-
-        if (meta.pluginId() == "org.kde.latte.containment") {
+        if (isLatteContainment(containment)) {
             qDebug() << "new latte containment id: " << containment->id();
             importedDocks << containment;
         }
@@ -1499,44 +1495,49 @@ void Layout::syncDockViewsToScreens()
 
     //! first step: primary docks must be placed in primary screen free edges
     foreach (auto containment, m_containments) {
-        int screenId = containment->screen();
+        if (isLatteContainment(containment)) {
+            int screenId = containment->screen();
 
-        if (screenId == -1) {
-            screenId = containment->lastScreen();
-        }
+            if (screenId == -1) {
+                screenId = containment->lastScreen();
+            }
 
-        bool onPrimary = containment->config().readEntry("onPrimary", true);
-        Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
 
-        if (onPrimary && !futureDocksLocations[prmScreenName].contains(location)) {
-            futureDocksLocations[prmScreenName].append(location);
-            futureShownViews.append(containment->id());
+            if (onPrimary && !futureDocksLocations[prmScreenName].contains(location)) {
+                futureDocksLocations[prmScreenName].append(location);
+                futureShownViews.append(containment->id());
+            }
         }
     }
 
     //! second step: explicit docks must be placed in their screens if the screen edge is free
     foreach (auto containment, m_containments) {
-        int screenId = containment->screen();
+        if (isLatteContainment(containment)) {
+            int screenId = containment->screen();
 
-        if (screenId == -1) {
-            screenId = containment->lastScreen();
-        }
+            if (screenId == -1) {
+                screenId = containment->lastScreen();
+            }
 
-        bool onPrimary = containment->config().readEntry("onPrimary", true);
-        Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+            bool onPrimary = containment->config().readEntry("onPrimary", true);
+            Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
 
-        if (!onPrimary) {
-            QString expScreenName = m_corona->screenPool()->connector(screenId);
+            if (!onPrimary) {
+                QString expScreenName = m_corona->screenPool()->connector(screenId);
 
-            if (m_corona->screenPool()->screenExists(screenId) && !futureDocksLocations[expScreenName].contains(location)) {
-                futureDocksLocations[expScreenName].append(location);
-                futureShownViews.append(containment->id());
+                if (m_corona->screenPool()->screenExists(screenId) && !futureDocksLocations[expScreenName].contains(location)) {
+                    futureDocksLocations[expScreenName].append(location);
+                    futureShownViews.append(containment->id());
+                }
             }
         }
     }
 
     qDebug() << "PRIMARY SCREEN :: " << prmScreenName;
     qDebug() << "DOCKVIEWS MUST BE PRESENT AT :: " << futureDocksLocations;
+    qDebug() << "FUTURESHOWNVIEWS MUST BE :: " << futureShownViews;
 
     //! add views
     foreach (auto containment, m_containments) {
@@ -1547,7 +1548,7 @@ void Layout::syncDockViewsToScreens()
         }
 
         if (!dockViewExists(containment) && futureShownViews.contains(containment->id())) {
-            qDebug() << "syncDockViewsToScreens: view must be added... for:" << m_corona->screenPool()->connector(screenId);
+            qDebug() << "syncDockViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << m_corona->screenPool()->connector(screenId);
             addDock(containment);
         }
     }
@@ -1555,7 +1556,7 @@ void Layout::syncDockViewsToScreens()
     //! remove views
     foreach (auto view, m_dockViews) {
         if (view->containment() && !futureShownViews.contains(view->containment()->id())) {
-            qDebug() << "syncDockViewsToScreens: view must be deleted... for:" << view->currentScreen();
+            qDebug() << "syncDockViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->currentScreen();
             auto viewToDelete = m_dockViews.take(view->containment());
             viewToDelete->disconnectSensitiveSignals();
             viewToDelete->deleteLater();
@@ -1808,7 +1809,7 @@ bool Layout::explicitDockOccupyEdge(int screen, Plasma::Types::Location location
     }
 
     foreach (auto containment, m_containments) {
-        if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
+        if (isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             int id = containment->lastScreen();
             Plasma::Types::Location contLocation = containment->location();
@@ -1829,7 +1830,7 @@ bool Layout::primaryDockOccupyEdge(Plasma::Types::Location location) const
     }
 
     foreach (auto containment, m_containments) {
-        if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
+        if (isLatteContainment(containment)) {
             bool onPrimary = containment->config().readEntry("onPrimary", true);
             Plasma::Types::Location contLocation = containment->location();
 
@@ -1837,6 +1838,19 @@ bool Layout::primaryDockOccupyEdge(Plasma::Types::Location location) const
                 return true;
             }
         }
+    }
+
+    return false;
+}
+
+bool Layout::isLatteContainment(Plasma::Containment *containment) const
+{
+    if (!containment) {
+        return false;
+    }
+
+    if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
+        return true;
     }
 
     return false;
