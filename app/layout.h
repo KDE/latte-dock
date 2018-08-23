@@ -188,6 +188,9 @@ private:
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
     bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
 
+    //! Check if a containment is a latte dock/panel
+    bool isLatteContainment(Plasma::Containment *containment) const;
+
     bool kwin_disabledMaximizedBorders() const;
     void kwin_setDisabledMaximizedBorders(bool disable);
 
