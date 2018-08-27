@@ -137,8 +137,8 @@ Item{
         height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
-        imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "widgets/panel-background"
-        prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive ? "" : "shadow"
+        imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive || !hasElementPrefix("shadow") ? "" : "widgets/panel-background"
+        prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive || !hasElementPrefix("shadow") ? "" : "shadow"
 
         visible: (opacity == 0) ? false : true
 
@@ -306,8 +306,14 @@ Item{
             onWidthChanged: updateEffectsArea();
             onHeightChanged: updateEffectsArea();
 
-            Component.onCompleted: root.updateEffectsArea.connect(updateEffectsArea);
-            Component.onDestruction: root.updateEffectsArea.disconnect(updateEffectsArea);
+            Component.onCompleted: {
+                root.updateEffectsArea.connect(updateEffectsArea);
+                adjustPrefix();
+            }
+
+            Component.onDestruction: {
+                root.updateEffectsArea.disconnect(updateEffectsArea);
+            }
 
             Binding{
                 target: root
@@ -323,6 +329,10 @@ Item{
                         solidBackground.updateEffectsArea();
                     }
                 }
+
+                onSolidPanelChanged: {
+                    adjustPrefix();
+                }
             }
 
             //! Fix for FrameSvgItem QML version not updating its margins after a theme change
@@ -331,10 +341,16 @@ Item{
             Connections{
                 target: dock
                 onThemeChanged: {
+                    solidBackground.adjustPrefix();
                     plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
                     plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;
                     updateEffectsArea();
                 }
+            }
+
+            Connections{
+                target: plasmoid
+                onLocationChanged: solidBackground.adjustPrefix();
             }
 
             function updateEffectsArea(){
@@ -448,11 +464,8 @@ Item{
                 default:
                     prefix = "";
                 }
-                if (hasElementPrefix(pre)) {
-                    prefix = pre;
-                } else {
-                    prefix = "";
-                }
+
+                prefix = [pre, ""];
             }
         }
 
