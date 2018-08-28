@@ -66,6 +66,7 @@ PlasmaComponents.ContextMenu {
             activitiesDesktopsMenu.refresh();
         } else if (status == PlasmaComponents.DialogStatus.Closed) {
             root.startCheckRestoreZoomTimer(100);
+            root.contextMenu = null;
             menu.destroy();
             backend.ungrabMouse(visualParent);
         }
@@ -83,8 +84,9 @@ PlasmaComponents.ContextMenu {
         loadDynamicLaunchActions(visualParent.m.LauncherUrlWithoutIcon);
         // backend.ungrabMouse(visualParent);
         openRelative();
+
         windowsPreviewDlg.contextMenu = true;
-        windowsPreviewDlg.hide();
+        windowsPreviewDlg.hide("8.2");
 
         icList.directRender = false;
 

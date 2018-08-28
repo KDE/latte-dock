@@ -1145,7 +1145,11 @@ MouseArea{
             contextMenu = root.createContextMenu(mainItemContainer, modelIndex(), args);
             contextMenu.show();
         } else {
-            root.contextMenu.close();
+            //! make sure that context menu isnt deleted multiple times and creates a crash
+            //! bug case: 397635
+            var cMenu = root.contextMenu;
+            root.contextMenu = null;
+            cMenu.destroy();
         }
     }
 
