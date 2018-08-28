@@ -137,8 +137,10 @@ Item{
         height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
-        imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive || !hasElementPrefix("shadow") ? "" : "widgets/panel-background"
-        prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive || !root.panelShadowsActive || !hasElementPrefix("shadow") ? "" : "shadow"
+        imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive
+                   || !root.panelShadowsActive ? "" : "widgets/panel-background"
+        prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive
+                || !root.panelShadowsActive ? "" : "shadow"
 
         visible: (opacity == 0) ? false : true
 
