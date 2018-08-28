@@ -221,6 +221,7 @@ void DockView::init()
     connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeHasShadowChanged);
 
     connect(this, &DockView::normalThicknessChanged, this, [&]() {
         if (m_behaveAsPlasmaPanel) {
@@ -1288,6 +1289,10 @@ void DockView::setMaskArea(QRect area)
     emit maskAreaChanged();
 }
 
+bool DockView::themeHasShadow() const
+{
+    return PanelShadows::self()->enabled();
+}
 
 QRect DockView::effectsArea() const
 {

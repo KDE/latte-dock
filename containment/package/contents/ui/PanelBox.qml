@@ -138,9 +138,9 @@ Item{
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
         imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive
-                   || !root.panelShadowsActive ? "" : "widgets/panel-background"
+                   || !root.panelShadowsActive || !themeHasShadow ? "" : "widgets/panel-background"
         prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive
-                || !root.panelShadowsActive ? "" : "shadow"
+                || !root.panelShadowsActive || !themeHasShadow ? "" : "shadow"
 
         visible: (opacity == 0) ? false : true
 
@@ -152,6 +152,8 @@ Item{
         }
 
         enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+
+        property bool themeHasShadow: dock ? dock.themeHasShadow : false
 
         Behavior on opacity {
             enabled: Latte.WindowSystem.compositingActive

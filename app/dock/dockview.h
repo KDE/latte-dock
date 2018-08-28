@@ -71,6 +71,7 @@ class DockView : public PlasmaQuick::ContainmentView
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
+    Q_PROPERTY(bool themeHasShadow READ themeHasShadow NOTIFY themeHasShadowChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
@@ -147,6 +148,8 @@ public:
 
     bool inEditMode() const;
     void setInEditMode(bool edit);
+
+    bool themeHasShadow() const;
 
     float maxLength() const;
     void setMaxLength(float length);
@@ -293,6 +296,7 @@ signals:
     void screenGeometryChanged();
     void shadowChanged();
     void themeChanged();
+    void themeHasShadowChanged();
     void totalDocksCountChanged();
     void xChanged();
     void yChanged();
