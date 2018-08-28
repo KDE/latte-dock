@@ -483,7 +483,6 @@ Item {
         mainItem: toolTipDelegate
         visible: false
 
-        property bool contextMenu: false
         property bool signalSent: false
         property Item activeItem: null
 
@@ -505,7 +504,7 @@ Item {
 
             windowsPreviewDlg.activeItem = null;
 
-            if (!contextMenu)
+            if (!root.contextMenu)
                 root.disableRestoreZoom = false;
 
             visible = false;
@@ -572,7 +571,7 @@ Item {
 
         onTriggered: {
             if (windowsPreviewDlg.visible && root.contextMenu) {
-                windowsPreviewDlg.hide();
+                windowsPreviewDlg.hide("8.2");
             }
         }
     }
