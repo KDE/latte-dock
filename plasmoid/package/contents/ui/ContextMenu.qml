@@ -85,8 +85,12 @@ PlasmaComponents.ContextMenu {
         // backend.ungrabMouse(visualParent);
         openRelative();
 
-        windowsPreviewDlg.contextMenu = true;
-        windowsPreviewDlg.hide("8.2");
+        if (Latte.WindowSystem.isPlatformWayland){
+            //!Hiding previews under wayland it needs a delay otherwise it creates crashes
+            windowsPreviewCheckerToNotShowTimer.start();
+        } else {
+            windowsPreviewDlg.hide("9.4");
+        }
 
         icList.directRender = false;
 
@@ -276,7 +280,6 @@ PlasmaComponents.ContextMenu {
 
     Component.onDestruction: {
         if (!changingLayout) {
-            windowsPreviewDlg.contextMenu = false;
             root.contextMenu = null;
             backend.ungrabMouse(visualParent);
             root.signalActionsBlockHiding(-1);
