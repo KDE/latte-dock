@@ -33,7 +33,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QQmlProperty>
-#include <QtDBus/QtDBus>
+#include <QtDBus>
 
 #include <KActivities/Consumer>
 #include <KActivities/Controller>
@@ -524,7 +524,7 @@ void LayoutManager::loadLayoutOnStartup(QString layoutName)
     // if (memoryUsage() == Dock::MultipleLayouts) {
     QStringList layouts = m_importer->checkRepairMultipleLayoutsLinkedFile();
 
-    //! Latte didnt close correctly, maybe a crash
+    //! Latte didn't close correctly, maybe a crash
     if (layouts.size() > 0) {
         QMessageBox *msg = new QMessageBox();
         msg->setAttribute(Qt::WA_DeleteOnClose);
@@ -995,7 +995,7 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     filter.append(QString(layoutName + "*.layout.latte"));
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
-    //! if the newLayout already exists provide a newName that doesnt
+    //! if the newLayout already exists provide a newName that doesn't
     if (files.count() >= 1) {
         int newCounter = files.count() + 1;
 

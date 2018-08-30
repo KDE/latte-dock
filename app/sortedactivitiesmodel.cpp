@@ -441,6 +441,6 @@ float SortedActivitiesModel::luminasFromFile(QString imageFile, int edge)
         return areaLumin;
     }
 
-    //! didnt find anything
+    //! didn't find anything
     return -1000;
 }

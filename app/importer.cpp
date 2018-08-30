@@ -186,7 +186,7 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName, Q
 {
     QFile oldAppletsrc(oldAppletsPath);
 
-    //! old file doesnt exist
+    //! old file doesn't exist
     if (!oldAppletsrc.exists()) {
         return QString();
     }
@@ -225,7 +225,7 @@ QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName, Q
     filter.append(QString(newName + "*.layout.latte"));
     QStringList files = layoutDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
 
-    //! if the newLayout already exists provide a newName that doesnt
+    //! if the newLayout already exists provide a newName that doesn't
     if (files.count() >= 1) {
         int newCounter = files.count() + 1;
 

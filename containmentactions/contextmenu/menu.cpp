@@ -25,7 +25,7 @@
 #include <QDebug>
 #include <QFont>
 #include <QMenu>
-#include <QtDBus/QtDBus>
+#include <QtDBus>
 #include <QTimer>
 
 #include <KActionCollection>

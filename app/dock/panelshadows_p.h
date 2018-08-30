@@ -16,8 +16,8 @@
 *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef PLASMA_PANELSHADOWS_H
-#define PLASMA_PANELSHADOWS_H
+#ifndef PLASMA_PANELSHADOWS_P_H
+#define PLASMA_PANELSHADOWS_P_H
 
 #include <QSet>
 

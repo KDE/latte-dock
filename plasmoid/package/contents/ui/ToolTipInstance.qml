@@ -459,7 +459,7 @@ Column {
             }
         }
 
-        // In case the window title had only redundant informations (i.e. appName), text is now empty.
+        // In case the window title had only redundant information (i.e. appName), text is now empty.
         // Add a hyphen to indicate that and avoid empty space.
         if (text === "") {
             text = "—";

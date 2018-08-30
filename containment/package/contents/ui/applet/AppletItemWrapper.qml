@@ -48,7 +48,7 @@ Item{
         }
 
         if (container.latteApplet) {
-            //! commented because it was breaking the context menu available area, I dont remember where
+            //! commented because it was breaking the context menu available area, I don't remember where
             //! we needed this...
 
             // if (container.showZoomed && root.isVertical)
@@ -76,7 +76,7 @@ Item{
         }
 
         if (container.latteApplet) {
-            //! commented because it was breaking the context menu available area, I dont remember where
+            //! commented because it was breaking the context menu available area, I don't remember where
             //! we needed this...
 
             //if (container.showZoomed && root.isHorizontal)
@@ -644,7 +644,7 @@ Item{
             target: appletNumberLoader
             property:"badgeString"
             value: {
-                //! dont change value on hiding/releasing
+                //! don't change value on hiding/releasing
                 if (!root.showMetaBadge && !root.showAppletsNumbers) {
                     return;
                 }

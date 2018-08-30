@@ -736,7 +736,7 @@ bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)
 
     }
 
-    qDebug() << "dockAtLowerScreenPriority : shouldnt had reached here...";
+    qDebug() << "dockAtLowerScreenPriority : shouldn't had reached here...";
     return false;
 }
 

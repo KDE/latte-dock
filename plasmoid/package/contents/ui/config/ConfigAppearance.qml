@@ -271,7 +271,7 @@ Item {
             }
             /////
             //spacer to set a minimumWidth for sliders
-            //Layout.minimumWidth didnt work
+            //Layout.minimumWidth didn't work
             Label{}
             //  Label{Layout.maximumWidth: 275}
             Label{}

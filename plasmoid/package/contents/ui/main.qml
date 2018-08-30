@@ -89,7 +89,7 @@ Item {
     property int tasksStarting: 0
     property int realSize: iconSize + iconMargin
 
-    ///Dont use Math.floor it adds one pixel in animations and creates glitches
+    ///Don't use Math.floor it adds one pixel in animations and creates glitches
     property int widthMargins: root.vertical ? thickMargin : iconMargin
     property int heightMargins: !root.vertical ? thickMargin : iconMargin
 
@@ -902,7 +902,7 @@ Item {
 
         onTriggered: {
             if(root.latteDock)
-                console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldnt...");
+                console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldn't...");
 
             if (!root.containsMouse()) {
 

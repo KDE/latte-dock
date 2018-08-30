@@ -133,7 +133,7 @@ DockCorona::~DockCorona()
     //! BEGIN: Give the time to slide-out docks when closing
     m_layoutManager->hideAllDocks();
 
-    //! Dont delay the destruction under wayland in any case
+    //! Don't delay the destruction under wayland in any case
     //! because it creates a crash with kwin effects
     //! https://bugs.kde.org/show_bug.cgi?id=392890
     if (!KWindowSystem::isPlatformWayland()) {
@@ -430,7 +430,7 @@ QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout)
                 int realThickness = view->normalThickness() - view->shadow();
 
                 // Usually availableScreenRect is used by the desktop,
-                // but Latte dont have desktop, then here just
+                // but Latte don't have desktop, then here just
                 // need calculate available space for top and bottom location,
                 // because the left and right are those who dodge others docks
                 switch (view->location()) {
@@ -555,7 +555,7 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
                 auto dockRect = view->absGeometry();
 
                 // Usually availableScreenRect is used by the desktop,
-                // but Latte dont have desktop, then here just
+                // but Latte don't have desktop, then here just
                 // need calculate available space for top and bottom location,
                 // because the left and right are those who dodge others docks
                 switch (view->location()) {

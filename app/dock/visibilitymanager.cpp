@@ -432,7 +432,7 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
     if (raiseTemporarily)
         return;
 
-    //!dont send false raiseDock signal when containing mouse
+    //!don't send false raiseDock signal when containing mouse
     if (containsMouse) {
         raiseDock(true);
         return;
@@ -450,7 +450,7 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
         winfo = wm->requestInfo(wm->activeWindow());
     }
 
-    //!dont send false raiseDock signal when containing mouse
+    //!don't send false raiseDock signal when containing mouse
     if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid)) {
         raiseDock(!intersects(winfo));
     }
@@ -461,7 +461,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
     if (raiseTemporarily)
         return;
 
-    //!dont send false raiseDock signal when containing mouse
+    //!don't send false raiseDock signal when containing mouse
     if (containsMouse) {
         raiseDock(true);
         return;
@@ -491,7 +491,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
                 && intersects(winfo));
     };
 
-    //!dont send false raiseDock signal when containing mouse
+    //!don't send false raiseDock signal when containing mouse
     if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
         raiseDock(view->formFactor() == Plasma::Types::Vertical
                   ? !isMaxHoriz() : !isMaxVert());
@@ -505,7 +505,7 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
     if (windows.find(wid) == std::end(windows))
         return;
 
-    //!dont send false raiseDock signal when containing mouse
+    //!don't send false raiseDock signal when containing mouse
     if (containsMouse) {
         raiseDock(true);
         return;

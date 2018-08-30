@@ -72,7 +72,7 @@ public:
     //! check if this layout exists already in the latte directory
     static bool layoutExists(QString layoutName);
     //! imports the specific layout and return the new layout name.
-    //! if the function didnt succeed return an empty string
+    //! if the function didn't succeed return an empty string
     static QString importLayoutHelper(QString fileName);
 
     //! return the file path of a layout either existing or not
@@ -83,7 +83,7 @@ public:
     static QStringList availableLayouts();
     //! it checks the linked file if there are Containments in it that belong
     //! to Original Layouts and moves them accordingly. This is used mainly on
-    //! startup and if such state occurs, it basically means that the app didnt
+    //! startup and if such state occurs, it basically means that the app didn't
     //! close correctly, e.g. there was a crash.
     static QStringList checkRepairMultipleLayoutsLinkedFile();
 

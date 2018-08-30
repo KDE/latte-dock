@@ -60,7 +60,7 @@
 namespace Latte {
 
 //! both alwaysVisible and dockWinBehavior are passed through corona because
-//! during the dock window creation containment hasnt been set, but these variables
+//! during the dock window creation containment hasn't been set, but these variables
 //! are needed in order for window flags to be set correctly
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
@@ -122,8 +122,8 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
 
     //! under X11 it was identified that windows many times especially under screen changes
-    //! dont end up at the correct position and size. This timer will enforce repositionings
-    //! and resizes every 500ms if the window hasnt end up to correct values and until this
+    //! don't end up at the correct position and size. This timer will enforce repositionings
+    //! and resizes every 500ms if the window hasn't end up to correct values and until this
     //! is achieved
     m_validateGeometryTimer.setSingleShot(true);
     m_validateGeometryTimer.setInterval(500);
@@ -719,7 +719,7 @@ QRect DockView::maximumNormalGeometry()
     }
 
     //! this is needed in order to preserve that the top dock will be above
-    //! the others in case flag bypasswindowmanagerhint hasnt be set,
+    //! the others in case flag bypasswindowmanagerhint hasn't be set,
     //! such a case is the AlwaysVisible mode
     if (location() == Plasma::Types::TopEdge) {
         KWindowSystem::setState(winId(), NET::KeepAbove);
@@ -1552,7 +1552,7 @@ void DockView::setBlockHiding(bool block)
 
 void DockView::updateEffects()
 {
-    //! Dont apply any effect before the wayland surface is created under wayland
+    //! Don't apply any effect before the wayland surface is created under wayland
     //! https://bugs.kde.org/show_bug.cgi?id=392890
     if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
         return;

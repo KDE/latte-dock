@@ -123,7 +123,7 @@ MouseArea{
 
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=root.iconSize && height>=root.iconSize
                                         && !mainItemContainer.delayingRemove
-                                        && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //dont publish during zoomFactor
+                                        && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
 
     property bool pressed: false
     readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
@@ -624,7 +624,7 @@ MouseArea{
         }
 
         if(mainItemContainer.contextMenu && mainItemContainer.contextMenu.status == PlasmaComponents.DialogStatus.Open){
-            ///dont check to restore zooms
+            ///don't check to restore zooms
         }
         else{
             if(!inAnimation){
@@ -640,7 +640,7 @@ MouseArea{
     }
 
     //! mouseX-Y values are delayed to be updated onEntered events and at the same time
-    //! onPositionChanged signal may be delayed. we can fix this by dont delay at all
+    //! onPositionChanged signal may be delayed. we can fix this by don't delay at all
     //! when mouseX-Y is updated based on the plasmoid formFactor
     function mousePosChanged(mousePos) {
         if (root.editMode || mousePos<0 ||
@@ -656,7 +656,7 @@ MouseArea{
         //! show previews
         if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== mainItemContainer){
             if (hoveredTimerObj) {
-                //! dont delay showing preview in normal states,
+                //! don't delay showing preview in normal states,
                 //! that is when the dock wasnt hidden
                 if (!hoveredTimerObj.running) {
                     hoveredTimerObj.start();
@@ -1187,14 +1187,14 @@ MouseArea{
 
     function slotPublishGeometries() {
         //! this way we make sure that layouts that are in different activities that the current layout
-        //! dont publish their geometries
+        //! don't publish their geometries
         if ( canPublishGeometries
                 && (!latteDock
                     || (latteDock && currentLayout && latteDock.universalLayoutManager &&
                         currentLayout.name === latteDock.universalLayoutManager.currentLayoutName))) {
             var globalChoords = backend.globalRect(mainItemContainer);
 
-            //! Magic Lamp effect doesnt like coordinates outside the screen and
+            //! Magic Lamp effect doesn't like coordinates outside the screen and
             //! width,heights of zero value... So we now normalize the geometries
             //! sent in order to avoid such circumstances
             if (root.vertical) {
@@ -1549,7 +1549,7 @@ MouseArea{
 
     // The best solution in order to catch when the wheel action ended is to
     // track the isMinimized state, but when the user has enabled window previews
-    // at all times that flag doesnt work
+    // at all times that flag doesn't work
     Timer {
         id: wheelActionDelayer
         interval: 200

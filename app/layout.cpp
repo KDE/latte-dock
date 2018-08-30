@@ -1070,7 +1070,7 @@ void Layout::copyDock(Plasma::Containment *containment)
     QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
 
 
-    //! Dont create DockView when the containment is created because we must update
+    //! Don't create DockView when the containment is created because we must update
     //! its screen settings first
     setBlockAutomaticDockViewCreation(true);
     //! Finally import the configuration
@@ -1390,7 +1390,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
     foreach (auto contId, investigate_conts.groupList()) {
         QString pluginId = investigate_conts.group(contId).readEntry("plugin", "");
 
-        if (pluginId != "org.kde.desktopcontainment") { //!dont add ghost containments
+        if (pluginId != "org.kde.desktopcontainment") { //!don't add ghost containments
             KConfigGroup newContainmentGroup = fixedNewContainmets.group(assigned[contId]);
             investigate_conts.group(contId).copyTo(&newContainmentGroup);
 

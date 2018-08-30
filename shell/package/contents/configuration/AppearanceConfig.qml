@@ -438,7 +438,7 @@ PlasmaComponents.Page {
                 LatteExtraControls.Slider {
                     id: transparencySlider
                     Layout.fillWidth: true
-                    //! transparency can be set when the user doesnt want solidness all the time
+                    //! transparency can be set when the user doesn't want solidness all the time
                     //! or when the user wants solidness only for maximized windows
                     enabled: showBackground.checked && !blockOpacityAdjustment
 

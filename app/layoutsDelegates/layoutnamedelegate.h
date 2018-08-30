@@ -17,6 +17,9 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef LAYOUTNAMEDELEGATE_H
+#define LAYOUTNAMEDELEGATE_H
+
 #include <QStyledItemDelegate>
 
 class LayoutNameDelegate : public QStyledItemDelegate
@@ -26,3 +29,5 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
+
+#endif

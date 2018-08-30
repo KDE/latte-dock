@@ -31,7 +31,6 @@
 #include <QQuickWindow>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include <QDebug>
 #include <QDir>
 #include <QLockFile>
 #include <QSharedMemory>

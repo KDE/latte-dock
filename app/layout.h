@@ -206,7 +206,7 @@ private:
     bool m_blockAutomaticDockViewCreation{false};
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
-    //if version doesnt exist it is and old layout file
+    //if version doesn't exist it is and old layout file
     int m_version{2};
 
     QString m_background;

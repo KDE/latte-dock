@@ -17,8 +17,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef ALTERNATIVESDIALOG_H
-#define ALTERNATIVESDIALOG_H
+#ifndef ALTERNATIVESHELPER_H
+#define ALTERNATIVESHELPER_H
 
 #include <Plasma/Applet>
 

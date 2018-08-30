@@ -85,7 +85,7 @@ private slots:
 private:
     void addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true, bool showNotification = true);
     //! When an activity is closed for some reason the window manager hides and reshows
-    //! the windows. This function prevents this because we dont want to delete the window
+    //! the windows. This function prevents this because we don't want to delete the window
     //! on reject in such case.
     void blockDeleteOnActivityStopped();
     void loadSettings();

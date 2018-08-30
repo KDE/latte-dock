@@ -17,7 +17,7 @@
 #include <memory>
 #include <cmath>
 
-//! There are gcc versions that dont support yet that function even though they
+//! There are gcc versions that don't support yet that function even though they
 //! publish themselves as C++14 compatible. Such a case is gcc 4.8.x that openSUSE
 //! LEAP 42.2-3 is using. By enabling this flag such systems can be build correctly.
 #if ENABLE_MAKE_UNIQUE

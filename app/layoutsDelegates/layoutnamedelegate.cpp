@@ -72,7 +72,7 @@ void LayoutNameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
           myOptionE.text = s;*/
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), HIDDENTEXTCOLUMN));
 
-        //! Lock Icon 2: QIcon attempt that doesnt change color
+        //! Lock Icon 2: QIcon attempt that doesn't change color
         QIcon lockIcon = QIcon::fromTheme("object-locked");
 
         if (qApp->layoutDirection() == Qt::RightToLeft) {

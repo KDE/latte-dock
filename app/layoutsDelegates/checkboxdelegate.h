@@ -17,6 +17,9 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef CHECKBOXDELEGATE_H
+#define CHECKBOXDELEGATE_H
+
 #include <QStyledItemDelegate>
 
 class CheckBoxDelegate : public QStyledItemDelegate
@@ -27,3 +30,5 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 };
+
+#endif

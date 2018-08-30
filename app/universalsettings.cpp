@@ -26,7 +26,7 @@
 #include <QDir>
 #include <QProcess>
 
-#include <QtDBus/QtDBus>
+#include <QtDBus>
 
 #include <KDirWatch>
 #include <KActivities/Consumer>
@@ -334,7 +334,7 @@ void UniversalSettings::setAutostart(bool state)
         metaFile.copy(autostartFile.fileName());
         //! I havent added the flag "OnlyShowIn=KDE;" into the autostart file
         //! because I fall onto a Plasma 5.8 case that this flag
-        //! didnt let the plasma desktop to start
+        //! didn't let the plasma desktop to start
         emit autostartChanged();
     }
 }

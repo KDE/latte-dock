@@ -192,7 +192,7 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
                 m_contextMenu = desktopMenu;
 
-                //! deprecated old code that can be removed if the following plasma approach doesnt
+                //! deprecated old code that can be removed if the following plasma approach doesn't
                 //! create any issues with context menu creation in Latte
                 /*if (m_dockView->mouseGrabberItem()) {
                     //workaround, this fixes for me most of the right click menu behavior

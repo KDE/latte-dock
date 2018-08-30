@@ -448,7 +448,7 @@ void DockConfigView::addPanelSpacer()
 void DockConfigView::hideConfigWindow()
 {
     if (m_shellSurface) {
-        //!NOTE: Avoid crash in wayland enviroment with qt5.9
+        //!NOTE: Avoid crash in wayland environment with qt5.9
         close();
     } else {
         hide();
