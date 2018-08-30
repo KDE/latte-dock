@@ -46,7 +46,7 @@ public:
     Private(PanelShadows *shadows)
         : q(shadows)
 #if HAVE_X11
-        , _connection(0x0),
+        , _connection(nullptr),
           _gc(0x0)
         , m_isX11(KWindowSystem::isPlatformX11())
 #endif
@@ -160,7 +160,7 @@ void PanelShadows::removeWindow(const QWindow *window)
     }
 
     d->m_windows.remove(window);
-    disconnect(window, 0, this, 0);
+    disconnect(window, nullptr, this, nullptr);
     d->clearShadow(window);
 
     if (d->m_windows.isEmpty()) {
@@ -202,7 +202,7 @@ Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap &source)
 {
 
     // do nothing for invalid pixmaps
-    if (source.isNull()) return 0;
+    if (source.isNull()) return nullptr;
 
     /*
     in some cases, pixmap handle is invalid. This is the case notably
@@ -213,7 +213,7 @@ Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap &source)
 #if HAVE_X11
 
     if (!m_isX11) {
-        return 0;
+        return nullptr;
     }
 
     // check connection
@@ -228,7 +228,7 @@ Qt::HANDLE PanelShadows::Private::createPixmap(const QPixmap &source)
     // check gc
     if (!_gc) {
         _gc = xcb_generate_id(_connection);
-        xcb_create_gc(_connection, _gc, pixmap, 0, 0x0);
+        xcb_create_gc(_connection, _gc, pixmap, 0, nullptr);
     }
 
 //         // create explicitly shared QPixmap from it
@@ -752,3 +752,4 @@ void PanelShadows::Private::setupWaylandIntegration()
 }
 
 #include "moc_panelshadows_p.cpp"
+
