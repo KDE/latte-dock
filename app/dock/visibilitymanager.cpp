@@ -444,10 +444,17 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
         return;
 
     if (!winfo.isActive()) {
-        if (winfo.isPlasmaDesktop())
+        if (winfo.isPlasmaDesktop()) {
             raiseDock(true);
+        }
 
         winfo = wm->requestInfo(wm->activeWindow());
+
+        if (!winfo.isValid()) {
+            //! very rare case that window manager doesnt have any active window at all
+            raiseDock(true);
+            return;
+        }
     }
 
     //!don't send false raiseDock signal when containing mouse
@@ -477,6 +484,12 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
             raiseDock(true);
 
         winfo = wm->requestInfo(wm->activeWindow());
+
+        if (!winfo.isValid()) {
+            //! very rare case that window manager doesnt have any active window at all
+            raiseDock(true);
+            return;
+        }
     }
 
     auto isMaxVert = [&]() noexcept -> bool {
