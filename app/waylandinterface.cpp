@@ -349,6 +349,11 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 
 inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
 {
+    //! because wayland does not have any way yet to identify the window type
+    //! a trick is to just consider windows as valid when they can be shown in the
+    //! taskbar. Of course that creates issues with plasma native dialogs
+    //! e.g. widgets explorer, Activities etc. that are not used to hide
+    //! the dodge docks/panels appropriately
     return w->isValid() && !w->skipTaskbar();
 }
 
