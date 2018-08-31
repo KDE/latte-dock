@@ -444,10 +444,6 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
         return;
 
     if (!winfo.isActive()) {
-        if (winfo.isPlasmaDesktop()) {
-            raiseDock(true);
-        }
-
         winfo = wm->requestInfo(wm->activeWindow());
 
         if (!winfo.isValid()) {
@@ -457,8 +453,9 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
         }
     }
 
-    //!dont send false raiseDock signal when containing mouse
-    if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid)) {
+    //! don't send false raiseDock signal when containing mouse, // Johan comment
+    //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
+    if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         raiseDock(!intersects(winfo));
     }
 }
@@ -480,9 +477,6 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
         return;
 
     if (!winfo.isActive()) {
-        if (winfo.isPlasmaDesktop())
-            raiseDock(true);
-
         winfo = wm->requestInfo(wm->activeWindow());
 
         if (!winfo.isValid()) {
@@ -504,10 +498,12 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
                 && intersects(winfo));
     };
 
-    //!dont send false raiseDock signal when containing mouse
-    if (wm->isOnCurrentDesktop(wid) && wm->isOnCurrentActivity(wid))
+    //! don't send false raiseDock signal when containing mouse, // Johan comment
+    //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
+    if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         raiseDock(view->formFactor() == Plasma::Types::Vertical
                   ? !isMaxHoriz() : !isMaxVert());
+    }
 }
 
 void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
