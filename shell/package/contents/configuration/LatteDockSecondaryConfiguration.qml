@@ -38,7 +38,7 @@ import org.kde.latte 0.1 as Latte
 FocusScope {
     id: dialog
 
-    property int maxWidth: Math.max(9 * theme.defaultFont.pixelSize, 2.5 * height)
+    property int maxWidth: Math.max(9 * theme.defaultFont.pixelSize, 2.3 * height)
 
     width: maxWidth + units.smallSpacing * 2
     height: typeSettings.height + units.smallSpacing * 2

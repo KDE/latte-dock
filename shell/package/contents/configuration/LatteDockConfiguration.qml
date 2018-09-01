@@ -45,7 +45,7 @@ FocusScope {
     property int maxWidth: 0.6 * dock.screenGeometry.width
 
     //! propose size based on font size
-    property int proposedWidth: 0.87 * proposedHeight + units.smallSpacing * 2
+    property int proposedWidth: 0.84 * proposedHeight + units.smallSpacing * 2
     property int proposedHeight: 36 * theme.mSize(theme.defaultFont).height
 
     //! user set scales based on its preference, e.g. 96% of the proposed size
