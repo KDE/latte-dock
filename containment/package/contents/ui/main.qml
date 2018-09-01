@@ -89,7 +89,7 @@ DragDrop.DropArea {
     property bool windowIsTouching: dock && dock.visibility && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet)
 
     property bool forceSemiTransparentPanel: ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
-                                             || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
+                                              || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
                                              && Latte.WindowSystem.compositingActive
 
     property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
@@ -192,11 +192,26 @@ DragDrop.DropArea {
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
     property int currentPanelTransparency: 0 //application override
 
-    property bool panelShadowsActive: (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
-                                        || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                                       && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized))
-                                      || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100 && !(root.solidPanel && !plasmoid.configuration.panelShadows) )
+    property bool panelShadowsActive: {
+        if (!userShowPanelBackground) {
+            return false;
+        }
 
+        if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
+             || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
+                && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized)) {
+            return true;
+        }
+
+        if (hasExpandedApplet
+                && zoomFactor===1
+                && plasmoid.configuration.panelSize===100
+                && !(root.solidPanel && !plasmoid.configuration.panelShadows) ) {
+            return true;
+        }
+
+        return false;
+    }
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
     property int appShadowSize: enableShadows ? (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
@@ -580,12 +595,12 @@ DragDrop.DropArea {
                     return;
                 }
             } else if (dock.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                      && root.latteAppletContainer.containsPos(event)) {
-               confirmedDragEntered = true
-               dndSpacer.opacity = 0;
-               dndSpacer.parent = root;
-               return;
-           }
+                       && root.latteAppletContainer.containsPos(event)) {
+                confirmedDragEntered = true
+                dndSpacer.opacity = 0;
+                dndSpacer.parent = root;
+                return;
+            }
         }
 
         if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
@@ -1789,8 +1804,8 @@ DragDrop.DropArea {
         readonly property color minimizedDotColor: themeTextColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
         property bool isShown: active && !forceSolidPanel
-                                  //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
-                                  //! then the colorizer could be enabled for low panel transparency levels (<40%)
+        //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
+        //! then the colorizer could be enabled for low panel transparency levels (<40%)
                                && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
                                && !maximizedWindowTitleBarBehavesAsPanelBackground
                                && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
