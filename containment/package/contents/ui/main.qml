@@ -145,6 +145,8 @@ DragDrop.DropArea {
     //has been dropped from the Dock Configuration Window
     //property bool smallAutomaticIconJumps: plasmoid.configuration.smallAutomaticIconJumps
     property bool smallAutomaticIconJumps: true
+
+    property bool userShowPanelBackground: Latte.WindowSystem.compositingActive ? plasmoid.configuration.useThemePanel : true
     property bool useThemePanel: noApplets === 0 || !Latte.WindowSystem.compositingActive ?
                                      true : (plasmoid.configuration.useThemePanel || plasmoid.configuration.solidBackgroundForMaximized)
 
@@ -1789,7 +1791,7 @@ DragDrop.DropArea {
         property bool isShown: active && !forceSolidPanel
                                   //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
                                   //! then the colorizer could be enabled for low panel transparency levels (<40%)
-                               && (!forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
+                               && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
                                && !maximizedWindowTitleBarBehavesAsPanelBackground
                                && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
                                && !root.editMode && Latte.WindowSystem.compositingActive
