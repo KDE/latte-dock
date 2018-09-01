@@ -440,10 +440,7 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
 
     auto winfo = wm->requestInfo(wid);
 
-    if (!winfo.isValid())
-        return;
-
-    if (!winfo.isActive()) {
+    if (!winfo.isValid() || !winfo.isActive()) {
         winfo = wm->requestInfo(wm->activeWindow());
 
         if (!winfo.isValid()) {
@@ -456,7 +453,8 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
     //! don't send false raiseDock signal when containing mouse, // Johan comment
     //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-        raiseDock(!intersects(winfo));
+        bool overlaps{intersects(winfo)};
+        raiseDock(!overlaps);
     }
 }
 
@@ -473,10 +471,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 
     auto winfo = wm->requestInfo(wid);
 
-    if (!winfo.isValid())
-        return;
-
-    if (!winfo.isActive()) {
+    if (!winfo.isValid() || !winfo.isActive()) {
         winfo = wm->requestInfo(wm->activeWindow());
 
         if (!winfo.isValid()) {
@@ -486,13 +481,13 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
         }
     }
 
-    auto isMaxVert = [&]() noexcept -> bool {
+    auto intersectsMaxVert = [&]() noexcept -> bool {
         return ((winfo.isMaxVert()
                  || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
                 && intersects(winfo));
     };
 
-    auto isMaxHoriz = [&]() noexcept -> bool {
+    auto intersectsMaxHoriz = [&]() noexcept -> bool {
         return ((winfo.isMaxHoriz()
                  || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
                 && intersects(winfo));
@@ -501,8 +496,8 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
     //! don't send false raiseDock signal when containing mouse, // Johan comment
     //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-        raiseDock(view->formFactor() == Plasma::Types::Vertical
-                  ? !isMaxHoriz() : !isMaxVert());
+        bool overlapsMaximized{view->formFactor() == Plasma::Types::Vertical ? intersectsMaxHoriz() : intersectsMaxVert()};
+        raiseDock(!overlapsMaximized);
     }
 }
 
