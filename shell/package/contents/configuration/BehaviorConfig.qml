@@ -495,6 +495,7 @@ PlasmaComponents.Page {
         }
         //! END: Delay
 
+        //! Bottom spacer
         PlasmaComponents.Label{
             id: bottomMarginSpacer
             text:" "

@@ -1262,6 +1262,7 @@ PlasmaComponents.Page {
         }
         //! END: Length
 
+        //! Bottom spacer
         PlasmaComponents.Label{
             id: bottomMarginSpacer
             text:" "

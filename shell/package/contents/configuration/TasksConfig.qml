@@ -274,7 +274,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
 
                 property int group: plasmoid.configuration.launchersGroup
@@ -382,6 +381,7 @@ PlasmaComponents.Page {
         }
         //! END: Tasks Filters
 
+        //! Bottom spacer
         PlasmaComponents.Label{
             id: bottomMarginSpacer
             text:" "
