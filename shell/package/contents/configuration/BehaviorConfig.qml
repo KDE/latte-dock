@@ -51,7 +51,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             Layout.topMargin: units.smallSpacing
 
             visible: plasmoid.configuration.advanced && dockConfig.showInlineProperties
@@ -71,7 +70,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             Layout.topMargin: units.smallSpacing
 
             Header {
@@ -272,7 +270,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Alignment")
@@ -358,7 +355,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
 
             Header {
                 text: i18n("Visibility")
@@ -444,7 +440,6 @@ PlasmaComponents.Page {
         //! BEGIN: Delay
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
             enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
