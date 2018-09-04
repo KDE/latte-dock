@@ -99,9 +99,13 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
         qDebug() << "dock view c++ containment changed 2...";
 
+        //! First load default values from file
+        restoreConfig();
+
+        //! Afterwards override that values in case during creation something different is needed
         setDockWinBehavior(dockWindowBehavior);
 
-        restoreConfig();
+        //! Check the screen assigned to this dock
         reconsiderScreen();
 
         if (!m_visibility) {
@@ -1928,8 +1932,8 @@ void DockView::saveConfig()
         return;
 
     auto config = this->containment()->config();
-    config.writeEntry("onPrimary", m_onPrimary);
-    config.writeEntry("dockWindowBehavior", m_dockWinBehavior);
+    config.writeEntry("onPrimary", onPrimary());
+    config.writeEntry("dockWindowBehavior", dockWinBehavior());
     config.sync();
 }
 
@@ -1939,8 +1943,13 @@ void DockView::restoreConfig()
         return;
 
     auto config = this->containment()->config();
-    setOnPrimary(config.readEntry("onPrimary", true));
-    setDockWinBehavior(config.readEntry("dockWindowBehavior", true));
+    m_onPrimary = config.readEntry("onPrimary", true);
+    m_dockWinBehavior = config.readEntry("dockWindowBehavior", true);
+
+    //! Send changed signals at the end in order to be sure that saveConfig
+    //! wont rewrite default/invalid values
+    emit onPrimaryChanged();
+    emit dockWinBehaviorChanged();
 }
 //!END configuration functions
 
