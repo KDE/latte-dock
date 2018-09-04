@@ -911,6 +911,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
 
         if (primaryDockOccupyEdge(containment->location())) {
             qDebug() << "reject : adding explicit dock, primary dock occupies edge at screen ! : " << connector;
+            return;
         }
     }
 
@@ -973,6 +974,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     //! force this special dock case to become primary
     //! even though it isnt
     if (forceOnPrimary) {
+        qDebug() << "Enforcing onPrimary:true as requested for DockView...";
         dockView->setOnPrimary(true);
     }
 
