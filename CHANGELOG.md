@@ -1,5 +1,22 @@
 #**CHANGELOG**#
 
+#### Version 0.8.1
+
+* FIX: redesign the multi-screens implementation. OnPrimary docks have always higher priority in multi-screen environments
+* fix: do not move explicit dock on primary screen
+* fix: consider "not show background" case as full transparency
+* fix: consider preferredSize(s) only for >0 values (case of locked analog clock disappearing at a vertical panel)
+* fix: if there is not any active window at all, dodge set docks should reappear
+* fix: do not crash in wayland when right clicking with touchpad
+* fix: do not double paint plama theme background when the theme does not contain a shadow
+* fix: draw properly plasma theme panel backgrounds based on the edge that the dock or panel is present, e.g. Unity Ambiance, Nilium
+* fix: identify maximized window screen differently
+* fix: show grouped windows previews properly (follow plasma design for window previews)
+* fix: place correctly a new copied dock in a multi-screen environment
+* fix: enable blur for solid theme panels
+* fix: missing global shortcuts '9' badge
+* fix: support unified or not global shortcuts in case the user does not want to use the Latte unified system for its applets
+
 #### Version 0.8.0
 
 * Simultaneous Multiple Layouts in different Activities
