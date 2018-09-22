@@ -802,10 +802,24 @@ QList<DockView *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containme
         }
     }
 
+    DockView *highestPriorityView{nullptr};
+
+    for (int i = 0; i < docks.size(); ++i) {
+        if (docks[i]->isPreferredForShortcuts()) {
+            highestPriorityView = docks[i];
+            docks.removeAt(i);
+            break;
+        }
+    }
+
+    if (highestPriorityView) {
+        docks.prepend(highestPriorityView);
+    }
+
     qDebug() << " -------- sorted -----";
 
     for (int i = 0; i < docks.count(); ++i) {
-        qDebug() << i << ". " << docks[i]->screen()->name() << " - " << docks[i]->location();
+        qDebug() << i << ". " << docks[i]->isPreferredForShortcuts() << " - " << docks[i]->screen()->name() << " - " << docks[i]->location();
     }
 
     return docks;

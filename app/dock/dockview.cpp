@@ -213,8 +213,10 @@ void DockView::init()
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::offsetChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
+
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
+    connect(this, &DockView::isPreferredForShortcutsChanged, this, &DockView::saveConfig);
 
     connect(this, &DockView::locationChanged, this, [&]() {
         updateFormFactor();
@@ -1151,6 +1153,32 @@ void DockView::setInEditMode(bool edit)
     emit inEditModeChanged();
 }
 
+bool DockView::isPreferredForShortcuts() const
+{
+    return m_isPreferredForShortcuts;
+}
+
+void DockView::setIsPreferredForShortcuts(bool preferred)
+{
+    if (m_isPreferredForShortcuts == preferred) {
+        return;
+    }
+
+    m_isPreferredForShortcuts = preferred;
+
+    emit isPreferredForShortcutsChanged();
+
+    if (m_isPreferredForShortcuts && m_managedLayout) {
+        emit m_managedLayout->preferredViewForShortcutsChanged(this);
+    }
+}
+
+void DockView::preferredViewForShortcutsChangedSlot(DockView *view)
+{
+    if (view != this) {
+        setIsPreferredForShortcuts(false);
+    }
+}
 
 bool DockView::onPrimary() const
 {
@@ -1445,12 +1473,14 @@ void DockView::setManagedLayout(Layout *layout)
                 emit activitiesChanged();
             }
         });
+
+        connectionsManagedLayout[0] = connect(m_managedLayout, &Layout::preferredViewForShortcutsChanged, this, &DockView::preferredViewForShortcutsChangedSlot);
     }
 
     DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-        connectionsManagedLayout[0] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+        connectionsManagedLayout[1] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout && m_visibility) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
                          << " - activities: " << m_managedLayout->appliedActivities();
@@ -1459,14 +1489,14 @@ void DockView::setManagedLayout(Layout *layout)
             }
         });
 
-        connectionsManagedLayout[1] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
+        connectionsManagedLayout[2] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
             if (m_managedLayout) {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
 
-        connectionsManagedLayout[2] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+        connectionsManagedLayout[3] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
             if (m_managedLayout) {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
@@ -1475,7 +1505,7 @@ void DockView::setManagedLayout(Layout *layout)
 
         //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
         //! disappearing! With this they reappear!!!
-        connectionsManagedLayout[3] = connect(this, &QWindow::visibleChanged, this, [&]() {
+        connectionsManagedLayout[4] = connect(this, &QWindow::visibleChanged, this, [&]() {
             if (!isVisible() && m_managedLayout) {
                 QTimer::singleShot(100, [this]() {
                     if (m_managedLayout && containment() && !containment()->destroyed()) {
@@ -1934,6 +1964,7 @@ void DockView::saveConfig()
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", onPrimary());
     config.writeEntry("dockWindowBehavior", dockWinBehavior());
+    config.writeEntry("isPreferredForShortcuts", isPreferredForShortcuts());
     config.sync();
 }
 
@@ -1945,6 +1976,7 @@ void DockView::restoreConfig()
     auto config = this->containment()->config();
     m_onPrimary = config.readEntry("onPrimary", true);
     m_dockWinBehavior = config.readEntry("dockWindowBehavior", true);
+    m_isPreferredForShortcuts = config.readEntry("isPreferredForShortcuts", false);
 
     //! Send changed signals at the end in order to be sure that saveConfig
     //! wont rewrite default/invalid values

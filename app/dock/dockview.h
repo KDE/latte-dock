@@ -73,6 +73,7 @@ class DockView : public PlasmaQuick::ContainmentView
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
+    Q_PROPERTY(bool isPreferredForShortcuts READ isPreferredForShortcuts WRITE setIsPreferredForShortcuts NOTIFY isPreferredForShortcutsChanged)
     Q_PROPERTY(bool themeHasShadow READ themeHasShadow NOTIFY themeHasShadowChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
@@ -150,6 +151,9 @@ public:
 
     bool inEditMode() const;
     void setInEditMode(bool edit);
+
+    bool isPreferredForShortcuts() const;
+    void setIsPreferredForShortcuts(bool preferred);
 
     bool themeHasShadow() const;
 
@@ -286,6 +290,7 @@ signals:
     void widthChanged();
     void heightChanged();
     void inEditModeChanged();
+    void isPreferredForShortcutsChanged();
     void localGeometryChanged();
     void managedLayoutChanged();
     void maxLengthChanged();
@@ -308,6 +313,7 @@ signals:
 private slots:
     void availableScreenRectChanged();
     void hideWindowsForSlidingOut();
+    void preferredViewForShortcutsChangedSlot(DockView *view);
     void statusChanged(Plasma::Types::ItemStatus);
     void screenChanged(QScreen *screen);
     void updateEffects();
@@ -339,6 +345,7 @@ private:
     bool m_forceDrawCenteredBorders{false};
     bool m_inDelete{false};
     bool m_inEditMode{false};
+    bool m_isPreferredForShortcuts{false};
     bool m_onPrimary{true};
     int m_dockTransparency{100};
     int m_fontPixelSize{ -1};
@@ -370,7 +377,7 @@ private:
     QTimer m_validateGeometryTimer;
 
     //! Connections to release and bound for the managed layout
-    std::array<QMetaObject::Connection, 4> connectionsManagedLayout;
+    std::array<QMetaObject::Connection, 5> connectionsManagedLayout;
 
     //!used at sliding out/in animation
     QString m_moveToLayout;

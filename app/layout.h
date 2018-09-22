@@ -164,6 +164,10 @@ signals:
     void showInMenuChanged();
     void textColorChanged();
 
+    //! used from DockView(s) in order to exist only one each time that has the highest priority
+    //! to use the global shortcuts activations
+    void preferredViewForShortcutsChanged(DockView *view);
+
 private slots:
     void loadConfig();
     void saveConfig();

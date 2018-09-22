@@ -166,7 +166,7 @@ PlasmaComponents.Page {
                 text: i18n("Activate KWin edge after hiding")
                 checked: dock.visibility.enableKWinEdges
 
-                onCheckedChanged: {
+                onClicked: {
                     dock.visibility.enableKWinEdges = checked;
                 }
             }
@@ -191,6 +191,18 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.addLaunchersInTaskManager = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Prefer for global shortcuts activation")
+                checked: dock.isPreferredForShortcuts
+
+                tooltip: i18n("Enable highest priority for global shortcuts activation")
+
+                onClicked: {
+                    dock.isPreferredForShortcuts = checked
                 }
             }
 
