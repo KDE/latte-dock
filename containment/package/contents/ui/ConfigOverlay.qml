@@ -496,7 +496,7 @@ MouseArea {
                     PlasmaComponents.ToolButton {
                         id: closeButton
                         anchors.verticalCenter: parent.verticalCenter
-                        iconSource: "window-close"
+                        iconSource: "delete"
                         tooltip: i18n("Remove applet")
                         onClicked: {
                             tooltip.visible = false;
