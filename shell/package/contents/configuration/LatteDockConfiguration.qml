@@ -509,7 +509,7 @@ FocusScope {
                 Layout.alignment: Qt.AlignHCenter
 
                 text: i18n("Remove")
-                iconSource: "edit-delete"
+                iconSource: "delete"
                 opacity: dock.totalDocksCount > 1 ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
