@@ -83,8 +83,8 @@ Column {
 
     //
     function containsMouse() {
-        return area1.containsMouse || area2.containsMouse || area3.containsMouse || area4.containsMouse;
-        //|| ( area5 && area5.containsMouse) || (area6 && area6.containsMouse) || (area7 && area7.containsMouse);
+        return area1.containsMouse || area2.containsMouse || area3.containsMouse || area4.containsMouse
+               || (playbackLoader.active && playbackLoader.item.containsMouse());
     }
 
     // launcher icon + text labels + close button
@@ -265,8 +265,10 @@ Column {
 
 
         Loader {
+            id: playbackLoader
             anchors.fill: thumbnail
-            sourceComponent: hasPlayer ? playerControlsComp : undefined
+            active: hasPlayer
+            sourceComponent: playerControlsComp
         }
 
         Component {
@@ -284,6 +286,10 @@ Column {
                 //                    visible: !isWin || !windows[0] && canRaise
                 //                    onClicked: mpris2Source.raise(mprisSourceName)
                 //                }
+
+                function containsMouse() {
+                    return area5.containsMouse || area6.containsMouse || area7.containsMouse || area8.containsMouse;
+                }
 
                 Item {
                     id: playerControlsFrostedGlass
@@ -314,7 +320,11 @@ Column {
 
                 // prevent accidental click-through when a control is disabled
                 MouseArea {
+                    id: area5
                     anchors.fill: playerControlsRow
+
+                    hoverEnabled: true
+                    onContainsMouseChanged: mainToolTip.mouseIsInside();
                 }
 
                 RowLayout {
@@ -349,7 +359,7 @@ Column {
                     }
 
                     MouseArea {
-                        id: area5
+                        id: area6
 
                         height: units.iconSizes.smallMedium
                         width: height
@@ -371,7 +381,7 @@ Column {
                     }
 
                     MouseArea {
-                        id: area6
+                        id: area7
 
                         height: units.iconSizes.medium
                         width: height
@@ -391,7 +401,7 @@ Column {
                     }
 
                     MouseArea {
-                        id: area7
+                        id: area8
 
                         height: units.iconSizes.smallMedium
                         width: height
