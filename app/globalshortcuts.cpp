@@ -435,9 +435,9 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
     foreach (auto view, sortedViews) {
-        if ((view->latteTasksPresent() && activateLatteEntryAtContainment(view, index, modifier))
-            || (!view->latteTasksPresent() && view->tasksPresent() &&
-                activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))) {
+        if ((!view->latteTasksPresent() && view->tasksPresent() &&
+             activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
+            || (activateLatteEntryAtContainment(view, index, modifier))) {
 
             if (!m_hideDocks.contains(view)) {
                 m_hideDocks.append(view);
