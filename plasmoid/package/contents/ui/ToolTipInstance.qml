@@ -110,6 +110,8 @@ Column {
         // all textlabels
         Column {
             spacing: 0.75 * units.smallSpacing
+            Layout.margins: units.smallSpacing * 0.4
+
             PlasmaComponents.Label {
                 width: isWin ? textWidth : undefined
                 height: 1.25 * theme.mSize(theme.defaultFont).height
