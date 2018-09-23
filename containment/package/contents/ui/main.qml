@@ -264,22 +264,20 @@ DragDrop.DropArea {
     //which are used for thickness calculations
     property int thickMarginBase: {
         if (shrinkThickMargins) {
-            if (behaveAsPlasmaPanel){
-                return 0;
-            } else {
-                return 1;
-            }
+            return 0;
         } else {
             return Math.ceil(0.06 * iconSize);
         }
     }
 
     property int thickMarginHigh: {
+        var minimum = 2;
+
         if (shrinkThickMargins) {
             if (behaveAsPlasmaPanel){
-                return (reverseLinesPosition ? Math.max(root.statesLineSize/2, 1) : 1);
+                return (reverseLinesPosition ? Math.max(root.statesLineSize/2, 1) : minimum);
             } else {
-                return Math.max(1, 0.5 * appShadowSize);
+                return Math.max(minimum, 0.5 * appShadowSize);
             }
         } else {
             if (behaveAsPlasmaPanel) {
