@@ -493,7 +493,7 @@ Item {
         }
 
         function hide(debug){
-          //  console.log("on hide previews event called: "+debug);
+            //  console.log("on hide previews event called: "+debug);
 
             if (latteDock && signalSent) {
                 //it is used to unblock dock hiding
@@ -515,7 +515,7 @@ Item {
                 return;
             }
 
-          //  console.log("preview show called...");
+            //  console.log("preview show called...");
             if ((!activeItem || (activeItem !== taskItem)) && !root.contextMenu) {
                 //console.log("preview show called: accepted...");
 
@@ -1078,13 +1078,15 @@ Item {
                                       root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) :
                                       root.statesLineSize + root.iconSize + root.thickMargin
 
-            function urlsDroppedOnArea(urls){
-                // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
-                var createLaunchers = urls.every(function (item) {
+            function onlyLaunchersInList(list){
+                return list.every(function (item) {
                     return backend.isApplication(item)
                 });
+            }
 
-                if (createLaunchers) {
+            function urlsDroppedOnArea(urls){
+                // If all dropped URLs point to application desktop files, we'll add a launcher for each of them.
+                if (onlyLaunchersInList(urls)) {
                     urls.forEach(function (item) {
                         addLauncher(item);
                     });
@@ -1104,12 +1106,16 @@ Item {
             }
 
             onUrlsDropped: {
-                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                //! inform synced docks for new dropped launchers
+                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers && onlyLaunchersInList(urls)) {
                     latteDock.universalLayoutManager.launchersSignals.urlsDropped(root.managedLayoutName,
                                                                                   latteDock.launchersGroup, urls);
-                } else {
-                    urlsDroppedOnArea(urls);
+                    return;
                 }
+
+                //! if the list does not contain only launchers then just open the corresponding
+                //! urls with the relevant app
+                urlsDroppedOnArea(urls);
             }
         }
 
