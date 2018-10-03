@@ -168,11 +168,16 @@ Item {
                 }
             } else if (!root.dragSource && above && hoveredItem != above) {
                 hoveredItem = above;
+                if (!onlyLaunchers) {
+                    //! it is needed when dropping a url on a launcher in order to not break parabolic effect
+                    root.setHoveredIndex(hoveredItem.itemIndex);
+                }
                 //root.dropNewLauncher = true;
                 activationTimer.restart();
             } else if (!above) {
                 //root.dropNewLauncher = true;
                 hoveredItem = null;
+                root.setHoveredIndex(-1);
                 activationTimer.stop();
             }
 
@@ -183,6 +188,7 @@ Item {
 
         onDragLeave: {
             hoveredItem = null;
+            root.setHoveredIndex(-1);
             root.dropNewLauncher = false;
             onlyLaunchers = false;
             root.separatorsUpdated();
