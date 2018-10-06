@@ -363,7 +363,6 @@ Column {
 
                         height: units.iconSizes.smallMedium
                         width: height
-                        enabled: canGoBack
 
                         acceptedButtons: Qt.LeftButton
                         hoverEnabled: true
@@ -405,7 +404,6 @@ Column {
 
                         height: units.iconSizes.smallMedium
                         width: height
-                        enabled: canGoNext
 
                         acceptedButtons: Qt.LeftButton
                         hoverEnabled: true
