@@ -198,7 +198,8 @@ void Layout::initToCorona(DockCorona *corona)
         }
     });
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
         kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
     } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, [&]() {
