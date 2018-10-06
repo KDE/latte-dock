@@ -348,20 +348,40 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
 
     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
 
+    //! update desktop id
     if (winType != -1 && (winType & NET::Desktop)) {
         m_desktopId = wid;
         emit windowChanged(wid);
         return;
     }
 
-    //! ignore when, eg: the user presses a key, or a window is sending X events
+    //! accept only NET::Properties events,
+    //! ignore when the user presses a key, or a window is sending X events etc.
     //! without needing to (e.g. Firefox, https://bugzilla.mozilla.org/show_bug.cgi?id=1389953)
-    if (prop1 == 0 && (prop2 == NET::WM2UserTime || prop2 == NET::WM2IconPixmap)) {
+    //! NET::WM2UserTime, NET::WM2IconPixmap etc....
+    if (prop1 == 0) {
         return;
     }
 
-    if (prop1 && !(prop1 & NET::WMState || prop1 & NET::WMGeometry || prop1 & NET::ActiveWindow))
+    //! accepty only the following NET:Properties changed signals
+    //! NET::WMState, NET::WMGeometry, NET::ActiveWindow
+    if (!((prop1 & NET::WMState) || (prop1 & NET::WMGeometry) || (prop1 & NET::ActiveWindow))) {
         return;
+    }
+
+    //! when only WMState changed we can whitelist the acceptable states
+    if ((prop1 & NET::WMState) && !(prop1 & NET::WMGeometry) && !(prop1 & NET::ActiveWindow)) {
+        KWindowInfo info(wid, NET::WMState);
+
+        if (info.valid()) {
+            if (!info.hasState(NET::Sticky) && !info.hasState(NET::Shaded)
+                && !info.hasState(NET::FullScreen) && !info.hasState(NET::Hidden)) {
+                return;
+            }
+        } else {
+            return;
+        }
+    }
 
     emit windowChanged(wid);
 }
