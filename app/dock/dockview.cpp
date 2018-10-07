@@ -209,7 +209,13 @@ void DockView::init()
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
 
     connect(this, &DockView::behaveAsPlasmaPanelChanged, this, &DockView::syncGeometry);
-    connect(this, &DockView::drawShadowsChanged, this, &DockView::syncGeometry);
+    connect(this, &DockView::drawShadowsChanged, this, [&]() {
+        if (!m_behaveAsPlasmaPanel) {
+            syncGeometry();
+        } else {
+            updateEnabledBorders();
+        }
+    });
     connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::offsetChanged, this, &DockView::syncGeometry);
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
