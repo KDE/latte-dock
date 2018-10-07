@@ -112,7 +112,7 @@ public:
 
     void init();
 
-    void setScreenToFollow(QScreen *screen, bool updateScreenId = true);
+    void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
 
     void resizeWindow(QRect availableScreenRect = QRect());
     void syncGeometry();

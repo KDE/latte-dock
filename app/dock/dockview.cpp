@@ -444,27 +444,31 @@ bool DockView::setCurrentScreen(const QString id)
 //! dock its first origin screen is stored and that way when
 //! that screen is reconnected the dock will return to its original
 //! place
-void DockView::setScreenToFollow(QScreen *screen, bool updateScreenId)
+void DockView::setScreenToFollow(QScreen *scr, bool updateScreenId)
 {
-    if (!screen || m_screenToFollow == screen) {
+    if (!scr || (scr && (m_screenToFollow == scr) && (screen() == scr))) {
         return;
     }
 
-    m_screenToFollow = screen;
+    qDebug() << "setScreenToFollow() called for screen:" << scr->name() << " update:" << updateScreenId;
+
+    m_screenToFollow = scr;
 
     if (updateScreenId) {
-        m_screenToFollowId = screen->name();
+        m_screenToFollowId = scr->name();
     }
 
     qDebug() << "adapting to screen...";
-    setScreen(screen);
+    setScreen(scr);
 
     if (this->containment())
         this->containment()->reactToScreenChange();
 
-    connect(screen, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
+    connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
     syncGeometry();
     updateAbsDockGeometry(true);
+    qDebug() << "setScreenToFollow() ended...";
+
     emit screenGeometryChanged();
     emit currentScreenChanged();
 }
@@ -477,6 +481,7 @@ void DockView::reconsiderScreen()
         return;
     }
 
+    qDebug() << "reconsiderScreen() called...";
     qDebug() << "  Delayer  ";
 
     foreach (auto scr, qGuiApp->screens()) {
@@ -497,7 +502,8 @@ void DockView::reconsiderScreen()
 
     //! 1.a primary dock must be always on the primary screen
     if (m_onPrimary && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
-                        || m_screenToFollow != qGuiApp->primaryScreen())) {
+                        || m_screenToFollow != qGuiApp->primaryScreen()
+                        || screen() != qGuiApp->primaryScreen())) {
         using Plasma::Types;
         QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                      Types::TopEdge, Types::RightEdge};
@@ -513,7 +519,6 @@ void DockView::reconsiderScreen()
             //! case 1
             qDebug() << "reached case 1: of updating dock primary screen...";
             setScreenToFollow(qGuiApp->primaryScreen());
-            syncGeometry();
         }
     } else if (!m_onPrimary) {
         //! 2.an explicit dock must be always on the correct associated screen
@@ -523,11 +528,13 @@ void DockView::reconsiderScreen()
             if (scr && scr->name() == m_screenToFollowId) {
                 qDebug() << "reached case 2: updating the explicit screen for dock...";
                 setScreenToFollow(scr);
-                syncGeometry();
                 break;
             }
         }
     }
+
+    syncGeometry();
+    qDebug() << "reconsiderScreen() ended...";
 
     emit docksCountChanged();
 }
@@ -886,6 +893,8 @@ inline void DockView::syncGeometry()
 
     bool found{false};
 
+    qDebug() << "syncGeometry() called...";
+
     //! before updating the positioning and geometry of the dock
     //! we make sure that the dock is at the correct screen
     if (this->screen() != m_screenToFollow) {
@@ -942,6 +951,8 @@ inline void DockView::syncGeometry()
         resizeWindow(availableScreenRect);
         updatePosition(availableScreenRect);
     }
+
+    qDebug() << "syncGeometry() ended...";
 
     // qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
