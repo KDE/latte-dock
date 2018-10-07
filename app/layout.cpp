@@ -910,7 +910,9 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
             return;
         }
 
-        if (primaryDockOccupyEdge(containment->location())) {
+        //! explicit dock can not be added at explicit screen when that screen is the same with
+        //! primary screen and that edge is already occupied by a primary dock
+        if (nextScreen == qGuiApp->primaryScreen() && primaryDockOccupyEdge(containment->location())) {
             qDebug() << "reject : adding explicit dock, primary dock occupies edge at screen ! : " << connector;
             return;
         }
@@ -1765,7 +1767,7 @@ bool Layout::dockViewExists(Plasma::Containment *containment)
     return m_dockViews.keys().contains(containment);
 }
 
-QList<Plasma::Types::Location> Layout::freeEdges(QScreen *screen) const
+QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, DockView *forView) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
@@ -1776,7 +1778,28 @@ QList<Plasma::Types::Location> Layout::freeEdges(QScreen *screen) const
     }
 
     foreach (auto view, m_dockViews) {
-        if (view && view->currentScreen() == screen->name()) {
+        //! make sure that availabe edges takes into account only views that should be excluded,
+        //! this is why the forView should not be excluded
+        if (view && view != forView && view->currentScreen() == scr->name()) {
+            edges.removeOne(view->location());
+        }
+    }
+
+    return edges;
+}
+
+QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
+{
+    using Plasma::Types;
+    QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
+                                 Types::TopEdge, Types::RightEdge};
+
+    if (!m_corona) {
+        return edges;
+    }
+
+    foreach (auto view, m_dockViews) {
+        if (view && view->currentScreen() == scr->name()) {
             edges.removeOne(view->location());
         }
     }

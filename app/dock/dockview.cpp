@@ -516,7 +516,7 @@ void DockView::reconsiderScreen()
         QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
                                      Types::TopEdge, Types::RightEdge};
 
-        edges = m_managedLayout ? m_managedLayout->freeEdges(qGuiApp->primaryScreen()) : edges;
+        edges = m_managedLayout ? m_managedLayout->availableEdgesForView(qGuiApp->primaryScreen(), this) : edges;
 
         //change to primary screen only if the specific edge is free
         qDebug() << "updating the primary screen for dock...";
@@ -906,8 +906,15 @@ inline void DockView::syncGeometry()
     //! before updating the positioning and geometry of the dock
     //! we make sure that the dock is at the correct screen
     if (this->screen() != m_screenToFollow) {
-        qDebug() << "Sync Geometry screens inconsistent!!!!";
-        m_screenSyncTimer.start();
+        qDebug() << "Sync Geometry screens inconsistent!!!! ";
+
+        if (m_screenToFollow) {
+            qDebug() << "Sync Geometry screens inconsistent for m_screenToFollow:" << m_screenToFollow->name() << " dock screen:" << screen()->name();
+        }
+
+        if (!m_screenSyncTimer.isActive()) {
+            m_screenSyncTimer.start();
+        }
     } else {
         found = true;
     }
@@ -958,6 +965,8 @@ inline void DockView::syncGeometry()
         updateEnabledBorders();
         resizeWindow(availableScreenRect);
         updatePosition(availableScreenRect);
+
+        qDebug() << "syncGeometry() calculations for screen: " << screen()->name() << " _ " << screen()->geometry();
     }
 
     qDebug() << "syncGeometry() ended...";

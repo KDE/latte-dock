@@ -137,7 +137,11 @@ public:
     //! that dockView
     QList<Plasma::Containment *> unassignFromLayout(DockView *dockView);
 
-    QList<Plasma::Types::Location> freeEdges(QScreen *screen) const;
+    //! Available edges for specific view in that screen
+    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, DockView *forView) const;
+
+    //! All free edges in that screen
+    QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
     QList<Plasma::Types::Location> freeEdges(int screen) const;
 
     //! make it only read-only
