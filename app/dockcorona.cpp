@@ -866,6 +866,15 @@ void DockCorona::activateLauncherMenu()
     m_globalShortcuts->activateLauncherMenu();
 }
 
+void DockCorona::windowColorScheme(QString windowIdAndScheme)
+{
+    int firstSlash = windowIdAndScheme.indexOf("-");
+    QString windowIdStr = windowIdAndScheme.mid(0,firstSlash);
+    QString schemeStr = windowIdAndScheme.mid(firstSlash+1);
+
+    m_wm->setColorSchemeForWindow(windowIdStr, schemeStr);
+}
+
 //! update badge for specific dock item
 void DockCorona::updateDockItemBadge(QString identifier, QString value)
 {

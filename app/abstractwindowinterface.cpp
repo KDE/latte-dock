@@ -32,10 +32,24 @@ namespace Latte {
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
 {
+    QString defaultSchemePath = SchemeColors::possibleSchemeFile("kdeglobals");
+    SchemeColors *dScheme = new SchemeColors(this, defaultSchemePath);
+
+    m_schemes["kdeglobals"] = dScheme;
+    m_schemes[defaultSchemePath] = dScheme;
+
+    connect(this, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
+        m_windowScheme.remove(wid);
+    });
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()
 {
+    m_windowScheme.clear();
+    //! it is just a reference to a real scheme file
+    m_schemes.take("kdeglobals");
+    qDeleteAll(m_schemes);
+    m_schemes.clear();
 }
 
 void AbstractWindowInterface::addDock(WindowId wid)
@@ -49,6 +63,41 @@ void AbstractWindowInterface::removeDock(WindowId wid)
 
     if (it != m_docks.end())
         m_docks.erase(it);
+}
+
+
+//! Scheme support for windows
+SchemeColors *AbstractWindowInterface::schemeForWindow(WindowId wid)
+{
+    if (!m_windowScheme.contains(wid)) {
+        return m_schemes["kdeglobals"];
+    } else {
+        return m_schemes[m_windowScheme[wid]];
+    }
+
+    return nullptr;
+}
+
+void AbstractWindowInterface::setColorSchemeForWindow(WindowId wid, QString scheme)
+{
+    if (scheme == "kdeglobals" && !m_windowScheme.contains(wid)) {
+        //default scheme does not have to be set
+        return;
+    }
+
+    if (scheme == "kdeglobals") {
+        //! a window that previously had an explicit set scheme now is set back to default scheme
+        m_windowScheme.remove(wid);
+    } else {
+        QString schemeFile = SchemeColors::possibleSchemeFile(scheme);
+
+        if (!m_schemes.contains(schemeFile)) {
+            //! when this scheme file has not been loaded yet
+            m_schemes[schemeFile] = new SchemeColors(this, schemeFile);
+        }
+
+        m_windowScheme[wid] = schemeFile;
+    }
 }
 
 }

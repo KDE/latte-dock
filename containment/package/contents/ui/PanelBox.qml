@@ -473,6 +473,15 @@ Item{
             }
         }
 
+        Rectangle {
+            anchors.fill: solidBackground
+            opacity: showColoredPanel ? solidBackground.opacity : 0
+            color: showColoredPanel ? dock.visibility.touchingWindowScheme.backgroundColor : "#00000000"
+
+            readonly property bool showColoredPanel: dock && dock.visibility && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+                                                     && !hasExpandedApplet
+        }
+
         PlasmaCore.FrameSvgItem{
             id: hiddenPanelBackground
             imagePath: "widgets/panel-background"

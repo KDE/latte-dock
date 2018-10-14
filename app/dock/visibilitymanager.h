@@ -22,6 +22,8 @@
 #define VISIBILITYMANAGER_H
 
 #include "../plasmaquick/containmentview.h"
+#include "../schemecolors.h"
+#include "../windowinfowrap.h"
 #include "../../liblattedock/dock.h"
 
 #include <QObject>
@@ -48,6 +50,7 @@ class VisibilityManager : public QObject
     Q_PROPERTY(bool enabledDynamicBackground READ enabledDynamicBackground WRITE setEnabledDynamicBackground NOTIFY enabledDynamicBackgroundChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowSnapped READ existsWindowSnapped NOTIFY existsWindowSnappedChanged)
+    Q_PROPERTY(SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
     //! KWin Edges Support Options
     Q_PROPERTY(bool enableKWinEdges READ enableKWinEdges WRITE setEnableKWinEdges NOTIFY enableKWinEdgesChanged)
@@ -93,6 +96,8 @@ public:
     bool existsWindowMaximized() const;
     bool existsWindowSnapped() const;
 
+    SchemeColors *touchingWindowScheme() const;
+
     //! KWin Edges Support functions
     bool enableKWinEdges() const;
     void setEnableKWinEdges(bool enable);
@@ -111,6 +116,7 @@ signals:
     void containsMouseChanged();
     void timerShowChanged();
     void timerHideChanged();
+    void touchingWindowSchemeChanged();
 
     //! Dynamic Background signals (from options)
     void enabledDynamicBackgroundChanged();

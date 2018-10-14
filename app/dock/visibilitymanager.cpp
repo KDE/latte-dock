@@ -777,6 +777,17 @@ void VisibilityManagerPrivate::setExistsWindowSnapped(bool windowSnapped)
     emit q->existsWindowSnappedChanged();
 }
 
+void VisibilityManagerPrivate::setTouchingWindowScheme(SchemeColors *scheme)
+{
+    if (touchingScheme == scheme) {
+        return;
+    }
+
+    touchingScheme = scheme;
+
+    emit q->touchingWindowSchemeChanged();
+}
+
 void VisibilityManagerPrivate::updateAvailableScreenGeometry()
 {
     if (!view || !view->containment()) {
@@ -854,6 +865,8 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
     //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
     //! maybe a garbage collector here is a good idea!!!
     bool existsFaultyWindow{false};
+    WindowId maxWinId;
+    WindowId snapWinId;
 
     for (const auto &winfo : windows) {
         if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
@@ -861,6 +874,7 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
                 //! updated implementation to identify the screen that the maximized window is present
                 //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
                 foundMaximized = true;
+                maxWinId = winfo.wid();
             }
 
             bool touchingPanelEdge{false};
@@ -883,6 +897,7 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
             if (((winfo.isActive() || winfo.isKeepAbove()) && touchingPanelEdge)
                 || (!winfo.isActive() && snappedWindowsGeometries.contains(winfo.geometry()))) {
                 foundSnap = true;
+                snapWinId = winfo.wid();
             }
         }
 
@@ -906,6 +921,17 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
 
     setExistsWindowMaximized(foundMaximized);
     setExistsWindowSnapped(foundSnap);
+
+    //! update color scheme for touching window
+
+    if (foundSnap) {
+        //! first the snap one because that would mean it is active
+        setTouchingWindowScheme(wm->schemeForWindow(snapWinId));
+    } else if (foundMaximized) {
+        setTouchingWindowScheme(wm->schemeForWindow(maxWinId));
+    } else {
+        setTouchingWindowScheme(nullptr);
+    }
 }
 
 //! KWin Edges Support functions
@@ -1107,6 +1133,11 @@ bool VisibilityManager::existsWindowMaximized() const
 bool VisibilityManager::existsWindowSnapped() const
 {
     return d->windowIsSnappedFlag;
+}
+
+SchemeColors *VisibilityManager::touchingWindowScheme() const
+{
+    return d->touchingScheme;
 }
 
 //! KWin Edges Support functions

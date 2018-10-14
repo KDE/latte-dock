@@ -113,6 +113,8 @@ public:
 public slots:
     void aboutApplication();
     void activateLauncherMenu();
+    //! they are separated with a "-" character
+    void windowColorScheme(QString windowIdAndScheme);
     void loadDefaultLayout() override;
     void updateDockItemBadge(QString identifier, QString value);
     void unload();

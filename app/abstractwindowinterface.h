@@ -21,6 +21,7 @@
 #ifndef ABSTRACTWINDOWINTERFACE_H
 #define ABSTRACTWINDOWINTERFACE_H
 
+#include "schemecolors.h"
 #include "windowinfowrap.h"
 #include "../liblattedock/dock.h"
 #include "../liblattedock/extras.h"
@@ -31,6 +32,7 @@
 #include <QObject>
 #include <QWindow>
 #include <QDialog>
+#include <QMap>
 #include <QRect>
 #include <QPointer>
 #include <QScreen>
@@ -83,6 +85,9 @@ public:
     void addDock(WindowId wid);
     void removeDock(WindowId wid);
 
+    SchemeColors *schemeForWindow(WindowId wId);
+    void setColorSchemeForWindow(WindowId wId, QString scheme);
+
 signals:
     void activeWindowChanged(WindowId wid);
     void windowChanged(WindowId winfo);
@@ -95,6 +100,14 @@ protected:
     std::list<WindowId> m_windows;
     std::list<WindowId> m_docks;
     QPointer<KActivities::Consumer> m_activities;
+
+private:
+    //! scheme file and its loaded colors
+    QMap<QString, SchemeColors *> m_schemes;
+
+    //! window id and its corresponding scheme file
+    QMap<WindowId, QString> m_windowScheme;
+
 };
 
 // namespace alias

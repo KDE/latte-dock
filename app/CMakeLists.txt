@@ -18,6 +18,7 @@ set(lattedock-app_SRCS
     importer.cpp
     infoview.cpp
     launcherssignals.cpp
+    schemecolors.cpp
     layoutsDelegates/checkboxdelegate.cpp
     layoutsDelegates/colorcmbboxdelegate.cpp
     layoutsDelegates/colorcmbboxitemdelegate.cpp

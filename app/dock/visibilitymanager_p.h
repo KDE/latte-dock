@@ -1,8 +1,9 @@
 #ifndef VISIBILITYMANAGERPRIVATE_H
 #define VISIBILITYMANAGERPRIVATE_H
 
-#include "../windowinfowrap.h"
 #include "../abstractwindowinterface.h"
+#include "../schemecolors.h"
+#include "../windowinfowrap.h"
 #include "../../liblattedock/dock.h"
 
 #include <array>
@@ -55,6 +56,7 @@ public:
     void setEnabledDynamicBackground(bool active);
     void setExistsWindowMaximized(bool windowMaximized);
     void setExistsWindowSnapped(bool windowSnapped);
+    void setTouchingWindowScheme(SchemeColors *scheme);
     void updateAvailableScreenGeometry();
     void updateDynamicBackgroundWindowFlags();
 
@@ -112,6 +114,8 @@ public:
     QList<QRect> snappedWindowsGeometries;
     std::array<QMetaObject::Connection, 7> connectionsDynBackground;
     WindowId lastActiveWindowWid;
+    SchemeColors *touchingScheme{nullptr};
+
 
     //! KWin Edges
     bool enableKWinEdgesFromUser{true};

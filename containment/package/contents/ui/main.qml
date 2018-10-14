@@ -1736,9 +1736,16 @@ DragDrop.DropArea {
     Loader{
         id: colorizerLoader
 
-        active: forceColorizer
+        active: forceColorizer || forceSolidnessAndColorize
         anchors.fill: layoutsContainer
         z: layoutsContainer.z + 1
+
+        readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
+                                               || !Latte.WindowSystem.compositingActive
+        readonly property bool forceSolidnessAndColorize: forceSolidness && dock && dock.visibility
+                                                          && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+                                                          && !root.hasExpandedApplet
+
 
         // formula for luminance according to:
         // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
@@ -1801,7 +1808,7 @@ DragDrop.DropArea {
         readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
         readonly property color minimizedDotColor: themeTextColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
-        property bool isShown: active && !forceSolidPanel
+        property bool isShown: active && (!forceSolidPanel || forceSolidnessAndColorize)
         //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
         //! then the colorizer could be enabled for low panel transparency levels (<40%)
                                && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
@@ -1815,6 +1822,10 @@ DragDrop.DropArea {
         property color themeDarkColor: themeBackgroundColorLuma > themeTextColorLuma ? theme.textColor : theme.backgroundColor
 
         property color applyColor: {
+            if (forceSolidnessAndColorize && dock.visibility.touchingWindowScheme) {
+                return dock.visibility.touchingWindowScheme.foregroundColor;
+            }
+
             if (currentBackgroundLuminas>=0) {
                 var textAbs = Math.abs(themeTextColorLuma - currentBackgroundLuminas);
                 var backAbs = Math.abs(themeBackgroundColorLuma - currentBackgroundLuminas);
