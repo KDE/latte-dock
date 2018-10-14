@@ -91,10 +91,7 @@ public:
     void setEnabledDynamicBackground(bool active);
 
     bool existsWindowMaximized() const;
-    void setExistsWindowMaximized(bool windowMaximized);
-
     bool existsWindowSnapped() const;
-    void setExistsWindowSnapped(bool windowSnapped);
 
     //! KWin Edges Support functions
     bool enableKWinEdges() const;

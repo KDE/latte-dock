@@ -1104,19 +1104,9 @@ bool VisibilityManager::existsWindowMaximized() const
     return d->windowIsMaximizedFlag;
 }
 
-void VisibilityManager::setExistsWindowMaximized(bool windowMaximized)
-{
-    d->setExistsWindowMaximized(windowMaximized);
-}
-
 bool VisibilityManager::existsWindowSnapped() const
 {
     return d->windowIsSnappedFlag;
-}
-
-void VisibilityManager::setExistsWindowSnapped(bool windowSnapped)
-{
-    d->setExistsWindowSnapped(windowSnapped);
 }
 
 //! KWin Edges Support functions
