@@ -32,6 +32,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte 0.1 as Latte
 
 import "applet" as Applet
+import "colorizer" as Colorizer
 
 import "../code/LayoutManager.js" as LayoutManager
 
@@ -104,7 +105,7 @@ DragDrop.DropArea {
 
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
     property bool forceColorizeFromActiveWindowScheme: plasmoid.configuration.colorizeFromActiveWindowScheme && !editMode
-                                                       && (dock && dock.visibility
+                                                       && (dock && dock.visibility && dock.visibility.touchingWindowScheme
                                                            && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
                                                            && !hasExpandedApplet)
 
@@ -1839,7 +1840,7 @@ DragDrop.DropArea {
             return Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 1); //remove any transparency
         }
 
-        sourceComponent: ColorizerManager{}
+        sourceComponent: Colorizer.Manager{}
     }
 
     ///////////////END UI elements

@@ -28,6 +28,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
+import "colorizer" as Colorizer
+
 import org.kde.latte 0.1 as Latte
 
 Item{
@@ -473,10 +475,11 @@ Item{
             }
         }
 
-        Rectangle {
+        Colorizer.CustomBackground {
             anchors.fill: solidBackground
             opacity: root.forceColorizeFromActiveWindowScheme ? solidBackground.opacity : 0
-            color: root.forceColorizeFromActiveWindowScheme ? dock.visibility.touchingWindowScheme.backgroundColor : "#00000000"
+            backgroundColor: root.forceColorizeFromActiveWindowScheme ? dock.visibility.touchingWindowScheme.backgroundColor : "transparent"
+            roundness: 4
         }
 
         PlasmaCore.FrameSvgItem{
