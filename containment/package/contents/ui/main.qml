@@ -103,6 +103,10 @@ DragDrop.DropArea {
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
+    property bool forceColorizeFromActiveWindowScheme: plasmoid.configuration.colorizeFromActiveWindowScheme && !editMode
+                                                       && (dock && dock.visibility
+                                                           && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+                                                           && !hasExpandedApplet)
 
     property bool maximizedWindowTitleBarBehavesAsPanelBackground: dock && dock.visibility
                                                                    && (!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
@@ -1742,10 +1746,7 @@ DragDrop.DropArea {
 
         readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
                                                || !Latte.WindowSystem.compositingActive
-        readonly property bool forceSolidnessAndColorize: forceSolidness && dock && dock.visibility
-                                                          && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
-                                                          && !root.hasExpandedApplet
-
+        readonly property bool forceSolidnessAndColorize: forceSolidness && forceColorizeFromActiveWindowScheme
 
         // formula for luminance according to:
         // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef

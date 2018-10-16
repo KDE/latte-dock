@@ -125,7 +125,6 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: colorizeTransparentPanelsChk
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.bottomMargin: units.smallSpacing
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
                 text: i18n("Monochrome contents when panel is transparent")
                 checked: plasmoid.configuration.colorizeTransparentPanels
@@ -136,6 +135,22 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.colorizeTransparentPanels = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: colorizeFromActiveWindowSchemeChk
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
+                text: i18n("Paint contents based on active window scheme")
+                checked: plasmoid.configuration.colorizeFromActiveWindowScheme
+                tooltip: i18n("The panel contents are colorized from active window scheme \nwhen that window is maximized or is touching the panel.")
+                style: LatteCheckBoxStyle{}
+
+                enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
+
+                onClicked: {
+                    plasmoid.configuration.colorizeFromActiveWindowScheme = checked;
                 }
             }
 
