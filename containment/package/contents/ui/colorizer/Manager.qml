@@ -28,9 +28,9 @@ Item{
     ColorOverlay {
         id: colorizer
         anchors.fill: parent
-        color: colorizerLoader.applyColor
+        color: colorizerManagerLoader.applyColor
         source: layoutsContainer
-        opacity: colorizerLoader.isShown ? 1 : 0
+        opacity: colorizerManagerLoader.mustBeShown ? 1 : 0
 
         Behavior on opacity {
             NumberAnimation {
@@ -66,7 +66,7 @@ Item{
     Connections{
         target: plasmoid
         onLocationChanged:{
-            colorizerLoader.currentBackgroundLuminas = universalSettings.luminasFromFile(activitiesList.currentLayoutBackground, plasmoid.location);
+            colorizerManagerLoader.currentBackgroundLuminas = universalSettings.luminasFromFile(activitiesList.currentLayoutBackground, plasmoid.location);
         }
     }
 
@@ -77,7 +77,7 @@ Item{
         property string currentLayoutBackground: ""
 
         onCurrentLayoutBackgroundChanged: {
-            colorizerLoader.currentBackgroundLuminas = universalSettings.luminasFromFile(currentLayoutBackground, plasmoid.location);
+            colorizerManagerLoader.currentBackgroundLuminas = universalSettings.luminasFromFile(currentLayoutBackground, plasmoid.location);
         }
 
         Item {

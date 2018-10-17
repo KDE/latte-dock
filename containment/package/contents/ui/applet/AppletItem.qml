@@ -30,6 +30,7 @@ import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.latte 0.1 as Latte
 
+import "../colorizer" as Colorizer
 import "../../code/AppletIdentifier.js" as AppletIndetifier
 
 Item {
@@ -504,11 +505,12 @@ Item {
         }
     }
 
-
+    //! Main Applet Shown Area
     Flow{
         id: appletFlow
         width: container.computeWidth
         height: container.computeHeight
+        opacity: appletColorizer.mustBeShown ? 0 : 1
 
         anchors.rightMargin: (latteApplet || (showZoomed && root.editMode)) ||
                              (plasmoid.location !== PlasmaCore.Types.RightEdge) ? 0 : shownAppletMargin
@@ -519,6 +521,12 @@ Item {
         anchors.bottomMargin: (latteApplet || (showZoomed && root.editMode)) ||
                               (plasmoid.location !== PlasmaCore.Types.BottomEdge) ? 0 : shownAppletMargin
 
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 0.8 * root.animationTime
+                easing.type: Easing.OutCubic
+            }
+        }
 
         // a hidden spacer for the first element to add stability
         // IMPORTANT: hidden spacers must be tested on vertical !!!
@@ -534,7 +542,6 @@ Item {
 
         // a hidden spacer on the right for the last item to add stability
         AppletHiddenSpacer{id: hiddenSpacerRight; rightSpacer: true}
-
     }// Flow with hidden spacers inside
 
     //Busy Indicator
@@ -573,7 +580,7 @@ Item {
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
             fontSizeMode: Text.Fit
-            color: colorizerLoader.themeBrightColor
+            color: colorizerManagerLoader.themeBrightColor
 
             rotation: {
                 if (root.isHorizontal)
@@ -586,6 +593,21 @@ Item {
         }
     }
 
+    //! The Applet Colorizer
+    Colorizer.Applet {
+        id: appletColorizer
+        anchors.fill: parent
+        opacity: mustBeShown ? 1 : 0
+
+        readonly property bool mustBeShown: colorizerManagerLoader.mustBeShown
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 1.2 * root.animationTime
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
 
     MouseArea{
         id: appletMouseArea

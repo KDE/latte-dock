@@ -407,7 +407,7 @@ DragDrop.DropArea {
 
     property rect screenGeometry: dock ? dock.screenGeometry : plasmoid.screenGeometry
 
-    readonly property color minimizedDotColor: colorizerLoader.minimizedDotColor
+    readonly property color minimizedDotColor: colorizerManagerLoader.minimizedDotColor
     ///END properties from latteApplet
 
     /* Layout.preferredWidth: plasmoid.immutable ?
@@ -1728,22 +1728,12 @@ DragDrop.DropArea {
 
     LayoutsContainer {
         id: layoutsContainer
-        opacity: colorizerLoader.isShown ? 0 : 1
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 0.8 * root.animationTime
-                easing.type: Easing.OutCubic
-            }
-        }
     }
 
     Loader{
-        id: colorizerLoader
+        id: colorizerManagerLoader
 
         active: forceColorizer || forceSolidnessAndColorize
-        anchors.fill: layoutsContainer
-        z: layoutsContainer.z + 1
 
         readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
                                                || !Latte.WindowSystem.compositingActive
@@ -1810,13 +1800,13 @@ DragDrop.DropArea {
         readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
         readonly property color minimizedDotColor: themeTextColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
-        property bool isShown: active && (!forceSolidPanel || forceSolidnessAndColorize)
+        property bool mustBeShown: active && (!forceSolidPanel || forceSolidnessAndColorize)
         //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
         //! then the colorizer could be enabled for low panel transparency levels (<40%)
-                               && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
-                               && !maximizedWindowTitleBarBehavesAsPanelBackground
-                               && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
-                               && !root.editMode && Latte.WindowSystem.compositingActive
+                                   && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
+                                   && !maximizedWindowTitleBarBehavesAsPanelBackground
+                                   && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
+                                   && !root.editMode && Latte.WindowSystem.compositingActive
 
         property real currentBackgroundLuminas: -1000
 
