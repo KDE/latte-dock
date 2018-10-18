@@ -42,6 +42,9 @@ class UniversalSettings : public QObject
     Q_OBJECT
     Q_PROPERTY(bool autostart READ autostart WRITE setAutostart NOTIFY autostartChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
+
+    Q_PROPERTY(int plasmaThemeRoundness READ plasmaThemeRoundness NOTIFY plasmaThemeRoundnessChanged)
+
     Q_PROPERTY(QString currentLayoutName READ currentLayoutName WRITE setCurrentLayoutName NOTIFY currentLayoutNameChanged)
 
     Q_PROPERTY(QStringList badgesForActivate READ badgesForActivate NOTIFY badgesForActivateChanged)
@@ -67,6 +70,9 @@ public:
 
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
+
+    int plasmaThemeRoundness() const;
+    void setPlasmaThemeRoundness(int roundness);
 
     int version() const;
     void setVersion(int ver);
@@ -120,6 +126,7 @@ signals:
     void launchersChanged();
     void layoutsMemoryUsageChanged();
     void mouseSensitivityChanged();
+    void plasmaThemeRoundnessChanged();
     void runningActivitiesModelChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
@@ -147,6 +154,9 @@ private:
 private:
     bool m_canDisableBorders{false};
     bool m_showInfoWindow{true};
+
+    //! this Breeze default value
+    int m_plasmaThemeRoundness{0};
 
     //when there isnt a version it is an old universal file
     int m_version{1};

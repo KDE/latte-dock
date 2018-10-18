@@ -479,7 +479,7 @@ Item{
             anchors.fill: solidBackground
             opacity: root.forceColorizeFromActiveWindowScheme ? solidBackground.opacity : 0
             backgroundColor: root.forceColorizeFromActiveWindowScheme ? dock.visibility.touchingWindowScheme.backgroundColor : "transparent"
-            roundness: 4
+            roundness: universalSettings ? universalSettings.plasmaThemeRoundness : 0
         }
 
         PlasmaCore.FrameSvgItem{
