@@ -30,7 +30,12 @@ class SchemeColors: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QColor backgroundColor READ backgroundColor NOTIFY colorsChanged)
-    Q_PROPERTY(QColor foregroundColor READ foregroundColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor textColor READ textColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor highlightColor READ highlightColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor highlightedTextColor READ highlightedTextColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor positiveText READ positiveText NOTIFY colorsChanged)
+    Q_PROPERTY(QColor neutralText READ neutralText NOTIFY colorsChanged)
+    Q_PROPERTY(QColor negativeText READ negativeText NOTIFY colorsChanged)
 
 public:
     enum ColorsSubgroup
@@ -47,7 +52,12 @@ public:
     QString schemeFile();
 
     QColor backgroundColor() const;
-    QColor foregroundColor() const;
+    QColor textColor() const;
+    QColor highlightColor() const;
+    QColor highlightedTextColor() const;
+    QColor positiveText() const;
+    QColor neutralText() const;
+    QColor negativeText() const;
 
     SchemeColors::ColorsSubgroup subgroup() const;
     void setSubgroup(SchemeColors::ColorsSubgroup subgroup);
@@ -65,10 +75,16 @@ private:
     QString m_schemeFile;
 
     QColor m_activeBackgroundColor;
-    QColor m_activeForegroundColor;
+    QColor m_activeTextColor;
 
     QColor m_inactiveBackgroundColor;
-    QColor m_inactiveForegroundColor;
+    QColor m_inactiveTextColor;
+
+    QColor m_highlightColor;
+    QColor m_highlightedTextColor;
+    QColor m_positiveColor;
+    QColor m_neutralText;
+    QColor m_negativeText;
 
     ColorsSubgroup m_subgroup{SchemeColors::Active};
 };

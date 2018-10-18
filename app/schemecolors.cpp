@@ -52,9 +52,34 @@ QColor SchemeColors::backgroundColor() const
     return subgroup() == Active ? m_activeBackgroundColor : m_inactiveBackgroundColor;
 }
 
-QColor SchemeColors::foregroundColor() const
+QColor SchemeColors::textColor() const
 {
-    return subgroup() == Active ? m_activeForegroundColor : m_inactiveForegroundColor;
+    return subgroup() == Active ? m_activeTextColor : m_inactiveTextColor;
+}
+
+QColor SchemeColors::highlightColor() const
+{
+    return m_highlightColor;
+}
+
+QColor SchemeColors::highlightedTextColor() const
+{
+    return m_highlightedTextColor;
+}
+
+QColor SchemeColors::positiveText() const
+{
+    return m_positiveColor;
+}
+
+QColor SchemeColors::neutralText() const
+{
+    return m_neutralText;
+}
+
+QColor SchemeColors::negativeText() const
+{
+    return m_negativeText;
 }
 
 QString SchemeColors::schemeName()
@@ -124,12 +149,21 @@ void SchemeColors::updateScheme()
 
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_schemeFile);
     KConfigGroup wmGroup = KConfigGroup(filePtr, "WM");
+    KConfigGroup selGroup = KConfigGroup(filePtr, "Colors:Selection");
+    KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
 
     m_activeBackgroundColor = wmGroup.readEntry("activeBackground", QColor());
-    m_activeForegroundColor = wmGroup.readEntry("activeForeground", QColor());
+    m_activeTextColor = wmGroup.readEntry("activeForeground", QColor());
 
     m_inactiveBackgroundColor = wmGroup.readEntry("inactiveBackground", QColor());
-    m_inactiveForegroundColor = wmGroup.readEntry("inactiveForeground", QColor());
+    m_inactiveTextColor = wmGroup.readEntry("inactiveForeground", QColor());
+
+    m_highlightColor = selGroup.readEntry("BackgroundNormal", QColor());
+    m_highlightedTextColor = selGroup.readEntry("ForegroundNormal", QColor());
+
+    m_positiveColor = selGroup.readEntry("ForegroundPositive", QColor());
+    m_neutralText = selGroup.readEntry("ForegroundNeutral", QColor());;
+    m_negativeText = selGroup.readEntry("ForegroundNegative", QColor());
 
     emit colorsChanged();
 }

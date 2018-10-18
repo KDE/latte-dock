@@ -1815,7 +1815,7 @@ DragDrop.DropArea {
 
         property color applyColor: {
             if (forceSolidnessAndColorize && dock.visibility.touchingWindowScheme) {
-                return dock.visibility.touchingWindowScheme.foregroundColor;
+                return dock.visibility.touchingWindowScheme.textColor;
             }
 
             if (currentBackgroundLuminas>=0) {
