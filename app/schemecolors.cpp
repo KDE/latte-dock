@@ -25,6 +25,7 @@
 #include <QFileInfo>
 
 #include <KConfigGroup>
+#include <KDirWatch>
 #include <KSharedConfig>
 
 namespace Latte {
@@ -37,6 +38,16 @@ SchemeColors::SchemeColors(QObject *parent, QString scheme) :
     if (QFileInfo(pSchemeFile).exists()) {
         m_schemeFile = pSchemeFile;
         m_schemeName = scheme;
+
+        //! track scheme file for changes
+        KDirWatch::self()->addFile(m_schemeFile);
+
+        QObject::connect(KDirWatch::self(), &KDirWatch::dirty,
+                         this, &SchemeColors::updateScheme,
+                         Qt::QueuedConnection);
+        QObject::connect(KDirWatch::self(), &KDirWatch::created,
+                         this, &SchemeColors::updateScheme,
+                         Qt::QueuedConnection);
     }
 
     updateScheme();

@@ -23,8 +23,10 @@
 #include "waylandinterface.h"
 
 #include <QObject>
+#include <QDir>
 #include <QQuickWindow>
 
+#include <KDirWatch>
 #include <KWindowSystem>
 
 namespace Latte {
@@ -32,15 +34,23 @@ namespace Latte {
 AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
     : QObject(parent)
 {
-    QString defaultSchemePath = SchemeColors::possibleSchemeFile("kdeglobals");
-    SchemeColors *dScheme = new SchemeColors(this, defaultSchemePath);
-
-    m_schemes["kdeglobals"] = dScheme;
-    m_schemes[defaultSchemePath] = dScheme;
+    updateDefaultScheme();
 
     connect(this, &AbstractWindowInterface::windowRemoved, this, [&](WindowId wid) {
         m_windowScheme.remove(wid);
     });
+
+    //! track for changing default scheme
+    QString kdeSettingsFile = QDir::homePath() + "/.config/kdeglobals";
+
+    KDirWatch::self()->addFile(kdeSettingsFile);
+
+    QObject::connect(KDirWatch::self(), &KDirWatch::dirty,
+                     this, &AbstractWindowInterface::updateDefaultScheme,
+                     Qt::QueuedConnection);
+    QObject::connect(KDirWatch::self(), &KDirWatch::created,
+                     this, &AbstractWindowInterface::updateDefaultScheme,
+                     Qt::QueuedConnection);
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()
@@ -67,6 +77,23 @@ void AbstractWindowInterface::removeDock(WindowId wid)
 
 
 //! Scheme support for windows
+void AbstractWindowInterface::updateDefaultScheme()
+{
+    QString defaultSchemePath = SchemeColors::possibleSchemeFile("kdeglobals");
+
+    SchemeColors *dScheme;
+
+    if (!m_schemes.contains(defaultSchemePath)) {
+        dScheme = new SchemeColors(this, defaultSchemePath);
+    } else {
+        dScheme = m_schemes[defaultSchemePath];
+    }
+
+    if (!m_schemes.contains("kdeglobal") || m_schemes["kdeglobals"]->schemeFile() != defaultSchemePath) {
+        m_schemes["kdeglobals"] = dScheme;
+    }
+}
+
 SchemeColors *AbstractWindowInterface::schemeForWindow(WindowId wid)
 {
     if (!m_windowScheme.contains(wid)) {

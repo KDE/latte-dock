@@ -101,6 +101,9 @@ protected:
     std::list<WindowId> m_docks;
     QPointer<KActivities::Consumer> m_activities;
 
+private slots:
+    void updateDefaultScheme();
+
 private:
     //! scheme file and its loaded colors
     QMap<QString, SchemeColors *> m_schemes;
