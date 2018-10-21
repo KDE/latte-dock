@@ -124,6 +124,10 @@ void AbstractWindowInterface::setColorSchemeForWindow(WindowId wid, QString sche
         }
 
         m_windowScheme[wid] = schemeFile;
+
+        if (wid == activeWindow()) {
+            emit activeWindowChanged(wid);
+        }
     }
 }
 
