@@ -140,7 +140,7 @@ Item{
 
     property Item wrapperContainer: _wrapperContainer
     property Item clickedEffect: _clickedEffect
-    property Item fakeIconItemContainer: _fakeIconItemContainer
+    property Item containerForOverlayIcon: _containerForOverlayIcon
 
     // property int pHeight: applet ? applet.Layout.preferredHeight : -10
 
@@ -255,7 +255,7 @@ Item{
             layoutHeight = root.statesLineSize + root.iconSize;
         }
         else{
-            if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && !canBeHovered && !container.fakeIconItem){
+            if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && !canBeHovered && !communicator.overlayLatteIconIsActive){
                 layoutHeight = applet.Layout.minimumHeight;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
@@ -264,7 +264,7 @@ Item{
                         || container.lockZoom)
                     && root.isVertical
                     && !disableScaleWidth
-                    && !container.fakeIconItem) {
+                    && !communicator.overlayLatteIconIsActive) {
 
                 if (!container.isSpacer) {
                     disableScaleHeight = true;
@@ -301,7 +301,7 @@ Item{
             layoutWidth = root.statesLineSize + root.iconSize;
         }
         else{
-            if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && !canBeHovered && !container.fakeIconItem){
+            if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && !canBeHovered && !communicator.overlayLatteIconIsActive){
                 layoutWidth = applet.Layout.minimumWidth;
             } //it is used for plasmoids that need to scale only one axis... e.g. the Weather Plasmoid
             else if(applet
@@ -310,7 +310,7 @@ Item{
                         || container.lockZoom)
                     && root.isHorizontal
                     && !disableScaleHeight
-                    && !container.fakeIconItem){
+                    && !communicator.overlayLatteIconIsActive){
 
                 if (!container.isSpacer) {
                     disableScaleWidth = true;
@@ -336,7 +336,7 @@ Item{
     Loader{
         anchors.fill: parent
         active: root.activeIndicator === Latte.Dock.AllIndicator
-                || (root.activeIndicator === Latte.Dock.InternalsIndicator && fakeIconItem)
+                || (root.activeIndicator === Latte.Dock.InternalsIndicator && communicator.overlayLatteIconIsActive)
 
         sourceComponent: Item{
             anchors.fill: parent
@@ -429,14 +429,14 @@ Item{
         ///Secret MouseArea to be used by the folder widget
         Loader{
             anchors.fill: parent
-            active: container.fakeIconItem && applet.pluginName === "org.kde.plasma.folder" && !container.disableLatteParabolicIconHeuristics
+            active: communicator.overlayLatteIconIsActive && applet.pluginName === "org.kde.plasma.folder"
             sourceComponent: MouseArea{
                 onClicked: dock.toggleAppletExpanded(applet.id);
             }
         }
 
         Item{
-            id: _fakeIconItemContainer
+            id: _containerForOverlayIcon
             anchors.centerIn: parent
 
             //we setup as maximum for hidden container of some applets that break
@@ -458,18 +458,18 @@ Item{
 
         Loader{
             anchors.fill: parent
-            active: container.fakeIconItem && !container.disableLatteParabolicIconHeuristics
+            active: communicator.overlayLatteIconIsActive
             sourceComponent: Latte.IconItem{
-                id: fakeAppletIconItem
+                id: overlayIconItem
                 anchors.fill: parent
                 source: {
-                    if (appletIconItem && appletIconItem.visible)
-                        return appletIconItem.source;
-                    else if (appletImageItem && appletImageItem.visible)
-                        return appletImageItem.source;
+                    if (communicator.appletIconItemIsShown())
+                        return communicator.appletIconItem.source;
+                    else if (communicator.appletImageItemIsShown())
+                        return communicator.appletImageItem.source;
                 }
 
-                usesPlasmaTheme: appletIconItem && appletIconItem.visible ? appletIconItem.usesPlasmaTheme : false
+                usesPlasmaTheme: communicator.appletIconItemIsShown() ? communicator.appletIconItem.usesPlasmaTheme : false
 
                 Loader{
                     anchors.centerIn: parent
@@ -573,7 +573,7 @@ Item{
             color: root.appShadowColor //"#ff080808"
             fast: true
             samples: 2 * radius
-            source: container.fakeIconItem ? _wrapperContainer : container.applet
+            source: communicator.overlayLatteIconIsActive ? _wrapperContainer : container.applet
             radius: shadowSize
             verticalOffset: forcedShadow ? 0 : 2
 

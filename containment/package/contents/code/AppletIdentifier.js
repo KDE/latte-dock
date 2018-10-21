@@ -29,7 +29,7 @@ function typeOf(obj, className){
 }
 
 function reconsiderAppletIconItem(){
-    if (container.appletIconItem || !applet || container.disableLatteParabolicIconHeuristics)
+    if (communicator.appletIconItem || !applet || container.disableLatteParabolicIconHeuristics)
         return;
 
     //! searching to find for that applet the first IconItem
@@ -67,12 +67,12 @@ function identifyGeneric() {
                 var level2 = level1[j].children;
                 for(var k=0; k<level2.length; ++k){
                     if (typeOf(level2[k], "IconItem")) {
-                        container.appletIconItem = level2[k];
+                        communicator.appletIconItem = level2[k];
                         return;
                     }
                 }
             } else if (typeOf(level1[j], "IconItem")) {
-                container.appletIconItem = level1[j];
+                communicator.appletIconItem = level1[j];
                 return;
             }
         }
@@ -92,7 +92,7 @@ function identifyKdeConnectSms()
             var level2 = level1[j].children;
             for(var k=0; k<level2.length; ++k){
                 if (typeOf(level2[k], "IconItem")) {
-                    container.appletIconItem = level2[k];
+                    communicator.appletIconItem = level2[k];
                     return;
                 }
             }
@@ -115,7 +115,7 @@ function identifyKickOff() {
                     var level2 = level1[j].children;
                     for(var k=0; k<level2.length; ++k){
                         if (typeOf(level2[k], "IconItem")) {
-                            container.appletIconItem = level2[k];
+                            communicator.appletIconItem = level2[k];
                             return;
                         }
                     }
@@ -152,7 +152,7 @@ function identifyUserSwitcher() {
                                 }
                             }
                             if (iconIt && labelIt && !labelIt.visible){
-                                container.appletIconItem = iconIt;
+                                communicator.appletIconItem = iconIt;
                                 return;
                             }
                         }
@@ -186,11 +186,11 @@ function identifyKicker() {
                 }
 
                 if (iconIt) {
-                    container.appletIconItem = iconIt;
+                    communicator.appletIconItem = iconIt;
                 }
 
                 if (imageIt){
-                    container.appletImageItem = imageIt;
+                    communicator.appletImageItem = imageIt;
                 }
 
                 return;
@@ -219,11 +219,11 @@ function identifySimpleMenu() {
         }
 
         if (iconIt) {
-            container.appletIconItem = iconIt;
+            communicator.appletIconItem = iconIt;
         }
 
         if (imageIt){
-            container.appletImageItem = imageIt;
+            communicator.appletImageItem = imageIt;
         }
 
         return;

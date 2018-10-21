@@ -31,7 +31,6 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.latte 0.1 as Latte
 
 import "../colorizer" as Colorizer
-import "../../code/AppletIdentifier.js" as AppletIndetifier
 
 Item {
     id: container
@@ -45,7 +44,6 @@ Item {
     property bool canBeHovered: true
     property bool canShowAppletNumberBadge: !isSeparator && !isHidden && !isLattePlasmoid
                                             && !isSpacer && !isInternalViewSplitter
-    property bool disableLatteParabolicIconHeuristics: applet && applet.disableLatteParabolicIcon !== undefined ?  applet.disableLatteParabolicIcon : false
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool needsFillSpace: { //fill flag, it is used in calculations for fillWidth,fillHeight applets
         if (!applet || !applet.Layout ||  (applet && applet.pluginName === "org.kde.plasma.panelspacer"))
@@ -82,7 +80,6 @@ Item {
                                                                                          (((index === layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-2)&&(layoutsContainer.startLayout.count>2))
                                                                                           ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
                                                                                           ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
-    property bool supportsIsInLatte: applet && applet.isInLatte !== undefined ? true : false
 
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
     property int hoveredIndex: layoutsContainer.hoveredIndex
@@ -117,13 +114,8 @@ Item {
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||
                                   isSystray) ? wrapper : wrapper.wrapperContainer
-    property Item appletIconItem; //first applet's IconItem, to be activated onExit signal
-    property Item appletImageItem;
 
     property Item tooltipVisualParent: titleTooltipParent
-
-    //this is used for folderView and icon widgets to fake their visual
-    property bool fakeIconItem: applet && appletIconItem //(applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
 
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
@@ -132,50 +124,6 @@ Item {
         if(index==0)
             console.log(computeHeight);
     }*/
-
-    //a timer that is used in  order to init the fake applets on startup
-    Timer {
-        id: fakeInitTimer
-        interval: 4000
-        onTriggered: {
-            AppletIndetifier.reconsiderAppletIconItem();
-
-            if (root.debugModeTimers) {
-                console.log("containment timer: appletItem fakeInitTimer called...");
-            }
-        }
-    }
-
-    //set up the fake containers and properties for when a fakeIconItem must be presented to the user
-    //because the plasma widgets specific implementation breaks the Latte experience
-    onFakeIconItemChanged: {
-        if (fakeIconItem) {
-            applet.opacity = 0;
-
-            if (applet.pluginName === "org.kde.plasma.folder") {
-                applet.parent =  wrapper.fakeIconItemContainer;
-                applet.anchors.fill = wrapper.fakeIconItemContainer;
-            }
-
-            wrapper.disableScaleWidth = false;
-            wrapper.disableScaleHeight = false;
-
-            wrapper.updateLayoutWidth();
-            wrapper.updateLayoutHeight();
-        }
-    }
-
-    onDisableLatteParabolicIconHeuristicsChanged: {
-        if (disableLatteParabolicIconHeuristics && applet.opacity === 0) {
-            applet.opacity = 1;
-
-            wrapper.disableScaleWidth = false;
-            wrapper.disableScaleHeight = false;
-
-            wrapper.updateLayoutWidth();
-            wrapper.updateLayoutHeight();
-        }
-    }
 
     /// BEGIN functions
     function activateAppletForNeutralAreas(mouse){
@@ -243,7 +191,7 @@ Item {
         if ( (((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
                (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
               && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
-              && !container.fakeIconItem)
+              && !communicator.canShowOverlaiedLatteIcon)
                 || (isSystray)
                 || (container.needsFillSpace) ) {
             canBeHovered = false;
@@ -262,20 +210,12 @@ Item {
 
         return false;
     }
-
-    function reconsiderAppletIconItem() {
-        AppletIndetifier.reconsiderAppletIconItem();
-    }
-
     ///END functions
 
     //BEGIN connections
     onAppletChanged: {
         if (!applet) {
             destroy();
-        } else {
-            AppletIndetifier.reconsiderAppletIconItem();
-            fakeInitTimer.start();
         }
     }
 
@@ -365,12 +305,6 @@ Item {
         }
         else{
             wrapper.zoomScale = 1;
-        }
-    }
-
-    onSupportsIsInLatteChanged: {
-        if (supportsIsInLatte) {
-            applet.isInLatte = true;
         }
     }
 
@@ -478,6 +412,42 @@ Item {
     }
 
     ///END connections
+
+    //! It is used for any communication needed with the underlying applet
+    Communicator{
+        id: communicator
+
+        //set up the overlaied containers and properties for when a overlaiedIconItem must be presented to the user
+        //because the plasma widgets specific implementation breaks the Latte experience
+        onCanShowOverlaiedLatteIconChanged: {
+            if (canShowOverlaiedLatteIcon) {
+                applet.opacity = 0;
+
+                if (applet.pluginName === "org.kde.plasma.folder") {
+                    applet.parent =  wrapper.containerForOverlayIcon;
+                    applet.anchors.fill = wrapper.containerForOverlayIcon;
+                }
+
+                wrapper.disableScaleWidth = false;
+                wrapper.disableScaleHeight = false;
+
+                wrapper.updateLayoutWidth();
+                wrapper.updateLayoutHeight();
+            }
+        }
+
+        onDisableLatteParabolicIconHeuristicsChanged: {
+            if (communicator.disableLatteParabolicIconHeuristics && applet.opacity === 0) {
+                applet.opacity = 1;
+
+                wrapper.disableScaleWidth = false;
+                wrapper.disableScaleHeight = false;
+
+                wrapper.updateLayoutWidth();
+                wrapper.updateLayoutHeight();
+            }
+        }
+    }
 
     /*  Rectangle{
         anchors.fill: parent
@@ -632,7 +602,6 @@ Item {
         }
 
         onEntered: {
-            //AppletIndetifier.reconsiderAppletIconItem();
             if (containsMouse && !container.lockZoom && container.canBeHovered){
                 root.stopCheckRestoreZoomTimer();
             }
@@ -674,8 +643,9 @@ Item {
         }
 
         onExited:{
-            if (appletIconItem && appletIconItem.visible)
-                appletIconItem.active = false;
+            if (communicator.appletIconItemIsShown()) {
+                communicator.setAppletIconItemActive(false);
+            }
 
             root.hideTooltipLabel();
 
