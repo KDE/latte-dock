@@ -156,7 +156,8 @@ Item{
         target: appletRootItem
         property: "lattePalette"
         when: disableLatteSideColoring && appletCanUseLattePalette
-        value: dock && dock.visibility ? dock.visibility.touchingWindowScheme : null
+        value: colorizerManagerLoader
+        //value: dock && dock.visibility ? dock.visibility.touchingWindowScheme : null
     }
     //! END OF BINDINGS
 

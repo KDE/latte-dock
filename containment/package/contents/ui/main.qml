@@ -118,8 +118,9 @@ DragDrop.DropArea {
                                                                    && dock.visibility.existsWindowMaximized
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
-        return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.pluginName !== root.plasmoidName
-                && item.status !== PlasmaCore.Types.HiddenStatus);
+        return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.status !== PlasmaCore.Types.HiddenStatus
+                && item.pluginName !== root.plasmoidName
+                && item.pluginName !== "org.kde.activeWindowControl");
     })
 
     readonly property bool hasUserSpecifiedBackground: (dock && dock.managedLayout && dock.managedLayout.background.startsWith("/")) ?
@@ -1830,6 +1831,31 @@ DragDrop.DropArea {
 
             return Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 1); //remove any transparency
         }
+
+        //! new TEMPORARY options to pass palette to applets
+        //! UNTIL Latte produces two different color schemes files (LIGHT / DARK)
+        //! to be passed to applets etc...
+
+        readonly property color textColor: applyColor
+        readonly property color highlightColor: theme.highlightColor
+        readonly property color highlightedTextColor: theme.highlightedTextColor
+        readonly property color backgroundColor: {
+            if (forceSolidnessAndColorize && dock.visibility.touchingWindowScheme) {
+                return dock.visibility.touchingWindowScheme.backgroundColor;
+            }
+
+            if (currentBackgroundLuminas>=0) {
+                var textAbs = Math.abs(themeTextColorLuma - currentBackgroundLuminas);
+                var backAbs = Math.abs(themeBackgroundColorLuma - currentBackgroundLuminas);
+
+                if (textAbs > backAbs) {
+                    return Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b , 1); //remove any transparency
+                }
+            }
+
+            return Qt.rgba(theme.textColor.r, theme.textColor.g, theme.textColor.b, 1); //remove any transparency
+        }
+
 
         sourceComponent: Colorizer.Manager{}
     }
