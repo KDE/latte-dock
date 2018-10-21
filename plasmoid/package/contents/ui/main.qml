@@ -249,7 +249,12 @@ Item {
     property var managedLayoutName: currentLayout ? currentLayout.name : ""
 
     property Item latteDock: null
-    //END Now Dock Panel properties
+    //END Latte Dock Panel properties
+
+    //BEGIN Latte Dock Communicator
+    property bool disableLatteSideColoring : true
+    //END  Latte Dock Communicator
+
 
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation

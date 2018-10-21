@@ -99,6 +99,7 @@ DragDrop.DropArea {
                                        || showAppletsNumbers || showMetaBadge)
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
+                                         && dock && dock.visibility
                                          && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
                                          && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)

@@ -25,44 +25,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 
 Item{
-    ColorOverlay {
-        id: colorizer
-        anchors.fill: parent
-        color: colorizerManagerLoader.applyColor
-        source: layoutsContainer
-        opacity: colorizerManagerLoader.mustBeShown ? 1 : 0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 1.2 * root.animationTime
-                easing.type: Easing.OutCubic
-            }
-        }
-    }
-
-    ///Shadow in applets
-    Loader{
-        id: colorizedAppletShadow
-        anchors.fill: colorizer
-
-        active: (plasmoid.configuration.shadows >= 1) && (colorizer.opacity>0)
-        opacity: colorizer.opacity
-
-        sourceComponent: DropShadow{
-            anchors.fill: parent
-            color: root.appShadowColor
-            fast: true
-            samples: 2 * radius
-            source: colorizer
-            radius: shadowSize
-            verticalOffset: forcedShadow ? 0 : 2
-
-            property int shadowSize : root.appShadowSize
-
-            property bool forcedShadow: root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet && applet.pluginName !== root.plasmoidName ? true : false
-        }
-    }
-
     Connections{
         target: plasmoid
         onLocationChanged:{
