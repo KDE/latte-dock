@@ -37,7 +37,10 @@ Item{
     //             -------------------------------------
     // NAME: isInLatte
     //   USAGE: property bool isInLatte: false
-    //   EXPLANATION: Latte sets it to true when this applet is in a Latte containment
+    //   EXPLANATION: Latte sets it to true when this applet is in a Latte containment. This parameter
+    //       is very important because it identifies the main element of the applet in which all latte
+    //       parameters need to also placed. Be careful in case you are using CompactRepresentation then
+    //       the main element for which you must place the Latte options is the CompactRepresentation.
     property bool appletContainsIsInLatte: appletRootItem && appletRootItem.hasOwnProperty("isInLatte") ? true : false
 
     // NAME: lattePalette
@@ -99,6 +102,10 @@ Item{
     readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon
                                                      && !(disableLatteParabolicIconHeuristics || disableLatteIconOverlay)
 
+    property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
+    property Item appletDiscoveredRootItem: null
+    property Item appletDefaultRootItem: applet && applet.children && applet.children.length>0 ? applet.children[0] : null
+
     property Item appletIconItem; //first applet's IconItem to be used by Latte
     property Item appletImageItem; //first applet's ImageItem to be used by Latte
     //! END OF PROPERTIES
@@ -136,7 +143,8 @@ Item{
         target: container
         onAppletChanged: {
             if (applet) {
-                main.reconsiderAppletIconItem();
+                AppletIdentifier.checkAndUpdateAppletRootItem();
+                AppletIdentifier.reconsiderAppletIconItem();
                 overlayInitTimer.start();
             }
         }
@@ -167,6 +175,7 @@ Item{
         id: overlayInitTimer
         interval: 4000
         onTriggered: {
+            AppletIdentifier.checkAndUpdateAppletRootItem();
             AppletIdentifier.reconsiderAppletIconItem();
 
             if (root.debugModeTimers) {

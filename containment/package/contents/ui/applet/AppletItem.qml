@@ -106,7 +106,6 @@ Item {
     property string title: isInternalViewSplitter ? "Now Dock Splitter" : ""
 
     property Item applet: null
-    property Item appletRootItem: applet && applet.children && applet.children.length>0 ? applet.children[0] : null
     property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
                                    (applet.children[0] ? applet.children[0] : null) : null
     property Item latteSpacer: applet && (applet.pluginName === "org.kde.latte.spacer") ?

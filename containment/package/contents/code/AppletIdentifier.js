@@ -29,7 +29,7 @@ function typeOf(obj, className){
 }
 
 function reconsiderAppletIconItem(){
-    if (communicator.appletIconItem || !applet || container.disableLatteParabolicIconHeuristics)
+    if (communicator.appletIconItem || !applet || container.disableLatteParabolicIconHeuristics || container.disableLatteIconOverlay)
         return;
 
     //! searching to find for that applet the first IconItem
@@ -50,6 +50,33 @@ function reconsiderAppletIconItem(){
         //blacklist
     } else {
         identifyGeneric();
+    }
+}
+
+function checkAndUpdateAppletRootItem() {
+    if (appletDiscoveredRootItem) {
+        return;
+    }
+
+    var level0 = applet.children;
+
+    for(var i=0; i<level0.length; ++i){
+        var level1 = level0[i].children;
+        if (!appletDiscoveredRootItem && level0[i].hasOwnProperty("isInLatte")) {
+            appletDiscoveredRootItem = level0[i];
+        }
+        if (appletDiscoveredRootItem) {
+            break;
+        }
+
+        for(var j=0; j<level1.length; ++j){
+            if (!appletDiscoveredRootItem && level1[j].hasOwnProperty("isInLatte")) {
+                appletDiscoveredRootItem = level1[j];
+            }
+            if (appletDiscoveredRootItem) {
+                break;
+            }
+        }
     }
 }
 
@@ -110,14 +137,12 @@ function identifyKickOff() {
     for(var i=0; i<level0.length; ++i){
         var level1 = level0[i].children;
         for(var j=0; j<level1.length; ++j){
-            if (applet.pluginName === "org.kde.plasma.kickoff") {
-                if (typeOf(level1[j], "QQuickMouseArea")) {
-                    var level2 = level1[j].children;
-                    for(var k=0; k<level2.length; ++k){
-                        if (typeOf(level2[k], "IconItem")) {
-                            communicator.appletIconItem = level2[k];
-                            return;
-                        }
+            if (typeOf(level1[j], "QQuickMouseArea")) {
+                var level2 = level1[j].children;
+                for(var k=0; k<level2.length; ++k){
+                    if (typeOf(level2[k], "IconItem")) {
+                        communicator.appletIconItem = level2[k];
+                        return;
                     }
                 }
             }
