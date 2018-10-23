@@ -29,7 +29,7 @@ function typeOf(obj, className){
 }
 
 function reconsiderAppletIconItem(){
-    if (communicator.appletIconItem || !applet || container.disableLatteParabolicIconHeuristics || container.disableLatteIconOverlay)
+    if (communicator.appletIconItem || !applet)
         return;
 
     //! searching to find for that applet the first IconItem

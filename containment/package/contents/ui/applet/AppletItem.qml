@@ -419,26 +419,22 @@ Item {
 
         //set up the overlaied containers and properties for when a overlaiedIconItem must be presented to the user
         //because the plasma widgets specific implementation breaks the Latte experience
-        onCanShowOverlaiedLatteIconChanged: {
-            if (canShowOverlaiedLatteIcon) {
-                applet.opacity = 0;
-
-                if (applet.pluginName === "org.kde.plasma.folder") {
-                    applet.parent =  wrapper.containerForOverlayIcon;
-                    applet.anchors.fill = wrapper.containerForOverlayIcon;
-                }
+        onOverlayLatteIconIsActiveChanged:{
+            if (!overlayLatteIconIsActive && applet.opacity===0) {
+                applet.opacity = 1;
 
                 wrapper.disableScaleWidth = false;
                 wrapper.disableScaleHeight = false;
 
                 wrapper.updateLayoutWidth();
                 wrapper.updateLayoutHeight();
-            }
-        }
+            } else if (overlayLatteIconIsActive && applet.opacity>0) {
+                applet.opacity = 0;
 
-        onDisableLatteParabolicIconHeuristicsChanged: {
-            if (communicator.disableLatteParabolicIconHeuristics && applet.opacity === 0) {
-                applet.opacity = 1;
+                if (applet.pluginName === "org.kde.plasma.folder") {
+                    applet.parent =  wrapper.containerForOverlayIcon;
+                    applet.anchors.fill = wrapper.containerForOverlayIcon;
+                }
 
                 wrapper.disableScaleWidth = false;
                 wrapper.disableScaleHeight = false;
