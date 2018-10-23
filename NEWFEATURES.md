@@ -2,6 +2,8 @@ New features/fixes that are found only in master in contrast with the current st
 
 #### Version (master)
 
+* add a new Communicator item in order to handle all communications between containment and its applets
+* support new painting based on active window color scheme
 * user option to define which panel/dock will have the highest priority for global shortcuts
 * user option to define per panel/dock if unified global shortcuts will used for applets or not
 * enforce specific ratio for dock settings window in order to look the same between different fonts
