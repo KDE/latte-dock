@@ -946,7 +946,7 @@ This tracker is used in order to not lose any screen related update.</string>
                <item>
                 <widget class="QLabel" name="plasmaRoundnessLbl">
                  <property name="toolTip">
-                  <string>Roundess used from Latte elements in order to feel part of the current plasma theme.</string>
+                  <string>Roundness used from Latte elements in order to feel part of the current plasma theme.</string>
                  </property>
                  <property name="text">
                   <string>Background roundness</string>
@@ -968,7 +968,7 @@ This tracker is used in order to not lose any screen related update.</string>
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Roundess used from Latte elements in order to feel part of the current plasma theme.</string>
+                  <string>Roundness used from Latte elements in order to feel part of the current plasma theme.</string>
                  </property>
                  <property name="specialValueText">
                   <string/>
