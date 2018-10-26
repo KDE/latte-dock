@@ -22,6 +22,7 @@
 #include "plasmathemeextended.h"
 
 #include <QDebug>
+#include <QDir>
 #include <KSharedConfig>
 
 namespace Latte {
@@ -39,6 +40,7 @@ PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *par
 
 void PlasmaThemeExtended::load()
 {
+    loadThemePath();
     loadRoundness();
 }
 
@@ -105,14 +107,10 @@ void PlasmaThemeExtended::loadRoundness()
 
     m_themeHasExtendedInfo = false;
 
-    qDebug() << "current theme ::: " << m_theme.themeName();
-
     foreach (auto key, roundGroup.keyList()) {
-        qDebug() << "key ::: " << key;
-
         if (m_theme.themeName().toUpper().startsWith(key.toUpper())) {
             QStringList rs = roundGroup.readEntry(key, QStringList());
-            qDebug() << "rounds ::: " << rs;
+            qDebug() << "roundness ::: " << rs;
 
             if (rs.size() > 0) {
                 m_themeHasExtendedInfo = true;
@@ -136,6 +134,24 @@ void PlasmaThemeExtended::loadRoundness()
     }
 
     emit roundnessChanged();
+}
+
+void PlasmaThemeExtended::loadThemePath()
+{
+    m_themePath = "";
+
+    QString localD = QDir::homePath() + "/.local/share/plasma/desktoptheme/" + m_theme.themeName();
+    QString globalD = "/usr/share/plasma/desktoptheme/" + m_theme.themeName();
+
+    if (QDir(localD).exists()) {
+        m_themePath = localD;
+    } else if (QDir(globalD).exists()) {
+        m_themePath = globalD;
+    }
+
+    qDebug() << "current theme ::: " << m_theme.themeName();
+    qDebug() << "theme path :: " << m_themePath;
+
 }
 
 

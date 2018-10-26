@@ -58,12 +58,13 @@ signals:
     void roundnessChanged();
 
 private slots:
-    void loadRoundness();
-
     void loadConfig();
     void saveConfig();
 
 private:
+    void loadThemePath();
+    void loadRoundness();
+
     bool themeHasExtendedInfo() const;
 
 private:
@@ -74,6 +75,8 @@ private:
     int m_topEdgeRoundness{0};
     int m_rightEdgeRoundness{0};
     int m_userRoundness{0};
+
+    QString m_themePath;
 
     KConfigGroup m_themeGroup;
 
