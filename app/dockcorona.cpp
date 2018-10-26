@@ -94,6 +94,7 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
     setupWaylandIntegration();
 
     KPackage::Package package(new DockPackage(this));
+
     m_screenPool->load();
 
     if (!package.isValid()) {
@@ -106,8 +107,9 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
     }
 
     setKPackage(package);
-    //! universal settings must be loaded after the package has been set
+    //! universal settings / extendedtheme must be loaded after the package has been set
     m_universalSettings->load();
+    m_themeExtended->load();
 
     qmlRegisterTypes();
 

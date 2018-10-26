@@ -479,7 +479,21 @@ Item{
             anchors.fill: solidBackground
             opacity: root.forceColorizeFromActiveWindowScheme ? solidBackground.opacity : 0
             backgroundColor: root.forceColorizeFromActiveWindowScheme ? dock.visibility.touchingWindowScheme.backgroundColor : "transparent"
-            roundness: universalSettings ? universalSettings.plasmaThemeRoundness : 0
+            roundness: {
+                if (themeExtended) {
+                    switch(plasmoid.location) {
+                    case PlasmaCore.Types.BottomEdge: return themeExtended.bottomEdgeRoundness;
+                    case PlasmaCore.Types.LeftEdge: return themeExtended.leftEdgeRoundness;
+                    case PlasmaCore.Types.TopEdge: return themeExtended.topEdgeRoundness;
+                    case PlasmaCore.Types.RightEdge: return themeExtended.rightEdgeRoundness;
+                    default: return 0;
+                    }
+                }
+
+                return 0;
+            }
+
+
         }
 
         PlasmaCore.FrameSvgItem{

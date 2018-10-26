@@ -18,7 +18,11 @@
  *
  */
 
+#include "dockcorona.h"
 #include "plasmathemeextended.h"
+
+#include <QDebug>
+#include <KSharedConfig>
 
 namespace Latte {
 
@@ -26,6 +30,16 @@ PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *par
     QObject(parent),
     m_themeGroup(KConfigGroup(config, QStringLiteral("PlasmaThemeExtended")))
 {
+    m_corona = qobject_cast<DockCorona *>(parent);
+
+    loadConfig();
+
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::load);
+}
+
+void PlasmaThemeExtended::load()
+{
+    loadRoundness();
 }
 
 PlasmaThemeExtended::~PlasmaThemeExtended()
@@ -75,8 +89,55 @@ void PlasmaThemeExtended::setUserThemeRoundness(int roundness)
 
 bool PlasmaThemeExtended::themeHasExtendedInfo() const
 {
-    return false;
+    return m_themeHasExtendedInfo;
 }
+
+void PlasmaThemeExtended::loadRoundness()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    QString extendedInfoFilePath = m_corona->kPackage().filePath("themesExtendedInfo");
+
+    KSharedConfigPtr extInfoPtr = KSharedConfig::openConfig(extendedInfoFilePath);
+    KConfigGroup roundGroup(extInfoPtr, "Roundness");
+
+    m_themeHasExtendedInfo = false;
+
+    qDebug() << "current theme ::: " << m_theme.themeName();
+
+    foreach (auto key, roundGroup.keyList()) {
+        qDebug() << "key ::: " << key;
+
+        if (m_theme.themeName().toUpper().startsWith(key.toUpper())) {
+            QStringList rs = roundGroup.readEntry(key, QStringList());
+            qDebug() << "rounds ::: " << rs;
+
+            if (rs.size() > 0) {
+                m_themeHasExtendedInfo = true;
+
+                if (rs.size() <= 3) {
+                    //assign same roundness for all edges
+                    m_bottomEdgeRoundness = rs[0].toInt();
+                    m_leftEdgeRoundness = m_bottomEdgeRoundness;
+                    m_topEdgeRoundness = m_bottomEdgeRoundness;
+                    m_rightEdgeRoundness = m_bottomEdgeRoundness;
+                } else if (rs.size() >= 4) {
+                    m_bottomEdgeRoundness = rs[0].toInt();
+                    m_leftEdgeRoundness = rs[1].toInt();
+                    m_topEdgeRoundness = rs[2].toInt();
+                    m_rightEdgeRoundness = rs[3].toInt();
+                }
+            }
+
+            break;
+        }
+    }
+
+    emit roundnessChanged();
+}
+
 
 void PlasmaThemeExtended::loadConfig()
 {

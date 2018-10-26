@@ -30,6 +30,8 @@
 
 namespace Latte {
 
+class DockCorona;
+
 class PlasmaThemeExtended: public QObject
 {
     Q_OBJECT
@@ -50,10 +52,14 @@ public:
     int userThemeRoundness() const;
     void setUserThemeRoundness(int roundness);
 
+    void load();
+
 signals:
     void roundnessChanged();
 
 private slots:
+    void loadRoundness();
+
     void loadConfig();
     void saveConfig();
 
@@ -61,15 +67,19 @@ private:
     bool themeHasExtendedInfo() const;
 
 private:
+    bool m_themeHasExtendedInfo{false};
+
     int m_bottomEdgeRoundness{0};
     int m_leftEdgeRoundness{0};
     int m_topEdgeRoundness{0};
     int m_rightEdgeRoundness{0};
     int m_userRoundness{0};
 
+    KConfigGroup m_themeGroup;
+
     Plasma::Theme m_theme;
 
-    KConfigGroup m_themeGroup;
+    DockCorona *m_corona;
 };
 
 }
