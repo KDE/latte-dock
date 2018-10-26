@@ -24,6 +24,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.1 as Latte
 
+import "../../code/ColorizerTools.js" as ColorizerTools
+
 Loader{
     id: manager
 
@@ -33,65 +35,8 @@ Loader{
                                            || !Latte.WindowSystem.compositingActive
     readonly property bool forceSolidnessAndColorize: forceSolidness && forceColorizeFromActiveWindowScheme
 
-    // formula for luminance according to:
-    // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-    property real textColorRs: {
-        var color = theme.textColor.r;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorGs: {
-        var color = theme.textColor.g;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorBs: {
-        var color = theme.textColor.b;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    //! -------
-    property real backColorRs: {
-        var color = theme.backgroundColor.r;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real backColorGs: {
-        var color = theme.backgroundColor.g;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real backColorBs: {
-        var color = theme.backgroundColor.b;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    readonly property real themeBackgroundColorLuma: 0.2126*backColorRs + 0.7152*backColorGs + 0.0722*backColorBs
-    readonly property real themeTextColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
+    readonly property real themeBackgroundColorLuma: ColorizerTools.colorLuminas(theme.backgroundColor)
+    readonly property real themeTextColorLuma: ColorizerTools.colorLuminas(theme.textColor)
     readonly property color minimizedDotColor: themeTextColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
     property bool mustBeShown: active && (!forceSolidPanel || forceSolidnessAndColorize)

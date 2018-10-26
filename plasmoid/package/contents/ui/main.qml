@@ -36,6 +36,7 @@ import org.kde.latte 0.1 as Latte
 import "task" as Task
 import "../code/tools.js" as TaskTools
 import "../code/activitiesTools.js" as ActivitiesTools
+import "../code/ColorizerTools.js" as ColorizerTools
 
 Item {
     id:root
@@ -93,37 +94,7 @@ Item {
     property int widthMargins: root.vertical ? thickMargin : iconMargin
     property int heightMargins: !root.vertical ? thickMargin : iconMargin
 
-
-    // formula for luminance according to:
-    // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-    property real textColorRs: {
-        var color = theme.textColor.r;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorGs: {
-        var color = theme.textColor.g;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorBs: {
-        var color = theme.textColor.b;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
+    property real textColorLuma: ColorizerTools.colorLuminas(theme.textColor)
     property color minimizedDotColor: {
         if (latteDock) {
             return latteDock.minimizedDotColor;
