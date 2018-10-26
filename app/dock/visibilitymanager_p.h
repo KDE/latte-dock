@@ -77,6 +77,8 @@ public:
     void checkAllWindows();
 
     bool intersects(const WindowInfoWrap &winfo);
+    bool isMaximizedInCurrentScreen(const WindowInfoWrap &winfo);
+    bool isTouchingPanelEdge(const WindowInfoWrap &winfo);
 
     void updateStrutsBasedOnLayoutsAndActivities();
 

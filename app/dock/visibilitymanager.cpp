@@ -857,6 +857,46 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
     }
 }
 
+bool VisibilityManagerPrivate::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
+{
+    //! updated implementation to identify the screen that the maximized window is present
+    //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
+
+    if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
+        if (winfo.isMaximized() && availableScreenGeometry.contains(winfo.geometry().center())) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool VisibilityManagerPrivate::isTouchingPanelEdge(const WindowInfoWrap &winfo)
+{
+    if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
+        bool touchingPanelEdge{false};
+
+        QRect screenGeometry = dockView->screenGeometry();
+        bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
+
+        if (inCurrentScreen) {
+            if (view->location() == Plasma::Types::TopEdge) {
+                touchingPanelEdge = (winfo.geometry().y() == availableScreenGeometry.y());
+            } else if (view->location() == Plasma::Types::BottomEdge) {
+                touchingPanelEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
+            } else if (view->location() == Plasma::Types::LeftEdge) {
+                touchingPanelEdge = (winfo.geometry().x() == availableScreenGeometry.x());
+            } else if (view->location() == Plasma::Types::RightEdge) {
+                touchingPanelEdge = (winfo.geometry().right() == availableScreenGeometry.right());
+            }
+        }
+
+        return touchingPanelEdge;
+    }
+
+    return false;
+}
+
 void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
 {
     bool foundSnap{false};
@@ -869,43 +909,34 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
     WindowId snapWinId;
 
     for (const auto &winfo : windows) {
-        if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-            if (winfo.isMaximized() && availableScreenGeometry.contains(winfo.geometry().center())) {
-                //! updated implementation to identify the screen that the maximized window is present
-                //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
-                foundMaximized = true;
-                maxWinId = winfo.wid();
-            }
-
-            bool touchingPanelEdge{false};
-
-            QRect screenGeometry = dockView->screenGeometry();
-            bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
-
-            if (inCurrentScreen) {
-                if (view->location() == Plasma::Types::TopEdge) {
-                    touchingPanelEdge = (winfo.geometry().y() == availableScreenGeometry.y());
-                } else if (view->location() == Plasma::Types::BottomEdge) {
-                    touchingPanelEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
-                } else if (view->location() == Plasma::Types::LeftEdge) {
-                    touchingPanelEdge = (winfo.geometry().x() == availableScreenGeometry.x());
-                } else if (view->location() == Plasma::Types::RightEdge) {
-                    touchingPanelEdge = (winfo.geometry().right() == availableScreenGeometry.right());
-                }
-            }
-
-            if (((winfo.isActive() || winfo.isKeepAbove()) && touchingPanelEdge)
-                || (!winfo.isActive() && snappedWindowsGeometries.contains(winfo.geometry()))) {
-                foundSnap = true;
-                snapWinId = winfo.wid();
-            }
+        if (isMaximizedInCurrentScreen(winfo)) {
+            foundMaximized = true;
+            maxWinId = winfo.wid();
         }
 
-        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
+        if (winfo.isActive() && isTouchingPanelEdge(winfo)) {
+            foundSnap = true;
+            snapWinId = winfo.wid();
+        }
+
+        if (!existsFaultyWindow && winfo.geometry() == QRect(0, 0, 0, 0)) {
             existsFaultyWindow = true;
         }
 
         //qDebug() << "window geometry ::: " << winfo.geometry();
+    }
+
+    //! active windows that are touching the panel edge should have a higher priority
+    //! this is why are identified first
+    if (!foundSnap) {
+        for (const auto &winfo : windows) {
+            if ((winfo.isKeepAbove() && isTouchingPanelEdge(winfo))
+                || (!winfo.isActive() && snappedWindowsGeometries.contains(winfo.geometry()))) {
+                foundSnap = true;
+                snapWinId = winfo.wid();
+                break;
+            }
+        }
     }
 
     if (existsFaultyWindow) {
