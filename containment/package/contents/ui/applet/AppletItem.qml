@@ -546,7 +546,7 @@ Item {
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
             fontSizeMode: Text.Fit
-            color: colorizerManagerLoader.themeBrightColor
+            color: colorizerManager.themeBrightColor
 
             rotation: {
                 if (root.isHorizontal)
@@ -565,7 +565,7 @@ Item {
         anchors.fill: parent
         opacity: mustBeShown ? 1 : 0
 
-        readonly property bool mustBeShown: colorizerManagerLoader.mustBeShown
+        readonly property bool mustBeShown: colorizerManager.mustBeShown
                                             && !communicator.disableLatteSideColoring
 
         Behavior on opacity {

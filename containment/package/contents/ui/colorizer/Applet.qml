@@ -27,7 +27,7 @@ Item {
     ColorOverlay {
         id: colorizer
         anchors.fill: parent
-        color: colorizerManagerLoader.applyColor
+        color: colorizerManager.applyColor
         source: appletFlow
     }
 

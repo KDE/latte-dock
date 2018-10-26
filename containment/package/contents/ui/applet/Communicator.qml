@@ -157,14 +157,14 @@ Item{
         target: appletRootItem
         property: "applyLattePalette"
         when: disableLatteSideColoring && appletCanUseLattePalette
-        value: colorizerManagerLoader.mustBeShown
+        value: colorizerManager.mustBeShown
     }
 
     Binding{
         target: appletRootItem
         property: "lattePalette"
         when: disableLatteSideColoring && appletCanUseLattePalette
-        value: colorizerManagerLoader
+        value: colorizerManager
         //value: dock && dock.visibility ? dock.visibility.touchingWindowScheme : null
     }
     //! END OF BINDINGS
