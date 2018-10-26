@@ -1,5 +1,15 @@
 #**CHANGELOG**#
 
+#### Version 0.8.2
+
+* FIX: wrong placement of docks during startup for multi-screen environments
+* FIX: show explicit docks automatically when their corresponding screen is added in a multi-screen environment
+* fix: open files properly when dropping them on launchers
+* fix: improve behavior according to Fitt's Law when shrinking panel margins
+* fix: dont hide previews when hovering player buttons
+* fix: update delete icons to plasma design
+* fix: dont break BorderlessMaximized window default value
+
 #### Version 0.8.1
 
 * FIX: redesign the multi-screens implementation. OnPrimary docks have always higher priority in multi-screen environments
