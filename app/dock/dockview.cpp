@@ -29,6 +29,7 @@
 #include "../layout.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../plasmathemeextended.h"
 #include "../universalsettings.h"
 #include "../../liblattedock/extras.h"
 
@@ -256,6 +257,7 @@ void DockView::init()
     if (dockCorona) {
         rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
         rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
+        rootContext()->setContextProperty(QStringLiteral("themeExtended"), dockCorona->themeExtended());
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));

@@ -23,6 +23,9 @@
 
 #include <QObject>
 
+#include <KConfigGroup>
+#include <KSharedConfig>
+
 #include <Plasma/Theme>
 
 namespace Latte {
@@ -30,16 +33,43 @@ namespace Latte {
 class PlasmaThemeExtended: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int bottomEdgeRoundness READ bottomEdgeRoundness NOTIFY roundnessChanged)
+    Q_PROPERTY(int leftEdgeRoundness READ leftEdgeRoundness NOTIFY roundnessChanged)
+    Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
+    Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
 
 public:
-    PlasmaThemeExtended(QObject *parent);
+    PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *parent);
     ~PlasmaThemeExtended() override;;
 
+    int bottomEdgeRoundness() const;
+    int leftEdgeRoundness() const;
+    int topEdgeRoundness() const;
+    int rightEdgeRoundness() const;
 
+    int userThemeRoundness() const;
+    void setUserThemeRoundness(int roundness);
+
+signals:
+    void roundnessChanged();
+
+private slots:
+    void loadConfig();
+    void saveConfig();
 
 private:
+    bool themeHasExtendedInfo() const;
+
+private:
+    int m_bottomEdgeRoundness{0};
+    int m_leftEdgeRoundness{0};
+    int m_topEdgeRoundness{0};
+    int m_rightEdgeRoundness{0};
+    int m_userRoundness{0};
+
     Plasma::Theme m_theme;
 
+    KConfigGroup m_themeGroup;
 };
 
 }

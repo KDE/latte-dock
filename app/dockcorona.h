@@ -63,6 +63,7 @@ class GlobalShortcuts;
 class UniversalSettings;
 class LayoutManager;
 class LaunchersSignals;
+class PlasmaThemeExtended;
 }
 
 namespace Latte {
@@ -102,6 +103,7 @@ public:
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
     LayoutManager *layoutManager() const;
+    PlasmaThemeExtended *themeExtended() const;
 
     KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
 
@@ -170,6 +172,7 @@ private:
     GlobalShortcuts *m_globalShortcuts{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
     LayoutManager *m_layoutManager{nullptr};
+    PlasmaThemeExtended *m_themeExtended{nullptr};
 
     KWayland::Client::PlasmaShell *m_waylandDockCorona{nullptr};
 

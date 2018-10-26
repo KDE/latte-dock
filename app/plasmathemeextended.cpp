@@ -20,17 +20,72 @@
 
 #include "plasmathemeextended.h"
 
-
 namespace Latte {
-PlasmaThemeExtended::PlasmaThemeExtended(QObject *parent) :
-    QObject(parent)
-{
 
+PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *parent) :
+    QObject(parent),
+    m_themeGroup(KConfigGroup(config, QStringLiteral("PlasmaThemeExtended")))
+{
 }
 
 PlasmaThemeExtended::~PlasmaThemeExtended()
 {
+    saveConfig();
+}
 
+int PlasmaThemeExtended::bottomEdgeRoundness() const
+{
+    return (themeHasExtendedInfo() ? m_bottomEdgeRoundness : userThemeRoundness());
+}
+
+int PlasmaThemeExtended::leftEdgeRoundness() const
+{
+    return (themeHasExtendedInfo() ? m_leftEdgeRoundness : userThemeRoundness());
+}
+
+int PlasmaThemeExtended::topEdgeRoundness() const
+{
+    return (themeHasExtendedInfo() ? m_topEdgeRoundness : userThemeRoundness());
+}
+
+int PlasmaThemeExtended::rightEdgeRoundness() const
+{
+    return (themeHasExtendedInfo() ? m_rightEdgeRoundness : userThemeRoundness());
+}
+
+int PlasmaThemeExtended::userThemeRoundness() const
+{
+    return m_userRoundness;
+}
+
+void PlasmaThemeExtended::setUserThemeRoundness(int roundness)
+{
+    if (m_userRoundness == roundness) {
+        return;
+    }
+
+    m_userRoundness = roundness;
+
+    if (!themeHasExtendedInfo()) {
+        emit roundnessChanged();
+    }
+
+    saveConfig();
+}
+
+bool PlasmaThemeExtended::themeHasExtendedInfo() const
+{
+    return false;
+}
+
+void PlasmaThemeExtended::loadConfig()
+{
+    m_userRoundness = m_themeGroup.readEntry("userSetPlasmaThemeRoundness", 0);
+}
+
+void PlasmaThemeExtended::saveConfig()
+{
+    m_themeGroup.writeEntry("userSetPlasmaThemeRoundness", m_userRoundness);
 }
 
 }

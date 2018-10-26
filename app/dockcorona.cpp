@@ -26,6 +26,7 @@
 #include "importer.h"
 #include "launcherssignals.h"
 #include "layoutmanager.h"
+#include "plasmathemeextended.h"
 #include "screenpool.h"
 #include "universalsettings.h"
 #include "waylandinterface.h"
@@ -79,6 +80,7 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
+      m_themeExtended(new PlasmaThemeExtended(KSharedConfig::openConfig(), this)),
       m_layoutManager(new LayoutManager(this))
 {
     //! create the window manager
@@ -163,6 +165,7 @@ DockCorona::~DockCorona()
     m_layoutManager->deleteLater();
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
+    m_themeExtended->deleteLater();
 
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
     delete m_activityConsumer;
@@ -361,6 +364,11 @@ LayoutManager *DockCorona::layoutManager() const
 AbstractWindowInterface *DockCorona::wm() const
 {
     return m_wm;
+}
+
+PlasmaThemeExtended *DockCorona::themeExtended() const
+{
+    return m_themeExtended;
 }
 
 int DockCorona::numScreens() const
@@ -869,8 +877,8 @@ void DockCorona::activateLauncherMenu()
 void DockCorona::windowColorScheme(QString windowIdAndScheme)
 {
     int firstSlash = windowIdAndScheme.indexOf("-");
-    QString windowIdStr = windowIdAndScheme.mid(0,firstSlash);
-    QString schemeStr = windowIdAndScheme.mid(firstSlash+1);
+    QString windowIdStr = windowIdAndScheme.mid(0, firstSlash);
+    QString schemeStr = windowIdAndScheme.mid(firstSlash + 1);
 
     m_wm->setColorSchemeForWindow(windowIdStr, schemeStr);
 }

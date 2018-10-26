@@ -99,6 +99,7 @@ PlasmaCore.FrameSvgItem {
                 dockLayout.dock = dock;
                 dockLayout.universalSettings = universalSettings;
                 dockLayout.universalLayoutManager = layoutManager;
+                dockLayout.themeExtended = themeExtended;
             }
         }
     }
