@@ -1,36 +1,37 @@
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
-    windowinfowrap.cpp
-    abstractwindowinterface.cpp
-    xwindowinterface.cpp
-    waylandinterface.cpp
-    windowinfowrap.cpp
-    screenpool.cpp
     packageplugins/shell/dockpackage.cpp
+    abstractwindowinterface.cpp
     alternativeshelper.cpp
+    colortools.cpp
     dockcorona.cpp
     globalshortcuts.cpp
-    sortedactivitiesmodel.cpp
-    universalsettings.cpp
-    layoutmanager.cpp
-    layout.cpp
-    settingsdialog.cpp
     importer.cpp
     infoview.cpp
     launcherssignals.cpp
+    layout.cpp
+    layoutmanager.cpp
+    plasmathemeextended.cpp
     schemecolors.cpp
+    screenpool.cpp
+    settingsdialog.cpp
+    sortedactivitiesmodel.cpp
+    universalsettings.cpp
+    waylandinterface.cpp
+    windowinfowrap.cpp
+    xwindowinterface.cpp
+    dock/dockconfigview.cpp
+    dock/dockmenumanager.cpp
+    dock/docksecconfigview.cpp
+    dock/dockview.cpp
+    dock/panelshadows.cpp
+    dock/screenedgeghostwindow.cpp
+    dock/visibilitymanager.cpp
+    layoutsDelegates/activitycmbboxdelegate.cpp
     layoutsDelegates/checkboxdelegate.cpp
     layoutsDelegates/colorcmbboxdelegate.cpp
     layoutsDelegates/colorcmbboxitemdelegate.cpp
-    layoutsDelegates/activitycmbboxdelegate.cpp
     layoutsDelegates/layoutnamedelegate.cpp
-    dock/dockmenumanager.cpp
-    dock/dockview.cpp
-    dock/dockconfigview.cpp
-    dock/docksecconfigview.cpp
-    dock/panelshadows.cpp
-    dock/visibilitymanager.cpp
-    dock/screenedgeghostwindow.cpp
     main.cpp
 )
 

@@ -19,7 +19,7 @@
 
 // Self
 #include "sortedactivitiesmodel.h"
-
+#include "colortools.h"
 // C++
 #include <functional>
 
@@ -412,18 +412,8 @@ float SortedActivitiesModel::luminasFromFile(QString imageFile, int edge)
             QRgb *line = (QRgb *)image.scanLine(row);
 
             for (int col = firstColumn; col < endColumn ; ++col) {
-                // formula for luminance according to:
-                // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
                 QRgb pixelData = line[col];
-                float r = (float)(qRed(pixelData)) / 255;
-                float g = (float)(qGreen(pixelData)) / 255;
-                float b = (float)(qBlue(pixelData)) / 255;
-
-                float rS = (r <= 0.03928 ? r / 12.92 : qPow(((r + 0.055) / 1.055), 2.4));
-                float gS = (g <= 0.03928 ? g / 12.92 : qPow(((g + 0.055) / 1.055), 2.4));
-                float bS = (b <= 0.03928 ? b / 12.92 : qPow(((b + 0.055) / 1.055), 2.4));
-
-                float pixelLuminosity = 0.2126 * rS + 0.7152 * gS + 0.0722 * bS;
+                float pixelLuminosity = Latte::colorLumina(pixelData);
 
                 areaLumin = (areaLumin == -1000) ? pixelLuminosity : (areaLumin + pixelLuminosity);
             }
