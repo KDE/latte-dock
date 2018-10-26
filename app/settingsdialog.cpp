@@ -25,6 +25,7 @@
 #include "layout.h"
 #include "layoutmanager.h"
 #include "importer.h"
+#include "plasmathemeextended.h"
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../liblattedock/dock.h"
@@ -132,7 +133,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
     m_mouseSensitivityButtons->setExclusive(true);
 
     ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
-    ui->themeRoundnessSpinBox->setValue(m_corona->universalSettings()->plasmaThemeRoundness());
+    ui->themeRoundnessSpinBox->setValue(m_corona->themeExtended()->userThemeRoundness());
 
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
@@ -1338,7 +1339,8 @@ bool SettingsDialog::saveAllChanges()
     m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
     m_corona->universalSettings()->setCanDisableBorders(noBordersForMaximized);
     m_corona->universalSettings()->setScreenTrackerInterval(ui->screenTrackerSpinBox->value());
-    m_corona->universalSettings()->setPlasmaThemeRoundness(ui->themeRoundnessSpinBox->value());
+
+    m_corona->themeExtended()->setUserThemeRoundness(ui->themeRoundnessSpinBox->value());
 
     //! Update Layouts
     QStringList knownActivities = activities();

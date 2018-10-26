@@ -86,6 +86,8 @@ void PlasmaThemeExtended::loadConfig()
 void PlasmaThemeExtended::saveConfig()
 {
     m_themeGroup.writeEntry("userSetPlasmaThemeRoundness", m_userRoundness);
+
+    m_themeGroup.sync();
 }
 
 }

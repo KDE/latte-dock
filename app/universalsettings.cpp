@@ -51,7 +51,6 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsWindowSizeChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
-    connect(this, &UniversalSettings::plasmaThemeRoundnessChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::versionChanged, this, &UniversalSettings::saveConfig);
@@ -157,21 +156,6 @@ void UniversalSettings::load()
     //! load global shortcuts badges at startup
     initGlobalShortcutsWatcher();
     parseGlobalShortcuts();
-}
-
-int UniversalSettings::plasmaThemeRoundness() const
-{
-    return m_plasmaThemeRoundness;
-}
-
-void UniversalSettings::setPlasmaThemeRoundness(int roundness)
-{
-    if (m_plasmaThemeRoundness == roundness) {
-        return;
-    }
-
-    m_plasmaThemeRoundness = roundness;
-    emit plasmaThemeRoundnessChanged();
 }
 
 bool UniversalSettings::showInfoWindow() const
@@ -458,7 +442,6 @@ void UniversalSettings::loadConfig()
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
     m_layoutsColumnWidths = m_universalGroup.readEntry("layoutsColumnWidths", QStringList());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
-    m_plasmaThemeRoundness = m_universalGroup.readEntry("plasmaThemeRoundness", 0);
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
@@ -475,7 +458,6 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
     m_universalGroup.writeEntry("layoutsColumnWidths", m_layoutsColumnWidths);
     m_universalGroup.writeEntry("launchers", m_launchers);
-    m_universalGroup.writeEntry("plasmaThemeRoundness", m_plasmaThemeRoundness);
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
