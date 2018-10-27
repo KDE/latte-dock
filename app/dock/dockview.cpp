@@ -1891,6 +1891,19 @@ QVariantList DockView::containmentActions()
     return actions;
 }
 
+void DockView::disableGrabItemBehavior()
+{
+    setMouseGrabEnabled(false);
+}
+
+void DockView::restoreGrabItemBehavior()
+{
+    setMouseGrabEnabled(true);
+
+    if (mouseGrabberItem()) {
+        mouseGrabberItem()->ungrabMouse();
+    }
+}
 
 //!BEGIN overriding context menus behavior
 void DockView::mousePressEvent(QMouseEvent *event)

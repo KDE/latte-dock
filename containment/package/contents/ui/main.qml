@@ -29,6 +29,8 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.taskmanager 0.1 as TaskManager
+
 import org.kde.latte 0.1 as Latte
 
 import "applet" as Applet
@@ -1637,6 +1639,41 @@ DragDrop.DropArea {
                 startCheckRestoreZoomTimer()
             }
         }
+
+        onPressed: {
+            dock.disableGrabItemBehavior();
+            drawWindowTimer.start();
+        }
+
+        Timer {
+            id: drawWindowTimer
+            interval: 350
+            onTriggered: {
+                if (rootMouseArea.pressed) {
+                    tasksModel.requestMove(tasksModel.activeTask);
+                    restoreGrabberTimer.start();
+                } else {
+                    dock.restoreGrabItemBehavior();
+                }
+            }
+        }
+
+        Timer {
+            id: restoreGrabberTimer
+            interval: 350
+            onTriggered: {
+                dock.restoreGrabItemBehavior();
+            }
+        }
+    }
+
+    TaskManager.TasksModel {
+        id: tasksModel
+        sortMode: TaskManager.TasksModel.SortVirtualDesktop
+        groupMode: TaskManager.TasksModel.GroupDisabled
+
+        screenGeometry: plasmoid.screenGeometry
+        filterByScreen: plasmoid.configuration.showForCurrentScreenOnly
     }
 
     Loader{

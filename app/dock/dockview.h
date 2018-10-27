@@ -245,6 +245,9 @@ public slots:
 
     void updateAbsDockGeometry(bool bypassChecks = false);
 
+    Q_INVOKABLE void disableGrabItemBehavior();
+    Q_INVOKABLE void restoreGrabItemBehavior();
+
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;
 
