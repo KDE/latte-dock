@@ -23,6 +23,10 @@
 
 #include <QObject>
 
+#include <array>
+
+#include <QTemporaryDir>
+
 #include <KConfigGroup>
 #include <KSharedConfig>
 
@@ -62,8 +66,12 @@ private slots:
     void saveConfig();
 
 private:
-    void loadThemePath();
+    void loadThemePaths();
     void loadRoundness();
+
+    void setNormalSchemeFile(const QString &file);
+    void updateReversedScheme();
+    void updateReversedSchemeValues();
 
     bool themeHasExtendedInfo() const;
 
@@ -77,9 +85,13 @@ private:
     int m_userRoundness{0};
 
     QString m_themePath;
+    QString m_normalSchemePath;
+    QString m_reversedSchemePath;
 
+    std::array<QMetaObject::Connection, 2> m_kdeConnections;
+
+    QTemporaryDir m_extendedThemeDir;
     KConfigGroup m_themeGroup;
-
     Plasma::Theme m_theme;
 
     DockCorona *m_corona;
