@@ -3,7 +3,7 @@ set(lattedock-app_SRCS
     packageplugins/shell/dockpackage.cpp
     abstractwindowinterface.cpp
     alternativeshelper.cpp
-    colortools.cpp
+    commontools.cpp
     dockcorona.cpp
     globalshortcuts.cpp
     importer.cpp

@@ -19,7 +19,7 @@
 
 // Self
 #include "sortedactivitiesmodel.h"
-#include "colortools.h"
+#include "commontools.h"
 // C++
 #include <functional>
 

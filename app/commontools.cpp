@@ -18,7 +18,7 @@
  *
  */
 
-#include "colortools.h"
+#include "commontools.h"
 
 #include <QtMath>
 
