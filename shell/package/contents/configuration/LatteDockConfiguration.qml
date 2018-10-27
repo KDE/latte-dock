@@ -54,7 +54,11 @@ FocusScope {
 
     //! chosen size to be applied, if the user has set or not a different scale for the settings window
     property int chosenWidth: userScaleWidth !== 100 ? (userScaleWidth/100) * proposedWidth : proposedWidth
-    property int chosenHeight: userScaleHeight !== 100 ? (userScaleHeight/100) * proposedHeight : proposedHeight
+    property int chosenHeight: userScaleHeight !== 100 ? (userScaleHeight/100) * heightLevel * proposedHeight : heightLevel * proposedHeight
+
+    readonly property real heightLevel: (plasmoid.configuration.advanced ? 1.7 : 1)
+
+    onHeightChanged: dockConfig.syncGeometry();
 
     //! applied size in order to not be out of boundaries
     //! width can be between 200px - maxWidth
