@@ -1641,8 +1641,13 @@ DragDrop.DropArea {
         }
 
         onPressed: {
-            dock.disableGrabItemBehavior();
-            drawWindowTimer.start();
+           drawWindowTimer.start();
+        }
+
+        onDoubleClicked: {
+            drawWindowTimer.stop();
+            restoreGrabberTimer.stop();
+            tasksModel.requestToggleMaximized(tasksModel.activeTask);
         }
 
         Timer {
@@ -1650,17 +1655,16 @@ DragDrop.DropArea {
             interval: 350
             onTriggered: {
                 if (rootMouseArea.pressed) {
-                    tasksModel.requestMove(tasksModel.activeTask);
-                    restoreGrabberTimer.start();
-                } else {
-                    dock.restoreGrabItemBehavior();
+                      dock.disableGrabItemBehavior();
+                      tasksModel.requestMove(tasksModel.activeTask);
+                      restoreGrabberTimer.start();
                 }
             }
         }
 
         Timer {
             id: restoreGrabberTimer
-            interval: 350
+            interval: 50
             onTriggered: {
                 dock.restoreGrabItemBehavior();
             }
