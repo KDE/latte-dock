@@ -20,6 +20,7 @@
 
 #include "plasmathemeextended.h"
 
+#include "commontools.h"
 #include "dockcorona.h"
 #include "schemecolors.h"
 
@@ -54,6 +55,9 @@ void PlasmaThemeExtended::load()
 PlasmaThemeExtended::~PlasmaThemeExtended()
 {
     saveConfig();
+
+    m_normalScheme->deleteLater();
+    m_reversedScheme->deleteLater();
 }
 
 int PlasmaThemeExtended::bottomEdgeRoundness() const
@@ -101,6 +105,17 @@ bool PlasmaThemeExtended::themeHasExtendedInfo() const
     return m_themeHasExtendedInfo;
 }
 
+SchemeColors *PlasmaThemeExtended::lightTheme() const
+{
+    return m_isLightTheme ? m_normalScheme : m_reversedScheme;
+}
+
+SchemeColors *PlasmaThemeExtended::darkTheme() const
+{
+    return !m_isLightTheme ? m_normalScheme : m_reversedScheme;
+}
+
+
 void PlasmaThemeExtended::setNormalSchemeFile(const QString &file)
 {
     if (m_normalSchemePath == file) {
@@ -108,9 +123,22 @@ void PlasmaThemeExtended::setNormalSchemeFile(const QString &file)
     }
 
     m_normalSchemePath = file;
+
+    if (m_normalScheme) {
+        disconnect(m_normalScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
+        m_normalScheme->deleteLater();
+    }
+
+    m_normalScheme = new SchemeColors(this, m_normalSchemePath);
+    connect(m_normalScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
+
     qDebug() << "plasma theme normal colors ::: " << m_normalSchemePath;
 
     updateReversedScheme();
+
+    loadThemeLightness();
+
+    emit themesChanged();
 }
 
 void PlasmaThemeExtended::updateReversedScheme()
@@ -122,6 +150,12 @@ void PlasmaThemeExtended::updateReversedScheme()
 
     updateReversedSchemeValues();
 
+    if (m_reversedScheme) {
+        m_reversedScheme->deleteLater();
+    }
+
+    m_reversedScheme = new SchemeColors(this, m_reversedSchemePath);
+
     qDebug() << "plasma theme reversed colors ::: " << m_reversedSchemePath;
 }
 
@@ -129,46 +163,46 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
 {
     //! reverse values based on original scheme
     KSharedConfigPtr normalPtr = KSharedConfig::openConfig(m_normalSchemePath);
-    KSharedConfigPtr reversePtr = KSharedConfig::openConfig(m_reversedSchemePath);
+    KSharedConfigPtr reversedPtr = KSharedConfig::openConfig(m_reversedSchemePath);
 
-    if (normalPtr && reversePtr) {
-        foreach (auto groupName, reversePtr->groupList()) {
-            KConfigGroup reverseGroup(reversePtr, groupName);
+    if (normalPtr && reversedPtr) {
+        foreach (auto groupName, reversedPtr->groupList()) {
+            KConfigGroup reversedGroup(reversedPtr, groupName);
 
-            if (reverseGroup.keyList().contains("BackgroundNormal")
-                && reverseGroup.keyList().contains("ForegroundNormal")) {
+            if (reversedGroup.keyList().contains("BackgroundNormal")
+                && reversedGroup.keyList().contains("ForegroundNormal")) {
                 //! reverse usual text/background values
                 KConfigGroup normalGroup(normalPtr, groupName);
 
-                reverseGroup.writeEntry("BackgroundNormal", normalGroup.readEntry("ForegroundNormal", QColor()));
-                reverseGroup.writeEntry("ForegroundNormal", normalGroup.readEntry("BackgroundNormal", QColor()));
+                reversedGroup.writeEntry("BackgroundNormal", normalGroup.readEntry("ForegroundNormal", QColor()));
+                reversedGroup.writeEntry("ForegroundNormal", normalGroup.readEntry("BackgroundNormal", QColor()));
 
-                reverseGroup.sync();
+                reversedGroup.sync();
             }
         }
 
         //! update WM group
-        KConfigGroup reverseGroup(reversePtr, "WM");
+        KConfigGroup reversedGroup(reversedPtr, "WM");
 
-        if (reverseGroup.keyList().contains("activeBackground")
-            && reverseGroup.keyList().contains("activeForeground")
-            && reverseGroup.keyList().contains("inactiveBackground")
-            && reverseGroup.keyList().contains("inactiveForeground")) {
+        if (reversedGroup.keyList().contains("activeBackground")
+            && reversedGroup.keyList().contains("activeForeground")
+            && reversedGroup.keyList().contains("inactiveBackground")
+            && reversedGroup.keyList().contains("inactiveForeground")) {
             //! reverse usual wm titlebar values
             KConfigGroup normalGroup(normalPtr, "WM");
-            reverseGroup.writeEntry("activeBackground", normalGroup.readEntry("inactiveBackground", QColor()));
-            reverseGroup.writeEntry("activeForeground", normalGroup.readEntry("inactiveForeground", QColor()));
-            reverseGroup.writeEntry("inactiveBackground", normalGroup.readEntry("activeBackground", QColor()));
-            reverseGroup.writeEntry("inactiveForeground", normalGroup.readEntry("activeForeground", QColor()));
-            reverseGroup.sync();
+            reversedGroup.writeEntry("activeBackground", normalGroup.readEntry("inactiveBackground", QColor()));
+            reversedGroup.writeEntry("activeForeground", normalGroup.readEntry("inactiveForeground", QColor()));
+            reversedGroup.writeEntry("inactiveBackground", normalGroup.readEntry("activeBackground", QColor()));
+            reversedGroup.writeEntry("inactiveForeground", normalGroup.readEntry("activeForeground", QColor()));
+            reversedGroup.sync();
         }
 
-        if (reverseGroup.keyList().contains("activeBlend")
-            && reverseGroup.keyList().contains("inactiveBlend")) {
+        if (reversedGroup.keyList().contains("activeBlend")
+            && reversedGroup.keyList().contains("inactiveBlend")) {
             KConfigGroup normalGroup(normalPtr, "WM");
-            reverseGroup.writeEntry("activeBlend", normalGroup.readEntry("inactiveBlend", QColor()));
-            reverseGroup.writeEntry("inactiveBlend", normalGroup.readEntry("activeBlend", QColor()));
-            reverseGroup.sync();
+            reversedGroup.writeEntry("activeBlend", normalGroup.readEntry("inactiveBlend", QColor()));
+            reversedGroup.writeEntry("inactiveBlend", normalGroup.readEntry("activeBlend", QColor()));
+            reversedGroup.sync();
         }
     }
 }
@@ -265,6 +299,23 @@ void PlasmaThemeExtended::loadThemePaths()
     }
 }
 
+void PlasmaThemeExtended::loadThemeLightness()
+{
+    float textColorLum = Latte::colorLumina(m_normalScheme->textColor());
+    float backColorLum = Latte::colorLumina(m_normalScheme->backgroundColor());
+
+    if (backColorLum > textColorLum) {
+        m_isLightTheme = true;
+    } else {
+        m_isLightTheme = false;
+    }
+
+    if (m_isLightTheme) {
+        qDebug() << "Plasma theme is light...";
+    } else {
+        qDebug() << "Plasma theme is dark...";
+    }
+}
 
 void PlasmaThemeExtended::loadConfig()
 {

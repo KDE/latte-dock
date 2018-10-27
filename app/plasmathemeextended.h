@@ -23,6 +23,8 @@
 
 #include <QObject>
 
+#include <schemecolors.h>
+
 #include <array>
 
 #include <QTemporaryDir>
@@ -44,6 +46,9 @@ class PlasmaThemeExtended: public QObject
     Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
 
+    Q_PROPERTY(SchemeColors *lightTheme READ lightTheme NOTIFY themesChanged)
+    Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themesChanged)
+
 public:
     PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *parent);
     ~PlasmaThemeExtended() override;;
@@ -56,14 +61,19 @@ public:
     int userThemeRoundness() const;
     void setUserThemeRoundness(int roundness);
 
+    SchemeColors *lightTheme() const;
+    SchemeColors *darkTheme() const;
+
     void load();
 
 signals:
     void roundnessChanged();
+    void themesChanged();
 
 private slots:
     void loadConfig();
     void saveConfig();
+    void loadThemeLightness();
 
 private:
     void loadThemePaths();
@@ -76,6 +86,7 @@ private:
     bool themeHasExtendedInfo() const;
 
 private:
+    bool m_isLightTheme{false};
     bool m_themeHasExtendedInfo{false};
 
     int m_bottomEdgeRoundness{0};
@@ -94,7 +105,9 @@ private:
     KConfigGroup m_themeGroup;
     Plasma::Theme m_theme;
 
-    DockCorona *m_corona;
+    DockCorona *m_corona{nullptr};
+    SchemeColors *m_normalScheme{nullptr};
+    SchemeColors *m_reversedScheme{nullptr};
 };
 
 }
