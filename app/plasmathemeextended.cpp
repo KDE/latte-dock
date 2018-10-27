@@ -190,10 +190,10 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
             && reversedGroup.keyList().contains("inactiveForeground")) {
             //! reverse usual wm titlebar values
             KConfigGroup normalGroup(normalPtr, "WM");
-            reversedGroup.writeEntry("activeBackground", normalGroup.readEntry("inactiveBackground", QColor()));
-            reversedGroup.writeEntry("activeForeground", normalGroup.readEntry("inactiveForeground", QColor()));
-            reversedGroup.writeEntry("inactiveBackground", normalGroup.readEntry("activeBackground", QColor()));
-            reversedGroup.writeEntry("inactiveForeground", normalGroup.readEntry("activeForeground", QColor()));
+            reversedGroup.writeEntry("activeBackground", normalGroup.readEntry("activeForeground", QColor()));
+            reversedGroup.writeEntry("activeForeground", normalGroup.readEntry("activeBackground", QColor()));
+            reversedGroup.writeEntry("inactiveBackground", normalGroup.readEntry("inactiveForeground", QColor()));
+            reversedGroup.writeEntry("inactiveForeground", normalGroup.readEntry("inactiveBackground", QColor()));
             reversedGroup.sync();
         }
 

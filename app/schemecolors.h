@@ -29,6 +29,8 @@ namespace Latte {
 class SchemeColors: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString schemeFile READ schemeFile NOTIFY schemeFileChanged)
+
     Q_PROPERTY(QColor backgroundColor READ backgroundColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor textColor READ textColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor highlightColor READ highlightColor NOTIFY colorsChanged)
@@ -36,6 +38,11 @@ class SchemeColors: public QObject
     Q_PROPERTY(QColor positiveText READ positiveText NOTIFY colorsChanged)
     Q_PROPERTY(QColor neutralText READ neutralText NOTIFY colorsChanged)
     Q_PROPERTY(QColor negativeText READ negativeText NOTIFY colorsChanged)
+
+    Q_PROPERTY(QColor buttonTextColor READ buttonTextColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor buttonBackgroundColor READ buttonBackgroundColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor buttonHoverColor READ buttonHoverColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor buttonFocusColor READ buttonFocusColor NOTIFY colorsChanged)
 
 public:
     enum ColorsSubgroup
@@ -48,8 +55,10 @@ public:
     SchemeColors(QObject *parent, QString scheme);
     ~SchemeColors() override;
 
-    QString schemeName();
-    QString schemeFile();
+    QString schemeName() const;
+
+    QString schemeFile() const;
+    void setSchemeFile(QString file);
 
     QColor backgroundColor() const;
     QColor textColor() const;
@@ -59,6 +68,11 @@ public:
     QColor neutralText() const;
     QColor negativeText() const;
 
+    QColor buttonTextColor() const;
+    QColor buttonBackgroundColor() const;
+    QColor buttonHoverColor() const;
+    QColor buttonFocusColor() const;
+
     SchemeColors::ColorsSubgroup subgroup() const;
     void setSubgroup(SchemeColors::ColorsSubgroup subgroup);
 
@@ -66,6 +80,7 @@ public:
 
 signals:
     void colorsChanged();
+    void schemeFileChanged();
 
 private slots:
     void updateScheme();
@@ -85,6 +100,11 @@ private:
     QColor m_positiveColor;
     QColor m_neutralText;
     QColor m_negativeText;
+
+    QColor m_buttonTextColor;
+    QColor m_buttonBackgroundColor;
+    QColor m_buttonHoverColor;
+    QColor m_buttonFocusColor;
 
     ColorsSubgroup m_subgroup{SchemeColors::Active};
 };

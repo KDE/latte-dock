@@ -49,50 +49,33 @@ Loader{
 
     property real currentBackgroundLuminas: item ? item.currentBackgroundLuminas : -1000
 
-    property color themeBrightColor: themeBackgroundColorLuma > themeTextColorLuma ? theme.backgroundColor : theme.textColor
-    property color themeDarkColor: themeBackgroundColorLuma > themeTextColorLuma ? theme.textColor : theme.backgroundColor
-
-    property color applyColor: {
+    property QtObject applyTheme: {
         if (forceSolidnessAndColorize && dock.visibility.touchingWindowScheme) {
-            return dock.visibility.touchingWindowScheme.textColor;
+            return dock.visibility.touchingWindowScheme;
         }
 
-        if (currentBackgroundLuminas>=0) {
-            var textAbs = Math.abs(themeTextColorLuma - currentBackgroundLuminas);
-            var backAbs = Math.abs(themeBackgroundColorLuma - currentBackgroundLuminas);
-
-            if (textAbs > backAbs) {
-                return Qt.rgba(theme.textColor.r, theme.textColor.g, theme.textColor.b , 1); //remove any transparency
+        if (themeExtended) {
+            if (currentBackgroundLuminas > 0.5) {
+                return themeExtended.lightTheme;
+            } else {
+                return themeExtended.darkTheme;
             }
         }
 
-        return Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b, 1); //remove any transparency
+        return theme;
     }
+
+    property color applyColor: applyTheme.textColor
 
     //! new TEMPORARY options to pass palette to applets
     //! UNTIL Latte produces two different color schemes files (LIGHT / DARK)
     //! to be passed to applets etc...
-
-    readonly property color textColor: applyColor
+    readonly property color textColor: applyTheme.textColor
     readonly property color highlightColor: theme.highlightColor
     readonly property color highlightedTextColor: theme.highlightedTextColor
-    readonly property color backgroundColor: {
-        if (forceSolidnessAndColorize && dock.visibility.touchingWindowScheme) {
-            return dock.visibility.touchingWindowScheme.backgroundColor;
-        }
+    readonly property color backgroundColor: applyTheme.backgroundColor
 
-        if (currentBackgroundLuminas>=0) {
-            var textAbs = Math.abs(themeTextColorLuma - currentBackgroundLuminas);
-            var backAbs = Math.abs(themeBackgroundColorLuma - currentBackgroundLuminas);
-
-            if (textAbs > backAbs) {
-                return Qt.rgba(theme.backgroundColor.r, theme.backgroundColor.g, theme.backgroundColor.b , 1); //remove any transparency
-            }
-        }
-
-        return Qt.rgba(theme.textColor.r, theme.textColor.g, theme.textColor.b, 1); //remove any transparency
-    }
-
+    readonly property string scheme: themeExtended ? applyTheme.schemeFile : "kdeglobals"
 
     sourceComponent: BackgroundTracker{}
 }

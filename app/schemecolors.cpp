@@ -36,7 +36,7 @@ SchemeColors::SchemeColors(QObject *parent, QString scheme) :
     QString pSchemeFile = possibleSchemeFile(scheme);
 
     if (QFileInfo(pSchemeFile).exists()) {
-        m_schemeFile = pSchemeFile;
+        setSchemeFile(pSchemeFile);
         m_schemeName = scheme;
 
         //! track scheme file for changes
@@ -92,14 +92,44 @@ QColor SchemeColors::negativeText() const
     return m_negativeText;
 }
 
-QString SchemeColors::schemeName()
+QColor SchemeColors::buttonTextColor() const
+{
+    return m_buttonTextColor;
+}
+
+QColor SchemeColors::buttonBackgroundColor() const
+{
+    return m_buttonBackgroundColor;
+}
+
+QColor SchemeColors::buttonHoverColor() const
+{
+    return m_buttonHoverColor;
+}
+
+QColor SchemeColors::buttonFocusColor() const
+{
+    return m_buttonFocusColor;
+}
+
+QString SchemeColors::schemeName() const
 {
     return m_schemeName;
 }
 
-QString SchemeColors::schemeFile()
+QString SchemeColors::SchemeColors::schemeFile() const
 {
     return m_schemeFile;
+}
+
+void SchemeColors::setSchemeFile(QString file)
+{
+    if (m_schemeFile == file) {
+        return;
+    }
+
+    m_schemeFile = file;
+    emit schemeFileChanged();
 }
 
 SchemeColors::ColorsSubgroup SchemeColors::subgroup() const
@@ -120,7 +150,7 @@ void SchemeColors::setSubgroup(ColorsSubgroup subgroup)
 
 QString SchemeColors::possibleSchemeFile(QString scheme)
 {
-    if (scheme.startsWith("/") && scheme.endsWith(".colors") && QFileInfo(scheme).exists()) {
+    if (scheme.startsWith("/") && scheme.endsWith("colors") && QFileInfo(scheme).exists()) {
         return scheme;
     }
 
@@ -160,7 +190,9 @@ void SchemeColors::updateScheme()
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_schemeFile);
     KConfigGroup wmGroup = KConfigGroup(filePtr, "WM");
     KConfigGroup selGroup = KConfigGroup(filePtr, "Colors:Selection");
-    KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
+    //KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
+    //KConfigGroup windowGroup = KConfigGroup(filePtr, "Colors:Window");
+    KConfigGroup buttonGroup = KConfigGroup(filePtr, "Colors:Button");
 
     m_activeBackgroundColor = wmGroup.readEntry("activeBackground", QColor());
     m_activeTextColor = wmGroup.readEntry("activeForeground", QColor());
@@ -174,6 +206,11 @@ void SchemeColors::updateScheme()
     m_positiveColor = selGroup.readEntry("ForegroundPositive", QColor());
     m_neutralText = selGroup.readEntry("ForegroundNeutral", QColor());;
     m_negativeText = selGroup.readEntry("ForegroundNegative", QColor());
+
+    m_buttonTextColor = buttonGroup.readEntry("ForegroundNormal", QColor());
+    m_buttonBackgroundColor = buttonGroup.readEntry("BackgroundNormal", QColor());
+    m_buttonHoverColor = buttonGroup.readEntry("DecorationHover", QColor());
+    m_buttonFocusColor = buttonGroup.readEntry("DecorationFocus", QColor());
 
     emit colorsChanged();
 }

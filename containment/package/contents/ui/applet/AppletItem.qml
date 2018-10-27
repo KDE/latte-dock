@@ -546,7 +546,7 @@ Item {
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
             fontSizeMode: Text.Fit
-            color: colorizerManager.themeBrightColor
+            color: colorizerManager.applyTheme.textColor
 
             rotation: {
                 if (root.isHorizontal)
