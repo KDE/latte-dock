@@ -42,12 +42,11 @@ SchemeColors::SchemeColors(QObject *parent, QString scheme) :
         //! track scheme file for changes
         KDirWatch::self()->addFile(m_schemeFile);
 
-        QObject::connect(KDirWatch::self(), &KDirWatch::dirty,
-                         this, &SchemeColors::updateScheme,
-                         Qt::QueuedConnection);
-        QObject::connect(KDirWatch::self(), &KDirWatch::created,
-                         this, &SchemeColors::updateScheme,
-                         Qt::QueuedConnection);
+        connect(KDirWatch::self(), &KDirWatch::dirty, this, [ & ](const QString & path) {
+            if (path == m_schemeFile) {
+                updateScheme();
+            }
+        });
     }
 
     updateScheme();

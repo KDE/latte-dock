@@ -73,8 +73,8 @@ void UniversalSettings::initGlobalShortcutsWatcher()
 
     KDirWatch::self()->addFile(globalShortcutsFilePath);
 
-    QObject::connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
-    QObject::connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
+    connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
 }
 
 void UniversalSettings::shortcutsFileChanged(const QString &file)

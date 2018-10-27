@@ -45,12 +45,17 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
 
     KDirWatch::self()->addFile(kdeSettingsFile);
 
-    QObject::connect(KDirWatch::self(), &KDirWatch::dirty,
-                     this, &AbstractWindowInterface::updateDefaultScheme,
-                     Qt::QueuedConnection);
-    QObject::connect(KDirWatch::self(), &KDirWatch::created,
-                     this, &AbstractWindowInterface::updateDefaultScheme,
-                     Qt::QueuedConnection);
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, [ &, kdeSettingsFile](const QString & path) {
+        if (path == kdeSettingsFile) {
+            this->updateDefaultScheme();
+        }
+    });
+
+    connect(KDirWatch::self(), &KDirWatch::created, this, [ &, kdeSettingsFile](const QString & path) {
+        if (path == kdeSettingsFile) {
+            this->updateDefaultScheme();
+        }
+    });
 }
 
 AbstractWindowInterface::~AbstractWindowInterface()

@@ -58,13 +58,8 @@ public:
 
         KDirWatch::self()->addFile(configFile);
 
-        QObject::connect(KDirWatch::self(), &KDirWatch::dirty,
-                         this, &BackgroundCache::settingsFileChanged,
-                         Qt::QueuedConnection);
-        QObject::connect(KDirWatch::self(), &KDirWatch::created,
-                         this, &BackgroundCache::settingsFileChanged,
-                         Qt::QueuedConnection);
-
+        connect(KDirWatch::self(), &KDirWatch::dirty, this, &BackgroundCache::settingsFileChanged);
+        connect(KDirWatch::self(), &KDirWatch::created, this, &BackgroundCache::settingsFileChanged);
     }
 
     void settingsFileChanged(const QString &file) {
