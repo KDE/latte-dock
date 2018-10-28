@@ -105,6 +105,7 @@ public:
     bool supportsKWinEdges() const;
 
 public slots:
+    Q_INVOKABLE void requestToggleMaximizeForActiveWindow();
     Q_INVOKABLE void requestMoveActiveWindow(int localX, int localY);
     Q_INVOKABLE bool activeWindowCanBeDragged();
 

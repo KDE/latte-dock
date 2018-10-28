@@ -1042,15 +1042,37 @@ void VisibilityManagerPrivate::deleteEdgeGhostWindow()
 }
 
 //! Window Functions
+void VisibilityManagerPrivate::requestToggleMaximizeForActiveWindow()
+{
+    WindowInfoWrap actInfo = wm->requestInfoActive();
+
+    //active window can be toggled only when it is in the same screen
+    if (actInfo.isValid() && !actInfo.geometry().isNull() && dockView->screenGeometry().contains(actInfo.geometry().center())) {
+        wm->requestToggleMaximized(actInfo.wid());
+    }
+}
+
 void VisibilityManagerPrivate::requestMoveActiveWindow(int localX, int localY)
 {
-    QPoint globalPoint{dockView->x() + localX, dockView->y() + localY};
-    wm->requestMoveActiveWindow(globalPoint);
+    WindowInfoWrap actInfo = wm->requestInfoActive();
+
+    //active window can be dragged only when it is in the same screen
+    if (actInfo.isValid() && !actInfo.geometry().isNull() && dockView->screenGeometry().contains(actInfo.geometry().center())) {
+        QPoint globalPoint{dockView->x() + localX, dockView->y() + localY};
+        wm->requestMoveWindow(actInfo.wid(), globalPoint);
+    }
 }
 
 bool VisibilityManagerPrivate::activeWindowCanBeDragged()
 {
-    return wm->activeWindowCanBeDragged();
+    WindowInfoWrap actInfo = wm->requestInfoActive();
+
+    //active window can be dragged only when it is in the same screen
+    if (actInfo.isValid() && !actInfo.geometry().isNull() && dockView->screenGeometry().contains(actInfo.geometry().center())) {
+        return wm->windowCanBeDragged(actInfo.wid());
+    }
+
+    return false;
 }
 
 //! END: VisibilityManagerPrivate implementation
@@ -1201,6 +1223,11 @@ bool VisibilityManager::supportsKWinEdges() const
 }
 
 //! Window Functions
+void VisibilityManager::requestToggleMaximizeForActiveWindow()
+{
+    d->requestToggleMaximizeForActiveWindow();
+}
+
 void VisibilityManager::requestMoveActiveWindow(int localX, int localY)
 {
     d->requestMoveActiveWindow(localX, localY);

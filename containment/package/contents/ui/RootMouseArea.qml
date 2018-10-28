@@ -22,8 +22,6 @@ import QtQuick 2.7
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.taskmanager 0.1 as TaskManager
-
 MouseArea{
     id: mainArea
 
@@ -71,7 +69,8 @@ MouseArea{
     onDoubleClicked: {
         drawWindowTimer.stop();
         restoreGrabberTimer.stop();
-        tasksModel.requestToggleMaximized(tasksModel.activeTask);
+        dock.visibility.requestToggleMaximizeForActiveWindow();
+        //tasksModel.requestToggleMaximized(tasksModel.activeTask);
     }
 
     function activateDragging(){
@@ -99,27 +98,4 @@ MouseArea{
             mainArea.lastPressY = -1;
         }
     }
-
-    ////////// Dragging windows etc....
-    TaskManager.TasksModel {
-        id: tasksModel
-        sortMode: TaskManager.TasksModel.SortVirtualDesktop
-        groupMode: TaskManager.TasksModel.GroupDisabled
-
-        virtualDesktop: virtualDesktopInfo.currentDesktop
-        activity: activityInfo.currentActivity
-        screenGeometry: plasmoid.screenGeometry
-
-        filterByVirtualDesktop: true
-        filterByScreen: true
-        filterByActivity: true
-    }
-    TaskManager.VirtualDesktopInfo {
-        id: virtualDesktopInfo
-    }
-
-    TaskManager.ActivityInfo {
-        id: activityInfo
-    }
-    ////////// Dragging windows etc....
 }

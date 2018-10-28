@@ -322,28 +322,28 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
     return winfoWrap;
 }
 
-bool XWindowInterface::activeWindowCanBeDragged() const
+bool XWindowInterface::windowCanBeDragged(WindowId wid) const
 {
-    WindowInfoWrap activeInfo = requestInfoActive();
-    return (activeInfo.isValid() && !activeInfo.isPlasmaDesktop() && !activeInfo.hasSkipTaskbar());
+    WindowInfoWrap winfo = requestInfo(wid);
+    return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
 }
 
-void XWindowInterface::requestMoveActiveWindow(QPoint from) const
+void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
-    WindowInfoWrap activeInfo = requestInfoActive();
+    WindowInfoWrap wInfo = requestInfo(wid);
 
-    if (!activeInfo.isValid() || activeInfo.isPlasmaDesktop()) {
+    if (!wInfo.isValid() || wInfo.isPlasmaDesktop()) {
         return;
     }
 
-    int borderX{activeInfo.geometry().width() > 120 ? 60 : 10};
+    int borderX{wInfo.geometry().width() > 120 ? 60 : 10};
     int borderY{10};
 
     //! find min/max values for x,y based on active window geometry
-    int minX = activeInfo.geometry().x() + borderX;
-    int maxX = activeInfo.geometry().x() + activeInfo.geometry().width() - borderX;
-    int minY = activeInfo.geometry().y() + borderY;
-    int maxY = activeInfo.geometry().y() + activeInfo.geometry().height() - borderY;
+    int minX = wInfo.geometry().x() + borderX;
+    int maxX = wInfo.geometry().x() + wInfo.geometry().width() - borderX;
+    int minY = wInfo.geometry().y() + borderY;
+    int maxY = wInfo.geometry().y() + wInfo.geometry().height() - borderY;
 
     //! set the point from which this window will be moved,
     //! make sure that it is in window boundaries
@@ -351,9 +351,22 @@ void XWindowInterface::requestMoveActiveWindow(QPoint from) const
     int validY = qBound(minY, from.y(), maxY);
 
     NETRootInfo ri(QX11Info::connection(), NET::WMMoveResize);
-    ri.moveResizeRequest(activeInfo.wid().toUInt(), validX, validY, NET::Move);
+    ri.moveResizeRequest(wInfo.wid().toUInt(), validX, validY, NET::Move);
 }
 
+void XWindowInterface::requestToggleMaximized(WindowId wid) const
+{
+    WindowInfoWrap wInfo = requestInfo(wid);
+    bool restore = wInfo.isMaxHoriz() && wInfo.isMaxVert();
+
+    NETWinInfo ni(QX11Info::connection(), wid.toInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
+
+    if (restore) {
+        ni.setState(NET::States(), NET::Max);
+    } else {
+        ni.setState(NET::Max, NET::Max);
+    }
+}
 
 bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 {

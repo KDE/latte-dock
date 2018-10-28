@@ -82,6 +82,7 @@ public:
 
     void updateStrutsBasedOnLayoutsAndActivities();
 
+    void requestToggleMaximizeForActiveWindow();
     void requestMoveActiveWindow(int localX, int localY);
     bool activeWindowCanBeDragged();
 

@@ -318,45 +318,71 @@ bool WaylandInterface::isOnCurrentActivity(WindowId wid) const
 
 WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
 {
-    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
-        return w->isValid() && w->internalId() == wid;
-    });
-
-    if (it == m_windowManagement->windows().constEnd())
-        return {};
-
     WindowInfoWrap winfoWrap;
 
-    auto w = *it;
+    auto w = windowFor(wid);
 
-    if (isValidWindow(w)) {
-        winfoWrap.setIsValid(true);
-        winfoWrap.setWid(wid);
-        winfoWrap.setIsActive(w->isActive());
-        winfoWrap.setIsMinimized(w->isMinimized());
-        winfoWrap.setIsMaxVert(w->isMaximized());
-        winfoWrap.setIsMaxHoriz(w->isMaximized());
-        winfoWrap.setIsFullscreen(w->isFullscreen());
-        winfoWrap.setIsShaded(w->isShaded());
-        winfoWrap.setGeometry(w->geometry());
-    } else if (w->appId() == QLatin1String("org.kde.plasmashell")) {
-        winfoWrap.setIsValid(true);
-        winfoWrap.setIsPlasmaDesktop(true);
-        winfoWrap.setWid(wid);
+    if (w) {
+        if (isValidWindow(w)) {
+            winfoWrap.setIsValid(true);
+            winfoWrap.setWid(wid);
+            winfoWrap.setIsActive(w->isActive());
+            winfoWrap.setIsMinimized(w->isMinimized());
+            winfoWrap.setIsMaxVert(w->isMaximized());
+            winfoWrap.setIsMaxHoriz(w->isMaximized());
+            winfoWrap.setIsFullscreen(w->isFullscreen());
+            winfoWrap.setIsShaded(w->isShaded());
+            winfoWrap.setGeometry(w->geometry());
+            winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
+        } else if (w->appId() == QLatin1String("org.kde.plasmashell")) {
+            winfoWrap.setIsValid(true);
+            winfoWrap.setIsPlasmaDesktop(true);
+            winfoWrap.setWid(wid);
+        }
+    } else {
+        return {};
     }
 
     return winfoWrap;
 }
 
-bool WaylandInterface::activeWindowCanBeDragged() const
+KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid) const
 {
-    WindowInfoWrap activeInfo = requestInfoActive();
-    return (activeInfo.isValid() && !activeInfo.isPlasmaDesktop() && !activeInfo.hasSkipTaskbar());
+    auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
+        return w->isValid() && w->internalId() == wid;
+    });
+
+    if (it == m_windowManagement->windows().constEnd()) {
+        return nullptr;
+    }
+
+    return *it;
 }
 
-void WaylandInterface::requestMoveActiveWindow(QPoint from) const
+bool WaylandInterface::windowCanBeDragged(WindowId wid) const
 {
-    //to be supported
+    WindowInfoWrap winfo = requestInfo(wid);
+    return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
+}
+
+void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const
+{
+    if (windowCanBeDragged(wid)) {
+        auto w = windowFor(wid);
+
+        if (w && isValidWindow(w)) {
+            w->requestMove();
+        }
+    }
+}
+
+void WaylandInterface::requestToggleMaximized(WindowId wid) const
+{
+    auto w = windowFor(wid);
+
+    if (w && isValidWindow(w)) {
+        w->requestToggleMaximized();
+    }
 }
 
 inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
