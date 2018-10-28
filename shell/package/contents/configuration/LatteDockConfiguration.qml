@@ -56,7 +56,7 @@ FocusScope {
     property int chosenWidth: userScaleWidth !== 100 ? (userScaleWidth/100) * proposedWidth : proposedWidth
     property int chosenHeight: userScaleHeight !== 100 ? (userScaleHeight/100) * heightLevel * proposedHeight : heightLevel * proposedHeight
 
-    readonly property real heightLevel: (plasmoid.configuration.advanced ? 1.7 : 1)
+    readonly property real heightLevel: (plasmoid.configuration.advanced ? 1 : 1)
 
     onHeightChanged: dockConfig.syncGeometry();
 
