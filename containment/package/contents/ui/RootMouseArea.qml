@@ -30,6 +30,9 @@ MouseArea{
     anchors.fill: parent
     hoverEnabled: true
 
+    property int lastPressX: -1
+    property int lastPressY: -1
+
     onContainsMouseChanged: {
         if (mouseInHoverableArea()) {
             stopCheckRestoreZoomTimer();
@@ -41,7 +44,27 @@ MouseArea{
 
     onPressed: {
         if (dock.visibility.activeWindowCanBeDragged()) {
+            lastPressX = mouse.x;
+            lastPressY = mouse.y;
             drawWindowTimer.start();
+        }
+    }
+
+    onReleased: {
+        lastPressX = -1;
+        lastPressY = -1;
+    }
+
+    onPositionChanged: {
+        var stepX = Math.abs(lastPressX-mouse.x);
+        var stepY = Math.abs(lastPressY-mouse.y);
+        var threshold = 5;
+
+        var tryDrag = mainArea.pressed && (stepX>threshold || stepY>threshold);
+
+        if ( tryDrag && dock.visibility.activeWindowCanBeDragged()) {
+            drawWindowTimer.stop();
+            activateDragging();
         }
     }
 
@@ -51,14 +74,18 @@ MouseArea{
         tasksModel.requestToggleMaximized(tasksModel.activeTask);
     }
 
+    function activateDragging(){
+        dock.disableGrabItemBehavior();
+        dock.visibility.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
+        restoreGrabberTimer.start();
+    }
+
     Timer {
         id: drawWindowTimer
-        interval: 350
+        interval: 500
         onTriggered: {
             if (mainArea.pressed && dock.visibility.activeWindowCanBeDragged()) {
-                dock.disableGrabItemBehavior();
-                dock.visibility.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
-                restoreGrabberTimer.start();
+                mainArea.activateDragging();
             }
         }
     }
@@ -68,6 +95,8 @@ MouseArea{
         interval: 50
         onTriggered: {
             dock.restoreGrabItemBehavior();
+            mainArea.lastPressX = -1;
+            mainArea.lastPressY = -1;
         }
     }
 
