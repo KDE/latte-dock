@@ -77,18 +77,19 @@ public:
 
     bool sticker() const;
 
+    QRect geometryWhenVisible() const;
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QWindow *secondaryWindow();
 
 public slots:
     Q_INVOKABLE void addPanelSpacer();
-    Q_INVOKABLE void createSecondaryWindow();
-    Q_INVOKABLE void deleteSecondaryWindow();
     Q_INVOKABLE void hideConfigWindow();
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
+    Q_INVOKABLE void setAdvanced(bool advanced);
 
 signals:
     void enabledBordersChanged();
@@ -108,13 +109,19 @@ private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     void updateEnabledBorders();
 
+    void createSecondaryWindow();
+    void deleteSecondaryWindow();
+
 private:
     void setupWaylandIntegration();
 
+    bool m_advanced{false};
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
     bool m_inReverse{false};    //! it is used by the borders
     bool m_showInlineProperties{false};
+
+    QRect m_geometryWhenVisible;
 
     QPointer<DockView> m_dockView;
     QPointer<DockSecConfigView> m_secConfigView;

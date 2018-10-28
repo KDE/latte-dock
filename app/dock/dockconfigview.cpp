@@ -45,9 +45,6 @@
 
 namespace Latte {
 
-const int MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN = 1024;
-const int MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN = 768;
-
 DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
       m_dockView(dockView)
@@ -151,23 +148,39 @@ QWindow *DockConfigView::secondaryWindow()
     return m_secConfigView;
 }
 
+void DockConfigView::setAdvanced(bool advanced)
+{
+    if (m_advanced == advanced) {
+        return;
+    }
+
+    m_advanced = advanced;
+
+    if (m_advanced) {
+        createSecondaryWindow();
+    } else {
+        deleteSecondaryWindow();
+    }
+}
+
 void DockConfigView::createSecondaryWindow()
 {
-    if (m_secConfigView) {
+    //! do not proceed when secondary window is already created
+    //! or when main dock settings window has not updated yet
+    //! its geometry
+    if (m_secConfigView || geometryWhenVisible().isNull()) {
         return;
     }
 
     QRect geometry = m_dockView->screenGeometry();
 
-    if ((m_dockView->containment()->formFactor() == Plasma::Types::Horizontal
-         && geometry.width() > MAX_SCREEN_WIDTH_SECONDARY_CONFIG_WIN)
-        || (m_dockView->containment()->formFactor() == Plasma::Types::Vertical
-            && geometry.height() > MAX_SCREEN_HEIGHT_SECONDARY_CONFIG_WIN)) {
-        qDebug() << "create secondary config win...";
+    m_secConfigView = new DockSecConfigView(m_dockView, this);
+    m_secConfigView->init();
 
-        m_secConfigView = new DockSecConfigView(m_dockView, this);
-        m_secConfigView->init();
-
+    if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
+        setShowInlineProperties(true);
+        m_secConfigView->hideConfigWindow();
+    } else {
         if (!KWindowSystem::isPlatformWayland()) {
             QTimer::singleShot(150, m_secConfigView, SLOT(show()));
         } else {
@@ -177,8 +190,6 @@ void DockConfigView::createSecondaryWindow()
         }
 
         setShowInlineProperties(false);
-    } else {
-        setShowInlineProperties(true);
     }
 }
 
@@ -189,6 +200,10 @@ void DockConfigView::deleteSecondaryWindow()
     }
 }
 
+QRect DockConfigView::geometryWhenVisible() const
+{
+    return m_geometryWhenVisible;
+}
 
 void DockConfigView::syncGeometry()
 {
@@ -243,10 +258,17 @@ void DockConfigView::syncGeometry()
 
     updateEnabledBorders();
 
+    m_geometryWhenVisible = QRect(position.x(), position.y(), size.width(), size.height());
+
     setPosition(position);
 
     if (m_shellSurface) {
         m_shellSurface->setPosition(position);
+    }
+
+    if (m_advanced) {
+        //! consider even the secondary window can be create
+        createSecondaryWindow();
     }
 }
 

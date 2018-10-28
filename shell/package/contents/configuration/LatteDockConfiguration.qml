@@ -384,9 +384,9 @@ FocusScope {
                             }
 
                             if (checked) {
-                                dockConfig.createSecondaryWindow();
+                                dockConfig.setAdvanced(true);
                             } else {
-                                dockConfig.deleteSecondaryWindow();
+                                dockConfig.setAdvanced(false);
                             }
                         }
                     }

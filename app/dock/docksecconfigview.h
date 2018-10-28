@@ -61,6 +61,8 @@ public:
     void init();
     Qt::WindowFlags wFlags() const;
 
+    QRect geometryWhenVisible() const;
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
 public slots:
@@ -83,6 +85,8 @@ private slots:
 
 private:
     void setupWaylandIntegration();
+
+    QRect m_geometryWhenVisible;
 
     QPointer<DockView> m_dockView;
     QPointer<QWindow> m_parent;

@@ -136,6 +136,11 @@ inline Qt::WindowFlags DockSecConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
+QRect DockSecConfigView::geometryWhenVisible() const
+{
+    return m_geometryWhenVisible;
+}
+
 void DockSecConfigView::syncGeometry()
 {
     if (!m_dockView->managedLayout() || !m_dockView->containment() || !rootObject())
@@ -190,6 +195,8 @@ void DockSecConfigView::syncGeometry()
     }
 
     updateEnabledBorders();
+
+    m_geometryWhenVisible = QRect(position.x(), position.y(), size.width(), size.height());
 
     setPosition(position);
 
