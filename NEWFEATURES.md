@@ -2,6 +2,7 @@ New features/fixes that are found only in master in contrast with the current st
 
 #### Version (master)
 
+* support fill(s) applets for Left,Center,Right alignment properly. That means that the user can now add plasma taskmanagers in Latte panel/docks and use at the same time the previous alignments.
 * drag/maximize/restore active window from panel empty areas
 * provide a light and dark version of current plasma theme color scheme
 * support plasma themes roundness through text file or from preferences
