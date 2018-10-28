@@ -29,8 +29,6 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.taskmanager 0.1 as TaskManager
-
 import org.kde.latte 0.1 as Latte
 
 import "applet" as Applet
@@ -1626,76 +1624,9 @@ DragDrop.DropArea {
 
     //it is used to check if the mouse is outside the layoutsContainer borders,
     //so in that case the onLeave event behavior should be trigerred
-    MouseArea{
+    RootMouseArea{
         id: rootMouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-
-        onContainsMouseChanged: {
-            if (mouseInHoverableArea()) {
-                stopCheckRestoreZoomTimer();
-            } else {
-                initializeHoveredIndexes();
-                startCheckRestoreZoomTimer()
-            }
-        }
-
-        onPressed: {
-            if (dock.visibility.activeWindowCanBeDragged()) {
-                drawWindowTimer.start();
-            }
-        }
-
-        onDoubleClicked: {
-            drawWindowTimer.stop();
-            restoreGrabberTimer.stop();
-            tasksModel.requestToggleMaximized(tasksModel.activeTask);
-        }
-
-        Timer {
-            id: drawWindowTimer
-            interval: 350
-            onTriggered: {
-                if (rootMouseArea.pressed && dock.visibility.activeWindowCanBeDragged()) {
-                    dock.disableGrabItemBehavior();
-                    dock.visibility.requestMoveActiveWindow(rootMouseArea.mouseX, rootMouseArea.mouseY);
-                    restoreGrabberTimer.start();
-                }
-            }
-        }
-
-        Timer {
-            id: restoreGrabberTimer
-            interval: 50
-            onTriggered: {
-                dock.restoreGrabItemBehavior();
-            }
-        }
     }
-
-    ////////// Dragging windows etc....
-    TaskManager.TasksModel {
-        id: tasksModel
-        sortMode: TaskManager.TasksModel.SortVirtualDesktop
-        groupMode: TaskManager.TasksModel.GroupDisabled
-
-        virtualDesktop: virtualDesktopInfo.currentDesktop
-        activity: activityInfo.currentActivity
-        screenGeometry: plasmoid.screenGeometry
-
-        filterByVirtualDesktop: true
-        filterByScreen: true
-        filterByActivity: true
-    }
-    TaskManager.VirtualDesktopInfo {
-        id: virtualDesktopInfo
-    }
-
-    TaskManager.ActivityInfo {
-        id: activityInfo
-    }
-
-    ////////// Dragging windows etc....
 
     Loader{
         active: root.debugModeWindow
