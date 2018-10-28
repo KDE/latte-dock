@@ -311,13 +311,47 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid) const
         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
         winfoWrap.setGeometry(winfo.frameGeometry());
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
+        winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
     } else if (m_desktopId == wid) {
         winfoWrap.setIsValid(true);
         winfoWrap.setIsPlasmaDesktop(true);
         winfoWrap.setWid(wid);
+        winfoWrap.setHasSkipTaskbar(true);
     }
 
     return winfoWrap;
+}
+
+bool XWindowInterface::activeWindowCanBeDragged() const
+{
+    WindowInfoWrap activeInfo = requestInfoActive();
+    return (activeInfo.isValid() && !activeInfo.isPlasmaDesktop() && !activeInfo.hasSkipTaskbar());
+}
+
+void XWindowInterface::requestMoveActiveWindow(QPoint from) const
+{
+    WindowInfoWrap activeInfo = requestInfoActive();
+
+    if (!activeInfo.isValid() || activeInfo.isPlasmaDesktop()) {
+        return;
+    }
+
+    int borderX{activeInfo.geometry().width() > 120 ? 60 : 10};
+    int borderY{10};
+
+    //! find min/max values for x,y based on active window geometry
+    int minX = activeInfo.geometry().x() + borderX;
+    int maxX = activeInfo.geometry().x() + activeInfo.geometry().width() - borderX;
+    int minY = activeInfo.geometry().y() + borderY;
+    int maxY = activeInfo.geometry().y() + activeInfo.geometry().height() - borderY;
+
+    //! set the point from which this window will be moved,
+    //! make sure that it is in window boundaries
+    int validX = qBound(minX, from.x(), maxX);
+    int validY = qBound(minY, from.y(), maxY);
+
+    NETRootInfo ri(QX11Info::connection(), NET::WMMoveResize);
+    ri.moveResizeRequest(activeInfo.wid().toUInt(), validX, validY, NET::Move);
 }
 
 

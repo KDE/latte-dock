@@ -34,6 +34,7 @@
 #include <QDialog>
 #include <QMap>
 #include <QRect>
+#include <QPoint>
 #include <QPointer>
 #include <QScreen>
 
@@ -81,6 +82,9 @@ public:
     virtual void slideWindow(QWindow &view, Slide location) const = 0;
     virtual void enableBlurBehind(QWindow &view) const = 0;
     virtual void setEdgeStateFor(QWindow *view, bool active) const = 0;
+
+    virtual void requestMoveActiveWindow(QPoint from) const = 0;
+    virtual bool activeWindowCanBeDragged() const = 0;
 
     void addDock(WindowId wid);
     void removeDock(WindowId wid);

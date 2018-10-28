@@ -42,7 +42,8 @@ public:
         , m_isFullscreen(false)
         , m_isShaded(false)
         , m_isPlasmaDesktop(false)
-        , m_isKeepAbove(false) {
+        , m_isKeepAbove(false)
+        , m_hasSkipTaskbar(false) {
     }
 
     WindowInfoWrap(const WindowInfoWrap &o) noexcept
@@ -56,7 +57,8 @@ public:
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
-        , m_isKeepAbove(o.m_isKeepAbove) {
+        , m_isKeepAbove(o.m_isKeepAbove)
+        , m_hasSkipTaskbar(o.m_hasSkipTaskbar) {
     }
 
     WindowInfoWrap(WindowInfoWrap &&o) noexcept
@@ -70,7 +72,8 @@ public:
         , m_isFullscreen(o.m_isFullscreen)
         , m_isShaded(o.m_isShaded)
         , m_isPlasmaDesktop(o.m_isPlasmaDesktop)
-        , m_isKeepAbove(o.m_isKeepAbove) {
+        , m_isKeepAbove(o.m_isKeepAbove)
+        , m_hasSkipTaskbar(o.m_hasSkipTaskbar) {
     }
 
     inline WindowInfoWrap &operator=(WindowInfoWrap &&rhs) noexcept;
@@ -108,6 +111,9 @@ public:
     inline bool isKeepAbove() const noexcept;
     inline void setIsKeepAbove(bool isKeepAbove) noexcept;
 
+    inline bool hasSkipTaskbar() const noexcept;
+    inline void setHasSkipTaskbar(bool skipTaskbar) noexcept;
+
     inline QRect geometry() const noexcept;
     inline void setGeometry(const QRect &geometry) noexcept;
 
@@ -127,6 +133,7 @@ private:
     bool m_isShaded : 1;
     bool m_isPlasmaDesktop : 1;
     bool m_isKeepAbove: 1;
+    bool m_hasSkipTaskbar: 1;
 };
 
 // BEGIN: definitions
@@ -143,6 +150,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(WindowInfoWrap &&rhs) noexcept
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
+    m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     return *this;
 }
 
@@ -159,6 +167,7 @@ inline WindowInfoWrap &WindowInfoWrap::operator=(const WindowInfoWrap &rhs) noex
     m_isShaded = rhs.m_isShaded;
     m_isPlasmaDesktop = rhs.m_isPlasmaDesktop;
     m_isKeepAbove = rhs.m_isKeepAbove;
+    m_hasSkipTaskbar = rhs.m_hasSkipTaskbar;
     return *this;
 }
 
@@ -270,6 +279,16 @@ inline bool WindowInfoWrap::isKeepAbove() const noexcept
 inline void WindowInfoWrap::setIsKeepAbove(bool isKeepAbove) noexcept
 {
     m_isKeepAbove = isKeepAbove;
+}
+
+inline bool WindowInfoWrap::hasSkipTaskbar() const noexcept
+{
+    return m_hasSkipTaskbar;
+}
+
+inline void WindowInfoWrap::setHasSkipTaskbar(bool skipTaskbar) noexcept
+{
+    m_hasSkipTaskbar = skipTaskbar;
 }
 
 inline QRect WindowInfoWrap::geometry() const noexcept

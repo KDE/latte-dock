@@ -75,6 +75,9 @@ public:
     void slideWindow(QWindow &view, Slide location) const override;
     void enableBlurBehind(QWindow &view) const override;
 
+    void requestMoveActiveWindow(QPoint from) const override;
+    bool activeWindowCanBeDragged() const;
+
     void setEdgeStateFor(QWindow *view, bool active) const override;
 
     void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);

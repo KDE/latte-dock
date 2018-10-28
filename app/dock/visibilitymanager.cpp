@@ -1040,6 +1040,19 @@ void VisibilityManagerPrivate::deleteEdgeGhostWindow()
         emit q->supportsKWinEdgesChanged();
     }
 }
+
+//! Window Functions
+void VisibilityManagerPrivate::requestMoveActiveWindow(int localX, int localY)
+{
+    QPoint globalPoint{dockView->x() + localX, dockView->y() + localY};
+    wm->requestMoveActiveWindow(globalPoint);
+}
+
+bool VisibilityManagerPrivate::activeWindowCanBeDragged()
+{
+    return wm->activeWindowCanBeDragged();
+}
+
 //! END: VisibilityManagerPrivate implementation
 
 
@@ -1187,5 +1200,17 @@ bool VisibilityManager::supportsKWinEdges() const
     return (d->edgeGhostWindow != nullptr);
 }
 
+//! Window Functions
+void VisibilityManager::requestMoveActiveWindow(int localX, int localY)
+{
+    d->requestMoveActiveWindow(localX, localY);
+}
+
+bool VisibilityManager::activeWindowCanBeDragged()
+{
+    return d->activeWindowCanBeDragged();
+}
+
 //! END: VisibilityManager implementation
+
 }

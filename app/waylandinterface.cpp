@@ -285,6 +285,8 @@ WindowInfoWrap WaylandInterface::requestInfoActive() const
 
     winfoWrap.setIsKeepAbove(w->isKeepAbove());
 
+    winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
+
     return winfoWrap;
 }
 
@@ -346,6 +348,16 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
     return winfoWrap;
 }
 
+bool WaylandInterface::activeWindowCanBeDragged() const
+{
+    WindowInfoWrap activeInfo = requestInfoActive();
+    return (activeInfo.isValid() && !activeInfo.isPlasmaDesktop() && !activeInfo.hasSkipTaskbar());
+}
+
+void WaylandInterface::requestMoveActiveWindow(QPoint from) const
+{
+    //to be supported
+}
 
 inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
 {

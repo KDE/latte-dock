@@ -1641,7 +1641,9 @@ DragDrop.DropArea {
         }
 
         onPressed: {
-           drawWindowTimer.start();
+            if (dock.visibility.activeWindowCanBeDragged()) {
+                drawWindowTimer.start();
+            }
         }
 
         onDoubleClicked: {
@@ -1654,10 +1656,10 @@ DragDrop.DropArea {
             id: drawWindowTimer
             interval: 350
             onTriggered: {
-                if (rootMouseArea.pressed) {
-                      dock.disableGrabItemBehavior();
-                      tasksModel.requestMove(tasksModel.activeTask);
-                      restoreGrabberTimer.start();
+                if (rootMouseArea.pressed && dock.visibility.activeWindowCanBeDragged()) {
+                    dock.disableGrabItemBehavior();
+                    dock.visibility.requestMoveActiveWindow(rootMouseArea.mouseX, rootMouseArea.mouseY);
+                    restoreGrabberTimer.start();
                 }
             }
         }
@@ -1671,14 +1673,29 @@ DragDrop.DropArea {
         }
     }
 
+    ////////// Dragging windows etc....
     TaskManager.TasksModel {
         id: tasksModel
         sortMode: TaskManager.TasksModel.SortVirtualDesktop
         groupMode: TaskManager.TasksModel.GroupDisabled
 
+        virtualDesktop: virtualDesktopInfo.currentDesktop
+        activity: activityInfo.currentActivity
         screenGeometry: plasmoid.screenGeometry
-        filterByScreen: plasmoid.configuration.showForCurrentScreenOnly
+
+        filterByVirtualDesktop: true
+        filterByScreen: true
+        filterByActivity: true
     }
+    TaskManager.VirtualDesktopInfo {
+        id: virtualDesktopInfo
+    }
+
+    TaskManager.ActivityInfo {
+        id: activityInfo
+    }
+
+    ////////// Dragging windows etc....
 
     Loader{
         active: root.debugModeWindow

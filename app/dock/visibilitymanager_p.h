@@ -82,6 +82,9 @@ public:
 
     void updateStrutsBasedOnLayoutsAndActivities();
 
+    void requestMoveActiveWindow(int localX, int localY);
+    bool activeWindowCanBeDragged();
+
     void saveConfig();
     void restoreConfig();
 
