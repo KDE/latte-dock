@@ -43,8 +43,22 @@ Item{
                 return root.iconSize;
         }
 
-        if (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal){
-            return container.sizeForFill;
+        //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
+        if (container.needsFillSpace) {
+            if (root.panelAlignment !== Latte.Dock.Justify && root.isHorizontal) {
+                var constrainedWidth = container.sizeForFill>-1 ? Math.min(container.sizeForFill, applet.Layout.preferredWidth) :
+                                                                  applet.Layout.preferredWidth;
+
+                if (root.editMode) {
+                    return Math.max(constrainedWidth, 5 * root.iconSize);
+                } else {
+                    return Math.max(constrainedWidth, root.iconSize);
+                }
+            }
+
+            if((container.sizeForFill>-1) && root.isHorizontal){
+                return container.sizeForFill;
+            }
         }
 
         if (container.latteApplet) {
@@ -71,8 +85,22 @@ Item{
                 return root.iconSize;
         }
 
-        if (container.needsFillSpace && (container.sizeForFill>-1) && root.isVertical){
-            return container.sizeForFill;
+        if (container.needsFillSpace) {
+            //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
+            if (root.panelAlignment !== Latte.Dock.Justify && root.isVertical) {
+                var constrainedHeight = container.sizeForFill>-1 ? Math.min(container.sizeForFill, applet.Layout.preferredHeight) :
+                                                                   applet.Layout.preferredHeight;
+
+                if (root.editMode) {
+                    return Math.max(constrainedHeight, 5 * root.iconSize);
+                } else {
+                    return Math.max(constrainedHeight, root.iconSize);
+                }
+            }
+
+            if ((container.sizeForFill>-1) && root.isVertical){
+                return container.sizeForFill;
+            }
         }
 
         if (container.latteApplet) {
@@ -275,7 +303,7 @@ Item{
                 } else if (applet.Layout.minimumHeight > root.iconSize){
                     layoutHeight = applet.Layout.minimumHeight;
                 } else if ((applet.Layout.preferredHeight > root.iconSize)
-                         || (container.lockZoom && applet.Layout.preferredHeight > 0 )){
+                           || (container.lockZoom && applet.Layout.preferredHeight > 0 )){
                     layoutHeight = applet.Layout.preferredHeight;
                 } else{
                     layoutHeight = root.iconSize + moreHeight;
@@ -322,7 +350,7 @@ Item{
                 } else if (applet.Layout.minimumWidth > root.iconSize){
                     layoutWidth = applet.Layout.minimumWidth;
                 } else if ((applet.Layout.preferredWidth > root.iconSize)
-                         || (container.lockZoom && applet.Layout.preferredWidth > 0 )){
+                           || (container.lockZoom && applet.Layout.preferredWidth > 0 )){
                     layoutWidth = applet.Layout.preferredWidth;
                 } else{
                     layoutWidth = root.iconSize + moreWidth;
