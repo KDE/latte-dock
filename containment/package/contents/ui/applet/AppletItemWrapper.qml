@@ -49,11 +49,7 @@ Item{
                 var constrainedWidth = container.sizeForFill>-1 ? Math.min(container.sizeForFill, applet.Layout.preferredWidth) :
                                                                   applet.Layout.preferredWidth;
 
-                if (root.editMode) {
-                    return Math.max(constrainedWidth, 5 * root.iconSize);
-                } else {
-                    return Math.max(constrainedWidth, root.iconSize);
-                }
+                return root.editMode ? Math.max(constrainedWidth, root.iconSize) : constrainedWidth;
             }
 
             if((container.sizeForFill>-1) && root.isHorizontal){
@@ -91,11 +87,7 @@ Item{
                 var constrainedHeight = container.sizeForFill>-1 ? Math.min(container.sizeForFill, applet.Layout.preferredHeight) :
                                                                    applet.Layout.preferredHeight;
 
-                if (root.editMode) {
-                    return Math.max(constrainedHeight, 5 * root.iconSize);
-                } else {
-                    return Math.max(constrainedHeight, root.iconSize);
-                }
+                return root.editMode ? Math.max(constrainedHeight, root.iconSize) : constrainedHeight;
             }
 
             if ((container.sizeForFill>-1) && root.isVertical){
