@@ -262,7 +262,9 @@ Item{
 
     function updateLayoutHeight(){
 
-        if(container.isInternalViewSplitter){
+        if (isLattePlasmoid) {
+            return;
+        } else if (container.isInternalViewSplitter){
             if(!root.editMode)
                 layoutHeight = 0;
             else
@@ -308,7 +310,9 @@ Item{
 
     function updateLayoutWidth(){
 
-        if(container.isInternalViewSplitter){
+        if (isLattePlasmoid) {
+            return;
+        } else if (container.isInternalViewSplitter){
             if(!root.editMode)
                 layoutWidth = 0;
             else
