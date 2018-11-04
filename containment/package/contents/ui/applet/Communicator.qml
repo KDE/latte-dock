@@ -43,6 +43,12 @@ Item{
     //       the main element for which you must place the Latte options is the CompactRepresentation.
     property bool appletContainsIsInLatte: appletRootItem && appletRootItem.hasOwnProperty("isInLatte") ? true : false
 
+    // NAME: latteInEditMode
+    //   USAGE: property bool latteInEditMode: false
+    //   EXPLANATION: Latte sets it to true when this applet is in a Latte containment and Latte
+    //       is also in EditMode, that means when the user is altering applets and Latte dock settings
+    property bool appletContainsLatteInEditMode: appletRootItem && appletRootItem.hasOwnProperty("latteInEditMode") ? true : false
+
     // NAME: lattePalette
     //   USAGE: property QtObject lattePalette: null
     //   EXPLANATION: Latte updates it to its coloring palette in order for the applet
@@ -158,6 +164,13 @@ Item{
         property: "applyLattePalette"
         when: disableLatteSideColoring && appletCanUseLattePalette
         value: colorizerManager.mustBeShown
+    }
+
+    Binding{
+        target: appletRootItem
+        property: "latteInEditMode"
+        when: appletContainsLatteInEditMode
+        value: root.editMode
     }
 
     Binding{
