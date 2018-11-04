@@ -51,6 +51,7 @@ Item{
     //       Latte "palette" and FALSE otherwise
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
+    // @since: 0.9
     readonly property bool applyPalette: disableLatteSideColoring ? colorizerManager.mustBeShown : false
 
 
@@ -62,6 +63,7 @@ Item{
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background OR the applet
     //       is not using monochromatic icons but rather colorful ones.
+    // @since: 0.9
     property bool disableLatteSideColoring: false
 
     // NAME: disableLatteIconOverlay
@@ -70,5 +72,6 @@ Item{
     //       the applet or alters the applet visual in any sense.
     //       That means that the applet is responsible to provide a conherent
     //       parabolic effect experience.
+    // @since: 0.9
     property bool disableLatteIconOverlay: false
 }

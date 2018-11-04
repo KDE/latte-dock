@@ -223,7 +223,12 @@ Item {
     //END Latte Dock Panel properties
 
     //BEGIN Latte Dock Communicator
-    property bool disableLatteSideColoring : true
+    property QtObject latteSettings: null
+    onLatteSettingsChanged: {
+        if (latteSettings) {
+            latteSettings.disableLatteSideColoring = true;
+        }
+    }
     //END  Latte Dock Communicator
 
 

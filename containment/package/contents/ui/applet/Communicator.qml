@@ -28,21 +28,7 @@ Item{
     //              BEGIN OF INTERNAL APPLET PROPERTIES
     //             LATTE<->APPLET COMMUNICATION PROTOCOL
     //             -------------------------------------
-
-    // USAGE: The applet can set the following properties in its main item in order to
-    // establish communication with the Latte containment
-
-    //             -------------------------------------
-    //                  INGOING FROM LATTE TO APPLET
-    //             -------------------------------------
-    // NAME: isInLatte
-    //   USAGE: property bool isInLatte: false
-    //   EXPLANATION: Latte sets it to true when this applet is in a Latte containment. This parameter
-    //       is very important because it identifies the main element of the applet in which all latte
-    //       parameters need to also placed. Be careful in case you are using CompactRepresentation then
-    //       the main element for which you must place the Latte options is the CompactRepresentation.
-    property bool appletContainsIsInLatte: appletRootItem && appletRootItem.hasOwnProperty("isInLatte") ? true : false
-
+    //
     // NAME: latteSettings
     //   USAGE: property QtObject latteSettings: null
     //   EXPLANATION: The main shared object that Latte is using to communicate with the applet
@@ -55,6 +41,7 @@ Item{
     //! BEGIN OF PROPERTIES
     //this is used for folderView and icon widgets to fake their visual icons
     readonly property bool canShowOverlaiedLatteIcon: appletRootItem && communicator.appletIconItem
+    readonly property bool disableLatteSideColoring: settingsLoader.active ? settingsLoader.item.disableLatteSideColoring : false
     readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon
                                                      && settingsLoader.active
                                                      && !settingsLoader.item.disableLatteIconOverlay
@@ -68,11 +55,6 @@ Item{
     //! END OF PROPERTIES
 
     //! BEGIN OF PROPERTY CHANGES
-    onAppletContainsIsInLatteChanged: {
-        if (appletContainsIsInLatte) {
-            appletRootItem.isInLatte = true;
-        }
-    }
     //! END OF PROPERTY CHANGES
 
     //! BEGIN OF FUNCTIONS
@@ -120,7 +102,7 @@ Item{
 
     Loader{
         id:settingsLoader
-        active: appletContainsIsInLatte && appletContainsLatteSettings
+        active: appletContainsLatteSettings
         sourceComponent: LatteSettings{}
     }
 
