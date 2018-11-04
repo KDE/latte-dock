@@ -43,70 +43,21 @@ Item{
     //       the main element for which you must place the Latte options is the CompactRepresentation.
     property bool appletContainsIsInLatte: appletRootItem && appletRootItem.hasOwnProperty("isInLatte") ? true : false
 
-    // NAME: latteInEditMode
-    //   USAGE: property bool latteInEditMode: false
-    //   EXPLANATION: Latte sets it to true when this applet is in a Latte containment and Latte
-    //       is also in EditMode, that means when the user is altering applets and Latte dock settings
-    property bool appletContainsLatteInEditMode: appletRootItem && appletRootItem.hasOwnProperty("latteInEditMode") ? true : false
-
-    // NAME: lattePalette
-    //   USAGE: property QtObject lattePalette: null
-    //   EXPLANATION: Latte updates it to its coloring palette in order for the applet
-    //       to take resposibility of its coloring.
+    // NAME: latteSettings
+    //   USAGE: property QtObject latteSettings: null
+    //   EXPLANATION: The main shared object that Latte is using to communicate with the applet
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
-    property bool appletContainsLattePalette: appletRootItem && appletRootItem.hasOwnProperty("lattePalette") ? true : false
-
-    // NAME: applyLattePalette
-    //   USAGE: property bool applyLattePalette: false
-    //   EXPLANATION: Latte updates it to TRUE when the applet must use the provided
-    //       Latte palette through "lattePalette" and FALSE otherwise
-    //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
-    //       to look consistent with the underlying desktop background
-    property bool appletContainsApplyLattePalette: appletRootItem && appletRootItem.hasOwnProperty("applyLattePalette") ? true : false
-
-    //             -------------------------------------
-    //                  OUTGOING FROM APPLET TO LATTE
-    //             -------------------------------------
-
-    // NAME: disableLatteParabolicIcon
-    //   USE: property bool disableLatteParabolicIcon : false
-    //   DEPRECATED FROM: disableLatteIconOverlay
-    //   EXPLANATION: when is TRUE, Latte is not overlaying any icons above
-    //       the applet or alters the applet visual in any sense.
-    //       That means that the applet is responsible to provide a conherent
-    //       parabolic effect experience.
-    property bool disableLatteParabolicIconHeuristics: appletRootItem && appletRootItem.disableLatteParabolicIcon !== undefined ?
-                                                           appletRootItem.disableLatteParabolicIcon : false
-
-    // NAME: disableLatteSideColoring
-    //   USE: property bool disableLatteSideColoring : false
-    //   EXPLANATION: when is TRUE, Latte is not painting/colorizing this applet
-    //       in any case. In such case the applet can use lattePalette property
-    //       in order to access to color palette used at all cases from Latte
-    //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
-    //       to look consistent with the underlying desktop background OR the applet
-    //       is not using monochromatic icons but rather colorful ones.
-    property bool disableLatteSideColoring: appletRootItem && appletRootItem.disableLatteSideColoring !== undefined ?
-                                               appletRootItem.disableLatteSideColoring : false
-
-    // NAME: disableLatteIconOverlay
-    //   USE: property bool disableLatteIconOverlay : false
-    //   EXPLANATION: when is TRUE, Latte is not overlaying any icons above
-    //       the applet or alters the applet visual in any sense.
-    //       That means that the applet is responsible to provide a conherent
-    //       parabolic effect experience.
-    property bool disableLatteIconOverlay: appletRootItem && appletRootItem.disableLatteIconOverlay !== undefined ?
-                                               appletRootItem.disableLatteIconOverlay : false
+    property bool appletContainsLatteSettings: appletRootItem && appletRootItem.hasOwnProperty("latteSettings") ? true : false
     //!              END OF INTERNAL APPLET PROPERTIES
-
+    //             -------------------------------------
 
     //! BEGIN OF PROPERTIES
     //this is used for folderView and icon widgets to fake their visual icons
-    readonly property bool appletCanUseLattePalette: appletContainsApplyLattePalette && appletContainsLattePalette
-    readonly property bool canShowOverlaiedLatteIcon: appletRootItem && communicator.appletIconItem //(applet.pluginName === "org.kde.plasma.folder" || applet.pluginName === "org.kde.plasma.icon")
+    readonly property bool canShowOverlaiedLatteIcon: appletRootItem && communicator.appletIconItem
     readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon
-                                                     && !(disableLatteParabolicIconHeuristics || disableLatteIconOverlay)
+                                                     && settingsLoader.active
+                                                     && !settingsLoader.item.disableLatteIconOverlay
 
     property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
     property Item appletDiscoveredRootItem: null
@@ -161,26 +112,17 @@ Item{
     //! BEGIN OF BINDINGS
     Binding{
         target: appletRootItem
-        property: "applyLattePalette"
-        when: disableLatteSideColoring && appletCanUseLattePalette
-        value: colorizerManager.mustBeShown
-    }
-
-    Binding{
-        target: appletRootItem
-        property: "latteInEditMode"
-        when: appletContainsLatteInEditMode
-        value: root.editMode
-    }
-
-    Binding{
-        target: appletRootItem
-        property: "lattePalette"
-        when: disableLatteSideColoring && appletCanUseLattePalette
-        value: colorizerManager
-        //value: dock && dock.visibility ? dock.visibility.touchingWindowScheme : null
+        property: "latteSettings"
+        when: settingsLoader.active
+        value: settingsLoader.item
     }
     //! END OF BINDINGS
+
+    Loader{
+        id:settingsLoader
+        active: appletContainsIsInLatte && appletContainsLatteSettings
+        sourceComponent: LatteSettings{}
+    }
 
     //! BEGIN OF TIMERS
     //a timer that is used in  order to init some Communicator values
