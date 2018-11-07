@@ -62,7 +62,7 @@ function checkAndUpdateAppletRootItem() {
 
     for(var i=0; i<level0.length; ++i){
         var level1 = level0[i].children;
-        if (!appletDiscoveredRootItem && level0[i].hasOwnProperty("latteSettings")) {
+        if (!appletDiscoveredRootItem && level0[i].hasOwnProperty("latteBridge")) {
             appletDiscoveredRootItem = level0[i];
         }
         if (appletDiscoveredRootItem) {
@@ -70,7 +70,7 @@ function checkAndUpdateAppletRootItem() {
         }
 
         for(var j=0; j<level1.length; ++j){
-            if (!appletDiscoveredRootItem && level1[j].hasOwnProperty("latteSettings")) {
+            if (!appletDiscoveredRootItem && level1[j].hasOwnProperty("latteBridge")) {
                 appletDiscoveredRootItem = level1[j];
             }
             if (appletDiscoveredRootItem) {
