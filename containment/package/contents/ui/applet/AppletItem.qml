@@ -31,6 +31,7 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.latte 0.1 as Latte
 
 import "../colorizer" as Colorizer
+import "communicator" as Communicator
 
 Item {
     id: container
@@ -414,7 +415,7 @@ Item {
     ///END connections
 
     //! It is used for any communication needed with the underlying applet
-    Communicator{
+    Communicator.Engine{
         id: communicator
 
         //set up the overlaied containers and properties for when a overlaiedIconItem must be presented to the user

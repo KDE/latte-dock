@@ -19,32 +19,27 @@
 
 import QtQuick 2.7
 
-import "../../code/AppletIdentifier.js" as AppletIdentifier
+import "../../../code/AppletIdentifier.js" as AppletIdentifier
 
 Item{
-    id: main
+    id: mainCommunicator
 
     //             -------------------------------------
     //              BEGIN OF INTERNAL APPLET PROPERTIES
     //             LATTE<->APPLET COMMUNICATION PROTOCOL
     //             -------------------------------------
     //
-    // NAME: latteSettings
-    //   USAGE: property QtObject latteSettings: null
+    // NAME: latteBridge
+    //   USAGE: property QtObject latteBridge: null
     //   EXPLANATION: The main shared object that Latte is using to communicate with the applet
-    //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
-    //       to look consistent with the underlying desktop background
-    property bool appletContainsLatteSettings: appletRootItem && appletRootItem.hasOwnProperty("latteSettings") ? true : false
+    property bool appletContainsLatteBridge: appletRootItem && appletRootItem.hasOwnProperty("latteBridge") ? true : false
     //!              END OF INTERNAL APPLET PROPERTIES
     //             -------------------------------------
 
     //! BEGIN OF PROPERTIES
     //this is used for folderView and icon widgets to fake their visual icons
-    readonly property bool canShowOverlaiedLatteIcon: appletRootItem && communicator.appletIconItem
-    readonly property bool disableLatteSideColoring: settingsLoader.active ? settingsLoader.item.disableLatteSideColoring : false
-    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon
-                                                     && settingsLoader.active
-                                                     && !settingsLoader.item.disableLatteIconOverlay
+    readonly property bool canShowOverlaiedLatteIcon: appletRootItem && appletIconItem
+    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && bridgeLoader.active && !disableLatteIconOverlay
 
     property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
     property Item appletDiscoveredRootItem: null
@@ -53,6 +48,11 @@ Item{
     property Item appletIconItem; //first applet's IconItem to be used by Latte
     property Item appletImageItem; //first applet's ImageItem to be used by Latte
     //! END OF PROPERTIES
+
+    //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
+    property bool disableLatteSideColoring: false
+    property bool disableLatteIconOverlay: false
+    //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF PROPERTY CHANGES
     //! END OF PROPERTY CHANGES
@@ -94,16 +94,16 @@ Item{
     //! BEGIN OF BINDINGS
     Binding{
         target: appletRootItem
-        property: "latteSettings"
-        when: settingsLoader.active
-        value: settingsLoader.item
+        property: "latteBridge"
+        when: bridgeLoader.active
+        value: bridgeLoader.item
     }
     //! END OF BINDINGS
 
     Loader{
-        id:settingsLoader
-        active: appletContainsLatteSettings
-        sourceComponent: LatteSettings{}
+        id: bridgeLoader
+        active: appletContainsLatteBridge
+        sourceComponent: LatteBridge{}
     }
 
     //! BEGIN OF TIMERS
