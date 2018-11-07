@@ -33,6 +33,9 @@ class SchemeColors: public QObject
 
     Q_PROPERTY(QColor backgroundColor READ backgroundColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor textColor READ textColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor inactiveBackgroundColor READ inactiveBackgroundColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor inactiveTextColor READ inactiveTextColor NOTIFY colorsChanged)
+
     Q_PROPERTY(QColor highlightColor READ highlightColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor highlightedTextColor READ highlightedTextColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor positiveText READ positiveText NOTIFY colorsChanged)
@@ -45,13 +48,6 @@ class SchemeColors: public QObject
     Q_PROPERTY(QColor buttonFocusColor READ buttonFocusColor NOTIFY colorsChanged)
 
 public:
-    enum ColorsSubgroup
-    {
-        Active = 0,
-        Inactive = 1
-    };
-    Q_ENUM(ColorsSubgroup);
-
     SchemeColors(QObject *parent, QString scheme);
     ~SchemeColors() override;
 
@@ -62,6 +58,8 @@ public:
 
     QColor backgroundColor() const;
     QColor textColor() const;
+    QColor inactiveBackgroundColor() const;
+    QColor inactiveTextColor() const;
     QColor highlightColor() const;
     QColor highlightedTextColor() const;
     QColor positiveText() const;
@@ -72,9 +70,6 @@ public:
     QColor buttonBackgroundColor() const;
     QColor buttonHoverColor() const;
     QColor buttonFocusColor() const;
-
-    SchemeColors::ColorsSubgroup subgroup() const;
-    void setSubgroup(SchemeColors::ColorsSubgroup subgroup);
 
     static QString possibleSchemeFile(QString scheme);
 
@@ -105,8 +100,6 @@ private:
     QColor m_buttonBackgroundColor;
     QColor m_buttonHoverColor;
     QColor m_buttonFocusColor;
-
-    ColorsSubgroup m_subgroup{SchemeColors::Active};
 };
 
 }

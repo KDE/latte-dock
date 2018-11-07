@@ -59,12 +59,22 @@ SchemeColors::~SchemeColors()
 
 QColor SchemeColors::backgroundColor() const
 {
-    return subgroup() == Active ? m_activeBackgroundColor : m_inactiveBackgroundColor;
+    return m_activeBackgroundColor;
 }
 
 QColor SchemeColors::textColor() const
 {
-    return subgroup() == Active ? m_activeTextColor : m_inactiveTextColor;
+    return m_activeTextColor;
+}
+
+QColor SchemeColors::inactiveBackgroundColor() const
+{
+    return m_inactiveBackgroundColor;
+}
+
+QColor SchemeColors::inactiveTextColor() const
+{
+    return m_inactiveTextColor;
 }
 
 QColor SchemeColors::highlightColor() const
@@ -131,22 +141,6 @@ void SchemeColors::setSchemeFile(QString file)
     m_schemeFile = file;
     emit schemeFileChanged();
 }
-
-SchemeColors::ColorsSubgroup SchemeColors::subgroup() const
-{
-    return m_subgroup;
-}
-
-void SchemeColors::setSubgroup(ColorsSubgroup subgroup)
-{
-    if (m_subgroup == subgroup) {
-        return;
-    }
-
-    m_subgroup = subgroup;
-    emit colorsChanged();
-}
-
 
 QString SchemeColors::possibleSchemeFile(QString scheme)
 {
