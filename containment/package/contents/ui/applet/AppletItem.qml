@@ -591,7 +591,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: !latteApplet && canBeHovered && !root.editMode && !lockZoom
+        enabled: applet && !latteApplet && canBeHovered && !root.editMode && !lockZoom
         hoverEnabled: !root.editMode && (!latteApplet) ? true : false
         propagateComposedEvents: true
 
@@ -599,7 +599,7 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: !container.latteApplet && !lockZoom && canBeHovered && !(container.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
+        visible: applet && !container.latteApplet && !lockZoom && canBeHovered && !(container.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
 
         property bool blockWheel: false
         property bool pressed: false
