@@ -30,8 +30,9 @@
 
 namespace Latte {
 
-SchemeColors::SchemeColors(QObject *parent, QString scheme) :
-    QObject(parent)
+SchemeColors::SchemeColors(QObject *parent, QString scheme, bool plasmaTheme) :
+    QObject(parent),
+    m_basedOnPlasmaTheme(plasmaTheme)
 {
     QString pSchemeFile = possibleSchemeFile(scheme);
 
@@ -184,15 +185,21 @@ void SchemeColors::updateScheme()
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(m_schemeFile);
     KConfigGroup wmGroup = KConfigGroup(filePtr, "WM");
     KConfigGroup selGroup = KConfigGroup(filePtr, "Colors:Selection");
-    //KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
+    KConfigGroup viewGroup = KConfigGroup(filePtr, "Colors:View");
     //KConfigGroup windowGroup = KConfigGroup(filePtr, "Colors:Window");
     KConfigGroup buttonGroup = KConfigGroup(filePtr, "Colors:Button");
 
-    m_activeBackgroundColor = wmGroup.readEntry("activeBackground", QColor());
-    m_activeTextColor = wmGroup.readEntry("activeForeground", QColor());
-
-    m_inactiveBackgroundColor = wmGroup.readEntry("inactiveBackground", QColor());
-    m_inactiveTextColor = wmGroup.readEntry("inactiveForeground", QColor());
+    if (!m_basedOnPlasmaTheme) {
+        m_activeBackgroundColor = wmGroup.readEntry("activeBackground", QColor());
+        m_activeTextColor = wmGroup.readEntry("activeForeground", QColor());
+        m_inactiveBackgroundColor = wmGroup.readEntry("inactiveBackground", QColor());
+        m_inactiveTextColor = wmGroup.readEntry("inactiveForeground", QColor());
+    } else {
+        m_activeBackgroundColor = viewGroup.readEntry("BackgroundNormal", QColor());
+        m_activeTextColor = viewGroup.readEntry("ForegroundNormal", QColor());
+        m_inactiveBackgroundColor = viewGroup.readEntry("BackgroundAlternate", QColor());
+        m_inactiveTextColor = viewGroup.readEntry("ForegroundInactive", QColor());
+    }
 
     m_highlightColor = selGroup.readEntry("BackgroundNormal", QColor());
     m_highlightedTextColor = selGroup.readEntry("ForegroundNormal", QColor());

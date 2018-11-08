@@ -129,7 +129,7 @@ void PlasmaThemeExtended::setNormalSchemeFile(const QString &file)
         m_normalScheme->deleteLater();
     }
 
-    m_normalScheme = new SchemeColors(this, m_normalSchemePath);
+    m_normalScheme = new SchemeColors(this, m_normalSchemePath, true);
     connect(m_normalScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
 
     qDebug() << "plasma theme normal colors ::: " << m_normalSchemePath;
@@ -154,7 +154,7 @@ void PlasmaThemeExtended::updateReversedScheme()
         m_reversedScheme->deleteLater();
     }
 
-    m_reversedScheme = new SchemeColors(this, m_reversedSchemePath);
+    m_reversedScheme = new SchemeColors(this, m_reversedSchemePath, true);
 
     qDebug() << "plasma theme reversed colors ::: " << m_reversedSchemePath;
 }

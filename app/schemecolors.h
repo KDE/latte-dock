@@ -48,7 +48,7 @@ class SchemeColors: public QObject
     Q_PROPERTY(QColor buttonFocusColor READ buttonFocusColor NOTIFY colorsChanged)
 
 public:
-    SchemeColors(QObject *parent, QString scheme);
+    SchemeColors(QObject *parent, QString scheme, bool plasmaTheme = false);
     ~SchemeColors() override;
 
     QString schemeName() const;
@@ -81,6 +81,8 @@ private slots:
     void updateScheme();
 
 private:
+    bool m_basedOnPlasmaTheme{false};
+
     QString m_schemeName;
     QString m_schemeFile;
 
