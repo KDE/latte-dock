@@ -38,7 +38,7 @@ SchemeColors::SchemeColors(QObject *parent, QString scheme, bool plasmaTheme) :
 
     if (QFileInfo(pSchemeFile).exists()) {
         setSchemeFile(pSchemeFile);
-        m_schemeName = scheme;
+        m_schemeName = schemeName(pSchemeFile);
 
         //! track scheme file for changes
         KDirWatch::self()->addFile(m_schemeFile);
@@ -174,6 +174,30 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
     }
 
     return "";
+}
+
+QString SchemeColors::schemeName(QString originalFile)
+{
+    if (!(originalFile.startsWith("/") && originalFile.endsWith("colors") && QFileInfo(originalFile).exists())) {
+        return "";
+    }
+
+    QString fileNameNoExt =  originalFile;
+
+    int lastSlash = originalFile.lastIndexOf("/");
+
+    if (lastSlash >= 0) {
+        fileNameNoExt.remove(0, lastSlash + 1);
+    }
+
+    if (fileNameNoExt.endsWith(".colors")) {
+        fileNameNoExt.remove(".colors");
+    }
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(originalFile);
+    KConfigGroup generalGroup = KConfigGroup(filePtr, "General");
+
+    return generalGroup.readEntry("Name", fileNameNoExt);
 }
 
 void SchemeColors::updateScheme()

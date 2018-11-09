@@ -72,6 +72,7 @@ public:
     QColor buttonFocusColor() const;
 
     static QString possibleSchemeFile(QString scheme);
+    static QString schemeName(QString originalFile);
 
 signals:
     void colorsChanged();

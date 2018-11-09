@@ -204,6 +204,12 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
             reversedGroup.writeEntry("inactiveBlend", normalGroup.readEntry("activeBlend", QColor()));
             reversedGroup.sync();
         }
+
+        //! update scheme name
+        QString normalSchemeName = SchemeColors::schemeName(m_normalSchemePath);
+        KConfigGroup generalGroup(reversedPtr, "General");
+        generalGroup.writeEntry("Name", normalSchemeName + "_reversed");
+        generalGroup.sync();
     }
 }
 
