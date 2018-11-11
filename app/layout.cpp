@@ -574,7 +574,7 @@ bool Layout::layoutIsBroken() const
     } else {
         foreach (auto containment, m_containments) {
             ids << QString::number(containment->id());
-            conts << ids;
+            conts << QString::number(containment->id());
 
             foreach (auto applet, containment->applets()) {
                 ids << QString::number(applet->id());
@@ -596,9 +596,13 @@ bool Layout::layoutIsBroken() const
         qDebug() << "   ----   ERROR - BROKEN LAYOUT :: " << m_layoutName << " ----";
 
         if (!m_corona) {
-            qDebug() << "   ---- file : " << m_layoutFile;
+            qDebug() << "   --- file : " << m_layoutFile;
         } else {
-            qDebug() << "   ---- in multiple layouts hidden file : " << Importer::layoutFilePath(Layout::MultipleLayoutsName);
+            if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+                qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(Layout::MultipleLayoutsName);
+            } else {
+                qDebug() << "   --- in layout file : " << m_layoutFile;
+            }
         }
 
         qDebug() << "Contaiments :: " << conts;
