@@ -39,6 +39,7 @@ public:
     void setRaiseOnDesktop(bool enable);
     void setRaiseOnActivity(bool enable);
 
+    void setContainsMouse(bool contains);
     void setIsHidden(bool isHidden);
     void setBlockHiding(bool blockHiding);
     void setTimerShow(int msec);

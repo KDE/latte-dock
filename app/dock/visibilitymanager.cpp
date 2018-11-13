@@ -352,8 +352,9 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
         if (hideNow) {
             hideNow = false;
             emit q->mustBeHide(VisibilityManager::QPrivateSignal{});
-        } else if (!timerHide.isActive())
+        } else if (!timerHide.isActive()) {
             timerHide.start();
+        }
     }
 }
 
@@ -624,28 +625,31 @@ inline void VisibilityManagerPrivate::restoreConfig()
     });
 }
 
+void VisibilityManagerPrivate::setContainsMouse(bool contains)
+{
+    if (containsMouse == contains) {
+        return;
+    }
+
+    containsMouse = contains;
+    emit q->containsMouseChanged();
+
+    if (contains && mode != Dock::AlwaysVisible) {
+        raiseDock(true);
+    }
+}
+
 void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
 {
     switch (ev->type()) {
         case QEvent::Enter:
-            if (containsMouse)
-                break;
-
-            containsMouse = true;
-            emit q->containsMouseChanged();
-
-            if (mode != Dock::AlwaysVisible)
-                raiseDock(true);
-
+            setContainsMouse(true);
             break;
 
         case QEvent::Leave:
-            if (!containsMouse)
-                break;
-
-            containsMouse = false;
-            emit q->containsMouseChanged();
+            setContainsMouse(false);
             updateHiddenState();
+
             break;
 
         case QEvent::DragEnter:
@@ -1003,8 +1007,10 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
 
         wm->setDockExtraFlags(*edgeGhostWindow);
 
-        connect(edgeGhostWindow, &ScreenEdgeGhostWindow::edgeTriggered, this, [this]() {
-            emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
+        connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
+            if (contains) {
+                emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
+            }
         });
 
         connectionsKWinEdges[0] = connect(wm, &WindowSystem::currentActivityChanged,

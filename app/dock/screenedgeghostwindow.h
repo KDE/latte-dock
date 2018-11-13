@@ -71,7 +71,7 @@ public:
     KWayland::Client::PlasmaShellSurface *surface();
 
 signals:
-    void edgeTriggered();
+    void containsMouseChanged(bool contains);
 
 protected:
     bool event(QEvent *ev) override;

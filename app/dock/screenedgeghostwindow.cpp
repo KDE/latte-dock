@@ -214,7 +214,9 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
 bool ScreenEdgeGhostWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::Enter || e->type() == QEvent::DragEnter) {
-        emit edgeTriggered();
+        emit containsMouseChanged(true);
+    } else if (e->type() == QEvent::Leave || e->type() == QEvent::DragLeave) {
+        emit containsMouseChanged(false);
     }
 
     return QQuickView::event(e);
