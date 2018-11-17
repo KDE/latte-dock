@@ -167,17 +167,19 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
 
     if (normalPtr && reversedPtr) {
         foreach (auto groupName, reversedPtr->groupList()) {
-            KConfigGroup reversedGroup(reversedPtr, groupName);
+            if (groupName != "Colors:Button") {
+                KConfigGroup reversedGroup(reversedPtr, groupName);
 
-            if (reversedGroup.keyList().contains("BackgroundNormal")
-                && reversedGroup.keyList().contains("ForegroundNormal")) {
-                //! reverse usual text/background values
-                KConfigGroup normalGroup(normalPtr, groupName);
+                if (reversedGroup.keyList().contains("BackgroundNormal")
+                    && reversedGroup.keyList().contains("ForegroundNormal")) {
+                    //! reverse usual text/background values
+                    KConfigGroup normalGroup(normalPtr, groupName);
 
-                reversedGroup.writeEntry("BackgroundNormal", normalGroup.readEntry("ForegroundNormal", QColor()));
-                reversedGroup.writeEntry("ForegroundNormal", normalGroup.readEntry("BackgroundNormal", QColor()));
+                    reversedGroup.writeEntry("BackgroundNormal", normalGroup.readEntry("ForegroundNormal", QColor()));
+                    reversedGroup.writeEntry("ForegroundNormal", normalGroup.readEntry("BackgroundNormal", QColor()));
 
-                reversedGroup.sync();
+                    reversedGroup.sync();
+                }
             }
         }
 
