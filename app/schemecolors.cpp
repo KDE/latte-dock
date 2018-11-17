@@ -88,19 +88,19 @@ QColor SchemeColors::highlightedTextColor() const
     return m_highlightedTextColor;
 }
 
-QColor SchemeColors::positiveText() const
+QColor SchemeColors::positiveTextColor() const
 {
-    return m_positiveColor;
+    return m_positiveTextColor;
 }
 
-QColor SchemeColors::neutralText() const
+QColor SchemeColors::neutralTextColor() const
 {
-    return m_neutralText;
+    return m_neutralTextColor;
 }
 
-QColor SchemeColors::negativeText() const
+QColor SchemeColors::negativeTextColor() const
 {
-    return m_negativeText;
+    return m_negativeTextColor;
 }
 
 QColor SchemeColors::buttonTextColor() const
@@ -228,9 +228,9 @@ void SchemeColors::updateScheme()
     m_highlightColor = selGroup.readEntry("BackgroundNormal", QColor());
     m_highlightedTextColor = selGroup.readEntry("ForegroundNormal", QColor());
 
-    m_positiveColor = selGroup.readEntry("ForegroundPositive", QColor());
-    m_neutralText = selGroup.readEntry("ForegroundNeutral", QColor());;
-    m_negativeText = selGroup.readEntry("ForegroundNegative", QColor());
+    m_positiveTextColor = viewGroup.readEntry("ForegroundPositive", QColor());
+    m_neutralTextColor = viewGroup.readEntry("ForegroundNeutral", QColor());;
+    m_negativeTextColor = viewGroup.readEntry("ForegroundNegative", QColor());
 
     m_buttonTextColor = buttonGroup.readEntry("ForegroundNormal", QColor());
     m_buttonBackgroundColor = buttonGroup.readEntry("BackgroundNormal", QColor());

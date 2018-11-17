@@ -70,10 +70,21 @@ Loader{
     //! new TEMPORARY options to pass palette to applets
     //! UNTIL Latte produces two different color schemes files (LIGHT / DARK)
     //! to be passed to applets etc...
-    readonly property color textColor: applyTheme.textColor
-    readonly property color highlightColor: theme.highlightColor
-    readonly property color highlightedTextColor: theme.highlightedTextColor
     readonly property color backgroundColor: applyTheme.backgroundColor
+    readonly property color textColor: applyTheme.textColor
+    readonly property color inactiveBackgroundColor: applyTheme === theme ? theme.backgroundColor : applyTheme.inactiveBackgroundColor
+    readonly property color inactiveTextColor: applyTheme === theme ? theme.textColor : applyTheme.inactiveTextColor
+
+    readonly property color highlightColor: applyTheme.highlightColor
+    readonly property color highlightedTextColor: applyTheme.highlightedTextColor
+    readonly property color positiveTextColor: applyTheme.positiveTextColor
+    readonly property color neutralTextColor: applyTheme.neutralTextColor
+    readonly property color negativeTextColor: applyTheme.negativeTextColor
+
+    readonly property color buttonTextColor: applyTheme.buttonTextColor
+    readonly property color buttonBackgroundColor: applyTheme.buttonBackgroundColor
+    readonly property color buttonHoverColor: applyTheme.buttonHoverColor
+    readonly property color buttonFocusColor: applyTheme.buttonFocusColor
 
     readonly property string scheme: themeExtended ? applyTheme.schemeFile : "kdeglobals"
 

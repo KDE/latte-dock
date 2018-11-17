@@ -38,9 +38,9 @@ class SchemeColors: public QObject
 
     Q_PROPERTY(QColor highlightColor READ highlightColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor highlightedTextColor READ highlightedTextColor NOTIFY colorsChanged)
-    Q_PROPERTY(QColor positiveText READ positiveText NOTIFY colorsChanged)
-    Q_PROPERTY(QColor neutralText READ neutralText NOTIFY colorsChanged)
-    Q_PROPERTY(QColor negativeText READ negativeText NOTIFY colorsChanged)
+    Q_PROPERTY(QColor positiveTextColor READ positiveTextColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor neutralTextColor READ neutralTextColor NOTIFY colorsChanged)
+    Q_PROPERTY(QColor negativeTextColor READ negativeTextColor NOTIFY colorsChanged)
 
     Q_PROPERTY(QColor buttonTextColor READ buttonTextColor NOTIFY colorsChanged)
     Q_PROPERTY(QColor buttonBackgroundColor READ buttonBackgroundColor NOTIFY colorsChanged)
@@ -62,9 +62,9 @@ public:
     QColor inactiveTextColor() const;
     QColor highlightColor() const;
     QColor highlightedTextColor() const;
-    QColor positiveText() const;
-    QColor neutralText() const;
-    QColor negativeText() const;
+    QColor positiveTextColor() const;
+    QColor neutralTextColor() const;
+    QColor negativeTextColor() const;
 
     QColor buttonTextColor() const;
     QColor buttonBackgroundColor() const;
@@ -95,9 +95,9 @@ private:
 
     QColor m_highlightColor;
     QColor m_highlightedTextColor;
-    QColor m_positiveColor;
-    QColor m_neutralText;
-    QColor m_negativeText;
+    QColor m_positiveTextColor;
+    QColor m_neutralTextColor;
+    QColor m_negativeTextColor;
 
     QColor m_buttonTextColor;
     QColor m_buttonBackgroundColor;
