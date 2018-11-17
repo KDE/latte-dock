@@ -351,7 +351,7 @@ DragDrop.DropArea {
 
     ///BEGIN properties provided to Latte Plasmoid
     //shadows for applets, it should be removed as the appleitems don't need it any more
-    property bool enableShadows: plasmoid.configuration.shadows || root.forceTransparentPanel
+    property bool enableShadows: plasmoid.configuration.shadows || (root.forceTransparentPanel && plasmoid.configuration.shadows>0)
     property bool dockIsHidden: dock ? dock.visibility.isHidden : true
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
