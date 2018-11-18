@@ -44,7 +44,7 @@ function computeStep1ForLayout(layout, availableSpace, sizePerApplet, noOfApplet
         if (curApplet && curApplet.applet && curApplet.applet.Layout)
             maxSize = root.isVertical ? curApplet.applet.Layout.maximumHeight : curApplet.applet.Layout.maximumWidth;
 
-        if (curApplet.needsFillSpace && (maxSize <= sizePerApplet) && (maxSize>=1) && (maxSize !== Infinity)) {
+        if (curApplet.needsFillSpace && (maxSize <= sizePerApplet) && (maxSize>=0) && (maxSize !== Infinity)) {
             curApplet.sizeForFill = maxSize;
             // console.log("s3_1  "+ maxSize);
             curApplet.inFillCalculations = false;
