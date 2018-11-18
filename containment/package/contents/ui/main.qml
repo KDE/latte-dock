@@ -187,8 +187,8 @@ DragDrop.DropArea {
 
     property int iconStep: 8
     property int latteAppletPos: -1
-    property int maxLength: root.isHorizontal ? width * (plasmoid.configuration.maxLength/100)
-                                              : height * (plasmoid.configuration.maxLength/100)
+    property int maxLength: root.isHorizontal ? behaveAsPlasmaPanel ? width : width * (plasmoid.configuration.maxLength/100)
+                                              : behabeAsPlasmaPanel ? height : height * (plasmoid.configuration.maxLength/100)
 
     property int middleClickAction: plasmoid.configuration.middleClickAction
     property int modifier: plasmoid.configuration.modifier
