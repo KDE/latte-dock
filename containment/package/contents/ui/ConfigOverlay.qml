@@ -236,7 +236,7 @@ MouseArea {
 
     onWheel: {
         if (currentApplet && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")) {
-            return
+            return;
         }
 
         var angle = wheel.angleDelta.y / 8;
