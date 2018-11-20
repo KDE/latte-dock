@@ -51,9 +51,29 @@ Item{
         model:DelegateModel {
             id: windowsLocalModel
             model: tasksModel //icList.model
-            rootIndex: tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
+          /*  rootIndex: {
+                if (root.inDraggingPhase) {
+                    return tasksModel.makeModelIndex(lastValidIndex);
+                }
+
+                return tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
+            }*/
 
             property int currentIndex: -1
+
+            //! Trying to avoid a crash during dragging tasks/launchers
+            Binding{
+                target: windowsLocalModel
+                property: "rootIndex"
+
+                value: {
+                    if (root.inDraggingPhase) {
+                        return 0;
+                    }
+
+                    return tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
+                }
+            }
 
             delegate: Item{
                 readonly property string title: display

@@ -1122,17 +1122,6 @@ MouseArea{
     }
     ///window previews////
 
-    function launcherIsPresent(url) {
-        var activities = tasksModel.launcherActivities(url);
-
-        var NULL_UUID = "00000000-0000-0000-0000-000000000000";
-
-        if (activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1)
-            return true;
-
-        return false;
-    }
-
     function modelIndex(){
         return tasksModel.makeModelIndex(index);
     }
@@ -1286,7 +1275,7 @@ MouseArea{
     function updateVisibilityBasedOnLaunchers(){
         var launcherExists = !(((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
                                 && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                               || !launcherIsPresent(mainItemContainer.launcherUrl));
+                               || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl));
 
         if (root.showWindowsOnlyFromLaunchers) {
             var hideWindow =  !launcherExists && mainItemContainer.isWindow;
@@ -1378,7 +1367,7 @@ MouseArea{
                                     || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
 
         //startup without launcher
-        var hideStartup =  ((!hasShownLauncher || !launcherIsPresent(mainItemContainer.launcherUrl))
+        var hideStartup =  ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl))
                             && mainItemContainer.isStartup);
 
         if (!Latte.WindowSystem.compositingActive) {
