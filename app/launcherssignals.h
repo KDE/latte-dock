@@ -56,7 +56,9 @@ public slots:
     Q_INVOKABLE void addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
     Q_INVOKABLE void removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity);
     Q_INVOKABLE void urlsDropped(QString layoutName, int launcherGroup, QStringList urls);
+    //!Deprecated because it could create crashes, validateLaunchersOrder provides a better approach
     Q_INVOKABLE void moveTask(QString layoutName, int senderId, int launcherGroup, int from, int to);
+    Q_INVOKABLE void validateLaunchersOrder(QString layoutName, int senderId, int launcherGroup, QStringList launchers);
 
 private:
     QList<Plasma::Applet *> lattePlasmoids(QString layoutName);

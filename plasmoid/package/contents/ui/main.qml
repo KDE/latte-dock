@@ -366,6 +366,61 @@ Item {
         return createLaunchers;
     }
 
+    function currentLauncherList() {
+        var launch = [];
+        var launchersList = [];
+
+        if (currentLayout) {
+            if (latteDock && latteDock.universalLayoutManager
+                    && latteDock.dockManagedLayout && latteDock.universalSettings
+                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
+                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
+
+                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                    launchersList = latteDock.dockManagedLayout.launchers;
+                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                    launchersList = latteDock.universalSettings.launchers;
+                }
+            }
+        } else {
+            launchersList = plasmoid.configuration.launchers59;
+        }
+
+
+        for(var i=0; i<launchersList.length; ++i){
+            var launcherRecord = launchersList[i];
+
+            if (launcherRecord.indexOf("[") === -1) {
+                //global launcher
+                launch.push(launcherRecord);
+            } else {
+                //launcher assigned to activities
+                var end = launcherRecord.indexOf("\n");
+                var explicitLauncher = launcherRecord.substring(end+1,launcherRecord.length);
+                if (explicitLauncher !== "" && launcherRecord.indexOf(activityInfo.currentActivity) > -1) {
+                    launch.push(explicitLauncher);
+                }
+            }
+        }
+
+        return launch;
+    }
+
+    function currentListViewLauncherList() {
+        var launch = [];
+
+        var tasks = icList.contentItem.children;
+        for(var i=0; i<tasks.length; ++i){
+            var task = icList.childAtIndex(i);
+
+            if (task!==undefined && task.launcherUrl!=="" && tasksModel.launcherInCurrentActivity(task.launcherUrl)) {
+                launch.push(task.launcherUrl);
+            }
+        }
+
+        return launch;
+    }
+
     /// waiting launchers... this is used in order to check
     /// a window or startup if its launcher is playing its animation
     function addWaitingLauncher(launch){
@@ -434,11 +489,11 @@ Item {
 
     onDragSourceChanged: {
         if (dragSource == null) {
-            restoreDraggingPhaseTimer.start();
             root.draggingFinished();
             root.signalActionsBlockHiding(-1);
-
             tasksModel.syncLaunchers();
+
+            restoreDraggingPhaseTimer.start();
         } else {
             inDraggingPhase = true;
             root.signalActionsBlockHiding(1);
@@ -634,6 +689,17 @@ Item {
             }
         }
 
+        function launcherInCurrentActivity(url) {
+            var activities = tasksModel.launcherActivities(url);
+
+            var NULL_UUID = "00000000-0000-0000-0000-000000000000";
+
+            if (activities.indexOf(NULL_UUID) !== -1 || activities.indexOf(activityInfo.currentActivity) !== -1)
+                return true;
+
+            return false;
+        }
+
         onActivityChanged: {
             ActivitiesTools.currentActivity = String(activity);
         }
@@ -649,6 +715,15 @@ Item {
                         latteDock.dockManagedLayout.launchers = launcherList;
                     } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
                         latteDock.universalSettings.launchers = launcherList;
+                    }
+
+                    if (inDraggingPhase) {
+                        if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                            latteDock.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.managedLayoutName,
+                                                                                                     plasmoid.id,
+                                                                                                     latteDock.launchersGroup,
+                                                                                                     currentLauncherList());
+                        }
                     }
                 } else {
                     plasmoid.configuration.launchers59 = launcherList;
@@ -1259,6 +1334,120 @@ Item {
         }
     }
 
+    Timer{
+        id:launchersOrderValidatorTimer
+        interval: 200
+
+        property var launchers: []
+
+        function launchersAreInSync() {
+            return arraysAreEqual(currentListViewLauncherList(), launchers);
+        }
+
+        function launcherValidPos(url) {
+            for (var i=0; i<launchers.length; ++i) {
+                if (launchers[i] === url) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        function arraysAreEqual(list1, list2) {
+            if (list1.length !== list2.length) {
+                console.log("  arrays have different size...")
+                return false;
+            }
+
+            for (var i=0; i<list1.length; ++i) {
+                if (list1[i] !== list2[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //! true if upward is the best way to iterate through current
+        //! in order to make it equal with goal
+        function upwardIsBetter(current, goal)
+        {
+            var tCurrent = current.slice();
+
+            if (!arraysAreEqual(tCurrent, goal)) {
+                for (var i=0; i<tCurrent.length; ++i) {
+                    if (tCurrent[i] !== goal[i]) {
+                        var val = tCurrent[i];
+                        tCurrent.splice(i, 1);
+                        tCurrent.splice(goal.indexOf(val), 0, val);
+
+                        if (arraysAreEqual(tCurrent, goal)){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        onTriggered: {
+            if (launchersAreInSync()) {
+                stop();
+                console.log("launchers synced at:" + launchers);
+                launchers.length = 0;
+                parabolicManager.updateTasksEdgesIndexes();
+                root.separatorsUpdated();
+            } else {
+                var currentLaunchers = currentListViewLauncherList();
+
+                if (upwardIsBetter(currentLaunchers, launchers)) {
+                    console.log("UPWARD....");
+                    for (var i=0; i<currentLaunchers.length; ++i) {
+                        if (currentLaunchers[i] !== launchers[i]) {
+                            var p = launcherValidPos(currentLaunchers[i]);
+                            if (p === -1) {
+                                console.log("No pos found for :"+currentLaunchers[i] + " at: "+launchers);
+                                restart();
+                                return;
+                            }
+
+                            console.log(" moving:" +i + " _ " + p );
+                            tasksModel.move(i, p);
+                            restart();
+                            return;
+                        }
+                    }
+                } else {
+                    console.log("DOWNWARD....");
+                    for (var i=currentLaunchers.length-1; i>=0; --i) {
+                        if (currentLaunchers[i] !== launchers[i]) {
+                            var p = launcherValidPos(currentLaunchers[i]);
+                            if (p === -1) {
+                                console.log("No pos found for :"+currentLaunchers[i] + " at: "+launchers);
+                                restart();
+                                return;
+                            }
+
+                            console.log(" moving:" +i + " _ " + p );
+                            tasksModel.move(i, p);
+                            restart();
+                            return;
+                        }
+                    }
+                }
+
+                console.log("why we reached ??? ");
+                console.log("CURRENT ::: " + currentLaunchers);
+                console.log("VALID   ::: " + launchers);
+            }
+        }
+    }
+
     /////////
 
     //// functions
@@ -1547,9 +1736,18 @@ Item {
 
     function extSignalMoveTask(group, from, to) {
         if (group === latteDock.launchersGroup && !root.dragSource) {
-            tasksModel.move(from, to);
+            //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
+            /*  tasksModel.move(from, to);
             parabolicManager.updateTasksEdgesIndexes();
-            root.separatorsUpdated();
+            root.separatorsUpdated();*/
+        }
+    }
+
+    function extSignalValidateLaunchersOrder(group, launchers) {
+        if (group === latteDock.launchersGroup && !root.dragSource) {
+            launchersOrderValidatorTimer.stop();
+            launchersOrderValidatorTimer.launchers = launchers;
+            launchersOrderValidatorTimer.start();
         }
     }
 

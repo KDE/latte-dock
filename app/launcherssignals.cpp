@@ -272,4 +272,40 @@ void LaunchersSignals::moveTask(QString layoutName, int senderId, int launcherGr
     }
 }
 
+void LaunchersSignals::validateLaunchersOrder(QString layoutName, int senderId, int launcherGroup, QStringList launchers)
+{
+    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+
+    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+        return;
+    }
+
+    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+
+    foreach (auto applet, lattePlasmoids(lName)) {
+        if (applet->id() != senderId) {
+            if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
+                const auto &childItems = appletInterface->childItems();
+
+                if (childItems.isEmpty()) {
+                    continue;
+                }
+
+                for (QQuickItem *item : childItems) {
+                    if (auto *metaObject = item->metaObject()) {
+                        int methodIndex = metaObject->indexOfMethod("extSignalValidateLaunchersOrder(QVariant,QVariant)");
+
+                        if (methodIndex == -1) {
+                            continue;
+                        }
+
+                        QMetaMethod method = metaObject->method(methodIndex);
+                        method.invoke(item, Q_ARG(QVariant, launcherGroup), Q_ARG(QVariant, launchers));
+                    }
+                }
+            }
+        }
+    }
+}
+
 } //end of namespace

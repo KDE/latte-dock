@@ -158,11 +158,12 @@ Item {
 
                     var pos = root.dragSource.itemIndex;
                     tasksModel.move(pos, insertAt);
-                    if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                  //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
+                  /*  if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
                         latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
                                                                                    plasmoid.id,
                                                                                    latteDock.launchersGroup, pos, insertAt);
-                    }
+                    }*/
                     root.separatorsUpdated();
                     ignoreItemTimer.restart();
                 }

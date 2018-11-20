@@ -35,7 +35,7 @@ SequentialAnimation {
     //Animation Add/Remove (4) - the user removes a launcher, animation enabled
     property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) === -1)
                                  && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) === -1) )
-                                || !launcherIsPresent(mainItemContainer.launcherUrl))
+                                || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl))
                                && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
 
     property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
