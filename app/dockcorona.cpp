@@ -216,6 +216,15 @@ void DockCorona::load()
         }
 
         m_layoutManager->loadLayoutOnStartup(loadLayoutName);
+
+
+        //! load screens signals such screenGeometryChanged in order to support
+        //! plasmoid.screenGeometry properly
+        for (QScreen *screen : qGuiApp->screens()) {
+            addOutput(screen);
+        }
+
+        connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
     }
 }
 
@@ -598,6 +607,19 @@ void DockCorona::addOutput(QScreen *screen)
         int newId = m_screenPool->firstAvailableId();
         m_screenPool->insertScreenMapping(newId, screen->name());
     }
+
+    connect(screen, &QScreen::geometryChanged, this, [ = ]() {
+        const int id = m_screenPool->id(screen->name());
+
+        if (id >= 0) {
+            emit screenGeometryChanged(id);
+            emit availableScreenRegionChanged();
+            emit availableScreenRectChanged();
+        }
+    });
+
+    emit availableScreenRectChanged();
+    emit screenAdded(m_screenPool->id(screen->name()));
 }
 
 void DockCorona::primaryOutputChanged()
