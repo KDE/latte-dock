@@ -63,11 +63,27 @@ function restore() {
    // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
     //add the splitters in the correct position if they exist
     if(plasmoid.configuration.splitterPosition !== -1){
-        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition);
+        var missingApplets = 0;
+
+        for (var i=0; i<plasmoid.configuration.splitterPosition; ++i) {
+            if (appletsOrder[i] === undefined) {
+                missingApplets = missingApplets + 1;
+            }
+        }
+
+        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition-missingApplets);
     }
 
     if(plasmoid.configuration.splitterPosition2 !== -1){
-        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition2);
+        var missingApplets2 = 0;
+
+        for (var i=0; i<plasmoid.configuration.splitterPosition2; ++i) {
+            if (appletsOrder[i] === undefined) {
+                missingApplets2 = missingApplets2 + 1;
+            }
+        }
+
+        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition2-missingApplets2);
     }
 
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
