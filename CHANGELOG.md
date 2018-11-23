@@ -1,5 +1,22 @@
 #**CHANGELOG**#
 
+#### Version 0.8.3
+
+* FIX: support multi-screen plasmoids that use plasmoid.screenGeometry such
+as plasma pager, plasma taskmanagers etc. Latte did not update the
+plasmoid.screenGeometry value properly in previous versions
+* FIX: do not crash when moving launchers that are being synced between
+multiple docks/panels
+* FIX: make sure that launchers order between synced docks/panels is always
+the current one after the user has ended its dragging
+* FIX: support fillWidth/Height plasmoids better (such as plasma taskmanagers),
+now such applets can be added for all alignments including Left/Center/Right
+* FIX: do not show the warning message "Your layout file is broken" when the
+statement is not valid. This check validates that the containments and applets
+ids are unique in a layout file but the way this was implemented in the past it was
+returning false results in some cases
+
+
 #### Version 0.8.2
 
 * FIX: wrong placement of docks during startup for multi-screen environments
