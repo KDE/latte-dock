@@ -46,7 +46,7 @@ function computeStep1ForLayout(layout, availableSpace, sizePerApplet, noOfApplet
 
         if (curApplet.needsFillSpace && (maxSize <= sizePerApplet) && (maxSize>=0) && (maxSize !== Infinity)) {
             curApplet.sizeForFill = maxSize;
-            // console.log("s3_1  "+ maxSize);
+            // console.log("s3_1  "+ maxSize + " _ per applet:" + sizePerApplet);
             curApplet.inFillCalculations = false;
             availableSpace = Math.abs(availableSpace - maxSize);
             noOfApplets = noOfApplets - 1;
@@ -118,7 +118,6 @@ function updateSizeForAppletsInFill() {
             var availableSpace = Math.max(0, root.maxLength - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing);
             var sizePerApplet = availableSpace / noA;
 
-
             var res = initializationPhase(availableSpace, sizePerApplet, noA);
             availableSpace = res[0];  sizePerApplet = res[1]; noA = res[2];
 
@@ -137,8 +136,9 @@ function updateSizeForAppletsInFill() {
 
             //! compute the two free spaces around the centered layout
             //! they are called start and end accordingly
-            var availableSpaceStart = Math.max(0, root.maxLength/2 - startLayout.sizeWithNoFillApplets - root.panelEdgeSpacing/2);
-            var availableSpaceEnd = Math.max(0, root.maxLength/2 - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing/2);
+            var halfMainLayout = mainLayout.sizeWithNoFillApplets / 2;
+            var availableSpaceStart = Math.max(0, root.maxLength/2 - startLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
+            var availableSpaceEnd = Math.max(0, root.maxLength/2 - endLayout.sizeWithNoFillApplets - halfMainLayout - root.panelEdgeSpacing/2);
             var availableSpace = availableSpaceStart + availableSpaceEnd - mainLayout.sizeWithNoFillApplets;
 
             var sizePerAppletMain = mainLayout.fillApplets > 0 ? availableSpace / noA : 0 ;
@@ -182,10 +182,10 @@ function updateSizeForAppletsInFill() {
                 //var bSize = root.isHorizontal ? mainLayout.width : mainLayout.height;
                 sizePerAppletMain = (availableSpaceStart + availableSpaceEnd) / (noStart + noMain + noEnd);
                 computeStep2ForLayout(mainLayout, sizePerAppletMain);
-                var aSize = root.isHorizontal ? mainLayout.width : mainLayout.height;
+               //  var aSize = root.isHorizontal ? mainLayout.width : mainLayout.height;
 
-                availableSpaceStart = availableSpaceStart - aSize/2;
-                availableSpaceEnd = availableSpaceEnd - aSize/2;
+               // availableSpaceStart = availableSpaceStart - aSize/2;
+               // availableSpaceEnd = availableSpaceEnd - aSize/2;
 
                 sizePerAppletStart = startLayout.fillApplets > 0 ? availableSpaceStart / noStart : 0 ;
                 sizePerAppletEnd = endLayout.fillApplets > 0 ? availableSpaceEnd / noEnd : 0 ;
