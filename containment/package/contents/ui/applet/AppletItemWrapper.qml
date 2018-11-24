@@ -311,7 +311,7 @@ Item{
     }
 
     function updateLayoutWidth(){
-        if (needsFillSpace && root.isHorizontal) {
+        if (container.needsFillSpace && root.isHorizontal) {
             layoutsContainer.updateSizeForAppletsInFill();
             return;
         }
