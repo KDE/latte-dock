@@ -694,7 +694,7 @@ Item{
     //! HeuristicTools.updateSizeForAppletsInFill()
     Timer{
         id: updateSizeForAppletsInFillTimer
-        interval: 250
+        interval: 10
         onTriggered: HeuristicTools.updateSizeForAppletsInFill();
     }
 }
