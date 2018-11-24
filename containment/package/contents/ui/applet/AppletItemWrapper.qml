@@ -261,6 +261,10 @@ Item{
     }
 
     function updateLayoutHeight(){
+        if (container.needsFillSpace && root.isVertical) {
+            layoutsContainer.updateSizeForAppletsInFill();
+            return;
+        }
 
         if(container.isInternalViewSplitter){
             if(!root.editMode)
@@ -307,6 +311,10 @@ Item{
     }
 
     function updateLayoutWidth(){
+        if (needsFillSpace && root.isHorizontal) {
+            layoutsContainer.updateSizeForAppletsInFill();
+            return;
+        }
 
         if(container.isInternalViewSplitter){
             if(!root.editMode)

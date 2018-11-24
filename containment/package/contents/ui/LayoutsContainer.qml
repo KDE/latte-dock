@@ -131,7 +131,7 @@ Item{
                 slotAnimationsNeedLength(1);
             }
 
-            HeuristicTools.updateSizeForAppletsInFill();
+            layoutsContainer.updateSizeForAppletsInFill();
 
             delayUpdateMaskArea.start();
         }
@@ -156,7 +156,7 @@ Item{
                 slotAnimationsNeedLength(1);
             }
 
-            HeuristicTools.updateSizeForAppletsInFill();
+            layoutsContainer.updateSizeForAppletsInFill();
 
             delayUpdateMaskArea.start();
         }
@@ -230,9 +230,9 @@ Item{
             return no;
         }
 
-        onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+        onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
+        onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
+        onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
 
         states:[
             State {
@@ -357,9 +357,9 @@ Item{
             return no;
         }
 
-        onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+        onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
+        onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
+        onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
 
         transitions: Transition {
             enabled: editModeVisual.plasmaEditMode
@@ -623,9 +623,9 @@ Item{
             return no;
         }
 
-        onFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        onShownAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
-        onSizeWithNoFillAppletsChanged: HeuristicTools.updateSizeForAppletsInFill();
+        onFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
+        onShownAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
+        onSizeWithNoFillAppletsChanged: layoutsContainer.updateSizeForAppletsInFill();
 
         states:[
             State {
@@ -685,6 +685,16 @@ Item{
 
 
     function updateSizeForAppletsInFill() {
-        HeuristicTools.updateSizeForAppletsInFill();
+        if (!updateSizeForAppletsInFillTimer.running) {
+            updateSizeForAppletsInFillTimer.start();
+        }
+    }
+
+    //! This timer is needed in order to reduce the calls to heavy cpu function
+    //! HeuristicTools.updateSizeForAppletsInFill()
+    Timer{
+        id: updateSizeForAppletsInFillTimer
+        interval: 250
+        onTriggered: HeuristicTools.updateSizeForAppletsInFill();
     }
 }
