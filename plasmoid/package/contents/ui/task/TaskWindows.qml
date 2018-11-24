@@ -50,33 +50,17 @@ Item{
     Repeater{
         model:DelegateModel {
             id: windowsLocalModel
-            model: tasksModel //icList.model
-          /*  rootIndex: {
-                if (root.inDraggingPhase) {
-                    return tasksModel.makeModelIndex(lastValidIndex);
-                }
+            model: tasksModel
 
-                return tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
-            }*/
+            //! This is a little suspicious code for crashes
+            //! during dragging or when the dragging ends. It needs
+            //! investigation to be confirmed or not
+            rootIndex: tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
 
             property int currentIndex: -1
 
-            //! Trying to avoid a crash during dragging tasks/launchers
-            Binding{
-                target: windowsLocalModel
-                property: "rootIndex"
-
-                value: {
-                    if (root.inDraggingPhase) {
-                        return 0;
-                    }
-
-                    return tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
-                }
-            }
-
             delegate: Item{
-                readonly property string title: display
+                readonly property string title: display !== undefined ? display : ""
                 readonly property bool isMinimized: IsMinimized === true ? true : false
 
                 onIsMinimizedChanged: windowsContainer.initializeStates();
