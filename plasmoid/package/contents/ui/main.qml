@@ -1419,6 +1419,7 @@ Item {
                 launchers.length = 0;
                 parabolicManager.updateTasksEdgesIndexes();
                 root.separatorsUpdated();
+                tasksModel.syncLaunchers();
             } else {
                 var currentLaunchers = currentListViewLauncherList();
 
@@ -1710,6 +1711,7 @@ Item {
         if (group === latteDock.launchersGroup) {
             tasksModel.requestAddLauncher(launcher);
             launchersUpdatedFor(launcher);
+            tasksModel.syncLaunchers();
         }
     }
 
@@ -1718,6 +1720,7 @@ Item {
             root.launcherForRemoval = launcher;
             tasksModel.requestRemoveLauncher(launcher);
             launchersUpdatedFor(launcher);
+            tasksModel.syncLaunchers();
         }
     }
 
@@ -1731,6 +1734,7 @@ Item {
 
             tasksModel.requestAddLauncherToActivity(launcher, activity);
             launchersUpdatedFor(launcher);
+            tasksModel.syncLaunchers();
         }
     }
 
@@ -1742,6 +1746,7 @@ Item {
 
             tasksModel.requestRemoveLauncherFromActivity(launcher, activity);
             launchersUpdatedFor(launcher);
+            tasksModel.syncLaunchers();
         }
     }
 
@@ -1753,10 +1758,10 @@ Item {
 
     function extSignalMoveTask(group, from, to) {
         if (group === latteDock.launchersGroup && !root.dragSource) {
-            //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
-            /*  tasksModel.move(from, to);
+            tasksModel.move(from, to);
             parabolicManager.updateTasksEdgesIndexes();
-            root.separatorsUpdated();*/
+            root.separatorsUpdated();
+            tasksModel.syncLaunchers();
         }
     }
 
@@ -1880,6 +1885,7 @@ Item {
 
         tasksModel.requestAddLauncher(url);
         launchersUpdatedFor(url);
+        tasksModel.syncLaunchers();
     }
 
     function resetDragSource() {
