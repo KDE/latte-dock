@@ -27,7 +27,17 @@ import QtQml.Models 2.2
 
 Item{
     id: windowsContainer
-    property int windowsCount: 0
+    property int windowsCount: {
+        if (isLauncher) {
+            return 0;
+        }
+
+        if (isGroupParent) {
+            return windowsRepeater.count;
+        }
+
+        return 1;
+    }
 
     property bool isLauncher: IsLauncher ? true : false
     property bool isStartup: IsStartup ? true : false
@@ -35,44 +45,67 @@ Item{
 
     property int lastActiveWinInGroup: -1
 
-    onIsLauncherChanged: updateCounter();
-    //  onIsStartupChanged: updateCounter();
-    //    onIsWindowChanged: updateCounter();
-
     //states that exist in windows in a Group of windows
     property bool hasMinimized: false;
     property bool hasShown: false;
     property bool hasActive: false;
 
-    //FIXME: For some reason the index is not updated correctly in some cases (e.g. window dragging, repositioning launchers)
-    // and this way much beautiful information are lost, an activity change back and return,
-    // it fixes this sometimes...
     Repeater{
+        id: windowsRepeater
         model:DelegateModel {
             id: windowsLocalModel
             model: tasksModel
 
-            //! This is a little suspicious code for crashes
-            //! during dragging or when the dragging ends. It needs
-            //! investigation to be confirmed or not
-            rootIndex: tasksModel.makeModelIndex(currentIndex >=0 ? currentIndex : index)
-
-            property int currentIndex: -1
-
             delegate: Item{
                 readonly property string title: display !== undefined ? display : ""
                 readonly property bool isMinimized: IsMinimized === true ? true : false
+                readonly property bool isActive: IsActive === true ? true : false
 
-                onIsMinimizedChanged: windowsContainer.initializeStates();
+                onIsMinimizedChanged: windowsContainer.updateStates();
+                onIsActiveChanged:  {
+                    if (isActive) {
+                        windowsContainer.lastActiveWinInGroup = (LegacyWinIdList!==undefined ? LegacyWinIdList[0] : 0);
+                    }
+                    windowsContainer.updateStates();
+                }
+            }
+
+            Component.onCompleted: {
+                rootIndex = mainItemContainer.modelIndex();
             }
         }
+    }
 
-        onCountChanged:{
-            windowsContainer.updateCounter();
+    Connections{
+        target: mainItemContainer
+        onItemIndexChanged: windowsContainer.updateStates();
+    }
+
+    Connections{
+        target: root
+        onInDraggingPhaseChanged: windowsContainer.updateStates();
+    }
+
+    //! try to give the time to the model to update its states in order to
+    //! avoid any suspicious crashes during dragging grouped tasks that
+    //! are synced between multiple panels/docks. At the same time in updateStates()
+    //! function we block any DelegateModel updates when the user is dragging
+    //! a task because this could create crashes
+    Timer{
+        id: initializeStatesTimer
+        interval: 200
+        onTriggered: windowsContainer.initializeStates();
+    }
+
+    function updateStates() {
+        if (!root.inDraggingPhase) {
+            initializeStatesTimer.start();
         }
     }
 
     function initializeStates(){
+        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+
         hasMinimized = false;
         hasShown = false;
         hasActive = false;
@@ -93,7 +126,6 @@ Item{
     }
 
     function checkInternalStates(){
-        windowsLocalModel.currentIndex = index;
         var childs = windowsLocalModel.items;
 
         for(var i=0; i<childs.count; ++i){
@@ -110,21 +142,13 @@ Item{
     }
 
     function windowsTitles() {
+        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
         var result = new Array;
-
-        windowsLocalModel.currentIndex = index;
         var childs = windowsLocalModel.items;
 
         for(var i=0; i<childs.count; ++i){
             var kid = childs.get(i);
             var title = kid.model.display
-
-            //console.log(title);
-            // FIXME: we may need a way to remove the app name from the end
-            /*   var lst = title.lastIndexOf(" - ");
-            if (lst > 0) {
-                 title = title.substring(0, lst);
-             }*/
 
             result.push(title);
         }
@@ -135,13 +159,13 @@ Item{
     //! function which is used to cycle activation into
     //! a group of windows
     function activateNextTask() {
+        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+
         if (!mainItemContainer.isGroupParent) {
             return;
         }
 
-        windowsLocalModel.currentIndex = index;
         var childs = windowsLocalModel.items;
-
         var nextAvailableWindow = -1;
 
         for(var i=0; i<childs.count; ++i){
@@ -178,11 +202,12 @@ Item{
     //! function which is used to cycle activation into
     //! a group of windows backwise
     function activatePreviousTask() {
+        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+
         if (!mainItemContainer.isGroupParent) {
             return;
         }
 
-        windowsLocalModel.currentIndex = index;
         var childs = windowsLocalModel.items;
 
         //indicates than nothing was found
@@ -218,69 +243,11 @@ Item{
         tasksModel.requestActivate(tasksModel.makeModelIndex(index,prevAvailableWindow));
     }
 
-
-
-    // keep a record of the last active window in a group
-    Connections{
-        target:tasksModel
-        onActiveTaskChanged:{
-            if (!mainItemContainer.isGroupParent) {
-                return;
-            }
-
-            windowsLocalModel.currentIndex = index;
-            var childs = windowsLocalModel.items;
-
-            for(var i=0; i<childs.count; ++i){
-                var kid = childs.get(i);
-                if (kid.model.IsActive === true) {
-                    windowsContainer.lastActiveWinInGroup = kid.model.LegacyWinIdList ? kid.model.LegacyWinIdList[0] : 0;
-                    break;
-                }
-            }
-        }
-    }
-
     Component.onCompleted: {
         mainItemContainer.checkWindowsStates.connect(initializeStates);
-        updateCounter();
     }
 
     Component.onDestruction: {
         mainItemContainer.checkWindowsStates.disconnect(initializeStates);
     }
-
-    function updateCounter(){
-        //    console.log("--------- "+ index+" -------");
-        if(index>=0){
-            if(IsGroupParent){
-                windowsLocalModel.currentIndex = index;
-                var tempC = windowsLocalModel.count;
-
-                if (tempC == 0){
-                    if(isLauncher){
-                        windowsCount = 0;
-                    }
-                    else if(isWindow || isStartup){
-                        windowsCount = 1;
-                    }
-                }
-                else{
-                    windowsCount = tempC;
-                }
-            }
-            else{
-                if(isLauncher){
-                    windowsCount = 0;
-                }
-                else if(isWindow || isStartup){
-                    windowsCount = 1;
-                }
-            }
-
-            initializeStates();
-        }
-
-    }
-
 }
