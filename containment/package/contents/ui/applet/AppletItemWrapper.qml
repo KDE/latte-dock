@@ -28,6 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.1 as Latte
 
+import "../../code/MathTools.js" as MathTools
 
 Item{
     id: wrapper
@@ -44,15 +45,17 @@ Item{
         }
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (container.needsFillSpace) {
-            if (root.panelAlignment !== Latte.Dock.Justify && root.isHorizontal) {
-                var constrainedWidth = container.sizeForFill>-1 ? Math.min(container.sizeForFill, applet.Layout.preferredWidth) :
-                                                                  applet.Layout.preferredWidth;
+        if (container.needsFillSpace && root.isHorizontal) {
+            if (root.panelAlignment !== Latte.Dock.Justify) {
+                var maximumValue = (applet.Layout.maximumWidth === Infinity) || applet.Layout.maximumWidth === -1 ?
+                            container.sizeForFill : Math.min(container.sizeForFill, applet.Layout.maximumWidth);
+
+                var constrainedWidth = MathTools.bound(applet.Layout.minimumWidth, applet.Layout.preferredWidth, maximumValue);
 
                 return root.editMode ? Math.max(constrainedWidth, root.iconSize) : constrainedWidth;
             }
 
-            if((container.sizeForFill>-1) && root.isHorizontal){
+            if(container.sizeForFill>-1){
                 return container.sizeForFill;
             }
         }
@@ -81,16 +84,18 @@ Item{
                 return root.iconSize;
         }
 
-        if (container.needsFillSpace) {
-            //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-            if (root.panelAlignment !== Latte.Dock.Justify && root.isVertical) {
-                var constrainedHeight = container.sizeForFill>-1 ? Math.min(container.sizeForFill, applet.Layout.preferredHeight) :
-                                                                   applet.Layout.preferredHeight;
+        //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
+        if (container.needsFillSpace && root.isVertical) {
+            if (root.panelAlignment !== Latte.Dock.Justify) {
+                var maximumValue = (applet.Layout.maximumHeight === Infinity) || applet.Layout.maximumHeight === -1 ?
+                            container.sizeForFill : Math.min(container.sizeForFill, applet.Layout.maximumHeight);
+
+                var constrainedHeight = MathTools.bound(applet.Layout.minimumHeight, applet.Layout.preferredHeight, maximumValue);
 
                 return root.editMode ? Math.max(constrainedHeight, root.iconSize) : constrainedHeight;
             }
 
-            if ((container.sizeForFill>-1) && root.isVertical){
+            if (container.sizeForFill>-1){
                 return container.sizeForFill;
             }
         }
