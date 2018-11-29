@@ -534,12 +534,12 @@ DragDrop.DropArea {
             dock.onWidthChanged.connect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.connect(visibilityManager.updateMaskArea);
 
-            dock.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
 
 
             dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
@@ -738,12 +738,12 @@ DragDrop.DropArea {
             dock.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
             dock.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
 
-            dock.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.positioner.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            dock.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            dock.positioner.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
 
             if (dock.visibility) {
                 dock.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);

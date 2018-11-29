@@ -22,6 +22,7 @@
 #include "visibilitymanager_p.h"
 
 #include "dockview.h"
+#include "positioner.h"
 #include "screenedgeghostwindow.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
@@ -140,7 +141,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             });
             connections[1] = connect(dockView, &DockView::inEditModeChanged
             , this, [&]() {
-                if (!dockView->inEditMode() && !dockView->inLocationChangeAnimation() && view->screen())
+                if (!dockView->inEditMode() && !dockView->positioner()->inLocationChangeAnimation() && view->screen())
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
 
@@ -246,7 +247,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
 {
     bool multipleLayoutsAndCurrent = (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                      && dockView->managedLayout() && !dockView->inLocationChangeAnimation()
+                                      && dockView->managedLayout() && !dockView->positioner()->inLocationChangeAnimation()
                                       && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName());
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
@@ -289,7 +290,7 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     if (q->supportsKWinEdges()) {
         bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
                                 (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                 && dockView->managedLayout() && !dockView->inLocationChangeAnimation()
+                                 && dockView->managedLayout() && !dockView->positioner()->inLocationChangeAnimation()
                                  && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
@@ -1017,7 +1018,7 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
         this, [&]() {
             bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
                                     (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                     && dockView->managedLayout() && !dockView->inLocationChangeAnimation()
+                                     && dockView->managedLayout() && !dockView->positioner()->inLocationChangeAnimation()
                                      && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
 
             if (edgeGhostWindow) {

@@ -542,7 +542,7 @@ FocusScope {
                         if (index==0) {
                             dock.copyDock();
                         } else if (index>=2) {
-                            dock.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
+                            dock.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
                         }
 
                         actionsCmb.currentIndex = -1;

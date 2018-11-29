@@ -55,6 +55,7 @@ class PlasmaShellSurface;
 namespace Latte {
 class DockMenuManager;
 class Layout;
+class Positioner;
 }
 
 namespace Latte {
@@ -97,8 +98,9 @@ class DockView : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
-    Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
+    Q_PROPERTY(Positioner *positioner READ positioner NOTIFY positionerChanged)
+    Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
     Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
@@ -113,13 +115,10 @@ public:
 
     void init();
 
-    void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
-
-    void resizeWindow(QRect availableScreenRect = QRect());
-    void syncGeometry();
-
     bool alternativesIsShown() const;
     void setAlternativesIsShown(bool show);
+
+    bool inDelete() const;
 
     bool onPrimary() const;
     void setOnPrimary(bool flag);
@@ -190,8 +189,6 @@ public:
     QRect absGeometry() const;
     QRect screenGeometry() const;
 
-    bool inLocationChangeAnimation();
-
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QString currentScreen() const;
@@ -202,6 +199,9 @@ public:
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
+    void setForceDrawCenteredBorders(bool draw);
+
+    Positioner *positioner() const;
     VisibilityManager *visibility() const;
 
     Layout *managedLayout() const;
@@ -209,10 +209,12 @@ public:
 
     KWayland::Client::PlasmaShellSurface *surface();
 
-    QQmlListProperty<QScreen> screens();
-    static int countScreens(QQmlListProperty<QScreen> *property);
-    static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
     void reconsiderScreen();
+    QQmlListProperty<QScreen> screens();
+    //! is needed by screens()
+    static int countScreens(QQmlListProperty<QScreen> *property);
+    //! is needed by screens()
+    static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
 
     //! these are signals that create crashes, such a example is the availableScreenRectChanged from corona
     //! when its containment is destroyed
@@ -233,13 +235,9 @@ public slots:
     Q_INVOKABLE void toggleAppletExpanded(const int id);
     Q_INVOKABLE void updateEnabledBorders();
 
-    Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);
-    Q_INVOKABLE void hideDockDuringMovingToLayout(QString layoutName);
-
     Q_INVOKABLE int docksWithTasks();
 
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
-    Q_INVOKABLE bool setCurrentScreen(const QString id);
     Q_INVOKABLE bool tasksPresent();
     Q_INVOKABLE bool latteTasksPresent();
 
@@ -259,19 +257,6 @@ signals:
     void addInternalViewSplitter();
     void removeInternalViewSplitter();
     void eventTriggered(QEvent *ev);
-
-    //! these two signals are used from config ui and containment ui
-    //! in order to orchestrate an animated hiding/showing of dock
-    //! during changing location
-    void hideDockDuringLocationChangeStarted();
-    void hideDockDuringLocationChangeFinished();
-    void hideDockDuringScreenChangeStarted();
-    void hideDockDuringScreenChangeFinished();
-    void hideDockDuringMovingToLayoutStarted();
-    void hideDockDuringMovingToLayoutFinished();
-    void showDockAfterLocationChangeFinished();
-    void showDockAfterScreenChangeFinished();
-    void showDockAfterMovingToLayoutFinished();
 
     void activitiesChanged();
     void alternativesIsShownChanged();
@@ -303,6 +288,7 @@ signals:
     void onPrimaryChanged();
     void visibilityChanged();
     void maskAreaChanged();
+    void positionerChanged();
     void screenGeometryChanged();
     void shadowChanged();
     void themeChanged();
@@ -315,12 +301,9 @@ signals:
 
 private slots:
     void availableScreenRectChanged();
-    void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(DockView *view);
     void statusChanged(Plasma::Types::ItemStatus);
-    void screenChanged(QScreen *screen);
     void updateEffects();
-    void validateDockGeometry();
 
     void restoreConfig();
     void saveConfig();
@@ -329,11 +312,8 @@ private:
     void applyActivitiesToWindows();
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
-    void updatePosition(QRect availableScreenRect = QRect());
     void updateFormFactor();
     void updateAppletContainsMethod();
-
-    QRect maximumNormalGeometry();
 
 private:
     Plasma::Containment *containmentById(uint id);
@@ -364,28 +344,16 @@ private:
     QRect m_localGeometry;
     QRect m_absGeometry;
     QRect m_maskArea;
-    //! it is used in order to enforce X11 to never miss window geometry
-    QRect m_validGeometry;
 
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
     QPointer<VisibilityManager> m_visibility;
     QPointer<DockMenuManager> m_menuManager;
-    QPointer<QScreen> m_screenToFollow;
-
-    QString m_screenToFollowId;
-
-    QTimer m_screenSyncTimer;
-    QTimer m_validateGeometryTimer;
+    QPointer<Positioner> m_positioner;
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 5> connectionsManagedLayout;
-
-    //!used at sliding out/in animation
-    QString m_moveToLayout;
-    Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
-    QScreen *m_goToScreen{nullptr};
 
     Plasma::Theme m_theme;
     //only for the mask on disabled compositing, not to actually paint
@@ -394,6 +362,8 @@ private:
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+
+    friend class Positioner;
 };
 
 }

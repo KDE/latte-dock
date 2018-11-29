@@ -25,6 +25,7 @@ set(lattedock-app_SRCS
     dock/docksecconfigview.cpp
     dock/dockview.cpp
     dock/panelshadows.cpp
+    dock/positioner.cpp
     dock/screenedgeghostwindow.cpp
     dock/visibilitymanager.cpp
     layoutsDelegates/activitycmbboxdelegate.cpp

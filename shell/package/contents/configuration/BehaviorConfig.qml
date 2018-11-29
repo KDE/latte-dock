@@ -154,7 +154,7 @@ PlasmaComponents.Page {
                     onActivated: {
                         previousIndex = currentIndex;
                         if (index === 0) {
-                            var succeed = dock.setCurrentScreen("primary");
+                            var succeed = dock.positioner.setCurrentScreen("primary");
 
                             dock.onPrimary = true;
                             acceptedIndex = true;
@@ -162,7 +162,7 @@ PlasmaComponents.Page {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
 
-                            var succeed = dock.setCurrentScreen(textAt(index));
+                            var succeed = dock.positioner.setCurrentScreen(textAt(index));
 
                             if(succeed) {
                                 dock.onPrimary = false;
@@ -195,7 +195,7 @@ PlasmaComponents.Page {
 
                     onCurrentChanged: {
                         if (current.checked && !inStartup) {
-                            dock.hideDockDuringLocationChange(current.edge);
+                            dock.positioner.hideDockDuringLocationChange(current.edge);
                         }
                         inStartup = false;
                     }

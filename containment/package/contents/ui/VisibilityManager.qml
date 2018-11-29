@@ -247,7 +247,7 @@ Item{
 
     function sendHideDockDuringLocationChangeFinished(){
         blockUpdateMask = false;
-        dock.hideDockDuringLocationChangeFinished();
+        dock.positioner.hideDockDuringLocationChangeFinished();
     }
 
     ///test maskArea

@@ -24,6 +24,7 @@
 #include "dockmenumanager.h"
 
 #include "panelshadows_p.h"
+#include "positioner.h"
 #include "visibilitymanager.h"
 #include "../dockcorona.h"
 #include "../layout.h"
@@ -65,7 +66,8 @@ namespace Latte {
 //! are needed in order for window flags to be set correctly
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
-      m_menuManager(new DockMenuManager(this))
+      m_menuManager(new DockMenuManager(this)),
+      m_positioner(new Positioner(this))
 {
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -87,9 +89,9 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     KWindowSystem::setOnAllDesktops(winId(), true);
 
     if (targetScreen)
-        setScreenToFollow(targetScreen);
+        m_positioner->setScreenToFollow(targetScreen);
     else
-        setScreenToFollow(qGuiApp->primaryScreen());
+        m_positioner->setScreenToFollow(qGuiApp->primaryScreen());
 
     connect(this, &DockView::containmentChanged
     , this, [ &, dockWindowBehavior]() {
@@ -122,36 +124,12 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
-    m_screenSyncTimer.setSingleShot(true);
-    m_screenSyncTimer.setInterval(2000);
-    connect(&m_screenSyncTimer, &QTimer::timeout, this, &DockView::reconsiderScreen);
-
-    //! under X11 it was identified that windows many times especially under screen changes
-    //! don't end up at the correct position and size. This timer will enforce repositionings
-    //! and resizes every 500ms if the window hasn't end up to correct values and until this
-    //! is achieved
-    m_validateGeometryTimer.setSingleShot(true);
-    m_validateGeometryTimer.setInterval(500);
-    connect(&m_validateGeometryTimer, &QTimer::timeout, this, &DockView::syncGeometry);
-
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona) {
-        m_screenSyncTimer.setInterval(qMax(dockCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
-        connect(dockCorona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [this, dockCorona]() {
-            m_screenSyncTimer.setInterval(qMax(dockCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
-        });
-
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
         connect(this, &DockView::docksCountChanged, this, &DockView::totalDocksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
-        connect(dockCorona, &DockCorona::dockLocationChanged, this, [&]() {
-            //! check if an edge has been freed for a primary dock
-            //! from another screen
-            if (m_onPrimary) {
-                m_screenSyncTimer.start();
-            }
-        });
     }
 }
 
@@ -161,8 +139,6 @@ DockView::~DockView()
 
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
     disconnect(containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), this, SLOT(statusChanged(Plasma::Types::ItemStatus)));
-
-    m_screenSyncTimer.stop();
 
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
@@ -184,51 +160,42 @@ DockView::~DockView()
 
     if (m_visibility)
         delete m_visibility;
+
+    if (m_positioner) {
+        delete m_positioner;
+    }
 }
 
 void DockView::init()
 {
-    connect(this, &QQuickWindow::screenChanged, this, &DockView::screenChanged);
     connect(this, &QQuickWindow::screenChanged, this, &DockView::docksCountChanged);
-    connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockView::screenChanged);
-    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockView::screenChanged);
-    connect(this, &DockView::screenGeometryChanged, this, &DockView::syncGeometry);
 
     connect(this, &QQuickWindow::xChanged, this, &DockView::xChanged);
-    connect(this, &QQuickWindow::xChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::xChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::yChanged, this, &DockView::yChanged);
-    connect(this, &QQuickWindow::yChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::yChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::widthChanged);
-    connect(this, &QQuickWindow::widthChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::widthChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::heightChanged);
-    connect(this, &QQuickWindow::heightChanged, this, &DockView::validateDockGeometry);
     connect(this, &QQuickWindow::heightChanged, this, &DockView::updateAbsDockGeometry);
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
 
-    connect(this, &DockView::behaveAsPlasmaPanelChanged, this, &DockView::syncGeometry);
+    connect(m_positioner, &Positioner::currentScreenChanged, this, &DockView::currentScreenChanged);
+    connect(m_positioner, &Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
+
     connect(this, &DockView::drawShadowsChanged, this, [&]() {
-        if (!m_behaveAsPlasmaPanel) {
-            syncGeometry();
-        } else {
+        if (m_behaveAsPlasmaPanel) {
             updateEnabledBorders();
         }
     });
-    connect(this, &DockView::maxLengthChanged, this, &DockView::syncGeometry);
-    connect(this, &DockView::offsetChanged, this, &DockView::syncGeometry);
+
     connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
 
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::isPreferredForShortcutsChanged, this, &DockView::saveConfig);
 
-    connect(this, &DockView::locationChanged, this, [&]() {
-        updateFormFactor();
-        syncGeometry();
-    });
     connect(this, &DockView::dockTransparencyChanged, this, &DockView::updateEffects);
     connect(this, &DockView::drawEffectsChanged, this, &DockView::updateEffects);
     connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
@@ -236,18 +203,10 @@ void DockView::init()
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeHasShadowChanged);
 
-    connect(this, &DockView::normalThicknessChanged, this, [&]() {
-        if (m_behaveAsPlasmaPanel) {
-            syncGeometry();
-        }
-    });
-
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
     connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
 
     connect(m_menuManager, &DockMenuManager::contextMenuChanged, this, &DockView::contextMenuIsShownChanged);
-
-    initSignalingForLocationChangeSliding();
 
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
@@ -262,7 +221,7 @@ void DockView::init()
 
     setSource(corona()->kPackage().filePath("lattedockui"));
     // setVisible(true);
-    syncGeometry();
+    m_positioner->syncGeometry();
 
     if (!KWindowSystem::isPlatformWayland()) {
         setVisible(true);
@@ -271,91 +230,9 @@ void DockView::init()
     qDebug() << "SOURCE:" << source();
 }
 
-void DockView::hideWindowsForSlidingOut()
+bool DockView::inDelete() const
 {
-    setBlockHiding(false);
-
-    if (m_configView) {
-        auto configDialog = qobject_cast<DockConfigView *>(m_configView);
-
-        if (configDialog) {
-            configDialog->hideConfigWindow();
-        }
-    }
-}
-
-void DockView::initSignalingForLocationChangeSliding()
-{
-    //! signals to handle the sliding-in/out during location changes
-    connect(this, &DockView::hideDockDuringLocationChangeStarted, this, [&]() {
-        hideWindowsForSlidingOut();
-    });
-
-    connect(this, &DockView::locationChanged, this, [&]() {
-        if (m_goToLocation != Plasma::Types::Floating) {
-            m_goToLocation = Plasma::Types::Floating;
-            QTimer::singleShot(100, [this]() {
-                setBlockAnimations(false);
-                emit showDockAfterLocationChangeFinished();
-                showSettingsWindow();
-
-                if (m_managedLayout) {
-                    m_managedLayout->syncDockViewsToScreens();
-                }
-            });
-        }
-    });
-
-    //! signals to handle the sliding-in/out during screen changes
-    connect(this, &DockView::hideDockDuringScreenChangeStarted, this, [&]() {
-        hideWindowsForSlidingOut();
-    });
-
-    connect(this, &DockView::currentScreenChanged, this, [&]() {
-        if (m_goToScreen) {
-            m_goToScreen = nullptr;
-            QTimer::singleShot(100, [this]() {
-                setBlockAnimations(false);
-                emit showDockAfterScreenChangeFinished();
-                showSettingsWindow();
-
-                if (m_managedLayout) {
-                    m_managedLayout->syncDockViewsToScreens();
-                }
-            });
-        }
-    });
-
-    //! signals to handle the sliding-in/out during moving to another layout
-    connect(this, &DockView::hideDockDuringMovingToLayoutStarted, this, [&]() {
-        hideWindowsForSlidingOut();
-    });
-
-    connect(this, &DockView::managedLayoutChanged, this, [&]() {
-        if (!m_moveToLayout.isEmpty() && m_managedLayout) {
-            m_moveToLayout = "";
-            QTimer::singleShot(100, [this]() {
-                setBlockAnimations(false);
-                emit showDockAfterMovingToLayoutFinished();
-                showSettingsWindow();
-            });
-        }
-    });
-
-    //!    ----  both cases   ----  !//
-    //! this is used for both location and screen change cases, this signal
-    //! is send when the sliding-out animation has finished
-    connect(this, &DockView::hideDockDuringLocationChangeFinished, this, [&]() {
-        setBlockAnimations(true);
-
-        if (m_goToLocation != Plasma::Types::Floating) {
-            setLocation(m_goToLocation);
-        } else if (m_goToScreen) {
-            setScreenToFollow(m_goToScreen);
-        } else if (!m_moveToLayout.isEmpty()) {
-            moveToLayout(m_moveToLayout);
-        }
-    });
+    return m_inDelete;
 }
 
 void DockView::disconnectSensitiveSignals()
@@ -373,8 +250,9 @@ void DockView::availableScreenRectChanged()
     if (m_inDelete)
         return;
 
-    if (formFactor() == Plasma::Types::Vertical)
-        syncGeometry();
+    if (formFactor() == Plasma::Types::Vertical) {
+        m_positioner->syncGeometry();
+    }
 }
 
 void DockView::setupWaylandIntegration()
@@ -408,157 +286,11 @@ KWayland::Client::PlasmaShellSurface *DockView::surface()
     return m_shellSurface;
 }
 
-bool DockView::setCurrentScreen(const QString id)
-{
-    QScreen *nextScreen{qGuiApp->primaryScreen()};
-
-    if (id != "primary") {
-        foreach (auto scr, qGuiApp->screens()) {
-            if (scr && scr->name() == id) {
-                nextScreen = scr;
-                break;
-            }
-        }
-    }
-
-    if (m_screenToFollow == nextScreen) {
-        return true;
-    }
-
-    if (nextScreen) {
-        if (m_managedLayout) {
-            auto freeEdges = m_managedLayout->freeEdges(nextScreen);
-
-            if (!freeEdges.contains(location())) {
-                return false;
-            } else {
-                m_goToScreen = nextScreen;
-
-                //! asynchronous call in order to not crash from configwindow
-                //! deletion from sliding out animation
-                QTimer::singleShot(100, [this]() {
-                    emit hideDockDuringScreenChangeStarted();
-                });
-            }
-        }
-    }
-
-    return true;
-}
-
-//! this function updates the dock's associated screen.
-//! updateScreenId = true, update also the m_screenToFollowId
-//! updateScreenId = false, do not update the m_screenToFollowId
-//! that way an explicit dock can be shown in another screen when
-//! there isnt a tasks dock running in the system and for that
-//! dock its first origin screen is stored and that way when
-//! that screen is reconnected the dock will return to its original
-//! place
-void DockView::setScreenToFollow(QScreen *scr, bool updateScreenId)
-{
-    if (!scr || (scr && (m_screenToFollow == scr) && (screen() == scr))) {
-        return;
-    }
-
-    qDebug() << "setScreenToFollow() called for screen:" << scr->name() << " update:" << updateScreenId;
-
-    m_screenToFollow = scr;
-
-    if (updateScreenId) {
-        m_screenToFollowId = scr->name();
-    }
-
-    qDebug() << "adapting to screen...";
-    setScreen(scr);
-
-    if (this->containment())
-        this->containment()->reactToScreenChange();
-
-    connect(scr, &QScreen::geometryChanged, this, &DockView::screenGeometryChanged);
-    syncGeometry();
-    updateAbsDockGeometry(true);
-    qDebug() << "setScreenToFollow() ended...";
-
-    emit screenGeometryChanged();
-    emit currentScreenChanged();
-}
-
 //! the main function which decides if this dock is at the
 //! correct screen
 void DockView::reconsiderScreen()
 {
-    if (m_inDelete) {
-        return;
-    }
-
-    qDebug() << "reconsiderScreen() called...";
-    qDebug() << "  Delayer  ";
-
-    foreach (auto scr, qGuiApp->screens()) {
-        qDebug() << "      D, found screen: " << scr->name();
-    }
-
-    bool screenExists{false};
-
-    //!check if the associated screen is running
-    foreach (auto scr, qGuiApp->screens()) {
-        if (m_screenToFollowId == scr->name()
-            || (onPrimary() && scr == qGuiApp->primaryScreen())) {
-            screenExists = true;
-        }
-    }
-
-    qDebug() << "dock screen exists  ::: " << screenExists;
-
-    //! 1.a primary dock must be always on the primary screen
-    if (m_onPrimary && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
-                        || m_screenToFollow != qGuiApp->primaryScreen()
-                        || screen() != qGuiApp->primaryScreen())) {
-        using Plasma::Types;
-        QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,
-                                     Types::TopEdge, Types::RightEdge};
-
-        edges = m_managedLayout ? m_managedLayout->availableEdgesForView(qGuiApp->primaryScreen(), this) : edges;
-
-        //change to primary screen only if the specific edge is free
-        qDebug() << "updating the primary screen for dock...";
-        qDebug() << "available primary screen edges:" << edges;
-        qDebug() << "dock location:" << location();
-
-        if (edges.contains(location())) {
-            //! case 1
-            qDebug() << "reached case 1: of updating dock primary screen...";
-            setScreenToFollow(qGuiApp->primaryScreen());
-        }
-    } else if (!m_onPrimary) {
-        //! 2.an explicit dock must be always on the correct associated screen
-        //! there are cases that window manager misplaces the dock, this function
-        //! ensures that this dock will return at its correct screen
-        foreach (auto scr, qGuiApp->screens()) {
-            if (scr && scr->name() == m_screenToFollowId) {
-                qDebug() << "reached case 2: updating the explicit screen for dock...";
-                setScreenToFollow(scr);
-                break;
-            }
-        }
-    }
-
-    syncGeometry();
-    qDebug() << "reconsiderScreen() ended...";
-
-    emit docksCountChanged();
-}
-
-void DockView::screenChanged(QScreen *scr)
-{
-    m_screenSyncTimer.start();
-
-    //! this is needed in order to update the struts on screen change
-    //! and even though the geometry has been set correctly the offsets
-    //! of the screen must be updated to the new ones
-    if (m_visibility && m_visibility->mode() == Latte::Dock::AlwaysVisible) {
-        updateAbsDockGeometry(true);
-    }
+    m_positioner->reconsiderScreen();
 }
 
 void DockView::addNewDock()
@@ -605,7 +337,7 @@ QScreen *DockView::atScreens(QQmlListProperty<QScreen> *property, int index)
 
 QString DockView::currentScreen() const
 {
-    return m_screenToFollowId;
+    return m_positioner->currentScreenName();
 }
 
 bool DockView::settingsWindowIsShown()
@@ -679,114 +411,6 @@ void DockView::showConfigurationInterface(Plasma::Applet *applet)
     }
 }
 
-//! this is used mainly from vertical panels in order to
-//! to get the maximum geometry that can be used from the dock
-//! based on their alignment type and the location dock
-QRect DockView::maximumNormalGeometry()
-{
-    int xPos = 0;
-    int yPos = 0;
-    int maxHeight = maxLength() * screen()->geometry().height();
-    int maxWidth = normalThickness();
-    QRect maxGeometry;
-    maxGeometry.setRect(0, 0, maxWidth, maxHeight);
-
-    switch (location()) {
-        case Plasma::Types::LeftEdge:
-            xPos = screen()->geometry().x();
-
-            switch (alignment()) {
-                case Latte::Dock::Top:
-                    yPos = screen()->geometry().y();
-                    break;
-
-                case Latte::Dock::Center:
-                case Latte::Dock::Justify:
-                    yPos = qMax(screen()->geometry().center().y() - maxHeight / 2, screen()->geometry().y());
-                    break;
-
-                case Latte::Dock::Bottom:
-                    yPos = screen()->geometry().bottom() - maxHeight + 1;
-                    break;
-            }
-
-            maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
-            break;
-
-        case Plasma::Types::RightEdge:
-            xPos = screen()->geometry().right() - maxWidth + 1;
-
-            switch (alignment()) {
-                case Latte::Dock::Top:
-                    yPos = screen()->geometry().y();
-                    break;
-
-                case Latte::Dock::Center:
-                case Latte::Dock::Justify:
-                    yPos = qMax(screen()->geometry().center().y() - maxHeight / 2, screen()->geometry().y());
-                    break;
-
-                case Latte::Dock::Bottom:
-                    yPos = screen()->geometry().bottom() - maxHeight + 1;
-                    break;
-            }
-
-            maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
-            break;
-
-        default:
-            //! bypass clang warnings
-            break;
-    }
-
-    //! this is needed in order to preserve that the top dock will be above
-    //! the others in case flag bypasswindowmanagerhint hasn't be set,
-    //! such a case is the AlwaysVisible mode
-    if (location() == Plasma::Types::TopEdge) {
-        KWindowSystem::setState(winId(), NET::KeepAbove);
-    } else {
-        KWindowSystem::clearState(winId(), NET::KeepAbove);
-    }
-
-    return maxGeometry;
-}
-
-void DockView::resizeWindow(QRect availableScreenRect)
-{
-    QSize screenSize = this->screen()->size();
-    QSize size = (formFactor() == Plasma::Types::Vertical) ? QSize(maxThickness(), availableScreenRect.height()) : QSize(screenSize.width(), maxThickness());
-
-    if (formFactor() == Plasma::Types::Vertical) {
-        //qDebug() << "MAXIMUM RECT :: " << maximumRect << " - AVAILABLE RECT :: " << availableRect;
-        if (m_behaveAsPlasmaPanel) {
-            size.setWidth(normalThickness());
-            size.setHeight(static_cast<int>(maxLength() * availableScreenRect.height()));
-        }
-    } else {
-        if (m_behaveAsPlasmaPanel) {
-            size.setWidth(static_cast<int>(maxLength() * screenSize.width()));
-            size.setHeight(normalThickness());
-        }
-    }
-
-    m_validGeometry.setSize(size);
-
-    setMinimumSize(size);
-    setMaximumSize(size);
-    resize(size);
-
-    if (formFactor() == Plasma::Types::Horizontal && corona()) {
-        emit corona()->availableScreenRectChanged();
-    }
-}
-
-void DockView::validateDockGeometry()
-{
-    if (geometry() != m_validGeometry) {
-        m_validateGeometryTimer.start();
-    }
-}
-
 QRect DockView::localGeometry() const
 {
     return m_localGeometry;
@@ -819,7 +443,6 @@ void DockView::updateAbsDockGeometry(bool bypassChecks)
         return;
 
     m_absGeometry = absGeometry;
-    syncGeometry();
     emit absGeometryChanged(m_absGeometry);
 
     //! this is needed in order to update correctly the screenGeometries
@@ -827,153 +450,6 @@ void DockView::updateAbsDockGeometry(bool bypassChecks)
         emit corona()->availableScreenRectChanged();
         emit corona()->availableScreenRegionChanged();
     }
-}
-
-void DockView::updatePosition(QRect availableScreenRect)
-{
-    QRect screenGeometry{availableScreenRect};
-    QPoint position;
-    position = {0, 0};
-
-    const auto length = [&](int length) -> int {
-        float offs = static_cast<float>(offset());
-        return static_cast<int>(length * ((1 - maxLength()) / 2) + length * (offs / 100));
-    };
-    int cleanThickness = normalThickness() - shadow();
-
-    switch (location()) {
-        case Plasma::Types::TopEdge:
-            if (m_behaveAsPlasmaPanel) {
-                position = {screenGeometry.x() + length(screenGeometry.width()), screenGeometry.y()};
-            } else {
-                position = {screenGeometry.x(), screenGeometry.y()};
-            }
-
-            break;
-
-        case Plasma::Types::BottomEdge:
-            if (m_behaveAsPlasmaPanel) {
-                position = {screenGeometry.x() + length(screenGeometry.width()),
-                            screenGeometry.y() + screenGeometry.height() - cleanThickness
-                           };
-            } else {
-                position = {screenGeometry.x(), screenGeometry.y() + screenGeometry.height() - height()};
-            }
-
-            break;
-
-        case Plasma::Types::RightEdge:
-            if (m_behaveAsPlasmaPanel && !mask().isNull()) {
-                position = {availableScreenRect.right() - cleanThickness + 1,
-                            availableScreenRect.y() + length(availableScreenRect.height())
-                           };
-            } else {
-                position = {availableScreenRect.right() - width() + 1, availableScreenRect.y()};
-            }
-
-            break;
-
-        case Plasma::Types::LeftEdge:
-            if (m_behaveAsPlasmaPanel && !mask().isNull()) {
-                position = {availableScreenRect.x(), availableScreenRect.y() + length(availableScreenRect.height())};
-            } else {
-                position = {availableScreenRect.x(), availableScreenRect.y()};
-            }
-
-            break;
-
-        default:
-            qWarning() << "wrong location, couldn't update the panel position"
-                       << location();
-    }
-
-    m_validGeometry.setTopLeft(position);
-
-    setPosition(position);
-
-    if (m_shellSurface) {
-        m_shellSurface->setPosition(position);
-    }
-}
-
-inline void DockView::syncGeometry()
-{
-    if (!(this->screen() && this->containment()) || m_inDelete)
-        return;
-
-    bool found{false};
-
-    qDebug() << "syncGeometry() called...";
-
-    //! before updating the positioning and geometry of the dock
-    //! we make sure that the dock is at the correct screen
-    if (this->screen() != m_screenToFollow) {
-        qDebug() << "Sync Geometry screens inconsistent!!!! ";
-
-        if (m_screenToFollow) {
-            qDebug() << "Sync Geometry screens inconsistent for m_screenToFollow:" << m_screenToFollow->name() << " dock screen:" << screen()->name();
-        }
-
-        if (!m_screenSyncTimer.isActive()) {
-            m_screenSyncTimer.start();
-        }
-    } else {
-        found = true;
-    }
-
-    //! if the dock isnt at the correct screen the calculations
-    //! are not executed
-    if (found) {
-        //! compute the free screen rectangle for vertical panels only once
-        //! this way the costly QRegion computations are calculated only once
-        //! instead of two times (both inside the resizeWindow and the updatePosition)
-        QRegion freeRegion;;
-        QRect maximumRect;
-        QRect availableScreenRect{this->screen()->geometry()};
-
-        if (formFactor() == Plasma::Types::Vertical) {
-            QString layoutName = m_managedLayout ? m_managedLayout->name() : QString();
-            auto dockCorona = qobject_cast<DockCorona *>(corona());
-            int fixedScreen = onPrimary() ? dockCorona->screenPool()->primaryScreenId() : this->containment()->screen();
-
-            freeRegion = dockCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName);
-            maximumRect = maximumNormalGeometry();
-            QRegion availableRegion = freeRegion.intersected(maximumRect);
-            availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
-            float area = 0;
-
-            //! it is used to choose which or the availableRegion rectangles will
-            //! be the one representing dock geometry
-            for (int i = 0; i < availableRegion.rectCount(); ++i) {
-                QRect rect = availableRegion.rects().at(i);
-                //! the area of each rectangle in calculated in squares of 50x50
-                //! this is a way to avoid enourmous numbers for area value
-                float tempArea = (float)(rect.width() * rect.height()) / 2500;
-
-                if (tempArea > area) {
-                    availableScreenRect = rect;
-                    area = tempArea;
-                }
-            }
-
-            if (availableRegion.rectCount() > 1 && m_behaveAsPlasmaPanel)
-                m_forceDrawCenteredBorders = true;
-            else
-                m_forceDrawCenteredBorders = false;
-        } else {
-            m_forceDrawCenteredBorders = false;
-        }
-
-        updateEnabledBorders();
-        resizeWindow(availableScreenRect);
-        updatePosition(availableScreenRect);
-
-        qDebug() << "syncGeometry() calculations for screen: " << screen()->name() << " _ " << screen()->geometry();
-    }
-
-    qDebug() << "syncGeometry() ended...";
-
-    // qDebug() << "dock geometry:" << qRectToStr(geometry());
 }
 
 void DockView::statusChanged(Plasma::Types::ItemStatus status)
@@ -1249,7 +725,6 @@ void DockView::setMaxThickness(int thickness)
         return;
 
     m_maxThickness = thickness;
-    syncGeometry();
     emit maxThicknessChanged();
 }
 
@@ -1428,10 +903,6 @@ void DockView::setShadow(int shadow)
 
     m_shadow = shadow;
 
-    if (m_behaveAsPlasmaPanel) {
-        syncGeometry();
-    }
-
     emit shadowChanged();
 }
 
@@ -1576,23 +1047,6 @@ void DockView::moveToLayout(QString layoutName)
     }
 }
 
-bool DockView::inLocationChangeAnimation()
-{
-    return ((m_goToLocation != Plasma::Types::Floating) || (m_moveToLayout != "") || m_goToScreen);
-}
-
-void DockView::hideDockDuringLocationChange(int goToLocation)
-{
-    m_goToLocation = static_cast<Plasma::Types::Location>(goToLocation);
-    emit hideDockDuringLocationChangeStarted();
-}
-
-void DockView::hideDockDuringMovingToLayout(QString layoutName)
-{
-    m_moveToLayout = layoutName;
-    emit hideDockDuringMovingToLayoutStarted();
-}
-
 void DockView::setBlockHiding(bool block)
 {
     if (!block) {
@@ -1610,6 +1064,15 @@ void DockView::setBlockHiding(bool block)
             m_visibility->setBlockHiding(true);
         }
     }
+}
+
+void DockView::setForceDrawCenteredBorders(bool draw)
+{
+    if (m_forceDrawCenteredBorders == draw) {
+        return;
+    }
+
+    m_forceDrawCenteredBorders = draw;
 }
 
 void DockView::updateEffects()
@@ -1753,6 +1216,10 @@ bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
     return false;
 }
 
+Positioner *DockView::positioner() const
+{
+    return m_positioner;
+}
 
 VisibilityManager *DockView::visibility() const
 {
@@ -1776,7 +1243,7 @@ bool DockView::event(QEvent *e)
                             setupWaylandIntegration();
 
                             if (m_shellSurface) {
-                                syncGeometry();
+                                m_positioner->syncGeometry();
 
                                 if (m_drawShadows) {
                                     PanelShadows::self()->addWindow(this, enabledBorders());
