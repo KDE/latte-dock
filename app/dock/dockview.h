@@ -23,6 +23,7 @@
 
 #include "dockconfigview.h"
 #include "effects.h"
+#include "positioner.h"
 #include "visibilitymanager.h"
 #include "../layout.h"
 #include "../plasmaquick/containmentview.h"
@@ -56,7 +57,6 @@ class PlasmaShellSurface;
 namespace Latte {
 class DockMenuManager;
 class Layout;
-class Positioner;
 }
 
 namespace Latte {
@@ -97,7 +97,7 @@ class DockView : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(Latte::View::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
-    Q_PROPERTY(Positioner *positioner READ positioner NOTIFY positionerChanged)
+    Q_PROPERTY(Latte::View::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
 
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
@@ -183,7 +183,7 @@ public:
     void showSettingsWindow();
 
     View::Effects *effects() const;
-    Positioner *positioner() const;
+    View::Positioner *positioner() const;
     VisibilityManager *visibility() const;
 
     Layout *managedLayout() const;
@@ -278,6 +278,7 @@ signals:
 
 private slots:
     void availableScreenRectChanged();
+    void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(DockView *view);
     void statusChanged(Plasma::Types::ItemStatus);
 
@@ -288,7 +289,6 @@ private:
     void applyActivitiesToWindows();
     void initSignalingForLocationChangeSliding();
     void setupWaylandIntegration();
-    void updateFormFactor();
     void updateAppletContainsMethod();
 
 private:
@@ -321,7 +321,7 @@ private:
 
     QPointer<DockMenuManager> m_menuManager;
     QPointer<View::Effects> m_effects;
-    QPointer<Positioner> m_positioner;
+    QPointer<View::Positioner> m_positioner;
     QPointer<VisibilityManager> m_visibility;
 
     //! Connections to release and bound for the managed layout
@@ -330,8 +330,6 @@ private:
     Plasma::Theme m_theme;
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
-
-    friend class Positioner;
 };
 
 }

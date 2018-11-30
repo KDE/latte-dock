@@ -36,6 +36,7 @@ class DockView;
 }
 
 namespace Latte {
+namespace View {
 
 class Positioner: public QObject
 {
@@ -73,6 +74,7 @@ signals:
     void hideDockDuringScreenChangeFinished();
     void hideDockDuringMovingToLayoutStarted();
     void hideDockDuringMovingToLayoutFinished();
+    void onHideWindowsForSlidingOut();
     void showDockAfterLocationChangeFinished();
     void showDockAfterScreenChangeFinished();
     void showDockAfterMovingToLayoutFinished();
@@ -84,9 +86,9 @@ private slots:
 private:
     void init();
     void initSignalingForLocationChangeSliding();
-    void hideWindowsForSlidingOut();
     void resizeWindow(QRect availableScreenRect = QRect());
 
+    void updateFormFactor();
     void updatePosition(QRect availableScreenRect = QRect());
 
     QRect maximumNormalGeometry();
@@ -97,7 +99,7 @@ private:
     //! it is used in order to enforce X11 to never miss window geometry
     QRect m_validGeometry;
 
-    QPointer<DockView> m_view;
+    QPointer<Latte::DockView> m_view;
 
     QString m_screenToFollowId;
     QPointer<QScreen> m_screenToFollow;
@@ -111,6 +113,7 @@ private:
     QScreen *m_goToScreen{nullptr};
 };
 
+}
 }
 
 #endif

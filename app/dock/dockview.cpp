@@ -68,7 +68,7 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     : PlasmaQuick::ContainmentView(corona),
       m_menuManager(new DockMenuManager(this)),
       m_effects(new View::Effects(this)),
-      m_positioner(new Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
+      m_positioner(new View::Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
 {
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -187,8 +187,9 @@ void DockView::init()
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
 
-    connect(m_positioner, &Positioner::currentScreenChanged, this, &DockView::currentScreenChanged);
-    connect(m_positioner, &Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
+    connect(m_positioner, &View::Positioner::currentScreenChanged, this, &DockView::currentScreenChanged);
+    connect(m_positioner, &View::Positioner::onHideWindowsForSlidingOut, this, &DockView::hideWindowsForSlidingOut);
+    connect(m_positioner, &View::Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
 
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
@@ -532,27 +533,6 @@ int DockView::docksWithTasks()
         return 0;
 
     return m_managedLayout->noDocksWithTasks();
-}
-
-void DockView::updateFormFactor()
-{
-    if (!this->containment())
-        return;
-
-    switch (location()) {
-        case Plasma::Types::TopEdge:
-        case Plasma::Types::BottomEdge:
-            this->containment()->setFormFactor(Plasma::Types::Horizontal);
-            break;
-
-        case Plasma::Types::LeftEdge:
-        case Plasma::Types::RightEdge:
-            this->containment()->setFormFactor(Plasma::Types::Vertical);
-            break;
-
-        default:
-            qWarning() << "wrong location, couldn't update the panel position" << location();
-    }
 }
 
 bool DockView::dockWinBehavior() const
@@ -952,6 +932,19 @@ void DockView::setBlockHiding(bool block)
     }
 }
 
+void DockView::hideWindowsForSlidingOut()
+{
+    setBlockHiding(false);
+
+    if (m_configView) {
+        auto configDialog = qobject_cast<DockConfigView *>(m_configView);
+
+        if (configDialog) {
+            configDialog->hideConfigWindow();
+        }
+    }
+}
+
 //! remove latte tasks plasmoid
 void DockView::removeTasksPlasmoid()
 {
@@ -1037,7 +1030,7 @@ View::Effects *DockView::effects() const
     return m_effects;
 }
 
-Positioner *DockView::positioner() const
+View::Positioner *DockView::positioner() const
 {
     return m_positioner;
 }
