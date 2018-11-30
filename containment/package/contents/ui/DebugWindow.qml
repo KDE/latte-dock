@@ -149,8 +149,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.maskArea) {
-                        return dock.maskArea.x +", "+ dock.maskArea.y+"  "+dock.maskArea.width+"x"+dock.maskArea.height;
+                    if (dock && dock.effects && dock.effects.maskArea) {
+                        return dock.effects.maskArea.x +", "+ dock.effects.maskArea.y+"  "+dock.effects.maskArea.width+"x"+dock.effects.maskArea.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -191,7 +191,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.drawEffects)
+                    if (dock && dock.effects && dock.effects.drawEffects)
                         return "Yes";
                     else
                         return "No";
@@ -204,8 +204,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.effectsArea) {
-                        return dock.effectsArea.x + ", " + dock.effectsArea.y + "  " +dock.effectsArea.width + "x" + dock.effectsArea.height;
+                    if (dock && dock.effects && dock.effects.effectsArea) {
+                        return dock.effects.effectsArea.x + ", " + dock.effects.effectsArea.y + "  " +dock.effects.effectsArea.width + "x" + dock.effects.effectsArea.height;
                     } else {
                         return "_,_ _x_";
                     }

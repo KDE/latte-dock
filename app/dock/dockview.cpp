@@ -22,7 +22,7 @@
 
 #include "dockconfigview.h"
 #include "dockmenumanager.h"
-
+#include "effects.h"
 #include "panelshadows_p.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
@@ -67,7 +67,8 @@ namespace Latte {
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
       m_menuManager(new DockMenuManager(this)),
-      m_positioner(new Positioner(this))
+      m_effects(new View::Effects(this)),
+      m_positioner(new Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
 {
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -155,15 +156,20 @@ DockView::~DockView()
     }
 
     if (m_menuManager) {
-        m_menuManager->deleteLater();
+        delete m_menuManager;
+    }
+
+    //needs to be deleted before Effects becuase it catches some of its signals
+    if (m_positioner) {
+        delete m_positioner;
+    }
+
+    if (m_effects) {
+        delete m_effects;
     }
 
     if (m_visibility)
         delete m_visibility;
-
-    if (m_positioner) {
-        delete m_positioner;
-    }
 }
 
 void DockView::init()
@@ -184,21 +190,9 @@ void DockView::init()
     connect(m_positioner, &Positioner::currentScreenChanged, this, &DockView::currentScreenChanged);
     connect(m_positioner, &Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
 
-    connect(this, &DockView::drawShadowsChanged, this, [&]() {
-        if (m_behaveAsPlasmaPanel) {
-            updateEnabledBorders();
-        }
-    });
-
-    connect(this, &DockView::alignmentChanged, this, &DockView::updateEnabledBorders);
-
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::isPreferredForShortcutsChanged, this, &DockView::saveConfig);
-
-    connect(this, &DockView::dockTransparencyChanged, this, &DockView::updateEffects);
-    connect(this, &DockView::drawEffectsChanged, this, &DockView::updateEffects);
-    connect(this, &DockView::effectsAreaChanged, this, &DockView::updateEffects);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeHasShadowChanged);
@@ -493,9 +487,9 @@ bool DockView::contextMenuIsShown() const
 int DockView::currentThickness() const
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        return m_maskArea.isNull() ? width() : m_maskArea.width() - m_shadow;
+        return m_effects->maskArea().isNull() ? width() : m_effects->maskArea().width() - m_shadow;
     } else {
-        return m_maskArea.isNull() ? height() : m_maskArea.height() - m_shadow;
+        return m_effects->maskArea().isNull() ? height() : m_effects->maskArea().height() - m_shadow;
     }
 }
 
@@ -589,56 +583,13 @@ void DockView::setBehaveAsPlasmaPanel(bool behavior)
 
     m_behaveAsPlasmaPanel = behavior;
 
-    if (m_behaveAsPlasmaPanel && m_drawShadows) {
-        PanelShadows::self()->addWindow(this, enabledBorders());
+    if (m_behaveAsPlasmaPanel && m_effects->drawShadows()) {
+        PanelShadows::self()->addWindow(this, m_effects->enabledBorders());
     } else {
         PanelShadows::self()->removeWindow(this);
-        // m_enabledBorders = Plasma::FrameSvg::AllBorders;
-        // emit enabledBordersChanged();
     }
 
-    updateEffects();
     emit behaveAsPlasmaPanelChanged();
-}
-
-bool DockView::drawShadows() const
-{
-    return m_drawShadows;
-}
-
-void DockView::setDrawShadows(bool draw)
-{
-    if (m_drawShadows == draw) {
-        return;
-    }
-
-    m_drawShadows = draw;
-
-    if (m_behaveAsPlasmaPanel && m_drawShadows) {
-        PanelShadows::self()->addWindow(this, enabledBorders());
-    } else {
-        PanelShadows::self()->removeWindow(this);
-        //m_enabledBorders = Plasma::FrameSvg::AllBorders;
-        //emit enabledBordersChanged();
-    }
-
-    emit drawShadowsChanged();
-}
-
-bool DockView::drawEffects() const
-{
-    return m_drawEffects;
-}
-
-void DockView::setDrawEffects(bool draw)
-{
-    if (m_drawEffects == draw) {
-        return;
-    }
-
-    m_drawEffects = draw;
-
-    emit drawEffectsChanged();
 }
 
 bool DockView::inEditMode() const
@@ -775,76 +726,11 @@ void DockView::setColorizerSupport(bool support)
     emit colorizerSupportChanged();
 }
 
-QRect DockView::maskArea() const
-{
-    return m_maskArea;
-}
-
-void DockView::setMaskArea(QRect area)
-{
-    if (m_maskArea == area)
-        return;
-
-    m_maskArea = area;
-
-    if (KWindowSystem::compositingActive()) {
-        if (m_behaveAsPlasmaPanel) {
-            setMask(QRect());
-        } else {
-            setMask(m_maskArea);
-        }
-    } else {
-        //! this is used when compositing is disabled and provides
-        //! the correct way for the mask to be painted in order for
-        //! rounded corners to be shown correctly
-        //! the enabledBorders check was added because there was cases
-        //! that the mask region wasnt calculated correctly after location changes
-        if (!m_background || m_background->enabledBorders() != enabledBorders()) {
-            m_background = new Plasma::FrameSvg(this);
-        }
-
-        if (m_background->imagePath() != "opaque/dialogs/background") {
-            m_background->setImagePath(QStringLiteral("opaque/dialogs/background"));
-        }
-
-        m_background->setEnabledBorders(enabledBorders());
-        m_background->resizeFrame(area.size());
-        QRegion fixedMask = m_background->mask();
-        fixedMask.translate(m_maskArea.x(), m_maskArea.y());
-
-        //! fix for KF5.32 that return empty QRegion's for the mask
-        if (fixedMask.isEmpty()) {
-            fixedMask = QRegion(m_maskArea);
-        }
-
-        setMask(fixedMask);
-    }
-
-    // qDebug() << "dock mask set:" << m_maskArea;
-    emit maskAreaChanged();
-}
-
 bool DockView::themeHasShadow() const
 {
     return PanelShadows::self()->enabled();
 }
 
-QRect DockView::effectsArea() const
-{
-    return m_effectsArea;
-}
-
-void DockView::setEffectsArea(QRect area)
-{
-    QRect inWindowRect = area.intersected(QRect(0, 0, width(), height()));
-
-    if (m_effectsArea == inWindowRect) {
-        return;
-    }
-
-    m_effectsArea = inWindowRect;
-    emit effectsAreaChanged();
-}
 
 QRect DockView::absGeometry() const
 {
@@ -1066,76 +952,6 @@ void DockView::setBlockHiding(bool block)
     }
 }
 
-void DockView::setForceDrawCenteredBorders(bool draw)
-{
-    if (m_forceDrawCenteredBorders == draw) {
-        return;
-    }
-
-    m_forceDrawCenteredBorders = draw;
-}
-
-void DockView::updateEffects()
-{
-    //! Don't apply any effect before the wayland surface is created under wayland
-    //! https://bugs.kde.org/show_bug.cgi?id=392890
-    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
-        return;
-    }
-
-    if (!m_behaveAsPlasmaPanel) {
-        if (m_drawEffects && !m_effectsArea.isNull() && !m_effectsArea.isEmpty()) {
-            //! this is used when compositing is disabled and provides
-            //! the correct way for the mask to be painted in order for
-            //! rounded corners to be shown correctly
-            if (!m_background) {
-                m_background = new Plasma::FrameSvg(this);
-            }
-
-            if (m_background->imagePath() != "widgets/panel-background") {
-                m_background->setImagePath(QStringLiteral("widgets/panel-background"));
-            }
-
-            m_background->setEnabledBorders(enabledBorders());
-            m_background->resizeFrame(m_effectsArea.size());
-            QRegion fixedMask = m_background->mask();
-            fixedMask.translate(m_effectsArea.x(), m_effectsArea.y());
-
-            //! fix1, for KF5.32 that return empty QRegion's for the mask
-            if (fixedMask.isEmpty()) {
-                fixedMask = QRegion(m_effectsArea);
-            }
-
-            KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
-
-            bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_dockTransparency == 100);
-            //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
-            //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
-            //at the dock bottom that was distinguishing it from other themes
-            KWindowEffects::enableBackgroundContrast(winId(), drawBackgroundEffect,
-                    m_theme.backgroundContrast(),
-                    m_theme.backgroundIntensity(),
-                    m_theme.backgroundSaturation(),
-                    fixedMask.boundingRect());
-        } else {
-            KWindowEffects::enableBlurBehind(winId(), false);
-            KWindowEffects::enableBackgroundContrast(winId(), false);
-        }
-    } else if (m_behaveAsPlasmaPanel && m_drawEffects) {
-        KWindowEffects::enableBlurBehind(winId(), true);
-
-        bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_dockTransparency == 100);
-
-        KWindowEffects::enableBackgroundContrast(winId(), drawBackgroundEffect,
-                m_theme.backgroundContrast(),
-                m_theme.backgroundIntensity(),
-                m_theme.backgroundSaturation());
-    } else {
-        KWindowEffects::enableBlurBehind(winId(), false);
-        KWindowEffects::enableBackgroundContrast(winId(), false);
-    }
-}
-
 //! remove latte tasks plasmoid
 void DockView::removeTasksPlasmoid()
 {
@@ -1216,6 +1032,11 @@ bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
     return false;
 }
 
+View::Effects *DockView::effects() const
+{
+    return m_effects;
+}
+
 Positioner *DockView::positioner() const
 {
     return m_positioner;
@@ -1245,8 +1066,8 @@ bool DockView::event(QEvent *e)
                             if (m_shellSurface) {
                                 m_positioner->syncGeometry();
 
-                                if (m_drawShadows) {
-                                    PanelShadows::self()->addWindow(this, enabledBorders());
+                                if (m_effects->drawShadows()) {
+                                    PanelShadows::self()->addWindow(this, m_effects->enabledBorders());
                                 }
                             }
 
@@ -1383,85 +1204,6 @@ void DockView::mousePressEvent(QMouseEvent *event)
     }
 }
 //!END overriding context menus behavior
-
-//!BEGIN draw panel shadows outside the dock window
-Plasma::FrameSvg::EnabledBorders DockView::enabledBorders() const
-{
-    return m_enabledBorders;
-}
-
-void DockView::updateEnabledBorders()
-{
-    if (!this->screen()) {
-        return;
-    }
-
-    Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
-
-    switch (location()) {
-        case Plasma::Types::TopEdge:
-            borders &= ~Plasma::FrameSvg::TopBorder;
-            break;
-
-        case Plasma::Types::LeftEdge:
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            break;
-
-        case Plasma::Types::RightEdge:
-            borders &= ~Plasma::FrameSvg::RightBorder;
-            break;
-
-        case Plasma::Types::BottomEdge:
-            borders &= ~Plasma::FrameSvg::BottomBorder;
-            break;
-
-        default:
-            break;
-    }
-
-    if ((location() == Plasma::Types::LeftEdge || location() == Plasma::Types::RightEdge)) {
-        if (maxLength() == 1 && m_alignment == Dock::Justify && !m_forceDrawCenteredBorders) {
-            borders &= ~Plasma::FrameSvg::TopBorder;
-            borders &= ~Plasma::FrameSvg::BottomBorder;
-        }
-
-        if (m_alignment == Dock::Top && !m_forceDrawCenteredBorders && m_offset == 0) {
-            borders &= ~Plasma::FrameSvg::TopBorder;
-        }
-
-        if (m_alignment == Dock::Bottom && !m_forceDrawCenteredBorders && m_offset == 0) {
-            borders &= ~Plasma::FrameSvg::BottomBorder;
-        }
-    }
-
-    if (location() == Plasma::Types::TopEdge || location() == Plasma::Types::BottomEdge) {
-        if (maxLength() == 1 && m_alignment == Dock::Justify) {
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            borders &= ~Plasma::FrameSvg::RightBorder;
-        }
-
-        if (m_alignment == Dock::Left && m_offset == 0) {
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-        }
-
-        if (m_alignment == Dock::Right  && m_offset == 0) {
-            borders &= ~Plasma::FrameSvg::RightBorder;
-        }
-    }
-
-    if (m_enabledBorders != borders) {
-        m_enabledBorders = borders;
-        emit enabledBordersChanged();
-    }
-
-    if (!m_behaveAsPlasmaPanel || !m_drawShadows) {
-        PanelShadows::self()->removeWindow(this);
-    } else {
-        PanelShadows::self()->setEnabledBorders(this, borders);
-    }
-}
-
-//!END draw panel shadows outside the dock window
 
 //!BEGIN configuration functions
 void DockView::saveConfig()

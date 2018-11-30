@@ -63,7 +63,7 @@ Item{
         property: "topBorder"
         when: dock
         value: {
-            return ((dock && (dock.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
+            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
         }
     }
 
@@ -72,7 +72,7 @@ Item{
         property: "leftBorder"
         when: dock
         value: {
-            return ((dock && (dock.enabledBorders & PlasmaCore.FrameSvg.LeftBorder)) > 0);
+            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.LeftBorder)) > 0);
         }
     }
 
@@ -81,7 +81,7 @@ Item{
         property: "bottomBorder"
         when: dock
         value: {
-            return ((dock && (dock.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
+            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
         }
     }
 
@@ -90,7 +90,7 @@ Item{
         property: "rightBorder"
         when: dock
         value: {
-            return ((dock && (dock.enabledBorders & PlasmaCore.FrameSvg.RightBorder)) > 0);
+            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.RightBorder)) > 0);
         }
     }
 

@@ -219,7 +219,7 @@ Item{
         efGeometry.width = width;
         efGeometry.height = height;
 
-        dock.effectsArea = efGeometry;
+        dock.effects.effectsArea = efGeometry;
     }
 
 
@@ -329,7 +329,7 @@ Item{
                 ScriptAction{
                     script: {
                         //! remove kwin effects when starting the animation
-                        dock.effectsArea = Qt.rect(-1, -1, 0, 0);
+                        dock.effects.effectsArea = Qt.rect(-1, -1, 0, 0);
                     }
                 }
 

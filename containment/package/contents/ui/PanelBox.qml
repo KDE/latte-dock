@@ -153,7 +153,7 @@ Item{
                 return 1;
         }
 
-        enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: dock && dock.effects ? dock.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
         property bool themeHasShadow: dock ? dock.themeHasShadow : false
 
@@ -370,7 +370,7 @@ Item{
                 efGeometry.width = width;
                 efGeometry.height = height;
 
-                dock.effectsArea = efGeometry;
+                dock.effects.effectsArea = efGeometry;
 
                 if (!Latte.WindowSystem.compositingActive) {
                     visibilityManager.updateMaskArea();
@@ -437,7 +437,7 @@ Item{
                     adjustPrefix();
             }
 
-            enabledBorders: dock ? dock.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+            enabledBorders: dock && dock.effects ? dock.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
             Behavior on opacity{
                 enabled: Latte.WindowSystem.compositingActive

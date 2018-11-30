@@ -22,6 +22,7 @@
 #define DOCKVIEW_H
 
 #include "dockconfigview.h"
+#include "effects.h"
 #include "visibilitymanager.h"
 #include "../layout.h"
 #include "../plasmaquick/containmentview.h"
@@ -69,8 +70,6 @@ class DockView : public PlasmaQuick::ContainmentView
     Q_PROPERTY(bool colorizerSupport READ colorizerSupport WRITE setColorizerSupport NOTIFY colorizerSupportChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
-    Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
-    Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
@@ -96,17 +95,15 @@ class DockView : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
-    Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
-
+    Q_PROPERTY(Latte::View::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
     Q_PROPERTY(Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
+
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
-    Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
     Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
-    Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
 public:
@@ -142,12 +139,6 @@ public:
     bool dockWinBehavior() const;
     void setDockWinBehavior(bool dock);
 
-    bool drawShadows() const;
-    void setDrawShadows(bool draw);
-
-    bool drawEffects() const;
-    void setDrawEffects(bool draw);
-
     bool inEditMode() const;
     void setInEditMode(bool edit);
 
@@ -180,16 +171,8 @@ public:
     int alignment() const;
     void setAlignment(int alignment);
 
-    QRect maskArea() const;
-    void setMaskArea(QRect area);
-
-    QRect effectsArea() const;
-    void setEffectsArea(QRect area);
-
     QRect absGeometry() const;
     QRect screenGeometry() const;
-
-    Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
     QString currentScreen() const;
 
@@ -199,8 +182,7 @@ public:
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
-    void setForceDrawCenteredBorders(bool draw);
-
+    View::Effects *effects() const;
     Positioner *positioner() const;
     VisibilityManager *visibility() const;
 
@@ -233,7 +215,6 @@ public slots:
     Q_INVOKABLE void removeTasksPlasmoid();
     Q_INVOKABLE void setBlockHiding(bool block);
     Q_INVOKABLE void toggleAppletExpanded(const int id);
-    Q_INVOKABLE void updateEnabledBorders();
 
     Q_INVOKABLE int docksWithTasks();
 
@@ -270,10 +251,7 @@ signals:
     void docksCountChanged();
     void dockTransparencyChanged();
     void dockWinBehaviorChanged();
-    void drawShadowsChanged();
-    void drawEffectsChanged();
-    void effectsAreaChanged();
-    void enabledBordersChanged();
+    void effectsChanged();
     void fontPixelSizeChanged();
     void widthChanged();
     void heightChanged();
@@ -287,7 +265,6 @@ signals:
     void offsetChanged();
     void onPrimaryChanged();
     void visibilityChanged();
-    void maskAreaChanged();
     void positionerChanged();
     void screenGeometryChanged();
     void shadowChanged();
@@ -303,7 +280,6 @@ private slots:
     void availableScreenRectChanged();
     void preferredViewForShortcutsChangedSlot(DockView *view);
     void statusChanged(Plasma::Types::ItemStatus);
-    void updateEffects();
 
     void restoreConfig();
     void saveConfig();
@@ -323,9 +299,6 @@ private:
     bool m_blockAnimations{false};
     bool m_colorizerSupport{false};
     bool m_dockWinBehavior{true};
-    bool m_drawShadows{true};
-    bool m_drawEffects{false};
-    bool m_forceDrawCenteredBorders{false};
     bool m_inDelete{false};
     bool m_inEditMode{false};
     bool m_isPreferredForShortcuts{false};
@@ -340,27 +313,22 @@ private:
 
     Dock::Alignment m_alignment{Dock::Center};
 
-    QRect m_effectsArea;
     QRect m_localGeometry;
     QRect m_absGeometry;
-    QRect m_maskArea;
 
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
-    QPointer<VisibilityManager> m_visibility;
     QPointer<DockMenuManager> m_menuManager;
+    QPointer<View::Effects> m_effects;
     QPointer<Positioner> m_positioner;
+    QPointer<VisibilityManager> m_visibility;
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 5> connectionsManagedLayout;
 
     Plasma::Theme m_theme;
-    //only for the mask on disabled compositing, not to actually paint
-    Plasma::FrameSvg *m_background{nullptr};
 
-    //only for the mask, not to actually paint
-    Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
     friend class Positioner;

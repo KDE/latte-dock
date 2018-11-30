@@ -20,6 +20,7 @@
 #include "positioner.h"
 
 #include "dockview.h"
+#include "effects.h"
 #include "../dockcorona.h"
 #include "../screenpool.h"
 #include "../universalsettings.h"
@@ -94,7 +95,7 @@ void Positioner::init()
     connect(m_view, &DockView::maxLengthChanged, this, &Positioner::syncGeometry);
     connect(m_view, &DockView::offsetChanged, this, &Positioner::syncGeometry);
 
-    connect(m_view, &DockView::drawShadowsChanged, this, [&]() {
+    connect(m_view->effects(), &Latte::View::Effects::drawShadowsChanged, this, [&]() {
         if (!m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }
@@ -344,15 +345,15 @@ void Positioner::syncGeometry()
             }
 
             if (availableRegion.rectCount() > 1 && m_view->behaveAsPlasmaPanel()) {
-                m_view->setForceDrawCenteredBorders(true);
+                m_view->effects()->setForceDrawCenteredBorders(true);
             } else {
-                m_view->setForceDrawCenteredBorders(false);
+                m_view->effects()->setForceDrawCenteredBorders(false);
             }
         } else {
-            m_view->setForceDrawCenteredBorders(false);
+            m_view->effects()->setForceDrawCenteredBorders(false);
         }
 
-        m_view->updateEnabledBorders();
+        m_view->effects()->updateEnabledBorders();
         resizeWindow(availableScreenRect);
         updatePosition(availableScreenRect);
 

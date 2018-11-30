@@ -24,6 +24,7 @@ set(lattedock-app_SRCS
     dock/dockmenumanager.cpp
     dock/docksecconfigview.cpp
     dock/dockview.cpp
+    dock/effects.cpp
     dock/panelshadows.cpp
     dock/positioner.cpp
     dock/screenedgeghostwindow.cpp
