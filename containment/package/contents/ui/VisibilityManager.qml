@@ -110,14 +110,14 @@ Item{
     }
 
     Binding{
-        target: dock.effects
+        target: dock && dock.effects ? dock.effects : null
         property: "drawShadows"
         when: dock && dock.effects
         value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding)
     }
 
     Binding{
-        target: dock.effects
+        target: dock && dock.effects ? dock.effects : null
         property: "drawEffects"
         when: dock && dock.effects
         value: Latte.WindowSystem.compositingActive &&
