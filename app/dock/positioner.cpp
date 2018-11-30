@@ -108,14 +108,14 @@ void Positioner::init()
         }
     });
 
-    connect(m_view, &Latte::DockView::shadowChanged, this, [&]() {
-        if (m_view->behaveAsPlasmaPanel()) {
+    connect(m_view->effects(), &Latte::View::Effects::drawShadowsChanged, this, [&]() {
+        if (!m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }
     });
 
-    connect(m_view->effects(), &Latte::View::Effects::drawShadowsChanged, this, [&]() {
-        if (!m_view->behaveAsPlasmaPanel()) {
+    connect(m_view->effects(), &Latte::View::Effects::innerShadowChanged, this, [&]() {
+        if (m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }
     });
@@ -456,7 +456,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
         float offs = static_cast<float>(m_view->offset());
         return static_cast<int>(length * ((1 - m_view->maxLength()) / 2) + length * (offs / 100));
     };
-    int cleanThickness = m_view->normalThickness() - m_view->shadow();
+    int cleanThickness = m_view->normalThickness() - m_view->effects()->innerShadow();
 
     switch (m_view->location()) {
         case Plasma::Types::TopEdge:

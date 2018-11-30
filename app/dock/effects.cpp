@@ -55,6 +55,8 @@ void Effects::init()
     connect(m_view, &Latte::DockView::alignmentChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::DockView::dockTransparencyChanged, this, &Effects::updateEffects);
+
+    connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
 
 bool Effects::drawShadows() const
@@ -107,6 +109,21 @@ void Effects::setForceDrawCenteredBorders(bool draw)
     }
 
     m_forceDrawCenteredBorders = draw;
+}
+
+int Effects::innerShadow() const
+{
+    return m_innerShadow;
+}
+
+void Effects::setInnerShadow(int shadow)
+{
+    if (m_innerShadow == shadow)
+        return;
+
+    m_innerShadow = shadow;
+
+    emit innerShadowChanged();
 }
 
 QRect Effects::rect() const

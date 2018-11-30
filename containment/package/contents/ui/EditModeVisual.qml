@@ -177,18 +177,6 @@ Item{
         initializeEditPosition();
     }
 
-    onEditAnimationEndedChanged: {
-        if (!dock) {
-            return;
-        }
-
-        if (editAnimationEnded && !root.behaveAsPlasmaPanel) {
-            dock.shadow = root.editShadow;
-        } else {
-            dock.shadow = root.panelShadow;
-        }
-    }
-
     onXChanged: updateEffectsArea();
     onYChanged: updateEffectsArea();
 

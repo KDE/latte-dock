@@ -40,6 +40,9 @@ class Effects: public QObject
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
 
+    //! thickness shadow size when is drawn inside the window from qml
+    Q_PROPERTY(int innerShadow READ innerShadow WRITE setInnerShadow NOTIFY innerShadowChanged)
+
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
     Q_PROPERTY(QRect rect READ rect WRITE setRect NOTIFY rectChanged)
 
@@ -58,6 +61,9 @@ public:
     bool forceDrawCenteredBorders() const;
     void setForceDrawCenteredBorders(bool draw);
 
+    int innerShadow() const;
+    void setInnerShadow(int shadow);
+
     QRect mask() const;
     void setMask(QRect area);
 
@@ -75,6 +81,7 @@ signals:
     void drawEffectsChanged();
     void enabledBordersChanged();
     void maskChanged();
+    void innerShadowChanged();
     void rectChanged();
 
 private slots:
@@ -84,6 +91,8 @@ private:
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceDrawCenteredBorders{false};
+
+    int m_innerShadow{0};
 
     QRect m_rect;
     QRect m_mask;

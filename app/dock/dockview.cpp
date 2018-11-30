@@ -199,7 +199,6 @@ void DockView::init()
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeHasShadowChanged);
 
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
-    connect(this, SIGNAL(shadowChanged()), corona(), SIGNAL(availableScreenRectChanged()));
 
     connect(m_menuManager, &DockMenuManager::contextMenuChanged, this, &DockView::contextMenuIsShownChanged);
 
@@ -488,9 +487,9 @@ bool DockView::contextMenuIsShown() const
 int DockView::currentThickness() const
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        return m_effects->mask().isNull() ? width() : m_effects->mask().width() - m_shadow;
+        return m_effects->mask().isNull() ? width() : m_effects->mask().width() - m_effects->innerShadow();
     } else {
-        return m_effects->mask().isNull() ? height() : m_effects->mask().height() - m_shadow;
+        return m_effects->mask().isNull() ? height() : m_effects->mask().height() - m_effects->innerShadow();
     }
 }
 
@@ -755,21 +754,6 @@ void DockView::setDockTransparency(int transparency)
 
     m_dockTransparency = transparency;
     emit dockTransparencyChanged();
-}
-
-int DockView::shadow() const
-{
-    return m_shadow;
-}
-
-void DockView::setShadow(int shadow)
-{
-    if (m_shadow == shadow)
-        return;
-
-    m_shadow = shadow;
-
-    emit shadowChanged();
 }
 
 int DockView::fontPixelSize() const

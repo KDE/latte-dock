@@ -141,10 +141,16 @@ Item{
     }
 
     Binding{
-        target: dock
-        property:"shadow"
-        when: dock
-        value: root.panelShadow
+        target: dock && dock.effects ? dock.effects : null
+        property:"innerShadow"
+        when: dock && dock.effects
+        value: {
+            if (editModeVisual.editAnimationEnded && !root.behaveAsPlasmaPanel) {
+                return root.editShadow;
+            } else {
+                return root.panelShadow;
+            }
+        }
     }
 
     Binding{
