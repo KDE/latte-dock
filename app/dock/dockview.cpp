@@ -488,9 +488,9 @@ bool DockView::contextMenuIsShown() const
 int DockView::currentThickness() const
 {
     if (formFactor() == Plasma::Types::Vertical) {
-        return m_effects->maskArea().isNull() ? width() : m_effects->maskArea().width() - m_shadow;
+        return m_effects->mask().isNull() ? width() : m_effects->mask().width() - m_shadow;
     } else {
-        return m_effects->maskArea().isNull() ? height() : m_effects->maskArea().height() - m_shadow;
+        return m_effects->mask().isNull() ? height() : m_effects->mask().height() - m_shadow;
     }
 }
 

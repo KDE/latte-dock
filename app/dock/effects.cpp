@@ -44,7 +44,7 @@ Effects::~Effects()
 void Effects::init()
 {
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
-    connect(this, &Effects::effectsAreaChanged, this, &Effects::updateEffects);
+    connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
 
     connect(this, &Effects::drawShadowsChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
@@ -109,40 +109,40 @@ void Effects::setForceDrawCenteredBorders(bool draw)
     m_forceDrawCenteredBorders = draw;
 }
 
-QRect Effects::effectsArea() const
+QRect Effects::rect() const
 {
-    return m_effectsArea;
+    return m_rect;
 }
 
-void Effects::setEffectsArea(QRect area)
+void Effects::setRect(QRect area)
 {
     QRect inWindowRect = area.intersected(QRect(0, 0, m_view->width(), m_view->height()));
 
-    if (m_effectsArea == inWindowRect) {
+    if (m_rect == inWindowRect) {
         return;
     }
 
-    m_effectsArea = inWindowRect;
-    emit effectsAreaChanged();
+    m_rect = inWindowRect;
+    emit rectChanged();
 }
 
-QRect Effects::maskArea() const
+QRect Effects::mask() const
 {
-    return m_maskArea;
+    return m_mask;
 }
 
-void Effects::setMaskArea(QRect area)
+void Effects::setMask(QRect area)
 {
-    if (m_maskArea == area)
+    if (m_mask == area)
         return;
 
-    m_maskArea = area;
+    m_mask = area;
 
     if (KWindowSystem::compositingActive()) {
         if (m_view->behaveAsPlasmaPanel()) {
             m_view->setMask(QRect());
         } else {
-            m_view->setMask(m_maskArea);
+            m_view->setMask(m_mask);
         }
     } else {
         //! this is used when compositing is disabled and provides
@@ -161,22 +161,19 @@ void Effects::setMaskArea(QRect area)
         m_background->setEnabledBorders(m_enabledBorders);
         m_background->resizeFrame(area.size());
         QRegion fixedMask = m_background->mask();
-        fixedMask.translate(m_maskArea.x(), m_maskArea.y());
+        fixedMask.translate(m_mask.x(), m_mask.y());
 
         //! fix for KF5.32 that return empty QRegion's for the mask
         if (fixedMask.isEmpty()) {
-            fixedMask = QRegion(m_maskArea);
+            fixedMask = QRegion(m_mask);
         }
 
         m_view->setMask(fixedMask);
     }
 
-    // qDebug() << "dock mask set:" << m_maskArea;
-    emit maskAreaChanged();
+    // qDebug() << "dock mask set:" << m_mask;
+    emit maskChanged();
 }
-
-
-
 
 void Effects::updateEffects()
 {
@@ -187,7 +184,7 @@ void Effects::updateEffects()
     }
 
     if (!m_view->behaveAsPlasmaPanel()) {
-        if (m_drawEffects && !m_effectsArea.isNull() && !m_effectsArea.isEmpty()) {
+        if (m_drawEffects && !m_rect.isNull() && !m_rect.isEmpty()) {
             //! this is used when compositing is disabled and provides
             //! the correct way for the mask to be painted in order for
             //! rounded corners to be shown correctly
@@ -200,13 +197,13 @@ void Effects::updateEffects()
             }
 
             m_background->setEnabledBorders(m_enabledBorders);
-            m_background->resizeFrame(m_effectsArea.size());
+            m_background->resizeFrame(m_rect.size());
             QRegion fixedMask = m_background->mask();
-            fixedMask.translate(m_effectsArea.x(), m_effectsArea.y());
+            fixedMask.translate(m_rect.x(), m_rect.y());
 
             //! fix1, for KF5.32 that return empty QRegion's for the mask
             if (fixedMask.isEmpty()) {
-                fixedMask = QRegion(m_effectsArea);
+                fixedMask = QRegion(m_rect);
             }
 
             KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);

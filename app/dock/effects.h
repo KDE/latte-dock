@@ -40,8 +40,8 @@ class Effects: public QObject
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
 
-    Q_PROPERTY(QRect effectsArea READ effectsArea WRITE setEffectsArea NOTIFY effectsAreaChanged)
-    Q_PROPERTY(QRect maskArea READ maskArea WRITE setMaskArea NOTIFY maskAreaChanged)
+    Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
+    Q_PROPERTY(QRect rect READ rect WRITE setRect NOTIFY rectChanged)
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
@@ -58,11 +58,11 @@ public:
     bool forceDrawCenteredBorders() const;
     void setForceDrawCenteredBorders(bool draw);
 
-    QRect maskArea() const;
-    void setMaskArea(QRect area);
+    QRect mask() const;
+    void setMask(QRect area);
 
-    QRect effectsArea() const;
-    void setEffectsArea(QRect area);
+    QRect rect() const;
+    void setRect(QRect area);
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
@@ -73,9 +73,9 @@ public slots:
 signals:
     void drawShadowsChanged();
     void drawEffectsChanged();
-    void effectsAreaChanged();
     void enabledBordersChanged();
-    void maskAreaChanged();
+    void maskChanged();
+    void rectChanged();
 
 private slots:
     void init();
@@ -85,8 +85,8 @@ private:
     bool m_drawEffects{false};
     bool m_forceDrawCenteredBorders{false};
 
-    QRect m_effectsArea;
-    QRect m_maskArea;
+    QRect m_rect;
+    QRect m_mask;
 
     QPointer<Latte::DockView> m_view;
 

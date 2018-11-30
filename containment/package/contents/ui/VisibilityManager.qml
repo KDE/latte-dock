@@ -395,7 +395,7 @@ Item{
             }
         } // end of compositing calculations
 
-        var maskArea = dock.effects.maskArea;
+        var maskArea = dock.effects.mask;
 
         if (Latte.WindowSystem.compositingActive) {
             var maskLength = maskArea.width; //in Horizontal
@@ -410,30 +410,30 @@ Item{
         } else {
             //! no compositing case
             if (!dock.visibility.isHidden || !dock.visibility.supportsKWinEdges) {
-                localX = dock.effects.effectsArea.x;
-                localY = dock.effects.effectsArea.y;
+                localX = dock.effects.rect.x;
+                localY = dock.effects.rect.y;
             } else {
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    localX = dock.effects.effectsArea.x;
-                    localY = dock.effects.effectsArea.y+dock.effects.effectsArea.height+thicknessAutoHidden;
+                    localX = dock.effects.rect.x;
+                    localY = dock.effects.rect.y+dock.effects.rect.height+thicknessAutoHidden;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    localX = dock.effects.effectsArea.x;
-                    localY = dock.effects.effectsArea.y - thicknessAutoHidden;
+                    localX = dock.effects.rect.x;
+                    localY = dock.effects.rect.y - thicknessAutoHidden;
                 } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    localX = dock.effects.effectsArea.x - thicknessAutoHidden;
-                    localY = dock.effects.effectsArea.y;
+                    localX = dock.effects.rect.x - thicknessAutoHidden;
+                    localY = dock.effects.rect.y;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = dock.effects.effectsArea.x + dock.effects.effectsArea.width + 1;
-                    localY = dock.effects.effectsArea.y;
+                    localX = dock.effects.rect.x + dock.effects.rect.width + 1;
+                    localY = dock.effects.rect.y;
                 }
             }
 
             if (root.isHorizontal) {
-                tempThickness = dock.effects.effectsArea.height;
-                tempLength = dock.effects.effectsArea.width;
+                tempThickness = dock.effects.rect.height;
+                tempLength = dock.effects.rect.width;
             } else {
-                tempThickness = dock.effects.effectsArea.width;
-                tempLength = dock.effects.effectsArea.height;
+                tempThickness = dock.effects.rect.width;
+                tempLength = dock.effects.rect.height;
             }
         }
 
@@ -455,12 +455,12 @@ Item{
             }
 
             if (!Latte.WindowSystem.compositingActive) {
-                dock.effects.maskArea = newMaskArea;//dock.effectsArea;
+                dock.effects.mask = newMaskArea;
             } else {
                 if (dock.behaveAsPlasmaPanel && !root.editMode) {
-                    dock.effects.maskArea = Qt.rect(0,0,root.width,root.height);
+                    dock.effects.mask = Qt.rect(0,0,root.width,root.height);
                 } else {
-                    dock.effects.maskArea = newMaskArea;
+                    dock.effects.mask = newMaskArea;
                 }
             }
         }
@@ -468,7 +468,7 @@ Item{
         //console.log("reached updating geometry ::: "+dock.maskArea);
         if(normalState){
 
-            var tempGeometry = Qt.rect(dock.effects.maskArea.x, dock.effects.maskArea.y, dock.effects.maskArea.width, dock.effects.maskArea.height);
+            var tempGeometry = Qt.rect(dock.effects.mask.x, dock.effects.mask.y, dock.effects.mask.width, dock.effects.mask.height);
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
@@ -498,7 +498,7 @@ Item{
 
             //console.log("update geometry ::: "+tempGeometry);
             if (!Latte.WindowSystem.compositingActive) {
-                dock.localGeometry = dock.effects.effectsArea;
+                dock.localGeometry = dock.effects.rect;
             } else {
                 dock.localGeometry = tempGeometry;
             }
@@ -522,10 +522,10 @@ Item{
             }
 
             Rectangle{
-                x: dock ? dock.effects.maskArea.x : -1
-                y: dock ? dock.effects.maskArea.y : -1
-                height: dock ? dock.effects.maskArea.height : 0
-                width: dock ? dock.effects.maskArea.width : 0
+                x: dock ? dock.effects.mask.x : -1
+                y: dock ? dock.effects.mask.y : -1
+                height: dock ? dock.effects.mask.height : 0
+                width: dock ? dock.effects.mask.width : 0
 
                 border.color: "green"
                 border.width: 1

@@ -370,7 +370,7 @@ Item{
                 efGeometry.width = width;
                 efGeometry.height = height;
 
-                dock.effects.effectsArea = efGeometry;
+                dock.effects.rect = efGeometry;
 
                 if (!Latte.WindowSystem.compositingActive) {
                     visibilityManager.updateMaskArea();

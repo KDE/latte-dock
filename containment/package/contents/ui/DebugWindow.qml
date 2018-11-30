@@ -149,8 +149,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.effects && dock.effects.maskArea) {
-                        return dock.effects.maskArea.x +", "+ dock.effects.maskArea.y+"  "+dock.effects.maskArea.width+"x"+dock.effects.maskArea.height;
+                    if (dock && dock.effects && dock.effects.mask) {
+                        return dock.effects.mask.x +", "+ dock.effects.mask.y+"  "+dock.effects.mask.width+"x"+dock.effects.mask.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -204,8 +204,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.effects && dock.effects.effectsArea) {
-                        return dock.effects.effectsArea.x + ", " + dock.effects.effectsArea.y + "  " +dock.effects.effectsArea.width + "x" + dock.effects.effectsArea.height;
+                    if (dock && dock.effects && dock.effects.rect) {
+                        return dock.effects.rect.x + ", " + dock.effects.rect.y + "  " +dock.effects.rect.width + "x" + dock.effects.rect.height;
                     } else {
                         return "_,_ _x_";
                     }
