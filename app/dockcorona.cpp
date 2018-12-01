@@ -20,7 +20,6 @@
 
 #include "dockcorona.h"
 
-#include "abstractwindowinterface.h"
 #include "alternativeshelper.h"
 #include "globalshortcuts.h"
 #include "importer.h"
@@ -28,11 +27,12 @@
 #include "layoutmanager.h"
 #include "plasmathemeextended.h"
 #include "screenpool.h"
-#include "waylandinterface.h"
-#include "xwindowinterface.h"
 #include "dock/dockview.h"
 #include "packageplugins/shell/dockpackage.h"
 #include "settings/universalsettings.h"
+#include "wm/abstractwindowinterface.h"
+#include "wm/waylandinterface.h"
+#include "wm/xwindowinterface.h"
 
 //dbus adaptor
 #include "lattedockadaptor.h"

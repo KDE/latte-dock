@@ -22,10 +22,10 @@
 
 #include "dockview.h"
 #include "panelshadows_p.h"
-#include "../abstractwindowinterface.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
 #include "../settings/universalsettings.h"
+#include "../wm/abstractwindowinterface.h"
 
 #include <QFontMetrics>
 #include <QQuickItem>

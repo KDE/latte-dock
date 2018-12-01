@@ -1,7 +1,6 @@
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
     packageplugins/shell/dockpackage.cpp
-    abstractwindowinterface.cpp
     alternativeshelper.cpp
     commontools.cpp
     dockcorona.cpp
@@ -15,9 +14,6 @@ set(lattedock-app_SRCS
     schemecolors.cpp
     screenpool.cpp
     sortedactivitiesmodel.cpp
-    waylandinterface.cpp
-    windowinfowrap.cpp
-    xwindowinterface.cpp
     dock/contextmenu.cpp
     dock/dockconfigview.cpp
     dock/docksecconfigview.cpp
@@ -34,6 +30,10 @@ set(lattedock-app_SRCS
     settings/delegates/colorcmbboxdelegate.cpp
     settings/delegates/colorcmbboxitemdelegate.cpp
     settings/delegates/layoutnamedelegate.cpp
+    wm/abstractwindowinterface.cpp
+    wm/waylandinterface.cpp
+    wm/windowinfowrap.cpp
+    wm/xwindowinterface.cpp
     main.cpp
 )
 

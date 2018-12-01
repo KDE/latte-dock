@@ -27,7 +27,7 @@
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
-#include "../windowinfowrap.h"
+#include "../wm/windowinfowrap.h"
 #include "../../liblattedock/extras.h"
 
 #include <KWayland/Client/plasmashell.h>

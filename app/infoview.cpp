@@ -19,8 +19,8 @@
 */
 
 #include "infoview.h"
-#include "abstractwindowinterface.h"
 #include "dock/panelshadows_p.h"
+#include "wm/abstractwindowinterface.h"
 
 #include <QQuickItem>
 #include <QQmlContext>

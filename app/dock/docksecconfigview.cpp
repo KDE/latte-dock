@@ -22,8 +22,8 @@
 #include "dockconfigview.h"
 #include "dockview.h"
 #include "panelshadows_p.h"
-#include "../abstractwindowinterface.h"
 #include "../dockcorona.h"
+#include "../wm/abstractwindowinterface.h"
 
 #include <QFontMetrics>
 #include <QQuickItem>

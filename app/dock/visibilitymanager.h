@@ -23,7 +23,7 @@
 
 #include "../plasmaquick/containmentview.h"
 #include "../schemecolors.h"
-#include "../windowinfowrap.h"
+#include "../wm/windowinfowrap.h"
 #include "../../liblattedock/dock.h"
 
 #include <QObject>

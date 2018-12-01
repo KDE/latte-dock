@@ -1,9 +1,9 @@
 #ifndef VISIBILITYMANAGERPRIVATE_H
 #define VISIBILITYMANAGERPRIVATE_H
 
-#include "../abstractwindowinterface.h"
 #include "../schemecolors.h"
-#include "../windowinfowrap.h"
+#include "../wm/abstractwindowinterface.h"
+#include "../wm/windowinfowrap.h"
 #include "../../liblattedock/dock.h"
 
 #include <array>
