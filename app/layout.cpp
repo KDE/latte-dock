@@ -1107,7 +1107,7 @@ void Layout::copyDock(Plasma::Containment *containment)
     int copyScrId = -1;
 
     if (dock) {
-        dockScrId = m_corona->screenPool()->id(dock->positioner()->currentScreenName());
+        dockScrId = dock->positioner()->currentScreenId();
         qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
 
         if (dockScrId != -1 && screens.count() > 1) {
