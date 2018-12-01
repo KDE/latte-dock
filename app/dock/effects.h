@@ -85,6 +85,8 @@ public:
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
 public slots:
+    void clearShadows();
+    void updateShadows();
     void updateEffects();
     void updateEnabledBorders();
 

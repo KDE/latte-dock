@@ -23,7 +23,6 @@
 #include "dockconfigview.h"
 #include "dockmenumanager.h"
 #include "effects.h"
-#include "panelshadows_p.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "../dockcorona.h"
@@ -47,7 +46,6 @@
 #include <KAuthorized>
 #include <KLocalizedContext>
 #include <KLocalizedString>
-#include <KWindowEffects>
 #include <KWindowSystem>
 
 #include <KActivities/Consumer>
@@ -559,12 +557,6 @@ void DockView::setBehaveAsPlasmaPanel(bool behavior)
 
     m_behaveAsPlasmaPanel = behavior;
 
-    if (m_behaveAsPlasmaPanel && m_effects->drawShadows()) {
-        PanelShadows::self()->addWindow(this, m_effects->enabledBorders());
-    } else {
-        PanelShadows::self()->removeWindow(this);
-    }
-
     emit behaveAsPlasmaPanelChanged();
 }
 
@@ -988,10 +980,7 @@ bool DockView::event(QEvent *e)
 
                             if (m_shellSurface) {
                                 m_positioner->syncGeometry();
-
-                                if (m_effects->drawShadows()) {
-                                    PanelShadows::self()->addWindow(this, m_effects->enabledBorders());
-                                }
+                                m_effects->updateShadows();
                             }
 
                             break;
@@ -1001,7 +990,7 @@ bool DockView::event(QEvent *e)
                                 delete m_shellSurface;
                                 m_shellSurface = nullptr;
                                 qDebug() << "WAYLAND dock window surface was deleted...";
-                                PanelShadows::self()->removeWindow(this);
+                                m_effects->clearShadows();
                             }
 
                             break;

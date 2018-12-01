@@ -55,6 +55,7 @@ void Effects::init()
 
     connect(m_view, &Latte::DockView::alignmentChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
+    connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
 
     connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
@@ -236,6 +237,20 @@ void Effects::setMask(QRect area)
 
     // qDebug() << "dock mask set:" << m_mask;
     emit maskChanged();
+}
+
+void Effects::clearShadows()
+{
+    PanelShadows::self()->removeWindow(m_view);
+}
+
+void Effects::updateShadows()
+{
+    if (m_view->behaveAsPlasmaPanel() && drawShadows()) {
+        PanelShadows::self()->addWindow(m_view, enabledBorders());
+    } else {
+        PanelShadows::self()->removeWindow(m_view);
+    }
 }
 
 void Effects::updateEffects()
