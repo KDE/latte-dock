@@ -39,16 +39,11 @@
 #include <QQmlProperty>
 #include <QQuickItem>
 #include <QMenu>
-#include <QMetaEnum>
-#include <QVersionNumber>
 
 #include <KActionCollection>
-#include <KAuthorized>
-#include <KLocalizedContext>
-#include <KLocalizedString>
-#include <KWindowSystem>
-
 #include <KActivities/Consumer>
+
+#include <KWindowSystem>
 
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
