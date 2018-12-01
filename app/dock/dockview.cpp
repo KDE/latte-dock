@@ -121,7 +121,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
     auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
 
     if (dockCorona) {
-        connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
     }
 }
@@ -166,8 +165,6 @@ DockView::~DockView()
 
 void DockView::init()
 {
-    connect(this, &QQuickWindow::screenChanged, this, &DockView::docksCountChanged);
-
     connect(this, &QQuickWindow::xChanged, this, &DockView::xChanged);
     connect(this, &QQuickWindow::xChanged, this, &DockView::updateAbsDockGeometry);
     connect(this, &QQuickWindow::yChanged, this, &DockView::yChanged);
@@ -472,15 +469,6 @@ void DockView::setNormalThickness(int thickness)
 
     m_normalThickness = thickness;
     emit normalThicknessChanged();
-}
-
-int DockView::docksCount() const
-{
-    if (!m_managedLayout) {
-        return 0;
-    }
-
-    return m_managedLayout->docksCount(screen());
 }
 
 int DockView::docksWithTasks()

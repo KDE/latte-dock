@@ -123,7 +123,6 @@ public slots:
 
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
-    void docksCountChanged();
     void dockLocationChanged();
     void raiseDocksTemporaryChanged();
 

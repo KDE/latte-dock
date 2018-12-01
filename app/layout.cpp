@@ -817,7 +817,6 @@ void Layout::destroyedChanged(bool destroyed)
         m_dockViews[sender] = m_waitingDockViews.take(static_cast<Plasma::Containment *>(sender));
     }
 
-    //emit m_corona->docksCountChanged();
     emit viewsCountChanged();
     emit m_corona->availableScreenRectChanged();
     emit m_corona->availableScreenRegionChanged();
@@ -850,7 +849,6 @@ void Layout::containmentDestroyed(QObject *cont)
 
             view->deleteLater();
 
-            //emit m_corona->docksCountChanged();
             emit viewsCountChanged();
             emit m_corona->availableScreenRectChanged();
             emit m_corona->availableScreenRegionChanged();
@@ -1009,7 +1007,6 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     m_dockViews[containment] = dockView;
 
     emit viewColorizerChanged();
-    //emit m_corona->docksCountChanged();
     emit viewsCountChanged();
 }
 
@@ -1716,7 +1713,6 @@ void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> con
 
         dockView->setManagedLayout(this);
 
-        //emit m_corona->docksCountChanged();
         emit viewsCountChanged();
         emit m_corona->availableScreenRectChanged();
         emit m_corona->availableScreenRegionChanged();

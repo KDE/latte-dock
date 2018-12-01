@@ -186,7 +186,16 @@ PlasmaComponents.Page {
                 Connections{
                     target: dock
                     onDockLocationChanged: locationLayout.lockReservedEdges();
-                    onDocksCountChanged: locationLayout.lockReservedEdges();
+                }
+
+                Connections{
+                    target: dock.managedLayout
+                    onViewsCountChanged: locationLayout.lockReservedEdges();
+                }
+
+                Connections{
+                    target: dock.positioner
+                    onCurrentScreenChanged: locationLayout.lockReservedEdges();
                 }
 
                 Component.onCompleted: lockReservedEdges()

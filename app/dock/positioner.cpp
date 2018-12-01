@@ -281,8 +281,6 @@ void Positioner::reconsiderScreen()
 
     syncGeometry();
     qDebug() << "reconsiderScreen() ended...";
-
-    emit m_view->docksCountChanged();
 }
 
 void Positioner::screenChanged(QScreen *scr)

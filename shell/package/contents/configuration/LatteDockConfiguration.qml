@@ -485,14 +485,14 @@ FocusScope {
             spacing: units.largeSpacing
 
             Connections{
-                target: dock
-                onDocksCountChanged: actionButtons.updateEnabled();
+                target: dock.managedLayout
+                onViewsCountChanged: actionButtons.updateEnabled();
             }
 
             function updateEnabled() {
                 var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
-                addDock.enabled = dock.docksCount < 4 && screenFreeEdges.length > 0
-                removeDock.enabled = dock.docksCount>1 && !(dock.docksWithTasks()===1 && dock.tasksPresent())
+                addDock.enabled = dock.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
+                removeDock.enabled = dock.managedLayout.viewsCount>1 && !(dock.docksWithTasks()===1 && dock.tasksPresent())
             }
 
             PlasmaComponents.Button {
