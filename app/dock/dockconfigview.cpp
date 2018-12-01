@@ -25,7 +25,7 @@
 #include "../abstractwindowinterface.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
-#include "../universalsettings.h"
+#include "../settings/universalsettings.h"
 
 #include <QFontMetrics>
 #include <QQuickItem>

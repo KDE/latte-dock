@@ -22,12 +22,12 @@
 
 #include "importer.h"
 #include "infoview.h"
-#include "settingsdialog.h"
 #include "launcherssignals.h"
 #include "layout.h"
 #include "screenpool.h"
-#include "universalsettings.h"
 #include "dock/dockview.h"
+#include "settings/settingsdialog.h"
+#include "settings/universalsettings.h"
 
 #include <QDir>
 #include <QFile>

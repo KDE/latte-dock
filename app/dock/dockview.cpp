@@ -30,7 +30,7 @@
 #include "../layoutmanager.h"
 #include "../screenpool.h"
 #include "../plasmathemeextended.h"
-#include "../universalsettings.h"
+#include "../settings/universalsettings.h"
 #include "../../liblattedock/extras.h"
 
 #include <QAction>

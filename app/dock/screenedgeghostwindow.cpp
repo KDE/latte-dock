@@ -18,8 +18,8 @@
 */
 
 #include "screenedgeghostwindow.h"
-#include "../dockcorona.h"
 #include "dockview.h"
+#include "../dockcorona.h"
 
 #include <QDebug>
 #include <QSurfaceFormat>

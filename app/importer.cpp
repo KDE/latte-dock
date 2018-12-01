@@ -24,7 +24,7 @@
 #include "layoutmanager.h"
 #include "layout.h"
 #include "screenpool.h"
-#include "universalsettings.h"
+#include "settings/universalsettings.h"
 #include "../liblattedock/dock.h"
 
 #include <QFile>

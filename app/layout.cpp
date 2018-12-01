@@ -24,9 +24,9 @@
 #include "importer.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
-#include "universalsettings.h"
 #include "dock/dockview.h"
 #include "dock/positioner.h"
+#include "settings/universalsettings.h"
 
 #include <QDir>
 #include <QFile>

@@ -29,10 +29,10 @@
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../liblattedock/dock.h"
-#include "layoutsDelegates/checkboxdelegate.h"
-#include "layoutsDelegates/colorcmbboxdelegate.h"
-#include "layoutsDelegates/activitycmbboxdelegate.h"
-#include "layoutsDelegates/layoutnamedelegate.h"
+#include "delegates/checkboxdelegate.h"
+#include "delegates/colorcmbboxdelegate.h"
+#include "delegates/activitycmbboxdelegate.h"
+#include "delegates/layoutnamedelegate.h"
 
 #include <QButtonGroup>
 #include <QColorDialog>

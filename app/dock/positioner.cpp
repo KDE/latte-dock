@@ -23,7 +23,7 @@
 #include "effects.h"
 #include "../dockcorona.h"
 #include "../screenpool.h"
-#include "../universalsettings.h"
+#include "../settings/universalsettings.h"
 #include "../../liblattedock/dock.h"
 
 #include <QDebug>

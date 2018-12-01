@@ -14,9 +14,7 @@ set(lattedock-app_SRCS
     plasmathemeextended.cpp
     schemecolors.cpp
     screenpool.cpp
-    settingsdialog.cpp
     sortedactivitiesmodel.cpp
-    universalsettings.cpp
     waylandinterface.cpp
     windowinfowrap.cpp
     xwindowinterface.cpp
@@ -29,11 +27,13 @@ set(lattedock-app_SRCS
     dock/positioner.cpp
     dock/screenedgeghostwindow.cpp
     dock/visibilitymanager.cpp
-    layoutsDelegates/activitycmbboxdelegate.cpp
-    layoutsDelegates/checkboxdelegate.cpp
-    layoutsDelegates/colorcmbboxdelegate.cpp
-    layoutsDelegates/colorcmbboxitemdelegate.cpp
-    layoutsDelegates/layoutnamedelegate.cpp
+    settings/settingsdialog.cpp
+    settings/universalsettings.cpp
+    settings/delegates/activitycmbboxdelegate.cpp
+    settings/delegates/checkboxdelegate.cpp
+    settings/delegates/colorcmbboxdelegate.cpp
+    settings/delegates/colorcmbboxitemdelegate.cpp
+    settings/delegates/layoutnamedelegate.cpp
     main.cpp
 )
 

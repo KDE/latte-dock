@@ -28,11 +28,11 @@
 #include "layoutmanager.h"
 #include "plasmathemeextended.h"
 #include "screenpool.h"
-#include "universalsettings.h"
 #include "waylandinterface.h"
 #include "xwindowinterface.h"
 #include "dock/dockview.h"
 #include "packageplugins/shell/dockpackage.h"
+#include "settings/universalsettings.h"
 
 //dbus adaptor
 #include "lattedockadaptor.h"

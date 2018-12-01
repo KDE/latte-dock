@@ -22,7 +22,7 @@
 #define LAYOUTMANAGER_H
 
 #include "launcherssignals.h"
-#include "settingsdialog.h"
+#include "settings/settingsdialog.h"
 
 #include <QAction>
 #include <QObject>

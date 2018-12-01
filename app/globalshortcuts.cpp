@@ -21,8 +21,8 @@
 #include "dockcorona.h"
 #include "globalshortcuts.h"
 #include "layoutmanager.h"
-#include "universalsettings.h"
 #include "dock/dockview.h"
+#include "settings/universalsettings.h"
 
 #include <QAction>
 #include <QDebug>
