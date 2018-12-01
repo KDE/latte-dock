@@ -21,8 +21,11 @@
 #ifndef UNIVERSALSETTINGS_H
 #define UNIVERSALSETTINGS_H
 
+#include "dockcorona.h"
+
 #include <QObject>
 #include <QAbstractItemModel>
+#include <QPointer>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -100,8 +103,6 @@ public:
 
     QAbstractItemModel *runningActivitiesModel() const;
     void setRunningActivitiesModel(SortedActivitiesModel *model);
-    void enableActivitiesModel();
-    void disableActivitiesModel();
 
 public slots:
     Q_INVOKABLE QString splitterIconPath();
@@ -130,10 +131,13 @@ private slots:
     void loadConfig();
     void saveConfig();
 
+    void reconsiderActivitiesModel();
     void shortcutsFileChanged(const QString &file);
 
 private:
     void cleanupSettings();
+    void enableActivitiesModel();
+    void disableActivitiesModel();
 
     void initGlobalShortcutsWatcher();
     //! access user set global shortcuts for activate entries
@@ -171,6 +175,8 @@ private:
     KSharedConfig::Ptr m_shortcutsConfigPtr;
 
     SortedActivitiesModel *m_runningActivitiesModel{nullptr};
+
+    QPointer<DockCorona> m_corona;
 
     friend class LayoutManager;
     friend class DockCorona;

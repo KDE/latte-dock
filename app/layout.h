@@ -159,7 +159,6 @@ signals:
     void backgroundChanged();
     void colorChanged();
     void disableBordersForMaximizedWindowsChanged();
-    void dockColorizerSupportChanged();
     void fileChanged();
     void lastUsedActivityChanged();
     void launchersChanged();
@@ -167,6 +166,7 @@ signals:
     void versionChanged();
     void showInMenuChanged();
     void textColorChanged();
+    void viewColorizerChanged();
 
     //! used from DockView(s) in order to exist only one each time that has the highest priority
     //! to use the global shortcuts activations

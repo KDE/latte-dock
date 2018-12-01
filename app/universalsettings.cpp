@@ -19,8 +19,7 @@
 */
 
 #include "universalsettings.h"
-#include "dockcorona.h"
-
+#include "layoutmanager.h"
 #include "sortedactivitiesmodel.h"
 
 #include <QDir>
@@ -42,6 +41,8 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
       m_config(config),
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
+    m_corona = qobject_cast<DockCorona *>(parent);
+
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::downloadWindowSizeChanged, this, &UniversalSettings::saveConfig);
@@ -152,6 +153,9 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
+
+    //! connections with other classes
+    connect(m_corona->layoutManager(), &LayoutManager::viewColorizerChanged, this, &UniversalSettings::reconsiderActivitiesModel);
 
     //! load global shortcuts badges at startup
     initGlobalShortcutsWatcher();
@@ -527,6 +531,15 @@ void UniversalSettings::disableActivitiesModel()
 {
     if (m_runningActivitiesModel) {
         setRunningActivitiesModel(nullptr);
+    }
+}
+
+void UniversalSettings::reconsiderActivitiesModel()
+{
+    if (m_corona->layoutManager()->hasColorizer()) {
+        enableActivitiesModel();
+    } else {
+        disableActivitiesModel();
     }
 }
 

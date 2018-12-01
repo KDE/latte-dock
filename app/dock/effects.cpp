@@ -59,6 +59,22 @@ void Effects::init()
     connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
 
+bool Effects::colorizerEnabled() const
+{
+    return m_colorizerEnabled;
+}
+
+void Effects::setColorizerEnabled(bool enabled)
+{
+    if (m_colorizerEnabled == enabled) {
+        return;
+    }
+
+    m_colorizerEnabled = enabled;
+    emit colorizerEnabledChanged();
+}
+
+
 bool Effects::drawShadows() const
 {
     return m_drawShadows;

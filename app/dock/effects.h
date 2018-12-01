@@ -37,6 +37,7 @@ namespace View {
 class Effects: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool colorizerEnabled READ colorizerEnabled WRITE setColorizerEnabled NOTIFY colorizerEnabledChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
 
@@ -51,6 +52,9 @@ class Effects: public QObject
 public:
     Effects(DockView *parent);
     virtual ~Effects();
+
+    bool colorizerEnabled() const;
+    void setColorizerEnabled(bool enabled);
 
     bool drawShadows() const;
     void setDrawShadows(bool draw);
@@ -77,6 +81,7 @@ public slots:
     void updateEnabledBorders();
 
 signals:
+    void colorizerEnabledChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
     void enabledBordersChanged();
@@ -88,6 +93,7 @@ private slots:
     void init();
 
 private:
+    bool m_colorizerEnabled{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceDrawCenteredBorders{false};

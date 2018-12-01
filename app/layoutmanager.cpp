@@ -198,6 +198,19 @@ QString LayoutManager::defaultLayoutName() const
     return presetName;
 }
 
+bool LayoutManager::hasColorizer() const
+{
+    foreach (auto layout, m_activeLayouts) {
+        for (const auto *view : *layout->dockViews()) {
+            if (view->effects()->colorizerEnabled()) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool LayoutManager::layoutExists(QString layoutName) const
 {
     return m_layouts.contains(layoutName);
@@ -644,6 +657,16 @@ void LayoutManager::hideAllDocks()
     }
 }
 
+void LayoutManager::addLayout(Layout *layout)
+{
+    if (!m_activeLayouts.contains(layout)) {
+        m_activeLayouts.append(layout);
+        layout->initToCorona(m_corona);
+
+        connect(layout, &Layout::viewColorizerChanged, this, &LayoutManager::viewColorizerChanged);
+    }
+}
+
 bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 {
     if (m_activeLayouts.size() > 0 && currentLayoutName() == layoutName && previousMemoryUsage == -1) {
@@ -747,9 +770,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                 }
 
                 Layout *newLayout = new Layout(this, fixedLPath, fixedLayoutName);
-                m_activeLayouts.append(newLayout);
-                newLayout->initToCorona(m_corona);
-
+                addLayout(newLayout);
                 loadLatteLayout(fixedLPath);
 
                 emit activeLayoutsChanged();
@@ -901,9 +922,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
             if (newLayout) {
                 qDebug() << "ACTIVATING ORPHANED LAYOUT ::::: " << layoutForOrphans;
-
-                m_activeLayouts.append(newLayout);
-                newLayout->initToCorona(m_corona);
+                addLayout(newLayout);
                 newLayout->importToCorona();
             }
         }
@@ -916,8 +935,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
             if (newLayout) {
                 qDebug() << "ACTIVATING LAYOUT ::::: " << layoutName;
-                m_activeLayouts.append(newLayout);
-                newLayout->initToCorona(m_corona);
+                addLayout(newLayout);
                 newLayout->importToCorona();
 
                 if (newLayout->isOriginalLayout() && m_corona->universalSettings()->showInfoWindow()) {
@@ -1180,30 +1198,6 @@ void LayoutManager::showInfoWindow(QString info, int duration, QStringList activ
         QTimer::singleShot(duration, [this, infoView]() {
             infoView->deleteLater();
         });
-    }
-}
-
-void LayoutManager::updateColorizerSupport()
-{
-    bool enable{false};
-
-    foreach (auto layout, m_activeLayouts) {
-        for (const auto *view : *layout->dockViews()) {
-            if (view->colorizerSupport()) {
-                enable = true;
-                break;
-            }
-        }
-
-        if (enable) {
-            break;
-        }
-    }
-
-    if (enable) {
-        m_corona->universalSettings()->enableActivitiesModel();
-    } else {
-        m_corona->universalSettings()->disableActivitiesModel();
     }
 }
 

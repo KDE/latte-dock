@@ -174,8 +174,6 @@ void Layout::initToCorona(DockCorona *corona)
 {
     m_corona = corona;
 
-    connect(this, &Layout::dockColorizerSupportChanged, m_corona->layoutManager(), &LayoutManager::updateColorizerSupport);
-
     foreach (auto containment, m_corona->containments()) {
         if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
             addContainment(containment);
@@ -852,7 +850,7 @@ void Layout::containmentDestroyed(QObject *cont)
             emit m_corona->docksCountChanged();
             emit m_corona->availableScreenRectChanged();
             emit m_corona->availableScreenRegionChanged();
-            emit dockColorizerSupportChanged();
+            emit viewColorizerChanged();
         }
     }
 }
@@ -995,7 +993,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
         connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
     }
 
-    connect(dockView, &DockView::colorizerSupportChanged, this, &Layout::dockColorizerSupportChanged);
+    connect(dockView->effects(), &View::Effects::colorizerEnabledChanged, this, &Layout::viewColorizerChanged);
 
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
@@ -1006,7 +1004,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
 
     m_dockViews[containment] = dockView;
 
-    emit dockColorizerSupportChanged();
+    emit viewColorizerChanged();
     emit m_corona->docksCountChanged();
 }
 

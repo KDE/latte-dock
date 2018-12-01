@@ -79,6 +79,7 @@ public:
     void syncActiveLayoutsToOriginalFiles();
 
     bool dockViewExists(DockView *view) const;
+    bool hasColorizer() const;
     bool layoutExists(QString layoutName) const;
 
     QString shouldSwitchToLayout(QString activityId);
@@ -111,7 +112,6 @@ public:
 
 public slots:
     void showAboutDialog();
-    void updateColorizerSupport();
 
     void hideLatteSettingsDialog();
     Q_INVOKABLE void showLatteSettingsDialog(int page = Latte::Dock::LayoutPage);
@@ -133,6 +133,7 @@ signals:
     void launchersSignalsChanged();
     void layoutsChanged();
     void menuLayoutsChanged();
+    void viewColorizerChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
 
@@ -142,6 +143,7 @@ private slots:
     void syncMultipleLayoutsToActivities(QString layoutForOrphans = QString());
 
 private:
+    void addLayout(Layout *layout);
     void cleanupOnStartup(QString path); //!remove deprecated or oldstyle config options
     void clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks = false);
     void confirmDynamicSwitch();

@@ -97,33 +97,9 @@ Item{
 
     Binding{
         target: dock
-        property: "colorizerSupport"
-        when: dock
-        value: root.forceColorizer && plasmoid.configuration.solidBackgroundForMaximized
-    }
-
-    Binding{
-        target: dock
         property: "dockTransparency"
         when: dock
         value: root.currentPanelTransparency
-    }
-
-    Binding{
-        target: dock && dock.effects ? dock.effects : null
-        property: "drawShadows"
-        when: dock && dock.effects
-        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding)
-    }
-
-    Binding{
-        target: dock && dock.effects ? dock.effects : null
-        property: "drawEffects"
-        when: dock && dock.effects
-        value: Latte.WindowSystem.compositingActive &&
-               (((root.blurEnabled && root.useThemePanel)
-                 || (root.blurEnabled && root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
-                && (!root.inStartup || inForceHiding || inTempHiding))
     }
 
     Binding{
@@ -138,19 +114,6 @@ Item{
         property:"inEditMode"
         when: dock
         value: root.editMode
-    }
-
-    Binding{
-        target: dock && dock.effects ? dock.effects : null
-        property:"innerShadow"
-        when: dock && dock.effects
-        value: {
-            if (editModeVisual.editAnimationEnded && !root.behaveAsPlasmaPanel) {
-                return root.editShadow;
-            } else {
-                return root.panelShadow;
-            }
-        }
     }
 
     Binding{
@@ -173,6 +136,43 @@ Item{
         property: "alignment"
         when: dock
         value: root.panelAlignment
+    }
+
+    Binding{
+        target: dock && dock.effects ? dock.effects : null
+        property: "colorizerEnabled"
+        when: dock && dock.effects
+        value: root.forceColorizer && plasmoid.configuration.solidBackgroundForMaximized
+    }
+
+    Binding{
+        target: dock && dock.effects ? dock.effects : null
+        property: "drawEffects"
+        when: dock && dock.effects
+        value: Latte.WindowSystem.compositingActive &&
+               (((root.blurEnabled && root.useThemePanel)
+                 || (root.blurEnabled && root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
+                && (!root.inStartup || inForceHiding || inTempHiding))
+    }
+
+    Binding{
+        target: dock && dock.effects ? dock.effects : null
+        property: "drawShadows"
+        when: dock && dock.effects
+        value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding)
+    }
+
+    Binding{
+        target: dock && dock.effects ? dock.effects : null
+        property:"innerShadow"
+        when: dock && dock.effects
+        value: {
+            if (editModeVisual.editAnimationEnded && !root.behaveAsPlasmaPanel) {
+                return root.editShadow;
+            } else {
+                return root.panelShadow;
+            }
+        }
     }
 
     Binding{
