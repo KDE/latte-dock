@@ -89,6 +89,7 @@ void Positioner::init()
     connect(m_view, &QQuickWindow::yChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::widthChanged, this, &Positioner::validateDockGeometry);
     connect(m_view, &QQuickWindow::heightChanged, this, &Positioner::validateDockGeometry);
+    connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::currentScreenChanged);
     connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::screenChanged);
 
     connect(m_view, &Latte::DockView::absGeometryChanged, this, &Positioner::syncGeometry);
@@ -124,6 +125,17 @@ void Positioner::init()
     connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Positioner::screenChanged);
 
     initSignalingForLocationChangeSliding();
+}
+
+int Positioner::currentScreenId() const
+{
+    auto *dockCorona = qobject_cast<DockCorona *>(m_view->corona());
+
+    if (dockCorona) {
+        return dockCorona->screenPool()->id(m_screenToFollowId);
+    }
+
+    return -1;
 }
 
 QString Positioner::currentScreenName() const

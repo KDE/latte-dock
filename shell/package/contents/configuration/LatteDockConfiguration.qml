@@ -490,7 +490,8 @@ FocusScope {
             }
 
             function updateEnabled() {
-                addDock.enabled = dock.docksCount < 4 && dock.freeEdges().length > 0
+                var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
+                addDock.enabled = dock.docksCount < 4 && screenFreeEdges.length > 0
                 removeDock.enabled = dock.docksCount>1 && !(dock.docksWithTasks()===1 && dock.tasksPresent())
             }
 
@@ -574,7 +575,8 @@ FocusScope {
                     onClicked: dock.addNewDock()
 
                     Component.onCompleted: {
-                        enabled = dock.freeEdges().length > 0
+                        var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
+                        enabled = screenFreeEdges.length > 0
                     }
                 }
             }

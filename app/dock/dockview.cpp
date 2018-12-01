@@ -979,23 +979,6 @@ bool DockView::event(QEvent *e)
     return ContainmentView::event(e);;
 }
 
-QList<int> DockView::freeEdges() const
-{
-    if (!m_managedLayout) {
-        const QList<int> emptyEdges;
-        return emptyEdges;
-    }
-
-    const auto edges = m_managedLayout->freeEdges(screen());
-    QList<int> edgesInt;
-
-    foreach (Plasma::Types::Location edge, edges) {
-        edgesInt.append(static_cast<int>(edge));
-    }
-
-    return edgesInt;
-}
-
 void DockView::deactivateApplets()
 {
     if (!containment()) {

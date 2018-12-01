@@ -42,18 +42,20 @@ class Positioner: public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(int currentScreenId READ currentScreenId NOTIFY currentScreenChanged)
     Q_PROPERTY(QString currentScreenName READ currentScreenName NOTIFY currentScreenChanged)
 
 public:
     Positioner(DockView *parent);
     virtual ~Positioner();
 
-    void reconsiderScreen();
+    int currentScreenId() const;
+    QString currentScreenName() const;
 
     bool inLocationChangeAnimation();
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
 
-    QString currentScreenName() const;
+    void reconsiderScreen();
 
 public slots:
     Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);

@@ -1791,6 +1791,23 @@ QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, DockV
     return edges;
 }
 
+QList<int> Layout::qmlFreeEdges(int screen) const
+{
+    if (!m_corona) {
+        const QList<int> emptyEdges;
+        return emptyEdges;
+    }
+
+    const auto edges = freeEdges(screen);
+    QList<int> edgesInt;
+
+    foreach (Plasma::Types::Location edge, edges) {
+        edgesInt.append(static_cast<int>(edge));
+    }
+
+    return edgesInt;
+}
+
 QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
 {
     using Plasma::Types;

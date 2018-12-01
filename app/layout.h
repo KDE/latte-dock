@@ -154,6 +154,10 @@ public:
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;
 
+public slots:
+    //change <Plasma::Types::Location> to <int> types
+    Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;
+
 signals:
     void activitiesChanged();
     void backgroundChanged();

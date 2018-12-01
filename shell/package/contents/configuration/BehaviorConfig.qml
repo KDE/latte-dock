@@ -189,6 +189,8 @@ PlasmaComponents.Page {
                     onDocksCountChanged: locationLayout.lockReservedEdges();
                 }
 
+                Component.onCompleted: lockReservedEdges()
+
                 ExclusiveGroup {
                     id: locationGroup
                     property bool inStartup: true
@@ -202,64 +204,64 @@ PlasmaComponents.Page {
                 }
 
                 function lockReservedEdges() {
-                    var buttons = visibleChildren
-                    var edges = dock.freeEdges()
+                    var edges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
 
-                    for (var i = 0; i < buttons.length; i++) {
-                        buttons[i].enabled = buttons[i].checked || freeEdge(buttons[i].edge, edges)
-                    }
-                }
-
-                function freeEdge(edge, edges) {
-                    for (var i = 0; i < edges.length; i++) {
-                        if (edges[i] === edge)
-                            return true
-                    }
-                    return false
+                    bottomEdgeBtn.edgeIsFree = (edges.indexOf(bottomEdgeBtn.edge)>=0);
+                    topEdgeBtn.edgeIsFree = (edges.indexOf(topEdgeBtn.edge)>=0);
+                    leftEdgeBtn.edgeIsFree = (edges.indexOf(leftEdgeBtn.edge)>=0);
+                    rightEdgeBtn.edgeIsFree = (edges.indexOf(rightEdgeBtn.edge)>=0);
                 }
 
                 PlasmaComponents.Button {
+                    id: bottomEdgeBtn
                     Layout.fillWidth: true
                     text: i18nc("bottom location", "Bottom")
                     iconSource: "arrow-down"
                     checked: dock.location === edge
                     checkable: true
-                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
+                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
+                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.BottomEdge
                 }
                 PlasmaComponents.Button {
+                    id: leftEdgeBtn
                     Layout.fillWidth: true
                     text: i18nc("left location", "Left")
                     iconSource: "arrow-left"
                     checked: dock.location === edge
                     checkable: true
-                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
+                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
+                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.LeftEdge
                 }
                 PlasmaComponents.Button {
+                    id: topEdgeBtn
                     Layout.fillWidth: true
                     text: i18nc("top location", "Top")
                     iconSource: "arrow-up"
                     checked: dock.location === edge
                     checkable: true
-                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
+                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
+                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.TopEdge
                 }
                 PlasmaComponents.Button {
+                    id: rightEdgeBtn
                     Layout.fillWidth: true
                     text: i18nc("right location", "Right")
                     iconSource: "arrow-right"
                     checked: dock.location === edge
                     checkable: true
-                    enabled: checked || locationLayout.freeEdge(edge, dock.freeEdges())
+                    enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
 
+                    property bool edgeIsFree: true
                     readonly property int edge: PlasmaCore.Types.RightEdge
                 }
             }
