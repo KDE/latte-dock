@@ -1016,6 +1016,15 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     emit viewsCountChanged();
 }
 
+void Layout::addNewDock()
+{
+    if (!m_corona) {
+        return;
+    }
+
+    m_corona->loadDefaultLayout();
+}
+
 void Layout::copyDock(Plasma::Containment *containment)
 {
     if (!containment || !m_corona)

@@ -572,7 +572,7 @@ FocusScope {
                     iconSource: "list-add"
                     tooltip: i18n("Add a new dock")
 
-                    onClicked: dock.addNewDock()
+                    onClicked: dock.managedLayout.addNewDock()
 
                     Component.onCompleted: {
                         var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);

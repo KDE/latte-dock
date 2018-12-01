@@ -275,15 +275,6 @@ void DockView::reconsiderScreen()
     m_positioner->reconsiderScreen();
 }
 
-void DockView::addNewDock()
-{
-    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
-
-    if (dockCorona) {
-        dockCorona->loadDefaultLayout();
-    }
-}
-
 void DockView::copyDock()
 {
     m_managedLayout->copyDock(containment());

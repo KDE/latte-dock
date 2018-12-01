@@ -162,6 +162,8 @@ public slots:
     //change <Plasma::Types::Location> to <int> types
     Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;
 
+    Q_INVOKABLE void addNewDock();
+
 signals:
     void activitiesChanged();
     void backgroundChanged();
