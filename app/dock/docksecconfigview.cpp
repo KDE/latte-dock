@@ -79,12 +79,6 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
     connections << connect(dockView, &DockView::normalThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
     });
-
-    /*auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona && m_configType == PrimaryConfig) {
-        connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
-    }*/
 }
 
 DockSecConfigView::~DockSecConfigView()
@@ -279,9 +273,9 @@ void DockSecConfigView::setupWaylandIntegration()
         return;
     }
 
-    if (DockCorona *c = qobject_cast<DockCorona *>(m_dockView->containment()->corona())) {
+    if (m_corona) {
         using namespace KWayland::Client;
-        PlasmaShell *interface = c->waylandDockCoronaInterface();
+        PlasmaShell *interface = m_corona->waylandDockCoronaInterface();
 
         if (!interface) {
             return;

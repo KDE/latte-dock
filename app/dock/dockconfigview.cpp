@@ -81,10 +81,8 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         m_thicknessSyncTimer.start();
     });
 
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
-    if (dockCorona) {
-        connections << connect(dockCorona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
+    if (m_corona) {
+        connections << connect(m_corona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
     }
 }
 
@@ -114,11 +112,10 @@ void DockConfigView::init()
     PanelShadows::self()->addWindow(this);
     rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
 
-    if (dockCorona) {
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
-        rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
+    if (m_corona) {
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());
+        rootContext()->setContextProperty(QStringLiteral("layoutManager"), m_corona->layoutManager());
     }
 
     KDeclarative::KDeclarative kdeclarative;
@@ -373,9 +370,9 @@ void DockConfigView::setupWaylandIntegration()
         return;
     }
 
-    if (DockCorona *c = qobject_cast<DockCorona *>(m_dockView->containment()->corona())) {
+    if (m_corona) {
         using namespace KWayland::Client;
-        PlasmaShell *interface = c->waylandDockCoronaInterface();
+        PlasmaShell *interface = m_corona->waylandDockCoronaInterface();
 
         if (!interface) {
             return;
@@ -481,13 +478,11 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
 {
     Dock::LaunchersGroup group = (Dock::LaunchersGroup)groupInt;
 
-    auto *dockCorona = qobject_cast<DockCorona *>(m_dockView->corona());
-
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
-    if (dockCorona &&  m_dockView->managedLayout()) {
+    if (m_corona &&  m_dockView->managedLayout()) {
         if ((group == Dock::LayoutLaunchers && m_dockView->managedLayout()->launchers().isEmpty())
-            || (group == Dock::GlobalLaunchers && dockCorona->universalSettings()->launchers().isEmpty())) {
+            || (group == Dock::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_dockView->containment();
 
@@ -525,7 +520,7 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
                                     if (group == Dock::LayoutLaunchers) {
                                         m_dockView->managedLayout()->setLaunchers(launchers.toStringList());
                                     } else if (group == Dock::GlobalLaunchers) {
-                                        dockCorona->universalSettings()->setLaunchers(launchers.toStringList());
+                                        m_corona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }
                                 }
                             }
