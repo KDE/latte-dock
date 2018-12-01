@@ -52,8 +52,11 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
-class DockMenuManager;
 class Layout;
+
+namespace View {
+class ContextMenu;
+}
 }
 
 namespace Latte {
@@ -264,7 +267,7 @@ private:
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
-    QPointer<DockMenuManager> m_menuManager;
+    QPointer<View::ContextMenu> m_contextMenu;
     QPointer<View::Effects> m_effects;
     QPointer<View::Positioner> m_positioner;
     QPointer<VisibilityManager> m_visibility;

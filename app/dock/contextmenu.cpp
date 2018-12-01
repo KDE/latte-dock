@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dockmenumanager.h"
+#include "contextmenu.h"
 
 #include "dockview.h"
 #include "visibilitymanager.h"
@@ -38,23 +38,24 @@
 #include <PlasmaQuick/AppletQuickItem>
 
 namespace Latte {
+namespace View {
 
-DockMenuManager::DockMenuManager(DockView *view) :
+ContextMenu::ContextMenu(Latte::DockView *view) :
     QObject(view),
     m_dockView(view)
 {
 }
 
-DockMenuManager::~DockMenuManager()
+ContextMenu::~ContextMenu()
 {
 }
 
-QMenu *DockMenuManager::contextMenu()
+QMenu *ContextMenu::menu()
 {
     return m_contextMenu;
 }
 
-void DockMenuManager::menuAboutToHide()
+void ContextMenu::menuAboutToHide()
 {
     if (!m_dockView) {
         return;
@@ -66,10 +67,10 @@ void DockMenuManager::menuAboutToHide()
         m_dockView->visibility()->setBlockHiding(false);
     }
 
-    emit contextMenuChanged();
+    emit menuChanged();
 }
 
-bool DockMenuManager::mousePressEvent(QMouseEvent *event)
+bool ContextMenu::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "Step -1 ...";
 
@@ -85,7 +86,7 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
         //qDebug() << "Step 0.5 ...";
         m_contextMenu->close();
         m_contextMenu = 0;
-        emit contextMenuChanged();
+        emit menuChanged();
         // PlasmaQuick::ContainmentView::mousePressEvent(event);
         return false;
     }
@@ -281,7 +282,7 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
                 m_dockView->visibility()->setBlockHiding(true);
                 desktopMenu->popup(pos);
                 event->setAccepted(true);
-                emit contextMenuChanged();
+                emit menuChanged();
                 return false;
             }
 
@@ -292,13 +293,13 @@ bool DockMenuManager::mousePressEvent(QMouseEvent *event)
     }
 
     //qDebug() << "10 ...";
-    emit contextMenuChanged();
+    emit menuChanged();
     return true;
     //  PlasmaQuick::ContainmentView::mousePressEvent(event);
 }
 
 //! update the appletContainsPos method from Panel view
-void DockMenuManager::updateAppletContainsMethod()
+void ContextMenu::updateAppletContainsMethod()
 {
     for (QQuickItem *item : m_dockView->contentItem()->childItems()) {
         if (auto *metaObject = item->metaObject()) {
@@ -319,7 +320,7 @@ void DockMenuManager::updateAppletContainsMethod()
     }
 }
 
-void DockMenuManager::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
+void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
 {
     if (!m_dockView->containment()) {
         return;
@@ -402,7 +403,7 @@ void DockMenuManager::addAppletActions(QMenu *desktopMenu, Plasma::Applet *apple
     }
 }
 
-void DockMenuManager::addContainmentActions(QMenu *desktopMenu, QEvent *event)
+void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 {
     if (!m_dockView->containment()) {
         return;
@@ -452,7 +453,7 @@ void DockMenuManager::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     return;
 }
 
-Plasma::Containment *DockMenuManager::containmentById(uint id)
+Plasma::Containment *ContextMenu::containmentById(uint id)
 {
     foreach (auto containment, m_dockView->corona()->containments()) {
         if (id == containment->id()) {
@@ -463,4 +464,5 @@ Plasma::Containment *DockMenuManager::containmentById(uint id)
     return 0;
 }
 
+}
 }

@@ -20,8 +20,8 @@ set(lattedock-app_SRCS
     waylandinterface.cpp
     windowinfowrap.cpp
     xwindowinterface.cpp
+    dock/contextmenu.cpp
     dock/dockconfigview.cpp
-    dock/dockmenumanager.cpp
     dock/docksecconfigview.cpp
     dock/dockview.cpp
     dock/effects.cpp

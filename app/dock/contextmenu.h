@@ -17,9 +17,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#ifndef DOCKMENUMANAGER_H
-#define DOCKMENUMANAGER_H
+#ifndef CONTEXTMENU_H
+#define CONTEXTMENU_H
 
 #include <QEvent>
 #include <QMenu>
@@ -38,21 +37,22 @@ class DockView;
 }
 
 namespace Latte {
+namespace View {
 
-class DockMenuManager : public QObject
+class ContextMenu : public QObject
 {
     Q_OBJECT
 
 public:
-    DockMenuManager(DockView *view);
-    ~DockMenuManager() override;
+    ContextMenu(Latte::DockView *view);
+    ~ContextMenu() override;
 
-    QMenu *contextMenu();
+    QMenu *menu();
 
     bool mousePressEvent(QMouseEvent *event);
 
 signals:
-    void contextMenuChanged();
+    void menuChanged();
 
 private slots:
     void menuAboutToHide();
@@ -69,11 +69,12 @@ private:
     QMetaMethod m_appletContainsMethod;
     QQuickItem *m_appletContainsMethodItem{nullptr};
 
-    DockView *m_dockView;
+    Latte::DockView *m_dockView;
 
-    friend class DockView;
+    friend class Latte::DockView;
 };
 
+}
 }
 
 #endif // DOCKMENUMANAGER_H

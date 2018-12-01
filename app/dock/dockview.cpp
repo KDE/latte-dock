@@ -20,8 +20,8 @@
 
 #include "dockview.h"
 
+#include "contextmenu.h"
 #include "dockconfigview.h"
-#include "dockmenumanager.h"
 #include "effects.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
@@ -59,7 +59,7 @@ namespace Latte {
 //! are needed in order for window flags to be set correctly
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
-      m_menuManager(new DockMenuManager(this)),
+      m_contextMenu(new View::ContextMenu(this)),
       m_effects(new View::Effects(this)),
       m_positioner(new View::Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
 {
@@ -149,8 +149,8 @@ DockView::~DockView()
         m_configView->setVisible(false);//hide();
     }
 
-    if (m_menuManager) {
-        delete m_menuManager;
+    if (m_contextMenu) {
+        delete m_contextMenu;
     }
 
     //needs to be deleted before Effects becuase it catches some of its signals
@@ -188,7 +188,7 @@ void DockView::init()
 
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
 
-    connect(m_menuManager, &DockMenuManager::contextMenuChanged, this, &DockView::contextMenuIsShownChanged);
+    connect(m_contextMenu, &View::ContextMenu::menuChanged, this, &DockView::contextMenuIsShownChanged);
 
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
@@ -434,11 +434,11 @@ void DockView::setAlternativesIsShown(bool show)
 
 bool DockView::contextMenuIsShown() const
 {
-    if (!m_menuManager) {
+    if (!m_contextMenu) {
         return false;
     }
 
-    return m_menuManager->contextMenu();
+    return m_contextMenu->menu();
 }
 
 int DockView::currentThickness() const
@@ -1027,7 +1027,7 @@ void DockView::restoreGrabItemBehavior()
 //!BEGIN overriding context menus behavior
 void DockView::mousePressEvent(QMouseEvent *event)
 {
-    bool result = m_menuManager->mousePressEvent(event);
+    bool result = m_contextMenu->mousePressEvent(event);
     emit contextMenuIsShownChanged();
 
     if (result) {
