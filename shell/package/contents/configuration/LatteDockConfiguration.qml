@@ -589,7 +589,7 @@ FocusScope {
 
                 text: i18n("Remove")
                 iconSource: "delete"
-                opacity: dock.totalDocksCount > 1 ? 1 : 0
+                opacity: dock.managedLayout.viewsCount > 1 ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
                 onClicked: dock.removeDock()

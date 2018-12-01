@@ -49,6 +49,9 @@ class Layout : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool showInMenu READ showInMenu WRITE setShowInMenu NOTIFY showInMenuChanged)
+
+    Q_PROPERTY(int viewsCount READ viewsCount NOTIFY viewsCountChanged)
+
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
     Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
@@ -150,9 +153,10 @@ public:
     void unlock();
 
     int noDocksWithTasks() const;
-    int docksCount() const;
+
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;
+    int viewsCount() const;
 
 public slots:
     //change <Plasma::Types::Location> to <int> types
@@ -171,6 +175,7 @@ signals:
     void showInMenuChanged();
     void textColorChanged();
     void viewColorizerChanged();
+    void viewsCountChanged();
 
     //! used from DockView(s) in order to exist only one each time that has the highest priority
     //! to use the global shortcuts activations

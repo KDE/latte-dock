@@ -122,7 +122,6 @@ DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindo
 
     if (dockCorona) {
         connect(dockCorona, &DockCorona::docksCountChanged, this, &DockView::docksCountChanged);
-        connect(this, &DockView::docksCountChanged, this, &DockView::totalDocksCountChanged);
         connect(dockCorona, &DockCorona::dockLocationChanged, this, &DockView::dockLocationChanged);
     }
 }
@@ -292,7 +291,7 @@ void DockView::copyDock()
 
 void DockView::removeDock()
 {
-    if (totalDocksCount() > 1) {
+    if (m_managedLayout && m_managedLayout->viewsCount() > 1) {
         QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));
 
         if (removeAct) {
@@ -482,15 +481,6 @@ int DockView::docksCount() const
     }
 
     return m_managedLayout->docksCount(screen());
-}
-
-int DockView::totalDocksCount() const
-{
-    if (!m_managedLayout) {
-        return 0;
-    }
-
-    return m_managedLayout->docksCount();
 }
 
 int DockView::docksWithTasks()

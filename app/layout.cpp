@@ -817,7 +817,8 @@ void Layout::destroyedChanged(bool destroyed)
         m_dockViews[sender] = m_waitingDockViews.take(static_cast<Plasma::Containment *>(sender));
     }
 
-    emit m_corona->docksCountChanged();
+    //emit m_corona->docksCountChanged();
+    emit viewsCountChanged();
     emit m_corona->availableScreenRectChanged();
     emit m_corona->availableScreenRegionChanged();
 }
@@ -846,9 +847,11 @@ void Layout::containmentDestroyed(QObject *cont)
 
         if (view) {
             view->disconnectSensitiveSignals();
+
             view->deleteLater();
 
-            emit m_corona->docksCountChanged();
+            //emit m_corona->docksCountChanged();
+            emit viewsCountChanged();
             emit m_corona->availableScreenRectChanged();
             emit m_corona->availableScreenRegionChanged();
             emit viewColorizerChanged();
@@ -1006,7 +1009,8 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     m_dockViews[containment] = dockView;
 
     emit viewColorizerChanged();
-    emit m_corona->docksCountChanged();
+    //emit m_corona->docksCountChanged();
+    emit viewsCountChanged();
 }
 
 void Layout::copyDock(Plasma::Containment *containment)
@@ -1712,7 +1716,8 @@ void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> con
 
         dockView->setManagedLayout(this);
 
-        emit m_corona->docksCountChanged();
+        //emit m_corona->docksCountChanged();
+        emit viewsCountChanged();
         emit m_corona->availableScreenRectChanged();
         emit m_corona->availableScreenRegionChanged();
     }
@@ -1938,23 +1943,6 @@ int Layout::docksCount(int screen) const
     return docks;
 }
 
-int Layout::docksCount() const
-{
-    if (!m_corona) {
-        return 0;
-    }
-
-    int docks{0};
-
-    foreach (auto view, m_dockViews) {
-        if (view && view->containment() && !view->containment()->destroyed()) {
-            ++docks;
-        }
-    }
-
-    return docks;
-}
-
 int Layout::docksCount(QScreen *screen) const
 {
     if (!m_corona) {
@@ -1965,6 +1953,23 @@ int Layout::docksCount(QScreen *screen) const
 
     foreach (auto view, m_dockViews) {
         if (view && view->screen() == screen && !view->containment()->destroyed()) {
+            ++docks;
+        }
+    }
+
+    return docks;
+}
+
+int Layout::viewsCount() const
+{
+    if (!m_corona) {
+        return 0;
+    }
+
+    int docks{0};
+
+    foreach (auto view, m_dockViews) {
+        if (view && view->containment() && !view->containment()->destroyed()) {
             ++docks;
         }
     }

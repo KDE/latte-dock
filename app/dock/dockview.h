@@ -74,7 +74,6 @@ class DockView : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_PROPERTY(int docksCount READ docksCount NOTIFY docksCountChanged)
     Q_PROPERTY(int fontPixelSize READ fontPixelSize WRITE setFontPixelSize NOTIFY fontPixelSizeChanged)
-    Q_PROPERTY(int totalDocksCount READ totalDocksCount NOTIFY totalDocksCountChanged)
     Q_PROPERTY(int x READ x NOTIFY xChanged)
     Q_PROPERTY(int y READ y NOTIFY yChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
@@ -111,7 +110,6 @@ public:
     int currentThickness() const;
 
     int docksCount() const;
-    int totalDocksCount() const;
 
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
@@ -229,7 +227,6 @@ signals:
     void visibilityChanged();
     void positionerChanged();
     void screenGeometryChanged();
-    void totalDocksCountChanged();
     void xChanged();
     void yChanged();
 
