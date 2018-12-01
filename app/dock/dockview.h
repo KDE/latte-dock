@@ -84,8 +84,6 @@ class DockView : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
-    Q_PROPERTY(QString currentScreen READ currentScreen NOTIFY currentScreenChanged)
-
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
     Q_PROPERTY(Latte::View::Effects *effects READ effects NOTIFY effectsChanged)
@@ -152,8 +150,6 @@ public:
 
     QRect absGeometry() const;
     QRect screenGeometry() const;
-
-    QString currentScreen() const;
 
     QRect localGeometry() const;
     void setLocalGeometry(const QRect &geometry);
@@ -223,7 +219,6 @@ signals:
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
     void contextMenuIsShownChanged();
-    void currentScreenChanged();
     void dockLocationChanged();
     void docksCountChanged();
     void dockWinBehaviorChanged();

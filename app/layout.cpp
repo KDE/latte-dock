@@ -26,6 +26,7 @@
 #include "screenpool.h"
 #include "universalsettings.h"
 #include "dock/dockview.h"
+#include "dock/positioner.h"
 
 #include <QDir>
 #include <QFile>
@@ -1106,7 +1107,7 @@ void Layout::copyDock(Plasma::Containment *containment)
     int copyScrId = -1;
 
     if (dock) {
-        dockScrId = m_corona->screenPool()->id(dock->currentScreen());
+        dockScrId = m_corona->screenPool()->id(dock->positioner()->currentScreenName());
         qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
 
         if (dockScrId != -1 && screens.count() > 1) {
@@ -1563,7 +1564,7 @@ void Layout::syncDockViewsToScreens()
     //! remove views
     foreach (auto view, m_dockViews) {
         if (view->containment() && !futureShownViews.contains(view->containment()->id())) {
-            qDebug() << "syncDockViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->currentScreen();
+            qDebug() << "syncDockViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
             auto viewToDelete = m_dockViews.take(view->containment());
             viewToDelete->disconnectSensitiveSignals();
             viewToDelete->deleteLater();
@@ -1782,7 +1783,7 @@ QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, DockV
     foreach (auto view, m_dockViews) {
         //! make sure that availabe edges takes into account only views that should be excluded,
         //! this is why the forView should not be excluded
-        if (view && view != forView && view->currentScreen() == scr->name()) {
+        if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
     }
@@ -1801,7 +1802,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
     }
 
     foreach (auto view, m_dockViews) {
-        if (view && view->currentScreen() == scr->name()) {
+        if (view && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
     }
@@ -1822,7 +1823,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
     QScreen *scr = m_corona->screenPool()->screenForId(screen);
 
     foreach (auto view, m_dockViews) {
-        if (view && scr && view->currentScreen() == scr->name()) {
+        if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
     }

@@ -100,12 +100,12 @@ PlasmaComponents.Page {
                     //to has always a dock with tasks shown
                     var screenExists = false
                     for (var i = 0; i < dock.screens.length; i++) {
-                        if (dock.screens[i].name === dock.currentScreen)
+                        if (dock.screens[i].name === dock.positioner.currentScreenName)
                             screenExists = true;
                     }
 
                     if (!screenExists && !dock.onPrimary)
-                        screens.push(rtlSpace + dock.currentScreen);
+                        screens.push(rtlSpace + dock.positioner.currentScreenName);
 
                     for (var i = 0; i < dock.screens.length; i++) {
                         screens.push(rtlSpace + dock.screens[i].name)
@@ -116,10 +116,10 @@ PlasmaComponents.Page {
                     if (dock.onPrimary) {
                         screenCmb.currentIndex = 0;
                     } else {
-                        screenCmb.currentIndex = screenCmb.find(dock.currentScreen);
+                        screenCmb.currentIndex = screenCmb.find(dock.positioner.currentScreenName);
                     }
 
-                    console.log(dock.currentScreen);
+                    console.log(dock.positioner.currentScreenName);
                 }
 
                 Connections{
@@ -158,7 +158,7 @@ PlasmaComponents.Page {
 
                             dock.onPrimary = true;
                             acceptedIndex = true;
-                        } else if (index>0 && (index !== find(dock.currentScreen) || dock.onPrimary)) {
+                        } else if (index>0 && (index !== find(dock.positioner.currentScreenName) || dock.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
 

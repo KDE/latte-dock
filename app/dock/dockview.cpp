@@ -185,7 +185,6 @@ void DockView::init()
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
 
-    connect(m_positioner, &View::Positioner::currentScreenChanged, this, &DockView::currentScreenChanged);
     connect(m_positioner, &View::Positioner::onHideWindowsForSlidingOut, this, &DockView::hideWindowsForSlidingOut);
     connect(m_positioner, &View::Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
 
@@ -322,11 +321,6 @@ QScreen *DockView::atScreens(QQmlListProperty<QScreen> *property, int index)
 {
     Q_UNUSED(property)
     return qGuiApp->screens().at(index);
-}
-
-QString DockView::currentScreen() const
-{
-    return m_positioner->currentScreenName();
 }
 
 bool DockView::settingsWindowIsShown()

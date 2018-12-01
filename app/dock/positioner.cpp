@@ -586,7 +586,7 @@ void Positioner::initSignalingForLocationChangeSliding()
     //! signals to handle the sliding-in/out during screen changes
     connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
-    connect(m_view, &DockView::currentScreenChanged, this, [&]() {
+    connect(this, &Positioner::currentScreenChanged, this, [&]() {
         if (m_goToScreen) {
             m_goToScreen = nullptr;
             QTimer::singleShot(100, [this]() {

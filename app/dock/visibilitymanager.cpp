@@ -800,7 +800,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
         return;
     }
 
-    int currentScrId = dockCorona->screenPool()->id(dockView->currentScreen());
+    int currentScrId = dockCorona->screenPool()->id(dockView->positioner()->currentScreenName());
     QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectWithCriteria(currentScrId, {Dock::AlwaysVisible}, {});
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {

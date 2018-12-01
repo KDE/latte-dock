@@ -42,6 +42,8 @@ class Positioner: public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString currentScreenName READ currentScreenName NOTIFY currentScreenChanged)
+
 public:
     Positioner(DockView *parent);
     virtual ~Positioner();

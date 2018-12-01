@@ -51,7 +51,7 @@ Window{
             }
 
             Text{
-                text: dock && dock.currentScreen ? dock.currentScreen : "___"
+                text: dock && dock.positioner ? dock.positioner.currentScreenName : "___"
             }
 
             Text{
