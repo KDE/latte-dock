@@ -37,12 +37,13 @@ namespace View {
 class Effects: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
+    Q_PROPERTY(bool animationsBlocked READ animationsBlocked NOTIFY animationsBlockedChanged)
     Q_PROPERTY(bool colorizerEnabled READ colorizerEnabled WRITE setColorizerEnabled NOTIFY colorizerEnabledChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
 
     //! thickness shadow size when is drawn inside the window from qml
+    Q_PROPERTY(int backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
     Q_PROPERTY(int innerShadow READ innerShadow WRITE setInnerShadow NOTIFY innerShadowChanged)
 
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
@@ -53,6 +54,9 @@ class Effects: public QObject
 public:
     Effects(DockView *parent);
     virtual ~Effects();
+
+    bool animationsBlocked() const;
+    void setAnimationsBlocked(bool blocked);
 
     bool colorizerEnabled() const;
     void setColorizerEnabled(bool enabled);
@@ -85,6 +89,7 @@ public slots:
     void updateEnabledBorders();
 
 signals:
+    void animationsBlockedChanged();
     void backgroundOpacityChanged();
     void colorizerEnabledChanged();
     void drawShadowsChanged();
@@ -98,6 +103,7 @@ private slots:
     void init();
 
 private:
+    bool m_animationsBlocked{false};
     bool m_colorizerEnabled{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};

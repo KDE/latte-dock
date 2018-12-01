@@ -66,7 +66,6 @@ class DockView : public PlasmaQuick::ContainmentView
     Q_OBJECT
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
-    Q_PROPERTY(bool blockAnimations READ blockAnimations WRITE setBlockAnimations NOTIFY blockAnimationsChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
     Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
     //! Because Latte uses animations, changing to edit mode it may be different than
@@ -124,9 +123,6 @@ public:
 
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
-
-    bool blockAnimations() const;
-    void setBlockAnimations(bool block);
 
     bool contextMenuIsShown() const;
 
@@ -231,7 +227,6 @@ signals:
     void alternativesIsShownChanged();
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
-    void blockAnimationsChanged();
     void contextMenuIsShownChanged();
     void currentScreenChanged();
     void dockLocationChanged();
@@ -281,7 +276,6 @@ private:
 
     bool m_alternativesIsShown{false};
     bool m_behaveAsPlasmaPanel{false};
-    bool m_blockAnimations{false};
     bool m_dockWinBehavior{true};
     bool m_inDelete{false};
     bool m_inEditMode{false};

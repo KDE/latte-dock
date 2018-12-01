@@ -675,21 +675,6 @@ void DockView::setAlignment(int alignment)
     emit alignmentChanged();
 }
 
-bool DockView::blockAnimations() const
-{
-    return m_blockAnimations;
-}
-
-void DockView::setBlockAnimations(bool block)
-{
-    if (m_blockAnimations == block) {
-        return;
-    }
-
-    m_blockAnimations = block;
-    emit blockAnimationsChanged();
-}
-
 bool DockView::themeHasShadow() const
 {
     return PanelShadows::self()->enabled();

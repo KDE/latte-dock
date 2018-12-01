@@ -572,7 +572,7 @@ void Positioner::initSignalingForLocationChangeSliding()
         if (m_goToLocation != Plasma::Types::Floating) {
             m_goToLocation = Plasma::Types::Floating;
             QTimer::singleShot(100, [this]() {
-                m_view->setBlockAnimations(false);
+                m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterLocationChangeFinished();
                 m_view->showSettingsWindow();
 
@@ -590,7 +590,7 @@ void Positioner::initSignalingForLocationChangeSliding()
         if (m_goToScreen) {
             m_goToScreen = nullptr;
             QTimer::singleShot(100, [this]() {
-                m_view->setBlockAnimations(false);
+                m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterScreenChangeFinished();
                 m_view->showSettingsWindow();
 
@@ -608,7 +608,7 @@ void Positioner::initSignalingForLocationChangeSliding()
         if (!m_moveToLayout.isEmpty() && m_view->managedLayout()) {
             m_moveToLayout = "";
             QTimer::singleShot(100, [this]() {
-                m_view->setBlockAnimations(false);
+                m_view->effects()->setAnimationsBlocked(false);
                 emit showDockAfterMovingToLayoutFinished();
                 m_view->showSettingsWindow();
             });
@@ -619,7 +619,7 @@ void Positioner::initSignalingForLocationChangeSliding()
     //! this is used for both location and screen change cases, this signal
     //! is send when the sliding-out animation has finished
     connect(this, &Positioner::hideDockDuringLocationChangeFinished, this, [&]() {
-        m_view->setBlockAnimations(true);
+        m_view->effects()->setAnimationsBlocked(true);
 
         if (m_goToLocation != Plasma::Types::Floating) {
             m_view->setLocation(m_goToLocation);

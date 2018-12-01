@@ -59,6 +59,21 @@ void Effects::init()
     connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
 
+bool Effects::animationsBlocked() const
+{
+    return m_animationsBlocked;
+}
+
+void Effects::setAnimationsBlocked(bool blocked)
+{
+    if (m_animationsBlocked == blocked) {
+        return;
+    }
+
+    m_animationsBlocked = blocked;
+    emit animationsBlockedChanged();
+}
+
 bool Effects::colorizerEnabled() const
 {
     return m_colorizerEnabled;
