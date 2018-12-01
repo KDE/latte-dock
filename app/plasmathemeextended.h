@@ -41,17 +41,21 @@ class DockCorona;
 class PlasmaThemeExtended: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool hasShadow READ hasShadow NOTIFY hasShadowChanged)
+
     Q_PROPERTY(int bottomEdgeRoundness READ bottomEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int leftEdgeRoundness READ leftEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
 
-    Q_PROPERTY(SchemeColors *lightTheme READ lightTheme NOTIFY themesChanged)
-    Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themesChanged)
+    Q_PROPERTY(SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
+    Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
 
 public:
     PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *parent);
     ~PlasmaThemeExtended() override;;
+
+    bool hasShadow() const;
 
     int bottomEdgeRoundness() const;
     int leftEdgeRoundness() const;
@@ -67,8 +71,9 @@ public:
     void load();
 
 signals:
+    void hasShadowChanged();
     void roundnessChanged();
-    void themesChanged();
+    void themeChanged();
 
 private slots:
     void loadConfig();

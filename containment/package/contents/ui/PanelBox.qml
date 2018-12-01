@@ -155,7 +155,7 @@ Item{
 
         enabledBorders: dock && dock.effects ? dock.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
-        property bool themeHasShadow: dock ? dock.themeHasShadow : false
+        property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : false
 
         Behavior on opacity {
             enabled: Latte.WindowSystem.compositingActive
@@ -345,7 +345,7 @@ Item{
             //! with this hack we enforce such update. I could use the repaintNeeded signal but
             //! it is called more often than the themeChanged one.
             Connections{
-                target: dock
+                target: themeExtended
                 onThemeChanged: {
                     solidBackground.adjustPrefix();
                     plasmoid.configuration.panelShadows = !plasmoid.configuration.panelShadows;

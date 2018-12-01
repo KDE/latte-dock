@@ -23,6 +23,7 @@
 #include "commontools.h"
 #include "dockcorona.h"
 #include "schemecolors.h"
+#include "dock/panelshadows_p.h"
 
 #include <QDebug>
 #include <QDir>
@@ -43,7 +44,9 @@ PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *par
 
     loadConfig();
 
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::hasShadowChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::load);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::themeChanged);
 }
 
 void PlasmaThemeExtended::load()
@@ -58,6 +61,11 @@ PlasmaThemeExtended::~PlasmaThemeExtended()
 
     m_normalScheme->deleteLater();
     m_reversedScheme->deleteLater();
+}
+
+bool PlasmaThemeExtended::hasShadow() const
+{
+    return PanelShadows::self()->enabled();
 }
 
 int PlasmaThemeExtended::bottomEdgeRoundness() const
@@ -138,7 +146,7 @@ void PlasmaThemeExtended::setNormalSchemeFile(const QString &file)
 
     loadThemeLightness();
 
-    emit themesChanged();
+    emit themeChanged();
 }
 
 void PlasmaThemeExtended::updateReversedScheme()

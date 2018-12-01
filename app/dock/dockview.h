@@ -40,8 +40,6 @@
 #include <QPointer>
 #include <QTimer>
 
-#include <Plasma/Theme>
-
 namespace Plasma {
 class Types;
 class Corona;
@@ -72,7 +70,6 @@ class DockView : public PlasmaQuick::ContainmentView
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
     Q_PROPERTY(bool isPreferredForShortcuts READ isPreferredForShortcuts WRITE setIsPreferredForShortcuts NOTIFY isPreferredForShortcutsChanged)
-    Q_PROPERTY(bool themeHasShadow READ themeHasShadow NOTIFY themeHasShadowChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
@@ -134,8 +131,6 @@ public:
 
     bool isPreferredForShortcuts() const;
     void setIsPreferredForShortcuts(bool preferred);
-
-    bool themeHasShadow() const;
 
     float maxLength() const;
     void setMaxLength(float length);
@@ -248,8 +243,6 @@ signals:
     void visibilityChanged();
     void positionerChanged();
     void screenGeometryChanged();
-    void themeChanged();
-    void themeHasShadowChanged();
     void totalDocksCountChanged();
     void xChanged();
     void yChanged();
@@ -302,8 +295,6 @@ private:
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 5> connectionsManagedLayout;
-
-    Plasma::Theme m_theme;
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };

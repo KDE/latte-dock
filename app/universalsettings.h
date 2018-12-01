@@ -170,13 +170,13 @@ private:
     Dock::LayoutsMemoryUsage m_memoryUsage;
     Dock::MouseSensitivity m_mouseSensitivity{Dock::HighSensitivity};
 
-    KConfigGroup m_universalGroup;
-    KSharedConfig::Ptr m_config;
-    KSharedConfig::Ptr m_shortcutsConfigPtr;
-
     SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 
     QPointer<DockCorona> m_corona;
+
+    KConfigGroup m_universalGroup;
+    KSharedConfig::Ptr m_config;
+    KSharedConfig::Ptr m_shortcutsConfigPtr;
 
     friend class LayoutManager;
     friend class DockCorona;

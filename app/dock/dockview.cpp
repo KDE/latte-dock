@@ -195,9 +195,6 @@ void DockView::init()
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::isPreferredForShortcutsChanged, this, &DockView::saveConfig);
 
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeChanged);
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &DockView::themeHasShadowChanged);
-
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
 
     connect(m_menuManager, &DockMenuManager::contextMenuChanged, this, &DockView::contextMenuIsShownChanged);
@@ -674,12 +671,6 @@ void DockView::setAlignment(int alignment)
     m_alignment = align;
     emit alignmentChanged();
 }
-
-bool DockView::themeHasShadow() const
-{
-    return PanelShadows::self()->enabled();
-}
-
 
 QRect DockView::absGeometry() const
 {
