@@ -53,7 +53,7 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
     setupWaylandIntegration();
 
     setResizeMode(QQuickView::SizeViewToRootObject);
-    //setScreen(m_dockView->screen());
+    setScreen(m_dockView->screen());
 
     if (dockView && dockView->containment()) {
         setIcon(qGuiApp->windowIcon());
@@ -63,7 +63,7 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
     m_screenSyncTimer.setInterval(100);
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
-        // setScreen(m_dockView->screen());
+        setScreen(m_dockView->screen());
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
@@ -152,7 +152,7 @@ void DockSecConfigView::syncGeometry()
     resize(size);
 
     const auto location = m_dockView->containment()->location();
-    const auto sGeometry = screen()->geometry();
+    const auto sGeometry = m_dockView->screenGeometry();
 
     int clearThickness = m_dockView->normalThickness() + m_dockView->fontPixelSize();
 

@@ -216,7 +216,7 @@ void DockConfigView::syncGeometry()
     resize(size);
 
     const auto location = m_dockView->containment()->location();
-    const auto sGeometry = screen()->geometry();
+    const auto sGeometry = m_dockView->screenGeometry();
 
     int clearThickness = m_dockView->normalThickness() + m_dockView->fontPixelSize();
 
