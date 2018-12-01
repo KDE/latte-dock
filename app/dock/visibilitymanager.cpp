@@ -753,8 +753,9 @@ void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
             windows.clear();
         }
 
-        setExistsWindowMaximized(false);
-        setExistsWindowSnapped(false);
+       // ATTENTION: this was creating a crash under wayland environment through the blur effect
+       // setExistsWindowMaximized(false);
+       // setExistsWindowSnapped(false);
     }
 
     emit q->enabledDynamicBackgroundChanged();
