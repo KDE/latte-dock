@@ -105,6 +105,10 @@ void Layout::unloadContainments()
         return;
     }
 
+    //!disconnect signals in order to avoid crashes when the layout is unloading
+    disconnect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+    disconnect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+
     qDebug() << "Layout - " + name() + " unload: containments ... size ::: " << m_containments.size()
              << " ,dockViews in memory ::: " << m_dockViews.size()
              << " ,hidden dockViews in memory :::  " << m_waitingDockViews.size();
@@ -217,6 +221,12 @@ void Layout::initToCorona(DockCorona *corona)
 
     connect(m_corona->m_activityConsumer, &KActivities::Consumer::currentActivityChanged,
             this, &Layout::updateLastUsedActivity);
+
+    //!connect signals after adding the containment
+    connect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+    connect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
+
+    emit viewsCountChanged();
 }
 
 int Layout::version() const
@@ -818,8 +828,6 @@ void Layout::destroyedChanged(bool destroyed)
     }
 
     emit viewsCountChanged();
-    emit m_corona->availableScreenRectChanged();
-    emit m_corona->availableScreenRegionChanged();
 }
 
 void Layout::containmentDestroyed(QObject *cont)
@@ -850,8 +858,6 @@ void Layout::containmentDestroyed(QObject *cont)
             view->deleteLater();
 
             emit viewsCountChanged();
-            emit m_corona->availableScreenRectChanged();
-            emit m_corona->availableScreenRegionChanged();
             emit viewColorizerChanged();
         }
     }
@@ -1714,8 +1720,6 @@ void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> con
         dockView->setManagedLayout(this);
 
         emit viewsCountChanged();
-        emit m_corona->availableScreenRectChanged();
-        emit m_corona->availableScreenRegionChanged();
     }
 
     //! sync the original layout file for integrity
