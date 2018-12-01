@@ -306,23 +306,6 @@ void DockView::removeDock()
     }
 }
 
-QQmlListProperty<QScreen> DockView::screens()
-{
-    return QQmlListProperty<QScreen>(this, nullptr, &countScreens, &atScreens);
-}
-
-int DockView::countScreens(QQmlListProperty<QScreen> *property)
-{
-    Q_UNUSED(property)
-    return qGuiApp->screens().count();
-}
-
-QScreen *DockView::atScreens(QQmlListProperty<QScreen> *property, int index)
-{
-    Q_UNUSED(property)
-    return qGuiApp->screens().at(index);
-}
-
 bool DockView::settingsWindowIsShown()
 {
     auto configView = qobject_cast<DockConfigView *>(m_configView);

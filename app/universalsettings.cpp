@@ -550,4 +550,21 @@ float UniversalSettings::luminasFromFile(QString imageFile, int edge)
     return m_runningActivitiesModel->luminasFromFile(imageFile, edge);
 }
 
+QQmlListProperty<QScreen> UniversalSettings::screens()
+{
+    return QQmlListProperty<QScreen>(this, nullptr, &countScreens, &atScreens);
+}
+
+int UniversalSettings::countScreens(QQmlListProperty<QScreen> *property)
+{
+    Q_UNUSED(property)
+    return qGuiApp->screens().count();
+}
+
+QScreen *UniversalSettings::atScreens(QQmlListProperty<QScreen> *property, int index)
+{
+    Q_UNUSED(property)
+    return qGuiApp->screens().at(index);
+}
+
 }

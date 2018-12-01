@@ -85,7 +85,7 @@ PlasmaComponents.Page {
                 visible: true
 
                 function updateScreens() {
-                    if (dock.screens.length > 1)
+                    if (universalSettings.screens.length > 1)
                         screenRow.visible = true;
                     else
                         screenRow.visible = false;
@@ -99,16 +99,16 @@ PlasmaComponents.Page {
                     //the dock automatically to primaryScreen in order for the user
                     //to has always a dock with tasks shown
                     var screenExists = false
-                    for (var i = 0; i < dock.screens.length; i++) {
-                        if (dock.screens[i].name === dock.positioner.currentScreenName)
+                    for (var i = 0; i < universalSettings.screens.length; i++) {
+                        if (universalSettings.screens[i].name === dock.positioner.currentScreenName)
                             screenExists = true;
                     }
 
                     if (!screenExists && !dock.onPrimary)
                         screens.push(rtlSpace + dock.positioner.currentScreenName);
 
-                    for (var i = 0; i < dock.screens.length; i++) {
-                        screens.push(rtlSpace + dock.screens[i].name)
+                    for (var i = 0; i < universalSettings.screens.length; i++) {
+                        screens.push(rtlSpace + universalSettings.screens[i].name)
                     }
 
                     screenCmb.model = screens;

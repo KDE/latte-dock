@@ -33,7 +33,6 @@
 #include <array>
 
 #include <QQuickView>
-#include <QQmlListProperty>
 #include <QMenu>
 #include <QMimeData>
 #include <QScreen>
@@ -90,8 +89,6 @@ class DockView : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
     Q_PROPERTY(Latte::View::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
-
-    Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
     Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
@@ -167,11 +164,6 @@ public:
     KWayland::Client::PlasmaShellSurface *surface();
 
     void reconsiderScreen();
-    QQmlListProperty<QScreen> screens();
-    //! is needed by screens()
-    static int countScreens(QQmlListProperty<QScreen> *property);
-    //! is needed by screens()
-    static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index);
 
     //! these are signals that create crashes, such a example is the availableScreenRectChanged from corona
     //! when its containment is destroyed

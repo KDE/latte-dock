@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QAbstractItemModel>
 #include <QPointer>
+#include <QQmlListProperty>
+#include <QScreen>
 
 #include <KConfigGroup>
 #include <KSharedConfig>
@@ -54,6 +56,9 @@ class UniversalSettings : public QObject
     Q_PROPERTY(Latte::Dock::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
 
     Q_PROPERTY(QAbstractItemModel *runningActivitiesModel  READ runningActivitiesModel NOTIFY runningActivitiesModelChanged)
+
+    Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
+
 public:
     UniversalSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
     ~UniversalSettings() override;
@@ -103,6 +108,10 @@ public:
 
     QAbstractItemModel *runningActivitiesModel() const;
     void setRunningActivitiesModel(SortedActivitiesModel *model);
+
+    QQmlListProperty<QScreen> screens();
+    static int countScreens(QQmlListProperty<QScreen> *property); //! is needed by screens()
+    static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index); //! is needed by screens()
 
 public slots:
     Q_INVOKABLE QString splitterIconPath();
