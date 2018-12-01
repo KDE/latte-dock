@@ -1824,7 +1824,7 @@ int Layout::viewsWithTasks() const
     return result;
 }
 
-int Layout::docksCount(int screen) const
+int Layout::viewsCount(int screen) const
 {
     if (!m_corona) {
         return 0;
@@ -1843,7 +1843,7 @@ int Layout::docksCount(int screen) const
     return docks;
 }
 
-int Layout::docksCount(QScreen *screen) const
+int Layout::viewsCount(QScreen *screen) const
 {
     if (!m_corona) {
         return 0;

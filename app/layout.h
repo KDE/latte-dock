@@ -152,8 +152,8 @@ public:
     //! make it writable which it should be the default
     void unlock();
 
-    int docksCount(int screen) const;
-    int docksCount(QScreen *screen) const;
+    int viewsCount(int screen) const;
+    int viewsCount(QScreen *screen) const;
     int viewsCount() const;
 
 public slots:
