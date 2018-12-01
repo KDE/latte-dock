@@ -474,14 +474,6 @@ void DockView::setNormalThickness(int thickness)
     emit normalThicknessChanged();
 }
 
-int DockView::docksWithTasks()
-{
-    if (!m_managedLayout)
-        return 0;
-
-    return m_managedLayout->noDocksWithTasks();
-}
-
 bool DockView::dockWinBehavior() const
 {
     return m_dockWinBehavior;

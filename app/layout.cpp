@@ -1907,7 +1907,7 @@ bool Layout::isLatteContainment(Plasma::Containment *containment) const
     return false;
 }
 
-int Layout::noDocksWithTasks() const
+int Layout::viewsWithTasks() const
 {
     if (!m_corona) {
         return 0;

@@ -152,13 +152,13 @@ public:
     //! make it writable which it should be the default
     void unlock();
 
-    int noDocksWithTasks() const;
-
     int docksCount(int screen) const;
     int docksCount(QScreen *screen) const;
     int viewsCount() const;
 
 public slots:
+    Q_INVOKABLE int viewsWithTasks() const;
+
     //change <Plasma::Types::Location> to <int> types
     Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;
 

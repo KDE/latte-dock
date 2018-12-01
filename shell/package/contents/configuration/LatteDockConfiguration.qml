@@ -492,7 +492,7 @@ FocusScope {
             function updateEnabled() {
                 var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
                 addDock.enabled = dock.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
-                removeDock.enabled = dock.managedLayout.viewsCount>1 && !(dock.docksWithTasks()===1 && dock.tasksPresent())
+                removeDock.enabled = dock.managedLayout.viewsCount>1 && !(dock.managedLayout.viewsWithTasks()===1 && dock.tasksPresent())
             }
 
             PlasmaComponents.Button {
