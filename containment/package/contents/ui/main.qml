@@ -346,10 +346,10 @@ DragDrop.DropArea {
     property Item latteApplet
     property Item parabolicManager: _parabolicManager
 
-    property QtObject dock
-    property QtObject themeExtended
-    property QtObject universalSettings
-    property QtObject universalLayoutManager
+    property QtObject dock: null
+    property QtObject themeExtended: null
+    property QtObject universalSettings: null
+    property QtObject universalLayoutManager: null
     property QtObject dockManagedLayout: dock && dock.managedLayout ? dock.managedLayout : null
 
     // TO BE DELETED, if not needed: property int counter:0;

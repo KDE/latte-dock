@@ -134,6 +134,9 @@ DockView::~DockView()
 
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
+    rootContext()->setContextProperty(QStringLiteral("themeExtended"), nullptr);
+    rootContext()->setContextProperty(QStringLiteral("universalSettings"), nullptr);
+    rootContext()->setContextProperty(QStringLiteral("layoutManager"), nullptr);
 
     //! this disconnect does not free up connections correctly when
     //! dockView is deleted. A crash for this example is the following:

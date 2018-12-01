@@ -155,7 +155,8 @@ Item{
 
         enabledBorders: dock && dock.effects ? dock.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
-        property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : false
+        //! set true by default in order to avoid crash on startup because imagePath is set to ""
+        readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
 
         Behavior on opacity {
             enabled: Latte.WindowSystem.compositingActive
