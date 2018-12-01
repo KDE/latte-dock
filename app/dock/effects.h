@@ -37,6 +37,7 @@ namespace View {
 class Effects: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
     Q_PROPERTY(bool colorizerEnabled READ colorizerEnabled WRITE setColorizerEnabled NOTIFY colorizerEnabledChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
@@ -65,6 +66,9 @@ public:
     bool forceDrawCenteredBorders() const;
     void setForceDrawCenteredBorders(bool draw);
 
+    int backgroundOpacity() const;
+    void setBackgroundOpacity(int opacity);
+
     int innerShadow() const;
     void setInnerShadow(int shadow);
 
@@ -81,6 +85,7 @@ public slots:
     void updateEnabledBorders();
 
 signals:
+    void backgroundOpacityChanged();
     void colorizerEnabledChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
@@ -98,6 +103,7 @@ private:
     bool m_drawEffects{false};
     bool m_forceDrawCenteredBorders{false};
 
+    int m_backgroundOpacity{100};
     int m_innerShadow{0};
 
     QRect m_rect;

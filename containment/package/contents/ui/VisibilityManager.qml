@@ -97,13 +97,6 @@ Item{
 
     Binding{
         target: dock
-        property: "dockTransparency"
-        when: dock
-        value: root.currentPanelTransparency
-    }
-
-    Binding{
-        target: dock
         property: "fontPixelSize"
         when: theme
         value: theme.defaultFont.pixelSize
@@ -123,7 +116,6 @@ Item{
         value: root.editMode ? 1 : plasmoid.configuration.maxLength/100
     }
 
-
     Binding{
         target: dock
         property: "offset"
@@ -136,6 +128,13 @@ Item{
         property: "alignment"
         when: dock
         value: root.panelAlignment
+    }
+
+    Binding{
+        target: dock && dock.effects ? dock.effects : null
+        property: "backgroundOpacity"
+        when: dock && dock.effects
+        value: root.currentPanelTransparency
     }
 
     Binding{

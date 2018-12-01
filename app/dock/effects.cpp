@@ -43,6 +43,7 @@ Effects::~Effects()
 
 void Effects::init()
 {
+    connect(this, &Effects::backgroundOpacityChanged, this, &Effects::updateEffects);
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
     connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
 
@@ -54,7 +55,6 @@ void Effects::init()
 
     connect(m_view, &Latte::DockView::alignmentChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
-    connect(m_view, &Latte::DockView::dockTransparencyChanged, this, &Effects::updateEffects);
 
     connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
@@ -125,6 +125,21 @@ void Effects::setForceDrawCenteredBorders(bool draw)
     }
 
     m_forceDrawCenteredBorders = draw;
+}
+
+int Effects::backgroundOpacity() const
+{
+    return m_backgroundOpacity;
+}
+
+void Effects::setBackgroundOpacity(int opacity)
+{
+    if (m_backgroundOpacity == opacity) {
+        return;
+    }
+
+    m_backgroundOpacity = opacity;
+    emit backgroundOpacityChanged();
 }
 
 int Effects::innerShadow() const
@@ -241,7 +256,7 @@ void Effects::updateEffects()
 
             KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
 
-            bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_view->dockTransparency() == 100);
+            bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_backgroundOpacity == 100);
             //based on Breeze Dark theme behavior the enableBackgroundContrast even though it does accept
             //a QRegion it uses only the first rect. The bug was that for Breeze Dark there was a line
             //at the dock bottom that was distinguishing it from other themes
@@ -257,7 +272,7 @@ void Effects::updateEffects()
     } else if (m_view->behaveAsPlasmaPanel() && m_drawEffects) {
         KWindowEffects::enableBlurBehind(m_view->winId(), true);
 
-        bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_view->dockTransparency() == 100);
+        bool drawBackgroundEffect = m_theme.backgroundContrastEnabled() && (m_backgroundOpacity == 100);
 
         KWindowEffects::enableBackgroundContrast(m_view->winId(), drawBackgroundEffect,
                 m_theme.backgroundContrast(),

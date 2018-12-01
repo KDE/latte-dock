@@ -726,21 +726,6 @@ void DockView::setOffset(int offset)
     emit offsetChanged();
 }
 
-int DockView::dockTransparency() const
-{
-    return m_dockTransparency;
-}
-
-void DockView::setDockTransparency(int transparency)
-{
-    if (m_dockTransparency == transparency) {
-        return;
-    }
-
-    m_dockTransparency = transparency;
-    emit dockTransparencyChanged();
-}
-
 int DockView::fontPixelSize() const
 {
     return m_fontPixelSize;
