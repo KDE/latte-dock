@@ -18,11 +18,13 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef NOWDOCKPACKAGE_H
-#define NOWDOCKPACKAGE_H
+#ifndef DOCKPACKAGE_H
+#define DOCKPACKAGE_H
 
+// Qt
 #include <QObject>
 
+// KDE
 #include <KPackage/PackageStructure>
 
 namespace Latte {
@@ -39,4 +41,4 @@ public:
 };
 
 }
-#endif // NOWDOCKPACKAGE_H
+#endif // DOCKPACKAGE_H

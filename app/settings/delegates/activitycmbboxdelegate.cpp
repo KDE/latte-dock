@@ -19,8 +19,10 @@
 
 #include "activitycmbboxdelegate.h"
 
+// local
 #include "../settingsdialog.h"
 
+// Qt
 #include <QApplication>
 #include <QComboBox>
 #include <QDebug>
@@ -30,6 +32,7 @@
 #include <QString>
 #include <QTextDocument>
 
+// KDE
 #include <KActivities/Info>
 
 ActivityCmbBoxDelegate::ActivityCmbBoxDelegate(QObject *parent)

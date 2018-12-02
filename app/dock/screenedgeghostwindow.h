@@ -20,6 +20,7 @@
 #ifndef SCREENEDGEGHOSTWINDOW_H
 #define SCREENEDGEGHOSTWINDOW_H
 
+// Qt
 #include <QObject>
 #include <QQuickView>
 #include <QTimer>

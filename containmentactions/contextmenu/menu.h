@@ -20,8 +20,10 @@
 #ifndef MENU_H
 #define MENU_H
 
+// Qt
 #include <QObject>
 
+// Plasma
 #include <Plasma/ContainmentActions>
 
 class QAction;

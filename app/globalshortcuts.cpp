@@ -18,23 +18,31 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dockcorona.h"
 #include "globalshortcuts.h"
+
+// local
+#include "dockcorona.h"
 #include "layoutmanager.h"
 #include "dock/dockview.h"
 #include "settings/universalsettings.h"
 
+// C++
+#include <array>
+
+// Qt
 #include <QAction>
 #include <QDebug>
 #include <QQuickItem>
 #include <QMetaMethod>
 #include <QX11Info>
 
+// KDE
 #include <KActionCollection>
 #include <KGlobalAccel>
 #include <KLocalizedString>
 #include <KPluginMetaData>
 
+// Plasma
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
@@ -42,8 +50,6 @@
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 #include <X11/Xlib.h>
-
-#include <array>
 
 //this code is used by activityswitcher in plasma in order to check if the
 //user has release all the modifier keys from the globalshortcut

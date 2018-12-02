@@ -19,13 +19,17 @@
 */
 
 #include "abstractwindowinterface.h"
+
+// local
 #include "xwindowinterface.h"
 #include "waylandinterface.h"
 
+// Qt
 #include <QObject>
 #include <QDir>
 #include <QQuickWindow>
 
+// KDE
 #include <KDirWatch>
 #include <KWindowSystem>
 

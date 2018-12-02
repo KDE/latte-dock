@@ -19,13 +19,18 @@
 */
 
 #include "quickwindowsystem.h"
+
+// local
 #include "../app/config-latte.h"
 
+// Qt
 #include <QDebug>
 #include <QProcess>
 
+// Plasma
 #include <plasma/version.h>
 
+// X11
 #if HAVE_X11
     #include <KWindowSystem>
 #endif

@@ -19,27 +19,29 @@
 
 #include "docksecconfigview.h"
 
+// local
 #include "dockconfigview.h"
 #include "dockview.h"
 #include "panelshadows_p.h"
 #include "../dockcorona.h"
 #include "../wm/abstractwindowinterface.h"
 
+// Qt
 #include <QFontMetrics>
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QScreen>
 
+// KDE
 #include <KLocalizedContext>
 #include <KDeclarative/KDeclarative>
-
-#include <Plasma/Package>
-
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
-
 #include <KWindowSystem>
+
+// Plasma
+#include <Plasma/Package>
 
 namespace Latte {
 

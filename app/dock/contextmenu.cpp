@@ -19,18 +19,22 @@
 
 #include "contextmenu.h"
 
+// local
 #include "dockview.h"
 #include "visibilitymanager.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
 
+// Qt
 #include <QMouseEvent>
 #include <QVersionNumber>
 
+// KDE
 #include <KActionCollection>
 #include <KAuthorized>
 #include <KLocalizedString>
 
+// Plasma
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>

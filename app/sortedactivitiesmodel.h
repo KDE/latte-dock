@@ -23,6 +23,7 @@
 // Qt
 #include <QSortFilterProxyModel>
 
+// Plasma
 #include <Plasma>
 
 // KDE

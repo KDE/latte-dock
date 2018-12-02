@@ -20,14 +20,17 @@
 
 #include "plasmathemeextended.h"
 
+// local
 #include "commontools.h"
 #include "dockcorona.h"
 #include "schemecolors.h"
 #include "dock/panelshadows_p.h"
 
+// Qt
 #include <QDebug>
 #include <QDir>
 
+// KDE
 #include <KDirWatch>
 #include <KConfigGroup>
 #include <KSharedConfig>

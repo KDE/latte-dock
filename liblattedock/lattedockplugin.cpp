@@ -19,10 +19,13 @@
 */
 
 #include "lattedockplugin.h"
-#include "quickwindowsystem.h"
+
+// local
 #include "dock.h"
 #include "iconitem.h"
+#include "quickwindowsystem.h"
 
+// Qt
 #include <QtQml>
 
 void LatteDockPlugin::registerTypes(const char *uri)

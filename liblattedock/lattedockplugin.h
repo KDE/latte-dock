@@ -21,6 +21,7 @@
 #ifndef LATTEDOCKPLUGIN_H
 #define LATTEDOCKPLUGIN_H
 
+// Qt
 #include <QQmlExtensionPlugin>
 
 class LatteDockPlugin : public QQmlExtensionPlugin

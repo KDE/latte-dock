@@ -20,6 +20,7 @@
 #ifndef COLORCMBBOXDELEGATE_H
 #define COLORCMBBOXDELEGATE_H
 
+// Qt
 #include <QItemDelegate>
 
 class QModelIndex;

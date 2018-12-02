@@ -21,13 +21,16 @@
 #ifndef LAYOUT_H
 #define LAYOUT_H
 
+// Qt
 #include <QObject>
 #include <QScreen>
 
-#include <Plasma>
-
+// KDE
 #include <KConfigGroup>
 #include <KSharedConfig>
+
+// Plasma
+#include <Plasma>
 
 namespace Plasma {
 class Applet;

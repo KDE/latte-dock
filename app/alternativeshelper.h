@@ -20,9 +20,11 @@
 #ifndef ALTERNATIVESHELPER_H
 #define ALTERNATIVESHELPER_H
 
-#include <Plasma/Applet>
-
+// Qt
 #include <QQuickItem>
+
+// Plasma
+#include <Plasma/Applet>
 
 class AlternativesHelper : public QObject
 {

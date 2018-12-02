@@ -19,11 +19,14 @@
 */
 
 #include "waylandinterface.h"
+
+// local
 #include "dockcorona.h"
 #include "dock/dockview.h"
 #include "dock/screenedgeghostwindow.h"
 #include "../liblattedock/extras.h"
 
+// Qt
 #include <QDebug>
 #include <QTimer>
 #include <QApplication>
@@ -31,11 +34,13 @@
 #include <QtX11Extras/QX11Info>
 #include <QRasterWindow>
 
+// KDE
 #include <KWindowSystem>
 #include <KWindowInfo>
-#include <NETWM>
-
 #include <KWayland/Client/surface.h>
+
+// X11
+#include <NETWM>
 
 using namespace KWayland::Client;
 

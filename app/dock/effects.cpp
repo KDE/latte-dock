@@ -18,12 +18,16 @@
 */
 
 #include "effects.h"
+
+// local
 #include "dockview.h"
 #include "panelshadows_p.h"
 #include "../../liblattedock/dock.h"
 
+// Qt
 #include <QRegion>
 
+// KDE
 #include <KWindowEffects>
 #include <KWindowSystem>
 

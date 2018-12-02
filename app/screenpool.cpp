@@ -18,13 +18,17 @@
  */
 
 #include "screenpool.h"
+
+// local
 #include <config-latte.h>
 
+// Qt
 #include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
 #include <QScreen>
 
+// X11
 #if HAVE_X11
     #include <QtX11Extras/QX11Info>
     #include <xcb/xcb.h>

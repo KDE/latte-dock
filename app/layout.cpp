@@ -20,6 +20,7 @@
 
 #include "layout.h"
 
+// local
 #include "dockcorona.h"
 #include "importer.h"
 #include "layoutmanager.h"
@@ -28,16 +29,19 @@
 #include "dock/positioner.h"
 #include "settings/universalsettings.h"
 
+// Qt
 #include <QDir>
 #include <QFile>
 #include <QtDBus/QtDBus>
 
+// KDE
+#include <KSharedConfig>
+#include <KActivities/Consumer>
+
+// Plasma
 #include <Plasma>
 #include <Plasma/Applet>
 #include <Plasma/Containment>
-
-#include <KSharedConfig>
-#include <KActivities/Consumer>
 
 namespace Latte {
 

@@ -21,14 +21,17 @@
 #ifndef VISIBILITYMANAGER_H
 #define VISIBILITYMANAGER_H
 
+// local
 #include "../plasmaquick/containmentview.h"
 #include "../schemecolors.h"
 #include "../wm/windowinfowrap.h"
 #include "../../liblattedock/dock.h"
 
+// Qt
 #include <QObject>
 #include <QTimer>
 
+// Plasma
 #include <Plasma/Containment>
 
 namespace Latte {

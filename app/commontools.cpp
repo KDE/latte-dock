@@ -20,6 +20,7 @@
 
 #include "commontools.h"
 
+// Qt
 #include <QtMath>
 
 namespace Latte {

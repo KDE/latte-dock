@@ -21,14 +21,17 @@
 #ifndef ABSTRACTWINDOWINTERFACE_H
 #define ABSTRACTWINDOWINTERFACE_H
 
+// local
 #include "schemecolors.h"
 #include "windowinfowrap.h"
 #include "../liblattedock/dock.h"
 #include "../liblattedock/extras.h"
 
+// C++
 #include <unordered_map>
 #include <list>
 
+// Qt
 #include <QObject>
 #include <QWindow>
 #include <QDialog>
@@ -38,8 +41,11 @@
 #include <QPointer>
 #include <QScreen>
 
-#include <Plasma>
+// KDE
 #include <KActivities/Consumer>
+
+// Plasma
+#include <Plasma>
 
 namespace Latte {
 

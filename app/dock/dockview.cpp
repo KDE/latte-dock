@@ -20,6 +20,7 @@
 
 #include "dockview.h"
 
+// local
 #include "contextmenu.h"
 #include "dockconfigview.h"
 #include "effects.h"
@@ -33,6 +34,7 @@
 #include "../settings/universalsettings.h"
 #include "../../liblattedock/extras.h"
 
+// Qt
 #include <QAction>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -40,17 +42,17 @@
 #include <QQuickItem>
 #include <QMenu>
 
+// KDe
 #include <KActionCollection>
 #include <KActivities/Consumer>
-
+#include <KWayland/Client/plasmashell.h>
+#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
+// Plasma
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
 #include <PlasmaQuick/AppletQuickItem>
-
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 
 namespace Latte {
 

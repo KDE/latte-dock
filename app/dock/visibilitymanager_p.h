@@ -1,20 +1,24 @@
 #ifndef VISIBILITYMANAGERPRIVATE_H
 #define VISIBILITYMANAGERPRIVATE_H
 
+// local
 #include "../schemecolors.h"
 #include "../wm/abstractwindowinterface.h"
 #include "../wm/windowinfowrap.h"
 #include "../../liblattedock/dock.h"
 
+// C++
 #include <array>
 #include <memory>
 
+// Qt
 #include <QObject>
 #include <QTimer>
 #include <QEvent>
 #include <QVariant>
 #include <QMap>
 
+// Plasma
 #include <plasmaquick/containmentview.h>
 
 namespace Latte {

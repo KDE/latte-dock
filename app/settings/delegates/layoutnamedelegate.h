@@ -20,6 +20,7 @@
 #ifndef LAYOUTNAMEDELEGATE_H
 #define LAYOUTNAMEDELEGATE_H
 
+// Qt
 #include <QStyledItemDelegate>
 
 class LayoutNameDelegate : public QStyledItemDelegate

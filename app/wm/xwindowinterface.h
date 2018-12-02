@@ -21,11 +21,14 @@
 #ifndef XWINDOWINTERFACE_H
 #define XWINDOWINTERFACE_H
 
+// local
 #include "abstractwindowinterface.h"
 #include "windowinfowrap.h"
 
+// Qt
 #include <QObject>
 
+// KDE
 #include <KWindowInfo>
 #include <KWindowEffects>
 

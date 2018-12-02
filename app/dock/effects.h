@@ -20,10 +20,12 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
+// Qt
 #include <QObject>
 #include <QPointer>
 #include <QRect>
 
+// Plasma
 #include <Plasma/FrameSvg>
 #include <Plasma/Theme>
 

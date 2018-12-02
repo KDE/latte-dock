@@ -17,9 +17,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Self
 #include "sortedactivitiesmodel.h"
+
+// local
 #include "commontools.h"
+
 // C++
 #include <functional>
 
@@ -38,6 +40,7 @@
 #include <KLocalizedString>
 #include <KActivities/Consumer>
 
+// Plasma
 #include <Plasma>
 
 #define PLASMACONFIG "plasma-org.kde.plasma.desktop-appletsrc"

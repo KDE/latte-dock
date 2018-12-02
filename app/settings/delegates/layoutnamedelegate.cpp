@@ -19,6 +19,7 @@
 
 #include "layoutnamedelegate.h"
 
+// Qt
 #include <QApplication>
 #include <QBitmap>
 #include <QDebug>

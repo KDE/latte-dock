@@ -20,11 +20,14 @@
 
 #include "launcherssignals.h"
 
+// local
 #include "dockcorona.h"
 #include "layout.h"
 
+// Qt
 #include <QQuickItem>
 
+// Plasma
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 

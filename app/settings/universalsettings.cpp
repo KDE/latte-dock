@@ -19,14 +19,17 @@
 */
 
 #include "universalsettings.h"
+
+// local
 #include "layoutmanager.h"
 #include "sortedactivitiesmodel.h"
 
+// Qt
 #include <QDir>
 #include <QProcess>
-
 #include <QtDBus>
 
+// KDE
 #include <KDirWatch>
 #include <KActivities/Consumer>
 

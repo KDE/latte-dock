@@ -19,6 +19,7 @@
 
 #include "checkboxdelegate.h"
 
+// Qt
 #include <QApplication>
 #include <QDebug>
 #include <QEvent>

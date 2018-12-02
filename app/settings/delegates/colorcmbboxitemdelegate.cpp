@@ -19,11 +19,11 @@
 
 #include "colorcmbboxitemdelegate.h"
 
+// Qt
 #include <QApplication>
 #include <QDebug>
 #include <QPainter>
 #include <QString>
-
 
 ColorCmbBoxItemDelegate::ColorCmbBoxItemDelegate(QObject *parent, QString iconsPath)
     : QAbstractItemDelegate(parent),

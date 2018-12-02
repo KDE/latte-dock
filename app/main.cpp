@@ -18,14 +18,17 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// local
 #include "dockcorona.h"
 #include "config-latte.h"
 #include "importer.h"
 #include "../liblattedock/dock.h"
 
+// C++
 #include <memory>
 #include <csignal>
 
+// Qt
 #include <QApplication>
 #include <QDebug>
 #include <QQuickWindow>
@@ -35,12 +38,12 @@
 #include <QLockFile>
 #include <QSharedMemory>
 
+// KDE
 #include <KCrash>
 #include <KLocalizedString>
 #include <KAboutData>
 #include <KDBusService>
 #include <KQuickAddons/QtQuickSettings>
-
 
 //! COLORS
 #define CNORMAL  "\e[0m"

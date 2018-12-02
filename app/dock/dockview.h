@@ -21,6 +21,7 @@
 #ifndef DOCKVIEW_H
 #define DOCKVIEW_H
 
+// local
 #include "dockconfigview.h"
 #include "effects.h"
 #include "positioner.h"
@@ -30,8 +31,10 @@
 #include "../plasmaquick/configview.h"
 #include "../../liblattedock/dock.h"
 
+// C++
 #include <array>
 
+// Qt
 #include <QQuickView>
 #include <QMenu>
 #include <QMimeData>

@@ -20,15 +20,18 @@
 #ifndef DOCKSECCONFIGVIEW_H
 #define DOCKSECCONFIGVIEW_H
 
+// local
 #include "../../liblattedock/dock.h"
 
-#include <plasma/package.h>
-#include <Plasma/FrameSvg>
-
+//Qt
 #include <QObject>
 #include <QQuickView>
 #include <QPointer>
 #include <QTimer>
+
+// Plasma
+#include <plasma/package.h>
+#include <Plasma/FrameSvg>
 
 namespace Plasma {
 class Applet;

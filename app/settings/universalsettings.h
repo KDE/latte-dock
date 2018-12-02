@@ -21,18 +21,20 @@
 #ifndef UNIVERSALSETTINGS_H
 #define UNIVERSALSETTINGS_H
 
+// local
 #include "dockcorona.h"
+#include "../liblattedock/dock.h"
 
+// Qt
 #include <QObject>
 #include <QAbstractItemModel>
 #include <QPointer>
 #include <QQmlListProperty>
 #include <QScreen>
 
+// KDE
 #include <KConfigGroup>
 #include <KSharedConfig>
-
-#include "../liblattedock/dock.h"
 
 class SortedActivitiesModel;
 

@@ -21,10 +21,12 @@
 #ifndef GLOBALSHORTCUTS_H
 #define GLOBALSHORTCUTS_H
 
+// local
 #include "../liblattedock/dock.h"
 
-#include <QQuickItem>
+// Qt
 #include <QMetaMethod>
+#include <QQuickItem>
 #include <QTimer>
 
 namespace Plasma {

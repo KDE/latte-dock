@@ -18,10 +18,12 @@
 */
 
 #include "colorcmbboxdelegate.h"
-#include "colorcmbboxitemdelegate.h"
 
+// local
+#include "colorcmbboxitemdelegate.h"
 #include "../settingsdialog.h"
 
+// Qt
 #include <QComboBox>
 #include <QDebug>
 #include <QDir>
@@ -32,6 +34,7 @@
 #include <QPainter>
 #include <QString>
 
+// KDE
 #include <KLocalizedString>
 
 ColorCmbBoxDelegate::ColorCmbBoxDelegate(QObject *parent, QString iconsPath, QStringList colors)

@@ -19,6 +19,7 @@
 
 #include "positioner.h"
 
+// local
 #include "dockview.h"
 #include "effects.h"
 #include "../dockcorona.h"
@@ -26,12 +27,13 @@
 #include "../settings/universalsettings.h"
 #include "../../liblattedock/dock.h"
 
+// Qt
 #include <QDebug>
 
-#include <KWindowSystem>
-
+// KDE
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
+#include <KWindowSystem>
 
 namespace Latte {
 namespace View {

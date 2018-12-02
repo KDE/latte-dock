@@ -23,13 +23,16 @@
 #ifndef ICONITEM_H
 #define ICONITEM_H
 
+// C++
 #include <memory>
 
+// Qt
 #include <QQuickItem>
 #include <QIcon>
 #include <QImage>
 #include <QPixmap>
 
+// Plasma
 #include <Plasma/Svg>
 
 // this file is based on PlasmaCore::IconItem class, thanks to KDE

@@ -21,6 +21,7 @@
 #ifndef WINDOWINFOWRAP_H
 #define WINDOWINFOWRAP_H
 
+// Qt
 #include <QWindow>
 #include <QRect>
 #include <QVariant>

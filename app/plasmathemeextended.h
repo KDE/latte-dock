@@ -21,17 +21,21 @@
 #ifndef PLASMATHEMEEXTENDED_H
 #define PLASMATHEMEEXTENDED_H
 
-#include <QObject>
+// local
+#include "schemecolors.h"
 
-#include <schemecolors.h>
-
+// C++
 #include <array>
 
+// Qt
+#include <QObject>
 #include <QTemporaryDir>
 
+// KDE
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+// Plasma
 #include <Plasma/Theme>
 
 namespace Latte {

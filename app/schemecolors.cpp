@@ -20,10 +20,12 @@
 
 #include "schemecolors.h"
 
+// Qt
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 
+// KDE
 #include <KConfigGroup>
 #include <KDirWatch>
 #include <KSharedConfig>

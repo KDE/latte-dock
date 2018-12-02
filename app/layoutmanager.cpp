@@ -20,6 +20,7 @@
 
 #include "layoutmanager.h"
 
+// local
 #include "importer.h"
 #include "infoview.h"
 #include "launcherssignals.h"
@@ -29,12 +30,14 @@
 #include "settings/settingsdialog.h"
 #include "settings/universalsettings.h"
 
+// Qt
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
 #include <QQmlProperty>
 #include <QtDBus>
 
+// KDE
 #include <KActivities/Consumer>
 #include <KActivities/Controller>
 #include <KLocalizedString>

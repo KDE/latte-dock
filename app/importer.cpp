@@ -20,6 +20,7 @@
 
 #include "importer.h"
 
+// local
 #include "dockcorona.h"
 #include "layoutmanager.h"
 #include "layout.h"
@@ -27,16 +28,17 @@
 #include "settings/universalsettings.h"
 #include "../liblattedock/dock.h"
 
+// Qt
 #include <QFile>
 #include <QTemporaryDir>
 
+// KDE
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KNotification>
-
 
 namespace Latte {
 

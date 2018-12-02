@@ -21,9 +21,11 @@
 #ifndef LAUNCHERSSIGNALS_H
 #define LAUNCHERSSIGNALS_H
 
+// local
 #include "layoutmanager.h"
 #include "../liblattedock/dock.h"
 
+// Qt
 #include <QObject>
 
 namespace Plasma {

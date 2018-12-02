@@ -19,8 +19,10 @@
 
 #include "menu.h"
 
+// local
 #include "../../liblattedock/dock.h"
 
+// Qt
 #include <QAction>
 #include <QDebug>
 #include <QFont>
@@ -28,9 +30,11 @@
 #include <QtDBus>
 #include <QTimer>
 
+// KDE
 #include <KActionCollection>
 #include <KLocalizedString>
 
+// Plasma
 #include <Plasma/Containment>
 #include <Plasma/Corona>
 #include <Plasma/ServiceJob>

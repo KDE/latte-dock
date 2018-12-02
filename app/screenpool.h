@@ -20,6 +20,7 @@
 #ifndef SCREENPOOL_H
 #define SCREENPOOL_H
 
+// Qt
 #include <QObject>
 #include <QHash>
 #include <QScreen>
@@ -27,6 +28,7 @@
 #include <QTimer>
 #include <QAbstractNativeEventFilter>
 
+// KDE
 #include <KConfigGroup>
 #include <KSharedConfig>
 

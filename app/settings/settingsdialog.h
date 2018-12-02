@@ -22,8 +22,10 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
+// local
 #include "../liblattedock/dock.h"
 
+// Qt
 #include <QObject>
 #include <QButtonGroup>
 #include <QDialog>

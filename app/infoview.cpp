@@ -19,22 +19,26 @@
 */
 
 #include "infoview.h"
+
+// local
 #include "dock/panelshadows_p.h"
 #include "wm/abstractwindowinterface.h"
 
+// Qt
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QScreen>
 
+// KDE
 #include <KLocalizedContext>
 #include <KDeclarative/KDeclarative>
-
-#include <Plasma/Package>
 #include <KWindowSystem>
-
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
+
+// Plasma
+#include <Plasma/Package>
 
 namespace Latte {
 

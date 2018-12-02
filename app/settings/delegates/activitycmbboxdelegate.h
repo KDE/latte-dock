@@ -20,6 +20,7 @@
 #ifndef ACTIVITYCMBBOXDELEGATE_H
 #define ACTIVITYCMBBOXDELEGATE_H
 
+// Qt
 #include <QItemDelegate>
 
 class QModelIndex;

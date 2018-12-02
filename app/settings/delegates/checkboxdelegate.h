@@ -20,6 +20,7 @@
 #ifndef CHECKBOXDELEGATE_H
 #define CHECKBOXDELEGATE_H
 
+// Qt
 #include <QStyledItemDelegate>
 
 class CheckBoxDelegate : public QStyledItemDelegate

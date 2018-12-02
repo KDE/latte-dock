@@ -18,12 +18,23 @@
 
 #include "panelshadows_p.h"
 
+// local
+#include <config-latte.h>
+
+// Qt
+#include <QDebug>
 #include <QWindow>
 #include <QPainter>
 
-#include <config-latte.h>
-
+// KDE
+#include <KWayland/Client/connection_thread.h>
+#include <KWayland/Client/registry.h>
+#include <KWayland/Client/shadow.h>
+#include <KWayland/Client/shm_pool.h>
+#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
+
+// X11
 #if HAVE_X11
     #include <QX11Info>
     #include <X11/Xatom.h>
@@ -31,14 +42,6 @@
     #include <X11/Xlib-xcb.h>
     #include <fixx11h.h>
 #endif
-
-#include <KWayland/Client/connection_thread.h>
-#include <KWayland/Client/registry.h>
-#include <KWayland/Client/shadow.h>
-#include <KWayland/Client/shm_pool.h>
-#include <KWayland/Client/surface.h>
-
-#include <qdebug.h>
 
 class PanelShadows::Private
 {

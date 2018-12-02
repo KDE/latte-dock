@@ -20,11 +20,13 @@
 #ifndef POSITIONER_H
 #define POSITIONER_H
 
+// Qt
 #include <QObject>
 #include <QPointer>
 #include <QScreen>
 #include <QTimer>
 
+// Plasma
 #include <Plasma/Containment>
 
 namespace Plasma {

@@ -1,8 +1,16 @@
 #ifndef EXTRAS_H
 #define EXTRAS_H
 
+// local
 #include "../liblattedock/config-latte-lib.h"
 
+// C++
+#include <type_traits>
+#include <numeric>
+#include <memory>
+#include <cmath>
+
+// Qt
 #include <QObject>
 #include <QString>
 #include <QStringBuilder>
@@ -10,12 +18,8 @@
 #include <QMetaEnum>
 #include <QMetaType>
 
+// Plasma
 #include <Plasma>
-
-#include <type_traits>
-#include <numeric>
-#include <memory>
-#include <cmath>
 
 //! There are gcc versions that don't support yet that function even though they
 //! publish themselves as C++14 compatible. Such a case is gcc 4.8.x that openSUSE

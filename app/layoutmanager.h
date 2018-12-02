@@ -21,13 +21,16 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
+// local
 #include "launcherssignals.h"
 #include "settings/settingsdialog.h"
 
+// Qt
 #include <QAction>
 #include <QObject>
 #include <QPointer>
 
+// KDE
 #include <KLocalizedString>
 
 namespace Plasma {

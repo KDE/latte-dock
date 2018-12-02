@@ -18,19 +18,23 @@
 */
 
 #include "screenedgeghostwindow.h"
+
+// local
 #include "dockview.h"
 #include "../dockcorona.h"
 
+// Qt
 #include <QDebug>
 #include <QSurfaceFormat>
 #include <QQuickView>
 #include <QTimer>
 
+// KDE
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
-
 #include <KWindowSystem>
 
+// X11
 #include <NETWM>
 
 namespace Latte {

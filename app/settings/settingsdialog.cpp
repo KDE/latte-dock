@@ -21,6 +21,7 @@
 
 #include "settingsdialog.h"
 
+// local
 #include "dockcorona.h"
 #include "layout.h"
 #include "layoutmanager.h"
@@ -34,6 +35,7 @@
 #include "delegates/activitycmbboxdelegate.h"
 #include "delegates/layoutnamedelegate.h"
 
+// Qt
 #include <QButtonGroup>
 #include <QColorDialog>
 #include <QDesktopServices>
@@ -47,6 +49,7 @@
 #include <QStandardItemModel>
 #include <QTemporaryDir>
 
+// KDE
 #include <KActivities/Controller>
 #include <KArchive/KTar>
 #include <KArchive/KArchiveEntry>

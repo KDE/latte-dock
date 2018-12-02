@@ -21,21 +21,23 @@
 #ifndef WAYLANDINTERFACE_H
 #define WAYLANDINTERFACE_H
 
+// local
 #include "abstractwindowinterface.h"
 #include "windowinfowrap.h"
 
-#include <QObject>
+// Qt
 #include <QMap>
-
-#include <KWindowInfo>
-#include <KWindowEffects>
+#include <QObject>
 #include <QSignalMapper>
 
+// KDE
 #include <KWayland/Client/registry.h>
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/plasmawindowmanagement.h>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
+#include <KWindowInfo>
+#include <KWindowEffects>
 
 namespace Latte {
 

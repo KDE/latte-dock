@@ -18,6 +18,7 @@
  *
  */
 
+// Qt
 #include <QColor>
 
 namespace Latte {

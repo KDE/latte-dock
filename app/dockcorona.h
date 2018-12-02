@@ -21,16 +21,18 @@
 #ifndef DOCKCORONA_H
 #define DOCKCORONA_H
 
+// local
 #include "../liblattedock/dock.h"
 
+// Qt
 #include <QObject>
 #include <QTimer>
 
+// Plasma
 #include <Plasma/Corona>
-//#include <PlasmaQuick/ConfigView>
 
+// KDE
 #include <KAboutApplicationDialog>
-//#include <KDeclarative/QmlObject>
 
 namespace KDeclarative {
 class QmlObject;

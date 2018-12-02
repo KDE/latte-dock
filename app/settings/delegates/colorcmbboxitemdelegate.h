@@ -20,6 +20,7 @@
 #ifndef COLORCMBBOXITEMDELEGATE_H
 #define COLORCMBBOXITEMDELEGATE_H
 
+// Qt
 #include <QAbstractItemDelegate>
 
 class ColorCmbBoxItemDelegate : public QAbstractItemDelegate

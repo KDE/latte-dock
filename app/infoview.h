@@ -21,8 +21,10 @@
 #ifndef INFOVIEW_H
 #define INFOVIEW_H
 
+// local
 #include "dockcorona.h"
 
+// Qt
 #include <QObject>
 #include <QQuickView>
 #include <QScreen>

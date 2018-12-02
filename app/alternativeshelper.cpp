@@ -17,16 +17,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 #include "alternativeshelper.h"
 
+// Qt
 #include <QQmlEngine>
 #include <QQmlContext>
 
-#include <Plasma/Containment>
-#include <Plasma/PluginLoader>
+// KDE
 #include <KPackage/Package>
 #include <kconfig_version.h>
+
+// Plasma
+#include <Plasma/Containment>
+#include <Plasma/PluginLoader>
 
 AlternativesHelper::AlternativesHelper(Plasma::Applet *applet, QObject *parent)
     : QObject(parent),

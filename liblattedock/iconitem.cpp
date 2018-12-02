@@ -21,8 +21,11 @@
 */
 
 #include "iconitem.h"
+
+// local
 #include "../liblattedock/extras.h"
 
+// Qt
 #include <QDebug>
 #include <QPainter>
 #include <QPaintEngine>
@@ -31,6 +34,7 @@
 #include <QSGSimpleTextureNode>
 #include <QuickAddons/ManagedTextureNode>
 
+// KDE
 #include <KIconTheme>
 #include <KIconThemes/KIconLoader>
 #include <KIconThemes/KIconEffect>

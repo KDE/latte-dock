@@ -21,6 +21,7 @@
 #include "visibilitymanager.h"
 #include "visibilitymanager_p.h"
 
+// local
 #include "dockview.h"
 #include "positioner.h"
 #include "screenedgeghostwindow.h"
@@ -30,10 +31,12 @@
 #include "../wm/windowinfowrap.h"
 #include "../../liblattedock/extras.h"
 
+// Qt
+#include <QDebug>
+
+// KDE
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
-
-#include <QDebug>
 
 namespace Latte {
 

@@ -20,9 +20,11 @@
 
 #include "dockcorona.h"
 
+// local
 #include "alternativeshelper.h"
 #include "globalshortcuts.h"
 #include "importer.h"
+#include "lattedockadaptor.h"
 #include "launcherssignals.h"
 #include "layoutmanager.h"
 #include "plasmathemeextended.h"
@@ -34,9 +36,7 @@
 #include "wm/waylandinterface.h"
 #include "wm/xwindowinterface.h"
 
-//dbus adaptor
-#include "lattedockadaptor.h"
-
+// Qt
 #include <QAction>
 #include <QApplication>
 #include <QScreen>
@@ -47,12 +47,13 @@
 #include <QFontDatabase>
 #include <QQmlContext>
 
+// Plasma
 #include <Plasma>
 #include <Plasma/Corona>
 #include <Plasma/Containment>
-
 #include <PlasmaQuick/ConfigView>
 
+// KDE
 #include <KActionCollection>
 #include <KPluginMetaData>
 #include <KGlobalAccel>
@@ -62,7 +63,6 @@
 #include <KAboutData>
 #include <KActivities/Consumer>
 #include <KDeclarative/QmlObject>
-
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/registry.h>

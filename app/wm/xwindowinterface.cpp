@@ -19,18 +19,23 @@
 */
 
 #include "xwindowinterface.h"
+
+// local
 #include "dock/dockview.h"
 #include "dock/screenedgeghostwindow.h"
 #include "../liblattedock/extras.h"
 
+// Qt
 #include <QDebug>
 #include <QTimer>
 #include <QtX11Extras/QX11Info>
 
+// KDE
 #include <KWindowSystem>
 #include <KWindowInfo>
-#include <NETWM>
 
+// X11
+#include <NETWM>
 #include <xcb/xcb.h>
 
 namespace Latte {

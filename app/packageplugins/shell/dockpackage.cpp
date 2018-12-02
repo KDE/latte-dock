@@ -20,8 +20,10 @@
 
 #include "dockpackage.h"
 
+// Qt
 #include <QDebug>
 
+// KDE
 #include <KPackage/PackageLoader>
 #include <KI18n/KLocalizedString>
 
@@ -63,7 +65,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     package->addFileDefinition("preset10", QStringLiteral("presets/multiple-layouts_hidden.layout.latte"), i18n("multiple layouts hidden file"));
 
     package->addFileDefinition("themesExtendedInfo", QStringLiteral("themes/themesExtendedInforc"), i18n("a file that contains extended information for plasma themes"));
-    
+
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();
 }

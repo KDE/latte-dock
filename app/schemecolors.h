@@ -21,6 +21,7 @@
 #ifndef SCHEMECOLORS_H
 #define SCHEMECOLORS_H
 
+// Qt
 #include <QObject>
 #include <QColor>
 

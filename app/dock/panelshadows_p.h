@@ -19,8 +19,10 @@
 #ifndef PANELSHADOWS_P_H
 #define PANELSHADOWS_P_H
 
+// Qt
 #include <QSet>
 
+// Plasma
 #include "plasma/framesvg.h"
 #include "plasma/svg.h"
 
