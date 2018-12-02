@@ -1,6 +1,5 @@
 set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
-    packageplugins/shell/dockpackage.cpp
     alternativeshelper.cpp
     commontools.cpp
     dockcorona.cpp
@@ -13,7 +12,6 @@ set(lattedock-app_SRCS
     plasmathemeextended.cpp
     schemecolors.cpp
     screenpool.cpp
-    sortedactivitiesmodel.cpp
     dock/contextmenu.cpp
     dock/dockconfigview.cpp
     dock/docksecconfigview.cpp
@@ -23,7 +21,9 @@ set(lattedock-app_SRCS
     dock/positioner.cpp
     dock/screenedgeghostwindow.cpp
     dock/visibilitymanager.cpp
+    packageplugins/shell/dockpackage.cpp    
     settings/settingsdialog.cpp
+    settings/sortedactivitiesmodel.cpp
     settings/universalsettings.cpp
     settings/delegates/activitycmbboxdelegate.cpp
     settings/delegates/checkboxdelegate.cpp
