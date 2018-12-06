@@ -20,8 +20,8 @@
 #include "effects.h"
 
 // local
-#include "dockview.h"
 #include "panelshadows_p.h"
+#include "view.h"
 #include "../../liblattedock/dock.h"
 
 // Qt
@@ -34,7 +34,7 @@
 namespace Latte {
 namespace ViewPart {
 
-Effects::Effects(Latte::DockView *parent)
+Effects::Effects(Latte::View *parent)
     : QObject(parent),
       m_view(parent)
 {
@@ -57,9 +57,9 @@ void Effects::init()
         }
     });
 
-    connect(m_view, &Latte::DockView::alignmentChanged, this, &Effects::updateEnabledBorders);
-    connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
-    connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
+    connect(m_view, &Latte::View::alignmentChanged, this, &Effects::updateEnabledBorders);
+    connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
+    connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
 
     connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }

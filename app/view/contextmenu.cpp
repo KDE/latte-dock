@@ -20,7 +20,7 @@
 #include "contextmenu.h"
 
 // local
-#include "dockview.h"
+#include "view.h"
 #include "visibilitymanager.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
@@ -44,7 +44,7 @@
 namespace Latte {
 namespace ViewPart {
 
-ContextMenu::ContextMenu(Latte::DockView *view) :
+ContextMenu::ContextMenu(Latte::View *view) :
     QObject(view),
     m_dockView(view)
 {

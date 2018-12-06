@@ -44,10 +44,10 @@ class Controller;
 
 namespace Latte {
 class DockCorona;
-class DockView;
 class Importer;
 class Layout;
 class LaunchersSignals;
+class View;
 }
 
 namespace Latte {
@@ -81,7 +81,7 @@ public:
     void syncDockViewsToScreens();
     void syncActiveLayoutsToOriginalFiles();
 
-    bool dockViewExists(DockView *view) const;
+    bool dockViewExists(Latte::View *view) const;
     bool hasColorizer() const;
     bool layoutExists(QString layoutName) const;
 
@@ -97,8 +97,8 @@ public:
     Dock::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage);
 
-    QHash<const Plasma::Containment *, DockView *> *currentDockViews() const;
-    QHash<const Plasma::Containment *, DockView *> *layoutDockViews(const QString &layoutName) const;
+    QHash<const Plasma::Containment *, Latte::View *> *currentDockViews() const;
+    QHash<const Plasma::Containment *, Latte::View *> *layoutDockViews(const QString &layoutName) const;
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
     Layout *activeLayout(QString id) const;

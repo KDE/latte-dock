@@ -35,7 +35,7 @@ class Containment;
 
 namespace Latte {
 class DockCorona;
-class DockView;
+class View;
 }
 
 namespace Latte {
@@ -60,23 +60,23 @@ private:
     void showDocks();
     void showSettings();
 
-    bool activateLatteEntryAtContainment(const DockView *view, int index, Qt::Key modifier);
+    bool activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier);
     bool activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier);
-    bool dockAtLowerEdgePriority(DockView *test, DockView *base);
-    bool dockAtLowerScreenPriority(DockView *test, DockView *base);
+    bool dockAtLowerEdgePriority(Latte::View *test, Latte::View *base);
+    bool dockAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool docksToHideAreValid();
-    bool isCapableToShowAppletsNumbers(DockView *view);
+    bool isCapableToShowAppletsNumbers(Latte::View *view);
 
     int applicationLauncherId(const Plasma::Containment *c);
 
-    QList<DockView *> sortedViewsList(QHash<const Plasma::Containment *, DockView *> *views);
+    QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
     QAction *m_lastInvokedAction;
     //!it is used when the dock is hidden in order to delay the app launcher showing
     QAction *m_singleMetaAction;
 
     QTimer m_hideDocksTimer;
-    QList<DockView *> m_hideDocks;
+    QList<Latte::View *> m_hideDocks;
 
     QList<QQuickItem *> m_calledItems;
     QList<QMetaMethod> m_methodsShowNumbers;

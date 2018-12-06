@@ -29,9 +29,9 @@
 #include "layoutmanager.h"
 #include "plasmathemeextended.h"
 #include "screenpool.h"
-#include "dock/dockview.h"
 #include "packageplugins/shell/dockpackage.h"
 #include "settings/universalsettings.h"
+#include "view/view.h"
 #include "wm/abstractwindowinterface.h"
 #include "wm/waylandinterface.h"
 #include "wm/xwindowinterface.h"
@@ -432,7 +432,7 @@ QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout)
     if (!screen)
         return QRegion();
 
-    QHash<const Plasma::Containment *, DockView *> *views;
+    QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (forLayout.isEmpty()) {
         views = m_layoutManager->currentDockViews();
@@ -563,7 +563,7 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
 
     auto available = screen->geometry();
 
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentDockViews();
 
     if (views) {
         for (const auto *view : *views) {
@@ -712,11 +712,11 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
         }
     }
 
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentDockViews();
 
     //if the panel views already exist, base upon them
 
-    DockView *view = views ? views->value(containment) : nullptr;
+    Latte::View *view = views ? views->value(containment) : nullptr;
 
     if (view && view->screen()) {
         return m_screenPool->id(view->screen()->name());
@@ -749,9 +749,9 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    QHash<const Plasma::Containment *, DockView *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentDockViews();
 
-    DockView *dockView = (*views)[applet->containment()];
+    Latte::View *dockView = (*views)[applet->containment()];
 
     KDeclarative::QmlObject *qmlObj{nullptr};
 

@@ -22,9 +22,9 @@
 #include "visibilitymanager_p.h"
 
 // local
-#include "dockview.h"
 #include "positioner.h"
 #include "screenedgeghostwindow.h"
+#include "view.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
@@ -44,13 +44,13 @@ namespace Latte {
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
     : QObject(nullptr), q(q), view(view)
 {
-    dockView = qobject_cast<DockView *>(view);
+    dockView = qobject_cast<Latte::View *>(view);
     dockCorona = qobject_cast<DockCorona *>(view->corona());
     wm = dockCorona->wm();
 
     if (dockView) {
-        connect(dockView, &DockView::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
-        connect(dockView, &DockView::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
+        connect(dockView, &Latte::View::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
+        connect(dockView, &Latte::View::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
     }
 
     timerStartUp.setInterval(5000);
@@ -142,7 +142,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                 if (dockView->inEditMode())
                     wm->removeDockStruts(*view);
             });
-            connections[1] = connect(dockView, &DockView::inEditModeChanged
+            connections[1] = connect(dockView, &Latte::View::inEditModeChanged
             , this, [&]() {
                 if (!dockView->inEditMode() && !dockView->positioner()->inLocationChangeAnimation() && view->screen())
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
@@ -153,7 +153,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
-                connections[3] = connect(dockView, &DockView::activitiesChanged, this, [&]() {
+                connections[3] = connect(dockView, &Latte::View::activitiesChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
             }
@@ -1093,7 +1093,7 @@ bool VisibilityManagerPrivate::activeWindowCanBeDragged()
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     : d(new VisibilityManagerPrivate(view, this))
 {
-    DockView *dockView = qobject_cast<DockView *>(view);
+    Latte::View *dockView = qobject_cast<Latte::View *>(view);
 
     if (dockView) {
         connect(this, &VisibilityManager::modeChanged, dockView->corona(), &Plasma::Corona::availableScreenRectChanged);

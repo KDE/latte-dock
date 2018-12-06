@@ -21,8 +21,8 @@
 
 // local
 #include "dockconfigview.h"
-#include "dockview.h"
 #include "panelshadows_p.h"
+#include "view.h"
 #include "../dockcorona.h"
 #include "../wm/abstractwindowinterface.h"
 
@@ -45,10 +45,10 @@
 
 namespace Latte {
 
-DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
+DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
     : QQuickView(nullptr),
       m_parent(parent),
-      m_dockView(dockView)
+      m_dockView(view)
 {
     m_corona = qobject_cast<DockCorona *>(m_dockView->containment()->corona());
 
@@ -57,7 +57,7 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
     setResizeMode(QQuickView::SizeViewToRootObject);
     setScreen(m_dockView->screen());
 
-    if (dockView && dockView->containment()) {
+    if (m_dockView && m_dockView->containment()) {
         setIcon(qGuiApp->windowIcon());
     }
 
@@ -70,7 +70,7 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockSecConfigView::syncGeometry);
+    connections << connect(m_dockView->visibility(), &VisibilityManager::modeChanged, this, &DockSecConfigView::syncGeometry);
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -78,7 +78,7 @@ DockSecConfigView::DockSecConfigView(DockView *dockView, QWindow *parent)
         syncGeometry();
     });
 
-    connections << connect(dockView, &DockView::normalThicknessChanged, [&]() {
+    connections << connect(m_dockView, &Latte::View::normalThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
     });
 }

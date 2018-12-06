@@ -32,7 +32,7 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
-class DockView;
+class View;
 }
 
 namespace Latte {
@@ -59,7 +59,7 @@ class ScreenEdgeGhostWindow : public QQuickView
     Q_OBJECT
 
 public:
-    ScreenEdgeGhostWindow(DockView *view);
+    ScreenEdgeGhostWindow(Latte::View *view);
     ~ScreenEdgeGhostWindow() override;
 
     int location();
@@ -67,7 +67,7 @@ public:
     void hideWithMask();
     void showWithMask();
 
-    DockView *parentDock();
+    Latte::View *parentDock();
 
     KWayland::Client::PlasmaShellSurface *surface();
 
@@ -91,7 +91,7 @@ private:
 
     QTimer m_fixGeometryTimer;
 
-    DockView *m_dockView{nullptr};
+    Latte::View *m_dockView{nullptr};
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };

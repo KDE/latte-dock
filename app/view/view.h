@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DOCKVIEW_H
-#define DOCKVIEW_H
+#ifndef VIEW_H
+#define VIEW_H
 
 // local
 #include "dockconfigview.h"
@@ -64,7 +64,7 @@ class ContextMenu;
 
 namespace Latte {
 
-class DockView : public PlasmaQuick::ContainmentView
+class View : public PlasmaQuick::ContainmentView
 {
     Q_OBJECT
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
@@ -99,8 +99,8 @@ class DockView : public PlasmaQuick::ContainmentView
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
 public:
-    DockView(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool dockWindowBehavior = false);
-    virtual ~DockView();
+    View(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool dockWindowBehavior = false);
+    virtual ~View();
 
     void init();
 
@@ -234,7 +234,7 @@ signals:
 private slots:
     void availableScreenRectChanged();
     void hideWindowsForSlidingOut();
-    void preferredViewForShortcutsChangedSlot(DockView *view);
+    void preferredViewForShortcutsChangedSlot(Latte::View *view);
     void statusChanged(Plasma::Types::ItemStatus);
 
     void restoreConfig();

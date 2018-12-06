@@ -22,8 +22,8 @@
 
 // local
 #include "dockcorona.h"
-#include "dock/dockview.h"
-#include "dock/screenedgeghostwindow.h"
+#include "view/screenedgeghostwindow.h"
+#include "view/view.h"
 #include "../liblattedock/extras.h"
 
 // Qt

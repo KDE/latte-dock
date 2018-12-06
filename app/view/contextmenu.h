@@ -34,7 +34,7 @@ class Containment;
 }
 
 namespace Latte {
-class DockView;
+class View;
 }
 
 namespace Latte {
@@ -45,7 +45,7 @@ class ContextMenu : public QObject
     Q_OBJECT
 
 public:
-    ContextMenu(Latte::DockView *view);
+    ContextMenu(Latte::View *view);
     ~ContextMenu() override;
 
     QMenu *menu();
@@ -70,9 +70,9 @@ private:
     QMetaMethod m_appletContainsMethod;
     QQuickItem *m_appletContainsMethodItem{nullptr};
 
-    Latte::DockView *m_dockView;
+    Latte::View *m_dockView;
 
-    friend class Latte::DockView;
+    friend class Latte::View;
 };
 
 }

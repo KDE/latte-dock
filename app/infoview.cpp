@@ -21,8 +21,8 @@
 #include "infoview.h"
 
 // local
-#include "dock/panelshadows_p.h"
 #include "wm/abstractwindowinterface.h"
+#include "view/panelshadows_p.h"
 
 // Qt
 #include <QQuickItem>

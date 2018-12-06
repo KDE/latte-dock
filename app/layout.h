@@ -40,7 +40,7 @@ class Types;
 
 namespace Latte {
 class DockCorona;
-class DockView;
+class View;
 }
 
 namespace Latte {
@@ -132,19 +132,19 @@ public:
     const QStringList appliedActivities();
 
     QList<Plasma::Containment *> *containments();
-    QHash<const Plasma::Containment *, DockView *> *dockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *dockViews();
 
-    //! Bind this dockView and its relevant containments(including systrays)
-    //! to this layout. It is used for moving a dockView from layout to layout)
-    void assignToLayout(DockView *dockView, QList<Plasma::Containment *> containments);
+    //! Bind this latteView and its relevant containments(including systrays)
+    //! to this layout. It is used for moving a Latte::View from layout to layout)
+    void assignToLayout(Latte::View *dockView, QList<Plasma::Containment *> containments);
 
-    //! Unassign that dockView from this layout (this is used for moving a dockView
+    //! Unassign that latteView from this layout (this is used for moving a latteView
     //! from layout to layout) and returns all the containments relevant to
-    //! that dockView
-    QList<Plasma::Containment *> unassignFromLayout(DockView *dockView);
+    //! that latteView
+    QList<Plasma::Containment *> unassignFromLayout(Latte::View *dockView);
 
     //! Available edges for specific view in that screen
-    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, DockView *forView) const;
+    QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
 
     //! All free edges in that screen
     QList<Plasma::Types::Location> freeEdges(QScreen *scr) const;
@@ -182,9 +182,9 @@ signals:
     void viewColorizerChanged();
     void viewsCountChanged();
 
-    //! used from DockView(s) in order to exist only one each time that has the highest priority
+    //! used from LatteView(s) in order to exist only one each time that has the highest priority
     //! to use the global shortcuts activations
-    void preferredViewForShortcutsChanged(DockView *view);
+    void preferredViewForShortcutsChanged(Latte::View *view);
 
 private slots:
     void loadConfig();
@@ -202,7 +202,7 @@ private:
     void setName(QString name);
     void setFile(QString file);
 
-    //! It can be used in order for DockViews to not be created automatically when
+    //! It can be used in order for LatteViews to not be created automatically when
     //! their corresponding containments are created e.g. copyDock functionality
     bool blockAutomaticDockViewCreation() const;
     void setBlockAutomaticDockViewCreation(bool block);
@@ -247,8 +247,8 @@ private:
 
     QList<Plasma::Containment *> m_containments;
 
-    QHash<const Plasma::Containment *, DockView *> m_dockViews;
-    QHash<const Plasma::Containment *, DockView *> m_waitingDockViews;
+    QHash<const Plasma::Containment *, Latte::View *> m_dockViews;
+    QHash<const Plasma::Containment *, Latte::View *> m_waitingDockViews;
 };
 
 }

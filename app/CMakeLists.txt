@@ -12,15 +12,6 @@ set(lattedock-app_SRCS
     plasmathemeextended.cpp
     schemecolors.cpp
     screenpool.cpp
-    dock/contextmenu.cpp
-    dock/dockconfigview.cpp
-    dock/docksecconfigview.cpp
-    dock/dockview.cpp
-    dock/effects.cpp
-    dock/panelshadows.cpp
-    dock/positioner.cpp
-    dock/screenedgeghostwindow.cpp
-    dock/visibilitymanager.cpp
     packageplugins/shell/dockpackage.cpp    
     settings/settingsdialog.cpp
     settings/sortedactivitiesmodel.cpp
@@ -30,6 +21,15 @@ set(lattedock-app_SRCS
     settings/delegates/colorcmbboxdelegate.cpp
     settings/delegates/colorcmbboxitemdelegate.cpp
     settings/delegates/layoutnamedelegate.cpp
+    view/contextmenu.cpp
+    view/dockconfigview.cpp
+    view/docksecconfigview.cpp
+    view/effects.cpp
+    view/panelshadows.cpp
+    view/positioner.cpp
+    view/screenedgeghostwindow.cpp
+    view/view.cpp    
+    view/visibilitymanager.cpp    
     wm/abstractwindowinterface.cpp
     wm/waylandinterface.cpp
     wm/windowinfowrap.cpp

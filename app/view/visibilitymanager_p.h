@@ -24,7 +24,7 @@
 namespace Latte {
 
 class DockCorona;
-class DockView;
+class View;
 class VisibilityManager;
 class ScreenEdgeGhostWindow;
 
@@ -134,7 +134,7 @@ public:
     ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
 
     DockCorona *dockCorona{nullptr};
-    DockView *dockView{nullptr};
+    Latte::View *dockView{nullptr};
 };
 
 }

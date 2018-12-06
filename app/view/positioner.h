@@ -34,7 +34,7 @@ class Types;
 }
 
 namespace Latte {
-class DockView;
+class View;
 }
 
 namespace Latte {
@@ -48,7 +48,7 @@ class Positioner: public QObject
     Q_PROPERTY(QString currentScreenName READ currentScreenName NOTIFY currentScreenChanged)
 
 public:
-    Positioner(DockView *parent);
+    Positioner(Latte::View *parent);
     virtual ~Positioner();
 
     int currentScreenId() const;
@@ -105,7 +105,7 @@ private:
     //! it is used in order to enforce X11 to never miss window geometry
     QRect m_validGeometry;
 
-    QPointer<Latte::DockView> m_view;
+    QPointer<Latte::View> m_view;
 
     QString m_screenToFollowId;
     QPointer<QScreen> m_screenToFollow;

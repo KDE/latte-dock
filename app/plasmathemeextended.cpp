@@ -24,7 +24,7 @@
 #include "commontools.h"
 #include "dockcorona.h"
 #include "schemecolors.h"
-#include "dock/panelshadows_p.h"
+#include "view/panelshadows_p.h"
 
 // Qt
 #include <QDebug>

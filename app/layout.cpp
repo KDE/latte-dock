@@ -25,8 +25,8 @@
 #include "importer.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
-#include "dock/dockview.h"
-#include "dock/positioner.h"
+#include "view/positioner.h"
+#include "view/view.h"
 #include "settings/universalsettings.h"
 
 // Qt
@@ -749,7 +749,7 @@ void Layout::addContainment(Plasma::Containment *containment)
     }
 }
 
-QHash<const Plasma::Containment *, DockView *> *Layout::dockViews()
+QHash<const Plasma::Containment *, Latte::View *> *Layout::dockViews()
 {
     return &m_dockViews;
 }
@@ -982,7 +982,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
         dockWin = containment->config().readEntry("dockWindowBehavior", true);
     }
 
-    auto dockView = new DockView(m_corona, nextScreen, dockWin);
+    auto dockView = new Latte::View(m_corona, nextScreen, dockWin);
 
     dockView->init();
     dockView->setContainment(containment);
@@ -1603,7 +1603,7 @@ void Layout::syncDockViewsToScreens()
     qDebug() << "end of, syncDockViewsToScreens ....";
 }
 
-void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> containments)
+void Layout::assignToLayout(Latte::View *dockView, QList<Plasma::Containment *> containments)
 {
     if (!m_corona) {
         return;
@@ -1632,7 +1632,7 @@ void Layout::assignToLayout(DockView *dockView, QList<Plasma::Containment *> con
     }
 }
 
-QList<Plasma::Containment *> Layout::unassignFromLayout(DockView *dockView)
+QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *dockView)
 {
     QList<Plasma::Containment *> containments;
 
@@ -1679,7 +1679,7 @@ bool Layout::dockViewExists(Plasma::Containment *containment)
     return m_dockViews.keys().contains(containment);
 }
 
-QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, DockView *forView) const
+QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
 {
     using Plasma::Types;
     QList<Types::Location> edges{Types::BottomEdge, Types::LeftEdge,

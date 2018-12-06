@@ -21,7 +21,7 @@
 #include "dockconfigview.h"
 
 // local
-#include "dockview.h"
+#include "view.h"
 #include "panelshadows_p.h"
 #include "../dockcorona.h"
 #include "../layoutmanager.h"
@@ -47,9 +47,9 @@
 
 namespace Latte {
 
-DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockView, QWindow *parent)
+DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
-      m_dockView(dockView)
+      m_dockView(view)
 {
     m_corona = qobject_cast<DockCorona *>(m_dockView->containment()->corona());
 
@@ -70,7 +70,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
+    connections << connect(m_dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
 
     m_thicknessSyncTimer.setSingleShot(true);
@@ -79,7 +79,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, DockView *dockV
         syncGeometry();
     });
 
-    connections << connect(dockView, &DockView::normalThicknessChanged, [&]() {
+    connections << connect(m_dockView, &Latte::View::normalThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
     });
 

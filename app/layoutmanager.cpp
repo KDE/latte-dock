@@ -26,9 +26,9 @@
 #include "launcherssignals.h"
 #include "layout.h"
 #include "screenpool.h"
-#include "dock/dockview.h"
 #include "settings/settingsdialog.h"
 #include "settings/universalsettings.h"
+#include "view/view.h"
 
 // Qt
 #include <QDir>
@@ -324,7 +324,7 @@ void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading,
     }
 }
 
-bool LayoutManager::dockViewExists(DockView *view) const
+bool LayoutManager::dockViewExists(Latte::View *view) const
 {
     foreach (auto layout, m_activeLayouts) {
         for (auto it = layout->dockViews()->constBegin(), end = layout->dockViews()->constEnd(); it != end; ++it) {
@@ -337,7 +337,7 @@ bool LayoutManager::dockViewExists(DockView *view) const
     return false;
 }
 
-QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews() const
+QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentDockViews() const
 {
     if (memoryUsage() == Dock::SingleLayout) {
         return m_activeLayouts.at(0)->dockViews();
@@ -358,7 +358,7 @@ QHash<const Plasma::Containment *, DockView *> *LayoutManager::currentDockViews(
     return nullptr;
 }
 
-QHash<const Plasma::Containment *, DockView *> *LayoutManager::layoutDockViews(const QString &layoutName) const
+QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::layoutDockViews(const QString &layoutName) const
 {
     Layout *layout = activeLayout(layoutName);
 

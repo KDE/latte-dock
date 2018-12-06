@@ -30,7 +30,7 @@
 #include <Plasma/Theme>
 
 namespace Latte {
-class DockView;
+class View;
 }
 
 namespace Latte {
@@ -54,7 +54,7 @@ class Effects: public QObject
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    Effects(DockView *parent);
+    Effects(Latte::View *parent);
     virtual ~Effects();
 
     bool animationsBlocked() const;
@@ -119,7 +119,7 @@ private:
     QRect m_rect;
     QRect m_mask;
 
-    QPointer<Latte::DockView> m_view;
+    QPointer<Latte::View> m_view;
 
     Plasma::Theme m_theme;
     //only for the mask on disabled compositing, not to actually paint

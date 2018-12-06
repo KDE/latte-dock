@@ -23,8 +23,8 @@
 // local
 #include "dockcorona.h"
 #include "layoutmanager.h"
-#include "dock/dockview.h"
 #include "settings/universalsettings.h"
+#include "view/view.h"
 
 // C++
 #include <array>
@@ -278,7 +278,7 @@ void GlobalShortcuts::init()
 //! Activate launcher menu through dbus interface
 void GlobalShortcuts::activateLauncherMenu()
 {
-    QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
     foreach (auto view, sortedViews) {
         const auto applets = view->containment()->applets();
@@ -372,7 +372,7 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
     return false;
 }
 
-bool GlobalShortcuts::activateLatteEntryAtContainment(const DockView *view, int index, Qt::Key modifier)
+bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier)
 {
     if (QQuickItem *containmentInterface = view->containment()->property("_plasma_graphicObject").value<QQuickItem *>()) {
         const auto &childItems = containmentInterface->childItems();
@@ -438,7 +438,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
-    QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
     foreach (auto view, sortedViews) {
         if ((!view->latteTasksPresent() && view->tasksPresent() &&
@@ -502,7 +502,7 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
         return false;
     };
 
-    QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views =  m_corona->layoutManager()->currentDockViews();
 
     // update badges in all Latte Tasks plasmoids
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
@@ -510,7 +510,7 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
     }
 }
 
-bool GlobalShortcuts::isCapableToShowAppletsNumbers(DockView *view)
+bool GlobalShortcuts::isCapableToShowAppletsNumbers(Latte::View *view)
 {
     if (!view->latteTasksPresent() && view->tasksPresent()) {
         return false;
@@ -642,10 +642,10 @@ void GlobalShortcuts::showDocks()
         return false;
     };
 
-    QList<DockView *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
-    DockView *viewWithTasks{nullptr};
-    DockView *viewWithMeta{nullptr};
+    Latte::View *viewWithTasks{nullptr};
+    Latte::View *viewWithMeta{nullptr};
 
     foreach (auto view, sortedViews) {
         if (!viewWithTasks && isCapableToShowAppletsNumbers(view)) {
@@ -708,7 +708,7 @@ bool GlobalShortcuts::docksToHideAreValid()
     return true;
 }
 
-bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)
+bool GlobalShortcuts::dockAtLowerScreenPriority(Latte::View *test, Latte::View *base)
 {
     if (!base || ! test) {
         return true;
@@ -746,7 +746,7 @@ bool GlobalShortcuts::dockAtLowerScreenPriority(DockView *test, DockView *base)
     return false;
 }
 
-bool GlobalShortcuts::dockAtLowerEdgePriority(DockView *test, DockView *base)
+bool GlobalShortcuts::dockAtLowerEdgePriority(Latte::View *test, Latte::View *base)
 {
     if (!base || ! test) {
         return true;
@@ -775,9 +775,9 @@ bool GlobalShortcuts::dockAtLowerEdgePriority(DockView *test, DockView *base)
 }
 
 
-QList<DockView *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containment *, DockView *> *views)
+QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views)
 {
-    QList<DockView *> docks;
+    QList<Latte::View *> docks;
 
     //QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
 
@@ -801,14 +801,14 @@ QList<DockView *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containme
             if (dockAtLowerScreenPriority(docks[j], docks[j + 1])
                 || (docks[j]->screen() == docks[j + 1]->screen()
                     && dockAtLowerEdgePriority(docks[j], docks[j + 1]))) {
-                DockView *temp = docks[j + 1];
+                Latte::View *temp = docks[j + 1];
                 docks[j + 1] = docks[j];
                 docks[j] = temp;
             }
         }
     }
 
-    DockView *highestPriorityView{nullptr};
+    Latte::View *highestPriorityView{nullptr};
 
     for (int i = 0; i < docks.size(); ++i) {
         if (docks[i]->isPreferredForShortcuts()) {
@@ -833,7 +833,7 @@ QList<DockView *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containme
 
 void GlobalShortcuts::showSettings()
 {
-    QList<DockView *> docks = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> docks = sortedViewsList(m_corona->layoutManager()->currentDockViews());
 
     //! find which is the next dock to show its settings
     if (docks.count() > 0) {

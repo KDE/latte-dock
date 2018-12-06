@@ -20,7 +20,7 @@
 #include "screenedgeghostwindow.h"
 
 // local
-#include "dockview.h"
+#include "view.h"
 #include "../dockcorona.h"
 
 // Qt
@@ -39,7 +39,7 @@
 
 namespace Latte {
 
-ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
+ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     m_dockView(view)
 {
     setColor(QColor(Qt::transparent));
@@ -59,9 +59,9 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(DockView *view) :
     connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
     connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
 
-    connect(m_dockView, &DockView::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_dockView, &DockView::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_dockView, &DockView::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_dockView, &Latte::View::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_dockView, &Latte::View::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_dockView, &Latte::View::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
     connect(m_dockView, &QQuickView::screenChanged, this, [this]() {
         setScreen(m_dockView->screen());
         updateGeometry();
@@ -121,7 +121,7 @@ int ScreenEdgeGhostWindow::location()
     return (int)m_dockView->location();
 }
 
-DockView *ScreenEdgeGhostWindow::parentDock()
+Latte::View *ScreenEdgeGhostWindow::parentDock()
 {
     return m_dockView;
 }

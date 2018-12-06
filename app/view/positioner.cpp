@@ -20,8 +20,8 @@
 #include "positioner.h"
 
 // local
-#include "dockview.h"
 #include "effects.h"
+#include "view.h"
 #include "../dockcorona.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
@@ -38,7 +38,7 @@
 namespace Latte {
 namespace ViewPart {
 
-Positioner::Positioner(Latte::DockView *parent)
+Positioner::Positioner(Latte::View *parent)
     : QObject(parent),
       m_view(parent)
 {
@@ -94,18 +94,18 @@ void Positioner::init()
     connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::currentScreenChanged);
     connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::screenChanged);
 
-    connect(m_view, &Latte::DockView::absGeometryChanged, this, &Positioner::syncGeometry);
-    connect(m_view, &Latte::DockView::behaveAsPlasmaPanelChanged, this, &Positioner::syncGeometry);
-    connect(m_view, &Latte::DockView::maxThicknessChanged, this, &Positioner::syncGeometry);
-    connect(m_view, &Latte::DockView::maxLengthChanged, this, &Positioner::syncGeometry);
-    connect(m_view, &Latte::DockView::offsetChanged, this, &Positioner::syncGeometry);
+    connect(m_view, &Latte::View::absGeometryChanged, this, &Positioner::syncGeometry);
+    connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Positioner::syncGeometry);
+    connect(m_view, &Latte::View::maxThicknessChanged, this, &Positioner::syncGeometry);
+    connect(m_view, &Latte::View::maxLengthChanged, this, &Positioner::syncGeometry);
+    connect(m_view, &Latte::View::offsetChanged, this, &Positioner::syncGeometry);
 
-    connect(m_view, &Latte::DockView::locationChanged, this, [&]() {
+    connect(m_view, &Latte::View::locationChanged, this, [&]() {
         updateFormFactor();
         syncGeometry();
     });
 
-    connect(m_view, &Latte::DockView::normalThicknessChanged, this, [&]() {
+    connect(m_view, &Latte::View::normalThicknessChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }
@@ -580,7 +580,7 @@ void Positioner::initSignalingForLocationChangeSliding()
     //! signals to handle the sliding-in/out during location changes
     connect(this, &Positioner::hideDockDuringLocationChangeStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
-    connect(m_view, &DockView::locationChanged, this, [&]() {
+    connect(m_view, &View::locationChanged, this, [&]() {
         if (m_goToLocation != Plasma::Types::Floating) {
             m_goToLocation = Plasma::Types::Floating;
             QTimer::singleShot(100, [this]() {
@@ -616,7 +616,7 @@ void Positioner::initSignalingForLocationChangeSliding()
     //! signals to handle the sliding-in/out during moving to another layout
     connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
-    connect(m_view, &DockView::managedLayoutChanged, this, [&]() {
+    connect(m_view, &View::managedLayoutChanged, this, [&]() {
         if (!m_moveToLayout.isEmpty() && m_view->managedLayout()) {
             m_moveToLayout = "";
             QTimer::singleShot(100, [this]() {
