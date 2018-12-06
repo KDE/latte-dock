@@ -50,7 +50,7 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
-        connect(m_latteView, &Latte::View::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
+        connect(m_latteView, &Latte::View::absGeometryChanged, this, &VisibilityManagerPrivate::setViewGeometry);
     }
 
     timerStartUp.setInterval(5000);
@@ -110,12 +110,12 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
         , this, [&] {
             if (raiseOnDesktopChange)
-                raiseDockTemporarily();
+                raiseViewTemporarily();
         });
         connections[4] = connect(wm, &WindowSystem::currentActivityChanged
         , this, [&]() {
             if (raiseOnActivityChange)
-                raiseDockTemporarily();
+                raiseViewTemporarily();
             else
                 updateHiddenState();
         });
@@ -145,7 +145,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[1] = connect(m_latteView, &Latte::View::inEditModeChanged
             , this, [&]() {
                 if (!m_latteView->inEditMode() && !m_latteView->positioner()->inLocationChangeAnimation() && view->screen())
-                    wm->setViewStruts(*view, dockGeometry, view->containment()->location());
+                    wm->setViewStruts(*view, m_viewGeometry, view->containment()->location());
             });
 
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
@@ -158,7 +158,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                 });
             }
 
-            raiseDock(true);
+            raiseView(true);
         }
         break;
 
@@ -168,7 +168,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
-            raiseDock(containsMouse);
+            raiseView(containsMouse);
         }
         break;
 
@@ -254,7 +254,7 @@ void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
                                       && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName());
 
     if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
-        wm->setViewStruts(*view, dockGeometry, view->location());
+        wm->setViewStruts(*view, m_viewGeometry, view->location());
     } else {
         wm->removeViewStruts(*view);
     }
@@ -339,7 +339,7 @@ inline void VisibilityManagerPrivate::setTimerHide(int msec)
     emit q->timerHideChanged();
 }
 
-inline void VisibilityManagerPrivate::raiseDock(bool raise)
+inline void VisibilityManagerPrivate::raiseView(bool raise)
 {
     if (blockHiding)
         return;
@@ -362,7 +362,7 @@ inline void VisibilityManagerPrivate::raiseDock(bool raise)
     }
 }
 
-void VisibilityManagerPrivate::raiseDockTemporarily()
+void VisibilityManagerPrivate::raiseViewTemporarily()
 {
     if (raiseTemporarily)
         return;
@@ -388,7 +388,7 @@ void VisibilityManagerPrivate::updateHiddenState()
 
     switch (mode) {
         case Dock::AutoHide:
-            raiseDock(containsMouse);
+            raiseView(containsMouse);
             break;
 
         case Dock::DodgeActive:
@@ -408,12 +408,12 @@ void VisibilityManagerPrivate::updateHiddenState()
     }
 }
 
-inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
+inline void VisibilityManagerPrivate::setViewGeometry(const QRect &geometry)
 {
     if (!view->containment())
         return;
 
-    this->dockGeometry = geometry;
+    m_viewGeometry = geometry;
 
     if (mode == Dock::AlwaysVisible && !m_latteView->inEditMode() && view->screen()) {
         updateStrutsBasedOnLayoutsAndActivities();
@@ -437,9 +437,9 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
     if (raiseTemporarily)
         return;
 
-    //!don't send false raiseDock signal when containing mouse
+    //!don't send false raiseView signal when containing mouse
     if (containsMouse) {
-        raiseDock(true);
+        raiseView(true);
         return;
     }
 
@@ -450,16 +450,16 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
 
         if (!winfo.isValid()) {
             //! very rare case that window manager doesnt have any active window at all
-            raiseDock(true);
+            raiseView(true);
             return;
         }
     }
 
-    //! don't send false raiseDock signal when containing mouse, // Johan comment
+    //! don't send false raiseView signal when containing mouse, // Johan comment
     //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         bool overlaps{intersects(winfo)};
-        raiseDock(!overlaps);
+        raiseView(!overlaps);
     }
 }
 
@@ -468,9 +468,9 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
     if (raiseTemporarily)
         return;
 
-    //!don't send false raiseDock signal when containing mouse
+    //!don't send false raiseView signal when containing mouse
     if (containsMouse) {
-        raiseDock(true);
+        raiseView(true);
         return;
     }
 
@@ -481,7 +481,7 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 
         if (!winfo.isValid()) {
             //! very rare case that window manager doesnt have any active window at all
-            raiseDock(true);
+            raiseView(true);
             return;
         }
     }
@@ -498,11 +498,11 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
                 && intersects(winfo));
     };
 
-    //! don't send false raiseDock signal when containing mouse, // Johan comment
+    //! don't send false raiseView signal when containing mouse, // Johan comment
     //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         bool overlapsMaximized{view->formFactor() == Plasma::Types::Vertical ? intersectsMaxHoriz() : intersectsMaxVert()};
-        raiseDock(!overlapsMaximized);
+        raiseView(!overlapsMaximized);
     }
 }
 
@@ -514,9 +514,9 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
     if (windows.find(wid) == std::end(windows))
         return;
 
-    //!don't send false raiseDock signal when containing mouse
+    //!don't send false raiseView signal when containing mouse
     if (containsMouse) {
-        raiseDock(true);
+        raiseView(true);
         return;
     }
 
@@ -527,7 +527,7 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
         return;
 
     if (intersects(winfo))
-        raiseDock(false);
+        raiseView(false);
     else
         timerCheckWindows.start();
 }
@@ -559,13 +559,13 @@ void VisibilityManagerPrivate::checkAllWindows()
     }
 
     cleanupFaultyWindows();
-    raiseDock(raise);
+    raiseView(raise);
 }
 
 inline bool VisibilityManagerPrivate::intersects(const WindowInfoWrap &winfo)
 {
     return (!winfo.isMinimized()
-            && winfo.geometry().intersects(dockGeometry)
+            && winfo.geometry().intersects(m_viewGeometry)
             && !winfo.isShaded());
 }
 
@@ -639,7 +639,7 @@ void VisibilityManagerPrivate::setContainsMouse(bool contains)
     emit q->containsMouseChanged();
 
     if (contains && mode != Dock::AlwaysVisible) {
-        raiseDock(true);
+        raiseView(true);
     }
 }
 
@@ -811,7 +811,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
 
         snappedWindowsGeometries.clear();
 
-        //! for top dock the snapped geometries would be
+        //! for top view the snapped geometries would be
         int halfWidth1 = std::floor(availableScreenGeometry.width() / 2);
         int halfWidth2 = availableScreenGeometry.width() - halfWidth1;
         int halfHeight1 = std::floor((availableScreenGeometry.height()) / 2);

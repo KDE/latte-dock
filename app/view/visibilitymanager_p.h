@@ -49,8 +49,8 @@ public:
     void setTimerShow(int msec);
     void setTimerHide(int msec);
 
-    void raiseDock(bool raise);
-    void raiseDockTemporarily();
+    void raiseView(bool raise);
+    void raiseViewTemporarily();
     void updateHiddenState();
 
     //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
@@ -71,7 +71,7 @@ public:
     void setEnableKWinEdges(bool enable);
     void updateKWinEdgesSupport();
 
-    void setDockGeometry(const QRect &rect);
+    void setViewGeometry(const QRect &rect);
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
     void applyActivitiesToHiddenWindows(const QStringList &activities);
 
@@ -107,7 +107,7 @@ public:
     QTimer timerHide;
     QTimer timerCheckWindows;
     QTimer timerStartUp;
-    QRect dockGeometry;
+    QRect m_viewGeometry;
     bool isHidden{false};
     bool dragEnter{false};
     bool blockHiding{false};
