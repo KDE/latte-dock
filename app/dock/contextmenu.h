@@ -38,7 +38,7 @@ class DockView;
 }
 
 namespace Latte {
-namespace View {
+namespace ViewPart {
 
 class ContextMenu : public QObject
 {

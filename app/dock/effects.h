@@ -34,7 +34,7 @@ class DockView;
 }
 
 namespace Latte {
-namespace View {
+namespace ViewPart {
 
 class Effects: public QObject
 {

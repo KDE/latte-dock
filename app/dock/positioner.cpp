@@ -36,7 +36,7 @@
 #include <KWindowSystem>
 
 namespace Latte {
-namespace View {
+namespace ViewPart {
 
 Positioner::Positioner(Latte::DockView *parent)
     : QObject(parent),
@@ -111,13 +111,13 @@ void Positioner::init()
         }
     });
 
-    connect(m_view->effects(), &Latte::View::Effects::drawShadowsChanged, this, [&]() {
+    connect(m_view->effects(), &Latte::ViewPart::Effects::drawShadowsChanged, this, [&]() {
         if (!m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }
     });
 
-    connect(m_view->effects(), &Latte::View::Effects::innerShadowChanged, this, [&]() {
+    connect(m_view->effects(), &Latte::ViewPart::Effects::innerShadowChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
             syncGeometry();
         }

@@ -32,7 +32,7 @@
 #include <KWindowSystem>
 
 namespace Latte {
-namespace View {
+namespace ViewPart {
 
 Effects::Effects(Latte::DockView *parent)
     : QObject(parent),

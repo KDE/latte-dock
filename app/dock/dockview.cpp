@@ -61,9 +61,9 @@ namespace Latte {
 //! are needed in order for window flags to be set correctly
 DockView::DockView(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
     : PlasmaQuick::ContainmentView(corona),
-      m_contextMenu(new View::ContextMenu(this)),
-      m_effects(new View::Effects(this)),
-      m_positioner(new View::Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
+      m_contextMenu(new ViewPart::ContextMenu(this)),
+      m_effects(new ViewPart::Effects(this)),
+      m_positioner(new ViewPart::Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
 {
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -181,16 +181,15 @@ void DockView::init()
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &DockView::availableScreenRectChanged);
 
-    connect(m_positioner, &View::Positioner::onHideWindowsForSlidingOut, this, &DockView::hideWindowsForSlidingOut);
-    connect(m_positioner, &View::Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
-
     connect(this, &DockView::dockWinBehaviorChanged, this, &DockView::saveConfig);
     connect(this, &DockView::onPrimaryChanged, this, &DockView::saveConfig);
     connect(this, &DockView::isPreferredForShortcutsChanged, this, &DockView::saveConfig);
 
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
 
-    connect(m_contextMenu, &View::ContextMenu::menuChanged, this, &DockView::contextMenuIsShownChanged);
+    connect(m_positioner, &ViewPart::Positioner::onHideWindowsForSlidingOut, this, &DockView::hideWindowsForSlidingOut);
+    connect(m_positioner, &ViewPart::Positioner::screenGeometryChanged, this, &DockView::screenGeometryChanged);
+    connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &DockView::contextMenuIsShownChanged);
 
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
@@ -885,12 +884,12 @@ bool DockView::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
     return false;
 }
 
-View::Effects *DockView::effects() const
+ViewPart::Effects *DockView::effects() const
 {
     return m_effects;
 }
 
-View::Positioner *DockView::positioner() const
+ViewPart::Positioner *DockView::positioner() const
 {
     return m_positioner;
 }

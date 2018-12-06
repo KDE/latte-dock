@@ -42,7 +42,7 @@
 #include <PlasmaQuick/AppletQuickItem>
 
 namespace Latte {
-namespace View {
+namespace ViewPart {
 
 ContextMenu::ContextMenu(Latte::DockView *view) :
     QObject(view),

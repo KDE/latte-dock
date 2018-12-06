@@ -57,7 +57,7 @@ class PlasmaShellSurface;
 namespace Latte {
 class Layout;
 
-namespace View {
+namespace ViewPart {
 class ContextMenu;
 }
 }
@@ -89,9 +89,9 @@ class DockView : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
-    Q_PROPERTY(Latte::View::Effects *effects READ effects NOTIFY effectsChanged)
+    Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
-    Q_PROPERTY(Latte::View::Positioner *positioner READ positioner NOTIFY positionerChanged)
+    Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
 
     Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
@@ -155,8 +155,8 @@ public:
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
-    View::Effects *effects() const;
-    View::Positioner *positioner() const;
+    ViewPart::Effects *effects() const;
+    ViewPart::Positioner *positioner() const;
     VisibilityManager *visibility() const;
 
     Layout *managedLayout() const;
@@ -270,9 +270,9 @@ private:
     Layout *m_managedLayout{nullptr};
     QPointer<PlasmaQuick::ConfigView> m_configView;
 
-    QPointer<View::ContextMenu> m_contextMenu;
-    QPointer<View::Effects> m_effects;
-    QPointer<View::Positioner> m_positioner;
+    QPointer<ViewPart::ContextMenu> m_contextMenu;
+    QPointer<ViewPart::Effects> m_effects;
+    QPointer<ViewPart::Positioner> m_positioner;
     QPointer<VisibilityManager> m_visibility;
 
     //! Connections to release and bound for the managed layout
