@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DOCKPACKAGE_H
-#define DOCKPACKAGE_H
+#ifndef LATTEPACKAGE_H
+#define LATTEPACKAGE_H
 
 // Qt
 #include <QObject>
@@ -28,17 +28,17 @@
 #include <KPackage/PackageStructure>
 
 namespace Latte {
-class DockPackage : public KPackage::PackageStructure
+class Package : public KPackage::PackageStructure
 {
     Q_OBJECT
 
 public:
-    explicit DockPackage(QObject *parent = 0, const QVariantList &args = QVariantList());
+    explicit Package(QObject *parent = 0, const QVariantList &args = QVariantList());
 
-    ~DockPackage() override;
+    ~Package() override;
     void initPackage(KPackage::Package *package) override;
     void pathChanged(KPackage::Package *package) override;
 };
 
 }
-#endif // DOCKPACKAGE_H
+#endif // LATTEPACKAGE_H

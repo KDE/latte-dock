@@ -29,7 +29,7 @@
 #include "layoutmanager.h"
 #include "plasmathemeextended.h"
 #include "screenpool.h"
-#include "packageplugins/shell/dockpackage.h"
+#include "packageplugins/shell/lattepackage.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
 #include "wm/abstractwindowinterface.h"
@@ -93,7 +93,7 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
 
     setupWaylandIntegration();
 
-    KPackage::Package package(new DockPackage(this));
+    KPackage::Package package(new Latte::Package(this));
 
     m_screenPool->load();
 

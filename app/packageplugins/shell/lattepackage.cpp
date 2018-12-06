@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dockpackage.h"
+#include "lattepackage.h"
 
 // Qt
 #include <QDebug>
@@ -29,16 +29,16 @@
 
 namespace Latte {
 
-DockPackage::DockPackage(QObject *parent, const QVariantList &args)
+Package::Package(QObject *parent, const QVariantList &args)
     : KPackage::PackageStructure(parent, args)
 {
 }
 
-DockPackage::~DockPackage()
+Package::~Package()
 {
 }
 
-void DockPackage::initPackage(KPackage::Package *package)
+void Package::initPackage(KPackage::Package *package)
 {
     auto fallback = KPackage::PackageLoader::self()->loadPackage("Plasma/Shell", "org.kde.plasma.desktop");
     package->setDefaultPackageRoot(QStringLiteral("plasma/shells/"));
@@ -70,7 +70,7 @@ void DockPackage::initPackage(KPackage::Package *package)
     qDebug() << "package is valid" << package->isValid();
 }
 
-void DockPackage::pathChanged(KPackage::Package *package)
+void Package::pathChanged(KPackage::Package *package)
 {
     if (!package->metadata().isValid())
         return;

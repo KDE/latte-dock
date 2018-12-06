@@ -12,7 +12,7 @@ set(lattedock-app_SRCS
     plasmathemeextended.cpp
     schemecolors.cpp
     screenpool.cpp
-    packageplugins/shell/dockpackage.cpp    
+    packageplugins/shell/lattepackage.cpp    
     settings/settingsdialog.cpp
     settings/sortedactivitiesmodel.cpp
     settings/universalsettings.cpp
