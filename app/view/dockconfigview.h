@@ -128,7 +128,7 @@ private:
 
     QRect m_geometryWhenVisible;
 
-    QPointer<Latte::View> m_dockView;
+    QPointer<Latte::View> m_latteView;
     QPointer<DockSecConfigView> m_secConfigView;
     QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;

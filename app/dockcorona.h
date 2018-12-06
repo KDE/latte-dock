@@ -137,7 +137,7 @@ private slots:
     void primaryOutputChanged();
     void screenRemoved(QScreen *screen);
     void screenCountChanged();
-    void syncDockViewsToScreens();
+    void syncLatteViewsToScreens();
 
 private:
     void cleanConfig();

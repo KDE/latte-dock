@@ -114,14 +114,14 @@ void Layout::unloadContainments()
     disconnect(this, &Layout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
 
     qDebug() << "Layout - " + name() + " unload: containments ... size ::: " << m_containments.size()
-             << " ,dockViews in memory ::: " << m_dockViews.size()
-             << " ,hidden dockViews in memory :::  " << m_waitingDockViews.size();
+             << " ,latteViews in memory ::: " << m_latteViews.size()
+             << " ,hidden latteViews in memory :::  " << m_waitingLatteViews.size();
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         view->disconnectSensitiveSignals();
     }
 
-    foreach (auto view, m_waitingDockViews) {
+    foreach (auto view, m_waitingLatteViews) {
         view->disconnectSensitiveSignals();
     }
 
@@ -152,18 +152,18 @@ void Layout::unloadContainments()
     }
 }
 
-void Layout::unloadDockViews()
+void Layout::unloadLatteViews()
 {
     if (!m_corona) {
         return;
     }
 
-    qDebug() << "Layout - " + name() + " unload: dockViews ... size: " << m_dockViews.size();
+    qDebug() << "Layout - " + name() + " unload: latteViews ... size: " << m_latteViews.size();
 
-    qDeleteAll(m_dockViews);
-    qDeleteAll(m_waitingDockViews);
-    m_dockViews.clear();
-    m_waitingDockViews.clear();
+    qDeleteAll(m_latteViews);
+    qDeleteAll(m_waitingLatteViews);
+    m_latteViews.clear();
+    m_waitingLatteViews.clear();
 }
 
 void Layout::init()
@@ -249,18 +249,18 @@ void Layout::setVersion(int ver)
     emit versionChanged();
 }
 
-bool Layout::blockAutomaticDockViewCreation() const
+bool Layout::blockAutomaticLatteViewCreation() const
 {
-    return m_blockAutomaticDockViewCreation;
+    return m_blockAutomaticLatteViewCreation;
 }
 
-void Layout::setBlockAutomaticDockViewCreation(bool block)
+void Layout::setBlockAutomaticLatteViewCreation(bool block)
 {
-    if (m_blockAutomaticDockViewCreation == block) {
+    if (m_blockAutomaticLatteViewCreation == block) {
         return;
     }
 
-    m_blockAutomaticDockViewCreation = block;
+    m_blockAutomaticLatteViewCreation = block;
 }
 
 bool Layout::disableBordersForMaximizedWindows() const
@@ -739,19 +739,19 @@ void Layout::addContainment(Plasma::Containment *containment)
     }
 
     if (containmentInLayout) {
-        if (!blockAutomaticDockViewCreation()) {
+        if (!blockAutomaticLatteViewCreation()) {
             addDock(containment);
         } else {
-            qDebug() << "delaying DockView creation for containment :: " << containment->id();
+            qDebug() << "delaying LatteView creation for containment :: " << containment->id();
         }
 
         connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
     }
 }
 
-QHash<const Plasma::Containment *, Latte::View *> *Layout::dockViews()
+QHash<const Plasma::Containment *, Latte::View *> *Layout::latteViews()
 {
-    return &m_dockViews;
+    return &m_latteViews;
 }
 
 QList<Plasma::Containment *> *Layout::containments()
@@ -826,9 +826,9 @@ void Layout::destroyedChanged(bool destroyed)
     }
 
     if (destroyed) {
-        m_waitingDockViews[sender] = m_dockViews.take(static_cast<Plasma::Containment *>(sender));
+        m_waitingLatteViews[sender] = m_latteViews.take(static_cast<Plasma::Containment *>(sender));
     } else {
-        m_dockViews[sender] = m_waitingDockViews.take(static_cast<Plasma::Containment *>(sender));
+        m_latteViews[sender] = m_waitingLatteViews.take(static_cast<Plasma::Containment *>(sender));
     }
 
     emit viewsCountChanged();
@@ -850,10 +850,10 @@ void Layout::containmentDestroyed(QObject *cont)
         }
 
         qDebug() << "Layout " << name() << " :: containment destroyed!!!!";
-        auto view = m_dockViews.take(containment);
+        auto view = m_latteViews.take(containment);
 
         if (!view) {
-            view = m_waitingDockViews.take(containment);
+            view = m_waitingLatteViews.take(containment);
         }
 
         if (view) {
@@ -883,7 +883,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
 
     qDebug() << "step 2...";
 
-    for (auto *dock : m_dockViews) {
+    for (auto *dock : m_latteViews) {
         if (dock->containment() == containment)
             return;
     }
@@ -936,7 +936,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
         QString connector = m_corona->screenPool()->connector(id);
         qDebug() << "add dock - connector : " << connector;
 
-        foreach (auto view, m_dockViews) {
+        foreach (auto view, m_latteViews) {
             auto testContainment = view->containment();
 
             int testScreenId = testContainment->screen();
@@ -949,8 +949,8 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
             Plasma::Types::Location testLocation = static_cast<Plasma::Types::Location>((int)testContainment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
 
             if (!testOnPrimary && m_corona->screenPool()->primaryScreenId() == testScreenId && testLocation == containment->location()) {
-                qDebug() << "Rejected explicit dockView and removing it in order add an onPrimary with higher priority at screen: " << connector;
-                auto viewToDelete = m_dockViews.take(testContainment);
+                qDebug() << "Rejected explicit latteView and removing it in order add an onPrimary with higher priority at screen: " << connector;
+                auto viewToDelete = m_latteViews.take(testContainment);
                 viewToDelete->disconnectSensitiveSignals();
                 viewToDelete->deleteLater();
             }
@@ -982,17 +982,17 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
         dockWin = containment->config().readEntry("dockWindowBehavior", true);
     }
 
-    auto dockView = new Latte::View(m_corona, nextScreen, dockWin);
+    auto latteView = new Latte::View(m_corona, nextScreen, dockWin);
 
-    dockView->init();
-    dockView->setContainment(containment);
-    dockView->setManagedLayout(this);
+    latteView->init();
+    latteView->setContainment(containment);
+    latteView->setManagedLayout(this);
 
     //! force this special dock case to become primary
     //! even though it isnt
     if (forceOnPrimary) {
-        qDebug() << "Enforcing onPrimary:true as requested for DockView...";
-        dockView->setOnPrimary(true);
+        qDebug() << "Enforcing onPrimary:true as requested for LatteView...";
+        latteView->setOnPrimary(true);
     }
 
     //  connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
@@ -1005,16 +1005,16 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
         connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
     }
 
-    connect(dockView->effects(), &ViewPart::Effects::colorizerEnabledChanged, this, &Layout::viewColorizerChanged);
+    connect(latteView->effects(), &ViewPart::Effects::colorizerEnabledChanged, this, &Layout::viewColorizerChanged);
 
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
     //! the copied dock under X11
     //if (!KWindowSystem::isPlatformWayland()) {
-    dockView->show();
+    latteView->show();
     //}
 
-    m_dockViews[containment] = dockView;
+    m_latteViews[containment] = latteView;
 
     emit viewColorizerChanged();
     emit viewsCountChanged();
@@ -1098,9 +1098,9 @@ void Layout::copyDock(Plasma::Containment *containment)
     QString temp2File = newUniqueIdsLayoutFromFile(temp1File);
 
 
-    //! Don't create DockView when the containment is created because we must update
+    //! Don't create LatteView when the containment is created because we must update
     //! its screen settings first
-    setBlockAutomaticDockViewCreation(true);
+    setBlockAutomaticLatteViewCreation(true);
     //! Finally import the configuration
     QList<Plasma::Containment *> importedDocks = importLayoutFile(temp2File);
 
@@ -1119,7 +1119,7 @@ void Layout::copyDock(Plasma::Containment *containment)
 
     //in multi-screen environment the copied dock is moved to alternative screens first
     const auto screens = qGuiApp->screens();
-    auto dock = m_dockViews[containment];
+    auto dock = m_latteViews[containment];
 
     bool setOnExplicitScreen = false;
 
@@ -1178,7 +1178,7 @@ void Layout::copyDock(Plasma::Containment *containment)
         addDock(newContainment, false, dockScrId);
     }
 
-    setBlockAutomaticDockViewCreation(false);
+    setBlockAutomaticLatteViewCreation(false);
 }
 
 void Layout::appletCreated(Plasma::Applet *applet)
@@ -1482,17 +1482,17 @@ void Layout::recreateDock(Plasma::Containment *containment)
     }
 
     //! give the time to config window to close itself first and then recreate the dock
-    //! step:1 remove the dockview
+    //! step:1 remove the latteview
     QTimer::singleShot(350, [this, containment]() {
-        auto view = m_dockViews.take(containment);
+        auto view = m_latteViews.take(containment);
 
         if (view) {
             qDebug() << "recreate - step 1: removing dock for containment:" << containment->id();
 
-            //! step:2 add the new dockview
+            //! step:2 add the new latteview
             connect(view, &QObject::destroyed, this, [this, containment]() {
                 QTimer::singleShot(250, this, [this, containment]() {
-                    if (!m_dockViews.contains(containment)) {
+                    if (!m_latteViews.contains(containment)) {
                         qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
                         addDock(containment);
                     }
@@ -1505,15 +1505,15 @@ void Layout::recreateDock(Plasma::Containment *containment)
     });
 }
 
-//! the central functions that updates loading/unloading dockviews
+//! the central functions that updates loading/unloading latteviews
 //! concerning screen changed (for multi-screen setups mainly)
-void Layout::syncDockViewsToScreens()
+void Layout::syncLatteViewsToScreens()
 {
     if (!m_corona) {
         return;
     }
 
-    qDebug() << "start of, syncDockViewsToScreens ....";
+    qDebug() << "start of, syncLatteViewsToScreens ....";
     qDebug() << "LAYOUT ::: " << name();
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
@@ -1564,7 +1564,7 @@ void Layout::syncDockViewsToScreens()
     }
 
     qDebug() << "PRIMARY SCREEN :: " << prmScreenName;
-    qDebug() << "DOCKVIEWS MUST BE PRESENT AT :: " << futureDocksLocations;
+    qDebug() << "LATTEVIEWS MUST BE PRESENT AT :: " << futureDocksLocations;
     qDebug() << "FUTURESHOWNVIEWS MUST BE :: " << futureShownViews;
 
     //! add views
@@ -1575,24 +1575,24 @@ void Layout::syncDockViewsToScreens()
             screenId = containment->lastScreen();
         }
 
-        if (!dockViewExists(containment) && futureShownViews.contains(containment->id())) {
-            qDebug() << "syncDockViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << m_corona->screenPool()->connector(screenId);
+        if (!latteViewExists(containment) && futureShownViews.contains(containment->id())) {
+            qDebug() << "syncLatteViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << m_corona->screenPool()->connector(screenId);
             addDock(containment);
         }
     }
 
     //! remove views
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view->containment() && !futureShownViews.contains(view->containment()->id())) {
-            qDebug() << "syncDockViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
-            auto viewToDelete = m_dockViews.take(view->containment());
+            qDebug() << "syncLatteViewsToScreens: view must be deleted... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
+            auto viewToDelete = m_latteViews.take(view->containment());
             viewToDelete->disconnectSensitiveSignals();
             viewToDelete->deleteLater();
         }
     }
 
     //! reconsider views
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view->containment() && futureShownViews.contains(view->containment()->id())) {
             //! if the dock will not be deleted its a very good point to reconsider
             //! if the screen in which is running is the correct one
@@ -1600,17 +1600,17 @@ void Layout::syncDockViewsToScreens()
         }
     }
 
-    qDebug() << "end of, syncDockViewsToScreens ....";
+    qDebug() << "end of, syncLatteViewsToScreens ....";
 }
 
-void Layout::assignToLayout(Latte::View *dockView, QList<Plasma::Containment *> containments)
+void Layout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments)
 {
     if (!m_corona) {
         return;
     }
 
-    if (dockView) {
-        m_dockViews[dockView->containment()] = dockView;
+    if (latteView) {
+        m_latteViews[latteView->containment()] = latteView;
         m_containments << containments;
 
         foreach (auto containment, containments) {
@@ -1621,7 +1621,7 @@ void Layout::assignToLayout(Latte::View *dockView, QList<Plasma::Containment *> 
             connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
         }
 
-        dockView->setManagedLayout(this);
+        latteView->setManagedLayout(this);
 
         emit viewsCountChanged();
     }
@@ -1632,7 +1632,7 @@ void Layout::assignToLayout(Latte::View *dockView, QList<Plasma::Containment *> 
     }
 }
 
-QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *dockView)
+QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
 {
     QList<Plasma::Containment *> containments;
 
@@ -1640,13 +1640,13 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *dockView)
         return containments;
     }
 
-    containments << dockView->containment();
+    containments << latteView->containment();
 
     foreach (auto containment, m_containments) {
         Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
 
-        //! add systrays from that dockView
-        if (parentApplet && parentApplet->containment() && parentApplet->containment() == dockView->containment()) {
+        //! add systrays from that latteView
+        if (parentApplet && parentApplet->containment() && parentApplet->containment() == latteView->containment()) {
             containments << containment;
             disconnect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
             disconnect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
@@ -1659,7 +1659,7 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *dockView)
     }
 
     if (containments.size() > 0) {
-        m_dockViews.remove(dockView->containment());
+        m_latteViews.remove(latteView->containment());
     }
 
     //! sync the original layout file for integrity
@@ -1670,13 +1670,13 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *dockView)
     return containments;
 }
 
-bool Layout::dockViewExists(Plasma::Containment *containment)
+bool Layout::latteViewExists(Plasma::Containment *containment)
 {
     if (!m_corona) {
         return false;
     }
 
-    return m_dockViews.keys().contains(containment);
+    return m_latteViews.keys().contains(containment);
 }
 
 QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, Latte::View *forView) const
@@ -1689,7 +1689,7 @@ QList<Plasma::Types::Location> Layout::availableEdgesForView(QScreen *scr, Latte
         return edges;
     }
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         //! make sure that availabe edges takes into account only views that should be excluded,
         //! this is why the forView should not be excluded
         if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
@@ -1727,7 +1727,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(QScreen *scr) const
         return edges;
     }
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
@@ -1748,7 +1748,7 @@ QList<Plasma::Types::Location> Layout::freeEdges(int screen) const
 
     QScreen *scr = m_corona->screenPool()->screenForId(screen);
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view && scr && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
         }
@@ -1819,7 +1819,7 @@ int Layout::viewsWithTasks() const
 
     int result = 0;
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view->tasksPresent()) {
             result++;
         }
@@ -1838,7 +1838,7 @@ int Layout::viewsCount(int screen) const
 
     int docks{0};
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view && view->screen() == scr && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -1855,7 +1855,7 @@ int Layout::viewsCount(QScreen *screen) const
 
     int docks{0};
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view && view->screen() == screen && !view->containment()->destroyed()) {
             ++docks;
         }
@@ -1872,7 +1872,7 @@ int Layout::viewsCount() const
 
     int docks{0};
 
-    foreach (auto view, m_dockViews) {
+    foreach (auto view, m_latteViews) {
         if (view && view->containment() && !view->containment()->destroyed()) {
             ++docks;
         }

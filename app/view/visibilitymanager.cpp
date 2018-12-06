@@ -44,13 +44,13 @@ namespace Latte {
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
     : QObject(nullptr), q(q), view(view)
 {
-    dockView = qobject_cast<Latte::View *>(view);
+    m_latteView = qobject_cast<Latte::View *>(view);
     dockCorona = qobject_cast<DockCorona *>(view->corona());
     wm = dockCorona->wm();
 
-    if (dockView) {
-        connect(dockView, &Latte::View::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
-        connect(dockView, &Latte::View::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
+    if (m_latteView) {
+        connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
+        connect(m_latteView, &Latte::View::absGeometryChanged, this, &VisibilityManagerPrivate::setDockGeometry);
     }
 
     timerStartUp.setInterval(5000);
@@ -129,22 +129,22 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     switch (this->mode) {
         case Dock::AlwaysVisible: {
             //set wayland visibility mode
-            if (dockView->surface()) {
-                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+            if (m_latteView->surface()) {
+                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
             }
 
-            if (view->containment() && !dockView->inEditMode() && view->screen()) {
+            if (view->containment() && !m_latteView->inEditMode() && view->screen()) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
 
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
-                if (dockView->inEditMode())
+                if (m_latteView->inEditMode())
                     wm->removeDockStruts(*view);
             });
-            connections[1] = connect(dockView, &Latte::View::inEditModeChanged
+            connections[1] = connect(m_latteView, &Latte::View::inEditModeChanged
             , this, [&]() {
-                if (!dockView->inEditMode() && !dockView->positioner()->inLocationChangeAnimation() && view->screen())
+                if (!m_latteView->inEditMode() && !m_latteView->positioner()->inLocationChangeAnimation() && view->screen())
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
 
@@ -153,7 +153,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
-                connections[3] = connect(dockView, &Latte::View::activitiesChanged, this, [&]() {
+                connections[3] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
             }
@@ -164,8 +164,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
         case Dock::AutoHide: {
             //set wayland visibility mode
-            if (dockView->surface()) {
-                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            if (m_latteView->surface()) {
+                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
             raiseDock(containsMouse);
@@ -174,8 +174,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
         case Dock::DodgeActive: {
             //set wayland visibility mode
-            if (dockView->surface()) {
-                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            if (m_latteView->surface()) {
+                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
@@ -188,8 +188,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
         case Dock::DodgeMaximized: {
             //set wayland visibility mode
-            if (dockView->surface()) {
-                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            if (m_latteView->surface()) {
+                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
@@ -202,8 +202,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
         case Dock::DodgeAllWindows: {
             //set wayland visibility mode
-            if (dockView->surface()) {
-                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
+            if (m_latteView->surface()) {
+                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
             for (const auto &wid : wm->windows()) {
@@ -230,8 +230,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         case Dock::WindowsGoBelow:
 
             //set wayland visibility mode
-            if (dockView->surface()) {
-                dockView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
+            if (m_latteView->surface()) {
+                m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
             }
 
             break;
@@ -250,8 +250,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
 {
     bool multipleLayoutsAndCurrent = (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                      && dockView->managedLayout() && !dockView->positioner()->inLocationChangeAnimation()
-                                      && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName());
+                                      && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
+                                      && m_latteView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName());
 
     if (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
         wm->setDockStruts(*view, dockGeometry, view->location());
@@ -293,8 +293,8 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     if (q->supportsKWinEdges()) {
         bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
                                 (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                 && dockView->managedLayout() && !dockView->positioner()->inLocationChangeAnimation()
-                                 && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
+                                 && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
+                                 && m_latteView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
             wm->setEdgeStateFor(edgeGhostWindow, isHidden);
@@ -415,7 +415,7 @@ inline void VisibilityManagerPrivate::setDockGeometry(const QRect &geometry)
 
     this->dockGeometry = geometry;
 
-    if (mode == Dock::AlwaysVisible && !dockView->inEditMode() && view->screen()) {
+    if (mode == Dock::AlwaysVisible && !m_latteView->inEditMode() && view->screen()) {
         updateStrutsBasedOnLayoutsAndActivities();
     }
 }
@@ -803,7 +803,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
         return;
     }
 
-    int currentScrId = dockView->positioner()->currentScreenId();
+    int currentScrId = m_latteView->positioner()->currentScreenId();
     QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectWithCriteria(currentScrId, {Dock::AlwaysVisible}, {});
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {
@@ -885,7 +885,7 @@ bool VisibilityManagerPrivate::isTouchingPanelEdge(const WindowInfoWrap &winfo)
     if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         bool touchingPanelEdge{false};
 
-        QRect screenGeometry = dockView->screenGeometry();
+        QRect screenGeometry = m_latteView->screenGeometry();
         bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
 
         if (inCurrentScreen) {
@@ -1008,7 +1008,7 @@ void VisibilityManagerPrivate::updateKWinEdgesSupport()
 void VisibilityManagerPrivate::createEdgeGhostWindow()
 {
     if (!edgeGhostWindow) {
-        edgeGhostWindow = new ScreenEdgeGhostWindow(dockView);
+        edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
         wm->setDockExtraFlags(*edgeGhostWindow);
 
@@ -1022,8 +1022,8 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
         this, [&]() {
             bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
                                     (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
-                                     && dockView->managedLayout() && !dockView->positioner()->inLocationChangeAnimation()
-                                     && dockView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
+                                     && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
+                                     && m_latteView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
 
             if (edgeGhostWindow) {
                 if (inCurrentLayout) {
@@ -1058,7 +1058,7 @@ void VisibilityManagerPrivate::requestToggleMaximizeForActiveWindow()
     WindowInfoWrap actInfo = wm->requestInfoActive();
 
     //active window can be toggled only when it is in the same screen
-    if (actInfo.isValid() && !actInfo.geometry().isNull() && dockView->screenGeometry().contains(actInfo.geometry().center())) {
+    if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
         wm->requestToggleMaximized(actInfo.wid());
     }
 }
@@ -1068,8 +1068,8 @@ void VisibilityManagerPrivate::requestMoveActiveWindow(int localX, int localY)
     WindowInfoWrap actInfo = wm->requestInfoActive();
 
     //active window can be dragged only when it is in the same screen
-    if (actInfo.isValid() && !actInfo.geometry().isNull() && dockView->screenGeometry().contains(actInfo.geometry().center())) {
-        QPoint globalPoint{dockView->x() + localX, dockView->y() + localY};
+    if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
+        QPoint globalPoint{m_latteView->x() + localX, m_latteView->y() + localY};
         wm->requestMoveWindow(actInfo.wid(), globalPoint);
     }
 }
@@ -1079,7 +1079,7 @@ bool VisibilityManagerPrivate::activeWindowCanBeDragged()
     WindowInfoWrap actInfo = wm->requestInfoActive();
 
     //active window can be dragged only when it is in the same screen
-    if (actInfo.isValid() && !actInfo.geometry().isNull() && dockView->screenGeometry().contains(actInfo.geometry().center())) {
+    if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
         return wm->windowCanBeDragged(actInfo.wid());
     }
 
@@ -1093,10 +1093,10 @@ bool VisibilityManagerPrivate::activeWindowCanBeDragged()
 VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     : d(new VisibilityManagerPrivate(view, this))
 {
-    Latte::View *dockView = qobject_cast<Latte::View *>(view);
+    Latte::View *m_latteView = qobject_cast<Latte::View *>(view);
 
-    if (dockView) {
-        connect(this, &VisibilityManager::modeChanged, dockView->corona(), &Plasma::Corona::availableScreenRectChanged);
+    if (m_latteView) {
+        connect(this, &VisibilityManager::modeChanged, m_latteView->corona(), &Plasma::Corona::availableScreenRectChanged);
     }
 }
 

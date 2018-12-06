@@ -134,7 +134,7 @@ public:
     ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
 
     DockCorona *dockCorona{nullptr};
-    Latte::View *dockView{nullptr};
+    Latte::View *m_latteView{nullptr};
 };
 
 }

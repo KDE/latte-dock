@@ -70,7 +70,7 @@ private:
     QMetaMethod m_appletContainsMethod;
     QQuickItem *m_appletContainsMethodItem{nullptr};
 
-    Latte::View *m_dockView;
+    Latte::View *m_latteView;
 
     friend class Latte::View;
 };

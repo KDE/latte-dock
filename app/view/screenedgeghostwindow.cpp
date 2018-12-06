@@ -40,7 +40,7 @@
 namespace Latte {
 
 ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
-    m_dockView(view)
+    m_latteView(view)
 {
     setColor(QColor(Qt::transparent));
     setDefaultAlphaBuffer(true);
@@ -59,11 +59,11 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
     connect(this, &QQuickView::heightChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
 
-    connect(m_dockView, &Latte::View::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_dockView, &Latte::View::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_dockView, &Latte::View::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
-    connect(m_dockView, &QQuickView::screenChanged, this, [this]() {
-        setScreen(m_dockView->screen());
+    connect(m_latteView, &Latte::View::absGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::screenGeometryChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_latteView, &Latte::View::locationChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
+    connect(m_latteView, &QQuickView::screenChanged, this, [this]() {
+        setScreen(m_latteView->screen());
         updateGeometry();
     });
 
@@ -72,16 +72,16 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
         connect(this, &QWindow::visibleChanged, this, [&]() {
             //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
             //!  disappearing! With this they reappear!!!
-            if (m_dockView && m_dockView->managedLayout()) {
+            if (m_latteView && m_latteView->managedLayout()) {
                 if (!isVisible()) {
                     QTimer::singleShot(100, [this]() {
-                        if (!m_inDelete && m_dockView && m_dockView->managedLayout() && !isVisible()) {
+                        if (!m_inDelete && m_latteView && m_latteView->managedLayout() && !isVisible()) {
                             setVisible(true);
                         }
                     });
 
                     QTimer::singleShot(1500, [this]() {
-                        if (!m_inDelete && m_dockView && m_dockView->managedLayout() && !isVisible()) {
+                        if (!m_inDelete && m_latteView && m_latteView->managedLayout() && !isVisible()) {
                             setVisible(true);
                         }
                     });
@@ -100,7 +100,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
     setupWaylandIntegration();
 
-    setScreen(m_dockView->screen());
+    setScreen(m_latteView->screen());
     setVisible(true);
     updateGeometry();
     hideWithMask();
@@ -109,7 +109,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 {
     m_inDelete = true;
-    m_dockView = nullptr;
+    m_latteView = nullptr;
 
     if (m_shellSurface) {
         delete m_shellSurface;
@@ -118,12 +118,12 @@ ScreenEdgeGhostWindow::~ScreenEdgeGhostWindow()
 
 int ScreenEdgeGhostWindow::location()
 {
-    return (int)m_dockView->location();
+    return (int)m_latteView->location();
 }
 
 Latte::View *ScreenEdgeGhostWindow::parentDock()
 {
-    return m_dockView;
+    return m_latteView;
 }
 
 KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
@@ -136,26 +136,26 @@ void ScreenEdgeGhostWindow::updateGeometry()
     QRect newGeometry;
     int thickness{1};
 
-    if (m_dockView->location() == Plasma::Types::BottomEdge) {
-        newGeometry.setX(m_dockView->absGeometry().left());
-        newGeometry.setY(m_dockView->screenGeometry().bottom() - thickness);
-    } else if (m_dockView->location() == Plasma::Types::TopEdge) {
-        newGeometry.setX(m_dockView->absGeometry().left());
-        newGeometry.setY(m_dockView->screenGeometry().top());
-    } else if (m_dockView->location() == Plasma::Types::LeftEdge) {
-        newGeometry.setX(m_dockView->screenGeometry().left());
-        newGeometry.setY(m_dockView->absGeometry().top());
-    } else if (m_dockView->location() == Plasma::Types::RightEdge) {
-        newGeometry.setX(m_dockView->screenGeometry().right() - thickness);
-        newGeometry.setY(m_dockView->absGeometry().top());
+    if (m_latteView->location() == Plasma::Types::BottomEdge) {
+        newGeometry.setX(m_latteView->absGeometry().left());
+        newGeometry.setY(m_latteView->screenGeometry().bottom() - thickness);
+    } else if (m_latteView->location() == Plasma::Types::TopEdge) {
+        newGeometry.setX(m_latteView->absGeometry().left());
+        newGeometry.setY(m_latteView->screenGeometry().top());
+    } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
+        newGeometry.setX(m_latteView->screenGeometry().left());
+        newGeometry.setY(m_latteView->absGeometry().top());
+    } else if (m_latteView->location() == Plasma::Types::RightEdge) {
+        newGeometry.setX(m_latteView->screenGeometry().right() - thickness);
+        newGeometry.setY(m_latteView->absGeometry().top());
     }
 
-    if (m_dockView->formFactor() == Plasma::Types::Horizontal) {
-        newGeometry.setWidth(qMin(m_dockView->absGeometry().width(), m_dockView->screenGeometry().width() - 1));
+    if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
+        newGeometry.setWidth(qMin(m_latteView->absGeometry().width(), m_latteView->screenGeometry().width() - 1));
         newGeometry.setHeight(thickness + 1);
     } else {
         newGeometry.setWidth(thickness + 1);
-        newGeometry.setHeight(qMin(m_dockView->absGeometry().height(), m_dockView->screenGeometry().height() - 1));
+        newGeometry.setHeight(qMin(m_latteView->absGeometry().height(), m_latteView->screenGeometry().height() - 1));
     }
 
     m_calculatedGeometry = newGeometry;
@@ -186,12 +186,12 @@ void ScreenEdgeGhostWindow::startGeometryTimer()
 
 void ScreenEdgeGhostWindow::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_dockView || !m_dockView->containment()) {
+    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
         return;
     }
 
-    if (DockCorona *c = qobject_cast<DockCorona *>(m_dockView->containment()->corona())) {
+    if (DockCorona *c = qobject_cast<DockCorona *>(m_latteView->containment()->corona())) {
         using namespace KWayland::Client;
 
         PlasmaShell *interface = c->waylandDockCoronaInterface();

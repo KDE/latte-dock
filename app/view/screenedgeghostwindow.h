@@ -91,7 +91,7 @@ private:
 
     QTimer m_fixGeometryTimer;
 
-    Latte::View *m_dockView{nullptr};
+    Latte::View *m_latteView{nullptr};
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };

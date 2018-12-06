@@ -49,13 +49,13 @@ namespace Latte {
 
 DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
-      m_dockView(view)
+      m_latteView(view)
 {
-    m_corona = qobject_cast<DockCorona *>(m_dockView->containment()->corona());
+    m_corona = qobject_cast<DockCorona *>(m_latteView->containment()->corona());
 
     setupWaylandIntegration();
 
-    setScreen(m_dockView->screen());
+    setScreen(m_latteView->screen());
 
     if (containment) {
         setIcon(qGuiApp->windowIcon());
@@ -65,12 +65,12 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *vi
     m_screenSyncTimer.setInterval(100);
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
-        setScreen(m_dockView->screen());
+        setScreen(m_latteView->screen());
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(m_dockView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
+    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
     connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
 
     m_thicknessSyncTimer.setSingleShot(true);
@@ -79,7 +79,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *vi
         syncGeometry();
     });
 
-    connections << connect(m_dockView, &Latte::View::normalThicknessChanged, [&]() {
+    connections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
     });
 
@@ -112,7 +112,7 @@ void DockConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
-    rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
+    rootContext()->setContextProperty(QStringLiteral("dock"), m_latteView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
 
     if (m_corona) {
@@ -129,7 +129,7 @@ void DockConfigView::init()
 
     updateEnabledBorders();
 
-    auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath(tempFilePath));
+    auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
     syncSlideEffect();
@@ -171,9 +171,9 @@ void DockConfigView::createSecondaryWindow()
         return;
     }
 
-    QRect geometry = m_dockView->screenGeometry();
+    QRect geometry = m_latteView->screenGeometry();
 
-    m_secConfigView = new DockSecConfigView(m_dockView, this);
+    m_secConfigView = new DockSecConfigView(m_latteView, this);
     m_secConfigView->init();
 
     if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
@@ -206,7 +206,7 @@ QRect DockConfigView::geometryWhenVisible() const
 
 void DockConfigView::syncGeometry()
 {
-    if (!m_dockView->managedLayout() || !m_dockView->containment() || !rootObject())
+    if (!m_latteView->managedLayout() || !m_latteView->containment() || !rootObject())
         return;
 
     const QSize size(rootObject()->width(), rootObject()->height());
@@ -214,14 +214,14 @@ void DockConfigView::syncGeometry()
     setMinimumSize(size);
     resize(size);
 
-    const auto location = m_dockView->containment()->location();
-    const auto sGeometry = m_dockView->screenGeometry();
+    const auto location = m_latteView->containment()->location();
+    const auto sGeometry = m_latteView->screenGeometry();
 
-    int clearThickness = m_dockView->normalThickness() + m_dockView->fontPixelSize();
+    int clearThickness = m_latteView->normalThickness() + m_latteView->fontPixelSize();
 
     QPoint position{0, 0};
 
-    switch (m_dockView->containment()->formFactor()) {
+    switch (m_latteView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
             if (location == Plasma::Types::TopEdge) {
                 position = {sGeometry.center().x() - size.width() / 2
@@ -273,12 +273,12 @@ void DockConfigView::syncGeometry()
 
 void DockConfigView::syncSlideEffect()
 {
-    if (!m_dockView->containment())
+    if (!m_latteView->containment())
         return;
 
     auto slideLocation = WindowSystem::Slide::None;
 
-    switch (m_dockView->containment()->location()) {
+    switch (m_latteView->containment()->location()) {
         case Plasma::Types::TopEdge:
             slideLocation = WindowSystem::Slide::Top;
             break;
@@ -315,8 +315,8 @@ void DockConfigView::showEvent(QShowEvent *ev)
     syncGeometry();
     syncSlideEffect();
 
-    if (m_dockView && m_dockView->containment())
-        m_dockView->containment()->setUserConfiguring(true);
+    if (m_latteView && m_latteView->containment())
+        m_latteView->containment()->setUserConfiguring(true);
 
     m_screenSyncTimer.start();
     QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
@@ -326,25 +326,25 @@ void DockConfigView::showEvent(QShowEvent *ev)
 
 void DockConfigView::hideEvent(QHideEvent *ev)
 {
-    if (!m_dockView) {
+    if (!m_latteView) {
         QQuickWindow::hideEvent(ev);
         return;
     }
 
-    if (m_dockView->containment())
-        m_dockView->containment()->setUserConfiguring(false);
+    if (m_latteView->containment())
+        m_latteView->containment()->setUserConfiguring(false);
 
     QQuickWindow::hideEvent(ev);
 
-    const auto mode = m_dockView->visibility()->mode();
-    const auto previousDockWinBehavior = (m_dockView->flags() & Qt::BypassWindowManagerHint) ? false : true;
+    const auto mode = m_latteView->visibility()->mode();
+    const auto previousDockWinBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? false : true;
 
     if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
         if (!previousDockWinBehavior) {
-            m_dockView->managedLayout()->recreateDock(m_dockView->containment());
+            m_latteView->managedLayout()->recreateDock(m_latteView->containment());
         }
-    } else if (m_dockView->dockWinBehavior() != previousDockWinBehavior) {
-        m_dockView->managedLayout()->recreateDock(m_dockView->containment());
+    } else if (m_latteView->dockWinBehavior() != previousDockWinBehavior) {
+        m_latteView->managedLayout()->recreateDock(m_latteView->containment());
     }
 
     deleteLater();
@@ -367,7 +367,7 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
 
 void DockConfigView::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_dockView || !m_dockView->containment()) {
+    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
         return;
     }
@@ -461,8 +461,8 @@ void DockConfigView::setShowInlineProperties(bool show)
 
 void DockConfigView::addPanelSpacer()
 {
-    if (m_dockView && m_dockView->containment()) {
-        m_dockView->containment()->createApplet(QStringLiteral("org.kde.latte.spacer"));
+    if (m_latteView && m_latteView->containment()) {
+        m_latteView->containment()->createApplet(QStringLiteral("org.kde.latte.spacer"));
     }
 }
 
@@ -482,11 +482,11 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
 
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
-    if (m_corona &&  m_dockView->managedLayout()) {
-        if ((group == Dock::LayoutLaunchers && m_dockView->managedLayout()->launchers().isEmpty())
+    if (m_corona &&  m_latteView->managedLayout()) {
+        if ((group == Dock::LayoutLaunchers && m_latteView->managedLayout()->launchers().isEmpty())
             || (group == Dock::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
-            Plasma::Containment *c = m_dockView->containment();
+            Plasma::Containment *c = m_latteView->containment();
 
             const auto &applets = c->applets();
 
@@ -520,7 +520,7 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
 
                                 if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
                                     if (group == Dock::LayoutLaunchers) {
-                                        m_dockView->managedLayout()->setLaunchers(launchers.toStringList());
+                                        m_latteView->managedLayout()->setLaunchers(launchers.toStringList());
                                     } else if (group == Dock::GlobalLaunchers) {
                                         m_corona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }
@@ -549,7 +549,7 @@ void DockConfigView::updateEnabledBorders()
 
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
-    switch (m_dockView->location()) {
+    switch (m_latteView->location()) {
         case Plasma::Types::TopEdge:
             borders &= m_inReverse ? ~Plasma::FrameSvg::BottomBorder : ~Plasma::FrameSvg::TopBorder;
             break;

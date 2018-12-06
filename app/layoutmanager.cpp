@@ -74,7 +74,7 @@ LayoutManager::~LayoutManager()
         Layout *layout = m_activeLayouts.at(0);
         m_activeLayouts.removeFirst();
         layout->unloadContainments();
-        layout->unloadDockViews();
+        layout->unloadLatteViews();
         layout->deleteLater();
     }
 
@@ -133,7 +133,7 @@ void LayoutManager::unload()
         }
 
         layout->unloadContainments();
-        layout->unloadDockViews();
+        layout->unloadLatteViews();
 
         if (memoryUsage() == Dock::MultipleLayouts && layout->isOriginalLayout()) {
             clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
@@ -204,7 +204,7 @@ QString LayoutManager::defaultLayoutName() const
 bool LayoutManager::hasColorizer() const
 {
     foreach (auto layout, m_activeLayouts) {
-        for (const auto *view : *layout->dockViews()) {
+        for (const auto *view : *layout->latteViews()) {
             if (view->effects()->colorizerEnabled()) {
                 return true;
             }
@@ -324,10 +324,10 @@ void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading,
     }
 }
 
-bool LayoutManager::dockViewExists(Latte::View *view) const
+bool LayoutManager::latteViewExists(Latte::View *view) const
 {
     foreach (auto layout, m_activeLayouts) {
-        for (auto it = layout->dockViews()->constBegin(), end = layout->dockViews()->constEnd(); it != end; ++it) {
+        for (auto it = layout->latteViews()->constBegin(), end = layout->latteViews()->constEnd(); it != end; ++it) {
             if (it.value() == view) {
                 return true;
             }
@@ -337,20 +337,20 @@ bool LayoutManager::dockViewExists(Latte::View *view) const
     return false;
 }
 
-QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentDockViews() const
+QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentLatteViews() const
 {
     if (memoryUsage() == Dock::SingleLayout) {
-        return m_activeLayouts.at(0)->dockViews();
+        return m_activeLayouts.at(0)->latteViews();
     } else {
         foreach (auto layout, m_activeLayouts) {
             if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
-                return layout->dockViews();
+                return layout->latteViews();
             }
         }
 
         foreach (auto layout, m_activeLayouts) {
             if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
-                return layout->dockViews();
+                return layout->latteViews();
             }
         }
     }
@@ -358,12 +358,12 @@ QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentDockVie
     return nullptr;
 }
 
-QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::layoutDockViews(const QString &layoutName) const
+QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::layoutLatteViews(const QString &layoutName) const
 {
     Layout *layout = activeLayout(layoutName);
 
     if (layout) {
-        return layout->dockViews();
+        return layout->latteViews();
     }
 
     return nullptr;
@@ -571,7 +571,7 @@ void LayoutManager::loadLatteLayout(QString layoutPath)
         qDebug() << "LOADING CORONA LAYOUT:" << layoutPath;
         m_corona->loadLayout(layoutPath);
 
-        //! ~~~ ADDING DOCKVIEWS AND ENFORCE LOADING IF TASKS ARENT PRESENT BASED ON SCREENS ~~~ !//
+        //! ~~~ ADDING LATTEVIEWS AND ENFORCE LOADING IF TASKS ARENT PRESENT BASED ON SCREENS ~~~ !//
 
         //! this is used to record the first dock having tasks in it. It is used
         //! to specify which dock will be loaded on startup if a case that no "dock
@@ -758,7 +758,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                     }
 
                     layout->unloadContainments();
-                    layout->unloadDockViews();
+                    layout->unloadLatteViews();
 
                     if (layout->isOriginalLayout() && previousMemoryUsage == Dock::MultipleLayouts) {
                         clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
@@ -911,7 +911,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
                 }
 
                 layout->unloadContainments();
-                layout->unloadDockViews();
+                layout->unloadLatteViews();
                 clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
                 delete layout;
             }
@@ -1002,10 +1002,10 @@ void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containm
 }
 
 
-void LayoutManager::syncDockViewsToScreens()
+void LayoutManager::syncLatteViewsToScreens()
 {
     foreach (auto layout, m_activeLayouts) {
-        layout->syncDockViewsToScreens();
+        layout->syncLatteViewsToScreens();
     }
 }
 

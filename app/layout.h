@@ -72,7 +72,7 @@ public:
     void initToCorona(DockCorona *corona);
     void syncToLayoutFile(bool removeLayoutId = false);
     void unloadContainments();
-    void unloadDockViews();
+    void unloadLatteViews();
 
     bool disableBordersForMaximizedWindows() const;
     void setDisableBordersForMaximizedWindows(bool disable);
@@ -89,7 +89,7 @@ public:
 
     bool isWritable() const;
 
-    bool dockViewExists(Plasma::Containment *containment);
+    bool latteViewExists(Plasma::Containment *containment);
 
     int version() const;
     void setVersion(int ver);
@@ -126,22 +126,22 @@ public:
     void copyDock(Plasma::Containment *containment);
     void recreateDock(Plasma::Containment *containment);
 
-    void syncDockViewsToScreens();
+    void syncLatteViewsToScreens();
     void importToCorona();
 
     const QStringList appliedActivities();
 
     QList<Plasma::Containment *> *containments();
-    QHash<const Plasma::Containment *, Latte::View *> *dockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *latteViews();
 
     //! Bind this latteView and its relevant containments(including systrays)
     //! to this layout. It is used for moving a Latte::View from layout to layout)
-    void assignToLayout(Latte::View *dockView, QList<Plasma::Containment *> containments);
+    void assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments);
 
     //! Unassign that latteView from this layout (this is used for moving a latteView
     //! from layout to layout) and returns all the containments relevant to
     //! that latteView
-    QList<Plasma::Containment *> unassignFromLayout(Latte::View *dockView);
+    QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
     //! Available edges for specific view in that screen
     QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
@@ -204,8 +204,8 @@ private:
 
     //! It can be used in order for LatteViews to not be created automatically when
     //! their corresponding containments are created e.g. copyDock functionality
-    bool blockAutomaticDockViewCreation() const;
-    void setBlockAutomaticDockViewCreation(bool block);
+    bool blockAutomaticLatteViewCreation() const;
+    void setBlockAutomaticLatteViewCreation(bool block);
 
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
     bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
@@ -225,7 +225,7 @@ private:
     QList<Plasma::Containment *> importLayoutFile(QString file);
 
 private:
-    bool m_blockAutomaticDockViewCreation{false};
+    bool m_blockAutomaticLatteViewCreation{false};
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
     //if version doesn't exist it is and old layout file
@@ -247,8 +247,8 @@ private:
 
     QList<Plasma::Containment *> m_containments;
 
-    QHash<const Plasma::Containment *, Latte::View *> m_dockViews;
-    QHash<const Plasma::Containment *, Latte::View *> m_waitingDockViews;
+    QHash<const Plasma::Containment *, Latte::View *> m_latteViews;
+    QHash<const Plasma::Containment *, Latte::View *> m_waitingLatteViews;
 };
 
 }

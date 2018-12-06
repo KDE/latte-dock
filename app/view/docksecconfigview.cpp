@@ -48,16 +48,16 @@ namespace Latte {
 DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
     : QQuickView(nullptr),
       m_parent(parent),
-      m_dockView(view)
+      m_latteView(view)
 {
-    m_corona = qobject_cast<DockCorona *>(m_dockView->containment()->corona());
+    m_corona = qobject_cast<DockCorona *>(m_latteView->containment()->corona());
 
     setupWaylandIntegration();
 
     setResizeMode(QQuickView::SizeViewToRootObject);
-    setScreen(m_dockView->screen());
+    setScreen(m_latteView->screen());
 
-    if (m_dockView && m_dockView->containment()) {
+    if (m_latteView && m_latteView->containment()) {
         setIcon(qGuiApp->windowIcon());
     }
 
@@ -65,12 +65,12 @@ DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
     m_screenSyncTimer.setInterval(100);
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
-        setScreen(m_dockView->screen());
+        setScreen(m_latteView->screen());
         setFlags(wFlags());
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(m_dockView->visibility(), &VisibilityManager::modeChanged, this, &DockSecConfigView::syncGeometry);
+    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &DockSecConfigView::syncGeometry);
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -78,7 +78,7 @@ DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
         syncGeometry();
     });
 
-    connections << connect(m_dockView, &Latte::View::normalThicknessChanged, [&]() {
+    connections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
     });
 }
@@ -105,9 +105,9 @@ void DockSecConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
-    rootContext()->setContextProperty(QStringLiteral("dock"), m_dockView);
+    rootContext()->setContextProperty(QStringLiteral("dock"), m_latteView);
     rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
-    rootContext()->setContextProperty(QStringLiteral("plasmoid"), m_dockView->containment()->property("_plasma_graphicObject").value<QObject *>());
+    rootContext()->setContextProperty(QStringLiteral("plasmoid"), m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
 
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
@@ -118,7 +118,7 @@ void DockSecConfigView::init()
 
     updateEnabledBorders();
 
-    auto source = QUrl::fromLocalFile(m_dockView->containment()->corona()->kPackage().filePath(tempFilePath));
+    auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
     syncSlideEffect();
@@ -139,7 +139,7 @@ QRect DockSecConfigView::geometryWhenVisible() const
 
 void DockSecConfigView::syncGeometry()
 {
-    if (!m_dockView->managedLayout() || !m_dockView->containment() || !rootObject())
+    if (!m_latteView->managedLayout() || !m_latteView->containment() || !rootObject())
         return;
 
     const QSize size(rootObject()->width(), rootObject()->height());
@@ -147,27 +147,27 @@ void DockSecConfigView::syncGeometry()
     setMinimumSize(size);
     resize(size);
 
-    const auto location = m_dockView->containment()->location();
-    const auto sGeometry = m_dockView->screenGeometry();
+    const auto location = m_latteView->containment()->location();
+    const auto sGeometry = m_latteView->screenGeometry();
 
-    int clearThickness = m_dockView->normalThickness() + m_dockView->fontPixelSize();
+    int clearThickness = m_latteView->normalThickness() + m_latteView->fontPixelSize();
 
-    int secondaryConfigSpacing = 2 * m_dockView->fontPixelSize();
+    int secondaryConfigSpacing = 2 * m_latteView->fontPixelSize();
 
     QPoint position{0, 0};
 
-    switch (m_dockView->containment()->formFactor()) {
+    switch (m_latteView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
             if (location == Plasma::Types::TopEdge) {
-                int yPos = m_dockView->y() + clearThickness;
+                int yPos = m_latteView->y() + clearThickness;
 
-                position = {m_dockView->x() + secondaryConfigSpacing, yPos};
+                position = {m_latteView->x() + secondaryConfigSpacing, yPos};
             } else if (location == Plasma::Types::BottomEdge) {
 
                 int yPos;
                 yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
 
-                position = {m_dockView->x() + m_dockView->width() - secondaryConfigSpacing - size.width(), yPos};
+                position = {m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width(), yPos};
             }
         }
         break;
@@ -175,11 +175,11 @@ void DockSecConfigView::syncGeometry()
         case Plasma::Types::Vertical: {
             if (location == Plasma::Types::LeftEdge) {
                 position = {sGeometry.x() + clearThickness
-                            , m_dockView->y() + secondaryConfigSpacing
+                            , m_latteView->y() + secondaryConfigSpacing
                            };
             } else if (location == Plasma::Types::RightEdge) {
                 position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                            , m_dockView->y() + secondaryConfigSpacing
+                            , m_latteView->y() + secondaryConfigSpacing
                            };
             }
         }
@@ -203,12 +203,12 @@ void DockSecConfigView::syncGeometry()
 
 void DockSecConfigView::syncSlideEffect()
 {
-    if (!m_dockView->containment())
+    if (!m_latteView->containment())
         return;
 
     auto slideLocation = WindowSystem::Slide::None;
 
-    switch (m_dockView->containment()->location()) {
+    switch (m_latteView->containment()->location()) {
         case Plasma::Types::TopEdge:
             slideLocation = WindowSystem::Slide::Top;
             break;
@@ -270,7 +270,7 @@ void DockSecConfigView::focusOutEvent(QFocusEvent *ev)
 
 void DockSecConfigView::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_dockView || !m_dockView->containment()) {
+    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
         return;
     }
@@ -352,7 +352,7 @@ void DockSecConfigView::updateEnabledBorders()
 
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
-    switch (m_dockView->location()) {
+    switch (m_latteView->location()) {
         case Plasma::Types::TopEdge:
             borders &= ~Plasma::FrameSvg::TopBorder;
             break;

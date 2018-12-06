@@ -278,7 +278,7 @@ void GlobalShortcuts::init()
 //! Activate launcher menu through dbus interface
 void GlobalShortcuts::activateLauncherMenu()
 {
-    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
     foreach (auto view, sortedViews) {
         const auto applets = view->containment()->applets();
@@ -438,7 +438,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
-    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
     foreach (auto view, sortedViews) {
         if ((!view->latteTasksPresent() && view->tasksPresent() &&
@@ -502,7 +502,7 @@ void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
         return false;
     };
 
-    QHash<const Plasma::Containment *, Latte::View *> *views =  m_corona->layoutManager()->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views =  m_corona->layoutManager()->currentLatteViews();
 
     // update badges in all Latte Tasks plasmoids
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
@@ -642,7 +642,7 @@ void GlobalShortcuts::showDocks()
         return false;
     };
 
-    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
@@ -699,7 +699,7 @@ void GlobalShortcuts::showDocks()
 bool GlobalShortcuts::docksToHideAreValid()
 {
     foreach (auto view, m_hideDocks) {
-        if (!m_corona->layoutManager()->dockViewExists(view)) {
+        if (!m_corona->layoutManager()->latteViewExists(view)) {
             return false;
         }
 
@@ -779,8 +779,6 @@ QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Contai
 {
     QList<Latte::View *> docks;
 
-    //QHash<const Plasma::Containment *, DockView *> *views =  m_corona->layoutManager()->currentDockViews();
-
     //! create a docks list to sorted out
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
         docks.append(it.value());
@@ -833,7 +831,7 @@ QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Contai
 
 void GlobalShortcuts::showSettings()
 {
-    QList<Latte::View *> docks = sortedViewsList(m_corona->layoutManager()->currentDockViews());
+    QList<Latte::View *> docks = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
     //! find which is the next dock to show its settings
     if (docks.count() > 0) {
@@ -874,8 +872,8 @@ void GlobalShortcuts::hideDocksTimerSlot()
             m_lastInvokedAction = Q_NULLPTR;
 
             if (docksToHideAreValid()) {
-                foreach (auto dockView, m_hideDocks) {
-                    dockView->visibility()->setBlockHiding(false);
+                foreach (auto latteView, m_hideDocks) {
+                    latteView->visibility()->setBlockHiding(false);
                 }
 
                 if (m_calledItems.count() > 0) {
@@ -898,8 +896,8 @@ void GlobalShortcuts::hideDocksTimerSlot()
         m_lastInvokedAction = Q_NULLPTR;
 
         if (docksToHideAreValid()) {
-            foreach (auto dockView, m_hideDocks) {
-                dockView->visibility()->setBlockHiding(false);
+            foreach (auto latteView, m_hideDocks) {
+                latteView->visibility()->setBlockHiding(false);
             }
 
             if (m_calledItems.count() > 0) {

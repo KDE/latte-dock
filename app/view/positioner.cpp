@@ -589,7 +589,7 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->showSettingsWindow();
 
                 if (m_view->managedLayout()) {
-                    m_view->managedLayout()->syncDockViewsToScreens();
+                    m_view->managedLayout()->syncLatteViewsToScreens();
                 }
             });
         }
@@ -607,7 +607,7 @@ void Positioner::initSignalingForLocationChangeSliding()
                 m_view->showSettingsWindow();
 
                 if (m_view->managedLayout()) {
-                    m_view->managedLayout()->syncDockViewsToScreens();
+                    m_view->managedLayout()->syncLatteViewsToScreens();
                 }
             });
         }

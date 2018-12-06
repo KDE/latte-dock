@@ -93,7 +93,7 @@ private:
 
     QRect m_geometryWhenVisible;
 
-    QPointer<Latte::View> m_dockView;
+    QPointer<Latte::View> m_latteView;
     QPointer<QWindow> m_parent;
     QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;

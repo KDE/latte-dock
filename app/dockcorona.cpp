@@ -121,7 +121,7 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
 
     m_docksScreenSyncTimer.setSingleShot(true);
     m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
-    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncDockViewsToScreens);
+    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncLatteViewsToScreens);
     connect(m_universalSettings, &UniversalSettings::screenTrackerIntervalChanged, this, [this]() {
         m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
     });
@@ -435,9 +435,9 @@ QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout)
     QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (forLayout.isEmpty()) {
-        views = m_layoutManager->currentDockViews();
+        views = m_layoutManager->currentLatteViews();
     } else {
-        views = m_layoutManager->layoutDockViews(forLayout);
+        views = m_layoutManager->layoutLatteViews(forLayout);
     }
 
     QRegion available(screen->geometry());
@@ -563,7 +563,7 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
 
     auto available = screen->geometry();
 
-    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentLatteViews();
 
     if (views) {
         for (const auto *view : *views) {
@@ -647,11 +647,11 @@ void DockCorona::screenCountChanged()
     m_docksScreenSyncTimer.start();
 }
 
-//! the central functions that updates loading/unloading dockviews
+//! the central functions that updates loading/unloading latteviews
 //! concerning screen changed (for multi-screen setups mainly)
-void DockCorona::syncDockViewsToScreens()
+void DockCorona::syncLatteViewsToScreens()
 {
-    m_layoutManager->syncDockViewsToScreens();
+    m_layoutManager->syncLatteViewsToScreens();
 }
 
 int DockCorona::primaryScreenId() const
@@ -694,7 +694,7 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     //FIXME: indexOf is not a proper way to support multi-screen
     // as for environment to environment the indexes change
     // also there is the following issue triggered
-    // from dockView adaptToScreen()
+    // from latteView adaptToScreen()
     //
     // in a multi-screen environment that
     // primary screen is not set to 0 it was
@@ -712,7 +712,7 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
         }
     }
 
-    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentLatteViews();
 
     //if the panel views already exist, base upon them
 
@@ -749,15 +749,15 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentDockViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentLatteViews();
 
-    Latte::View *dockView = (*views)[applet->containment()];
+    Latte::View *latteView = (*views)[applet->containment()];
 
     KDeclarative::QmlObject *qmlObj{nullptr};
 
-    if (dockView) {
-        dockView->setAlternativesIsShown(true);
-        qmlObj = new KDeclarative::QmlObject(dockView);
+    if (latteView) {
+        latteView->setAlternativesIsShown(true);
+        qmlObj = new KDeclarative::QmlObject(latteView);
     } else {
         qmlObj = new KDeclarative::QmlObject(this);
     }
@@ -772,8 +772,8 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
     qmlObj->completeInitialization();
 
     //! Alternative dialog signals
-    connect(helper, &QObject::destroyed, this, [dockView]() {
-        dockView->setAlternativesIsShown(false);
+    connect(helper, &QObject::destroyed, this, [latteView]() {
+        latteView->setAlternativesIsShown(false);
     });
 
     connect(qmlObj->rootObject(), SIGNAL(visibleChanged(bool)),

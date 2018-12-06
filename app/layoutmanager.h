@@ -78,10 +78,10 @@ public:
     void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
     void hideAllDocks();
     void pauseLayout(QString layoutName);
-    void syncDockViewsToScreens();
+    void syncLatteViewsToScreens();
     void syncActiveLayoutsToOriginalFiles();
 
-    bool dockViewExists(Latte::View *view) const;
+    bool latteViewExists(Latte::View *view) const;
     bool hasColorizer() const;
     bool layoutExists(QString layoutName) const;
 
@@ -97,8 +97,8 @@ public:
     Dock::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage);
 
-    QHash<const Plasma::Containment *, Latte::View *> *currentDockViews() const;
-    QHash<const Plasma::Containment *, Latte::View *> *layoutDockViews(const QString &layoutName) const;
+    QHash<const Plasma::Containment *, Latte::View *> *currentLatteViews() const;
+    QHash<const Plasma::Containment *, Latte::View *> *layoutLatteViews(const QString &layoutName) const;
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
     Layout *activeLayout(QString id) const;

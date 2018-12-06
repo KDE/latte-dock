@@ -46,7 +46,7 @@ namespace ViewPart {
 
 ContextMenu::ContextMenu(Latte::View *view) :
     QObject(view),
-    m_dockView(view)
+    m_latteView(view)
 {
 }
 
@@ -61,14 +61,14 @@ QMenu *ContextMenu::menu()
 
 void ContextMenu::menuAboutToHide()
 {
-    if (!m_dockView) {
+    if (!m_latteView) {
         return;
     }
 
     m_contextMenu = 0;
 
-    if (!m_dockView->containment()->isUserConfiguring()) {
-        m_dockView->visibility()->setBlockHiding(false);
+    if (!m_latteView->containment()->isUserConfiguring()) {
+        m_latteView->visibility()->setBlockHiding(false);
     }
 
     emit menuChanged();
@@ -78,7 +78,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "Step -1 ...";
 
-    if (!event || !m_dockView->containment()) {
+    if (!event || !m_latteView->containment()) {
         return false;
     }
 
@@ -99,7 +99,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
     QString trigger = Plasma::ContainmentActions::eventToString(event);
 
     if (trigger == "RightButton;NoModifier") {
-        Plasma::ContainmentActions *plugin = m_dockView->containment()->containmentActions().value(trigger);
+        Plasma::ContainmentActions *plugin = m_latteView->containment()->containmentActions().value(trigger);
 
         if (!plugin || plugin->contextualActions().isEmpty()) {
             event->setAccepted(false);
@@ -126,7 +126,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
             updateAppletContainsMethod();
         }
 
-        foreach (Plasma::Applet *appletTemp, m_dockView->containment()->applets()) {
+        foreach (Plasma::Applet *appletTemp, m_latteView->containment()->applets()) {
             PlasmaQuick::AppletQuickItem *ai = appletTemp->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             bool appletContainsMouse = false;
@@ -137,7 +137,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                                               , Q_ARG(QVariant, appletTemp->id()), Q_ARG(QVariant, event->pos()));
                 appletContainsMouse = retVal.toBool();
             } else {
-                appletContainsMouse = ai->contains(ai->mapFromItem(m_dockView->contentItem(), event->pos()));
+                appletContainsMouse = ai->contains(ai->mapFromItem(m_latteView->contentItem(), event->pos()));
             }
 
             if (ai && ai->isVisible() && appletContainsMouse) {
@@ -156,7 +156,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                         foreach (Plasma::Applet *appletCont, cont->applets()) {
                             PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
-                            if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_dockView->contentItem(), event->pos()))) {
+                            if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_latteView->contentItem(), event->pos()))) {
                                 applet = ai2->applet();
                                 break;
                             }
@@ -171,7 +171,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
         }
 
         if (!applet && !inSystray) {
-            applet = m_dockView->containment();
+            applet = m_latteView->containment();
         }
 
         //qDebug() << "3 ...";
@@ -191,7 +191,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                 //end workaround
 
                 if (desktopMenu->winId()) {
-                    desktopMenu->windowHandle()->setTransientParent(m_dockView);
+                    desktopMenu->windowHandle()->setTransientParent(m_latteView);
                 }
 
                 desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
@@ -199,9 +199,9 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
                 //! deprecated old code that can be removed if the following plasma approach doesn't
                 //! create any issues with context menu creation in Latte
-                /*if (m_dockView->mouseGrabberItem()) {
+                /*if (m_latteView->mouseGrabberItem()) {
                     //workaround, this fixes for me most of the right click menu behavior
-                    m_dockView->mouseGrabberItem()->ungrabMouse();
+                    m_latteView->mouseGrabberItem()->ungrabMouse();
                     return;
                 }*/
 
@@ -215,8 +215,8 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
                 //by releasing manually we avoid that situation
                 auto ungrabMouseHack = [this]() {
-                    if (m_dockView->mouseGrabberItem()) {
-                        m_dockView->mouseGrabberItem()->ungrabMouse();
+                    if (m_latteView->mouseGrabberItem()) {
+                        m_latteView->mouseGrabberItem()->ungrabMouse();
                     }
                 };
 
@@ -233,13 +233,13 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 
                 //qDebug() << "5 ...";
 
-                if (applet && applet != m_dockView->containment()) {
+                if (applet && applet != m_latteView->containment()) {
                     //qDebug() << "5.3 ...";
                     emit applet->contextualActionsAboutToShow();
                     addAppletActions(desktopMenu, applet, event);
                 } else {
                     //qDebug() << "5.6 ...";
-                    emit m_dockView->containment()->contextualActionsAboutToShow();
+                    emit m_latteView->containment()->contextualActionsAboutToShow();
                     addContainmentActions(desktopMenu, event);
                 }
 
@@ -253,8 +253,8 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                     //qDebug() << "6 ...";
                     desktopMenu->adjustSize();
 
-                    if (m_dockView->screen()) {
-                        const QRect scr = m_dockView->screen()->geometry();
+                    if (m_latteView->screen()) {
+                        const QRect scr = m_latteView->screen()->geometry();
                         int smallStep = 3;
                         int x = event->globalPos().x() + smallStep;
                         int y = event->globalPos().y() + smallStep;
@@ -283,7 +283,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                 }
 
                 connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(menuAboutToHide()));
-                m_dockView->visibility()->setBlockHiding(true);
+                m_latteView->visibility()->setBlockHiding(true);
                 desktopMenu->popup(pos);
                 event->setAccepted(true);
                 emit menuChanged();
@@ -305,7 +305,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
 //! update the appletContainsPos method from Panel view
 void ContextMenu::updateAppletContainsMethod()
 {
-    for (QQuickItem *item : m_dockView->contentItem()->childItems()) {
+    for (QQuickItem *item : m_latteView->contentItem()->childItems()) {
         if (auto *metaObject = item->metaObject()) {
             // not using QMetaObject::invokeMethod to avoid warnings when calling
             // this on applets that don't have it or other child items since this
@@ -326,7 +326,7 @@ void ContextMenu::updateAppletContainsMethod()
 
 void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
 {
-    if (!m_dockView->containment()) {
+    if (!m_latteView->containment()) {
         return;
     }
 
@@ -351,13 +351,13 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
 
         QAction *appletAlternatives = applet->actions()->action(QStringLiteral("alternatives"));
 
-        if (appletAlternatives && appletAlternatives->isEnabled() && m_dockView->containment()->isUserConfiguring()) {
+        if (appletAlternatives && appletAlternatives->isEnabled() && m_latteView->containment()->isUserConfiguring()) {
             desktopMenu->addAction(appletAlternatives);
         }
     }
 
     QAction *containmentAction = desktopMenu->menuAction();
-    containmentAction->setText(i18nc("%1 is the name of the containment", "%1 Options", m_dockView->containment()->title()));
+    containmentAction->setText(i18nc("%1 is the name of the containment", "%1 Options", m_latteView->containment()->title()));
 
     addContainmentActions(containmentAction->menu(), event);
 
@@ -391,8 +391,8 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
         }
     }
 
-    if (m_dockView->containment()->immutability() == Plasma::Types::Mutable &&
-        (m_dockView->containment()->containmentType() != Plasma::Types::PanelContainment || m_dockView->containment()->isUserConfiguring())) {
+    if (m_latteView->containment()->immutability() == Plasma::Types::Mutable &&
+        (m_latteView->containment()->containmentType() != Plasma::Types::PanelContainment || m_latteView->containment()->isUserConfiguring())) {
         QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
 
         //qDebug() << "checking for removal" << closeApplet;
@@ -409,11 +409,11 @@ void ContextMenu::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, Q
 
 void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 {
-    if (!m_dockView->containment()) {
+    if (!m_latteView->containment()) {
         return;
     }
 
-    if (m_dockView->containment()->corona()->immutability() != Plasma::Types::Mutable &&
+    if (m_latteView->containment()->corona()->immutability() != Plasma::Types::Mutable &&
         !KAuthorized::authorizeAction(QStringLiteral("plasma/containment_actions"))) {
         //qDebug() << "immutability";
         return;
@@ -422,17 +422,17 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
     //this is what ContainmentPrivate::prepareContainmentActions was
     const QString trigger = Plasma::ContainmentActions::eventToString(event);
     //"RightButton;NoModifier"
-    Plasma::ContainmentActions *plugin = m_dockView->containment()->containmentActions().value(trigger);
+    Plasma::ContainmentActions *plugin = m_latteView->containment()->containmentActions().value(trigger);
 
     if (!plugin) {
         return;
     }
 
-    if (plugin->containment() != m_dockView->containment()) {
-        plugin->setContainment(m_dockView->containment());
+    if (plugin->containment() != m_latteView->containment()) {
+        plugin->setContainment(m_latteView->containment());
         // now configure it
-        KConfigGroup cfg(m_dockView->containment()->corona()->config(), "ActionPlugins");
-        cfg = KConfigGroup(&cfg, QString::number(m_dockView->containment()->containmentType()));
+        KConfigGroup cfg(m_latteView->containment()->corona()->config(), "ActionPlugins");
+        cfg = KConfigGroup(&cfg, QString::number(m_latteView->containment()->containmentType()));
         KConfigGroup pluginConfig = KConfigGroup(&cfg, trigger);
         plugin->restore(pluginConfig);
     }
@@ -447,7 +447,7 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
             //end workaround
 
             if (act->menu()->winId()) {
-                act->menu()->windowHandle()->setTransientParent(m_dockView);
+                act->menu()->windowHandle()->setTransientParent(m_latteView);
             }
         }
     }
@@ -459,7 +459,7 @@ void ContextMenu::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 
 Plasma::Containment *ContextMenu::containmentById(uint id)
 {
-    foreach (auto containment, m_dockView->corona()->containments()) {
+    foreach (auto containment, m_latteView->corona()->containments()) {
         if (id == containment->id()) {
             return containment;
         }
