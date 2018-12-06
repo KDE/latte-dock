@@ -119,11 +119,11 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 
     connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
-    m_docksScreenSyncTimer.setSingleShot(true);
-    m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
-    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &Corona::syncLatteViewsToScreens);
+    m_viewsScreenSyncTimer.setSingleShot(true);
+    m_viewsScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
+    connect(&m_viewsScreenSyncTimer, &QTimer::timeout, this, &Corona::syncLatteViewsToScreens);
     connect(m_universalSettings, &UniversalSettings::screenTrackerIntervalChanged, this, [this]() {
-        m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
+        m_viewsScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
     });
 
     //! Dbus adaptor initialization
@@ -134,8 +134,8 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 
 Corona::~Corona()
 {
-    //! BEGIN: Give the time to slide-out docks when closing
-    m_layoutManager->hideAllDocks();
+    //! BEGIN: Give the time to slide-out views when closing
+    m_layoutManager->hideAllViews();
 
     //! Don't delay the destruction under wayland in any case
     //! because it creates a crash with kwin effects
@@ -150,9 +150,9 @@ Corona::~Corona()
         }
     }
 
-    //! END: slide-out docks when closing
+    //! END: slide-out views when closing
 
-    m_docksScreenSyncTimer.stop();
+    m_viewsScreenSyncTimer.stop();
 
     if (m_layoutManager->memoryUsage() == Dock::SingleLayout) {
         cleanConfig();
@@ -451,7 +451,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
                 // Usually availableScreenRect is used by the desktop,
                 // but Latte don't have desktop, then here just
                 // need calculate available space for top and bottom location,
-                // because the left and right are those who dodge others docks
+                // because the left and right are those who dodge others views
                 switch (view->location()) {
                     case Plasma::Types::TopEdge:
                         if (view->behaveAsPlasmaPanel()) {
@@ -634,7 +634,7 @@ void Corona::addOutput(QScreen *screen)
 
 void Corona::primaryOutputChanged()
 {
-    m_docksScreenSyncTimer.start();
+    m_viewsScreenSyncTimer.start();
 }
 
 void Corona::screenRemoved(QScreen *screen)
@@ -644,7 +644,7 @@ void Corona::screenRemoved(QScreen *screen)
 
 void Corona::screenCountChanged()
 {
-    m_docksScreenSyncTimer.start();
+    m_viewsScreenSyncTimer.start();
 }
 
 //! the central functions that updates loading/unloading latteviews
@@ -665,10 +665,10 @@ void Corona::closeApplication()
     //! also from qml (Settings window).
     QTimer::singleShot(5, [this]() {
         m_layoutManager->hideLatteSettingsDialog();
-        m_layoutManager->hideAllDocks();
+        m_layoutManager->hideAllViews();
     });
 
-    //! give the time for the docks to hide themselves
+    //! give the time for the views to hide themselves
     QTimer::singleShot(500, [this]() {
         qGuiApp->quit();
     });
@@ -864,7 +864,6 @@ void Corona::loadDefaultLayout()
     emit containmentAdded(defaultContainment);
     emit containmentCreated(defaultContainment);
 
-    //m_layoutManager->addDock(defaultContainment);
     defaultContainment->createApplet(QStringLiteral("org.kde.latte.plasmoid"));
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
@@ -907,7 +906,7 @@ void Corona::windowColorScheme(QString windowIdAndScheme)
     m_wm->setColorSchemeForWindow(windowIdStr, schemeStr);
 }
 
-//! update badge for specific dock item
+//! update badge for specific view item
 void Corona::updateDockItemBadge(QString identifier, QString value)
 {
     m_globalShortcuts->updateDockItemBadge(identifier, value);

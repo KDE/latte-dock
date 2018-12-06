@@ -62,7 +62,7 @@ Positioner::Positioner(Latte::View *parent)
             m_screenSyncTimer.setInterval(qMax(latteCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
         });
 
-        connect(latteCorona, &Latte::Corona::dockLocationChanged, this, [&]() {
+        connect(latteCorona, &Latte::Corona::viewLocationChanged, this, [&]() {
             //! check if an edge has been freed for a primary dock
             //! from another screen
             if (m_view->onPrimary()) {

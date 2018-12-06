@@ -740,7 +740,7 @@ void Layout::addContainment(Plasma::Containment *containment)
 
     if (containmentInLayout) {
         if (!blockAutomaticLatteViewCreation()) {
-            addDock(containment);
+            addView(containment);
         } else {
             qDebug() << "delaying LatteView creation for containment :: " << containment->id();
         }
@@ -867,9 +867,9 @@ void Layout::containmentDestroyed(QObject *cont)
     }
 }
 
-void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int expDockScreen)
+void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen)
 {
-    qDebug() << "Layout :::: " << m_layoutName << " ::: addDock was called... m_containments :: " << m_containments.size();
+    qDebug() << "Layout :::: " << m_layoutName << " ::: addView was called... m_containments :: " << m_containments.size();
 
     if (!containment || !m_corona || !containment->kPackage().isValid()) {
         qWarning() << "the requested containment plugin can not be located or loaded";
@@ -895,12 +895,12 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     bool onPrimary = containment->config().readEntry("onPrimary", true);
     int id = containment->screen();
 
-    if (id == -1 && expDockScreen == -1) {
+    if (id == -1 && explicitScreen == -1) {
         id = containment->lastScreen();
     }
 
-    if (expDockScreen > -1) {
-        id = expDockScreen;
+    if (explicitScreen > -1) {
+        id = explicitScreen;
     }
 
     qDebug() << "add dock - containment id: " << containment->id() << " ,screen : " << id << " - " << m_corona->screenPool()->connector(id)
@@ -997,7 +997,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
 
     //  connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
-    connect(containment, &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::dockLocationChanged);
+    connect(containment, &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::viewLocationChanged);
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
 
@@ -1020,7 +1020,7 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     emit viewsCountChanged();
 }
 
-void Layout::addNewDock()
+void Layout::addNewView()
 {
     if (!m_corona) {
         return;
@@ -1029,7 +1029,7 @@ void Layout::addNewDock()
     m_corona->loadDefaultLayout();
 }
 
-void Layout::copyDock(Plasma::Containment *containment)
+void Layout::copyView(Plasma::Containment *containment)
 {
     if (!containment || !m_corona)
         return;
@@ -1171,11 +1171,11 @@ void Layout::copyDock(Plasma::Containment *containment)
 
     if (setOnExplicitScreen && copyScrId > -1) {
         qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
-        addDock(newContainment, false, copyScrId);
+        addView(newContainment, false, copyScrId);
         newContainment->reactToScreenChange();
     } else {
         qDebug() << "Copy Dock in current screen...";
-        addDock(newContainment, false, dockScrId);
+        addView(newContainment, false, dockScrId);
     }
 
     setBlockAutomaticLatteViewCreation(false);
@@ -1475,7 +1475,7 @@ QList<Plasma::Containment *> Layout::importLayoutFile(QString file)
     return importedDocks;
 }
 
-void Layout::recreateDock(Plasma::Containment *containment)
+void Layout::recreateView(Plasma::Containment *containment)
 {
     if (!m_corona) {
         return;
@@ -1494,7 +1494,7 @@ void Layout::recreateDock(Plasma::Containment *containment)
                 QTimer::singleShot(250, this, [this, containment]() {
                     if (!m_latteViews.contains(containment)) {
                         qDebug() << "recreate - step 2: adding dock for containment:" << containment->id();
-                        addDock(containment);
+                        addView(containment);
                     }
                 });
             });
@@ -1577,7 +1577,7 @@ void Layout::syncLatteViewsToScreens()
 
         if (!latteViewExists(containment) && futureShownViews.contains(containment->id())) {
             qDebug() << "syncLatteViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << m_corona->screenPool()->connector(screenId);
-            addDock(containment);
+            addView(containment);
         }
     }
 

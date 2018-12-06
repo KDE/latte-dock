@@ -341,10 +341,10 @@ void DockConfigView::hideEvent(QHideEvent *ev)
 
     if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
         if (!previousByPassWMBehavior) {
-            m_latteView->managedLayout()->recreateDock(m_latteView->containment());
+            m_latteView->managedLayout()->recreateView(m_latteView->containment());
         }
     } else if (m_latteView->byPassWM() != previousByPassWMBehavior) {
-        m_latteView->managedLayout()->recreateDock(m_latteView->containment());
+        m_latteView->managedLayout()->recreateView(m_latteView->containment());
     }
 
     deleteLater();

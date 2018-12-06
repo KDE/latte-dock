@@ -125,8 +125,8 @@ public slots:
 
 signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
-    void dockLocationChanged();
-    void raiseDocksTemporaryChanged();
+    void viewLocationChanged();
+    void raiseViewsTemporaryChanged();
 
 private slots:
     void alternativesVisibilityChanged(bool visible);
@@ -154,7 +154,7 @@ private:
 
     bool m_activitiesStarting{true};
     bool m_defaultLayoutOnStartup{false}; //! this is used to enforce loading the default layout on startup
-    bool m_quitTimedEnded{false}; //! this is used on destructor in order to delay it and slide-out the docks
+    bool m_quitTimedEnded{false}; //! this is used on destructor in order to delay it and slide-out the views
 
     //!it can be used on startup to change memory usage from command line
     int m_userSetMemoryUsage{ -1};
@@ -163,7 +163,7 @@ private:
 
     QList<KDeclarative::QmlObject *> m_alternativesObjects;
 
-    QTimer m_docksScreenSyncTimer;
+    QTimer m_viewsScreenSyncTimer;
 
     KActivities::Consumer *m_activityConsumer;
     QPointer<KAboutApplicationDialog> aboutDialog;

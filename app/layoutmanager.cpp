@@ -307,10 +307,10 @@ void LayoutManager::setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage)
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
 }
 
-void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading, int expDockScreen)
+void LayoutManager::addView(Plasma::Containment *containment, bool forceLoading, int explicitScreen)
 {
     if (memoryUsage() == Dock::SingleLayout) {
-        m_activeLayouts.at(0)->addDock(containment, forceLoading, expDockScreen);
+        m_activeLayouts.at(0)->addView(containment, forceLoading, explicitScreen);
     } else if (memoryUsage() == Dock::MultipleLayouts) {
         QString layoutId = containment->config().readEntry("layoutId", QString());
 
@@ -318,7 +318,7 @@ void LayoutManager::addDock(Plasma::Containment *containment, bool forceLoading,
             auto layout = activeLayout(layoutId);
 
             if (layout) {
-                layout->addDock(containment, forceLoading, expDockScreen);
+                layout->addView(containment, forceLoading, explicitScreen);
             }
         }
     }
@@ -651,7 +651,7 @@ void LayoutManager::importLatteLayout(QString layoutPath)
     //! This might not be needed as it is Layout responsibility
 }
 
-void LayoutManager::hideAllDocks()
+void LayoutManager::hideAllViews()
 {
     foreach (auto layout, m_activeLayouts) {
         if (layout->isOriginalLayout()) {
@@ -1035,9 +1035,9 @@ QString LayoutManager::newLayout(QString layoutName, QString preset)
     return newLayoutPath;
 }
 
-//! This function figures in the beginning if a dock with tasks
+//! This function figures in the beginning if a view with tasks
 //! in it will be loaded taking into account also the screens are present.
-bool LayoutManager::heuresticForLoadingDockWithTasks(int *firstContainmentWithTasks)
+bool LayoutManager::heuresticForLoadingViewWithTasks(int *firstContainmentWithTasks)
 {
     foreach (auto containment, m_corona->containments()) {
         QString plugin = containment->pluginMetaData().pluginId();

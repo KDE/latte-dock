@@ -122,9 +122,9 @@ public:
     QStringList unloadedContainmentsIds();
 
     //! this function needs the layout to have first set the corona through initToCorona() function
-    void addDock(Plasma::Containment *containment, bool forceOnPrimary = false, int expDockScreen = -1);
-    void copyDock(Plasma::Containment *containment);
-    void recreateDock(Plasma::Containment *containment);
+    void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1);
+    void copyView(Plasma::Containment *containment);
+    void recreateView(Plasma::Containment *containment);
 
     void syncLatteViewsToScreens();
     void importToCorona();
@@ -165,7 +165,7 @@ public slots:
     //change <Plasma::Types::Location> to <int> types
     Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;
 
-    Q_INVOKABLE void addNewDock();
+    Q_INVOKABLE void addNewView();
 
 signals:
     void activitiesChanged();
@@ -203,7 +203,7 @@ private:
     void setFile(QString file);
 
     //! It can be used in order for LatteViews to not be created automatically when
-    //! their corresponding containments are created e.g. copyDock functionality
+    //! their corresponding containments are created e.g. copyView functionality
     bool blockAutomaticLatteViewCreation() const;
     void setBlockAutomaticLatteViewCreation(bool block);
 

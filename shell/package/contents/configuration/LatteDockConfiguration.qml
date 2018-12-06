@@ -541,7 +541,7 @@ FocusScope {
 
                     onActivated: {
                         if (index==0) {
-                            dock.copyDock();
+                            dock.copyView();
                         } else if (index>=2) {
                             dock.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
                         }
@@ -572,7 +572,7 @@ FocusScope {
                     iconSource: "list-add"
                     tooltip: i18n("Add a new dock")
 
-                    onClicked: dock.managedLayout.addNewDock()
+                    onClicked: dock.managedLayout.addNewView()
 
                     Component.onCompleted: {
                         var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
@@ -592,7 +592,7 @@ FocusScope {
                 opacity: dock.managedLayout.viewsCount > 1 ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
-                onClicked: dock.removeDock()
+                onClicked: dock.removeView()
             }
 
             PlasmaComponents.Button {

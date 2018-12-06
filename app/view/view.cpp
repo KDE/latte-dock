@@ -123,7 +123,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (latteCorona) {
-        connect(latteCorona, &Latte::Corona::dockLocationChanged, this, &View::dockLocationChanged);
+        connect(latteCorona, &Latte::Corona::viewLocationChanged, this, &View::dockLocationChanged);
     }
 }
 
@@ -276,12 +276,12 @@ void View::reconsiderScreen()
     m_positioner->reconsiderScreen();
 }
 
-void View::copyDock()
+void View::copyView()
 {
-    m_managedLayout->copyDock(containment());
+    m_managedLayout->copyView(containment());
 }
 
-void View::removeDock()
+void View::removeView()
 {
     if (m_managedLayout && m_managedLayout->viewsCount() > 1) {
         QAction *removeAct = this->containment()->actions()->action(QStringLiteral("remove"));

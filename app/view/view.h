@@ -171,8 +171,8 @@ public:
     void disconnectSensitiveSignals();
 
 public slots:
-    Q_INVOKABLE void removeDock();
-    Q_INVOKABLE void copyDock();
+    Q_INVOKABLE void copyView();
+    Q_INVOKABLE void removeView();
 
     Q_INVOKABLE QVariantList containmentActions();
 

@@ -75,8 +75,8 @@ public:
     void load();
     void loadLayoutOnStartup(QString layoutName);
     void unload();
-    void addDock(Plasma::Containment *containment, bool forceLoading = false, int expDockScreen = -1);
-    void hideAllDocks();
+    void addView(Plasma::Containment *containment, bool forceLoading = false, int explicitScreen = -1);
+    void hideAllViews();
     void pauseLayout(QString layoutName);
     void syncLatteViewsToScreens();
     void syncActiveLayoutsToOriginalFiles();
@@ -152,11 +152,11 @@ private:
     void confirmDynamicSwitch();
     //! it is used just in order to provide translations for the presets
     void ghostForTranslatedPresets();
-    //! This function figures in the beginning if a dock with tasks
+    //! This function figures in the beginning if a view with tasks
     //! in it will be loaded taking into account also the screens are present.
     //! returns true if it will be loaded, false otherwise
     //! firstContainmentWithTasks = the first containment containing a taskmanager plasmoid
-    bool heuresticForLoadingDockWithTasks(int *firstContainmentWithTasks);
+    bool heuresticForLoadingViewWithTasks(int *firstContainmentWithTasks);
     void importLatteLayout(QString layoutPath);
     void importPreset(int presetNo, bool newInstanceIfPresent = false);
     void loadLatteLayout(QString layoutPath);
