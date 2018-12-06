@@ -56,10 +56,10 @@
 
 namespace Latte {
 
-//! both alwaysVisible and dockWinBehavior are passed through corona because
-//! during the dock window creation containment hasn't been set, but these variables
+//! both alwaysVisible and byPassWM are passed through corona because
+//! during the view window creation containment hasn't been set, but these variables
 //! are needed in order for window flags to be set correctly
-View::View(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavior)
+View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
@@ -76,10 +76,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavio
                        | Qt::NoDropShadowWindowHint
                        | Qt::WindowDoesNotAcceptFocus;
 
-    if (dockWindowBehavior) {
-        setFlags(flags);
-    } else {
+    if (byPassWM) {
         setFlags(flags | Qt::BypassWindowManagerHint);
+    } else {
+        setFlags(flags);
     }
 
     KWindowSystem::setOnAllDesktops(winId(), true);
@@ -90,7 +90,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavio
         m_positioner->setScreenToFollow(qGuiApp->primaryScreen());
 
     connect(this, &View::containmentChanged
-    , this, [ &, dockWindowBehavior]() {
+    , this, [ &, byPassWM]() {
         qDebug() << "dock view c++ containment changed 1...";
 
         if (!this->containment())
@@ -102,7 +102,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavio
         restoreConfig();
 
         //! Afterwards override that values in case during creation something different is needed
-        setDockWinBehavior(dockWindowBehavior);
+        setByPassWM(byPassWM);
 
         //! Check the screen assigned to this dock
         reconsiderScreen();
@@ -181,7 +181,7 @@ void View::init()
 
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
 
-    connect(this, &View::dockWinBehaviorChanged, this, &View::saveConfig);
+    connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::onPrimaryChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
 
@@ -466,19 +466,19 @@ void View::setNormalThickness(int thickness)
     emit normalThicknessChanged();
 }
 
-bool View::dockWinBehavior() const
+bool View::byPassWM() const
 {
-    return m_dockWinBehavior;
+    return m_byPassWM;
 }
 
-void View::setDockWinBehavior(bool dock)
+void View::setByPassWM(bool bypass)
 {
-    if (m_dockWinBehavior == dock) {
+    if (m_byPassWM == bypass) {
         return;
     }
 
-    m_dockWinBehavior = dock;
-    emit dockWinBehaviorChanged();
+    m_byPassWM = bypass;
+    emit byPassWMChanged();
 }
 
 bool View::behaveAsPlasmaPanel() const
@@ -1045,7 +1045,7 @@ void View::saveConfig()
 
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", onPrimary());
-    config.writeEntry("dockWindowBehavior", dockWinBehavior());
+    config.writeEntry("byPassWM", byPassWM());
     config.writeEntry("isPreferredForShortcuts", isPreferredForShortcuts());
     config.sync();
 }
@@ -1057,13 +1057,13 @@ void View::restoreConfig()
 
     auto config = this->containment()->config();
     m_onPrimary = config.readEntry("onPrimary", true);
-    m_dockWinBehavior = config.readEntry("dockWindowBehavior", true);
+    m_byPassWM = config.readEntry("byPassWM", false);
     m_isPreferredForShortcuts = config.readEntry("isPreferredForShortcuts", false);
 
     //! Send changed signals at the end in order to be sure that saveConfig
     //! wont rewrite default/invalid values
     emit onPrimaryChanged();
-    emit dockWinBehaviorChanged();
+    emit byPassWMChanged();
 }
 //!END configuration functions
 

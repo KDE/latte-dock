@@ -69,8 +69,8 @@ class View : public PlasmaQuick::ContainmentView
     Q_OBJECT
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
+    Q_PROPERTY(bool byPassWM READ byPassWM WRITE setByPassWM NOTIFY byPassWMChanged)
     Q_PROPERTY(bool contextMenuIsShown READ contextMenuIsShown NOTIFY contextMenuIsShownChanged)
-    Q_PROPERTY(bool dockWinBehavior READ dockWinBehavior WRITE setDockWinBehavior NOTIFY dockWinBehaviorChanged)
     //! Because Latte uses animations, changing to edit mode it may be different than
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
@@ -99,7 +99,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(QRect screenGeometry READ screenGeometry NOTIFY screenGeometryChanged)
 
 public:
-    View(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool dockWindowBehavior = false);
+    View(Plasma::Corona *corona, QScreen *targetScreen = nullptr, bool byPassWM = false);
     virtual ~View();
 
     void init();
@@ -119,8 +119,8 @@ public:
 
     bool contextMenuIsShown() const;
 
-    bool dockWinBehavior() const;
-    void setDockWinBehavior(bool dock);
+    bool byPassWM() const;
+    void setByPassWM(bool bypass);
 
     bool inEditMode() const;
     void setInEditMode(bool edit);
@@ -207,9 +207,9 @@ signals:
     void alternativesIsShownChanged();
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
+    void byPassWMChanged();
     void contextMenuIsShownChanged();
     void dockLocationChanged();
-    void dockWinBehaviorChanged();
     void effectsChanged();
     void fontPixelSizeChanged();
     void widthChanged();
@@ -251,7 +251,7 @@ private:
 
     bool m_alternativesIsShown{false};
     bool m_behaveAsPlasmaPanel{false};
-    bool m_dockWinBehavior{true};
+    bool m_byPassWM{true};
     bool m_inDelete{false};
     bool m_inEditMode{false};
     bool m_isPreferredForShortcuts{false};

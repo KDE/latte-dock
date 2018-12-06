@@ -223,15 +223,15 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Behave as a normal dock window")
-                checked: dock.dockWinBehavior
+                text: i18n("Above fullscreen windows")
+                checked: dock.byPassWM
                 enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
                            || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
 
-                tooltip: i18n("Remove the BypassWindowManagerHint flag from the window.\nThe dock wont be above windows which are set at 'Always On Top'")
+                tooltip: i18n("BypassWindowManagerHint flag for the window.\nThe view will be above all windows even those set as 'Always On Top'")
 
                 onCheckedChanged: {
-                    dock.dockWinBehavior = checked
+                    dock.byPassWM = checked;
                 }
             }
 

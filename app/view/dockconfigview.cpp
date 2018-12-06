@@ -337,13 +337,13 @@ void DockConfigView::hideEvent(QHideEvent *ev)
     QQuickWindow::hideEvent(ev);
 
     const auto mode = m_latteView->visibility()->mode();
-    const auto previousDockWinBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? false : true;
+    const auto previousByPassWMBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? true : false;
 
     if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
-        if (!previousDockWinBehavior) {
+        if (!previousByPassWMBehavior) {
             m_latteView->managedLayout()->recreateDock(m_latteView->containment());
         }
-    } else if (m_latteView->dockWinBehavior() != previousDockWinBehavior) {
+    } else if (m_latteView->byPassWM() != previousByPassWMBehavior) {
         m_latteView->managedLayout()->recreateDock(m_latteView->containment());
     }
 

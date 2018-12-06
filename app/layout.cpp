@@ -974,15 +974,15 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
     //! of the window... This of course is also used during
     //! recreations of the window between different visibility modes
     auto mode = static_cast<Dock::Visibility>(containment->config().readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
-    bool dockWin{true};
+    bool byPassWM{false};
 
     if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
-        dockWin = true;
+        byPassWM = false;
     } else {
-        dockWin = containment->config().readEntry("dockWindowBehavior", true);
+        byPassWM = containment->config().readEntry("byPassWM", false);
     }
 
-    auto latteView = new Latte::View(m_corona, nextScreen, dockWin);
+    auto latteView = new Latte::View(m_corona, nextScreen, byPassWM);
 
     latteView->init();
     latteView->setContainment(containment);
