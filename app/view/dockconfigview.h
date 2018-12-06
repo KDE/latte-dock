@@ -50,7 +50,7 @@ class PlasmaShellSurface;
 }
 
 namespace Latte {
-class DockCorona;
+class Corona;
 class View;
 }
 
@@ -136,7 +136,7 @@ private:
 
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 

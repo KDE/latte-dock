@@ -23,7 +23,7 @@
 // local
 #include "view.h"
 #include "panelshadows_p.h"
-#include "../dockcorona.h"
+#include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../settings/universalsettings.h"
 #include "../wm/abstractwindowinterface.h"
@@ -51,7 +51,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *vi
     : PlasmaQuick::ConfigView(containment, parent),
       m_latteView(view)
 {
-    m_corona = qobject_cast<DockCorona *>(m_latteView->containment()->corona());
+    m_corona = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona());
 
     setupWaylandIntegration();
 
@@ -374,7 +374,7 @@ void DockConfigView::setupWaylandIntegration()
 
     if (m_corona) {
         using namespace KWayland::Client;
-        PlasmaShell *interface = m_corona->waylandDockCoronaInterface();
+        PlasmaShell *interface = m_corona->waylandCoronaInterface();
 
         if (!interface) {
             return;

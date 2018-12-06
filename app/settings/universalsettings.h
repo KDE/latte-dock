@@ -22,7 +22,7 @@
 #define UNIVERSALSETTINGS_H
 
 // local
-#include "dockcorona.h"
+#include "../lattecorona.h"
 #include "../liblattedock/dock.h"
 
 // Qt
@@ -183,14 +183,14 @@ private:
 
     SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 
-    QPointer<DockCorona> m_corona;
+    QPointer<Latte::Corona> m_corona;
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
     KSharedConfig::Ptr m_shortcutsConfigPtr;
 
     friend class LayoutManager;
-    friend class DockCorona;
+    friend class Latte::Corona;
 };
 
 }

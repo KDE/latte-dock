@@ -22,7 +22,7 @@
 
 // local
 #include "commontools.h"
-#include "dockcorona.h"
+#include "lattecorona.h"
 #include "schemecolors.h"
 #include "view/panelshadows_p.h"
 
@@ -43,7 +43,7 @@ PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *par
     QObject(parent),
     m_themeGroup(KConfigGroup(config, QStringLiteral("PlasmaThemeExtended")))
 {
-    m_corona = qobject_cast<DockCorona *>(parent);
+    m_corona = qobject_cast<Latte::Corona *>(parent);
 
     loadConfig();
 

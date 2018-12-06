@@ -42,7 +42,7 @@
 
 namespace Latte {
 
-InfoView::InfoView(DockCorona *corona, QString message, QScreen *screen, QWindow *parent)
+InfoView::InfoView(Latte::Corona *corona, QString message, QScreen *screen, QWindow *parent)
     : QQuickView(parent),
       m_corona(corona),
       m_message(message),
@@ -145,7 +145,7 @@ void InfoView::setupWaylandIntegration()
 
     if (m_corona) {
         using namespace KWayland::Client;
-        PlasmaShell *interface = m_corona->waylandDockCoronaInterface();
+        PlasmaShell *interface = m_corona->waylandCoronaInterface();
 
         if (!interface) {
             return;

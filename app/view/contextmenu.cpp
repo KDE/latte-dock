@@ -22,7 +22,7 @@
 // local
 #include "view.h"
 #include "visibilitymanager.h"
-#include "../dockcorona.h"
+#include "../lattecorona.h"
 #include "../layoutmanager.h"
 
 // Qt

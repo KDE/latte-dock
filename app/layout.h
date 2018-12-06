@@ -39,7 +39,7 @@ class Types;
 }
 
 namespace Latte {
-class DockCorona;
+class Corona;
 class View;
 }
 
@@ -69,7 +69,7 @@ public:
 
     static const QString MultipleLayoutsName;
 
-    void initToCorona(DockCorona *corona);
+    void initToCorona(Latte::Corona *corona);
     void syncToLayoutFile(bool removeLayoutId = false);
     void unloadContainments();
     void unloadLatteViews();
@@ -242,7 +242,7 @@ private:
 
     QStringList m_unloadedContainmentsIds;
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
     KConfigGroup m_layoutGroup;
 
     QList<Plasma::Containment *> m_containments;

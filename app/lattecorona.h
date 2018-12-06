@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DOCKCORONA_H
-#define DOCKCORONA_H
+#ifndef LATTECORONA_H
+#define LATTECORONA_H
 
 // local
 #include "../liblattedock/dock.h"
@@ -70,17 +70,17 @@ class PlasmaThemeExtended;
 
 namespace Latte {
 
-class DockCorona : public Plasma::Corona
+class Corona : public Plasma::Corona
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.LatteDock")
 
 public:
-    DockCorona(bool defaultLayoutOnStartup = false,
+    Corona(bool defaultLayoutOnStartup = false,
                QString layoutNameOnStartUp = QString(),
                int userSetMemoryUsage = -1,
                QObject *parent = nullptr);
-    virtual ~DockCorona();
+    virtual ~Corona();
 
     int numScreens() const override;
     QRect screenGeometry(int id) const override;
@@ -107,7 +107,7 @@ public:
     LayoutManager *layoutManager() const;
     PlasmaThemeExtended *themeExtended() const;
 
-    KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
+    KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
     //! these functions are used from context menu through containmentactions
     void switchToLayout(QString layout);
@@ -175,7 +175,7 @@ private:
     LayoutManager *m_layoutManager{nullptr};
     PlasmaThemeExtended *m_themeExtended{nullptr};
 
-    KWayland::Client::PlasmaShell *m_waylandDockCorona{nullptr};
+    KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
 
     friend class GlobalShortcuts;
     friend class Layout;
@@ -185,4 +185,4 @@ private:
 
 }
 
-#endif // DOCKCORONA_H
+#endif // LATTECORONA_H

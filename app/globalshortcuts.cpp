@@ -21,7 +21,7 @@
 #include "globalshortcuts.h"
 
 // local
-#include "dockcorona.h"
+#include "lattecorona.h"
 #include "layoutmanager.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
@@ -153,7 +153,7 @@ const int APPLETEXECUTIONDELAY = 400;
 GlobalShortcuts::GlobalShortcuts(QObject *parent)
     : QObject(parent)
 {
-    m_corona = qobject_cast<DockCorona *>(parent);
+    m_corona = qobject_cast<Latte::Corona *>(parent);
 
     if (m_corona) {
         init();

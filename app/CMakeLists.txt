@@ -2,17 +2,17 @@ set(lattedock-app_SRCS
     ../liblattedock/dock.cpp
     alternativeshelper.cpp
     commontools.cpp
-    dockcorona.cpp
     globalshortcuts.cpp
     importer.cpp
     infoview.cpp
+    lattecorona.cpp
     launcherssignals.cpp
     layout.cpp
     layoutmanager.cpp
     plasmathemeextended.cpp
     schemecolors.cpp
     screenpool.cpp
-    packageplugins/shell/lattepackage.cpp    
+    packageplugins/shell/lattepackage.cpp
     settings/settingsdialog.cpp
     settings/sortedactivitiesmodel.cpp
     settings/universalsettings.cpp
@@ -28,8 +28,8 @@ set(lattedock-app_SRCS
     view/panelshadows.cpp
     view/positioner.cpp
     view/screenedgeghostwindow.cpp
-    view/view.cpp    
-    view/visibilitymanager.cpp    
+    view/view.cpp
+    view/visibilitymanager.cpp
     wm/abstractwindowinterface.cpp
     wm/waylandinterface.cpp
     wm/windowinfowrap.cpp
@@ -38,7 +38,7 @@ set(lattedock-app_SRCS
 )
 
 set(latte_dbusXML dbus/org.kde.LatteDock.xml)
-qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} dockcorona.h Latte::DockCorona lattedockadaptor)
+qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Corona lattedockadaptor)
 ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog.ui)
 
 add_executable(latte-dock ${lattedock-app_SRCS})

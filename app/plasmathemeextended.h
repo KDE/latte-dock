@@ -39,8 +39,10 @@
 #include <Plasma/Theme>
 
 namespace Latte {
+class Corona;
+}
 
-class DockCorona;
+namespace Latte {
 
 class PlasmaThemeExtended: public QObject
 {
@@ -114,7 +116,7 @@ private:
     KConfigGroup m_themeGroup;
     Plasma::Theme m_theme;
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
     SchemeColors *m_normalScheme{nullptr};
     SchemeColors *m_reversedScheme{nullptr};
 };

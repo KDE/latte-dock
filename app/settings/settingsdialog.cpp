@@ -22,13 +22,13 @@
 #include "settingsdialog.h"
 
 // local
-#include "dockcorona.h"
 #include "layout.h"
 #include "layoutmanager.h"
 #include "importer.h"
 #include "plasmathemeextended.h"
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
+#include "../lattecorona.h"
 #include "../liblattedock/dock.h"
 #include "delegates/checkboxdelegate.h"
 #include "delegates/colorcmbboxdelegate.h"
@@ -74,7 +74,7 @@ const int THEMEDEFAULTROUNDNESS = 0; //Breeze default value is used 0px.
 
 const QChar CheckMark{0x2714};
 
-SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
+SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     : QDialog(parent),
       ui(new Ui::SettingsDialog),
       m_corona(corona)
@@ -211,8 +211,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, DockCorona *corona)
         updateApplyButtonsState();
     });
 
-    connect(aboutAction, &QAction::triggered, m_corona, &DockCorona::aboutApplication);
-    connect(quitAction, &QAction::triggered, m_corona, &DockCorona::closeApplication);
+    connect(aboutAction, &QAction::triggered, m_corona, &Latte::Corona::aboutApplication);
+    connect(quitAction, &QAction::triggered, m_corona, &Latte::Corona::closeApplication);
 
     //! update all layouts view when runningActivities changed. This way we update immediately
     //! the running Activities in Activities checkboxes which are shown as bold

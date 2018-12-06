@@ -41,7 +41,7 @@
 
 namespace Latte {
 
-class DockCorona;
+class Corona;
 
 namespace Private {
 /**
@@ -90,7 +90,7 @@ private:
     inline bool isValidWindow(const KWayland::Client::PlasmaWindow *w) const;
     void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
     KWayland::Client::PlasmaWindow *windowFor(WindowId wid) const;
-    KWayland::Client::PlasmaShell *waylandDockCoronaInterface() const;
+    KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
     QSignalMapper *mapper{nullptr};
 
@@ -99,7 +99,7 @@ private:
 
     KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
 };
 
 

@@ -21,9 +21,9 @@
 #include "waylandinterface.h"
 
 // local
-#include "dockcorona.h"
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
+#include "../lattecorona.h"
 #include "../liblattedock/extras.h"
 
 // Qt
@@ -83,7 +83,7 @@ public:
         if (!s)
             return;
 
-        m_shellSurface = m_waylandInterface->waylandDockCoronaInterface()->createSurface(s, this);
+        m_shellSurface = m_waylandInterface->waylandCoronaInterface()->createSurface(s, this);
         qDebug() << "wayland ghost window surface was created...";
 
         m_shellSurface->setSkipTaskbar(true);
@@ -99,7 +99,7 @@ public:
 WaylandInterface::WaylandInterface(QObject *parent)
     : AbstractWindowInterface(parent)
 {
-    m_corona = qobject_cast<DockCorona *>(parent);
+    m_corona = qobject_cast<Latte::Corona *>(parent);
 
     m_activities = new KActivities::Consumer(this);
 
@@ -127,9 +127,9 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
     }, Qt::QueuedConnection);
 }
 
-KWayland::Client::PlasmaShell *WaylandInterface::waylandDockCoronaInterface() const
+KWayland::Client::PlasmaShell *WaylandInterface::waylandCoronaInterface() const
 {
-    return m_corona->waylandDockCoronaInterface();
+    return m_corona->waylandCoronaInterface();
 }
 
 void WaylandInterface::setDockExtraFlags(QWindow &view)

@@ -21,8 +21,8 @@
 #include "layout.h"
 
 // local
-#include "dockcorona.h"
 #include "importer.h"
+#include "lattecorona.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
 #include "view/positioner.h"
@@ -179,7 +179,7 @@ void Layout::init()
     connect(this, &Layout::lastUsedActivityChanged, this, &Layout::saveConfig);
 }
 
-void Layout::initToCorona(DockCorona *corona)
+void Layout::initToCorona(Latte::Corona *corona)
 {
     m_corona = corona;
 
@@ -997,9 +997,9 @@ void Layout::addDock(Plasma::Containment *containment, bool forceOnPrimary, int 
 
     //  connect(containment, &QObject::destroyed, this, &Layout::containmentDestroyed);
     connect(containment, &Plasma::Applet::destroyedChanged, this, &Layout::destroyedChanged);
-    connect(containment, &Plasma::Applet::locationChanged, m_corona, &DockCorona::dockLocationChanged);
+    connect(containment, &Plasma::Applet::locationChanged, m_corona, &Latte::Corona::dockLocationChanged);
     connect(containment, &Plasma::Containment::appletAlternativesRequested
-            , m_corona, &DockCorona::showAlternativesForApplet, Qt::QueuedConnection);
+            , m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
 
     if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
         connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);

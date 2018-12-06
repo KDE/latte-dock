@@ -26,7 +26,7 @@
 #include "effects.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
-#include "../dockcorona.h"
+#include "../lattecorona.h"
 #include "../layout.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
@@ -120,10 +120,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool dockWindowBehavio
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
-    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+    auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
-    if (dockCorona) {
-        connect(dockCorona, &DockCorona::dockLocationChanged, this, &View::dockLocationChanged);
+    if (latteCorona) {
+        connect(latteCorona, &Latte::Corona::dockLocationChanged, this, &View::dockLocationChanged);
     }
 }
 
@@ -194,12 +194,12 @@ void View::init()
     ///!!!!!
     rootContext()->setContextProperty(QStringLiteral("dock"), this);
 
-    auto *dockCorona = qobject_cast<DockCorona *>(this->corona());
+    auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
-    if (dockCorona) {
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), dockCorona->universalSettings());
-        rootContext()->setContextProperty(QStringLiteral("layoutManager"), dockCorona->layoutManager());
-        rootContext()->setContextProperty(QStringLiteral("themeExtended"), dockCorona->themeExtended());
+    if (latteCorona) {
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), latteCorona->universalSettings());
+        rootContext()->setContextProperty(QStringLiteral("layoutManager"), latteCorona->layoutManager());
+        rootContext()->setContextProperty(QStringLiteral("themeExtended"), latteCorona->themeExtended());
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));
@@ -243,9 +243,9 @@ void View::setupWaylandIntegration()
     if (m_shellSurface)
         return;
 
-    if (DockCorona *c = qobject_cast<DockCorona *>(corona())) {
+    if (Latte::Corona *c = qobject_cast<Latte::Corona *>(corona())) {
         using namespace KWayland::Client;
-        PlasmaShell *interface {c->waylandDockCoronaInterface()};
+        PlasmaShell *interface {c->waylandCoronaInterface()};
 
         if (!interface)
             return;
@@ -701,10 +701,10 @@ void View::setManagedLayout(Layout *layout)
         connectionsManagedLayout[0] = connect(m_managedLayout, &Layout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
     }
 
-    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+    Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
-    if (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-        connectionsManagedLayout[1] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+    if (latteCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        connectionsManagedLayout[1] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout && m_visibility) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
                          << " - activities: " << m_managedLayout->appliedActivities();
@@ -720,7 +720,7 @@ void View::setManagedLayout(Layout *layout)
             }
         });
 
-        connectionsManagedLayout[3] = connect(dockCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+        connectionsManagedLayout[3] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
             if (m_managedLayout) {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
@@ -761,10 +761,10 @@ void View::moveToLayout(QString layoutName)
 
     QList<Plasma::Containment *> containments = m_managedLayout->unassignFromLayout(this);
 
-    DockCorona *dockCorona = qobject_cast<DockCorona *>(this->corona());
+    Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
-    if (dockCorona && containments.size() > 0) {
-        Layout *newLayout = dockCorona->layoutManager()->activeLayout(layoutName);
+    if (latteCorona && containments.size() > 0) {
+        Layout *newLayout = latteCorona->layoutManager()->activeLayout(layoutName);
 
         if (newLayout) {
             newLayout->assignToLayout(this, containments);

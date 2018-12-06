@@ -19,9 +19,9 @@
 */
 
 // local
-#include "dockcorona.h"
 #include "config-latte.h"
 #include "importer.h"
+#include "lattecorona.h"
 #include "../liblattedock/dock.h"
 
 // C++
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
     KCrash::setDrKonqiEnabled(true);
     KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
-    Latte::DockCorona corona(defaultLayoutOnStartup, layoutNameOnStartup, memoryUsage);
+    Latte::Corona corona(defaultLayoutOnStartup, layoutNameOnStartup, memoryUsage);
     KDBusService service(KDBusService::Unique);
 
     return app.exec();

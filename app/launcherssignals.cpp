@@ -21,7 +21,7 @@
 #include "launcherssignals.h"
 
 // local
-#include "dockcorona.h"
+#include "lattecorona.h"
 #include "layout.h"
 
 // Qt

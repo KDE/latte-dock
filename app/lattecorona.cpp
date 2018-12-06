@@ -18,7 +18,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dockcorona.h"
+#include "lattecorona.h"
 
 // local
 #include "alternativeshelper.h"
@@ -71,7 +71,7 @@
 
 namespace Latte {
 
-DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int userSetMemoryUsage, QObject *parent)
+Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int userSetMemoryUsage, QObject *parent)
     : Plasma::Corona(parent),
       m_defaultLayoutOnStartup(defaultLayoutOnStartup),
       m_userSetMemoryUsage(userSetMemoryUsage),
@@ -117,11 +117,11 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
         load();
     }
 
-    connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+    connect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
 
     m_docksScreenSyncTimer.setSingleShot(true);
     m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
-    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &DockCorona::syncLatteViewsToScreens);
+    connect(&m_docksScreenSyncTimer, &QTimer::timeout, this, &Corona::syncLatteViewsToScreens);
     connect(m_universalSettings, &UniversalSettings::screenTrackerIntervalChanged, this, [this]() {
         m_docksScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
     });
@@ -132,7 +132,7 @@ DockCorona::DockCorona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp,
     dbus.registerObject(QStringLiteral("/Latte"), this);
 }
 
-DockCorona::~DockCorona()
+Corona::~Corona()
 {
     //! BEGIN: Give the time to slide-out docks when closing
     m_layoutManager->hideAllDocks();
@@ -169,24 +169,24 @@ DockCorona::~DockCorona()
     m_universalSettings->deleteLater();
     m_themeExtended->deleteLater();
 
-    disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+    disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
     delete m_activityConsumer;
 
     qDebug() << "Latte Corona - deleted...";
 }
 
-void DockCorona::load()
+void Corona::load()
 {
     if (m_activityConsumer && (m_activityConsumer->serviceStatus() == KActivities::Consumer::Running) && m_activitiesStarting) {
-        disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &DockCorona::load);
+        disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
         m_layoutManager->load();
 
         m_activitiesStarting = false;
 
-        connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &DockCorona::primaryOutputChanged, Qt::UniqueConnection);
-        connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &DockCorona::screenCountChanged);
+        connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Corona::primaryOutputChanged, Qt::UniqueConnection);
+        connect(QApplication::desktop(), &QDesktopWidget::screenCountChanged, this, &Corona::screenCountChanged);
 
-        connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &DockCorona::screenCountChanged);
+        connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
 
         QString assignedLayout = m_layoutManager->shouldSwitchToLayout(m_activityConsumer->currentActivity());
 
@@ -229,11 +229,11 @@ void DockCorona::load()
             addOutput(screen);
         }
 
-        connect(qGuiApp, &QGuiApplication::screenAdded, this, &DockCorona::addOutput, Qt::UniqueConnection);
+        connect(qGuiApp, &QGuiApplication::screenAdded, this, &Corona::addOutput, Qt::UniqueConnection);
     }
 }
 
-void DockCorona::unload()
+void Corona::unload()
 {
     qDebug() << "unload: removing containments...";
 
@@ -244,7 +244,7 @@ void DockCorona::unload()
     }
 }
 
-void DockCorona::setupWaylandIntegration()
+void Corona::setupWaylandIntegration()
 {
     if (!KWindowSystem::isPlatformWayland()) {
         return;
@@ -263,7 +263,7 @@ void DockCorona::setupWaylandIntegration()
 
     connect(registry, &Registry::plasmaShellAnnounced, this
     , [this, registry](quint32 name, quint32 version) {
-        m_waylandDockCorona = registry->createPlasmaShell(name, version, this);
+        m_waylandCorona = registry->createPlasmaShell(name, version, this);
     });
 
     QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced,
@@ -281,12 +281,12 @@ void DockCorona::setupWaylandIntegration()
     connection->roundtrip();
 }
 
-KWayland::Client::PlasmaShell *DockCorona::waylandDockCoronaInterface() const
+KWayland::Client::PlasmaShell *Corona::waylandCoronaInterface() const
 {
-    return m_waylandDockCorona;
+    return m_waylandCorona;
 }
 
-void DockCorona::cleanConfig()
+void Corona::cleanConfig()
 {
     auto containmentsEntries = config()->group("Containments");
     bool changed = false;
@@ -317,7 +317,7 @@ void DockCorona::cleanConfig()
     }
 }
 
-bool DockCorona::containmentExists(uint id) const
+bool Corona::containmentExists(uint id) const
 {
     foreach (auto containment, containments()) {
         if (id == containment->id()) {
@@ -328,7 +328,7 @@ bool DockCorona::containmentExists(uint id) const
     return false;
 }
 
-bool DockCorona::appletExists(uint containmentId, uint appletId) const
+bool Corona::appletExists(uint containmentId, uint appletId) const
 {
     Plasma::Containment *containment = nullptr;
 
@@ -352,42 +352,42 @@ bool DockCorona::appletExists(uint containmentId, uint appletId) const
     return false;
 }
 
-KActivities::Consumer *DockCorona::activitiesConsumer() const
+KActivities::Consumer *Corona::activitiesConsumer() const
 {
     return m_activityConsumer;
 }
 
-ScreenPool *DockCorona::screenPool() const
+ScreenPool *Corona::screenPool() const
 {
     return m_screenPool;
 }
 
-UniversalSettings *DockCorona::universalSettings() const
+UniversalSettings *Corona::universalSettings() const
 {
     return m_universalSettings;
 }
 
-LayoutManager *DockCorona::layoutManager() const
+LayoutManager *Corona::layoutManager() const
 {
     return m_layoutManager;
 }
 
-AbstractWindowInterface *DockCorona::wm() const
+AbstractWindowInterface *Corona::wm() const
 {
     return m_wm;
 }
 
-PlasmaThemeExtended *DockCorona::themeExtended() const
+PlasmaThemeExtended *Corona::themeExtended() const
 {
     return m_themeExtended;
 }
 
-int DockCorona::numScreens() const
+int Corona::numScreens() const
 {
     return qGuiApp->screens().count();
 }
 
-QRect DockCorona::screenGeometry(int id) const
+QRect Corona::screenGeometry(int id) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -407,12 +407,12 @@ QRect DockCorona::screenGeometry(int id) const
     return screen->geometry();
 }
 
-QRegion DockCorona::availableScreenRegion(int id) const
+QRegion Corona::availableScreenRegion(int id) const
 {
     return availableScreenRegionWithCriteria(id);
 }
 
-QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout) const
+QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -533,12 +533,12 @@ QRegion DockCorona::availableScreenRegionWithCriteria(int id, QString forLayout)
     return available;
 }
 
-QRect DockCorona::availableScreenRect(int id) const
+QRect Corona::availableScreenRect(int id) const
 {
     return availableScreenRectWithCriteria(id);
 }
 
-QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility> modes, QList<Plasma::Types::Location> edges) const
+QRect Corona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility> modes, QList<Plasma::Types::Location> edges) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -607,7 +607,7 @@ QRect DockCorona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility
     return available;
 }
 
-void DockCorona::addOutput(QScreen *screen)
+void Corona::addOutput(QScreen *screen)
 {
     Q_ASSERT(screen);
 
@@ -632,34 +632,34 @@ void DockCorona::addOutput(QScreen *screen)
     emit screenAdded(m_screenPool->id(screen->name()));
 }
 
-void DockCorona::primaryOutputChanged()
+void Corona::primaryOutputChanged()
 {
     m_docksScreenSyncTimer.start();
 }
 
-void DockCorona::screenRemoved(QScreen *screen)
+void Corona::screenRemoved(QScreen *screen)
 {
     Q_ASSERT(screen);
 }
 
-void DockCorona::screenCountChanged()
+void Corona::screenCountChanged()
 {
     m_docksScreenSyncTimer.start();
 }
 
 //! the central functions that updates loading/unloading latteviews
 //! concerning screen changed (for multi-screen setups mainly)
-void DockCorona::syncLatteViewsToScreens()
+void Corona::syncLatteViewsToScreens()
 {
     m_layoutManager->syncLatteViewsToScreens();
 }
 
-int DockCorona::primaryScreenId() const
+int Corona::primaryScreenId() const
 {
     return m_screenPool->id(qGuiApp->primaryScreen()->name());
 }
 
-void DockCorona::closeApplication()
+void Corona::closeApplication()
 {
     //! this code must be called asynchronously because it is called
     //! also from qml (Settings window).
@@ -674,7 +674,7 @@ void DockCorona::closeApplication()
     });
 }
 
-void DockCorona::aboutApplication()
+void Corona::aboutApplication()
 {
     if (aboutDialog) {
         aboutDialog->hide();
@@ -689,7 +689,7 @@ void DockCorona::aboutApplication()
     aboutDialog->show();
 }
 
-int DockCorona::screenForContainment(const Plasma::Containment *containment) const
+int Corona::screenForContainment(const Plasma::Containment *containment) const
 {
     //FIXME: indexOf is not a proper way to support multi-screen
     // as for environment to environment the indexes change
@@ -741,7 +741,7 @@ int DockCorona::screenForContainment(const Plasma::Containment *containment) con
     return -1;
 }
 
-void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
+void Corona::showAlternativesForApplet(Plasma::Applet *applet)
 {
     const QString alternativesQML = kPackage().filePath("appletalternativesui");
 
@@ -797,7 +797,7 @@ void DockCorona::showAlternativesForApplet(Plasma::Applet *applet)
     });
 }
 
-void DockCorona::alternativesVisibilityChanged(bool visible)
+void Corona::alternativesVisibilityChanged(bool visible)
 {
     if (visible) {
         return;
@@ -817,7 +817,7 @@ void DockCorona::alternativesVisibilityChanged(bool visible)
     }
 }
 
-void DockCorona::loadDefaultLayout()
+void Corona::loadDefaultLayout()
 {
     qDebug() << "loading default layout";
     //! Settting mutable for create a containment
@@ -869,7 +869,7 @@ void DockCorona::loadDefaultLayout()
     defaultContainment->createApplet(QStringLiteral("org.kde.plasma.analogclock"));
 }
 
-QStringList DockCorona::containmentsIds()
+QStringList Corona::containmentsIds()
 {
     QStringList ids;
 
@@ -880,7 +880,7 @@ QStringList DockCorona::containmentsIds()
     return ids;
 }
 
-QStringList DockCorona::appletsIds()
+QStringList Corona::appletsIds()
 {
     QStringList ids;
 
@@ -893,12 +893,12 @@ QStringList DockCorona::appletsIds()
 }
 
 //! Activate launcher menu through dbus interface
-void DockCorona::activateLauncherMenu()
+void Corona::activateLauncherMenu()
 {
     m_globalShortcuts->activateLauncherMenu();
 }
 
-void DockCorona::windowColorScheme(QString windowIdAndScheme)
+void Corona::windowColorScheme(QString windowIdAndScheme)
 {
     int firstSlash = windowIdAndScheme.indexOf("-");
     QString windowIdStr = windowIdAndScheme.mid(0, firstSlash);
@@ -908,18 +908,18 @@ void DockCorona::windowColorScheme(QString windowIdAndScheme)
 }
 
 //! update badge for specific dock item
-void DockCorona::updateDockItemBadge(QString identifier, QString value)
+void Corona::updateDockItemBadge(QString identifier, QString value)
 {
     m_globalShortcuts->updateDockItemBadge(identifier, value);
 }
 
 
-void DockCorona::switchToLayout(QString layout)
+void Corona::switchToLayout(QString layout)
 {
     m_layoutManager->switchToLayout(layout);
 }
 
-void DockCorona::showSettingsWindow(int page)
+void Corona::showSettingsWindow(int page)
 {
     Dock::LatteConfigPage p = Dock::LayoutPage;
 
@@ -930,7 +930,7 @@ void DockCorona::showSettingsWindow(int page)
     m_layoutManager->showLatteSettingsDialog(p);
 }
 
-QStringList DockCorona::contextMenuData()
+QStringList Corona::contextMenuData()
 {
     QStringList data;
 
@@ -948,7 +948,7 @@ QStringList DockCorona::contextMenuData()
     return data;
 }
 
-inline void DockCorona::qmlRegisterTypes() const
+inline void Corona::qmlRegisterTypes() const
 {
     qmlRegisterType<QScreen>();
 }

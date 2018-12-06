@@ -43,7 +43,7 @@ class Controller;
 }
 
 namespace Latte {
-class DockCorona;
+class Corona;
 class Importer;
 class Layout;
 class LaunchersSignals;
@@ -69,7 +69,7 @@ public:
     LayoutManager(QObject *parent = nullptr);
     ~LayoutManager() override;
 
-    DockCorona *corona();
+    Latte::Corona *corona();
     Importer *importer();
 
     void load();
@@ -185,7 +185,7 @@ private:
 
     QPointer<Latte::SettingsDialog> m_latteSettingsDialog;
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
     Importer *m_importer{nullptr};
     LaunchersSignals *m_launchersSignals{nullptr};
 

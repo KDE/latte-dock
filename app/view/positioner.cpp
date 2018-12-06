@@ -22,7 +22,7 @@
 // local
 #include "effects.h"
 #include "view.h"
-#include "../dockcorona.h"
+#include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
 #include "../../liblattedock/dock.h"
@@ -54,15 +54,15 @@ Positioner::Positioner(Latte::View *parent)
     m_validateGeometryTimer.setInterval(500);
     connect(&m_validateGeometryTimer, &QTimer::timeout, this, &Positioner::syncGeometry);
 
-    auto *dockCorona = qobject_cast<DockCorona *>(m_view->corona());
+    auto *latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
 
-    if (dockCorona) {
-        m_screenSyncTimer.setInterval(qMax(dockCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
-        connect(dockCorona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [this, dockCorona]() {
-            m_screenSyncTimer.setInterval(qMax(dockCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
+    if (latteCorona) {
+        m_screenSyncTimer.setInterval(qMax(latteCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
+        connect(latteCorona->universalSettings(), &UniversalSettings::screenTrackerIntervalChanged, this, [this, latteCorona]() {
+            m_screenSyncTimer.setInterval(qMax(latteCorona->universalSettings()->screenTrackerInterval() - 500, 1000));
         });
 
-        connect(dockCorona, &DockCorona::dockLocationChanged, this, [&]() {
+        connect(latteCorona, &Latte::Corona::dockLocationChanged, this, [&]() {
             //! check if an edge has been freed for a primary dock
             //! from another screen
             if (m_view->onPrimary()) {
@@ -131,10 +131,10 @@ void Positioner::init()
 
 int Positioner::currentScreenId() const
 {
-    auto *dockCorona = qobject_cast<DockCorona *>(m_view->corona());
+    auto *latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
 
-    if (dockCorona) {
-        return dockCorona->screenPool()->id(m_screenToFollowId);
+    if (latteCorona) {
+        return latteCorona->screenPool()->id(m_screenToFollowId);
     }
 
     return -1;
@@ -335,10 +335,10 @@ void Positioner::syncGeometry()
 
         if (m_view->formFactor() == Plasma::Types::Vertical) {
             QString layoutName = m_view->managedLayout() ? m_view->managedLayout()->name() : QString();
-            auto dockCorona = qobject_cast<DockCorona *>(m_view->corona());
-            int fixedScreen = m_view->onPrimary() ? dockCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
+            auto latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
+            int fixedScreen = m_view->onPrimary() ? latteCorona->screenPool()->primaryScreenId() : m_view->containment()->screen();
 
-            freeRegion = dockCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName);
+            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, layoutName);
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();

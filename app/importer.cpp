@@ -21,7 +21,7 @@
 #include "importer.h"
 
 // local
-#include "dockcorona.h"
+#include "lattecorona.h"
 #include "layoutmanager.h"
 #include "layout.h"
 #include "screenpool.h"

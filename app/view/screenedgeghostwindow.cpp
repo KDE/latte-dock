@@ -21,7 +21,7 @@
 
 // local
 #include "view.h"
-#include "../dockcorona.h"
+#include "../lattecorona.h"
 
 // Qt
 #include <QDebug>
@@ -191,10 +191,10 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
         return;
     }
 
-    if (DockCorona *c = qobject_cast<DockCorona *>(m_latteView->containment()->corona())) {
+    if (Latte::Corona *c = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona())) {
         using namespace KWayland::Client;
 
-        PlasmaShell *interface = c->waylandDockCoronaInterface();
+        PlasmaShell *interface = c->waylandCoronaInterface();
 
         if (!interface) {
             return;

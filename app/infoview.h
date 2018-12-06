@@ -22,7 +22,7 @@
 #define INFOVIEW_H
 
 // local
-#include "dockcorona.h"
+#include "lattecorona.h"
 
 // Qt
 #include <QObject>
@@ -44,7 +44,7 @@ class InfoView : public QQuickView
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    InfoView(DockCorona *corona, QString message, QScreen *screen = qGuiApp->primaryScreen(), QWindow *parent = nullptr);
+    InfoView(Latte::Corona *corona, QString message, QScreen *screen = qGuiApp->primaryScreen(), QWindow *parent = nullptr);
     ~InfoView() override;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
@@ -76,9 +76,8 @@ private:
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
 };
 
 }
-#endif //DOCKCONFIGVIEW_H
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#endif //INFOVIEW_H

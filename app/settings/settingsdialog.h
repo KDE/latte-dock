@@ -42,7 +42,7 @@ class Controller;
 }
 
 namespace Latte {
-class DockCorona;
+class Corona;
 class Layout;
 }
 
@@ -52,7 +52,7 @@ class SettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    SettingsDialog(QWidget *parent, DockCorona *corona);
+    SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
     void setCurrentPage(Dock::LatteConfigPage page);
@@ -122,7 +122,7 @@ private:
     QTimer m_activityClosedTimer;
     bool m_blockDeleteOnReject{false};
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
 
     QStandardItemModel *m_model{nullptr};
     Ui::SettingsDialog *ui;

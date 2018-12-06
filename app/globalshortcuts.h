@@ -34,7 +34,7 @@ class Containment;
 }
 
 namespace Latte {
-class DockCorona;
+class Corona;
 class View;
 }
 
@@ -81,7 +81,7 @@ private:
     QList<QQuickItem *> m_calledItems;
     QList<QMetaMethod> m_methodsShowNumbers;
 
-    DockCorona *m_corona{nullptr};
+    Latte::Corona *m_corona{nullptr};
 };
 
 }

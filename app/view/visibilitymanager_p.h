@@ -23,7 +23,7 @@
 
 namespace Latte {
 
-class DockCorona;
+class Corona;
 class View;
 class VisibilityManager;
 class ScreenEdgeGhostWindow;
@@ -133,7 +133,7 @@ public:
     std::array<QMetaObject::Connection, 1> connectionsKWinEdges;
     ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
 
-    DockCorona *dockCorona{nullptr};
+    Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};
 };
 

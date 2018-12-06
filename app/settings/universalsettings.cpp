@@ -44,7 +44,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
       m_config(config),
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
-    m_corona = qobject_cast<DockCorona *>(parent);
+    m_corona = qobject_cast<Latte::Corona *>(parent);
 
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
@@ -483,24 +483,12 @@ void UniversalSettings::cleanupSettings()
 
 QString UniversalSettings::splitterIconPath()
 {
-    auto *dockCorona = qobject_cast<DockCorona *>(parent());
-
-    if (dockCorona) {
-        return dockCorona->kPackage().filePath("splitter");
-    }
-
-    return "";
+    return m_corona->kPackage().filePath("splitter");
 }
 
 QString UniversalSettings::trademarkIconPath()
 {
-    auto *dockCorona = qobject_cast<DockCorona *>(parent());
-
-    if (dockCorona) {
-        return dockCorona->kPackage().filePath("trademark");
-    }
-
-    return "";
+    return m_corona->kPackage().filePath("trademark");
 }
 
 QAbstractItemModel *UniversalSettings::runningActivitiesModel() const

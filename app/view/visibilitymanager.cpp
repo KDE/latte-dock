@@ -25,7 +25,7 @@
 #include "positioner.h"
 #include "screenedgeghostwindow.h"
 #include "view.h"
-#include "../dockcorona.h"
+#include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
 #include "../wm/windowinfowrap.h"
@@ -45,8 +45,8 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
     : QObject(nullptr), q(q), view(view)
 {
     m_latteView = qobject_cast<Latte::View *>(view);
-    dockCorona = qobject_cast<DockCorona *>(view->corona());
-    wm = dockCorona->wm();
+    m_corona = qobject_cast<Latte::Corona *>(view->corona());
+    wm = m_corona->wm();
 
     if (m_latteView) {
         connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
@@ -148,8 +148,8 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                     wm->setDockStruts(*view, dockGeometry, view->containment()->location());
             });
 
-            if (dockCorona && dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
-                connections[2] = connect(dockCorona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+            if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+                connections[2] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
 
@@ -249,11 +249,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
 void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
 {
-    bool multipleLayoutsAndCurrent = (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+    bool multipleLayoutsAndCurrent = (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
                                       && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                      && m_latteView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName());
+                                      && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName());
 
-    if (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
+    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
         wm->setDockStruts(*view, dockGeometry, view->location());
     } else {
         wm->removeDockStruts(*view);
@@ -291,10 +291,10 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     this->isHidden = isHidden;
 
     if (q->supportsKWinEdges()) {
-        bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
-                                (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+        bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
+                                (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
                                  && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                 && m_latteView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
+                                 && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
             wm->setEdgeStateFor(edgeGhostWindow, isHidden);
@@ -804,7 +804,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
     }
 
     int currentScrId = m_latteView->positioner()->currentScreenId();
-    QRect tempAvailableScreenGeometry = dockCorona->availableScreenRectWithCriteria(currentScrId, {Dock::AlwaysVisible}, {});
+    QRect tempAvailableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, {Dock::AlwaysVisible}, {});
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {
         availableScreenGeometry = tempAvailableScreenGeometry;
@@ -1020,10 +1020,10 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
 
         connectionsKWinEdges[0] = connect(wm, &WindowSystem::currentActivityChanged,
         this, [&]() {
-            bool inCurrentLayout = (dockCorona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
-                                    (dockCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+            bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
+                                    (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
                                      && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                     && m_latteView->managedLayout()->name() == dockCorona->layoutManager()->currentLayoutName()));
+                                     && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
             if (edgeGhostWindow) {
                 if (inCurrentLayout) {

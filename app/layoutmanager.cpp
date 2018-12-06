@@ -53,7 +53,7 @@ LayoutManager::LayoutManager(QObject *parent)
       m_launchersSignals(new LaunchersSignals(this)),
       m_activitiesController(new KActivities::Controller(this))
 {
-    m_corona = qobject_cast<DockCorona *>(parent);
+    m_corona = qobject_cast<Latte::Corona *>(parent);
 
     if (m_corona) {
         connect(m_corona->universalSettings(), &UniversalSettings::currentLayoutNameChanged, this, &LayoutManager::currentLayoutNameChanged);
@@ -164,7 +164,7 @@ void LayoutManager::unload()
         file2.remove();
 }
 
-DockCorona *LayoutManager::corona()
+Latte::Corona *LayoutManager::corona()
 {
     return m_corona;
 }
