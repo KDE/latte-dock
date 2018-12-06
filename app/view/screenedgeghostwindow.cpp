@@ -70,7 +70,7 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
 
     if (!KWindowSystem::isPlatformWayland()) {
         connect(this, &QWindow::visibleChanged, this, [&]() {
-            //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
+            //! IMPORTANT!!! ::: This fixes a bug when closing an Activity all views from all Activities are
             //!  disappearing! With this they reappear!!!
             if (m_latteView && m_latteView->managedLayout()) {
                 if (!isVisible()) {
@@ -121,7 +121,7 @@ int ScreenEdgeGhostWindow::location()
     return (int)m_latteView->location();
 }
 
-Latte::View *ScreenEdgeGhostWindow::parentDock()
+Latte::View *ScreenEdgeGhostWindow::parentView()
 {
     return m_latteView;
 }

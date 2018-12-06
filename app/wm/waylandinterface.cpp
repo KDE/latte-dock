@@ -132,12 +132,12 @@ KWayland::Client::PlasmaShell *WaylandInterface::waylandCoronaInterface() const
     return m_corona->waylandCoronaInterface();
 }
 
-void WaylandInterface::setDockExtraFlags(QWindow &view)
+void WaylandInterface::setViewExtraFlags(QWindow &view)
 {
     Q_UNUSED(view)
 }
 
-void WaylandInterface::setDockStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
+void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
 {
     if (!m_ghostWindows.contains(view.winId()))
         m_ghostWindows[view.winId()] = new Private::GhostWindow(this);
@@ -167,7 +167,7 @@ void WaylandInterface::setWindowOnActivities(QWindow &window, const QStringList 
     // KWindowSystem::setOnActivities(view.winId(), activities);
 }
 
-void WaylandInterface::removeDockStruts(QWindow &view) const
+void WaylandInterface::removeViewStruts(QWindow &view) const
 {
     delete m_ghostWindows.take(view.winId());
 }
@@ -243,11 +243,11 @@ void WaylandInterface::setEdgeStateFor(QWindow *view, bool active) const
         return;
     }
 
-    if (window->parentDock()->surface() && window->parentDock()->visibility()
-        && (window->parentDock()->visibility()->mode() == Dock::DodgeActive
-            || window->parentDock()->visibility()->mode() == Dock::DodgeMaximized
-            || window->parentDock()->visibility()->mode() == Dock::DodgeAllWindows
-            || window->parentDock()->visibility()->mode() == Dock::AutoHide)) {
+    if (window->parentView()->surface() && window->parentView()->visibility()
+        && (window->parentView()->visibility()->mode() == Dock::DodgeActive
+            || window->parentView()->visibility()->mode() == Dock::DodgeMaximized
+            || window->parentView()->visibility()->mode() == Dock::DodgeAllWindows
+            || window->parentView()->visibility()->mode() == Dock::AutoHide)) {
         if (active) {
             window->showWithMask();
             window->surface()->requestHideAutoHidingPanel();
@@ -396,7 +396,7 @@ inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow
     //! a trick is to just consider windows as valid when they can be shown in the
     //! taskbar. Of course that creates issues with plasma native dialogs
     //! e.g. widgets explorer, Activities etc. that are not used to hide
-    //! the dodge docks/panels appropriately
+    //! the dodge views appropriately
     return w->isValid() && !w->skipTaskbar();
 }
 

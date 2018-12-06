@@ -72,16 +72,16 @@ VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView 
             emit this->q->mustBeHide(VisibilityManager::QPrivateSignal{});
         }
     });
-    wm->setDockExtraFlags(*view);
-    wm->addDock(view->winId());
+    wm->setViewExtraFlags(*view);
+    wm->addView(view->winId());
     restoreConfig();
 }
 
 VisibilityManagerPrivate::~VisibilityManagerPrivate()
 {
     qDebug() << "VisibilityManagerPrivate deleting...";
-    wm->removeDockStruts(*view);
-    wm->removeDock(view->winId());
+    wm->removeViewStruts(*view);
+    wm->removeView(view->winId());
 
     if (edgeGhostWindow) {
         edgeGhostWindow->deleteLater();
@@ -105,7 +105,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     }
 
     if (this->mode == Dock::AlwaysVisible) {
-        wm->removeDockStruts(*view);
+        wm->removeViewStruts(*view);
     } else {
         connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
         , this, [&] {
@@ -140,12 +140,12 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
             connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
                 if (m_latteView->inEditMode())
-                    wm->removeDockStruts(*view);
+                    wm->removeViewStruts(*view);
             });
             connections[1] = connect(m_latteView, &Latte::View::inEditModeChanged
             , this, [&]() {
                 if (!m_latteView->inEditMode() && !m_latteView->positioner()->inLocationChangeAnimation() && view->screen())
-                    wm->setDockStruts(*view, dockGeometry, view->containment()->location());
+                    wm->setViewStruts(*view, dockGeometry, view->containment()->location());
             });
 
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
@@ -254,9 +254,9 @@ void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
                                       && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName());
 
     if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
-        wm->setDockStruts(*view, dockGeometry, view->location());
+        wm->setViewStruts(*view, dockGeometry, view->location());
     } else {
-        wm->removeDockStruts(*view);
+        wm->removeViewStruts(*view);
     }
 }
 
@@ -671,7 +671,7 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
             break;
 
         case QEvent::Show:
-            wm->setDockExtraFlags(*view);
+            wm->setViewExtraFlags(*view);
             break;
 
         default:
@@ -1010,7 +1010,7 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
     if (!edgeGhostWindow) {
         edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
-        wm->setDockExtraFlags(*edgeGhostWindow);
+        wm->setViewExtraFlags(*edgeGhostWindow);
 
         connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {

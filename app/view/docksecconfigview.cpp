@@ -237,7 +237,7 @@ void DockSecConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
-    m_corona->wm()->setDockExtraFlags(*this);
+    m_corona->wm()->setViewExtraFlags(*this);
     setFlags(wFlags());
 
     m_corona->wm()->enableBlurBehind(*this);

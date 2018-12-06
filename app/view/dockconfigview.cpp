@@ -84,7 +84,7 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *vi
     });
 
     if (m_corona) {
-        connections << connect(m_corona, SIGNAL(raiseDocksTemporaryChanged()), this, SIGNAL(raiseDocksTemporaryChanged()));
+        connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &DockConfigView::raiseDocksTemporaryChanged);
     }
 }
 
@@ -307,7 +307,7 @@ void DockConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
-    m_corona->wm()->setDockExtraFlags(*this);
+    m_corona->wm()->setViewExtraFlags(*this);
     setFlags(wFlags());
 
     m_corona->wm()->enableBlurBehind(*this);

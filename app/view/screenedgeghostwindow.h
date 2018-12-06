@@ -48,7 +48,7 @@ namespace Latte {
 //! that arent relevant any more.
 //!
 //! In order to workaround the above behaviour Latte is using a
-//! fake window to communicate with KWin and the MAIN dock window
+//! fake window to communicate with KWin and the MAIN Latte::View window
 //! continues to use only mask technique to hide
 //!
 //! KDE BUGS: https://bugs.kde.org/show_bug.cgi?id=382219
@@ -67,7 +67,7 @@ public:
     void hideWithMask();
     void showWithMask();
 
-    Latte::View *parentDock();
+    Latte::View *parentView();
 
     KWayland::Client::PlasmaShellSurface *surface();
 

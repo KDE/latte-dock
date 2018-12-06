@@ -58,12 +58,12 @@ public:
     explicit WaylandInterface(QObject *parent = nullptr);
     ~WaylandInterface() override;
 
-    void setDockExtraFlags(QWindow &view) override;
-    void setDockStruts(QWindow &view, const QRect &rect
+    void setViewExtraFlags(QWindow &view) override;
+    void setViewStruts(QWindow &view, const QRect &rect
                        , Plasma::Types::Location location) override;
     void setWindowOnActivities(QWindow &view, const QStringList &activities) override;
 
-    void removeDockStruts(QWindow &view) const override;
+    void removeViewStruts(QWindow &view) const override;
 
     WindowId activeWindow() const override;
     WindowInfoWrap requestInfo(WindowId wid) const override;

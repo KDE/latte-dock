@@ -71,17 +71,17 @@ AbstractWindowInterface::~AbstractWindowInterface()
     m_schemes.clear();
 }
 
-void AbstractWindowInterface::addDock(WindowId wid)
+void AbstractWindowInterface::addView(WindowId wid)
 {
-    m_docks.push_back(wid);
+    m_views.push_back(wid);
 }
 
-void AbstractWindowInterface::removeDock(WindowId wid)
+void AbstractWindowInterface::removeView(WindowId wid)
 {
-    auto it = std::find(m_docks.begin(), m_docks.end(), wid);
+    auto it = std::find(m_views.begin(), m_views.end(), wid);
 
-    if (it != m_docks.end())
-        m_docks.erase(it);
+    if (it != m_views.end())
+        m_views.erase(it);
 }
 
 

@@ -82,7 +82,7 @@ XWindowInterface::~XWindowInterface()
 {
 }
 
-void XWindowInterface::setDockExtraFlags(QWindow &view)
+void XWindowInterface::setViewExtraFlags(QWindow &view)
 {
     NETWinInfo winfo(QX11Info::connection()
                      , static_cast<xcb_window_t>(view.winId())
@@ -95,7 +95,7 @@ void XWindowInterface::setDockExtraFlags(QWindow &view)
     KWindowSystem::setOnAllDesktops(view.winId(), true);
 }
 
-void XWindowInterface::setDockStruts(QWindow &view, const QRect &rect
+void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
                                      , Plasma::Types::Location location)
 {
     NETExtendedStrut strut;
@@ -156,7 +156,7 @@ void XWindowInterface::setWindowOnActivities(QWindow &window, const QStringList 
     KWindowSystem::setOnActivities(window.winId(), activities);
 }
 
-void XWindowInterface::removeDockStruts(QWindow &view) const
+void XWindowInterface::removeViewStruts(QWindow &view) const
 {
     KWindowSystem::setStrut(view.winId(), 0, 0, 0, 0);
 }
@@ -394,8 +394,8 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 
 void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2)
 {
-    //! if the dock changed is ignored
-    if (std::find(m_docks.cbegin(), m_docks.cend(), wid) != m_docks.cend())
+    //! if the view changed is ignored
+    if (std::find(m_views.cbegin(), m_views.cend(), wid) != m_views.cend())
         return;
 
     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);

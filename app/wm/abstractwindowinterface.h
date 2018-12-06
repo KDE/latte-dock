@@ -69,12 +69,12 @@ public:
     explicit AbstractWindowInterface(QObject *parent = nullptr);
     virtual ~AbstractWindowInterface();
 
-    virtual void setDockExtraFlags(QWindow &view) = 0;
-    virtual void setDockStruts(QWindow &view, const QRect &rect
+    virtual void setViewExtraFlags(QWindow &view) = 0;
+    virtual void setViewStruts(QWindow &view, const QRect &rect
                                , Plasma::Types::Location location) = 0;
     virtual void setWindowOnActivities(QWindow &window, const QStringList &activities) = 0;
 
-    virtual void removeDockStruts(QWindow &view) const = 0;
+    virtual void removeViewStruts(QWindow &view) const = 0;
 
     virtual WindowId activeWindow() const = 0;
     virtual WindowInfoWrap requestInfo(WindowId wid) const = 0;
@@ -93,8 +93,8 @@ public:
     virtual void requestMoveWindow(WindowId wid, QPoint from) const = 0;
     virtual bool windowCanBeDragged(WindowId wid) const = 0;
 
-    void addDock(WindowId wid);
-    void removeDock(WindowId wid);
+    void addView(WindowId wid);
+    void removeView(WindowId wid);
 
     SchemeColors *schemeForWindow(WindowId wId);
     void setColorSchemeForWindow(WindowId wId, QString scheme);
@@ -109,7 +109,7 @@ signals:
 
 protected:
     std::list<WindowId> m_windows;
-    std::list<WindowId> m_docks;
+    std::list<WindowId> m_views;
     QPointer<KActivities::Consumer> m_activities;
 
 private slots:
