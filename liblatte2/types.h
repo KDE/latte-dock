@@ -18,8 +18,8 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DOCK_H
-#define DOCK_H
+#ifndef TYPES_H
+#define TYPES_H
 
 // Qt
 #include <QObject>
@@ -28,13 +28,13 @@
 
 namespace Latte {
 
-class Dock
+class Types
 {
     Q_GADGET
 
 public:
-    Dock() = delete;
-    ~Dock() {}
+    Types() = delete;
+    ~Types() {}
 
     enum Visibility
     {

@@ -18,20 +18,20 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "lattedockplugin.h"
+#include "latteplugin.h"
 
 // local
-#include "dock.h"
 #include "iconitem.h"
 #include "quickwindowsystem.h"
+#include "types.h"
 
 // Qt
 #include <QtQml>
 
-void LatteDockPlugin::registerTypes(const char *uri)
+void LattePlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.latte"));
-    qmlRegisterUncreatableType<Latte::Dock>(uri, 0, 1, "Dock", "Latte Dock Types uncreatable");
-    qmlRegisterType<Latte::IconItem>(uri, 0, 1, "IconItem");
-    qmlRegisterSingletonType<Latte::QuickWindowSystem>(uri, 0, 1, "WindowSystem", &Latte::windowsystem_qobject_singletontype_provider);
+    qmlRegisterUncreatableType<Latte::Types>(uri, 0, 2, "Types", "Latte Types uncreatable");
+    qmlRegisterType<Latte::IconItem>(uri, 0, 2, "IconItem");
+    qmlRegisterSingletonType<Latte::QuickWindowSystem>(uri, 0, 2, "WindowSystem", &Latte::windowsystem_qobject_singletontype_provider);
 }

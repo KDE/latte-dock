@@ -2,7 +2,7 @@
 #define EXTRAS_H
 
 // local
-#include "../liblattedock/config-latte-lib.h"
+#include "../liblatte2/config-latte-lib.h"
 
 // C++
 #include <type_traits>

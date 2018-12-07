@@ -1,15 +1,15 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-latte-lib.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-latte-lib.h)
 
-set(lattedock_SRCS
-    lattedockplugin.cpp
+set(latteplugin_SRCS
+    latteplugin.cpp
     quickwindowsystem.cpp
-    dock.cpp
     iconitem.cpp
+    types.cpp
 )
 
-add_library(lattedockplugin SHARED ${lattedock_SRCS})
+add_library(latte2plugin SHARED ${latteplugin_SRCS})
 
-target_link_libraries(lattedockplugin
+target_link_libraries(latte2plugin
     Qt5::Quick
     Qt5::Qml
     KF5::CoreAddons
@@ -20,10 +20,10 @@ target_link_libraries(lattedockplugin
 )
 
 if(HAVE_X11)
-    target_link_libraries(lattedockplugin KF5::WindowSystem)
+    target_link_libraries(latte2plugin KF5::WindowSystem)
 endif()
 
-install(TARGETS lattedockplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
+install(TARGETS latte2plugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
 
 install(DIRECTORY qml/ DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
 

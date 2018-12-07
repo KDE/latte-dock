@@ -1,5 +1,0 @@
-module org.kde.latte
-plugin lattedockplugin
-
-GlowPoint 0.1 GlowPoint.qml
-BadgeText 0.1 BadgeText.qml

@@ -1,5 +1,5 @@
 set(lattedock-app_SRCS
-    ../liblattedock/dock.cpp
+    ../liblatte2/types.cpp
     alternativeshelper.cpp
     commontools.cpp
     globalshortcuts.cpp

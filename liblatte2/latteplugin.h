@@ -18,13 +18,13 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef LATTEDOCKPLUGIN_H
-#define LATTEDOCKPLUGIN_H
+#ifndef LATTEPLUGIN_H
+#define LATTEPLUGIN_H
 
 // Qt
 #include <QQmlExtensionPlugin>
 
-class LatteDockPlugin : public QQmlExtensionPlugin
+class LattePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
