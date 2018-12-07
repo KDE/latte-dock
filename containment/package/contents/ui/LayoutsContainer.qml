@@ -24,7 +24,7 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "../code/HeuristicTools.js" as HeuristicTools
 
@@ -32,7 +32,7 @@ Item{
     id: layoutsContainer
 
     readonly property bool isHidden: root.inStartup || (dock && dock.visibility && dock.visibility.isHidden)
-    readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
+    readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify)
                                          && ((!root.editMode && !root.behaveAsPlasmaPanel )
                                              || (behaveAsPlasmaPanel && root.editMode))
 
@@ -107,7 +107,7 @@ Item{
     z:10
 
     property bool animationSent: false
-    property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (_mainLayout.children>1)
+    property bool shouldCheckHalfs: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (_mainLayout.children>1)
 
     property int contentsWidth: _startLayout.width + _mainLayout.width + _endLayout.width
     property int contentsHeight: _startLayout.height + _mainLayout.height + _endLayout.height
@@ -237,7 +237,7 @@ Item{
         states:[
             State {
                 name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _startLayout
@@ -250,7 +250,7 @@ Item{
             },
             State {
                 name: "left"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _startLayout
@@ -263,7 +263,7 @@ Item{
             },
             State {
                 name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _startLayout
@@ -276,7 +276,7 @@ Item{
             },
             State {
                 name: "top"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _startLayout
@@ -376,7 +376,7 @@ Item{
             ///Left Edge
             State {
                 name: "leftCenter"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
+                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -390,7 +390,7 @@ Item{
             },
             State {
                 name: "leftTop"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Top)
+                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Top)
 
                 AnchorChanges {
                     target: _mainLayout
@@ -404,7 +404,7 @@ Item{
             },
             State {
                 name: "leftBottom"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
+                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Bottom)
 
                 AnchorChanges {
                     target: _mainLayout
@@ -419,7 +419,7 @@ Item{
             ///Right Edge
             State {
                 name: "rightCenter"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -433,7 +433,7 @@ Item{
             },
             State {
                 name: "rightTop"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Top)
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Top)
 
                 AnchorChanges {
                     target: _mainLayout
@@ -447,7 +447,7 @@ Item{
             },
             State {
                 name: "rightBottom"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Bottom)
 
                 AnchorChanges {
                     target: _mainLayout
@@ -462,7 +462,7 @@ Item{
             ///Bottom Edge
             State {
                 name: "bottomCenter"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
+                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -477,8 +477,8 @@ Item{
             State {
                 name: "bottomLeft"
                 when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                      &&(((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         || ((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                      &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                         || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -493,8 +493,8 @@ Item{
             State {
                 name: "bottomRight"
                 when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                      &&(((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         ||((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                      &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                         ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -509,7 +509,7 @@ Item{
             ///Top Edge
             State {
                 name: "topCenter"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&((root.panelAlignment === Latte.Dock.Center)||(root.panelAlignment === Latte.Dock.Justify))
+                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&((root.panelAlignment === Latte.Types.Center)||(root.panelAlignment === Latte.Types.Justify))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -524,8 +524,8 @@ Item{
             State {
                 name: "topLeft"
                 when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                      &&(((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         || ((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                      &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                         || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -540,8 +540,8 @@ Item{
             State {
                 name: "topRight"
                 when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                      &&(((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                         ||((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                      &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                         ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
                 AnchorChanges {
                     target: _mainLayout
@@ -630,7 +630,7 @@ Item{
         states:[
             State {
                 name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _endLayout
@@ -643,7 +643,7 @@ Item{
             },
             State {
                 name: "left"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _endLayout
@@ -656,7 +656,7 @@ Item{
             },
             State {
                 name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _endLayout
@@ -669,7 +669,7 @@ Item{
             },
             State {
                 name: "top"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Justify)
+                when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Types.Justify)
 
                 AnchorChanges {
                     target: _endLayout

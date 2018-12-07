@@ -33,7 +33,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 FocusScope {
     id: dialog

@@ -24,7 +24,7 @@ import QtQuick.Window 2.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Window{
     width: mainGrid.width + 10
@@ -307,22 +307,22 @@ Window{
             Text{
                 text: {
                     switch(plasmoid.configuration.panelPosition){
-                    case Latte.Dock.Left:
+                    case Latte.Types.Left:
                         return "Left";
                         break;
-                    case Latte.Dock.Right:
+                    case Latte.Types.Right:
                         return "Right";
                         break;
-                    case Latte.Dock.Center:
+                    case Latte.Types.Center:
                         return "Center";
                         break;
-                    case Latte.Dock.Top:
+                    case Latte.Types.Top:
                         return "Top";
                         break;
-                    case Latte.Dock.Bottom:
+                    case Latte.Types.Bottom:
                         return "Bottom";
                         break;
-                    case Latte.Dock.Justify:
+                    case Latte.Types.Justify:
                         return "Justify";
                         break;
                     }
@@ -341,22 +341,22 @@ Window{
                         return "";
 
                     switch(dock.visibility.mode){
-                    case Latte.Dock.AlwaysVisible:
+                    case Latte.Types.AlwaysVisible:
                         return "Always Visible";
                         break;
-                    case Latte.Dock.AutoHide:
+                    case Latte.Types.AutoHide:
                         return "Auto Hide";
                         break;
-                    case Latte.Dock.DodgeActive:
+                    case Latte.Types.DodgeActive:
                         return "Dodge Active";
                         break;
-                    case Latte.Dock.DodgeMaximized:
+                    case Latte.Types.DodgeMaximized:
                         return "Dodge Maximized";
                         break;
-                    case Latte.Dock.DodgeAllWindows:
+                    case Latte.Types.DodgeAllWindows:
                         return "Dodge All Windows";
                         break;
-                    case Latte.Dock.None:
+                    case Latte.Types.None:
                         return "None";
                         break;
                     }

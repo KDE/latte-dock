@@ -29,7 +29,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "../controls" as LatteExtraControls
 
@@ -633,7 +633,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: activeIndicatorTypeGroup
                     tooltip: i18n("Show a line indicator for active tasks/applets")
 
-                    readonly property int indicatorType: Latte.Dock.LineIndicator
+                    readonly property int indicatorType: Latte.Types.LineIndicator
                 }
 
                 PlasmaComponents.Button {
@@ -645,7 +645,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: activeIndicatorTypeGroup
                     tooltip: i18n("Show a dot indicator for active tasks/applets")
 
-                    readonly property int indicatorType: Latte.Dock.DotIndicator
+                    readonly property int indicatorType: Latte.Types.DotIndicator
                 }
 
                 PlasmaComponents.Label{
@@ -681,7 +681,7 @@ PlasmaComponents.Page {
                     visible: plasmoid.configuration.advanced
                     tooltip: i18n("Latte will not show any active applet indicator on its own\n except those the plasma theme provides")
 
-                    readonly property int activeIndicator: Latte.Dock.NoneIndicator
+                    readonly property int activeIndicator: Latte.Types.NoneIndicator
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -693,7 +693,7 @@ PlasmaComponents.Page {
                     visible: plasmoid.configuration.advanced
                     tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted\n by it for hovering capabilities e.g. folderview")
 
-                    readonly property int activeIndicator: Latte.Dock.InternalsIndicator
+                    readonly property int activeIndicator: Latte.Types.InternalsIndicator
                 }
 
                 PlasmaComponents.Button {
@@ -707,7 +707,7 @@ PlasmaComponents.Page {
                     visible: plasmoid.configuration.advanced
                     tooltip: i18n("Latte will show active applet indicators for all applets")
 
-                    readonly property int activeIndicator: Latte.Dock.AllIndicator
+                    readonly property int activeIndicator: Latte.Types.AllIndicator
                 }
             }
         }
@@ -770,7 +770,7 @@ PlasmaComponents.Page {
                             exclusiveGroup:  glowGroup
                             tooltip: i18n("Add glow only to active task/applet indicator")
 
-                            readonly property int option: Latte.Dock.GlowOnlyOnActive
+                            readonly property int option: Latte.Types.GlowOnlyOnActive
                         }
                         PlasmaComponents.Button {
                             Layout.fillWidth: true
@@ -781,7 +781,7 @@ PlasmaComponents.Page {
                             exclusiveGroup: glowGroup
                             tooltip: i18n("Add glow to all task/applet indicators")
 
-                            readonly property int option: Latte.Dock.GlowAll
+                            readonly property int option: Latte.Types.GlowAll
                         }
                     }
 
@@ -1152,13 +1152,13 @@ PlasmaComponents.Page {
                             var newTotal = Math.abs(plasmoid.configuration.offset) + value;
 
                             //centered and justify alignments based on offset and get out of the screen in some cases
-                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                                                 || (plasmoid.configuration.panelPosition === Latte.Dock.Justify))
+                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                                 || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
                                     && ((Math.abs(plasmoid.configuration.offset) + value/2) > 50);
 
                             if (newTotal > 100 || centeredCheck) {
-                                if ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                                        || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) {
+                                if ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                        || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) {
 
                                     var suggestedValue = (plasmoid.configuration.offset<0) ? Math.min(0, -(100-value)): Math.max(0, 100-value);
 
@@ -1215,10 +1215,10 @@ PlasmaComponents.Page {
                     id: offsetSlider
 
                     value: plasmoid.configuration.offset
-                    from: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                           || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? -20 :  0
-                    to: ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                         || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ? 20 :  40
+                    from: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                           || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? -20 :  0
+                    to: ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                         || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ? 20 :  40
                     stepSize: 2
                     wheelEnabled: false
 
@@ -1228,12 +1228,12 @@ PlasmaComponents.Page {
                             var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
 
                             //centered and justify alignments based on offset and get out of the screen in some cases
-                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                                                 || (plasmoid.configuration.panelPosition === Latte.Dock.Justify))
+                            var centeredCheck = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                                 || (plasmoid.configuration.panelPosition === Latte.Types.Justify))
                                     && ((Math.abs(value) + plasmoid.configuration.maxLength/2) > 50);
                             if (newTotal > 100 || centeredCheck) {
-                                plasmoid.configuration.maxLength = ((plasmoid.configuration.panelPosition === Latte.Dock.Center)
-                                                                    || (plasmoid.configuration.panelPosition === Latte.Dock.Justify)) ?
+                                plasmoid.configuration.maxLength = ((plasmoid.configuration.panelPosition === Latte.Types.Center)
+                                                                    || (plasmoid.configuration.panelPosition === Latte.Types.Justify)) ?
                                             2*(50 - Math.abs(value)) :100 - Math.abs(value);
                             }
                         }

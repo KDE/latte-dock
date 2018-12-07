@@ -77,7 +77,7 @@ function computeStep2ForLayout(layout, sizePerApplet) {
 //! it is used when the Centered (Main)Layout is only used or when the Main(Layout)
 //! is empty in Justify mode
 function initializationPhase(availableSpace, sizePerApplet, noOfApplets){
-    if (root.panelAlignment === Latte.Dock.Justify) {
+    if (root.panelAlignment === Latte.Types.Justify) {
         initLayoutForFillsCalculations(startLayout);
         initLayoutForFillsCalculations(endLayout);
     }
@@ -91,7 +91,7 @@ function initializationPhase(availableSpace, sizePerApplet, noOfApplets){
     var res = computeStep1ForLayout(mainLayout, availableSpace, sizePerApplet, noOfApplets);
     availableSpace = res[0]; sizePerApplet = res[1]; noOfApplets = res[2];
 
-    if (root.panelAlignment === Latte.Dock.Justify) {
+    if (root.panelAlignment === Latte.Types.Justify) {
         res = computeStep1ForLayout(startLayout, availableSpace, sizePerApplet, noOfApplets);
         availableSpace = res[0]; sizePerApplet = res[1]; noOfApplets = res[2];
 
@@ -114,7 +114,7 @@ function updateSizeForAppletsInFill() {
             return;
 
         // console.log("s2...");
-        if (mainLayout.shownApplets === 0 || root.panelAlignment !== Latte.Dock.Justify) {
+        if (mainLayout.shownApplets === 0 || root.panelAlignment !== Latte.Types.Justify) {
             var availableSpace = Math.max(0, root.maxLength - startLayout.sizeWithNoFillApplets - mainLayout.sizeWithNoFillApplets - endLayout.sizeWithNoFillApplets - root.panelEdgeSpacing);
             var sizePerApplet = availableSpace / noA;
 

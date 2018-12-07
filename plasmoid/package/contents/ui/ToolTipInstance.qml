@@ -34,7 +34,7 @@ import org.kde.draganddrop 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Column {
     id: instance

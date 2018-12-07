@@ -26,7 +26,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -225,8 +225,8 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Above fullscreen windows")
                 checked: dock.byPassWM
-                enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
-                           || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+                enabled: !(dock.visibility.mode === Latte.Types.AlwaysVisible
+                           || dock.visibility.mode === Latte.Types.WindowsGoBelow)
 
                 tooltip: i18n("BypassWindowManagerHint flag for the window.\nThe view will be above all windows even those set as 'Always On Top'")
 
@@ -239,7 +239,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise on desktop change")
                 checked: dock.visibility.raiseOnDesktop
-                enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                enabled: dock.visibility.mode !== Latte.Types.AlwaysVisible
 
                 onClicked: {
                     dock.visibility.raiseOnDesktop = checked
@@ -250,7 +250,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise on activity change")
                 checked: dock.visibility.raiseOnActivity
-                enabled: dock.visibility.mode !== Latte.Dock.AlwaysVisible
+                enabled: dock.visibility.mode !== Latte.Types.AlwaysVisible
 
                 onClicked: {
                     dock.visibility.raiseOnActivity = checked

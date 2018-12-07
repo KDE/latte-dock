@@ -31,7 +31,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.activities 0.1 as Activities
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "task" as Task
 import "../code/tools.js" as TaskTools
@@ -61,7 +61,7 @@ Item {
 
     property bool editMode: latteDock ? latteDock.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
-    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator
+    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool inActivityChange: false
@@ -167,14 +167,14 @@ Item {
     property bool titleTooltips: latteDock ? latteDock.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
-    property int activeIndicator: latteDock ? latteDock.activeIndicator : Latte.Dock.AllIndicator
-    property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Dock.LineIndicator
+    property int activeIndicator: latteDock ? latteDock.activeIndicator : Latte.Types.AllIndicator
+    property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Types.LineIndicator
     property int animationStep: latteDock ? latteDock.animationStep : 1
     property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
     property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
     property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
-    property int glowOption: latteDock ? latteDock.glowOption : Latte.Dock.GlowAll
+    property int glowOption: latteDock ? latteDock.glowOption : Latte.Types.GlowAll
     property real glowOpacity: latteDock ? latteDock.glowOpacity : 0.35
 
     property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
@@ -182,13 +182,13 @@ Item {
     property int modifierClickAction: latteDock ? latteDock.modifierClickAction : -1
     property int modifierClick: latteDock ? latteDock.modifierClick : -1
     property int modifierQt:{
-        if (modifier === Latte.Dock.Shift)
+        if (modifier === Latte.Types.Shift)
             return Qt.ShiftModifier;
-        else if (modifier === Latte.Dock.Ctrl)
+        else if (modifier === Latte.Types.Ctrl)
             return Qt.ControlModifier;
-        else if (modifier === Latte.Dock.Alt)
+        else if (modifier === Latte.Types.Alt)
             return Qt.AltModifier;
-        else if (modifier === Latte.Dock.Meta)
+        else if (modifier === Latte.Types.Meta)
             return Qt.MetaModifier;
         else return -1;
     }
@@ -373,12 +373,12 @@ Item {
         if (currentLayout) {
             if (latteDock && latteDock.universalLayoutManager
                     && latteDock.dockManagedLayout && latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
+                    && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
+                        || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
                     launchersList = latteDock.dockManagedLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launchersList = latteDock.universalSettings.launchers;
                 }
             }
@@ -677,11 +677,11 @@ Item {
 
         function updateLaunchersList(){
             if (latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
-                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                    && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
+                        || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
                     tasksModel.launcherList = latteDock.dockManagedLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
                     tasksModel.launcherList = latteDock.universalSettings.launchers;
                 }
             } else {
@@ -708,17 +708,17 @@ Item {
             if (currentLayout) {
                 if (latteDock && latteDock.universalLayoutManager
                         && latteDock.dockManagedLayout && latteDock.universalSettings
-                        && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                            || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
+                        && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
+                            || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                    if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                    if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
                         latteDock.dockManagedLayout.launchers = launcherList;
-                    } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                    } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
                         latteDock.universalSettings.launchers = launcherList;
                     }
 
                     if (inDraggingPhase) {
-                        if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                        if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                             latteDock.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.managedLayoutName,
                                                                                                      plasmoid.id,
                                                                                                      latteDock.launchersGroup,
@@ -758,12 +758,12 @@ Item {
             ActivitiesTools.importLaunchersToNewArchitecture();
 
             if (currentLayout && latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Dock.GlobalLaunchers)) {
+                    && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
+                        || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                if (latteDock.launchersGroup === Latte.Dock.LayoutLaunchers) {
+                if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
                     launcherList = latteDock.dockManagedLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Dock.GlobalLaunchers) {
+                } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launcherList = latteDock.universalSettings.launchers;
                 }
             } else {
@@ -1163,7 +1163,7 @@ Item {
 
             onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
-                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers && onlyLaunchersInList(urls)) {
+                if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
                     latteDock.universalLayoutManager.launchersSignals.urlsDropped(root.managedLayoutName,
                                                                                   latteDock.launchersGroup, urls);
                     return;
@@ -1554,7 +1554,7 @@ Item {
         if (separatorName !== "") {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
                                                                               latteDock.launchersGroup, separatorName);
             } else {
@@ -1767,7 +1767,7 @@ Item {
         if (separatorName !== "") {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
@@ -1779,7 +1779,7 @@ Item {
         var separatorName = parabolicManager.lastPresentSeparatorName();
 
         if (separatorName !== "") {
-            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
                                                                                  latteDock.launchersGroup, separatorName);
             } else {
@@ -1966,7 +1966,7 @@ Item {
         ///Bottom Edge
         State {
             name: "bottomCenter"
-            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -1979,7 +1979,7 @@ Item {
         },
         State {
             name: "bottomLeft"
-            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Left)
+            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -1992,7 +1992,7 @@ Item {
         },
         State {
             name: "bottomRight"
-            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Dock.Right)
+            when: (root.position === PlasmaCore.Types.BottomPosition && userPanelPosition===Latte.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -2006,7 +2006,7 @@ Item {
         ///Top Edge
         State {
             name: "topCenter"
-            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2019,7 +2019,7 @@ Item {
         },
         State {
             name: "topLeft"
-            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Left)
+            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Types.Left)
 
             AnchorChanges {
                 target: barLine
@@ -2032,7 +2032,7 @@ Item {
         },
         State {
             name: "topRight"
-            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Dock.Right)
+            when: (root.position === PlasmaCore.Types.TopPosition && userPanelPosition===Latte.Types.Right)
 
             AnchorChanges {
                 target: barLine
@@ -2046,7 +2046,7 @@ Item {
         ////Left Edge
         State {
             name: "leftCenter"
-            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2059,7 +2059,7 @@ Item {
         },
         State {
             name: "leftTop"
-            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Top)
+            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -2072,7 +2072,7 @@ Item {
         },
         State {
             name: "leftBottom"
-            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Dock.Bottom)
+            when: (root.position === PlasmaCore.Types.LeftPosition && userPanelPosition===Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -2086,7 +2086,7 @@ Item {
         ///Right Edge
         State {
             name: "rightCenter"
-            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Center)
+            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Types.Center)
 
             AnchorChanges {
                 target: barLine
@@ -2099,7 +2099,7 @@ Item {
         },
         State {
             name: "rightTop"
-            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Top)
+            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -2112,7 +2112,7 @@ Item {
         },
         State {
             name: "rightBottom"
-            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Dock.Bottom)
+            when: (root.position === PlasmaCore.Types.RightPosition && userPanelPosition===Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine

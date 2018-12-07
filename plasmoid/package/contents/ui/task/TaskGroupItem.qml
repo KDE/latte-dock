@@ -25,7 +25,7 @@ import QtGraphicalEffects 1.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Item{
     id:glowFrame
@@ -76,9 +76,9 @@ Item{
                 roundCorners: true
                 showAttention: mainItemContainer.showAttention
                 showGlow: {
-                    if (root.showGlow && (root.glowOption === Latte.Dock.GlowAll || showAttention ))
+                    if (root.showGlow && (root.glowOption === Latte.Types.GlowAll || showAttention ))
                         return true;
-                    else if (root.showGlow && root.glowOption === Latte.Dock.GlowOnlyOnActive && mainItemContainer.hasActive)
+                    else if (root.showGlow && root.glowOption === Latte.Types.GlowOnlyOnActive && mainItemContainer.hasActive)
                         return true;
                     else
                         return false;
@@ -107,12 +107,12 @@ Item{
                         else
                             height = glowFrame.size;
 
-                        if(vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+                        if(vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                             height = stateHeight;
                         else
                             height = glowFrame.size;
 
-                        if(!vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+                        if(!vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                             width = stateWidth;
                         else
                             width = glowFrame.size;
@@ -122,26 +122,26 @@ Item{
 
                 onIsActiveChanged: {
                     // if(mainItemContainer.hasActive || windowsPreviewDlg.visible)
-                    if (root.activeIndicatorType === Latte.Dock.LineIndicator)
+                    if (root.activeIndicatorType === Latte.Types.LineIndicator)
                         activeAndReverseAnimation.start();
                 }
 
                 onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator){
+                    if(!activeAndReverseAnimation.running && !root.vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator){
                         width = stateWidth;
                     }
-                    else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator){
+                    else if (!activeAndReverseAnimation.running && root.vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator){
                         height = stateHeight;
                     }
                 }
 
                 onStateWidthChanged:{
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                         width = stateWidth;
                 }
 
                 onStateHeightChanged:{
-                    if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+                    if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                         height = stateHeight;
                 }
 
@@ -161,7 +161,7 @@ Item{
                     id: activeAndReverseAnimation
                     target: firstPoint
                     property: root.vertical ? "height" : "width"
-                    to: (mainItemContainer.hasActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+                    to: (mainItemContainer.hasActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                         || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
                         ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
                     duration: firstPoint.animationTime
@@ -191,9 +191,9 @@ Item{
 
                 basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
                 roundCorners: true
-                showGlow: root.showGlow  && root.glowOption === Latte.Dock.GlowAll
-                visible:  ( mainItemContainer.isGroupParent && ((root.dotsOnActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
-                                                                || root.activeIndicatorType === Latte.Dock.DotIndicator
+                showGlow: root.showGlow  && root.glowOption === Latte.Types.GlowAll
+                visible:  ( mainItemContainer.isGroupParent && ((root.dotsOnActive && root.activeIndicatorType === Latte.Types.LineIndicator)
+                                                                || root.activeIndicatorType === Latte.Types.DotIndicator
                                                                 || !mainItemContainer.hasActive) )? true: false
 
                 //when there is no active window

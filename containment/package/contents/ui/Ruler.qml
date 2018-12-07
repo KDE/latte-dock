@@ -26,7 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Item{
     id: rulerItem
@@ -79,13 +79,13 @@ Item{
         property: "xL"
         value: {
             if (root.isHorizontal) {
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
                     return root.width/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Left) {
+                } else if (root.panelAlignment === Latte.Types.Left) {
                     return root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
+                } else if (root.panelAlignment === Latte.Types.Center) {
                     return root.width/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Right) {
+                } else if (root.panelAlignment === Latte.Types.Right) {
                     return root.width - rulerItem.length - root.offset;
                 }
             } else {
@@ -99,13 +99,13 @@ Item{
         property: "yL"
         value: {
             if (root.isVertical) {
-                if (plasmoid.configuration.panelPosition === Latte.Dock.Justify) {
+                if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
                     return root.height/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Top) {
+                } else if (root.panelAlignment === Latte.Types.Top) {
                     return root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Center) {
+                } else if (root.panelAlignment === Latte.Types.Center) {
                     return root.height/2 - rulerItem.length/2 + root.offset;
-                } else if (root.panelAlignment === Latte.Dock.Bottom) {
+                } else if (root.panelAlignment === Latte.Types.Bottom) {
                     return root.height - rulerItem.length - root.offset;
                 }
             } else {

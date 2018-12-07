@@ -27,14 +27,14 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
     property bool disableAllWindowsFunctionality: plasmoid.configuration.showWindowsOnlyFromLaunchers
-                                                  && plasmoid.configuration.activeIndicator === Latte.Dock.NoneIndicator
+                                                  && plasmoid.configuration.activeIndicator === Latte.Types.NoneIndicator
 
     ColumnLayout {
         id: content
@@ -74,7 +74,7 @@ PlasmaComponents.Page {
                 checked: plasmoid.configuration.dotsOnActive
                 tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active and the Line Active Indicator \nis enabled")
                 visible: plasmoid.configuration.advanced
-                enabled: plasmoid.configuration.activeIndicatorType === Latte.Dock.LineIndicator
+                enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
 
                 onClicked: {
                     plasmoid.configuration.dotsOnActive = checked
@@ -296,7 +296,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: launchersGroup
                     tooltip: i18n("Use a unique set of launchers for this dock which is independent from any other dock")
 
-                    readonly property int group: Latte.Dock.UniqueLaunchers
+                    readonly property int group: Latte.Types.UniqueLaunchers
                 }
 
                 PlasmaComponents.Button {
@@ -308,7 +308,7 @@ PlasmaComponents.Page {
                     tooltip: i18n("Use the current layout set of launchers for this dock. This group provides launchers <b>synchronization</b> between different docks in the <b>same layout</b>")
                     visible: plasmoid.configuration.advanced || plasmoid.configuration.launchersGroup === group;
 
-                    readonly property int group: Latte.Dock.LayoutLaunchers
+                    readonly property int group: Latte.Types.LayoutLaunchers
                 }
 
                 PlasmaComponents.Button {
@@ -319,7 +319,7 @@ PlasmaComponents.Page {
                     exclusiveGroup: launchersGroup
                     tooltip: i18n("Use the global set of launchers for this dock. This group provides launchers <b>synchronization</b> between different docks and between <b>different layouts</b>")
 
-                    readonly property int group: Latte.Dock.GlobalLaunchers
+                    readonly property int group: Latte.Types.GlobalLaunchers
                 }
             }
         }

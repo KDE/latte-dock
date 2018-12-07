@@ -26,7 +26,7 @@ import org.kde.draganddrop 2.0
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "../code/tools.js" as TaskTools
 
@@ -159,7 +159,7 @@ Item {
                     var pos = root.dragSource.itemIndex;
                     tasksModel.move(pos, insertAt);
                   //! disable syncing for moving launchers action in favor of validatorOrder launchersSignal
-                  /*  if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                  /*  if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                         latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
                                                                                    plasmoid.id,
                                                                                    latteDock.launchersGroup, pos, insertAt);

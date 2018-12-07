@@ -30,7 +30,7 @@ import org.kde.kquickcontrolsaddons 2.0
 
 import "colorizer" as Colorizer
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Item{
     id:barLine
@@ -50,7 +50,7 @@ Item{
         if (root.behaveAsPlasmaPanel && !root.editMode) {
             return root.width;
         } else {
-            if ((root.panelAlignment === Latte.Dock.Justify) && root.isHorizontal) {
+            if ((root.panelAlignment === Latte.Types.Justify) && root.isHorizontal) {
                 return root.maxLength;
             } else {
                 return layoutsContainer.mainLayout.width + spacing;
@@ -62,7 +62,7 @@ Item{
         if (root.behaveAsPlasmaPanel && !root.editMode) {
             return root.height;
         } else {
-            if ((root.panelAlignment === Latte.Dock.Justify) && root.isVertical) {
+            if ((root.panelAlignment === Latte.Types.Justify) && root.isVertical) {
                 return root.maxLength;
             } else {
                 return layoutsContainer.mainLayout.height + spacing;
@@ -73,9 +73,9 @@ Item{
     property int spacing: {
         if (!Latte.WindowSystem.compositingActive) {
             return 0;
-        } else if (root.panelAlignment === Latte.Dock.Justify && plasmoid.configuration.maxLength === 100) {
+        } else if (root.panelAlignment === Latte.Types.Justify && plasmoid.configuration.maxLength === 100) {
             return 0;
-        } else if (root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify || root.offset!==0) {
+        } else if (root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify || root.offset!==0) {
             return root.panelEdgeSpacing/2;
         } else {
             return root.panelEdgeSpacing/4;
@@ -173,9 +173,9 @@ Item{
             if (imagePath === "") {
                 return 0;
             } else {
-                if (root.panelAlignment === Latte.Dock.Left && root.offset===0)
+                if (root.panelAlignment === Latte.Types.Left && root.offset===0)
                     return margins.right;
-                else if (root.panelAlignment === Latte.Dock.Right && root.offset===0)
+                else if (root.panelAlignment === Latte.Types.Right && root.offset===0)
                     return margins.left;
                 else
                     return margins.left+margins.right;
@@ -186,9 +186,9 @@ Item{
             if (imagePath === "") {
                 return 0;
             } else {
-                if (root.panelAlignment === Latte.Dock.Top && root.offset===0)
+                if (root.panelAlignment === Latte.Types.Top && root.offset===0)
                     return margins.bottom;
-                else if (root.panelAlignment === Latte.Dock.Bottom && root.offset===0)
+                else if (root.panelAlignment === Latte.Types.Bottom && root.offset===0)
                     return margins.top;
                 else
                     return margins.top + margins.bottom;
@@ -519,7 +519,7 @@ Item{
         ///Left
         State {
             name: "leftCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -532,13 +532,13 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0);
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0);
             }
         },
         ///Left
         State {
             name: "leftTop"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Top)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -557,7 +557,7 @@ Item{
         ///Left
         State {
             name: "leftBottom"
-            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)&&(root.panelAlignment === Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -576,7 +576,7 @@ Item{
         ///Right
         State {
             name: "rightCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -589,12 +589,12 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0);
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0);
             }
         },
         State {
             name: "rightTop"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Top)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Top)
 
             AnchorChanges {
                 target: barLine
@@ -612,7 +612,7 @@ Item{
         },
         State {
             name: "rightBottom"
-            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Dock.Bottom)
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)&&(root.panelAlignment === Latte.Types.Bottom)
 
             AnchorChanges {
                 target: barLine
@@ -631,7 +631,7 @@ Item{
         ///Bottom
         State {
             name: "bottomCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -644,14 +644,14 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
         State {
             name: "bottomLeft"
             when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                  &&(((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     || ((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -671,8 +671,8 @@ Item{
         State {
             name: "bottomRight"
             when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-                  &&(((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     ||((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -691,7 +691,7 @@ Item{
         ///Top
         State {
             name: "topCenterOrJustify"
-            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Dock.Center || root.panelAlignment === Latte.Dock.Justify)
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)&&(root.panelAlignment === Latte.Types.Center || root.panelAlignment === Latte.Types.Justify)
 
             AnchorChanges {
                 target: barLine
@@ -704,14 +704,14 @@ Item{
             PropertyChanges{
                 target: barLine
                 anchors.leftMargin: 0;    anchors.rightMargin:0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Dock.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
+                anchors.horizontalCenterOffset: (root.panelAlignment === Latte.Types.Center ? root.offset : 0); anchors.verticalCenterOffset: 0;
             }
         },
         State {
             name: "topLeft"
             when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                  &&(((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     || ((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     || ((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine
@@ -730,8 +730,8 @@ Item{
         State {
             name: "topRight"
             when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-                  &&(((root.panelAlignment === Latte.Dock.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
-                     ||((root.panelAlignment === Latte.Dock.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
+                  &&(((root.panelAlignment === Latte.Types.Right)&&(Qt.application.layoutDirection !== Qt.RightToLeft))
+                     ||((root.panelAlignment === Latte.Types.Left)&&(Qt.application.layoutDirection === Qt.RightToLeft)))
 
             AnchorChanges {
                 target: barLine

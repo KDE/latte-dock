@@ -24,7 +24,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Item{
     id:glowFrame
@@ -74,8 +74,8 @@ Item{
         property bool vertical: root.isVertical
 
         property int animationTime: root.durationTime * (1.2*units.longDuration)
-        property int stateWidth: root.activeIndicatorType === Latte.Dock.DotIndicator ? glowFrame.size : glowFrame.width
-        property int stateHeight: root.activeIndicatorType === Latte.Dock.DotIndicator ? glowFrame.size : glowFrame.height
+        property int stateWidth: root.activeIndicatorType === Latte.Types.DotIndicator ? glowFrame.size : glowFrame.width
+        property int stateHeight: root.activeIndicatorType === Latte.Types.DotIndicator ? glowFrame.size : glowFrame.height
 
         property real scaleFactor: wrapper.zoomScale
 
@@ -105,7 +105,7 @@ Item{
         }
 
         onScaleFactorChanged: {
-            if ( root.activeIndicatorType === Latte.Dock.LineIndicator ) {
+            if ( root.activeIndicatorType === Latte.Types.LineIndicator ) {
                 if(!activeAndReverseAnimation.running && !root.vertical && isActive){
                     width = stateWidth;
                 }
@@ -116,12 +116,12 @@ Item{
         }
 
         onStateWidthChanged:{
-            if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+            if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                 width = stateWidth;
         }
 
         onStateHeightChanged:{
-            if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Dock.LineIndicator)
+            if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                 height = stateHeight;
         }
 

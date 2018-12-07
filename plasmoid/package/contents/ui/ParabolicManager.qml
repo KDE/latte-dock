@@ -22,7 +22,7 @@ import QtQuick 2.0
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 // holds all the logic around parabolic effect signals into one place.
 // ParabolicManager is responsible for triggering all the messages to tasks
@@ -536,7 +536,7 @@ Item {
             //console.log("to be moved: "+launcherUrl + " - " + from +" -> "+to)
 
             tasksModel.move(from, to);
-            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
                                                                            plasmoid.id, latteDock.launchersGroup, from, to);
             }

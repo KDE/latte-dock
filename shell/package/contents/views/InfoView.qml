@@ -25,7 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 PlasmaCore.FrameSvgItem {
     id: dialog

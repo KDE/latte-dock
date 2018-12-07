@@ -28,7 +28,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "animations" as TaskAnimations
 

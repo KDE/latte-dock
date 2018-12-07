@@ -26,7 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "../../code/MathTools.js" as MathTools
 
@@ -46,7 +46,7 @@ Item{
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (container.needsFillSpace && root.isHorizontal) {
-            if (root.panelAlignment !== Latte.Dock.Justify) {
+            if (root.panelAlignment !== Latte.Types.Justify) {
                 var maximumValue = (applet.Layout.maximumWidth === Infinity) || applet.Layout.maximumWidth === -1 ?
                             container.sizeForFill : Math.min(container.sizeForFill, applet.Layout.maximumWidth);
 
@@ -86,7 +86,7 @@ Item{
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (container.needsFillSpace && root.isVertical) {
-            if (root.panelAlignment !== Latte.Dock.Justify) {
+            if (root.panelAlignment !== Latte.Types.Justify) {
                 var maximumValue = (applet.Layout.maximumHeight === Infinity) || applet.Layout.maximumHeight === -1 ?
                             container.sizeForFill : Math.min(container.sizeForFill, applet.Layout.maximumHeight);
 
@@ -372,8 +372,8 @@ Item{
 
     Loader{
         anchors.fill: parent
-        active: root.activeIndicator === Latte.Dock.AllIndicator
-                || (root.activeIndicator === Latte.Dock.InternalsIndicator && communicator.overlayLatteIconIsActive)
+        active: root.activeIndicator === Latte.Types.AllIndicator
+                || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive)
 
         sourceComponent: Item{
             anchors.fill: parent

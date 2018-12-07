@@ -34,7 +34,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 import "../controls" as LatteExtraControls
 
 FocusScope {
@@ -291,7 +291,7 @@ FocusScope {
                     anchors.fill: parent
                     hoverEnabled: true
 
-                    readonly property int preferencesPage: Latte.Dock.PreferencesPage
+                    readonly property int preferencesPage: Latte.Types.PreferencesPage
                     onClicked: layoutManager.showLatteSettingsDialog(preferencesPage)
                 }
             }

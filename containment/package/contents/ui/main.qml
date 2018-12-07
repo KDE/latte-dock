@@ -29,7 +29,7 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "applet" as Applet
 import "colorizer" as Colorizer
@@ -73,8 +73,8 @@ DragDrop.DropArea {
             return false;
 
         return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
-                && (dock.visibility.mode === Latte.Dock.AlwaysVisible || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
-                && (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && !(root.solidPanel && panelShadowsActive));
+                && (dock.visibility.mode === Latte.Types.AlwaysVisible || dock.visibility.mode === Latte.Types.WindowsGoBelow)
+                && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidPanel && panelShadowsActive));
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
@@ -112,7 +112,7 @@ DragDrop.DropArea {
 
     property bool maximizedWindowTitleBarBehavesAsPanelBackground: dock && dock.visibility
                                                                    && (!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
-                                                                   && (dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+                                                                   && (dock.visibility.mode === Latte.Types.WindowsGoBelow)
                                                                    && (plasmoid.location === PlasmaCore.Types.TopEdge)
                                                                    && (!useThemePanel || panelTransparency<40)
                                                                    && dock.visibility.existsWindowMaximized
@@ -129,7 +129,7 @@ DragDrop.DropArea {
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
     property bool immutable: plasmoid.immutable
     property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
-    property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Dock.Justify) && (plasmoid.configuration.maxLength===100)
+    property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (plasmoid.configuration.maxLength===100)
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
     property bool inStartup: true
@@ -246,7 +246,7 @@ DragDrop.DropArea {
     }
 
     //center the layout correctly when the user uses an offset
-    property int offsetFixed: (offset===0 || panelAlignment === Latte.Dock.Center || plasmoid.configuration.panelPosition === Latte.Dock.Justify)?
+    property int offsetFixed: (offset===0 || panelAlignment === Latte.Types.Center || plasmoid.configuration.panelPosition === Latte.Types.Justify)?
                                   offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
 
     property int realSize: iconSize + iconMargin
@@ -313,17 +313,17 @@ DragDrop.DropArea {
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
     //! equal to the iconSize
     property int iconMargin: Math.ceil( ((0.5 * (plasmoid.configuration.iconMargin))/100) * iconSize)
-    property int statesLineSize: (latteApplet && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Dock.NoneIndicator))
-                                 || (activeIndicator !== Latte.Dock.NoneIndicator) ?  Math.ceil( root.iconSize/13 ) : 0
+    property int statesLineSize: (latteApplet && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator))
+                                 || (activeIndicator !== Latte.Types.NoneIndicator) ?  Math.ceil( root.iconSize/13 ) : 0
 
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
-    //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Dock.Center : (root.isVertical ? Latte.Dock.Top : Latte.Dock.Left)
-    //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Dock.Justify ? plasmoid.configuration.panelPosition : layoutsContainer.mainLayoutPosition
+    //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
+    //property int panelAlignment: plasmoid.configuration.panelPosition !== Latte.Types.Justify ? plasmoid.configuration.panelPosition : layoutsContainer.mainLayoutPosition
 
     property int panelAlignment: !root.editMode ? plasmoid.configuration.panelPosition :
-                                                  ( plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
-                                                       Latte.Dock.Center : plasmoid.configuration.panelPosition )
+                                                  ( plasmoid.configuration.panelPosition === Latte.Types.Justify ?
+                                                       Latte.Types.Center : plasmoid.configuration.panelPosition )
 
     property real zoomFactor: (Latte.WindowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
@@ -381,11 +381,11 @@ DragDrop.DropArea {
 
     property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
     property int animationStep: {
-        if (!universalSettings || universalSettings.mouseSensitivity === Latte.Dock.HighSensitivity) {
+        if (!universalSettings || universalSettings.mouseSensitivity === Latte.Types.HighSensitivity) {
             return 1;
-        } else if (universalSettings.mouseSensitivity === Latte.Dock.MediumSensitivity) {
+        } else if (universalSettings.mouseSensitivity === Latte.Types.MediumSensitivity) {
             return Math.max(3, root.iconSize / 18);
-        } else if (universalSettings.mouseSensitivity === Latte.Dock.LowSensitivity) {
+        } else if (universalSettings.mouseSensitivity === Latte.Types.LowSensitivity) {
             return Math.max(5, root.iconSize / 10);
         }
     }
@@ -418,12 +418,12 @@ DragDrop.DropArea {
     ///END properties from latteApplet
 
     /* Layout.preferredWidth: plasmoid.immutable ?
-                               (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                               (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                     layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin) :
                                Screen.width //on unlocked state use the maximum
 
     Layout.preferredHeight: plasmoid.immutable ?
-                               (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                               (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                     layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin) :
                                Screen.height //on unlocked state use the maximum*/
 
@@ -692,15 +692,15 @@ DragDrop.DropArea {
 
     onIsVerticalChanged: {
         if (isVertical) {
-            if (plasmoid.configuration.panelPosition === Latte.Dock.Left)
-                plasmoid.configuration.panelPosition = Latte.Dock.Top;
-            else if (plasmoid.configuration.panelPosition === Latte.Dock.Right)
-                plasmoid.configuration.panelPosition = Latte.Dock.Bottom;
+            if (plasmoid.configuration.panelPosition === Latte.Types.Left)
+                plasmoid.configuration.panelPosition = Latte.Types.Top;
+            else if (plasmoid.configuration.panelPosition === Latte.Types.Right)
+                plasmoid.configuration.panelPosition = Latte.Types.Bottom;
         } else {
-            if (plasmoid.configuration.panelPosition === Latte.Dock.Top)
-                plasmoid.configuration.panelPosition = Latte.Dock.Left;
-            else if (plasmoid.configuration.panelPosition === Latte.Dock.Bottom)
-                plasmoid.configuration.panelPosition = Latte.Dock.Right;
+            if (plasmoid.configuration.panelPosition === Latte.Types.Top)
+                plasmoid.configuration.panelPosition = Latte.Types.Left;
+            else if (plasmoid.configuration.panelPosition === Latte.Types.Bottom)
+                plasmoid.configuration.panelPosition = Latte.Types.Right;
         }
     }
 
@@ -835,10 +835,10 @@ DragDrop.DropArea {
         ///to add applets
         if (plasmoid.immutable) {
             if(root.isHorizontal) {
-                root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                                   layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
             } else {
-                root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === Latte.Dock.Justify ?
+                root.Layout.preferredHeight = (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                                    layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin);
             }
         } else {
@@ -1292,10 +1292,10 @@ DragDrop.DropArea {
             //console.log("max length: "+ maxLength);
 
             if (root.isVertical) {
-                layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
+                layoutLength = (plasmoid.configuration.panelPosition === Latte.Types.Justify) ?
                             layoutsContainer.startLayout.height+layoutsContainer.mainLayout.height+layoutsContainer.endLayout.height : layoutsContainer.mainLayout.height
             } else {
-                layoutLength = (plasmoid.configuration.panelPosition === Latte.Dock.Justify) ?
+                layoutLength = (plasmoid.configuration.panelPosition === Latte.Types.Justify) ?
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 

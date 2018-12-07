@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 Grid {
     id: typeRow
@@ -54,7 +54,7 @@ Grid {
 
     property bool horizontal: false
 
-    readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Dock.Justify)
+    readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Types.Justify)
                                     && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
                                     && (plasmoid.configuration.zoomLevel === 0)
 
@@ -74,15 +74,15 @@ Grid {
 
         onPressedChanged: {
             if (pressed && !checked) {
-                dock.visibility.mode = Latte.Dock.DodgeActive;
-                plasmoid.configuration.panelPosition = Latte.Dock.Center;
+                dock.visibility.mode = Latte.Types.DodgeActive;
+                plasmoid.configuration.panelPosition = Latte.Types.Center;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
                 plasmoid.configuration.panelSize = 0;
                 plasmoid.configuration.shadows = 2;
                 plasmoid.configuration.zoomLevel = 16;
                 plasmoid.configuration.shrinkThickMargins = false;
-                plasmoid.configuration.activeIndicator = Latte.Dock.InternalsIndicator;
+                plasmoid.configuration.activeIndicator = Latte.Types.InternalsIndicator;
                 plasmoid.configuration.autoDecreaseIconSize = true;
 
                 //! Dynamic Background
@@ -106,8 +106,8 @@ Grid {
 
         onPressedChanged: {
             if (pressed && !checked) {
-                dock.visibility.mode = Latte.Dock.AlwaysVisible;
-                plasmoid.configuration.panelPosition = Latte.Dock.Justify;
+                dock.visibility.mode = Latte.Types.AlwaysVisible;
+                plasmoid.configuration.panelPosition = Latte.Types.Justify;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
                 plasmoid.configuration.panelSize = 100;
@@ -115,7 +115,7 @@ Grid {
                 plasmoid.configuration.shadows = 0;
                 plasmoid.configuration.zoomLevel = 0;
                 plasmoid.configuration.shrinkThickMargins = true;
-                plasmoid.configuration.activeIndicator = Latte.Dock.NoneIndicator;
+                plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
                 plasmoid.configuration.autoDecreaseIconSize = false;
 
                 //! Dynamic Background

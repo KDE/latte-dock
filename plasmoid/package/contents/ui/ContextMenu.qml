@@ -27,7 +27,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.activities 0.1 as Activities
 import org.kde.taskmanager 0.1 as TaskManager
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -639,7 +639,7 @@ PlasmaComponents.ContextMenu {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
                 var launcher = get(atm.LauncherUrl);
 
-                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                     latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
                                                                                      latteDock.launchersGroup, launcher);
                 } else {
@@ -650,7 +650,7 @@ PlasmaComponents.ContextMenu {
 
             } else {
                 var launcher = get(atm.LauncherUrl);
-                if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                     latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
                                                                                   latteDock.launchersGroup, launcher);
                 } else {
@@ -698,7 +698,7 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                                        if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                                             latteDock.universalLayoutManager.launchersSignals.addLauncherToActivity(root.managedLayoutName,
                                                                                                                     latteDock.launchersGroup, url, id);
                                         } else {
@@ -710,7 +710,7 @@ PlasmaComponents.ContextMenu {
                                             root.launchersUpdatedFor(url);
                                         }
                                     } else {
-                                        if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+                                        if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                                             latteDock.universalLayoutManager.launchersSignals.removeLauncherFromActivity(root.managedLayoutName,
                                                                                                                          latteDock.launchersGroup, url, id);
                                         } else {
@@ -768,7 +768,7 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
                                                                                  latteDock.launchersGroup, launcher);
             } else {
@@ -811,7 +811,7 @@ PlasmaComponents.ContextMenu {
             //root.removeLastSeparator();
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Dock.LayoutLaunchers) {
+            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
                 latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
                                                                                  latteDock.launchersGroup, launcher);
             } else {

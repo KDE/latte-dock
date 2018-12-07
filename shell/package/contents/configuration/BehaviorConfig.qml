@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.latte 0.1 as Latte
+import org.kde.latte 0.2 as Latte
 
 import "../controls" as LatteExtraControls
 
@@ -296,14 +296,14 @@ PlasmaComponents.Page {
                 property int panelPosition: plasmoid.configuration.panelPosition
 
                 onPanelPositionChanged: {
-                    if (panelPosition === Latte.Dock.Justify)
+                    if (panelPosition === Latte.Types.Justify)
                         dock.addInternalViewSplitter()
                     else
                         dock.removeInternalViewSplitter()
                 }
 
                 Component.onCompleted: {
-                    if (panelPosition === Latte.Dock.Justify)
+                    if (panelPosition === Latte.Types.Justify)
                         dock.addInternalViewSplitter()
                     else
                         dock.removeInternalViewSplitter()
@@ -325,7 +325,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: panelIsVertical ? Latte.Dock.Top : Latte.Dock.Left
+                    property int position: panelIsVertical ? Latte.Types.Top : Latte.Types.Left
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -335,7 +335,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: Latte.Dock.Center
+                    property int position: Latte.Types.Center
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -345,7 +345,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: panelIsVertical ? Latte.Dock.Bottom : Latte.Dock.Right
+                    property int position: panelIsVertical ? Latte.Types.Bottom : Latte.Types.Right
                 }
 
                 PlasmaComponents.Button {
@@ -356,7 +356,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: alignmentGroup
 
-                    property int position: Latte.Dock.Justify
+                    property int position: Latte.Types.Justify
                 }
             }
         }
@@ -397,7 +397,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Dock.AlwaysVisible
+                    property int mode: Latte.Types.AlwaysVisible
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -406,7 +406,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Dock.AutoHide
+                    property int mode: Latte.Types.AutoHide
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -415,7 +415,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Dock.DodgeActive
+                    property int mode: Latte.Types.DodgeActive
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -424,7 +424,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Dock.DodgeMaximized
+                    property int mode: Latte.Types.DodgeMaximized
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -433,7 +433,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Dock.DodgeAllWindows
+                    property int mode: Latte.Types.DodgeAllWindows
                 }
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
@@ -442,7 +442,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: visibilityGroup
 
-                    property int mode: Latte.Dock.WindowsGoBelow
+                    property int mode: Latte.Types.WindowsGoBelow
                 }
             }
         }
@@ -453,8 +453,8 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            enabled: !(dock.visibility.mode === Latte.Dock.AlwaysVisible
-                       || dock.visibility.mode === Latte.Dock.WindowsGoBelow)
+            enabled: !(dock.visibility.mode === Latte.Types.AlwaysVisible
+                       || dock.visibility.mode === Latte.Types.WindowsGoBelow)
 
             Header {
                 Layout.fillWidth: true
