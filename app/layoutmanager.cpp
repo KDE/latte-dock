@@ -116,7 +116,7 @@ void LayoutManager::load()
 
     connect(m_corona->m_activityConsumer, &KActivities::Consumer::runningActivitiesChanged,
     this, [&]() {
-        if (memoryUsage() == Dock::MultipleLayouts) {
+        if (memoryUsage() == Types::MultipleLayouts) {
             syncMultipleLayoutsToActivities();
         }
     });
@@ -128,14 +128,14 @@ void LayoutManager::unload()
 {
     //! Unload all Layouts
     foreach (auto layout, m_activeLayouts) {
-        if (memoryUsage() == Dock::MultipleLayouts && layout->isOriginalLayout()) {
+        if (memoryUsage() == Types::MultipleLayouts && layout->isOriginalLayout()) {
             layout->syncToLayoutFile(true);
         }
 
         layout->unloadContainments();
         layout->unloadLatteViews();
 
-        if (memoryUsage() == Dock::MultipleLayouts && layout->isOriginalLayout()) {
+        if (memoryUsage() == Types::MultipleLayouts && layout->isOriginalLayout()) {
             clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds());
         }
 
@@ -143,7 +143,7 @@ void LayoutManager::unload()
     }
 
     //! Cleanup pseudo-layout from Containments
-    if (memoryUsage() == Dock::MultipleLayouts) {
+    if (memoryUsage() == Types::MultipleLayouts) {
         //    auto containmentsEntries = m_corona->config()->group("Containments");
         //  containmentsEntries.deleteGroup();
         //  containmentsEntries.sync();
@@ -181,9 +181,9 @@ LaunchersSignals *LayoutManager::launchersSignals()
 
 QString LayoutManager::currentLayoutName() const
 {
-    if (memoryUsage() == Dock::SingleLayout) {
+    if (memoryUsage() == Types::SingleLayout) {
         return m_corona->universalSettings()->currentLayoutName();
-    } else if (memoryUsage() == Dock::MultipleLayouts) {
+    } else if (memoryUsage() == Types::MultipleLayouts) {
         return m_currentLayoutNameInMultiEnvironment;
     }
 
@@ -230,9 +230,9 @@ QStringList LayoutManager::menuLayouts() const
 
     //! in case the current layout isnt checked to be shown in the menus
     //! we must add it on top
-    if (!fixedMenuLayouts.contains(currentLayoutName()) && memoryUsage() == Dock::SingleLayout) {
+    if (!fixedMenuLayouts.contains(currentLayoutName()) && memoryUsage() == Types::SingleLayout) {
         fixedMenuLayouts.prepend(currentLayoutName());
-    } else if (memoryUsage() == Dock::MultipleLayouts) {
+    } else if (memoryUsage() == Types::MultipleLayouts) {
         foreach (auto layout, m_activeLayouts) {
             if (layout->isOriginalLayout() && !fixedMenuLayouts.contains(layout->name())) {
                 fixedMenuLayouts.prepend(layout->name());
@@ -292,7 +292,7 @@ QString LayoutManager::layoutPath(QString layoutName)
     return path;
 }
 
-Dock::LayoutsMemoryUsage LayoutManager::memoryUsage() const
+Types::LayoutsMemoryUsage LayoutManager::memoryUsage() const
 {
     return m_corona->universalSettings()->layoutsMemoryUsage();
 }
@@ -302,16 +302,16 @@ int LayoutManager::layoutsMemoryUsage()
     return (int)m_corona->universalSettings()->layoutsMemoryUsage();
 }
 
-void LayoutManager::setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage)
+void LayoutManager::setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage)
 {
     m_corona->universalSettings()->setLayoutsMemoryUsage(memoryUsage);
 }
 
 void LayoutManager::addView(Plasma::Containment *containment, bool forceLoading, int explicitScreen)
 {
-    if (memoryUsage() == Dock::SingleLayout) {
+    if (memoryUsage() == Types::SingleLayout) {
         m_activeLayouts.at(0)->addView(containment, forceLoading, explicitScreen);
-    } else if (memoryUsage() == Dock::MultipleLayouts) {
+    } else if (memoryUsage() == Types::MultipleLayouts) {
         QString layoutId = containment->config().readEntry("layoutId", QString());
 
         if (!layoutId.isEmpty()) {
@@ -339,7 +339,7 @@ bool LayoutManager::latteViewExists(Latte::View *view) const
 
 QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentLatteViews() const
 {
-    if (memoryUsage() == Dock::SingleLayout) {
+    if (memoryUsage() == Types::SingleLayout) {
         return m_activeLayouts.at(0)->latteViews();
     } else {
         foreach (auto layout, m_activeLayouts) {
@@ -373,7 +373,7 @@ QStringList LayoutManager::activeLayoutsNames()
 {
     QStringList names;
 
-    if (memoryUsage() == Dock::SingleLayout) {
+    if (memoryUsage() == Types::SingleLayout) {
         names << currentLayoutName();
     } else {
         for (int i = 0; i < m_activeLayouts.size(); ++i) {
@@ -439,13 +439,13 @@ void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()
 
 void LayoutManager::currentActivityChanged(const QString &id)
 {
-    if (memoryUsage() == Dock::SingleLayout) {
+    if (memoryUsage() == Types::SingleLayout) {
         qDebug() << "activity changed :: " << id;
 
         m_shouldSwitchToLayout = shouldSwitchToLayout(id);
 
         m_dynamicSwitchTimer.start();
-    } else if (memoryUsage() == Dock::MultipleLayouts) {
+    } else if (memoryUsage() == Types::MultipleLayouts) {
         updateCurrentLayoutNameInMultiEnvironment();
     }
 }
@@ -537,7 +537,7 @@ void LayoutManager::loadLayouts()
 
 void LayoutManager::loadLayoutOnStartup(QString layoutName)
 {
-    // if (memoryUsage() == Dock::MultipleLayouts) {
+    // if (memoryUsage() == Types::MultipleLayouts) {
     QStringList layouts = m_importer->checkRepairMultipleLayoutsLinkedFile();
 
     //! Latte didn't close correctly, maybe a crash
@@ -677,7 +677,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
     }
 
     //! First Check If that Layout is already present
-    if (memoryUsage() == Dock::MultipleLayouts && previousMemoryUsage == -1) {
+    if (memoryUsage() == Types::MultipleLayouts && previousMemoryUsage == -1) {
         Layout *layout = activeLayout(layoutName);
 
         if (layout) {
@@ -711,9 +711,9 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
     }
 
     if (!lPath.isEmpty()) {
-        if (memoryUsage() == Dock::SingleLayout) {
+        if (memoryUsage() == Types::SingleLayout) {
             emit currentLayoutIsSwitching(currentLayoutName());
-        } else if (memoryUsage() == Dock::MultipleLayouts && layoutName != Layout::MultipleLayoutsName) {
+        } else if (memoryUsage() == Types::MultipleLayouts && layoutName != Layout::MultipleLayoutsName) {
             Layout toLayout(this, lPath);
 
             QStringList toActivities = toLayout.activities();
@@ -744,23 +744,23 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
 
             bool initializingMultipleLayouts{false};
 
-            if (memoryUsage() == Dock::MultipleLayouts && !activeLayout(Layout::MultipleLayoutsName)) {
+            if (memoryUsage() == Types::MultipleLayouts && !activeLayout(Layout::MultipleLayoutsName)) {
                 initializingMultipleLayouts = true;
             }
 
-            if (memoryUsage() == Dock::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == Dock::MultipleLayouts) {
+            if (memoryUsage() == Types::SingleLayout || initializingMultipleLayouts || previousMemoryUsage == Types::MultipleLayouts) {
                 while (!m_activeLayouts.isEmpty()) {
                     Layout *layout = m_activeLayouts.at(0);
                     m_activeLayouts.removeFirst();
 
-                    if (layout->isOriginalLayout() && previousMemoryUsage == Dock::MultipleLayouts) {
+                    if (layout->isOriginalLayout() && previousMemoryUsage == Types::MultipleLayouts) {
                         layout->syncToLayoutFile(true);
                     }
 
                     layout->unloadContainments();
                     layout->unloadLatteViews();
 
-                    if (layout->isOriginalLayout() && previousMemoryUsage == Dock::MultipleLayouts) {
+                    if (layout->isOriginalLayout() && previousMemoryUsage == Types::MultipleLayouts) {
                         clearUnloadedContainmentsFromLinkedFile(layout->unloadedContainmentsIds(), true);
                     }
 
@@ -779,7 +779,7 @@ bool LayoutManager::switchToLayout(QString layoutName, int previousMemoryUsage)
                 emit activeLayoutsChanged();
             }
 
-            if (memoryUsage() == Dock::MultipleLayouts) {
+            if (memoryUsage() == Types::MultipleLayouts) {
                 if (!initializingMultipleLayouts && !activeLayout(layoutName)) {
                     //! When we are in Multiple Layouts Environment and the user activates
                     //! a Layout that is assigned to specific activities but this
@@ -954,7 +954,7 @@ void LayoutManager::syncMultipleLayoutsToActivities(QString layoutForOrphans)
 
 void LayoutManager::pauseLayout(QString layoutName)
 {
-    if (memoryUsage() == Dock::MultipleLayouts) {
+    if (memoryUsage() == Types::MultipleLayouts) {
         Layout *layout = activeLayout(layoutName);
 
         if (layout && !layout->activities().isEmpty()) {
@@ -975,7 +975,7 @@ void LayoutManager::pauseLayout(QString layoutName)
 
 void LayoutManager::syncActiveLayoutsToOriginalFiles()
 {
-    if (memoryUsage() == Dock::MultipleLayouts) {
+    if (memoryUsage() == Types::MultipleLayouts) {
         foreach (auto layout, m_activeLayouts) {
             if (layout->isOriginalLayout()) {
                 layout->syncToLayoutFile();
@@ -986,7 +986,7 @@ void LayoutManager::syncActiveLayoutsToOriginalFiles()
 
 void LayoutManager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsIds, bool bypassChecks)
 {
-    if (!m_corona || (memoryUsage() == Dock::SingleLayout && !bypassChecks)) {
+    if (!m_corona || (memoryUsage() == Types::SingleLayout && !bypassChecks)) {
         return;
     }
 
@@ -1176,7 +1176,7 @@ void LayoutManager::showLatteSettingsDialog(int page)
         m_latteSettingsDialog->showNormal();
     }
 
-    Dock::LatteConfigPage configPage = static_cast<Dock::LatteConfigPage>(page);
+    Types::LatteConfigPage configPage = static_cast<Types::LatteConfigPage>(page);
     m_latteSettingsDialog->setCurrentPage(configPage);
 
     m_latteSettingsDialog->activateWindow();

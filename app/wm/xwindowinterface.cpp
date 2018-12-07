@@ -23,7 +23,7 @@
 // local
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
-#include "../liblattedock/extras.h"
+#include "../liblatte2/extras.h"
 
 // Qt
 #include <QDebug>

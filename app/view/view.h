@@ -29,7 +29,7 @@
 #include "../layout.h"
 #include "../plasmaquick/containmentview.h"
 #include "../plasmaquick/configview.h"
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 // C++
 #include <array>
@@ -262,7 +262,7 @@ private:
     int m_offset{0};
     float m_maxLength{1};
 
-    Dock::Alignment m_alignment{Dock::Center};
+    Types::Alignment m_alignment{Types::Center};
 
     QRect m_localGeometry;
     QRect m_absGeometry;

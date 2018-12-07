@@ -339,7 +339,7 @@ void DockConfigView::hideEvent(QHideEvent *ev)
     const auto mode = m_latteView->visibility()->mode();
     const auto previousByPassWMBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? true : false;
 
-    if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
+    if (mode == Types::AlwaysVisible || mode == Types::WindowsGoBelow) {
         if (!previousByPassWMBehavior) {
             m_latteView->managedLayout()->recreateView(m_latteView->containment());
         }
@@ -478,13 +478,13 @@ void DockConfigView::hideConfigWindow()
 
 void DockConfigView::updateLaunchersForGroup(int groupInt)
 {
-    Dock::LaunchersGroup group = (Dock::LaunchersGroup)groupInt;
+    Types::LaunchersGroup group = (Types::LaunchersGroup)groupInt;
 
     //! when the layout/global launchers list is empty then the current dock launchers are used for them
     //! as a start point
     if (m_corona &&  m_latteView->managedLayout()) {
-        if ((group == Dock::LayoutLaunchers && m_latteView->managedLayout()->launchers().isEmpty())
-            || (group == Dock::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
+        if ((group == Types::LayoutLaunchers && m_latteView->managedLayout()->launchers().isEmpty())
+            || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_latteView->containment();
 
@@ -519,9 +519,9 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
                                 QVariant launchers;
 
                                 if (method.invoke(item, Q_RETURN_ARG(QVariant, launchers))) {
-                                    if (group == Dock::LayoutLaunchers) {
+                                    if (group == Types::LayoutLaunchers) {
                                         m_latteView->managedLayout()->setLaunchers(launchers.toStringList());
-                                    } else if (group == Dock::GlobalLaunchers) {
+                                    } else if (group == Types::GlobalLaunchers) {
                                         m_corona->universalSettings()->setLaunchers(launchers.toStringList());
                                     }
                                 }

@@ -20,7 +20,7 @@
 #include "menu.h"
 
 // local
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QAction>
@@ -145,7 +145,7 @@ void Menu::populateLayouts()
 
     if (m_layoutsData.size() > 3) {
         //when there are more than 1 layouts present
-        Latte::Dock::LayoutsMemoryUsage memoryUsage = static_cast<Latte::Dock::LayoutsMemoryUsage>((m_layoutsData[0]).toInt());
+        Latte::Types::LayoutsMemoryUsage memoryUsage = static_cast<Latte::Types::LayoutsMemoryUsage>((m_layoutsData[0]).toInt());
         QString currentName = m_layoutsData[1];
 
         for (int i = 2; i < m_layoutsData.size(); ++i) {
@@ -153,7 +153,7 @@ void Menu::populateLayouts()
 
             QString layout = m_layoutsData[i].right(m_layoutsData[i].length() - 2);
 
-            QString currentText = (memoryUsage == Latte::Dock::MultipleLayouts && layout == currentName) ?
+            QString currentText = (memoryUsage == Latte::Types::MultipleLayouts && layout == currentName) ?
                                   (" " + i18nc("current layout", "(Current)")) : "";
             QString layoutName = layout + currentText;
 
@@ -195,7 +195,7 @@ void Menu::switchToLayout(QAction *action)
             QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
             if (iface.isValid()) {
-                iface.call("showSettingsWindow", (int)Latte::Dock::LayoutPage);
+                iface.call("showSettingsWindow", (int)Latte::Types::LayoutPage);
             }
         });
     } else {

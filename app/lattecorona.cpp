@@ -154,7 +154,7 @@ Corona::~Corona()
 
     m_viewsScreenSyncTimer.stop();
 
-    if (m_layoutManager->memoryUsage() == Dock::SingleLayout) {
+    if (m_layoutManager->memoryUsage() == Types::SingleLayout) {
         cleanConfig();
     }
 
@@ -211,13 +211,13 @@ void Corona::load()
         }
 
         if (m_userSetMemoryUsage != -1 && !KWindowSystem::isPlatformWayland()) {
-            Dock::LayoutsMemoryUsage usage = static_cast<Dock::LayoutsMemoryUsage>(m_userSetMemoryUsage);
+            Types::LayoutsMemoryUsage usage = static_cast<Types::LayoutsMemoryUsage>(m_userSetMemoryUsage);
 
             m_universalSettings->setLayoutsMemoryUsage(usage);
         }
 
         if (KWindowSystem::isPlatformWayland()) {
-            m_universalSettings->setLayoutsMemoryUsage(Dock::SingleLayout);
+            m_universalSettings->setLayoutsMemoryUsage(Types::SingleLayout);
         }
 
         m_layoutManager->loadLayoutOnStartup(loadLayoutName);
@@ -445,7 +445,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     if (views) {
         for (const auto *view : *views) {
             if (view && view->containment() && view->screen() == screen
-                && view->visibility() && (view->visibility()->mode() != Latte::Dock::AutoHide)) {
+                && view->visibility() && (view->visibility()->mode() != Latte::Types::AutoHide)) {
                 int realThickness = view->normalThickness() - view->effects()->innerShadow();
 
                 // Usually availableScreenRect is used by the desktop,
@@ -461,18 +461,18 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
                             int realWidth = view->maxLength() * view->width();
 
                             switch (view->alignment()) {
-                                case Latte::Dock::Left:
+                                case Latte::Types::Left:
                                     realGeometry = QRect(view->x(), view->y(),
                                                          realWidth, realThickness);
                                     break;
 
-                                case Latte::Dock::Center:
-                                case Latte::Dock::Justify:
+                                case Latte::Types::Center:
+                                case Latte::Types::Justify:
                                     realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2), view->y(),
                                                          realWidth, realThickness);
                                     break;
 
-                                case Latte::Dock::Right:
+                                case Latte::Types::Right:
                                     realGeometry = QRect(view->geometry().right() - realWidth + 1, view->y(),
                                                          realWidth, realThickness);
                                     break;
@@ -492,18 +492,18 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
                             int realY = view->geometry().bottom() - realThickness + 1;
 
                             switch (view->alignment()) {
-                                case Latte::Dock::Left:
+                                case Latte::Types::Left:
                                     realGeometry = QRect(view->x(), realY,
                                                          realWidth, realThickness);
                                     break;
 
-                                case Latte::Dock::Center:
-                                case Latte::Dock::Justify:
+                                case Latte::Types::Center:
+                                case Latte::Types::Justify:
                                     realGeometry = QRect(qMax(view->geometry().x(), view->geometry().center().x() - realWidth / 2),
                                                          realY, realWidth, realThickness);
                                     break;
 
-                                case Latte::Dock::Right:
+                                case Latte::Types::Right:
                                     realGeometry = QRect(view->geometry().right() - realWidth + 1, realY,
                                                          realWidth, realThickness);
                                     break;
@@ -538,7 +538,7 @@ QRect Corona::availableScreenRect(int id) const
     return availableScreenRectWithCriteria(id);
 }
 
-QRect Corona::availableScreenRectWithCriteria(int id, QList<Dock::Visibility> modes, QList<Plasma::Types::Location> edges) const
+QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> modes, QList<Plasma::Types::Location> edges) const
 {
     const auto screens = qGuiApp->screens();
     const QScreen *screen{qGuiApp->primaryScreen()};
@@ -851,7 +851,7 @@ void Corona::loadDefaultLayout()
         defaultContainment->setLocation(Plasma::Types::BottomEdge);
     }
 
-    if (m_layoutManager->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_layoutManager->memoryUsage() == Latte::Types::MultipleLayouts) {
         config.writeEntry("layoutId", m_layoutManager->currentLayoutName());
     }
 
@@ -920,10 +920,10 @@ void Corona::switchToLayout(QString layout)
 
 void Corona::showSettingsWindow(int page)
 {
-    Dock::LatteConfigPage p = Dock::LayoutPage;
+    Types::LatteConfigPage p = Types::LayoutPage;
 
-    if (page >= Dock::LayoutPage && page <= Dock::PreferencesPage) {
-        p = static_cast<Dock::LatteConfigPage>(page);
+    if (page >= Types::LayoutPage && page <= Types::PreferencesPage) {
+        p = static_cast<Types::LatteConfigPage>(page);
     }
 
     m_layoutManager->showLatteSettingsDialog(p);

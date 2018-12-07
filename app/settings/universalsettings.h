@@ -23,7 +23,7 @@
 
 // local
 #include "../lattecorona.h"
-#include "../liblattedock/dock.h"
+#include "../liblatte2/types.h"
 
 // Qt
 #include <QObject>
@@ -55,7 +55,7 @@ class UniversalSettings : public QObject
     Q_PROPERTY(QStringList badgesForActivate READ badgesForActivate NOTIFY badgesForActivateChanged)
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
-    Q_PROPERTY(Latte::Dock::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
+    Q_PROPERTY(Latte::Types::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
 
     Q_PROPERTY(QAbstractItemModel *runningActivitiesModel  READ runningActivitiesModel NOTIFY runningActivitiesModelChanged)
 
@@ -105,8 +105,8 @@ public:
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
-    Dock::MouseSensitivity mouseSensitivity() const;
-    void setMouseSensitivity(Dock::MouseSensitivity sensitivity);
+    Types::MouseSensitivity mouseSensitivity() const;
+    void setMouseSensitivity(Types::MouseSensitivity sensitivity);
 
     QAbstractItemModel *runningActivitiesModel() const;
     void setRunningActivitiesModel(SortedActivitiesModel *model);
@@ -157,8 +157,8 @@ private:
     bool kwin_metaForwardedToLatte() const;
     void kwin_forwardMetaToLatte(bool forward);
 
-    Dock::LayoutsMemoryUsage layoutsMemoryUsage() const;
-    void setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage);
+    Types::LayoutsMemoryUsage layoutsMemoryUsage() const;
+    void setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsMemoryUsage);
 
 private:
     bool m_canDisableBorders{false};
@@ -178,8 +178,8 @@ private:
     QStringList m_layoutsColumnWidths;
     QStringList m_launchers;
 
-    Dock::LayoutsMemoryUsage m_memoryUsage;
-    Dock::MouseSensitivity m_mouseSensitivity{Dock::HighSensitivity};
+    Types::LayoutsMemoryUsage m_memoryUsage;
+    Types::MouseSensitivity m_mouseSensitivity{Types::HighSensitivity};
 
     SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 

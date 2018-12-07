@@ -24,7 +24,7 @@
 // local
 #include "docksecconfigview.h"
 #include "../plasmaquick/configview.h"
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 //Qt
 #include <QObject>

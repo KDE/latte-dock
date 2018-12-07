@@ -32,7 +32,7 @@
 #include "../screenpool.h"
 #include "../plasmathemeextended.h"
 #include "../settings/universalsettings.h"
-#include "../../liblattedock/extras.h"
+#include "../../liblatte2/extras.h"
 
 // Qt
 #include <QAction>
@@ -398,7 +398,7 @@ void View::updateAbsDockGeometry(bool bypassChecks)
     emit absGeometryChanged(m_absGeometry);
 
     //! this is needed in order to update correctly the screenGeometries
-    if (visibility() && corona() && visibility()->mode() == Dock::AlwaysVisible) {
+    if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
         emit corona()->availableScreenRectChanged();
         emit corona()->availableScreenRegionChanged();
     }
@@ -591,7 +591,7 @@ int View::alignment() const
 
 void View::setAlignment(int alignment)
 {
-    Dock::Alignment align = static_cast<Dock::Alignment>(alignment);
+    Types::Alignment align = static_cast<Types::Alignment>(alignment);
 
     if (m_alignment == alignment) {
         return;
@@ -703,7 +703,7 @@ void View::setManagedLayout(Layout *layout)
 
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
-    if (latteCorona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (latteCorona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         connectionsManagedLayout[1] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout && m_visibility) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()

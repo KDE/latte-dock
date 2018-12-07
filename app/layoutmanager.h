@@ -94,8 +94,8 @@ public:
     QStringList menuLayouts() const;
     QStringList presetsPaths() const;
 
-    Dock::LayoutsMemoryUsage memoryUsage() const;
-    void setMemoryUsage(Dock::LayoutsMemoryUsage memoryUsage);
+    Types::LayoutsMemoryUsage memoryUsage() const;
+    void setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage);
 
     QHash<const Plasma::Containment *, Latte::View *> *currentLatteViews() const;
     QHash<const Plasma::Containment *, Latte::View *> *layoutLatteViews(const QString &layoutName) const;
@@ -117,7 +117,7 @@ public slots:
     void showAboutDialog();
 
     void hideLatteSettingsDialog();
-    Q_INVOKABLE void showLatteSettingsDialog(int page = Latte::Dock::LayoutPage);
+    Q_INVOKABLE void showLatteSettingsDialog(int page = Latte::Types::LayoutPage);
 
     //! switch to specified layout, default previousMemoryUsage means that it didn't change
     Q_INVOKABLE bool switchToLayout(QString layoutName, int previousMemoryUsage = -1);

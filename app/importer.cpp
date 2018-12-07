@@ -26,7 +26,7 @@
 #include "layout.h"
 #include "screenpool.h"
 #include "settings/universalsettings.h"
-#include "../liblattedock/dock.h"
+#include "../liblatte2/types.h"
 
 // Qt
 #include <QFile>
@@ -105,14 +105,14 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
         KConfigGroup containmentGroup = containments.group(containmentId);
 
         QString plugin = containmentGroup.readEntry("plugin", QString());
-        Dock::SessionType session = (Dock::SessionType)containmentGroup.readEntry("session", (int)Dock::DefaultSession);
+        Types::SessionType session = (Types::SessionType)containmentGroup.readEntry("session", (int)Types::DefaultSession);
 
         bool shouldImport = false;
 
-        if (plugin == "org.kde.latte.containment" && session == Dock::DefaultSession && !alternative) {
+        if (plugin == "org.kde.latte.containment" && session == Types::DefaultSession && !alternative) {
             qDebug() << containmentId << " - " << plugin << " - " << session;
             shouldImport = true;
-        } else if (plugin == "org.kde.latte.containment" && session == Dock::AlternativeSession && alternative) {
+        } else if (plugin == "org.kde.latte.containment" && session == Types::AlternativeSession && alternative) {
             qDebug() << containmentId << " - " << plugin << " - " << session;
             shouldImport = true;
         }

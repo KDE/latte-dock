@@ -29,7 +29,7 @@
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
-#include "../liblattedock/dock.h"
+#include "../liblatte2/types.h"
 #include "delegates/checkboxdelegate.h"
 #include "delegates/colorcmbboxdelegate.h"
 #include "delegates/activitycmbboxdelegate.h"
@@ -121,18 +121,18 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->layoutsView->setItemDelegateForColumn(ACTIVITYCOLUMN, new ActivityCmbBoxDelegate(this));
 
     m_inMemoryButtons = new QButtonGroup(this);
-    m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Dock::SingleLayout);
-    m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Dock::MultipleLayouts);
+    m_inMemoryButtons->addButton(ui->singleToolBtn, Latte::Types::SingleLayout);
+    m_inMemoryButtons->addButton(ui->multipleToolBtn, Latte::Types::MultipleLayouts);
     m_inMemoryButtons->setExclusive(true);
 
     if (KWindowSystem::isPlatformWayland()) {
-        m_inMemoryButtons->button(Latte::Dock::MultipleLayouts)->setEnabled(false);
+        m_inMemoryButtons->button(Latte::Types::MultipleLayouts)->setEnabled(false);
     }
 
     m_mouseSensitivityButtons = new QButtonGroup(this);
-    m_mouseSensitivityButtons->addButton(ui->lowSensitivityBtn, Latte::Dock::LowSensitivity);
-    m_mouseSensitivityButtons->addButton(ui->mediumSensitivityBtn, Latte::Dock::MediumSensitivity);
-    m_mouseSensitivityButtons->addButton(ui->highSensitivityBtn, Latte::Dock::HighSensitivity);
+    m_mouseSensitivityButtons->addButton(ui->lowSensitivityBtn, Latte::Types::LowSensitivity);
+    m_mouseSensitivityButtons->addButton(ui->mediumSensitivityBtn, Latte::Types::MediumSensitivity);
+    m_mouseSensitivityButtons->addButton(ui->highSensitivityBtn, Latte::Types::HighSensitivity);
     m_mouseSensitivityButtons->setExclusive(true);
 
     ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
@@ -282,11 +282,11 @@ QStringList SettingsDialog::availableActivities()
     return m_availableActivities;
 }
 
-void SettingsDialog::setCurrentPage(Dock::LatteConfigPage page)
+void SettingsDialog::setCurrentPage(Types::LatteConfigPage page)
 {
-    if (page == Dock::LayoutPage) {
+    if (page == Types::LayoutPage) {
         ui->tabWidget->setCurrentIndex(0);
-    } else if (page == Dock::PreferencesPage) {
+    } else if (page == Types::PreferencesPage) {
         ui->tabWidget->setCurrentIndex(1);
     }
 }
@@ -321,7 +321,7 @@ void SettingsDialog::on_copyButton_clicked()
     }
 
     //! Update original layout before copying if this layout is active
-    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         QString lName = (m_model->data(m_model->index(row, NAMECOLUMN), Qt::DisplayRole)).toString();
 
         if (Importer::layoutExists(lName)) {
@@ -826,7 +826,7 @@ void SettingsDialog::loadSettings()
     int i = 0;
     QStringList brokenLayouts;
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
     }
 
@@ -866,7 +866,7 @@ void SettingsDialog::loadSettings()
 
 
     //! Check Multiple Layouts Integrity
-    /*if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    /*if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         m_corona->layoutManager()->syncActiveLayoutsToOriginalFiles();
 
         QString multipleLayoutPath = QDir::homePath() + "/.config/latte/" + Layout::MultipleLayoutsName + ".layout.latte";
@@ -909,9 +909,9 @@ void SettingsDialog::loadSettings()
         ui->layoutsView->setColumnWidth(BORDERSCOLUMN, columnWidths[3].toInt());
     }
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
         ui->singleToolBtn->setChecked(true);
-    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         ui->multipleToolBtn->setChecked(true);
     }
 
@@ -922,11 +922,11 @@ void SettingsDialog::loadSettings()
     ui->metaChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
     ui->noBordersForMaximizedChkBox->setChecked(m_corona->universalSettings()->canDisableBorders());
 
-    if (m_corona->universalSettings()->mouseSensitivity() == Dock::LowSensitivity) {
+    if (m_corona->universalSettings()->mouseSensitivity() == Types::LowSensitivity) {
         ui->lowSensitivityBtn->setChecked(true);
-    } else if (m_corona->universalSettings()->mouseSensitivity() == Dock::MediumSensitivity) {
+    } else if (m_corona->universalSettings()->mouseSensitivity() == Types::MediumSensitivity) {
         ui->mediumSensitivityBtn->setChecked(true);
-    } else if (m_corona->universalSettings()->mouseSensitivity() == Dock::HighSensitivity) {
+    } else if (m_corona->universalSettings()->mouseSensitivity() == Types::HighSensitivity) {
         ui->highSensitivityBtn->setChecked(true);
     }
 
@@ -1071,7 +1071,7 @@ void SettingsDialog::on_switchButton_clicked()
         QString lName;
         QStringList lActivities;
 
-        if (m_inMemoryButtons->checkedId() == Latte::Dock::MultipleLayouts) {
+        if (m_inMemoryButtons->checkedId() == Latte::Types::MultipleLayouts) {
             lName = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole).toString();
             lActivities = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), ACTIVITYCOLUMN), Qt::UserRole).toStringList();
         }
@@ -1124,7 +1124,7 @@ void SettingsDialog::layoutsChanged()
             } else {
                 Layout *layout = m_corona->layoutManager()->activeLayout(name);
 
-                if (layout && (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts)) {
+                if (layout && (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts)) {
                     font.setBold(true);
                 } else {
                     font.setBold(false);
@@ -1237,9 +1237,9 @@ void SettingsDialog::updatePerLayoutButtonsState()
     }
 
     //! Pause Button
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
         ui->pauseButton->setVisible(false);
-    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         ui->pauseButton->setVisible(true);
 
         QStringList lActivities = m_model->data(m_model->index(currentRow, ACTIVITYCOLUMN), Qt::UserRole).toStringList();
@@ -1330,7 +1330,7 @@ bool SettingsDialog::saveAllChanges()
     }
 
     //! Update universal settings
-    Latte::Dock::MouseSensitivity sensitivity = static_cast<Latte::Dock::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
+    Latte::Types::MouseSensitivity sensitivity = static_cast<Latte::Types::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
     bool autostart = ui->autostartChkBox->isChecked();
     bool forwardMeta = ui->metaChkBox->isChecked();
     bool showInfoWindow = ui->infoWindowChkBox->isChecked();
@@ -1433,7 +1433,7 @@ bool SettingsDialog::saveAllChanges()
         //! If the layout name changed OR the layout path is a temporary one
         if (layout->name() != name || (id.startsWith("/tmp/"))) {
             //! If the layout is Active in MultipleLayouts
-            if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts && activeLayout) {
+            if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts && activeLayout) {
                 qDebug() << " Active Layout Should Be Renamed From : " << layout->name() << " TO :: " << name;
                 activeLayoutsToRename[name] = layout;
             }
@@ -1441,7 +1441,7 @@ bool SettingsDialog::saveAllChanges()
             QString tempFile = layoutTempDir.path() + "/" + QString(layout->name() + ".layout.latte");
             qDebug() << "new temp file ::: " << tempFile;
 
-            if ((m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) && (layout->name() == m_corona->layoutManager()->currentLayoutName())) {
+            if ((m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) && (layout->name() == m_corona->layoutManager()->currentLayoutName())) {
                 switchToLayout = name;
             }
 
@@ -1483,7 +1483,7 @@ bool SettingsDialog::saveAllChanges()
 
     QString orphanedLayout;
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         foreach (auto newLayoutName, activeLayoutsToRename.keys()) {
             qDebug() << " Active Layout Is Renamed From : " << activeLayoutsToRename[newLayoutName]->name() << " TO :: " << newLayoutName;
             Layout *layout = activeLayoutsToRename[newLayoutName];
@@ -1512,10 +1512,10 @@ bool SettingsDialog::saveAllChanges()
 
     m_corona->layoutManager()->loadLayouts();
 
-    Latte::Dock::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Dock::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
+    Latte::Types::LayoutsMemoryUsage inMemoryOption = static_cast<Latte::Types::LayoutsMemoryUsage>(m_inMemoryButtons->checkedId());
 
     if (m_corona->layoutManager()->memoryUsage() != inMemoryOption) {
-        Dock::LayoutsMemoryUsage previousMemoryUsage = m_corona->layoutManager()->memoryUsage();
+        Types::LayoutsMemoryUsage previousMemoryUsage = m_corona->layoutManager()->memoryUsage();
         m_corona->layoutManager()->setMemoryUsage(inMemoryOption);
 
         QVariant value = m_model->data(m_model->index(ui->layoutsView->currentIndex().row(), NAMECOLUMN), Qt::DisplayRole);
@@ -1525,7 +1525,7 @@ bool SettingsDialog::saveAllChanges()
     } else {
         if (!switchToLayout.isEmpty()) {
             m_corona->layoutManager()->switchToLayout(switchToLayout);
-        } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
             m_corona->layoutManager()->syncMultipleLayoutsToActivities(orphanedLayout);
         }
     }

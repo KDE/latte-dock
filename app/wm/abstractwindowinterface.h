@@ -24,8 +24,8 @@
 // local
 #include "schemecolors.h"
 #include "windowinfowrap.h"
-#include "../liblattedock/dock.h"
-#include "../liblattedock/extras.h"
+#include "../liblatte2/types.h"
+#include "../liblatte2/extras.h"
 
 // C++
 #include <unordered_map>

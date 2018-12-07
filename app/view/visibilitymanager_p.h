@@ -5,7 +5,7 @@
 #include "../schemecolors.h"
 #include "../wm/abstractwindowinterface.h"
 #include "../wm/windowinfowrap.h"
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 // C++
 #include <array>
@@ -39,7 +39,7 @@ public:
     VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q);
     ~VisibilityManagerPrivate();
 
-    void setMode(Dock::Visibility mode);
+    void setMode(Types::Visibility mode);
     void setRaiseOnDesktop(bool enable);
     void setRaiseOnActivity(bool enable);
 
@@ -99,7 +99,7 @@ public:
     VisibilityManager *q;
     PlasmaQuick::ContainmentView *view;
     AbstractWindowInterface *wm;
-    Dock::Visibility mode{Dock::None};
+    Types::Visibility mode{Types::None};
     std::array<QMetaObject::Connection, 5> connections;
     QMap<WindowId, WindowInfoWrap> windows;
 

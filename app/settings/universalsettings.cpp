@@ -409,12 +409,12 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
     }
 }
 
-Dock::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
+Types::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
 {
     return m_memoryUsage;
 }
 
-void UniversalSettings::setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMemoryUsage)
+void UniversalSettings::setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsMemoryUsage)
 {
     if (m_memoryUsage == layoutsMemoryUsage) {
         return;
@@ -424,12 +424,12 @@ void UniversalSettings::setLayoutsMemoryUsage(Dock::LayoutsMemoryUsage layoutsMe
     emit layoutsMemoryUsageChanged();
 }
 
-Dock::MouseSensitivity UniversalSettings::mouseSensitivity() const
+Types::MouseSensitivity UniversalSettings::mouseSensitivity() const
 {
     return m_mouseSensitivity;
 }
 
-void UniversalSettings::setMouseSensitivity(Dock::MouseSensitivity sensitivity)
+void UniversalSettings::setMouseSensitivity(Types::MouseSensitivity sensitivity)
 {
     if (m_mouseSensitivity == sensitivity) {
         return;
@@ -451,8 +451,8 @@ void UniversalSettings::loadConfig()
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
-    m_memoryUsage = static_cast<Dock::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Dock::SingleLayout));
-    m_mouseSensitivity = static_cast<Dock::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Dock::HighSensitivity));
+    m_memoryUsage = static_cast<Types::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Types::SingleLayout));
+    m_mouseSensitivity = static_cast<Types::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Types::HighSensitivity));
 }
 
 void UniversalSettings::saveConfig()

@@ -24,7 +24,7 @@
 #include "view/screenedgeghostwindow.h"
 #include "view/view.h"
 #include "../lattecorona.h"
-#include "../liblattedock/extras.h"
+#include "../liblatte2/extras.h"
 
 // Qt
 #include <QDebug>
@@ -244,10 +244,10 @@ void WaylandInterface::setEdgeStateFor(QWindow *view, bool active) const
     }
 
     if (window->parentView()->surface() && window->parentView()->visibility()
-        && (window->parentView()->visibility()->mode() == Dock::DodgeActive
-            || window->parentView()->visibility()->mode() == Dock::DodgeMaximized
-            || window->parentView()->visibility()->mode() == Dock::DodgeAllWindows
-            || window->parentView()->visibility()->mode() == Dock::AutoHide)) {
+        && (window->parentView()->visibility()->mode() == Types::DodgeActive
+            || window->parentView()->visibility()->mode() == Types::DodgeMaximized
+            || window->parentView()->visibility()->mode() == Types::DodgeAllWindows
+            || window->parentView()->visibility()->mode() == Types::AutoHide)) {
         if (active) {
             window->showWithMask();
             window->surface()->requestHideAutoHidingPanel();

@@ -21,7 +21,7 @@
 #define DOCKSECCONFIGVIEW_H
 
 // local
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 //Qt
 #include <QObject>

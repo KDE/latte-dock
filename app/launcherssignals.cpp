@@ -71,13 +71,13 @@ QList<Plasma::Applet *> LaunchersSignals::lattePlasmoids(QString layoutName)
 
 void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -105,13 +105,13 @@ void LaunchersSignals::addLauncher(QString layoutName, int launcherGroup, QStrin
 
 void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QString launcher)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -139,13 +139,13 @@ void LaunchersSignals::removeLauncher(QString layoutName, int launcherGroup, QSt
 
 void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -173,13 +173,13 @@ void LaunchersSignals::addLauncherToActivity(QString layoutName, int launcherGro
 
 void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launcherGroup, QString launcher, QString activity)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -207,13 +207,13 @@ void LaunchersSignals::removeLauncherFromActivity(QString layoutName, int launch
 
 void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStringList urls)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -241,13 +241,13 @@ void LaunchersSignals::urlsDropped(QString layoutName, int launcherGroup, QStrin
 
 void LaunchersSignals::moveTask(QString layoutName, int senderId, int launcherGroup, int from, int to)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (applet->id() != senderId) {
@@ -277,13 +277,13 @@ void LaunchersSignals::moveTask(QString layoutName, int senderId, int launcherGr
 
 void LaunchersSignals::validateLaunchersOrder(QString layoutName, int senderId, int launcherGroup, QStringList launchers)
 {
-    Dock::LaunchersGroup group = static_cast<Dock::LaunchersGroup>(launcherGroup);
+    Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
 
-    if ((Dock::LaunchersGroup)group == Dock::UniqueLaunchers) {
+    if ((Types::LaunchersGroup)group == Types::UniqueLaunchers) {
         return;
     }
 
-    QString lName = (group == Dock::LayoutLaunchers) ? layoutName : "";
+    QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
 
     foreach (auto applet, lattePlasmoids(lName)) {
         if (applet->id() != senderId) {

@@ -22,7 +22,7 @@
 #include "config-latte.h"
 #include "importer.h"
 #include "lattecorona.h"
-#include "../liblattedock/dock.h"
+#include "../liblatte2/types.h"
 
 // C++
 #include <memory>
@@ -223,9 +223,9 @@ int main(int argc, char **argv)
     }
 
     if (parser.isSet(QStringLiteral("multiple"))) {
-        memoryUsage = (int)(Latte::Dock::MultipleLayouts);
+        memoryUsage = (int)(Latte::Types::MultipleLayouts);
     } else if (parser.isSet(QStringLiteral("single"))) {
-        memoryUsage = (int)(Latte::Dock::SingleLayout);
+        memoryUsage = (int)(Latte::Types::SingleLayout);
     }
 
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {

@@ -29,7 +29,7 @@
 #include "../layoutmanager.h"
 #include "../screenpool.h"
 #include "../wm/windowinfowrap.h"
-#include "../../liblattedock/extras.h"
+#include "../../liblatte2/extras.h"
 
 // Qt
 #include <QDebug>
@@ -88,23 +88,23 @@ VisibilityManagerPrivate::~VisibilityManagerPrivate()
     }
 }
 
-inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
+inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
 {
     if (this->mode == mode)
         return;
 
-    Q_ASSERT_X(mode != Dock::None, q->staticMetaObject.className(), "set visibility to Dock::None");
+    Q_ASSERT_X(mode != Types::None, q->staticMetaObject.className(), "set visibility to Types::None");
 
     // clear mode
     for (auto &c : connections) {
         disconnect(c);
     }
 
-    if (mode != Dock::DodgeAllWindows && !enabledDynamicBackgroundFlag) {
+    if (mode != Types::DodgeAllWindows && !enabledDynamicBackgroundFlag) {
         windows.clear();
     }
 
-    if (this->mode == Dock::AlwaysVisible) {
+    if (this->mode == Types::AlwaysVisible) {
         wm->removeViewStruts(*view);
     } else {
         connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
@@ -127,7 +127,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
     this->mode = mode;
 
     switch (this->mode) {
-        case Dock::AlwaysVisible: {
+        case Types::AlwaysVisible: {
             //set wayland visibility mode
             if (m_latteView->surface()) {
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
@@ -148,7 +148,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
                     wm->setViewStruts(*view, m_viewGeometry, view->containment()->location());
             });
 
-            if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+            if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
                 connections[2] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
                     updateStrutsBasedOnLayoutsAndActivities();
                 });
@@ -162,7 +162,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         }
         break;
 
-        case Dock::AutoHide: {
+        case Types::AutoHide: {
             //set wayland visibility mode
             if (m_latteView->surface()) {
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
@@ -172,7 +172,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         }
         break;
 
-        case Dock::DodgeActive: {
+        case Types::DodgeActive: {
             //set wayland visibility mode
             if (m_latteView->surface()) {
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
@@ -186,7 +186,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         }
         break;
 
-        case Dock::DodgeMaximized: {
+        case Types::DodgeMaximized: {
             //set wayland visibility mode
             if (m_latteView->surface()) {
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
@@ -200,7 +200,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         }
         break;
 
-        case Dock::DodgeAllWindows: {
+        case Types::DodgeAllWindows: {
             //set wayland visibility mode
             if (m_latteView->surface()) {
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
@@ -227,7 +227,7 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
         }
         break;
 
-        case Dock::WindowsGoBelow:
+        case Types::WindowsGoBelow:
 
             //set wayland visibility mode
             if (m_latteView->surface()) {
@@ -249,11 +249,11 @@ inline void VisibilityManagerPrivate::setMode(Dock::Visibility mode)
 
 void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
 {
-    bool multipleLayoutsAndCurrent = (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+    bool multipleLayoutsAndCurrent = (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                       && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                       && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName());
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout || multipleLayoutsAndCurrent) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
         wm->setViewStruts(*view, m_viewGeometry, view->location());
     } else {
         wm->removeViewStruts(*view);
@@ -291,8 +291,8 @@ inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
     this->isHidden = isHidden;
 
     if (q->supportsKWinEdges()) {
-        bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
-                                (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+        bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
+                                (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                  && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                  && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
@@ -387,19 +387,19 @@ void VisibilityManagerPrivate::updateHiddenState()
         return;
 
     switch (mode) {
-        case Dock::AutoHide:
+        case Types::AutoHide:
             raiseView(containsMouse);
             break;
 
-        case Dock::DodgeActive:
+        case Types::DodgeActive:
             dodgeActive(wm->activeWindow());
             break;
 
-        case Dock::DodgeMaximized:
+        case Types::DodgeMaximized:
             dodgeMaximized(wm->activeWindow());
             break;
 
-        case Dock::DodgeAllWindows:
+        case Types::DodgeAllWindows:
             dodgeWindows(wm->activeWindow());
             break;
 
@@ -415,7 +415,7 @@ inline void VisibilityManagerPrivate::setViewGeometry(const QRect &geometry)
 
     m_viewGeometry = geometry;
 
-    if (mode == Dock::AlwaysVisible && !m_latteView->inEditMode() && view->screen()) {
+    if (mode == Types::AlwaysVisible && !m_latteView->inEditMode() && view->screen()) {
         updateStrutsBasedOnLayoutsAndActivities();
     }
 }
@@ -603,12 +603,12 @@ inline void VisibilityManagerPrivate::restoreConfig()
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
 
     auto mode = [&]() {
-        return static_cast<Dock::Visibility>(view->containment()->config()
-                                             .readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+        return static_cast<Types::Visibility>(view->containment()->config()
+                                             .readEntry("visibility", static_cast<int>(Types::DodgeActive)));
     };
 
-    if (mode() == Dock::AlwaysVisible) {
-        setMode(Dock::AlwaysVisible);
+    if (mode() == Types::AlwaysVisible) {
+        setMode(Types::AlwaysVisible);
     } else {
         connect(&timerStartUp, &QTimer::timeout, this, [ &, mode]() {
             setMode(mode());
@@ -638,7 +638,7 @@ void VisibilityManagerPrivate::setContainsMouse(bool contains)
     containsMouse = contains;
     emit q->containsMouseChanged();
 
-    if (contains && mode != Dock::AlwaysVisible) {
+    if (contains && mode != Types::AlwaysVisible) {
         raiseView(true);
     }
 }
@@ -702,7 +702,7 @@ void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
     enabledDynamicBackgroundFlag = active;
 
     if (active) {
-        if (mode != Dock::DodgeAllWindows) {
+        if (mode != Types::DodgeAllWindows) {
             for (const auto &wid : wm->windows()) {
                 windows.insert(wid, wm->requestInfo(wid));
             }
@@ -752,7 +752,7 @@ void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
             disconnect(c);
         }
 
-        if (mode != Dock::DodgeAllWindows) {
+        if (mode != Types::DodgeAllWindows) {
             windows.clear();
         }
 
@@ -804,7 +804,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
     }
 
     int currentScrId = m_latteView->positioner()->currentScreenId();
-    QRect tempAvailableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, {Dock::AlwaysVisible}, {});
+    QRect tempAvailableScreenGeometry = m_corona->availableScreenRectWithCriteria(currentScrId, {Types::AlwaysVisible}, {});
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {
         availableScreenGeometry = tempAvailableScreenGeometry;
@@ -990,17 +990,17 @@ void VisibilityManagerPrivate::setEnableKWinEdges(bool enable)
 
 void VisibilityManagerPrivate::updateKWinEdgesSupport()
 {
-    if (mode == Dock::AutoHide
-        || mode == Dock::DodgeActive
-        || mode == Dock::DodgeAllWindows
-        || mode == Dock::DodgeMaximized) {
+    if (mode == Types::AutoHide
+        || mode == Types::DodgeActive
+        || mode == Types::DodgeAllWindows
+        || mode == Types::DodgeMaximized) {
         if (enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
         } else if (!enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
         }
-    } else if (mode == Dock::AlwaysVisible
-               || mode == Dock::WindowsGoBelow) {
+    } else if (mode == Types::AlwaysVisible
+               || mode == Types::WindowsGoBelow) {
         deleteEdgeGhostWindow();
     }
 }
@@ -1020,8 +1020,8 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
 
         connectionsKWinEdges[0] = connect(wm, &WindowSystem::currentActivityChanged,
         this, [&]() {
-            bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout ||
-                                    (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts
+            bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
+                                    (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                      && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                      && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
@@ -1106,12 +1106,12 @@ VisibilityManager::~VisibilityManager()
     delete d;
 }
 
-Dock::Visibility VisibilityManager::mode() const
+Types::Visibility VisibilityManager::mode() const
 {
     return d->mode;
 }
 
-void VisibilityManager::setMode(Dock::Visibility mode)
+void VisibilityManager::setMode(Types::Visibility mode)
 {
     d->setMode(mode);
 }

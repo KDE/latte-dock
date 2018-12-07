@@ -22,7 +22,7 @@
 #define LATTECORONA_H
 
 // local
-#include "../liblattedock/dock.h"
+#include "../liblatte2/types.h"
 
 // Qt
 #include <QObject>
@@ -91,7 +91,7 @@ public:
     //! by calculating only the user specified visibility modes and edges. Empty QLists for both
     //! arguments mean that all choices are accepted in calculations
     QRect availableScreenRectWithCriteria(int id,
-                                          QList<Dock::Visibility> modes = QList<Dock::Visibility>(),
+                                          QList<Types::Visibility> modes = QList<Types::Visibility>(),
                                           QList<Plasma::Types::Location> edges = QList<Plasma::Types::Location>()) const;
 
     QRegion availableScreenRegionWithCriteria(int id, QString forLayout = QString()) const;

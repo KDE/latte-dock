@@ -25,7 +25,7 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QDebug>
@@ -292,7 +292,7 @@ void Positioner::screenChanged(QScreen *scr)
     //! this is needed in order to update the struts on screen change
     //! and even though the geometry has been set correctly the offsets
     //! of the screen must be updated to the new ones
-    if (m_view->visibility() && m_view->visibility()->mode() == Latte::Dock::AlwaysVisible) {
+    if (m_view->visibility() && m_view->visibility()->mode() == Latte::Types::AlwaysVisible) {
         m_view->updateAbsDockGeometry(true);
     }
 }
@@ -403,16 +403,16 @@ QRect Positioner::maximumNormalGeometry()
             xPos = m_view->screen()->geometry().x();
 
             switch (m_view->alignment()) {
-                case Latte::Dock::Top:
+                case Latte::Types::Top:
                     yPos = m_view->screen()->geometry().y();
                     break;
 
-                case Latte::Dock::Center:
-                case Latte::Dock::Justify:
+                case Latte::Types::Center:
+                case Latte::Types::Justify:
                     yPos = qMax(m_view->screen()->geometry().center().y() - maxHeight / 2, m_view->screen()->geometry().y());
                     break;
 
-                case Latte::Dock::Bottom:
+                case Latte::Types::Bottom:
                     yPos = m_view->screen()->geometry().bottom() - maxHeight + 1;
                     break;
             }
@@ -424,16 +424,16 @@ QRect Positioner::maximumNormalGeometry()
             xPos = m_view->screen()->geometry().right() - maxWidth + 1;
 
             switch (m_view->alignment()) {
-                case Latte::Dock::Top:
+                case Latte::Types::Top:
                     yPos = m_view->screen()->geometry().y();
                     break;
 
-                case Latte::Dock::Center:
-                case Latte::Dock::Justify:
+                case Latte::Types::Center:
+                case Latte::Types::Justify:
                     yPos = qMax(m_view->screen()->geometry().center().y() - maxHeight / 2, m_view->screen()->geometry().y());
                     break;
 
-                case Latte::Dock::Bottom:
+                case Latte::Types::Bottom:
                     yPos = m_view->screen()->geometry().bottom() - maxHeight + 1;
                     break;
             }

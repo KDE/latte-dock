@@ -184,9 +184,9 @@ void Layout::initToCorona(Latte::Corona *corona)
     m_corona = corona;
 
     foreach (auto containment, m_corona->containments()) {
-        if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+        if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
             addContainment(containment);
-        } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
             QString layoutId = containment->config().readEntry("layoutId", QString());
 
             if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
@@ -206,9 +206,9 @@ void Layout::initToCorona(Latte::Corona *corona)
     });
 
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout && m_corona->universalSettings()->canDisableBorders()) {
         kwin_setDisabledMaximizedBorders(disableBordersForMaximizedWindows());
-    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         connect(m_corona->layoutManager(), &LayoutManager::currentLayoutNameChanged, this, [&]() {
             if (m_corona->universalSettings()->canDisableBorders()
                 && m_corona->layoutManager()->currentLayoutName() == name()) {
@@ -611,7 +611,7 @@ bool Layout::layoutIsBroken() const
         if (!m_corona) {
             qDebug() << "   --- file : " << m_layoutFile;
         } else {
-            if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+            if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
                 qDebug() << "   --- in multiple layouts hidden file : " << Importer::layoutFilePath(Layout::MultipleLayoutsName);
             } else {
                 qDebug() << "   --- in layout file : " << m_layoutFile;
@@ -726,10 +726,10 @@ void Layout::addContainment(Plasma::Containment *containment)
 
     bool containmentInLayout{false};
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
         m_containments.append(containment);
         containmentInLayout = true;
-    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         QString layoutId = containment->config().readEntry("layoutId", QString());
 
         if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
@@ -765,9 +765,9 @@ const QStringList Layout::appliedActivities()
         return {};
     }
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout) {
         return {"0"};
-    } else if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    } else if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         if (m_activities.isEmpty()) {
             return m_corona->layoutManager()->orphanedActivities();
         } else {
@@ -805,7 +805,7 @@ void Layout::updateLastUsedActivity()
 
     if (m_lastUsedActivity != currentId
         && (appliedActivitiesIds.contains(currentId)
-            || m_corona->layoutManager()->memoryUsage() == Dock::SingleLayout)) {
+            || m_corona->layoutManager()->memoryUsage() == Types::SingleLayout)) {
         m_lastUsedActivity = currentId;
 
         emit lastUsedActivityChanged();
@@ -973,10 +973,10 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
     //! it is used to set the correct flag during the creation
     //! of the window... This of course is also used during
     //! recreations of the window between different visibility modes
-    auto mode = static_cast<Dock::Visibility>(containment->config().readEntry("visibility", static_cast<int>(Dock::DodgeActive)));
+    auto mode = static_cast<Types::Visibility>(containment->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
     bool byPassWM{false};
 
-    if (mode == Dock::AlwaysVisible || mode == Dock::WindowsGoBelow) {
+    if (mode == Types::AlwaysVisible || mode == Types::WindowsGoBelow) {
         byPassWM = false;
     } else {
         byPassWM = containment->config().readEntry("byPassWM", false);
@@ -1001,7 +1001,7 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
     connect(containment, &Plasma::Containment::appletAlternativesRequested
             , m_corona, &Latte::Corona::showAlternativesForApplet, Qt::QueuedConnection);
 
-    if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
     }
 
@@ -1397,7 +1397,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
             }
         }
 
-        if (m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+        if (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
             investigate_conts.group(cId).writeEntry("layoutId", m_layoutName);
         }
     }
@@ -1627,7 +1627,7 @@ void Layout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *>
     }
 
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         syncToLayoutFile(false);
     }
 }
@@ -1663,7 +1663,7 @@ QList<Plasma::Containment *> Layout::unassignFromLayout(Latte::View *latteView)
     }
 
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutManager()->memoryUsage() == Dock::MultipleLayouts) {
+    if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
         syncToLayoutFile(false);
     }
 

@@ -22,7 +22,7 @@
 // local
 #include "panelshadows_p.h"
 #include "view.h"
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QRegion>
@@ -354,31 +354,31 @@ void Effects::updateEnabledBorders()
     }
 
     if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {
-        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Dock::Justify && !m_forceDrawCenteredBorders) {
+        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify && !m_forceDrawCenteredBorders) {
             borders &= ~Plasma::FrameSvg::TopBorder;
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
 
-        if (m_view->alignment() == Latte::Dock::Top && !m_forceDrawCenteredBorders && m_view->offset() == 0) {
+        if (m_view->alignment() == Latte::Types::Top && !m_forceDrawCenteredBorders && m_view->offset() == 0) {
             borders &= ~Plasma::FrameSvg::TopBorder;
         }
 
-        if (m_view->alignment() == Latte::Dock::Bottom && !m_forceDrawCenteredBorders && m_view->offset() == 0) {
+        if (m_view->alignment() == Latte::Types::Bottom && !m_forceDrawCenteredBorders && m_view->offset() == 0) {
             borders &= ~Plasma::FrameSvg::BottomBorder;
         }
     }
 
     if (m_view->location() == Plasma::Types::TopEdge || m_view->location() == Plasma::Types::BottomEdge) {
-        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Dock::Justify) {
+        if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
             borders &= ~Plasma::FrameSvg::LeftBorder;
             borders &= ~Plasma::FrameSvg::RightBorder;
         }
 
-        if (m_view->alignment() == Latte::Dock::Left && m_view->offset() == 0) {
+        if (m_view->alignment() == Latte::Types::Left && m_view->offset() == 0) {
             borders &= ~Plasma::FrameSvg::LeftBorder;
         }
 
-        if (m_view->alignment() == Latte::Dock::Right  && m_view->offset() == 0) {
+        if (m_view->alignment() == Latte::Types::Right  && m_view->offset() == 0) {
             borders &= ~Plasma::FrameSvg::RightBorder;
         }
     }

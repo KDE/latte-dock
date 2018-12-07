@@ -25,7 +25,7 @@
 #include "../plasmaquick/containmentview.h"
 #include "../schemecolors.h"
 #include "../wm/windowinfowrap.h"
-#include "../../liblattedock/dock.h"
+#include "../../liblatte2/types.h"
 
 // Qt
 #include <QObject>
@@ -42,7 +42,7 @@ class VisibilityManager : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Latte::Dock::Visibility mode READ mode WRITE setMode NOTIFY modeChanged)
+    Q_PROPERTY(Latte::Types::Visibility mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(bool raiseOnDesktop READ raiseOnDesktop WRITE setRaiseOnDesktop NOTIFY raiseOnDesktopChanged)
     Q_PROPERTY(bool raiseOnActivity READ raiseOnActivity WRITE setRaiseOnActivity NOTIFY raiseOnActivityChanged)
     Q_PROPERTY(bool isHidden READ isHidden WRITE setIsHidden NOTIFY isHiddenChanged)
@@ -66,8 +66,8 @@ public:
     explicit VisibilityManager(PlasmaQuick::ContainmentView *view);
     virtual ~VisibilityManager();
 
-    Latte::Dock::Visibility mode() const;
-    void setMode(Latte::Dock::Visibility mode);
+    Latte::Types::Visibility mode() const;
+    void setMode(Latte::Types::Visibility mode);
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
     void applyActivitiesToHiddenWindows(const QStringList &activities);

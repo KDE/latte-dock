@@ -204,7 +204,7 @@ void GlobalShortcuts::init()
     layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_W));
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
-        m_corona->layoutManager()->showLatteSettingsDialog(Dock::LayoutPage);
+        m_corona->layoutManager()->showLatteSettingsDialog(Types::LayoutPage);
     });
 
     //show the latter universal settings
@@ -213,7 +213,7 @@ void GlobalShortcuts::init()
     universalSettingsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
     KGlobalAccel::setGlobalShortcut(universalSettingsAction, QKeySequence(Qt::META + Qt::Key_E));
     connect(universalSettingsAction, &QAction::triggered, this, [this]() {
-        m_corona->layoutManager()->showLatteSettingsDialog(Dock::PreferencesPage);
+        m_corona->layoutManager()->showLatteSettingsDialog(Types::PreferencesPage);
     });
 
     KActionCollection *taskbarActions = new KActionCollection(m_corona);

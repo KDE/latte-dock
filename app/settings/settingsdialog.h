@@ -23,7 +23,7 @@
 #define SETTINGSDIALOG_H
 
 // local
-#include "../liblattedock/dock.h"
+#include "../liblatte2/types.h"
 
 // Qt
 #include <QObject>
@@ -55,7 +55,7 @@ public:
     SettingsDialog(QWidget *parent, Latte::Corona *corona);
     ~SettingsDialog();
 
-    void setCurrentPage(Dock::LatteConfigPage page);
+    void setCurrentPage(Types::LatteConfigPage page);
 
     QStringList activities();
     QStringList availableActivities();

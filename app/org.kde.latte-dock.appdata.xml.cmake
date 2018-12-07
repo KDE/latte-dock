@@ -169,7 +169,7 @@
   <project_group>KDE</project_group>
   <provides>
     <binary>latte-dock</binary>
-    <library>liblattedockplugin.so</library>
+    <library>liblatte2plugin.so</library>
   </provides>
   <releases>
 ​    <release version="0.6.0" date="2017-04-02"/>
