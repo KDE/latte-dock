@@ -41,8 +41,8 @@ FocusScope {
     id: dialog
 
     //! max size based on screen resolution
-    property int maxHeight: dock.screenGeometry.height - dock.normalThickness - 2*units.largeSpacing
-    property int maxWidth: 0.6 * dock.screenGeometry.width
+    property int maxHeight: latteView.screenGeometry.height - latteView.normalThickness - 2*units.largeSpacing
+    property int maxWidth: 0.6 * latteView.screenGeometry.width
 
     //! propose size based on font size
     property int proposedWidth: 0.84 * proposedHeight + units.smallSpacing * 2
@@ -58,7 +58,7 @@ FocusScope {
 
     readonly property real heightLevel: (plasmoid.configuration.advanced ? 1 : 1)
 
-    onHeightChanged: dockConfig.syncGeometry();
+    onHeightChanged: viewConfig.syncGeometry();
 
     //! applied size in order to not be out of boundaries
     //! width can be between 200px - maxWidth
@@ -74,7 +74,7 @@ FocusScope {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    readonly property bool dockIsPanel: behaviorPage.dockTypeSelection.isPanel
+    readonly property bool viewIsPanel: behaviorPage.dockTypeSelection.isPanel
 
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     property int subGroupSpacing: units.largeSpacing + units.smallSpacing * 1.5
@@ -85,7 +85,7 @@ FocusScope {
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
         imagePath: "dialogs/background"
-        enabledBorders: dockConfig.enabledBorders
+        enabledBorders: viewConfig.enabledBorders
     }
 
     MouseArea{
@@ -118,12 +118,12 @@ FocusScope {
             if (angle > 12) {
                 plasmoid.configuration.windowWidthScale = plasmoid.configuration.windowWidthScale + scaleStep;
                 plasmoid.configuration.windowHeightScale = plasmoid.configuration.windowHeightScale + scaleStep;
-                dockConfig.syncGeometry();
+                viewConfig.syncGeometry();
                 //negative direction
             } else if (angle < -12) {
                 plasmoid.configuration.windowWidthScale = plasmoid.configuration.windowWidthScale - scaleStep;
                 plasmoid.configuration.windowHeightScale = plasmoid.configuration.windowHeightScale - scaleStep;
-                dockConfig.syncGeometry();
+                viewConfig.syncGeometry();
             }
         }
     }
@@ -131,7 +131,7 @@ FocusScope {
     PlasmaComponents.Label{
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        text: i18nc("dock settings window scale","Window scale at %0%").arg(userScaleWidth)
+        text: i18nc("view settings window scale","Window scale at %0%").arg(userScaleWidth)
         visible: backgroundMouseArea.containsMouse && backgroundMouseArea.wheelTriggeredOnce
     }
 
@@ -162,7 +162,7 @@ FocusScope {
 
         Keys.onPressed: {
             if (event.key === Qt.Key_Escape) {
-                dockConfig.hideConfigWindow();
+                viewConfig.hideConfigWindow();
             } else if (event.key === Qt.Key_Left) {
                 //
                 if (tabGroup.currentTab === behaviorPage) {
@@ -325,12 +325,12 @@ FocusScope {
 
                     onClicked: {
                         plasmoid.configuration.configurationSticker = checked
-                        dockConfig.setSticker(checked)
+                        viewConfig.setSticker(checked)
                     }
 
                     Component.onCompleted: {
                         checked = plasmoid.configuration.configurationSticker
-                        dockConfig.setSticker(plasmoid.configuration.configurationSticker)
+                        viewConfig.setSticker(plasmoid.configuration.configurationSticker)
                     }
                 }
 
@@ -384,9 +384,9 @@ FocusScope {
                             }
 
                             if (checked) {
-                                dockConfig.setAdvanced(true);
+                                viewConfig.setAdvanced(true);
                             } else {
-                                dockConfig.setAdvanced(false);
+                                viewConfig.setAdvanced(false);
                             }
                         }
                     }
@@ -414,7 +414,7 @@ FocusScope {
                 text: i18n("Tasks")
                 tab: tasksPage
 
-                visible: dock.latteTasksPresent()
+                visible: latteView.latteTasksPresent()
             }
             PlasmaComponents.TabButton {
                 id: tweaksTabBtn
@@ -485,14 +485,14 @@ FocusScope {
             spacing: units.largeSpacing
 
             Connections{
-                target: dock.managedLayout
+                target: latteView.managedLayout
                 onViewsCountChanged: actionButtons.updateEnabled();
             }
 
             function updateEnabled() {
-                var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
-                addDock.enabled = dock.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
-                removeDock.enabled = dock.managedLayout.viewsCount>1 && !(dock.managedLayout.viewsWithTasks()===1 && dock.tasksPresent())
+                var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
+                addView.enabled = latteView.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
+                removeView.enabled = latteView.managedLayout.viewsCount>1 && !(latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent())
             }
 
             PlasmaComponents.Button {
@@ -503,7 +503,7 @@ FocusScope {
                 PlasmaComponents3.ComboBox {
                     id: actionsCmb
                     anchors.fill: parent
-                    enabled: addDock.enabled
+                    enabled: addView.enabled
 
                     property var activeLayoutsNames;
 
@@ -512,7 +512,7 @@ FocusScope {
                         actions.push("    " + i18n("Copy Dock"));
 
                         var tempActiveLayouts = layoutManager.activeLayoutsNames();
-                        var currentLayoutIndex = tempActiveLayouts.indexOf(dock.managedLayout.name);
+                        var currentLayoutIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
 
                         tempActiveLayouts.splice(currentLayoutIndex,1);
 
@@ -541,9 +541,9 @@ FocusScope {
 
                     onActivated: {
                         if (index==0) {
-                            dock.copyView();
+                            latteView.copyView();
                         } else if (index>=2) {
-                            dock.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
+                            latteView.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
                         }
 
                         actionsCmb.currentIndex = -1;
@@ -560,7 +560,7 @@ FocusScope {
 
                 //overlayed button
                 PlasmaComponents.Button {
-                    id: addDock
+                    id: addView
                     anchors.left: Qt.application.layoutDirection === Qt.RightToLeft ? undefined : parent.left
                     anchors.right: Qt.application.layoutDirection === Qt.RightToLeft ? parent.right : undefined
                     LayoutMirroring.enabled: false
@@ -572,27 +572,27 @@ FocusScope {
                     iconSource: "list-add"
                     tooltip: i18n("Add a new dock")
 
-                    onClicked: dock.managedLayout.addNewView()
+                    onClicked: latteView.managedLayout.addNewView()
 
                     Component.onCompleted: {
-                        var screenFreeEdges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
+                        var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
                         enabled = screenFreeEdges.length > 0
                     }
                 }
             }
 
             PlasmaComponents.Button {
-                id: removeDock
+                id: removeView
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
 
                 text: i18n("Remove")
                 iconSource: "delete"
-                opacity: dock.managedLayout.viewsCount > 1 ? 1 : 0
+                opacity: latteView.managedLayout.viewsCount > 1 ? 1 : 0
                 tooltip: i18n("Remove current dock")
 
-                onClicked: dock.removeView()
+                onClicked: latteView.removeView()
             }
 
             PlasmaComponents.Button {
@@ -605,7 +605,7 @@ FocusScope {
                 iconSource: "dialog-close"
                 tooltip: i18n("Close settings window")
 
-                onClicked: dockConfig.hideConfigWindow();
+                onClicked: viewConfig.hideConfigWindow();
             }
         }
     }

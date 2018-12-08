@@ -179,10 +179,10 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate KWin edge after hiding")
-                checked: dock.visibility.enableKWinEdges
+                checked: latteView.visibility.enableKWinEdges
 
                 onClicked: {
-                    dock.visibility.enableKWinEdges = checked;
+                    latteView.visibility.enableKWinEdges = checked;
                 }
             }
 
@@ -191,7 +191,7 @@ PlasmaComponents.Page {
                 text: i18n("Decrease applets size when it is needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
                 tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length \n\nHint: this option is disabled when only plasma taskmanagers are present")
-                enabled: !(dock.tasksPresent() && !dock.latteTasksPresent());
+                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
 
                 onClicked: {
                     plasmoid.configuration.autoDecreaseIconSize = checked
@@ -212,48 +212,48 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Prefer for global shortcuts activation")
-                checked: dock.isPreferredForShortcuts
+                checked: latteView.isPreferredForShortcuts
 
                 tooltip: i18n("Enable highest priority for global shortcuts activation")
 
                 onClicked: {
-                    dock.isPreferredForShortcuts = checked
+                    latteView.isPreferredForShortcuts = checked
                 }
             }
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Above fullscreen windows")
-                checked: dock.byPassWM
-                enabled: !(dock.visibility.mode === Latte.Types.AlwaysVisible
-                           || dock.visibility.mode === Latte.Types.WindowsGoBelow)
+                checked: latteView.byPassWM
+                enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
+                           || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
                 tooltip: i18n("BypassWindowManagerHint flag for the window.\nThe view will be above all windows even those set as 'Always On Top'")
 
                 onCheckedChanged: {
-                    dock.byPassWM = checked;
+                    latteView.byPassWM = checked;
                 }
             }
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise on desktop change")
-                checked: dock.visibility.raiseOnDesktop
-                enabled: dock.visibility.mode !== Latte.Types.AlwaysVisible
+                checked: latteView.visibility.raiseOnDesktop
+                enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible
 
                 onClicked: {
-                    dock.visibility.raiseOnDesktop = checked
+                    latteView.visibility.raiseOnDesktop = checked
                 }
             }
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise on activity change")
-                checked: dock.visibility.raiseOnActivity
-                enabled: dock.visibility.mode !== Latte.Types.AlwaysVisible
+                checked: latteView.visibility.raiseOnActivity
+                enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible
 
                 onClicked: {
-                    dock.visibility.raiseOnActivity = checked
+                    latteView.visibility.raiseOnActivity = checked
                 }
             }
         }
@@ -283,7 +283,7 @@ PlasmaComponents.Page {
                     tooltip: i18n("Add a spacer to separate applets")
 
                     onClicked: {
-                        dockConfig.addPanelSpacer()
+                        viewConfig.addPanelSpacer()
                     }
                 }
 
@@ -291,11 +291,11 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     iconSource: "edit-delete"
                     text: i18n("Remove Tasks Applet")
-                    enabled: dock.tasksPresent()
+                    enabled: latteView.tasksPresent()
                     tooltip: i18n("Remove Latte Tasks plasmoid")
 
                     onClicked: {
-                        dock.removeTasksPlasmoid();
+                        latteView.removeTasksPlasmoid();
                     }
                 }
             }

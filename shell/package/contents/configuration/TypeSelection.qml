@@ -74,7 +74,7 @@ Grid {
 
         onPressedChanged: {
             if (pressed && !checked) {
-                dock.visibility.mode = Latte.Types.DodgeActive;
+                latteView.visibility.mode = Latte.Types.DodgeActive;
                 plasmoid.configuration.panelPosition = Latte.Types.Center;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
@@ -106,7 +106,7 @@ Grid {
 
         onPressedChanged: {
             if (pressed && !checked) {
-                dock.visibility.mode = Latte.Types.AlwaysVisible;
+                latteView.visibility.mode = Latte.Types.AlwaysVisible;
                 plasmoid.configuration.panelPosition = Latte.Types.Justify;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;

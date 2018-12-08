@@ -53,7 +53,7 @@ FocusScope {
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
         imagePath: "dialogs/background"
-        enabledBorders: dockConfig.enabledBorders
+        enabledBorders: viewConfig.enabledBorders
     }
 
 
@@ -65,7 +65,7 @@ FocusScope {
 
         Keys.onPressed: {
             if (event.key === Qt.Key_Escape) {
-                dockConfig.hideConfigWindow();
+                viewConfig.hideConfigWindow();
             }
         }
     }

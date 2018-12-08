@@ -53,7 +53,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
-            visible: plasmoid.configuration.advanced && dockConfig.showInlineProperties
+            visible: plasmoid.configuration.advanced && viewConfig.showInlineProperties
 
             Header {
                 text: i18n("Type")
@@ -96,16 +96,16 @@ PlasmaComponents.Page {
                     screens.push(rtlSpace + i18n("On Primary"));
 
                     //check if the screen exists, it is used in cases Latte is moving
-                    //the dock automatically to primaryScreen in order for the user
-                    //to has always a dock with tasks shown
+                    //the view automatically to primaryScreen in order for the user
+                    //to has always a view with tasks shown
                     var screenExists = false
                     for (var i = 0; i < universalSettings.screens.length; i++) {
-                        if (universalSettings.screens[i].name === dock.positioner.currentScreenName)
+                        if (universalSettings.screens[i].name === latteView.positioner.currentScreenName)
                             screenExists = true;
                     }
 
-                    if (!screenExists && !dock.onPrimary)
-                        screens.push(rtlSpace + dock.positioner.currentScreenName);
+                    if (!screenExists && !latteView.onPrimary)
+                        screens.push(rtlSpace + latteView.positioner.currentScreenName);
 
                     for (var i = 0; i < universalSettings.screens.length; i++) {
                         screens.push(rtlSpace + universalSettings.screens[i].name)
@@ -113,17 +113,17 @@ PlasmaComponents.Page {
 
                     screenCmb.model = screens;
 
-                    if (dock.onPrimary) {
+                    if (latteView.onPrimary) {
                         screenCmb.currentIndex = 0;
                     } else {
-                        screenCmb.currentIndex = screenCmb.find(dock.positioner.currentScreenName);
+                        screenCmb.currentIndex = screenCmb.find(latteView.positioner.currentScreenName);
                     }
 
-                    console.log(dock.positioner.currentScreenName);
+                    console.log(latteView.positioner.currentScreenName);
                 }
 
                 Connections{
-                    target: dockConfig
+                    target: viewConfig
                     onShowSignal: screenRow.updateScreens();
                 }
 
@@ -154,18 +154,18 @@ PlasmaComponents.Page {
                     onActivated: {
                         previousIndex = currentIndex;
                         if (index === 0) {
-                            var succeed = dock.positioner.setCurrentScreen("primary");
+                            var succeed = latteView.positioner.setCurrentScreen("primary");
 
-                            dock.onPrimary = true;
+                            latteView.onPrimary = true;
                             acceptedIndex = true;
-                        } else if (index>0 && (index !== find(dock.positioner.currentScreenName) || dock.onPrimary)) {
+                        } else if (index>0 && (index !== find(latteView.positioner.currentScreenName) || latteView.onPrimary)) {
                             console.log("current index changed!!! :"+ index);
                             console.log("screen must be changed...");
 
-                            var succeed = dock.positioner.setCurrentScreen(textAt(index));
+                            var succeed = latteView.positioner.setCurrentScreen(textAt(index));
 
                             if(succeed) {
-                                dock.onPrimary = false;
+                                latteView.onPrimary = false;
                             } else {
                                 console.log("the edge is already occupied!!!");
                                 acceptedIndex = false;
@@ -184,17 +184,17 @@ PlasmaComponents.Page {
                 spacing: 1
 
                 Connections{
-                    target: dock
+                    target: latteView
                     onDockLocationChanged: locationLayout.lockReservedEdges();
                 }
 
                 Connections{
-                    target: dock.managedLayout
+                    target: latteView.managedLayout
                     onViewsCountChanged: locationLayout.lockReservedEdges();
                 }
 
                 Connections{
-                    target: dock.positioner
+                    target: latteView.positioner
                     onCurrentScreenChanged: locationLayout.lockReservedEdges();
                 }
 
@@ -206,14 +206,14 @@ PlasmaComponents.Page {
 
                     onCurrentChanged: {
                         if (current.checked && !inStartup) {
-                            dock.positioner.hideDockDuringLocationChange(current.edge);
+                            latteView.positioner.hideDockDuringLocationChange(current.edge);
                         }
                         inStartup = false;
                     }
                 }
 
                 function lockReservedEdges() {
-                    var edges = dock.managedLayout.qmlFreeEdges(dock.positioner.currentScreenId);
+                    var edges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
 
                     bottomEdgeBtn.edgeIsFree = (edges.indexOf(bottomEdgeBtn.edge)>=0);
                     topEdgeBtn.edgeIsFree = (edges.indexOf(topEdgeBtn.edge)>=0);
@@ -226,7 +226,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     text: i18nc("bottom location", "Bottom")
                     iconSource: "arrow-down"
-                    checked: dock.location === edge
+                    checked: latteView.location === edge
                     checkable: true
                     enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
@@ -239,7 +239,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     text: i18nc("left location", "Left")
                     iconSource: "arrow-left"
-                    checked: dock.location === edge
+                    checked: latteView.location === edge
                     checkable: true
                     enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
@@ -252,7 +252,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     text: i18nc("top location", "Top")
                     iconSource: "arrow-up"
-                    checked: dock.location === edge
+                    checked: latteView.location === edge
                     checkable: true
                     enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
@@ -265,7 +265,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     text: i18nc("right location", "Right")
                     iconSource: "arrow-right"
-                    checked: dock.location === edge
+                    checked: latteView.location === edge
                     checkable: true
                     enabled: checked || edgeIsFree
                     exclusiveGroup: locationGroup
@@ -297,16 +297,16 @@ PlasmaComponents.Page {
 
                 onPanelPositionChanged: {
                     if (panelPosition === Latte.Types.Justify)
-                        dock.addInternalViewSplitter()
+                        latteView.addInternalViewSplitter()
                     else
-                        dock.removeInternalViewSplitter()
+                        latteView.removeInternalViewSplitter()
                 }
 
                 Component.onCompleted: {
                     if (panelPosition === Latte.Types.Justify)
-                        dock.addInternalViewSplitter()
+                        latteView.addInternalViewSplitter()
                     else
-                        dock.removeInternalViewSplitter()
+                        latteView.removeInternalViewSplitter()
                 }
 
                 ExclusiveGroup {
@@ -380,13 +380,13 @@ PlasmaComponents.Page {
 
                 columns: 2
 
-                property int mode: dock.visibility.mode
+                property int mode: latteView.visibility.mode
 
                 ExclusiveGroup {
                     id: visibilityGroup
                     onCurrentChanged: {
                         if (current.checked)
-                            dock.visibility.mode = current.mode
+                            latteView.visibility.mode = current.mode
                     }
                 }
 
@@ -453,8 +453,8 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            enabled: !(dock.visibility.mode === Latte.Types.AlwaysVisible
-                       || dock.visibility.mode === Latte.Types.WindowsGoBelow)
+            enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
+                       || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
             Header {
                 Layout.fillWidth: true
@@ -478,10 +478,10 @@ PlasmaComponents.Page {
                 }
                 LatteExtraControls.TextField {
                     Layout.preferredWidth: width
-                    text: dock.visibility.timerShow
+                    text: latteView.visibility.timerShow
 
                     onValueChanged: {
-                        dock.visibility.timerShow = value
+                        latteView.visibility.timerShow = value
                     }
                 }
 
@@ -496,10 +496,10 @@ PlasmaComponents.Page {
                 }
                 LatteExtraControls.TextField{
                     Layout.preferredWidth: width
-                    text: dock.visibility.timerHide
+                    text: latteView.visibility.timerHide
 
                     onValueChanged: {
-                        dock.visibility.timerHide = value
+                        latteView.visibility.timerHide = value
                     }
                 }
             }

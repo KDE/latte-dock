@@ -112,8 +112,8 @@ void DockConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
-    rootContext()->setContextProperty(QStringLiteral("dock"), m_latteView);
-    rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
+    rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
+    rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
 
     if (m_corona) {
         rootContext()->setContextProperty(QStringLiteral("universalSettings"), m_corona->universalSettings());

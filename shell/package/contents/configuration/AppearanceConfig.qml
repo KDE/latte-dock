@@ -43,7 +43,7 @@ PlasmaComponents.Page {
         running: false
         repeat: false
         interval: 400
-        onTriggered: dockConfig.syncGeometry()
+        onTriggered: viewConfig.syncGeometry()
     }
 
     ColumnLayout {
@@ -166,7 +166,7 @@ PlasmaComponents.Page {
                     to: 128
                     stepSize: (!plasmoid.configuration.autoDecreaseIconSize
                                && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
-                              || dialog.dockIsPanel ? 1 : 8
+                              || dialog.viewIsPanel ? 1 : 8
                     wheelEnabled: false
 
                     function updateIconSize() {
@@ -956,7 +956,7 @@ PlasmaComponents.Page {
                             enabled: showAppletShadow.checked
 
                             onClicked: {
-                                dockConfig.setSticker(true);
+                                viewConfig.setSticker(true);
                                 colorDialogLoader.showDialog = true;
                             }
 
@@ -992,11 +992,11 @@ PlasmaComponents.Page {
                                             plasmoid.configuration.shadowColor = strC.substr(1);
 
                                         colorDialogLoader.showDialog = false;
-                                        dockConfig.setSticker(false);
+                                        viewConfig.setSticker(false);
                                     }
                                     onRejected: {
                                         colorDialogLoader.showDialog = false;
-                                        dockConfig.setSticker(false);
+                                        viewConfig.setSticker(false);
                                     }
                                     Component.onCompleted: {
                                         color = String("#" + plasmoid.configuration.shadowColor);

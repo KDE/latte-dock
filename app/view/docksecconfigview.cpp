@@ -105,8 +105,8 @@ void DockSecConfigView::init()
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
-    rootContext()->setContextProperty(QStringLiteral("dock"), m_latteView);
-    rootContext()->setContextProperty(QStringLiteral("dockConfig"), this);
+    rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
+    rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
     rootContext()->setContextProperty(QStringLiteral("plasmoid"), m_latteView->containment()->property("_plasma_graphicObject").value<QObject *>());
 
     KDeclarative::KDeclarative kdeclarative;

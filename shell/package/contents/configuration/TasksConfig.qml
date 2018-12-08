@@ -282,7 +282,7 @@ PlasmaComponents.Page {
                     id: launchersGroup
                     onCurrentChanged: {
                         if (current.checked) {
-                            dockConfig.updateLaunchersForGroup(current.group);
+                            viewConfig.updateLaunchersForGroup(current.group);
                             plasmoid.configuration.launchersGroup = current.group;
                         }
                     }
@@ -294,7 +294,7 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use a unique set of launchers for this dock which is independent from any other dock")
+                    tooltip: i18n("Use a unique set of launchers for this view which is independent from any other view")
 
                     readonly property int group: Latte.Types.UniqueLaunchers
                 }
@@ -305,7 +305,7 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use the current layout set of launchers for this dock. This group provides launchers <b>synchronization</b> between different docks in the <b>same layout</b>")
+                    tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
                     visible: plasmoid.configuration.advanced || plasmoid.configuration.launchersGroup === group;
 
                     readonly property int group: Latte.Types.LayoutLaunchers
@@ -317,7 +317,7 @@ PlasmaComponents.Page {
                     checked: parent.group === group
                     checkable: true
                     exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use the global set of launchers for this dock. This group provides launchers <b>synchronization</b> between different docks and between <b>different layouts</b>")
+                    tooltip: i18n("Use the global set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views and between <b>different layouts</b>")
 
                     readonly property int group: Latte.Types.GlobalLaunchers
                 }
