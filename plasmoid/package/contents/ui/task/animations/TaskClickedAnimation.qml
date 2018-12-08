@@ -76,7 +76,7 @@ SequentialAnimation{
     onStopped: {
         if( !mainItemContainer.isDragged){
             //mainItemContainer.animationEnded();
-            if(!root.latteDock)
+            if(!root.latteView)
                 checkListHovered.startDuration(6*units.longDuration);
         }
     }

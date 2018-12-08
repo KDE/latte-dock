@@ -76,17 +76,17 @@ Item{
 
         if (root.editMode) {
             neighbourSeparator = false;
-        } else if (latteDock && index!==-1) {
+        } else if (latteView && index!==-1) {
             if (!rightSpacer) {
                 neighbourSeparator = (mainItemContainer.hasNeighbourSeparator(itemIndex-1, false) && !isSeparator && itemIndex!==parabolicManager.firstRealTaskIndex)
-                        || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
+                        || (latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
             } else {
                 if (itemIndex >= root.tasksCount) {
                     return;
                 }
 
                 neighbourSeparator = (mainItemContainer.hasNeighbourSeparator(itemIndex+1,true) && !isSeparator && itemIndex!==parabolicManager.lastRealTaskIndex)
-                        || (latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
+                        || (latteView.parabolicManager.isSeparator(latteView.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
             }
 
             /* if (launcherUrl.indexOf("kwrite") > -1 || launcherUrl.indexOf("dolphin") > -1 ) {
@@ -102,13 +102,13 @@ Item{
     Connections{
         target: root
         onEditModeChanged: hiddenSpacer.updateNeighbour();
-        onLatteDockChanged: hiddenSpacer.updateNeighbour();
+        onLatteViewChanged: hiddenSpacer.updateNeighbour();
         // onInternalSeparatorHiddenChanged: hiddenSpacer.updateNeighbour();
         onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
     }
 
     Connections{
-        target: latteDock
+        target: latteView
         onSeparatorsUpdated: hiddenSpacer.updateNeighbour();
         onLatteAppletPosChanged: hiddenSpacer.updateNeighbour();
     }
@@ -148,7 +148,7 @@ Item{
     }
 
     Loader{
-        active: latteDock && latteDock.debugModeSpacers
+        active: latteView && latteView.debugModeSpacers
 
         sourceComponent: Rectangle{
             width: !root.vertical ? hiddenSpacer.width : 1

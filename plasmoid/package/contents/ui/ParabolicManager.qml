@@ -94,19 +94,19 @@ Item {
     //!this is used in order to update the index when the signal is for applets
     //!outside the latte plasmoid
     function updateIdSendScale(index, zScale, zStep){
-        if ((index>=0 && index<=root.tasksCount-1) || (!root.latteDock)){
+        if ((index>=0 && index<=root.tasksCount-1) || (!root.latteView)){
             root.updateScale(index, zScale, zStep);
             return -1;
         } else{
-            var appletId = latteDock.latteAppletPos;
+            var appletId = latteView.latteAppletPos;
             if (index<0)
-                appletId = latteDock.parabolicManager.availableLowerId(latteDock.latteAppletPos + index);
+                appletId = latteView.parabolicManager.availableLowerId(latteView.latteAppletPos + index);
             else if (index>root.tasksCount-1){
                 var step=index-root.tasksCount+1;
-                appletId = latteDock.parabolicManager.availableHigherId(latteDock.latteAppletPos + step);
+                appletId = latteView.parabolicManager.availableHigherId(latteView.latteAppletPos + step);
             }
 
-            latteDock.updateScale(appletId, zScale, zStep);
+            latteView.updateScale(appletId, zScale, zStep);
             return appletId;
         }
     }
@@ -169,18 +169,18 @@ Item {
         gPAppletId = updateIdSendScale(aGId1, rightScale, 0);
         lPAppletId = updateIdSendScale(aLId1, leftScale, 0);
 
-        // console.log("index:"+index + " lattePos:"+latteDock.latteAppletPos);
+        // console.log("index:"+index + " lattePos:"+latteView.latteAppletPos);
         // console.log("gApp:"+gPAppletId+" lApp:"+lPAppletId+ " aG1:"+aGId1+" aLId1:"+aLId1);
 
         gStep = aGId1 - index;
         lStep = index - aLId1;
 
-        if (latteDock) {
+        if (latteView) {
             if (gPAppletId > -1)
-                gStep = Math.abs(gPAppletId - latteDock.latteAppletPos + (root.tasksCount-1-index));
+                gStep = Math.abs(gPAppletId - latteView.latteAppletPos + (root.tasksCount-1-index));
 
             if (lPAppletId > -1)
-                lStep = Math.abs(lPAppletId - latteDock.latteAppletPos - index);
+                lStep = Math.abs(lPAppletId - latteView.latteAppletPos - index);
         }
 
         //console.log("gs:"+gStep+" ls:"+lStep);
@@ -193,16 +193,16 @@ Item {
         clearTasksGreaterThan(aGId1+1);
         clearTasksLowerThan(aLId1-1);
 
-        if (latteDock){
+        if (latteView){
             if (gAppletId > -1)
-                latteDock.parabolicManager.clearAppletsGreaterThan(gAppletId);
+                latteView.parabolicManager.clearAppletsGreaterThan(gAppletId);
             else
-                latteDock.parabolicManager.clearAppletsGreaterThan(latteDock.latteAppletPos);
+                latteView.parabolicManager.clearAppletsGreaterThan(latteView.latteAppletPos);
 
             if (lAppletId > -1)
-                latteDock.parabolicManager.clearAppletsLowerThan(lAppletId);
+                latteView.parabolicManager.clearAppletsLowerThan(lAppletId);
             else
-                latteDock.parabolicManager.clearAppletsLowerThan(latteDock.latteAppletPos-1);
+                latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos-1);
         }
 
         return {leftScale:leftScale, rightScale:rightScale};
@@ -536,9 +536,9 @@ Item {
             //console.log("to be moved: "+launcherUrl + " - " + from +" -> "+to)
 
             tasksModel.move(from, to);
-            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
-                                                                           plasmoid.id, latteDock.launchersGroup, from, to);
+            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.universalLayoutManager.launchersSignals.moveTask(root.managedLayoutName,
+                                                                           plasmoid.id, latteView.launchersGroup, from, to);
             }
             delayedLaynchersSyncTimer.start();
         }

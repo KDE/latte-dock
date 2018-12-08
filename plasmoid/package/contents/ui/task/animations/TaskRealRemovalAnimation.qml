@@ -65,11 +65,11 @@ SequentialAnimation {
                 //! the removal animation a small margin must applied
                 var nextTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
                         ((mainItemContainer.hasNeighbourSeparator(lastValidIndex+1,true) && !mainItemContainer.isSeparator && lastValidIndex<parabolicManager.lastRealTaskIndex)
-                         || (latteDock && latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos+1) && lastValidIndex>parabolicManager.lastRealTaskIndex));
+                         || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos+1) && lastValidIndex>parabolicManager.lastRealTaskIndex));
 
                 var previousTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
                         ((mainItemContainer.hasNeighbourSeparator(lastValidIndex-1,false) && !mainItemContainer.isSeparator && lastValidIndex>parabolicManager.firstRealTaskIndex)
-                         || (latteDock && latteDock.parabolicManager.isSeparator(latteDock.latteAppletPos-1) && lastValidIndex<=parabolicManager.firstRealTaskIndex));
+                         || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && lastValidIndex<=parabolicManager.firstRealTaskIndex));
 
                 var spacer = nextTaskIsSeparator ? -(2+root.iconMargin/2) : ( previousTaskIsSeparator ? (2+root.iconMargin/2)/2 : 0);
 

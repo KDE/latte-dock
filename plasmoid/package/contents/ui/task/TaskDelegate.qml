@@ -458,7 +458,7 @@ MouseArea{
                 //      mainItemContainer.hoverEnabled = true;
                 slotPublishGeometries();
 
-                if (latteDock && latteDock.debugModeTimers) {
+                if (latteView && latteView.debugModeTimers) {
                     console.log("plasmoid timer: taskInitComponentTimer called...");
                 }
 
@@ -578,20 +578,20 @@ MouseArea{
             windowsPreviewDlg.hide(1);
         }
 
-        if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
+        if (!latteView || (latteView && !(latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
             icList.hoveredIndex = index;
         }
 
-        if (root.latteDock && (!root.showPreviews)){
+        if (root.latteView && (!root.showPreviews)){
             var displayText = isWindow ? model.display : model.AppName;
             var maxCharacters = 80;
 
             var fixedDisplayText = displayText.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : displayText;
 
-            root.latteDock.showTooltipLabel(mainItemContainer, fixedDisplayText);
+            root.latteView.showTooltipLabel(mainItemContainer, fixedDisplayText);
         }
 
-        if (root.latteDock && root.latteDock.isHalfShown) {
+        if (root.latteView && root.latteView.isHalfShown) {
             return;
         }
 
@@ -619,8 +619,8 @@ MouseArea{
     onExited: {
         mainItemContainer.scalesUpdatedOnce = false;
 
-        if (root.latteDock && (!root.showPreviews || (root.showPreviews && isLauncher))){
-            root.latteDock.hideTooltipLabel();
+        if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
+            root.latteView.hideTooltipLabel();
         }
 
         if(mainItemContainer.contextMenu && mainItemContainer.contextMenu.status == PlasmaComponents.DialogStatus.Open){
@@ -649,7 +649,7 @@ MouseArea{
 
         root.stopCheckRestoreZoomTimer();
 
-        if (root.latteDock && root.latteDock.isHalfShown) {
+        if (root.latteView && root.latteView.isHalfShown) {
             return;
         }
 
@@ -673,7 +673,7 @@ MouseArea{
                 root.startDirectRenderDelayerDuringEntering();
             }
 
-            if (!latteDock || (latteDock && !(latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
+            if (!latteView || (latteView && !(latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
                 icList.hoveredIndex = index;
             }
 
@@ -713,7 +713,7 @@ MouseArea{
         if (root.editMode || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
-        if (root.latteDock && root.latteDock.isHalfShown) {
+        if (root.latteView && root.latteView.isHalfShown) {
             return;
         }
 
@@ -865,7 +865,7 @@ MouseArea{
 
     onWheel: {
         if (isSeparator || !root.mouseWheelActions || blockWheel || inWheelAction || inBouncingAnimation
-                || (latteDock && (latteDock.dockIsHidden || latteDock.inSlidingIn || latteDock.inSlidingOut))){
+                || (latteView && (latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
             return;
         }
 
@@ -1178,9 +1178,9 @@ MouseArea{
         //! this way we make sure that layouts that are in different activities that the current layout
         //! don't publish their geometries
         if ( canPublishGeometries
-                && (!latteDock
-                    || (latteDock && currentLayout && latteDock.universalLayoutManager &&
-                        currentLayout.name === latteDock.universalLayoutManager.currentLayoutName))) {
+                && (!latteView
+                    || (latteView && currentLayout && latteView.universalLayoutManager &&
+                        currentLayout.name === latteView.universalLayoutManager.currentLayoutName))) {
             var globalChoords = backend.globalRect(mainItemContainer);
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
@@ -1421,9 +1421,9 @@ MouseArea{
 
                 if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
                     //console.log("Hovered Timer....");
-                    if (root.showPreviews && (!root.latteDock
-                                              || (root.latteDock && !root.latteDock.isHalfShown
-                                                  && !root.latteDock.inSlidingIn && !root.latteDock.inSlidingOut))) {
+                    if (root.showPreviews && (!root.latteView
+                                              || (root.latteView && !root.latteView.isHalfShown
+                                                  && !root.latteView.inSlidingIn && !root.latteView.inSlidingOut))) {
                         mainItemContainer.preparePreviewWindow(false);
                         windowsPreviewDlg.show(mainItemContainer);
                     } else if (mainItemContainer.isWindow && root.highlightWindows) {
@@ -1453,7 +1453,7 @@ MouseArea{
                     mainItemContainer.isDragged = true;
                 }
 
-                if (latteDock && latteDock.debugModeTimers) {
+                if (latteView && latteView.debugModeTimers) {
                     console.log("plasmoid timer: resistanerTimer called...");
                 }
 
@@ -1502,7 +1502,7 @@ MouseArea{
                 else
                     showWindowAnimation.execute();
 
-                if (latteDock && latteDock.debugModeTimers) {
+                if (latteView && latteView.debugModeTimers) {
                     console.log("plasmoid timer: timerWindow called...");
                 }
 
@@ -1530,7 +1530,7 @@ MouseArea{
                 }
             }
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: lastValidTimer called...");
             }
         }
@@ -1545,7 +1545,7 @@ MouseArea{
         onTriggered: {
             mainItemContainer.inWheelAction = false;
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: wheelActionDelayer called...");
             }
         }

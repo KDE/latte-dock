@@ -638,8 +638,8 @@ Item{
                 ScriptAction{
                     script: {
                         icList.directRender = false;
-                        if(latteDock) {
-                            latteDock.globalDirectRender=false;
+                        if(latteView) {
+                            latteView.globalDirectRender=false;
                         }
 
                         mainItemContainer.inBlockingAnimation = true;
@@ -690,9 +690,9 @@ Item{
                     parabolicManager.clearTasksGreaterThan(index);
                     parabolicManager.clearTasksLowerThan(index);
 
-                    if (latteDock){
-                        latteDock.parabolicManager.clearAppletsGreaterThan(latteDock.latteAppletPos);
-                        latteDock.parabolicManager.clearAppletsLowerThan(latteDock.latteAppletPos);
+                    if (latteView){
+                        latteView.parabolicManager.clearAppletsGreaterThan(latteView.latteAppletPos);
+                        latteView.parabolicManager.clearAppletsLowerThan(latteView.latteAppletPos);
                     }
                 }
             }
@@ -707,8 +707,8 @@ Item{
                 ScriptAction{
                     script: {
                         icList.directRender = false;
-                        if(latteDock) {
-                            latteDock.globalDirectRender=false;
+                        if(latteView) {
+                            latteView.globalDirectRender=false;
                         }
                     }
                 }

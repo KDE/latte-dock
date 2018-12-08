@@ -94,9 +94,9 @@ PlasmaComponents.ContextMenu {
 
         icList.directRender = false;
 
-        if (root.latteDock){
-            root.latteDock.hideTooltipLabel();
-            root.latteDock.globalDirectRender = false;
+        if (root.latteView){
+            root.latteView.hideTooltipLabel();
+            root.latteView.globalDirectRender = false;
         }
     }
 
@@ -639,9 +639,9 @@ PlasmaComponents.ContextMenu {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
                 var launcher = get(atm.LauncherUrl);
 
-                if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
-                                                                                     latteDock.launchersGroup, launcher);
+                if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                    latteView.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                     latteView.launchersGroup, launcher);
                 } else {
                     root.launcherForRemoval = launcher;
                     tasksModel.requestRemoveLauncher(launcher);
@@ -650,9 +650,9 @@ PlasmaComponents.ContextMenu {
 
             } else {
                 var launcher = get(atm.LauncherUrl);
-                if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                    latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
-                                                                                  latteDock.launchersGroup, launcher);
+                if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                    latteView.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
+                                                                                  latteView.launchersGroup, launcher);
                 } else {
                     tasksModel.requestAddLauncher(launcher);
                     root.launchersUpdatedFor(launcher);
@@ -698,9 +698,9 @@ PlasmaComponents.ContextMenu {
                     result.clicked.connect(
                                 function() {
                                     if (result.checked) {
-                                        if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                                            latteDock.universalLayoutManager.launchersSignals.addLauncherToActivity(root.managedLayoutName,
-                                                                                                                    latteDock.launchersGroup, url, id);
+                                        if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                                            latteView.universalLayoutManager.launchersSignals.addLauncherToActivity(root.managedLayoutName,
+                                                                                                                    latteView.launchersGroup, url, id);
                                         } else {
                                             if (id !== tasksModel.activity && (activities[0] === "00000000-0000-0000-0000-000000000000")) {
                                                 root.launcherForRemoval = url;
@@ -710,9 +710,9 @@ PlasmaComponents.ContextMenu {
                                             root.launchersUpdatedFor(url);
                                         }
                                     } else {
-                                        if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                                            latteDock.universalLayoutManager.launchersSignals.removeLauncherFromActivity(root.managedLayoutName,
-                                                                                                                         latteDock.launchersGroup, url, id);
+                                        if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                                            latteView.universalLayoutManager.launchersSignals.removeLauncherFromActivity(root.managedLayoutName,
+                                                                                                                         latteView.launchersGroup, url, id);
                                         } else {
                                             if (id === tasksModel.activity) {
                                                 root.launcherForRemoval = url;
@@ -768,9 +768,9 @@ PlasmaComponents.ContextMenu {
         onClicked: {
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
-                                                                                 latteDock.launchersGroup, launcher);
+            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                 latteView.launchersGroup, launcher);
             } else {
                 root.launcherForRemoval = launcher
                 tasksModel.requestRemoveLauncher(launcher);
@@ -811,9 +811,9 @@ PlasmaComponents.ContextMenu {
             //root.removeLastSeparator();
             var launcher = get(atm.LauncherUrlWithoutIcon);
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
-                                                                                 latteDock.launchersGroup, launcher);
+            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                 latteView.launchersGroup, launcher);
             } else {
                 root.launcherForRemoval = launcher;
                 tasksModel.requestRemoveLauncher(launcher);
@@ -830,9 +830,9 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: layoutsMenuItem
 
-        action: latteDock ?  latteDock.containmentActions()[1] : plasmoid.action("configure")
+        action: latteView ?  latteView.containmentActions()[1] : plasmoid.action("configure")
         enabled: visible
-        visible: latteDock && latteDock.universalLayoutManager.menuLayouts.length>1
+        visible: latteView && latteView.universalLayoutManager.menuLayouts.length>1
     }
 
     PlasmaComponents.MenuItem {
@@ -847,21 +847,21 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: addWidgets
 
-        action: latteDock ? latteDock.containmentActions()[2] : plasmoid.action("configure");
-        visible:  latteDock
+        action: latteView ? latteView.containmentActions()[2] : plasmoid.action("configure");
+        visible:  latteView
     }
 
 
     PlasmaComponents.MenuItem {
         id: configureItem
 
-        action: latteDock ? latteDock.containmentActions()[3] : plasmoid.action("configure")
+        action: latteView ? latteView.containmentActions()[3] : plasmoid.action("configure")
     }
 
     //! BEGIN: Plasmoid actions when it isnt inside a Latte dock
     PlasmaComponents.MenuItem {
         id: removePlasmoid
-        visible: !latteDock && !plasmoid.immutable
+        visible: !latteView && !plasmoid.immutable
 
         text: plasmoid.action("remove").text
         icon: plasmoid.action("remove").icon
@@ -871,7 +871,7 @@ PlasmaComponents.ContextMenu {
 
     PlasmaComponents.MenuItem {
         id: configurePlasmoid
-        visible: !latteDock && !plasmoid.immutable
+        visible: !latteView && !plasmoid.immutable
 
         text: plasmoid.action("configure").text
         icon: plasmoid.action("configure").icon

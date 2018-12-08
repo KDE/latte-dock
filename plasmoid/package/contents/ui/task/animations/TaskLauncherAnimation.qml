@@ -121,8 +121,8 @@ SequentialAnimation{
             launchedAlready = true;
             root.signalAnimationsNeedThickness(1);
 
-            if (root.latteDock)
-                root.latteDock.disableDirectRender();
+            if (root.latteView)
+                root.latteView.disableDirectRender();
             else
                 icList.directRender=false;
 

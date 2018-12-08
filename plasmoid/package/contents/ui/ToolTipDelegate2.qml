@@ -168,15 +168,15 @@ PlasmaExtras.ScrollArea {
         if (isInside){
             mainToolTip.containsMouse = true;
 
-            if(!root.latteDock)
+            if(!root.latteView)
                 checkListHovered.stop();
         } else {
             mainToolTip.containsMouse = false;
 
-            if(!root.latteDock)
+            if(!root.latteView)
                 checkListHovered.startDuration(100);
             else
-                root.latteDock.startCheckRestoreZoomTimer();
+                root.latteView.startCheckRestoreZoomTimer();
         }
     }
 

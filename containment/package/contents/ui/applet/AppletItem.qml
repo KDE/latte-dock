@@ -277,7 +277,7 @@ Item {
             root.latteApplet = container.latteApplet;
             root.latteAppletContainer = container;
             root.latteAppletPos = index;
-            container.latteApplet.latteDock = root;
+            container.latteApplet.latteView = root;
             container.latteApplet.forceHidePanel = true;
 
             container.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);

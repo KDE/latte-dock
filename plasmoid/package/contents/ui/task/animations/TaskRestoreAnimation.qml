@@ -69,7 +69,7 @@ SequentialAnimation{
         //! VERY IMPORTANT CODE, fixes a bug when cycling the mouse very fast inside
         //! and outside the dock, in some rare cases the restoreAnimation didn't end!!
 
-        //if (latteDock && (!latteDock.dockContainsMouse || icList.hoveredIndex === -1)) {
+        //if (latteView && (!latteView.dockContainsMouse || icList.hoveredIndex === -1)) {
         //    wrapper.mScale = 1;
         //}
         // if (index === 2)

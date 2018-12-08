@@ -47,19 +47,19 @@ Item {
     ///IMPORTANT: These values must be tested when the Now Dock Panel support
     ///also the four new anchors. A small issue is shown between the animation
     /// of the now dock plasmoid and the neighbour widgets...
-    Layout.minimumWidth: (userPanelPosition !== 0)&&(!latteDock) ? clearWidth : -1
-    Layout.minimumHeight: (userPanelPosition !== 0)&&(!latteDock) ? clearHeight : -1
-    Layout.preferredWidth: (userPanelPosition !== 0)&&(!latteDock) ? tasksWidth : -1
-    Layout.preferredHeight: (userPanelPosition !== 0)&&(!latteDock) ? tasksHeight : -1
+    Layout.minimumWidth: (userPanelPosition !== 0)&&(!latteView) ? clearWidth : -1
+    Layout.minimumHeight: (userPanelPosition !== 0)&&(!latteView) ? clearHeight : -1
+    Layout.preferredWidth: (userPanelPosition !== 0)&&(!latteView) ? tasksWidth : -1
+    Layout.preferredHeight: (userPanelPosition !== 0)&&(!latteView) ? tasksHeight : -1
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
 
     property bool debugLocation: false
 
     //it is used to check both the applet and the containment for direct render
-    property bool globalDirectRender: latteDock ? latteDock.globalDirectRender : icList.directRender
+    property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
 
-    property bool editMode: latteDock ? latteDock.editMode : plasmoid.userConfiguring
+    property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator
     property bool dropNewLauncher: false
@@ -96,8 +96,8 @@ Item {
 
     property real textColorLuma: ColorizerTools.colorLuminas(theme.textColor)
     property color minimizedDotColor: {
-        if (latteDock) {
-            return latteDock.minimizedDotColor;
+        if (latteView) {
+            return latteView.minimizedDotColor;
         }
 
         return textColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
@@ -141,46 +141,46 @@ Item {
     property string launcherForRemoval: ""
 
     //BEGIN Latte Dock properties
-    property bool dockIsShownCompletely: latteDock ? latteDock.dockIsShownCompletely : true
-    property bool enableShadows: latteDock ? latteDock.enableShadows > 0 : plasmoid.configuration.showShadows
+    property bool dockIsShownCompletely: latteView ? latteView.dockIsShownCompletely : true
+    property bool enableShadows: latteView ? latteView.enableShadows > 0 : plasmoid.configuration.showShadows
     property bool forceHidePanel: false
-    property bool directRenderDelayerIsRunning: latteDock ? latteDock.directRenderDelayerIsRunning : directRenderDelayerForEnteringTimer.running
+    property bool directRenderDelayerIsRunning: latteView ? latteView.directRenderDelayerIsRunning : directRenderDelayerForEnteringTimer.running
     property bool disableLeftSpacer: false
     property bool disableRightSpacer: false
-    property bool dockIsHidden: latteDock ? latteDock.dockIsHidden : false
-    property bool groupTasksByDefault: latteDock ? latteDock.groupTasksByDefault: true
-    property bool highlightWindows: latteDock ? latteDock.highlightWindows: plasmoid.configuration.highlightWindows
-    property bool indicateAudioStreams: latteDock ? latteDock.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
-    property bool mouseWheelActions: latteDock ? latteDock.mouseWheelActions : true
-    property bool reverseLinesPosition: latteDock ? latteDock.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
-    property bool dotsOnActive: latteDock ? latteDock.dotsOnActive : plasmoid.configuration.dotsOnActive
-    property bool showGlow: latteDock ? latteDock.showGlow : plasmoid.configuration.showGlow
-    property bool glow3D: latteDock ? latteDock.glow3D : false
-    property bool showOnlyCurrentScreen: latteDock ? latteDock.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
-    property bool showOnlyCurrentDesktop: latteDock ? latteDock.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
-    property bool showOnlyCurrentActivity: latteDock ? latteDock.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
-    property bool showPreviews:  latteDock ? latteDock.showToolTips : plasmoid.configuration.showToolTips
-    property bool showWindowActions: latteDock ? latteDock.showWindowActions : plasmoid.configuration.showWindowActions
-    property bool showWindowsOnlyFromLaunchers: latteDock ? latteDock.showWindowsOnlyFromLaunchers : false
-    property bool smartLaunchersEnabled: latteDock ? latteDock.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
-    property bool threeColorsWindows: latteDock ? latteDock.threeColorsWindows : plasmoid.configuration.threeColorsWindows
-    property bool titleTooltips: latteDock ? latteDock.titleTooltips : false
+    property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
+    property bool groupTasksByDefault: latteView ? latteView.groupTasksByDefault: true
+    property bool highlightWindows: latteView ? latteView.highlightWindows: plasmoid.configuration.highlightWindows
+    property bool indicateAudioStreams: latteView ? latteView.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
+    property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
+    property bool reverseLinesPosition: latteView ? latteView.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
+    property bool dotsOnActive: latteView ? latteView.dotsOnActive : plasmoid.configuration.dotsOnActive
+    property bool showGlow: latteView ? latteView.showGlow : plasmoid.configuration.showGlow
+    property bool glow3D: latteView ? latteView.glow3D : false
+    property bool showOnlyCurrentScreen: latteView ? latteView.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
+    property bool showOnlyCurrentDesktop: latteView ? latteView.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
+    property bool showOnlyCurrentActivity: latteView ? latteView.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
+    property bool showPreviews:  latteView ? latteView.showToolTips : plasmoid.configuration.showToolTips
+    property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
+    property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
+    property bool smartLaunchersEnabled: latteView ? latteView.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
+    property bool threeColorsWindows: latteView ? latteView.threeColorsWindows : plasmoid.configuration.threeColorsWindows
+    property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
-    property int activeIndicator: latteDock ? latteDock.activeIndicator : Latte.Types.AllIndicator
-    property int activeIndicatorType: latteDock ? latteDock.activeIndicatorType : Latte.Types.LineIndicator
-    property int animationStep: latteDock ? latteDock.animationStep : 1
-    property int directRenderAnimationTime: latteDock ? latteDock.directRenderAnimationTime : 0
-    property int dockHoveredIndex : latteDock ? latteDock.hoveredIndex : -1
-    property int iconMargin: latteDock ? latteDock.iconMargin : 0.12*iconSize
-    property int iconSize: latteDock ? latteDock.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
-    property int glowOption: latteDock ? latteDock.glowOption : Latte.Types.GlowAll
-    property real glowOpacity: latteDock ? latteDock.glowOpacity : 0.35
+    property int activeIndicator: latteView ? latteView.activeIndicator : Latte.Types.AllIndicator
+    property int activeIndicatorType: latteView ? latteView.activeIndicatorType : Latte.Types.LineIndicator
+    property int animationStep: latteView ? latteView.animationStep : 1
+    property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
+    property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
+    property int iconMargin: latteView ? latteView.iconMargin : 0.12*iconSize
+    property int iconSize: latteView ? latteView.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int glowOption: latteView ? latteView.glowOption : Latte.Types.GlowAll
+    property real glowOpacity: latteView ? latteView.glowOpacity : 0.35
 
-    property int middleClickAction: latteDock ? latteDock.middleClickAction : plasmoid.configuration.middleClickAction
-    property int modifier: latteDock ? latteDock.modifier : -1
-    property int modifierClickAction: latteDock ? latteDock.modifierClickAction : -1
-    property int modifierClick: latteDock ? latteDock.modifierClick : -1
+    property int middleClickAction: latteView ? latteView.middleClickAction : plasmoid.configuration.middleClickAction
+    property int modifier: latteView ? latteView.modifier : -1
+    property int modifierClickAction: latteView ? latteView.modifierClickAction : -1
+    property int modifierClick: latteView ? latteView.modifierClick : -1
     property int modifierQt:{
         if (modifier === Latte.Types.Shift)
             return Qt.ShiftModifier;
@@ -195,31 +195,31 @@ Item {
 
     //decouple iconMargin which now is used only for length calculations with thickMargins
     //which are used for thickness calculations
-    property int thickMarginBase: latteDock ? latteDock.thickMarginBase : Math.ceil(iconMargin/2)
-    property int thickMarginHigh: latteDock ? latteDock.thickMarginHigh : Math.ceil(iconMargin/2)
+    property int thickMarginBase: latteView ? latteView.thickMarginBase : Math.ceil(iconMargin/2)
+    property int thickMarginHigh: latteView ? latteView.thickMarginHigh : Math.ceil(iconMargin/2)
     property int thickMargin: thickMarginBase + thickMarginHigh
 
-    property int statesLineSize: latteDock ? latteDock.statesLineSize : Math.ceil( root.iconSize/13 )
+    property int statesLineSize: latteView ? latteView.statesLineSize : Math.ceil( root.iconSize/13 )
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
-    property int userPanelPosition: latteDock ? latteDock.panelAlignment : plasmoid.configuration.plasmoidPosition
+    property int userPanelPosition: latteView ? latteView.panelAlignment : plasmoid.configuration.plasmoidPosition
 
-    property real durationTime: latteDock ? latteDock.durationTime : plasmoid.configuration.durationTime
-    property real zoomFactor: latteDock ? latteDock.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
+    property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
+    property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 
-    property int appShadowSize: latteDock ? latteDock.appShadowSize : Math.ceil(0.12*iconSize)
-    property string appShadowColor: latteDock ? latteDock.appShadowColor : "#ff080808"
-    property string appShadowColorSolid: latteDock ? latteDock.appShadowColorSolid : "#ff080808"
+    property int appShadowSize: latteView ? latteView.appShadowSize : Math.ceil(0.12*iconSize)
+    property string appShadowColor: latteView ? latteView.appShadowColor : "#ff080808"
+    property string appShadowColorSolid: latteView ? latteView.appShadowColorSolid : "#ff080808"
 
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    property QtObject currentLayout : latteDock && latteDock.dockManagedLayout ? latteDock.dockManagedLayout : null
+    property QtObject currentLayout : latteView && latteView.dockManagedLayout ? latteView.dockManagedLayout : null
 
-    property var badgesForActivate: latteDock ? latteDock.badgesForActivate : []
+    property var badgesForActivate: latteView ? latteView.badgesForActivate : []
     property var managedLayoutName: currentLayout ? currentLayout.name : ""
 
-    property Item latteDock: null
+    property Item latteView: null
     //END Latte Dock Panel properties
 
     //BEGIN Latte Dock Communicator
@@ -264,8 +264,8 @@ Item {
                 border.color: "red"
                 color: "white"
             } */
-    onLatteDockChanged: {
-        if (latteDock)
+    onLatteViewChanged: {
+        if (latteView)
             plasmoid.configuration.isInLatteDock = true;
         else
             plasmoid.configuration.isInLatteDock = false;
@@ -290,15 +290,15 @@ Item {
 
 
     Connections{
-        target: latteDock
+        target: latteView
         onDockIsHiddenChanged:{
-            if (latteDock.dockIsHidden) {
+            if (latteView.dockIsHidden) {
                 windowsPreviewDlg.hide("3.3");
             }
         }
 
         onLaunchersGroupChanged:{
-            if( latteDock && latteDock.editMode) {
+            if( latteView && latteView.editMode) {
                 tasksModel.updateLaunchersList();
             }
         }
@@ -306,7 +306,7 @@ Item {
 
 
     Connections{
-        target: latteDock && latteDock.universalLayoutManager ? latteDock.universalLayoutManager : null
+        target: latteView && latteView.universalLayoutManager ? latteView.universalLayoutManager : null
 
         onCurrentLayoutNameChanged: root.publishTasksGeometries();
     }
@@ -315,8 +315,8 @@ Item {
         target: icList
 
         onHoveredIndexChanged:{
-            if (latteDock && icList.hoveredIndex>-1){
-                latteDock.setHoveredIndex(-1);
+            if (latteView && icList.hoveredIndex>-1){
+                latteView.setHoveredIndex(-1);
             }
         }
     }
@@ -371,15 +371,15 @@ Item {
         var launchersList = [];
 
         if (currentLayout) {
-            if (latteDock && latteDock.universalLayoutManager
-                    && latteDock.dockManagedLayout && latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
+            if (latteView && latteView.universalLayoutManager
+                    && latteView.dockManagedLayout && latteView.universalSettings
+                    && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
+                        || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    launchersList = latteDock.dockManagedLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
-                    launchersList = latteDock.universalSettings.launchers;
+                if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                    launchersList = latteView.dockManagedLayout.launchers;
+                } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                    launchersList = latteView.universalSettings.launchers;
                 }
             }
         } else {
@@ -531,7 +531,7 @@ Item {
         function hide(debug){
             //  console.log("on hide previews event called: "+debug);
 
-            if (latteDock && signalSent) {
+            if (latteView && signalSent) {
                 //it is used to unblock dock hiding
                 root.signalActionsBlockHiding(-1);
                 signalSent = false;
@@ -568,7 +568,7 @@ Item {
                 activeItem = taskItem;
                 toolTipDelegate.parentTask = taskItem;
 
-                if (latteDock && !signalSent) {
+                if (latteView && !signalSent) {
                     //it is used to block dock hiding
                     root.signalActionsBlockHiding(1);
                     signalSent = true;
@@ -593,7 +593,7 @@ Item {
         onTriggered: {
             windowsPreviewDlg.visible = true;
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: showPreviewTimer called...");
             }
         }
@@ -624,7 +624,7 @@ Item {
         onTriggered: {
             tasksModel.requestClose(delayWindowRemovalTimer.modelIndex)
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: delayWindowRemovalTimer called...");
             }
         }
@@ -637,7 +637,7 @@ Item {
             root.inActivityChange = false;
             activityInfo.previousActivity = activityInfo.currentActivity;
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: activityChangeDelayer called...");
             }
         }
@@ -676,13 +676,13 @@ Item {
         sortMode: TaskManager.TasksModel.SortManual
 
         function updateLaunchersList(){
-            if (latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
-                if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    tasksModel.launcherList = latteDock.dockManagedLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
-                    tasksModel.launcherList = latteDock.universalSettings.launchers;
+            if (latteView.universalSettings
+                    && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
+                        || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                    tasksModel.launcherList = latteView.dockManagedLayout.launchers;
+                } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                    tasksModel.launcherList = latteView.universalSettings.launchers;
                 }
             } else {
                 tasksModel.launcherList = plasmoid.configuration.launchers59;
@@ -706,22 +706,22 @@ Item {
 
         onLauncherListChanged: {
             if (currentLayout) {
-                if (latteDock && latteDock.universalLayoutManager
-                        && latteDock.dockManagedLayout && latteDock.universalSettings
-                        && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
-                            || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
+                if (latteView && latteView.universalLayoutManager
+                        && latteView.dockManagedLayout && latteView.universalSettings
+                        && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
+                            || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                    if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
-                        latteDock.dockManagedLayout.launchers = launcherList;
-                    } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
-                        latteDock.universalSettings.launchers = launcherList;
+                    if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                        latteView.dockManagedLayout.launchers = launcherList;
+                    } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                        latteView.universalSettings.launchers = launcherList;
                     }
 
                     if (inDraggingPhase) {
-                        if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                            latteDock.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.managedLayoutName,
+                        if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                            latteView.universalLayoutManager.launchersSignals.validateLaunchersOrder(root.managedLayoutName,
                                                                                                      plasmoid.id,
-                                                                                                     latteDock.launchersGroup,
+                                                                                                     latteView.launchersGroup,
                                                                                                      currentLauncherList());
                         }
                     }
@@ -757,14 +757,14 @@ Item {
             //var loadedLaunchers = ActivitiesTools.restoreLaunchers();
             ActivitiesTools.importLaunchersToNewArchitecture();
 
-            if (currentLayout && latteDock.universalSettings
-                    && (latteDock.launchersGroup === Latte.Types.LayoutLaunchers
-                        || latteDock.launchersGroup === Latte.Types.GlobalLaunchers)) {
+            if (currentLayout && latteView.universalSettings
+                    && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
+                        || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
-                if (latteDock.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    launcherList = latteDock.dockManagedLayout.launchers;
-                } else if (latteDock.launchersGroup === Latte.Types.GlobalLaunchers) {
-                    launcherList = latteDock.universalSettings.launchers;
+                if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
+                    launcherList = latteView.dockManagedLayout.launchers;
+                } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
+                    launcherList = latteView.universalSettings.launchers;
                 }
             } else {
                 launcherList = plasmoid.configuration.launchers59;
@@ -936,7 +936,7 @@ Item {
                 plasmoid.status = PlasmaCore.Types.PassiveStatus;
                 destroy();
 
-                if (latteDock && latteDock.debugModeTimers) {
+                if (latteView && latteView.debugModeTimers) {
                     console.log("plasmoid timer: attentionTimer called...");
                 }
             }
@@ -957,7 +957,7 @@ Item {
         property int normalInterval: Math.max(120, 2 * (root.durationTime * 1.2 * units.shortDuration) + 50)
 
         onTriggered: {
-            if(root.latteDock)
+            if(root.latteView)
                 console.log("Plasmoid, checkListHoveredTimer was called, even though it shouldn't...");
 
             if (!root.containsMouse()) {
@@ -969,7 +969,7 @@ Item {
 
             interval = normalInterval;
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: checkListHovered called...");
             }
         }
@@ -1163,9 +1163,9 @@ Item {
 
             onUrlsDropped: {
                 //! inform synced docks for new dropped launchers
-                if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
-                    latteDock.universalLayoutManager.launchersSignals.urlsDropped(root.managedLayoutName,
-                                                                                  latteDock.launchersGroup, urls);
+                if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers && onlyLaunchersInList(urls)) {
+                    latteView.universalLayoutManager.launchersSignals.urlsDropped(root.managedLayoutName,
+                                                                                  latteView.launchersGroup, urls);
                     return;
                 }
 
@@ -1285,7 +1285,7 @@ Item {
         onTriggered: {
             root.publishTasksGeometries();
 
-            if (latteDock && latteDock.debugModeTimers) {
+            if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: iconGeometryTimer called...");
             }
         }
@@ -1554,9 +1554,9 @@ Item {
         if (separatorName !== "") {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
-                                                                              latteDock.launchersGroup, separatorName);
+            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.universalLayoutManager.launchersSignals.addLauncher(root.managedLayoutName,
+                                                                              latteView.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1691,7 +1691,7 @@ Item {
 
     //! BEGIN ::: external launchers signals in order to update the tasks model
     function extSignalAddLauncher(group, launcher) {
-        if (group === latteDock.launchersGroup) {
+        if (group === latteView.launchersGroup) {
             tasksModel.requestAddLauncher(launcher);
             launchersUpdatedFor(launcher);
             tasksModel.syncLaunchers();
@@ -1699,7 +1699,7 @@ Item {
     }
 
     function extSignalRemoveLauncher(group, launcher) {
-        if (group === latteDock.launchersGroup) {
+        if (group === latteView.launchersGroup) {
             root.launcherForRemoval = launcher;
             tasksModel.requestRemoveLauncher(launcher);
             launchersUpdatedFor(launcher);
@@ -1708,7 +1708,7 @@ Item {
     }
 
     function extSignalAddLauncherToActivity(group, launcher, activity) {
-        if (group === latteDock.launchersGroup) {
+        if (group === latteView.launchersGroup) {
             var launcherActivities = tasksModel.launcherActivities(launcher);
 
             if (activity !== tasksModel.activity && (launcherActivities[0] === "00000000-0000-0000-0000-000000000000")) {
@@ -1722,7 +1722,7 @@ Item {
     }
 
     function extSignalRemoveLauncherFromActivity(group, launcher, activity) {
-        if (group === latteDock.launchersGroup) {
+        if (group === latteView.launchersGroup) {
             if (activity === tasksModel.activity) {
                 root.launcherForRemoval = launcher;
             }
@@ -1734,13 +1734,13 @@ Item {
     }
 
     function extSignalUrlsDropped(group, urls) {
-        if (group === latteDock.launchersGroup) {
+        if (group === latteView.launchersGroup) {
             mouseHandler.urlsDroppedOnArea(urls);
         }
     }
 
     function extSignalMoveTask(group, from, to) {
-        if (group === latteDock.launchersGroup && !root.dragSource) {
+        if (group === latteView.launchersGroup && !root.dragSource) {
             tasksModel.move(from, to);
             parabolicManager.updateTasksEdgesIndexes();
             root.separatorsUpdated();
@@ -1749,7 +1749,7 @@ Item {
     }
 
     function extSignalValidateLaunchersOrder(group, launchers) {
-        if (group === latteDock.launchersGroup && !root.dragSource) {
+        if (group === latteView.launchersGroup && !root.dragSource) {
             launchersOrderValidatorTimer.stop();
             launchersOrderValidatorTimer.launchers = launchers;
             launchersOrderValidatorTimer.start();
@@ -1767,8 +1767,8 @@ Item {
         if (separatorName !== "") {
             parabolicManager.addLauncherToBeMoved(separatorName, Math.max(0,pos));
 
-            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.addLauncher(latteDock.launchersGroup, separatorName);
+            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.universalLayoutManager.launchersSignals.addLauncher(latteView.launchersGroup, separatorName);
             } else {
                 tasksModel.requestAddLauncher(separatorName);
             }
@@ -1779,9 +1779,9 @@ Item {
         var separatorName = parabolicManager.lastPresentSeparatorName();
 
         if (separatorName !== "") {
-            if (latteDock && latteDock.launchersGroup >= Latte.Types.LayoutLaunchers) {
-                latteDock.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
-                                                                                 latteDock.launchersGroup, separatorName);
+            if (latteView && latteView.launchersGroup >= Latte.Types.LayoutLaunchers) {
+                latteView.universalLayoutManager.launchersSignals.removeLauncher(root.managedLayoutName,
+                                                                                 latteView.launchersGroup, separatorName);
             } else {
                 root.launcherForRemoval = separatorName;
                 tasksModel.requestRemoveLauncher(separatorName);
@@ -1847,7 +1847,7 @@ Item {
         if (!previewContainsMouse())
             windowsPreviewDlg.hide(4.2);
 
-        if (!latteDock) {
+        if (!latteView) {
             initializeHoveredIndex();
         }
 
@@ -1880,8 +1880,8 @@ Item {
         if (waitingLaunchers.length > 0)
             return;
 
-        if (latteDock) {
-            latteDock.setGlobalDirectRender(value);
+        if (latteView) {
+            latteView.setGlobalDirectRender(value);
         } else {
             if (value === true) {
                 if (root.containsMouse()) {
@@ -1896,8 +1896,8 @@ Item {
     }
 
     function startCheckRestoreZoomTimer(duration) {
-        if (latteDock) {
-            latteDock.startCheckRestoreZoomTimer();
+        if (latteView) {
+            latteView.startCheckRestoreZoomTimer();
         } else {
             if (duration > 0) {
                 checkListHovered.startDuration(duration);
@@ -1908,16 +1908,16 @@ Item {
     }
 
     function stopCheckRestoreZoomTimer() {
-        if (latteDock) {
-            latteDock.stopCheckRestoreZoomTimer();
+        if (latteView) {
+            latteView.stopCheckRestoreZoomTimer();
         } else {
             checkListHovered.stop();
         }
     }
 
     function startDirectRenderDelayerDuringEntering(){
-        if (latteDock) {
-            latteDock.startDirectRenderDelayerDuringEntering();
+        if (latteView) {
+            latteView.startDirectRenderDelayerDuringEntering();
         } else {
             directRenderDelayerForEnteringTimer.start();
         }
