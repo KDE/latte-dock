@@ -338,7 +338,7 @@ Item{
                 }
 
                 onSolidPanelChanged: {
-                    adjustPrefix();
+                    solidBackground.adjustPrefix();
                 }
             }
 
