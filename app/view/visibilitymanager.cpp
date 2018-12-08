@@ -1008,11 +1008,11 @@ void VisibilityManagerPrivate::updateKWinEdgesSupport()
 void VisibilityManagerPrivate::createEdgeGhostWindow()
 {
     if (!edgeGhostWindow) {
-        edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
+        edgeGhostWindow = new ViewPart::ScreenEdgeGhostWindow(m_latteView);
 
         wm->setViewExtraFlags(*edgeGhostWindow);
 
-        connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
+        connect(edgeGhostWindow, &ViewPart::ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
                 emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
             }

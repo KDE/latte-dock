@@ -36,6 +36,7 @@ class View;
 }
 
 namespace Latte {
+namespace ViewPart {
 
 //! What is the importance of this class?
 //!
@@ -97,5 +98,5 @@ private:
 };
 
 }
-
+}
 #endif

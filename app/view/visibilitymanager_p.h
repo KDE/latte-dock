@@ -26,8 +26,12 @@ namespace Latte {
 class Corona;
 class View;
 class VisibilityManager;
+namespace ViewPart {
 class ScreenEdgeGhostWindow;
+}
+}
 
+namespace Latte {
 /*!
  * \brief The Latte::VisibilityManagerPrivate is a class d-pointer
  */
@@ -131,7 +135,7 @@ public:
     //! KWin Edges
     bool enableKWinEdgesFromUser{true};
     std::array<QMetaObject::Connection, 1> connectionsKWinEdges;
-    ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
+    ViewPart::ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
 
     Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};

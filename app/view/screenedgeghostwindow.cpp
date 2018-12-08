@@ -38,6 +38,7 @@
 #include <NETWM>
 
 namespace Latte {
+namespace ViewPart {
 
 ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     m_latteView(view)
@@ -238,4 +239,5 @@ void ScreenEdgeGhostWindow::showWithMask()
     setMask(QRect());
 }
 
+}
 }
