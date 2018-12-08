@@ -92,7 +92,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
-    Q_PROPERTY(VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
+    Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
 
     Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
@@ -157,7 +157,7 @@ public:
 
     ViewPart::Effects *effects() const;
     ViewPart::Positioner *positioner() const;
-    VisibilityManager *visibility() const;
+    ViewPart::VisibilityManager *visibility() const;
 
     Layout *managedLayout() const;
     void setManagedLayout(Layout *layout);
@@ -273,7 +273,7 @@ private:
     QPointer<ViewPart::ContextMenu> m_contextMenu;
     QPointer<ViewPart::Effects> m_effects;
     QPointer<ViewPart::Positioner> m_positioner;
-    QPointer<VisibilityManager> m_visibility;
+    QPointer<ViewPart::VisibilityManager> m_visibility;
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 5> connectionsManagedLayout;

@@ -35,6 +35,7 @@
 #include <Plasma/Containment>
 
 namespace Latte {
+namespace ViewPart {
 
 class VisibilityManagerPrivate;
 
@@ -141,5 +142,6 @@ private:
     friend class VisibilityManagerPrivate;
 };
 
+}
 }
 #endif // VISIBILITYMANAGER_H

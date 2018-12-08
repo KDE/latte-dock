@@ -22,16 +22,16 @@
 #include <plasmaquick/containmentview.h>
 
 namespace Latte {
-
 class Corona;
 class View;
-class VisibilityManager;
 namespace ViewPart {
 class ScreenEdgeGhostWindow;
+class VisibilityManager;
 }
 }
 
 namespace Latte {
+namespace ViewPart {
 /*!
  * \brief The Latte::VisibilityManagerPrivate is a class d-pointer
  */
@@ -135,12 +135,13 @@ public:
     //! KWin Edges
     bool enableKWinEdgesFromUser{true};
     std::array<QMetaObject::Connection, 1> connectionsKWinEdges;
-    ViewPart::ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
+    ScreenEdgeGhostWindow *edgeGhostWindow{nullptr};
 
     Latte::Corona *m_corona{nullptr};
     Latte::View *m_latteView{nullptr};
 };
 
+}
 }
 
 #endif // VISIBILITYMANAGERPRIVATE_H

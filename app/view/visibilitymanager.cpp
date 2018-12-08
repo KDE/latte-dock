@@ -39,6 +39,7 @@
 #include <KWayland/Client/surface.h>
 
 namespace Latte {
+namespace ViewPart {
 
 //! BEGIN: VisiblityManagerPrivate implementation
 VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
@@ -1008,11 +1009,11 @@ void VisibilityManagerPrivate::updateKWinEdgesSupport()
 void VisibilityManagerPrivate::createEdgeGhostWindow()
 {
     if (!edgeGhostWindow) {
-        edgeGhostWindow = new ViewPart::ScreenEdgeGhostWindow(m_latteView);
+        edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
 
         wm->setViewExtraFlags(*edgeGhostWindow);
 
-        connect(edgeGhostWindow, &ViewPart::ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
+        connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
                 emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
             }
@@ -1251,4 +1252,5 @@ bool VisibilityManager::activeWindowCanBeDragged()
 
 //! END: VisibilityManager implementation
 
+}
 }

@@ -108,9 +108,9 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         reconsiderScreen();
 
         if (!m_visibility) {
-            m_visibility = new VisibilityManager(this);
+            m_visibility = new ViewPart::VisibilityManager(this);
 
-            connect(m_visibility, &VisibilityManager::isHiddenChanged, this, [&]() {
+            connect(m_visibility, &ViewPart::VisibilityManager::isHiddenChanged, this, [&]() {
                 if (m_visibility->isHidden()) {
                     deactivateApplets();
                 }
@@ -894,7 +894,7 @@ ViewPart::Positioner *View::positioner() const
     return m_positioner;
 }
 
-VisibilityManager *View::visibility() const
+ViewPart::VisibilityManager *View::visibility() const
 {
     return m_visibility;
 }
