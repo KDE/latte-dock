@@ -1,5 +1,6 @@
 /*
-*  Copyright 2018  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2016  Smith AR <audoban@openmailbox.org>
+*                  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,17 +18,19 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DOCKSECCONFIGVIEW_H
-#define DOCKSECCONFIGVIEW_H
+#ifndef PRIMARYCONFIGVIEW_H
+#define PRIMARYCONFIGVIEW_H
 
 // local
-#include "../../liblatte2/types.h"
+#include "secondaryconfigview.h"
+#include "../../plasmaquick/configview.h"
+#include "../../../liblatte2/types.h"
 
 //Qt
 #include <QObject>
-#include <QQuickView>
 #include <QPointer>
 #include <QTimer>
+#include <QWindow>
 
 // Plasma
 #include <plasma/package.h>
@@ -52,49 +55,82 @@ class View;
 }
 
 namespace Latte {
+namespace ViewPart {
 
-class DockSecConfigView : public QQuickView
+class PrimaryConfigView : public PlasmaQuick::ConfigView
 {
     Q_OBJECT
+    //! used when the secondary config window can not be shown
+    Q_PROPERTY(bool showInlineProperties READ showInlineProperties WRITE setShowInlineProperties NOTIFY showInlinePropertiesChanged)
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    DockSecConfigView(Latte::View *view, QWindow *parent);
-    ~DockSecConfigView() override;
+    enum ConfigViewType
+    {
+        PrimaryConfig = 0,
+        SecondaryConfig
+    };
 
-    void init();
+    PrimaryConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent = nullptr);
+    ~PrimaryConfigView() override;
+
+    void init() override;
     Qt::WindowFlags wFlags() const;
+
+    bool showInlineProperties() const;
+    void setShowInlineProperties(bool show);
+
+    bool sticker() const;
 
     QRect geometryWhenVisible() const;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
+    QWindow *secondaryWindow();
+
 public slots:
+    Q_INVOKABLE void addPanelSpacer();
     Q_INVOKABLE void hideConfigWindow();
+    Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
+    Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
+    Q_INVOKABLE void setAdvanced(bool advanced);
 
 signals:
     void enabledBordersChanged();
+    void raiseDocksTemporaryChanged();
+    void showInlinePropertiesChanged();
     void showSignal();
 
 protected:
     void showEvent(QShowEvent *ev) override;
+    void hideEvent(QHideEvent *ev) override;
     void focusOutEvent(QFocusEvent *ev) override;
     bool event(QEvent *e) override;
 
     void syncSlideEffect();
 
 private slots:
+    void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     void updateEnabledBorders();
+
+    void createSecondaryWindow();
+    void deleteSecondaryWindow();
 
 private:
     void setupWaylandIntegration();
 
+    bool m_advanced{false};
+    bool m_blockFocusLost{false};
+    bool m_blockFocusLostOnStartup{true};
+    bool m_inReverse{false};    //! it is used by the borders
+    bool m_showInlineProperties{false};
+
     QRect m_geometryWhenVisible;
 
     QPointer<Latte::View> m_latteView;
-    QPointer<QWindow> m_parent;
+    QPointer<SecondaryConfigView> m_secConfigView;
     QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;
     QList<QMetaObject::Connection> connections;
@@ -106,5 +142,6 @@ private:
 };
 
 }
-#endif //DOCKSECCONFIGVIEW_H
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+}
+#endif //PRIMARYCONFIGVIEW_H
+

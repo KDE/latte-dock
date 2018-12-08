@@ -22,14 +22,14 @@ set(lattedock-app_SRCS
     settings/delegates/colorcmbboxitemdelegate.cpp
     settings/delegates/layoutnamedelegate.cpp
     view/contextmenu.cpp
-    view/dockconfigview.cpp
-    view/docksecconfigview.cpp
     view/effects.cpp
     view/panelshadows.cpp
     view/positioner.cpp
     view/screenedgeghostwindow.cpp
     view/view.cpp
     view/visibilitymanager.cpp
+    view/settings/primaryconfigview.cpp
+    view/settings/secondaryconfigview.cpp
     wm/abstractwindowinterface.cpp
     wm/waylandinterface.cpp
     wm/windowinfowrap.cpp

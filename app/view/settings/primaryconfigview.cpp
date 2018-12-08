@@ -18,15 +18,15 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dockconfigview.h"
+#include "primaryconfigview.h"
 
 // local
-#include "view.h"
-#include "panelshadows_p.h"
-#include "../lattecorona.h"
-#include "../layoutmanager.h"
-#include "../settings/universalsettings.h"
-#include "../wm/abstractwindowinterface.h"
+#include "../panelshadows_p.h"
+#include "../view.h"
+#include "../../lattecorona.h"
+#include "../../layoutmanager.h"
+#include "../../settings/universalsettings.h"
+#include "../../wm/abstractwindowinterface.h"
 
 // Qt
 #include <QFontMetrics>
@@ -46,8 +46,9 @@
 #include <Plasma/Package>
 
 namespace Latte {
+namespace ViewPart {
 
-DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent)
+PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::View *view, QWindow *parent)
     : PlasmaQuick::ConfigView(containment, parent),
       m_latteView(view)
 {
@@ -70,8 +71,8 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *vi
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &DockConfigView::syncGeometry);
-    connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &DockConfigView::immutabilityChanged);
+    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &PrimaryConfigView::syncGeometry);
+    connections << connect(containment, &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -84,13 +85,13 @@ DockConfigView::DockConfigView(Plasma::Containment *containment, Latte::View *vi
     });
 
     if (m_corona) {
-        connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &DockConfigView::raiseDocksTemporaryChanged);
+        connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
     }
 }
 
-DockConfigView::~DockConfigView()
+PrimaryConfigView::~PrimaryConfigView()
 {
-    qDebug() << "DockConfigView deleting ...";
+    qDebug() << "ConfigView deleting ...";
 
     deleteSecondaryWindow();
 
@@ -105,7 +106,7 @@ DockConfigView::~DockConfigView()
 
 }
 
-void DockConfigView::init()
+void PrimaryConfigView::init()
 {
     qDebug() << "dock config view : initialization started...";
 
@@ -137,17 +138,17 @@ void DockConfigView::init()
     qDebug() << "dock config view : initialization ended...";
 }
 
-inline Qt::WindowFlags DockConfigView::wFlags() const
+inline Qt::WindowFlags PrimaryConfigView::wFlags() const
 {
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
-QWindow *DockConfigView::secondaryWindow()
+QWindow *PrimaryConfigView::secondaryWindow()
 {
     return m_secConfigView;
 }
 
-void DockConfigView::setAdvanced(bool advanced)
+void PrimaryConfigView::setAdvanced(bool advanced)
 {
     if (m_advanced == advanced) {
         return;
@@ -162,7 +163,7 @@ void DockConfigView::setAdvanced(bool advanced)
     }
 }
 
-void DockConfigView::createSecondaryWindow()
+void PrimaryConfigView::createSecondaryWindow()
 {
     //! do not proceed when secondary window is already created
     //! or when main dock settings window has not updated yet
@@ -173,7 +174,7 @@ void DockConfigView::createSecondaryWindow()
 
     QRect geometry = m_latteView->screenGeometry();
 
-    m_secConfigView = new DockSecConfigView(m_latteView, this);
+    m_secConfigView = new SecondaryConfigView(m_latteView, this);
     m_secConfigView->init();
 
     if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
@@ -192,19 +193,19 @@ void DockConfigView::createSecondaryWindow()
     }
 }
 
-void DockConfigView::deleteSecondaryWindow()
+void PrimaryConfigView::deleteSecondaryWindow()
 {
     if (m_secConfigView) {
         m_secConfigView->deleteLater();
     }
 }
 
-QRect DockConfigView::geometryWhenVisible() const
+QRect PrimaryConfigView::geometryWhenVisible() const
 {
     return m_geometryWhenVisible;
 }
 
-void DockConfigView::syncGeometry()
+void PrimaryConfigView::syncGeometry()
 {
     if (!m_latteView->managedLayout() || !m_latteView->containment() || !rootObject())
         return;
@@ -271,7 +272,7 @@ void DockConfigView::syncGeometry()
     }
 }
 
-void DockConfigView::syncSlideEffect()
+void PrimaryConfigView::syncSlideEffect()
 {
     if (!m_latteView->containment())
         return;
@@ -303,7 +304,7 @@ void DockConfigView::syncSlideEffect()
     m_corona->wm()->slideWindow(*this, slideLocation);
 }
 
-void DockConfigView::showEvent(QShowEvent *ev)
+void PrimaryConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
@@ -319,12 +320,12 @@ void DockConfigView::showEvent(QShowEvent *ev)
         m_latteView->containment()->setUserConfiguring(true);
 
     m_screenSyncTimer.start();
-    QTimer::singleShot(400, this, &DockConfigView::syncGeometry);
+    QTimer::singleShot(400, this, &PrimaryConfigView::syncGeometry);
 
     emit showSignal();
 }
 
-void DockConfigView::hideEvent(QHideEvent *ev)
+void PrimaryConfigView::hideEvent(QHideEvent *ev)
 {
     if (!m_latteView) {
         QQuickWindow::hideEvent(ev);
@@ -350,7 +351,7 @@ void DockConfigView::hideEvent(QHideEvent *ev)
     deleteLater();
 }
 
-void DockConfigView::focusOutEvent(QFocusEvent *ev)
+void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
 
@@ -365,7 +366,7 @@ void DockConfigView::focusOutEvent(QFocusEvent *ev)
     }
 }
 
-void DockConfigView::setupWaylandIntegration()
+void PrimaryConfigView::setupWaylandIntegration()
 {
     if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
@@ -395,7 +396,7 @@ void DockConfigView::setupWaylandIntegration()
     }
 }
 
-bool DockConfigView::event(QEvent *e)
+bool PrimaryConfigView::event(QEvent *e)
 {
     if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
@@ -426,18 +427,18 @@ bool DockConfigView::event(QEvent *e)
 }
 
 
-void DockConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
+void PrimaryConfigView::immutabilityChanged(Plasma::Types::ImmutabilityType type)
 {
     if (type != Plasma::Types::Mutable && isVisible())
         hideConfigWindow();
 }
 
-bool DockConfigView::sticker() const
+bool PrimaryConfigView::sticker() const
 {
     return m_blockFocusLost;
 }
 
-void DockConfigView::setSticker(bool blockFocusLost)
+void PrimaryConfigView::setSticker(bool blockFocusLost)
 {
     if (m_blockFocusLost == blockFocusLost)
         return;
@@ -445,11 +446,11 @@ void DockConfigView::setSticker(bool blockFocusLost)
     m_blockFocusLost = blockFocusLost;
 }
 
-bool DockConfigView::showInlineProperties() const
+bool PrimaryConfigView::showInlineProperties() const
 {
     return m_showInlineProperties;
 }
-void DockConfigView::setShowInlineProperties(bool show)
+void PrimaryConfigView::setShowInlineProperties(bool show)
 {
     if (m_showInlineProperties == show) {
         return;
@@ -459,14 +460,14 @@ void DockConfigView::setShowInlineProperties(bool show)
     emit showInlinePropertiesChanged();
 }
 
-void DockConfigView::addPanelSpacer()
+void PrimaryConfigView::addPanelSpacer()
 {
     if (m_latteView && m_latteView->containment()) {
         m_latteView->containment()->createApplet(QStringLiteral("org.kde.latte.spacer"));
     }
 }
 
-void DockConfigView::hideConfigWindow()
+void PrimaryConfigView::hideConfigWindow()
 {
     if (m_shellSurface) {
         //!NOTE: Avoid crash in wayland environment with qt5.9
@@ -476,7 +477,7 @@ void DockConfigView::hideConfigWindow()
     }
 }
 
-void DockConfigView::updateLaunchersForGroup(int groupInt)
+void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
 {
     Types::LaunchersGroup group = (Types::LaunchersGroup)groupInt;
 
@@ -536,12 +537,12 @@ void DockConfigView::updateLaunchersForGroup(int groupInt)
 }
 
 //!BEGIN borders
-Plasma::FrameSvg::EnabledBorders DockConfigView::enabledBorders() const
+Plasma::FrameSvg::EnabledBorders PrimaryConfigView::enabledBorders() const
 {
     return m_enabledBorders;
 }
 
-void DockConfigView::updateEnabledBorders()
+void PrimaryConfigView::updateEnabledBorders()
 {
     if (!this->screen()) {
         return;
@@ -582,4 +583,5 @@ void DockConfigView::updateEnabledBorders()
 //!END borders
 
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+}
+

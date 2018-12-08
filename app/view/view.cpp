@@ -22,10 +22,10 @@
 
 // local
 #include "contextmenu.h"
-#include "dockconfigview.h"
 #include "effects.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
+#include "settings/primaryconfigview.h"
 #include "../lattecorona.h"
 #include "../layout.h"
 #include "../layoutmanager.h"
@@ -294,7 +294,7 @@ void View::removeView()
 
 bool View::settingsWindowIsShown()
 {
-    auto configView = qobject_cast<DockConfigView *>(m_configView);
+    auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
     return (configView != nullptr);
 }
@@ -338,7 +338,7 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     bool delayConfigView = false;
 
     if (c && containment() && c->isContainment() && c->id() == this->containment()->id()) {
-        m_configView = new DockConfigView(c, this);
+        m_configView = new ViewPart::PrimaryConfigView(c, this);
         delayConfigView = true;
     } else {
         m_configView = new PlasmaQuick::ConfigView(applet);
@@ -656,7 +656,7 @@ void View::applyActivitiesToWindows()
         if (m_configView) {
             m_visibility->setWindowOnActivities(*m_configView, activities);
 
-            auto configView = qobject_cast<DockConfigView *>(m_configView);
+            auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
             if (configView && configView->secondaryWindow()) {
                 m_visibility->setWindowOnActivities(*configView->secondaryWindow(), activities);
@@ -775,7 +775,7 @@ void View::moveToLayout(QString layoutName)
 void View::setBlockHiding(bool block)
 {
     if (!block) {
-        auto *configView = qobject_cast<DockConfigView *>(m_configView);
+        auto *configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
         if (m_alternativesIsShown || (configView && configView->sticker() && configView->isVisible())) {
             return;
@@ -796,7 +796,7 @@ void View::hideWindowsForSlidingOut()
     setBlockHiding(false);
 
     if (m_configView) {
-        auto configDialog = qobject_cast<DockConfigView *>(m_configView);
+        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
         if (configDialog) {
             configDialog->hideConfigWindow();

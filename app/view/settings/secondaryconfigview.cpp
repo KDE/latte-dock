@@ -17,14 +17,14 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "docksecconfigview.h"
+#include "secondaryconfigview.h"
 
 // local
-#include "dockconfigview.h"
-#include "panelshadows_p.h"
-#include "view.h"
-#include "../lattecorona.h"
-#include "../wm/abstractwindowinterface.h"
+#include "primaryconfigview.h"
+#include "../panelshadows_p.h"
+#include "../view.h"
+#include "../../lattecorona.h"
+#include "../../wm/abstractwindowinterface.h"
 
 // Qt
 #include <QFontMetrics>
@@ -44,8 +44,9 @@
 #include <Plasma/Package>
 
 namespace Latte {
+namespace ViewPart {
 
-DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
+SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
     : QQuickView(nullptr),
       m_parent(parent),
       m_latteView(view)
@@ -70,7 +71,7 @@ DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
         syncGeometry();
         syncSlideEffect();
     });
-    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &DockSecConfigView::syncGeometry);
+    connections << connect(m_latteView->visibility(), &VisibilityManager::modeChanged, this, &SecondaryConfigView::syncGeometry);
 
     m_thicknessSyncTimer.setSingleShot(true);
     m_thicknessSyncTimer.setInterval(200);
@@ -83,7 +84,7 @@ DockSecConfigView::DockSecConfigView(Latte::View *view, QWindow *parent)
     });
 }
 
-DockSecConfigView::~DockSecConfigView()
+SecondaryConfigView::~SecondaryConfigView()
 {
     qDebug() << "SecDockConfigView deleting ...";
 
@@ -98,7 +99,7 @@ DockSecConfigView::~DockSecConfigView()
 
 }
 
-void DockSecConfigView::init()
+void SecondaryConfigView::init()
 {
     qDebug() << "dock secondary config view : initialization started...";
 
@@ -127,17 +128,17 @@ void DockSecConfigView::init()
     qDebug() << "dock secondary config view : initialization ended...";
 }
 
-inline Qt::WindowFlags DockSecConfigView::wFlags() const
+inline Qt::WindowFlags SecondaryConfigView::wFlags() const
 {
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
-QRect DockSecConfigView::geometryWhenVisible() const
+QRect SecondaryConfigView::geometryWhenVisible() const
 {
     return m_geometryWhenVisible;
 }
 
-void DockSecConfigView::syncGeometry()
+void SecondaryConfigView::syncGeometry()
 {
     if (!m_latteView->managedLayout() || !m_latteView->containment() || !rootObject())
         return;
@@ -201,7 +202,7 @@ void DockSecConfigView::syncGeometry()
     }
 }
 
-void DockSecConfigView::syncSlideEffect()
+void SecondaryConfigView::syncSlideEffect()
 {
     if (!m_latteView->containment())
         return;
@@ -233,7 +234,7 @@ void DockSecConfigView::syncSlideEffect()
     m_corona->wm()->slideWindow(*this, slideLocation);
 }
 
-void DockSecConfigView::showEvent(QShowEvent *ev)
+void SecondaryConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
 
@@ -246,12 +247,12 @@ void DockSecConfigView::showEvent(QShowEvent *ev)
     syncSlideEffect();
 
     m_screenSyncTimer.start();
-    QTimer::singleShot(400, this, &DockSecConfigView::syncGeometry);
+    QTimer::singleShot(400, this, &SecondaryConfigView::syncGeometry);
 
     emit showSignal();
 }
 
-void DockSecConfigView::focusOutEvent(QFocusEvent *ev)
+void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 {
     Q_UNUSED(ev);
 
@@ -261,14 +262,14 @@ void DockSecConfigView::focusOutEvent(QFocusEvent *ev)
                         || focusWindow->flags().testFlag(Qt::ToolTip)))
         return;
 
-    const auto parent = qobject_cast<DockConfigView *>(m_parent);
+    const auto parent = qobject_cast<PrimaryConfigView *>(m_parent);
 
     if (parent && !parent->sticker() && !parent->isActive()) {
         parent->hideConfigWindow();
     }
 }
 
-void DockSecConfigView::setupWaylandIntegration()
+void SecondaryConfigView::setupWaylandIntegration()
 {
     if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
@@ -298,7 +299,7 @@ void DockSecConfigView::setupWaylandIntegration()
     }
 }
 
-bool DockSecConfigView::event(QEvent *e)
+bool SecondaryConfigView::event(QEvent *e)
 {
     if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
@@ -328,7 +329,7 @@ bool DockSecConfigView::event(QEvent *e)
     return QQuickView::event(e);
 }
 
-void DockSecConfigView::hideConfigWindow()
+void SecondaryConfigView::hideConfigWindow()
 {
     if (m_shellSurface) {
         //!NOTE: Avoid crash in wayland environment with qt5.9
@@ -339,12 +340,12 @@ void DockSecConfigView::hideConfigWindow()
 }
 
 //!BEGIN borders
-Plasma::FrameSvg::EnabledBorders DockSecConfigView::enabledBorders() const
+Plasma::FrameSvg::EnabledBorders SecondaryConfigView::enabledBorders() const
 {
     return m_enabledBorders;
 }
 
-void DockSecConfigView::updateEnabledBorders()
+void SecondaryConfigView::updateEnabledBorders()
 {
     if (!this->screen()) {
         return;
@@ -384,6 +385,6 @@ void DockSecConfigView::updateEnabledBorders()
 
 //!END borders
 
-
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+}
+

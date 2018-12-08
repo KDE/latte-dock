@@ -22,6 +22,7 @@
 #define LATTECORONA_H
 
 // local
+#include "plasmaquick/configview.h"
 #include "../liblatte2/types.h"
 
 // Qt
