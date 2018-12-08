@@ -31,7 +31,7 @@ import "../code/HeuristicTools.js" as HeuristicTools
 Item{
     id: layoutsContainer
 
-    readonly property bool isHidden: root.inStartup || (dock && dock.visibility && dock.visibility.isHidden)
+    readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
     readonly property bool useMaxLength: (plasmoid.configuration.panelPosition === Latte.Types.Justify)
                                          && ((!root.editMode && !root.behaveAsPlasmaPanel )
                                              || (behaveAsPlasmaPanel && root.editMode))
@@ -50,8 +50,8 @@ Item{
         target: layoutsContainer
         property: "x"
         value: {
-            if ( dock && root.isHorizontal && useMaxLength ){
-                return ((dock.width/2) - (root.maxLength/2)); // + root.offset)
+            if ( latteView && root.isHorizontal && useMaxLength ){
+                return ((latteView.width/2) - (root.maxLength/2)); // + root.offset)
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isVertical){
                     return;
@@ -78,8 +78,8 @@ Item{
         target: layoutsContainer
         property: "y"
         value: {
-            if ( dock && root.isVertical && useMaxLength ) {
-                return ((dock.height/2) - (root.maxLength/2));// + root.offset);
+            if ( latteView && root.isVertical && useMaxLength ) {
+                return ((latteView.height/2) - (root.maxLength/2));// + root.offset);
             } else {
                 if ((visibilityManager.inSlidingIn || visibilityManager.inSlidingOut) && root.isHorizontal){
                     return;
@@ -122,7 +122,7 @@ Item{
                 secondHalfExited = ( (_endLayout.width + _mainLayout.width/2) >= root.maxLength/2 );
             }
 
-            if (dock && ((contentsWidth >= root.maxLength) || firstHalfExited || secondHalfExited)) {
+            if (latteView && ((contentsWidth >= root.maxLength) || firstHalfExited || secondHalfExited)) {
                 updateAutomaticIconSize();
             }
 
@@ -147,7 +147,7 @@ Item{
                 secondHalfExited = ( (_endLayout.height + _mainLayout.height/2) >= root.maxLength/2 );
             }
 
-            if (dock && ((contentsHeight >= root.maxLength) || firstHalfExited || secondHalfExited)) {
+            if (latteView && ((contentsHeight >= root.maxLength) || firstHalfExited || secondHalfExited)) {
                 updateAutomaticIconSize();
             }
 

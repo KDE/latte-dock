@@ -214,7 +214,7 @@ Item {
     property alias tasksCount: tasksModel.count
     property alias hoveredIndex: icList.hoveredIndex
 
-    property QtObject currentLayout : latteView && latteView.dockManagedLayout ? latteView.dockManagedLayout : null
+    property QtObject currentLayout : latteView && latteView.managedLayout ? latteView.managedLayout : null
 
     property var badgesForActivate: latteView ? latteView.badgesForActivate : []
     property var managedLayoutName: currentLayout ? currentLayout.name : ""
@@ -372,12 +372,12 @@ Item {
 
         if (currentLayout) {
             if (latteView && latteView.universalLayoutManager
-                    && latteView.dockManagedLayout && latteView.universalSettings
+                    && latteView.managedLayout && latteView.universalSettings
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
                 if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    launchersList = latteView.dockManagedLayout.launchers;
+                    launchersList = latteView.managedLayout.launchers;
                 } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launchersList = latteView.universalSettings.launchers;
                 }
@@ -680,7 +680,7 @@ Item {
                     && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
                 if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    tasksModel.launcherList = latteView.dockManagedLayout.launchers;
+                    tasksModel.launcherList = latteView.managedLayout.launchers;
                 } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                     tasksModel.launcherList = latteView.universalSettings.launchers;
                 }
@@ -707,12 +707,12 @@ Item {
         onLauncherListChanged: {
             if (currentLayout) {
                 if (latteView && latteView.universalLayoutManager
-                        && latteView.dockManagedLayout && latteView.universalSettings
+                        && latteView.managedLayout && latteView.universalSettings
                         && (latteView.launchersGroup === Latte.Types.LayoutLaunchers
                             || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
                     if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                        latteView.dockManagedLayout.launchers = launcherList;
+                        latteView.managedLayout.launchers = launcherList;
                     } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                         latteView.universalSettings.launchers = launcherList;
                     }
@@ -762,7 +762,7 @@ Item {
                         || latteView.launchersGroup === Latte.Types.GlobalLaunchers)) {
 
                 if (latteView.launchersGroup === Latte.Types.LayoutLaunchers) {
-                    launcherList = latteView.dockManagedLayout.launchers;
+                    launcherList = latteView.managedLayout.launchers;
                 } else if (latteView.launchersGroup === Latte.Types.GlobalLaunchers) {
                     launcherList = latteView.universalSettings.launchers;
                 }

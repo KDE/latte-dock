@@ -468,7 +468,7 @@ Item{
             anchors.fill: parent
             active: communicator.overlayLatteIconIsActive && applet.pluginName === "org.kde.plasma.folder"
             sourceComponent: MouseArea{
-                onClicked: dock.toggleAppletExpanded(applet.id);
+                onClicked: latteView.toggleAppletExpanded(applet.id);
             }
         }
 

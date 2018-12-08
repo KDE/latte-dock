@@ -61,36 +61,36 @@ Item{
     Binding{
         target: main
         property: "topBorder"
-        when: dock
+        when: latteView
         value: {
-            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
+            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.TopBorder)) > 0);
         }
     }
 
     Binding{
         target: main
         property: "leftBorder"
-        when: dock
+        when: latteView
         value: {
-            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.LeftBorder)) > 0);
+            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.LeftBorder)) > 0);
         }
     }
 
     Binding{
         target: main
         property: "bottomBorder"
-        when: dock
+        when: latteView
         value: {
-            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
+            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.BottomBorder)) > 0);
         }
     }
 
     Binding{
         target: main
         property: "rightBorder"
-        when: dock
+        when: latteView
         value: {
-            return ((dock && dock.effects && (dock.effects.enabledBorders & PlasmaCore.FrameSvg.RightBorder)) > 0);
+            return ((latteView && latteView.effects && (latteView.effects.enabledBorders & PlasmaCore.FrameSvg.RightBorder)) > 0);
         }
     }
 

@@ -33,7 +33,7 @@ PlasmaCore.FrameSvgItem {
     // onRepaintNeeded: adjustPrefix();
 
     property Item containment
-    property Item dockLayout
+    property Item viewLayout
 
     readonly property bool verticalPanel: containment && containment.formFactor === PlasmaCore.Types.Vertical
 
@@ -73,7 +73,7 @@ PlasmaCore.FrameSvgItem {
     }
 
     Component.onDestruction: {
-        console.log("dock view qml source deleting...");
+        console.log("latte view qml source deleting...");
 
         if (containment) {
             containment.locationChanged.disconnect(adjustPrefix);
@@ -81,11 +81,11 @@ PlasmaCore.FrameSvgItem {
     }
 
     onContainmentChanged: {
-        console.log("dock view qml source - containment changed 1...");
+        console.log("latte view qml source - containment changed 1...");
         if (!containment) {
             return;
         }
-        console.log("dock view qml source - containment changed 2...");
+        console.log("latte view qml source - containment changed 2...");
 
         containment.parent = containmentParent;
         containment.visible = true;
@@ -94,12 +94,12 @@ PlasmaCore.FrameSvgItem {
         adjustPrefix();
 
         for(var i=0; i<containment.children.length; ++i){
-            if (containment.children[i].objectName === "dockLayoutView") {
-                dockLayout = containment.children[i];
-                dockLayout.dock = dock;
-                dockLayout.universalSettings = universalSettings;
-                dockLayout.universalLayoutManager = layoutManager;
-                dockLayout.themeExtended = themeExtended;
+            if (containment.children[i].objectName === "containmentViewLayout") {
+                viewLayout = containment.children[i];
+                viewLayout.latteView = latteView;
+                viewLayout.universalSettings = universalSettings;
+                viewLayout.universalLayoutManager = layoutManager;
+                viewLayout.themeExtended = themeExtended;
             }
         }
     }
@@ -113,8 +113,8 @@ PlasmaCore.FrameSvgItem {
     //! the only way to take into account the visual appearance
     //! of the applet (including its spacers)
     function appletContainsPos(appletId, pos) {
-        if (dockLayout) {
-            return dockLayout.appletContainsPos(appletId, pos);
+        if (viewLayout) {
+            return viewLayout.appletContainsPos(appletId, pos);
         }
 
         return false;

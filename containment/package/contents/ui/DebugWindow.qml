@@ -51,7 +51,7 @@ Window{
             }
 
             Text{
-                text: dock && dock.positioner ? dock.positioner.currentScreenName : "___"
+                text: latteView && latteView.positioner ? latteView.positioner.currentScreenName : "___"
             }
 
             Text{
@@ -60,8 +60,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.screenGeometry){
-                        return dock.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height;
+                    if (latteView && latteView.screenGeometry){
+                        return latteView.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -74,8 +74,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock) {
-                        return  dock.x + "," + dock.y + " "+dock.width+ "x"+dock.height;
+                    if (latteView) {
+                        return  latteView.x + "," + latteView.y + " "+dock.width+ "x"+dock.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -88,7 +88,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.onPrimary)
+                    if (latteView && latteView.onPrimary)
                         return "Yes";
                     else
                         return "No";
@@ -149,8 +149,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.effects && dock.effects.mask) {
-                        return dock.effects.mask.x +", "+ dock.effects.mask.y+"  "+dock.effects.mask.width+"x"+dock.effects.mask.height;
+                    if (latteView && latteView.effects && latteView.effects.mask) {
+                        return latteView.effects.mask.x +", "+ latteView.effects.mask.y+"  "+dock.effects.mask.width+"x"+dock.effects.mask.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -163,8 +163,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.absoluteGeometry) {
-                        return dock.absoluteGeometry.x + ", " + dock.absoluteGeometry.y + "  " + dock.absoluteGeometry.width + "x" + dock.absoluteGeometry.height;
+                    if (latteView && latteView.absoluteGeometry) {
+                        return latteView.absoluteGeometry.x + ", " + latteView.absoluteGeometry.y + "  " + latteView.absoluteGeometry.width + "x" + latteView.absoluteGeometry.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -177,8 +177,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.localGeometry) {
-                        return dock.localGeometry.x + ", " + dock.localGeometry.y + "  " + dock.localGeometry.width + "x" + dock.localGeometry.height;
+                    if (latteView && latteView.localGeometry) {
+                        return latteView.localGeometry.x + ", " + latteView.localGeometry.y + "  " + latteView.localGeometry.width + "x" + latteView.localGeometry.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -191,7 +191,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.effects && dock.effects.drawEffects)
+                    if (latteView && latteView.effects && latteView.effects.drawEffects)
                         return "Yes";
                     else
                         return "No";
@@ -204,8 +204,8 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.effects && dock.effects.rect) {
-                        return dock.effects.rect.x + ", " + dock.effects.rect.y + "  " +dock.effects.rect.width + "x" + dock.effects.rect.height;
+                    if (latteView && latteView.effects && latteView.effects.rect) {
+                        return latteView.effects.rect.x + ", " + latteView.effects.rect.y + "  " +dock.effects.rect.width + "x" + latteView.effects.rect.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -226,7 +226,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.visibility && dock.visibility.isHidden)
+                    if (latteView && latteView.visibility && latteView.visibility.isHidden)
                         return "Yes";
                     else
                         return "No";
@@ -247,7 +247,7 @@ Window{
 
             Text{
                 text: {
-                    if (dock && dock.visibility && dock.visibility.containsMouse)
+                    if (latteView && latteView.visibility && latteView.visibility.containsMouse)
                         return "Yes";
                     else
                         return "No";
@@ -337,10 +337,10 @@ Window{
 
             Text{
                 text: {
-                    if (!dock || !dock.visibility)
+                    if (!latteView || !latteView.visibility)
                         return "";
 
-                    switch(dock.visibility.mode){
+                    switch(latteView.visibility.mode){
                     case Latte.Types.AlwaysVisible:
                         return "Always Visible";
                         break;
@@ -361,7 +361,7 @@ Window{
                         break;
                     }
 
-                    return "<unknown> : " + dock.visibility.mode;
+                    return "<unknown> : " + latteView.visibility.mode;
                 }
             }
 

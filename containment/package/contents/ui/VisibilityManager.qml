@@ -74,97 +74,97 @@ Item{
     property int thicknessEditMode: thicknessNormalOriginalValue + theme.defaultFont.pixelSize + root.editShadow
 
     Binding{
-        target: dock
+        target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: dock && !inTempHiding && !inForceHiding
+        when: latteView && !inTempHiding && !inForceHiding
         value: thicknessZoomOriginal
     }
 
     Binding{
-        target: dock
+        target: latteView
         property:"normalThickness"
-        when: dock
+        when: latteView
         value: thicknessNormalOriginal
     }
 
     Binding{
-        target: dock
+        target: latteView
         property: "behaveAsPlasmaPanel"
-        when: dock
+        when: latteView
         value: root.editMode ? false : root.behaveAsPlasmaPanel
     }
 
     Binding{
-        target: dock
+        target: latteView
         property: "fontPixelSize"
         when: theme
         value: theme.defaultFont.pixelSize
     }
 
     Binding{
-        target: dock
+        target: latteView
         property:"inEditMode"
-        when: dock
+        when: latteView
         value: root.editMode
     }
 
     Binding{
-        target: dock
+        target: latteView
         property: "maxLength"
-        when: dock
+        when: latteView
         value: root.editMode ? 1 : plasmoid.configuration.maxLength/100
     }
 
     Binding{
-        target: dock
+        target: latteView
         property: "offset"
-        when: dock
+        when: latteView
         value: plasmoid.configuration.offset
     }
 
     Binding{
-        target: dock
+        target: latteView
         property: "alignment"
-        when: dock
+        when: latteView
         value: root.panelAlignment
     }
 
     Binding{
-        target: dock && dock.effects ? dock.effects : null
+        target: latteView && latteView.effects ? latteView.effects : null
         property: "backgroundOpacity"
-        when: dock && dock.effects
+        when: latteView && latteView.effects
         value: root.currentPanelTransparency
     }
 
     Binding{
-        target: dock && dock.effects ? dock.effects : null
+        target: latteView && latteView.effects ? latteView.effects : null
         property: "colorizerEnabled"
-        when: dock && dock.effects
+        when: latteView && latteView.effects
         value: root.forceColorizer && plasmoid.configuration.solidBackgroundForMaximized
     }
 
     Binding{
-        target: dock && dock.effects ? dock.effects : null
+        target: latteView && latteView.effects ? latteView.effects : null
         property: "drawEffects"
-        when: dock && dock.effects
+        when: latteView && latteView.effects
         value: Latte.WindowSystem.compositingActive &&
                (((root.blurEnabled && root.useThemePanel)
-                 || (root.blurEnabled && root.forceSolidPanel && dock.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
+                 || (root.blurEnabled && root.forceSolidPanel && latteView.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
                 && (!root.inStartup || inForceHiding || inTempHiding))
     }
 
     Binding{
-        target: dock && dock.effects ? dock.effects : null
+        target: latteView && latteView.effects ? latteView.effects : null
         property: "drawShadows"
-        when: dock && dock.effects
+        when: latteView && latteView.effects
         value: root.drawShadowsExternal && (!root.inStartup || inForceHiding || inTempHiding)
     }
 
     Binding{
-        target: dock && dock.effects ? dock.effects : null
+        target: latteView && latteView.effects ? latteView.effects : null
         property:"innerShadow"
-        when: dock && dock.effects
+        when: latteView && latteView.effects
         value: {
             if (editModeVisual.editAnimationEnded && !root.behaveAsPlasmaPanel) {
                 return root.editShadow;
@@ -175,9 +175,9 @@ Item{
     }
 
     Binding{
-        target: dock && dock.visibility ? dock.visibility : null
+        target: latteView && latteView.visibility ? latteView.visibility : null
         property: "enabledDynamicBackground"
-        when: dock && dock.visibility
+        when: latteView && latteView.visibility
         value: (root.backgroundOnlyOnMaximized
                 || plasmoid.configuration.solidBackgroundForMaximized
                 || root.disablePanelShadowMaximized)
@@ -193,7 +193,7 @@ Item{
     Connections{
         target: universalLayoutManager
         onCurrentLayoutIsSwitching: {
-            if (Latte.WindowSystem.compositingActive && root.dockManagedLayout && root.dockManagedLayout.name === layoutName) {
+            if (Latte.WindowSystem.compositingActive && root.latteViewManagedLayout && root.latteViewManagedLayout.name === layoutName) {
                 manager.inTempHiding = true;
                 manager.inForceHiding = true;
                 root.clearZoom();
@@ -214,7 +214,7 @@ Item{
     }
 
     function slotContainsMouseChanged() {
-        if(dock.visibility.containsMouse) {
+        if(latteView.visibility.containsMouse) {
             updateMaskArea();
         }
     }
@@ -233,8 +233,8 @@ Item{
         }
 
         // console.log("hide....");
-        if((!slidingAnimationAutoHiddenOut.running && !dock.visibility.blockHiding
-            && !dock.visibility.containsMouse) || inForceHiding) {
+        if((!slidingAnimationAutoHiddenOut.running && !latteView.visibility.blockHiding
+            && !latteView.visibility.containsMouse) || inForceHiding) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
@@ -252,12 +252,12 @@ Item{
 
     function sendHideDockDuringLocationChangeFinished(){
         blockUpdateMask = false;
-        dock.positioner.hideDockDuringLocationChangeFinished();
+        latteView.positioner.hideDockDuringLocationChangeFinished();
     }
 
     ///test maskArea
     function updateMaskArea() {
-        if (!dock || blockUpdateMask) {
+        if (!latteView || blockUpdateMask) {
             return;
         }
 
@@ -265,12 +265,12 @@ Item{
         var localY = 0;
 
         normalState = ((root.animationsNeedBothAxis === 0) && (root.animationsNeedLength === 0))
-                || (dock.visibility.isHidden && !dock.visibility.containsMouse && root.animationsNeedThickness == 0);
+                || (latteView.visibility.isHidden && !latteView.visibility.containsMouse && root.animationsNeedThickness == 0);
 
         // debug maskArea criteria
         if (debugMagager) {
             console.log(root.animationsNeedBothAxis + ", " + root.animationsNeedLength + ", " +
-                        root.animationsNeedThickness + ", " + dock.visibility.isHidden);
+                        root.animationsNeedThickness + ", " + latteView.visibility.isHidden);
 
             if (previousNormalState !== normalState) {
                 console.log("normal state changed to:" + normalState);
@@ -318,50 +318,50 @@ Item{
                     tempThickness = Latte.WindowSystem.compositingActive ? thicknessZoom : thicknessNormal;
                 }
 
-                if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
+                if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                     tempThickness = thicknessAutoHidden;
                 }
 
                 //configure x,y based on plasmoid position and root.panelAlignment(Alignment)
                 if ((plasmoid.location === PlasmaCore.Types.BottomEdge) || (plasmoid.location === PlasmaCore.Types.TopEdge)) {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                        localY = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
-                                    dock.height + tempThickness : dock.height - tempThickness;
+                        localY = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
+                                    latteView.height + tempThickness : latteView.height - tempThickness;
                     } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                        localY = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
+                        localY = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
                                     -tempThickness : 0;
                     }
 
                     if (noCompositingEdit) {
                         localX = 0;
                     } else if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
-                        localX = (dock.width/2) - tempLength/2 + root.offset;
+                        localX = (latteView.width/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Left) {
                         localX = root.offset;
                     } else if (root.panelAlignment === Latte.Types.Center) {
-                        localX = (dock.width/2) - tempLength/2 + root.offset;
+                        localX = (latteView.width/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Right) {
-                        localX = dock.width - layoutsContainer.mainLayout.width - space - root.offset;
+                        localX = latteView.width - layoutsContainer.mainLayout.width - space - root.offset;
                     }
                 } else if ((plasmoid.location === PlasmaCore.Types.LeftEdge) || (plasmoid.location === PlasmaCore.Types.RightEdge)){
                     if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                        localX = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
+                        localX = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
                                     -tempThickness : 0;
                     } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        localX = dock.visibility.isHidden && dock.visibility.supportsKWinEdges ?
-                                    dock.width + tempThickness : dock.width - tempThickness;
+                        localX = latteView.visibility.isHidden && latteView.visibility.supportsKWinEdges ?
+                                    latteView.width + tempThickness : latteView.width - tempThickness;
                     }
 
                     if (noCompositingEdit) {
                         localY = 0;
                     } else if (plasmoid.configuration.panelPosition === Latte.Types.Justify) {
-                        localY = (dock.height/2) - tempLength/2 + root.offset;
+                        localY = (latteView.height/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Top) {
                         localY = root.offset;
                     } else if (root.panelAlignment === Latte.Types.Center) {
-                        localY = (dock.height/2) - tempLength/2 + root.offset;
+                        localY = (latteView.height/2) - tempLength/2 + root.offset;
                     } else if (root.panelAlignment === Latte.Types.Bottom) {
-                        localY = dock.height - layoutsContainer.mainLayout.height - space - root.offset;
+                        localY = latteView.height - layoutsContainer.mainLayout.height - space - root.offset;
                     }
                 }
             } else {
@@ -378,14 +378,14 @@ Item{
                     tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + theme.defaultFont.pixelSize + root.editShadow :
                                                                         thicknessNormalOriginal + theme.defaultFont.pixelSize
 
-                    if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
+                    if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = thicknessAutoHidden;
                     } else if (root.animationsNeedThickness > 0) {
                         tempThickness = thicknessZoomOriginal;
                     }
                 } else{
                     //use all thickness space
-                    if (dock.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
+                    if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = Latte.WindowSystem.compositingActive ? thicknessAutoHidden : thicknessNormalOriginal;
                     } else {
                         tempThickness = thicknessZoomOriginal;
@@ -394,13 +394,13 @@ Item{
 
                 //configure the x,y position based on thickness
                 if(plasmoid.location === PlasmaCore.Types.RightEdge)
-                    localX = Math.max(0,dock.width - tempThickness);
+                    localX = Math.max(0,latteView.width - tempThickness);
                 else if(plasmoid.location === PlasmaCore.Types.BottomEdge)
-                    localY = Math.max(0,dock.height - tempThickness);
+                    localY = Math.max(0,latteView.height - tempThickness);
             }
         } // end of compositing calculations
 
-        var maskArea = dock.effects.mask;
+        var maskArea = latteView.effects.mask;
 
         if (Latte.WindowSystem.compositingActive) {
             var maskLength = maskArea.width; //in Horizontal
@@ -414,31 +414,31 @@ Item{
             }
         } else {
             //! no compositing case
-            if (!dock.visibility.isHidden || !dock.visibility.supportsKWinEdges) {
-                localX = dock.effects.rect.x;
-                localY = dock.effects.rect.y;
+            if (!latteView.visibility.isHidden || !latteView.visibility.supportsKWinEdges) {
+                localX = latteView.effects.rect.x;
+                localY = latteView.effects.rect.y;
             } else {
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    localX = dock.effects.rect.x;
-                    localY = dock.effects.rect.y+dock.effects.rect.height+thicknessAutoHidden;
+                    localX = latteView.effects.rect.x;
+                    localY = latteView.effects.rect.y+dock.effects.rect.height+thicknessAutoHidden;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    localX = dock.effects.rect.x;
-                    localY = dock.effects.rect.y - thicknessAutoHidden;
+                    localX = latteView.effects.rect.x;
+                    localY = latteView.effects.rect.y - thicknessAutoHidden;
                 } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    localX = dock.effects.rect.x - thicknessAutoHidden;
-                    localY = dock.effects.rect.y;
+                    localX = latteView.effects.rect.x - thicknessAutoHidden;
+                    localY = latteView.effects.rect.y;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    localX = dock.effects.rect.x + dock.effects.rect.width + 1;
-                    localY = dock.effects.rect.y;
+                    localX = latteView.effects.rect.x + latteView.effects.rect.width + 1;
+                    localY = latteView.effects.rect.y;
                 }
             }
 
             if (root.isHorizontal) {
-                tempThickness = dock.effects.rect.height;
-                tempLength = dock.effects.rect.width;
+                tempThickness = latteView.effects.rect.height;
+                tempLength = latteView.effects.rect.width;
             } else {
-                tempThickness = dock.effects.rect.width;
-                tempLength = dock.effects.rect.height;
+                tempThickness = latteView.effects.rect.width;
+                tempLength = latteView.effects.rect.height;
             }
         }
 
@@ -460,12 +460,12 @@ Item{
             }
 
             if (!Latte.WindowSystem.compositingActive) {
-                dock.effects.mask = newMaskArea;
+                latteView.effects.mask = newMaskArea;
             } else {
-                if (dock.behaveAsPlasmaPanel && !root.editMode) {
-                    dock.effects.mask = Qt.rect(0,0,root.width,root.height);
+                if (latteView.behaveAsPlasmaPanel && !root.editMode) {
+                    latteView.effects.mask = Qt.rect(0,0,root.width,root.height);
                 } else {
-                    dock.effects.mask = newMaskArea;
+                    latteView.effects.mask = newMaskArea;
                 }
             }
         }
@@ -473,11 +473,11 @@ Item{
         //console.log("reached updating geometry ::: "+dock.maskArea);
         if(normalState){
 
-            var tempGeometry = Qt.rect(dock.effects.mask.x, dock.effects.mask.y, dock.effects.mask.width, dock.effects.mask.height);
+            var tempGeometry = Qt.rect(latteView.effects.mask.x, latteView.effects.mask.y, latteView.effects.mask.width, latteView.effects.mask.height);
 
             //the shadows size must be removed from the maskArea
             //before updating the localDockGeometry
-            if ((!dock.behaveAsPlasmaPanel || root.editMode)
+            if ((!latteView.behaveAsPlasmaPanel || root.editMode)
                     && Latte.WindowSystem.compositingActive) {
                 var fixedThickness = root.realPanelThickness;
 
@@ -488,24 +488,24 @@ Item{
                 }
 
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                    tempGeometry.y = dock.height - fixedThickness;
+                    tempGeometry.y = latteView.height - fixedThickness;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    tempGeometry.x = dock.width - fixedThickness;
+                    tempGeometry.x = latteView.width - fixedThickness;
                 }
 
-                //set the boundaries for dock local geometry
+                //set the boundaries for latteView local geometry
                 //qBound = qMax(min, qMin(value, max)).
-                tempGeometry.x = Math.max(0, Math.min(tempGeometry.x, dock.width));
-                tempGeometry.y = Math.max(0, Math.min(tempGeometry.y, dock.height));
-                tempGeometry.width = Math.min(tempGeometry.width, dock.width);
-                tempGeometry.height = Math.min(tempGeometry.height, dock.height);
+                tempGeometry.x = Math.max(0, Math.min(tempGeometry.x, latteView.width));
+                tempGeometry.y = Math.max(0, Math.min(tempGeometry.y, latteView.height));
+                tempGeometry.width = Math.min(tempGeometry.width, latteView.width);
+                tempGeometry.height = Math.min(tempGeometry.height, latteView.height);
             }
 
             //console.log("update geometry ::: "+tempGeometry);
             if (!Latte.WindowSystem.compositingActive) {
-                dock.localGeometry = dock.effects.rect;
+                latteView.localGeometry = latteView.effects.rect;
             } else {
-                dock.localGeometry = tempGeometry;
+                latteView.localGeometry = tempGeometry;
             }
         }
 
@@ -527,10 +527,10 @@ Item{
             }
 
             Rectangle{
-                x: dock ? dock.effects.mask.x : -1
-                y: dock ? dock.effects.mask.y : -1
-                height: dock ? dock.effects.mask.height : 0
-                width: dock ? dock.effects.mask.width : 0
+                x: latteView ? latteView.effects.mask.x : -1
+                y: latteView ? latteView.effects.mask.y : -1
+                height: latteView ? latteView.effects.mask.height : 0
+                width: latteView ? latteView.effects.mask.width : 0
 
                 border.color: "green"
                 border.width: 1
@@ -571,7 +571,7 @@ Item{
 
         ScriptAction{
             script: {
-                dock.visibility.isHidden = true;
+                latteView.visibility.isHidden = true;
             }
         }
 
@@ -582,7 +582,7 @@ Item{
         }
 
         onStopped: {
-            dock.visibility.isHidden = true;
+            latteView.visibility.isHidden = true;
 
             if (manager.debugMagager) {
                 console.log("hiding animation ended...");
@@ -596,7 +596,7 @@ Item{
         }
 
         function init() {
-            if (!dock.visibility.blockHiding)
+            if (!latteView.visibility.blockHiding)
                 start();
         }
     }
@@ -646,14 +646,14 @@ Item{
         }
 
         function init() {
-            // if (!dock.visibility.blockHiding)
+            // if (!latteView.visibility.blockHiding)
             inSlidingIn = true;
 
             if (slidingAnimationAutoHiddenOut.running) {
                 slidingAnimationAutoHiddenOut.stop();
             }
 
-            dock.visibility.isHidden = false;
+            latteView.visibility.isHidden = false;
             updateMaskArea();
 
             start();

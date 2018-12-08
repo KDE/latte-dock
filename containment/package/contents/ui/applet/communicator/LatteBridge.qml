@@ -32,7 +32,7 @@ Item{
     // NAME: inEditMode
     //   USAGE: read-only
     //   EXPLANATION: Latte sets it to true when this applet is in a Latte containment and Latte
-    //       is also in EditMode, that means when the user is altering applets and Latte dock settings
+    //       is also in EditMode, that means when the user is altering applets and Latte latteView settings
     // @since: 0.9
     readonly property bool inEditMode: root.editMode
 

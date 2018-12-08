@@ -25,7 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 MouseArea{
-    enabled: root.editMode && !dock.visibility.isHidden
+    enabled: root.editMode && !latteView.visibility.isHidden
 
     cursorShape: {
         if (enabled) {

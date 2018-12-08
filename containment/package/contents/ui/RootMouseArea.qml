@@ -41,7 +41,7 @@ MouseArea{
     }
 
     onPressed: {
-        if (dock.visibility.activeWindowCanBeDragged()) {
+        if (latteView.visibility.activeWindowCanBeDragged()) {
             lastPressX = mouse.x;
             lastPressY = mouse.y;
             drawWindowTimer.start();
@@ -60,7 +60,7 @@ MouseArea{
 
         var tryDrag = mainArea.pressed && (stepX>threshold || stepY>threshold);
 
-        if ( tryDrag && dock.visibility.activeWindowCanBeDragged()) {
+        if ( tryDrag && latteView.visibility.activeWindowCanBeDragged()) {
             drawWindowTimer.stop();
             activateDragging();
         }
@@ -69,13 +69,13 @@ MouseArea{
     onDoubleClicked: {
         drawWindowTimer.stop();
         restoreGrabberTimer.stop();
-        dock.visibility.requestToggleMaximizeForActiveWindow();
+        latteView.visibility.requestToggleMaximizeForActiveWindow();
         //tasksModel.requestToggleMaximized(tasksModel.activeTask);
     }
 
     function activateDragging(){
-        dock.disableGrabItemBehavior();
-        dock.visibility.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
+        latteView.disableGrabItemBehavior();
+        latteView.visibility.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
         restoreGrabberTimer.start();
     }
 
@@ -83,7 +83,7 @@ MouseArea{
         id: drawWindowTimer
         interval: 500
         onTriggered: {
-            if (mainArea.pressed && dock.visibility.activeWindowCanBeDragged()) {
+            if (mainArea.pressed && latteView.visibility.activeWindowCanBeDragged()) {
                 mainArea.activateDragging();
             }
         }
@@ -93,7 +93,7 @@ MouseArea{
         id: restoreGrabberTimer
         interval: 50
         onTriggered: {
-            dock.restoreGrabItemBehavior();
+            latteView.restoreGrabItemBehavior();
             mainArea.lastPressX = -1;
             mainArea.lastPressY = -1;
         }

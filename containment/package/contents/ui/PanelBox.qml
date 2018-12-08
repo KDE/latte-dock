@@ -153,7 +153,7 @@ Item{
                 return 1;
         }
 
-        enabledBorders: dock && dock.effects ? dock.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
         //! set true by default in order to avoid crash on startup because imagePath is set to ""
         readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
@@ -361,7 +361,7 @@ Item{
             }
 
             function updateEffectsArea(){
-                if (!dock || root.editMode)
+                if (!latteView || root.editMode)
                     return;
 
                 var rootGeometry = mapToItem(root, 0, 0);
@@ -371,7 +371,7 @@ Item{
                 efGeometry.width = width;
                 efGeometry.height = height;
 
-                dock.effects.rect = efGeometry;
+                latteView.effects.rect = efGeometry;
 
                 if (!Latte.WindowSystem.compositingActive) {
                     visibilityManager.updateMaskArea();
@@ -438,7 +438,7 @@ Item{
                     adjustPrefix();
             }
 
-            enabledBorders: dock && dock.effects ? dock.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+            enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
 
             Behavior on opacity{
                 enabled: Latte.WindowSystem.compositingActive
@@ -479,7 +479,7 @@ Item{
         Colorizer.CustomBackground {
             anchors.fill: solidBackground
             opacity: root.forceColorizeFromActiveWindowScheme ? solidBackground.opacity : 0
-            backgroundColor: root.forceColorizeFromActiveWindowScheme ? dock.visibility.touchingWindowScheme.backgroundColor : "transparent"
+            backgroundColor: root.forceColorizeFromActiveWindowScheme ? latteView.visibility.touchingWindowScheme.backgroundColor : "transparent"
             roundness: {
                 if (themeExtended) {
                     switch(plasmoid.location) {

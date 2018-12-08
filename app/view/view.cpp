@@ -192,7 +192,7 @@ void View::init()
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
 
     ///!!!!!
-    rootContext()->setContextProperty(QStringLiteral("dock"), this);
+    rootContext()->setContextProperty(QStringLiteral("latteView"), this);
 
     auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 

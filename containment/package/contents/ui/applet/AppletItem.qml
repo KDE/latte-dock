@@ -133,7 +133,7 @@ Item {
         //for example the icon-only applets
         var choords = mapToItem(container.appletWrapper, mouse.x, mouse.y);
         if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=container.appletWrapper.height) {
-            dock.toggleAppletExpanded(applet.id);
+            latteView.toggleAppletExpanded(applet.id);
         }
     }
 
@@ -375,7 +375,7 @@ Item {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && container.isLattePlasmoid) {
                 latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
             } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(container.index))) {
-                dock.toggleAppletExpanded(applet.id);
+                latteView.toggleAppletExpanded(applet.id);
             }
         }
 
@@ -383,7 +383,7 @@ Item {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && container.isLattePlasmoid) {
                 latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
             } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(container.index))) {
-                dock.toggleAppletExpanded(applet.id);
+                latteView.toggleAppletExpanded(applet.id);
             }
         }
     }
@@ -617,7 +617,7 @@ Item {
                 root.startDirectRenderDelayerDuringEntering();
             }
 
-            if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+            if (!(root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
                 layoutsContainer.hoveredIndex = index;
             }
 
@@ -668,7 +668,7 @@ Item {
                 root.startDirectRenderDelayerDuringEntering();
             }
 
-            if (!(root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+            if (!(root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
                 layoutsContainer.hoveredIndex = index;
             }
 
@@ -714,7 +714,7 @@ Item {
 
         onWheel: {
             if (isSeparator || !root.mouseWheelActions || blockWheel
-                    || (root.dockIsHidden || root.inSlidingIn || root.inSlidingOut)){
+                    || (root.latteViewIsHidden || root.inSlidingIn || root.inSlidingOut)){
                 wheel.accepted = false;
                 return;
             }
@@ -727,12 +727,12 @@ Item {
             if (angle > 12) {
                 //positive direction
                 if (!isExpanded) {
-                    dock.toggleAppletExpanded(applet.id);
+                    latteView.toggleAppletExpanded(applet.id);
                 }
             } else if (angle < -12) {
                 //negative direction
                 if (isExpanded) {
-                    dock.toggleAppletExpanded(applet.id);
+                    latteView.toggleAppletExpanded(applet.id);
                 }
             }
         }

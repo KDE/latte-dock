@@ -38,7 +38,7 @@ import "../code/LayoutManager.js" as LayoutManager
 
 DragDrop.DropArea {
     id: root
-    objectName: "dockLayoutView"
+    objectName: "containmentViewLayout"
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.isVertical
     LayoutMirroring.childrenInherit: true
@@ -69,11 +69,11 @@ DragDrop.DropArea {
     property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize && !containsOnlyPlasmaTasks && layoutsContainer.fillApplets<=0
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
-        if (!dock || !dock.visibility)
+        if (!latteView || !latteView.visibility)
             return false;
 
         return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
-                && (dock.visibility.mode === Latte.Types.AlwaysVisible || dock.visibility.mode === Latte.Types.WindowsGoBelow)
+                && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidPanel && panelShadowsActive));
     }
 
@@ -82,40 +82,40 @@ DragDrop.DropArea {
 
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
-    property bool dockContainsMouse: dock && dock.visibility ? dock.visibility.containsMouse : false
+    property bool dockContainsMouse: latteView && latteView.visibility ? latteView.visibility.containsMouse : false
 
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && Latte.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
-    property bool windowIsTouching: dock && dock.visibility && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet)
+    property bool windowIsTouching: latteView && latteView.visibility && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped || hasExpandedApplet)
 
     property bool forceSemiTransparentPanel: ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
                                               || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
                                              && Latte.WindowSystem.compositingActive
 
-    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && dock && dock.visibility
+    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
-                                    &&(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped || hasExpandedApplet
+                                    &&(latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped || hasExpandedApplet
                                        || showAppletsNumbers || showMetaBadge)
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
-                                         && dock && dock.visibility
-                                         && !(dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+                                         && latteView && latteView.visibility
+                                         && !(latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped)
                                          && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
     property bool forceColorizeFromActiveWindowScheme: plasmoid.configuration.colorizeFromActiveWindowScheme && !editMode
-                                                       && (dock && dock.visibility && dock.visibility.touchingWindowScheme
-                                                           && (dock.visibility.existsWindowMaximized || dock.visibility.existsWindowSnapped)
+                                                       && (latteView && latteView.visibility && latteView.visibility.touchingWindowScheme
+                                                           && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped)
                                                            && !hasExpandedApplet)
 
-    property bool maximizedWindowTitleBarBehavesAsPanelBackground: dock && dock.visibility
+    property bool maximizedWindowTitleBarBehavesAsPanelBackground: latteView && latteView.visibility
                                                                    && (!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
-                                                                   && (dock.visibility.mode === Latte.Types.WindowsGoBelow)
+                                                                   && (latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                                                                    && (plasmoid.location === PlasmaCore.Types.TopEdge)
                                                                    && (!useThemePanel || panelTransparency<40)
-                                                                   && dock.visibility.existsWindowMaximized
+                                                                   && latteView.visibility.existsWindowMaximized
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.status !== PlasmaCore.Types.HiddenStatus
@@ -123,7 +123,7 @@ DragDrop.DropArea {
                 && item.pluginName !== "org.kde.activeWindowControl");
     })
 
-    readonly property bool hasUserSpecifiedBackground: (dock && dock.managedLayout && dock.managedLayout.background.startsWith("/")) ?
+    readonly property bool hasUserSpecifiedBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                            true : false
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
@@ -179,10 +179,10 @@ DragDrop.DropArea {
                                root.maxIconSize
 
     property int proportionIconSize: { //icon size based on screen height
-        if ((plasmoid.configuration.proportionIconSize===-1) || !dock)
+        if ((plasmoid.configuration.proportionIconSize===-1) || !latteView)
             return -1;
 
-        return Math.max(16,Math.round(dock.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
+        return Math.max(16,Math.round(latteView.screenGeometry.height * plasmoid.configuration.proportionIconSize/100/8)*8);
     }
 
     property int iconStep: 8
@@ -211,7 +211,7 @@ DragDrop.DropArea {
 
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
              || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                && !(disablePanelShadowMaximized && dock.visibility.existsWindowMaximized)) {
+                && !(disablePanelShadowMaximized && latteView.visibility.existsWindowMaximized)) {
             return true;
         }
 
@@ -260,8 +260,8 @@ DragDrop.DropArea {
     property int editShadow: {
         if (!Latte.WindowSystem.compositingActive) {
             return 0;
-        } else if (dock && dock.screenGeometry) {
-            return (dock.screenGeometry.height/90);
+        } else if (latteView && latteView.screenGeometry) {
+            return (latteView.screenGeometry.height/90);
         } else {
             return 7;
         }
@@ -346,18 +346,18 @@ DragDrop.DropArea {
     property Item latteApplet
     property Item parabolicManager: _parabolicManager
 
-    property QtObject dock: null
+    property QtObject latteView: null
     property QtObject themeExtended: null
     property QtObject universalSettings: null
     property QtObject universalLayoutManager: null
-    property QtObject dockManagedLayout: dock && dock.managedLayout ? dock.managedLayout : null
+    property QtObject managedLayout: latteView && latteView.managedLayout ? latteView.managedLayout : null
 
     // TO BE DELETED, if not needed: property int counter:0;
 
     ///BEGIN properties provided to Latte Plasmoid
     //shadows for applets, it should be removed as the appleitems don't need it any more
     property bool enableShadows: plasmoid.configuration.shadows || (root.forceTransparentPanel && plasmoid.configuration.shadows>0)
-    property bool dockIsHidden: dock ? dock.visibility.isHidden : true
+    property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool highlightWindows: plasmoid.configuration.highlightWindows
@@ -397,7 +397,7 @@ DragDrop.DropArea {
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
     property real durationTime: {
-        if ((dock && dock.effects && dock.effects.animationsBlocked) || !Latte.WindowSystem.compositingActive) {
+        if ((latteView && latteView.effects && latteView.effects.animationsBlocked) || !Latte.WindowSystem.compositingActive) {
             return 0;
         }
 
@@ -412,7 +412,7 @@ DragDrop.DropArea {
         return 2;
     }
 
-    property rect screenGeometry: dock ? dock.screenGeometry : plasmoid.screenGeometry
+    property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 
     readonly property color minimizedDotColor: colorizerManager.minimizedDotColor
     ///END properties from latteApplet
@@ -524,27 +524,27 @@ DragDrop.DropArea {
         }
     }
 
-    onDockChanged: {
-        if (dock) {
-            dock.onAddInternalViewSplitter.connect(addInternalViewSplitters);
-            dock.onRemoveInternalViewSplitter.connect(removeInternalViewSplitters);
+    onLatteViewChanged: {
+        if (latteView) {
+            latteView.onAddInternalViewSplitter.connect(addInternalViewSplitters);
+            latteView.onRemoveInternalViewSplitter.connect(removeInternalViewSplitters);
 
-            dock.onXChanged.connect(visibilityManager.updateMaskArea);
-            dock.onYChanged.connect(visibilityManager.updateMaskArea);
-            dock.onWidthChanged.connect(visibilityManager.updateMaskArea);
-            dock.onHeightChanged.connect(visibilityManager.updateMaskArea);
+            latteView.onXChanged.connect(visibilityManager.updateMaskArea);
+            latteView.onYChanged.connect(visibilityManager.updateMaskArea);
+            latteView.onWidthChanged.connect(visibilityManager.updateMaskArea);
+            latteView.onHeightChanged.connect(visibilityManager.updateMaskArea);
 
-            dock.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            latteView.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+            latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+            latteView.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
 
 
-            dock.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
-            dock.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
-            dock.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
+            latteView.visibility.onContainsMouseChanged.connect(visibilityManager.slotContainsMouseChanged);
+            latteView.visibility.onMustBeHide.connect(visibilityManager.slotMustBeHide);
+            latteView.visibility.onMustBeShown.connect(visibilityManager.slotMustBeShown);
 
             updateContainsOnlyPlasmaTasks();
         }
@@ -572,7 +572,7 @@ DragDrop.DropArea {
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
-            } else if (dock.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+            } else if (latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
                        && root.latteAppletContainer.containsPos(event)) {
                 confirmedDragEntered = true
                 dndSpacer.opacity = 0;
@@ -586,7 +586,7 @@ DragDrop.DropArea {
             slotAnimationsNeedLength(1);
         }
 
-        if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+        if (!latteApplet || (latteApplet && !latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
             LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
             dndSpacer.opacity = 1;
         }
@@ -604,7 +604,7 @@ DragDrop.DropArea {
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
-            } else if (dock.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+            } else if (latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
                        && root.latteAppletContainer.containsPos(event)) {
                 confirmedDragEntered = true
                 dndSpacer.opacity = 0;
@@ -613,7 +613,7 @@ DragDrop.DropArea {
             }
         }
 
-        if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+        if (!latteApplet || (latteApplet && !latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
             LayoutManager.insertAtCoordinates2(dndSpacer, event.x, event.y)
             dndSpacer.opacity = 1;
         }
@@ -639,7 +639,7 @@ DragDrop.DropArea {
         if (event.mimeData.formats.indexOf("application/x-orgkdeplasmataskmanager_taskbuttonitem") < 0) {
             if (latteApplet && latteApplet.launchersDrop(event) && root.addLaunchersInTaskManager) {
                 latteApplet.launchersDropped(event.mimeData.urls);
-            } else if (!latteApplet || (latteApplet && !dock.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
+            } else if (!latteApplet || (latteApplet && !latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.plasmoid"))) {
                 plasmoid.processMimeData(event.mimeData, event.x, event.y);
                 event.accept(event.proposedAction);
             }
@@ -729,26 +729,26 @@ DragDrop.DropArea {
     Component.onDestruction: {
         console.debug("Destroying Latte Dock Containment ui...");
 
-        if (dock) {
-            dock.onAddInternalViewSplitter.disconnect(addInternalViewSplitters);
-            dock.onRemoveInternalViewSplitter.disconnect(removeInternalViewSplitters);
+        if (latteView) {
+            latteView.onAddInternalViewSplitter.disconnect(addInternalViewSplitters);
+            latteView.onRemoveInternalViewSplitter.disconnect(removeInternalViewSplitters);
 
-            dock.onXChanged.disconnect(visibilityManager.updateMaskArea);
-            dock.onYChanged.disconnect(visibilityManager.updateMaskArea);
-            dock.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
-            dock.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
+            latteView.onXChanged.disconnect(visibilityManager.updateMaskArea);
+            latteView.onYChanged.disconnect(visibilityManager.updateMaskArea);
+            latteView.onWidthChanged.disconnect(visibilityManager.updateMaskArea);
+            latteView.onHeightChanged.disconnect(visibilityManager.updateMaskArea);
 
-            dock.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.positioner.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-            dock.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-            dock.positioner.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            latteView.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            latteView.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            latteView.positioner.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+            latteView.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+            latteView.positioner.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
 
-            if (dock.visibility) {
-                dock.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);
-                dock.visibility.onMustBeHide.disconnect(visibilityManager.slotMustBeHide);
-                dock.visibility.onMustBeShown.disconnect(visibilityManager.slotMustBeShown);
+            if (latteView.visibility) {
+                latteView.visibility.onContainsMouseChanged.disconnect(visibilityManager.slotContainsMouseChanged);
+                latteView.visibility.onMustBeHide.disconnect(visibilityManager.slotMustBeHide);
+                latteView.visibility.onMustBeShown.disconnect(visibilityManager.slotMustBeShown);
             }
         }
     }
@@ -792,7 +792,7 @@ DragDrop.DropArea {
         // console.debug("user configuring", plasmoid.userConfiguring)
 
         if (plasmoid.userConfiguring) {
-            dock.setBlockHiding(true);
+            latteView.setBlockHiding(true);
 
             //  console.log("applets------");
             for (var i = 0; i < plasmoid.applets.length; ++i) {
@@ -812,10 +812,10 @@ DragDrop.DropArea {
                 dragOverlay.visible = true;
             }
         } else {
-            dock.setBlockHiding(false);
+            latteView.setBlockHiding(false);
 
-            if (dock.visibility.isHidden) {
-                dock.visibility.mustBeShown();
+            if (latteView.visibility.isHidden) {
+                latteView.visibility.mustBeShown();
             }
 
             if (dragOverlay) {
@@ -831,7 +831,7 @@ DragDrop.DropArea {
 
         ///Set Preferred Sizes///
         ///Notice: they are set here because if they are set with a binding
-        ///they break the !immutable experience, the dock becomes too small
+        ///they break the !immutable experience, the latteView becomes too small
         ///to add applets
         if (plasmoid.immutable) {
             if(root.isHorizontal) {
@@ -1018,7 +1018,7 @@ DragDrop.DropArea {
     }
 
     function containmentActions(){
-        return dock.containmentActions();
+        return latteView.containmentActions();
     }
 
     function decimalToHex(d, padding) {
@@ -1110,7 +1110,7 @@ DragDrop.DropArea {
     }
 
     function mouseInHoverableArea() {
-        return (dock.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet());
+        return (latteView.visibility.containsMouse && !rootMouseArea.containsMouse && mouseInCanBeHoveredApplet());
     }
 
     function removeInternalViewSplitters(){
@@ -1231,23 +1231,23 @@ DragDrop.DropArea {
         //    return;
         // }
 
-        if ((step === 0) || (!dock)) {
+        if ((step === 0) || (!latteView)) {
             return;
         }
 
         actionsBlockHiding = Math.max(actionsBlockHiding + step, 0);
 
         if (actionsBlockHiding > 0){
-            dock.setBlockHiding(true);
+            latteView.setBlockHiding(true);
         } else {
             if (!root.editMode)
-                dock.setBlockHiding(false);
+                latteView.setBlockHiding(false);
         }
     }
 
     function slotPreviewsShown(){
-        if (dock) {
-            dock.deactivateApplets();
+        if (latteView) {
+            latteView.deactivateApplets();
         }
     }
 
@@ -1349,8 +1349,8 @@ DragDrop.DropArea {
     }
 
     function updateContainsOnlyPlasmaTasks() {
-        if (dock) {
-            root.containsOnlyPlasmaTasks = (dock.tasksPresent() && !dock.latteTasksPresent());
+        if (latteView) {
+            root.containsOnlyPlasmaTasks = (latteView.tasksPresent() && !latteView.latteTasksPresent());
         } else {
             root.containsOnlyPlasmaTasks = false;
         }
@@ -1433,7 +1433,7 @@ DragDrop.DropArea {
     }
 
     Connections {
-        target: dock
+        target: latteView
         onWidthChanged:{
             if (root.isHorizontal && proportionIconSize!==-1)
                 updateAutomaticIconSize();
@@ -1445,7 +1445,7 @@ DragDrop.DropArea {
         }
 
         onContextMenuIsShownChanged: {
-            if (!dock.contextMenuIsShown) {
+            if (!latteView.contextMenuIsShown) {
                 checkRestoreZoom.start();
             } else {
                 root.setGlobalDirectRender(false);
@@ -1454,7 +1454,7 @@ DragDrop.DropArea {
     }
 
     Connections{
-        target: dock && dock.visibility ? dock.visibility : root
+        target: latteView && latteView.visibility ? latteView.visibility : root
 
         ignoreUnknownSignals : true
 
@@ -1565,7 +1565,7 @@ DragDrop.DropArea {
         id: showTitleTooltipTimer
         interval: 100
         onTriggered: {
-            if (dock && dock.visibility && dock.visibility.containsMouse) {
+            if (latteView && latteView.visibility && latteView.visibility.containsMouse) {
                 titleTooltipDialog.update();
             }
 
@@ -1645,7 +1645,7 @@ DragDrop.DropArea {
         sourceComponent: Image{
             anchors.fill: parent
             fillMode: Image.Tile
-            source: root.hasUserSpecifiedBackground ? dock.managedLayout.background : "../icons/wheatprint.jpg"
+            source: root.hasUserSpecifiedBackground ? latteView.managedLayout.background : "../icons/wheatprint.jpg"
         }
     }
 
@@ -1735,7 +1735,7 @@ DragDrop.DropArea {
     ///////////////BEGIN TIMER elements
 
 
-    //Timer to check if the mouse is still outside the dock in order to restore zooms to 1.0
+    //Timer to check if the mouse is still outside the latteView in order to restore zooms to 1.0
     Timer{
         id:checkRestoreZoom
         interval: 90
@@ -1744,7 +1744,7 @@ DragDrop.DropArea {
             if (latteApplet && (latteApplet.previewContainsMouse() || latteApplet.contextMenu))
                 return;
 
-            if (dock.contextMenuIsShown)
+            if (latteView.contextMenuIsShown)
                 return;
 
             if (!mouseInHoverableArea()) {
@@ -1798,7 +1798,7 @@ DragDrop.DropArea {
         onTriggered: root.updateAutomaticIconSize();
     }
 
-    //! It is used in order to slide-in the dock on startup
+    //! It is used in order to slide-in the latteView on startup
     Timer{
         id: inStartupTimer
         interval: 1500

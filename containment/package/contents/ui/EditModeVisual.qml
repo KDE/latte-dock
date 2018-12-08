@@ -28,9 +28,9 @@ import org.kde.latte 0.2 as Latte
 
 Item{
     id: editVisual
-    width: root.isHorizontal ? (dock ? dock.width : root.width) :
+    width: root.isHorizontal ? (latteView ? latteView.width : root.width) :
                                visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
-    height: root.isVertical ? (dock ? dock.height : root.height) :
+    height: root.isVertical ? (latteView ? latteView.height : root.height) :
                               visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
 
     opacity: 0
@@ -51,7 +51,7 @@ Item{
 
     property rect efGeometry
 
-    property string layoutColor: root.dockManagedLayout ? root.dockManagedLayout.color : "blue"
+    property string layoutColor: root.latteViewManagedLayout ? root.latteViewManagedLayout.color : "blue"
 
 
     Item{
@@ -158,9 +158,9 @@ Item{
         opacity: editVisual.editStateOpacity
 
         fillMode: Image.Tile
-        source: hasBackground ? dock.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
+        source: hasBackground ? latteView.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
 
-        readonly property bool hasBackground: (dock && dock.managedLayout && dock.managedLayout.background.startsWith("/")) ?
+        readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                   true : false
     }
 
@@ -197,7 +197,7 @@ Item{
     }
 
     function updateEffectsArea(){
-        if (!dock || state !== "edit" || !editAnimationEnded)
+        if (!latteView || state !== "edit" || !editAnimationEnded)
             return;
 
         var rootGeometry = mapToItem(root, 0, 0);
@@ -207,7 +207,7 @@ Item{
         efGeometry.width = width;
         efGeometry.height = height;
 
-        dock.effects.rect = efGeometry;
+        latteView.effects.rect = efGeometry;
     }
 
 
@@ -317,7 +317,7 @@ Item{
                 ScriptAction{
                     script: {
                         //! remove kwin effects when starting the animation
-                        dock.effects.rect = Qt.rect(-1, -1, 0, 0);
+                        latteView.effects.rect = Qt.rect(-1, -1, 0, 0);
                     }
                 }
 

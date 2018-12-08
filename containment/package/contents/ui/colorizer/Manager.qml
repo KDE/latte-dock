@@ -50,8 +50,8 @@ Loader{
     property real currentBackgroundLuminas: item ? item.currentBackgroundLuminas : -1000
 
     property QtObject applyTheme: {
-        if (forceSolidnessAndColorize && dock.visibility.touchingWindowScheme) {
-            return dock.visibility.touchingWindowScheme;
+        if (forceSolidnessAndColorize && latteView.visibility.touchingWindowScheme) {
+            return latteView.visibility.touchingWindowScheme;
         }
 
         if (themeExtended) {

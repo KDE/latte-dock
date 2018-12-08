@@ -56,22 +56,22 @@ Item{
             property bool current: model.isCurrent
 
             Component.onCompleted: {
-                if (dockManagedLayout && forceColorizer && dockManagedLayout.lastUsedActivity === activityId) {
+                if (managedLayout && forceColorizer && managedLayout.lastUsedActivity === activityId) {
                     activitiesList.currentLayoutBackground = background;
                 }
             }
 
             onBackgroundChanged: {
-                if (dockManagedLayout && forceColorizer && dockManagedLayout.lastUsedActivity === activityId) {
+                if (managedLayout && forceColorizer && managedLayout.lastUsedActivity === activityId) {
                     activitiesList.currentLayoutBackground = background;
                 }
             }
 
             Connections{
-                target: dockManagedLayout
+                target: managedLayout
 
                 onLastUsedActivityChanged:{
-                    if (dockManagedLayout && forceColorizer && dockManagedLayout.lastUsedActivity === activityItem.activityId) {
+                    if (managedLayout && forceColorizer && managedLayout.lastUsedActivity === activityItem.activityId) {
                         activitiesList.currentLayoutBackground = activityItem.background;
                     }
                 }

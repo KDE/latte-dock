@@ -155,7 +155,7 @@ Item{
 
     readonly property real textColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
     readonly property bool textColorIsDark: textColorLuma < 0.6
-    readonly property color textColor: dock && dock.managedLayout ? dock.managedLayout.textColor : "#D7E3FF"
+    readonly property color textColor: latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF"
 
     Behavior on width {
         NumberAnimation {
