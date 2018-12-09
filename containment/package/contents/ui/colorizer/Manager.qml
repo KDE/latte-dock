@@ -87,8 +87,8 @@ Loader{
     readonly property color buttonFocusColor: theme.buttonFocusColor
 
     readonly property string scheme: {
-        if (applyTheme===theme) {
-            return applyTheme.defaultTheme.schemeFile;
+        if (applyTheme===theme || !mustBeShown) {
+            return themeExtended.defaultTheme.schemeFile;
         }
 
         return applyTheme.schemeFile;
