@@ -94,11 +94,16 @@ void Positioner::init()
     connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::currentScreenChanged);
     connect(m_view, &QQuickWindow::screenChanged, this, &Positioner::screenChanged);
 
-    connect(m_view, &Latte::View::absGeometryChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::maxThicknessChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::maxLengthChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::offsetChanged, this, &Positioner::syncGeometry);
+
+    connect(m_view, &Latte::View::absGeometryChanged, this, [&]() {
+        if (m_view->behaveAsPlasmaPanel()) {
+            syncGeometry();
+        }
+    });
 
     connect(m_view, &Latte::View::locationChanged, this, [&]() {
         updateFormFactor();
