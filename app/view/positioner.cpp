@@ -372,6 +372,7 @@ void Positioner::syncGeometry()
         updatePosition(availableScreenRect);
 
         qDebug() << "syncGeometry() calculations for screen: " << m_view->screen()->name() << " _ " << m_view->screen()->geometry();
+        qDebug() << "syncGeometry() calculations for edge: " << m_view->location();
     }
 
     qDebug() << "syncGeometry() ended...";
