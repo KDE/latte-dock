@@ -96,7 +96,9 @@ private:
     void loadThemePaths();
     void loadRoundness();
 
-    void setNormalSchemeFile(const QString &file);
+    void setOriginalSchemeFile(const QString &file);
+    void updateDefaultScheme();
+    void updateDefaultSchemeValues();
     void updateReversedScheme();
     void updateReversedSchemeValues();
 
@@ -113,7 +115,8 @@ private:
     int m_userRoundness{0};
 
     QString m_themePath;
-    QString m_normalSchemePath;
+    QString m_defaultSchemePath;
+    QString m_originalSchemePath;
     QString m_reversedSchemePath;
 
     std::array<QMetaObject::Connection, 2> m_kdeConnections;
@@ -123,7 +126,7 @@ private:
     Plasma::Theme m_theme;
 
     Latte::Corona *m_corona{nullptr};
-    SchemeColors *m_normalScheme{nullptr};
+    SchemeColors *m_defaultScheme{nullptr};
     SchemeColors *m_reversedScheme{nullptr};
 };
 

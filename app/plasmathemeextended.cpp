@@ -35,6 +35,7 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+#define DEFAULTCOLORSCHEME "default.colors"
 #define REVERSEDCOLORSCHEME "reversed.colors"
 
 namespace Latte {
@@ -62,7 +63,7 @@ PlasmaThemeExtended::~PlasmaThemeExtended()
 {
     saveConfig();
 
-    m_normalScheme->deleteLater();
+    m_defaultScheme->deleteLater();
     m_reversedScheme->deleteLater();
 }
 
@@ -128,38 +129,31 @@ bool PlasmaThemeExtended::themeHasExtendedInfo() const
 
 SchemeColors *PlasmaThemeExtended::defaultTheme() const
 {
-    return m_normalScheme;
+    return m_defaultScheme;
 }
 
 SchemeColors *PlasmaThemeExtended::lightTheme() const
 {
-    return m_isLightTheme ? m_normalScheme : m_reversedScheme;
+    return m_isLightTheme ? m_defaultScheme : m_reversedScheme;
 }
 
 SchemeColors *PlasmaThemeExtended::darkTheme() const
 {
-    return !m_isLightTheme ? m_normalScheme : m_reversedScheme;
+    return !m_isLightTheme ? m_defaultScheme : m_reversedScheme;
 }
 
 
-void PlasmaThemeExtended::setNormalSchemeFile(const QString &file)
+void PlasmaThemeExtended::setOriginalSchemeFile(const QString &file)
 {
-    if (m_normalSchemePath == file) {
+    if (m_originalSchemePath == file) {
         return;
     }
 
-    m_normalSchemePath = file;
+    m_originalSchemePath = file;
 
-    if (m_normalScheme) {
-        disconnect(m_normalScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
-        m_normalScheme->deleteLater();
-    }
+    qDebug() << "plasma theme original colors ::: " << m_originalSchemePath;
 
-    m_normalScheme = new SchemeColors(this, m_normalSchemePath, true);
-    connect(m_normalScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
-
-    qDebug() << "plasma theme normal colors ::: " << m_normalSchemePath;
-
+    updateDefaultScheme();
     updateReversedScheme();
 
     loadThemeLightness();
@@ -167,11 +161,59 @@ void PlasmaThemeExtended::setNormalSchemeFile(const QString &file)
     emit themeChanged();
 }
 
+//! WM records need to be updated based on the colors that
+//! plasma will use in order to be consistent. Such an example
+//! are the Breeze color schemes that have different values for
+//! WM and the plasma theme records
+void PlasmaThemeExtended::updateDefaultScheme()
+{
+    QString defaultFilePath = m_extendedThemeDir.path() + "/" + DEFAULTCOLORSCHEME;
+    if (QFileInfo(defaultFilePath).exists()) {
+        QFile(defaultFilePath).remove();
+    }
+
+    QFile(m_originalSchemePath).copy(defaultFilePath);
+    m_defaultSchemePath = defaultFilePath;
+
+    updateDefaultSchemeValues();
+
+    if (m_defaultScheme) {
+        disconnect(m_defaultScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
+        m_defaultScheme->deleteLater();
+    }
+
+    m_defaultScheme = new SchemeColors(this, m_defaultSchemePath, true);
+    connect(m_defaultScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
+
+    qDebug() << "plasma theme default colors ::: " << m_defaultSchemePath;
+}
+
+void PlasmaThemeExtended::updateDefaultSchemeValues()
+{
+    //! update WM values based on original scheme
+    KSharedConfigPtr originalPtr = KSharedConfig::openConfig(m_originalSchemePath);
+    KSharedConfigPtr defaultPtr = KSharedConfig::openConfig(m_defaultSchemePath);
+
+    if (originalPtr && defaultPtr) {
+        KConfigGroup originalViewGroup(originalPtr, "Colors:View");
+        KConfigGroup defaultWMGroup(defaultPtr, "WM");
+
+        defaultWMGroup.writeEntry("activeBackground", originalViewGroup.readEntry("BackgroundNormal", QColor()));
+        defaultWMGroup.writeEntry("activeForeground", originalViewGroup.readEntry("ForegroundNormal", QColor()));
+
+        defaultWMGroup.sync();
+    }
+}
+
 void PlasmaThemeExtended::updateReversedScheme()
 {
     QString reversedFilePath = m_extendedThemeDir.path() + "/" + REVERSEDCOLORSCHEME;
 
-    QFile(m_normalSchemePath).copy(reversedFilePath);
+    if (QFileInfo(reversedFilePath).exists()) {
+        QFile(reversedFilePath).remove();
+    }
+
+    QFile(m_originalSchemePath).copy(reversedFilePath);
     m_reversedSchemePath = reversedFilePath;
 
     updateReversedSchemeValues();
@@ -188,10 +230,10 @@ void PlasmaThemeExtended::updateReversedScheme()
 void PlasmaThemeExtended::updateReversedSchemeValues()
 {
     //! reverse values based on original scheme
-    KSharedConfigPtr normalPtr = KSharedConfig::openConfig(m_normalSchemePath);
+    KSharedConfigPtr originalPtr = KSharedConfig::openConfig(m_originalSchemePath);
     KSharedConfigPtr reversedPtr = KSharedConfig::openConfig(m_reversedSchemePath);
 
-    if (normalPtr && reversedPtr) {
+    if (originalPtr && reversedPtr) {
         foreach (auto groupName, reversedPtr->groupList()) {
             if (groupName != "Colors:Button") {
                 KConfigGroup reversedGroup(reversedPtr, groupName);
@@ -199,10 +241,10 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
                 if (reversedGroup.keyList().contains("BackgroundNormal")
                     && reversedGroup.keyList().contains("ForegroundNormal")) {
                     //! reverse usual text/background values
-                    KConfigGroup normalGroup(normalPtr, groupName);
+                    KConfigGroup originalGroup(originalPtr, groupName);
 
-                    reversedGroup.writeEntry("BackgroundNormal", normalGroup.readEntry("ForegroundNormal", QColor()));
-                    reversedGroup.writeEntry("ForegroundNormal", normalGroup.readEntry("BackgroundNormal", QColor()));
+                    reversedGroup.writeEntry("BackgroundNormal", originalGroup.readEntry("ForegroundNormal", QColor()));
+                    reversedGroup.writeEntry("ForegroundNormal", originalGroup.readEntry("BackgroundNormal", QColor()));
 
                     reversedGroup.sync();
                 }
@@ -210,33 +252,34 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
         }
 
         //! update WM group
-        KConfigGroup reversedGroup(reversedPtr, "WM");
+        KConfigGroup reversedWMGroup(reversedPtr, "WM");
+        KConfigGroup originalViewGroup(originalPtr, "Colors:View");
 
-        if (reversedGroup.keyList().contains("activeBackground")
-            && reversedGroup.keyList().contains("activeForeground")
-            && reversedGroup.keyList().contains("inactiveBackground")
-            && reversedGroup.keyList().contains("inactiveForeground")) {
+        if (reversedWMGroup.keyList().contains("activeBackground")
+            && reversedWMGroup.keyList().contains("activeForeground")
+            && reversedWMGroup.keyList().contains("inactiveBackground")
+            && reversedWMGroup.keyList().contains("inactiveForeground")) {
             //! reverse usual wm titlebar values
-            KConfigGroup normalGroup(normalPtr, "WM");
-            reversedGroup.writeEntry("activeBackground", normalGroup.readEntry("activeForeground", QColor()));
-            reversedGroup.writeEntry("activeForeground", normalGroup.readEntry("activeBackground", QColor()));
-            reversedGroup.writeEntry("inactiveBackground", normalGroup.readEntry("inactiveForeground", QColor()));
-            reversedGroup.writeEntry("inactiveForeground", normalGroup.readEntry("inactiveBackground", QColor()));
-            reversedGroup.sync();
+            KConfigGroup originalGroup(originalPtr, "WM");
+            reversedWMGroup.writeEntry("activeBackground", originalViewGroup.readEntry("ForegroundNormal", QColor()));
+            reversedWMGroup.writeEntry("activeForeground", originalViewGroup.readEntry("BackgroundNormal", QColor()));
+            reversedWMGroup.writeEntry("inactiveBackground", originalGroup.readEntry("inactiveForeground", QColor()));
+            reversedWMGroup.writeEntry("inactiveForeground", originalGroup.readEntry("inactiveBackground", QColor()));
+            reversedWMGroup.sync();
         }
 
-        if (reversedGroup.keyList().contains("activeBlend")
-            && reversedGroup.keyList().contains("inactiveBlend")) {
-            KConfigGroup normalGroup(normalPtr, "WM");
-            reversedGroup.writeEntry("activeBlend", normalGroup.readEntry("inactiveBlend", QColor()));
-            reversedGroup.writeEntry("inactiveBlend", normalGroup.readEntry("activeBlend", QColor()));
-            reversedGroup.sync();
+        if (reversedWMGroup.keyList().contains("activeBlend")
+            && reversedWMGroup.keyList().contains("inactiveBlend")) {
+            KConfigGroup originalGroup(originalPtr, "WM");
+            reversedWMGroup.writeEntry("activeBlend", originalGroup.readEntry("inactiveBlend", QColor()));
+            reversedWMGroup.writeEntry("inactiveBlend", originalGroup.readEntry("activeBlend", QColor()));
+            reversedWMGroup.sync();
         }
 
         //! update scheme name
-        QString normalSchemeName = SchemeColors::schemeName(m_normalSchemePath);
+        QString originalSchemeName = SchemeColors::schemeName(m_originalSchemePath);
         KConfigGroup generalGroup(reversedPtr, "General");
-        generalGroup.writeEntry("Name", normalSchemeName + "_reversed");
+        generalGroup.writeEntry("Name", originalSchemeName + "_reversed");
         generalGroup.sync();
     }
 }
@@ -309,7 +352,7 @@ void PlasmaThemeExtended::loadThemePaths()
     QString themeColorScheme = m_themePath + "/colors";
 
     if (QFileInfo(themeColorScheme).exists()) {
-        setNormalSchemeFile(themeColorScheme);
+        setOriginalSchemeFile(themeColorScheme);
     } else {
         //! when plasma theme uses the kde colors
         //! we track when kde color scheme is changing
@@ -319,24 +362,24 @@ void PlasmaThemeExtended::loadThemePaths()
 
         m_kdeConnections[0] = connect(KDirWatch::self(), &KDirWatch::dirty, this, [ &, kdeSettingsFile](const QString & path) {
             if (path == kdeSettingsFile) {
-                this->setNormalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
+                this->setOriginalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
             }
         });
 
         m_kdeConnections[1] = connect(KDirWatch::self(), &KDirWatch::created, this, [ &, kdeSettingsFile](const QString & path) {
             if (path == kdeSettingsFile) {
-                this->setNormalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
+                this->setOriginalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
             }
         });
 
-        setNormalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
+        setOriginalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
     }
 }
 
 void PlasmaThemeExtended::loadThemeLightness()
 {
-    float textColorLum = Latte::colorLumina(m_normalScheme->textColor());
-    float backColorLum = Latte::colorLumina(m_normalScheme->backgroundColor());
+    float textColorLum = Latte::colorLumina(m_defaultScheme->textColor());
+    float backColorLum = Latte::colorLumina(m_defaultScheme->backgroundColor());
 
     if (backColorLum > textColorLum) {
         m_isLightTheme = true;
