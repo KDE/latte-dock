@@ -71,6 +71,16 @@ bool PlasmaThemeExtended::hasShadow() const
     return PanelShadows::self()->enabled();
 }
 
+bool PlasmaThemeExtended::isLightTheme() const
+{
+    return m_isLightTheme;
+}
+
+bool PlasmaThemeExtended::isDarkTheme() const
+{
+    return !m_isLightTheme;
+}
+
 int PlasmaThemeExtended::bottomEdgeRoundness() const
 {
     return (themeHasExtendedInfo() ? m_bottomEdgeRoundness : userThemeRoundness());
@@ -114,6 +124,11 @@ void PlasmaThemeExtended::setUserThemeRoundness(int roundness)
 bool PlasmaThemeExtended::themeHasExtendedInfo() const
 {
     return m_themeHasExtendedInfo;
+}
+
+SchemeColors *PlasmaThemeExtended::defaultTheme() const
+{
+    return m_normalScheme;
 }
 
 SchemeColors *PlasmaThemeExtended::lightTheme() const

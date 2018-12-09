@@ -48,12 +48,15 @@ class PlasmaThemeExtended: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool hasShadow READ hasShadow NOTIFY hasShadowChanged)
+    Q_PROPERTY(bool isLightTheme READ isLightTheme NOTIFY themeChanged)
+    Q_PROPERTY(bool isDarkTheme READ isDarkTheme NOTIFY themeChanged)
 
     Q_PROPERTY(int bottomEdgeRoundness READ bottomEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int leftEdgeRoundness READ leftEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
 
+    Q_PROPERTY(SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
     Q_PROPERTY(SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
     Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
 
@@ -62,6 +65,8 @@ public:
     ~PlasmaThemeExtended() override;;
 
     bool hasShadow() const;
+    bool isLightTheme() const;
+    bool isDarkTheme() const;
 
     int bottomEdgeRoundness() const;
     int leftEdgeRoundness() const;
@@ -71,6 +76,7 @@ public:
     int userThemeRoundness() const;
     void setUserThemeRoundness(int roundness);
 
+    SchemeColors *defaultTheme() const;
     SchemeColors *lightTheme() const;
     SchemeColors *darkTheme() const;
 

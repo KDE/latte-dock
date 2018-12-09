@@ -86,7 +86,13 @@ Loader{
     readonly property color buttonHoverColor: theme.buttonHoverColor
     readonly property color buttonFocusColor: theme.buttonFocusColor
 
-    readonly property string scheme: themeExtended ? applyTheme.schemeFile : "kdeglobals"
+    readonly property string scheme: {
+        if (applyTheme===theme) {
+            return applyTheme.defaultTheme.schemeFile;
+        }
+
+        return applyTheme.schemeFile;
+    }
 
     sourceComponent: BackgroundTracker{}
 }
