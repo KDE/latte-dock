@@ -78,7 +78,7 @@ We recommend that you use at least **Plasma 5.12.0**
 
 ### Void Linux
 
-- [Void Linux](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/latte-dock)
+- [Void Linux](https://github.com/void-linux/void-packages/tree/master/srcpkgs/latte-dock)
 
 ### FreeBSD
 - [FreeBSD Port](https://www.freshports.org/deskutils/latte-dock/)
