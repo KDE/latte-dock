@@ -11,6 +11,7 @@ set(lattedock-app_SRCS
     layoutmanager.cpp
     schemecolors.cpp
     screenpool.cpp
+    plasma/extended/screenpool.cpp
     plasma/extended/theme.cpp
     packageplugins/shell/lattepackage.cpp
     settings/settingsdialog.cpp

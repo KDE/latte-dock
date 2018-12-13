@@ -29,6 +29,7 @@
 #include "layoutmanager.h"
 #include "screenpool.h"
 #include "packageplugins/shell/lattepackage.h"
+#include "plasma/extended/screenpool.h"
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
@@ -80,6 +81,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
+      m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
       m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
       m_layoutManager(new LayoutManager(this))
 {
@@ -167,6 +169,7 @@ Corona::~Corona()
     m_layoutManager->deleteLater();
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
+    m_plasmaScreenPool->deleteLater();
     m_themeExtended->deleteLater();
 
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
@@ -375,6 +378,11 @@ LayoutManager *Corona::layoutManager() const
 AbstractWindowInterface *Corona::wm() const
 {
     return m_wm;
+}
+
+PlasmaExtended::ScreenPool *Corona::plasmaScreenPool() const
+{
+    return m_plasmaScreenPool;
 }
 
 PlasmaExtended::Theme *Corona::themeExtended() const

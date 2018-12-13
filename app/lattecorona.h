@@ -67,6 +67,7 @@ class UniversalSettings;
 class LayoutManager;
 class LaunchersSignals;
 namespace PlasmaExtended{
+class ScreenPool;
 class Theme;
 }
 }
@@ -108,6 +109,8 @@ public:
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
     LayoutManager *layoutManager() const;
+
+    PlasmaExtended::ScreenPool *plasmaScreenPool() const;
     PlasmaExtended::Theme *themeExtended() const;
 
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
@@ -176,6 +179,8 @@ private:
     GlobalShortcuts *m_globalShortcuts{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
     LayoutManager *m_layoutManager{nullptr};
+
+    PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
     PlasmaExtended::Theme *m_themeExtended{nullptr};
 
     KWayland::Client::PlasmaShell *m_waylandCorona{nullptr};
