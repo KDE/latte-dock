@@ -22,7 +22,7 @@
 #define VISIBILITYMANAGER_H
 
 // local
-#include "../plasmaquick/containmentview.h"
+#include "../plasma/quick/containmentview.h"
 #include "../schemecolors.h"
 #include "../wm/windowinfowrap.h"
 #include "../../liblatte2/types.h"

@@ -27,8 +27,8 @@
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
 #include "../layout.h"
-#include "../plasmaquick/containmentview.h"
-#include "../plasmaquick/configview.h"
+#include "../plasma/quick/containmentview.h"
+#include "../plasma/quick/configview.h"
 #include "../../liblatte2/types.h"
 
 // C++
