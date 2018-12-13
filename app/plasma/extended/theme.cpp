@@ -18,7 +18,7 @@
  *
  */
 
-#include "plasmathemeextended.h"
+#include "theme.h"
 
 // local
 #include "commontools.h"
@@ -39,8 +39,9 @@
 #define REVERSEDCOLORSCHEME "reversed.colors"
 
 namespace Latte {
+namespace PlasmaExtended {
 
-PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *parent) :
+Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
     QObject(parent),
     m_themeGroup(KConfigGroup(config, QStringLiteral("PlasmaThemeExtended")))
 {
@@ -48,18 +49,18 @@ PlasmaThemeExtended::PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *par
 
     loadConfig();
 
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::hasShadowChanged);
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::load);
-    connect(&m_theme, &Plasma::Theme::themeChanged, this, &PlasmaThemeExtended::themeChanged);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::hasShadowChanged);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::load);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::themeChanged);
 }
 
-void PlasmaThemeExtended::load()
+void Theme::load()
 {
     loadThemePaths();
     loadRoundness();
 }
 
-PlasmaThemeExtended::~PlasmaThemeExtended()
+Theme::~Theme()
 {
     saveConfig();
 
@@ -67,47 +68,47 @@ PlasmaThemeExtended::~PlasmaThemeExtended()
     m_reversedScheme->deleteLater();
 }
 
-bool PlasmaThemeExtended::hasShadow() const
+bool Theme::hasShadow() const
 {
     return PanelShadows::self()->enabled();
 }
 
-bool PlasmaThemeExtended::isLightTheme() const
+bool Theme::isLightTheme() const
 {
     return m_isLightTheme;
 }
 
-bool PlasmaThemeExtended::isDarkTheme() const
+bool Theme::isDarkTheme() const
 {
     return !m_isLightTheme;
 }
 
-int PlasmaThemeExtended::bottomEdgeRoundness() const
+int Theme::bottomEdgeRoundness() const
 {
     return (themeHasExtendedInfo() ? m_bottomEdgeRoundness : userThemeRoundness());
 }
 
-int PlasmaThemeExtended::leftEdgeRoundness() const
+int Theme::leftEdgeRoundness() const
 {
     return (themeHasExtendedInfo() ? m_leftEdgeRoundness : userThemeRoundness());
 }
 
-int PlasmaThemeExtended::topEdgeRoundness() const
+int Theme::topEdgeRoundness() const
 {
     return (themeHasExtendedInfo() ? m_topEdgeRoundness : userThemeRoundness());
 }
 
-int PlasmaThemeExtended::rightEdgeRoundness() const
+int Theme::rightEdgeRoundness() const
 {
     return (themeHasExtendedInfo() ? m_rightEdgeRoundness : userThemeRoundness());
 }
 
-int PlasmaThemeExtended::userThemeRoundness() const
+int Theme::userThemeRoundness() const
 {
     return m_userRoundness;
 }
 
-void PlasmaThemeExtended::setUserThemeRoundness(int roundness)
+void Theme::setUserThemeRoundness(int roundness)
 {
     if (m_userRoundness == roundness) {
         return;
@@ -122,28 +123,28 @@ void PlasmaThemeExtended::setUserThemeRoundness(int roundness)
     saveConfig();
 }
 
-bool PlasmaThemeExtended::themeHasExtendedInfo() const
+bool Theme::themeHasExtendedInfo() const
 {
     return m_themeHasExtendedInfo;
 }
 
-SchemeColors *PlasmaThemeExtended::defaultTheme() const
+SchemeColors *Theme::defaultTheme() const
 {
     return m_defaultScheme;
 }
 
-SchemeColors *PlasmaThemeExtended::lightTheme() const
+SchemeColors *Theme::lightTheme() const
 {
     return m_isLightTheme ? m_defaultScheme : m_reversedScheme;
 }
 
-SchemeColors *PlasmaThemeExtended::darkTheme() const
+SchemeColors *Theme::darkTheme() const
 {
     return !m_isLightTheme ? m_defaultScheme : m_reversedScheme;
 }
 
 
-void PlasmaThemeExtended::setOriginalSchemeFile(const QString &file)
+void Theme::setOriginalSchemeFile(const QString &file)
 {
     if (m_originalSchemePath == file) {
         return;
@@ -165,7 +166,7 @@ void PlasmaThemeExtended::setOriginalSchemeFile(const QString &file)
 //! plasma will use in order to be consistent. Such an example
 //! are the Breeze color schemes that have different values for
 //! WM and the plasma theme records
-void PlasmaThemeExtended::updateDefaultScheme()
+void Theme::updateDefaultScheme()
 {
     QString defaultFilePath = m_extendedThemeDir.path() + "/" + DEFAULTCOLORSCHEME;
     if (QFileInfo(defaultFilePath).exists()) {
@@ -178,17 +179,17 @@ void PlasmaThemeExtended::updateDefaultScheme()
     updateDefaultSchemeValues();
 
     if (m_defaultScheme) {
-        disconnect(m_defaultScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
+        disconnect(m_defaultScheme, &SchemeColors::colorsChanged, this, &Theme::loadThemeLightness);
         m_defaultScheme->deleteLater();
     }
 
     m_defaultScheme = new SchemeColors(this, m_defaultSchemePath, true);
-    connect(m_defaultScheme, &SchemeColors::colorsChanged, this, &PlasmaThemeExtended::loadThemeLightness);
+    connect(m_defaultScheme, &SchemeColors::colorsChanged, this, &Theme::loadThemeLightness);
 
     qDebug() << "plasma theme default colors ::: " << m_defaultSchemePath;
 }
 
-void PlasmaThemeExtended::updateDefaultSchemeValues()
+void Theme::updateDefaultSchemeValues()
 {
     //! update WM values based on original scheme
     KSharedConfigPtr originalPtr = KSharedConfig::openConfig(m_originalSchemePath);
@@ -205,7 +206,7 @@ void PlasmaThemeExtended::updateDefaultSchemeValues()
     }
 }
 
-void PlasmaThemeExtended::updateReversedScheme()
+void Theme::updateReversedScheme()
 {
     QString reversedFilePath = m_extendedThemeDir.path() + "/" + REVERSEDCOLORSCHEME;
 
@@ -227,7 +228,7 @@ void PlasmaThemeExtended::updateReversedScheme()
     qDebug() << "plasma theme reversed colors ::: " << m_reversedSchemePath;
 }
 
-void PlasmaThemeExtended::updateReversedSchemeValues()
+void Theme::updateReversedSchemeValues()
 {
     //! reverse values based on original scheme
     KSharedConfigPtr originalPtr = KSharedConfig::openConfig(m_originalSchemePath);
@@ -285,7 +286,7 @@ void PlasmaThemeExtended::updateReversedSchemeValues()
 }
 
 
-void PlasmaThemeExtended::loadRoundness()
+void Theme::loadRoundness()
 {
     if (!m_corona) {
         return;
@@ -327,7 +328,7 @@ void PlasmaThemeExtended::loadRoundness()
     emit roundnessChanged();
 }
 
-void PlasmaThemeExtended::loadThemePaths()
+void Theme::loadThemePaths()
 {
     m_themePath = "";
 
@@ -376,7 +377,7 @@ void PlasmaThemeExtended::loadThemePaths()
     }
 }
 
-void PlasmaThemeExtended::loadThemeLightness()
+void Theme::loadThemeLightness()
 {
     float textColorLum = Latte::colorLumina(m_defaultScheme->textColor());
     float backColorLum = Latte::colorLumina(m_defaultScheme->backgroundColor());
@@ -394,16 +395,17 @@ void PlasmaThemeExtended::loadThemeLightness()
     }
 }
 
-void PlasmaThemeExtended::loadConfig()
+void Theme::loadConfig()
 {
     m_userRoundness = m_themeGroup.readEntry("userSetPlasmaThemeRoundness", 0);
 }
 
-void PlasmaThemeExtended::saveConfig()
+void Theme::saveConfig()
 {
     m_themeGroup.writeEntry("userSetPlasmaThemeRoundness", m_userRoundness);
 
     m_themeGroup.sync();
 }
 
+}
 }

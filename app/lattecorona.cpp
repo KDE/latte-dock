@@ -27,9 +27,9 @@
 #include "lattedockadaptor.h"
 #include "launcherssignals.h"
 #include "layoutmanager.h"
-#include "plasmathemeextended.h"
 #include "screenpool.h"
 #include "packageplugins/shell/lattepackage.h"
+#include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
 #include "view/view.h"
 #include "wm/abstractwindowinterface.h"
@@ -80,7 +80,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
-      m_themeExtended(new PlasmaThemeExtended(KSharedConfig::openConfig(), this)),
+      m_themeExtended(new PlasmaExtended::Theme(KSharedConfig::openConfig(), this)),
       m_layoutManager(new LayoutManager(this))
 {
     //! create the window manager
@@ -377,7 +377,7 @@ AbstractWindowInterface *Corona::wm() const
     return m_wm;
 }
 
-PlasmaThemeExtended *Corona::themeExtended() const
+PlasmaExtended::Theme *Corona::themeExtended() const
 {
     return m_themeExtended;
 }

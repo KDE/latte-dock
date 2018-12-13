@@ -29,8 +29,8 @@
 #include "../lattecorona.h"
 #include "../layout.h"
 #include "../layoutmanager.h"
+#include "../plasma/extended/theme.h"
 #include "../screenpool.h"
-#include "../plasmathemeextended.h"
 #include "../settings/universalsettings.h"
 #include "../../liblatte2/extras.h"
 

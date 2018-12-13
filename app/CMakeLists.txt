@@ -9,9 +9,9 @@ set(lattedock-app_SRCS
     launcherssignals.cpp
     layout.cpp
     layoutmanager.cpp
-    plasmathemeextended.cpp
     schemecolors.cpp
     screenpool.cpp
+    plasma/extended/theme.cpp
     packageplugins/shell/lattepackage.cpp
     settings/settingsdialog.cpp
     settings/sortedactivitiesmodel.cpp

@@ -43,8 +43,9 @@ class Corona;
 }
 
 namespace Latte {
+namespace PlasmaExtended {
 
-class PlasmaThemeExtended: public QObject
+class Theme: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool hasShadow READ hasShadow NOTIFY hasShadowChanged)
@@ -61,8 +62,8 @@ class PlasmaThemeExtended: public QObject
     Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
 
 public:
-    PlasmaThemeExtended(KSharedConfig::Ptr config, QObject *parent);
-    ~PlasmaThemeExtended() override;;
+    Theme(KSharedConfig::Ptr config, QObject *parent);
+    ~Theme() override;;
 
     bool hasShadow() const;
     bool isLightTheme() const;
@@ -130,6 +131,7 @@ private:
     SchemeColors *m_reversedScheme{nullptr};
 };
 
+}
 }
 
 #endif
