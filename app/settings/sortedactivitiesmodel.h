@@ -80,6 +80,10 @@ private:
     KActivities::ActivitiesModel *m_activitiesModel = nullptr;
     KActivities::Consumer *m_activities = nullptr;
 
+    //! screen aware backgrounds: activity id, screen name, backgroundfile
+    QHash<QString, QHash<QString, QString>> m_backgrounds;
+
+    //! image file and luminas per edge
     QHash<QString, EdgesHash> m_luminasCache;
 };
 
