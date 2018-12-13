@@ -11,9 +11,9 @@ set(lattedock-app_SRCS
     layoutmanager.cpp
     schemecolors.cpp
     screenpool.cpp
+    package/lattepackage.cpp
     plasma/extended/screenpool.cpp
-    plasma/extended/theme.cpp
-    packageplugins/shell/lattepackage.cpp
+    plasma/extended/theme.cpp    
     settings/settingsdialog.cpp
     settings/sortedactivitiesmodel.cpp
     settings/universalsettings.cpp

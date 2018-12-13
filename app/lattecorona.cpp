@@ -28,7 +28,7 @@
 #include "launcherssignals.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
-#include "packageplugins/shell/lattepackage.h"
+#include "package/lattepackage.h"
 #include "plasma/extended/screenpool.h"
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
