@@ -193,7 +193,7 @@ Item{
     Connections{
         target: universalLayoutManager
         onCurrentLayoutIsSwitching: {
-            if (Latte.WindowSystem.compositingActive && root.latteViewManagedLayout && root.latteViewManagedLayout.name === layoutName) {
+            if (Latte.WindowSystem.compositingActive && latteView && latteView.managedLayout && latteView.managedLayout.name === layoutName) {
                 manager.inTempHiding = true;
                 manager.inForceHiding = true;
                 root.clearZoom();

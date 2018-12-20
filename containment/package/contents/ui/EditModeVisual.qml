@@ -51,7 +51,7 @@ Item{
 
     property rect efGeometry
 
-    property string layoutColor: root.latteViewManagedLayout ? root.latteViewManagedLayout.color : "blue"
+    property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
 
 
     Item{

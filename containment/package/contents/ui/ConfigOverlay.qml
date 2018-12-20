@@ -96,9 +96,9 @@ MouseArea {
 
                 if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
                         (plasmoid.formFactor !== PlasmaCore.Types.Vertical && posInItem.x < item.width/2)) {
-                    root.layoutManager.insertBefore(item, placeHolder);
+                    root.layoutManagerInsertBefore(item, placeHolder);
                 } else {
-                    root.layoutManager.insertAfter(item, placeHolder);
+                    root.layoutManagerInsertAfter(item, placeHolder);
                 }
             }
 
@@ -198,7 +198,7 @@ MouseArea {
         placeHolder.height = currentApplet.height;
         handle.width = currentApplet.width;
         handle.height = currentApplet.height;
-        root.layoutManager.insertBefore(currentApplet, placeHolder);
+        root.layoutManagerInsertBefore(currentApplet, placeHolder);
         currentApplet.parent = root;
         currentApplet.x = lastX-appletX;
         currentApplet.y = lastY-appletY;
@@ -221,7 +221,7 @@ MouseArea {
         configurationArea.isResizingLeft = false;
         configurationArea.isResizingRight = false;
 
-        root.layoutManager.insertBefore(placeHolder, currentApplet);
+        root.layoutManagerInsertBefore(placeHolder, currentApplet);
         placeHolder.parent = configurationArea;
         currentApplet.z = 1;
 
@@ -231,7 +231,7 @@ MouseArea {
         handle.y = relevantLayout.y + currentApplet.y;
         //     handle.width = currentApplet.width;
         //    handle.height = currentApplet.height;
-        root.layoutManager.save();
+        root.layoutManagerSave();
     }
 
     onWheel: {
@@ -489,7 +489,7 @@ MouseArea {
 
                         onCheckedChanged: {
                             currentApplet.lockZoom = checked;
-                            root.layoutManager.saveLocks();
+                            root.layoutManagerSaveLocks();
                         }
                     }
 

@@ -338,7 +338,6 @@ DragDrop.DropArea {
     }
 
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
-    property var layoutManager: LayoutManager
 
     property Item dragOverlay
     property Item toolBox
@@ -717,7 +716,7 @@ DragDrop.DropArea {
         LayoutManager.root = root;
         LayoutManager.layout = layoutsContainer.mainLayout;
         LayoutManager.layoutS = layoutsContainer.startLayout;
-        layoutManager.layoutE = layoutsContainer.endLayout;
+        LayoutManager.layoutE = layoutsContainer.endLayout;
         LayoutManager.lastSpacer = lastSpacer;
         LayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
@@ -947,12 +946,12 @@ DragDrop.DropArea {
             container.visible = true;
 
             if(pos>=0 ){
-                layoutManager.insertAtIndex(container, pos);
+                LayoutManager.insertAtIndex(container, pos);
             } else {
-                layoutManager.insertAtIndex(container, Math.floor(layoutsContainer.mainLayout.count / 2));
+                LayoutManager.insertAtIndex(container, Math.floor(layoutsContainer.mainLayout.count / 2));
             }
 
-            layoutManager.save();
+            LayoutManager.save();
         }
     }
 
@@ -1071,6 +1070,22 @@ DragDrop.DropArea {
         }
     }
 
+    function layoutManagerInsertBefore(place, item) {
+        LayoutManager.insertBefore(place, item);
+    }
+
+    function layoutManagerInsertAfter(place, item) {
+        LayoutManager.insertAfter(place, item);
+    }
+
+    function layoutManagerSave() {
+        LayoutManager.save();
+    }
+
+    function layoutManagerSaveLocks() {
+        LayoutManager.saveLocks();
+    }
+
     function mouseInCanBeHoveredApplet(){
         if (latteApplet && latteApplet.containsMouse())
             return true;
@@ -1120,7 +1135,7 @@ DragDrop.DropArea {
                 item.destroy();
         }
 
-        layoutManager.save();
+        LayoutManager.save();
     }
 
     function setHoveredIndex(ind) {
