@@ -19,7 +19,6 @@
 */
 
 #include "visibilitymanager.h"
-#include "visibilitymanager_p.h"
 
 // local
 #include "positioner.h"
@@ -41,72 +40,85 @@
 namespace Latte {
 namespace ViewPart {
 
-//! BEGIN: VisiblityManagerPrivate implementation
-VisibilityManagerPrivate::VisibilityManagerPrivate(PlasmaQuick::ContainmentView *view, VisibilityManager *q)
-    : QObject(nullptr), q(q), view(view)
+//! BEGIN: VisiblityManager implementation
+
+VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
+    : QObject(view)
 {
+    qDebug() << "VisibilityManager creating...";
+
     m_latteView = qobject_cast<Latte::View *>(view);
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
     wm = m_corona->wm();
 
     if (m_latteView) {
-        connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManagerPrivate::viewEventManager);
-        connect(m_latteView, &Latte::View::absGeometryChanged, this, &VisibilityManagerPrivate::setViewGeometry);
+        connect(m_latteView, &Latte::View::absGeometryChanged, this, &VisibilityManager::setViewGeometry);
+        connect(m_latteView, &Latte::View::eventTriggered, this, &VisibilityManager::viewEventManager);
     }
 
-    timerStartUp.setInterval(5000);
-    timerStartUp.setSingleShot(true);
-    timerCheckWindows.setInterval(350);
-    timerCheckWindows.setSingleShot(true);
-    timerShow.setSingleShot(true);
-    timerHide.setSingleShot(true);
-    connect(&timerCheckWindows, &QTimer::timeout, this, &VisibilityManagerPrivate::checkAllWindows);
-    connect(&timerShow, &QTimer::timeout, this, [this, q]() {
-        if (isHidden) {
+    if (m_corona) {
+        connect(this, &VisibilityManager::modeChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
+    }
+
+    m_timerStartUp.setInterval(5000);
+    m_timerStartUp.setSingleShot(true);
+    m_timerCheckWindows.setInterval(350);
+    m_timerCheckWindows.setSingleShot(true);
+    m_timerShow.setSingleShot(true);
+    m_timerHide.setSingleShot(true);
+    connect(&m_timerCheckWindows, &QTimer::timeout, this, &VisibilityManager::checkAllWindows);
+    connect(&m_timerShow, &QTimer::timeout, this, [&]() {
+        if (m_isHidden) {
             //   qDebug() << "must be shown";
-            emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
+            emit mustBeShown();
         }
     });
-    connect(&timerHide, &QTimer::timeout, this, [this]() {
-        if (!blockHiding && !isHidden && !dragEnter) {
+    connect(&m_timerHide, &QTimer::timeout, this, [&]() {
+        if (!m_blockHiding && !m_isHidden && !dragEnter) {
             //   qDebug() << "must be hide";
-            emit this->q->mustBeHide(VisibilityManager::QPrivateSignal{});
+            emit mustBeHide();
         }
     });
-    wm->setViewExtraFlags(*view);
-    wm->addView(view->winId());
+    wm->setViewExtraFlags(*m_latteView);
+    wm->addView(m_latteView->winId());
+
     restoreConfig();
 }
 
-VisibilityManagerPrivate::~VisibilityManagerPrivate()
+VisibilityManager::~VisibilityManager()
 {
-    qDebug() << "VisibilityManagerPrivate deleting...";
-    wm->removeViewStruts(*view);
-    wm->removeView(view->winId());
+    qDebug() << "VisibilityManager deleting...";
+    wm->removeViewStruts(*m_latteView);
+    wm->removeView(m_latteView->winId());
 
     if (edgeGhostWindow) {
         edgeGhostWindow->deleteLater();
     }
 }
 
-inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
+Types::Visibility VisibilityManager::mode() const
 {
-    if (this->mode == mode)
+    return m_mode;
+}
+
+void VisibilityManager::setMode(Latte::Types::Visibility mode)
+{
+    if (m_mode == mode)
         return;
 
-    Q_ASSERT_X(mode != Types::None, q->staticMetaObject.className(), "set visibility to Types::None");
+    Q_ASSERT_X(m_mode != Types::None, staticMetaObject.className(), "set visibility to Types::None");
 
     // clear mode
     for (auto &c : connections) {
         disconnect(c);
     }
 
-    if (mode != Types::DodgeAllWindows && !enabledDynamicBackgroundFlag) {
+    if (m_mode != Types::DodgeAllWindows && !enabledDynamicBackgroundFlag) {
         windows.clear();
     }
 
-    if (this->mode == Types::AlwaysVisible) {
-        wm->removeViewStruts(*view);
+    if (m_mode == Types::AlwaysVisible) {
+        wm->removeViewStruts(*m_latteView);
     } else {
         connections[3] = connect(wm, &WindowSystem::currentDesktopChanged
         , this, [&] {
@@ -122,31 +134,31 @@ inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
         });
     }
 
-    timerShow.stop();
-    timerHide.stop();
-    timerCheckWindows.stop();
-    this->mode = mode;
+    m_timerShow.stop();
+    m_timerHide.stop();
+    m_timerCheckWindows.stop();
+    m_mode = mode;
 
-    switch (this->mode) {
+    switch (m_mode) {
         case Types::AlwaysVisible: {
             //set wayland visibility mode
             if (m_latteView->surface()) {
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::WindowsGoBelow);
             }
 
-            if (view->containment() && !m_latteView->inEditMode() && view->screen()) {
+            if (m_latteView->containment() && !m_latteView->inEditMode() && m_latteView->screen()) {
                 updateStrutsBasedOnLayoutsAndActivities();
             }
 
-            connections[0] = connect(view->containment(), &Plasma::Containment::locationChanged
+            connections[0] = connect(m_latteView->containment(), &Plasma::Containment::locationChanged
             , this, [&]() {
                 if (m_latteView->inEditMode())
-                    wm->removeViewStruts(*view);
+                    wm->removeViewStruts(*m_latteView);
             });
             connections[1] = connect(m_latteView, &Latte::View::inEditModeChanged
             , this, [&]() {
-                if (!m_latteView->inEditMode() && !m_latteView->positioner()->inLocationChangeAnimation() && view->screen())
-                    wm->setViewStruts(*view, m_viewGeometry, view->containment()->location());
+                if (!m_latteView->inEditMode() && !m_latteView->positioner()->inLocationChangeAnimation() && m_latteView->screen())
+                    wm->setViewStruts(*m_latteView, m_viewGeometry, m_latteView->containment()->location());
             });
 
             if (m_corona && m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
@@ -169,7 +181,7 @@ inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
-            raiseView(containsMouse);
+            raiseView(m_containsMouse);
         }
         break;
 
@@ -180,9 +192,9 @@ inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
             }
 
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
-                                     , this, &VisibilityManagerPrivate::dodgeActive);
+                                     , this, &VisibilityManager::dodgeActive);
             connections[1] = connect(wm, &WindowSystem::windowChanged
-                                     , this, &VisibilityManagerPrivate::dodgeActive);
+                                     , this, &VisibilityManager::dodgeActive);
             dodgeActive(wm->activeWindow());
         }
         break;
@@ -194,9 +206,9 @@ inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
             }
 
             connections[0] = connect(wm, &WindowSystem::activeWindowChanged
-                                     , this, &VisibilityManagerPrivate::dodgeMaximized);
+                                     , this, &VisibilityManager::dodgeMaximized);
             connections[1] = connect(wm, &WindowSystem::windowChanged
-                                     , this, &VisibilityManagerPrivate::dodgeMaximized);
+                                     , this, &VisibilityManager::dodgeMaximized);
             dodgeMaximized(wm->activeWindow());
         }
         break;
@@ -212,19 +224,19 @@ inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
             }
 
             connections[0] = connect(wm, &WindowSystem::windowChanged
-                                     , this, &VisibilityManagerPrivate::dodgeWindows);
+                                     , this, &VisibilityManager::dodgeWindows);
             connections[1] = connect(wm, &WindowSystem::windowRemoved
             , this, [&](WindowId wid) {
                 windows.remove(wid);
-                timerCheckWindows.start();
+                m_timerCheckWindows.start();
             });
             connections[2] = connect(wm, &WindowSystem::windowAdded
             , this, [&](WindowId wid) {
                 windows.insert(wid, wm->requestInfo(wid));
-                timerCheckWindows.start();
+                m_timerCheckWindows.start();
             });
 
-            timerCheckWindows.start();
+            m_timerCheckWindows.start();
         }
         break;
 
@@ -241,155 +253,191 @@ inline void VisibilityManagerPrivate::setMode(Types::Visibility mode)
             break;
     }
 
-    view->containment()->config().writeEntry("visibility", static_cast<int>(mode));
+    m_latteView->containment()->config().writeEntry("visibility", static_cast<int>(m_mode));
 
     updateKWinEdgesSupport();
 
-    emit q->modeChanged();
+    emit modeChanged();
 }
 
-void VisibilityManagerPrivate::updateStrutsBasedOnLayoutsAndActivities()
+void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities()
 {
     bool multipleLayoutsAndCurrent = (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                       && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                       && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName());
 
     if (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout || multipleLayoutsAndCurrent) {
-        wm->setViewStruts(*view, m_viewGeometry, view->location());
+        wm->setViewStruts(*m_latteView, m_viewGeometry, m_latteView->location());
     } else {
-        wm->removeViewStruts(*view);
+        wm->removeViewStruts(*m_latteView);
     }
 }
 
-void VisibilityManagerPrivate::setRaiseOnDesktop(bool enable)
+bool VisibilityManager::raiseOnDesktop() const
+{
+    return raiseOnDesktopChange;
+}
+
+void VisibilityManager::setRaiseOnDesktop(bool enable)
 {
     if (enable == raiseOnDesktopChange)
         return;
 
     raiseOnDesktopChange = enable;
-    emit q->raiseOnDesktopChanged();
+    emit raiseOnDesktopChanged();
 }
 
-void VisibilityManagerPrivate::setRaiseOnActivity(bool enable)
+bool VisibilityManager::raiseOnActivity() const
+{
+    return raiseOnActivityChange;
+}
+
+void VisibilityManager::setRaiseOnActivity(bool enable)
 {
     if (enable == raiseOnActivityChange)
         return;
 
     raiseOnActivityChange = enable;
-    emit q->raiseOnActivityChanged();
+    emit raiseOnActivityChanged();
 }
 
-inline void VisibilityManagerPrivate::setIsHidden(bool isHidden)
+bool VisibilityManager::isHidden() const
 {
-    if (this->isHidden == isHidden)
+    return m_isHidden;
+}
+
+void VisibilityManager::setIsHidden(bool isHidden)
+{
+    if (m_isHidden == isHidden)
         return;
 
-    if (blockHiding && isHidden) {
+    if (m_blockHiding && m_isHidden) {
         qWarning() << "isHidden property is blocked, ignoring update";
         return;
     }
 
-    this->isHidden = isHidden;
+    m_isHidden = isHidden;
 
-    if (q->supportsKWinEdges()) {
+    if (supportsKWinEdges()) {
         bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
                                 (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
                                  && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
                                  && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
 
         if (inCurrentLayout) {
-            wm->setEdgeStateFor(edgeGhostWindow, isHidden);
+            wm->setEdgeStateFor(edgeGhostWindow, m_isHidden);
         } else {
             wm->setEdgeStateFor(edgeGhostWindow, false);
         }
     }
 
-    emit q->isHiddenChanged();
+    emit isHiddenChanged();
 }
 
-void VisibilityManagerPrivate::setBlockHiding(bool blockHiding)
+bool VisibilityManager::blockHiding() const
 {
-    if (this->blockHiding == blockHiding)
-        return;
+    return m_blockHiding;
+}
 
-    this->blockHiding = blockHiding;
+void VisibilityManager::setBlockHiding(bool blockHiding)
+{
+    if (m_blockHiding == blockHiding) {
+        return;
+    }
+
+    m_blockHiding = blockHiding;
     // qDebug() << "blockHiding:" << blockHiding;
 
-    if (this->blockHiding) {
-        timerHide.stop();
+    if (m_blockHiding) {
+        m_timerHide.stop();
 
-        if (isHidden) {
-            emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
+        if (m_isHidden) {
+            emit mustBeShown();
         }
     } else {
         updateHiddenState();
     }
 
-    emit q->blockHidingChanged();
+    emit blockHidingChanged();
 }
 
-inline void VisibilityManagerPrivate::setTimerShow(int msec)
+int VisibilityManager::timerShow() const
 {
-    timerShow.setInterval(msec);
-    emit q->timerShowChanged();
+    return m_timerShow.interval();
 }
 
-inline void VisibilityManagerPrivate::setTimerHide(int msec)
+void VisibilityManager::setTimerShow(int msec)
 {
-    timerHide.setInterval(msec);
-    emit q->timerHideChanged();
+    m_timerShow.setInterval(msec);
+    emit timerShowChanged();
 }
 
-inline void VisibilityManagerPrivate::raiseView(bool raise)
+int VisibilityManager::timerHide() const
 {
-    if (blockHiding)
+    return m_timerHide.interval();
+}
+
+void VisibilityManager::setTimerHide(int msec)
+{
+    m_timerHide.setInterval(msec);
+    emit timerHideChanged();
+}
+
+bool VisibilityManager::supportsKWinEdges() const
+{
+    return (edgeGhostWindow != nullptr);
+}
+
+void VisibilityManager::raiseView(bool raise)
+{
+    if (m_blockHiding)
         return;
 
     if (raise) {
-        timerHide.stop();
+        m_timerHide.stop();
 
-        if (!timerShow.isActive()) {
-            timerShow.start();
+        if (!m_timerShow.isActive()) {
+            m_timerShow.start();
         }
     } else if (!dragEnter) {
-        timerShow.stop();
+        m_timerShow.stop();
 
         if (hideNow) {
             hideNow = false;
-            emit q->mustBeHide(VisibilityManager::QPrivateSignal{});
-        } else if (!timerHide.isActive()) {
-            timerHide.start();
+            emit mustBeHide();
+        } else if (!m_timerHide.isActive()) {
+            m_timerHide.start();
         }
     }
 }
 
-void VisibilityManagerPrivate::raiseViewTemporarily()
+void VisibilityManager::raiseViewTemporarily()
 {
     if (raiseTemporarily)
         return;
 
     raiseTemporarily = true;
-    timerHide.stop();
-    timerShow.stop();
+    m_timerHide.stop();
+    m_timerShow.stop();
 
-    if (isHidden)
-        emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
+    if (m_isHidden)
+        emit mustBeShown();
 
-    QTimer::singleShot(qBound(1800, 2 * timerHide.interval(), 3000), this, [&]() {
+    QTimer::singleShot(qBound(1800, 2 * m_timerHide.interval(), 3000), this, [&]() {
         raiseTemporarily = false;
         hideNow = true;
         updateHiddenState();
     });
 }
 
-void VisibilityManagerPrivate::updateHiddenState()
+void VisibilityManager::updateHiddenState()
 {
     if (dragEnter)
         return;
 
-    switch (mode) {
+    switch (m_mode) {
         case Types::AutoHide:
-            raiseView(containsMouse);
+            raiseView(m_containsMouse);
             break;
 
         case Types::DodgeActive:
@@ -409,37 +457,37 @@ void VisibilityManagerPrivate::updateHiddenState()
     }
 }
 
-inline void VisibilityManagerPrivate::setViewGeometry(const QRect &geometry)
+void VisibilityManager::setViewGeometry(const QRect &geometry)
 {
-    if (!view->containment())
+    if (!m_latteView->containment())
         return;
 
     m_viewGeometry = geometry;
 
-    if (mode == Types::AlwaysVisible && !m_latteView->inEditMode() && view->screen()) {
+    if (m_mode == Types::AlwaysVisible && !m_latteView->inEditMode() && m_latteView->screen()) {
         updateStrutsBasedOnLayoutsAndActivities();
     }
 }
 
-void VisibilityManagerPrivate::setWindowOnActivities(QWindow &window, const QStringList &activities)
+void VisibilityManager::setWindowOnActivities(QWindow &window, const QStringList &activities)
 {
     wm->setWindowOnActivities(window, activities);
 }
 
-void VisibilityManagerPrivate::applyActivitiesToHiddenWindows(const QStringList &activities)
+void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)
 {
     if (edgeGhostWindow) {
         wm->setWindowOnActivities(*edgeGhostWindow, activities);
     }
 }
 
-void VisibilityManagerPrivate::dodgeActive(WindowId wid)
+void VisibilityManager::dodgeActive(WindowId wid)
 {
     if (raiseTemporarily)
         return;
 
     //!don't send false raiseView signal when containing mouse
-    if (containsMouse) {
+    if (m_containsMouse) {
         raiseView(true);
         return;
     }
@@ -464,13 +512,13 @@ void VisibilityManagerPrivate::dodgeActive(WindowId wid)
     }
 }
 
-void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
+void VisibilityManager::dodgeMaximized(WindowId wid)
 {
     if (raiseTemporarily)
         return;
 
     //!don't send false raiseView signal when containing mouse
-    if (containsMouse) {
+    if (m_containsMouse) {
         raiseView(true);
         return;
     }
@@ -489,25 +537,25 @@ void VisibilityManagerPrivate::dodgeMaximized(WindowId wid)
 
     auto intersectsMaxVert = [&]() noexcept -> bool {
         return ((winfo.isMaxVert()
-                 || (view->screen() && view->screen()->availableSize().height() <= winfo.geometry().height()))
+                 || (m_latteView->screen() && m_latteView->screen()->availableSize().height() <= winfo.geometry().height()))
                 && intersects(winfo));
     };
 
     auto intersectsMaxHoriz = [&]() noexcept -> bool {
         return ((winfo.isMaxHoriz()
-                 || (view->screen() && view->screen()->availableSize().width() <= winfo.geometry().width()))
+                 || (m_latteView->screen() && m_latteView->screen()->availableSize().width() <= winfo.geometry().width()))
                 && intersects(winfo));
     };
 
     //! don't send false raiseView signal when containing mouse, // Johan comment
     //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
-        bool overlapsMaximized{view->formFactor() == Plasma::Types::Vertical ? intersectsMaxHoriz() : intersectsMaxVert()};
+        bool overlapsMaximized{m_latteView->formFactor() == Plasma::Types::Vertical ? intersectsMaxHoriz() : intersectsMaxVert()};
         raiseView(!overlapsMaximized);
     }
 }
 
-void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
+void VisibilityManager::dodgeWindows(WindowId wid)
 {
     if (raiseTemporarily)
         return;
@@ -516,7 +564,7 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
         return;
 
     //!don't send false raiseView signal when containing mouse
-    if (containsMouse) {
+    if (m_containsMouse) {
         raiseView(true);
         return;
     }
@@ -530,10 +578,10 @@ void VisibilityManagerPrivate::dodgeWindows(WindowId wid)
     if (intersects(winfo))
         raiseView(false);
     else
-        timerCheckWindows.start();
+        m_timerCheckWindows.start();
 }
 
-void VisibilityManagerPrivate::checkAllWindows()
+void VisibilityManager::checkAllWindows()
 {
     if (raiseTemporarily)
         return;
@@ -563,88 +611,95 @@ void VisibilityManagerPrivate::checkAllWindows()
     raiseView(raise);
 }
 
-inline bool VisibilityManagerPrivate::intersects(const WindowInfoWrap &winfo)
+bool VisibilityManager::intersects(const WindowInfoWrap &winfo)
 {
     return (!winfo.isMinimized()
             && winfo.geometry().intersects(m_viewGeometry)
             && !winfo.isShaded());
 }
 
-inline void VisibilityManagerPrivate::saveConfig()
+void VisibilityManager::saveConfig()
 {
-    if (!view->containment())
+    if (!m_latteView->containment())
         return;
 
-    auto config = view->containment()->config();
+    auto config = m_latteView->containment()->config();
 
     config.writeEntry("enableKWinEdges", enableKWinEdgesFromUser);
-    config.writeEntry("timerShow", timerShow.interval());
-    config.writeEntry("timerHide", timerHide.interval());
+    config.writeEntry("timerShow", m_timerShow.interval());
+    config.writeEntry("timerHide", m_timerHide.interval());
     config.writeEntry("raiseOnDesktopChange", raiseOnDesktopChange);
     config.writeEntry("raiseOnActivityChange", raiseOnActivityChange);
 
-    view->containment()->configNeedsSaving();
+    m_latteView->containment()->configNeedsSaving();
 }
 
-inline void VisibilityManagerPrivate::restoreConfig()
+void VisibilityManager::restoreConfig()
 {
-    if (!view->containment())
+    if (!m_latteView || !m_latteView->containment()){
         return;
+    }
 
-    auto config = view->containment()->config();
-    timerShow.setInterval(config.readEntry("timerShow", 0));
-    timerHide.setInterval(config.readEntry("timerHide", 700));
-    emit q->timerShowChanged();
-    emit q->timerHideChanged();
+    auto config = m_latteView->containment()->config();
+    m_timerShow.setInterval(config.readEntry("timerShow", 0));
+    m_timerHide.setInterval(config.readEntry("timerHide", 700));
+    emit timerShowChanged();
+    emit timerHideChanged();
 
     enableKWinEdgesFromUser = config.readEntry("enableKWinEdges", true);
-    emit q->enableKWinEdgesChanged();
+    emit enableKWinEdgesChanged();
 
     setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
 
-    auto mode = [&]() {
-        return static_cast<Types::Visibility>(view->containment()->config()
-                                             .readEntry("visibility", static_cast<int>(Types::DodgeActive)));
-    };
+    auto storedMode = static_cast<Types::Visibility>(m_latteView->containment()->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
 
-    if (mode() == Types::AlwaysVisible) {
+    if (storedMode == Types::AlwaysVisible) {
+        qDebug() << "Loading visibility mode: Always Visible , on startup...";
         setMode(Types::AlwaysVisible);
     } else {
-        connect(&timerStartUp, &QTimer::timeout, this, [ &, mode]() {
-            setMode(mode());
+        connect(&m_timerStartUp, &QTimer::timeout, this, [&]() {
+            auto fMode = static_cast<Types::Visibility>(m_latteView->containment()->config().readEntry("visibility", static_cast<int>(Types::DodgeActive)));
+            qDebug() << "Loading visibility mode:" << fMode << " on startup...";
+            setMode(fMode);
         });
-        connect(view->containment(), &Plasma::Containment::userConfiguringChanged
+        connect(m_latteView->containment(), &Plasma::Containment::userConfiguringChanged
         , this, [&](bool configuring) {
-            if (configuring && timerStartUp.isActive())
-                timerStartUp.start(100);
+            if (configuring && m_timerStartUp.isActive())
+                m_timerStartUp.start(100);
         });
 
-        timerStartUp.start();
+        m_timerStartUp.start();
     }
 
-    connect(view->containment(), &Plasma::Containment::userConfiguringChanged
+    connect(m_latteView->containment(), &Plasma::Containment::userConfiguringChanged
     , this, [&](bool configuring) {
-        if (!configuring)
+        if (!configuring) {
             saveConfig();
+        }
     });
 }
 
-void VisibilityManagerPrivate::setContainsMouse(bool contains)
+bool VisibilityManager::containsMouse() const
 {
-    if (containsMouse == contains) {
+    return m_containsMouse;
+}
+
+void VisibilityManager::setContainsMouse(bool contains)
+{
+    if (m_containsMouse == contains) {
         return;
     }
 
-    containsMouse = contains;
-    emit q->containsMouseChanged();
+    m_containsMouse = contains;
+    emit containsMouseChanged();
 
-    if (contains && mode != Types::AlwaysVisible) {
+    if (contains && m_mode != Types::AlwaysVisible) {
         raiseView(true);
     }
 }
 
-void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
+void VisibilityManager::viewEventManager(QEvent *ev)
 {
     switch (ev->type()) {
         case QEvent::Enter:
@@ -660,8 +715,8 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
         case QEvent::DragEnter:
             dragEnter = true;
 
-            if (isHidden)
-                emit q->mustBeShown(VisibilityManager::QPrivateSignal{});
+            if (m_isHidden)
+                emit mustBeShown();
 
             break;
 
@@ -672,7 +727,7 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
             break;
 
         case QEvent::Show:
-            wm->setViewExtraFlags(*view);
+            wm->setViewExtraFlags(*m_latteView);
             break;
 
         default:
@@ -680,7 +735,7 @@ void VisibilityManagerPrivate::viewEventManager(QEvent *ev)
     }
 }
 
-void VisibilityManagerPrivate::cleanupFaultyWindows()
+void VisibilityManager::cleanupFaultyWindows()
 {
     foreach (auto key, windows.keys()) {
         auto winfo = windows[key];
@@ -694,7 +749,12 @@ void VisibilityManagerPrivate::cleanupFaultyWindows()
 }
 
 //! Dynamic Background functions
-void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
+bool VisibilityManager::enabledDynamicBackground() const
+{
+    return enabledDynamicBackgroundFlag;
+}
+
+void VisibilityManager::setEnabledDynamicBackground(bool active)
 {
     if (enabledDynamicBackgroundFlag == active) {
         return;
@@ -703,14 +763,14 @@ void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
     enabledDynamicBackgroundFlag = active;
 
     if (active) {
-        if (mode != Types::DodgeAllWindows) {
+        if (m_mode != Types::DodgeAllWindows) {
             for (const auto &wid : wm->windows()) {
                 windows.insert(wid, wm->requestInfo(wid));
             }
         }
 
-        connectionsDynBackground[0] = connect(view->corona(), &Plasma::Corona::availableScreenRectChanged,
-                                              this, &VisibilityManagerPrivate::updateAvailableScreenGeometry);
+        connectionsDynBackground[0] = connect(m_latteView->corona(), &Plasma::Corona::availableScreenRectChanged,
+                                              this, &VisibilityManager::updateAvailableScreenGeometry);
 
         connectionsDynBackground[1] = connect(wm, &WindowSystem::windowChanged, this, [&](WindowId wid) {
             windows[wid] = wm->requestInfo(wid);
@@ -753,7 +813,7 @@ void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
             disconnect(c);
         }
 
-        if (mode != Types::DodgeAllWindows) {
+        if (m_mode != Types::DodgeAllWindows) {
             windows.clear();
         }
 
@@ -762,10 +822,15 @@ void VisibilityManagerPrivate::setEnabledDynamicBackground(bool active)
        // setExistsWindowSnapped(false);
     }
 
-    emit q->enabledDynamicBackgroundChanged();
+    emit enabledDynamicBackgroundChanged();
 }
 
-void VisibilityManagerPrivate::setExistsWindowMaximized(bool windowMaximized)
+bool VisibilityManager::existsWindowMaximized() const
+{
+    return windowIsMaximizedFlag;
+}
+
+void VisibilityManager::setExistsWindowMaximized(bool windowMaximized)
 {
     if (windowIsMaximizedFlag == windowMaximized) {
         return;
@@ -773,10 +838,15 @@ void VisibilityManagerPrivate::setExistsWindowMaximized(bool windowMaximized)
 
     windowIsMaximizedFlag = windowMaximized;
 
-    emit q->existsWindowMaximizedChanged();
+    emit existsWindowMaximizedChanged();
 }
 
-void VisibilityManagerPrivate::setExistsWindowSnapped(bool windowSnapped)
+bool VisibilityManager::existsWindowSnapped() const
+{
+    return windowIsSnappedFlag;
+}
+
+void VisibilityManager::setExistsWindowSnapped(bool windowSnapped)
 {
     if (windowIsSnappedFlag == windowSnapped) {
         return;
@@ -784,10 +854,15 @@ void VisibilityManagerPrivate::setExistsWindowSnapped(bool windowSnapped)
 
     windowIsSnappedFlag = windowSnapped;
 
-    emit q->existsWindowSnappedChanged();
+    emit existsWindowSnappedChanged();
 }
 
-void VisibilityManagerPrivate::setTouchingWindowScheme(SchemeColors *scheme)
+SchemeColors *VisibilityManager::touchingWindowScheme() const
+{
+    return touchingScheme;
+}
+
+void VisibilityManager::setTouchingWindowScheme(SchemeColors *scheme)
 {
     if (touchingScheme == scheme) {
         return;
@@ -795,12 +870,12 @@ void VisibilityManagerPrivate::setTouchingWindowScheme(SchemeColors *scheme)
 
     touchingScheme = scheme;
 
-    emit q->touchingWindowSchemeChanged();
+    emit touchingWindowSchemeChanged();
 }
 
-void VisibilityManagerPrivate::updateAvailableScreenGeometry()
+void VisibilityManager::updateAvailableScreenGeometry()
 {
-    if (!view || !view->containment()) {
+    if (!m_latteView || !m_latteView->containment()) {
         return;
     }
 
@@ -828,25 +903,25 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
         QRect snap3;
         QRect snap4;
 
-        if (view->formFactor() == Plasma::Types::Horizontal) {
-            if (view->location() == Plasma::Types::TopEdge) {
+        if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
+            if (m_latteView->location() == Plasma::Types::TopEdge) {
                 snap1 = QRect(x1, y1, halfWidth1, halfHeight1);
                 snap3 = QRect(x2, y1, halfWidth2, halfHeight1);
-            } else if ((view->location() == Plasma::Types::BottomEdge)) {
+            } else if ((m_latteView->location() == Plasma::Types::BottomEdge)) {
                 snap1 = QRect(x1, y2, halfWidth1, halfHeight2);
                 snap3 = QRect(x2, y2, halfWidth2, halfHeight2);
             }
 
             snap2 = QRect(x1, y1, halfWidth1, availableScreenGeometry.height());
             snap4 = QRect(x2, y1, halfWidth2, availableScreenGeometry.height());
-        } else if (view->formFactor() == Plasma::Types::Vertical) {
+        } else if (m_latteView->formFactor() == Plasma::Types::Vertical) {
             QRect snap5;
 
-            if (view->location() == Plasma::Types::LeftEdge) {
+            if (m_latteView->location() == Plasma::Types::LeftEdge) {
                 snap1 = QRect(x1, y1, halfWidth1, halfHeight1);
                 snap3 = QRect(x1, y2, halfWidth1, halfHeight2);
                 snap5 = QRect(x1, y1, halfWidth1, availableScreenGeometry.height());
-            } else if ((view->location() == Plasma::Types::RightEdge)) {
+            } else if ((m_latteView->location() == Plasma::Types::RightEdge)) {
                 snap1 = QRect(x2, y1, halfWidth2, halfHeight1);
                 snap3 = QRect(x2, y2, halfWidth2, halfHeight2);
                 snap5 = QRect(x2, y1, halfWidth2, availableScreenGeometry.height());
@@ -867,7 +942,7 @@ void VisibilityManagerPrivate::updateAvailableScreenGeometry()
     }
 }
 
-bool VisibilityManagerPrivate::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
+bool VisibilityManager::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
 {
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
@@ -881,7 +956,7 @@ bool VisibilityManagerPrivate::isMaximizedInCurrentScreen(const WindowInfoWrap &
     return false;
 }
 
-bool VisibilityManagerPrivate::isTouchingPanelEdge(const WindowInfoWrap &winfo)
+bool VisibilityManager::isTouchingPanelEdge(const WindowInfoWrap &winfo)
 {
     if (winfo.isValid() && !winfo.isMinimized() && wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         bool touchingPanelEdge{false};
@@ -890,13 +965,13 @@ bool VisibilityManagerPrivate::isTouchingPanelEdge(const WindowInfoWrap &winfo)
         bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
 
         if (inCurrentScreen) {
-            if (view->location() == Plasma::Types::TopEdge) {
+            if (m_latteView->location() == Plasma::Types::TopEdge) {
                 touchingPanelEdge = (winfo.geometry().y() == availableScreenGeometry.y());
-            } else if (view->location() == Plasma::Types::BottomEdge) {
+            } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
                 touchingPanelEdge = (winfo.geometry().bottom() == availableScreenGeometry.bottom());
-            } else if (view->location() == Plasma::Types::LeftEdge) {
+            } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
                 touchingPanelEdge = (winfo.geometry().x() == availableScreenGeometry.x());
-            } else if (view->location() == Plasma::Types::RightEdge) {
+            } else if (m_latteView->location() == Plasma::Types::RightEdge) {
                 touchingPanelEdge = (winfo.geometry().right() == availableScreenGeometry.right());
             }
         }
@@ -907,7 +982,7 @@ bool VisibilityManagerPrivate::isTouchingPanelEdge(const WindowInfoWrap &winfo)
     return false;
 }
 
-void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
+void VisibilityManager::updateDynamicBackgroundWindowFlags()
 {
     bool foundSnap{false};
     bool foundMaximized{false};
@@ -976,7 +1051,12 @@ void VisibilityManagerPrivate::updateDynamicBackgroundWindowFlags()
 }
 
 //! KWin Edges Support functions
-void VisibilityManagerPrivate::setEnableKWinEdges(bool enable)
+bool VisibilityManager::enableKWinEdges() const
+{
+    return enableKWinEdgesFromUser;
+}
+
+void VisibilityManager::setEnableKWinEdges(bool enable)
 {
     if (enableKWinEdgesFromUser == enable) {
         return;
@@ -984,29 +1064,29 @@ void VisibilityManagerPrivate::setEnableKWinEdges(bool enable)
 
     enableKWinEdgesFromUser = enable;
 
-    emit q->enableKWinEdgesChanged();
+    emit enableKWinEdgesChanged();
 
     updateKWinEdgesSupport();
 }
 
-void VisibilityManagerPrivate::updateKWinEdgesSupport()
+void VisibilityManager::updateKWinEdgesSupport()
 {
-    if (mode == Types::AutoHide
-        || mode == Types::DodgeActive
-        || mode == Types::DodgeAllWindows
-        || mode == Types::DodgeMaximized) {
+    if (m_mode == Types::AutoHide
+        || m_mode == Types::DodgeActive
+        || m_mode == Types::DodgeAllWindows
+        || m_mode == Types::DodgeMaximized) {
         if (enableKWinEdgesFromUser) {
             createEdgeGhostWindow();
         } else if (!enableKWinEdgesFromUser) {
             deleteEdgeGhostWindow();
         }
-    } else if (mode == Types::AlwaysVisible
-               || mode == Types::WindowsGoBelow) {
+    } else if (m_mode == Types::AlwaysVisible
+               || m_mode == Types::WindowsGoBelow) {
         deleteEdgeGhostWindow();
     }
 }
 
-void VisibilityManagerPrivate::createEdgeGhostWindow()
+void VisibilityManager::createEdgeGhostWindow()
 {
     if (!edgeGhostWindow) {
         edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
@@ -1015,7 +1095,7 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
 
         connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
-                emit this->q->mustBeShown(VisibilityManager::QPrivateSignal{});
+                emit mustBeShown();
             }
         });
 
@@ -1028,18 +1108,18 @@ void VisibilityManagerPrivate::createEdgeGhostWindow()
 
             if (edgeGhostWindow) {
                 if (inCurrentLayout) {
-                    wm->setEdgeStateFor(edgeGhostWindow, isHidden);
+                    wm->setEdgeStateFor(edgeGhostWindow, m_isHidden);
                 } else {
                     wm->setEdgeStateFor(edgeGhostWindow, false);
                 }
             }
         });
 
-        emit q->supportsKWinEdgesChanged();
+        emit supportsKWinEdgesChanged();
     }
 }
 
-void VisibilityManagerPrivate::deleteEdgeGhostWindow()
+void VisibilityManager::deleteEdgeGhostWindow()
 {
     if (edgeGhostWindow) {
         edgeGhostWindow->deleteLater();
@@ -1049,12 +1129,12 @@ void VisibilityManagerPrivate::deleteEdgeGhostWindow()
             disconnect(c);
         }
 
-        emit q->supportsKWinEdgesChanged();
+        emit supportsKWinEdgesChanged();
     }
 }
 
 //! Window Functions
-void VisibilityManagerPrivate::requestToggleMaximizeForActiveWindow()
+void VisibilityManager::requestToggleMaximizeForActiveWindow()
 {
     WindowInfoWrap actInfo = wm->requestInfoActive();
 
@@ -1064,7 +1144,7 @@ void VisibilityManagerPrivate::requestToggleMaximizeForActiveWindow()
     }
 }
 
-void VisibilityManagerPrivate::requestMoveActiveWindow(int localX, int localY)
+void VisibilityManager::requestMoveActiveWindow(int localX, int localY)
 {
     WindowInfoWrap actInfo = wm->requestInfoActive();
 
@@ -1075,7 +1155,7 @@ void VisibilityManagerPrivate::requestMoveActiveWindow(int localX, int localY)
     }
 }
 
-bool VisibilityManagerPrivate::activeWindowCanBeDragged()
+bool VisibilityManager::activeWindowCanBeDragged()
 {
     WindowInfoWrap actInfo = wm->requestInfoActive();
 
@@ -1085,169 +1165,6 @@ bool VisibilityManagerPrivate::activeWindowCanBeDragged()
     }
 
     return false;
-}
-
-//! END: VisibilityManagerPrivate implementation
-
-
-//! BEGIN: VisibilityManager implementation
-VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
-    : d(new VisibilityManagerPrivate(view, this))
-{
-    Latte::View *m_latteView = qobject_cast<Latte::View *>(view);
-
-    if (m_latteView) {
-        connect(this, &VisibilityManager::modeChanged, m_latteView->corona(), &Plasma::Corona::availableScreenRectChanged);
-    }
-}
-
-VisibilityManager::~VisibilityManager()
-{
-    qDebug() << "VisibilityManager deleting...";
-    delete d;
-}
-
-Types::Visibility VisibilityManager::mode() const
-{
-    return d->mode;
-}
-
-void VisibilityManager::setMode(Types::Visibility mode)
-{
-    d->setMode(mode);
-}
-
-void VisibilityManager::setWindowOnActivities(QWindow &window, const QStringList &activities)
-{
-    d->setWindowOnActivities(window, activities);
-}
-
-void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)
-{
-    d->applyActivitiesToHiddenWindows(activities);
-}
-
-bool VisibilityManager::raiseOnDesktop() const
-{
-    return d->raiseOnDesktopChange;
-}
-
-void VisibilityManager::setRaiseOnDesktop(bool enable)
-{
-    d->setRaiseOnDesktop(enable);
-}
-
-bool VisibilityManager::raiseOnActivity() const
-{
-    return d->raiseOnActivityChange;
-}
-
-void VisibilityManager::setRaiseOnActivity(bool enable)
-{
-    d->setRaiseOnActivity(enable);
-}
-
-bool VisibilityManager::isHidden() const
-{
-    return d->isHidden;
-}
-
-void VisibilityManager::setIsHidden(bool isHidden)
-{
-    d->setIsHidden(isHidden);
-}
-
-bool VisibilityManager::blockHiding() const
-{
-    return d->blockHiding;
-}
-
-void VisibilityManager::setBlockHiding(bool blockHiding)
-{
-    d->setBlockHiding(blockHiding);
-}
-
-bool VisibilityManager::containsMouse() const
-{
-    return d->containsMouse;
-}
-
-int VisibilityManager::timerShow() const
-{
-    return d->timerShow.interval();
-}
-
-void VisibilityManager::setTimerShow(int msec)
-{
-    d->setTimerShow(msec);
-}
-
-int VisibilityManager::timerHide() const
-{
-    return d->timerHide.interval();
-}
-
-void VisibilityManager::setTimerHide(int msec)
-{
-    d->setTimerHide(msec);
-}
-
-//! Dynamic Background functions
-bool VisibilityManager::enabledDynamicBackground() const
-{
-    return d->enabledDynamicBackgroundFlag;
-}
-
-void VisibilityManager::setEnabledDynamicBackground(bool active)
-{
-    d->setEnabledDynamicBackground(active);
-}
-
-bool VisibilityManager::existsWindowMaximized() const
-{
-    return d->windowIsMaximizedFlag;
-}
-
-bool VisibilityManager::existsWindowSnapped() const
-{
-    return d->windowIsSnappedFlag;
-}
-
-SchemeColors *VisibilityManager::touchingWindowScheme() const
-{
-    return d->touchingScheme;
-}
-
-//! KWin Edges Support functions
-bool VisibilityManager::enableKWinEdges() const
-{
-    return d->enableKWinEdgesFromUser;
-}
-
-void VisibilityManager::setEnableKWinEdges(bool enable)
-{
-    d->setEnableKWinEdges(enable);
-}
-
-bool VisibilityManager::supportsKWinEdges() const
-{
-    return (d->edgeGhostWindow != nullptr);
-}
-
-//! Window Functions
-void VisibilityManager::requestToggleMaximizeForActiveWindow()
-{
-    d->requestToggleMaximizeForActiveWindow();
-}
-
-void VisibilityManager::requestMoveActiveWindow(int localX, int localY)
-{
-    d->requestMoveActiveWindow(localX, localY);
-}
-
-bool VisibilityManager::activeWindowCanBeDragged()
-{
-    return d->activeWindowCanBeDragged();
 }
 
 //! END: VisibilityManager implementation
