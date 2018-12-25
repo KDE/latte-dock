@@ -188,13 +188,19 @@ float BackgroundCache::luminasFor(QString activity, QString screen, Plasma::Type
 
 float BackgroundCache::luminasFromFile(QString imageFile, Plasma::Types::Location location)
 {
-    QImage image(imageFile);
-
     if (m_luminasCache.keys().contains(imageFile)) {
         if (m_luminasCache[imageFile].keys().contains(location)) {
             return m_luminasCache[imageFile].value(location);
         }
     }
+
+    //! if it is a color
+    if (imageFile.startsWith("#")) {
+        return Latte::colorLumina(QColor(imageFile));
+    }
+
+    //! if it is a local image
+    QImage image(imageFile);
 
     if (image.format() != QImage::Format_Invalid) {
         int maskHeight = (0.08 * image.height());
