@@ -106,19 +106,34 @@ QString BackgroundCache::backgroundFromConfig(const KConfigGroup &config) const 
     return QString();
 }
 
-void BackgroundCache::reload() {
+bool BackgroundCache::isDesktopContainment(const KConfigGroup &containment) const
+{
+    const auto type = containment.readEntry("plugin", QString());
 
+    if (type == "org.kde.desktopcontainment" || type == "org.kde.plasma.folder" ) {
+        return true;
+    }
+
+    return false;
+}
+
+void BackgroundCache::reload()
+{
     // Traversing through all containments in search for
     // containments that define activities in plasma
     KConfigGroup plasmaConfigContainments = m_plasmaConfig->group("Containments");
+
+    //!activityId and screen names for which their background was updated
+    QHash<QString, QList<QString>> updates;
 
     for (const auto &containmentId : plasmaConfigContainments.groupList()) {
         const auto containment = plasmaConfigContainments.group(containmentId);
         const auto lastScreen  = containment.readEntry("lastScreen", 0);
         const auto activity    = containment.readEntry("activityId", QString());
 
-        // Ignore the containment if the activity is not defined
-        if (activity.isEmpty()) continue;
+        //! Ignore the containment if the activity is not defined or
+        //! the containment is not a plasma desktop
+        if (activity.isEmpty() || !isDesktopContainment(containment)) continue;
 
         const auto returnedBackground = backgroundFromConfig(containment);
 
@@ -130,12 +145,25 @@ void BackgroundCache::reload() {
 
         if (background.isEmpty()) continue;
 
-        m_backgrounds[activity][m_pool->connector(lastScreen)] = background;
+        QString screenName = m_pool->connector(lastScreen);
+
+        if(!m_backgrounds.contains(activity)
+                || !m_backgrounds[activity].contains(screenName)
+                || m_backgrounds[activity][screenName] != background) {
+
+            updates[activity].append(screenName);
+        }
+
+        m_backgrounds[activity][screenName] = background;
     }
 
     m_initialized = true;
 
-    qDebug() << m_backgrounds;
+    foreach (auto activity, updates.keys()) {
+        foreach (auto screen, updates[activity]) {
+            emit backgroundChanged(activity, screen);
+        }
+    }
 }
 
 QString BackgroundCache::background(QString activity, QString screen)

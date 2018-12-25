@@ -62,6 +62,7 @@ signals:
     void screenNameChanged();
 
 private slots:
+    void backgroundChanged(const QString &activity, const QString &screenName);
     void update();
 
 private:

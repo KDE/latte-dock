@@ -51,6 +51,9 @@ public:
 
     QString background(QString activity, QString screen);
 
+signals:
+    void backgroundChanged(const QString &activity, const QString &screenName);
+
 private slots:
     void reload();
     void settingsFileChanged(const QString &file);
@@ -58,6 +61,7 @@ private slots:
 private:
     BackgroundCache(QObject *parent = nullptr);
 
+    bool isDesktopContainment(const KConfigGroup &containment) const;
     float luminasFromFile(QString imageFile, Plasma::Types::Location location);
     QString backgroundFromConfig(const KConfigGroup &config) const;
 

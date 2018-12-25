@@ -20,6 +20,7 @@
 
 #include "backgroundtracker.h"
 
+#include "plasma/extended/backgroundcache.h"
 
 namespace Latte {
 
@@ -31,6 +32,8 @@ BackgroundTracker::BackgroundTracker(QObject *parent)
     connect(this, &BackgroundTracker::activityChanged, this, &BackgroundTracker::update);
     connect(this, &BackgroundTracker::locationChanged, this, &BackgroundTracker::update);
     connect(this, &BackgroundTracker::screenNameChanged, this, &BackgroundTracker::update);
+
+    connect(m_cache, &PlasmaExtended::BackgroundCache::backgroundChanged, this, &BackgroundTracker::backgroundChanged);
 }
 
 BackgroundTracker::~BackgroundTracker()
@@ -90,6 +93,13 @@ void BackgroundTracker::setScreenName(QString name)
     m_screenName = name;
 
     emit screenNameChanged();
+}
+
+void BackgroundTracker::backgroundChanged(const QString &activity, const QString &screenName)
+{
+    if (m_activity==activity && m_screenName==screenName) {
+        update();
+    }
 }
 
 void BackgroundTracker::update()
