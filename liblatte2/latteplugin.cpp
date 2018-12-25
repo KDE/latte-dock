@@ -21,6 +21,7 @@
 #include "latteplugin.h"
 
 // local
+#include "backgroundtracker.h"
 #include "iconitem.h"
 #include "quickwindowsystem.h"
 #include "types.h"
@@ -32,6 +33,7 @@ void LattePlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.latte"));
     qmlRegisterUncreatableType<Latte::Types>(uri, 0, 2, "Types", "Latte Types uncreatable");
+    qmlRegisterType<Latte::BackgroundTracker>(uri, 0, 2, "BackgroundTracker");
     qmlRegisterType<Latte::IconItem>(uri, 0, 2, "IconItem");
     qmlRegisterSingletonType<Latte::QuickWindowSystem>(uri, 0, 2, "WindowSystem", &Latte::windowsystem_qobject_singletontype_provider);
 }

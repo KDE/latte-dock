@@ -23,21 +23,42 @@
 #include "commontools.h"
 
 // Qt
+#include <QDebug>
 #include <QImage>
 #include <QRgb>
 
 // Plasma
 #include <Plasma>
 
+// KDE
+#include <KConfigGroup>
+#include <KDirWatch>
+
+#define PLASMACONFIG "plasma-org.kde.plasma.desktop-appletsrc"
+#define DEFAULTWALLPAPER "/usr/share/wallpapers/Next/contents/images/1920x1080.png"
+
 namespace Latte{
 namespace PlasmaExtended {
 
 BackgroundCache::BackgroundCache(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_initialized(false),
+      m_plasmaConfig(KSharedConfig::openConfig(PLASMACONFIG))
 {
+    const auto configFile = QStandardPaths::writableLocation(
+                                QStandardPaths::GenericConfigLocation) +
+                            QLatin1Char('/') + PLASMACONFIG;
+
+    KDirWatch::self()->addFile(configFile);
+
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &BackgroundCache::settingsFileChanged);
+    connect(KDirWatch::self(), &KDirWatch::created, this, &BackgroundCache::settingsFileChanged);
+
     if (!m_pool) {
         m_pool = new ScreenPool(this);
     }
+
+    reload();
 }
 
 BackgroundCache::~BackgroundCache()
@@ -53,11 +74,93 @@ BackgroundCache *BackgroundCache::self()
     return &cache;
 }
 
-float BackgroundCache::luminasFromFile(QString imageFile, int edge)
+void BackgroundCache::settingsFileChanged(const QString &file) {
+    if (!file.endsWith(PLASMACONFIG)) {
+        return;
+    }
+
+    if (m_initialized) {
+        m_plasmaConfig->reparseConfiguration();
+        reload();
+    }
+}
+
+QString BackgroundCache::backgroundFromConfig(const KConfigGroup &config) const {
+    auto wallpaperPlugin = config.readEntry("wallpaperplugin");
+    auto wallpaperConfig = config.group("Wallpaper").group(wallpaperPlugin).group("General");
+
+    if (wallpaperConfig.hasKey("Image")) {
+        // Trying for the wallpaper
+        auto wallpaper = wallpaperConfig.readEntry("Image", QString());
+
+        if (!wallpaper.isEmpty()) {
+            return wallpaper;
+        }
+    }
+
+    if (wallpaperConfig.hasKey("Color")) {
+        auto backgroundColor = wallpaperConfig.readEntry("Color", QColor(0, 0, 0));
+        return backgroundColor.name();
+    }
+
+    return QString();
+}
+
+void BackgroundCache::reload() {
+
+    // Traversing through all containments in search for
+    // containments that define activities in plasma
+    KConfigGroup plasmaConfigContainments = m_plasmaConfig->group("Containments");
+
+    for (const auto &containmentId : plasmaConfigContainments.groupList()) {
+        const auto containment = plasmaConfigContainments.group(containmentId);
+        const auto lastScreen  = containment.readEntry("lastScreen", 0);
+        const auto activity    = containment.readEntry("activityId", QString());
+
+        // Ignore the containment if the activity is not defined
+        if (activity.isEmpty()) continue;
+
+        const auto returnedBackground = backgroundFromConfig(containment);
+
+        QString background = returnedBackground;
+
+        if (background.startsWith("file://")) {
+            background = returnedBackground.mid(7);
+        }
+
+        if (background.isEmpty()) continue;
+
+        m_backgrounds[activity][m_pool->connector(lastScreen)] = background;
+    }
+
+    m_initialized = true;
+
+    qDebug() << m_backgrounds;
+}
+
+QString BackgroundCache::background(QString activity, QString screen)
+{
+    if (m_backgrounds.contains(activity) && m_backgrounds[activity].contains(screen)) {
+        return m_backgrounds[activity][screen];
+    } else {
+        return DEFAULTWALLPAPER;
+    }
+}
+
+float BackgroundCache::luminasFor(QString activity, QString screen, Plasma::Types::Location location)
+{
+    QString assignedBackground = background(activity, screen);
+
+    if (!assignedBackground.isEmpty()) {
+        return luminasFromFile(assignedBackground, location);
+    }
+
+    return -1000;
+}
+
+float BackgroundCache::luminasFromFile(QString imageFile, Plasma::Types::Location location)
 {
     QImage image(imageFile);
-
-    Plasma::Types::Location location = static_cast<Plasma::Types::Location>(edge);
 
     if (m_luminasCache.keys().contains(imageFile)) {
         if (m_luminasCache[imageFile].keys().contains(location)) {

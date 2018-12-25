@@ -47,7 +47,7 @@ Loader{
                                && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
                                && !root.editMode && Latte.WindowSystem.compositingActive
 
-    property real currentBackgroundLuminas: item ? item.currentBackgroundLuminas : -1000
+    property real currentBackgroundLuminas: item ? item.currentLuminas : -1000
 
     property QtObject applyTheme: {
         if (forceSolidnessAndColorize && latteView.visibility.touchingWindowScheme) {
@@ -94,5 +94,11 @@ Loader{
         return applyTheme.schemeFile;
     }
 
-    sourceComponent: BackgroundTracker{}
+    sourceComponent: Latte.BackgroundTracker {
+        activity: managedLayout ? managedLayout.lastUsedActivity : ""
+        location: plasmoid.location
+        screenName: latteView && latteView.positioner ? latteView.positioner.currentScreenName : ""
+
+        onCurrentLuminasChanged: console.log("CURRENT LUMINAS !!! " + currentLuminas);
+    }
 }

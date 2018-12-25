@@ -30,6 +30,10 @@
 // Plasma
 #include <Plasma>
 
+// KDE
+#include <KConfigGroup>
+#include <KSharedConfig>
+
 typedef QHash<Plasma::Types::Location, float> EdgesHash;
 
 namespace Latte {
@@ -43,19 +47,31 @@ public:
     static BackgroundCache *self();
     ~BackgroundCache() override;
 
-    float luminasFromFile(QString imageFile, int edge);
+    float luminasFor(QString activity, QString screen, Plasma::Types::Location location);
+
+    QString background(QString activity, QString screen);
+
+private slots:
+    void reload();
+    void settingsFileChanged(const QString &file);
 
 private:
     BackgroundCache(QObject *parent = nullptr);
 
+    float luminasFromFile(QString imageFile, Plasma::Types::Location location);
+    QString backgroundFromConfig(const KConfigGroup &config) const;
+
 private:
+    bool m_initialized{false};
+
+    ScreenPool *m_pool{nullptr};
+
     //! screen aware backgrounds: activity id, screen name, backgroundfile
     QHash<QString, QHash<QString, QString>> m_backgrounds;
-
     //! image file and luminas per edge
     QHash<QString, EdgesHash> m_luminasCache;
 
-    ScreenPool *m_pool{nullptr};
+    KSharedConfig::Ptr m_plasmaConfig;
 };
 
 }

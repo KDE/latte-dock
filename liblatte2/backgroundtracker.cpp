@@ -27,10 +27,37 @@ BackgroundTracker::BackgroundTracker(QObject *parent)
     : QObject(parent)
 {
     m_cache = PlasmaExtended::BackgroundCache::self();
+
+    connect(this, &BackgroundTracker::activityChanged, this, &BackgroundTracker::update);
+    connect(this, &BackgroundTracker::locationChanged, this, &BackgroundTracker::update);
+    connect(this, &BackgroundTracker::screenNameChanged, this, &BackgroundTracker::update);
 }
 
 BackgroundTracker::~BackgroundTracker()
 {
+}
+
+int BackgroundTracker::location() const
+{
+    return m_location;
+}
+
+void BackgroundTracker::setLocation(int location)
+{
+    Plasma::Types::Location pLocation = static_cast<Plasma::Types::Location>(location);
+
+    if (m_location == pLocation) {
+        return;
+    }
+
+    m_location = pLocation;
+
+    emit locationChanged();
+}
+
+float BackgroundTracker::currentLuminas() const
+{
+    return m_luminas;
 }
 
 QString BackgroundTracker::activity() const
@@ -63,6 +90,17 @@ void BackgroundTracker::setScreenName(QString name)
     m_screenName = name;
 
     emit screenNameChanged();
+}
+
+void BackgroundTracker::update()
+{
+    if (m_activity.isEmpty() || m_screenName.isEmpty()) {
+        return;
+    }
+
+    m_luminas = m_cache->luminasFor(m_activity, m_screenName, m_location);
+
+    emit currentLuminasChanged();
 }
 
 }
