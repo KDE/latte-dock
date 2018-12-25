@@ -207,8 +207,9 @@ QRect PrimaryConfigView::geometryWhenVisible() const
 
 void PrimaryConfigView::syncGeometry()
 {
-    if (!m_latteView->managedLayout() || !m_latteView->containment() || !rootObject())
+    if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !rootObject()) {
         return;
+    }
 
     const QSize size(rootObject()->width(), rootObject()->height());
     setMaximumSize(size);
@@ -274,8 +275,9 @@ void PrimaryConfigView::syncGeometry()
 
 void PrimaryConfigView::syncSlideEffect()
 {
-    if (!m_latteView->containment())
+    if (!m_latteView || !m_latteView->containment()) {
         return;
+    }
 
     auto slideLocation = WindowSystem::Slide::None;
 
@@ -307,6 +309,10 @@ void PrimaryConfigView::syncSlideEffect()
 void PrimaryConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
+
+    if (!m_latteView) {
+        return;
+    }
 
     m_corona->wm()->setViewExtraFlags(*this);
     setFlags(wFlags());
@@ -340,13 +346,17 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
     const auto mode = m_latteView->visibility()->mode();
     const auto previousByPassWMBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? true : false;
 
+   /*
+    //! TOFIX: This code was creating crashed when switching between different screens and the mode
+    //! was AlwaysVisible, it must be reconsidered what was its purpose and if it is still needed
+    //!
     if (mode == Types::AlwaysVisible || mode == Types::WindowsGoBelow) {
         if (!previousByPassWMBehavior) {
             m_latteView->managedLayout()->recreateView(m_latteView->containment());
         }
     } else if (m_latteView->byPassWM() != previousByPassWMBehavior) {
         m_latteView->managedLayout()->recreateView(m_latteView->containment());
-    }
+    } */
 
     deleteLater();
 }

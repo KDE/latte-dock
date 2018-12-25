@@ -1500,7 +1500,6 @@ void Layout::recreateView(Plasma::Containment *containment)
             });
 
             view->deleteLater();
-
         }
     });
 }

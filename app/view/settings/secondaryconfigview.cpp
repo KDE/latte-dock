@@ -140,8 +140,9 @@ QRect SecondaryConfigView::geometryWhenVisible() const
 
 void SecondaryConfigView::syncGeometry()
 {
-    if (!m_latteView->managedLayout() || !m_latteView->containment() || !rootObject())
+    if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !rootObject()) {
         return;
+    }
 
     const QSize size(rootObject()->width(), rootObject()->height());
     setMaximumSize(size);
@@ -204,8 +205,9 @@ void SecondaryConfigView::syncGeometry()
 
 void SecondaryConfigView::syncSlideEffect()
 {
-    if (!m_latteView->containment())
+    if (!m_latteView || !m_latteView->containment()) {
         return;
+    }
 
     auto slideLocation = WindowSystem::Slide::None;
 
@@ -237,6 +239,10 @@ void SecondaryConfigView::syncSlideEffect()
 void SecondaryConfigView::showEvent(QShowEvent *ev)
 {
     QQuickWindow::showEvent(ev);
+
+    if (!m_latteView) {
+        return;
+    }
 
     m_corona->wm()->setViewExtraFlags(*this);
     setFlags(wFlags());
