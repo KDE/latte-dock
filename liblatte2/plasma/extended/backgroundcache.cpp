@@ -175,28 +175,28 @@ QString BackgroundCache::background(QString activity, QString screen)
     }
 }
 
-float BackgroundCache::luminasFor(QString activity, QString screen, Plasma::Types::Location location)
+float BackgroundCache::brightnessFor(QString activity, QString screen, Plasma::Types::Location location)
 {
     QString assignedBackground = background(activity, screen);
 
     if (!assignedBackground.isEmpty()) {
-        return luminasFromFile(assignedBackground, location);
+        return brightnessFromFile(assignedBackground, location);
     }
 
     return -1000;
 }
 
-float BackgroundCache::luminasFromFile(QString imageFile, Plasma::Types::Location location)
+float BackgroundCache::brightnessFromFile(QString imageFile, Plasma::Types::Location location)
 {
-    if (m_luminasCache.keys().contains(imageFile)) {
-        if (m_luminasCache[imageFile].keys().contains(location)) {
-            return m_luminasCache[imageFile].value(location);
+    if (m_brightnessCache.keys().contains(imageFile)) {
+        if (m_brightnessCache[imageFile].keys().contains(location)) {
+            return m_brightnessCache[imageFile].value(location);
         }
     }
 
     //! if it is a color
     if (imageFile.startsWith("#")) {
-        return Latte::colorLumina(QColor(imageFile));
+        return Latte::colorBrightness(QColor(imageFile));
     }
 
     //! if it is a local image
@@ -206,7 +206,7 @@ float BackgroundCache::luminasFromFile(QString imageFile, Plasma::Types::Locatio
         int maskHeight = (0.08 * image.height());
         int maskWidth = (0.05 * image.width());
 
-        float areaLumin = -1000;
+        float areaBrightness = -1000;
 
         int firstRow = 0;
         int firstColumn = 0;
@@ -240,22 +240,22 @@ float BackgroundCache::luminasFromFile(QString imageFile, Plasma::Types::Locatio
 
             for (int col = firstColumn; col < endColumn ; ++col) {
                 QRgb pixelData = line[col];
-                float pixelLuminosity = Latte::colorLumina(pixelData);
+                float pixelBrightness = Latte::colorBrightness(pixelData);
 
-                areaLumin = (areaLumin == -1000) ? pixelLuminosity : (areaLumin + pixelLuminosity);
+                areaBrightness = (areaBrightness == -1000) ? pixelBrightness : (areaBrightness + pixelBrightness);
             }
         }
 
         float areaSize = (endRow - firstRow) * (endColumn - firstColumn);
-        areaLumin = areaLumin / areaSize;
+        areaBrightness = areaBrightness / areaSize;
 
-        if (!m_luminasCache.keys().contains(imageFile)) {
-            m_luminasCache[imageFile] = EdgesHash();
+        if (!m_brightnessCache.keys().contains(imageFile)) {
+            m_brightnessCache[imageFile] = EdgesHash();
         }
 
-        m_luminasCache[imageFile].insert(location, areaLumin);
+        m_brightnessCache[imageFile].insert(location, areaBrightness);
 
-        return areaLumin;
+        return areaBrightness;
     }
 
     //! didn't find anything

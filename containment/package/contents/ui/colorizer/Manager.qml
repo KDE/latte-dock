@@ -35,9 +35,10 @@ Loader{
                                            || !Latte.WindowSystem.compositingActive
     readonly property bool forceSolidnessAndColorize: forceSolidness && forceColorizeFromActiveWindowScheme
 
-    readonly property real themeBackgroundColorLuma: ColorizerTools.colorLuminas(theme.backgroundColor)
-    readonly property real themeTextColorLuma: ColorizerTools.colorLuminas(theme.textColor)
-    readonly property color minimizedDotColor: themeTextColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
+    readonly property real themeBackgroundColorBrightness: ColorizerTools.colorBrightness(theme.backgroundColor)
+    readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
+
+    readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
     property bool mustBeShown: active && (!forceSolidPanel || forceSolidnessAndColorize)
     //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
@@ -47,7 +48,7 @@ Loader{
                                && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
                                && !root.editMode && Latte.WindowSystem.compositingActive
 
-    property real currentBackgroundLuminas: item ? item.currentLuminas : -1000
+    property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
     property QtObject applyTheme: {
         if (forceSolidnessAndColorize && latteView.visibility.touchingWindowScheme) {
@@ -55,7 +56,7 @@ Loader{
         }
 
         if (themeExtended) {
-            if (currentBackgroundLuminas > 0.5) {
+            if (currentBackgroundBrightness > 127.5) {
                 return themeExtended.lightTheme;
             } else {
                 return themeExtended.darkTheme;
@@ -99,6 +100,6 @@ Loader{
         location: plasmoid.location
         screenName: latteView && latteView.positioner ? latteView.positioner.currentScreenName : ""
 
-        onCurrentLuminasChanged: console.log("CURRENT LUMINAS !!! " + currentLuminas);
+        onCurrentBrightnessChanged: console.log("CURRENT Brightness !!! " + currentBrightness);
     }
 }

@@ -94,13 +94,13 @@ Item {
     property int widthMargins: root.vertical ? thickMargin : iconMargin
     property int heightMargins: !root.vertical ? thickMargin : iconMargin
 
-    property real textColorLuma: ColorizerTools.colorLuminas(theme.textColor)
+    property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
     property color minimizedDotColor: {
         if (latteView) {
             return latteView.minimizedDotColor;
         }
 
-        return textColorLuma > 0.6 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
+        return textColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
     }
 
     //a small badgers record (id,value)

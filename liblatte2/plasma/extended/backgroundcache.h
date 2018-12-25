@@ -47,7 +47,7 @@ public:
     static BackgroundCache *self();
     ~BackgroundCache() override;
 
-    float luminasFor(QString activity, QString screen, Plasma::Types::Location location);
+    float brightnessFor(QString activity, QString screen, Plasma::Types::Location location);
 
     QString background(QString activity, QString screen);
 
@@ -62,7 +62,7 @@ private:
     BackgroundCache(QObject *parent = nullptr);
 
     bool isDesktopContainment(const KConfigGroup &containment) const;
-    float luminasFromFile(QString imageFile, Plasma::Types::Location location);
+    float brightnessFromFile(QString imageFile, Plasma::Types::Location location);
     QString backgroundFromConfig(const KConfigGroup &config) const;
 
 private:
@@ -72,8 +72,8 @@ private:
 
     //! screen aware backgrounds: activity id, screen name, backgroundfile
     QHash<QString, QHash<QString, QString>> m_backgrounds;
-    //! image file and luminas per edge
-    QHash<QString, EdgesHash> m_luminasCache;
+    //! image file and brightness per edge
+    QHash<QString, EdgesHash> m_brightnessCache;
 
     KSharedConfig::Ptr m_plasmaConfig;
 };

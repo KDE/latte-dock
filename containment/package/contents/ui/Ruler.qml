@@ -28,6 +28,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
 
+import "../code/ColorizerTools.js" as ColorizerTools
+
 Item{
     id: rulerItem
 
@@ -123,38 +125,8 @@ Item{
         }
     }
 
-
-    // formula for luminance according to:
-    // https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-    property real textColorRs: {
-        var color = textColor.r;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorGs: {
-        var color = textColor.g;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    property real textColorBs: {
-        var color = textColor.b;
-        if (color <= 0.03928) {
-            return color / 12.92;
-        } else {
-            return Math.pow( ((color + 0.055) / 1.055), 2.4 );
-        }
-    }
-
-    readonly property real textColorLuma: 0.2126*textColorRs + 0.7152*textColorGs + 0.0722*textColorBs
-    readonly property bool textColorIsDark: textColorLuma < 0.6
+    readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
+    readonly property bool textColorIsDark: textColorBrightness < 127.5
     readonly property color textColor: latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF"
 
     Behavior on width {

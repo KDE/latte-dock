@@ -58,9 +58,9 @@ void BackgroundTracker::setLocation(int location)
     emit locationChanged();
 }
 
-float BackgroundTracker::currentLuminas() const
+float BackgroundTracker::currentBrightness() const
 {
-    return m_luminas;
+    return m_brightness;
 }
 
 QString BackgroundTracker::activity() const
@@ -108,9 +108,9 @@ void BackgroundTracker::update()
         return;
     }
 
-    m_luminas = m_cache->luminasFor(m_activity, m_screenName, m_location);
+    m_brightness = m_cache->brightnessFor(m_activity, m_screenName, m_location);
 
-    emit currentLuminasChanged();
+    emit currentBrightnessChanged();
 }
 
 }

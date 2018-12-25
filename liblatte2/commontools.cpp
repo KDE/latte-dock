@@ -25,6 +25,24 @@
 
 namespace Latte {
 
+float colorBrightness(QColor color)
+{
+    return colorBrightness(color.red(), color.green(), color.blue());
+}
+
+float colorBrightness(QRgb rgb)
+{
+    return colorBrightness(qRed(rgb), qGreen(rgb), qBlue(rgb));
+}
+
+float colorBrightness(float r, float g, float b)
+{
+    float brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    return brightness;
+}
+
+
 float colorLumina(QRgb rgb)
 {
     float r = (float)(qRed(rgb)) / 255;

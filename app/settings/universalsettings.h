@@ -36,8 +36,6 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-class SortedActivitiesModel;
-
 namespace Latte {
 
 class LayoutManager;
@@ -56,8 +54,6 @@ class UniversalSettings : public QObject
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
 
     Q_PROPERTY(Latte::Types::MouseSensitivity mouseSensitivity READ mouseSensitivity WRITE setMouseSensitivity NOTIFY mouseSensitivityChanged)
-
-    Q_PROPERTY(QAbstractItemModel *runningActivitiesModel  READ runningActivitiesModel NOTIFY runningActivitiesModelChanged)
 
     Q_PROPERTY(QQmlListProperty<QScreen> screens READ screens)
 
@@ -108,9 +104,6 @@ public:
     Types::MouseSensitivity mouseSensitivity() const;
     void setMouseSensitivity(Types::MouseSensitivity sensitivity);
 
-    QAbstractItemModel *runningActivitiesModel() const;
-    void setRunningActivitiesModel(SortedActivitiesModel *model);
-
     QQmlListProperty<QScreen> screens();
     static int countScreens(QQmlListProperty<QScreen> *property); //! is needed by screens()
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index); //! is needed by screens()
@@ -118,8 +111,6 @@ public:
 public slots:
     Q_INVOKABLE QString splitterIconPath();
     Q_INVOKABLE QString trademarkIconPath();
-
-    Q_INVOKABLE float luminasFromFile(QString imageFile, int edge);
 
 signals:
     void autostartChanged();
@@ -133,7 +124,6 @@ signals:
     void launchersChanged();
     void layoutsMemoryUsageChanged();
     void mouseSensitivityChanged();
-    void runningActivitiesModelChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
     void versionChanged();
@@ -142,13 +132,10 @@ private slots:
     void loadConfig();
     void saveConfig();
 
-    void reconsiderActivitiesModel();
     void shortcutsFileChanged(const QString &file);
 
 private:
     void cleanupSettings();
-    void enableActivitiesModel();
-    void disableActivitiesModel();
 
     void initGlobalShortcutsWatcher();
     //! access user set global shortcuts for activate entries
@@ -180,8 +167,6 @@ private:
 
     Types::LayoutsMemoryUsage m_memoryUsage;
     Types::MouseSensitivity m_mouseSensitivity{Types::HighSensitivity};
-
-    SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 
     QPointer<Latte::Corona> m_corona;
 

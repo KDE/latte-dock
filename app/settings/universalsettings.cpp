@@ -22,7 +22,6 @@
 
 // local
 #include "layoutmanager.h"
-#include "sortedactivitiesmodel.h"
 
 // Qt
 #include <QDir>
@@ -64,10 +63,6 @@ UniversalSettings::~UniversalSettings()
 {
     saveConfig();
     cleanupSettings();
-
-    if (m_runningActivitiesModel) {
-        m_runningActivitiesModel->deleteLater();
-    }
 }
 
 void UniversalSettings::initGlobalShortcutsWatcher()
@@ -156,9 +151,6 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
-
-    //! connections with other classes
-    connect(m_corona->layoutManager(), &LayoutManager::viewColorizerChanged, this, &UniversalSettings::reconsiderActivitiesModel);
 
     //! load global shortcuts badges at startup
     initGlobalShortcutsWatcher();
@@ -489,56 +481,6 @@ QString UniversalSettings::splitterIconPath()
 QString UniversalSettings::trademarkIconPath()
 {
     return m_corona->kPackage().filePath("trademark");
-}
-
-QAbstractItemModel *UniversalSettings::runningActivitiesModel() const
-{
-    return m_runningActivitiesModel;
-}
-
-void UniversalSettings::setRunningActivitiesModel(SortedActivitiesModel *model)
-{
-    if (m_runningActivitiesModel == model) {
-        return;
-    }
-
-    if (m_runningActivitiesModel) {
-        m_runningActivitiesModel->deleteLater();
-    }
-
-    m_runningActivitiesModel = model;
-
-    emit runningActivitiesModelChanged();
-}
-
-void UniversalSettings::enableActivitiesModel()
-{
-    if (!m_runningActivitiesModel) {
-        setRunningActivitiesModel(new SortedActivitiesModel({KActivities::Info::Running, KActivities::Info::Stopping}, this));
-    }
-}
-
-void UniversalSettings::disableActivitiesModel()
-{
-    if (m_runningActivitiesModel) {
-        setRunningActivitiesModel(nullptr);
-    }
-}
-
-void UniversalSettings::reconsiderActivitiesModel()
-{
-    if (m_corona->layoutManager()->hasColorizer()) {
-        enableActivitiesModel();
-    } else {
-        disableActivitiesModel();
-    }
-}
-
-float UniversalSettings::luminasFromFile(QString imageFile, int edge)
-{
-    enableActivitiesModel();
-
-    return m_runningActivitiesModel->luminasFromFile(imageFile, edge);
 }
 
 QQmlListProperty<QScreen> UniversalSettings::screens()

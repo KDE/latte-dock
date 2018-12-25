@@ -23,6 +23,10 @@
 
 namespace Latte {
 
+float colorBrightness(QColor color);
+float colorBrightness(QRgb rgb);
+float colorBrightness(float r, float g, float b);
+
 float colorLumina(QColor color);
 float colorLumina(QRgb rgb);
 float colorLumina(float r, float g, float b);

@@ -15,7 +15,6 @@ set(lattedock-app_SRCS
     plasma/extended/screenpool.cpp
     plasma/extended/theme.cpp
     settings/settingsdialog.cpp
-    settings/sortedactivitiesmodel.cpp
     settings/universalsettings.cpp
     settings/delegates/activitycmbboxdelegate.cpp
     settings/delegates/checkboxdelegate.cpp

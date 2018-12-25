@@ -35,7 +35,7 @@ class BackgroundTracker: public QObject
 
     Q_PROPERTY(int location READ location WRITE setLocation NOTIFY locationChanged)
 
-    Q_PROPERTY(float currentLuminas READ currentLuminas NOTIFY currentLuminasChanged)
+    Q_PROPERTY(float currentBrightness READ currentBrightness NOTIFY currentBrightnessChanged)
 
     Q_PROPERTY(QString activity READ activity WRITE setActivity NOTIFY activityChanged)
     Q_PROPERTY(QString screenName READ screenName WRITE setScreenName NOTIFY screenNameChanged)
@@ -47,7 +47,7 @@ public:
     int location() const;
     void setLocation(int location);
 
-    float currentLuminas() const;
+    float currentBrightness() const;
 
     QString activity() const;
     void setActivity(QString id);
@@ -57,7 +57,7 @@ public:
 
 signals:
     void activityChanged();
-    void currentLuminasChanged();
+    void currentBrightnessChanged();
     void locationChanged();
     void screenNameChanged();
 
@@ -67,7 +67,7 @@ private slots:
 
 private:
     // local
-    float m_luminas{-1000};
+    float m_brightness{-1000};
     PlasmaExtended::BackgroundCache *m_cache{nullptr};
 
     // Qt

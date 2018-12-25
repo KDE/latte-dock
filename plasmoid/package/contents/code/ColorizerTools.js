@@ -17,6 +17,15 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+function colorBrightness(color) {
+    return colorBrightnessFromRGB(color.r * 255, color.g * 255, color.b * 255);
+}
+
+// formula for brightness according to:
+// https://www.w3.org/TR/AERT/#color-contrast
+function colorBrightnessFromRGB(r, g, b) {
+    return (r * 299 + g * 587 + b * 114) / 1000
+}
 
 function colorLuminas(color) {
     return colorLuminasFromRGB(color.r, color.g, color.b)
