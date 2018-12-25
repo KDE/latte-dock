@@ -63,6 +63,8 @@ class PrimaryConfigView : public PlasmaQuick::ConfigView
     //! used when the secondary config window can not be shown
     Q_PROPERTY(bool showInlineProperties READ showInlineProperties WRITE setShowInlineProperties NOTIFY showInlinePropertiesChanged)
 
+    Q_PROPERTY(int complexity READ complexity WRITE setComplexity NOTIFY complexityChanged)
+
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
@@ -83,6 +85,9 @@ public:
 
     bool sticker() const;
 
+    int complexity() const;
+    void setComplexity(int complexity);
+
     QRect geometryWhenVisible() const;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
@@ -95,9 +100,9 @@ public slots:
     Q_INVOKABLE void setSticker(bool blockFocusLost);
     Q_INVOKABLE void syncGeometry();
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
-    Q_INVOKABLE void setAdvanced(bool advanced);
 
 signals:
+    void complexityChanged();
     void enabledBordersChanged();
     void raiseDocksTemporaryChanged();
     void showInlinePropertiesChanged();
@@ -118,14 +123,18 @@ private slots:
     void createSecondaryWindow();
     void deleteSecondaryWindow();
 
+    void loadConfig();
+    void saveConfig();
+
 private:
     void setupWaylandIntegration();
 
-    bool m_advanced{false};
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
     bool m_inReverse{false};    //! it is used by the borders
     bool m_showInlineProperties{false};
+
+    Latte::Types::SettingsComplexity m_complexity{Latte::Types::BasicSettings};
 
     QRect m_geometryWhenVisible;
 

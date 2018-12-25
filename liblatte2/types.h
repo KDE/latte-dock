@@ -145,6 +145,14 @@ public:
         PreferencesPage
     };
     Q_ENUM(LatteConfigPage)
+
+    enum SettingsComplexity
+    {
+        BasicSettings = 0,
+        AdvancedSettings = 2,
+        ExpertSettings = 4
+    };
+    Q_ENUM(SettingsComplexity)
 };
 
 }//end of namespace

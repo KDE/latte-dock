@@ -65,6 +65,8 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
+    connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
+
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
         setFlags(wFlags());
@@ -109,6 +111,7 @@ PrimaryConfigView::~PrimaryConfigView()
 void PrimaryConfigView::init()
 {
     qDebug() << "dock config view : initialization started...";
+    loadConfig();
 
     setDefaultAlphaBuffer(true);
     setColor(Qt::transparent);
@@ -146,21 +149,6 @@ inline Qt::WindowFlags PrimaryConfigView::wFlags() const
 QWindow *PrimaryConfigView::secondaryWindow()
 {
     return m_secConfigView;
-}
-
-void PrimaryConfigView::setAdvanced(bool advanced)
-{
-    if (m_advanced == advanced) {
-        return;
-    }
-
-    m_advanced = advanced;
-
-    if (m_advanced) {
-        createSecondaryWindow();
-    } else {
-        deleteSecondaryWindow();
-    }
 }
 
 void PrimaryConfigView::createSecondaryWindow()
@@ -224,37 +212,37 @@ void PrimaryConfigView::syncGeometry()
     QPoint position{0, 0};
 
     switch (m_latteView->containment()->formFactor()) {
-        case Plasma::Types::Horizontal: {
-            if (location == Plasma::Types::TopEdge) {
-                position = {sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + clearThickness
-                           };
+    case Plasma::Types::Horizontal: {
+        if (location == Plasma::Types::TopEdge) {
+            position = {sGeometry.center().x() - size.width() / 2
+                        , sGeometry.y() + clearThickness
+                       };
 
-            } else if (location == Plasma::Types::BottomEdge) {
-                position = {sGeometry.center().x() - size.width() / 2
-                            , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
-                           };
+        } else if (location == Plasma::Types::BottomEdge) {
+            position = {sGeometry.center().x() - size.width() / 2
+                        , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
+                       };
 
-            }
         }
+    }
         break;
 
-        case Plasma::Types::Vertical: {
-            if (location == Plasma::Types::LeftEdge) {
-                position = {sGeometry.x() + clearThickness
-                            , sGeometry.center().y() - size.height() / 2
-                           };
-            } else if (location == Plasma::Types::RightEdge) {
-                position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                            , sGeometry.center().y() - size.height() / 2
-                           };
-            }
+    case Plasma::Types::Vertical: {
+        if (location == Plasma::Types::LeftEdge) {
+            position = {sGeometry.x() + clearThickness
+                        , sGeometry.center().y() - size.height() / 2
+                       };
+        } else if (location == Plasma::Types::RightEdge) {
+            position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
+                        , sGeometry.center().y() - size.height() / 2
+                       };
         }
+    }
         break;
 
-        default:
-            qWarning() << "no sync geometry, wrong formFactor";
-            break;
+    default:
+        qWarning() << "no sync geometry, wrong formFactor";
+        break;
     }
 
     updateEnabledBorders();
@@ -267,7 +255,7 @@ void PrimaryConfigView::syncGeometry()
         m_shellSurface->setPosition(position);
     }
 
-    if (m_advanced) {
+    if (m_complexity != Latte::Types::BasicSettings) {
         //! consider even the secondary window can be create
         createSecondaryWindow();
     }
@@ -282,25 +270,25 @@ void PrimaryConfigView::syncSlideEffect()
     auto slideLocation = WindowSystem::Slide::None;
 
     switch (m_latteView->containment()->location()) {
-        case Plasma::Types::TopEdge:
-            slideLocation = WindowSystem::Slide::Top;
-            break;
+    case Plasma::Types::TopEdge:
+        slideLocation = WindowSystem::Slide::Top;
+        break;
 
-        case Plasma::Types::RightEdge:
-            slideLocation = WindowSystem::Slide::Right;
-            break;
+    case Plasma::Types::RightEdge:
+        slideLocation = WindowSystem::Slide::Right;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            slideLocation = WindowSystem::Slide::Bottom;
-            break;
+    case Plasma::Types::BottomEdge:
+        slideLocation = WindowSystem::Slide::Bottom;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            slideLocation = WindowSystem::Slide::Left;
-            break;
+    case Plasma::Types::LeftEdge:
+        slideLocation = WindowSystem::Slide::Left;
+        break;
 
-        default:
-            qDebug() << staticMetaObject.className() << "wrong location";
-            break;
+    default:
+        qDebug() << staticMetaObject.className() << "wrong location";
+        break;
     }
 
     m_corona->wm()->slideWindow(*this, slideLocation);
@@ -346,7 +334,7 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
     const auto mode = m_latteView->visibility()->mode();
     const auto previousByPassWMBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? true : false;
 
-   /*
+    /*
     //! TOFIX: This code was creating crashed when switching between different screens and the mode
     //! was AlwaysVisible, it must be reconsidered what was its purpose and if it is still needed
     //!
@@ -411,24 +399,24 @@ bool PrimaryConfigView::event(QEvent *e)
     if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
             switch (pe->surfaceEventType()) {
-                case QPlatformSurfaceEvent::SurfaceCreated:
+            case QPlatformSurfaceEvent::SurfaceCreated:
 
-                    if (m_shellSurface) {
-                        break;
-                    }
-
-                    setupWaylandIntegration();
+                if (m_shellSurface) {
                     break;
+                }
 
-                case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                    if (m_shellSurface) {
-                        delete m_shellSurface;
-                        m_shellSurface = nullptr;
-                        qDebug() << "WAYLAND config window surface was deleted...";
-                        PanelShadows::self()->removeWindow(this);
-                    }
+                setupWaylandIntegration();
+                break;
 
-                    break;
+            case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                if (m_shellSurface) {
+                    delete m_shellSurface;
+                    m_shellSurface = nullptr;
+                    qDebug() << "WAYLAND config window surface was deleted...";
+                    PanelShadows::self()->removeWindow(this);
+                }
+
+                break;
             }
         }
     }
@@ -470,6 +458,28 @@ void PrimaryConfigView::setShowInlineProperties(bool show)
     emit showInlinePropertiesChanged();
 }
 
+int PrimaryConfigView::complexity() const
+{
+    return (int)m_complexity;
+}
+
+void PrimaryConfigView::setComplexity(int complexity)
+{
+    if ((int)m_complexity == complexity) {
+        return;
+    }
+
+    m_complexity = static_cast<Latte::Types::SettingsComplexity>(complexity);
+
+    if (m_complexity != Latte::Types::BasicSettings) {
+        createSecondaryWindow();
+    } else {
+        deleteSecondaryWindow();
+    }
+
+    emit complexityChanged();
+}
+
 void PrimaryConfigView::addPanelSpacer()
 {
     if (m_latteView && m_latteView->containment()) {
@@ -495,7 +505,7 @@ void PrimaryConfigView::updateLaunchersForGroup(int groupInt)
     //! as a start point
     if (m_corona &&  m_latteView->managedLayout()) {
         if ((group == Types::LayoutLaunchers && m_latteView->managedLayout()->launchers().isEmpty())
-            || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
+                || (group == Types::GlobalLaunchers && m_corona->universalSettings()->launchers().isEmpty())) {
 
             Plasma::Containment *c = m_latteView->containment();
 
@@ -561,24 +571,24 @@ void PrimaryConfigView::updateEnabledBorders()
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
     switch (m_latteView->location()) {
-        case Plasma::Types::TopEdge:
-            borders &= m_inReverse ? ~Plasma::FrameSvg::BottomBorder : ~Plasma::FrameSvg::TopBorder;
-            break;
+    case Plasma::Types::TopEdge:
+        borders &= m_inReverse ? ~Plasma::FrameSvg::BottomBorder : ~Plasma::FrameSvg::TopBorder;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            break;
+    case Plasma::Types::LeftEdge:
+        borders &= ~Plasma::FrameSvg::LeftBorder;
+        break;
 
-        case Plasma::Types::RightEdge:
-            borders &= ~Plasma::FrameSvg::RightBorder;
-            break;
+    case Plasma::Types::RightEdge:
+        borders &= ~Plasma::FrameSvg::RightBorder;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            borders &= m_inReverse ? ~Plasma::FrameSvg::TopBorder : ~Plasma::FrameSvg::BottomBorder;
-            break;
+    case Plasma::Types::BottomEdge:
+        borders &= m_inReverse ? ~Plasma::FrameSvg::TopBorder : ~Plasma::FrameSvg::BottomBorder;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (m_enabledBorders != borders) {
@@ -589,8 +599,27 @@ void PrimaryConfigView::updateEnabledBorders()
         emit enabledBordersChanged();
     }
 }
-
 //!END borders
+
+//!BEGIN configuration
+void PrimaryConfigView::loadConfig()
+{
+    if (!m_latteView) {
+        return;
+    }
+
+    m_complexity = static_cast<Latte::Types::SettingsComplexity>(m_latteView->config().readEntry("settingsComplexity", (int)Latte::Types::BasicSettings));
+}
+
+void PrimaryConfigView::saveConfig()
+{
+    if (!m_latteView) {
+        return;
+    }
+
+    m_latteView->config().writeEntry("settingsComplexity", (int)m_complexity);
+}
+//!END configuration
 
 }
 }
