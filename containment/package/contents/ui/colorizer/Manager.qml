@@ -99,7 +99,5 @@ Loader{
         activity: managedLayout ? managedLayout.lastUsedActivity : ""
         location: plasmoid.location
         screenName: latteView && latteView.positioner ? latteView.positioner.currentScreenName : ""
-
-        onCurrentBrightnessChanged: console.log("CURRENT Brightness !!! " + currentBrightness);
     }
 }

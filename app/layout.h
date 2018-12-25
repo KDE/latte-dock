@@ -179,7 +179,6 @@ signals:
     void versionChanged();
     void showInMenuChanged();
     void textColorChanged();
-    void viewColorizerChanged();
     void viewsCountChanged();
 
     //! used from LatteView(s) in order to exist only one each time that has the highest priority

@@ -82,7 +82,6 @@ public:
     void syncActiveLayoutsToOriginalFiles();
 
     bool latteViewExists(Latte::View *view) const;
-    bool hasColorizer() const;
     bool layoutExists(QString layoutName) const;
 
     QString shouldSwitchToLayout(QString activityId);
@@ -136,7 +135,6 @@ signals:
     void launchersSignalsChanged();
     void layoutsChanged();
     void menuLayoutsChanged();
-    void viewColorizerChanged();
 
     void currentLayoutIsSwitching(QString layoutName);
 

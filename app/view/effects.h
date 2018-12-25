@@ -40,7 +40,6 @@ class Effects: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool animationsBlocked READ animationsBlocked NOTIFY animationsBlockedChanged)
-    Q_PROPERTY(bool colorizerEnabled READ colorizerEnabled WRITE setColorizerEnabled NOTIFY colorizerEnabledChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
 
@@ -59,9 +58,6 @@ public:
 
     bool animationsBlocked() const;
     void setAnimationsBlocked(bool blocked);
-
-    bool colorizerEnabled() const;
-    void setColorizerEnabled(bool enabled);
 
     bool drawShadows() const;
     void setDrawShadows(bool draw);
@@ -95,7 +91,6 @@ public slots:
 signals:
     void animationsBlockedChanged();
     void backgroundOpacityChanged();
-    void colorizerEnabledChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
     void enabledBordersChanged();
@@ -108,7 +103,6 @@ private slots:
 
 private:
     bool m_animationsBlocked{false};
-    bool m_colorizerEnabled{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceDrawCenteredBorders{false};

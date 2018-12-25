@@ -201,19 +201,6 @@ QString LayoutManager::defaultLayoutName() const
     return presetName;
 }
 
-bool LayoutManager::hasColorizer() const
-{
-    foreach (auto layout, m_activeLayouts) {
-        for (const auto *view : *layout->latteViews()) {
-            if (view->effects()->colorizerEnabled()) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 bool LayoutManager::layoutExists(QString layoutName) const
 {
     return m_layouts.contains(layoutName);
@@ -665,8 +652,6 @@ void LayoutManager::addLayout(Layout *layout)
     if (!m_activeLayouts.contains(layout)) {
         m_activeLayouts.append(layout);
         layout->initToCorona(m_corona);
-
-        connect(layout, &Layout::viewColorizerChanged, this, &LayoutManager::viewColorizerChanged);
     }
 }
 

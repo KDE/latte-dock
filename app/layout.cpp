@@ -862,7 +862,6 @@ void Layout::containmentDestroyed(QObject *cont)
             view->deleteLater();
 
             emit viewsCountChanged();
-            emit viewColorizerChanged();
         }
     }
 }
@@ -1005,8 +1004,6 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
         connect(containment, &Plasma::Containment::appletCreated, this, &Layout::appletCreated);
     }
 
-    connect(latteView->effects(), &ViewPart::Effects::colorizerEnabledChanged, this, &Layout::viewColorizerChanged);
-
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
     //! the copied dock under X11
@@ -1016,7 +1013,6 @@ void Layout::addView(Plasma::Containment *containment, bool forceOnPrimary, int 
 
     m_latteViews[containment] = latteView;
 
-    emit viewColorizerChanged();
     emit viewsCountChanged();
 }
 

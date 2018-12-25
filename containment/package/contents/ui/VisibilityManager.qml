@@ -139,13 +139,6 @@ Item{
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
-        property: "colorizerEnabled"
-        when: latteView && latteView.effects
-        value: root.forceColorizer && plasmoid.configuration.solidBackgroundForMaximized
-    }
-
-    Binding{
-        target: latteView && latteView.effects ? latteView.effects : null
         property: "drawEffects"
         when: latteView && latteView.effects
         value: Latte.WindowSystem.compositingActive &&
