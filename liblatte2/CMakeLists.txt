@@ -2,9 +2,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-latte-lib.h.cmake ${CMAKE_CURR
 
 set(latteplugin_SRCS
     latteplugin.cpp
-    quickwindowsystem.cpp
+    backgroundtracker.cpp
+    commontools.cpp
     iconitem.cpp
+    quickwindowsystem.cpp
     types.cpp
+    plasma/extended/backgroundcache.cpp
+    plasma/extended/screenpool.cpp
 )
 
 add_library(latte2plugin SHARED ${latteplugin_SRCS})

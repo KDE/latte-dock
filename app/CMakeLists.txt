@@ -1,7 +1,7 @@
 set(lattedock-app_SRCS
+    ../liblatte2/commontools.cpp
     ../liblatte2/types.cpp
     alternativeshelper.cpp
-    commontools.cpp
     globalshortcuts.cpp
     importer.cpp
     infoview.cpp
@@ -13,7 +13,7 @@ set(lattedock-app_SRCS
     screenpool.cpp
     package/lattepackage.cpp
     plasma/extended/screenpool.cpp
-    plasma/extended/theme.cpp    
+    plasma/extended/theme.cpp
     settings/settingsdialog.cpp
     settings/sortedactivitiesmodel.cpp
     settings/universalsettings.cpp

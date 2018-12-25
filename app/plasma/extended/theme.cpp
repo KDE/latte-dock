@@ -21,10 +21,10 @@
 #include "theme.h"
 
 // local
-#include "commontools.h"
 #include "lattecorona.h"
 #include "schemecolors.h"
-#include "view/panelshadows_p.h"
+#include "../../view/panelshadows_p.h"
+#include "../../../liblatte2/commontools.h"
 
 // Qt
 #include <QDebug>

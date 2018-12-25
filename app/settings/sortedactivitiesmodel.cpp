@@ -20,7 +20,7 @@
 #include "sortedactivitiesmodel.h"
 
 // local
-#include "commontools.h"
+#include "../../liblatte2/commontools.h"
 
 // C++
 #include <functional>
