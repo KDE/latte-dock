@@ -604,20 +604,23 @@ void PrimaryConfigView::updateEnabledBorders()
 //!BEGIN configuration
 void PrimaryConfigView::loadConfig()
 {
-    if (!m_latteView) {
+    if (!m_latteView || !m_latteView->containment()) {
         return;
     }
-
-    m_complexity = static_cast<Latte::Types::SettingsComplexity>(m_latteView->config().readEntry("settingsComplexity", (int)Latte::Types::BasicSettings));
+    auto config = m_latteView->containment()->config();
+    int complexity = config.readEntry("settingsComplexity", (int)Latte::Types::BasicSettings);
+    m_complexity = static_cast<Latte::Types::SettingsComplexity>(complexity);
 }
 
 void PrimaryConfigView::saveConfig()
 {
-    if (!m_latteView) {
+    if (!m_latteView || !m_latteView->containment()) {
         return;
     }
 
-    m_latteView->config().writeEntry("settingsComplexity", (int)m_complexity);
+    auto config = m_latteView->containment()->config();
+    config.writeEntry("settingsComplexity", (int)m_complexity);
+    config.sync();
 }
 //!END configuration
 

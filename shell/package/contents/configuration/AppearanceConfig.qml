@@ -59,7 +59,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
-            visible: plasmoid.configuration.advanced
+            visible: dialog.advancedLevel
 
             Header {
                 text: i18n("Layout")
@@ -139,7 +139,7 @@ PlasmaComponents.Page {
         //! BEGIN: Applet Size
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.topMargin: plasmoid.configuration.advanced ? 0 : units.smallSpacing
+            Layout.topMargin: dialog.advancedLevel ? 0 : units.smallSpacing
             spacing: units.smallSpacing
 
             Header {
@@ -165,7 +165,7 @@ PlasmaComponents.Page {
                     from: 16
                     to: 128
                     stepSize: (!plasmoid.configuration.autoDecreaseIconSize
-                               && (plasmoid.configuration.advanced || (plasmoid.configuration.iconSize % 8 !== 0)))
+                               && (dialog.advancedLevel || (plasmoid.configuration.iconSize % 8 !== 0)))
                               || dialog.viewIsPanel ? 1 : 8
                     wheelEnabled: false
 
@@ -258,7 +258,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
-                visible: plasmoid.configuration.advanced || plasmoid.configuration.proportionIconSize>0
+                visible: dialog.advancedLevel || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
                     text: i18n("Screen Height Proportion")
@@ -313,7 +313,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
-                visible: plasmoid.configuration.advanced
+                visible: dialog.advancedLevel
 
                 PlasmaComponents.Label {
                     text: i18n("Applets Distance")
@@ -427,7 +427,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                visible: plasmoid.configuration.advanced
+                visible: dialog.advancedLevel
 
                 PlasmaComponents.Label {
                     text: i18n("Opacity")
@@ -485,7 +485,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
-                visible: plasmoid.configuration.advanced
+                visible: dialog.advancedLevel
 
                 PlasmaComponents.Button {
                     id: panelShadows
@@ -621,7 +621,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     text: i18nc("active indicator style","Style")
                     horizontalAlignment: Text.AlignLeft
-                    visible: plasmoid.configuration.advanced
+                    visible: dialog.advancedLevel
                 }
 
                 PlasmaComponents.Button {
@@ -668,7 +668,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     text: i18n("Applets") + " "
                     horizontalAlignment: Text.AlignLeft
-                    visible: plasmoid.configuration.advanced
+                    visible: dialog.advancedLevel
                 }
 
                 PlasmaComponents.Button {
@@ -678,7 +678,7 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: plasmoid.configuration.advanced
+                    visible: dialog.advancedLevel
                     tooltip: i18n("Latte will not show any active applet indicator on its own\n except those the plasma theme provides")
 
                     readonly property int activeIndicator: Latte.Types.NoneIndicator
@@ -690,7 +690,7 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: plasmoid.configuration.advanced
+                    visible: dialog.advancedLevel
                     tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted\n by it for hovering capabilities e.g. folderview")
 
                     readonly property int activeIndicator: Latte.Types.InternalsIndicator
@@ -704,7 +704,7 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: plasmoid.configuration.advanced
+                    visible: dialog.advancedLevel
                     tooltip: i18n("Latte will show active applet indicators for all applets")
 
                     readonly property int activeIndicator: Latte.Types.AllIndicator
@@ -717,7 +717,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            visible: plasmoid.configuration.advanced
+            visible: dialog.advancedLevel
 
             Header {
                 text: i18n("Glow")
@@ -858,7 +858,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            visible: plasmoid.configuration.advanced
+            visible: dialog.advancedLevel
 
             Header {
                 text: i18n("Applet shadows")
@@ -1119,7 +1119,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            visible: plasmoid.configuration.advanced
+            visible: dialog.advancedLevel
 
             Header {
                 text: i18n("Length")

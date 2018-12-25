@@ -53,7 +53,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
-            visible: plasmoid.configuration.advanced && viewConfig.showInlineProperties
+            visible: dialog.advancedLevel && viewConfig.showInlineProperties
 
             Header {
                 text: i18n("Type")

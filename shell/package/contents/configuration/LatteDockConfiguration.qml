@@ -40,6 +40,10 @@ import "../controls" as LatteExtraControls
 FocusScope {
     id: dialog
 
+    readonly property bool basicLevel: viewConfig.complexity === Latte.Types.BasicSettings
+    readonly property bool advancedLevel: viewConfig.complexity === Latte.Types.AdvancedSettings || dialog.expertLevel
+    readonly property bool expertLevel: viewConfig.complexity === Latte.Types.ExpertSettings
+
     //! max size based on screen resolution
     property int maxHeight: latteView.screenGeometry.height - latteView.normalThickness - 2*units.largeSpacing
     property int maxWidth: 0.6 * latteView.screenGeometry.width
@@ -56,7 +60,7 @@ FocusScope {
     property int chosenWidth: userScaleWidth !== 100 ? (userScaleWidth/100) * proposedWidth : proposedWidth
     property int chosenHeight: userScaleHeight !== 100 ? (userScaleHeight/100) * heightLevel * proposedHeight : heightLevel * proposedHeight
 
-    readonly property real heightLevel: (plasmoid.configuration.advanced ? 1 : 1)
+    readonly property real heightLevel: (dialog.expertLevel ? 100 : 1)
 
     onHeightChanged: viewConfig.syncGeometry();
 
@@ -166,7 +170,7 @@ FocusScope {
             } else if (event.key === Qt.Key_Left) {
                 //
                 if (tabGroup.currentTab === behaviorPage) {
-                    if (plasmoid.configuration.advanced) {
+                    if (dialog.advancedLevel) {
                         tabGroup.currentTab = tweaksPage;
                         tabBar.currentTab = tweaksTabBtn;
                     } else if (tasksTabBtn.visible) {
@@ -201,7 +205,7 @@ FocusScope {
                     if (tasksTabBtn.visible) {
                         tabGroup.currentTab = tasksPage;
                         tabBar.currentTab = tasksTabBtn;
-                    } else if (plasmoid.configuration.advanced) {
+                    } else if (dialog.advancedLevel) {
                         tabGroup.currentTab = tweaksPage;
                         tabBar.currentTab = tweaksTabBtn;
                     } else {
@@ -209,7 +213,7 @@ FocusScope {
                         tabBar.currentTab = behaviorTabBtn;
                     }
                 } else if (tabGroup.currentTab === tasksPage) {
-                    if (plasmoid.configuration.advanced) {
+                    if (dialog.advancedLevel) {
                         tabGroup.currentTab = tweaksPage;
                         tabBar.currentTab = tweaksTabBtn;
                     } else {
@@ -348,24 +352,34 @@ FocusScope {
                     PlasmaComponents.Label {
                         text: i18n("Advanced")
                         Layout.alignment: Qt.AlignRight
-                        opacity: plasmoid.configuration.advanced ? 1 : 0.3
+                        opacity: dialog.basicLevel ? 0.3 : 1
 
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                plasmoid.configuration.advanced = !advancedSwitch.checked;
-                                advancedSwitch.checked = plasmoid.configuration.advanced;
+                                if (!advancedSwitch.checked) {
+                                    viewConfig.complexity = Latte.Types.AdvancedSettings;
+                                } else {
+                                    viewConfig.complexity = Latte.Types.BasicSettings;
+                                }
+
+                                advancedSwitch.checked = viewConfig.complexity;
                             }
                         }
                     }
 
                     Switch {
                         id: advancedSwitch
-                        checked: plasmoid.configuration.advanced
+                        checked: dialog.advancedLevel
 
                         onPressedChanged: {
-                            if(pressed)
-                                plasmoid.configuration.advanced = !checked;
+                            if(pressed){
+                                if (!checked) {
+                                    viewConfig.complexity = Latte.Types.BasicSettings;
+                                } else {
+                                    viewConfig.complexity = Latte.Types.AdvancedSettings;
+                                }
+                            }
                         }
 
                         style: Styles.SwitchStyle {
@@ -384,9 +398,9 @@ FocusScope {
                             }
 
                             if (checked) {
-                                viewConfig.setAdvanced(true);
+                                viewConfig.complexity = Latte.Types.AdvancedSettings;
                             } else {
-                                viewConfig.setAdvanced(false);
+                                viewConfig.complexity = Latte.Types.BasicSettings;
                             }
                         }
                     }
@@ -421,7 +435,7 @@ FocusScope {
                 text: i18n("Tweaks")
                 tab: tweaksPage
 
-                visible: plasmoid.configuration.advanced
+                visible: dialog.advancedLevel
             }
         }
 

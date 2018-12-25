@@ -47,7 +47,6 @@ FocusScope {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    property bool advanced: plasmoid.configuration.advanced
     property bool panelIsVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
     PlasmaCore.FrameSvgItem{
