@@ -370,7 +370,7 @@ FocusScope {
                         text: {
                             if (dialog.basicLevel) {
                                 return i18nc("basic settings", "Basic");
-                            } else if (dialog.highLevel) {
+                            } else if (dialog.advancedLevel) {
                                 return i18nc("advanced settings", "Advanced");
                             } else if (dialog.expertLevel) {
                                 return i18nc("expert settings", "Expert");
@@ -386,7 +386,7 @@ FocusScope {
                             onClicked: {
                                 if (dialog.basicLevel) {
                                     viewConfig.complexity = Latte.Types.AdvancedSettings;
-                                } else if (dialog.highLevel) {
+                                } else if (dialog.advancedLevel) {
                                     viewConfig.complexity = Latte.Types.ExpertSettings;
                                 } else if (dialog.expertLevel) {
                                     viewConfig.complexity = Latte.Types.BasicSettings;
