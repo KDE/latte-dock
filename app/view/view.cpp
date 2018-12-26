@@ -301,8 +301,11 @@ bool View::settingsWindowIsShown()
 
 void View::showSettingsWindow()
 {
-    showConfigurationInterface(containment());
-    applyActivitiesToWindows();
+    if (!settingsWindowIsShown()) {
+        emit m_visibility->mustBeShown();
+        showConfigurationInterface(containment());
+        applyActivitiesToWindows();
+    }
 }
 
 void View::showConfigurationInterface(Plasma::Applet *applet)
