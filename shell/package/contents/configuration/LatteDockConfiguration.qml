@@ -46,6 +46,8 @@ FocusScope {
     readonly property bool advancedLevel: viewConfig.complexity === Latte.Types.AdvancedSettings
     readonly property bool expertLevel: viewConfig.complexity === Latte.Types.ExpertSettings
 
+    readonly property bool highLevel: advancedLevel || expertLevel
+
     //! max size based on screen resolution
     property int maxHeight: latteView.screenGeometry.height - latteView.normalThickness - 2*units.largeSpacing
     property int maxWidth: 0.6 * latteView.screenGeometry.width
@@ -172,7 +174,7 @@ FocusScope {
             } else if (event.key === Qt.Key_Left) {
                 //
                 if (tabGroup.currentTab === behaviorPage) {
-                    if (dialog.advancedLevel) {
+                    if (dialog.highLevel) {
                         tabGroup.currentTab = tweaksPage;
                         tabBar.currentTab = tweaksTabBtn;
                     } else if (tasksTabBtn.visible) {
@@ -207,7 +209,7 @@ FocusScope {
                     if (tasksTabBtn.visible) {
                         tabGroup.currentTab = tasksPage;
                         tabBar.currentTab = tasksTabBtn;
-                    } else if (dialog.advancedLevel) {
+                    } else if (dialog.highLevel) {
                         tabGroup.currentTab = tweaksPage;
                         tabBar.currentTab = tweaksTabBtn;
                     } else {
@@ -215,7 +217,7 @@ FocusScope {
                         tabBar.currentTab = behaviorTabBtn;
                     }
                 } else if (tabGroup.currentTab === tasksPage) {
-                    if (dialog.advancedLevel) {
+                    if (dialog.highLevel) {
                         tabGroup.currentTab = tweaksPage;
                         tabBar.currentTab = tweaksTabBtn;
                     } else {
@@ -368,7 +370,7 @@ FocusScope {
                         text: {
                             if (dialog.basicLevel) {
                                 return i18nc("basic settings", "Basic");
-                            } else if (dialog.advancedLevel) {
+                            } else if (dialog.highLevel) {
                                 return i18nc("advanced settings", "Advanced");
                             } else if (dialog.expertLevel) {
                                 return i18nc("expert settings", "Expert");
@@ -384,7 +386,7 @@ FocusScope {
                             onClicked: {
                                 if (dialog.basicLevel) {
                                     viewConfig.complexity = Latte.Types.AdvancedSettings;
-                                } else if (dialog.advancedLevel) {
+                                } else if (dialog.highLevel) {
                                     viewConfig.complexity = Latte.Types.ExpertSettings;
                                 } else if (dialog.expertLevel) {
                                     viewConfig.complexity = Latte.Types.BasicSettings;
@@ -432,7 +434,7 @@ FocusScope {
                 text: i18n("Tweaks")
                 tab: tweaksPage
 
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
             }
         }
 

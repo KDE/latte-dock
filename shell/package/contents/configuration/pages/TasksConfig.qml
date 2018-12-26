@@ -75,7 +75,7 @@ PlasmaComponents.Page {
                 text: i18n("Indicator for active window group")
                 checked: plasmoid.configuration.dotsOnActive
                 tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active and the Line Active Indicator \nis enabled")
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
                 enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
 
                 onClicked: {
@@ -111,7 +111,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Highlight windows on hovering")
                 checked: plasmoid.configuration.highlightWindows
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
                 enabled: !disableAllWindowsFunctionality
 
                 onClicked: {
@@ -136,7 +136,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show window actions in the context menu")
                 checked: plasmoid.configuration.showWindowActions
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
                 enabled: !disableAllWindowsFunctionality
 
                 onClicked: {
@@ -150,7 +150,7 @@ PlasmaComponents.Page {
                 text: i18n("Show indicator for audio streams")
                 checked: plasmoid.configuration.indicateAudioStreams
                 tooltip: i18n("Audio indicator from which the user can mute/unmute an app")
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
 
                 onClicked: {
                     plasmoid.configuration.indicateAudioStreams = checked
@@ -163,7 +163,7 @@ PlasmaComponents.Page {
                 text: i18n("Group tasks of the same application")
                 checked: plasmoid.configuration.groupTasksByDefault
                 tooltip: i18n("By default group tasks of the same application")
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
 
                 onClicked: {
                     plasmoid.configuration.groupTasksByDefault = checked
@@ -176,7 +176,7 @@ PlasmaComponents.Page {
                 text: i18n("Unify global shortcuts with applets")
                 checked: plasmoid.configuration.unifiedGlobalShortcuts
                 tooltip: i18n("Global shortcuts are used both from applets and tasks")
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
 
                 onClicked: {
                     plasmoid.configuration.unifiedGlobalShortcuts = checked
@@ -189,7 +189,7 @@ PlasmaComponents.Page {
                 text: i18n("Activate tasks through mouse wheel")
                 checked: plasmoid.configuration.mouseWheelActions
                 tooltip: i18n("Enable/Disable the mouse wheel actions in order to cycle through tasks")
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
 
                 onClicked: {
                     plasmoid.configuration.mouseWheelActions = checked
@@ -199,7 +199,7 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.topMargin: units.smallSpacing * 3
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
                 enabled: !disableAllWindowsFunctionality
 
                 PlasmaComponents.Label {
@@ -222,7 +222,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.topMargin: units.smallSpacing
                 spacing: units.smallSpacing
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
                 enabled: !disableAllWindowsFunctionality
 
                 PlasmaComponents3.ComboBox {
@@ -308,7 +308,7 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: launchersGroup
                     tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
-                    visible: dialog.advancedLevel || plasmoid.configuration.launchersGroup === group;
+                    visible: dialog.highLevel || plasmoid.configuration.launchersGroup === group;
 
                     readonly property int group: Latte.Types.LayoutLaunchers
                 }
@@ -374,7 +374,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show only tasks from launchers")
                 checked: plasmoid.configuration.showWindowsOnlyFromLaunchers
-                visible: dialog.advancedLevel
+                visible: dialog.highLevel
 
                 onClicked: {
                     plasmoid.configuration.showWindowsOnlyFromLaunchers = checked
