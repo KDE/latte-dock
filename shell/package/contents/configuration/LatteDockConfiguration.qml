@@ -41,7 +41,7 @@ FocusScope {
     id: dialog
 
     readonly property bool basicLevel: viewConfig.complexity === Latte.Types.BasicSettings
-    readonly property bool advancedLevel: viewConfig.complexity === Latte.Types.AdvancedSettings || dialog.expertLevel
+    readonly property bool advancedLevel: viewConfig.complexity === Latte.Types.AdvancedSettings
     readonly property bool expertLevel: viewConfig.complexity === Latte.Types.ExpertSettings
 
     //! max size based on screen resolution
@@ -298,11 +298,21 @@ FocusScope {
                     readonly property int preferencesPage: Latte.Types.PreferencesPage
                     onClicked: layoutManager.showLatteSettingsDialog(preferencesPage)
                 }
+
+                Rectangle {
+                    anchors.top: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.topMargin: 2
+                    width: parent.width + 4
+                    height: 2
+                    color: theme.highlightColor
+                    visible: aboutMouseArea.containsMouse
+                }
             }
 
             Item{
                 id: headerSpacer
-                Layout.minimumHeight: advancedSettings.height + 2*units.smallSpacing
+                Layout.minimumHeight: complexitySettings.height + 2*units.smallSpacing
             }
 
             ColumnLayout {
@@ -314,7 +324,7 @@ FocusScope {
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    Layout.bottomMargin: units.smallSpacing * 3
+                    Layout.bottomMargin: units.smallSpacing
                     //!avoid editMode box shadow
                     Layout.topMargin: units.smallSpacing * 2
                     Layout.rightMargin: units.smallSpacing
@@ -339,10 +349,10 @@ FocusScope {
                 }
 
                 RowLayout {
-                    id: advancedSettings
+                    id: complexitySettings
                     Layout.fillWidth: true
                     Layout.rightMargin: units.smallSpacing * 2
-                    Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
                     PlasmaComponents.Label {
                         Layout.fillWidth: true
@@ -350,58 +360,43 @@ FocusScope {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18n("Advanced")
+                        id: complexityLbl
                         Layout.alignment: Qt.AlignRight
-                        opacity: dialog.basicLevel ? 0.3 : 1
+                        opacity: complexityMouseArea.containsMouse ? 1 : 0.45
+                        text: {
+                            if (dialog.basicLevel) {
+                                return i18nc("basic settings", "Basic");
+                            } else if (dialog.advancedLevel) {
+                                return i18nc("advanced settings", "Advanced");
+                            } else if (dialog.expertLevel) {
+                                return i18nc("expert settings", "Expert");
+                            }
+
+                            return "";
+                        }
 
                         MouseArea {
+                            id: complexityMouseArea
                             anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: {
-                                if (!advancedSwitch.checked) {
+                                if (dialog.basicLevel) {
                                     viewConfig.complexity = Latte.Types.AdvancedSettings;
-                                } else {
+                                } else if (dialog.advancedLevel) {
+                                    viewConfig.complexity = Latte.Types.ExpertSettings;
+                                } else if (dialog.expertLevel) {
                                     viewConfig.complexity = Latte.Types.BasicSettings;
                                 }
-
-                                advancedSwitch.checked = viewConfig.complexity;
-                            }
-                        }
-                    }
-
-                    Switch {
-                        id: advancedSwitch
-                        checked: dialog.advancedLevel
-
-                        onPressedChanged: {
-                            if(pressed){
-                                if (!checked) {
-                                    viewConfig.complexity = Latte.Types.BasicSettings;
-                                } else {
-                                    viewConfig.complexity = Latte.Types.AdvancedSettings;
-                                }
                             }
                         }
 
-                        style: Styles.SwitchStyle {
-                            property bool checked: advancedSwitch.checked
-                        }
-
-                        onCheckedChanged: {
-                            if (!checked && tabGroup.currentTab === tweaksPage) {
-                                if (tasksTabBtn.visible) {
-                                    tabGroup.currentTab = tasksPage;
-                                    tabBar.currentTab = tasksTabBtn;
-                                } else {
-                                    tabGroup.currentTab = appearancePage;
-                                    tabBar.currentTab = appearanceTabBtn;
-                                }
-                            }
-
-                            if (checked) {
-                                viewConfig.complexity = Latte.Types.AdvancedSettings;
-                            } else {
-                                viewConfig.complexity = Latte.Types.BasicSettings;
-                            }
+                        Rectangle {
+                            anchors.top: parent.bottom
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: complexityLbl.width + 6
+                            height: 2
+                            color: theme.highlightColor
+                            visible: complexityMouseArea.containsMouse
                         }
                     }
                 }
