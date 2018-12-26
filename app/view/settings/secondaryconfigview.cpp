@@ -48,9 +48,9 @@ namespace ViewPart {
 
 SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
     : QQuickView(nullptr),
-      m_parent(parent),
       m_latteView(view)
 {
+    m_parent = qobject_cast<PrimaryConfigView *>(parent);
     m_corona = qobject_cast<Latte::Corona *>(m_latteView->containment()->corona());
 
     setupWaylandIntegration();
@@ -158,39 +158,38 @@ void SecondaryConfigView::syncGeometry()
 
     QPoint position{0, 0};
 
+    int xPos{0};
+    int yPos{0};
+
     switch (m_latteView->containment()->formFactor()) {
         case Plasma::Types::Horizontal: {
             if (location == Plasma::Types::TopEdge) {
-                int yPos = m_latteView->y() + clearThickness;
-
-                position = {m_latteView->x() + secondaryConfigSpacing, yPos};
+                xPos = m_latteView->x() + secondaryConfigSpacing;
+                yPos = m_latteView->y() + clearThickness;
             } else if (location == Plasma::Types::BottomEdge) {
-
-                int yPos;
+                xPos = m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width();
                 yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
-
-                position = {m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width(), yPos};
             }
         }
         break;
 
         case Plasma::Types::Vertical: {
             if (location == Plasma::Types::LeftEdge) {
-                position = {sGeometry.x() + clearThickness
-                            , m_latteView->y() + secondaryConfigSpacing
-                           };
+                xPos = sGeometry.x() + clearThickness;
+                yPos = m_latteView->y() + secondaryConfigSpacing;
             } else if (location == Plasma::Types::RightEdge) {
-                position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                            , m_latteView->y() + secondaryConfigSpacing
-                           };
+                xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
+                yPos = m_latteView->y() + secondaryConfigSpacing;
             }
         }
         break;
 
         default:
             qWarning() << "no sync geometry, wrong formFactor";
-            break;
+        break;
     }
+
+    position = {xPos, yPos};
 
     updateEnabledBorders();
 

@@ -56,6 +56,12 @@ class View;
 
 namespace Latte {
 namespace ViewPart {
+class SecondaryConfigView;
+}
+}
+
+namespace Latte {
+namespace ViewPart {
 
 class PrimaryConfigView : public PlasmaQuick::ConfigView
 {

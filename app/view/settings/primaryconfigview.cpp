@@ -211,39 +211,38 @@ void PrimaryConfigView::syncGeometry()
 
     QPoint position{0, 0};
 
+    int xPos{0};
+    int yPos{0};
+
     switch (m_latteView->containment()->formFactor()) {
-    case Plasma::Types::Horizontal: {
-        if (location == Plasma::Types::TopEdge) {
-            position = {sGeometry.center().x() - size.width() / 2
-                        , sGeometry.y() + clearThickness
-                       };
-
-        } else if (location == Plasma::Types::BottomEdge) {
-            position = {sGeometry.center().x() - size.width() / 2
-                        , sGeometry.y() + sGeometry.height() - clearThickness - size.height()
-                       };
-
+        case Plasma::Types::Horizontal: {
+            if (location == Plasma::Types::TopEdge) {
+                xPos = sGeometry.center().x() - size.width() / 2;
+                yPos = sGeometry.y() + clearThickness;
+            } else if (location == Plasma::Types::BottomEdge) {
+                xPos = sGeometry.center().x() - size.width() / 2;
+                yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
+            }
         }
-    }
         break;
 
-    case Plasma::Types::Vertical: {
-        if (location == Plasma::Types::LeftEdge) {
-            position = {sGeometry.x() + clearThickness
-                        , sGeometry.center().y() - size.height() / 2
-                       };
-        } else if (location == Plasma::Types::RightEdge) {
-            position = {sGeometry.x() + sGeometry.width() - clearThickness - size.width()
-                        , sGeometry.center().y() - size.height() / 2
-                       };
+        case Plasma::Types::Vertical: {
+            if (location == Plasma::Types::LeftEdge) {
+                xPos = sGeometry.x() + clearThickness;
+                yPos = sGeometry.center().y() - size.height() / 2;
+            } else if (location == Plasma::Types::RightEdge) {
+                xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
+                yPos = sGeometry.center().y() - size.height() / 2;
+            }
         }
-    }
         break;
 
-    default:
-        qWarning() << "no sync geometry, wrong formFactor";
+        default:
+            qWarning() << "no sync geometry, wrong formFactor";
         break;
     }
+
+    position = {xPos, yPos};
 
     updateEnabledBorders();
 
@@ -473,6 +472,7 @@ void PrimaryConfigView::setComplexity(int complexity)
 
     if (m_complexity != Latte::Types::BasicSettings) {
         createSecondaryWindow();
+        m_secConfigView->syncGeometry();
     } else {
         deleteSecondaryWindow();
     }

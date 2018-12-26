@@ -21,6 +21,7 @@
 #define SECONDARYCONFIGVIEW_H
 
 // local
+#include "primaryconfigview.h"
 #include "../../../liblatte2/types.h"
 
 //Qt
@@ -49,6 +50,12 @@ class PlasmaShellSurface;
 namespace Latte {
 class Corona;
 class View;
+}
+
+namespace Latte {
+namespace ViewPart {
+class PrimaryConfigView;
+}
 }
 
 namespace Latte {
@@ -95,7 +102,7 @@ private:
     QRect m_geometryWhenVisible;
 
     QPointer<Latte::View> m_latteView;
-    QPointer<QWindow> m_parent;
+    QPointer<PrimaryConfigView> m_parent;
     QTimer m_screenSyncTimer;
     QTimer m_thicknessSyncTimer;
     QList<QMetaObject::Connection> connections;
