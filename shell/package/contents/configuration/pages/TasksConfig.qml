@@ -29,6 +29,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
 
+import "../../controls" as LatteExtraControls
+
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
@@ -52,7 +54,7 @@ PlasmaComponents.Page {
             Layout.topMargin: units.smallSpacing
             enabled: !disableAllWindowsFunctionality
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Appearance")
             }
 
@@ -88,7 +90,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Interaction")
             }
 
@@ -267,7 +269,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Launchers Group")
             }
 
@@ -330,7 +332,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Filters")
             }
 

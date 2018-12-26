@@ -30,7 +30,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
 
-import "../controls" as LatteExtraControls
+import "../../controls" as LatteExtraControls
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -55,11 +55,12 @@ PlasmaComponents.Page {
 
             visible: dialog.advancedLevel && viewConfig.showInlineProperties
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Type")
             }
 
-            TypeSelection{
+
+            LatteExtraControls.TypeSelection{
                 id: _dockTypeSelection
                 horizontal: true
             }
@@ -72,7 +73,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Location")
             }
 
@@ -282,7 +283,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Alignment")
             }
 
@@ -367,7 +368,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Visibility")
             }
 
@@ -456,7 +457,7 @@ PlasmaComponents.Page {
             enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
                        || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
-            Header {
+            LatteExtraControls.Header {
                 Layout.fillWidth: true
                 text: i18n("Delay")
             }

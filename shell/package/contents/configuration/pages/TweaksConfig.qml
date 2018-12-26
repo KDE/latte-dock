@@ -28,6 +28,8 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
 
+import "../../controls" as LatteExtraControls
+
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
@@ -47,7 +49,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             Layout.topMargin: units.smallSpacing
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Appearance")
             }
 
@@ -92,7 +94,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             enabled: Latte.WindowSystem.compositingActive
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Dynamic Background")
             }
 
@@ -103,7 +105,7 @@ PlasmaComponents.Page {
                 text: i18n("Force solid background for maximized or snapped windows")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized or snapped window")
-                style: LatteCheckBoxStyle{}
+                style: LatteExtraControls.LatteCheckBoxStyle{}
 
                 onClicked: {
                     plasmoid.configuration.solidBackgroundForMaximized = checked;
@@ -129,7 +131,7 @@ PlasmaComponents.Page {
                 text: i18n("Monochrome contents when panel is transparent")
                 checked: plasmoid.configuration.colorizeTransparentPanels
                 tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
-                style: LatteCheckBoxStyle{}
+                style: LatteExtraControls.LatteCheckBoxStyle{}
 
                 enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
 
@@ -145,7 +147,7 @@ PlasmaComponents.Page {
                 text: i18n("Paint contents based on active window scheme")
                 checked: plasmoid.configuration.colorizeFromActiveWindowScheme
                 tooltip: i18n("The panel contents are colorized from active window scheme \nwhen that window is maximized or is touching the panel.")
-                style: LatteCheckBoxStyle{}
+                style: LatteExtraControls.LatteCheckBoxStyle{}
 
                 enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
 
@@ -172,7 +174,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Behavior")
             }
 
@@ -265,7 +267,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Extra Actions")
             }
 

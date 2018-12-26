@@ -31,7 +31,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
 
-import "../controls" as LatteExtraControls
+import "../../controls" as LatteExtraControls
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -61,7 +61,7 @@ PlasmaComponents.Page {
             Layout.topMargin: units.smallSpacing
             visible: dialog.advancedLevel
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Layout")
             }
 
@@ -142,7 +142,7 @@ PlasmaComponents.Page {
             Layout.topMargin: dialog.advancedLevel ? 0 : units.smallSpacing
             spacing: units.smallSpacing
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Applets")
             }
 
@@ -354,7 +354,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             enabled: Latte.WindowSystem.compositingActive
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Background")
             }
 
@@ -522,7 +522,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             enabled: Latte.WindowSystem.compositingActive
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Animations")
             }
 
@@ -587,7 +587,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Active Indicator")
             }
 
@@ -719,7 +719,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             visible: dialog.advancedLevel
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Glow")
             }
 
@@ -860,7 +860,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             visible: dialog.advancedLevel
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Applet shadows")
             }
 
@@ -1121,7 +1121,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             visible: dialog.advancedLevel
 
-            Header {
+            LatteExtraControls.Header {
                 text: i18n("Length")
             }
 

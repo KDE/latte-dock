@@ -35,6 +35,8 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.2 as Latte
+
+import "pages" as Pages
 import "../controls" as LatteExtraControls
 
 FocusScope {
@@ -467,19 +469,19 @@ FocusScope {
                     width: currentTab.Layout.maximumWidth
                     height: currentTab.Layout.maximumHeight
 
-                    BehaviorConfig {
+                    Pages.BehaviorConfig {
                         id: behaviorPage
                     }
 
-                    AppearanceConfig {
+                    Pages.AppearanceConfig {
                         id: appearancePage
                     }
 
-                    TasksConfig {
+                    Pages.TasksConfig {
                         id: tasksPage
                     }
 
-                    TweaksConfig {
+                    Pages.TweaksConfig {
                         id: tweaksPage
                     }
                 }
