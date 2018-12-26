@@ -311,7 +311,7 @@ void VisibilityManager::setIsHidden(bool isHidden)
     if (m_isHidden == isHidden)
         return;
 
-    if (m_blockHiding && m_isHidden) {
+    if (m_blockHiding && isHidden) {
         qWarning() << "isHidden property is blocked, ignoring update";
         return;
     }

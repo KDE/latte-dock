@@ -289,11 +289,8 @@ void GlobalShortcuts::activateLauncherMenu()
             if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
                 if (view->visibility()->isHidden()) {
                     m_lastInvokedAction = m_singleMetaAction;
-                    m_hideDocks.clear();
 
-                    m_hideDocks.append(view);
                     view->visibility()->setBlockHiding(true);
-                    m_hideDocksTimer.start();
 
                     //! delay the execution in order to show first the dock
                     QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, applet]() {
