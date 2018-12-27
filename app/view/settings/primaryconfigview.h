@@ -67,7 +67,7 @@ class PrimaryConfigView : public PlasmaQuick::ConfigView
 {
     Q_OBJECT
     //! used when the secondary config window can not be shown
-    Q_PROPERTY(bool showInlineProperties READ showInlineProperties WRITE setShowInlineProperties NOTIFY showInlinePropertiesChanged)
+    Q_PROPERTY(bool showInlineProperties READ showInlineProperties NOTIFY showInlinePropertiesChanged)
 
     Q_PROPERTY(int complexity READ complexity WRITE setComplexity NOTIFY complexityChanged)
 
@@ -87,7 +87,6 @@ public:
     Qt::WindowFlags wFlags() const;
 
     bool showInlineProperties() const;
-    void setShowInlineProperties(bool show);
 
     bool sticker() const;
 
@@ -125,9 +124,12 @@ protected:
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
     void updateEnabledBorders();
+    void updateShowInlineProperties();
 
     void createSecondaryWindow();
     void deleteSecondaryWindow();
+
+    void setShowInlineProperties(bool show);
 
     void loadConfig();
     void saveConfig();

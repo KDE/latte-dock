@@ -167,7 +167,8 @@ void SecondaryConfigView::syncGeometry()
                 xPos = m_latteView->x() + secondaryConfigSpacing;
                 yPos = m_latteView->y() + clearThickness;
             } else if (location == Plasma::Types::BottomEdge) {
-                xPos = m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width();
+                xPos = m_latteView->x() + secondaryConfigSpacing;
+                //xPos = m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width();
                 yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
             }
         }

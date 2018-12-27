@@ -53,7 +53,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
-            visible: dialog.advancedLevel && viewConfig.showInlineProperties
+            visible: dialog.highLevel && viewConfig.showInlineProperties
 
             LatteExtraControls.Header {
                 text: i18n("Type")

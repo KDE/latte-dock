@@ -49,7 +49,12 @@ FocusScope {
     readonly property bool highLevel: advancedLevel || expertLevel
 
     //! max size based on screen resolution
-    property int maxHeight: latteView.screenGeometry.height - latteView.normalThickness - 2*units.largeSpacing
+    //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
+    //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
+    //!    some space around the settings window
+    property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
+                                latteView.screenGeometry.height - latteView.normalThickness - 64 :
+                                latteView.height - 50
     property int maxWidth: 0.6 * latteView.screenGeometry.width
 
     //! propose size based on font size

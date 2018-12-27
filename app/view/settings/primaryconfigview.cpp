@@ -66,6 +66,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     m_screenSyncTimer.setInterval(100);
 
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
+    connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
@@ -153,38 +154,20 @@ QWindow *PrimaryConfigView::secondaryWindow()
 
 void PrimaryConfigView::createSecondaryWindow()
 {
-    //! do not proceed when secondary window is already created
-    //! or when main dock settings window has not updated yet
-    //! its geometry
-    if (m_secConfigView || geometryWhenVisible().isNull()) {
+    if (m_secConfigView) {
         return;
     }
 
-    QRect geometry = m_latteView->screenGeometry();
-
     m_secConfigView = new SecondaryConfigView(m_latteView, this);
     m_secConfigView->init();
-
-    if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
-        setShowInlineProperties(true);
-        m_secConfigView->hideConfigWindow();
-    } else {
-        if (!KWindowSystem::isPlatformWayland()) {
-            QTimer::singleShot(150, m_secConfigView, SLOT(show()));
-        } else {
-            QTimer::singleShot(150, [this]() {
-                m_secConfigView->setVisible(true);
-            });
-        }
-
-        setShowInlineProperties(false);
-    }
 }
 
 void PrimaryConfigView::deleteSecondaryWindow()
 {
     if (m_secConfigView) {
-        m_secConfigView->deleteLater();
+        auto secConfig = m_secConfigView;
+        m_secConfigView = nullptr;
+        secConfig->hideConfigWindow();
     }
 }
 
@@ -214,13 +197,15 @@ void PrimaryConfigView::syncGeometry()
     int xPos{0};
     int yPos{0};
 
-    switch (m_latteView->containment()->formFactor()) {
+    switch (m_latteView->formFactor()) {
         case Plasma::Types::Horizontal: {
+            xPos = (m_complexity == Latte::Types::ExpertSettings) ?
+                        m_latteView->x() + m_latteView->width() - size.width() :
+                        sGeometry.center().x() - size.width() / 2;
+
             if (location == Plasma::Types::TopEdge) {
-                xPos = sGeometry.center().x() - size.width() / 2;
                 yPos = sGeometry.y() + clearThickness;
             } else if (location == Plasma::Types::BottomEdge) {
-                xPos = sGeometry.center().x() - size.width() / 2;
                 yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
             }
         }
@@ -229,10 +214,10 @@ void PrimaryConfigView::syncGeometry()
         case Plasma::Types::Vertical: {
             if (location == Plasma::Types::LeftEdge) {
                 xPos = sGeometry.x() + clearThickness;
-                yPos = sGeometry.center().y() - size.height() / 2;
+                yPos = m_latteView->geometry().center().y() - size.height() / 2;
             } else if (location == Plasma::Types::RightEdge) {
                 xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
-                yPos = sGeometry.center().y() - size.height() / 2;
+                yPos = m_latteView->geometry().center().y() - size.height() / 2;
             }
         }
         break;
@@ -254,10 +239,7 @@ void PrimaryConfigView::syncGeometry()
         m_shellSurface->setPosition(position);
     }
 
-    if (m_complexity != Latte::Types::BasicSettings) {
-        //! consider even the secondary window can be create
-        createSecondaryWindow();
-    }
+    updateShowInlineProperties();
 }
 
 void PrimaryConfigView::syncSlideEffect()
@@ -457,6 +439,55 @@ void PrimaryConfigView::setShowInlineProperties(bool show)
     emit showInlinePropertiesChanged();
 }
 
+void PrimaryConfigView::updateShowInlineProperties()
+{
+    if (!m_latteView) {
+        return;
+    }
+
+    bool showSecWindow{false};
+    bool complexityApprovedSecWindow{false};
+
+
+    if (m_complexity != Latte::Types::BasicSettings
+            && !(m_complexity == Latte::Types::ExpertSettings && m_latteView->formFactor() == Plasma::Types::Vertical)) {
+        showSecWindow = true;
+        complexityApprovedSecWindow = true;
+    }
+
+    //! consider screen geometry for showing or not the secondary window
+    if (!geometryWhenVisible().isNull()) {
+        createSecondaryWindow();
+
+        if (m_secConfigView->geometryWhenVisible().intersects(geometryWhenVisible())) {
+            showSecWindow = false;
+        } else if (complexityApprovedSecWindow) {
+            showSecWindow = true;
+        }
+    }
+
+    if (showSecWindow) {
+        if (!m_secConfigView) {
+            createSecondaryWindow();
+        }
+
+        if (!KWindowSystem::isPlatformWayland()) {
+            QTimer::singleShot(150, m_secConfigView, SLOT(show()));
+        } else {
+            QTimer::singleShot(150, [this]() {
+                m_secConfigView->setVisible(true);
+            });
+        }
+
+        setShowInlineProperties(false);
+    } else {
+        deleteSecondaryWindow();
+        setShowInlineProperties(true);
+    }
+
+    qDebug() << " showSecWindow:" << showSecWindow << " _ " << " inline:"<< !showSecWindow;
+}
+
 int PrimaryConfigView::complexity() const
 {
     return (int)m_complexity;
@@ -469,13 +500,6 @@ void PrimaryConfigView::setComplexity(int complexity)
     }
 
     m_complexity = static_cast<Latte::Types::SettingsComplexity>(complexity);
-
-    if (m_complexity != Latte::Types::BasicSettings) {
-        createSecondaryWindow();
-        m_secConfigView->syncGeometry();
-    } else {
-        deleteSecondaryWindow();
-    }
 
     emit complexityChanged();
 }
@@ -609,7 +633,7 @@ void PrimaryConfigView::loadConfig()
     }
     auto config = m_latteView->containment()->config();
     int complexity = config.readEntry("settingsComplexity", (int)Latte::Types::BasicSettings);
-    m_complexity = static_cast<Latte::Types::SettingsComplexity>(complexity);
+    setComplexity(static_cast<Latte::Types::SettingsComplexity>(complexity));
 }
 
 void PrimaryConfigView::saveConfig()
