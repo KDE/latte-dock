@@ -514,7 +514,7 @@ PlasmaComponents.Page {
             visible: dialog.expertLevel
 
             LatteExtraControls.Header {
-                text: i18n("Behavior")
+                text: i18nc("adjust properties to differentiate", "Adjust")
             }
 
             PlasmaComponents.CheckBox {

@@ -313,27 +313,34 @@ FocusScope {
                     PlasmaComponents.Label {
                         id: complexityLbl
                         Layout.alignment: Qt.AlignRight
-                        opacity: complexityMouseArea.containsMouse ? 1 : 0.45
-                        text: {
-                            if (dialog.basicLevel) {
-                                return i18nc("basic settings", "Basic");
-                            } else if (dialog.advancedLevel) {
-                                return i18nc("advanced settings", "Advanced");
-                            } else if (dialog.expertLevel) {
-                                return i18nc("expert settings", "Expert");
-                            }
+                        opacity: dialog.basicLevel ? 0.3 : 1
 
-                            return "";
-                        }
+                        //! TODO: the term here is not accurate because the expert settings mode
+                        //! is used currently. In the future this term will be rethought if
+                        //! it must remain or be changed
+                        text: i18nc("advanced settings", "Advanced")
 
                         MouseArea {
                             id: complexityMouseArea
                             anchors.fill: parent
                             hoverEnabled: true
                             onClicked: {
-                                if (dialog.basicLevel) {
-                                    viewConfig.complexity = Latte.Types.AdvancedSettings;
-                                } else if (dialog.advancedLevel) {
+                                if (dialog.basicLevel || dialog.advancedLevel) {
+                                    viewConfig.complexity = Latte.Types.ExpertSettings;
+                                } else if (dialog.expertLevel) {
+                                    viewConfig.complexity = Latte.Types.BasicSettings;
+                                }
+                            }
+                        }
+                    }
+
+                    Switch {
+                        id: complexitySwitch
+                        checked: dialog.expertLevel
+
+                        onPressedChanged: {
+                            if(pressed){
+                                if (dialog.basicLevel || dialog.advancedLevel) {
                                     viewConfig.complexity = Latte.Types.ExpertSettings;
                                 } else if (dialog.expertLevel) {
                                     viewConfig.complexity = Latte.Types.BasicSettings;
@@ -341,13 +348,8 @@ FocusScope {
                             }
                         }
 
-                        Rectangle {
-                            anchors.top: parent.bottom
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            width: complexityLbl.width + 6
-                            height: 2
-                            color: theme.highlightColor
-                            visible: complexityMouseArea.containsMouse
+                        style: Styles.SwitchStyle {
+                            property bool checked: dialog.highLevel
                         }
                     }
                 }

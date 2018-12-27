@@ -44,72 +44,6 @@ PlasmaComponents.Page {
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.leftMargin: units.smallSpacing * 2
 
-        //! BEGIN: Animations
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: units.smallSpacing
-            spacing: units.smallSpacing
-
-            LatteExtraControls.Header {
-                text: i18n("Animations")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 2
-
-                property int duration: plasmoid.configuration.durationTime
-
-                ExclusiveGroup {
-                    id: animationsGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.durationTime = current.duration
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("None")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 0
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("x1")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 1
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("x2")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 2
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("x3")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 3
-                }
-            }
-        }
-        //! END: Animations
-
         //! BEGIN: Shadows
         ColumnLayout {
             Layout.fillWidth: true
@@ -146,7 +80,7 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: showAppletShadow.width
                         text:" "
                         enabled: showAppletShadow.checked
-                        visible: dialog.advancedLevel
+                        visible: dialog.highLevel
 
                         PlasmaComponents3.ComboBox {
                             id: restoreCmb
@@ -210,7 +144,7 @@ PlasmaComponents.Page {
                             height: parent.height
                             text: " "
                             enabled: showAppletShadow.checked
-                            visible: dialog.advancedLevel
+                            visible: dialog.highLevel
 
                             onClicked: {
                                 viewConfig.setSticker(true);
@@ -318,7 +252,7 @@ PlasmaComponents.Page {
                     }
 
                     RowLayout{
-                        visible: dialog.advancedLevel
+                        visible: dialog.highLevel
                         PlasmaComponents.Label {
                             text: " | "
                             horizontalAlignment: Text.AlignLeft
@@ -445,7 +379,7 @@ PlasmaComponents.Page {
                     }
 
                     RowLayout{
-                        visible: dialog.advancedLevel
+                        visible: dialog.highLevel
 
                         PlasmaComponents.Label {
                             enabled: showGlowChk.checked
@@ -514,5 +448,71 @@ PlasmaComponents.Page {
             }
         }
         //! END: Glow
+
+        //! BEGIN: Animations
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: units.smallSpacing
+            spacing: units.smallSpacing
+
+            LatteExtraControls.Header {
+                text: i18n("Animations")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
+
+                property int duration: plasmoid.configuration.durationTime
+
+                ExclusiveGroup {
+                    id: animationsGroup
+                    onCurrentChanged: {
+                        if (current.checked)
+                            plasmoid.configuration.durationTime = current.duration
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("None")
+                    checked: parent.duration === duration
+                    checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 0
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("x1")
+                    checked: parent.duration === duration
+                    checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 1
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("x2")
+                    checked: parent.duration === duration
+                    checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 2
+                }
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("x3")
+                    checked: parent.duration === duration
+                    checkable: true
+                    exclusiveGroup: animationsGroup
+
+                    readonly property int duration: 3
+                }
+            }
+        }
+        //! END: Animations
     }
 }
