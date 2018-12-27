@@ -208,57 +208,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
-                enabled: plasmoid.configuration.durationTime > 0
-
-                PlasmaComponents.Label {
-                    text: i18n("Zoom On Hover")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteExtraControls.Slider {
-                    Layout.fillWidth: true
-                    id: zoomSlider
-
-                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
-                    from: 1
-                    to: 2
-                    stepSize: 0.05
-                    wheelEnabled: false
-
-                    function updateZoomLevel() {
-                        if (!pressed) {
-                            var result = Math.round((value - 1) * 20)
-                            plasmoid.configuration.zoomLevel = result
-                        }
-                    }
-
-                    onPressedChanged: {
-                        updateZoomLevel()
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updateZoomLevel)
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateZoomLevel)
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                visible: dialog.highLevel || plasmoid.configuration.proportionIconSize>0
+                visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
                     text: i18n("Screen Height Proportion")
@@ -305,6 +255,57 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
+                }
+            }
+
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+                enabled: plasmoid.configuration.durationTime > 0
+
+                PlasmaComponents.Label {
+                    text: i18n("Zoom On Hover")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                LatteExtraControls.Slider {
+                    Layout.fillWidth: true
+                    id: zoomSlider
+
+                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
+                    from: 1
+                    to: 2
+                    stepSize: 0.05
+                    wheelEnabled: false
+
+                    function updateZoomLevel() {
+                        if (!pressed) {
+                            var result = Math.round((value - 1) * 20)
+                            plasmoid.configuration.zoomLevel = result
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateZoomLevel()
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateZoomLevel)
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateZoomLevel)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -485,7 +486,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
-                visible: dialog.highLevel
+                visible: dialog.expertLevel
 
                 PlasmaComponents.Button {
                     id: panelShadows
@@ -515,72 +516,6 @@ PlasmaComponents.Page {
             }
         }
         //! END: Background
-
-        //! BEGIN: Animations
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            enabled: Latte.WindowSystem.compositingActive
-
-            LatteExtraControls.Header {
-                text: i18n("Animations")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 2
-
-                property int duration: plasmoid.configuration.durationTime
-
-                ExclusiveGroup {
-                    id: animationsGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.durationTime = current.duration
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("None")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 0
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("x1")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 1
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("x2")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 2
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("x3")
-                    checked: parent.duration === duration
-                    checkable: true
-                    exclusiveGroup: animationsGroup
-
-                    readonly property int duration: 3
-                }
-            }
-        }
-        //! END: Animations
 
         //! BEGIN: Active Indicator
         ColumnLayout{
@@ -619,7 +554,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: i18nc("active indicator style","Style")
+                    text: i18nc("active indicator style","Style") + " "
                     horizontalAlignment: Text.AlignLeft
                     visible: dialog.highLevel
                 }
@@ -668,7 +603,7 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     text: i18n("Applets") + " "
                     horizontalAlignment: Text.AlignLeft
-                    visible: dialog.highLevel
+                    visible: dialog.expertLevel
                 }
 
                 PlasmaComponents.Button {
@@ -678,7 +613,7 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.highLevel
+                    visible: dialog.expertLevel
                     tooltip: i18n("Latte will not show any active applet indicator on its own\n except those the plasma theme provides")
 
                     readonly property int activeIndicator: Latte.Types.NoneIndicator
@@ -690,7 +625,7 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.highLevel
+                    visible: dialog.expertLevel
                     tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted\n by it for hovering capabilities e.g. folderview")
 
                     readonly property int activeIndicator: Latte.Types.InternalsIndicator
@@ -704,7 +639,7 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.highLevel
+                    visible: dialog.expertLevel
                     tooltip: i18n("Latte will show active applet indicators for all applets")
 
                     readonly property int activeIndicator: Latte.Types.AllIndicator
@@ -713,413 +648,11 @@ PlasmaComponents.Page {
         }
         //! END: Active Indicator
 
-        //! BEGIN: Glow
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            visible: dialog.highLevel
-
-            LatteExtraControls.Header {
-                text: i18n("Glow")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 2
-
-                ColumnLayout{
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-
-                        PlasmaComponents.CheckBox {
-                            id: showGlowChk
-                            text: i18nc("show glow","Show")
-                            checked: plasmoid.configuration.showGlow
-
-                            onClicked: {
-                                plasmoid.configuration.showGlow = checked
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            opacity: 0.35
-                            enabled: showGlowChk.checked
-                        }
-
-                        property int option: plasmoid.configuration.glowOption
-
-                        ExclusiveGroup {
-                            id: glowGroup
-                            onCurrentChanged: {
-                                if (current.checked)
-                                    plasmoid.configuration.glowOption = current.option
-                            }
-                        }
-
-                        PlasmaComponents.Button {
-                            Layout.fillWidth: true
-                            text: i18nc("add glow only to active task/applet indicators","Only On Active")
-                            checked: parent.option === option
-                            checkable: true
-                            enabled: showGlowChk.checked
-                            exclusiveGroup:  glowGroup
-                            tooltip: i18n("Add glow only to active task/applet indicator")
-
-                            readonly property int option: Latte.Types.GlowOnlyOnActive
-                        }
-                        PlasmaComponents.Button {
-                            Layout.fillWidth: true
-                            text: i18nc("Add glow to all task/applet indicators","All")
-                            checked: parent.option === option
-                            checkable: true
-                            enabled: showGlowChk.checked
-                            exclusiveGroup: glowGroup
-                            tooltip: i18n("Add glow to all task/applet indicators")
-
-                            readonly property int option: Latte.Types.GlowAll
-                        }
-                    }
-
-                    RowLayout{
-                        PlasmaComponents.Label {
-                            enabled: showGlowChk.checked
-                            text: i18n("Opacity")
-                            horizontalAlignment: Text.AlignLeft
-                        }
-
-                        LatteExtraControls.Slider {
-                            id: glowOpacitySlider
-                            Layout.fillWidth: true
-                            enabled: showGlowChk.checked
-
-                            value: plasmoid.configuration.glowOpacity
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
-
-                            function updateGlowOpacity() {
-                                if (!pressed)
-                                    plasmoid.configuration.glowOpacity = value;
-                            }
-
-                            onPressedChanged: {
-                                updateGlowOpacity();
-                            }
-
-                            Component.onCompleted: {
-                                valueChanged.connect(updateGlowOpacity);
-                            }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateGlowOpacity);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showGlowChk.checked
-                            text: glowOpacitySlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                        }
-
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            enabled: showGlowChk.checked
-                            opacity: 0.35
-                        }
-
-                        PlasmaComponents.CheckBox {
-                            id: showGlow3D
-                            Layout.leftMargin: units.smallSpacing * 2
-                            text: " " + i18n("3D")
-                            checked: plasmoid.configuration.glow3D
-                            enabled: showGlowChk.checked
-                            tooltip: i18n("Use a 3D style glow")
-
-                            onClicked: {
-                                plasmoid.configuration.glow3D = checked;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //! END: Glow
-
-        //! BEGIN: Shadows
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            visible: dialog.highLevel
-
-            LatteExtraControls.Header {
-                text: i18n("Applet shadows")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 2
-
-                ColumnLayout{
-                    PlasmaComponents.CheckBox {
-                        id: showAppletShadow
-                        text: i18nc("show applet shadow","Show")
-                        checked: plasmoid.configuration.shadows>0
-
-                        onClicked: {
-                            if (checked)
-                                plasmoid.configuration.shadows = 2;
-                            else
-                                plasmoid.configuration.shadows = 0;
-                        }
-                    }
-
-                    PlasmaComponents.Button{
-                        id: backColorBtn
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.fillWidth: true
-                        Layout.maximumWidth: showAppletShadow.width
-                        text:" "
-                        enabled: showAppletShadow.checked
-
-                        PlasmaComponents3.ComboBox {
-                            id: restoreCmb
-                            anchors.fill: parent
-                            enabled: backColorBtn.enabled
-
-                            function addModel() {
-                                var actions = [];
-                                actions.push(i18nc("Use theme shadow","Theme"));
-                                actions.push(i18nc("Clear applet shadow settings","Clear"));
-                                restoreCmb.model = actions;
-                                restoreCmb.currentIndex = -1;
-                            }
-
-                            function emptyModel() {
-                                var actions = []
-                                actions.push("  ");
-                                restoreCmb.model = actions;
-                                restoreCmb.currentIndex = -1;
-                            }
-
-                            Component.onCompleted:{
-                                addModel();
-                            }
-
-                            onActivated: {
-                                if (index===0) {
-                                    var strC = String(theme.textColor);
-                                    if (strC.indexOf("#") === 0)
-                                        plasmoid.configuration.shadowColor = strC.substr(1);
-                                }else if (index===1){
-                                    plasmoid.configuration.shadowColor = "080808";
-                                }
-
-                                if (index===0 || index===1) {
-                                    plasmoid.configuration.shadowSize = 20;
-                                    plasmoid.configuration.shadowOpacity = 100;
-                                }
-
-                                restoreCmb.currentIndex = -1;
-                            }
-
-                            onCurrentIndexChanged: {
-                                if (currentIndex === 0)
-                                    currentIndex = -1;
-                            }
-
-                            onEnabledChanged: {
-                                if (enabled)
-                                    addModel();
-                                else
-                                    emptyModel();
-                            }
-                        }
-
-
-                        //overlayed button
-                        PlasmaComponents.Button {
-                            id: colorBtn
-                            width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
-                            height: parent.height
-                            text: " "
-                            enabled: showAppletShadow.checked
-
-                            onClicked: {
-                                viewConfig.setSticker(true);
-                                colorDialogLoader.showDialog = true;
-                            }
-
-                            Rectangle{
-                                anchors.fill: parent
-                                anchors.margins: 1.5*units.smallSpacing
-
-                                color: "#" + plasmoid.configuration.shadowColor;
-                                opacity: colorBtn.enabled ? 1 : 0.4
-
-                                Rectangle{
-                                    anchors.fill: parent
-                                    color: "transparent"
-                                    border.width: 1
-                                    border.color: theme.textColor
-                                    opacity: 0.7
-                                }
-                            }
-
-                            Loader{
-                                id:colorDialogLoader
-                                property bool showDialog: false
-                                active: showDialog
-
-                                sourceComponent: ColorDialog {
-                                    title: i18n("Please choose shadow color")
-                                    showAlphaChannel: false
-
-                                    onAccepted: {
-                                        //console.log("You chose: " + String(color));
-                                        var strC = String(color);
-                                        if (strC.indexOf("#") === 0)
-                                            plasmoid.configuration.shadowColor = strC.substr(1);
-
-                                        colorDialogLoader.showDialog = false;
-                                        viewConfig.setSticker(false);
-                                    }
-                                    onRejected: {
-                                        colorDialogLoader.showDialog = false;
-                                        viewConfig.setSticker(false);
-                                    }
-                                    Component.onCompleted: {
-                                        color = String("#" + plasmoid.configuration.shadowColor);
-                                        visible = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                ColumnLayout {
-                    RowLayout{
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            opacity: 0.35
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: i18n("Opacity")
-                            horizontalAlignment: Text.AlignLeft
-                        }
-
-                        LatteExtraControls.Slider {
-                            id: shadowOpacitySlider
-                            Layout.fillWidth: true
-                            enabled: showAppletShadow.checked
-
-                            value: plasmoid.configuration.shadowOpacity
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
-
-                            function updateShadowOpacity() {
-                                if (!pressed)
-                                    plasmoid.configuration.shadowOpacity = value;
-                            }
-
-                            onPressedChanged: {
-                                updateShadowOpacity();
-                            }
-
-                            Component.onCompleted: {
-                                valueChanged.connect(updateShadowOpacity);
-                            }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateShadowOpacity);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: shadowOpacitySlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                        }
-                    }
-
-                    RowLayout{
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            opacity: 0.35
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: i18n("Size")
-                            horizontalAlignment: Text.AlignLeft
-                        }
-
-                        LatteExtraControls.Slider {
-                            id: shadowSizeSlider
-                            Layout.fillWidth: true
-                            enabled: showAppletShadow.checked
-
-                            value: plasmoid.configuration.shadowSize
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
-
-                            function updateShadowSize() {
-                                if (!pressed)
-                                    plasmoid.configuration.shadowSize = value;
-                            }
-
-                            onPressedChanged: {
-                                updateShadowSize();
-                            }
-
-                            Component.onCompleted: {
-                                valueChanged.connect(updateShadowSize);
-                            }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateShadowSize);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: shadowSizeSlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                        }
-                    }
-                }
-            }
-        }
-        //! END: Shadows
-
         //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            visible: dialog.highLevel
+            visible: dialog.expertLevel
 
             LatteExtraControls.Header {
                 text: i18n("Length")
@@ -1261,6 +794,134 @@ PlasmaComponents.Page {
             }
         }
         //! END: Length
+
+        //! BEGIN: Appearance
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            Layout.topMargin: units.smallSpacing
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Appearance")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: blurPanel
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Blur for panel background")
+                checked: plasmoid.configuration.blurEnabled
+
+                onClicked: {
+                    plasmoid.configuration.blurEnabled = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: titleTooltipsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show applets/task title tooltips on hovering")
+                checked: plasmoid.configuration.titleTooltips
+
+                onClicked: {
+                    plasmoid.configuration.titleTooltips = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: shrinkThickness
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Shrink thickness margins to minimum")
+                checked: plasmoid.configuration.shrinkThickMargins
+
+                onClicked: {
+                    plasmoid.configuration.shrinkThickMargins = checked
+                }
+            }
+        }
+        //! END: Appearance
+
+        //! BEGIN: Dynamic Background
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            enabled: Latte.WindowSystem.compositingActive
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Dynamic Background")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: solidForMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                text: i18n("Force solid background for maximized or snapped windows")
+                checked: plasmoid.configuration.solidBackgroundForMaximized
+                tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized or snapped window")
+                style: LatteExtraControls.LatteCheckBoxStyle{}
+
+                onClicked: {
+                    plasmoid.configuration.solidBackgroundForMaximized = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: onlyOnMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Hide background for not maximized windows")
+                checked: plasmoid.configuration.backgroundOnlyOnMaximized
+                tooltip: i18n("The panel background becomes transparent except if \nthere is a maximized or snapped window")
+
+                onClicked: {
+                    plasmoid.configuration.backgroundOnlyOnMaximized = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: colorizeTransparentPanelsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
+                text: i18n("Monochrome contents when panel is transparent")
+                checked: plasmoid.configuration.colorizeTransparentPanels
+                tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
+                style: LatteExtraControls.LatteCheckBoxStyle{}
+
+                enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
+
+                onClicked: {
+                    plasmoid.configuration.colorizeTransparentPanels = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: colorizeFromActiveWindowSchemeChk
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
+                text: i18n("Paint contents based on active window scheme")
+                checked: plasmoid.configuration.colorizeFromActiveWindowScheme
+                tooltip: i18n("The panel contents are colorized from active window scheme \nwhen that window is maximized or is touching the panel.")
+                style: LatteExtraControls.LatteCheckBoxStyle{}
+
+                enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
+
+                onClicked: {
+                    plasmoid.configuration.colorizeFromActiveWindowScheme = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: hideShadowsOnMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Hide panel shadow for maximized windows")
+                checked: plasmoid.configuration.disablePanelShadowForMaximized
+
+                onClicked: {
+                    plasmoid.configuration.disablePanelShadowForMaximized = checked;
+                }
+            }
+        }
+        //! END: Dynamic Background
 
         //! Bottom spacer
         PlasmaComponents.Label{

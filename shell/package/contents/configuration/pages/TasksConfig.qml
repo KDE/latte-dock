@@ -195,137 +195,8 @@ PlasmaComponents.Page {
                     plasmoid.configuration.mouseWheelActions = checked
                 }
             }
-
-            RowLayout {
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.topMargin: units.smallSpacing * 3
-                visible: dialog.highLevel
-                enabled: !disableAllWindowsFunctionality
-
-                PlasmaComponents.Label {
-                    text: i18n("On middle-click")
-                    Layout.alignment: Qt.AlignRight
-                }
-
-                PlasmaComponents3.ComboBox {
-                    id: middleClickAction
-                    Layout.fillWidth: true
-                    model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
-                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"), i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
-
-                    currentIndex: plasmoid.configuration.middleClickAction
-                    onCurrentIndexChanged: plasmoid.configuration.middleClickAction = currentIndex
-                }
-            }
-
-            RowLayout {
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.topMargin: units.smallSpacing
-                spacing: units.smallSpacing
-                visible: dialog.highLevel
-                enabled: !disableAllWindowsFunctionality
-
-                PlasmaComponents3.ComboBox {
-                    id: modifier
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 5
-                    model: ["Shift", "Ctrl", "Alt", "Meta"]
-
-                    currentIndex: plasmoid.configuration.modifier
-                    onCurrentIndexChanged: plasmoid.configuration.modifier = currentIndex
-                }
-
-                PlasmaComponents.Label {
-                    text: "+"
-                }
-
-                PlasmaComponents3.ComboBox {
-                    id: modifierClick
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 10
-                    model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
-
-                    currentIndex: plasmoid.configuration.modifierClick
-                    onCurrentIndexChanged: plasmoid.configuration.modifierClick = currentIndex
-                }
-
-                PlasmaComponents.Label {
-                    text: "="
-                }
-
-                PlasmaComponents3.ComboBox {
-                    id: modifierClickAction
-                    Layout.fillWidth: true
-                    model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
-                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
-
-                    currentIndex: plasmoid.configuration.modifierClickAction
-                    onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
-                }
-            }
         }
         //! END: Tasks Interaction
-
-        //! BEGIN: Launchers Group
-        ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-
-            LatteExtraControls.Header {
-                text: i18n("Launchers Group")
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: 2
-
-                property int group: plasmoid.configuration.launchersGroup
-
-                ExclusiveGroup {
-                    id: launchersGroup
-                    onCurrentChanged: {
-                        if (current.checked) {
-                            viewConfig.updateLaunchersForGroup(current.group);
-                            plasmoid.configuration.launchersGroup = current.group;
-                        }
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18nc("unique launchers group","Unique")
-                    checked: parent.group === group
-                    checkable: true
-                    exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use a unique set of launchers for this view which is independent from any other view")
-
-                    readonly property int group: Latte.Types.UniqueLaunchers
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18nc("layout launchers group","Layout")
-                    checked: parent.group === group
-                    checkable: true
-                    exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
-                    visible: dialog.highLevel || plasmoid.configuration.launchersGroup === group;
-
-                    readonly property int group: Latte.Types.LayoutLaunchers
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18nc("global launchers group","Global")
-                    checked: parent.group === group
-                    checkable: true
-                    exclusiveGroup: launchersGroup
-                    tooltip: i18n("Use the global set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views and between <b>different layouts</b>")
-
-                    readonly property int group: Latte.Types.GlobalLaunchers
-                }
-            }
-        }
-        //! END: Launchers Group
 
         //! BEGIN: Tasks Filters
         ColumnLayout {
@@ -382,6 +253,159 @@ PlasmaComponents.Page {
             }
         }
         //! END: Tasks Filters
+
+        //! BEGIN: Launchers Group
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+
+            LatteExtraControls.Header {
+                text: i18n("Launchers Group")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: 2
+
+                property int group: plasmoid.configuration.launchersGroup
+
+                ExclusiveGroup {
+                    id: launchersGroup
+                    onCurrentChanged: {
+                        if (current.checked) {
+                            viewConfig.updateLaunchersForGroup(current.group);
+                            plasmoid.configuration.launchersGroup = current.group;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("unique launchers group","Unique")
+                    checked: parent.group === group
+                    checkable: true
+                    exclusiveGroup: launchersGroup
+                    tooltip: i18n("Use a unique set of launchers for this view which is independent from any other view")
+
+                    readonly property int group: Latte.Types.UniqueLaunchers
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("layout launchers group","Layout")
+                    checked: parent.group === group
+                    checkable: true
+                    exclusiveGroup: launchersGroup
+                    tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
+                    visible: dialog.expertLevel || plasmoid.configuration.launchersGroup === group;
+
+                    readonly property int group: Latte.Types.LayoutLaunchers
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("global launchers group","Global")
+                    checked: parent.group === group
+                    checkable: true
+                    exclusiveGroup: launchersGroup
+                    tooltip: i18n("Use the global set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views and between <b>different layouts</b>")
+
+                    readonly property int group: Latte.Types.GlobalLaunchers
+                }
+            }
+        }
+        //! END: Launchers Group
+
+        //! BEGIN: Actions
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Actions")
+            }
+
+            RowLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.topMargin: units.smallSpacing
+                enabled: !disableAllWindowsFunctionality
+
+                PlasmaComponents.Label {
+                    text: i18n("On middle-click")
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                PlasmaComponents3.ComboBox {
+                    id: middleClickAction
+                    Layout.fillWidth: true
+                    model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
+                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"), i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
+
+                    currentIndex: plasmoid.configuration.middleClickAction
+                    onCurrentIndexChanged: plasmoid.configuration.middleClickAction = currentIndex
+                }
+            }
+
+            RowLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.topMargin: units.smallSpacing
+                spacing: units.smallSpacing
+                enabled: !disableAllWindowsFunctionality
+
+                PlasmaComponents3.ComboBox {
+                    id: modifier
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 5
+                    model: ["Shift", "Ctrl", "Alt", "Meta"]
+
+                    currentIndex: plasmoid.configuration.modifier
+                    onCurrentIndexChanged: plasmoid.configuration.modifier = currentIndex
+                }
+
+                PlasmaComponents.Label {
+                    text: "+"
+                }
+
+                PlasmaComponents3.ComboBox {
+                    id: modifierClick
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 10
+                    model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
+
+                    currentIndex: plasmoid.configuration.modifierClick
+                    onCurrentIndexChanged: plasmoid.configuration.modifierClick = currentIndex
+                }
+
+                PlasmaComponents.Label {
+                    text: "="
+                }
+
+                PlasmaComponents3.ComboBox {
+                    id: modifierClickAction
+                    Layout.fillWidth: true
+                    model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
+                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"),  i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
+
+                    currentIndex: plasmoid.configuration.modifierClickAction
+                    onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
+                }
+            }
+
+            PlasmaComponents.Button {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.topMargin: units.smallSpacing
+                Layout.fillWidth: true
+
+                text: i18n("Remove Latte Tasks Applet")
+                enabled: latteView.latteTasksPresent()
+                tooltip: i18n("Remove Latte Tasks plasmoid")
+
+                onClicked: {
+                    latteView.removeTasksPlasmoid();
+                }
+            }
+        }
+        //! END: Actions
 
         //! Bottom spacer
         PlasmaComponents.Label{

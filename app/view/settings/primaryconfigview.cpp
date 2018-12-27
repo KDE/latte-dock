@@ -504,13 +504,6 @@ void PrimaryConfigView::setComplexity(int complexity)
     emit complexityChanged();
 }
 
-void PrimaryConfigView::addPanelSpacer()
-{
-    if (m_latteView && m_latteView->containment()) {
-        m_latteView->containment()->createApplet(QStringLiteral("org.kde.latte.spacer"));
-    }
-}
-
 void PrimaryConfigView::hideConfigWindow()
 {
     if (m_shellSurface) {

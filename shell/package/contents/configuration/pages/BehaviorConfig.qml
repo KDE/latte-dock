@@ -507,6 +507,99 @@ PlasmaComponents.Page {
         }
         //! END: Delay
 
+        //! BEGIN: Behavior
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Behavior")
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Activate KWin edge after hiding")
+                checked: latteView.visibility.enableKWinEdges
+
+                onClicked: {
+                    latteView.visibility.enableKWinEdges = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Decrease applets size when it is needed")
+                checked: plasmoid.configuration.autoDecreaseIconSize
+                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length \n\nHint: this option is disabled when only plasma taskmanagers are present")
+                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
+
+                onClicked: {
+                    plasmoid.configuration.autoDecreaseIconSize = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Add launchers only in the corresponding area")
+                checked: plasmoid.configuration.addLaunchersInTaskManager
+                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
+
+                onClicked: {
+                    plasmoid.configuration.addLaunchersInTaskManager = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Prefer for global shortcuts activation")
+                checked: latteView.isPreferredForShortcuts
+
+                tooltip: i18n("Enable highest priority for global shortcuts activation")
+
+                onClicked: {
+                    latteView.isPreferredForShortcuts = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Above fullscreen windows")
+                checked: latteView.byPassWM
+                enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
+                           || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
+
+                tooltip: i18n("BypassWindowManagerHint flag for the window.\nThe view will be above all windows even those set as 'Always On Top'")
+
+                onCheckedChanged: {
+                    latteView.byPassWM = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Raise on desktop change")
+                checked: latteView.visibility.raiseOnDesktop
+                enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible
+
+                onClicked: {
+                    latteView.visibility.raiseOnDesktop = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Raise on activity change")
+                checked: latteView.visibility.raiseOnActivity
+                enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible
+
+                onClicked: {
+                    latteView.visibility.raiseOnActivity = checked
+                }
+            }
+        }
+        //! END: Behavior
+
         //! Bottom spacer
         PlasmaComponents.Label{
             id: bottomMarginSpacer
