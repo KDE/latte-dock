@@ -35,6 +35,8 @@ import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.2 as Latte
 
+import "../controls" as LatteExtraControls
+
 FocusScope {
     id: dialog
 
@@ -56,7 +58,7 @@ FocusScope {
     }
 
 
-    TypeSelection{
+    LatteExtraControls.TypeSelection{
         id: typeSettings
         anchors.centerIn: parent
 
