@@ -346,6 +346,17 @@ PlasmaComponents.Page {
                     enabled: iconMarginSlider.value > 0
                 }
             }
+
+            PlasmaComponents.CheckBox {
+                id: shrinkThickness
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Shrink thickness margins to minimum")
+                checked: plasmoid.configuration.shrinkThickMargins
+
+                onClicked: {
+                    plasmoid.configuration.shrinkThickMargins = checked
+                }
+            }
         }
         //! END: Applet Size
 
@@ -487,6 +498,19 @@ PlasmaComponents.Page {
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
                 visible: dialog.expertLevel
+
+                PlasmaComponents.Button {
+                    id: panelBlur
+                    Layout.fillWidth: true
+                    text: i18n("Blur")
+                    checked: plasmoid.configuration.blurEnabled
+                    checkable: true
+                    enabled: showBackground.checked
+
+                    onClicked: {
+                        plasmoid.configuration.blurEnabled  = checked
+                    }
+                }
 
                 PlasmaComponents.Button {
                     id: panelShadows
@@ -794,52 +818,6 @@ PlasmaComponents.Page {
             }
         }
         //! END: Length
-
-        //! BEGIN: Appearance
-        ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            Layout.topMargin: units.smallSpacing
-            visible: dialog.expertLevel
-
-            LatteExtraControls.Header {
-                text: i18nc("adjust properties to differentiate", "Adjust")
-            }
-
-            PlasmaComponents.CheckBox {
-                id: blurPanel
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Blur for panel background")
-                checked: plasmoid.configuration.blurEnabled
-
-                onClicked: {
-                    plasmoid.configuration.blurEnabled = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: titleTooltipsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show applets/task title tooltips on hovering")
-                checked: plasmoid.configuration.titleTooltips
-
-                onClicked: {
-                    plasmoid.configuration.titleTooltips = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: shrinkThickness
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Shrink thickness margins to minimum")
-                checked: plasmoid.configuration.shrinkThickMargins
-
-                onClicked: {
-                    plasmoid.configuration.shrinkThickMargins = checked
-                }
-            }
-        }
-        //! END: Appearance
 
         //! BEGIN: Dynamic Background
         ColumnLayout {

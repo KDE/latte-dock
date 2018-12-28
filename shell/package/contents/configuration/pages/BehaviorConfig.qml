@@ -507,20 +507,56 @@ PlasmaComponents.Page {
         }
         //! END: Delay
 
-        //! BEGIN: Behavior
+        //! BEGIN: Applets
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
             LatteExtraControls.Header {
-                text: i18nc("adjust properties to differentiate", "Adjust")
+                text: i18n("Applets")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: titleTooltipsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Show title tooltips on hovering")
+                checked: plasmoid.configuration.titleTooltips
+
+                onClicked: {
+                    plasmoid.configuration.titleTooltips = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Decrease size automatically when needed")
+                checked: plasmoid.configuration.autoDecreaseIconSize
+                tooltip: i18n("Applets size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
+                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
+
+                onClicked: {
+                    plasmoid.configuration.autoDecreaseIconSize = checked
+                }
+            }
+        }
+        //! END: Applets
+
+        //! BEGIN: Adjust
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Environment")
             }
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate KWin edge after hiding")
                 checked: latteView.visibility.enableKWinEdges
+                tooltip: i18n("After the view becomes hidden, KWin is informed to track user feedback. For example an edge visual hint is shown whenever the mouse approaches the hidden view")
 
                 onClicked: {
                     latteView.visibility.enableKWinEdges = checked;
@@ -529,33 +565,10 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Decrease applets size when it is needed")
-                checked: plasmoid.configuration.autoDecreaseIconSize
-                tooltip: i18n("Applets size is decreased automatically when the contents \nexceed the maximum length \n\nHint: this option is disabled when only plasma taskmanagers are present")
-                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
-
-                onClicked: {
-                    plasmoid.configuration.autoDecreaseIconSize = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Add launchers only in the corresponding area")
-                checked: plasmoid.configuration.addLaunchersInTaskManager
-                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
-
-                onClicked: {
-                    plasmoid.configuration.addLaunchersInTaskManager = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Prefer for global shortcuts activation")
+                text: i18n("Prefer this view for global shortcuts activation")
                 checked: latteView.isPreferredForShortcuts
 
-                tooltip: i18n("Enable highest priority for global shortcuts activation")
+                tooltip: i18n("This view is preferred with highest priority for activating global shortcuts")
 
                 onClicked: {
                     latteView.isPreferredForShortcuts = checked
@@ -564,12 +577,12 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Above fullscreen windows")
+                text: i18n("Can be above fullscreen windows")
                 checked: latteView.byPassWM
                 enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
                            || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
-                tooltip: i18n("BypassWindowManagerHint flag for the window.\nThe view will be above all windows even those set as 'Always On Top'")
+                tooltip: i18n("BypassWindowManagerHint flag for the window. The view will be above all windows even those set as 'Always On Top'")
 
                 onCheckedChanged: {
                     latteView.byPassWM = checked;
@@ -598,7 +611,7 @@ PlasmaComponents.Page {
                 }
             }
         }
-        //! END: Behavior
+        //! END: Adjust
 
         //! Bottom spacer
         PlasmaComponents.Label{

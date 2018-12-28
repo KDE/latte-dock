@@ -158,6 +158,17 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Add launchers only in the corresponding area")
+                checked: plasmoid.configuration.addLaunchersInTaskManager
+                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
+
+                onClicked: {
+                    plasmoid.configuration.addLaunchersInTaskManager = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: groupTasksChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Group tasks of the same application")
