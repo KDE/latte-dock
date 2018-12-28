@@ -165,9 +165,7 @@ void PrimaryConfigView::createSecondaryWindow()
 void PrimaryConfigView::deleteSecondaryWindow()
 {
     if (m_secConfigView) {
-        auto secConfig = m_secConfigView;
-        m_secConfigView = nullptr;
-        secConfig->hideConfigWindow();
+        m_secConfigView->deleteLater();
     }
 }
 
