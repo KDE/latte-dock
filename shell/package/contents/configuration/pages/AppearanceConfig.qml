@@ -263,7 +263,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
-                visible: dialog.highLevel
 
                 PlasmaComponents.Label {
                     text: i18n("Distance")
@@ -388,7 +387,6 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                visible: dialog.highLevel
 
                 PlasmaComponents.Label {
                     text: i18n("Opacity")
@@ -494,7 +492,6 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
 
             LatteExtraControls.Header {
                 text: i18n("Length")
@@ -579,6 +576,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                visible: dialog.expertLevel
 
                 PlasmaComponents.Label {
                     text: i18n("Offset")
