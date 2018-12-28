@@ -362,7 +362,7 @@ DragDrop.DropArea {
     property bool highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: !latteApplet && plasmoid.configuration.panelSize===100 ?
                                             !plasmoid.configuration.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
-    property bool showGlow: plasmoid.configuration.showGlow
+    property bool showGlow: plasmoid.configuration.showGlow || plasmoid.configuration.glowOption!==Latte.Types.GlowNone
     property bool glow3D: plasmoid.configuration.glow3D
     property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions

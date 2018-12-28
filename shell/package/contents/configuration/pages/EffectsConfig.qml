@@ -366,143 +366,6 @@ PlasmaComponents.Page {
                 text: i18n("Active Indicator")
             }
 
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 2
-
-                ColumnLayout{
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: 2
-
-                        PlasmaComponents.CheckBox {
-                            id: showGlowChk
-                            text: i18nc("show glow","Glow")
-                            checked: plasmoid.configuration.showGlow
-
-                            onClicked: {
-                                plasmoid.configuration.showGlow = checked
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            opacity: 0.35
-                            enabled: showGlowChk.checked
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showGlowChk.checked
-                            text: i18n("Opacity")
-                            horizontalAlignment: Text.AlignLeft
-                        }
-
-                        LatteExtraControls.Slider {
-                            id: glowOpacitySlider
-                            Layout.fillWidth: true
-                            enabled: showGlowChk.checked
-
-                            value: plasmoid.configuration.glowOpacity
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
-
-                            function updateGlowOpacity() {
-                                if (!pressed)
-                                    plasmoid.configuration.glowOpacity = value;
-                            }
-
-                            onPressedChanged: {
-                                updateGlowOpacity();
-                            }
-
-                            Component.onCompleted: {
-                                valueChanged.connect(updateGlowOpacity);
-                            }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateGlowOpacity);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showGlowChk.checked
-                            text: glowOpacitySlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                        }
-
-
-                    }
-
-                    RowLayout{
-                        visible: dialog.highLevel
-                        spacing: 1
-
-                        property int option: plasmoid.configuration.glowOption
-
-                        ExclusiveGroup {
-                            id: glowGroup
-                            onCurrentChanged: {
-                                if (current.checked)
-                                    plasmoid.configuration.glowOption = current.option
-                            }
-                        }
-
-                        PlasmaComponents.Button {
-                            Layout.fillWidth: true
-                            text: i18nc("add glow only to active task/applet indicators","On Active Indicator")
-                            checked: parent.option === option
-                            checkable: true
-                            enabled: showGlowChk.checked
-                            exclusiveGroup:  glowGroup
-                            tooltip: i18n("Add glow only to active task/applet indicator")
-
-                            readonly property int option: Latte.Types.GlowOnlyOnActive
-                        }
-                        PlasmaComponents.Button {
-                            Layout.fillWidth: true
-                            Layout.rightMargin: units.smallSpacing * 2
-                            text: i18nc("Add glow to all task/applet indicators","All Indicators")
-                            checked: parent.option === option
-                            checkable: true
-                            enabled: showGlowChk.checked
-                            exclusiveGroup: glowGroup
-                            tooltip: i18n("Add glow to all task/applet indicators")
-
-                            readonly property int option: Latte.Types.GlowAll
-                        }
-
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            enabled: showGlowChk.checked
-                            opacity: 0.35
-                        }
-
-                        PlasmaComponents.Button {
-                            id: showGlow3D
-                            Layout.leftMargin: units.smallSpacing * 2
-                            Layout.maximumWidth: 75
-                            checked: plasmoid.configuration.glow3D
-                            checkable: true
-                            enabled: showGlowChk.checked
-                            text: i18n("3D")
-                            tooltip: i18n("Use a 3D style glow")
-
-                            onClicked: {
-                                plasmoid.configuration.glow3D = checked;
-                            }
-                        }
-                    }
-                }
-            }
-
             GridLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
@@ -596,6 +459,7 @@ PlasmaComponents.Page {
                     readonly property int activeIndicator: Latte.Types.NoneIndicator
                 }
                 PlasmaComponents.Button {
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
 
                     text: i18nc("active indicator only to in-house latte applets", "Internals")
@@ -610,7 +474,6 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    Layout.columnSpan: 2
 
                     text: i18nc("active indicator to all applets", "All")
                     checked: parent.activeIndicator === activeIndicator
@@ -620,6 +483,114 @@ PlasmaComponents.Page {
                     tooltip: i18n("Latte will show active applet indicators for all applets")
 
                     readonly property int activeIndicator: Latte.Types.AllIndicator
+                }
+
+                PlasmaComponents.Label {
+                    text: i18n("Glow") + " "
+                    horizontalAlignment: Text.AlignLeft
+                    visible: dialog.expertLevel
+                }
+
+                property int option: plasmoid.configuration.glowOption
+
+                ExclusiveGroup {
+                    id: glowGroup
+                    onCurrentChanged: {
+                        if (current.checked)
+                            plasmoid.configuration.glowOption = current.option
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("none glow", "None")
+                    checked: parent.option === option
+                    checkable: true
+                    exclusiveGroup:  glowGroup
+                    tooltip: i18n("Do not show any glow for task/applet indicators")
+
+                    readonly property int option: Latte.Types.GlowNone
+                }
+
+                PlasmaComponents.Button {
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    text: i18nc("glow only to active task/applet indicators","Only On Active")
+                    checked: parent.option === option
+                    checkable: true
+                    exclusiveGroup:  glowGroup
+                    tooltip: i18n("Add glow only to active task/applet indicator")
+
+                    readonly property int option: Latte.Types.GlowOnlyOnActive
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18nc("glow to all task/applet indicators","All")
+                    checked: parent.option === option
+                    checkable: true
+                    exclusiveGroup: glowGroup
+                    tooltip: i18n("Add glow to all task/applet indicators")
+
+                    readonly property int option: Latte.Types.GlowAll
+                }
+
+                ColumnLayout{
+                    Layout.columnSpan: 5
+                    Layout.leftMargin: units.largeSpacing
+                    enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
+
+                    RowLayout {
+                        PlasmaComponents.Label {
+                            text: i18n("Opacity")
+                            horizontalAlignment: Text.AlignLeft
+                        }
+
+                        LatteExtraControls.Slider {
+                            id: glowOpacitySlider
+                            Layout.fillWidth: true
+
+                            value: plasmoid.configuration.glowOpacity
+                            from: 0
+                            to: 100
+                            stepSize: 5
+                            wheelEnabled: false
+
+                            function updateGlowOpacity() {
+                                if (!pressed)
+                                    plasmoid.configuration.glowOpacity = value;
+                            }
+
+                            onPressedChanged: {
+                                updateGlowOpacity();
+                            }
+
+                            Component.onCompleted: {
+                                valueChanged.connect(updateGlowOpacity);
+                            }
+
+                            Component.onDestruction: {
+                                valueChanged.disconnect(updateGlowOpacity);
+                            }
+                        }
+
+                        PlasmaComponents.Label {
+                            text: glowOpacitySlider.value + " %"
+                            horizontalAlignment: Text.AlignRight
+                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                        }
+                    }
+
+                    PlasmaComponents.CheckBox {
+                        id: showGlow3D
+                        text: i18n("Use a 3D style glow")
+                        checked: plasmoid.configuration.glow3D
+
+                        onClicked: {
+                            plasmoid.configuration.glow3D = checked;
+                        }
+                    }
                 }
             }
         }

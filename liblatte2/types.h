@@ -119,6 +119,7 @@ public:
 
     enum GlowGroup
     {
+        GlowNone = -1,
         GlowOnlyOnActive = 0,
         GlowAll = 1
     };

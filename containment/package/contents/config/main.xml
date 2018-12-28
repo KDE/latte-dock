@@ -107,14 +107,16 @@
     </entry>
     <entry name="showGlow" type="Bool">
        <default>false</default>
+       <label>deprecated, glowOption:None is used from v0.9 </label>
     </entry>
     <entry name="glowOption" type="Enum">
-      <label>Show active indicator</label>
+      <label>Glow for active indicators</label>
         <choices>
+          <choice name="None"/>
           <choice name="OnActive"/>
           <choice name="All"/>
         </choices>
-      <default>1</default>
+      <default>0</default>
     </entry>
     <entry name="glow3D" type="Bool">
        <default>false</default>
