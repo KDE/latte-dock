@@ -1,5 +1,15 @@
 #**CHANGELOG**#
 
+#### Version 0.8.4
+
+* FIX: restore mouse wheel action to activate your tasks that broke with v0.8.3
+* FIX: support fillWidth(s)/Height(s) applets in Left/Center/Right alignments,
+add a plasma taskmanager to see what happens
+* FIX: do not break applets order in Justify alignment when some of
+the applets in the layout are not found in the system
+* fix: a crash that was related to grouped tasks
+* fix: improve launchers synchronization between different docks/panels
+
 #### Version 0.8.3
 
 * FIX: support multi-screen plasmoids that use plasmoid.screenGeometry such
