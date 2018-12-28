@@ -485,7 +485,7 @@ void PrimaryConfigView::updateShowInlineProperties()
         setShowInlineProperties(true);
     }
 
-    qDebug() << " showSecWindow:" << showSecWindow << " _ " << " inline:"<< !showSecWindow;
+    // qDebug() << " showSecWindow:" << showSecWindow << " _ " << " inline:"<< !showSecWindow;
 }
 
 int PrimaryConfigView::complexity() const
