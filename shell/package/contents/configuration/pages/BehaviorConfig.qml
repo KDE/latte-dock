@@ -529,6 +529,19 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: mouseWheelChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Activate through mouse wheel")
+                checked: plasmoid.configuration.mouseWheelActions
+                tooltip: i18n("Enable/Disable the mouse wheel action for applets and tasks")
+                visible: dialog.highLevel
+
+                onClicked: {
+                    plasmoid.configuration.mouseWheelActions = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease size automatically when needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize

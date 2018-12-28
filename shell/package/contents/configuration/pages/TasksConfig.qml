@@ -50,8 +50,8 @@ PlasmaComponents.Page {
         //! BEGIN: Tasks Appearance
         ColumnLayout {
             spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
             Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
             enabled: !disableAllWindowsFunctionality
 
             LatteExtraControls.Header {
@@ -132,6 +132,17 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Add launchers only in the corresponding area")
+                checked: plasmoid.configuration.addLaunchersInTaskManager
+                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
+
+                onClicked: {
+                    plasmoid.configuration.addLaunchersInTaskManager = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: windowActionsChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show window actions in the context menu")
@@ -158,17 +169,6 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Add launchers only in the corresponding area")
-                checked: plasmoid.configuration.addLaunchersInTaskManager
-                tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
-
-                onClicked: {
-                    plasmoid.configuration.addLaunchersInTaskManager = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
                 id: groupTasksChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Group tasks of the same application")
@@ -191,19 +191,6 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.unifiedGlobalShortcuts = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: mouseWheelChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Activate tasks through mouse wheel")
-                checked: plasmoid.configuration.mouseWheelActions
-                tooltip: i18n("Enable/Disable the mouse wheel actions in order to cycle through tasks")
-                visible: dialog.highLevel
-
-                onClicked: {
-                    plasmoid.configuration.mouseWheelActions = checked
                 }
             }
         }
@@ -271,7 +258,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
 
             LatteExtraControls.Header {
-                text: i18n("Launchers Group")
+                text: i18n("Launchers")
             }
 
             RowLayout {
@@ -309,7 +296,8 @@ PlasmaComponents.Page {
                     checkable: true
                     exclusiveGroup: launchersGroup
                     tooltip: i18n("Use the current layout set of launchers for this latteView. This group provides launchers <b>synchronization</b> between different views in the <b>same layout</b>")
-                    visible: dialog.expertLevel || plasmoid.configuration.launchersGroup === group;
+                    //! it is shown only when the user has activated that option manually from the text layout file
+                    visible: plasmoid.configuration.launchersGroup === group
 
                     readonly property int group: Latte.Types.LayoutLaunchers
                 }

@@ -250,62 +250,11 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Label {
                     text: proportionSizeSlider.value !== proportionSizeSlider.from ?
-                              proportionSizeSlider.value.toFixed(1) + "%" : "---%"
+                              proportionSizeSlider.value.toFixed(1) + " %" : "--- %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
-                }
-            }
-
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-                enabled: plasmoid.configuration.durationTime > 0
-
-                PlasmaComponents.Label {
-                    text: i18n("Zoom On Hover")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteExtraControls.Slider {
-                    Layout.fillWidth: true
-                    id: zoomSlider
-
-                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
-                    from: 1
-                    to: 2
-                    stepSize: 0.05
-                    wheelEnabled: false
-
-                    function updateZoomLevel() {
-                        if (!pressed) {
-                            var result = Math.round((value - 1) * 20)
-                            plasmoid.configuration.zoomLevel = result
-                        }
-                    }
-
-                    onPressedChanged: {
-                        updateZoomLevel()
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updateZoomLevel)
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updateZoomLevel)
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + "%"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
 
@@ -317,7 +266,7 @@ PlasmaComponents.Page {
                 visible: dialog.highLevel
 
                 PlasmaComponents.Label {
-                    text: i18n("Applets Distance")
+                    text: i18n("Distance")
                     horizontalAlignment: Text.AlignLeft
                     enabled: iconMarginSlider.value > 0
                 }
@@ -339,7 +288,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: iconMarginSlider.value.toFixed(1) + "%"
+                    text: iconMarginSlider.value.toFixed(1) + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -541,137 +490,6 @@ PlasmaComponents.Page {
         }
         //! END: Background
 
-        //! BEGIN: Active Indicator
-        ColumnLayout{
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-
-            LatteExtraControls.Header {
-                text: i18n("Active Indicator")
-            }
-
-            GridLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                rowSpacing: units.smallSpacing * 2
-                columnSpacing: 1
-
-                columns: 5
-
-                property int indicatorType: plasmoid.configuration.activeIndicatorType
-                property int activeIndicator: plasmoid.configuration.activeIndicator
-
-                ExclusiveGroup {
-                    id: activeIndicatorTypeGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.activeIndicatorType = current.indicatorType;
-                    }
-                }
-
-                ExclusiveGroup {
-                    id: activeIndicatorGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.activeIndicator = current.activeIndicator
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: i18nc("active indicator style","Style") + " "
-                    horizontalAlignment: Text.AlignLeft
-                    visible: dialog.highLevel
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("line indicator","Line")
-                    checked: parent.indicatorType === indicatorType
-                    checkable: true
-                    exclusiveGroup: activeIndicatorTypeGroup
-                    tooltip: i18n("Show a line indicator for active tasks/applets")
-
-                    readonly property int indicatorType: Latte.Types.LineIndicator
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("dot indicator", "Dot")
-                    checked: parent.indicatorType === indicatorType
-                    checkable: true
-                    exclusiveGroup: activeIndicatorTypeGroup
-                    tooltip: i18n("Show a dot indicator for active tasks/applets")
-
-                    readonly property int indicatorType: Latte.Types.DotIndicator
-                }
-
-                PlasmaComponents.Label{
-                    text:"  |  "
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("reverse the position of the active indicator e.g. from bottom to top", "Reverse")
-                    checked: plasmoid.configuration.reverseLinesPosition
-                    checkable: true
-                    tooltip: i18n("Reverse the position of the active indicator e.g. from bottom to top")
-
-                    onClicked: {
-                        plasmoid.configuration.reverseLinesPosition = checked;
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: i18n("Applets") + " "
-                    horizontalAlignment: Text.AlignLeft
-                    visible: dialog.expertLevel
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("active indicator to no applets", "None")
-                    checked: parent.activeIndicator === activeIndicator
-                    checkable: true
-                    exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.expertLevel
-                    tooltip: i18n("Latte will not show any active applet indicator on its own\n except those the plasma theme provides")
-
-                    readonly property int activeIndicator: Latte.Types.NoneIndicator
-                }
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("active indicator only to in-house latte applets", "Internals")
-                    checked: parent.activeIndicator === activeIndicator
-                    checkable: true
-                    exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.expertLevel
-                    tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted\n by it for hovering capabilities e.g. folderview")
-
-                    readonly property int activeIndicator: Latte.Types.InternalsIndicator
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 2
-
-                    text: i18nc("active indicator to all applets", "All")
-                    checked: parent.activeIndicator === activeIndicator
-                    checkable: true
-                    exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.expertLevel
-                    tooltip: i18n("Latte will show active applet indicators for all applets")
-
-                    readonly property int activeIndicator: Latte.Types.AllIndicator
-                }
-            }
-        }
-        //! END: Active Indicator
-
         //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true
@@ -749,7 +567,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: maxLengthSlider.value + "%"
+                    text: maxLengthSlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -810,7 +628,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: offsetSlider.value + "%"
+                    text: offsetSlider.value + " %"
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
