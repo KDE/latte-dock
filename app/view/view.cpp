@@ -1021,8 +1021,6 @@ void View::disableGrabItemBehavior()
 
 void View::restoreGrabItemBehavior()
 {
-    setMouseGrabEnabled(true);
-
     if (mouseGrabberItem()) {
         mouseGrabberItem()->ungrabMouse();
     }
