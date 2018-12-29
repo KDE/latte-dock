@@ -61,7 +61,7 @@ Window{
             Text{
                 text: {
                     if (latteView && latteView.screenGeometry){
-                        return latteView.screenGeometry.x+","+dock.screenGeometry.y+ " "+dock.screenGeometry.width+"x"+dock.screenGeometry.height;
+                        return latteView.screenGeometry.x+","+latteView.screenGeometry.y+ " "+latteView.screenGeometry.width+"x"+latteView.screenGeometry.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -75,7 +75,7 @@ Window{
             Text{
                 text: {
                     if (latteView) {
-                        return  latteView.x + "," + latteView.y + " "+dock.width+ "x"+dock.height;
+                        return  latteView.x + "," + latteView.y + " "+latteView.width+ "x"+latteView.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -150,7 +150,7 @@ Window{
             Text{
                 text: {
                     if (latteView && latteView.effects && latteView.effects.mask) {
-                        return latteView.effects.mask.x +", "+ latteView.effects.mask.y+"  "+dock.effects.mask.width+"x"+dock.effects.mask.height;
+                        return latteView.effects.mask.x +", "+ latteView.effects.mask.y+"  "+latteView.effects.mask.width+"x"+latteView.effects.mask.height;
                     } else {
                         return "_,_ _x_";
                     }
@@ -205,7 +205,7 @@ Window{
             Text{
                 text: {
                     if (latteView && latteView.effects && latteView.effects.rect) {
-                        return latteView.effects.rect.x + ", " + latteView.effects.rect.y + "  " +dock.effects.rect.width + "x" + latteView.effects.rect.height;
+                        return latteView.effects.rect.x + ", " + latteView.effects.rect.y + "  " +latteView.effects.rect.width + "x" + latteView.effects.rect.height;
                     } else {
                         return "_,_ _x_";
                     }
