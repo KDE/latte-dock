@@ -86,6 +86,7 @@ T.Slider {
             y: parent.horizontal ? (parent.height - height) / 2 : control.visualPosition * parent.height
             width: parent.horizontal ? control.position * parent.width + invisibleSpacer : parent.width
             height: parent.horizontal ? parent.height : control.position * parent.height + invisibleSpacer
+            opacity: control.enabled ? 1 : 0.4
 
             property int invisibleSpacer: control.position === 0 ? 4 : 0
         }
