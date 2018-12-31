@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Copyright 2018  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
@@ -28,6 +28,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
+import QtQuick.Controls.Styles.Plasma 2.0 as Styles
+
 import org.kde.latte 0.2 as Latte
 
 import "../../controls" as LatteExtraControls
@@ -47,259 +49,248 @@ PlasmaComponents.Page {
         //! BEGIN: Shadows
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.topMargin: units.smallSpacing
             spacing: units.smallSpacing
 
-            LatteExtraControls.Header {
-                text: i18n("Applets")
+            LatteExtraControls.HeaderSwitch {
+                id: showAppletShadow
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+                Layout.rightMargin: units.smallSpacing * 2
+
+                checked: plasmoid.configuration.shadows>0
+                text: i18n("Shadows")
+                tooltip: i18n("Enable/disable applet shadows")
+
+                onPressed: {
+                    if(plasmoid.configuration.shadows !== 2){
+                        plasmoid.configuration.shadows = 2;
+                    } else {
+                        plasmoid.configuration.shadows = 0;
+                    }
+                }
+            }
+
+            ColumnLayout {
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+
+                RowLayout{
+                    enabled: showAppletShadow.checked
+
+                    PlasmaComponents.Label {
+                        enabled: showAppletShadow.checked
+                        text: i18n("Size")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteExtraControls.Slider {
+                        id: shadowSizeSlider
+                        Layout.fillWidth: true
+                        enabled: showAppletShadow.checked
+
+                        value: plasmoid.configuration.shadowSize
+                        from: 0
+                        to: 100
+                        stepSize: 5
+                        wheelEnabled: false
+
+                        function updateShadowSize() {
+                            if (!pressed)
+                                plasmoid.configuration.shadowSize = value;
+                        }
+
+                        onPressedChanged: {
+                            updateShadowSize();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateShadowSize);
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateShadowSize);
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        enabled: showAppletShadow.checked
+                        text: shadowSizeSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
+
+
+                RowLayout{
+                    enabled: showAppletShadow.checked
+
+                    PlasmaComponents.Label {
+                        enabled: showAppletShadow.checked
+                        text: i18n("Opacity")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteExtraControls.Slider {
+                        id: shadowOpacitySlider
+                        Layout.fillWidth: true
+
+                        value: plasmoid.configuration.shadowOpacity
+                        from: 0
+                        to: 100
+                        stepSize: 5
+                        wheelEnabled: false
+
+                        function updateShadowOpacity() {
+                            if (!pressed)
+                                plasmoid.configuration.shadowOpacity = value;
+                        }
+
+                        onPressedChanged: {
+                            updateShadowOpacity();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateShadowOpacity);
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateShadowOpacity);
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        enabled: showAppletShadow.checked
+                        text: shadowOpacitySlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
             }
 
             RowLayout {
+                id: shadowColorRow
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
+                enabled: showAppletShadow.checked
 
-                ColumnLayout{
-                    PlasmaComponents.CheckBox {
-                        id: showAppletShadow
-                        text: i18nc("show applet shadow","Shadow")
-                        checked: plasmoid.configuration.shadows>0
+                PlasmaComponents.Label {
+                    text: i18n("Color")
 
-                        onClicked: {
-                            if (checked)
-                                plasmoid.configuration.shadows = 2;
-                            else
-                                plasmoid.configuration.shadows = 0;
-                        }
-                    }
-
-                    PlasmaComponents.Button{
-                        id: backColorBtn
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.fillWidth: true
-                        Layout.maximumWidth: showAppletShadow.width
-                        text:" "
-                        enabled: showAppletShadow.checked
-                        visible: dialog.highLevel
-
-                        PlasmaComponents3.ComboBox {
-                            id: restoreCmb
-                            anchors.fill: parent
-                            enabled: backColorBtn.enabled
-
-                            function addModel() {
-                                var actions = [];
-                                actions.push(i18nc("Use theme shadow","Theme"));
-                                actions.push(i18nc("Clear applet shadow settings","Clear"));
-                                restoreCmb.model = actions;
-                                restoreCmb.currentIndex = -1;
-                            }
-
-                            function emptyModel() {
-                                var actions = []
-                                actions.push("  ");
-                                restoreCmb.model = actions;
-                                restoreCmb.currentIndex = -1;
-                            }
-
-                            Component.onCompleted:{
-                                addModel();
-                            }
-
-                            onActivated: {
-                                if (index===0) {
-                                    var strC = String(theme.textColor);
-                                    if (strC.indexOf("#") === 0)
-                                        plasmoid.configuration.shadowColor = strC.substr(1);
-                                }else if (index===1){
-                                    plasmoid.configuration.shadowColor = "080808";
-                                }
-
-                                if (index===0 || index===1) {
-                                    plasmoid.configuration.shadowSize = 20;
-                                    plasmoid.configuration.shadowOpacity = 100;
-                                }
-
-                                restoreCmb.currentIndex = -1;
-                            }
-
-                            onCurrentIndexChanged: {
-                                if (currentIndex === 0)
-                                    currentIndex = -1;
-                            }
-
-                            onEnabledChanged: {
-                                if (enabled)
-                                    addModel();
-                                else
-                                    emptyModel();
-                            }
-                        }
-
-
-                        //overlayed button
-                        PlasmaComponents.Button {
-                            id: colorBtn
-                            width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
-                            height: parent.height
-                            text: " "
-                            enabled: showAppletShadow.checked
-                            visible: dialog.highLevel
-
-                            onClicked: {
-                                viewConfig.setSticker(true);
-                                colorDialogLoader.showDialog = true;
-                            }
-
-                            Rectangle{
-                                anchors.fill: parent
-                                anchors.margins: 1.5*units.smallSpacing
-
-                                color: "#" + plasmoid.configuration.shadowColor;
-                                opacity: colorBtn.enabled ? 1 : 0.4
-
-                                Rectangle{
-                                    anchors.fill: parent
-                                    color: "transparent"
-                                    border.width: 1
-                                    border.color: theme.textColor
-                                    opacity: 0.7
-                                }
-                            }
-
-                            Loader{
-                                id:colorDialogLoader
-                                property bool showDialog: false
-                                active: showDialog
-
-                                sourceComponent: ColorDialog {
-                                    title: i18n("Please choose shadow color")
-                                    showAlphaChannel: false
-
-                                    onAccepted: {
-                                        //console.log("You chose: " + String(color));
-                                        var strC = String(color);
-                                        if (strC.indexOf("#") === 0)
-                                            plasmoid.configuration.shadowColor = strC.substr(1);
-
-                                        colorDialogLoader.showDialog = false;
-                                        viewConfig.setSticker(false);
-                                    }
-                                    onRejected: {
-                                        colorDialogLoader.showDialog = false;
-                                        viewConfig.setSticker(false);
-                                    }
-                                    Component.onCompleted: {
-                                        color = String("#" + plasmoid.configuration.shadowColor);
-                                        visible = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Layout.rightMargin: units.smallSpacing
                 }
 
-                ColumnLayout {
-                    RowLayout{
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            opacity: 0.35
+                readonly property string defaultShadow: "080808"
+                readonly property string themeShadow: {
+                    var strC = String(theme.textColor);
+
+                    return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
+                }
+
+                ExclusiveGroup {
+                    id: shadowColorGroup
+
+                    property bool inStartup: true
+
+                    onCurrentChanged: {
+                        if (inStartup) {
+                            return;
                         }
 
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: i18n("Opacity")
-                            horizontalAlignment: Text.AlignLeft
-                        }
-
-                        LatteExtraControls.Slider {
-                            id: shadowOpacitySlider
-                            Layout.fillWidth: true
-                            enabled: showAppletShadow.checked
-
-                            value: plasmoid.configuration.shadowOpacity
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
-
-                            function updateShadowOpacity() {
-                                if (!pressed)
-                                    plasmoid.configuration.shadowOpacity = value;
-                            }
-
-                            onPressedChanged: {
-                                updateShadowOpacity();
-                            }
-
-                            Component.onCompleted: {
-                                valueChanged.connect(updateShadowOpacity);
-                            }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateShadowOpacity);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: shadowOpacitySlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                        if (current === defaultShadowBtn) {
+                            plasmoid.configuration.shadowColor = shadowColorRow.defaultShadow;
+                        } else if (current === themeShadowBtn) {
+                            plasmoid.configuration.shadowColor = shadowColorRow.themeShadow;
+                        } else if (current === userShadowBtn) {
+                            viewConfig.setSticker(true);
+                            colorDialogLoader.showDialog = true;
                         }
                     }
 
-                    RowLayout{
-                        visible: dialog.highLevel
-                        PlasmaComponents.Label {
-                            text: " | "
-                            horizontalAlignment: Text.AlignLeft
-                            opacity: 0.35
+                    Component.onCompleted: inStartup = false;
+                }
+
+                PlasmaComponents.Button {
+                    id: defaultShadowBtn
+                    Layout.fillWidth: true
+
+                    text: i18nc("default shadow", "Default")
+                    checked: plasmoid.configuration.shadowColor === shadowColorRow.defaultShadow
+                    checkable: true
+                    exclusiveGroup: shadowColorGroup
+                    tooltip: i18n("Default shadow for applets")
+                }
+
+                PlasmaComponents.Button {
+                    id: themeShadowBtn
+                    Layout.fillWidth: true
+
+                    text: i18nc("theme shadow", "Theme")
+                    checked: plasmoid.configuration.shadowColor === shadowColorRow.themeShadow
+                    checkable: true
+                    exclusiveGroup: shadowColorGroup
+                    tooltip: i18n("Shadow from theme color pallete")
+                }
+
+                //overlayed button
+                PlasmaComponents.Button {
+                    id: userShadowBtn
+                    Layout.fillWidth: true
+                    height: parent.height
+                    text: " "
+
+                    checkable: true
+                    checked: plasmoid.configuration.shadowColor !== shadowColorRow.defaultShadow
+                             && plasmoid.configuration.shadowColor !== shadowColorRow.themeShadow
+                    tooltip: i18n("Use set shadow color")
+                    exclusiveGroup: shadowColorGroup
+
+                    Rectangle{
+                        anchors.fill: parent
+                        anchors.margins: 1.5*units.smallSpacing
+
+                        color: "#" + plasmoid.configuration.shadowColor;
+                        opacity: userShadowBtn.checked ? 1 : 0.4
+
+                        Rectangle{
+                            anchors.fill: parent
+                            color: "transparent"
+                            border.width: 1
+                            border.color: theme.textColor
+                            opacity: 0.7
                         }
+                    }
 
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: i18n("Size")
-                            horizontalAlignment: Text.AlignLeft
-                        }
+                    Loader{
+                        id:colorDialogLoader
+                        property bool showDialog: false
+                        active: showDialog
 
-                        LatteExtraControls.Slider {
-                            id: shadowSizeSlider
-                            Layout.fillWidth: true
-                            enabled: showAppletShadow.checked
+                        sourceComponent: ColorDialog {
+                            title: i18n("Please choose shadow color")
+                            showAlphaChannel: false
 
-                            value: plasmoid.configuration.shadowSize
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
+                            onAccepted: {
+                                //console.log("You chose: " + String(color));
+                                var strC = String(color);
+                                if (strC.indexOf("#") === 0)
+                                    plasmoid.configuration.shadowColor = strC.substr(1);
 
-                            function updateShadowSize() {
-                                if (!pressed)
-                                    plasmoid.configuration.shadowSize = value;
+                                colorDialogLoader.showDialog = false;
+                                viewConfig.setSticker(false);
                             }
-
-                            onPressedChanged: {
-                                updateShadowSize();
+                            onRejected: {
+                                colorDialogLoader.showDialog = false;
+                                viewConfig.setSticker(false);
                             }
-
                             Component.onCompleted: {
-                                valueChanged.connect(updateShadowSize);
+                                color = String("#" + plasmoid.configuration.shadowColor);
+                                visible = true;
                             }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateShadowSize);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            enabled: showAppletShadow.checked
-                            text: shadowSizeSlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                         }
                     }
                 }
@@ -320,7 +311,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 rowSpacing: units.smallSpacing * 2
-                columnSpacing: 1
+                columnSpacing: 2
 
                 columns: 5
 
@@ -393,7 +384,8 @@ PlasmaComponents.Page {
                 PlasmaComponents.Label {
                     text: i18n("Applets") + " "
                     horizontalAlignment: Text.AlignLeft
-                    visible: dialog.expertLevel
+                    //visible: dialog.expertLevel
+                    visible: false
                 }
 
                 PlasmaComponents.Button {
@@ -403,7 +395,9 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.expertLevel
+                    //visible: dialog.expertLevel
+                    visible: false
+
                     tooltip: i18n("Latte will not show any active applet indicator on its own except those the plasma theme provides")
 
                     readonly property int activeIndicator: Latte.Types.NoneIndicator
@@ -416,7 +410,9 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.expertLevel
+                    //visible: dialog.expertLevel
+                    visible: false
+
                     tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted by it for hovering capabilities e.g. folderview")
 
                     readonly property int activeIndicator: Latte.Types.InternalsIndicator
@@ -429,7 +425,9 @@ PlasmaComponents.Page {
                     checked: parent.activeIndicator === activeIndicator
                     checkable: true
                     exclusiveGroup: activeIndicatorGroup
-                    visible: dialog.expertLevel
+                    //visible: dialog.expertLevel
+                    visible: false
+
                     tooltip: i18n("Latte will show active applet indicators for all applets")
 
                     readonly property int activeIndicator: Latte.Types.AllIndicator
@@ -536,6 +534,7 @@ PlasmaComponents.Page {
                         id: showGlow3D
                         text: i18n("Use a 3D style glow")
                         checked: plasmoid.configuration.glow3D
+                        visible: false
 
                         onClicked: {
                             plasmoid.configuration.glow3D = checked;

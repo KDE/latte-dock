@@ -82,7 +82,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-                spacing: 1
+                spacing: 2
                 visible: true
 
                 function updateScreens() {
@@ -182,7 +182,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 LayoutMirroring.enabled: false
-                spacing: 1
+                spacing: 2
 
                 Connections{
                     target: latteView
@@ -292,7 +292,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 LayoutMirroring.enabled: false
-                spacing: 1
+                spacing: 2
 
                 property int panelPosition: plasmoid.configuration.panelPosition
 
@@ -374,8 +374,8 @@ PlasmaComponents.Page {
 
             GridLayout {
                 width: parent.width
-                rowSpacing: 1
-                columnSpacing: 1
+                rowSpacing: 2
+                columnSpacing: 2
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
 

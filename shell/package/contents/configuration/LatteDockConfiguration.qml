@@ -38,6 +38,7 @@ import org.kde.latte 0.2 as Latte
 
 import "pages" as Pages
 import "../controls" as LatteExtraControls
+import "../controls/private" as LatteExtraControlsPrivate
 
 FocusScope {
     id: dialog
@@ -348,9 +349,7 @@ FocusScope {
                             }
                         }
 
-                        style: Styles.SwitchStyle {
-                            property bool checked: dialog.highLevel
-                        }
+                        style: LatteExtraControlsPrivate.SwitchStyle {}
                     }
                 }
             }

@@ -119,7 +119,7 @@
       <default>0</default>
     </entry>
     <entry name="glow3D" type="Bool">
-       <default>false</default>
+       <default>true</default>
     </entry>
     <entry name="glowOpacity" type="Int">
        <default>30</default>
@@ -131,7 +131,8 @@
           <choice name="Internal"/>
           <choice name="All"/>
         </choices>
-      <default>1</default>
+      <default>0</default>
+      <label>Internal will become deprecated, Latte applets active indicator will be just active or not </label>
     </entry>
     <entry name="activeIndicatorType" type="Enum">
       <label>Active indicator style</label>
