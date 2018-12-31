@@ -313,7 +313,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
 
             LatteExtraControls.Header {
-                text: i18n("Active Indicator")
+                text: i18n("Indicators")
             }
 
             GridLayout {
@@ -344,7 +344,7 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.Label {
-                    text: i18nc("active indicator style","Style") + " "
+                    text: i18nc("active indicator style","Active") + " "
                     horizontalAlignment: Text.AlignLeft
                     visible: dialog.highLevel
                 }
@@ -446,6 +446,7 @@ PlasmaComponents.Page {
                     text: i18n("Glow") + " "
                     horizontalAlignment: Text.AlignLeft
                     visible: dialog.expertLevel
+                    enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
                 }
 
                 property int option: plasmoid.configuration.glowOption
@@ -494,12 +495,11 @@ PlasmaComponents.Page {
 
                 ColumnLayout{
                     Layout.columnSpan: 5
-                    Layout.leftMargin: units.largeSpacing
                     enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
 
                     RowLayout {
                         PlasmaComponents.Label {
-                            text: i18n("Opacity")
+                            text: i18n("Glow Opacity")
                             horizontalAlignment: Text.AlignLeft
                         }
 
