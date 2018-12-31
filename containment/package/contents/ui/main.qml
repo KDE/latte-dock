@@ -228,8 +228,21 @@ DragDrop.DropArea {
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
     property int appShadowSize: enableShadows ? (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
     property int appShadowSizeOriginal: enableShadows ? (0.4*maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + plasmoid.configuration.shadowColor
-    property string appShadowColorSolid: "#" + plasmoid.configuration.shadowColor
+
+    property string appChosenShadowColor: {
+        if (plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow) {
+            var strC = String(theme.textColor);
+            return strC.indexOf("#") === 0 ? strC.substr(1) : strC;
+        } else if (plasmoid.configuration.shadowColorType === Latte.Types.UserColorShadow) {
+            return plasmoid.configuration.shadowColor;
+        }
+
+        // default shadow color
+        return "080808";
+    }
+
+    property string appShadowColor: "#" + decimalToHex(appShadowOpacity) + appChosenShadowColor
+    property string appShadowColorSolid: "#" + appChosenShadowColor
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably

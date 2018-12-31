@@ -125,6 +125,22 @@ public:
     };
     Q_ENUM(GlowGroup)
 
+    enum ShadowGroup
+    {
+        NoneAppletShadow = 0,
+        LockedAppletsShadow, /* DEPRECATED, apply shadow only to locked applets */
+        AllAppletsShadow
+    };
+    Q_ENUM(ShadowGroup)
+
+    enum ShadowColorGroup
+    {
+        DefaultColorShadow = 0,
+        ThemeColorShadow,
+        UserColorShadow
+    };
+    Q_ENUM(ShadowColorGroup)
+
     enum LayoutsMemoryUsage
     {
         SingleLayout = 0,  /* a single Layout is loaded in each time */

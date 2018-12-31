@@ -58,15 +58,15 @@ PlasmaComponents.Page {
                 Layout.minimumHeight: implicitHeight
                 Layout.rightMargin: units.smallSpacing * 2
 
-                checked: plasmoid.configuration.shadows>0
+                checked: plasmoid.configuration.shadows !== Latte.Types.NoneShadow
                 text: i18n("Shadows")
                 tooltip: i18n("Enable/disable applet shadows")
 
                 onPressed: {
-                    if(plasmoid.configuration.shadows !== 2){
-                        plasmoid.configuration.shadows = 2;
+                    if(plasmoid.configuration.shadows !== Latte.Types.AllAppletsShadow){
+                        plasmoid.configuration.shadows = Latte.Types.AllAppletsShadow;
                     } else {
-                        plasmoid.configuration.shadows = 0;
+                        plasmoid.configuration.shadows = Latte.Types.NoneShadow;
                     }
                 }
             }
@@ -202,12 +202,11 @@ PlasmaComponents.Page {
                         }
 
                         if (current === defaultShadowBtn) {
-                            plasmoid.configuration.shadowColor = shadowColorRow.defaultShadow;
+                            plasmoid.configuration.shadowColorType = Latte.Types.DefaultColorShadow;
                         } else if (current === themeShadowBtn) {
-                            plasmoid.configuration.shadowColor = shadowColorRow.themeShadow;
+                            plasmoid.configuration.shadowColorType = Latte.Types.ThemeColorShadow;
                         } else if (current === userShadowBtn) {
-                            viewConfig.setSticker(true);
-                            colorDialogLoader.showDialog = true;
+                            plasmoid.configuration.shadowColorType = Latte.Types.UserColorShadow;
                         }
                     }
 
@@ -219,7 +218,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
 
                     text: i18nc("default shadow", "Default")
-                    checked: plasmoid.configuration.shadowColor === shadowColorRow.defaultShadow
+                    checked: plasmoid.configuration.shadowColorType === Latte.Types.DefaultColorShadow
                     checkable: true
                     exclusiveGroup: shadowColorGroup
                     tooltip: i18n("Default shadow for applets")
@@ -230,7 +229,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
 
                     text: i18nc("theme shadow", "Theme")
-                    checked: plasmoid.configuration.shadowColor === shadowColorRow.themeShadow
+                    checked: plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow
                     checkable: true
                     exclusiveGroup: shadowColorGroup
                     tooltip: i18n("Shadow from theme color pallete")
@@ -244,8 +243,7 @@ PlasmaComponents.Page {
                     text: " "
 
                     checkable: true
-                    checked: plasmoid.configuration.shadowColor !== shadowColorRow.defaultShadow
-                             && plasmoid.configuration.shadowColor !== shadowColorRow.themeShadow
+                    checked: plasmoid.configuration.shadowColorType === Latte.Types.UserColorShadow
                     tooltip: i18n("Use set shadow color")
                     exclusiveGroup: shadowColorGroup
 
@@ -254,14 +252,24 @@ PlasmaComponents.Page {
                         anchors.margins: 1.5*units.smallSpacing
 
                         color: "#" + plasmoid.configuration.shadowColor;
-                        opacity: userShadowBtn.checked ? 1 : 0.4
+
+                        opacity: shadowColorRow.enabled ? 1 : 0.6
 
                         Rectangle{
                             anchors.fill: parent
                             color: "transparent"
                             border.width: 1
                             border.color: theme.textColor
-                            opacity: 0.7
+                            opacity: parent.opacity - 0.4
+                        }
+
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                shadowColorGroup.current = userShadowBtn;
+                                viewConfig.setSticker(true);
+                                colorDialogLoader.showDialog = true;
+                            }
                         }
                     }
 
@@ -277,8 +285,9 @@ PlasmaComponents.Page {
                             onAccepted: {
                                 //console.log("You chose: " + String(color));
                                 var strC = String(color);
-                                if (strC.indexOf("#") === 0)
+                                if (strC.indexOf("#") === 0) {
                                     plasmoid.configuration.shadowColor = strC.substr(1);
+                                }
 
                                 colorDialogLoader.showDialog = false;
                                 viewConfig.setSticker(false);
