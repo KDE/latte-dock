@@ -374,7 +374,7 @@ PlasmaComponents.Page {
 
             GridLayout {
                 width: parent.width
-                rowSpacing: 2
+                rowSpacing: 1
                 columnSpacing: 2
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
