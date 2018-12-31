@@ -263,6 +263,56 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
+                enabled: plasmoid.configuration.durationTime > 0
+
+                PlasmaComponents.Label {
+                    text: i18n("Zoom On Hover")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                LatteExtraControls.Slider {
+                    Layout.fillWidth: true
+                    id: zoomSlider
+
+                    value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
+                    from: 1
+                    to: 2
+                    stepSize: 0.05
+                    wheelEnabled: false
+
+                    function updateZoomLevel() {
+                        if (!pressed) {
+                            var result = Math.round((value - 1) * 20)
+                            plasmoid.configuration.zoomLevel = result
+                        }
+                    }
+
+                    onPressedChanged: {
+                        updateZoomLevel()
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updateZoomLevel)
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updateZoomLevel)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: Number((zoomSlider.value * 100) - 100).toFixed(0) + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
 
                 PlasmaComponents.Label {
                     text: i18n("Distance")
@@ -292,17 +342,6 @@ PlasmaComponents.Page {
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: iconMarginSlider.value > 0
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: shrinkThickness
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Shrink thickness margins to minimum")
-                checked: plasmoid.configuration.shrinkThickMargins
-
-                onClicked: {
-                    plasmoid.configuration.shrinkThickMargins = checked
                 }
             }
         }
@@ -634,6 +673,28 @@ PlasmaComponents.Page {
             }
         }
         //! END: Length
+
+        //! BEGIN: Background
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Margins")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: shrinkThickness
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Shrink thickness margins to minimum")
+                checked: plasmoid.configuration.shrinkThickMargins
+
+                onClicked: {
+                    plasmoid.configuration.shrinkThickMargins = checked
+                }
+            }
+        }
 
         //! BEGIN: Dynamic Background
         ColumnLayout {
