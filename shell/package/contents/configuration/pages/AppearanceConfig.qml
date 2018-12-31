@@ -353,30 +353,25 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             enabled: Latte.WindowSystem.compositingActive
 
-            LatteExtraControls.Header {
+            LatteExtraControls.HeaderSwitch {
+                id: showBackground
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+                Layout.rightMargin: units.smallSpacing * 2
+
+                checked: plasmoid.configuration.useThemePanel
                 text: i18n("Background")
+                tooltip: i18n("Enable/disable background")
+
+                onPressed: {
+                    plasmoid.configuration.useThemePanel = !plasmoid.configuration.useThemePanel;
+                }
             }
 
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
-
-                PlasmaComponents.CheckBox {
-                    id: showBackground
-                    text: i18nc("show panel","Show")
-                    checked: plasmoid.configuration.useThemePanel
-
-                    onClicked: {
-                        plasmoid.configuration.useThemePanel = checked
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: " | "
-                    horizontalAlignment: Text.AlignLeft
-                    opacity: 0.35
-                }
 
                 PlasmaComponents.Label {
                     enabled: showBackground.checked
