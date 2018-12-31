@@ -582,7 +582,7 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
-                    text: i18n("None")
+                    text: i18n("Instant")
                     checked: parent.duration === duration
                     checkable: true
                     exclusiveGroup: animationsGroup
