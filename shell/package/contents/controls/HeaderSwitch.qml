@@ -36,10 +36,12 @@ import "private" as Private
 Item {
     id: item
 
+    property bool isHeader: true
     property bool checked: false
 
-    readonly property int implicitWidth: headerText.width + headerSwitch.width
-    readonly property int implicitHeight: Math.max(headerText.height, headerSwitch.height)
+    readonly property int implicitWidth: isHeader ? headerText.width + itemSwitch.width : labelText.width + itemSwitch.width
+    readonly property int implicitHeight: isHeader ? Math.max(headerText.implicitHeight, itemSwitch.implicitHeight) :
+                                                     Math.max(labelText.implicitHeight, itemSwitch.implicitHeight)
 
     property string text:""
     property string tooltip:""
@@ -48,17 +50,28 @@ Item {
 
     RowLayout {
         id: row
-        anchors.fill: parent
+
+        width: parent.width
+        anchors.verticalCenter: parent.verticalCenter
 
         LatteExtraControls.Header {
             id: headerText
             Layout.fillWidth: true
             text: item.text
             enabled: item.checked
+            visible: item.isHeader
+        }
+
+        PlasmaComponents.Label {
+            id: labelText
+            Layout.fillWidth: true
+            text: item.text
+            enabled: item.checked
+            visible: !item.isHeader
         }
 
         Switch {
-            id: headerSwitch
+            id: itemSwitch
             checked: item.checked
 
             style: Private.SwitchStyle {}
@@ -67,14 +80,14 @@ Item {
 
     MouseArea {
         id: itemMouseArea
-        anchors.fill: row
+        anchors.fill: parent
         hoverEnabled: true
 
         onClicked: item.pressed();
     }
 
     ToolTip{
-        parent: headerSwitch
+        parent: itemSwitch
         text: item.tooltip
         visible: itemMouseArea.containsMouse && text !==""
         delay: 7 * units.longDuration

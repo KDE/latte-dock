@@ -32,15 +32,20 @@ T.Slider {
         Math.max(handle ? handle.implicitHeight : 0,
                  handle ? handle.implicitHeight : 0) + topPadding + bottomPadding)
 
-    padding: 3*units.smallSpacing //5//units.gridUnit
+    //padding: 3*units.smallSpacing //5//units.gridUnit
+    topPadding: 3*units.smallSpacing
+    bottomPadding: 3*units.smallSpacing
+    leftPadding: units.smallSpacing
+    rightPadding: units.smallSpacing
+
     snapMode: T.Slider.SnapOnRelease
 
     PlasmaCore.Svg {
         id: grooveSvg
         imagePath: "widgets/slider"
         colorGroup: PlasmaCore.ColorScope.colorGroup
-
     }
+
     handle: Item {
         property bool horizontal: control.orientation === Qt.Horizontal
         x: leftFixedPadding + (horizontal ? control.visualPosition * (control.availableWidth - width / 2) : (control.availableWidth - width) / 2)

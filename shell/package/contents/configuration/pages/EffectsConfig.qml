@@ -312,242 +312,200 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            LatteExtraControls.Header {
+            LatteExtraControls.HeaderSwitch {
+                id: indicatorsSwitch
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+                Layout.rightMargin: units.smallSpacing * 2
+
+                checked: plasmoid.configuration.activeIndicator !== Latte.Types.NoneIndicator
                 text: i18n("Indicators")
+                tooltip: i18n("Enable/disable applet indicators")
+
+                onPressed: {
+                    if(plasmoid.configuration.activeIndicator !== Latte.Types.AllIndicator){
+                        plasmoid.configuration.activeIndicator = Latte.Types.AllIndicator;
+                    } else {
+                        plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
+                    }
+                }
             }
 
             GridLayout {
-                Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                rowSpacing: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                columns: 2
                 columnSpacing: 2
+                rowSpacing: 1
+                enabled: indicatorsSwitch.checked
 
-                columns: 5
-
-                property int indicatorType: plasmoid.configuration.activeIndicatorType
-                property int activeIndicator: plasmoid.configuration.activeIndicator
-
-                ExclusiveGroup {
-                    id: activeIndicatorTypeGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.activeIndicatorType = current.indicatorType;
-                    }
-                }
-
-                ExclusiveGroup {
-                    id: activeIndicatorGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.activeIndicator = current.activeIndicator
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: i18nc("active indicator style","Active") + " "
-                    horizontalAlignment: Text.AlignLeft
-                    visible: dialog.highLevel
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("line indicator","Line")
-                    checked: parent.indicatorType === indicatorType
-                    checkable: true
-                    exclusiveGroup: activeIndicatorTypeGroup
-                    tooltip: i18n("Show a line indicator for active tasks/applets")
-
-                    readonly property int indicatorType: Latte.Types.LineIndicator
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("dot indicator", "Dot")
-                    checked: parent.indicatorType === indicatorType
-                    checkable: true
-                    exclusiveGroup: activeIndicatorTypeGroup
-                    tooltip: i18n("Show a dot indicator for active tasks/applets")
-
-                    readonly property int indicatorType: Latte.Types.DotIndicator
-                }
-
-                PlasmaComponents.Label{
-                    text:"  |  "
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("reverse the position of the active indicator e.g. from bottom to top", "Reverse")
-                    checked: plasmoid.configuration.reverseLinesPosition
-                    checkable: true
-                    tooltip: i18n("Reverse the position of the active indicator e.g. from bottom to top")
-
-                    onClicked: {
-                        plasmoid.configuration.reverseLinesPosition = checked;
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: i18n("Applets") + " "
-                    horizontalAlignment: Text.AlignLeft
-                    //visible: dialog.expertLevel
-                    visible: false
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("active indicator to no applets", "None")
-                    checked: parent.activeIndicator === activeIndicator
-                    checkable: true
-                    exclusiveGroup: activeIndicatorGroup
-                    //visible: dialog.expertLevel
-                    visible: false
-
-                    tooltip: i18n("Latte will not show any active applet indicator on its own except those the plasma theme provides")
-
-                    readonly property int activeIndicator: Latte.Types.NoneIndicator
-                }
-                PlasmaComponents.Button {
+                LatteExtraControls.HeaderSwitch {
+                    id: reverseSwitch
                     Layout.columnSpan: 2
+
                     Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+                    Layout.topMargin: units.smallSpacing
+                    Layout.bottomMargin: units.smallSpacing
 
-                    text: i18nc("active indicator only to in-house latte applets", "Internals")
-                    checked: parent.activeIndicator === activeIndicator
-                    checkable: true
-                    exclusiveGroup: activeIndicatorGroup
-                    //visible: dialog.expertLevel
-                    visible: false
+                    checked: plasmoid.configuration.reverseLinesPosition
+                    text: i18nc("reverse indicators position", "Reverse position")
+                    tooltip: i18n("Reverse indicators position e.g. from bottom to top")
 
-                    tooltip: i18n("Latte will show active applet indicators only for applets that have been adjusted by it for hovering capabilities e.g. folderview")
+                    isHeader: false
 
-                    readonly property int activeIndicator: Latte.Types.InternalsIndicator
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-
-                    text: i18nc("active indicator to all applets", "All")
-                    checked: parent.activeIndicator === activeIndicator
-                    checkable: true
-                    exclusiveGroup: activeIndicatorGroup
-                    //visible: dialog.expertLevel
-                    visible: false
-
-                    tooltip: i18n("Latte will show active applet indicators for all applets")
-
-                    readonly property int activeIndicator: Latte.Types.AllIndicator
+                    onPressed: {
+                        plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
+                    }
                 }
 
                 PlasmaComponents.Label {
-                    text: i18n("Glow") + " "
+                    Layout.rightMargin: units.smallSpacing
                     horizontalAlignment: Text.AlignLeft
+                    text: i18n("Glow")
                     visible: dialog.expertLevel
                     enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
                 }
 
-                property int option: plasmoid.configuration.glowOption
-
-                ExclusiveGroup {
-                    id: glowGroup
-                    onCurrentChanged: {
-                        if (current.checked)
-                            plasmoid.configuration.glowOption = current.option
-                    }
-                }
-
-                PlasmaComponents.Button {
+                RowLayout {
                     Layout.fillWidth: true
-                    text: i18nc("none glow", "None")
-                    checked: parent.option === option
-                    checkable: true
-                    exclusiveGroup:  glowGroup
-                    tooltip: i18n("Do not show any glow for task/applet indicators")
+                    spacing: 2
 
-                    readonly property int option: Latte.Types.GlowNone
-                }
+                    property int option: plasmoid.configuration.glowOption
 
-                PlasmaComponents.Button {
-                    Layout.columnSpan: 2
-                    Layout.fillWidth: true
-                    text: i18nc("glow only to active task/applet indicators","Only On Active")
-                    checked: parent.option === option
-                    checkable: true
-                    exclusiveGroup:  glowGroup
-                    tooltip: i18n("Add glow only to active task/applet indicator")
-
-                    readonly property int option: Latte.Types.GlowOnlyOnActive
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18nc("glow to all task/applet indicators","All")
-                    checked: parent.option === option
-                    checkable: true
-                    exclusiveGroup: glowGroup
-                    tooltip: i18n("Add glow to all task/applet indicators")
-
-                    readonly property int option: Latte.Types.GlowAll
-                }
-
-                ColumnLayout{
-                    Layout.columnSpan: 5
-                    enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
-
-                    RowLayout {
-                        PlasmaComponents.Label {
-                            text: i18n("Glow Opacity")
-                            horizontalAlignment: Text.AlignLeft
-                        }
-
-                        LatteExtraControls.Slider {
-                            id: glowOpacitySlider
-                            Layout.fillWidth: true
-
-                            value: plasmoid.configuration.glowOpacity
-                            from: 0
-                            to: 100
-                            stepSize: 5
-                            wheelEnabled: false
-
-                            function updateGlowOpacity() {
-                                if (!pressed)
-                                    plasmoid.configuration.glowOpacity = value;
-                            }
-
-                            onPressedChanged: {
-                                updateGlowOpacity();
-                            }
-
-                            Component.onCompleted: {
-                                valueChanged.connect(updateGlowOpacity);
-                            }
-
-                            Component.onDestruction: {
-                                valueChanged.disconnect(updateGlowOpacity);
-                            }
-                        }
-
-                        PlasmaComponents.Label {
-                            text: glowOpacitySlider.value + " %"
-                            horizontalAlignment: Text.AlignRight
-                            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    ExclusiveGroup {
+                        id: glowGroup
+                        onCurrentChanged: {
+                            if (current.checked)
+                                plasmoid.configuration.glowOption = current.option
                         }
                     }
 
-                    PlasmaComponents.CheckBox {
-                        id: showGlow3D
-                        text: i18n("Use a 3D style glow")
-                        checked: plasmoid.configuration.glow3D
-                        visible: false
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+                        text: i18nc("none glow", "None")
+                        checked: parent.option === option
+                        checkable: true
+                        exclusiveGroup:  glowGroup
+                        tooltip: i18n("Do not show any glow for task/applet indicators")
 
-                        onClicked: {
-                            plasmoid.configuration.glow3D = checked;
+                        readonly property int option: Latte.Types.GlowNone
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+                        text: i18nc("glow only to active task/applet indicators","On Active")
+                        checked: parent.option === option
+                        checkable: true
+                        exclusiveGroup:  glowGroup
+                        tooltip: i18n("Add glow only to active task/applet indicator")
+
+                        readonly property int option: Latte.Types.GlowOnlyOnActive
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+                        text: i18nc("glow to all task/applet indicators","All")
+                        checked: parent.option === option
+                        checkable: true
+                        exclusiveGroup: glowGroup
+                        tooltip: i18n("Add glow to all task/applet indicators")
+
+                        readonly property int option: Latte.Types.GlowAll
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: i18n("Glow Opacity")
+                    horizontalAlignment: Text.AlignLeft
+                    Layout.rightMargin: units.smallSpacing
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 2
+
+                    LatteExtraControls.Slider {
+                        id: glowOpacitySlider
+                        Layout.fillWidth: true
+
+                        leftPadding: 0
+                        value: plasmoid.configuration.glowOpacity
+                        from: 0
+                        to: 100
+                        stepSize: 5
+                        wheelEnabled: false
+
+                        function updateGlowOpacity() {
+                            if (!pressed)
+                                plasmoid.configuration.glowOpacity = value;
                         }
+
+                        onPressedChanged: {
+                            updateGlowOpacity();
+                        }
+
+                        Component.onCompleted: {
+                            valueChanged.connect(updateGlowOpacity);
+                        }
+
+                        Component.onDestruction: {
+                            valueChanged.disconnect(updateGlowOpacity);
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: glowOpacitySlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    Layout.rightMargin: units.smallSpacing
+                    horizontalAlignment: Text.AlignLeft
+                    text: i18nc("active indicator style","Active Style") + " "
+                    visible: dialog.highLevel
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 2
+
+                    property int indicatorType: plasmoid.configuration.activeIndicatorType
+
+                    ExclusiveGroup {
+                        id: activeIndicatorTypeGroup
+                        onCurrentChanged: {
+                            if (current.checked) {
+                                plasmoid.configuration.activeIndicatorType = current.indicatorType;
+                            }
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("line indicator","Line")
+                        checked: parent.indicatorType === indicatorType
+                        checkable: true
+                        exclusiveGroup: activeIndicatorTypeGroup
+                        tooltip: i18n("Show a line indicator for active tasks/applets")
+
+                        readonly property int indicatorType: Latte.Types.LineIndicator
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("dot indicator", "Dot")
+                        checked: parent.indicatorType === indicatorType
+                        checkable: true
+                        exclusiveGroup: activeIndicatorTypeGroup
+                        tooltip: i18n("Show a dot indicator for active tasks/applets")
+
+                        readonly property int indicatorType: Latte.Types.DotIndicator
                     }
                 }
             }
