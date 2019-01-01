@@ -48,7 +48,7 @@ Item{
     property bool firstDrawed: true
     property bool toBeDestroyed: false
 
-    // three intervals in order to create the necessarty buffers from the
+    // three intervals in order to create the necessary buffers from the
     // PlasmaCore.IconItem, one big interval for the first creation of the
     // plasmoid, a second one for the first creation of a task and a small one
     // for simple updates.
@@ -196,7 +196,7 @@ Item{
             }
 
             //! try to show the correct icon when a window is removed... libtaskmanager when a window is removed
-            //! sends an unknow pixmap as icon
+            //! sends an unknown pixmap as icon
             Connections {
                 target: mainItemContainer
                 onInRemoveStageChanged: {

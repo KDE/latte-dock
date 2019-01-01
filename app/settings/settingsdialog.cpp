@@ -873,7 +873,7 @@ void SettingsDialog::loadSettings()
         Layout multipleHiddenLayouts(this, multipleLayoutPath, "Multiple Layouts File");
 
         if (multipleHiddenLayouts.layoutIsBroken()) {
-            qDebug() << "Intergrity Error ::: Multiple Layouts Hidden file is broken!!!!";
+            qDebug() << "Integrity Error ::: Multiple Layouts Hidden file is broken!!!!";
             brokenLayouts.append(multipleHiddenLayouts.name());
         }
     }*/

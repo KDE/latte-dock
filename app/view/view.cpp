@@ -63,7 +63,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
-      m_positioner(new ViewPart::Positioner(this)) //needs to be created after Effects becuase it catches some of its signals
+      m_positioner(new ViewPart::Positioner(this)) //needs to be created after Effects because it catches some of its signals
 {
     setTitle(corona->kPackage().metadata().name());
     setIcon(qGuiApp->windowIcon());
@@ -155,7 +155,7 @@ View::~View()
         delete m_contextMenu;
     }
 
-    //needs to be deleted before Effects becuase it catches some of its signals
+    //needs to be deleted before Effects because it catches some of its signals
     if (m_positioner) {
         delete m_positioner;
     }
@@ -354,7 +354,7 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
         //m_configView.data()->show();
     } else {
         //add a timer for showing the configuration window the first time it is
-        //created in order to give the containmnent's layouts the time to
+        //created in order to give the containment's layouts the time to
         //calculate the window's height
         if (!KWindowSystem::isPlatformWayland()) {
             QTimer::singleShot(150, m_configView, SLOT(show()));
@@ -386,7 +386,7 @@ void View::updateAbsDockGeometry(bool bypassChecks)
 {
     //! there was a -1 in height and width here. The reason of this
     //! if I remember correctly was related to multi-screen but I cant
-    //! remember exactly the reason, something related to rigth edge in
+    //! remember exactly the reason, something related to right edge in
     //! multi screen environment. BUT this was breaking the entire AlwaysVisible
     //! experience with struts. Removing them in order to restore correct
     //! behavior and keeping this comment in order to check for

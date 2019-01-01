@@ -22,7 +22,7 @@ import QtQuick 2.0
 import QtQml.Models 2.2
 
 //trying to do a very simple thing to count how many windows does
-//a task instace has...
+//a task instance has...
 //Workaround the mess with launchers, startups, windows etc.
 
 Item{

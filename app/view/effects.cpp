@@ -201,7 +201,7 @@ void Effects::setMask(QRect area)
         //! the correct way for the mask to be painted in order for
         //! rounded corners to be shown correctly
         //! the enabledBorders check was added because there was cases
-        //! that the mask region wasnt calculated correctly after location changes
+        //! that the mask region wasn't calculated correctly after location changes
         if (!m_background || m_background->enabledBorders() != m_enabledBorders) {
             m_background = new Plasma::FrameSvg(this);
         }

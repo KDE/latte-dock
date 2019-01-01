@@ -498,14 +498,14 @@ void VisibilityManager::dodgeActive(WindowId wid)
         winfo = wm->requestInfo(wm->activeWindow());
 
         if (!winfo.isValid()) {
-            //! very rare case that window manager doesnt have any active window at all
+            //! very rare case that window manager doesn't have any active window at all
             raiseView(true);
             return;
         }
     }
 
     //! don't send false raiseView signal when containing mouse, // Johan comment
-    //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
+    //! I don't know why that wasn't winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         bool overlaps{intersects(winfo)};
         raiseView(!overlaps);
@@ -529,7 +529,7 @@ void VisibilityManager::dodgeMaximized(WindowId wid)
         winfo = wm->requestInfo(wm->activeWindow());
 
         if (!winfo.isValid()) {
-            //! very rare case that window manager doesnt have any active window at all
+            //! very rare case that window manager doesn't have any active window at all
             raiseView(true);
             return;
         }
@@ -548,7 +548,7 @@ void VisibilityManager::dodgeMaximized(WindowId wid)
     };
 
     //! don't send false raiseView signal when containing mouse, // Johan comment
-    //! I dont know why that wasnt winfo.wid() //active window, but just wid//the window that made the call
+    //! I don't know why that wasn't winfo.wid() //active window, but just wid//the window that made the call
     if (wm->isOnCurrentDesktop(winfo.wid()) && wm->isOnCurrentActivity(winfo.wid())) {
         bool overlapsMaximized{m_latteView->formFactor() == Plasma::Types::Vertical ? intersectsMaxHoriz() : intersectsMaxVert()};
         raiseView(!overlapsMaximized);

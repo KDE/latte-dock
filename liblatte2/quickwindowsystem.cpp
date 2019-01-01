@@ -93,7 +93,7 @@ uint QuickWindowSystem::makeVersion(uint major, uint minor, uint release) const
 
 uint QuickWindowSystem::identifyPlasmaDesktopVersion()
 {
-    //! Indentify Plasma Desktop version
+    //! Identify Plasma Desktop version
     QProcess process;
     process.start("plasmashell", QStringList() << "-v");
     process.waitForFinished();

@@ -1005,7 +1005,7 @@ Item {
         onTriggered: inDraggingPhase = false;
     }
 
-    ///Red Liner!!! show the upper needed limit for annimations
+    ///Red Liner!!! show the upper needed limit for animations
     Rectangle{
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
@@ -1278,7 +1278,7 @@ Item {
 
     Timer {
         id: iconGeometryTimer
-        // INVESTIGATE: such big interval but unfortunately it doesnot work otherwise
+        // INVESTIGATE: such big interval but unfortunately it does not work otherwise
         interval: 500
         repeat: false
 

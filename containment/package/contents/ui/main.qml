@@ -141,7 +141,7 @@ DragDrop.DropArea {
                                          : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
     property bool normalState : false
-    property bool onlyAddingStarup: true //is used for the initialization phase in startup where there arent removals, this variable provides a way to grow icon size
+    property bool onlyAddingStarup: true //is used for the initialization phase in startup where there aren't removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
     property bool showAppletsNumbers: false
     property bool showMetaBadge: false
@@ -246,7 +246,7 @@ DragDrop.DropArea {
 
     property int totalPanelEdgeSpacing: 0 //this is set by PanelBox
     //FIXME: this is not needed any more probably
-    property int previousAllTasks: -1    //is used to forbit updateAutomaticIconSize when hovering
+    property int previousAllTasks: -1    //is used to forbid updateAutomaticIconSize when hovering
     property int offset: {
         /*if (behaveAsPlasmaPanel) {
             return 0;
@@ -877,7 +877,7 @@ DragDrop.DropArea {
         applet.visible = true;
 
 
-        // don't show applet if it choses to be hidden but still make it
+        // don't show applet if it chooses to be hidden but still make it
         // accessible in the panelcontroller
         container.visible = Qt.binding(function() {
             return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring)

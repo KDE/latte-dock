@@ -105,7 +105,7 @@ SequentialAnimation {
         to: 1
 
         //this duration must be a bit less than the bouncing animation. Otherwise the
-        //smooth trasition between removals is breaking
+        //smooth transition between removals is breaking
         duration:  mainItemContainer.inBouncingAnimation  && !mainItemContainer.isSeparator? 4*launcherSpeedStep + 50 : 0
         easing.type: Easing.InQuad
 

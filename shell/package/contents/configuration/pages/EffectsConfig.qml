@@ -232,7 +232,7 @@ PlasmaComponents.Page {
                     checked: plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow
                     checkable: true
                     exclusiveGroup: shadowColorGroup
-                    tooltip: i18n("Shadow from theme color pallete")
+                    tooltip: i18n("Shadow from theme color palette")
                 }
 
                 //overlayed button

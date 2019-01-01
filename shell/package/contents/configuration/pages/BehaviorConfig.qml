@@ -139,13 +139,13 @@ PlasmaComponents.Page {
                     Component.onCompleted: screenRow.updateScreens();
 
                     //they are used to restore the index when the screen edge
-                    //is occuppied
+                    //is occupied
                     property bool acceptedIndex: true
                     property int previousIndex: -1
 
                     onCurrentIndexChanged: {
                         //it is used to restore the index when the screen edge
-                        //is occuppied
+                        //is occupied
                         if (!acceptedIndex) {
                             acceptedIndex = true;
                             currentIndex = previousIndex;

@@ -615,7 +615,7 @@ MouseArea{
         }*/
     }
 
-    // IMPORTANT: This must be improved ! even for small miliseconds  it reduces performance
+    // IMPORTANT: This must be improved ! even for small milliseconds  it reduces performance
     onExited: {
         mainItemContainer.scalesUpdatedOnce = false;
 
@@ -657,7 +657,7 @@ MouseArea{
         if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== mainItemContainer){
             if (hoveredTimerObj) {
                 //! don't delay showing preview in normal states,
-                //! that is when the dock wasnt hidden
+                //! that is when the dock wasn't hidden
                 if (!hoveredTimerObj.running) {
                     hoveredTimerObj.start();
                 }
@@ -1471,14 +1471,14 @@ MouseArea{
     ///Based on the animations, windows are shown directly, startups
     ///are shown after 5secs of existence, and launchers after 200ms
     ///for launchers this is set in order to give to a window the time
-    ///to desappear and then show the launcher...
+    ///to disappear and then show the launcher...
 
 
     //   property int mainDelay: IsLauncher ? 800 : 400
     //   property int mainDelay: icList.delayingRemoval ? 2*showWindowAnimation.speed : 450
 
     //BE CAREFUL: this interval (e.g. 700ms) must be lower from the removal animation
-    //duration e.g.(800ms) because there are situattions that because of this some
+    //duration e.g.(800ms) because there are situations that because of this some
     //launchers delay A LOT to reappear, e.g google-chrome
     //I will blacklist google-chrome as I have not found any other case for this bug
     //to appear, but even this way there are cases that still appears...

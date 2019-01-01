@@ -415,7 +415,7 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         return;
     }
 
-    //! accepty only the following NET:Properties changed signals
+    //! accept only the following NET:Properties changed signals
     //! NET::WMState, NET::WMGeometry, NET::ActiveWindow
     if (!((prop1 & NET::WMState) || (prop1 & NET::WMGeometry) || (prop1 & NET::ActiveWindow))) {
         return;

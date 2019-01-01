@@ -39,7 +39,7 @@ Item{
     // NAME: palette
     //   USAGE: read-only
     //   EXPLANATION: Latte updates it to its coloring palette in order for the applet
-    //       to take resposibility of its coloring.
+    //       to take responsibility of its coloring.
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
     // @since: 0.9
@@ -75,7 +75,7 @@ Item{
     //   USAGE: writable through actions.setProperty
     //   EXPLANATION: when is TRUE, Latte is not overlaying any icons above
     //       the applet or alters the applet visual in any sense.
-    //       That means that the applet is responsible to provide a conherent
+    //       That means that the applet is responsible to provide a coherent
     //       parabolic effect experience.
     // @since: 0.9
 }

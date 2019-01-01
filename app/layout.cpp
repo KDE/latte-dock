@@ -195,7 +195,7 @@ void Layout::initToCorona(Latte::Corona *corona)
         }
     }
 
-    qDebug() << "Layout ::::: " << name() << " added contaiments ::: " << m_containments.size();
+    qDebug() << "Layout ::::: " << name() << " added containments ::: " << m_containments.size();
 
     connect(m_corona->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, [&]() {
         if (m_corona->universalSettings()->canDisableBorders()) {
@@ -282,7 +282,7 @@ void Layout::setDisableBordersForMaximizedWindows(bool disable)
 
 bool Layout::kwin_disabledMaximizedBorders() const
 {
-    //! Indentify Plasma Desktop version
+    //! Identify Plasma Desktop version
     QProcess process;
     process.start("kreadconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows");
     process.waitForFinished();
@@ -618,7 +618,7 @@ bool Layout::layoutIsBroken() const
             }
         }
 
-        qDebug() << "Contaiments :: " << conts;
+        qDebug() << "Containments :: " << conts;
         qDebug() << "Applets :: " << applets;
 
         foreach (QString c, conts) {
@@ -1031,7 +1031,7 @@ void Layout::copyView(Plasma::Containment *containment)
         return;
 
     qDebug() << "copying containment layout";
-    //! Settting mutable for create a containment
+    //! Setting mutable for create a containment
     m_corona->setImmutability(Plasma::Types::Mutable);
 
     QString temp1File = QDir::homePath() + "/.config/lattedock.copy1.bak";
@@ -1204,14 +1204,14 @@ void Layout::importToCorona()
         return;
     }
 
-    //! Settting mutable for create a containment
+    //! Setting mutable for create a containment
     m_corona->setImmutability(Plasma::Types::Mutable);
 
     QString temp1FilePath = QDir::homePath() + "/.config/lattedock.copy1.bak";
     //! we need to copy first the layout file because the kde cache
     //! may not have yet been updated (KSharedConfigPtr)
     //! this way we make sure at the latest changes stored in the layout file
-    //! will be also available when changing to Myltiple Layouts
+    //! will be also available when changing to Multiple Layouts
     QString tempLayoutFilePath = QDir::homePath() + "/.config/lattedock.layout.bak";
 
     //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
@@ -1373,7 +1373,7 @@ QString Layout::newUniqueIdsLayoutFromFile(QString file)
 
     qDebug() << "FIXED FULL ASSIGNMENTS ::: " << assigned;
 
-    //! update applet ids in their contaiment order and in MultipleLayouts update also the layoutId
+    //! update applet ids in their containment order and in MultipleLayouts update also the layoutId
     foreach (auto cId, investigate_conts.groupList()) {
         //! Update (appletOrder) and (lockedZoomApplets)
         for (int i = 1; i <= 2; ++i) {

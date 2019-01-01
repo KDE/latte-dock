@@ -17,7 +17,7 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//! applets that havent identified properly their Latte behavior and
+//! applets that haven't identified properly their Latte behavior and
 //! create broken results when used in Latte
 var blacklistedApplets = [];
 

@@ -41,12 +41,12 @@ namespace ViewPart {
 //! What is the importance of this class?
 //!
 //! Plasma is activating the screen edges for the main panel window
-//! unfortunately this isnt possible for the Latte case.
+//! unfortunately this isn't possible for the Latte case.
 //! When a window is hidden at an edge it becomes NOT visible
 //! unfortunately that means that all the animations are
 //! stopped (Qt behaviour) and that creates confusion to the user after the window
 //! reappears because various animations are played (adding-removing tasks/launchers)
-//! that arent relevant any more.
+//! that aren't relevant any more.
 //!
 //! In order to workaround the above behaviour Latte is using a
 //! fake window to communicate with KWin and the MAIN Latte::View window

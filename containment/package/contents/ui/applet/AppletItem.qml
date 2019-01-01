@@ -418,7 +418,7 @@ Item {
     Communicator.Engine{
         id: communicator
 
-        //set up the overlaied containers and properties for when a overlaiedIconItem must be presented to the user
+        //set up the overlayed containers and properties for when a overlaiedIconItem must be presented to the user
         //because the plasma widgets specific implementation breaks the Latte experience
         onOverlayLatteIconIsActiveChanged:{
             if (!overlayLatteIconIsActive && applet.opacity===0) {

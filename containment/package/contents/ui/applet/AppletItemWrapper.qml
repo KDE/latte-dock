@@ -768,7 +768,7 @@ Item{
 
         var distanceFromHovered = Math.abs(index - layoutsContainer.hoveredIndex);
 
-        // A new algorithm tryig to make the zoom calculation only once
+        // A new algorithm trying to make the zoom calculation only once
         // and at the same time fixing glitches
         if ((distanceFromHovered == 0)&&
                 (currentMousePosition  > 0) ){

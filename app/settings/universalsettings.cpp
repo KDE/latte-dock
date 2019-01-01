@@ -331,7 +331,7 @@ void UniversalSettings::setAutostart(bool state)
         emit autostartChanged();
     } else if (state && metaFile.exists()) {
         metaFile.copy(autostartFile.fileName());
-        //! I havent added the flag "OnlyShowIn=KDE;" into the autostart file
+        //! I haven't added the flag "OnlyShowIn=KDE;" into the autostart file
         //! because I fall onto a Plasma 5.8 case that this flag
         //! didn't let the plasma desktop to start
         emit autostartChanged();

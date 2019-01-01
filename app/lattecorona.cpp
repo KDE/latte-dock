@@ -828,7 +828,7 @@ void Corona::alternativesVisibilityChanged(bool visible)
 void Corona::loadDefaultLayout()
 {
     qDebug() << "loading default layout";
-    //! Settting mutable for create a containment
+    //! Setting mutable for create a containment
     setImmutability(Plasma::Types::Mutable);
     QVariantList args;
     auto defaultContainment = createContainmentDelayed("org.kde.latte.containment", args);
