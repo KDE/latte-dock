@@ -400,7 +400,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 columns: 2
                 columnSpacing: 2
-                rowSpacing: 1
+                rowSpacing: units.smallspacing
                 enabled: indicatorsSwitch.checked
 
                 LatteExtraControls.HeaderSwitch {
