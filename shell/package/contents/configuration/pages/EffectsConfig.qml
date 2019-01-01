@@ -555,7 +555,7 @@ PlasmaComponents.Page {
                         checked: parent.indicatorType === indicatorType
                         checkable: true
                         exclusiveGroup: activeIndicatorTypeGroup
-                        tooltip: i18n("Show a line indicator for active tasks/applets")
+                        tooltip: i18n("Show a line indicator for active items")
 
                         readonly property int indicatorType: Latte.Types.LineIndicator
                     }
@@ -567,7 +567,7 @@ PlasmaComponents.Page {
                         checked: parent.indicatorType === indicatorType
                         checkable: true
                         exclusiveGroup: activeIndicatorTypeGroup
-                        tooltip: i18n("Show a dot indicator for active tasks/applets")
+                        tooltip: i18n("Show a dot indicator for active items")
 
                         readonly property int indicatorType: Latte.Types.DotIndicator
                     }

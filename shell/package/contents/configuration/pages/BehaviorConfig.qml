@@ -507,14 +507,14 @@ PlasmaComponents.Page {
         }
         //! END: Delay
 
-        //! BEGIN: Applets
+        //! BEGIN: Items
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
             LatteExtraControls.Header {
-                text: i18n("Applets")
+                text: i18n("Items")
             }
 
             PlasmaComponents.CheckBox {
@@ -533,7 +533,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate through mouse wheel")
                 checked: plasmoid.configuration.mouseWheelActions
-                tooltip: i18n("Enable/Disable the mouse wheel action for applets and tasks")
+                tooltip: i18n("Enable/Disable the mouse wheel action")
                 visible: dialog.highLevel
 
                 onClicked: {
@@ -545,7 +545,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease size automatically when needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
-                tooltip: i18n("Applets size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
+                tooltip: i18n("Items size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
                 enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
 
                 onClicked: {
@@ -553,7 +553,7 @@ PlasmaComponents.Page {
                 }
             }
         }
-        //! END: Applets
+        //! END: Items
 
         //! BEGIN: Adjust
         ColumnLayout {

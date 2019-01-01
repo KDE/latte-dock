@@ -136,14 +136,14 @@ PlasmaComponents.Page {
         }
         //! END: Layout
 
-        //! BEGIN: Applet Size
+        //! BEGIN: Items
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: dialog.highLevel ? 0 : units.smallSpacing
             spacing: units.smallSpacing
 
             LatteExtraControls.Header {
-                text: i18n("Applets")
+                text: i18n("Items")
             }
 
             RowLayout {
@@ -345,7 +345,7 @@ PlasmaComponents.Page {
                 }
             }
         }
-        //! END: Applet Size
+        //! END: Items
 
         //! BEGIN: Background
         ColumnLayout {
