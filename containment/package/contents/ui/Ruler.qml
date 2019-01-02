@@ -31,8 +31,8 @@ import org.kde.latte 0.1 as Latte
 Item{
     id: rulerItem
 
-    width: root.isHorizontal ? root.maxLength : thickness
-    height: root.isVertical ? root.maxLength : thickness
+    width: root.isHorizontal ? userMaxLength : thickness
+    height: root.isVertical ? userMaxLength : thickness
 
     opacity: root.editMode ? 1 : 0
 
@@ -42,6 +42,14 @@ Item{
     readonly property int thickness: theme.defaultFont.pixelSize + rMargin
 
     readonly property string tooltip: i18nc("maximum length tooltip, %0% is maximum length percentage","You can use mouse wheel to change maximum length of %0%").arg(plasmoid.configuration.maxLength)
+
+    readonly property int userMaxLength: {
+        if (root.isHorizontal) {
+            return root.width * (plasmoid.configuration.maxLength/100);
+        } else {
+            return root.height * (plasmoid.configuration.maxLength/100);
+        }
+    }
 
     x: {
         if (root.isHorizontal) {
@@ -68,7 +76,7 @@ Item{
 
     }
 
-    property int length: root.maxLength
+    property int length: userMaxLength
 
     property int rMargin: 3
     property int xL: 0
