@@ -193,7 +193,7 @@ Item{
 
                 var space = 0;
                 for (var i=0; i<_startLayout.children.length; ++i){
-                    if (_startLayout.children[i] && !_startLayout.children[i].needsFillSpace) {
+                    if (_startLayout.children[i] && !_startLayout.children[i].needsFillSpace && !_startLayout.children[i].isHidden) {
                         space = root.isHorizontal ? space + _startLayout.children[i].width : space + _startLayout.children[i].height;
                     }
                 }
@@ -320,7 +320,7 @@ Item{
 
                 var space = 0;
                 for (var i=0; i<_mainLayout.children.length; ++i){
-                    if (_mainLayout.children[i] && !_mainLayout.children[i].needsFillSpace) {
+                    if (_mainLayout.children[i] && !_mainLayout.children[i].needsFillSpace && !_mainLayout.children[i].isHidden) {
                         space = root.isHorizontal ? space + _mainLayout.children[i].width : space + _mainLayout.children[i].height;
                     }
                 }
@@ -586,7 +586,7 @@ Item{
 
                 var space = 0;
                 for (var i=0; i<_endLayout.children.length; ++i){
-                    if (_endLayout.children[i] && !_endLayout.children[i].needsFillSpace) {
+                    if (_endLayout.children[i] && !_endLayout.children[i].needsFillSpace && !_endLayout.children[i].isHidden) {
                         space = root.isHorizontal ? space + _endLayout.children[i].width : space + _endLayout.children[i].height;
                     }
                 }
