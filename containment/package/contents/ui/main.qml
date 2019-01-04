@@ -77,7 +77,7 @@ DragDrop.DropArea {
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidPanel && panelShadowsActive));
     }
 
-    property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel
+    property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForDistortedBackground)
                                || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool confirmedDragEntered: false

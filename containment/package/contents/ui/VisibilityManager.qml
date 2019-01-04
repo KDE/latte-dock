@@ -143,7 +143,8 @@ Item{
         when: latteView && latteView.effects
         value: Latte.WindowSystem.compositingActive &&
                (((root.blurEnabled && root.useThemePanel)
-                 || (root.blurEnabled && root.forceSolidPanel && latteView.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive))
+                 || (root.blurEnabled && root.forceSolidPanel && latteView.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive)
+                 || (root.blurEnabled && root.forcePanelForDistortedBackground && Latte.WindowSystem.compositingActive))
                 && (!root.inStartup || inForceHiding || inTempHiding))
     }
 
