@@ -34,7 +34,12 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-typedef QHash<Plasma::Types::Location, float> EdgesHash;
+struct imageHints {
+    bool distorted{false};
+    float brightness{-1000};
+};
+
+typedef QHash<Plasma::Types::Location, imageHints> EdgesHash;
 
 namespace Latte {
 namespace PlasmaExtended {
@@ -47,6 +52,7 @@ public:
     static BackgroundCache *self();
     ~BackgroundCache() override;
 
+    bool distortedFor(QString activity, QString screen, Plasma::Types::Location location);
     float brightnessFor(QString activity, QString screen, Plasma::Types::Location location);
 
     QString background(QString activity, QString screen);
@@ -61,9 +67,15 @@ private slots:
 private:
     BackgroundCache(QObject *parent = nullptr);
 
+    bool areaIsDistorted(float bright1, float bright2, float bright3);
+    bool distortedForFile(QString imageFile, Plasma::Types::Location location);
     bool isDesktopContainment(const KConfigGroup &containment) const;
-    float brightnessFromFile(QString imageFile, Plasma::Types::Location location);
+
+    float brightnessForFile(QString imageFile, Plasma::Types::Location location);
+    float brightnessFromArea(QImage &image, int firstRow, int firstColumn, int endRow, int endColumn);
     QString backgroundFromConfig(const KConfigGroup &config) const;
+
+    void updateImageCalculations(QString imageFile, Plasma::Types::Location location);
 
 private:
     bool m_initialized{false};
@@ -73,7 +85,7 @@ private:
     //! screen aware backgrounds: activity id, screen name, backgroundfile
     QHash<QString, QHash<QString, QString>> m_backgrounds;
     //! image file and brightness per edge
-    QHash<QString, EdgesHash> m_brightnessCache;
+    QHash<QString, EdgesHash> m_hintsCache;
 
     KSharedConfig::Ptr m_plasmaConfig;
 };

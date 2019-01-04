@@ -33,6 +33,8 @@ class BackgroundTracker: public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool isDistorted READ isDistorted NOTIFY isDistortedChanged)
+
     Q_PROPERTY(int location READ location WRITE setLocation NOTIFY locationChanged)
 
     Q_PROPERTY(float currentBrightness READ currentBrightness NOTIFY currentBrightnessChanged)
@@ -43,6 +45,8 @@ class BackgroundTracker: public QObject
 public:
     BackgroundTracker(QObject *parent = nullptr);
     virtual ~BackgroundTracker();
+
+    bool isDistorted() const;
 
     int location() const;
     void setLocation(int location);
@@ -58,6 +62,7 @@ public:
 signals:
     void activityChanged();
     void currentBrightnessChanged();
+    void isDistortedChanged();
     void locationChanged();
     void screenNameChanged();
 
@@ -67,6 +72,7 @@ private slots:
 
 private:
     // local
+    bool m_distorted{false};
     float m_brightness{-1000};
     PlasmaExtended::BackgroundCache *m_cache{nullptr};
 

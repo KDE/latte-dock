@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QImage>
 #include <QRgb>
+#include <QtMath>
 
 // Plasma
 #include <Plasma>
@@ -46,8 +47,8 @@ BackgroundCache::BackgroundCache(QObject *parent)
       m_plasmaConfig(KSharedConfig::openConfig(PLASMACONFIG))
 {
     const auto configFile = QStandardPaths::writableLocation(
-                                QStandardPaths::GenericConfigLocation) +
-                            QLatin1Char('/') + PLASMACONFIG;
+                QStandardPaths::GenericConfigLocation) +
+            QLatin1Char('/') + PLASMACONFIG;
 
     KDirWatch::self()->addFile(configFile);
 
@@ -175,66 +176,33 @@ QString BackgroundCache::background(QString activity, QString screen)
     }
 }
 
+bool BackgroundCache::distortedFor(QString activity, QString screen, Plasma::Types::Location location)
+{
+    QString assignedBackground = background(activity, screen);
+
+    if (!assignedBackground.isEmpty()) {
+        return distortedForFile(assignedBackground, location);
+    }
+
+    return false;
+}
+
 float BackgroundCache::brightnessFor(QString activity, QString screen, Plasma::Types::Location location)
 {
     QString assignedBackground = background(activity, screen);
 
     if (!assignedBackground.isEmpty()) {
-        return brightnessFromFile(assignedBackground, location);
+        return brightnessForFile(assignedBackground, location);
     }
 
     return -1000;
 }
 
-float BackgroundCache::brightnessFromFile(QString imageFile, Plasma::Types::Location location)
+float BackgroundCache::brightnessFromArea(QImage &image, int firstRow, int firstColumn, int endRow, int endColumn)
 {
-    if (m_brightnessCache.keys().contains(imageFile)) {
-        if (m_brightnessCache[imageFile].keys().contains(location)) {
-            return m_brightnessCache[imageFile].value(location);
-        }
-    }
-
-    //! if it is a color
-    if (imageFile.startsWith("#")) {
-        return Latte::colorBrightness(QColor(imageFile));
-    }
-
-    //! if it is a local image
-    QImage image(imageFile);
+    float areaBrightness = -1000;
 
     if (image.format() != QImage::Format_Invalid) {
-        int maskHeight = (0.08 * image.height());
-        int maskWidth = (0.05 * image.width());
-
-        float areaBrightness = -1000;
-
-        int firstRow = 0;
-        int firstColumn = 0;
-        int endRow = 0;
-        int endColumn = 0;
-
-        if (location == Plasma::Types::TopEdge) {
-            firstRow = 0;
-            endRow = maskHeight;
-            firstColumn = 0;
-            endColumn = image.width() - 1;
-        } else if (location == Plasma::Types::BottomEdge) {
-            firstRow = image.height() - maskHeight - 1;
-            endRow = image.height() - 1;
-            firstColumn = 0;
-            endColumn = image.width() - 1;
-        } else if (location == Plasma::Types::LeftEdge) {
-            firstRow = 0;
-            endRow = image.height() - 1;
-            firstColumn = 0;
-            endColumn = maskWidth;
-        } else if (location == Plasma::Types::RightEdge) {
-            firstRow = 0;
-            endRow = image.height() - 1;
-            firstColumn = image.width() - 1 - maskWidth;
-            endColumn = image.width() - 1;
-        }
-
         for (int row = firstRow; row < endRow; ++row) {
             QRgb *line = (QRgb *)image.scanLine(row);
 
@@ -248,18 +216,134 @@ float BackgroundCache::brightnessFromFile(QString imageFile, Plasma::Types::Loca
 
         float areaSize = (endRow - firstRow) * (endColumn - firstColumn);
         areaBrightness = areaBrightness / areaSize;
-
-        if (!m_brightnessCache.keys().contains(imageFile)) {
-            m_brightnessCache[imageFile] = EdgesHash();
-        }
-
-        m_brightnessCache[imageFile].insert(location, areaBrightness);
-
-        return areaBrightness;
     }
 
-    //! didn't find anything
+    return areaBrightness;
+}
+
+bool BackgroundCache::areaIsDistorted(float bright1, float bright2, float bright3)
+{
+    int distortedStep{30};
+
+    return (qFabs(bright1-bright2)>=distortedStep
+            || qFabs(bright2-bright3)>=distortedStep
+            || qFabs(bright1-bright3)>=distortedStep);
+}
+
+void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::Location location)
+{
+    //! if it is a local image
+    QImage image(imageFile);
+
+    if (image.format() != QImage::Format_Invalid) {
+        int maskHeight = (0.08 * image.height());
+        int maskWidth = (0.05 * image.width());
+
+        float areaBrightness = -1000;
+
+        float area1Brightness = -1000; float area2Brightness = -1000; float area3Brightness = -1000;
+        float area1p = 0.25; float area2p=0.35; float area3p=0.4;
+
+        int firstRow = 0; int firstColumn = 0; int endRow = 0; int endColumn = 0;
+
+        //! horizontal mask calculations
+        if (location == Plasma::Types::TopEdge) {
+            firstRow = 0; endRow = maskHeight;
+        } else if (location == Plasma::Types::BottomEdge) {
+            firstRow = image.height() - maskHeight - 1; endRow = image.height() - 1;
+        }
+
+        if (location == Plasma::Types::TopEdge || location == Plasma::Types::BottomEdge) {
+            firstColumn = 0; endColumn = (area1p*image.width()) - 1;
+            area1Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+
+            firstColumn = endColumn+1; endColumn = ((area1p+area2p)*image.width()) - 1;
+            area2Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+
+            firstColumn = endColumn+1; endColumn = (image.width() - 1);
+            area3Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+        }
+
+        //! vertical mask calculations
+        if (location == Plasma::Types::LeftEdge) {
+            firstColumn = 0; endColumn = maskWidth;
+        } else if (location == Plasma::Types::RightEdge) {
+            firstColumn = image.width() - 1 - maskWidth; endColumn = image.width() - 1;
+        }
+
+        if (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge) {
+            firstRow = 0; endRow = image.height() - 1;
+            area1Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+
+            firstRow = endRow+1; endRow = ((area1p+area2p)*image.height()) - 1;
+            area2Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+
+            firstRow = endRow+1; endRow = (image.height() - 1);
+            area3Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+        }
+
+        //! compute total brightness for this area
+        areaBrightness = (area1Brightness + area2Brightness + area3Brightness) / 3;
+        bool areaDistorted = areaIsDistorted(area1Brightness, area2Brightness, area3Brightness);
+
+        if (!m_hintsCache.keys().contains(imageFile)) {
+            m_hintsCache[imageFile] = EdgesHash();
+        }
+
+        if (!m_hintsCache[imageFile].contains(location)) {
+            imageHints iHints;
+            iHints.brightness = areaBrightness;
+            iHints.distorted =areaDistorted;
+            m_hintsCache[imageFile].insert(location, iHints);
+        } else {
+            m_hintsCache[imageFile][location].brightness = areaBrightness;
+            m_hintsCache[imageFile][location].distorted = areaDistorted;
+        }
+    }
+}
+
+float BackgroundCache::brightnessForFile(QString imageFile, Plasma::Types::Location location)
+{
+    if (m_hintsCache.keys().contains(imageFile)) {
+        if (m_hintsCache[imageFile].keys().contains(location)) {
+            return m_hintsCache[imageFile][location].brightness;
+        }
+    }
+
+    //! if it is a color
+    if (imageFile.startsWith("#")) {
+        return Latte::colorBrightness(QColor(imageFile));
+    }
+
+    updateImageCalculations(imageFile, location);
+
+    if (m_hintsCache.keys().contains(imageFile)) {
+        return m_hintsCache[imageFile][location].brightness;
+    }
+
     return -1000;
+}
+
+bool BackgroundCache::distortedForFile(QString imageFile, Plasma::Types::Location location)
+{
+    if (m_hintsCache.keys().contains(imageFile)) {
+        if (m_hintsCache[imageFile].keys().contains(location)) {
+            return m_hintsCache[imageFile][location].distorted;
+        }
+    }
+
+    //! if it is a color
+    if (imageFile.startsWith("#")) {
+        return false;
+    }
+
+    updateImageCalculations(imageFile, location);
+
+    if (m_hintsCache.keys().contains(imageFile)) {
+        return m_hintsCache[imageFile][location].distorted;
+    }
+
+    return false;
 }
 
 }
