@@ -212,6 +212,10 @@ DragDrop.DropArea {
             return false;
         }
 
+        if (plasmoid.configuration.panelShadows && root.forcePanelForDistortedBackground) {
+            return true;
+        }
+
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
              || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
                 && !(disablePanelShadowMaximized && latteView.visibility.existsWindowMaximized)) {
