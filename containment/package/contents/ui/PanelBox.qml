@@ -147,7 +147,8 @@ Item{
         visible: (opacity == 0) ? false : true
 
         opacity: {
-            if (root.forceTransparentPanel || !root.useThemePanel)
+            if ((root.forceTransparentPanel && !root.forcePanelForDistortedBackground)
+                    || !root.useThemePanel)
                 return 0;
             else
                 return 1;
@@ -296,14 +297,17 @@ Item{
             opacity: {
                 if (forceSolidness) {
                     return 1;
-                } else if (!plasmoid.configuration.useThemePanel && plasmoid.configuration.solidBackgroundForMaximized) {
+                } else if (root.forcePanelForDistortedBackground
+                           || (!plasmoid.configuration.useThemePanel
+                               && plasmoid.configuration.solidBackgroundForMaximized)) {
                     return 0;
                 } else {
                     return plasmoid.configuration.panelTransparency / 100;
                 }
             }
 
-            readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized) || root.forceSolidPanel
+            readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized)
+                                                   || root.forceSolidPanel
                                                    || !Latte.WindowSystem.compositingActive
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
@@ -478,8 +482,32 @@ Item{
 
         Colorizer.CustomBackground {
             anchors.fill: solidBackground
-            opacity: root.forceColorizeFromActiveWindowScheme ? solidBackground.opacity : 0
-            backgroundColor: root.forceColorizeFromActiveWindowScheme ? latteView.visibility.touchingWindowScheme.backgroundColor : "transparent"
+            opacity: {
+                if (root.forcePanelForDistortedBackground
+                        && solidBackground.opacity === 0
+                        && solidBackgroundRectangle.opacity === 0) {
+                    return plasmoid.configuration.panelTransparency / 100;
+                }
+
+                if (root.forceColorizeFromActiveWindowScheme) {
+                    return solidBackground.opacity;
+                }
+
+                return 0;
+            }
+
+            backgroundColor: {
+                if (root.forcePanelForDistortedBackground) {
+                    return colorizerManager.backgroundColor;
+                }
+
+                if (root.forceColorizeFromActiveWindowScheme) {
+                    return latteView.visibility.touchingWindowScheme.backgroundColor
+                }
+
+                return "transparent";
+            }
+
             roundness: {
                 if (themeExtended) {
                     switch(plasmoid.location) {

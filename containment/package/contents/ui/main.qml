@@ -104,6 +104,9 @@ DragDrop.DropArea {
                                          && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
+    property bool forcePanelForDistortedBackground: root.forceTransparentPanel && colorizerManager.mustBeShown && colorizerManager.isDistorted
+
+
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
     property bool forceColorizeFromActiveWindowScheme: plasmoid.configuration.colorizeFromActiveWindowScheme && !editMode
                                                        && (latteView && latteView.visibility && latteView.visibility.touchingWindowScheme

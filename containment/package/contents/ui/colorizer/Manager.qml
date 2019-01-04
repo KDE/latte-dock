@@ -35,6 +35,8 @@ Loader{
                                            || !Latte.WindowSystem.compositingActive
     readonly property bool forceSolidnessAndColorize: forceSolidness && forceColorizeFromActiveWindowScheme
 
+    readonly property bool isDistorted: item ? item.isDistorted : false
+
     readonly property real themeBackgroundColorBrightness: ColorizerTools.colorBrightness(theme.backgroundColor)
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
 
@@ -48,7 +50,7 @@ Loader{
                                && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
                                && !root.editMode && Latte.WindowSystem.compositingActive
 
-    property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
+    readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
     property QtObject applyTheme: {
         if (forceSolidnessAndColorize && latteView.visibility.touchingWindowScheme) {
