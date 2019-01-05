@@ -176,12 +176,12 @@ QString BackgroundCache::background(QString activity, QString screen)
     }
 }
 
-bool BackgroundCache::distortedFor(QString activity, QString screen, Plasma::Types::Location location)
+bool BackgroundCache::busyFor(QString activity, QString screen, Plasma::Types::Location location)
 {
     QString assignedBackground = background(activity, screen);
 
     if (!assignedBackground.isEmpty()) {
-        return distortedForFile(assignedBackground, location);
+        return busyForFile(assignedBackground, location);
     }
 
     return false;
@@ -221,13 +221,13 @@ float BackgroundCache::brightnessFromArea(QImage &image, int firstRow, int first
     return areaBrightness;
 }
 
-bool BackgroundCache::areaIsDistorted(float bright1, float bright2, float bright3)
+bool BackgroundCache::areaIsBusy(float bright1, float bright2, float bright3)
 {
-    int distortedStep{30};
+    int brightDifference{30};
 
-    return (qFabs(bright1-bright2)>=distortedStep
-            || qFabs(bright2-bright3)>=distortedStep
-            || qFabs(bright1-bright3)>=distortedStep);
+    return (qFabs(bright1-bright2)>=brightDifference
+            || qFabs(bright2-bright3)>=brightDifference
+            || qFabs(bright1-bright3)>=brightDifference);
 }
 
 void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::Location location)
@@ -284,7 +284,7 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
 
         //! compute total brightness for this area
         areaBrightness = (area1Brightness + area2Brightness + area3Brightness) / 3;
-        bool areaDistorted = areaIsDistorted(area1Brightness, area2Brightness, area3Brightness);
+        bool areaBusy = areaIsBusy(area1Brightness, area2Brightness, area3Brightness);
 
         if (!m_hintsCache.keys().contains(imageFile)) {
             m_hintsCache[imageFile] = EdgesHash();
@@ -293,11 +293,11 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
         if (!m_hintsCache[imageFile].contains(location)) {
             imageHints iHints;
             iHints.brightness = areaBrightness;
-            iHints.distorted =areaDistorted;
+            iHints.busy =areaBusy;
             m_hintsCache[imageFile].insert(location, iHints);
         } else {
             m_hintsCache[imageFile][location].brightness = areaBrightness;
-            m_hintsCache[imageFile][location].distorted = areaDistorted;
+            m_hintsCache[imageFile][location].busy = areaBusy;
         }
     }
 }
@@ -324,11 +324,11 @@ float BackgroundCache::brightnessForFile(QString imageFile, Plasma::Types::Locat
     return -1000;
 }
 
-bool BackgroundCache::distortedForFile(QString imageFile, Plasma::Types::Location location)
+bool BackgroundCache::busyForFile(QString imageFile, Plasma::Types::Location location)
 {
     if (m_hintsCache.keys().contains(imageFile)) {
         if (m_hintsCache[imageFile].keys().contains(location)) {
-            return m_hintsCache[imageFile][location].distorted;
+            return m_hintsCache[imageFile][location].busy;
         }
     }
 
@@ -340,7 +340,7 @@ bool BackgroundCache::distortedForFile(QString imageFile, Plasma::Types::Locatio
     updateImageCalculations(imageFile, location);
 
     if (m_hintsCache.keys().contains(imageFile)) {
-        return m_hintsCache[imageFile][location].distorted;
+        return m_hintsCache[imageFile][location].busy;
     }
 
     return false;

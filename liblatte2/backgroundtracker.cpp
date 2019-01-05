@@ -40,9 +40,9 @@ BackgroundTracker::~BackgroundTracker()
 {
 }
 
-bool BackgroundTracker::isDistorted() const
+bool BackgroundTracker::isBusy() const
 {
-    return m_distorted;
+    return m_busy;
 }
 
 int BackgroundTracker::location() const
@@ -114,10 +114,10 @@ void BackgroundTracker::update()
     }
 
     m_brightness = m_cache->brightnessFor(m_activity, m_screenName, m_location);
-    m_distorted = m_cache->distortedFor(m_activity, m_screenName, m_location);
+    m_busy = m_cache->busyFor(m_activity, m_screenName, m_location);
 
     emit currentBrightnessChanged();
-    emit isDistortedChanged();
+    emit isBusyChanged();
 }
 
 }

@@ -147,7 +147,7 @@ Item{
         visible: (opacity == 0) ? false : true
 
         opacity: {
-            if ((root.forceTransparentPanel && !root.forcePanelForDistortedBackground)
+            if ((root.forceTransparentPanel && !root.forcePanelForBusyBackground)
                     || !root.useThemePanel)
                 return 0;
             else
@@ -297,7 +297,7 @@ Item{
             opacity: {
                 if (forceSolidness) {
                     return 1;
-                } else if (root.forcePanelForDistortedBackground
+                } else if (root.forcePanelForBusyBackground
                            || (!plasmoid.configuration.useThemePanel
                                && plasmoid.configuration.solidBackgroundForMaximized)) {
                     return 0;
@@ -483,7 +483,7 @@ Item{
         Colorizer.CustomBackground {
             anchors.fill: solidBackground
             opacity: {
-                if (root.forcePanelForDistortedBackground
+                if (root.forcePanelForBusyBackground
                         && solidBackground.opacity === 0
                         && solidBackgroundRectangle.opacity === 0) {
                     return plasmoid.configuration.panelTransparency / 100;
@@ -497,7 +497,7 @@ Item{
             }
 
             backgroundColor: {
-                if (root.forcePanelForDistortedBackground) {
+                if (root.forcePanelForBusyBackground) {
                     return colorizerManager.backgroundColor;
                 }
 

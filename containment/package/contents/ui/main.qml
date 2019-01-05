@@ -77,7 +77,7 @@ DragDrop.DropArea {
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidPanel && panelShadowsActive));
     }
 
-    property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForDistortedBackground)
+    property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForBusyBackground)
                                || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool confirmedDragEntered: false
@@ -104,7 +104,7 @@ DragDrop.DropArea {
                                          && Latte.WindowSystem.compositingActive
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
-    property bool forcePanelForDistortedBackground: root.forceTransparentPanel && colorizerManager.mustBeShown && colorizerManager.isDistorted
+    property bool forcePanelForBusyBackground: root.forceTransparentPanel && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy
 
 
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
@@ -212,7 +212,7 @@ DragDrop.DropArea {
             return false;
         }
 
-        if (plasmoid.configuration.panelShadows && root.forcePanelForDistortedBackground) {
+        if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground) {
             return true;
         }
 

@@ -35,7 +35,7 @@
 #include <KSharedConfig>
 
 struct imageHints {
-    bool distorted{false};
+    bool busy{false};
     float brightness{-1000};
 };
 
@@ -52,7 +52,7 @@ public:
     static BackgroundCache *self();
     ~BackgroundCache() override;
 
-    bool distortedFor(QString activity, QString screen, Plasma::Types::Location location);
+    bool busyFor(QString activity, QString screen, Plasma::Types::Location location);
     float brightnessFor(QString activity, QString screen, Plasma::Types::Location location);
 
     QString background(QString activity, QString screen);
@@ -67,8 +67,8 @@ private slots:
 private:
     BackgroundCache(QObject *parent = nullptr);
 
-    bool areaIsDistorted(float bright1, float bright2, float bright3);
-    bool distortedForFile(QString imageFile, Plasma::Types::Location location);
+    bool areaIsBusy(float bright1, float bright2, float bright3);
+    bool busyForFile(QString imageFile, Plasma::Types::Location location);
     bool isDesktopContainment(const KConfigGroup &containment) const;
 
     float brightnessForFile(QString imageFile, Plasma::Types::Location location);

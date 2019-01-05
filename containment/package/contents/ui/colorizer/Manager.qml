@@ -35,7 +35,7 @@ Loader{
                                            || !Latte.WindowSystem.compositingActive
     readonly property bool forceSolidnessAndColorize: forceSolidness && forceColorizeFromActiveWindowScheme
 
-    readonly property bool isDistorted: item ? item.isDistorted : false
+    readonly property bool backgroundIsBusy: item ? item.isBusy : false
 
     readonly property real themeBackgroundColorBrightness: ColorizerTools.colorBrightness(theme.backgroundColor)
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
