@@ -92,7 +92,11 @@ Loader{
 
     readonly property string scheme: {
         if (applyTheme===theme || !mustBeShown) {
-            return themeExtended.defaultTheme.schemeFile;
+            if (themeExtended) {
+                return themeExtended.defaultTheme.schemeFile;
+            } else {
+                return "kdeglobals";
+            }
         }
 
         return applyTheme.schemeFile;
