@@ -235,7 +235,7 @@ bool BackgroundCache::areaIsBusy(float bright1, float bright2)
 //! the code is doing the following. It is not needed to calculate these values
 //! for the entire image that would also be cpu costly. The function takes
 //! the location of the area in the image for which we are interested.
-//! The area is splitted in fourty different subareas and for each one its brightness
+//! The area is splitted in ten different subareas and for each one its brightness
 //! is computed. The brightness average from these areas provides the entire
 //! area brightness. In order to indicate if this area is busy or not we
 //! compare the minimum and the maximum values of brightness from these
@@ -256,7 +256,7 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
 
         bool vertical = image.width() > image.height() ? false : true;
         int imageLength = image.width() > image.height() ? image.width() : image.height();
-        int areas{qMin(40,imageLength)};
+        int areas{qMin(10,imageLength)};
 
         float factor = ((float)100/areas)/100;
 
