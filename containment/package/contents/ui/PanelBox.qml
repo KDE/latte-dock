@@ -139,10 +139,8 @@ Item{
         height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
                                   panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
 
-        imagePath: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive
-                   || !root.panelShadowsActive || !themeHasShadow ? "" : "widgets/panel-background"
-        prefix: root.behaveAsPlasmaPanel || !Latte.WindowSystem.compositingActive
-                || !root.panelShadowsActive || !themeHasShadow ? "" : "shadow"
+        imagePath: hideShadow ? "" : "widgets/panel-background"
+        prefix: hideShadow ? "" : "shadow"
 
         visible: (opacity == 0) ? false : true
 
@@ -158,6 +156,11 @@ Item{
 
         //! set true by default in order to avoid crash on startup because imagePath is set to ""
         readonly property bool themeHasShadow: themeExtended ? themeExtended.hasShadow : true
+
+        readonly property bool hideShadow: (root.behaveAsPlasmaPanel && !root.editMode)
+                                           || !Latte.WindowSystem.compositingActive
+                                           || !root.panelShadowsActive
+                                           || !themeHasShadow
 
         Behavior on opacity {
             enabled: Latte.WindowSystem.compositingActive

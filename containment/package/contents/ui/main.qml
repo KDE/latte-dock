@@ -216,6 +216,10 @@ DragDrop.DropArea {
             return false;
         }
 
+        if (root.editMode) {
+            return plasmoid.configuration.panelShadows;
+        }
+
         if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground) {
             return true;
         }
