@@ -74,7 +74,7 @@ DragDrop.DropArea {
 
         return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
                 && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
-                && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidPanel && panelShadowsActive));
+                && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidStylePanel && panelShadowsActive));
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForBusyBackground)
@@ -149,7 +149,7 @@ DragDrop.DropArea {
     property bool showAppletsNumbers: false
     property bool showMetaBadge: false
     property int applicationLauncherId: -1
-    property bool solidPanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
+    property bool solidStylePanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
 
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
@@ -225,7 +225,7 @@ DragDrop.DropArea {
         if (hasExpandedApplet
                 && zoomFactor===1
                 && plasmoid.configuration.panelSize===100
-                && !(root.solidPanel && !plasmoid.configuration.panelShadows) ) {
+                && !(root.solidStylePanel && !plasmoid.configuration.panelShadows) ) {
             return true;
         }
 

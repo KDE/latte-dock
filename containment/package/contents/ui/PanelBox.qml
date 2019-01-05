@@ -306,13 +306,11 @@ Item{
                 }
             }
 
-            readonly property bool forceSolidness: (root.solidPanel && !plasmoid.configuration.solidBackgroundForMaximized)
-                                                   || root.forceSolidPanel
-                                                   || !Latte.WindowSystem.compositingActive
+            readonly property bool forceSolidness: root.forceSolidPanel || !Latte.WindowSystem.compositingActive
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
-            imagePath: root.solidPanel ? "opaque/dialogs/background" : "widgets/panel-background"
+            imagePath: root.solidStylePanel ? "opaque/dialogs/background" : "widgets/panel-background"
 
             onWidthChanged: updateEffectsArea();
             onHeightChanged: updateEffectsArea();
@@ -341,7 +339,7 @@ Item{
                     }
                 }
 
-                onSolidPanelChanged: {
+                onSolidStylePanelChanged: {
                     solidBackground.adjustPrefix();
                 }
             }
@@ -385,7 +383,7 @@ Item{
             //! the increases used when the user forces a solid background and the background
             //! must be increased in order to look ok in the corners
             property int rightIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.LeftEdge)
+                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.LeftEdge)
                         || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
@@ -393,7 +391,7 @@ Item{
             }
 
             property int leftIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.RightEdge)
+                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.RightEdge)
                         || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
@@ -401,7 +399,7 @@ Item{
             }
 
             property int topIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.BottomEdge)
+                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.BottomEdge)
                         || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else
@@ -409,7 +407,7 @@ Item{
             }
 
             property int bottomIncreaser: {
-                if (!(root.solidPanel && root.isVertical && plasmoid.location === PlasmaCore.Types.TopEdge)
+                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.TopEdge)
                         || !Latte.WindowSystem.compositingActive)
                     return 0;
                 else

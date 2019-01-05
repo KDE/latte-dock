@@ -431,8 +431,6 @@ PlasmaComponents.Page {
                 LatteExtraControls.Slider {
                     id: transparencySlider
                     Layout.fillWidth: true
-                    //! transparency can be set when the user doesn't want solidness all the time
-                    //! or when the user wants solidness only for maximized windows
                     enabled: showBackground.checked //&& !blockOpacityAdjustment
 
                     value: plasmoid.configuration.panelTransparency
@@ -487,6 +485,7 @@ PlasmaComponents.Page {
                     checked: plasmoid.configuration.blurEnabled
                     checkable: true
                     enabled: showBackground.checked
+                    tooltip: i18n("Background is blurred underneath")
 
                     onClicked: {
                         plasmoid.configuration.blurEnabled  = checked
@@ -500,6 +499,7 @@ PlasmaComponents.Page {
                     checked: plasmoid.configuration.panelShadows
                     checkable: true
                     enabled: showBackground.checked
+                    tooltip: i18n("Background shows its shadows")
 
                     onClicked: {
                         plasmoid.configuration.panelShadows  = checked
@@ -509,10 +509,11 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     id: solidBackground
                     Layout.fillWidth: true
-                    text: i18n("Solid")
+                    text: i18n("Solid Style")
                     checked: plasmoid.configuration.solidPanel
                     checkable: true
                     enabled: showBackground.checked
+                    tooltip: i18n("Background uses solid style image provided from plasma theme")
 
                     onClicked: {
                         plasmoid.configuration.solidPanel = checked
