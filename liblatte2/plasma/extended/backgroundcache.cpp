@@ -223,16 +223,19 @@ float BackgroundCache::brightnessFromArea(QImage &image, int firstRow, int first
 
 bool BackgroundCache::areaIsBusy(float bright1, float bright2)
 {
-    int brightDifference{80};
+    bool bright1IsLight = bright1>=123;
+    bool bright2IsLight = bright2>=123;
 
-    return qFabs(bright1-bright2)>=brightDifference;
+    bool inBounds = bright1>=0 && bright2<=255 && bright2>=0 && bright2<=255;
+
+    return !inBounds || bright1IsLight != bright2IsLight;
 }
 
 //! In order to calculate the brightness and busy hints for specific image
 //! the code is doing the following. It is not needed to calculate these values
 //! for the entire image that would also be cpu costly. The function takes
 //! the location of the area in the image for which we are interested.
-//! The area is splitted is ten different subareas and for each one its brightness
+//! The area is splitted in fourty different subareas and for each one its brightness
 //! is computed. The brightness average from these areas provides the entire
 //! area brightness. In order to indicate if this area is busy or not we
 //! compare the minimum and the maximum values of brightness from these
@@ -246,13 +249,14 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
         float brightness{-1000};
         float maxBrightness{0};
         float minBrightness{255};
-        int areas{10};
 
-        int maskHeight = (0.08 * image.height());
-        int maskWidth = (0.05 * image.width());
+        //! 24px. should be enough because the views are always snapped to edges
+        int maskHeight = qMin(24,image.height()); // (0.08 * image.height());
+        int maskWidth = qMin(24,image.width()); //(0.05 * image.width());
 
         bool vertical = image.width() > image.height() ? false : true;
         int imageLength = image.width() > image.height() ? image.width() : image.height();
+        int areas{qMin(40,imageLength)};
 
         float factor = (float)areas/100;
 
