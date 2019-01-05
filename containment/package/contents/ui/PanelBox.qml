@@ -300,7 +300,7 @@ Item{
                     anchors.fill: parent
 
                     fillMode: Image.Tile
-                    source: hasBackground ? latteView.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
+                    source: hasBackground ? latteView.managedLayout.background : "../icons/"+editModeVisual.layoutColor+"print.jpg"
 
                     readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                               true : false
