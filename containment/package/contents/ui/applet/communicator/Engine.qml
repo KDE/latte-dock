@@ -87,24 +87,16 @@ Item{
                 overlayInitTimer.start();
             }
         }
-
     }
     //! END OF CONNECTIONS
 
-    //! BEGIN OF BINDINGS
-    Binding{
-        target: appletRootItem
-        property: "latteBridge"
-        when: bridgeLoader.active
-        value: bridgeLoader.item
-    }
-    //! END OF BINDINGS
-
+    //! BEGIN OF LOADERS
     Loader{
         id: bridgeLoader
         active: appletContainsLatteBridge
         sourceComponent: LatteBridge{}
     }
+    //! END OF LOADERS
 
     //! BEGIN OF TIMERS
     //a timer that is used in  order to init some Communicator values

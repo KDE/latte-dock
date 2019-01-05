@@ -78,4 +78,11 @@ Item{
     //       That means that the applet is responsible to provide a coherent
     //       parabolic effect experience.
     // @since: 0.9
+
+
+    //! Initialize
+
+    Component.onCompleted: {
+        appletRootItem.latteBridge = settings;
+    }
 }
