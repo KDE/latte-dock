@@ -221,29 +221,44 @@ float BackgroundCache::brightnessFromArea(QImage &image, int firstRow, int first
     return areaBrightness;
 }
 
-bool BackgroundCache::areaIsBusy(float bright1, float bright2, float bright3)
+bool BackgroundCache::areaIsBusy(float bright1, float bright2)
 {
-    int brightDifference{30};
+    int brightDifference{80};
 
-    return (qFabs(bright1-bright2)>=brightDifference
-            || qFabs(bright2-bright3)>=brightDifference
-            || qFabs(bright1-bright3)>=brightDifference);
+    return qFabs(bright1-bright2)>=brightDifference;
 }
 
+//! In order to calculate the brightness and busy hints for specific image
+//! the code is doing the following. It is not needed to calculate these values
+//! for the entire image that would also be cpu costly. The function takes
+//! the location of the area in the image for which we are interested.
+//! The area is splitted is ten different subareas and for each one its brightness
+//! is computed. The brightness average from these areas provides the entire
+//! area brightness. In order to indicate if this area is busy or not we
+//! compare the minimum and the maximum values of brightness from these
+//! subareas. If the difference it too big then the area is busy
 void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::Location location)
 {
     //! if it is a local image
     QImage image(imageFile);
 
     if (image.format() != QImage::Format_Invalid) {
+        float brightness{-1000};
+        float maxBrightness{0};
+        float minBrightness{255};
+        int areas{10};
+
         int maskHeight = (0.08 * image.height());
         int maskWidth = (0.05 * image.width());
 
-        float areaBrightness = -1000;
+        bool vertical = image.width() > image.height() ? false : true;
+        int imageLength = image.width() > image.height() ? image.width() : image.height();
 
-        float area1Brightness = -1000; float area2Brightness = -1000; float area3Brightness = -1000;
-        float area1p = 0.25; float area2p=0.35; float area3p=0.4;
+        float factor = (float)areas/100;
 
+        QList<float> subBrightness;
+
+        //! Iterating algorigthm
         int firstRow = 0; int firstColumn = 0; int endRow = 0; int endColumn = 0;
 
         //! horizontal mask calculations
@@ -253,38 +268,58 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
             firstRow = image.height() - maskHeight - 1; endRow = image.height() - 1;
         }
 
-        if (location == Plasma::Types::TopEdge || location == Plasma::Types::BottomEdge) {
-            firstColumn = 0; endColumn = (area1p*image.width()) - 1;
-            area1Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+        if (!vertical) {
+            for (int i=1; i<=areas; ++i) {
+                float subFactor = ((float)i) * factor;
+                firstColumn = endColumn+1; endColumn = (subFactor*imageLength) - 1;
+                int tempBrightness = brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+                subBrightness.append(tempBrightness);
 
-            firstColumn = endColumn+1; endColumn = ((area1p+area2p)*image.width()) - 1;
-            area2Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
-
-            firstColumn = endColumn+1; endColumn = (image.width() - 1);
-            area3Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+                if (tempBrightness > maxBrightness) {
+                    maxBrightness = tempBrightness;
+                }
+                if (tempBrightness < minBrightness) {
+                    minBrightness = tempBrightness;
+                }
+            }
         }
 
         //! vertical mask calculations
+
         if (location == Plasma::Types::LeftEdge) {
             firstColumn = 0; endColumn = maskWidth;
         } else if (location == Plasma::Types::RightEdge) {
             firstColumn = image.width() - 1 - maskWidth; endColumn = image.width() - 1;
         }
 
-        if (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge) {
-            firstRow = 0; endRow = image.height() - 1;
-            area1Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+        if (vertical) {
+            for (int i=1; i<=areas; ++i) {
+                float subFactor = ((float)i) * factor;
+                firstRow = endRow+1; endRow = (subFactor*imageLength) - 1;
+                int tempBrightness = brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+                subBrightness.append(tempBrightness);
 
-            firstRow = endRow+1; endRow = ((area1p+area2p)*image.height()) - 1;
-            area2Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+                if (tempBrightness > maxBrightness) {
+                    maxBrightness = tempBrightness;
+                }
+                if (tempBrightness < minBrightness) {
+                    minBrightness = tempBrightness;
+                }
+            }
+        }
+        //! compute total brightness for this area
+        float subBrightnessSum = 0;
 
-            firstRow = endRow+1; endRow = (image.height() - 1);
-            area3Brightness =  brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
+        for (int i=0; i<subBrightness.count(); ++i) {
+            subBrightnessSum = subBrightnessSum + subBrightness[i];
         }
 
-        //! compute total brightness for this area
-        areaBrightness = (area1Brightness + area2Brightness + area3Brightness) / 3;
-        bool areaBusy = areaIsBusy(area1Brightness, area2Brightness, area3Brightness);
+        brightness = subBrightnessSum / subBrightness.count();
+
+        bool areaBusy = areaIsBusy(minBrightness, maxBrightness);
+
+        qDebug() << " Hints for Background image: " << imageFile;
+        qDebug() << " Brightness: " << brightness << " Busy: " << areaBusy << " minBright:" << minBrightness << " maxBright:" << maxBrightness;
 
         if (!m_hintsCache.keys().contains(imageFile)) {
             m_hintsCache[imageFile] = EdgesHash();
@@ -292,11 +327,10 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
 
         if (!m_hintsCache[imageFile].contains(location)) {
             imageHints iHints;
-            iHints.brightness = areaBrightness;
-            iHints.busy =areaBusy;
+            iHints.brightness = brightness; iHints.busy = areaBusy;
             m_hintsCache[imageFile].insert(location, iHints);
         } else {
-            m_hintsCache[imageFile][location].brightness = areaBrightness;
+            m_hintsCache[imageFile][location].brightness = brightness;
             m_hintsCache[imageFile][location].busy = areaBusy;
         }
     }

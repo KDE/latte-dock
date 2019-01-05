@@ -67,7 +67,7 @@ private slots:
 private:
     BackgroundCache(QObject *parent = nullptr);
 
-    bool areaIsBusy(float bright1, float bright2, float bright3);
+    bool areaIsBusy(float bright1, float bright2);
     bool busyForFile(QString imageFile, Plasma::Types::Location location);
     bool isDesktopContainment(const KConfigGroup &containment) const;
 
