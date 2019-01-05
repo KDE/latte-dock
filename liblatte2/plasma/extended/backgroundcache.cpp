@@ -258,7 +258,7 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
         int imageLength = image.width() > image.height() ? image.width() : image.height();
         int areas{qMin(40,imageLength)};
 
-        float factor = (float)areas/100;
+        float factor = ((float)100/areas)/100;
 
         QList<float> subBrightness;
 
@@ -276,6 +276,8 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
             for (int i=1; i<=areas; ++i) {
                 float subFactor = ((float)i) * factor;
                 firstColumn = endColumn+1; endColumn = (subFactor*imageLength) - 1;
+                endColumn = qMin(endColumn, imageLength-1);
+
                 int tempBrightness = brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
                 subBrightness.append(tempBrightness);
 
@@ -289,7 +291,6 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
         }
 
         //! vertical mask calculations
-
         if (location == Plasma::Types::LeftEdge) {
             firstColumn = 0; endColumn = maskWidth;
         } else if (location == Plasma::Types::RightEdge) {
@@ -300,6 +301,8 @@ void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::
             for (int i=1; i<=areas; ++i) {
                 float subFactor = ((float)i) * factor;
                 firstRow = endRow+1; endRow = (subFactor*imageLength) - 1;
+                endRow = qMin(endRow, imageLength-1);
+
                 int tempBrightness = brightnessFromArea(image, firstRow, firstColumn, endRow, endColumn);
                 subBrightness.append(tempBrightness);
 
