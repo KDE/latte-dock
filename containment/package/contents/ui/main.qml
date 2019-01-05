@@ -89,19 +89,23 @@ DragDrop.DropArea {
     property bool editMode: editModeVisual.inEditMode
     property bool windowIsTouching: latteView && latteView.visibility && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped || hasExpandedApplet)
 
-    property bool forceSemiTransparentPanel: ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
-                                              || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
-                                             && Latte.WindowSystem.compositingActive
+    property bool forceSemiTransparentPanel: Latte.WindowSystem.compositingActive && !root.editMode
+                                             && ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
+                                                 || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
 
-    property bool forceSolidPanel:  plasmoid.configuration.solidBackgroundForMaximized && latteView && latteView.visibility
+    property bool forceSolidPanel: (plasmoid.configuration.solidBackgroundForMaximized
+                                    && latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
-                                    &&(latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped || hasExpandedApplet
-                                       || showAppletsNumbers || showMetaBadge)
+                                    && !root.editMode
+                                    && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped || hasExpandedApplet
+                                       || showAppletsNumbers || showMetaBadge))
+                                    || !Latte.WindowSystem.compositingActive
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && latteView && latteView.visibility
-                                         && !(latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped)
                                          && Latte.WindowSystem.compositingActive
+                                         && !root.editMode
+                                         && !(latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowSnapped)
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool forcePanelForBusyBackground: root.forceTransparentPanel && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy

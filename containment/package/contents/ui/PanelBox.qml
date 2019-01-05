@@ -297,9 +297,7 @@ Item{
             opacity: {
                 if (forceSolidness) {
                     return 1;
-                } else if (root.forcePanelForBusyBackground
-                           || (!plasmoid.configuration.useThemePanel
-                               && plasmoid.configuration.solidBackgroundForMaximized)) {
+                } else if (root.forcePanelForBusyBackground || root.forceTransparentPanel) {
                     return 0;
                 } else {
                     return plasmoid.configuration.panelTransparency / 100;
