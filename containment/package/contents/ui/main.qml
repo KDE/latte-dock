@@ -78,7 +78,7 @@ DragDrop.DropArea {
     }
 
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForBusyBackground)
-                               || (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+                               //|| (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
