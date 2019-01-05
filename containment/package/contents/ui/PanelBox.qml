@@ -21,6 +21,7 @@
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
+import QtGraphicalEffects 1.0
 
 import org.kde.plasma.plasmoid 2.0
 
@@ -286,6 +287,39 @@ Item{
             Behavior on opacity{
                 enabled: !Latte.WindowSystem.compositingActive
                 NumberAnimation { duration: 0 }
+            }
+        }
+
+        //! Show a fake blurness under panel background for editMode visual feedback
+        Loader {
+            anchors.fill: solidBackground
+            active: editModeVisual.inEditMode && root.userShowPanelBackground && plasmoid.configuration.blurEnabled
+            sourceComponent: Item{
+                Image{
+                    id: backTiler
+                    anchors.fill: parent
+
+                    fillMode: Image.Tile
+                    source: hasBackground ? latteView.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
+
+                    readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
+                                                              true : false
+                }
+
+                ShaderEffectSource {
+                    id: effectSource
+
+                    sourceItem: backTiler
+                    anchors.fill: backTiler
+                    sourceRect: Qt.rect(0,0, width, height)
+                }
+
+                FastBlur{
+                    id: blur
+                    anchors.fill: effectSource
+                    source: effectSource
+                    radius: 35
+                }
             }
         }
 
