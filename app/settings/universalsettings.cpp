@@ -330,6 +330,13 @@ void UniversalSettings::setAutostart(bool state)
         autostartFile.remove();
         emit autostartChanged();
     } else if (state && metaFile.exists()) {
+        //! check if autostart folder exists and create otherwise
+        QDir autostartDir(QDir::homePath() + "/.config/autostart");
+        if (!autostartDir.exists()) {
+            QDir configDir(QDir::homePath() + "/.config");
+            configDir.mkdir("autostart");
+        }
+
         metaFile.copy(autostartFile.fileName());
         //! I haven't added the flag "OnlyShowIn=KDE;" into the autostart file
         //! because I fall onto a Plasma 5.8 case that this flag
