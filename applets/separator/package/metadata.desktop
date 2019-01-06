@@ -76,7 +76,7 @@ Keywords[sk]=oddeľovač
 Keywords[sv]=avskiljare
 Keywords[uk]=Роздільник
 Keywords[x-test]=xxseparatorxx
-Keywords[zh_CN]=分隔栏
+Keywords[zh_CN]=分隔符
 Keywords[zh_TW]=分隔器
 Type=Service
 
