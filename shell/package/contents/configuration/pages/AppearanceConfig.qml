@@ -707,9 +707,9 @@ PlasmaComponents.Page {
                 id: solidForMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
-                text: i18n("Force solid background for maximized or snapped windows")
+                text: i18n("Force solid background when touching any window")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
-                tooltip: i18n("The panel background removes its transparency setting \n when there is a maximized or snapped window")
+                tooltip: i18n("Background removes its transparency setting when a window is touching")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
 
                 onClicked: {
@@ -720,9 +720,9 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: onlyOnMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide background for not maximized windows")
+                text: i18n("Hide background when not touching any window")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                tooltip: i18n("The panel background becomes transparent except if \nthere is a maximized or snapped window")
+                tooltip: i18n("Background becomes transparent except when a window is touching")
 
                 onClicked: {
                     plasmoid.configuration.backgroundOnlyOnMaximized = checked;
@@ -733,9 +733,9 @@ PlasmaComponents.Page {
                 id: colorizeTransparentPanelsChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
-                text: i18n("Monochrome contents when panel is transparent")
+                text: i18n("Monochrome contents when not touching any window")
                 checked: plasmoid.configuration.colorizeTransparentPanels
-                tooltip: i18n("The panel contents are colorized in order to improve contrast \nwith the underlying desktop background when the panel is transparent")
+                tooltip: i18n("Contents are colorized in order to improve contrast with the underlying desktop background")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
 
                 enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
@@ -751,7 +751,7 @@ PlasmaComponents.Page {
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
                 text: i18n("Paint contents based on active window scheme")
                 checked: plasmoid.configuration.colorizeFromActiveWindowScheme
-                tooltip: i18n("The panel contents are colorized from active window scheme \nwhen that window is maximized or is touching the panel.")
+                tooltip: i18n("Contents are colorized from active window scheme when that window is touching the view")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
 
                 enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
@@ -764,8 +764,9 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: hideShadowsOnMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide panel shadow for maximized windows")
+                text: i18n("Hide background shadow for maximized windows")
                 checked: plasmoid.configuration.disablePanelShadowForMaximized
+                tooltip: i18n("Background shadows become hidden when a maximized window is touching the view")
 
                 onClicked: {
                     plasmoid.configuration.disablePanelShadowForMaximized = checked;
