@@ -138,9 +138,11 @@ private:
 
     bool m_blockFocusLost{false};
     bool m_blockFocusLostOnStartup{true};
+    bool m_originalByPassWM{false};
     bool m_inReverse{false};    //! it is used by the borders
     bool m_showInlineProperties{false};
 
+    Latte::Types::Visibility m_originalMode{Latte::Types::DodgeActive};
     Latte::Types::SettingsComplexity m_complexity{Latte::Types::BasicSettings};
 
     QRect m_geometryWhenVisible;

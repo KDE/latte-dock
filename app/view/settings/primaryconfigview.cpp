@@ -112,6 +112,9 @@ PrimaryConfigView::~PrimaryConfigView()
 void PrimaryConfigView::init()
 {
     qDebug() << "dock config view : initialization started...";
+    m_originalByPassWM = m_latteView->byPassWM();
+    m_originalMode = m_latteView->visibility()->mode();
+
     loadConfig();
 
     setDefaultAlphaBuffer(true);
@@ -311,19 +314,17 @@ void PrimaryConfigView::hideEvent(QHideEvent *ev)
     QQuickWindow::hideEvent(ev);
 
     const auto mode = m_latteView->visibility()->mode();
-    const auto previousByPassWMBehavior = (m_latteView->flags() & Qt::BypassWindowManagerHint) ? true : false;
 
-    /*
-    //! TOFIX: This code was creating crashed when switching between different screens and the mode
-    //! was AlwaysVisible, it must be reconsidered what was its purpose and if it is still needed
-    //!
-    if (mode == Types::AlwaysVisible || mode == Types::WindowsGoBelow) {
-        if (!previousByPassWMBehavior) {
+    if ((mode == Types::AlwaysVisible || mode == Types::WindowsGoBelow)
+            && !(m_originalMode == Types::AlwaysVisible || m_originalMode == Types::WindowsGoBelow)) {
+        //! mode changed to AlwaysVisible OR WindowsGoBelow FROM Dodge mode
+        if (m_originalByPassWM) {
+            //! if original by pass is active
             m_latteView->managedLayout()->recreateView(m_latteView->containment());
         }
-    } else if (m_latteView->byPassWM() != previousByPassWMBehavior) {
+    } else if (m_latteView->byPassWM() != m_originalByPassWM) {
         m_latteView->managedLayout()->recreateView(m_latteView->containment());
-    } */
+    }
 
     deleteLater();
 }
