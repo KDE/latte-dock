@@ -413,7 +413,7 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
         if (containment()->status() >= Plasma::Types::NeedsAttentionStatus &&
             containment()->status() != Plasma::Types::HiddenStatus) {
             setBlockHiding(true);
-        } else {
+        } else if (!containment()->isUserConfiguring()){
             setBlockHiding(false);
         }
     }
