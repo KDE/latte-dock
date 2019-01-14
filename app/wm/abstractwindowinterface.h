@@ -89,6 +89,7 @@ public:
     virtual void enableBlurBehind(QWindow &view) const = 0;
     virtual void setEdgeStateFor(QWindow *view, bool active) const = 0;
 
+    virtual void releaseMouseEventFor(WindowId wid) const = 0;
     virtual void requestToggleMaximized(WindowId wid) const = 0;
     virtual void requestMoveWindow(WindowId wid, QPoint from) const = 0;
     virtual bool windowCanBeDragged(WindowId wid) const = 0;

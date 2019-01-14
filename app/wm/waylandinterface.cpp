@@ -370,6 +370,11 @@ bool WaylandInterface::windowCanBeDragged(WindowId wid) const
     return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
 }
 
+void WaylandInterface::releaseMouseEventFor(WindowId wid) const
+{
+    // this isnt really needed under wayland
+}
+
 void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     if (windowCanBeDragged(wid)) {

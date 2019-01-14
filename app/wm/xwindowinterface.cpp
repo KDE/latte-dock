@@ -333,6 +333,28 @@ bool XWindowInterface::windowCanBeDragged(WindowId wid) const
     return (winfo.isValid() && !winfo.isPlasmaDesktop() && !winfo.hasSkipTaskbar());
 }
 
+void XWindowInterface::releaseMouseEventFor(WindowId wid) const
+{
+    auto connection = QX11Info::connection();
+
+    xcb_button_release_event_t releaseEvent;
+    memset(&releaseEvent, 0, sizeof(releaseEvent));
+
+    releaseEvent.response_type = XCB_BUTTON_RELEASE;
+    releaseEvent.event =  wid.toInt();
+    releaseEvent.child = XCB_WINDOW_NONE;
+    releaseEvent.root = QX11Info::appRootWindow();
+    releaseEvent.event_x = -1;
+    releaseEvent.event_y = -1;
+    releaseEvent.root_x = -1;
+    releaseEvent.root_y = -1;
+    releaseEvent.detail = XCB_BUTTON_INDEX_1;
+    releaseEvent.state = XCB_BUTTON_MASK_1;
+    releaseEvent.time = XCB_CURRENT_TIME;
+    releaseEvent.same_screen = true;
+    xcb_send_event( connection, false, wid.toInt(), XCB_EVENT_MASK_BUTTON_RELEASE, reinterpret_cast<const char*>(&releaseEvent));
+}
+
 void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from) const
 {
     WindowInfoWrap wInfo = requestInfo(wid);

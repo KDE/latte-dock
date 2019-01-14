@@ -1151,7 +1151,17 @@ void VisibilityManager::requestMoveActiveWindow(int localX, int localY)
     //active window can be dragged only when it is in the same screen
     if (actInfo.isValid() && !actInfo.geometry().isNull() && m_latteView->screenGeometry().contains(actInfo.geometry().center())) {
         QPoint globalPoint{m_latteView->x() + localX, m_latteView->y() + localY};
+
         wm->requestMoveWindow(actInfo.wid(), globalPoint);
+
+        //! This timer is needed because otherwise the mouse position
+        //! in the dragged window changes to TopLeft corner
+        QTimer::singleShot(250, this, [&, actInfo, globalPoint]() {
+            wm->releaseMouseEventFor(m_latteView->winId());
+        });
+
+        setContainsMouse(false);
+        updateHiddenState();
     }
 }
 
