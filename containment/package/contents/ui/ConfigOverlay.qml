@@ -151,6 +151,7 @@ MouseArea {
         handle.height = currentApplet.height;
 
         lockButton.checked = currentApplet.lockZoom;
+        colorizingButton.checked = !currentApplet.userBlocksColorizing;
 
         repositionHandler.restart();
     }
@@ -411,6 +412,7 @@ MouseArea {
                 lockButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== "org.kde.plasma.systemtray")
                         && (currentApplet.applet.pluginName !== root.plasmoidName)
                         && !currentApplet.isSeparator
+                colorizingButton.visible = root.forceColorizer && !currentApplet.appletBlocksColorizing;
 
                 label.text = currentApplet.isInternalViewSplitter ? i18n("Justify Splitter") : currentApplet.applet.title;
             } else {
@@ -418,6 +420,7 @@ MouseArea {
                     configureButton.visible = false;
                     closeButton.visible = false;
                     lockButton.visible = false;
+                    colorizingButton.visible = false;
                     label.text = ruler.tooltip;
 
                     tooltip.visible = true;
@@ -478,7 +481,18 @@ MouseArea {
                             when: currentApplet === ruler
                             value: ruler.tooltip
                         }
+                    }
 
+                    PlasmaComponents.ToolButton{
+                        id: colorizingButton
+                        checkable: true
+                        iconSource: "color-picker"
+                        tooltip: i18n("Enable/Disable painting  for this applet")
+
+                        onCheckedChanged: {
+                            currentApplet.userBlocksColorizing = !checked;
+                            root.layoutManagerSaveOptions();
+                        }
                     }
 
                     PlasmaComponents.ToolButton{
@@ -489,7 +503,7 @@ MouseArea {
 
                         onCheckedChanged: {
                             currentApplet.lockZoom = checked;
-                            root.layoutManagerSaveLocks();
+                            root.layoutManagerSaveOptions();
                         }
                     }
 

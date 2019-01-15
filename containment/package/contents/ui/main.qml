@@ -1110,8 +1110,8 @@ DragDrop.DropArea {
         LayoutManager.save();
     }
 
-    function layoutManagerSaveLocks() {
-        LayoutManager.saveLocks();
+    function layoutManagerSaveOptions() {
+        LayoutManager.saveOptions();
     }
 
     function mouseInCanBeHoveredApplet(){

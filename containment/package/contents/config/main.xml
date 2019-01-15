@@ -12,6 +12,9 @@
     <entry name="lockedZoomApplets" type="String">
       <label>applets that lock the zoom effect</label>
     </entry>
+    <entry name="userBlocksColorizingApplets" type="String">
+      <label>applets that do not want to be colorized in any case</label>
+    </entry>
     <entry name="panelPosition" type="Enum">
       <choices>
             <choice name="Center"/>

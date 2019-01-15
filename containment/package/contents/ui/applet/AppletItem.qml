@@ -57,6 +57,9 @@ Item {
         else
             return false;
     }
+
+    property bool userBlocksColorizing: false
+    property bool appletBlocksColorizing: communicator.disableLatteSideColoring
     property bool showZoomed: false
     property bool lockZoom: false
     property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
@@ -567,7 +570,8 @@ Item {
         opacity: mustBeShown ? 1 : 0
 
         readonly property bool mustBeShown: colorizerManager.mustBeShown
-                                            && !communicator.disableLatteSideColoring
+                                            && !container.userBlocksColorizing
+                                            && !container.appletBlocksColorizing
 
         Behavior on opacity {
             NumberAnimation {

@@ -88,7 +88,7 @@ function restore() {
 
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
     save();
-    restoreLocks();
+    restoreOptions();
 
     inRestore = false;
 
@@ -96,8 +96,20 @@ function restore() {
     root.updateLayouts();
 }
 
-function restoreLocks() {
-    var configString = String(plasmoid.configuration.lockedZoomApplets)
+function restoreOptions() {
+    restoreOption("lockedZoomApplets");
+    restoreOption("userBlocksColorizingApplets");
+}
+
+function restoreOption(option) {
+    var configString;
+
+    if (option === "lockedZoomApplets") {
+        configString = String(plasmoid.configuration.lockedZoomApplets);
+    } else if (option === "userBlocksColorizingApplets") {
+        configString = String(plasmoid.configuration.userBlocksColorizingApplets);
+    }
+
     //array, a cell for encoded item order
     var itemsArray = configString.split(";");
 
@@ -106,7 +118,11 @@ function restoreLocks() {
             var child = layout.children[j];
 
             if (child.applet && (child.applet.id == itemsArray[i])) {
-                child.lockZoom = true;
+                if (option === "lockedZoomApplets") {
+                    child.lockZoom = true;
+                } else if (option === "userBlocksColorizingApplets") {
+                    child.userBlocksColorizing = true;
+                }
             }
         }
     }
@@ -170,18 +186,29 @@ function save() {
     plasmoid.configuration.appletOrder = ids.join(';');
 }
 
-function saveLocks() {
+function saveOptions() {
+    saveOption("lockedZoomApplets");
+    saveOption("userBlocksColorizingApplets");
+}
+
+function saveOption(option) {
     var ids = new Array();
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
 
-        if (child.applet && child.lockZoom) {
+        if (child.applet
+                && (option === "lockedZoomApplets" && child.lockZoom)
+                || (option === "userBlocksColorizingApplets" && child.userBlocksColorizing)) {
             ids.push(child.applet.id);
         }
     }
-    plasmoid.configuration.lockedZoomApplets = ids.join(';');
-}
 
+    if (option === "lockedZoomApplets") {
+        plasmoid.configuration.lockedZoomApplets = ids.join(';');
+    } else if (option === "userBlocksColorizingApplets") {
+        plasmoid.configuration.userBlocksColorizingApplets = ids.join(';');
+    }
+}
 
 function removeApplet (applet) {
     for (var i = layout.children.length - 1; i >= 0; --i) {
