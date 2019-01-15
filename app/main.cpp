@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 
         if (lockFile.getLockInfo(&pid, nullptr, nullptr)) {
             kill(static_cast<pid_t>(pid), SIGINT);
-            timeout = 3000;
+            timeout = -1;
         }
     }
 
