@@ -44,7 +44,7 @@ MouseArea{
         if (latteView.visibility.activeWindowCanBeDragged()) {
             lastPressX = mouse.x;
             lastPressY = mouse.y;
-            drawWindowTimer.start();
+            dragWindowTimer.start();
         }
     }
 
@@ -61,13 +61,13 @@ MouseArea{
         var tryDrag = mainArea.pressed && (stepX>threshold || stepY>threshold);
 
         if ( tryDrag && latteView.visibility.activeWindowCanBeDragged()) {
-            drawWindowTimer.stop();
+            dragWindowTimer.stop();
             activateDragging();
         }
     }
 
     onDoubleClicked: {
-        drawWindowTimer.stop();
+        dragWindowTimer.stop();
         restoreGrabberTimer.stop();
         latteView.visibility.requestToggleMaximizeForActiveWindow();
         //tasksModel.requestToggleMaximized(tasksModel.activeTask);
@@ -80,7 +80,7 @@ MouseArea{
     }
 
     Timer {
-        id: drawWindowTimer
+        id: dragWindowTimer
         interval: 500
         onTriggered: {
             if (mainArea.pressed && latteView.visibility.activeWindowCanBeDragged()) {
