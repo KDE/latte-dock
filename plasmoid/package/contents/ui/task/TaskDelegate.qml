@@ -762,7 +762,7 @@ MouseArea{
 
         ////disable hover effect///
         if (isWindow && root.highlightWindows && !containsMouse) {
-            root.windowsHovered(model.LegacyWinIdList, false);
+            root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , false);
         }
     }
 
@@ -969,7 +969,7 @@ MouseArea{
         else{
             if (model.IsGroupParent) {
                 if (Latte.WindowSystem.compositingActive && backend.canPresentWindows()) {
-                    root.presentWindows(model.LegacyWinIdList);
+                    root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
                 } else {
                     if ((windowsPreviewDlg.visualParent === previewsVisualParent)&&(windowsPreviewDlg.visible)) {
                         windowsPreviewDlg.hide(3);
@@ -1024,7 +1024,7 @@ MouseArea{
         }
 
         toolTipDelegate.windows = Qt.binding(function() {
-            return model.LegacyWinIdList;
+            return root.plasma515 ? model.WinIdList : model.LegacyWinIdList ;
         });
         toolTipDelegate.isGroup = Qt.binding(function() {
             return model.IsGroupParent == true;
@@ -1427,7 +1427,7 @@ MouseArea{
                         mainItemContainer.preparePreviewWindow(false);
                         windowsPreviewDlg.show(mainItemContainer);
                     } else if (mainItemContainer.isWindow && root.highlightWindows) {
-                        root.windowsHovered(model.LegacyWinIdList, mainItemContainer.containsMouse);
+                        root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , mainItemContainer.containsMouse);
                     }
                 }
 
