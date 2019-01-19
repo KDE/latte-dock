@@ -44,7 +44,7 @@ Loader{
     readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
     property bool mustBeShown: active && (!root.forceSolidPanel || forceSolidnessAndColorize)
-    //! when forceSemiTransparentPanel is enabled because of snapped or maximized etc. windows
+    //! when forceSemiTransparentPanel is enabled because of touching or maximized etc. windows
     //! then the colorizer could be enabled for low panel transparency levels (<40%)
                                && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
                                && !maximizedWindowTitleBarBehavesAsPanelBackground

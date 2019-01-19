@@ -614,6 +614,8 @@ void VisibilityManager::checkAllWindows()
 bool VisibilityManager::intersects(const WindowInfoWrap &winfo)
 {
     return (!winfo.isMinimized()
+            && wm->isOnCurrentDesktop(winfo.wid())
+            && wm->isOnCurrentActivity(winfo.wid())
             && winfo.geometry().intersects(m_viewGeometry)
             && !winfo.isShaded());
 }
@@ -819,7 +821,7 @@ void VisibilityManager::setEnabledDynamicBackground(bool active)
 
        // ATTENTION: this was creating a crash under wayland environment through the blur effect
        // setExistsWindowMaximized(false);
-       // setExistsWindowSnapped(false);
+       // setExistsWindowTouching(false);
     }
 
     emit enabledDynamicBackgroundChanged();
@@ -841,20 +843,20 @@ void VisibilityManager::setExistsWindowMaximized(bool windowMaximized)
     emit existsWindowMaximizedChanged();
 }
 
-bool VisibilityManager::existsWindowSnapped() const
+bool VisibilityManager::existsWindowTouching() const
 {
-    return windowIsSnappedFlag;
+    return windowIsTouchingFlag;
 }
 
-void VisibilityManager::setExistsWindowSnapped(bool windowSnapped)
+void VisibilityManager::setExistsWindowTouching(bool windowTouching)
 {
-    if (windowIsSnappedFlag == windowSnapped) {
+    if (windowIsTouchingFlag == windowTouching) {
         return;
     }
 
-    windowIsSnappedFlag = windowSnapped;
+    windowIsTouchingFlag = windowTouching;
 
-    emit existsWindowSnappedChanged();
+    emit existsWindowTouchingChanged();
 }
 
 SchemeColors *VisibilityManager::touchingWindowScheme() const
@@ -884,59 +886,6 @@ void VisibilityManager::updateAvailableScreenGeometry()
 
     if (tempAvailableScreenGeometry != availableScreenGeometry) {
         availableScreenGeometry = tempAvailableScreenGeometry;
-
-        snappedWindowsGeometries.clear();
-
-        //! for top view the snapped geometries would be
-        int halfWidth1 = std::floor(availableScreenGeometry.width() / 2);
-        int halfWidth2 = availableScreenGeometry.width() - halfWidth1;
-        int halfHeight1 = std::floor((availableScreenGeometry.height()) / 2);
-        int halfHeight2 = availableScreenGeometry.height() - halfHeight1;
-
-        int x1 = availableScreenGeometry.x();
-        int x2 = availableScreenGeometry.x() + halfWidth1;
-        int y1 = availableScreenGeometry.y();
-        int y2 = availableScreenGeometry.y() + halfHeight1;
-
-        QRect snap1;
-        QRect snap2;
-        QRect snap3;
-        QRect snap4;
-
-        if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-            if (m_latteView->location() == Plasma::Types::TopEdge) {
-                snap1 = QRect(x1, y1, halfWidth1, halfHeight1);
-                snap3 = QRect(x2, y1, halfWidth2, halfHeight1);
-            } else if ((m_latteView->location() == Plasma::Types::BottomEdge)) {
-                snap1 = QRect(x1, y2, halfWidth1, halfHeight2);
-                snap3 = QRect(x2, y2, halfWidth2, halfHeight2);
-            }
-
-            snap2 = QRect(x1, y1, halfWidth1, availableScreenGeometry.height());
-            snap4 = QRect(x2, y1, halfWidth2, availableScreenGeometry.height());
-        } else if (m_latteView->formFactor() == Plasma::Types::Vertical) {
-            QRect snap5;
-
-            if (m_latteView->location() == Plasma::Types::LeftEdge) {
-                snap1 = QRect(x1, y1, halfWidth1, halfHeight1);
-                snap3 = QRect(x1, y2, halfWidth1, halfHeight2);
-                snap5 = QRect(x1, y1, halfWidth1, availableScreenGeometry.height());
-            } else if ((m_latteView->location() == Plasma::Types::RightEdge)) {
-                snap1 = QRect(x2, y1, halfWidth2, halfHeight1);
-                snap3 = QRect(x2, y2, halfWidth2, halfHeight2);
-                snap5 = QRect(x2, y1, halfWidth2, availableScreenGeometry.height());
-            }
-
-            snap2 = QRect(x1, y1, availableScreenGeometry.width(), halfHeight1);
-            snap4 = QRect(x1, y2, availableScreenGeometry.width(), halfHeight2);
-
-            snappedWindowsGeometries.append(snap5);
-        }
-
-        snappedWindowsGeometries.append(snap1);
-        snappedWindowsGeometries.append(snap2);
-        snappedWindowsGeometries.append(snap3);
-        snappedWindowsGeometries.append(snap4);
 
         updateDynamicBackgroundWindowFlags();
     }
@@ -984,14 +933,14 @@ bool VisibilityManager::isTouchingPanelEdge(const WindowInfoWrap &winfo)
 
 void VisibilityManager::updateDynamicBackgroundWindowFlags()
 {
-    bool foundSnap{false};
+    bool foundTouch{false};
     bool foundMaximized{false};
 
     //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
     //! maybe a garbage collector here is a good idea!!!
     bool existsFaultyWindow{false};
     WindowId maxWinId;
-    WindowId snapWinId;
+    WindowId touchWinId;
 
     for (const auto &winfo : windows) {
         if (isMaximizedInCurrentScreen(winfo)) {
@@ -999,9 +948,9 @@ void VisibilityManager::updateDynamicBackgroundWindowFlags()
             maxWinId = winfo.wid();
         }
 
-        if (winfo.isActive() && isTouchingPanelEdge(winfo)) {
-            foundSnap = true;
-            snapWinId = winfo.wid();
+        if (winfo.isActive() && (isTouchingPanelEdge(winfo) || (intersects(winfo)))) {
+            foundTouch = true;
+            touchWinId = winfo.wid();
         }
 
         if (!existsFaultyWindow && winfo.geometry() == QRect(0, 0, 0, 0)) {
@@ -1011,38 +960,18 @@ void VisibilityManager::updateDynamicBackgroundWindowFlags()
         //qDebug() << "window geometry ::: " << winfo.geometry();
     }
 
-    //! active windows that are touching the panel edge should have a higher priority
-    //! this is why are identified first
-    if (!foundSnap) {
-        for (const auto &winfo : windows) {
-            if ((winfo.isKeepAbove() && isTouchingPanelEdge(winfo))
-                || (!winfo.isActive() && snappedWindowsGeometries.contains(winfo.geometry()))) {
-                foundSnap = true;
-                snapWinId = winfo.wid();
-                break;
-            }
-        }
-    }
-
     if (existsFaultyWindow) {
         cleanupFaultyWindows();
     }
 
-    /*if (!foundMaximized && !foundSnap) {
-        qDebug() << "SCREEN GEOMETRY : " << availableScreenGeometry;
-        qDebug() << "SNAPS ::: " << snappedWindowsGeometries;
-    }
-
-    qDebug() << " FOUND ::: " << foundMaximized << foundSnap;*/
-
     setExistsWindowMaximized(foundMaximized);
-    setExistsWindowSnapped(foundSnap);
+    setExistsWindowTouching(foundTouch);
 
     //! update color scheme for touching window
 
-    if (foundSnap) {
-        //! first the snap one because that would mean it is active
-        setTouchingWindowScheme(wm->schemeForWindow(snapWinId));
+    if (foundTouch) {
+        //! first the touching one because that would mean it is active
+        setTouchingWindowScheme(wm->schemeForWindow(touchWinId));
     } else if (foundMaximized) {
         setTouchingWindowScheme(wm->schemeForWindow(maxWinId));
     } else {

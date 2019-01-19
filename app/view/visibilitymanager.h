@@ -60,7 +60,7 @@ class VisibilityManager : public QObject
     //! Dynamic Background Feature (needed options)
     Q_PROPERTY(bool enabledDynamicBackground READ enabledDynamicBackground WRITE setEnabledDynamicBackground NOTIFY enabledDynamicBackgroundChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
-    Q_PROPERTY(bool existsWindowSnapped READ existsWindowSnapped NOTIFY existsWindowSnappedChanged)
+    Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
     Q_PROPERTY(SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
     //! KWin Edges Support Options
@@ -105,7 +105,7 @@ public:
     void setEnabledDynamicBackground(bool active);
 
     bool existsWindowMaximized() const;
-    bool existsWindowSnapped() const;
+    bool existsWindowTouching() const;
 
     SchemeColors *touchingWindowScheme() const;
 
@@ -137,7 +137,7 @@ signals:
     //! Dynamic Background signals (from options)
     void enabledDynamicBackgroundChanged();
     void existsWindowMaximizedChanged();
-    void existsWindowSnappedChanged();
+    void existsWindowTouchingChanged();
 
     //! KWin Edges Support signals
     void enableKWinEdgesChanged();
@@ -160,7 +160,7 @@ private:
 
     //! Dynamic Background Feature
     void setExistsWindowMaximized(bool windowMaximized);
-    void setExistsWindowSnapped(bool windowSnapped);
+    void setExistsWindowTouching(bool windowTouching);
     void setTouchingWindowScheme(SchemeColors *scheme);
     void updateAvailableScreenGeometry();
     void updateDynamicBackgroundWindowFlags();
@@ -207,10 +207,9 @@ private:
 
     //! Dynamic Background flags and needed information
     bool enabledDynamicBackgroundFlag{false};
-    bool windowIsSnappedFlag{false};
+    bool windowIsTouchingFlag{false};
     bool windowIsMaximizedFlag{false};
     QRect availableScreenGeometry;
-    QList<QRect> snappedWindowsGeometries;
     std::array<QMetaObject::Connection, 7> connectionsDynBackground;
     WindowId lastActiveWindowWid;
     SchemeColors *touchingScheme{nullptr};
