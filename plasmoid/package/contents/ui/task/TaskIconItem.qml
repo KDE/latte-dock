@@ -406,29 +406,9 @@ Item{
                                     }
                                 ]
                             } // audio mask
-
-                            Connections{
-                                target: plasmoid
-                                onLocationChanged: iconOverlay.mask.scheduleUpdate();
-                            }
-
-                            Connections{
-                                target:badgesLoader
-                                onShowProgressChanged: iconOverlay.mask.scheduleUpdate();
-                                onShowAudioChanged: iconOverlay.mask.scheduleUpdate();
-                            }
-
-                            Connections{
-                                target: infoBadge
-                                onInformationChanged: {
-                                    if (badgesLoader.showProgress) {
-                                        iconOverlay.mask.scheduleUpdate();
-                                    }
-                                }
-                            }
                         }
                         hideSource: true
-                        live: mainItemContainer.badgeIndicator > 0 ? true : false
+                        live: true
                     } //end of mask
 
                     supportsAtlasTextures: true
