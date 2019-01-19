@@ -70,9 +70,34 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: audioIndicatorChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Indicator for audio streams")
+                checked: plasmoid.configuration.indicateAudioStreams
+                tooltip: i18n("Audio indicator from which the user can mute/unmute an app")
+                visible: dialog.highLevel
+
+                onClicked: {
+                    plasmoid.configuration.indicateAudioStreams = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: smartLaunchersChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Progress information for tasks")
+                checked: plasmoid.configuration.smartLaunchersEnabled
+                tooltip: i18n("Show a beautiful progress animation e.g. when copying \nfiles with Dolphin")
+
+                onClicked: {
+                    plasmoid.configuration.smartLaunchersEnabled = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
                 id: dotsOnActive
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Indicator for active window group")
+                text: i18n("Show an extra dot for grouped windows when active")
                 checked: plasmoid.configuration.dotsOnActive
                 tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active and the Line Active Indicator \nis enabled")
                 visible: dialog.highLevel
@@ -82,6 +107,7 @@ PlasmaComponents.Page {
                     plasmoid.configuration.dotsOnActive = checked
                 }
             }
+
         }
         //! END: Tasks Appearance
 
@@ -92,18 +118,6 @@ PlasmaComponents.Page {
 
             LatteExtraControls.Header {
                 text: i18n("Interaction")
-            }
-
-            PlasmaComponents.CheckBox {
-                id: smartLaunchersChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show progress information for tasks")
-                checked: plasmoid.configuration.smartLaunchersEnabled
-                tooltip: i18n("Show a beautiful progress animation e.g. when copying \nfiles with Dolphin")
-
-                onClicked: {
-                    plasmoid.configuration.smartLaunchersEnabled = checked
-                }
             }
 
             PlasmaComponents.CheckBox {
@@ -127,32 +141,6 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.showWindowActions = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: audioIndicatorChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show indicator for audio streams")
-                checked: plasmoid.configuration.indicateAudioStreams
-                tooltip: i18n("Audio indicator from which the user can mute/unmute an app")
-                visible: dialog.highLevel
-
-                onClicked: {
-                    plasmoid.configuration.indicateAudioStreams = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: groupTasksChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Group tasks of the same application")
-                checked: plasmoid.configuration.groupTasksByDefault
-                tooltip: i18n("By default group tasks of the same application")
-                visible: dialog.highLevel
-
-                onClicked: {
-                    plasmoid.configuration.groupTasksByDefault = checked
                 }
             }
 
@@ -222,6 +210,19 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     plasmoid.configuration.showWindowsOnlyFromLaunchers = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                id: groupTasksChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Group tasks of the same application")
+                checked: plasmoid.configuration.groupTasksByDefault
+                tooltip: i18n("By default group tasks of the same application")
+                visible: dialog.highLevel
+
+                onClicked: {
+                    plasmoid.configuration.groupTasksByDefault = checked
                 }
             }
         }
@@ -456,6 +457,18 @@ PlasmaComponents.Page {
                     onCurrentIndexChanged: plasmoid.configuration.modifierClickAction = currentIndex
                 }
             }
+        }
+        //! END: Actions
+
+        //! BEGIN: Actions
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Recycling")
+            }
 
             PlasmaComponents.Button {
                 Layout.leftMargin: units.smallSpacing * 2
@@ -471,7 +484,6 @@ PlasmaComponents.Page {
                 }
             }
         }
-        //! END: Actions
 
         //! Bottom spacer
         PlasmaComponents.Label{
