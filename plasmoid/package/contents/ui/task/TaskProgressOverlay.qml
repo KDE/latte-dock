@@ -29,6 +29,8 @@ Item {
 
     readonly property int contentWidth: progressCircle.width + 0.1*height
 
+    signal informationChanged();
+
     Item {
         id: subRectangle
         width: contentWidth
@@ -68,6 +70,8 @@ Item {
             textWithBackgroundColor: ( (mainItemContainer.badgeIndicator > 0)
                                       || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )
                                      && proportion>0
+
+            onNumberValueChanged: background.informationChanged();
 
             proportion: {
                 if (mainItemContainer.badgeIndicator > 0 ||

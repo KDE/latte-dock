@@ -418,6 +418,14 @@ Item{
                                 onShowAudioChanged: iconOverlay.mask.scheduleUpdate();
                             }
 
+                            Connections{
+                                target: infoBadge
+                                onInformationChanged: {
+                                    if (badgesLoader.showProgress) {
+                                        iconOverlay.mask.scheduleUpdate();
+                                    }
+                                }
+                            }
                         }
                         hideSource: true
                         live: mainItemContainer.badgeIndicator > 0 ? true : false
