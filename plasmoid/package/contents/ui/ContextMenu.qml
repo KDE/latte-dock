@@ -147,7 +147,7 @@ PlasmaComponents.ContextMenu {
         // Add Media Player control actions
         var sourceName = mpris2Source.sourceNameForLauncherUrl(launcherUrl, get(atm.AppPid));
 
-        if (sourceName && !(get(atm.LegacyWinIdList) != undefined && get(atm.LegacyWinIdList).length > 1)) {
+        if (sourceName && !(get( root.plasma515 ? atm.WinIdList : atm.LegacyWinIdList ) != undefined && get( root.plasma515 ? atm.WinIdList : atm.LegacyWinIdList ).length > 1)) {
             var playerData = mpris2Source.data[sourceName]
 
             if (playerData.CanControl) {

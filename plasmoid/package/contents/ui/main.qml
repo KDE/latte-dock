@@ -59,6 +59,8 @@ Item {
     //it is used to check both the applet and the containment for direct render
     property bool globalDirectRender: latteView ? latteView.globalDirectRender : icList.directRender
 
+    property bool plasma515: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,14,90)
+
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator
