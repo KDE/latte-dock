@@ -147,7 +147,9 @@ PlasmaComponents.ContextMenu {
         // Add Media Player control actions
         var sourceName = mpris2Source.sourceNameForLauncherUrl(launcherUrl, get(atm.AppPid));
 
-        if (sourceName && !(get( root.plasma515 ? atm.WinIdList : atm.LegacyWinIdList ) != undefined && get( root.plasma515 ? atm.WinIdList : atm.LegacyWinIdList ).length > 1)) {
+        var winIdList = root.plasma515 ? atm.WinIdList : atm.LegacyWinIdList;
+
+        if (sourceName && !(get(winIdList) !== undefined && get(winIdList).length > 1)) {
             var playerData = mpris2Source.data[sourceName]
 
             if (playerData.CanControl) {
@@ -295,9 +297,10 @@ PlasmaComponents.ContextMenu {
         id: virtualDesktopsMenuItem
 
         visible: virtualDesktopInfo.numberOfDesktops > 1
-                 && (visualParent && visualParent.m.IsLauncher !== true
-                     && visualParent.m.IsStartup !== true
-                     && visualParent.m.IsVirtualDesktopChangeable === true)
+                 && (visualParent && get(atm.IsLauncher) !== true
+                 && get(atm.IsStartup) !== true
+                 && (root.plasma515 ? get(atm.IsVirtualDesktopsChangeable) === true :
+                                     get(atm.IsVirtualDesktopChangeable) === true ) )
 
         enabled: visible
 
@@ -306,8 +309,14 @@ PlasmaComponents.ContextMenu {
         Connections {
             target: virtualDesktopInfo
 
-            onNumberOfDesktopsChanged: virtualDesktopsMenu.refresh()
-            onDesktopNamesChanged: virtualDesktopsMenu.refresh()
+            onNumberOfDesktopsChanged: root.plasma515 ? Qt.callLater(virtualDesktopsMenu.refresh) : virtualDesktopsMenu.refresh()
+            onDesktopNamesChanged: root.plasma515 ? Qt.callLater(virtualDesktopsMenu.refresh) : virtualDesktopsMenu.refresh()
+        }
+
+        Connections {
+            target: root.plasma515 ? virtualDesktopInfo : null
+
+            onDesktopIdsChanged: root.plasma515 ? Qt.callLater(virtualDesktopsMenu.refresh) : virtualDesktopsMenu.refresh()
         }
 
         PlasmaComponents.ContextMenu {
@@ -325,10 +334,18 @@ PlasmaComponents.ContextMenu {
                 var menuItem = menu.newMenuItem(virtualDesktopsMenu);
                 menuItem.text = i18n("Move To Current Desktop");
                 menuItem.enabled = Qt.binding(function() {
-                    return menu.visualParent && menu.visualParent.m.VirtualDesktop != virtualDesktopInfo.currentDesktop;
+                    if (root.plasma515) {
+                        return menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.currentDesktop) == -1;
+                    } else {
+                        return menu.visualParent && menu.get(atm.VirtualDesktop) !== virtualDesktopInfo.currentDesktop;
+                    }
                 });
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestVirtualDesktop(menu.modelIndex, 0);
+                    if (root.plasma515) {
+                        tasksModel.requestVirtualDesktops(menu.modelIndex, [virtualDesktopInfo.currentDesktop]);
+                    } else {
+                        tasksModel.requestVirtualDesktop(menu.modelIndex, virtualDesktopInfo.currentDesktop);
+                    }
                 });
 
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
@@ -338,7 +355,11 @@ PlasmaComponents.ContextMenu {
                     return menu.visualParent && menu.visualParent.m.IsOnAllVirtualDesktops === true;
                 });
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestVirtualDesktop(menu.modelIndex, 0);
+                    if (root.plasma515) {
+                        tasksModel.requestVirtualDesktops(menu.modelIndex, []);
+                    } else {
+                        tasksModel.requestVirtualDesktop(menu.modelIndex, 0);
+                    }
                 });
                 backend.setActionGroup(menuItem.action);
 
@@ -350,10 +371,22 @@ PlasmaComponents.ContextMenu {
                     menuItem.text = (i + 1) + ". " + virtualDesktopInfo.desktopNames[i];
                     menuItem.checkable = true;
                     menuItem.checked = Qt.binding((function(i) {
-                        return function() { return menu.visualParent && menu.visualParent.m.VirtualDesktop == (i + 1) };
+                        return function() {
+                            if (root.plasma515) {
+                                return (menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
+                            } else {
+                                return (menu.visualParent && menu.get(atm.VirtualDesktop) === (i + 1));
+                            }
+                        };
                     })(i));
                     menuItem.clicked.connect((function(i) {
-                        return function() { return tasksModel.requestVirtualDesktop(menu.modelIndex, i + 1); };
+                        return function() {
+                            if (root.plasma515) {
+                                return tasksModel.requestVirtualDesktops(menu.modelIndex, [virtualDesktopInfo.desktopIds[i]]);
+                            } else {
+                                return tasksModel.requestVirtualDesktop(menu.modelIndex, i + 1);
+                            }
+                        };
                     })(i));
                     backend.setActionGroup(menuItem.action);
                 }
@@ -363,7 +396,11 @@ PlasmaComponents.ContextMenu {
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
                 menuItem.text = i18n("New Desktop");
                 menuItem.clicked.connect(function() {
-                    tasksModel.requestVirtualDesktop(menu.modelIndex, virtualDesktopInfo.numberOfDesktops + 1)
+                    if (root.plasma515) {
+                        tasksModel.requestNewVirtualDesktop(menu.modelIndex);
+                    } else {
+                        tasksModel.requestVirtualDesktop(menu.modelIndex, virtualDesktopInfo.numberOfDesktops + 1)
+                    }
                 });
             }
 
