@@ -201,6 +201,10 @@ void SecondaryConfigView::syncGeometry()
     if (m_shellSurface) {
         m_shellSurface->setPosition(position);
     }
+
+    //! after placement request to activate the main config window in order to avoid
+    //! rare cases of closing settings window from secondaryConfigView->focusOutEvent
+    m_parent->requestActivate();
 }
 
 void SecondaryConfigView::syncSlideEffect()
