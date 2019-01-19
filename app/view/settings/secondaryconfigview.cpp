@@ -124,7 +124,10 @@ void SecondaryConfigView::init()
     syncGeometry();
     syncSlideEffect();
 
-    m_parent->requestActivate();
+    if (m_parent) {
+        m_parent->requestActivate();
+    }
+
     qDebug() << "dock secondary config view : initialization ended...";
 }
 
@@ -204,7 +207,9 @@ void SecondaryConfigView::syncGeometry()
 
     //! after placement request to activate the main config window in order to avoid
     //! rare cases of closing settings window from secondaryConfigView->focusOutEvent
-    m_parent->requestActivate();
+    if (m_parent) {
+        m_parent->requestActivate();
+    }
 }
 
 void SecondaryConfigView::syncSlideEffect()
