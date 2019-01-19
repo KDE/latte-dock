@@ -90,7 +90,11 @@ public:
         NewInstance,
         ToggleMinimized,
         CycleThroughTasks,
-        ToggleGrouping
+        ToggleGrouping,
+        PresentWindows,
+        PreviewWindows,
+        HighlightWindows,
+        PreviewAndHighlightWindows
     };
     Q_ENUM(TaskAction)
 

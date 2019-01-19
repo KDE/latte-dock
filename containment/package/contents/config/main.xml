@@ -160,6 +160,21 @@
     <entry name="offset" type="Int">
       <default>0</default>
     </entry>
+    <entry name="leftClickAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+            <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
+      </choices>
+      <default>6</default>
+    </entry>
     <entry name="middleClickAction" type="Enum">
       <choices>
             <choice name="None"/>
@@ -168,8 +183,27 @@
             <choice name="ToggleMinimized"/>
             <choice name="CycleThroughTasks"/>
             <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
       </choices>
       <default>2</default>
+    </entry>
+    <entry name="hoverAction" type="Enum">
+      <choices>
+            <choice name="None"/>
+            <choice name="Close"/>
+            <choice name="NewInstance"/>
+            <choice name="ToggleMinimized"/>
+            <choice name="CycleThroughTasks"/>
+            <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
+      </choices>
+      <default>0</default>
     </entry>
     <entry name="modifierClickAction" type="Enum">
       <choices>
@@ -179,6 +213,10 @@
             <choice name="ToggleMinimized"/>
             <choice name="CycleThroughTasks"/>
             <choice name="ToggleGrouping"/>
+            <choice name="PresentWindows"/>
+            <choice name="PreviewWindows"/>
+            <choice name="HighlightWindows"/>
+            <choice name="PreviewAndHighlightWindows"/>
       </choices>
       <default>0</default>
     </entry>
@@ -240,12 +278,6 @@
     </entry>
     <entry name="smartLaunchersEnabled" type="Bool">
       <default>true</default>
-    </entry>
-    <entry name="highlightWindows" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="showToolTips" type="Bool">
-      <default>false</default>
     </entry>
     <entry name="showWindowActions" type="Bool">
       <default>false</default>

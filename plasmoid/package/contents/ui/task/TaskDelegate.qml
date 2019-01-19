@@ -582,13 +582,8 @@ MouseArea{
             icList.hoveredIndex = index;
         }
 
-        if (root.latteView && (!root.showPreviews)){
-            var displayText = isWindow ? model.display : model.AppName;
-            var maxCharacters = 80;
-
-            var fixedDisplayText = displayText.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : displayText;
-
-            root.latteView.showTooltipLabel(mainItemContainer, fixedDisplayText);
+        if (root.latteView && !root.showPreviews && root.titleTooltips){
+            showTitleTooltip();
         }
 
         if (root.latteView && root.latteView.isHalfShown) {
@@ -769,7 +764,9 @@ MouseArea{
     onPressed: {
         //console.log("Pressed Task Delegate..");
         if (Latte.WindowSystem.compositingActive && !Latte.WindowSystem.isPlatformWayland) {
-            windowsPreviewDlg.hide(2);
+            if(root.leftClickAction !== Latte.Types.PreviewWindows) {
+                windowsPreviewDlg.hide(2);
+            }
         }
 
         var modAccepted = modifierAccepted(mouse);
@@ -850,7 +847,24 @@ MouseArea{
                     activateTask();
                 }
             } else if (mouse.button == Qt.LeftButton){
-                activateTask();
+                if( !mainItemContainer.isLauncher){
+                    if (root.leftClickAction === Latte.Types.PresentWindows) {
+                        activateTask();
+                    } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
+                        if (isGroupParent)
+                            tasksWindows.activateNextTask();
+                        else
+                            activateTask();
+                    } else if (root.leftClickAction === Latte.Types.PreviewWindows) {
+                        if(windowsPreviewDlg.activeItem !== mainItemContainer){
+                            showPreviewWindow();
+                        } else {
+                            hidePreviewWindow();
+                        }
+                    }
+                } else {
+                    activateTask();
+                }
             }
 
             backend.cancelHighlightWindows();
@@ -1001,6 +1015,45 @@ MouseArea{
         }
 
         return parabolicManager.taskIsSeparator(cursor);
+    }
+
+    function showPreviewWindow() {
+        if (root.disableAllWindowsFunctionality) {
+            return;
+        }
+
+        if(windowsPreviewDlg.activeItem !== mainItemContainer){
+            if (!root.latteView
+                    || (root.latteView && !root.latteView.isHalfShown && !root.latteView.inSlidingIn && !root.latteView.inSlidingOut)) {
+                if (root.latteView && root.titleTooltips) {
+                    root.latteView.hideTooltipLabel();
+                }
+
+                mainItemContainer.preparePreviewWindow(false);
+                windowsPreviewDlg.show(mainItemContainer);
+            }
+        }
+    }
+
+    function showTitleTooltip() {
+        if (root.latteView && root.titleTooltips){
+            var displayText = isWindow ? model.display : model.AppName;
+            var maxCharacters = 80;
+
+            var fixedDisplayText = displayText.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : displayText;
+
+            root.latteView.showTooltipLabel(mainItemContainer, fixedDisplayText);
+        }
+    }
+
+    function hidePreviewWindow() {
+        if(windowsPreviewDlg.activeItem === mainItemContainer){
+            windowsPreviewDlg.hide("14.1");
+
+            if (root.latteView && root.titleTooltips && containsMouse) {
+                showTitleTooltip();
+            }
+        }
     }
 
     function preparePreviewWindow(hideClose){
@@ -1364,7 +1417,7 @@ MouseArea{
         root.launchersUpdatedFor.connect(slotLaunchersChangedFor);
 
         var hasShownLauncher = ((tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1)
-                                    || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
+                                || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
 
         //startup without launcher
         var hideStartup =  ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl))
@@ -1419,13 +1472,9 @@ MouseArea{
                     return;
                 }
 
-                if(mainItemContainer.containsMouse && windowsPreviewDlg.activeItem !== mainItemContainer){
-                    //console.log("Hovered Timer....");
-                    if (root.showPreviews && (!root.latteView
-                                              || (root.latteView && !root.latteView.isHalfShown
-                                                  && !root.latteView.inSlidingIn && !root.latteView.inSlidingOut))) {
-                        mainItemContainer.preparePreviewWindow(false);
-                        windowsPreviewDlg.show(mainItemContainer);
+                if (mainItemContainer.containsMouse) {
+                    if (root.showPreviews) {
+                        showPreviewWindow();
                     } else if (mainItemContainer.isWindow && root.highlightWindows) {
                         root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , mainItemContainer.containsMouse);
                     }

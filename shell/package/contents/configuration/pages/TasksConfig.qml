@@ -95,31 +95,6 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                id: showPreviewsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Preview windows on hovering")
-                checked: plasmoid.configuration.showToolTips
-                enabled: !disableAllWindowsFunctionality
-
-                onClicked: {
-                    plasmoid.configuration.showToolTips = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: highlightWindowsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Highlight windows on hovering")
-                checked: plasmoid.configuration.highlightWindows
-                visible: dialog.highLevel
-                enabled: !disableAllWindowsFunctionality
-
-                onClicked: {
-                    plasmoid.configuration.highlightWindows = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
                 id: smartLaunchersChk
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show progress information for tasks")
@@ -326,24 +301,116 @@ PlasmaComponents.Page {
                 text: i18n("Actions")
             }
 
-            RowLayout {
+            GridLayout {
+                columns: 2
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.topMargin: units.smallSpacing
                 enabled: !disableAllWindowsFunctionality
 
                 PlasmaComponents.Label {
-                    text: i18n("On middle-click")
-                    Layout.alignment: Qt.AlignRight
+                    text: i18n("Left Click")
+                }
+
+                PlasmaComponents3.ComboBox {
+                    id: leftClickAction
+                    Layout.fillWidth: true
+                    model: [i18nc("present windows action", "Present Windows"),
+                        i18n("Cycle Through Tasks"),
+                        i18n("Preview Windows")]
+
+                    currentIndex: {
+                        switch(plasmoid.configuration.leftClickAction) {
+                        case Latte.Types.PresentWindows:
+                            return 0;
+                        case Latte.Types.CycleThroughTasks:
+                            return 1;
+                        case Latte.Types.PreviewWindows:
+                            return 2;
+                        }
+
+                        return 0;
+                    }
+
+                    onCurrentIndexChanged: {
+                        switch(currentIndex) {
+                        case 0:
+                            plasmoid.configuration.leftClickAction = Latte.Types.PresentWindows;
+                            break;
+                        case 1:
+                            plasmoid.configuration.leftClickAction = Latte.Types.CycleThroughTasks;
+                            break;
+                        case 2:
+                            plasmoid.configuration.leftClickAction = Latte.Types.PreviewWindows;
+                            break;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: i18n("Middle Click")
                 }
 
                 PlasmaComponents3.ComboBox {
                     id: middleClickAction
                     Layout.fillWidth: true
-                    model: [i18nc("The click action", "None"), i18n("Close Window or Group"),
-                        i18n("New Instance"), i18n("Minimize/Restore Window or Group"), i18n("Cycle Through Tasks"), i18n("Toggle Task Grouping")]
+                    model: [
+                        i18nc("The click action", "None"),
+                        i18n("Close Window or Group"),
+                        i18n("New Instance"),
+                        i18n("Minimize/Restore Window or Group"),
+                        i18n("Cycle Through Tasks"),
+                        i18n("Toggle Task Grouping")
+                    ]
 
                     currentIndex: plasmoid.configuration.middleClickAction
                     onCurrentIndexChanged: plasmoid.configuration.middleClickAction = currentIndex
+                }
+
+                PlasmaComponents.Label {
+                    text: i18n("Hover")
+                }
+
+                PlasmaComponents3.ComboBox {
+                    id: hoverAction
+                    Layout.fillWidth: true
+                    model: [
+                        i18nc("none action", "None"),
+                        i18n("Preview Windows"),
+                        i18n("Highlight Windows"),
+                        i18n("Preview and Highlight Windows"),
+                    ]
+
+                    currentIndex: {
+                        switch(plasmoid.configuration.hoverAction) {
+                        case Latte.Types.NoneAction:
+                            return 0;
+                        case Latte.Types.PreviewWindows:
+                            return 1;
+                        case Latte.Types.HighlightWindows:
+                            return 2;
+                        case Latte.Types.PreviewAndHighlightWindows:
+                            return 3;
+                        }
+
+                        return 0;
+                    }
+
+                    onCurrentIndexChanged: {
+                        switch(currentIndex) {
+                        case 0:
+                            plasmoid.configuration.hoverAction = Latte.Types.NoneAction;
+                            break;
+                        case 1:
+                            plasmoid.configuration.hoverAction = Latte.Types.PreviewWindows;
+                            break;
+                        case 2:
+                            plasmoid.configuration.hoverAction = Latte.Types.HighlightWindows;
+                            break;
+                        case 3:
+                            plasmoid.configuration.hoverAction = Latte.Types.PreviewAndHighlightWindows;
+                            break;
+                        }
+                    }
                 }
             }
 

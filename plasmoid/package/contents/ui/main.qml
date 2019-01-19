@@ -151,7 +151,8 @@ Item {
     property bool disableRightSpacer: false
     property bool dockIsHidden: latteView ? latteView.dockIsHidden : false
     property bool groupTasksByDefault: latteView ? latteView.groupTasksByDefault: true
-    property bool highlightWindows: latteView ? latteView.highlightWindows: plasmoid.configuration.highlightWindows
+    property bool highlightWindows: latteView ? latteView.hoverAction === Latte.Types.HighlightWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
+                                                plasmoid.configuration.highlightWindows
     property bool indicateAudioStreams: latteView ? latteView.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
     property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
     property bool reverseLinesPosition: latteView ? latteView.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
@@ -161,7 +162,8 @@ Item {
     property bool showOnlyCurrentScreen: latteView ? latteView.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: latteView ? latteView.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: latteView ? latteView.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
-    property bool showPreviews:  latteView ? latteView.showToolTips : plasmoid.configuration.showToolTips
+    property bool showPreviews:  latteView ? latteView.hoverAction === Latte.Types.PreviewWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
+                                             plasmoid.configuration.showToolTips
     property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
     property bool smartLaunchersEnabled: latteView ? latteView.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
@@ -179,7 +181,10 @@ Item {
     property int glowOption: latteView ? latteView.glowOption : Latte.Types.GlowAll
     property real glowOpacity: latteView ? latteView.glowOpacity : 0.35
 
+
+    property int leftClickAction: latteView ? latteView.leftClickAction : Latte.Types.PresentWindows
     property int middleClickAction: latteView ? latteView.middleClickAction : plasmoid.configuration.middleClickAction
+    property int hoverAction: latteView ? latteView.hoverAction : Latte.Types.NoneAction
     property int modifier: latteView ? latteView.modifier : -1
     property int modifierClickAction: latteView ? latteView.modifierClickAction : -1
     property int modifierClick: latteView ? latteView.modifierClick : -1

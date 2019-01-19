@@ -202,7 +202,9 @@ DragDrop.DropArea {
         }
     }
 
+    property int leftClickAction: plasmoid.configuration.leftClickAction
     property int middleClickAction: plasmoid.configuration.middleClickAction
+    property int hoverAction: plasmoid.configuration.hoverAction
     property int modifier: plasmoid.configuration.modifier
     property int modifierClickAction: plasmoid.configuration.modifierClickAction
     property int modifierClick: plasmoid.configuration.modifierClick
@@ -387,12 +389,10 @@ DragDrop.DropArea {
     property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
-    property bool highlightWindows: plasmoid.configuration.highlightWindows
     property bool reverseLinesPosition: !latteApplet && plasmoid.configuration.panelSize===100 ?
                                             !plasmoid.configuration.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool showGlow: plasmoid.configuration.showGlow || plasmoid.configuration.glowOption!==Latte.Types.GlowNone
     property bool glow3D: plasmoid.configuration.glow3D
-    property bool showToolTips: plasmoid.configuration.showToolTips
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
