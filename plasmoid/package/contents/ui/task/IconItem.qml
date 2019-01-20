@@ -61,7 +61,7 @@ Item{
 
     property int shadowSize : root.appShadowSize
 
-    readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.smartLaunchersEnabled))
+    readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.showInfoBadge || root.showProgressBadge))
     readonly property variant iconDecoration: decoration
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
@@ -287,14 +287,15 @@ Item{
             active: opacityN > 0
             asynchronous: true
 
-            property real opacityN: showProgress || showAudio ? 1 : 0
+            property real opacityN: showInfo || showProgress || showAudio ? 1 : 0
 
-            property bool showProgress: (taskIcon.smartLauncherEnabled && taskIcon.smartLauncherItem && !taskItem.isSeparator
-                                         && (taskIcon.smartLauncherItem.countVisible || taskIcon.smartLauncherItem.progressVisible
-                                             || taskItem.badgeIndicator > 0))
+            property bool showInfo: (root.showInfoBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
+                                     && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0))
 
-            property bool showAudio: taskItem.hasAudioStream && taskItem.playingAudio &&
-                                     !taskItem.isSeparator
+            property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
+                                         && taskIcon.smartLauncherItem.progressVisible
+
+            property bool showAudio: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
@@ -325,7 +326,7 @@ Item{
                                 width: Math.max(infoBadge.contentWidth, parent.width / 2)
                                 height: parent.height / 2
                                 radius: parent.height
-                                visible: badgesLoader.showProgress
+                                visible: badgesLoader.showInfo || badgesLoader.showProgress
 
                                 //! Removes any remainings from the icon around the roundness at the corner
                                 Rectangle{
@@ -428,7 +429,7 @@ Item{
                     id: infoBadge
                     anchors.fill:parent
                     opacity: badgesLoader.opacityN
-                    visible: badgesLoader.showProgress
+                    visible: badgesLoader.showInfo || badgesLoader.showProgress
                 }
 
                 AudioStream{

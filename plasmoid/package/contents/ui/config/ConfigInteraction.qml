@@ -39,7 +39,7 @@ Item {
     property alias cfg_showOnlyCurrentActivity: showOnlyCurrentActivity.checked
 
     property alias cfg_highlightWindows: highlightWindowsChk.checked
-    property alias cfg_smartLaunchersEnabled: smartLaunchersChk.checked
+    property alias cfg_showInfoBadge: showInfoBadgeChk.checked
     property alias cfg_showToolTips: showPreviewsChk.checked
     property alias cfg_showWindowActions: windowActionsChk.checked
 
@@ -79,7 +79,7 @@ Item {
                 }
 
                 CheckBox {
-                    id: smartLaunchersChk
+                    id: showInfoBadgeChk
                     Layout.fillWidth: true
                     text: i18n("Show progress information for tasks")
                 }

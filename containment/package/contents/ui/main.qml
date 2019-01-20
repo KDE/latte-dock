@@ -135,7 +135,6 @@ DragDrop.DropArea {
 
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
     property bool immutable: plasmoid.immutable
-    property bool indicateAudioStreams: plasmoid.configuration.indicateAudioStreams
     property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (plasmoid.configuration.maxLength===100)
     property bool inSlidingIn: visibilityManager ? visibilityManager.inSlidingIn : false
     property bool inSlidingOut: visibilityManager ? visibilityManager.inSlidingOut : false
@@ -393,13 +392,17 @@ DragDrop.DropArea {
                                             !plasmoid.configuration.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool showGlow: plasmoid.configuration.showGlow || plasmoid.configuration.glowOption!==Latte.Types.GlowNone
     property bool glow3D: plasmoid.configuration.glow3D
+
+    property bool showInfoBadge: plasmoid.configuration.showInfoBadge
+    property bool showProgressBadge: plasmoid.configuration.showProgressBadge
+    property bool showAudioBadge: plasmoid.configuration.showAudioBadge
+
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers
     property bool showOnlyCurrentScreen: plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
 
-    property bool smartLaunchersEnabled: plasmoid.configuration.smartLaunchersEnabled
     property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: plasmoid.configuration.titleTooltips
     property bool unifiedGlobalShortcuts: plasmoid.configuration.unifiedGlobalShortcuts

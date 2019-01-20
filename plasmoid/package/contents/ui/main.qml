@@ -153,12 +153,15 @@ Item {
     property bool groupTasksByDefault: latteView ? latteView.groupTasksByDefault: true
     property bool highlightWindows: latteView ? latteView.hoverAction === Latte.Types.HighlightWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
                                                 plasmoid.configuration.highlightWindows
-    property bool indicateAudioStreams: latteView ? latteView.indicateAudioStreams : plasmoid.configuration.indicateAudioStreams
     property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
     property bool reverseLinesPosition: latteView ? latteView.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: latteView ? latteView.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: latteView ? latteView.showGlow : plasmoid.configuration.showGlow
     property bool glow3D: latteView ? latteView.glow3D : false
+
+    property bool showInfoBadge: latteView ? latteView.showInfoBadge : plasmoid.configuration.showInfoBadge
+    property bool showProgressBadge: latteView ? latteView.showProgressBadge : plasmoid.configuration.showInfoBadge
+    property bool showAudioBadge: latteView ? latteView.showAudioBadge : plasmoid.configuration.showAudioBadge
     property bool showOnlyCurrentScreen: latteView ? latteView.showOnlyCurrentScreen : plasmoid.configuration.showOnlyCurrentScreen
     property bool showOnlyCurrentDesktop: latteView ? latteView.showOnlyCurrentDesktop : plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: latteView ? latteView.showOnlyCurrentActivity : plasmoid.configuration.showOnlyCurrentActivity
@@ -166,7 +169,7 @@ Item {
                                              plasmoid.configuration.showToolTips
     property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
-    property bool smartLaunchersEnabled: latteView ? latteView.smartLaunchersEnabled : plasmoid.configuration.smartLaunchersEnabled
+
     property bool threeColorsWindows: latteView ? latteView.threeColorsWindows : plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
@@ -923,7 +926,7 @@ Item {
     Loader {
         id: pulseAudio
         source: "PulseAudio.qml"
-        active: root.indicateAudioStreams
+        active: root.showAudioBadge
     }
 
     ParabolicManager{

@@ -61,17 +61,26 @@ Item {
             border.color: root.minimizedDotColor
             minimumWidth: 0.8 * parent.height
             height: 0.8 * parent.height
-            numberValue: taskItem.badgeIndicator > 0 ? taskItem.badgeIndicator : taskIcon.smartLauncherItem.count
+            numberValue: {
+                if (taskItem.badgeIndicator > 0) {
+                    return taskItem.badgeIndicator;
+                } else if (taskIcon.smartLauncherItem) {
+                    return taskIcon.smartLauncherItem.count;
+                }
+
+                return 0;
+            }
             fullCircle: true
             showNumber: true
 
-            textWithBackgroundColor: ( (taskItem.badgeIndicator > 0)
-                                      || (taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible) )
-                                     && proportion>0
+            /*textWithBackgroundColor: ( (taskItem.badgeIndicator > 0)
+                                      || (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible) )
+                                     && proportion>0*/
+            textWithBackgroundColor: false
 
             proportion: {
                 if (taskItem.badgeIndicator > 0 ||
-                        (taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible)) {
+                        (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible)) {
                     return 100;
                 }
 

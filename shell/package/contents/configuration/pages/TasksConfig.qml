@@ -70,31 +70,6 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
-                id: audioIndicatorChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Indicator for audio streams")
-                checked: plasmoid.configuration.indicateAudioStreams
-                tooltip: i18n("Audio indicator from which the user can mute/unmute an app")
-                visible: dialog.highLevel
-
-                onClicked: {
-                    plasmoid.configuration.indicateAudioStreams = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: smartLaunchersChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Progress information for tasks")
-                checked: plasmoid.configuration.smartLaunchersEnabled
-                tooltip: i18n("Show a beautiful progress animation e.g. when copying \nfiles with Dolphin")
-
-                onClicked: {
-                    plasmoid.configuration.smartLaunchersEnabled = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
                 id: dotsOnActive
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Show an extra dot for grouped windows when active")
@@ -110,6 +85,52 @@ PlasmaComponents.Page {
 
         }
         //! END: Tasks Appearance
+
+        //! BEGIN: Badges
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.highLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Badges")
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Unread messages from tasks")
+                checked: plasmoid.configuration.showInfoBadge
+                tooltip: i18n("Show unread messages or information from tasks")
+
+                onClicked: {
+                    plasmoid.configuration.showInfoBadge = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Progress information for tasks")
+                checked: plasmoid.configuration.showProgressBadge
+                tooltip: i18n("Show a progress animation for tasks e.g. when copying files with Dolphin")
+
+                onClicked: {
+                    plasmoid.configuration.showProgressBadge = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Audio playing from tasks")
+                checked: plasmoid.configuration.showAudioBadge
+                tooltip: i18n("Show audio playing from tasks, the user is able to mute/unmute or change the volume")
+
+                onClicked: {
+                    plasmoid.configuration.showAudioBadge = checked
+                }
+            }
+        }
+        //! END: Badges
 
         //! BEGIN: Tasks Interaction
         ColumnLayout {

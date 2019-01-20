@@ -188,7 +188,7 @@ MouseArea{
     ////// Audio streams //////
     property Item audioStreamOverlay
     property var audioStreams: []
-    readonly property bool hasAudioStream: root.indicateAudioStreams && audioStreams.length > 0 && !isLauncher
+    readonly property bool hasAudioStream: root.showAudioBadge && audioStreams.length > 0 && !isLauncher
     readonly property bool playingAudio: hasAudioStream && audioStreams.some(function (item) {
         return !item.corked
     })
@@ -1387,7 +1387,7 @@ MouseArea{
         //trying to fix #440, showing the audio icon indicator to irrelevant tasks
         //after dragging an existent task with audio
         onDragSourceChanged: taskItem.updateAudioStreams()
-        onIndicateAudioStreamsChanged: taskItem.updateAudioStreams()
+        onShowAudioBadgeChanged: taskItem.updateAudioStreams()
     }
 
     Connections {
