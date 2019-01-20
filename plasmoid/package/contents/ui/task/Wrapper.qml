@@ -155,7 +155,7 @@ Item{
             visible: active
 
             sourceComponent: Component{
-                TaskGroupItem{}
+                GroupItem{}
             }
         }
 
@@ -186,7 +186,7 @@ Item{
             }
         }
 
-        TaskIconItem{ id: taskIconItem}
+        IconItem{ id: taskIconItem}
 
         //! This is used from bouncing attention animation in order to played correctly
         Loader{
@@ -222,7 +222,7 @@ Item{
             visible: active
 
             sourceComponent: Component{
-                TaskGroupItem{}
+                GroupItem{}
             }
         }
 

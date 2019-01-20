@@ -42,7 +42,7 @@ MouseArea{
     anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
     anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
 
-    objectName: "TaskDelegate"
+    objectName: "TaskItem"
 
     width: {
         if (!visible)
@@ -94,8 +94,8 @@ MouseArea{
     property bool scalesUpdatedOnce: false
     //states that exist in windows in a Group of windows
     property bool hasActive: isActive
-    property bool hasMinimized: (IsGroupParent === true) ? tasksWindows.hasMinimized : isMinimized
-    property bool hasShown: (IsGroupParent === true) ? tasksWindows.hasShown : !isMinimized
+    property bool hasMinimized: (IsGroupParent === true) ? subWindows.hasMinimized : isMinimized
+    property bool hasShown: (IsGroupParent === true) ? subWindows.hasShown : !isMinimized
     property bool inAddRemoveAnimation: true
     property bool inAnimation: true
     property bool inAttentionAnimation: false
@@ -226,8 +226,8 @@ MouseArea{
         NumberAnimation { duration: root.durationTime*units.longDuration }
     }
 
-    TaskWindows{
-        id: tasksWindows
+    SubWindows{
+        id: subWindows
 
         property int previousCount: 0
 
@@ -431,12 +431,12 @@ MouseArea{
 
         // a hidden spacer for the first element to add stability
         // IMPORTANT: hidden spacers must be tested on vertical !!!
-        TaskHiddenSpacer{ id:hiddenSpacerLeft;}
+        HiddenSpacer{ id:hiddenSpacerLeft;}
 
-        TaskWrapper{ id: wrapper }
+        Wrapper{ id: wrapper }
 
         // a hidden spacer on the right for the last item to add stability
-        TaskHiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
+        HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }
     }// Flow with hidden spacers inside
 
     /*Rectangle{
@@ -818,7 +818,7 @@ MouseArea{
                         tasksModel.requestToggleMinimized(modelIndex());
                     } else if ( root.modifierClickAction == Latte.Types.CycleThroughTasks) {
                         if (isGroupParent)
-                            tasksWindows.activateNextTask();
+                            subWindows.activateNextTask();
                         else
                             activateTask();
                     } else if (root.modifierClickAction == Latte.Types.ToggleGrouping) {
@@ -837,7 +837,7 @@ MouseArea{
                         tasksModel.requestToggleMinimized(modelIndex());
                     } else if ( root.middleClickAction == Latte.Types.CycleThroughTasks) {
                         if (isGroupParent)
-                            tasksWindows.activateNextTask();
+                            subWindows.activateNextTask();
                         else
                             activateTask();
                     } else if (root.middleClickAction == Latte.Types.ToggleGrouping) {
@@ -852,7 +852,7 @@ MouseArea{
                         activateTask();
                     } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
                         if (isGroupParent)
-                            tasksWindows.activateNextTask();
+                            subWindows.activateNextTask();
                         else
                             activateTask();
                     } else if (root.leftClickAction === Latte.Types.PreviewWindows) {
@@ -894,7 +894,7 @@ MouseArea{
                 inWheelAction = true;
                 wrapper.runLauncherAnimation();
             } else if (isGroupParent) {
-                tasksWindows.activateNextTask();
+                subWindows.activateNextTask();
             } else {
                 var taskIndex = modelIndex();
 
@@ -911,7 +911,7 @@ MouseArea{
             if (isLauncher || root.disableAllWindowsFunctionality) {
                 // do nothing
             } else if (isGroupParent) {
-                tasksWindows.activatePreviousTask();
+                subWindows.activatePreviousTask();
             } else {
                 var taskIndex = modelIndex();
 
@@ -969,7 +969,7 @@ MouseArea{
 
     ///// Helper functions /////
     function activateNextTask() {
-        tasksWindows.activateNextTask();
+        subWindows.activateNextTask();
     }
 
     function activateTask() {

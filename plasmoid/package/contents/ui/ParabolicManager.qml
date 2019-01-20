@@ -523,7 +523,7 @@ Item {
         return (posOfLauncherToBeMoved(launcher) >= 0);
     }
 
-    //!Trying to avoid a binding loop in TaskDelegate for modelLauncherUrl
+    //!Trying to avoid a binding loop in TaskItem for modelLauncherUrl
     Timer {
         id: launchersToBeMovedTimer
         interval: 50

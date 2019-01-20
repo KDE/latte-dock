@@ -424,7 +424,7 @@ Item{
         "
                 } //end of sourceComponent
 
-                TaskProgressOverlay{
+                ProgressOverlay{
                     id: infoBadge
                     anchors.fill:parent
                     opacity: badgesLoader.opacityN

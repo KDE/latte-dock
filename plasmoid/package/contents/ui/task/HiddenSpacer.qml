@@ -40,7 +40,7 @@ Item{
     //fix #846,empty tasks after activity changes
     //in some cases after activity changes some tasks
     //are shown empty because some ghost tasks are created.
-    //This was tracked down to hidden TaskDelegates spacers.
+    //This was tracked down to hidden TaskItems spacers.
     //the flag !root.inActivityChange protects from this
     //and it is used later on Behaviors in order to not break
     //the activity change animations from removal/additions of tasks

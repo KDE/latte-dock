@@ -1211,7 +1211,7 @@ Item {
 
             orientation: Qt.Horizontal
 
-            delegate: Task.TaskDelegate{}
+            delegate: Task.TaskItem{}
 
             /* Rectangle{
                 anchors.fill: parent
@@ -1244,7 +1244,7 @@ Item {
 
                     var choords = mapFromItem(task,0, 0);
 
-                    if( (task.objectName==="TaskDelegate") && (x>=choords.x) && (x<=choords.x+task.width)
+                    if( (task.objectName==="TaskItem") && (x>=choords.x) && (x<=choords.x+task.width)
                             && (y>=choords.y) && (y<=choords.y+task.height)){
                         return task;
                     }

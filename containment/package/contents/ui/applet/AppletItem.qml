@@ -158,7 +158,7 @@ Item {
         }
 
         for(var i=0; i<layoutsContainer.endLayout.count; ++i){
-            if(layoutsContainer.endLayout.children[i] === container){
+            if(layoutsContainer.endLayout.children[i] === appletItem){
                 //create a very high index in order to not need to exchange hovering messages
                 //between layoutsContainer.mainLayout and layoutsContainer.endLayout
                 index = layoutsContainer.endLayout.beginIndex + i;
