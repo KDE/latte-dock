@@ -66,7 +66,7 @@ Item{
             return 1;
         }
 
-        property bool isActive: (container.isExpanded && !container.isSystray
+        property bool isActive: (appletItem.isExpanded && !appletItem.isSystray
                                  && applet.pluginName !== root.plasmoidName
                                  && applet.pluginName !== "org.kde.activeWindowControl"
                                  && applet.pluginName !== "org.kde.plasma.appmenu")

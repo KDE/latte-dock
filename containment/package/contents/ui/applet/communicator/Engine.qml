@@ -79,7 +79,7 @@ Item{
 
     //! BEGIN OF CONNECTIONS
     Connections{
-        target: container
+        target: appletItem
         onAppletChanged: {
             if (applet) {
                 AppletIdentifier.checkAndUpdateAppletRootItem();

@@ -34,7 +34,7 @@ import "colorizer" as Colorizer
 import "communicator" as Communicator
 
 Item {
-    id: container
+    id: appletItem
 
     visible: false
     width: isInternalViewSplitter && !root.editMode ? 0 : (root.isHorizontal ? computeWidth : computeWidth + shownAppletMargin)
@@ -134,8 +134,8 @@ Item {
         //if the event is at the active indicator or spacers area then try to expand the applet,
         //unfortunately for other applets there is no other way to activate them yet
         //for example the icon-only applets
-        var choords = mapToItem(container.appletWrapper, mouse.x, mouse.y);
-        if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=container.appletWrapper.height) {
+        var choords = mapToItem(appletItem.appletWrapper, mouse.x, mouse.y);
+        if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=appletItem.appletWrapper.height) {
             latteView.toggleAppletExpanded(applet.id);
         }
     }
@@ -144,14 +144,14 @@ Item {
         index = -1;
 
         for(var i=0; i<layoutsContainer.startLayout.count; ++i){
-            if(layoutsContainer.startLayout.children[i] === container){
+            if(layoutsContainer.startLayout.children[i] === appletItem){
                 index = layoutsContainer.startLayout.beginIndex + i;
                 break;
             }
         }
 
         for(var i=0; i<layoutsContainer.mainLayout.count; ++i){
-            if(layoutsContainer.mainLayout.children[i] === container){
+            if(layoutsContainer.mainLayout.children[i] === appletItem){
                 index = layoutsContainer.mainLayout.beginIndex + i;
                 break;
             }
@@ -167,7 +167,7 @@ Item {
         }
 
 
-        if(container.latteApplet){
+        if(appletItem.latteApplet){
             if(index===layoutsContainer.startLayout.beginIndex || index===layoutsContainer.mainLayout.beginIndex || index===layoutsContainer.endLayout.beginIndex)
                 latteApplet.disableLeftSpacer = false;
             else
@@ -197,7 +197,7 @@ Item {
               && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
               && !communicator.canShowOverlaiedLatteIcon)
                 || (isSystray)
-                || (container.needsFillSpace) ) {
+                || (appletItem.needsFillSpace) ) {
             canBeHovered = false;
         }
         else{
@@ -207,7 +207,7 @@ Item {
 
     //! pos in global root positioning
     function containsPos(pos) {
-        var relPos = root.mapToItem(container,pos.x, pos.y);
+        var relPos = root.mapToItem(appletItem,pos.x, pos.y);
 
         if (relPos.x>=0 && relPos.x<=width && relPos.y>=0 && relPos.y<=height)
             return true;
@@ -235,7 +235,7 @@ Item {
     }
 
     onIndexChanged: {
-        if (container.latteApplet) {
+        if (appletItem.latteApplet) {
             root.latteAppletPos = index;
         }
 
@@ -276,26 +276,26 @@ Item {
     }
 
     onLatteAppletChanged: {
-        if(container.latteApplet){
-            root.latteApplet = container.latteApplet;
-            root.latteAppletContainer = container;
+        if(appletItem.latteApplet){
+            root.latteApplet = appletItem.latteApplet;
+            root.latteAppletContainer = appletItem;
             root.latteAppletPos = index;
-            container.latteApplet.latteView = root;
-            container.latteApplet.forceHidePanel = true;
+            appletItem.latteApplet.latteView = root;
+            appletItem.latteApplet.forceHidePanel = true;
 
-            container.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
-            container.latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
-            container.latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
-            container.latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
-            container.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
-            container.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
+            appletItem.latteApplet.signalAnimationsNeedBothAxis.connect(slotAnimationsNeedBothAxis);
+            appletItem.latteApplet.signalAnimationsNeedLength.connect(slotAnimationsNeedLength);
+            appletItem.latteApplet.signalAnimationsNeedThickness.connect(slotAnimationsNeedThickness);
+            appletItem.latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
+            appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
+            appletItem.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
         }
     }
 
     onLatteSpacerChanged: {
-        if(container.latteSpacer){
+        if(appletItem.latteSpacer){
             latteSpacer.latteDock = root;
-            //container.lockZoom = true;
+            //appletItem.lockZoom = true;
         }
     }
 
@@ -303,7 +303,7 @@ Item {
 
     onShowZoomedChanged: {
         if(showZoomed){
-            //var newZ = container.maxHeight / root.iconSize;
+            //var newZ = appletItem.maxHeight / root.iconSize;
             //wrapper.zoomScale = newZ;
             wrapper.zoomScale = 1;
         }
@@ -329,13 +329,13 @@ Item {
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
 
-        if (container.latteApplet) {
-            container.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);
-            container.latteApplet.signalAnimationsNeedLength.disconnect(slotAnimationsNeedLength);
-            container.latteApplet.signalAnimationsNeedThickness.disconnect(slotAnimationsNeedThickness);
-            container.latteApplet.signalActionsBlockHiding.disconnect(slotActionsBlockHiding);
-            container.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
-            container.latteApplet.clearZoomSignal.disconnect(titleTooltipDialog.hide);
+        if (appletItem.latteApplet) {
+            appletItem.latteApplet.signalAnimationsNeedBothAxis.disconnect(slotAnimationsNeedBothAxis);
+            appletItem.latteApplet.signalAnimationsNeedLength.disconnect(slotAnimationsNeedLength);
+            appletItem.latteApplet.signalAnimationsNeedThickness.disconnect(slotAnimationsNeedThickness);
+            appletItem.latteApplet.signalActionsBlockHiding.disconnect(slotActionsBlockHiding);
+            appletItem.latteApplet.signalPreviewsShown.disconnect(slotPreviewsShown);
+            appletItem.latteApplet.clearZoomSignal.disconnect(titleTooltipDialog.hide);
         }
     }
 
@@ -369,23 +369,23 @@ Item {
                 }
 
                 if(Math.abs(index-root.latteAppletPos+root.latteAppletHoveredIndex)>=Math.max(2,distance)) {
-                    container.clearZoom();
+                    appletItem.clearZoom();
                 }
             }
         }
 
         onSignalActivateEntryAtIndex: {
-            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && container.isLattePlasmoid) {
+            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
-            } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(container.index))) {
+            } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index))) {
                 latteView.toggleAppletExpanded(applet.id);
             }
         }
 
         onSignalNewInstanceForEntryAtIndex: {
-            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && container.isLattePlasmoid) {
+            if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
                 latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
-            } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(container.index))) {
+            } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index))) {
                 latteView.toggleAppletExpanded(applet.id);
             }
         }
@@ -398,7 +398,7 @@ Item {
             //is enough to clearZoom
             if ( (root.zoomFactor>1) && (layoutsContainer.hoveredIndex>=0)
                     && (Math.abs(index-layoutsContainer.hoveredIndex)>=2))
-                container.clearZoom();
+                appletItem.clearZoom();
 
             if ((restoreAnimation.running) && (layoutsContainer.hoveredIndex !== -1)) {
                 restoreAnimation.stop();
@@ -421,7 +421,7 @@ Item {
     Communicator.Engine{
         id: communicator
 
-        //set up the overlayed containers and properties for when a overlaiedIconItem must be presented to the user
+        //set up the overlayed appletItems and properties for when a overlaiedIconItem must be presented to the user
         //because the plasma widgets specific implementation breaks the Latte experience
         onOverlayLatteIconIsActiveChanged:{
             if (!overlayLatteIconIsActive && applet.opacity===0) {
@@ -464,7 +464,7 @@ Item {
         property bool pressed: false
 
         onPressed: {
-            container.activateAppletForNeutralAreas(mouse);
+            appletItem.activateAppletForNeutralAreas(mouse);
             pressed = true;
             mouse.accepted = false;
         }
@@ -478,8 +478,8 @@ Item {
     //! Main Applet Shown Area
     Flow{
         id: appletFlow
-        width: container.computeWidth
-        height: container.computeHeight
+        width: appletItem.computeWidth
+        height: appletItem.computeHeight
 
         anchors.rightMargin: (latteApplet || (showZoomed && root.editMode)) ||
                              (plasmoid.location !== PlasmaCore.Types.RightEdge) ? 0 : shownAppletMargin
@@ -525,8 +525,8 @@ Item {
                 opacity: mustBeShown ? 1 : 0
 
                 readonly property bool mustBeShown: colorizerManager.mustBeShown
-                                                    && !container.userBlocksColorizing
-                                                    && !container.appletBlocksColorizing
+                                                    && !appletItem.userBlocksColorizing
+                                                    && !appletItem.appletBlocksColorizing
 
                 Behavior on opacity {
                     NumberAnimation {
@@ -564,7 +564,7 @@ Item {
         opacity: latteApplet && root.addLaunchersMessage ? 1 : 0
 
         Behavior on opacity{
-            NumberAnimation { duration: 2*root.durationTime*container.animationTime }
+            NumberAnimation { duration: 2*root.durationTime*appletItem.animationTime }
         }
 
         PlasmaExtras.Heading {
@@ -602,7 +602,7 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: applet && !container.latteApplet && !lockZoom && canBeHovered && !(container.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
+        visible: applet && !appletItem.latteApplet && !lockZoom && canBeHovered && !(appletItem.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
 
         property bool blockWheel: false
         property bool pressed: false
@@ -613,7 +613,7 @@ Item {
         }
 
         onEntered: {
-            if (containsMouse && !container.lockZoom && container.canBeHovered){
+            if (containsMouse && !appletItem.lockZoom && appletItem.canBeHovered){
                 root.stopCheckRestoreZoomTimer();
             }
 
@@ -621,7 +621,7 @@ Item {
                 restoreAnimation.stop();
             }
 
-            root.showTooltipLabel(container, applet.title);
+            root.showTooltipLabel(appletItem, applet.title);
 
             //console.log("entered applet:" + layoutsContainer.hoveredIndex);
 
@@ -712,7 +712,7 @@ Item {
         }
 
         onPressed: {
-            container.activateAppletForNeutralAreas(mouse);
+            appletItem.activateAppletForNeutralAreas(mouse);
 
             pressed = true;
             //! this is needed for some applets is order to be activated/deactivated correctly
@@ -813,7 +813,7 @@ Item {
             target: wrapper
             property: "zoomScale"
             to: 1
-            duration: 4 * container.animationTime
+            duration: 4 * appletItem.animationTime
             easing.type: Easing.InCubic
         }
 
@@ -821,7 +821,7 @@ Item {
             target: hiddenSpacerLeft
             property: "nScale"
             to: 0
-            duration: 4 * container.animationTime
+            duration: 4 * appletItem.animationTime
             easing.type: Easing.InCubic
         }
 
@@ -829,7 +829,7 @@ Item {
             target: hiddenSpacerRight
             property: "nScale"
             to: 0
-            duration: 4 * container.animationTime
+            duration: 4 * appletItem.animationTime
             easing.type: Easing.InCubic
         }
     }

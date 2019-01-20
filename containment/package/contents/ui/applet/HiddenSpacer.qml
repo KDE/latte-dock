@@ -30,13 +30,13 @@ Item{
     height: root.isHorizontal ? wrapper.height : nHiddenSize
 
     ///check also if this is the first/last plasmoid in anylayout
-    visible: (rightSpacer ? container.endEdge : container.startEdge) || separatorSpace>0
+    visible: (rightSpacer ? appletItem.endEdge : appletItem.startEdge) || separatorSpace>0
 
     property bool neighbourSeparator: false;
 
-    property int separatorSpace: neighbourSeparator && !container.isSeparator && !container.latteApplet ? (2+root.iconMargin/2) : 0
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet ? (2+root.iconMargin/2) : 0
 
-    property real nHiddenSize: (nScale > 0) ? (container.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+    property real nHiddenSize: (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
     property bool rightSpacer: false
 
@@ -45,7 +45,7 @@ Item{
     Behavior on nHiddenSize {
         id: animatedBehavior
         enabled: !root.globalDirectRender || restoreAnimation.running
-        NumberAnimation { duration: 3 * container.animationTime }
+        NumberAnimation { duration: 3 * appletItem.animationTime }
     }
 
     Behavior on nHiddenSize {

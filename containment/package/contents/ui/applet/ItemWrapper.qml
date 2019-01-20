@@ -34,10 +34,10 @@ Item{
     id: wrapper
 
     width: {
-        if (container.isInternalViewSplitter && !root.editMode)
+        if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
 
-        if (container.isSeparator && !root.editMode) {
+        if (appletItem.isSeparator && !root.editMode) {
             if (!root.isVertical)
                 return -1;
             else
@@ -45,26 +45,26 @@ Item{
         }
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (container.needsFillSpace && root.isHorizontal) {
+        if (appletItem.needsFillSpace && root.isHorizontal) {
             if (root.panelAlignment !== Latte.Types.Justify) {
                 var maximumValue = (applet.Layout.maximumWidth === Infinity) || applet.Layout.maximumWidth === -1 ?
-                            container.sizeForFill : Math.min(container.sizeForFill, applet.Layout.maximumWidth);
+                            appletItem.sizeForFill : Math.min(appletItem.sizeForFill, applet.Layout.maximumWidth);
 
                 var constrainedWidth = MathTools.bound(applet.Layout.minimumWidth, applet.Layout.preferredWidth, maximumValue);
 
                 return root.editMode ? Math.max(constrainedWidth, root.iconSize) : constrainedWidth;
             }
 
-            if(container.sizeForFill>-1){
-                return container.sizeForFill;
+            if(appletItem.sizeForFill>-1){
+                return appletItem.sizeForFill;
             }
         }
 
-        if (container.latteApplet) {
+        if (appletItem.latteApplet) {
             //! commented because it was breaking the context menu available area, I don't remember where
             //! we needed this...
 
-            // if (container.showZoomed && root.isVertical)
+            // if (appletItem.showZoomed && root.isVertical)
             //   return root.statesLineSize + root.thickMargin + root.iconSize + 1;
             //else
             return latteApplet.tasksWidth;
@@ -74,10 +74,10 @@ Item{
     }
 
     height: {
-        if (container.isInternalViewSplitter && !root.editMode)
+        if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
 
-        if (container.isSeparator && !root.editMode) {
+        if (appletItem.isSeparator && !root.editMode) {
             if (root.isVertical)
                 return -1;
             else
@@ -85,26 +85,26 @@ Item{
         }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
-        if (container.needsFillSpace && root.isVertical) {
+        if (appletItem.needsFillSpace && root.isVertical) {
             if (root.panelAlignment !== Latte.Types.Justify) {
                 var maximumValue = (applet.Layout.maximumHeight === Infinity) || applet.Layout.maximumHeight === -1 ?
-                            container.sizeForFill : Math.min(container.sizeForFill, applet.Layout.maximumHeight);
+                            appletItem.sizeForFill : Math.min(appletItem.sizeForFill, applet.Layout.maximumHeight);
 
                 var constrainedHeight = MathTools.bound(applet.Layout.minimumHeight, applet.Layout.preferredHeight, maximumValue);
 
                 return root.editMode ? Math.max(constrainedHeight, root.iconSize) : constrainedHeight;
             }
 
-            if (container.sizeForFill>-1){
-                return container.sizeForFill;
+            if (appletItem.sizeForFill>-1){
+                return appletItem.sizeForFill;
             }
         }
 
-        if (container.latteApplet) {
+        if (appletItem.latteApplet) {
             //! commented because it was breaking the context menu available area, I don't remember where
             //! we needed this...
 
-            //if (container.showZoomed && root.isHorizontal)
+            //if (appletItem.showZoomed && root.isHorizontal)
             // return root.statesLineSize + root.thickMargin + root.iconSize + 1;
             //  else
             return latteApplet.tasksHeight;
@@ -115,9 +115,9 @@ Item{
 
     opacity: appletColorizer.mustBeShown ? 0 : 1
 
-    //width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isVertical) ?
+    //width: appletItem.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((appletItem.showZoomed && root.isVertical) ?
     //                                                                        scaledWidth : latteApplet.tasksWidth) : scaledWidth )
-    //height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isHorizontal) ?
+    //height: appletItem.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((appletItem.showZoomed && root.isHorizontal) ?
     //                                                                          scaledHeight : latteApplet.tasksHeight ): scaledHeight )
 
     property bool disableScaleWidth: false
@@ -136,11 +136,11 @@ Item{
     property int iconSize: root.iconSize
 
     property int marginWidth: root.isVertical ?
-                                  (container.isSystray ? root.thickMarginBase : root.thickMargin ) :
-                                  (root.inFullJustify && (container.firstChildOfStartLayout || container.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
+                                  (appletItem.isSystray ? root.thickMarginBase : root.thickMargin ) :
+                                  (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
-                                   (container.isSystray ? root.thickMarginBase : root.thickMargin ) :
-                                   (root.inFullJustify && (container.firstChildOfStartLayout || container.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
+                                   (appletItem.isSystray ? root.thickMarginBase : root.thickMargin ) :
+                                   (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
@@ -155,15 +155,15 @@ Item{
     // property int localMoreSpace: root.reverseLinesPosition ? root.statesLineSize + 2 : appletMargin
     property int localMoreSpace: appletMargin
 
-    property int moreHeight: (container.isSystray || root.reverseLinesPosition)
+    property int moreHeight: (appletItem.isSystray || root.reverseLinesPosition)
                              && root.isHorizontal ? localMoreSpace : 0
-    property int moreWidth: (container.isSystray || root.reverseLinesPosition)
+    property int moreWidth: (appletItem.isSystray || root.reverseLinesPosition)
                             && root.isVertical ? localMoreSpace : 0
 
     property real center:(width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real zoomScale: 1
 
-    property int index: container.index
+    property int index: appletItem.index
 
     property Item wrapperContainer: _wrapperContainer
     property Item clickedEffect: _clickedEffect
@@ -239,14 +239,14 @@ Item{
             root.setGlobalDirectRender(true);
         }
 
-        if ((zoomScale > 1) && !container.isZoomed) {
-            container.isZoomed = true;
+        if ((zoomScale > 1) && !appletItem.isZoomed) {
+            appletItem.isZoomed = true;
             if (!root.editMode && !animationWasSent) {
                 root.slotAnimationsNeedBothAxis(1);
                 animationWasSent = true;
             }
-        } else if ((zoomScale == 1) && container.isZoomed) {
-            container.isZoomed = false;
+        } else if ((zoomScale == 1) && appletItem.isZoomed) {
+            appletItem.isZoomed = false;
             if (animationWasSent) {
                 root.slotAnimationsNeedBothAxis(-1);
                 animationWasSent = false;
@@ -257,7 +257,7 @@ Item{
     Connections {
         target: root
         onIsVerticalChanged: {
-            if (container.latteApplet) {
+            if (appletItem.latteApplet) {
                 return;
             }
 
@@ -275,14 +275,14 @@ Item{
     }
 
     function updateLayoutHeight(){
-        if (container.needsFillSpace && root.isVertical) {
+        if (appletItem.needsFillSpace && root.isVertical) {
             layoutsContainer.updateSizeForAppletsInFill();
             return;
         }
 
         if (isLattePlasmoid) {
             return;
-        } else if (container.isInternalViewSplitter){
+        } else if (appletItem.isInternalViewSplitter){
             if(!root.editMode)
                 layoutHeight = 0;
             else
@@ -291,7 +291,7 @@ Item{
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
             layoutHeight = root.iconSize + moreHeight;
         }
-        else if(container.isSystray && root.isHorizontal){
+        else if(appletItem.isSystray && root.isHorizontal){
             layoutHeight = root.statesLineSize + root.iconSize;
         }
         else{
@@ -301,12 +301,12 @@ Item{
             else if(applet
                     && ( applet.Layout.maximumHeight < root.iconSize
                         || applet.Layout.preferredHeight > root.iconSize
-                        || container.lockZoom)
+                        || appletItem.lockZoom)
                     && root.isVertical
                     && !disableScaleWidth
                     && !communicator.overlayLatteIconIsActive) {
 
-                if (!container.isSpacer) {
+                if (!appletItem.isSpacer) {
                     disableScaleHeight = true;
                 }
                 //this way improves performance, probably because during animation the preferred sizes update a lot
@@ -315,7 +315,7 @@ Item{
                 } else if (applet.Layout.minimumHeight > root.iconSize){
                     layoutHeight = applet.Layout.minimumHeight;
                 } else if ((applet.Layout.preferredHeight > root.iconSize)
-                           || (container.lockZoom && applet.Layout.preferredHeight > 0 )){
+                           || (appletItem.lockZoom && applet.Layout.preferredHeight > 0 )){
                     layoutHeight = applet.Layout.preferredHeight;
                 } else{
                     layoutHeight = root.iconSize + moreHeight;
@@ -327,14 +327,14 @@ Item{
     }
 
     function updateLayoutWidth(){
-        if (container.needsFillSpace && root.isHorizontal) {
+        if (appletItem.needsFillSpace && root.isHorizontal) {
             layoutsContainer.updateSizeForAppletsInFill();
             return;
         }
 
         if (isLattePlasmoid) {
             return;
-        } else if (container.isInternalViewSplitter){
+        } else if (appletItem.isInternalViewSplitter){
             if(!root.editMode)
                 layoutWidth = 0;
             else
@@ -343,7 +343,7 @@ Item{
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
             layoutWidth = root.iconSize + moreWidth;
         }
-        else if(container.isSystray && root.isVertical){
+        else if(appletItem.isSystray && root.isVertical){
             layoutWidth = root.statesLineSize + root.iconSize;
         }
         else{
@@ -353,12 +353,12 @@ Item{
             else if(applet
                     && ( applet.Layout.maximumWidth < root.iconSize
                         || applet.Layout.preferredWidth > root.iconSize
-                        || container.lockZoom)
+                        || appletItem.lockZoom)
                     && root.isHorizontal
                     && !disableScaleHeight
                     && !communicator.overlayLatteIconIsActive){
 
-                if (!container.isSpacer) {
+                if (!appletItem.isSpacer) {
                     disableScaleWidth = true;
                 }
                 //this way improves performance, probably because during animation the preferred sizes update a lot
@@ -368,7 +368,7 @@ Item{
                 } else if (applet.Layout.minimumWidth > root.iconSize){
                     layoutWidth = applet.Layout.minimumWidth;
                 } else if ((applet.Layout.preferredWidth > root.iconSize)
-                           || (container.lockZoom && applet.Layout.preferredWidth > 0 )){
+                           || (appletItem.lockZoom && applet.Layout.preferredWidth > 0 )){
                     layoutWidth = applet.Layout.preferredWidth;
                 } else{
                     layoutWidth = root.iconSize + moreWidth;
@@ -383,29 +383,29 @@ Item{
         id:_wrapperContainer
 
         width:{
-            if (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal){
+            if (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isHorizontal){
                 return wrapper.width;
             }
 
-            if (container.isInternalViewSplitter)
+            if (appletItem.isInternalViewSplitter)
                 return wrapper.layoutWidth;
             else
                 return parent.zoomScaleWidth * wrapper.layoutWidth;
         }
 
         height:{
-            if (container.needsFillSpace && (container.sizeForFill>-1) && root.isVertical){
+            if (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isVertical){
                 return wrapper.height;
             }
 
-            if (container.isInternalViewSplitter)
+            if (appletItem.isInternalViewSplitter)
                 return wrapper.layoutHeight;
             else
                 return parent.zoomScaleHeight * wrapper.layoutHeight;
         }
 
-        //width: Math.round( container.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
-        //height: Math.round( container.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
+        //width: Math.round( appletItem.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
+        //height: Math.round( appletItem.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
 
         anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? lowThickUsed : 0
         anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? lowThickUsed : 0
@@ -549,7 +549,7 @@ Item{
 
     Loader{
         anchors.fill: _wrapperContainer
-        active: container.isInternalViewSplitter && root.editMode
+        active: appletItem.isInternalViewSplitter && root.editMode
 
         rotation: root.isVertical ? 90 : 0
 
@@ -586,11 +586,11 @@ Item{
     ///Shadow in applets
     Loader{
         id: appletShadow
-        anchors.fill: container.appletWrapper
+        anchors.fill: appletItem.appletWrapper
 
-        active: container.applet && !appletColorizer.mustBeShown
+        active: appletItem.applet && !appletColorizer.mustBeShown
                 && (((plasmoid.configuration.shadows === 1 /*Locked Applets*/
-                      && (!container.canBeHovered || (container.lockZoom && (applet.pluginName !== root.plasmoidName))) )
+                      && (!appletItem.canBeHovered || (appletItem.lockZoom && (applet.pluginName !== root.plasmoidName))) )
                      || (plasmoid.configuration.shadows === 2 /*All Applets*/
                          && (applet.pluginName !== root.plasmoidName)))
                     || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
@@ -608,7 +608,7 @@ Item{
             color: root.appShadowColor //"#ff080808"
             fast: true
             samples: 2 * radius
-            source: communicator.overlayLatteIconIsActive ? _wrapperContainer : container.applet
+            source: communicator.overlayLatteIconIsActive ? _wrapperContainer : appletItem.applet
             radius: shadowSize
             verticalOffset: forcedShadow ? 0 : 2
 
@@ -644,7 +644,7 @@ Item{
     /// START Applets Number
     Loader{
         id: appletNumberLoader
-        anchors.fill: container.appletWrapper
+        anchors.fill: appletItem.appletWrapper
         active: isValidDelayer > 0
         asynchronous: true
         visible: badgeString!==""
@@ -660,7 +660,7 @@ Item{
 
         Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
 
-        property real isValidDelayer: container.canShowAppletNumberBadge &&
+        property real isValidDelayer: appletItem.canShowAppletNumberBadge &&
                                       ((root.showAppletsNumbers && root.unifiedGlobalShortcuts)
                                        || (root.showMetaBadge && applet.id===applicationLauncherId)) ? 1 : 0
 
@@ -741,7 +741,7 @@ Item{
             color: "transparent"
             //! red visualizer, in debug mode for the applets that use fillWidth or fillHeight
             //! green, for the rest
-            border.color:  (container.needsFillSpace && (container.sizeForFill>-1) && root.isHorizontal) ? "red" : "green"
+            border.color:  (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isHorizontal) ? "red" : "green"
             border.width: 1
         }
     }
@@ -749,7 +749,7 @@ Item{
     Behavior on zoomScale {
         enabled: !root.globalDirectRender
         NumberAnimation {
-            duration: 3 * container.animationTime
+            duration: 3 * appletItem.animationTime
             easing.type: Easing.OutCubic
         }
     }
@@ -779,12 +779,12 @@ Item{
             }*/
 
             //Left hiddenSpacer
-            if(container.startEdge){
+            if(appletItem.startEdge){
                 hiddenSpacerLeft.nScale = scales.leftScale - 1;
             }
 
             //Right hiddenSpacer  ///there is one more item in the currentLayout ????
-            if(container.endEdge){
+            if(appletItem.endEdge){
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
@@ -795,12 +795,12 @@ Item{
 
 
     function signalUpdateScale(nIndex, nScale, step){
-        if(container && !container.containsMouse && (container.index === nIndex)){
-            if ( ((canBeHovered && !lockZoom ) || container.latteApplet)
+        if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
+            if ( ((canBeHovered && !lockZoom ) || appletItem.latteApplet)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)
                     //&& (index != currentLayout.hoveredIndex)
                     ){
-                if(!container.latteApplet){
+                if(!appletItem.latteApplet){
                     if(nScale >= 0)
                         zoomScale = nScale + step;
                     else
