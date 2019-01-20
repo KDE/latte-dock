@@ -43,7 +43,7 @@
   <summary xml:lang="eu">Jendartearen kaia</summary>
   <summary xml:lang="fi">Telakka massoille</summary>
   <summary xml:lang="gl">Doca para as masas</summary>
-  <summary xml:lang="id">Dock untuk massa</summary>
+  <summary xml:lang="id">Dock untuk mengelompokkan</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
   <summary xml:lang="ko">만인을 위한 독</summary>
   <summary xml:lang="nl">Dock voor de massa</summary>
