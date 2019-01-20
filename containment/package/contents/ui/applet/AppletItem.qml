@@ -30,7 +30,7 @@ import org.kde.kquickcontrolsaddons 2.0
 
 import org.kde.latte 0.2 as Latte
 
-import "../colorizer" as Colorizer
+import "colorizer" as Colorizer
 import "communicator" as Communicator
 
 Item {
