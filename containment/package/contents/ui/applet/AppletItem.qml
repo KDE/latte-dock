@@ -492,13 +492,13 @@ Item {
 
         // a hidden spacer for the first element to add stability
         // IMPORTANT: hidden spacers must be tested on vertical !!!
-        AppletHiddenSpacer{id: hiddenSpacerLeft}
+        HiddenSpacer{id: hiddenSpacerLeft}
 
         Item {
             width: wrapper.width
             height: wrapper.height
 
-            AppletItemWrapper{
+            ItemWrapper{
                 id: wrapper
 
                 TitleTooltipParent{
@@ -538,7 +538,7 @@ Item {
         }
 
         // a hidden spacer on the right for the last item to add stability
-        AppletHiddenSpacer{id: hiddenSpacerRight; rightSpacer: true}
+        HiddenSpacer{id: hiddenSpacerRight; rightSpacer: true}
     }// Flow with hidden spacers inside
 
     //Busy Indicator
