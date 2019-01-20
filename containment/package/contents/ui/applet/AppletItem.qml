@@ -135,7 +135,7 @@ Item {
         //unfortunately for other applets there is no other way to activate them yet
         //for example the icon-only applets
         var choords = mapToItem(appletItem.appletWrapper, mouse.x, mouse.y);
-        if (choords.x<0 || choords.y<0 || choords.x>=container.appletWrapper.width || choords.y>=appletItem.appletWrapper.height) {
+        if (choords.x<0 || choords.y<0 || choords.x>=appletItem.appletWrapper.width || choords.y>=appletItem.appletWrapper.height) {
             latteView.toggleAppletExpanded(applet.id);
         }
     }
