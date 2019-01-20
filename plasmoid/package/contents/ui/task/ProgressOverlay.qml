@@ -61,22 +61,22 @@ Item {
             border.color: root.minimizedDotColor
             minimumWidth: 0.8 * parent.height
             height: 0.8 * parent.height
-            numberValue: taskItem.badgeIndicator > 0 ? taskItem.badgeIndicator : centralItem.smartLauncherItem.count
+            numberValue: taskItem.badgeIndicator > 0 ? taskItem.badgeIndicator : taskIcon.smartLauncherItem.count
             fullCircle: true
             showNumber: true
 
             textWithBackgroundColor: ( (taskItem.badgeIndicator > 0)
-                                      || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )
+                                      || (taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible) )
                                      && proportion>0
 
             proportion: {
                 if (taskItem.badgeIndicator > 0 ||
-                        (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible)) {
+                        (taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible)) {
                     return 100;
                 }
 
-                if (centralItem.smartLauncherItem) {
-                    return centralItem.smartLauncherItem.progress / 100;
+                if (taskIcon.smartLauncherItem) {
+                    return taskIcon.smartLauncherItem.progress / 100;
                 } else {
                     return 0;
                 }

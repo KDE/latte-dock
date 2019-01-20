@@ -38,7 +38,7 @@ import "animations" as TaskAnimations
 //but it increases performance almost to double during animation
 
 Item{
-    id: centralItem
+    id: taskIcon
 
     width: wrapper.regulatorWidth
     height: wrapper.regulatorHeight
@@ -80,7 +80,7 @@ Item{
         if (smartLauncherEnabled && !smartLauncherItem) {
             var smartLauncher = Qt.createQmlObject(
                         " import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet; TaskManagerApplet.SmartLauncherItem { }",
-                        centralItem);
+                        taskIcon);
 
             smartLauncher.launcherUrl = Qt.binding(function() { return taskItem.launcherUrlWithIcon; });
 
@@ -182,7 +182,7 @@ Item{
                     return 0;
             }
 
-            width: Math.round(newTempSize) //+ 2*centralItem.shadowSize
+            width: Math.round(newTempSize) //+ 2*taskIcon.shadowSize
             height: Math.round(width)
             source: decoration
 
@@ -289,8 +289,8 @@ Item{
 
             property real opacityN: showProgress || showAudio ? 1 : 0
 
-            property bool showProgress: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !taskItem.isSeparator
-                                         && (centralItem.smartLauncherItem.countVisible || centralItem.smartLauncherItem.progressVisible
+            property bool showProgress: (taskIcon.smartLauncherEnabled && taskIcon.smartLauncherItem && !taskItem.isSeparator
+                                         && (taskIcon.smartLauncherItem.countVisible || taskIcon.smartLauncherItem.progressVisible
                                              || taskItem.badgeIndicator > 0))
 
             property bool showAudio: taskItem.hasAudioStream && taskItem.playingAudio &&
@@ -572,7 +572,7 @@ Item{
     }
 
     Component.onDestruction: {
-        centralItem.toBeDestroyed = true;
+        taskIcon.toBeDestroyed = true;
 
         if(removingAnimation.removingItem)
             removingAnimation.removingItem.destroy();

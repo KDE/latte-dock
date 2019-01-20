@@ -31,7 +31,7 @@ Item{
     id:removingAnimation
 
     function init(){
-        var relavantPoint = root.mapFromItem(centralItem,0,0);
+        var relavantPoint = root.mapFromItem(taskIcon,0,0);
 
         var removingItem = removeTaskComponent.createObject(root);
         removingItem.x = relavantPoint.x;
@@ -41,7 +41,7 @@ Item{
     }
 
     function removeTask(){
-        if(!centralItem.toBeDestroyed && plasmoid.configuration.showShadows && Latte.WindowSystem.compositingActive){
+        if(!taskIcon.toBeDestroyed && plasmoid.configuration.showShadows && Latte.WindowSystem.compositingActive){
             removingAnimation.init();
         }
     }
@@ -60,8 +60,8 @@ Item{
         id: removeTaskComponent
         Item{
             id: removeTask
-            width: centralItem.width
-            height: centralItem.height
+            width: taskIcon.width
+            height: taskIcon.height
 
             visible: false
 
@@ -97,7 +97,7 @@ Item{
                     fast: true
                     samples: 2 * radius
                     source: tempRemoveIcon
-                    radius: centralItem.shadowSize
+                    radius: taskIcon.shadowSize
                     verticalOffset: 2
                 }
             }
