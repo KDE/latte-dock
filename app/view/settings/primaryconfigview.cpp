@@ -67,6 +67,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
+    connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::syncGeometry);
 
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
