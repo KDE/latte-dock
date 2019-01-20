@@ -113,6 +113,8 @@ Item{
         }
     }
 
+    opacity: appletColorizer.mustBeShown ? 0 : 1
+
     //width: container.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isVertical) ?
     //                                                                        scaledWidth : latteApplet.tasksWidth) : scaledWidth )
     //height: container.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((container.showZoomed && root.isHorizontal) ?
@@ -166,6 +168,13 @@ Item{
     property Item wrapperContainer: _wrapperContainer
     property Item clickedEffect: _clickedEffect
     property Item containerForOverlayIcon: _containerForOverlayIcon
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
 
     // property int pHeight: applet ? applet.Layout.preferredHeight : -10
 
@@ -367,17 +376,6 @@ Item{
             } else{
                 layoutWidth = root.iconSize + moreWidth;
             }
-        }
-    }
-
-    Loader{
-        anchors.fill: parent
-        active: root.activeIndicator === Latte.Types.AllIndicator
-                || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive)
-
-        sourceComponent: Item{
-            anchors.fill: parent
-            ActiveIndicator{}
         }
     }
 

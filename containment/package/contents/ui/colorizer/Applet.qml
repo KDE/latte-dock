@@ -28,7 +28,7 @@ Item {
         id: colorizer
         anchors.fill: parent
         color: colorizerManager.applyColor
-        source: appletFlow
+        source: wrapper
     }
 
     ///Shadow in applets

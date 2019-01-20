@@ -480,7 +480,6 @@ Item {
         id: appletFlow
         width: container.computeWidth
         height: container.computeHeight
-        opacity: appletColorizer.mustBeShown ? 0 : 1
 
         anchors.rightMargin: (latteApplet || (showZoomed && root.editMode)) ||
                              (plasmoid.location !== PlasmaCore.Types.RightEdge) ? 0 : shownAppletMargin
@@ -491,22 +490,50 @@ Item {
         anchors.bottomMargin: (latteApplet || (showZoomed && root.editMode)) ||
                               (plasmoid.location !== PlasmaCore.Types.BottomEdge) ? 0 : shownAppletMargin
 
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 0.8 * root.animationTime
-                easing.type: Easing.OutCubic
-            }
-        }
-
         // a hidden spacer for the first element to add stability
         // IMPORTANT: hidden spacers must be tested on vertical !!!
         AppletHiddenSpacer{id: hiddenSpacerLeft}
 
-        AppletItemWrapper{
-            id: wrapper
+        Item {
+            width: wrapper.width
+            height: wrapper.height
 
-            TitleTooltipParent{
-                id: titleTooltipParent
+            AppletItemWrapper{
+                id: wrapper
+
+                TitleTooltipParent{
+                    id: titleTooltipParent
+                }
+            }
+
+            //! Active Indicator loader
+            Loader{
+                anchors.fill: parent
+                active: root.activeIndicator === Latte.Types.AllIndicator
+                        || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive)
+
+                sourceComponent: Item{
+                    anchors.fill: parent
+                    ActiveIndicator{}
+                }
+            }
+
+            //! The Applet Colorizer
+            Colorizer.Applet {
+                id: appletColorizer
+                anchors.fill: parent
+                opacity: mustBeShown ? 1 : 0
+
+                readonly property bool mustBeShown: colorizerManager.mustBeShown
+                                                    && !container.userBlocksColorizing
+                                                    && !container.appletBlocksColorizing
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 1.2 * root.animationTime
+                        easing.type: Easing.OutCubic
+                    }
+                }
             }
         }
 
@@ -559,24 +586,6 @@ Item {
                     return -90;
                 else if (plasmoid.location === PlasmaCore.Types.RightEdge)
                     return 90;
-            }
-        }
-    }
-
-    //! The Applet Colorizer
-    Colorizer.Applet {
-        id: appletColorizer
-        anchors.fill: parent
-        opacity: mustBeShown ? 1 : 0
-
-        readonly property bool mustBeShown: colorizerManager.mustBeShown
-                                            && !container.userBlocksColorizing
-                                            && !container.appletBlocksColorizing
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 1.2 * root.animationTime
-                easing.type: Easing.OutCubic
             }
         }
     }
