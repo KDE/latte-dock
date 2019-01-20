@@ -591,15 +591,15 @@ Item{
 
     ///// Animations /////
 
-    TaskAnimations.TaskClickedAnimation { id: clickedAnimation }
+    TaskAnimations.ClickedAnimation { id: clickedAnimation }
 
-    TaskAnimations.TaskLauncherAnimation { id:launcherAnimation }
+    TaskAnimations.LauncherAnimation { id:launcherAnimation }
 
-    TaskAnimations.TaskNewWindowAnimation { id: newWindowAnimation }
+    TaskAnimations.NewWindowAnimation { id: newWindowAnimation }
 
-    TaskAnimations.TaskRemoveWindowFromGroupAnimation { id: removingAnimation }
+    TaskAnimations.RemoveWindowFromGroupAnimation { id: removingAnimation }
 
-    TaskAnimations.TaskFastRestoreAnimation { id: fastRestoreAnimation }
+    TaskAnimations.FastRestoreAnimation { id: fastRestoreAnimation }
 
     //////////// States ////////////////////
     states: [

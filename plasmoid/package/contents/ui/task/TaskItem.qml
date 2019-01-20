@@ -1452,9 +1452,9 @@ MouseArea{
 
     /////Animations
 
-    TaskAnimations.TaskShowWindowAnimation{ id: showWindowAnimation }
+    TaskAnimations.ShowWindowAnimation{ id: showWindowAnimation }
 
-    TaskAnimations.TaskRestoreAnimation{ id: restoreAnimation}
+    TaskAnimations.RestoreAnimation{ id: restoreAnimation}
 
     //A Timer to check how much time the task is hovered in order to check if we must
     //show window previews
@@ -1601,7 +1601,7 @@ MouseArea{
     }
 
     ///Item's Removal Animation
-    ListView.onRemove: TaskAnimations.TaskRealRemovalAnimation{ id: taskRealRemovalAnimation }
+    ListView.onRemove: TaskAnimations.RealRemovalAnimation{ id: taskRealRemovalAnimation }
 
 }// main Item
 
