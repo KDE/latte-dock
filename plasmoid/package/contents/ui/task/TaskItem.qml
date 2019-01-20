@@ -33,7 +33,7 @@ import org.kde.latte 0.2 as Latte
 import "animations" as TaskAnimations
 
 MouseArea{
-    id: mainItemContainer
+    id: taskItem
 
     visible: false //true//(isStartup && root.durationTime !== 0) ? false : true
 
@@ -122,7 +122,7 @@ MouseArea{
     property bool isZoomed: false
 
     property bool canPublishGeometries: (isWindow || isStartup || isGroupParent) && visible && width>=root.iconSize && height>=root.iconSize
-                                        && !mainItemContainer.delayingRemove
+                                        && !taskItem.delayingRemove
                                         && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
 
     property bool pressed: false
@@ -237,18 +237,18 @@ MouseArea{
             }
 
             if ((windowsCount >= 2) && (windowsCount > previousCount)
-                    && !(mainItemContainer.containsMouse || parabolicManager.neighbourIsHovered(itemIndex)) ){
+                    && !(taskItem.containsMouse || parabolicManager.neighbourIsHovered(itemIndex)) ){
                 if(root.dragSource == null)
-                    mainItemContainer.groupWindowAdded();
+                    taskItem.groupWindowAdded();
             }
             else if ((windowsCount >=1) &&(windowsCount < previousCount)){
                 //sometimes this is triggered in dragging with no reason
-                if(root.dragSource == null && !mainItemContainer.delayingRemove)
-                    mainItemContainer.groupWindowRemoved();
+                if(root.dragSource == null && !taskItem.delayingRemove)
+                    taskItem.groupWindowRemoved();
             }
 
             if (windowsCount>=1) {
-                mainItemContainer.slotPublishGeometries();
+                taskItem.slotPublishGeometries();
             }
 
             previousCount = windowsCount;
@@ -259,11 +259,11 @@ MouseArea{
         id: isSeparatorRectangle
         active: (opacityN>0)
 
-        width: mainItemContainer.width
-        height: mainItemContainer.height
+        width: taskItem.width
+        height: taskItem.height
         anchors.centerIn: separatorItem
 
-        property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === mainItemContainer ? 1 : 0
+        property real opacityN: isSeparator && root.contextMenu && root.contextMenu.visualParent === taskItem ? 1 : 0
 
         Behavior on opacityN {
             NumberAnimation { duration: root.durationTime*units.longDuration }
@@ -301,7 +301,7 @@ MouseArea{
         //opacity: separatorShadow.active || root.internalSeparatorHidden ? 0 : 0.4
         opacity: separatorShadow.active || forceHiddenState ? 0 : 0.4
 
-        visible: mainItemContainer.isSeparator
+        visible: taskItem.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
         height: !root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
@@ -319,7 +319,7 @@ MouseArea{
                 forceHiddenState = false;
             } else {
                 var firstPosition = (index>=0) && (index < parabolicManager.firstRealTaskIndex);
-                var sepNeighbour = mainItemContainer.hasNeighbourSeparator(index-1, false);
+                var sepNeighbour = taskItem.hasNeighbourSeparator(index-1, false);
                 var firstSepFromLastSeparatorsGroup = (index>=0) && (index > parabolicManager.lastRealTaskIndex);
 
                 forceHiddenState = (firstPosition || sepNeighbour || firstSepFromLastSeparatorsGroup);
@@ -348,11 +348,11 @@ MouseArea{
             //! place we might miss the activation of the parabolic effect.
             //! By catching that signal we are trying to solve this.
             onDockIsShownCompletelyChanged: {
-                if (dockIsShownCompletely && mainItemContainer.containsMouse) {
+                if (dockIsShownCompletely && taskItem.containsMouse) {
                     if (root.vertical) {
-                        mainItemContainer.mousePosChanged(mainItemContainer.mouseY);
+                        taskItem.mousePosChanged(taskItem.mouseY);
                     } else {
-                        mainItemContainer.mousePosChanged(mainItemContainer.mouseX);
+                        taskItem.mousePosChanged(taskItem.mouseX);
                     }
                 }
             }
@@ -369,12 +369,12 @@ MouseArea{
                     return;
                 }
 
-                mainItemContainer.updateVisibilityBasedOnLaunchers();
+                taskItem.updateVisibilityBasedOnLaunchers();
             }
 
             onInActivityChangeChanged: {
                 if (root.showWindowsOnlyFromLaunchers && !root.inActivityChange) {
-                    mainItemContainer.updateVisibilityBasedOnLaunchers();
+                    taskItem.updateVisibilityBasedOnLaunchers();
                 }
             }
         }
@@ -455,7 +455,7 @@ MouseArea{
             repeat: false
 
             onTriggered: {
-                //      mainItemContainer.hoverEnabled = true;
+                //      taskItem.hoverEnabled = true;
                 slotPublishGeometries();
 
                 if (latteView && latteView.debugModeTimers) {
@@ -482,7 +482,7 @@ MouseArea{
     onCanPublishGeometriesChanged: {
         if (canPublishGeometries) {
             slotPublishGeometries();
-            taskInitComponent.createObject(mainItemContainer);
+            taskInitComponent.createObject(taskItem);
         }
     }
 
@@ -523,8 +523,8 @@ MouseArea{
 
     onIsDraggedChanged: {
         if(isDragged && (!root.editMode)){
-            root.dragSource = mainItemContainer;
-            dragHelper.startDrag(mainItemContainer, model.MimeType, model.MimeData,
+            root.dragSource = taskItem;
+            dragHelper.startDrag(taskItem, model.MimeType, model.MimeData,
                                  model.LauncherUrlWithoutIcon, model.decoration);
             pressX = -1;
             pressY = -1;
@@ -612,13 +612,13 @@ MouseArea{
 
     // IMPORTANT: This must be improved ! even for small milliseconds  it reduces performance
     onExited: {
-        mainItemContainer.scalesUpdatedOnce = false;
+        taskItem.scalesUpdatedOnce = false;
 
         if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteView.hideTooltipLabel();
         }
 
-        if(mainItemContainer.contextMenu && mainItemContainer.contextMenu.status == PlasmaComponents.DialogStatus.Open){
+        if(taskItem.contextMenu && taskItem.contextMenu.status == PlasmaComponents.DialogStatus.Open){
             ///don't check to restore zooms
         }
         else{
@@ -649,7 +649,7 @@ MouseArea{
         }
 
         //! show previews
-        if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== mainItemContainer){
+        if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== taskItem){
             if (hoveredTimerObj) {
                 //! don't delay showing preview in normal states,
                 //! that is when the dock wasn't hidden
@@ -658,7 +658,7 @@ MouseArea{
                 }
             } else {
                 if (!root.disableAllWindowsFunctionality) {
-                    hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                    hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
                 }
             }
         }
@@ -718,8 +718,8 @@ MouseArea{
                     && isDragged
                     && !root.editMode
                     && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y) ) {
-                root.dragSource = mainItemContainer;
-                dragHelper.startDrag(mainItemContainer, model.MimeType, model.MimeData,
+                root.dragSource = taskItem;
+                dragHelper.startDrag(taskItem, model.MimeType, model.MimeData,
                                      model.LauncherUrlWithoutIcon, model.decoration);
                 pressX = -1;
                 pressY = -1;
@@ -743,7 +743,7 @@ MouseArea{
                     hoveredTimerObj.restart();
                 } else {
                     if (!root.disableAllWindowsFunctionality) {
-                        hoveredTimerObj = hoveredTimerComponent.createObject(mainItemContainer);
+                        hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
                     }
                 }
             }
@@ -778,7 +778,7 @@ MouseArea{
             pressY = mouse.y;
 
             if(draggingResistaner == null && !modAccepted)
-                draggingResistaner = resistanerTimerComponent.createObject(mainItemContainer);
+                draggingResistaner = resistanerTimerComponent.createObject(taskItem);
         }
         else if (mouse.button == Qt.RightButton && !modAccepted){
             // When we're a launcher, there's no window controls, so we can show all
@@ -789,7 +789,7 @@ MouseArea{
                 showContextMenu();
             }
 
-            //root.createContextMenu(mainItemContainer).show();
+            //root.createContextMenu(taskItem).show();
         }
 
         if (hoveredTimerObj){
@@ -809,7 +809,7 @@ MouseArea{
         if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
 
             if (modifierAccepted(mouse) && !root.disableAllWindowsFunctionality){
-                if( !mainItemContainer.isLauncher){
+                if( !taskItem.isLauncher){
                     if (root.modifierClickAction == Latte.Types.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
                     } else if (root.modifierClickAction == Latte.Types.Close) {
@@ -828,7 +828,7 @@ MouseArea{
                     activateTask();
                 }
             } else if (mouse.button == Qt.MidButton && !root.disableAllWindowsFunctionality){
-                if( !mainItemContainer.isLauncher){
+                if( !taskItem.isLauncher){
                     if (root.middleClickAction == Latte.Types.NewInstance) {
                         tasksModel.requestNewInstance(modelIndex());
                     } else if (root.middleClickAction == Latte.Types.Close) {
@@ -847,7 +847,7 @@ MouseArea{
                     activateTask();
                 }
             } else if (mouse.button == Qt.LeftButton){
-                if( !mainItemContainer.isLauncher){
+                if( !taskItem.isLauncher){
                     if (root.leftClickAction === Latte.Types.PresentWindows) {
                         activateTask();
                     } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
@@ -856,7 +856,7 @@ MouseArea{
                         else
                             activateTask();
                     } else if (root.leftClickAction === Latte.Types.PreviewWindows) {
-                        if(windowsPreviewDlg.activeItem !== mainItemContainer){
+                        if(windowsPreviewDlg.activeItem !== taskItem){
                             showPreviewWindow();
                         } else {
                             hidePreviewWindow();
@@ -935,7 +935,7 @@ MouseArea{
 
         interval: 400
 
-        onTriggered: mainItemContainer.blockWheel = false;
+        onTriggered: taskItem.blockWheel = false;
     }
 
     ///////////////// End Of Mouse Area Events ///////////////////
@@ -973,7 +973,7 @@ MouseArea{
     }
 
     function activateTask() {
-        if( mainItemContainer.isLauncher || root.disableAllWindowsFunctionality){
+        if( taskItem.isLauncher || root.disableAllWindowsFunctionality){
             if (Latte.WindowSystem.compositingActive) {
                 wrapper.runLauncherAnimation();
             } else {
@@ -989,7 +989,7 @@ MouseArea{
                         windowsPreviewDlg.hide(3);
                     } else {
                         preparePreviewWindow(false);
-                        windowsPreviewDlg.show(mainItemContainer);
+                        windowsPreviewDlg.show(taskItem);
                     }
                 }
             } else {
@@ -1022,15 +1022,15 @@ MouseArea{
             return;
         }
 
-        if(windowsPreviewDlg.activeItem !== mainItemContainer){
+        if(windowsPreviewDlg.activeItem !== taskItem){
             if (!root.latteView
                     || (root.latteView && !root.latteView.isHalfShown && !root.latteView.inSlidingIn && !root.latteView.inSlidingOut)) {
                 if (root.latteView && root.titleTooltips) {
                     root.latteView.hideTooltipLabel();
                 }
 
-                mainItemContainer.preparePreviewWindow(false);
-                windowsPreviewDlg.show(mainItemContainer);
+                taskItem.preparePreviewWindow(false);
+                windowsPreviewDlg.show(taskItem);
             }
         }
     }
@@ -1042,12 +1042,12 @@ MouseArea{
 
             var fixedDisplayText = displayText.length>maxCharacters ? displayText.substring(0,maxCharacters-1) + "..." : displayText;
 
-            root.latteView.showTooltipLabel(mainItemContainer, fixedDisplayText);
+            root.latteView.showTooltipLabel(taskItem, fixedDisplayText);
         }
     }
 
     function hidePreviewWindow() {
-        if(windowsPreviewDlg.activeItem === mainItemContainer){
+        if(windowsPreviewDlg.activeItem === taskItem){
             windowsPreviewDlg.hide("14.1");
 
             if (root.latteView && root.titleTooltips && containsMouse) {
@@ -1059,7 +1059,7 @@ MouseArea{
     function preparePreviewWindow(hideClose){
         windowsPreviewDlg.visualParent = previewsVisualParent;
 
-        toolTipDelegate.parentTask = mainItemContainer;
+        toolTipDelegate.parentTask = taskItem;
         toolTipDelegate.rootIndex = tasksModel.makeModelIndex(itemIndex, -1);
 
         toolTipDelegate.hideCloseButtons = hideClose;
@@ -1116,7 +1116,7 @@ MouseArea{
         // if ((lastButtonClicked == Qt.LeftButton)||(lastButtonClicked == Qt.MidButton)){
         if (Latte.WindowSystem.compositingActive) {
             inBouncingAnimation = true;
-            root.addWaitingLauncher(mainItemContainer.launcherUrl);
+            root.addWaitingLauncher(taskItem.launcherUrl);
         }
 
         if (root.disableAllWindowsFunctionality) {
@@ -1184,7 +1184,7 @@ MouseArea{
             return;
 
         if (!root.contextMenu) {
-            contextMenu = root.createContextMenu(mainItemContainer, modelIndex(), args);
+            contextMenu = root.createContextMenu(taskItem, modelIndex(), args);
             contextMenu.show();
         } else {
             //! make sure that context menu isnt deleted multiple times and creates a crash
@@ -1221,9 +1221,9 @@ MouseArea{
     }
 
     function slotShowPreviewForTasks(group) {
-        if (group === mainItemContainer && !windowsPreviewDlg.visible) {
+        if (group === taskItem && !windowsPreviewDlg.visible) {
             preparePreviewWindow(true);
-            windowsPreviewDlg.show(mainItemContainer);
+            windowsPreviewDlg.show(taskItem);
         }
     }
 
@@ -1234,17 +1234,17 @@ MouseArea{
                 && (!latteView
                     || (latteView && currentLayout && latteView.universalLayoutManager &&
                         currentLayout.name === latteView.universalLayoutManager.currentLayoutName))) {
-            var globalChoords = backend.globalRect(mainItemContainer);
+            var globalChoords = backend.globalRect(taskItem);
 
             //! Magic Lamp effect doesn't like coordinates outside the screen and
             //! width,heights of zero value... So we now normalize the geometries
             //! sent in order to avoid such circumstances
             if (root.vertical) {
                 globalChoords.width = 1;
-                globalChoords.height = Math.max(root.iconSize, mainItemContainer.height);
+                globalChoords.height = Math.max(root.iconSize, taskItem.height);
             } else {
                 globalChoords.height = 1;
-                globalChoords.width = Math.max(root.iconSize, mainItemContainer.width);
+                globalChoords.width = Math.max(root.iconSize, taskItem.width);
             }
 
             if (root.position === PlasmaCore.Types.BottomPositioned) {
@@ -1257,7 +1257,7 @@ MouseArea{
                 globalChoords.x = plasmoid.screenGeometry.x+plasmoid.screenGeometry.width - 1;
             }
 
-            tasksModel.requestPublishDelegateGeometry(mainItemContainer.modelIndex(), globalChoords, mainItemContainer);
+            tasksModel.requestPublishDelegateGeometry(taskItem.modelIndex(), globalChoords, taskItem);
         }
     }
 
@@ -1281,17 +1281,17 @@ MouseArea{
             return;
         }
 
-        var streams = pa.streamsForPid(mainItemContainer.pid);
+        var streams = pa.streamsForPid(taskItem.pid);
         if (streams.length) {
-            pa.registerPidMatch(mainItemContainer.appName);
+            pa.registerPidMatch(taskItem.appName);
         } else {
             // We only want to fall back to appName matching if we never managed to map
             // a PID to an audio stream window. Otherwise if you have two instances of
             // an application, one playing and the other not, it will look up appName
             // for the non-playing instance and erroneously show an indicator on both.
-            if (!pa.hasPidMatch(mainItemContainer.appName)) {
+            if (!pa.hasPidMatch(taskItem.appName)) {
                 var streams_result;
-                streams_result = pa.streamsForAppName(mainItemContainer.appName);
+                streams_result = pa.streamsForAppName(taskItem.appName);
                 if (streams_result.length===0 && launcherName !== "") {
                     streams_result = pa.streamsForAppName(launcherName);
                 }
@@ -1315,7 +1315,7 @@ MouseArea{
         }
 
         if (changed) {
-            mainItemContainer.audioStreams = streams;
+            taskItem.audioStreams = streams;
         }
     }
 
@@ -1326,22 +1326,22 @@ MouseArea{
     }
 
     function updateVisibilityBasedOnLaunchers(){
-        var launcherExists = !(((tasksModel.launcherPosition(mainItemContainer.launcherUrl) == -1)
-                                && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) == -1) )
-                               || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl));
+        var launcherExists = !(((tasksModel.launcherPosition(taskItem.launcherUrl) == -1)
+                                && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) == -1) )
+                               || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl));
 
         if (root.showWindowsOnlyFromLaunchers) {
-            var hideWindow =  !launcherExists && mainItemContainer.isWindow;
+            var hideWindow =  !launcherExists && taskItem.isWindow;
 
             if (hideWindow) {
                 isForcedHidden = true;
                 taskRealRemovalAnimation.start();
-            } else if (launcherExists && mainItemContainer.isWindow && !mainItemContainer.isVisible) {
+            } else if (launcherExists && taskItem.isWindow && !taskItem.isVisible) {
                 showWindowAnimation.showWindow();
                 isForcedHidden = false;
             }
         } else {
-            var showWindow =  !launcherExists && mainItemContainer.isWindow;
+            var showWindow =  !launcherExists && taskItem.isWindow;
 
             if (showWindow) {
                 showWindowAnimation.showWindow();
@@ -1352,18 +1352,18 @@ MouseArea{
 
     function toggleMuted() {
         if (muted) {
-            mainItemContainer.audioStreams.forEach(function (item) { item.unmute(); });
+            taskItem.audioStreams.forEach(function (item) { item.unmute(); });
         } else {
-            mainItemContainer.audioStreams.forEach(function (item) { item.mute(); });
+            taskItem.audioStreams.forEach(function (item) { item.mute(); });
         }
     }
 
     function increaseVolume() {
-        mainItemContainer.audioStreams.forEach(function (item) { item.increaseVolume(); });
+        taskItem.audioStreams.forEach(function (item) { item.increaseVolume(); });
     }
 
     function decreaseVolume() {
-        mainItemContainer.audioStreams.forEach(function (item) { item.decreaseVolume(); });
+        taskItem.audioStreams.forEach(function (item) { item.decreaseVolume(); });
     }
 
     function updateBadge() {
@@ -1379,15 +1379,15 @@ MouseArea{
     Connections {
         target: pulseAudio.item
         ignoreUnknownSignals: true // Plasma-PA might not be available
-        onStreamsChanged: mainItemContainer.updateAudioStreams()
+        onStreamsChanged: taskItem.updateAudioStreams()
     }
 
     Connections {
         target: root
         //trying to fix #440, showing the audio icon indicator to irrelevant tasks
         //after dragging an existent task with audio
-        onDragSourceChanged: mainItemContainer.updateAudioStreams()
-        onIndicateAudioStreamsChanged: mainItemContainer.updateAudioStreams()
+        onDragSourceChanged: taskItem.updateAudioStreams()
+        onIndicateAudioStreamsChanged: taskItem.updateAudioStreams()
     }
 
     Connections {
@@ -1416,12 +1416,12 @@ MouseArea{
         root.mimicEnterForParabolic.connect(slotMimicEnterForParabolic);
         root.launchersUpdatedFor.connect(slotLaunchersChangedFor);
 
-        var hasShownLauncher = ((tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1)
-                                || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
+        var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
+                                || (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) !== -1) );
 
         //startup without launcher
-        var hideStartup =  ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl))
-                            && mainItemContainer.isStartup);
+        var hideStartup =  ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
+                            && taskItem.isStartup);
 
         if (!Latte.WindowSystem.compositingActive) {
             visible = true;
@@ -1472,11 +1472,11 @@ MouseArea{
                     return;
                 }
 
-                if (mainItemContainer.containsMouse) {
+                if (taskItem.containsMouse) {
                     if (root.showPreviews) {
                         showPreviewWindow();
-                    } else if (mainItemContainer.isWindow && root.highlightWindows) {
-                        root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , mainItemContainer.containsMouse);
+                    } else if (taskItem.isWindow && root.highlightWindows) {
+                        root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
                     }
                 }
 
@@ -1494,12 +1494,12 @@ MouseArea{
         id: resistanerTimerComponent
         Timer {
             id: resistanerTimer
-            interval: mainItemContainer.resistanceDelay
+            interval: taskItem.resistanceDelay
             repeat: false
 
             onTriggered: {
-                if (!mainItemContainer.inBlockingAnimation){
-                    mainItemContainer.isDragged = true;
+                if (!taskItem.inBlockingAnimation){
+                    taskItem.isDragged = true;
                 }
 
                 if (latteView && latteView.debugModeTimers) {
@@ -1532,7 +1532,7 @@ MouseArea{
     //I will blacklist google-chrome as I have not found any other case for this bug
     //to appear, but even this way there are cases that still appears...
     property int mainDelay: (AppId == "google-chrome") ? 0 : 2*root.durationTime*showWindowAnimation.speed
-    property int windowDelay: mainItemContainer.isStartup ? 3*root.durationTime*units.longDuration : mainDelay
+    property int windowDelay: taskItem.isStartup ? 3*root.durationTime*units.longDuration : mainDelay
 
     Component {
         id: delayShowWindow
@@ -1544,9 +1544,9 @@ MouseArea{
             repeat: false
 
             onTriggered: {
-                //console.log("I am in here: "+mainItemContainer.windowDelay);
+                //console.log("I am in here: "+taskItem.windowDelay);
                 // showWindowAnimation.execute();
-                if(!mainItemContainer.buffersAreReady)
+                if(!taskItem.buffersAreReady)
                     showWindowAnimation.showWindow();
                 else
                     showWindowAnimation.execute();
@@ -1571,8 +1571,8 @@ MouseArea{
         repeat: false
 
         onTriggered: {
-            if (mainItemContainer.itemIndex >= 0){
-                mainItemContainer.lastValidIndex = mainItemContainer.itemIndex;
+            if (taskItem.itemIndex >= 0){
+                taskItem.lastValidIndex = taskItem.itemIndex;
 
                 if (root.showWindowsOnlyFromLaunchers) {
                     parabolicManager.updateTasksEdgesIndexes();
@@ -1592,7 +1592,7 @@ MouseArea{
         id: wheelActionDelayer
         interval: 200
         onTriggered: {
-            mainItemContainer.inWheelAction = false;
+            taskItem.inWheelAction = false;
 
             if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: wheelActionDelayer called...");

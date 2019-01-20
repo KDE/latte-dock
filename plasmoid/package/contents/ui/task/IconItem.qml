@@ -61,7 +61,7 @@ Item{
 
     property int shadowSize : root.appShadowSize
 
-    readonly property bool smartLauncherEnabled: ((mainItemContainer.isStartup === false) && (root.smartLaunchersEnabled))
+    readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.smartLaunchersEnabled))
     readonly property variant iconDecoration: decoration
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
@@ -82,7 +82,7 @@ Item{
                         " import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet; TaskManagerApplet.SmartLauncherItem { }",
                         centralItem);
 
-            smartLauncher.launcherUrl = Qt.binding(function() { return mainItemContainer.launcherUrlWithIcon; });
+            smartLauncher.launcherUrl = Qt.binding(function() { return taskItem.launcherUrlWithIcon; });
 
             smartLauncherItem = smartLauncher;
         } else if (!smartLauncherEnabled && smartLauncherItem) {
@@ -93,8 +93,8 @@ Item{
 
     Rectangle{
         id: draggedRectangle
-        width: mainItemContainer.isSeparator ? parent.width + 1 : iconImageBuffer.width+1
-        height: mainItemContainer.isSeparator ? parent.height + 1 : iconImageBuffer.height+1
+        width: taskItem.isSeparator ? parent.width + 1 : iconImageBuffer.width+1
+        height: taskItem.isSeparator ? parent.height + 1 : iconImageBuffer.height+1
         anchors.centerIn: iconGraphic
         opacity: 0
         radius: 3
@@ -134,7 +134,7 @@ Item{
             target: plasmoid
 
             onFormFactorChanged:{
-                mainItemContainer.inAddRemoveAnimation = false;
+                taskItem.inAddRemoveAnimation = false;
 
                 wrapper.mScale = 1.01;
                 wrapper.tempScaleWidth = 1.01;
@@ -186,7 +186,7 @@ Item{
             height: Math.round(width)
             source: decoration
 
-            visible: !mainItemContainer.isSeparator && !badgesLoader.active
+            visible: !taskItem.isSeparator && !badgesLoader.active
             //visible: !root.enableShadows
 
             onValidChanged: {
@@ -198,9 +198,9 @@ Item{
             //! try to show the correct icon when a window is removed... libtaskmanager when a window is removed
             //! sends an unknown pixmap as icon
             Connections {
-                target: mainItemContainer
+                target: taskItem
                 onInRemoveStageChanged: {
-                    if (mainItemContainer.inRemoveStage && iconImageBuffer.lastValidSourceName !== "") {
+                    if (taskItem.inRemoveStage && iconImageBuffer.lastValidSourceName !== "") {
                         iconImageBuffer.source = iconImageBuffer.lastValidSourceName;
                     }
                 }
@@ -224,7 +224,7 @@ Item{
             states: [
                 State{
                     name: "*"
-                    when:  !launcherAnimation.running && !newWindowAnimation.running && !mainItemContainer.inAddRemoveAnimation && !fastRestoreAnimation.running
+                    when:  !launcherAnimation.running && !newWindowAnimation.running && !taskItem.inAddRemoveAnimation && !fastRestoreAnimation.running
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -239,7 +239,7 @@ Item{
 
                 State{
                     name: "inAddRemoveAnimation"
-                    when:  mainItemContainer.inAddRemoveAnimation
+                    when:  taskItem.inAddRemoveAnimation
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -254,7 +254,7 @@ Item{
 
                 State{
                     name: "animating"
-                    when: (launcherAnimation.running || newWindowAnimation.running || fastRestoreAnimation.running) && !mainItemContainer.inAddRemoveAnimation
+                    when: (launcherAnimation.running || newWindowAnimation.running || fastRestoreAnimation.running) && !taskItem.inAddRemoveAnimation
 
                     AnchorChanges{
                         target:iconImageBuffer;
@@ -273,7 +273,7 @@ Item{
                 Transition{
                     from: "animating"
                     to: "*"
-                    enabled: !fastRestoreAnimation.running && !mainItemContainer.inMimicParabolicAnimation
+                    enabled: !fastRestoreAnimation.running && !taskItem.inMimicParabolicAnimation
 
                     AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
                 }
@@ -289,12 +289,12 @@ Item{
 
             property real opacityN: showProgress || showAudio ? 1 : 0
 
-            property bool showProgress: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !mainItemContainer.isSeparator
+            property bool showProgress: (centralItem.smartLauncherEnabled && centralItem.smartLauncherItem && !taskItem.isSeparator
                                          && (centralItem.smartLauncherItem.countVisible || centralItem.smartLauncherItem.progressVisible
-                                             || mainItemContainer.badgeIndicator > 0))
+                                             || taskItem.badgeIndicator > 0))
 
-            property bool showAudio: mainItemContainer.hasAudioStream && mainItemContainer.playingAudio &&
-                                     !mainItemContainer.isSeparator
+            property bool showAudio: taskItem.hasAudioStream && taskItem.playingAudio &&
+                                     !taskItem.isSeparator
 
             Behavior on opacityN {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
@@ -462,7 +462,7 @@ Item{
 
             Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
 
-            property real isValidDelayer: root.showTasksNumbers && !mainItemContainer.isSeparator && fixedIndex<20 ? 1 : 0
+            property real isValidDelayer: root.showTasksNumbers && !taskItem.isSeparator && fixedIndex<20 ? 1 : 0
 
             Behavior on isValidDelayer {
                 NumberAnimation { duration: root.durationTime*units.longDuration }
@@ -528,12 +528,12 @@ Item{
 
         visible: opacity == 0 ? false : true
         opacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
-                 && (root.dragSource == null) && (mouseHandler.hoveredItem === mainItemContainer) ? 1 : 0
+                 && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 1 : 0
     }
 
     BrightnessContrast{
         id:hoveredImage
-        opacity: mainItemContainer.containsMouse && !clickedAnimation.running ? 1 : 0
+        opacity: taskItem.containsMouse && !clickedAnimation.running ? 1 : 0
         anchors.fill: iconGraphic
 
         brightness: 0.30
@@ -579,10 +579,10 @@ Item{
     }
 
     Connections{
-        target: mainItemContainer
+        target: taskItem
 
         onShowAttentionChanged:{
-            if (!mainItemContainer.showAttention && newWindowAnimation.running && mainItemContainer.inAttentionAnimation) {
+            if (!taskItem.showAttention && newWindowAnimation.running && taskItem.inAttentionAnimation) {
                 newWindowAnimation.pause();
                 fastRestoreAnimation.start();
             }
@@ -605,12 +605,12 @@ Item{
     states: [
         State{
             name: "*"
-            when:  !mainItemContainer.isDragged
+            when:  !taskItem.isDragged
         },
 
         State{
             name: "isDragged"
-            when: ( (mainItemContainer.isDragged) && (!root.editMode) )
+            when: ( (taskItem.isDragged) && (!root.editMode) )
         }
     ]
 
@@ -630,7 +630,7 @@ Item{
                             latteView.globalDirectRender=false;
                         }
 
-                        mainItemContainer.inBlockingAnimation = true;
+                        taskItem.inBlockingAnimation = true;
                         root.clearZoom();
                     }
                 }
@@ -663,7 +663,7 @@ Item{
                     PropertyAnimation {
                         target: stateColorizer
                         property: "opacity"
-                        to: mainItemContainer.isSeparator ? 0 : 1
+                        to: taskItem.isSeparator ? 0 : 1
                         duration: isDraggedTransition.speed
                         easing.type: Easing.OutQuad
                     }
@@ -672,7 +672,7 @@ Item{
 
             onRunningChanged: {
                 if(running){
-                    mainItemContainer.animationStarted();
+                    taskItem.animationStarted();
                     //root.animations++;
 
                     parabolicManager.clearTasksGreaterThan(index);
@@ -737,7 +737,7 @@ Item{
 
                 ScriptAction{
                     script: {
-                        mainItemContainer.inBlockingAnimation = false;
+                        taskItem.inBlockingAnimation = false;
                     }
                 }
             }
@@ -748,7 +748,7 @@ Item{
 
                     wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
 
-                    mainItemContainer.animationEnded();
+                    taskItem.animationEnded();
                     //   root.animations--;
                 }
             }

@@ -66,7 +66,7 @@ Item {
                 border.color: root.minimizedDotColor
                 radius: width/2
 
-                //opacity: mainItemContainer.playingAudio && !mainItemContainer.muted && mainItemContainer.volume>0 ? 1 : 0.85
+                //opacity: taskItem.playingAudio && !taskItem.muted && taskItem.volume>0 ? 1 : 0.85
             }
 
             Latte.IconItem{
@@ -76,13 +76,13 @@ Item {
                 height: width
                 usesPlasmaTheme: true
 
-                //opacity: mainItemContainer.playingAudio && !mainItemContainer.muted ? 1 : 0.85
+                //opacity: taskItem.playingAudio && !taskItem.muted ? 1 : 0.85
                 source: {
-                    if (mainItemContainer.volume <= 0 || mainItemContainer.muted) {
+                    if (taskItem.volume <= 0 || taskItem.muted) {
                         return "audio-volume-muted";
-                    } else if (mainItemContainer.volume <= 25) {
+                    } else if (taskItem.volume <= 25) {
                         return "audio-volume-low";
-                    } else if (mainItemContainer.volume <= 75) {
+                    } else if (taskItem.volume <= 75) {
                         return "audio-volume-medium";
                     } else {
                         return "audio-volume-high" ;
@@ -93,7 +93,7 @@ Item {
                     id: audioBadgeMouseArea
                     anchors.fill: parent
 
-                    onClicked: mainItemContainer.toggleMuted();
+                    onClicked: taskItem.toggleMuted();
                     property bool blockWheel: false;
 
                     onWheel: {
@@ -104,9 +104,9 @@ Item {
                         var angle = wheel.angleDelta.y / 8;
 
                         if (angle > 2)
-                            mainItemContainer.increaseVolume();
+                            taskItem.increaseVolume();
                         else if (angle < -2)
-                            mainItemContainer.decreaseVolume();
+                            taskItem.decreaseVolume();
 
                         blockWheel = true;
                         scrollDelayer.start();

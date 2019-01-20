@@ -32,7 +32,7 @@ SequentialAnimation{
 
     SequentialAnimation{
         ScriptAction {
-            script: mainItemContainer.launcherAction();
+            script: taskItem.launcherAction();
         }
 
         //Ghost animation that acts as a delayer
@@ -49,7 +49,7 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: mainItemContainer.containsMouse ? root.zoomFactor : 1 + (0.65 * (root.zoomFactor-1))
+                to: taskItem.containsMouse ? root.zoomFactor : 1 + (0.65 * (root.zoomFactor-1))
                 duration: launcherAnimation.speed
                 easing.type: Easing.OutQuad
             }
@@ -91,16 +91,16 @@ SequentialAnimation{
     }
 
     onStopped: {
-        if (!mainItemContainer.inRemoveStage) {
-            mainItemContainer.inBouncingAnimation = false;
-            root.removeWaitingLauncher(mainItemContainer.launcherUrl);
+        if (!taskItem.inRemoveStage) {
+            taskItem.inBouncingAnimation = false;
+            root.removeWaitingLauncher(taskItem.launcherUrl);
         }
 
         root.setGlobalDirectRender(false);
         clearAnimationsSignals();
 
-        mainItemContainer.setBlockingAnimation(false);
-        mainItemContainer.animationEnded();
+        taskItem.setBlockingAnimation(false);
+        taskItem.animationEnded();
     }
 
     function clearAnimationsSignals() {
@@ -130,17 +130,17 @@ SequentialAnimation{
             parabolicManager.clearTasksLowerThan(index);
 
             root.noTasksInAnimation++;
-            mainItemContainer.inBouncingAnimation = true;
-            mainItemContainer.setBlockingAnimation(true);
+            taskItem.inBouncingAnimation = true;
+            taskItem.setBlockingAnimation(true);
 
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
-            var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);
+            var previousTask = icList.childAtIndex(taskItem.lastValidIndex-1);
             if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
                 if (root.vertical) {
-                    mainItemContainer.anchors.top = previousTask.bottom;
+                    taskItem.anchors.top = previousTask.bottom;
                 } else {
-                    mainItemContainer.anchors.left = previousTask.right;
+                    taskItem.anchors.left = previousTask.right;
                 }
             }
         }
@@ -152,13 +152,13 @@ SequentialAnimation{
 
     function bounceLauncher(){
         if(root.zoomFactor > 1){
-            mainItemContainer.animationStarted();
+            taskItem.animationStarted();
             init();
             start();
         }
         else{
             stopped();
-            mainItemContainer.launcherAction();
+            taskItem.launcherAction();
         }
     }
 

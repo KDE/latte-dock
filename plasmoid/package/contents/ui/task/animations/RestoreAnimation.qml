@@ -31,7 +31,7 @@ SequentialAnimation{
             target: wrapper
             property: "mScale"
             to: 1
-            duration: 4 * mainItemContainer.animationTime
+            duration: 4 * taskItem.animationTime
             easing.type: Easing.InCubic
         }
 
@@ -39,7 +39,7 @@ SequentialAnimation{
             target: hiddenSpacerLeft
             property: "nScale"
             to: 0
-            duration: 4 * mainItemContainer.animationTime
+            duration: 4 * taskItem.animationTime
             easing.type: Easing.InCubic
         }
 
@@ -47,7 +47,7 @@ SequentialAnimation{
             target: hiddenSpacerRight
             property: "nScale"
             to: 0
-            duration: 4 * mainItemContainer.animationTime
+            duration: 4 * taskItem.animationTime
             easing.type: Easing.InCubic
         }
     }

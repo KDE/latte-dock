@@ -26,7 +26,7 @@ import org.kde.plasma.plasmoid 2.0
 SequentialAnimation{
     id: clickedAnimation
 
-    property bool pressed: mainItemContainer.pressed
+    property bool pressed: taskItem.pressed
     property int speed: root.durationTime*units.longDuration
     property real maxMScale: Math.max(1,root.zoomFactor - (root.zoomFactor - 1) / 2)
 
@@ -67,15 +67,15 @@ SequentialAnimation{
 
     onPressedChanged: {
         if( !running && pressed&&
-                ((mainItemContainer.lastButtonClicked == Qt.LeftButton)||(mainItemContainer.lastButtonClicked == Qt.MidButton)) ){
-            //mainItemContainer.animationStarted();
+                ((taskItem.lastButtonClicked == Qt.LeftButton)||(taskItem.lastButtonClicked == Qt.MidButton)) ){
+            //taskItem.animationStarted();
             start();
         }
     }
 
     onStopped: {
-        if( !mainItemContainer.isDragged){
-            //mainItemContainer.animationEnded();
+        if( !taskItem.isDragged){
+            //taskItem.animationEnded();
             if(!root.latteView)
                 checkListHovered.startDuration(6*units.longDuration);
         }

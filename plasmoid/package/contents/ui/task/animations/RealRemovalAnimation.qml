@@ -26,49 +26,49 @@ import org.kde.latte 0.2 as Latte
 
 SequentialAnimation {
     id: taskRealRemovalAnimation
-    PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: true }
-    PropertyAction { target: mainItemContainer; property: "inAnimation"; value: true }
-    PropertyAction { target: mainItemContainer; property: "inAddRemoveAnimation"; value: true }
-    PropertyAction { target: mainItemContainer; property: "inRemoveStage"; value: true }
+    PropertyAction { target: taskItem; property: "ListView.delayRemove"; value: true }
+    PropertyAction { target: taskItem; property: "inAnimation"; value: true }
+    PropertyAction { target: taskItem; property: "inAddRemoveAnimation"; value: true }
+    PropertyAction { target: taskItem; property: "inRemoveStage"; value: true }
 
     //Animation Add/Remove (1) - when is window with no launcher, animations enabled
     //Animation Add/Remove (4) - the user removes a launcher, animation enabled
-    property bool animation1: ((((tasksModel.launcherPosition(mainItemContainer.launcherUrl) === -1)
-                                 && (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) === -1) )
-                                || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl))
-                               && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
+    property bool animation1: ((((tasksModel.launcherPosition(taskItem.launcherUrl) === -1)
+                                 && (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) === -1) )
+                                || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
+                               && !taskItem.isStartup && Latte.WindowSystem.compositingActive)
 
-    property bool animation4: ((mainItemContainer.launcherUrl===root.launcherForRemoval
-                                || mainItemContainer.launcherUrlWithIcon===root.launcherForRemoval )
-                               && !mainItemContainer.isStartup && Latte.WindowSystem.compositingActive)
+    property bool animation4: ((taskItem.launcherUrl===root.launcherForRemoval
+                                || taskItem.launcherUrlWithIcon===root.launcherForRemoval )
+                               && !taskItem.isStartup && Latte.WindowSystem.compositingActive)
 
     property bool enabledAnimation: (animation1 || animation4) && (root.durationTime !== 0)
-                                    && !mainItemContainer.inBouncingAnimation
-                                    && !mainItemContainer.isSeparator
-                                    && mainItemContainer.visible;
+                                    && !taskItem.inBouncingAnimation
+                                    && !taskItem.isSeparator
+                                    && taskItem.visible;
     ScriptAction{
         script:{
             //! When a window is removed and afterwards its launcher must be shown immediately!
-            if (!enabledAnimation && mainItemContainer.isWindow && !mainItemContainer.isSeparator
-                    && tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1
-                    && !root.immediateLauncherExists(mainItemContainer.launcherUrl)){
-                root.addImmediateLauncher(mainItemContainer.launcherUrl);
+            if (!enabledAnimation && taskItem.isWindow && !taskItem.isSeparator
+                    && tasksModel.launcherPosition(taskItem.launcherUrl) !== -1
+                    && !root.immediateLauncherExists(taskItem.launcherUrl)){
+                root.addImmediateLauncher(taskItem.launcherUrl);
             }
 
             //trying to fix the ListView nasty behavior
             //during the removal the anchoring for ListView children changes a lot
-            var previousTask = icList.childAtIndex(mainItemContainer.lastValidIndex-1);
+            var previousTask = icList.childAtIndex(taskItem.lastValidIndex-1);
 
             if (previousTask !== undefined && !previousTask.isStartup && !previousTask.inBouncingAnimation){
                 //! When removing a task and there are surrounding separators then the hidden spacers
                 //! are updated immediately for the neighbour tasks. In such case in order to not break
                 //! the removal animation a small margin must applied
                 var nextTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
-                        ((mainItemContainer.hasNeighbourSeparator(lastValidIndex+1,true) && !mainItemContainer.isSeparator && lastValidIndex<parabolicManager.lastRealTaskIndex)
+                        ((taskItem.hasNeighbourSeparator(lastValidIndex+1,true) && !taskItem.isSeparator && lastValidIndex<parabolicManager.lastRealTaskIndex)
                          || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos+1) && lastValidIndex>parabolicManager.lastRealTaskIndex));
 
                 var previousTaskIsSeparator = (lastValidIndex !== -1) && enabledAnimation &&
-                        ((mainItemContainer.hasNeighbourSeparator(lastValidIndex-1,false) && !mainItemContainer.isSeparator && lastValidIndex>parabolicManager.firstRealTaskIndex)
+                        ((taskItem.hasNeighbourSeparator(lastValidIndex-1,false) && !taskItem.isSeparator && lastValidIndex>parabolicManager.firstRealTaskIndex)
                          || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && lastValidIndex<=parabolicManager.firstRealTaskIndex));
 
                 var spacer = nextTaskIsSeparator ? -(2+root.iconMargin/2) : ( previousTaskIsSeparator ? (2+root.iconMargin/2)/2 : 0);
@@ -77,22 +77,22 @@ SequentialAnimation {
                 //console.log("Removing ::: " + lastValidIndex + " _ " + launcherUrl + " _ " + previousTaskIsSeparator + " _ " + nextTaskIsSeparator);
 
                 if (root.vertical) {
-                    mainItemContainer.anchors.top = previousTask.bottom;
-                    mainItemContainer.anchors.topMargin = spacer;
+                    taskItem.anchors.top = previousTask.bottom;
+                    taskItem.anchors.topMargin = spacer;
                 } else {
-                    mainItemContainer.anchors.left = previousTask.right;
-                    mainItemContainer.anchors.leftMargin = spacer;
+                    taskItem.anchors.left = previousTask.right;
+                    taskItem.anchors.leftMargin = spacer;
                 }
             }
 
-            // console.log("1." + mainItemContainer.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
-            // console.log("2." + root.launcherForRemoval + " - " + mainItemContainer.isLauncher);
+            // console.log("1." + taskItem.launcherUrl + " - " + taskRealRemovalAnimation.enabledAnimation);
+            // console.log("2." + root.launcherForRemoval + " - " + taskItem.isLauncher);
 
             root.signalAnimationsNeedLength(1);
 
             if (wrapper.mScale > 1 && !taskRealRemovalAnimation.enabledAnimation
-                    && !mainItemContainer.inBouncingAnimation && Latte.WindowSystem.compositingActive) {
-                parabolicManager.setFrozenTask(mainItemContainer.launcherUrl, wrapper.mScale);
+                    && !taskItem.inBouncingAnimation && Latte.WindowSystem.compositingActive) {
+                parabolicManager.setFrozenTask(taskItem.launcherUrl, wrapper.mScale);
             }
         }
     }
@@ -106,7 +106,7 @@ SequentialAnimation {
 
         //this duration must be a bit less than the bouncing animation. Otherwise the
         //smooth transition between removals is breaking
-        duration:  mainItemContainer.inBouncingAnimation  && !mainItemContainer.isSeparator? 4*launcherSpeedStep + 50 : 0
+        duration:  taskItem.inBouncingAnimation  && !taskItem.isSeparator? 4*launcherSpeedStep + 50 : 0
         easing.type: Easing.InQuad
 
         property int launcherSpeedStep: root.durationTime * 0.8 * units.longDuration
@@ -126,7 +126,7 @@ SequentialAnimation {
     ParallelAnimation{
         id: removalAnimation
 
-        // property int speed: (IsStartup && !mainItemContainer.visible)? 0 : 400
+        // property int speed: (IsStartup && !taskItem.visible)? 0 : 400
         //property int speed: 400
         NumberAnimation {
             target: wrapper;
@@ -164,37 +164,37 @@ SequentialAnimation {
 
             root.signalAnimationsNeedLength(-1);
 
-            if(mainItemContainer.launcherUrl===root.launcherForRemoval && mainItemContainer.isLauncher)
+            if(taskItem.launcherUrl===root.launcherForRemoval && taskItem.isLauncher)
                 root.launcherForRemoval="";
 
-            if (windowsPreviewDlg.visible && windowsPreviewDlg.mainItem.parentTask === mainItemContainer
+            if (windowsPreviewDlg.visible && windowsPreviewDlg.mainItem.parentTask === taskItem
                     && isWindow && !isGroupParent){
                 hidePreview();
             }
 
             if (root.showWindowsOnlyFromLaunchers) {
                 if (root.vertical) {
-                    mainItemContainer.anchors.top = undefined;
-                    mainItemContainer.anchors.topMargin = 0;
+                    taskItem.anchors.top = undefined;
+                    taskItem.anchors.topMargin = 0;
                 } else {
-                    mainItemContainer.anchors.left = undefined;
-                    mainItemContainer.anchors.leftMargin = 0;
+                    taskItem.anchors.left = undefined;
+                    taskItem.anchors.leftMargin = 0;
                 }
             }
 
-            mainItemContainer.visible = false;
+            taskItem.visible = false;
 
             //send signal that the launcher is really removing
-            if (mainItemContainer.inBouncingAnimation) {
-                root.removeWaitingLauncher(mainItemContainer.launcherUrl);
+            if (taskItem.inBouncingAnimation) {
+                root.removeWaitingLauncher(taskItem.launcherUrl);
                 root.setGlobalDirectRender(false);
             }
         }
     }
 
-    PropertyAction { target: mainItemContainer; property: "inAnimation"; value: false }
-    PropertyAction { target: mainItemContainer; property: "inAddRemoveAnimation"; value: false }
-    PropertyAction { target: mainItemContainer; property: "inRemoveStage"; value: false }
+    PropertyAction { target: taskItem; property: "inAnimation"; value: false }
+    PropertyAction { target: taskItem; property: "inAddRemoveAnimation"; value: false }
+    PropertyAction { target: taskItem; property: "inRemoveStage"; value: false }
 
-    PropertyAction { target: mainItemContainer; property: "ListView.delayRemove"; value: false }
+    PropertyAction { target: taskItem; property: "ListView.delayRemove"; value: false }
 }

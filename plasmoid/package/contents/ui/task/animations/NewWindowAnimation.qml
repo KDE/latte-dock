@@ -30,7 +30,7 @@ SequentialAnimation{
 
     property int speed: root.durationTime*units.longDuration
     property bool isDemandingAttention: (IsDemandingAttention === true)
-    property bool containsMouse: mainItemContainer.containsMouse
+    property bool containsMouse: taskItem.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
 
     SequentialAnimation{
@@ -44,7 +44,7 @@ SequentialAnimation{
                 duration: newWindowAnimation.speed
                 easing.type: Easing.OutQuad
 
-                property real thickPercentage: mainItemContainer.inAttentionAnimation ? 1 : 0.6
+                property real thickPercentage: taskItem.inAttentionAnimation ? 1 : 0.6
             }
 
             PropertyAnimation {
@@ -73,8 +73,8 @@ SequentialAnimation{
         wrapper.tempScaleWidth = 1;
         wrapper.tempScaleHeight = 1;
 
-        mainItemContainer.setBlockingAnimation(false);
-        mainItemContainer.inAttentionAnimation = false;
+        taskItem.setBlockingAnimation(false);
+        taskItem.inAttentionAnimation = false;
     }
 
     onStopped: {
@@ -96,7 +96,7 @@ SequentialAnimation{
     }
 
     function init(){
-        mainItemContainer.setBlockingAnimation(true);
+        taskItem.setBlockingAnimation(true);
 
         wrapper.tempScaleWidth = wrapper.mScale;
         wrapper.tempScaleHeight = wrapper.mScale;
@@ -105,7 +105,7 @@ SequentialAnimation{
             loops = 1;
         else {
             loops = 20;
-            mainItemContainer.inAttentionAnimation = true;
+            taskItem.inAttentionAnimation = true;
         }
 
         if (!needsThicknessSent) {
@@ -125,11 +125,11 @@ SequentialAnimation{
     }
 
     Component.onCompleted: {
-        mainItemContainer.groupWindowAdded.connect(bounceNewWindow);
+        taskItem.groupWindowAdded.connect(bounceNewWindow);
     }
 
     Component.onDestruction: {
-        mainItemContainer.groupWindowAdded.disconnect(bounceNewWindow);
+        taskItem.groupWindowAdded.disconnect(bounceNewWindow);
         sendEndOfNeedThicknessAnimation();
     }
 }

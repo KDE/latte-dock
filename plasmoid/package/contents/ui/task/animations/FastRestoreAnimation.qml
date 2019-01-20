@@ -26,12 +26,12 @@ import org.kde.plasma.plasmoid 2.0
 SequentialAnimation{
     id: fastRestoreAnimation
 
-    property int speed: 5*mainItemContainer.animationTime
+    property int speed: 5*taskItem.animationTime
 
     ScriptAction {
         script: {
-            mainItemContainer.inFastRestoreAnimation = true;
-            mainItemContainer.inBlockingAnimation = true;
+            taskItem.inFastRestoreAnimation = true;
+            taskItem.inBlockingAnimation = true;
         }
     }
 
@@ -62,21 +62,21 @@ SequentialAnimation{
     }
 
     onStopped: {
-        if (!mainItemContainer.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
-            mainItemContainer.inMimicParabolicAnimation = false;
+        if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+            taskItem.inMimicParabolicAnimation = false;
         } else {
-            mainItemContainer.inMimicParabolicAnimation = true;
+            taskItem.inMimicParabolicAnimation = true;
         }
 
         newWindowAnimation.stop();
 
-        if (!mainItemContainer.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
-            mainItemContainer.inBlockingAnimation = false;
+        if (!taskItem.containsMouse && !parabolicManager.neighbourIsHovered(itemIndex)) {
+            taskItem.inBlockingAnimation = false;
         }
 
         root.mimicEnterForParabolic();
 
-        mainItemContainer.inFastRestoreAnimation = false;
+        taskItem.inFastRestoreAnimation = false;
         // console.log("Fast Restore Animation ended...");
     }
 

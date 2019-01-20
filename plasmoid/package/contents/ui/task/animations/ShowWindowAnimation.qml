@@ -80,15 +80,15 @@ SequentialAnimation{
     }
 
     onStopped: {
-        mainItemContainer.inAddRemoveAnimation = false;
+        taskItem.inAddRemoveAnimation = false;
 
-        if(mainItemContainer.isWindow || mainItemContainer.isStartup){
+        if(taskItem.isWindow || taskItem.isStartup){
             taskInitComponent.createObject(wrapper);
-            if (mainItemContainer.isDemandingAttention){
-                mainItemContainer.groupWindowAdded();
+            if (taskItem.isDemandingAttention){
+                taskItem.groupWindowAdded();
             }
         }
-        mainItemContainer.inAnimation = false;
+        taskItem.inAnimation = false;
 
         if (showWindowAnimation.animationSent) {
             root.signalAnimationsNeedLength(-1);
@@ -104,85 +104,85 @@ SequentialAnimation{
             var nextTask = icList.childAtIndex(index+1);
             if (previousTask !== undefined && nextTask !== undefined && nextTask.inBouncingAnimation){
                 if (root.vertical) {
-                    mainItemContainer.anchors.top = previousTask.bottom;
+                    taskItem.anchors.top = previousTask.bottom;
                 } else {
-                    mainItemContainer.anchors.left = previousTask.right;
+                    taskItem.anchors.left = previousTask.right;
                 }
             }
         }
 
-        var hasShownLauncher = ((tasksModel.launcherPosition(mainItemContainer.launcherUrl) !== -1)
-                                    || (tasksModel.launcherPosition(mainItemContainer.launcherUrlWithIcon) !== -1) );
+        var hasShownLauncher = ((tasksModel.launcherPosition(taskItem.launcherUrl) !== -1)
+                                    || (tasksModel.launcherPosition(taskItem.launcherUrlWithIcon) !== -1) );
 
         var launcherIsAlreadyShown = hasShownLauncher && isLauncher && !root.inActivityChange;
 
         //Animation Add/Remove (2) - when is window with no launcher, animations enabled
         //Animation Add/Remove (3) - when is launcher with no window, animations enabled
-        var animation2 = ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl))
-                          && mainItemContainer.isWindow
+        var animation2 = ((!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl))
+                          && taskItem.isWindow
                           && Latte.WindowSystem.compositingActive);
 
-        var animation3 = (!root.immediateLauncherExists(mainItemContainer.launcherUrl)
-                          && mainItemContainer.isLauncher
+        var animation3 = (!root.immediateLauncherExists(taskItem.launcherUrl)
+                          && taskItem.isLauncher
                           && Latte.WindowSystem.compositingActive);
 
-        var activities = tasksModel.launcherActivities(mainItemContainer.launcherUrl);
-        var animation6 = (root.inActivityChange && mainItemContainer.isWindow
+        var activities = tasksModel.launcherActivities(taskItem.launcherUrl);
+        var animation6 = (root.inActivityChange && taskItem.isWindow
                           && activities.indexOf(activityInfo.currentActivity)>=0
                           && activities.indexOf(activityInfo.previousActivity) === -1
                           && Latte.WindowSystem.compositingActive);
 
 
         //startup without launcher, animation should be blocked
-        var launcherExists = !(!hasShownLauncher || !tasksModel.launcherInCurrentActivity(mainItemContainer.launcherUrl));
+        var launcherExists = !(!hasShownLauncher || !tasksModel.launcherInCurrentActivity(taskItem.launcherUrl));
 
-        //var hideStartup =  launcherExists && mainItemContainer.isStartup; //! fix #976
-        var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && mainItemContainer.isWindow;
+        //var hideStartup =  launcherExists && taskItem.isStartup; //! fix #976
+        var hideWindow =  root.showWindowsOnlyFromLaunchers && !launcherExists && taskItem.isWindow;
 
-        if (root.immediateLauncherExists(mainItemContainer.launcherUrl) && mainItemContainer.isLauncher) {
-            root.removeImmediateLauncher(mainItemContainer.launcherUrl);
+        if (root.immediateLauncherExists(taskItem.launcherUrl) && taskItem.isLauncher) {
+            root.removeImmediateLauncher(taskItem.launcherUrl);
         }
 
         //if (hideStartup || hideWindow) { //fix #976
         if (hideWindow) {
             isForcedHidden = true;
-            mainItemContainer.visible = false;
+            taskItem.visible = false;
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             wrapper.opacity = 0;
-            mainItemContainer.inAnimation = false;
+            taskItem.inAnimation = false;
         } else if (!Latte.WindowSystem.compositingActive || root.inDraggingPhase
-                   || mainItemContainer.isSeparator) {
+                   || taskItem.isSeparator) {
             isForcedHidden = false;
-            mainItemContainer.visible = true;
+            taskItem.visible = true;
             wrapper.tempScaleWidth = 1;
             wrapper.tempScaleHeight = 1;
             wrapper.mScale = 1;
             wrapper.opacity = 1;
-            mainItemContainer.inAnimation = false;
+            taskItem.inAnimation = false;
         } else if (( animation2 || animation3 || animation6 || isForcedHidden)
                    && (root.durationTime !== 0) && !launcherIsAlreadyShown){
             isForcedHidden = false;
-            mainItemContainer.visible = true;
+            taskItem.visible = true;
             wrapper.tempScaleWidth = 0;
             wrapper.tempScaleHeight = 0;
             start();
         } else {
             isForcedHidden = false;
-            var frozenTask = parabolicManager.getFrozenTask(mainItemContainer.launcherUrl);
+            var frozenTask = parabolicManager.getFrozenTask(taskItem.launcherUrl);
 
             if (frozenTask && frozenTask.mScale>1) {
                 wrapper.mScale = frozenTask.mScale;
-                parabolicManager.removeFrozenTask(mainItemContainer.launcherUrl);
+                parabolicManager.removeFrozenTask(taskItem.launcherUrl);
             } else {
                 wrapper.tempScaleWidth = 1;
                 wrapper.tempScaleHeight = 1;
             }
 
             //! by enabling it we break the bouncing animation
-            //mainItemContainer.visible = true;
+            //taskItem.visible = true;
             wrapper.opacity = 1;
-            mainItemContainer.inAnimation = false;
+            taskItem.inAnimation = false;
         }
     }
 

@@ -47,11 +47,11 @@ Item{
     }
 
     Component.onCompleted: {
-        mainItemContainer.groupWindowRemoved.connect(removeTask);
+        taskItem.groupWindowRemoved.connect(removeTask);
     }
 
     Component.onDestruction: {
-        mainItemContainer.groupWindowRemoved.disconnect(removeTask);
+        taskItem.groupWindowRemoved.disconnect(removeTask);
     }
 
     ///////////// Component for animating removing window from group

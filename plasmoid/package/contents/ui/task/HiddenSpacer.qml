@@ -29,8 +29,8 @@ Item{
     height: root.vertical ? nHiddenSize : wrapper.height
 
     visible: (rightSpacer ? index === parabolicManager.lastRealTaskIndex : index === parabolicManager.firstRealTaskIndex)
-             || (separatorSpace > 0) || mainItemContainer.inAttentionAnimation
-             || mainItemContainer.inFastRestoreAnimation || mainItemContainer.inMimicParabolicAnimation
+             || (separatorSpace > 0) || taskItem.inAttentionAnimation
+             || taskItem.inFastRestoreAnimation || taskItem.inMimicParabolicAnimation
 
     property bool neighbourSeparator: false
     //in case there is a neighbour separator, lastValidIndex is used in order to protect from false
@@ -61,7 +61,7 @@ Item{
             if (isForcedHidden) {
                 return 0;
             } else if (!inAttentionAnimation && !inMimicParabolicAnimation && !inFastRestoreAnimation) {
-                return (nScale > 0) ? (mainItemContainer.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
+                return (nScale > 0) ? (taskItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace;
             } else {
                 return (nScale > 0) ? (root.iconSize * nScale) + separatorSpace : separatorSpace;
             }
@@ -70,7 +70,7 @@ Item{
 
     function updateNeighbour() {
         //index===-1 indicates that this item is removed
-        if (mainItemContainer.inBouncingAnimation) {
+        if (taskItem.inBouncingAnimation) {
             return;
         }
 
@@ -78,14 +78,14 @@ Item{
             neighbourSeparator = false;
         } else if (latteView && index!==-1) {
             if (!rightSpacer) {
-                neighbourSeparator = (mainItemContainer.hasNeighbourSeparator(itemIndex-1, false) && !isSeparator && itemIndex!==parabolicManager.firstRealTaskIndex)
+                neighbourSeparator = (taskItem.hasNeighbourSeparator(itemIndex-1, false) && !isSeparator && itemIndex!==parabolicManager.firstRealTaskIndex)
                         || (latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && parabolicManager.firstRealTaskIndex === itemIndex);
             } else {
                 if (itemIndex >= root.tasksCount) {
                     return;
                 }
 
-                neighbourSeparator = (mainItemContainer.hasNeighbourSeparator(itemIndex+1,true) && !isSeparator && itemIndex!==parabolicManager.lastRealTaskIndex)
+                neighbourSeparator = (taskItem.hasNeighbourSeparator(itemIndex+1,true) && !isSeparator && itemIndex!==parabolicManager.lastRealTaskIndex)
                         || (latteView.parabolicManager.isSeparator(latteView.latteAppletPos+1) && parabolicManager.lastRealTaskIndex === itemIndex );
             }
 
@@ -120,7 +120,7 @@ Item{
     }
 
     Connections{
-        target: mainItemContainer
+        target: taskItem
         onItemIndexChanged: hiddenSpacer.updateNeighbour();
     }
 
@@ -135,10 +135,10 @@ Item{
 
     Behavior on nHiddenSize {
         id: animatedBehavior
-        enabled: (mainItemContainer.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
-                  || root.inActivityChange || mainItemContainer.inRemoveStage)
-                 || (mainItemContainer.containsMouse && inAttentionAnimation && wrapper.mScale!==root.zoomFactor)
-        NumberAnimation{ duration: 3 * mainItemContainer.animationTime }
+        enabled: (taskItem.inFastRestoreAnimation || showWindowAnimation.running || restoreAnimation.running
+                  || root.inActivityChange || taskItem.inRemoveStage)
+                 || (taskItem.containsMouse && inAttentionAnimation && wrapper.mScale!==root.zoomFactor)
+        NumberAnimation{ duration: 3 * taskItem.animationTime }
     }
 
     Behavior on nHiddenSize {

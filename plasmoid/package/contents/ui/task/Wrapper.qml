@@ -29,17 +29,17 @@ Item{
 
     opacity: 0
     width: {
-        if (!mainItemContainer.visible)
+        if (!taskItem.visible)
             return 0;
 
-        if (mainItemContainer.isSeparator){
+        if (taskItem.isSeparator){
             if (!root.vertical)
                 return 0; //5 + root.widthMargins;
             else
                 return (root.iconSize + root.widthMargins) + root.statesLineSize;
         }
 
-        if (mainItemContainer.isStartup && root.durationTime !==0 ) {
+        if (taskItem.isStartup && root.durationTime !==0 ) {
             var moreThickness = root.vertical ? addedSpace : 0;
 
             return cleanScalingWidth + moreThickness;
@@ -49,17 +49,17 @@ Item{
     }
 
     height: {
-        if (!mainItemContainer.visible)
+        if (!taskItem.visible)
             return 0;
 
-        if (mainItemContainer.isSeparator){
+        if (taskItem.isSeparator){
             if (root.vertical)
                 return 0; //5 + root.heightMargins;
             else
                 return (root.iconSize + root.heightMargins) + root.statesLineSize;
         }
 
-        if (mainItemContainer.isStartup && root.durationTime !==0){
+        if (taskItem.isStartup && root.durationTime !==0){
             var moreThickness = !root.vertical ? addedSpace : 0;
 
             return cleanScalingHeight + moreThickness;
@@ -96,12 +96,12 @@ Item{
     property real basicScalingWidth : (inTempScaling == true) ? ((root.iconSize + root.widthMargins) * scaleWidth) : cleanScalingWidth
     property real basicScalingHeight : (inTempScaling == true) ? ((root.iconSize + root.heightMargins) * scaleHeight) : cleanScalingHeight
 
-    property real regulatorWidth: mainItemContainer.isSeparator ? width : basicScalingWidth;
-    property real regulatorHeight: mainItemContainer.isSeparator ? height : basicScalingHeight;
+    property real regulatorWidth: taskItem.isSeparator ? width : basicScalingWidth;
+    property real regulatorHeight: taskItem.isSeparator ? height : basicScalingHeight;
     /// end of Scalers///////
 
     //property int curIndex: icList.hoveredIndex
-    //  property int index: mainItemContainer.Positioner.index
+    //  property int index: taskItem.Positioner.index
     //property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real center: (width + hiddenSpacerLeft.nHiddenSize + hiddenSpacerRight.nHiddenSize) / 2
 
@@ -120,7 +120,7 @@ Item{
     Behavior on mScale {
         enabled: !root.globalDirectRender || inMimicParabolicAnimation
         NumberAnimation{
-            duration: 3 * mainItemContainer.animationTime
+            duration: 3 * taskItem.animationTime
             easing.type: Easing.OutCubic
         }
     }
@@ -164,7 +164,7 @@ Item{
             id: firstPadding
 
             active: secondIndicator.active && !root.reverseLinesPosition
-                    && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
+                    && (taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation)
                     && !root.disableAllWindowsFunctionality
             visible: active
 
@@ -193,7 +193,7 @@ Item{
             id: secondPadding
 
             active: firstIndicator.active && !root.reverseLinesPosition
-                    && (mainItemContainer.inAttentionAnimation || mainItemContainer.inFastRestoreAnimation)
+                    && (taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation)
                     && !root.disableAllWindowsFunctionality
             visible: active
 
@@ -258,7 +258,7 @@ Item{
                 hiddenSpacerRight.nScale =  scales.rightScale - 1;
             }
 
-            if (!mainItemContainer.inAttentionAnimation) {
+            if (!taskItem.inAttentionAnimation) {
                 mScale = root.zoomFactor;
             } else {
                 var subSpacerScale = (root.zoomFactor-1)/2;
@@ -267,20 +267,20 @@ Item{
                 hiddenSpacerRight.nScale = subSpacerScale;
             }
 
-            mainItemContainer.scalesUpdatedOnce = false;
+            taskItem.scalesUpdatedOnce = false;
         }
 
     } //nScale
 
     function signalUpdateScale(nIndex, nScale, step){
-        if (!mainItemContainer.containsMouse && (index === nIndex)
-                && (mainItemContainer.hoverEnabled || inMimicParabolicAnimation)&&(waitingLaunchers.length===0)){
-            if (mainItemContainer.inAttentionAnimation) {
+        if (!taskItem.containsMouse && (index === nIndex)
+                && (taskItem.hoverEnabled || inMimicParabolicAnimation)&&(waitingLaunchers.length===0)){
+            if (taskItem.inAttentionAnimation) {
                 var subSpacerScale = (nScale-1)/2;
 
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
-            } else if (!inBlockingAnimation || mainItemContainer.inMimicParabolicAnimation) {
+            } else if (!inBlockingAnimation || taskItem.inMimicParabolicAnimation) {
                 var newScale = 1;
 
                 if(nScale >= 0) {
@@ -299,8 +299,8 @@ Item{
     }
 
     function sendEndOfNeedBothAxisAnimation(){
-        if (mainItemContainer.isZoomed) {
-            mainItemContainer.isZoomed = false;
+        if (taskItem.isZoomed) {
+            taskItem.isZoomed = false;
             root.signalAnimationsNeedBothAxis(-1);
         }
     }
@@ -324,10 +324,10 @@ Item{
             }
         }
 
-        if ((mScale > 1) && !mainItemContainer.isZoomed) {
-            mainItemContainer.isZoomed = true;
+        if ((mScale > 1) && !taskItem.isZoomed) {
+            taskItem.isZoomed = true;
             root.signalAnimationsNeedBothAxis(1);
-        } else if ((mScale == 1) && mainItemContainer.isZoomed) {
+        } else if ((mScale == 1) && taskItem.isZoomed) {
             sendEndOfNeedBothAxisAnimation();
         }
     }

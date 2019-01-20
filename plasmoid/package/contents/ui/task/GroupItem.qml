@@ -40,7 +40,7 @@ Item{
     //property color isShownColor: plasmoid.configuration.threeColorsWindows ? root.shownDotColor : isActiveColor
     //property color isShownColor: isActiveColor
     property color minimizedColor: root.threeColorsWindows ? root.minimizedDotColor : isActiveColor
-    property color notActiveColor: mainItemContainer.hasMinimized ? minimizedColor : isActiveColor
+    property color notActiveColor: taskItem.hasMinimized ? minimizedColor : isActiveColor
 
     /*Rectangle{
         anchors.fill: parent
@@ -63,7 +63,7 @@ Item{
                 id:firstPoint
                 visible: ( !IsLauncher ) ? true: false
 
-                basicColor: IsActive===true || (mainItemContainer.isGroupParent && mainItemContainer.hasShown)?
+                basicColor: IsActive===true || (taskItem.isGroupParent && taskItem.hasShown)?
                                 glowFrame.isActiveColor : glowFrame.notActiveColor
 
                 glow3D: root.glow3D
@@ -74,27 +74,27 @@ Item{
                 attentionColor: colorScopePalette.negativeTextColor
 
                 roundCorners: true
-                showAttention: mainItemContainer.showAttention
+                showAttention: taskItem.showAttention
                 showGlow: {
                     if (root.showGlow && (root.glowOption === Latte.Types.GlowAll || showAttention ))
                         return true;
-                    else if (root.showGlow && root.glowOption === Latte.Types.GlowOnlyOnActive && mainItemContainer.hasActive)
+                    else if (root.showGlow && root.glowOption === Latte.Types.GlowOnlyOnActive && taskItem.hasActive)
                         return true;
                     else
                         return false;
                 }
                 showBorder: root.showGlow && root.glow3D
 
-               // opacity: (!mainItemContainer.hasActive && root.showPreviews
-               //           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer)) ? 0.4 : 1
+               // opacity: (!taskItem.hasActive && root.showPreviews
+               //           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem)) ? 0.4 : 1
 
-                property int stateWidth: mainItemContainer.isGroupParent ? (wrapper.regulatorWidth - secondPoint.width) : wrapper.regulatorWidth - spacer.width
-                property int stateHeight: mainItemContainer.isGroupParent ? wrapper.regulatorHeight - secondPoint.height : wrapper.regulatorHeight - spacer.height
+                property int stateWidth: taskItem.isGroupParent ? (wrapper.regulatorWidth - secondPoint.width) : wrapper.regulatorWidth - spacer.width
+                property int stateHeight: taskItem.isGroupParent ? wrapper.regulatorHeight - secondPoint.height : wrapper.regulatorHeight - spacer.height
 
                 property int animationTime: root.durationTime* (0.7*units.longDuration)
 
-                property bool isActive: mainItemContainer.hasActive
-                                        || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
+                property bool isActive: taskItem.hasActive
+                                        || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
 
                 property bool vertical: root.vertical
 
@@ -121,7 +121,7 @@ Item{
 
 
                 onIsActiveChanged: {
-                    // if(mainItemContainer.hasActive || windowsPreviewDlg.visible)
+                    // if(taskItem.hasActive || windowsPreviewDlg.visible)
                     if (root.activeIndicatorType === Latte.Types.LineIndicator)
                         activeAndReverseAnimation.start();
                 }
@@ -161,8 +161,8 @@ Item{
                     id: activeAndReverseAnimation
                     target: firstPoint
                     property: root.vertical ? "height" : "width"
-                    to: (mainItemContainer.hasActive && root.activeIndicatorType === Latte.Types.LineIndicator)
-                        || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === mainItemContainer))
+                    to: (taskItem.hasActive && root.activeIndicatorType === Latte.Types.LineIndicator)
+                        || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
                         ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
                     duration: firstPoint.animationTime
                     easing.type: Easing.InQuad
@@ -189,17 +189,17 @@ Item{
                 contrastColor: root.appShadowColorSolid
                 showBorder: root.showGlow && root.glow3D
 
-                basicColor: state2Color //mainItemContainer.hasActive ? state2Color : state1Color
+                basicColor: state2Color //taskItem.hasActive ? state2Color : state1Color
                 roundCorners: true
                 showGlow: root.showGlow  && root.glowOption === Latte.Types.GlowAll
-                visible:  ( mainItemContainer.isGroupParent && ((root.dotsOnActive && root.activeIndicatorType === Latte.Types.LineIndicator)
+                visible:  ( taskItem.isGroupParent && ((root.dotsOnActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                                                                 || root.activeIndicatorType === Latte.Types.DotIndicator
-                                                                || !mainItemContainer.hasActive) )? true: false
+                                                                || !taskItem.hasActive) )? true: false
 
                 //when there is no active window
-                property color state1Color: mainItemContainer.hasShown ? glowFrame.isActiveColor : glowFrame.minimizedColor
+                property color state1Color: taskItem.hasShown ? glowFrame.isActiveColor : glowFrame.minimizedColor
                 //when there is active window
-                property color state2Color: mainItemContainer.hasMinimized ? glowFrame.minimizedColor : glowFrame.isActiveColor
+                property color state2Color: taskItem.hasMinimized ? glowFrame.minimizedColor : glowFrame.isActiveColor
             }
         }
     }

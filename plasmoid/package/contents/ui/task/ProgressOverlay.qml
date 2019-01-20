@@ -61,16 +61,16 @@ Item {
             border.color: root.minimizedDotColor
             minimumWidth: 0.8 * parent.height
             height: 0.8 * parent.height
-            numberValue: mainItemContainer.badgeIndicator > 0 ? mainItemContainer.badgeIndicator : centralItem.smartLauncherItem.count
+            numberValue: taskItem.badgeIndicator > 0 ? taskItem.badgeIndicator : centralItem.smartLauncherItem.count
             fullCircle: true
             showNumber: true
 
-            textWithBackgroundColor: ( (mainItemContainer.badgeIndicator > 0)
+            textWithBackgroundColor: ( (taskItem.badgeIndicator > 0)
                                       || (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible) )
                                      && proportion>0
 
             proportion: {
-                if (mainItemContainer.badgeIndicator > 0 ||
+                if (taskItem.badgeIndicator > 0 ||
                         (centralItem.smartLauncherItem.countVisible && !centralItem.smartLauncherItem.progressVisible)) {
                     return 100;
                 }

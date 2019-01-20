@@ -72,13 +72,13 @@ Item{
             }
 
             Component.onCompleted: {
-                rootIndex = mainItemContainer.modelIndex();
+                rootIndex = taskItem.modelIndex();
             }
         }
     }
 
     Connections{
-        target: mainItemContainer
+        target: taskItem
         onItemIndexChanged: windowsContainer.updateStates();
     }
 
@@ -105,7 +105,7 @@ Item{
     }
 
     function initializeStates(){
-        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+        windowsLocalModel.rootIndex = taskItem.modelIndex();
 
         hasMinimized = false;
         hasShown = false;
@@ -115,10 +115,10 @@ Item{
             checkInternalStates();
         }
         else{
-            if(mainItemContainer.isActive)
+            if(taskItem.isActive)
                 hasActive = true;
 
-            if(mainItemContainer.isMinimized){
+            if(taskItem.isMinimized){
                 hasMinimized = true;
             } else {
                 hasShown = true;
@@ -143,7 +143,7 @@ Item{
     }
 
     function windowsTitles() {
-        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+        windowsLocalModel.rootIndex = taskItem.modelIndex();
         var result = new Array;
         var childs = windowsLocalModel.items;
 
@@ -160,9 +160,9 @@ Item{
     //! function which is used to cycle activation into
     //! a group of windows
     function activateNextTask() {
-        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+        windowsLocalModel.rootIndex = taskItem.modelIndex();
 
-        if (!mainItemContainer.isGroupParent) {
+        if (!taskItem.isGroupParent) {
             return;
         }
 
@@ -204,9 +204,9 @@ Item{
     //! function which is used to cycle activation into
     //! a group of windows backwise
     function activatePreviousTask() {
-        windowsLocalModel.rootIndex = mainItemContainer.modelIndex();
+        windowsLocalModel.rootIndex = taskItem.modelIndex();
 
-        if (!mainItemContainer.isGroupParent) {
+        if (!taskItem.isGroupParent) {
             return;
         }
 
@@ -247,10 +247,10 @@ Item{
     }
 
     Component.onCompleted: {
-        mainItemContainer.checkWindowsStates.connect(initializeStates);
+        taskItem.checkWindowsStates.connect(initializeStates);
     }
 
     Component.onDestruction: {
-        mainItemContainer.checkWindowsStates.disconnect(initializeStates);
+        taskItem.checkWindowsStates.disconnect(initializeStates);
     }
 }
