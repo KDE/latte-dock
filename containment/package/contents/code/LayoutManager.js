@@ -62,6 +62,9 @@ function restore() {
 
    // console.log("splitters restored:"+plasmoid.configuration.splitterPosition+ " - " + plasmoid.configuration.splitterPosition2);
     //add the splitters in the correct position if they exist
+
+    var validSplitter1 = -1;
+
     if(plasmoid.configuration.splitterPosition !== -1){
         var missingApplets = 0;
 
@@ -71,19 +74,33 @@ function restore() {
             }
         }
 
-        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition-missingApplets);
+        validSplitter1 = plasmoid.configuration.splitterPosition-missingApplets;
+
+        // console.log("INTERNAL SPLITTER 1 ::: " + plasmoid.configuration.splitterPosition);
+        // console.log("UNDEFINEDSPLITTER 1 ::: " + missingApplets);
+        // console.log("VALID    SPLITTER 1 ::: " + validSplitter1);
+
+        root.addInternalViewSplitter(validSplitter1);
     }
 
     if(plasmoid.configuration.splitterPosition2 !== -1){
         var missingApplets2 = 0;
+        var spacers = plasmoid.configuration.splitterPosition !== -1 ? 1 : 0;
+        var secondPartIndex = plasmoid.configuration.splitterPosition !== -1 ? plasmoid.configuration.splitterPosition+1 : 0;
 
-        for (var i=0; i<plasmoid.configuration.splitterPosition2; ++i) {
-            if (appletsOrder[i] === undefined) {
+        for (var i=secondPartIndex; i<plasmoid.configuration.splitterPosition2; ++i) {
+            if (appletsOrder[i-spacers] === undefined) {
                 missingApplets2 = missingApplets2 + 1;
             }
         }
 
-        root.addInternalViewSplitter(plasmoid.configuration.splitterPosition2-missingApplets2);
+        var validSplitter2 = plasmoid.configuration.splitterPosition2-missingApplets2;
+
+        // console.log("INTERNAL SPLITTER 2 ::: " + plasmoid.configuration.splitterPosition2);
+        // console.log("UNDEFINEDSPLITTER 2 ::: " + missingApplets2);
+        // console.log("VALID    SPLITTER 2 ::: " + validSplitter2);
+
+        root.addInternalViewSplitter(validSplitter2);
     }
 
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
