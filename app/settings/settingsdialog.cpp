@@ -22,12 +22,12 @@
 #include "settingsdialog.h"
 
 // local
-#include "layout.h"
 #include "layoutmanager.h"
 #include "importer.h"
 #include "universalsettings.h"
 #include "ui_settingsdialog.h"
 #include "../lattecorona.h"
+#include "../layout/layout.h"
 #include "../liblatte2/types.h"
 #include "../plasma/extended/theme.h"
 #include "delegates/checkboxdelegate.h"

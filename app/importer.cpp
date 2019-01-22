@@ -23,8 +23,8 @@
 // local
 #include "lattecorona.h"
 #include "layoutmanager.h"
-#include "layout.h"
 #include "screenpool.h"
+#include "layout/layout.h"
 #include "settings/universalsettings.h"
 #include "../liblatte2/types.h"
 

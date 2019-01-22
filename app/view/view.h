@@ -26,7 +26,7 @@
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
-#include "../layout.h"
+#include "../layout/layout.h"
 #include "../plasma/quick/containmentview.h"
 #include "../plasma/quick/configview.h"
 #include "../../liblatte2/types.h"

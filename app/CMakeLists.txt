@@ -7,10 +7,10 @@ set(lattedock-app_SRCS
     infoview.cpp
     lattecorona.cpp
     launcherssignals.cpp
-    layout.cpp
     layoutmanager.cpp
     schemecolors.cpp
     screenpool.cpp
+    layout/layout.cpp
     package/lattepackage.cpp
     plasma/extended/screenpool.cpp
     plasma/extended/theme.cpp

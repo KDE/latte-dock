@@ -21,13 +21,13 @@
 #include "layout.h"
 
 // local
-#include "importer.h"
-#include "lattecorona.h"
-#include "layoutmanager.h"
-#include "screenpool.h"
-#include "view/positioner.h"
-#include "view/view.h"
-#include "settings/universalsettings.h"
+#include "../importer.h"
+#include "../lattecorona.h"
+#include "../layoutmanager.h"
+#include "../screenpool.h"
+#include "../view/positioner.h"
+#include "../view/view.h"
+#include "../settings/universalsettings.h"
 
 // Qt
 #include <QDir>

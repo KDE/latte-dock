@@ -22,7 +22,7 @@
 
 // local
 #include "lattecorona.h"
-#include "layout.h"
+#include "layout/layout.h"
 
 // Qt
 #include <QQuickItem>
