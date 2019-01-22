@@ -21,10 +21,10 @@ import QtQuick 2.7
 
 Item{
     function setProperty(appletId, parameter, value) {
-        if (parameter === "disableLatteSideColoring") {
-            mainCommunicator.disableLatteSideColoring = value;
-        } else if (parameter === "disableLatteIconOverlay") {
-            mainCommunicator.disableLatteIconOverlay = value;
+        if (parameter === "latteSideColoringEnabled") {
+            mainCommunicator.latteSideColoringEnabled = value;
+        } else if (parameter === "latteIconOverlayEnabled") {
+            mainCommunicator.latteIconOverlayEnabled = value;
         } else if (parameter === "activeIndicatorEnabled") {
             mainCommunicator.activeIndicatorEnabled = value;
         } else if (parameter === "parabolicEffectEnabled") {
@@ -33,10 +33,10 @@ Item{
     }
 
     function getProperty(appletId, parameter, value) {
-        if (parameter === "disableLatteSideColoring") {
-            return mainCommunicator.disableLatteSideColoring;
-        } else if (parameter === "disableLatteIconOverlay") {
-            return mainCommunicator.disableLatteIconOverlay;
+        if (parameter === "latteSideColoringEnabled") {
+            return mainCommunicator.latteSideColoringEnabled;
+        } else if (parameter === "latteIconOverlayEnabled") {
+            return mainCommunicator.latteIconOverlayEnabled;
         } else if (parameter === "activeIndicatorEnabled") {
             return mainCommunicator.activeIndicatorEnabled;
         } else if (parameter === "parabolicEffectEnabled") {

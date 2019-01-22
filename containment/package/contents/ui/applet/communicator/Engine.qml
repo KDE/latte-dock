@@ -39,7 +39,7 @@ Item{
     //! BEGIN OF PROPERTIES
     //this is used for folderView and icon widgets to fake their visual icons
     readonly property bool canShowOverlaiedLatteIcon: appletIconItem
-    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && !disableLatteIconOverlay
+    readonly property bool overlayLatteIconIsActive: canShowOverlaiedLatteIcon && latteIconOverlayEnabled
 
     property Item appletRootItem: appletDiscoveredRootItem ? appletDiscoveredRootItem : appletDefaultRootItem
     property Item appletDiscoveredRootItem: null
@@ -50,8 +50,8 @@ Item{
     //! END OF PROPERTIES
 
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
-    property bool disableLatteSideColoring: false
-    property bool disableLatteIconOverlay: false
+    property bool latteSideColoringEnabled: true
+    property bool latteIconOverlayEnabled: true
     property bool activeIndicatorEnabled: true
     property bool parabolicEffectEnabled: true
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS

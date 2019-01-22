@@ -43,7 +43,7 @@ Item{
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
     // @since: 0.9
-    readonly property QtObject palette: disableLatteSideColoring ? colorizerManager : null
+    readonly property QtObject palette: !latteSideColoringEnabled ? colorizerManager : null
 
     // NAME: applyPalette
     //   USAGE: read-only
@@ -52,16 +52,16 @@ Item{
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
     //       to look consistent with the underlying desktop background
     // @since: 0.9
-    readonly property bool applyPalette: disableLatteSideColoring ? colorizerManager.mustBeShown : false
+    readonly property bool applyPalette: !latteSideColoringEnabled ? colorizerManager.mustBeShown : false
 
 
     property Item actions: Actions{}
 
 
-    // NAME: disableLatteSideColoring
+    // NAME: latteSideColoringEnabled
     // TYPE: bool
     //   USAGE: writable through actions.setProperty
-    //   EXPLANATION: when is TRUE, Latte is not painting/colorizing this applet
+    //   EXPLANATION: when is FALSE, Latte is not painting/colorizing this applet
     //       in any case. In such case the applet can use 'palette'
     //       in order to access the color palette used at all cases from Latte
     //   USE CASE: when Latte is transparent and applets colors need to be adjusted in order
@@ -70,10 +70,10 @@ Item{
     // @since: 0.9
 
 
-    // NAME: disableLatteIconOverlay
+    // NAME: latteIconOverlayEnabled
     // TYPE: bool
     //   USAGE: writable through actions.setProperty
-    //   EXPLANATION: when is TRUE, Latte is not overlaying any icons above
+    //   EXPLANATION: when is FALSE, Latte is not overlaying any icons above
     //       the applet or alters the applet visual in any sense.
     //       That means that the applet is responsible to provide a coherent
     //       parabolic effect experience.

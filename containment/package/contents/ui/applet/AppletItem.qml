@@ -59,7 +59,8 @@ Item {
     }
 
     property bool userBlocksColorizing: false
-    property bool appletBlocksColorizing: communicator.disableLatteSideColoring
+    property bool appletBlocksColorizing: !communicator.latteSideColoringEnabled
+    property bool appletBlocksParabolicEffect: !communicator.parabolicEffectEnabled
     property bool showZoomed: false
     property bool lockZoom: false
     property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
