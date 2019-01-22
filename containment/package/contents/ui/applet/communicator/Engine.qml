@@ -52,6 +52,8 @@ Item{
     //! BEGIN OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
     property bool disableLatteSideColoring: false
     property bool disableLatteIconOverlay: false
+    property bool activeIndicatorEnabled: true
+    property bool parabolicEffectEnabled: true
     //! END OF PUBLIC PROPERTIES SET THROUGH LATTEBRIDGE.ACTIONS
 
     //! BEGIN OF PROPERTY CHANGES

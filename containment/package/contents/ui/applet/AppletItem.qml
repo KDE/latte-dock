@@ -509,8 +509,9 @@ Item {
             //! Active Indicator loader
             Loader{
                 anchors.fill: parent
-                active: root.activeIndicator === Latte.Types.AllIndicator
-                        || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive)
+                active: (root.activeIndicator === Latte.Types.AllIndicator
+                        || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
+                        && communicator.activeIndicatorEnabled
 
                 sourceComponent: Item{
                     anchors.fill: parent
@@ -594,7 +595,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: applet && !latteApplet && canBeHovered && !root.editMode && !lockZoom
+        enabled: applet && !latteApplet && canBeHovered && !root.editMode && !lockZoom && communicator.parabolicEffectEnabled
         hoverEnabled: !root.editMode && (!latteApplet) ? true : false
         propagateComposedEvents: true
 
@@ -602,7 +603,8 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: applet && !appletItem.latteApplet && !lockZoom && canBeHovered && !(appletItem.isSeparator && !root.editMode)  //&& (root.zoomFactor>1)
+        visible: applet && !appletItem.latteApplet && !lockZoom && communicator.parabolicEffectEnabled
+                 && canBeHovered && !(appletItem.isSeparator && !root.editMode)
 
         property bool blockWheel: false
         property bool pressed: false
@@ -613,7 +615,7 @@ Item {
         }
 
         onEntered: {
-            if (containsMouse && !appletItem.lockZoom && appletItem.canBeHovered){
+            if (containsMouse && !appletItem.lockZoom && communicator.parabolicEffectEnabled && appletItem.canBeHovered){
                 root.stopCheckRestoreZoomTimer();
             }
 
@@ -634,7 +636,7 @@ Item {
                 layoutsContainer.hoveredIndex = index;
             }
 
-            if (lockZoom || !canBeHovered) {
+            if (lockZoom || !communicator.parabolicEffectEnabled || !canBeHovered) {
                 return;
             }
 

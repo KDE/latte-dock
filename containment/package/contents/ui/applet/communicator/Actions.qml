@@ -25,6 +25,10 @@ Item{
             mainCommunicator.disableLatteSideColoring = value;
         } else if (parameter === "disableLatteIconOverlay") {
             mainCommunicator.disableLatteIconOverlay = value;
+        } else if (parameter === "activeIndicatorEnabled") {
+            mainCommunicator.activeIndicatorEnabled = value;
+        } else if (parameter === "parabolicEffectEnabled") {
+            mainCommunicator.parabolicEffectEnabled = value;
         }
     }
 
@@ -33,6 +37,10 @@ Item{
             return mainCommunicator.disableLatteSideColoring;
         } else if (parameter === "disableLatteIconOverlay") {
             return mainCommunicator.disableLatteIconOverlay;
+        } else if (parameter === "activeIndicatorEnabled") {
+            return mainCommunicator.activeIndicatorEnabled;
+        } else if (parameter === "parabolicEffectEnabled") {
+            return mainCommunicator.parabolicEffectEnabled;
         }
 
         return null;
