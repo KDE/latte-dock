@@ -236,7 +236,7 @@ Item {
     property QtObject latteBridge: null
     onLatteBridgeChanged: {
         if (latteBridge) {
-            latteBridge.actions.setProperty(plasmoid.id, "disableLatteSideColoring", true);
+            latteBridge.actions.setProperty(plasmoid.id, "latteSideColoringEnabled", false);
         }
     }
     //END  Latte Dock Communicator
