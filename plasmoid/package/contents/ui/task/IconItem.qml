@@ -299,10 +299,11 @@ Item{
         Loader{
             id: badgesLoader
             anchors.fill: iconImageBuffer
-            active: opacityN > 0
+            active: activateProgress > 0
             asynchronous: true
+            opacity: stateColorizer.opacity > 0 ? 0 : 1
 
-            property real opacityN: showInfo || showProgress || showAudio ? 1 : 0
+            property real activateProgress: showInfo || showProgress || showAudio ? 1 : 0
 
             property bool showInfo: (root.showInfoBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
                                      && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0))
@@ -312,7 +313,7 @@ Item{
 
             property bool showAudio: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
 
-            Behavior on opacityN {
+            Behavior on activateProgress {
                 NumberAnimation { duration: root.durationTime*2*units.longDuration }
             }
 
@@ -462,7 +463,7 @@ Item{
                     width: Math.max(parent.width, contentWidth)
                     height: parent.height
 
-                    opacity: badgesLoader.opacityN
+                    opacity: badgesLoader.activateProgress
                     visible: badgesLoader.showInfo || badgesLoader.showProgress
 
                     layer.enabled: root.enableShadows
@@ -479,7 +480,7 @@ Item{
                 AudioStream{
                     id: audioStreamBadge
                     anchors.fill: parent
-                    opacity: badgesLoader.opacityN
+                    opacity: badgesLoader.activateProgress
                     visible: badgesLoader.showAudio
 
                     layer.enabled: root.enableShadows
@@ -512,10 +513,61 @@ Item{
                     saturation: stateColorizer.saturation
                     lightness: stateColorizer.lightness
                 }
+
+                /*BrightnessContrast{
+                    anchors.fill: parent
+                    source: parent
+
+                    opacity: hoveredImage.opacity
+                    brightness: hoveredImage.brightness
+                    contrast: hoveredImage.contrast
+                }
+
+                BrightnessContrast {
+                    anchors.fill: parent
+                    source: parent
+
+                    visible: brightnessTaskEffect.visible
+                }*/
             }
         }
         //! END: Badges Visuals
 
+        //! Effects
+        Colorize{
+            id: stateColorizer
+            anchors.fill: iconImageBuffer
+            source: badgesLoader.active ? badgesLoader : iconImageBuffer
+
+            opacity:0
+
+            hue:0
+            saturation:0
+            lightness:0
+        }
+
+        BrightnessContrast{
+            id:hoveredImage
+            anchors.fill: iconImageBuffer
+            source: badgesLoader.active ? badgesLoader : iconImageBuffer
+
+            opacity: taskItem.containsMouse && !clickedAnimation.running ? 1 : 0
+            brightness: 0.30
+            contrast: 0.1
+
+            Behavior on opacity {
+                NumberAnimation { duration: root.durationTime*units.longDuration }
+            }
+        }
+
+        BrightnessContrast {
+            id: brightnessTaskEffect
+            anchors.fill: iconImageBuffer
+            source: badgesLoader.active ? badgesLoader : iconImageBuffer
+
+            visible: clickedAnimation.running
+        }
+        //! Effects
 
         /// START Task Number
         Loader{
@@ -576,18 +628,6 @@ Item{
             }
         }
         //END of task number (showTasksNumbers)
-
-        Colorize{
-            id: stateColorizer
-            source: badgesLoader.active ? badgesLoader : iconImageBuffer
-            anchors.fill: iconImageBuffer
-
-            opacity:0
-
-            hue:0
-            saturation:0
-            lightness:0
-        }
     }
 
     VisualAddItem{
@@ -597,31 +637,6 @@ Item{
         visible: opacity == 0 ? false : true
         opacity: root.dropNewLauncher && !mouseHandler.onlyLaunchers
                  && (root.dragSource == null) && (mouseHandler.hoveredItem === taskItem) ? 1 : 0
-    }
-
-    BrightnessContrast{
-        id:hoveredImage
-        opacity: taskItem.containsMouse && !clickedAnimation.running ? 1 : 0
-        anchors.fill: iconGraphic
-
-        brightness: 0.30
-        contrast: 0.1
-        source: iconGraphic
-
-        Behavior on opacity {
-            NumberAnimation { duration: root.durationTime*units.longDuration }
-        }
-    }
-
-    BrightnessContrast {
-        id: brightnessTaskEffect
-        anchors.fill: iconGraphic
-        source: iconGraphic
-
-        visible: clickedAnimation.running
-    }
-
-    Component.onCompleted: {
     }
 
     Component.onDestruction: {
