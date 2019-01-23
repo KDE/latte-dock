@@ -121,12 +121,8 @@ Item{
     // KQuickControlAddons.QIconItem{
     Item{
         id: iconGraphic
-        //width: iconImageBuffer.width
-        //height: iconImageBuffer.height
         width: parent.width
         height: parent.height
-
-        opacity: root.enableShadows ? 0 : 1
 
         //fix bug #478, when changing form factor sometimes the tasks are not positioned
         //correctly, in such case we make a fast reinitialization for the sizes
@@ -186,6 +182,7 @@ Item{
             height: Math.round(width)
             source: decoration
 
+            opacity: root.enableShadows ? 0 : 1
             visible: !taskItem.isSeparator && !badgesLoader.active
             //visible: !root.enableShadows
 
@@ -278,9 +275,27 @@ Item{
                     AnchorAnimation { duration: 1.5*root.durationTime*units.longDuration }
                 }
             ]
-        }
+        } //IconImageBuffer
 
-        ////! Combined Loader for Progress and Audio badges
+        //! Shadows
+        Loader{
+            id: taskWithShadow
+            anchors.fill: iconImageBuffer
+            active: root.enableShadows && !taskItem.isSeparator
+
+            sourceComponent: DropShadow{
+                anchors.fill: parent
+                color: root.appShadowColor
+                fast: true
+                samples: 2 * radius
+                source: badgesLoader.active ? badgesLoader.item : iconImageBuffer
+                radius: root.appShadowSize
+                verticalOffset: 2
+            }
+        }
+        //! Shadows
+
+        //! Combined Loader for Progress and Audio badges masks
         Loader{
             id: badgesLoader
             anchors.fill: iconImageBuffer
@@ -293,7 +308,7 @@ Item{
                                      && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0))
 
             property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem && !taskItem.isSeparator
-                                         && taskIcon.smartLauncherItem.progressVisible
+                                        && taskIcon.smartLauncherItem.progressVisible
 
             property bool showAudio: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
 
@@ -323,7 +338,7 @@ Item{
 
                             Rectangle{
                                 id: maskRect
-                                width: Math.max(infoBadge.contentWidth, parent.width / 2)
+                                width: Math.max(badgeVisualsLoader.infoBadgeWidth, parent.width / 2)
                                 height: parent.height / 2
                                 radius: parent.height
                                 visible: badgesLoader.showInfo || badgesLoader.showProgress
@@ -424,23 +439,82 @@ Item{
             }
         "
                 } //end of sourceComponent
+            }
+        }
+        ////!
 
+        //! START: Badges Visuals
+        //! the badges visual get out from iconGraphic in order to be able to draw shadows that
+        //! extend beyond the iconGraphic boundaries
+        Loader {
+            id: badgeVisualsLoader
+            anchors.fill: iconImageBuffer
+            active: badgesLoader.active
+
+            readonly property int infoBadgeWidth: active ? publishedInfoBadgeWidth : 0
+            property int publishedInfoBadgeWidth: 0
+
+            sourceComponent: Item {
                 ProgressOverlay{
                     id: infoBadge
-                    anchors.fill:parent
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    width: Math.max(parent.width, contentWidth)
+                    height: parent.height
+
                     opacity: badgesLoader.opacityN
                     visible: badgesLoader.showInfo || badgesLoader.showProgress
+
+                    layer.enabled: root.enableShadows
+                    layer.effect: DropShadow {
+                        color: root.appShadowColor
+                        fast: true
+                        samples: 2 * radius
+                        source: infoBadge
+                        radius: root.appShadowSize
+                        verticalOffset: 2
+                    }
                 }
 
                 AudioStream{
                     id: audioStreamBadge
-                    anchors.fill:parent
+                    anchors.fill: parent
                     opacity: badgesLoader.opacityN
                     visible: badgesLoader.showAudio
+
+                    layer.enabled: root.enableShadows
+                    layer.effect: DropShadow {
+                        color: root.appShadowColor
+                        fast: true
+                        samples: 2 * radius
+                        source: audioStreamBadge
+                        radius: root.appShadowSize
+                        verticalOffset: 2
+                    }
+                }
+
+                Binding {
+                    target: badgeVisualsLoader
+                    property: "publishedInfoBadgeWidth"
+                    value: infoBadge.contentWidth
+                }
+
+                //! grey-ing the badges when the task is dragged
+                Colorize{
+                    anchors.centerIn: parent
+                    width: source.width
+                    height: source.height
+                    source: parent
+
+                    opacity: stateColorizer.opacity
+
+                    hue: stateColorizer.hue
+                    saturation: stateColorizer.saturation
+                    lightness: stateColorizer.lightness
                 }
             }
         }
-        ////!
+        //! END: Badges Visuals
 
 
         /// START Task Number
@@ -501,25 +575,18 @@ Item{
                 }
             }
         }
-        //END of task number
+        //END of task number (showTasksNumbers)
 
-        //showTasksNumbers
-    }
+        Colorize{
+            id: stateColorizer
+            source: badgesLoader.active ? badgesLoader : iconImageBuffer
+            anchors.fill: iconImageBuffer
 
-    ///Shadow in tasks
-    Loader{
-        id: taskWithShadow
-        anchors.fill: iconGraphic
-        active: root.enableShadows
+            opacity:0
 
-        sourceComponent: DropShadow{
-            anchors.fill: parent
-            color: root.appShadowColor
-            fast: true
-            samples: 2 * radius
-            source: iconGraphic
-            radius: root.appShadowSize
-            verticalOffset: 2
+            hue:0
+            saturation:0
+            lightness:0
         }
     }
 
@@ -552,21 +619,6 @@ Item{
         source: iconGraphic
 
         visible: clickedAnimation.running
-    }
-
-    Colorize{
-        id: stateColorizer
-        source: badgesLoader.active ? badgesLoader : iconImageBuffer
-        anchors.centerIn: iconGraphic
-        width: source.width
-        height: source.height
-
-        //visible: false
-        opacity:0
-
-        hue:0
-        saturation:0
-        lightness:0
     }
 
     Component.onCompleted: {
