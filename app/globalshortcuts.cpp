@@ -288,6 +288,10 @@ void GlobalShortcuts::activateLauncherMenu()
 
             if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
                 if (view->visibility()->isHidden()) {
+                    if (!m_hideDocks.contains(view)) {
+                        m_hideDocks.append(view);
+                    }
+
                     m_lastInvokedAction = m_singleMetaAction;
 
                     view->visibility()->setBlockHiding(true);
@@ -296,6 +300,8 @@ void GlobalShortcuts::activateLauncherMenu()
                     QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, applet]() {
                         view->toggleAppletExpanded(applet->id());
                     });
+
+                    m_hideDocksTimer.start();
                 } else {
                     view->toggleAppletExpanded(applet->id());
                 }
