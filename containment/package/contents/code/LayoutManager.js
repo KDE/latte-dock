@@ -86,10 +86,9 @@ function restore() {
     if(plasmoid.configuration.splitterPosition2 !== -1){
         var missingApplets2 = 0;
         var spacers = plasmoid.configuration.splitterPosition !== -1 ? 1 : 0;
-        var secondPartIndex = plasmoid.configuration.splitterPosition !== -1 ? plasmoid.configuration.splitterPosition+1 : 0;
 
-        for (var i=secondPartIndex; i<plasmoid.configuration.splitterPosition2; ++i) {
-            if (appletsOrder[i-spacers] === undefined) {
+        for (var i=0; i<plasmoid.configuration.splitterPosition2-spacers; ++i) {
+            if (appletsOrder[i] === undefined) {
                 missingApplets2 = missingApplets2 + 1;
             }
         }
