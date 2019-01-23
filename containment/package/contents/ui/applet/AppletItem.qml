@@ -507,6 +507,11 @@ Item {
                 }
             }
 
+            //! Applet Shortcut Visual Badge
+            ShortcutBadge{
+                anchors.fill: wrapper
+            }
+
             //! Active Indicator loader
             Loader{
                 anchors.fill: parent
