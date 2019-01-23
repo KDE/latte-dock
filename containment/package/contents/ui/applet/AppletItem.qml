@@ -507,24 +507,6 @@ Item {
                 }
             }
 
-            //! Applet Shortcut Visual Badge
-            ShortcutBadge{
-                anchors.fill: wrapper
-            }
-
-            //! Active Indicator loader
-            Loader{
-                anchors.fill: parent
-                active: (root.activeIndicator === Latte.Types.AllIndicator
-                        || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
-                        && communicator.activeIndicatorEnabled
-
-                sourceComponent: Item{
-                    anchors.fill: parent
-                    ActiveIndicator{}
-                }
-            }
-
             //! The Applet Colorizer
             Colorizer.Applet {
                 id: appletColorizer
@@ -541,6 +523,24 @@ Item {
                         easing.type: Easing.OutCubic
                     }
                 }
+            }
+
+            //! Active Indicator loader
+            Loader{
+                anchors.fill: parent
+                active: (root.activeIndicator === Latte.Types.AllIndicator
+                        || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
+                        && communicator.activeIndicatorEnabled
+
+                sourceComponent: Item{
+                    anchors.fill: parent
+                    ActiveIndicator{}
+                }
+            }
+
+            //! Applet Shortcut Visual Badge
+            ShortcutBadge{
+                anchors.fill: wrapper
             }
         }
 
