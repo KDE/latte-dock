@@ -59,7 +59,10 @@ Item {
             id: progressCircle
             anchors.centerIn: parent
             border.color: root.minimizedDotColor
-            minimumWidth: 0.8 * parent.height
+            minimumWidth: Math.min(0.8 * parent.height, maximumWidth)
+            maximumWidth: index === parabolicManager.firstRealTaskIndex && !taskItem.containsMouse ?
+                              wrapper.mScale * (root.iconSize - (root.enableShadows ? shadowSize/2 : 0)) :
+                              999999
             height: 0.8 * parent.height
             numberValue: {
                 if (taskItem.badgeIndicator > 0) {

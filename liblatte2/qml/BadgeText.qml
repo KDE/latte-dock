@@ -39,6 +39,7 @@ Rectangle {
 
     property int radiusPerCentage: 100
     property int minimumWidth: 0
+    property int maximumWidth: 9999
 
     property double circleOpacity: 1
     property double fontPixelSize: partSize // * 0.55
@@ -121,6 +122,9 @@ Rectangle {
     Text {
         id: valueText
         anchors.centerIn: parent
+        width: Math.min(maximumWidth - 4*units.smallSpacing, implicitWidth)
+        elide: Text.ElideRight
+
         text: {
             if (showNumber) {
                 if (numberValue > 9999) {
