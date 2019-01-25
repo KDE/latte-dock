@@ -71,10 +71,10 @@ Item {
             }
             height: 0.8 * parent.height
             numberValue: {
-                if (taskItem.badgeIndicator > 0) {
-                    return taskItem.badgeIndicator;
-                } else if (taskIcon.smartLauncherItem) {
+                if (taskIcon.smartLauncherItem && (taskIcon.smartLauncherItem.countVisible || taskIcon.smartLauncherItem.progressVisible)) {
                     return taskIcon.smartLauncherItem.count;
+                } else if (taskItem.badgeIndicator > 0) {
+                    return taskItem.badgeIndicator;
                 }
 
                 return 0;
@@ -88,16 +88,15 @@ Item {
             textWithBackgroundColor: false
 
             proportion: {
-                if (taskItem.badgeIndicator > 0 ||
-                        (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible && !taskIcon.smartLauncherItem.progressVisible)) {
+                if (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.progressVisible) {
+                    return taskIcon.smartLauncherItem.progress / 100;
+                }
+
+                if (taskItem.badgeIndicator > 0 || (taskIcon.smartLauncherItem && taskIcon.smartLauncherItem.countVisible)) {
                     return 100;
                 }
 
-                if (taskIcon.smartLauncherItem) {
-                    return taskIcon.smartLauncherItem.progress / 100;
-                } else {
-                    return 0;
-                }
+                return 0;
             }
 
             readonly property bool showsAudioBadge: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
