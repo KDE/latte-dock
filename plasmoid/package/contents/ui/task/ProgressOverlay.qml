@@ -60,9 +60,15 @@ Item {
             anchors.centerIn: parent
             border.color: root.minimizedDotColor
             minimumWidth: Math.min(0.8 * parent.height, maximumWidth)
-            maximumWidth: index === parabolicManager.firstRealTaskIndex && !taskItem.containsMouse ?
-                              wrapper.mScale * (root.iconSize - (root.enableShadows ? shadowSize/2 : 0)) :
-                              999999
+            maximumWidth: {
+                if (showsAudioBadge) {
+                    return height;
+                } else if ( index === parabolicManager.firstRealTaskIndex && !taskItem.containsMouse) {
+                    return (wrapper.mScale * (root.iconSize - (root.enableShadows ? shadowSize/2 : 0)));
+                } else {
+                    return 999999;
+                }
+            }
             height: 0.8 * parent.height
             numberValue: {
                 if (taskItem.badgeIndicator > 0) {
@@ -93,6 +99,8 @@ Item {
                     return 0;
                 }
             }
+
+            readonly property bool showsAudioBadge: root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio && !taskItem.isSeparator
         }
     }
 }
