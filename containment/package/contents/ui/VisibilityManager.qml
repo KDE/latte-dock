@@ -39,7 +39,7 @@ Item{
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelSize >= root.iconSize)
+    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= root.iconSize)
 
     property int animationSpeed: Latte.WindowSystem.compositingActive ? root.durationTime * 1.2 * units.longDuration : 0
     property bool inSlidingIn: false //necessary because of its init structure
@@ -181,7 +181,7 @@ Item{
     Connections{
         target:root
         onPanelShadowChanged: updateMaskArea();
-        onPanelMarginChanged: updateMaskArea();
+        onPanelThickMarginHighChanged: updateMaskArea();
     }
 
     Connections{

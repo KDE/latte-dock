@@ -206,11 +206,11 @@ Item{
                 return root.statesLineSize + root.iconSize + root.thickMargin;
             } else {
                 var icons = root.statesLineSize + root.iconSize + root.thickMargin + 1;
-                var panels = root.themePanelSize + root.panelMargin;
+                var panelt = root.themePanelThickness + root.panelThickMarginHigh;
 
                 root.realPanelThickness = icons;
-                if (icons > panels) {
-                    return panels;
+                if (icons > panelt) {
+                    return panelt;
                 } else {
                     return icons;
                 }
@@ -452,7 +452,7 @@ Item{
 
             Binding {
                 target: root
-                property: "panelMargin"
+                property: "panelThickMarginHigh"
                 value: {
                     if (root.useThemePanel){
                         if (root.isVertical){

@@ -283,7 +283,8 @@ DragDrop.DropArea {
     property int realPanelLength: 0
     property int realPanelThickness: 0
     //this is set by the PanelBox
-    property int panelMargin: 0
+    property int panelThickMarginBase: 0
+    property int panelThickMarginHigh: 0
     property int panelMarginLength: 0
     property int panelShadow: 0 //shadowsSize
     property int editShadow: {
@@ -296,9 +297,9 @@ DragDrop.DropArea {
         }
     }
 
-    property int themePanelSize: {
+    property int themePanelThickness: {
         //root.statesLineSize + root.iconSize + root.iconMargin + 1
-        var panelBase = root.statesLineSize + root.panelMargin;
+        var panelBase = root.statesLineSize + root.panelThickMarginHigh;
         var margin = latteApplet ? thickMargin : 0;
         var maxPanelSize = (root.statesLineSize + iconSize + margin + 1) - panelBase;
         var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;

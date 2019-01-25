@@ -541,11 +541,11 @@ Window{
             }
 
             Text{
-                text: "Panel Background Margin"+space
+                text: "Panel Thickness Margin High"+space
             }
 
             Text{
-                text: root.panelMargin
+                text: root.panelThickMarginHigh
             }
 
             Text{
