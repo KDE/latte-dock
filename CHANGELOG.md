@@ -1,5 +1,16 @@
 #**CHANGELOG**#
 
+#### Version 0.8.5
+
+* FIX: important improvements for fillWidth(s)/Height(s) applets. Latte now
+tries to use plasma panels as an example in order to provide very similar experience
+with its Latte panels
+* FIX: adjust Latte taskmanager in order to support new Plasma 5.15 Virtual Desktops interface
+* improve: splitters positioning during startup for Justify alignment
+* improve: --replace option in order to restart Latte properly for all systems
+* fix: maximum length ruler behavior for Latte panels
+* fix: create autostart folder when missing from user folder
+
 #### Version 0.8.4
 
 * FIX: restore mouse wheel action to activate your tasks that broke with v0.8.3
