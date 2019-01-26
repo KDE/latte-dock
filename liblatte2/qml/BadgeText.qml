@@ -121,8 +121,13 @@ Rectangle {
 
     Text {
         id: valueText
-        anchors.centerIn: parent
+        anchors.centerIn: canvas
+
         width: Math.min(maximumWidth - 4*units.smallSpacing, implicitWidth)
+        height: canvas.height * 0.62
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
         elide: Text.ElideRight
 
         text: {
@@ -140,7 +145,7 @@ Rectangle {
 
             return "";
         }
-        font.pixelSize: Math.max(0.55 * parent.minimumWidth, theme.defaultFont.pixelSize)
+        font.pixelSize: height
         font.bold: true
         color: textWithBackgroundColor ? theme.backgroundColor : theme.textColor
         visible: showNumber || showText
