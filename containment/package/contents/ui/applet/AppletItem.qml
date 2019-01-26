@@ -629,7 +629,9 @@ Item {
                 restoreAnimation.stop();
             }
 
-            root.showTooltipLabel(appletItem, applet.title);
+            if (!root.editMode && !(isSeparator || isSpacer)) {
+                root.showTooltipLabel(appletItem, applet.title);
+            }
 
             //console.log("entered applet:" + layoutsContainer.hoveredIndex);
 
