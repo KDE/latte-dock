@@ -124,7 +124,6 @@ Rectangle {
         anchors.centerIn: canvas
 
         width: Math.min(maximumWidth - 4*units.smallSpacing, implicitWidth)
-        height: canvas.height * 0.62
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
@@ -145,12 +144,11 @@ Rectangle {
 
             return "";
         }
-        font.pixelSize: height
+        font.pixelSize: 0.62 * parent.height
         font.bold: true
         color: textWithBackgroundColor ? theme.backgroundColor : theme.textColor
         visible: showNumber || showText
     }
-
 
     Rectangle{
         anchors.fill: parent
