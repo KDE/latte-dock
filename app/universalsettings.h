@@ -103,6 +103,8 @@ public:
     void enableActivitiesModel();
     void disableActivitiesModel();
 
+    void clearAllAppletShortcuts();
+
 public slots:
     Q_INVOKABLE QString splitterIconPath();
     Q_INVOKABLE QString trademarkIconPath();
@@ -161,6 +163,7 @@ private:
 
     KConfigGroup m_universalGroup;
     KSharedConfig::Ptr m_config;
+    KSharedConfig::Ptr m_shortcutsConfigPtr;
 
     SortedActivitiesModel *m_runningActivitiesModel{nullptr};
 

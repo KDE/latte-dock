@@ -24,8 +24,12 @@
 #include "sortedactivitiesmodel.h"
 
 #include <QDir>
+#include <QAction>
 
+#include <KGlobalAccel>
 #include <KActivities/Consumer>
+
+#define GLOBALSHORTCUTSCONFIG "kglobalshortcutsrc"
 
 namespace Latte {
 
@@ -34,6 +38,9 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
       m_config(config),
       m_universalGroup(KConfigGroup(config, QStringLiteral("UniversalSettings")))
 {
+    const QString globalShortcutsFilePath = QDir::homePath() + "/.config/" + GLOBALSHORTCUTSCONFIG;
+    m_shortcutsConfigPtr = KSharedConfig::openConfig(globalShortcutsFilePath);
+
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::currentLayoutNameChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::downloadWindowSizeChanged, this, &UniversalSettings::saveConfig);
@@ -59,6 +66,25 @@ UniversalSettings::~UniversalSettings()
     }
 }
 
+void UniversalSettings::clearAllAppletShortcuts()
+{
+    KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
+
+    foreach(auto key, latteGroup.keyList()) {
+        if (key.startsWith("activate widget ")) {
+            QAction *appletAction = new QAction(this);
+
+            appletAction->setText(QString("Activate ") + key);
+            appletAction->setObjectName(key);
+            appletAction->setShortcut(QKeySequence());
+            KGlobalAccel::setGlobalShortcut(appletAction, QKeySequence());
+            KGlobalAccel::self()->removeAllShortcuts(appletAction);
+
+            appletAction->deleteLater();
+        }
+    }
+}
+
 void UniversalSettings::load()
 {
     //! check if user has set the autostart option
@@ -70,6 +96,8 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
+
+    clearAllAppletShortcuts();
 }
 
 bool UniversalSettings::showInfoWindow() const
