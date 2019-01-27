@@ -1189,6 +1189,7 @@ DragDrop.DropArea {
         showAppletsNumbers = showNumbers;
         showMetaBadge = showMeta;
         applicationLauncherId = applicationLauncher;
+        root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
     }
 
     // This is called by dockcorona in response to a Meta+number shortcut.
@@ -1202,6 +1203,7 @@ DragDrop.DropArea {
             latteApplet.setTasksNumbersBase(base - 1);
         }
 
+        root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
         signalActivateEntryAtIndex(index);
     }
 
@@ -1216,6 +1218,7 @@ DragDrop.DropArea {
             latteApplet.setTasksNumbersBase(base - 1);
         }
 
+        root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
         signalNewInstanceForEntryAtIndex(index);
     }
 
