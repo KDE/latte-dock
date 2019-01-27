@@ -573,7 +573,7 @@ Item{
         Loader{
             id: taskNumberLoader
             anchors.fill: iconImageBuffer
-            active: isValidDelayer>0 && !launcherAnimation.running
+            active: root.showTasksNumbers && !taskItem.isSeparator && fixedIndex>=0 && fixedIndex<20
             asynchronous: true
             visible: badgeString !== ""
 
@@ -581,19 +581,12 @@ Item{
             property string badgeString: (taskNumberLoader.fixedIndex>=1 && taskNumberLoader.fixedIndex<20 && root.badgesForActivate.length===19) ?
                                              root.badgesForActivate[taskNumberLoader.fixedIndex-1] : ""
 
-            onActiveChanged: {
-                if (active) {
-                    fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
-                }
+            Connections {
+                target: root
+                onShowTasksNumbersChanged: taskNumberLoader.fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
             }
 
             Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
-
-            property real isValidDelayer: root.showTasksNumbers && !taskItem.isSeparator && fixedIndex<20 ? 1 : 0
-
-            Behavior on isValidDelayer {
-                NumberAnimation { duration: root.durationTime*units.longDuration }
-            }
 
             sourceComponent: Item{
                 Loader{

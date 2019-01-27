@@ -25,7 +25,10 @@ import org.kde.latte 0.2 as Latte
 Loader{
     id: appletNumberLoader
 
-    active: isValidDelayer > 0
+    active: appletItem.canShowAppletNumberBadge &&
+            ((root.showAppletsNumbers && root.unifiedGlobalShortcuts)
+             || (root.showMetaBadge && applet.id===applicationLauncherId))
+
     asynchronous: true
     visible: badgeString!==""
 
@@ -39,14 +42,6 @@ Loader{
     }
 
     Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
-
-    property real isValidDelayer: appletItem.canShowAppletNumberBadge &&
-                                  ((root.showAppletsNumbers && root.unifiedGlobalShortcuts)
-                                   || (root.showMetaBadge && applet.id===applicationLauncherId)) ? 1 : 0
-
-    Behavior on isValidDelayer {
-        NumberAnimation { duration: root.durationTime*units.longDuration }
-    }
 
     Binding{
         target: appletNumberLoader
