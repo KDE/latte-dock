@@ -616,7 +616,7 @@ Item{
                     border.color: root.minimizedDotColor
 
                     minimumWidth: 0.4 * root.iconSize
-                    height: width
+                    height: 0.4 * (wrapper.mScale * root.iconSize)
                     textValue: taskNumberLoader.badgeString
 
                     showNumber: false
