@@ -573,6 +573,15 @@ bool Layout::isOriginalLayout() const
     return m_layoutName != MultipleLayoutsName;
 }
 
+bool Layout::appletGroupIsValid(KConfigGroup appletGroup) const
+{
+    return !( appletGroup.keyList().count() == 0
+              && appletGroup.groupList().count() == 1
+              && appletGroup.groupList().at(0) == "Configuration"
+              && appletGroup.group("Configuration").keyList().count() == 1
+              && appletGroup.group("Configuration").hasKey("PreloadWeight") );
+}
+
 bool Layout::layoutIsBroken() const
 {
     if (m_layoutFile.isEmpty() || !QFile(m_layoutFile).exists()) {
@@ -594,8 +603,28 @@ bool Layout::layoutIsBroken() const
         foreach (auto cId, containmentsEntries.groupList()) {
             auto appletsEntries = containmentsEntries.group(cId).group("Applets");
 
-            ids << appletsEntries.groupList();
-            applets << appletsEntries.groupList();
+            QStringList validAppletIds;
+            bool updated{false};
+
+            foreach (auto appletId, appletsEntries.groupList()) {
+                KConfigGroup appletGroup = appletsEntries.group(appletId);
+
+                if (appletGroupIsValid(appletGroup)) {
+                    validAppletIds << appletId;
+                } else {
+                    updated = true;
+                    //! heal layout file by removing applet config records that are not used any more
+                    qDebug() << "Layout: " << name() << " removing deprecated applet : " << appletId;
+                    appletsEntries.deleteGroup(appletId);
+                }
+            }
+
+            if (updated) {
+                appletsEntries.sync();
+            }
+
+            ids << validAppletIds;
+            applets << validAppletIds;
         }
     } else {
         foreach (auto containment, m_containments) {

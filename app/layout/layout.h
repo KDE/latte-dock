@@ -215,6 +215,8 @@ private:
 
     //! Check if a containment is a latte dock/panel
     bool isLatteContainment(Plasma::Containment *containment) const;
+    //! Check if an applet config group is valid or belongs to removed applet
+    bool appletGroupIsValid(KConfigGroup appletGroup) const;
 
     bool kwin_disabledMaximizedBorders() const;
     void kwin_setDisabledMaximizedBorders(bool disable);
