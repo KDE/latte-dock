@@ -23,6 +23,7 @@
 
 // Qt
 #include <QObject>
+#include <QPointer>
 #include <QScreen>
 
 // KDE
@@ -41,6 +42,9 @@ class Types;
 namespace Latte {
 class Corona;
 class View;
+namespace LayoutPart {
+class Shortcuts;
+}
 }
 
 namespace Latte {
@@ -242,6 +246,8 @@ private:
     QStringList m_unloadedContainmentsIds;
 
     Latte::Corona *m_corona{nullptr};
+    QPointer<Latte::LayoutPart::Shortcuts> m_shortcuts;
+
     KConfigGroup m_layoutGroup;
 
     QList<Plasma::Containment *> m_containments;
