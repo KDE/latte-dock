@@ -86,8 +86,9 @@ Loader{
             id: appletNumber
             anchors.centerIn: parent
 
-            minimumWidth: 0.4 * root.iconSize
-            height: 0.4 * (wrapper.zoomScale * root.iconSize)
+            minimumWidth: 0.4 * (wrapper.zoomScale * root.iconSize)
+            height: Math.max(24, 0.4 * (wrapper.zoomScale * root.iconSize))
+
             border.color: root.minimizedDotColor
             proportion: 0
             radiusPerCentage: 50

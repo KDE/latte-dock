@@ -613,10 +613,10 @@ Item{
                 Latte.BadgeText {
                     id: taskNumber
                     anchors.centerIn: parent
-                    border.color: root.minimizedDotColor
+                    minimumWidth: 0.4 * (wrapper.mScale * root.iconSize)
+                    height: Math.max(24, 0.4 * (wrapper.mScale * root.iconSize))
 
-                    minimumWidth: 0.4 * root.iconSize
-                    height: 0.4 * (wrapper.mScale * root.iconSize)
+                    border.color: root.minimizedDotColor
                     textValue: taskNumberLoader.badgeString
 
                     showNumber: false
