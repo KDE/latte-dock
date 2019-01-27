@@ -281,6 +281,8 @@ Item{
                     return -glowItem.width / 7;
                 else if (location === PlasmaCore.Types.RightEdge)
                     return glowItem.width / 7;
+
+                return 0;
             }
             anchors.verticalCenterOffset: {
                 if (isVertical)
@@ -289,6 +291,8 @@ Item{
                     return glowItem.height / 7;
                 else if (location === PlasmaCore.Types.TopEdge)
                     return -glowItem.height / 7;
+
+                return 0;
             }
 
             width: isHorizontal ? Math.max(mainGlowPart.width, shadow) : shadow
