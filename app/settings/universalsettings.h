@@ -108,6 +108,8 @@ public:
     static int countScreens(QQmlListProperty<QScreen> *property); //! is needed by screens()
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index); //! is needed by screens()
 
+    void clearAllAppletShortcuts();
+
 public slots:
     Q_INVOKABLE QString splitterIconPath();
     Q_INVOKABLE QString trademarkIconPath();

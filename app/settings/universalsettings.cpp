@@ -30,6 +30,7 @@
 
 // KDE
 #include <KDirWatch>
+#include <KGlobalAccel>
 #include <KActivities/Consumer>
 
 #define GLOBALSHORTCUTSCONFIG "kglobalshortcutsrc"
@@ -140,6 +141,25 @@ void UniversalSettings::parseGlobalShortcuts()
     }
 }
 
+void UniversalSettings::clearAllAppletShortcuts()
+{
+    KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
+
+    foreach(auto key, latteGroup.keyList()) {
+        if (key.startsWith("activate widget ")) {
+            QAction *appletAction = new QAction(this);
+
+            appletAction->setText(QString("Activate ") + key);
+            appletAction->setObjectName(key);
+            appletAction->setShortcut(QKeySequence());
+            KGlobalAccel::setGlobalShortcut(appletAction, QKeySequence());
+            KGlobalAccel::self()->removeAllShortcuts(appletAction);
+
+            appletAction->deleteLater();
+        }
+    }
+}
+
 void UniversalSettings::load()
 {
     //! check if user has set the autostart option
@@ -155,6 +175,7 @@ void UniversalSettings::load()
     //! load global shortcuts badges at startup
     initGlobalShortcutsWatcher();
     parseGlobalShortcuts();
+    clearAllAppletShortcuts();
 }
 
 bool UniversalSettings::showInfoWindow() const
