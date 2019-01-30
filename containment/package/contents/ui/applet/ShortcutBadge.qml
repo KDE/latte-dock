@@ -26,8 +26,7 @@ Loader{
     id: appletNumberLoader
 
     active: appletItem.canShowAppletNumberBadge &&
-            ((root.showAppletsNumbers && root.unifiedGlobalShortcuts)
-             || (root.showMetaBadge && applet.id===applicationLauncherId))
+            (root.showAppletsNumbers || (root.showMetaBadge && applet.id===applicationLauncherId))
 
     asynchronous: true
     visible: badgeString!==""
@@ -36,7 +35,7 @@ Loader{
     property string badgeString: ""
 
     onActiveChanged: {
-        if (active) {
+        if (active && root.unifiedGlobalShortcuts) {
             fixedIndex = parabolicManager.pseudoAppletIndex(index);
         }
     }
@@ -50,6 +49,14 @@ Loader{
             //! don't change value on hiding/releasing
             if (!root.showMetaBadge && !root.showAppletsNumbers) {
                 return;
+            }
+
+            if (root.showAppletsNumbers) {
+                var plasmaShortcut = universalSettings.appletShortcutBadge(applet.id);
+
+                if (plasmaShortcut !== "") {
+                    return plasmaShortcut;
+                }
             }
 
             if (root.showMetaBadge && applet && applet.id === applicationLauncherId) {

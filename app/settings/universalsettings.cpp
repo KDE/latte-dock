@@ -95,7 +95,7 @@ QString UniversalSettings::appletShortcutBadge(int appletId)
         return m_appletShortcuts[appletId];
     }
 
-    return QString;
+    return QString();
 }
 
 QString UniversalSettings::shortcutToBadge(QStringList shortcutRecords)
