@@ -28,6 +28,7 @@ We recommend that you use at least **Plasma 5.12.0**
  KF5PlasmaQuick >= 5.38.0
  KF5Activities >= 5.38.0
  KF5CoreAddons >= 5.38.0
+ KF5GuiAddons >= 5.38.0
  KF5DBusAddons >= 5.38.0
  KF5Declarative >= 5.38.0
  KF5Wayland >= 5.38.0

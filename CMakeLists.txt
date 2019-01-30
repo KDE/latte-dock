@@ -19,7 +19,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-    Activities Archive CoreAddons Crash DBusAddons Declarative GlobalAccel I18n
+    Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel I18n 
     IconThemes NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
 
 find_package(X11 REQUIRED)

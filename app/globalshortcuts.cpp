@@ -273,6 +273,19 @@ void GlobalShortcuts::init()
 
     m_singleMetaAction = new QAction(this);
     m_singleMetaAction->setShortcut(QKeySequence(Qt::META));
+
+    //display shortcut badges while holding Meta
+    m_mKeyInfoTimer.setInterval(1000);
+    connect(&m_mKeyInfoTimer, &QTimer::timeout, this, [&]() {
+                showDocks();
+            });
+    connect(&m_keyInfo, &KModifierKeyInfo::keyPressed, this, [&](Qt::Key key, bool state) {
+                if (key == Qt::Key_Super_L && state) {
+                    m_mKeyInfoTimer.start();
+                } else if (key == Qt::Key_Super_L && !state) {
+                    m_mKeyInfoTimer.stop();
+                }
+            });
 }
 
 //! Activate launcher menu through dbus interface
@@ -563,6 +576,10 @@ int GlobalShortcuts::applicationLauncherId(const Plasma::Containment *c)
 void GlobalShortcuts::showDocks()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
+    if (!m_lastInvokedAction) {
+        // when holding Meta
+        m_lastInvokedAction = m_singleMetaAction;
+    }
 
     auto invokeShowNumbers = [this](const Plasma::Containment * c) {
         if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {

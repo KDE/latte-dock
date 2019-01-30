@@ -29,6 +29,9 @@
 #include <QQuickItem>
 #include <QTimer>
 
+// KDE
+#include <kmodifierkeyinfo.h>
+
 namespace Plasma {
 class Containment;
 }
@@ -82,6 +85,9 @@ private:
     QList<QMetaMethod> m_methodsShowNumbers;
 
     Latte::Corona *m_corona{nullptr};
+
+    KModifierKeyInfo m_keyInfo;
+    QTimer m_mKeyInfoTimer;
 };
 
 }

@@ -54,6 +54,7 @@ target_link_libraries(latte-dock
     KF5::DBusAddons
     KF5::Declarative
     KF5::CoreAddons
+    KF5::GuiAddons
     KF5::GlobalAccel
     KF5::Archive
     KF5::Crash
