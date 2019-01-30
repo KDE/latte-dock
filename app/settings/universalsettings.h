@@ -28,6 +28,7 @@
 // Qt
 #include <QObject>
 #include <QAbstractItemModel>
+#include <QHash>
 #include <QPointer>
 #include <QQmlListProperty>
 #include <QScreen>
@@ -114,6 +115,8 @@ public slots:
     Q_INVOKABLE QString splitterIconPath();
     Q_INVOKABLE QString trademarkIconPath();
 
+    Q_INVOKABLE QString appletShortcutBadge(int appletId);
+
 signals:
     void autostartChanged();
     void badgesForActivateChanged();
@@ -149,6 +152,8 @@ private:
     Types::LayoutsMemoryUsage layoutsMemoryUsage() const;
     void setLayoutsMemoryUsage(Types::LayoutsMemoryUsage layoutsMemoryUsage);
 
+    QString shortcutToBadge(QStringList shortcutRecords);
+
 private:
     bool m_canDisableBorders{false};
     bool m_showInfoWindow{true};
@@ -166,6 +171,10 @@ private:
     QStringList m_badgesForActivate{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "z", "x", "c", "v", "b", "n", "m", ",", "."};
     QStringList m_layoutsColumnWidths;
     QStringList m_launchers;
+
+    //! shortcuts assigned to applets through plasma infrastructure
+    //! <applet id, shortcut>
+    QHash<int, QString> m_appletShortcuts;
 
     Types::LayoutsMemoryUsage m_memoryUsage;
     Types::MouseSensitivity m_mouseSensitivity{Types::HighSensitivity};

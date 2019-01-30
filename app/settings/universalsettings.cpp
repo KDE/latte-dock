@@ -24,6 +24,7 @@
 #include "layoutmanager.h"
 
 // Qt
+#include <QDebug>
 #include <QDir>
 #include <QProcess>
 #include <QtDBus>
@@ -36,6 +37,7 @@
 #define GLOBALSHORTCUTSCONFIG "kglobalshortcutsrc"
 #define KWINMETAFORWARDTOLATTESTRING "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu"
 #define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
+#define APPLETSHORTCUTKEY "activate widget "
 
 namespace Latte {
 
@@ -87,57 +89,82 @@ void UniversalSettings::shortcutsFileChanged(const QString &file)
     parseGlobalShortcuts();
 }
 
+QString UniversalSettings::appletShortcutBadge(int appletId)
+{
+    if (m_appletShortcuts.contains(appletId)) {
+        return m_appletShortcuts[appletId];
+    }
+
+    return QString;
+}
+
+QString UniversalSettings::shortcutToBadge(QStringList shortcutRecords)
+{
+    QString badge;
+
+    if (shortcutRecords.count()>0 && shortcutRecords[0] != "none") {
+        QStringList modifiers = shortcutRecords[0].split("+");
+
+        if (modifiers.count() >= 1) {
+            badge = modifiers[modifiers.count() - 1];
+
+            //! when shortcut follows Meta+"Character" scheme
+            if (modifiers.count() == 2 && modifiers[0] == "Meta") {
+                badge = badge.toLower();
+            } else {
+                badge = badge.toUpper();
+            }
+        }
+    }
+
+    return badge;
+}
+
 void UniversalSettings::parseGlobalShortcuts()
 {
     KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
 
     //! make sure that latte dock records in global shortcuts where found correctly
-    bool recordsExist{true};
+    bool recordExists{true};
 
     if (!latteGroup.exists()) {
-        recordsExist = false;
+        recordExists = false;
     }
 
-    if (recordsExist) {
+    if (recordExists) {
         for (int i = 1; i <= 19; ++i) {
             QString entry = "activate entry " + QString::number(i);
 
             if (!latteGroup.hasKey(entry)) {
-                recordsExist = false;
+                recordExists = false;
                 break;
             }
         }
     }
 
-    if (recordsExist) {
+    if (recordExists) {
         m_badgesForActivate.clear();
+        m_appletShortcuts.clear();
 
         for (int i = 1; i <= 19; ++i) {
             QString entry = "activate entry " + QString::number(i);
             QStringList records = latteGroup.readEntry(entry, QStringList());
 
-            QString badge;
+            m_badgesForActivate << shortcutToBadge(records);
+        }
 
-            if (records[0] != "none") {
-                QStringList modifiers = records[0].split("+");
+        foreach(auto key, latteGroup.keyList()) {
+            if (key.startsWith(APPLETSHORTCUTKEY)) {
+                QStringList records = latteGroup.readEntry(key, QStringList());
+                int appletId = key.remove(APPLETSHORTCUTKEY).toInt();
 
-                if (modifiers.count() >= 1) {
-                    badge = modifiers[modifiers.count() - 1];
-
-                    //! when shortcut follows Meta+"Character" scheme
-                    if (modifiers.count() == 2 && modifiers[0] == "Meta") {
-                        badge = badge.toLower();
-                    } else {
-                        badge = badge.toUpper();
-                    }
-                }
+                m_appletShortcuts[appletId] = shortcutToBadge(records);
             }
-
-            m_badgesForActivate << badge;
         }
 
         emit badgesForActivateChanged();
         qDebug() << "badges updated to :: " << m_badgesForActivate;
+        qDebug() << "applet shortcuts updated to :: " << m_appletShortcuts;
     }
 }
 
@@ -146,7 +173,7 @@ void UniversalSettings::clearAllAppletShortcuts()
     KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
 
     foreach(auto key, latteGroup.keyList()) {
-        if (key.startsWith("activate widget ")) {
+        if (key.startsWith(APPLETSHORTCUTKEY)) {
             QAction *appletAction = new QAction(this);
 
             appletAction->setText(QString("Activate ") + key);
