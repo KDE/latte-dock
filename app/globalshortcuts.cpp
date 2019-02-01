@@ -46,106 +46,6 @@
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
-// X11
-#include <X11/keysym.h>
-#include <X11/keysymdef.h>
-#include <X11/Xlib.h>
-
-//this code is used by activityswitcher in plasma in order to check if the
-//user has release all the modifier keys from the globalshortcut
-namespace {
-bool isPlatformX11()
-{
-    static const bool isX11 = QX11Info::isPlatformX11();
-    return isX11;
-}
-
-// Taken from kwin/tabbox/tabbox.cpp
-Display *x11_display()
-{
-    static Display *s_display = nullptr;
-
-    if (!s_display) {
-        s_display = QX11Info::display();
-    }
-
-    return s_display;
-}
-
-bool x11_areKeySymXsDepressed(bool bAll, const uint keySyms[], int nKeySyms)
-{
-    char keymap[32];
-
-    XQueryKeymap(x11_display(), keymap);
-
-    for (int iKeySym = 0; iKeySym < nKeySyms; iKeySym++) {
-        uint keySymX = keySyms[ iKeySym ];
-        uchar keyCodeX = XKeysymToKeycode(x11_display(), keySymX);
-        int i = keyCodeX / 8;
-        char mask = 1 << (keyCodeX - (i * 8));
-
-        // Abort if bad index value,
-        if (i < 0 || i >= 32)
-            return false;
-
-        // If ALL keys passed need to be depressed,
-        if (bAll) {
-            if ((keymap[i] & mask) == 0)
-                return false;
-        } else {
-            // If we are looking for ANY key press, and this key is depressed,
-            if (keymap[i] & mask)
-                return true;
-        }
-    }
-
-    // If we were looking for ANY key press, then none was found, return false,
-    // If we were looking for ALL key presses, then all were found, return true.
-    return bAll;
-}
-
-bool x11_areModKeysDepressed(const QKeySequence &seq)
-{
-    uint rgKeySyms[10];
-    int nKeySyms = 0;
-
-    if (seq.isEmpty()) {
-        return false;
-    }
-
-    int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
-
-    if (mod & Qt::SHIFT) {
-        rgKeySyms[nKeySyms++] = XK_Shift_L;
-        rgKeySyms[nKeySyms++] = XK_Shift_R;
-    }
-
-    if (mod & Qt::CTRL) {
-        rgKeySyms[nKeySyms++] = XK_Control_L;
-        rgKeySyms[nKeySyms++] = XK_Control_R;
-    }
-
-    if (mod & Qt::ALT) {
-        rgKeySyms[nKeySyms++] = XK_Alt_L;
-        rgKeySyms[nKeySyms++] = XK_Alt_R;
-    }
-
-    if (mod & Qt::META) {
-        // It would take some code to determine whether the Win key
-        // is associated with Super or Meta, so check for both.
-        // See bug #140023 for details.
-        rgKeySyms[nKeySyms++] = XK_Super_L;
-        rgKeySyms[nKeySyms++] = XK_Super_R;
-        rgKeySyms[nKeySyms++] = XK_Meta_L;
-        rgKeySyms[nKeySyms++] = XK_Meta_R;
-    }
-
-    return x11_areKeySymXsDepressed(false, rgKeySyms, nKeySyms);
-}
-}
-
-
-
 namespace Latte {
 
 const int APPLETEXECUTIONDELAY = 400;
@@ -161,7 +61,7 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
 
     m_hideDocksTimer.setSingleShot(true);
 
-    if (isPlatformX11()) {
+    if (QX11Info::isPlatformX11()) {
         //in X11 the timer is a poller that checks to see if the modifier keys
         //from user global shortcut have been released
         m_hideDocksTimer.setInterval(300);
@@ -275,17 +175,92 @@ void GlobalShortcuts::init()
     m_singleMetaAction->setShortcut(QKeySequence(Qt::META));
 
     //display shortcut badges while holding Meta
-    m_mKeyInfoTimer.setInterval(1000);
-    connect(&m_mKeyInfoTimer, &QTimer::timeout, this, [&]() {
-                showDocks();
-            });
+    initModifiers();
+    m_metaPressedTimer.setInterval(700);
+
+    connect(&m_metaPressedTimer, &QTimer::timeout, this, [&]() {
+        showDocks();
+    });
+
     connect(&m_keyInfo, &KModifierKeyInfo::keyPressed, this, [&](Qt::Key key, bool state) {
-                if (key == Qt::Key_Super_L && state) {
-                    m_mKeyInfoTimer.start();
-                } else if (key == Qt::Key_Super_L && !state) {
-                    m_mKeyInfoTimer.stop();
-                }
-            });
+        Qt::Key nKey = normalizeKey(key);
+        //! ignore modifiers that we do not take into account
+        if (!modifierIsTracked(nKey)) {
+            return;
+        }
+
+        m_pressed[nKey] = state;
+
+        emit modifiersChanged();
+
+        if (nKey == Qt::Key_Super_L) {
+            bool singleKey{singleModifierPressed(Qt::Key_Super_L)};
+            if (state && singleKey) {
+                m_metaPressedTimer.start();
+            } else if (!state || !singleKey) {
+                m_metaPressedTimer.stop();
+            }
+        }
+    });
+}
+
+void GlobalShortcuts::initModifiers()
+{
+    m_pressed[Qt::Key_Super_L] = false;
+    m_pressed[Qt::Key_Control] = false;
+    m_pressed[Qt::Key_Alt] = false;
+    m_pressed[Qt::Key_Shift] = false;
+}
+
+bool GlobalShortcuts::modifierIsTracked(Qt::Key key)
+{
+    return(key == Qt::Key_Super_L || key == Qt::Key_Super_R || key == Qt::Key_Control || key == Qt::Key_Alt || key == Qt::Key_Shift);
+}
+
+bool GlobalShortcuts::noModifierPressed()
+{
+    foreach(Qt::Key modifier, m_pressed.keys()) {
+        if ( m_pressed[modifier]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool GlobalShortcuts::sequenceModifierPressed(const QKeySequence &seq)
+{
+    if (seq.isEmpty()) {
+        return false;
+    }
+
+    int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
+
+    if ( ((mod & Qt::SHIFT) && m_pressed[Qt::Key_Shift])
+         || ((mod & Qt::CTRL) && m_pressed[Qt::Key_Control])
+         || ((mod & Qt::ALT) && m_pressed[Qt::Key_Alt])
+         || ((mod & Qt::META) && m_pressed[Qt::Key_Super_L])) {
+        return true;
+    }
+
+    return false;
+}
+
+bool GlobalShortcuts::singleModifierPressed(Qt::Key key)
+{
+    foreach(Qt::Key modifier, m_pressed.keys()) {
+        if ( (modifier != key && m_pressed[modifier])
+             || (modifier == key && !m_pressed[modifier]) ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+Qt::Key GlobalShortcuts::normalizeKey(Qt::Key key)
+{
+    return key == Qt::Key_Super_L || key == key == Qt::Key_Super_R ? Qt::Key_Super_L : key;
 }
 
 //! Activate launcher menu through dbus interface
@@ -887,8 +862,8 @@ void GlobalShortcuts::hideDocksTimerSlot()
 
     // qDebug() << "MEMORY ::: " << m_hideDocks.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
 
-    if (isPlatformX11()) {
-        if (!x11_areModKeysDepressed(m_lastInvokedAction->shortcut())) {
+    if (QX11Info::isPlatformX11()) {
+        if (!sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
             m_lastInvokedAction = Q_NULLPTR;
 
             if (docksToHideAreValid()) {

@@ -54,11 +54,15 @@ public:
     void activateLauncherMenu();
     void updateDockItemBadge(QString identifier, QString value);
 
+signals:
+    void modifiersChanged();
+
 private slots:
     void hideDocksTimerSlot();
 
 private:
     void init();
+    void initModifiers();
     void activateEntry(int index, Qt::Key modifier);
     void showDocks();
     void showSettings();
@@ -71,6 +75,21 @@ private:
     bool isCapableToShowAppletsNumbers(Latte::View *view);
 
     int applicationLauncherId(const Plasma::Containment *c);
+
+    //! <key> modifier is tracked for changes
+    bool modifierIsTracked(Qt::Key key);
+
+    //! none of tracked modifiers is pressed
+    bool noModifierPressed();
+
+    //! at least one of the modifiers from KeySequence is pressed
+    bool sequenceModifierPressed(const QKeySequence &seq);
+
+    //! only <key> is pressed and no other modifier
+    bool singleModifierPressed(Qt::Key key);
+
+    //! adjust key in more general values, e.g. Super_L and Super_R both return Super_L
+    Qt::Key normalizeKey(Qt::Key key);
 
     QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
@@ -87,7 +106,10 @@ private:
     Latte::Corona *m_corona{nullptr};
 
     KModifierKeyInfo m_keyInfo;
-    QTimer m_mKeyInfoTimer;
+    QTimer m_metaPressedTimer;
+
+    //! keep a record for modifiers
+    QHash<Qt::Key, bool> m_pressed;
 };
 
 }
