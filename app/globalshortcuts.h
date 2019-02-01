@@ -93,6 +93,9 @@ private:
 
     QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
+private:
+    bool m_metaShowedViews{false};
+
     QAction *m_lastInvokedAction;
     //!it is used when the dock is hidden in order to delay the app launcher showing
     QAction *m_singleMetaAction;

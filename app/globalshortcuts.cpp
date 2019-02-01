@@ -95,6 +95,7 @@ void GlobalShortcuts::init()
     settingsAction->setText(i18n("Show Dock Settings"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
+        m_metaPressedTimer.stop();
         showSettings();
     });
 
@@ -104,6 +105,7 @@ void GlobalShortcuts::init()
     layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_W));
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
+        m_metaPressedTimer.stop();
         m_corona->layoutManager()->showLatteSettingsDialog(Types::LayoutPage);
     });
 
@@ -113,6 +115,7 @@ void GlobalShortcuts::init()
     universalSettingsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
     KGlobalAccel::setGlobalShortcut(universalSettingsAction, QKeySequence(Qt::META + Qt::Key_E));
     connect(universalSettingsAction, &QAction::triggered, this, [this]() {
+        m_metaPressedTimer.stop();
         m_corona->layoutManager()->showLatteSettingsDialog(Types::PreferencesPage);
     });
 
@@ -179,6 +182,7 @@ void GlobalShortcuts::init()
     m_metaPressedTimer.setInterval(700);
 
     connect(&m_metaPressedTimer, &QTimer::timeout, this, [&]() {
+        m_metaShowedViews = true;
         showDocks();
     });
 
@@ -191,8 +195,6 @@ void GlobalShortcuts::init()
 
         m_pressed[nKey] = state;
 
-        emit modifiersChanged();
-
         if (nKey == Qt::Key_Super_L) {
             bool singleKey{singleModifierPressed(Qt::Key_Super_L)};
             if (state && singleKey) {
@@ -200,7 +202,11 @@ void GlobalShortcuts::init()
             } else if (!state || !singleKey) {
                 m_metaPressedTimer.stop();
             }
+        } else {
+            m_metaPressedTimer.stop();
         }
+
+        emit modifiersChanged();
     });
 }
 
@@ -266,6 +272,10 @@ Qt::Key GlobalShortcuts::normalizeKey(Qt::Key key)
 //! Activate launcher menu through dbus interface
 void GlobalShortcuts::activateLauncherMenu()
 {
+    if (m_metaShowedViews) {
+        return;
+    }
+
     QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
     foreach (auto view, sortedViews) {
@@ -365,6 +375,8 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
 
 bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier)
 {
+    m_metaPressedTimer.stop();
+
     if (QQuickItem *containmentInterface = view->containment()->property("_plasma_graphicObject").value<QQuickItem *>()) {
         const auto &childItems = containmentInterface->childItems();
 
@@ -402,17 +414,13 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
 
                 if (view->visibility()->isHidden()) {
                     //! delay the execution in order to show first the dock
-                    if (m_methodsShowNumbers[showMethodIndex].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
-                        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
-                            method.invoke(item, Q_ARG(QVariant, index));
-                        });
-                    }
+                    QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
+                        method.invoke(item, Q_ARG(QVariant, index));
+                    });
 
                     return true;
                 } else {
                     if (method.invoke(item, Q_ARG(QVariant, index))) {
-                        m_methodsShowNumbers[showMethodIndex].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher));
-
                         return true;
                     }
                 }
@@ -427,6 +435,8 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
 //! Activate task manager entry
 void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
+    m_metaPressedTimer.stop();
+
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
     QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
@@ -881,6 +891,7 @@ void GlobalShortcuts::hideDocksTimerSlot()
             m_hideDocks.clear();
             m_calledItems.clear();
             m_methodsShowNumbers.clear();
+            m_metaShowedViews = false;
 
             return;
         } else {
@@ -905,8 +916,8 @@ void GlobalShortcuts::hideDocksTimerSlot()
         m_hideDocks.clear();
         m_calledItems.clear();
         m_methodsShowNumbers.clear();
+        m_metaShowedViews = false;
     }
-
 }
 
 }
