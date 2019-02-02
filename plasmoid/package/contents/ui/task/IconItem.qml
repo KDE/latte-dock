@@ -569,58 +569,7 @@ Item{
         }
         //! Effects
 
-        /// START Task Number
-        Loader{
-            id: taskShorcutBadge
-            anchors.fill: iconImageBuffer
-            active: root.showTaskShortcutBadges && !taskItem.isSeparator && fixedIndex>=0 && fixedIndex<20
-            asynchronous: true
-            visible: badgeString !== ""
-
-            property int fixedIndex:-1
-            property string badgeString: (taskShorcutBadge.fixedIndex>=1 && taskShorcutBadge.fixedIndex<20 && root.badgesForActivate.length===19) ?
-                                             root.badgesForActivate[taskShorcutBadge.fixedIndex-1] : ""
-
-            Connections {
-                target: root
-                onShowTaskShortcutBadgesChanged: taskShorcutBadge.fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
-            }
-
-            Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
-
-            sourceComponent: Item{
-                Loader{
-                    anchors.fill: taskNumber
-                    active: root.enableShadows
-
-                    sourceComponent: DropShadow{
-                        color: root.appShadowColor
-                        fast: true
-                        samples: 2 * radius
-                        source: taskNumber
-                        radius: root.appShadowSize/2
-                        verticalOffset: 2
-                    }
-                }
-
-                Latte.BadgeText {
-                    id: taskNumber
-                    anchors.centerIn: parent
-                    minimumWidth: 0.4 * (wrapper.mScale * root.iconSize)
-                    height: Math.max(24, 0.4 * (wrapper.mScale * root.iconSize))
-
-                    border.color: root.minimizedDotColor
-                    textValue: taskShorcutBadge.badgeString
-
-                    showNumber: false
-                    showText: true
-
-                    proportion: 0
-                    radiusPerCentage: 50
-                }
-            }
-        }
-        //END of TaskShortcutBadge
+        ShortcutBadge{}
     }
 
     VisualAddItem{
