@@ -200,32 +200,32 @@ void PrimaryConfigView::syncGeometry()
     int yPos{0};
 
     switch (m_latteView->formFactor()) {
-        case Plasma::Types::Horizontal: {
-            xPos = (m_complexity == Latte::Types::ExpertSettings) ?
-                        m_latteView->x() + m_latteView->width() - size.width() :
-                        sGeometry.center().x() - size.width() / 2;
+    case Plasma::Types::Horizontal: {
+        xPos = (m_complexity == Latte::Types::ExpertSettings) ?
+                    m_latteView->x() + m_latteView->width() - size.width() :
+                    sGeometry.center().x() - size.width() / 2;
 
-            if (location == Plasma::Types::TopEdge) {
-                yPos = sGeometry.y() + clearThickness;
-            } else if (location == Plasma::Types::BottomEdge) {
-                yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
-            }
+        if (location == Plasma::Types::TopEdge) {
+            yPos = sGeometry.y() + clearThickness;
+        } else if (location == Plasma::Types::BottomEdge) {
+            yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
         }
+    }
         break;
 
-        case Plasma::Types::Vertical: {
-            if (location == Plasma::Types::LeftEdge) {
-                xPos = sGeometry.x() + clearThickness;
-                yPos = m_latteView->geometry().center().y() - size.height() / 2;
-            } else if (location == Plasma::Types::RightEdge) {
-                xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
-                yPos = m_latteView->geometry().center().y() - size.height() / 2;
-            }
+    case Plasma::Types::Vertical: {
+        if (location == Plasma::Types::LeftEdge) {
+            xPos = sGeometry.x() + clearThickness;
+            yPos = m_latteView->geometry().center().y() - size.height() / 2;
+        } else if (location == Plasma::Types::RightEdge) {
+            xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
+            yPos = m_latteView->geometry().center().y() - size.height() / 2;
         }
+    }
         break;
 
-        default:
-            qWarning() << "no sync geometry, wrong formFactor";
+    default:
+        qWarning() << "no sync geometry, wrong formFactor";
         break;
     }
 

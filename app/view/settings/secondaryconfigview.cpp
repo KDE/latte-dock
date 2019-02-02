@@ -165,31 +165,31 @@ void SecondaryConfigView::syncGeometry()
     int yPos{0};
 
     switch (m_latteView->containment()->formFactor()) {
-        case Plasma::Types::Horizontal: {
-            if (location == Plasma::Types::TopEdge) {
-                xPos = m_latteView->x() + secondaryConfigSpacing;
-                yPos = m_latteView->y() + clearThickness;
-            } else if (location == Plasma::Types::BottomEdge) {
-                xPos = m_latteView->x() + secondaryConfigSpacing;
-                //xPos = m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width();
-                yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
-            }
+    case Plasma::Types::Horizontal: {
+        if (location == Plasma::Types::TopEdge) {
+            xPos = m_latteView->x() + secondaryConfigSpacing;
+            yPos = m_latteView->y() + clearThickness;
+        } else if (location == Plasma::Types::BottomEdge) {
+            xPos = m_latteView->x() + secondaryConfigSpacing;
+            //xPos = m_latteView->x() + m_latteView->width() - secondaryConfigSpacing - size.width();
+            yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
         }
+    }
         break;
 
-        case Plasma::Types::Vertical: {
-            if (location == Plasma::Types::LeftEdge) {
-                xPos = sGeometry.x() + clearThickness;
-                yPos = m_latteView->y() + secondaryConfigSpacing;
-            } else if (location == Plasma::Types::RightEdge) {
-                xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
-                yPos = m_latteView->y() + secondaryConfigSpacing;
-            }
+    case Plasma::Types::Vertical: {
+        if (location == Plasma::Types::LeftEdge) {
+            xPos = sGeometry.x() + clearThickness;
+            yPos = m_latteView->y() + secondaryConfigSpacing;
+        } else if (location == Plasma::Types::RightEdge) {
+            xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
+            yPos = m_latteView->y() + secondaryConfigSpacing;
         }
+    }
         break;
 
-        default:
-            qWarning() << "no sync geometry, wrong formFactor";
+    default:
+        qWarning() << "no sync geometry, wrong formFactor";
         break;
     }
 
@@ -221,25 +221,25 @@ void SecondaryConfigView::syncSlideEffect()
     auto slideLocation = WindowSystem::Slide::None;
 
     switch (m_latteView->containment()->location()) {
-        case Plasma::Types::TopEdge:
-            slideLocation = WindowSystem::Slide::Top;
-            break;
+    case Plasma::Types::TopEdge:
+        slideLocation = WindowSystem::Slide::Top;
+        break;
 
-        case Plasma::Types::RightEdge:
-            slideLocation = WindowSystem::Slide::Right;
-            break;
+    case Plasma::Types::RightEdge:
+        slideLocation = WindowSystem::Slide::Right;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            slideLocation = WindowSystem::Slide::Bottom;
-            break;
+    case Plasma::Types::BottomEdge:
+        slideLocation = WindowSystem::Slide::Bottom;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            slideLocation = WindowSystem::Slide::Left;
-            break;
+    case Plasma::Types::LeftEdge:
+        slideLocation = WindowSystem::Slide::Left;
+        break;
 
-        default:
-            qDebug() << staticMetaObject.className() << "wrong location";
-            break;
+    default:
+        qDebug() << staticMetaObject.className() << "wrong location";
+        break;
     }
 
     m_corona->wm()->slideWindow(*this, slideLocation);
@@ -321,24 +321,24 @@ bool SecondaryConfigView::event(QEvent *e)
     if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
             switch (pe->surfaceEventType()) {
-                case QPlatformSurfaceEvent::SurfaceCreated:
+            case QPlatformSurfaceEvent::SurfaceCreated:
 
-                    if (m_shellSurface) {
-                        break;
-                    }
-
-                    setupWaylandIntegration();
+                if (m_shellSurface) {
                     break;
+                }
 
-                case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                    if (m_shellSurface) {
-                        delete m_shellSurface;
-                        m_shellSurface = nullptr;
-                        qDebug() << "WAYLAND secondary config window surface was deleted...";
-                        PanelShadows::self()->removeWindow(this);
-                    }
+                setupWaylandIntegration();
+                break;
 
-                    break;
+            case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                if (m_shellSurface) {
+                    delete m_shellSurface;
+                    m_shellSurface = nullptr;
+                    qDebug() << "WAYLAND secondary config window surface was deleted...";
+                    PanelShadows::self()->removeWindow(this);
+                }
+
+                break;
             }
         }
     }
@@ -371,24 +371,24 @@ void SecondaryConfigView::updateEnabledBorders()
     Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
 
     switch (m_latteView->location()) {
-        case Plasma::Types::TopEdge:
-            borders &= ~Plasma::FrameSvg::TopBorder;
-            break;
+    case Plasma::Types::TopEdge:
+        borders &= ~Plasma::FrameSvg::TopBorder;
+        break;
 
-        case Plasma::Types::LeftEdge:
-            borders &= ~Plasma::FrameSvg::LeftBorder;
-            break;
+    case Plasma::Types::LeftEdge:
+        borders &= ~Plasma::FrameSvg::LeftBorder;
+        break;
 
-        case Plasma::Types::RightEdge:
-            borders &= ~Plasma::FrameSvg::RightBorder;
-            break;
+    case Plasma::Types::RightEdge:
+        borders &= ~Plasma::FrameSvg::RightBorder;
+        break;
 
-        case Plasma::Types::BottomEdge:
-            borders &=  ~Plasma::FrameSvg::BottomBorder;
-            break;
+    case Plasma::Types::BottomEdge:
+        borders &=  ~Plasma::FrameSvg::BottomBorder;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (m_enabledBorders != borders) {
