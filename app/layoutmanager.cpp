@@ -345,6 +345,30 @@ QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentLatteVi
     return nullptr;
 }
 
+QList<Latte::View *> LayoutManager::currentViewsWithPlasmaShortcuts()
+{
+    QList<Latte::View *> views;
+
+    if (memoryUsage() == Types::SingleLayout) {
+        return m_activeLayouts.at(0)->viewsWithPlasmaShortcuts();
+    } else {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
+                return layout->viewsWithPlasmaShortcuts();
+            }
+        }
+
+        foreach (auto layout, m_activeLayouts) {
+            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+                return layout->viewsWithPlasmaShortcuts();
+            }
+        }
+    }
+
+    return views;
+}
+
+
 QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::layoutLatteViews(const QString &layoutName) const
 {
     Layout *layout = activeLayout(layoutName);

@@ -110,6 +110,7 @@ public:
     static QScreen *atScreens(QQmlListProperty<QScreen> *property, int index); //! is needed by screens()
 
     void clearAllAppletShortcuts();
+    QList<int> appletsWithPlasmaShortcuts();
 
 public slots:
     Q_INVOKABLE QString splitterIconPath();

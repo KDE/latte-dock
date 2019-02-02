@@ -136,6 +136,7 @@ public:
     const QStringList appliedActivities();
 
     QList<Plasma::Containment *> *containments();
+    QList<Latte::View *> viewsWithPlasmaShortcuts();
     QHash<const Plasma::Containment *, Latte::View *> *latteViews();
 
     //! Bind this latteView and its relevant containments(including systrays)

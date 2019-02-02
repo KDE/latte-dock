@@ -593,6 +593,7 @@ void GlobalShortcuts::showViews()
         m_showShortcutBadgesMethods.clear();
     }
 
+    //! show view that contains tasks plasmoid
     if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment())) {
         viewFound = true;
 
@@ -602,12 +603,31 @@ void GlobalShortcuts::showViews()
         }
     }
 
+    //! show view that contains only meta
     if (viewWithMeta && viewWithMeta != viewWithTasks && invokeShowOnlyMeta(viewWithMeta->containment())) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
             m_hideViews.append(viewWithMeta);
             viewWithMeta->visibility()->setBlockHiding(true);
+        }
+    }
+
+    //! show all the rest views that contain plasma shortcuts
+    QList<Latte::View *> viewsWithShortcuts = m_corona->layoutManager()->currentViewsWithPlasmaShortcuts();
+
+    if (viewsWithShortcuts.count() > 0) {
+        viewFound = true;
+
+        if (!m_hideViewsTimer.isActive()) {
+            foreach (auto view, viewsWithShortcuts) {
+                if (view != viewWithTasks && view != viewWithMeta) {
+                    if (invokeShowShortcuts(view->containment())) {
+                        m_hideViews.append(view);
+                        view->visibility()->setBlockHiding(true);
+                    }
+                }
+            }
         }
     }
 

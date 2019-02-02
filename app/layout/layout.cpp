@@ -801,6 +801,38 @@ QList<Plasma::Containment *> *Layout::containments()
     return &m_containments;
 }
 
+QList<Latte::View *> Layout::viewsWithPlasmaShortcuts()
+{
+    QList<Latte::View *> views;
+
+    if (!m_corona) {
+        return views;
+    }
+
+    QList<int> appletsWithShortcuts = m_corona->universalSettings()->appletsWithPlasmaShortcuts();
+
+    foreach(auto appletId, appletsWithShortcuts) {
+        foreach(auto view, m_latteViews) {
+            bool found{false};
+            foreach(auto applet, view->containment()->applets()) {
+                if (appletId == applet->id()) {
+                    if (!views.contains(view)) {
+                        views.append(view);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found) {
+                break;
+            }
+        }
+    }
+
+    return views;
+}
+
 const QStringList Layout::appliedActivities()
 {
     if (!m_corona) {

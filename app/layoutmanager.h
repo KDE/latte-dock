@@ -98,6 +98,7 @@ public:
 
     QHash<const Plasma::Containment *, Latte::View *> *currentLatteViews() const;
     QHash<const Plasma::Containment *, Latte::View *> *layoutLatteViews(const QString &layoutName) const;
+    QList<Latte::View *> currentViewsWithPlasmaShortcuts();
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
     Layout *activeLayout(QString id) const;

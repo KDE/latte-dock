@@ -89,6 +89,11 @@ void UniversalSettings::shortcutsFileChanged(const QString &file)
     parseGlobalShortcuts();
 }
 
+QList<int> UniversalSettings::appletsWithPlasmaShortcuts()
+{
+    return m_appletShortcuts.keys();
+}
+
 QString UniversalSettings::appletShortcutBadge(int appletId)
 {
     if (m_appletShortcuts.contains(appletId)) {
