@@ -27,6 +27,7 @@
 // Qt
 #include <QMetaMethod>
 #include <QQuickItem>
+#include <QPointer>
 #include <QTimer>
 
 // KDE
@@ -39,6 +40,9 @@ class Containment;
 namespace Latte {
 class Corona;
 class View;
+namespace ShortcutsPart{
+class ModifierTracker;
+}
 }
 
 namespace Latte {
@@ -76,21 +80,6 @@ private:
 
     int applicationLauncherId(const Plasma::Containment *c);
 
-    //! <key> modifier is tracked for changes
-    bool modifierIsTracked(Qt::Key key);
-
-    //! none of tracked modifiers is pressed
-    bool noModifierPressed();
-
-    //! at least one of the modifiers from KeySequence is pressed
-    bool sequenceModifierPressed(const QKeySequence &seq);
-
-    //! only <key> is pressed and no other modifier
-    bool singleModifierPressed(Qt::Key key);
-
-    //! adjust key in more general values, e.g. Super_L and Super_R both return Super_L
-    Qt::Key normalizeKey(Qt::Key key);
-
     QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
 private:
@@ -106,13 +95,8 @@ private:
     QList<QQuickItem *> m_calledItems;
     QList<QMetaMethod> m_methodsShowNumbers;
 
-    Latte::Corona *m_corona{nullptr};
-
-    KModifierKeyInfo m_keyInfo;
-    QTimer m_metaPressedTimer;
-
-    //! keep a record for modifiers
-    QHash<Qt::Key, bool> m_pressed;
+    QPointer<ShortcutsPart::ModifierTracker> m_modifierTracker;
+    QPointer<Latte::Corona> m_corona;
 };
 
 }

@@ -21,10 +21,11 @@
 #include "globalshortcuts.h"
 
 // local
-#include "lattecorona.h"
-#include "layoutmanager.h"
-#include "settings/universalsettings.h"
-#include "view/view.h"
+#include "modifiertracker.h"
+#include "../lattecorona.h"
+#include "../layoutmanager.h"
+#include "../settings/universalsettings.h"
+#include "../view/view.h"
 
 // C++
 #include <array>
@@ -54,6 +55,7 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
     : QObject(parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
+    m_modifierTracker = new ShortcutsPart::ModifierTracker(this);
 
     if (m_corona) {
         init();
@@ -75,6 +77,9 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
 
 GlobalShortcuts::~GlobalShortcuts()
 {
+    if (m_modifierTracker) {
+        m_modifierTracker->deleteLater();
+    }
 }
 
 void GlobalShortcuts::init()
@@ -95,7 +100,7 @@ void GlobalShortcuts::init()
     settingsAction->setText(i18n("Show Dock Settings"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
-        m_metaPressedTimer.stop();
+        m_modifierTracker->cancelMetaPressed();
         showSettings();
     });
 
@@ -105,7 +110,7 @@ void GlobalShortcuts::init()
     layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_W));
     KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
     connect(layoutsAction, &QAction::triggered, this, [this]() {
-        m_metaPressedTimer.stop();
+        m_modifierTracker->cancelMetaPressed();
         m_corona->layoutManager()->showLatteSettingsDialog(Types::LayoutPage);
     });
 
@@ -115,7 +120,7 @@ void GlobalShortcuts::init()
     universalSettingsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_E));
     KGlobalAccel::setGlobalShortcut(universalSettingsAction, QKeySequence(Qt::META + Qt::Key_E));
     connect(universalSettingsAction, &QAction::triggered, this, [this]() {
-        m_metaPressedTimer.stop();
+        m_modifierTracker->cancelMetaPressed();
         m_corona->layoutManager()->showLatteSettingsDialog(Types::PreferencesPage);
     });
 
@@ -178,95 +183,10 @@ void GlobalShortcuts::init()
     m_singleMetaAction->setShortcut(QKeySequence(Qt::META));
 
     //display shortcut badges while holding Meta
-    initModifiers();
-    m_metaPressedTimer.setInterval(700);
-
-    connect(&m_metaPressedTimer, &QTimer::timeout, this, [&]() {
+    connect(m_modifierTracker, &ShortcutsPart::ModifierTracker::metaModifierPressed, this, [&]() {
         m_metaShowedViews = true;
         showDocks();
     });
-
-    connect(&m_keyInfo, &KModifierKeyInfo::keyPressed, this, [&](Qt::Key key, bool state) {
-        Qt::Key nKey = normalizeKey(key);
-        //! ignore modifiers that we do not take into account
-        if (!modifierIsTracked(nKey)) {
-            return;
-        }
-
-        m_pressed[nKey] = state;
-
-        if (nKey == Qt::Key_Super_L) {
-            bool singleKey{singleModifierPressed(Qt::Key_Super_L)};
-            if (state && singleKey) {
-                m_metaPressedTimer.start();
-            } else if (!state || !singleKey) {
-                m_metaPressedTimer.stop();
-            }
-        } else {
-            m_metaPressedTimer.stop();
-        }
-
-        emit modifiersChanged();
-    });
-}
-
-void GlobalShortcuts::initModifiers()
-{
-    m_pressed[Qt::Key_Super_L] = false;
-    m_pressed[Qt::Key_Control] = false;
-    m_pressed[Qt::Key_Alt] = false;
-    m_pressed[Qt::Key_Shift] = false;
-}
-
-bool GlobalShortcuts::modifierIsTracked(Qt::Key key)
-{
-    return(key == Qt::Key_Super_L || key == Qt::Key_Super_R || key == Qt::Key_Control || key == Qt::Key_Alt || key == Qt::Key_Shift);
-}
-
-bool GlobalShortcuts::noModifierPressed()
-{
-    foreach(Qt::Key modifier, m_pressed.keys()) {
-        if ( m_pressed[modifier]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-bool GlobalShortcuts::sequenceModifierPressed(const QKeySequence &seq)
-{
-    if (seq.isEmpty()) {
-        return false;
-    }
-
-    int mod = seq[seq.count() - 1] & Qt::KeyboardModifierMask;
-
-    if ( ((mod & Qt::SHIFT) && m_pressed[Qt::Key_Shift])
-         || ((mod & Qt::CTRL) && m_pressed[Qt::Key_Control])
-         || ((mod & Qt::ALT) && m_pressed[Qt::Key_Alt])
-         || ((mod & Qt::META) && m_pressed[Qt::Key_Super_L])) {
-        return true;
-    }
-
-    return false;
-}
-
-bool GlobalShortcuts::singleModifierPressed(Qt::Key key)
-{
-    foreach(Qt::Key modifier, m_pressed.keys()) {
-        if ( (modifier != key && m_pressed[modifier])
-             || (modifier == key && !m_pressed[modifier]) ) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-Qt::Key GlobalShortcuts::normalizeKey(Qt::Key key)
-{
-    return key == Qt::Key_Super_L || key == key == Qt::Key_Super_R ? Qt::Key_Super_L : key;
 }
 
 //! Activate launcher menu through dbus interface
@@ -375,7 +295,7 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
 
 bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier)
 {
-    m_metaPressedTimer.stop();
+    m_modifierTracker->cancelMetaPressed();
 
     if (QQuickItem *containmentInterface = view->containment()->property("_plasma_graphicObject").value<QQuickItem *>()) {
         const auto &childItems = containmentInterface->childItems();
@@ -435,7 +355,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
 //! Activate task manager entry
 void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
-    m_metaPressedTimer.stop();
+    m_modifierTracker->cancelMetaPressed();
 
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
@@ -873,7 +793,7 @@ void GlobalShortcuts::hideDocksTimerSlot()
     // qDebug() << "MEMORY ::: " << m_hideDocks.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
 
     if (QX11Info::isPlatformX11()) {
-        if (!sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
+        if (!m_modifierTracker->sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
             m_lastInvokedAction = Q_NULLPTR;
 
             if (docksToHideAreValid()) {

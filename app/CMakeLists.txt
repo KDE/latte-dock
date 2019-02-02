@@ -2,7 +2,6 @@ set(lattedock-app_SRCS
     ../liblatte2/commontools.cpp
     ../liblatte2/types.cpp
     alternativeshelper.cpp
-    globalshortcuts.cpp
     importer.cpp
     infoview.cpp
     lattecorona.cpp
@@ -22,6 +21,8 @@ set(lattedock-app_SRCS
     settings/delegates/colorcmbboxdelegate.cpp
     settings/delegates/colorcmbboxitemdelegate.cpp
     settings/delegates/layoutnamedelegate.cpp
+    shortcuts/modifiertracker.cpp
+    shortcuts/globalshortcuts.cpp
     view/contextmenu.cpp
     view/effects.cpp
     view/panelshadows.cpp
