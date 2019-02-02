@@ -98,7 +98,7 @@ DragDrop.DropArea {
                                     && Latte.WindowSystem.compositingActive
                                     && !root.editMode
                                     && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowTouching || hasExpandedApplet
-                                       || showAppletsNumbers || showMetaBadge))
+                                       || showAppletShortcutBadges || showMetaBadge))
                                     || !Latte.WindowSystem.compositingActive
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
@@ -149,7 +149,7 @@ DragDrop.DropArea {
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there aren't removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
-    property bool showAppletsNumbers: false
+    property bool showAppletShortcutBadges: false
     property bool showMetaBadge: false
     property int applicationLauncherId: -1
     property bool solidStylePanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
@@ -1179,14 +1179,14 @@ DragDrop.DropArea {
     }
 
     //! this is called from globalshortcuts c++ side
-    function setShowAppletsNumbers(showNumbers, showMeta, applicationLauncher){
+    function setShowAppletShortcutBadges(showBadges, showMeta, applicationLauncher){
         if (latteApplet) {
             var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksNumbersBase(base - 1);
-            latteApplet.setShowTasksNumbers(showNumbers);
+            latteApplet.setTasksBaseIndex(base - 1);
+            latteApplet.setShowTaskShortcutBadges(showBadges);
         }
 
-        showAppletsNumbers = showNumbers;
+        showAppletShortcutBadges = showBadges;
         showMetaBadge = showMeta;
         applicationLauncherId = applicationLauncher;
         root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
@@ -1200,7 +1200,7 @@ DragDrop.DropArea {
 
         if (latteApplet) {
             var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksNumbersBase(base - 1);
+            latteApplet.setTasksBaseIndex(base - 1);
         }
 
         root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
@@ -1215,7 +1215,7 @@ DragDrop.DropArea {
 
         if (latteApplet) {
             var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
-            latteApplet.setTasksNumbersBase(base - 1);
+            latteApplet.setTasksBaseIndex(base - 1);
         }
 
         root.latteApplet.parabolicManager.updateTasksEdgesIndexes();

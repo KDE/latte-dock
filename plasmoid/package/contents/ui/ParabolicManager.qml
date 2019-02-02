@@ -354,7 +354,7 @@ Item {
             }
         }
 
-        return pseudoIndex + root.tasksNumbersBase;
+        return pseudoIndex + root.tasksBaseIndex;
     }
 
     //! first available task index found after consequent internal separators or hidden tasks in the start

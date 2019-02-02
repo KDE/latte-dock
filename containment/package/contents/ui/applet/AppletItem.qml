@@ -377,7 +377,7 @@ Item {
 
         onSignalActivateEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
-                latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
+                latteApplet.activateTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
             } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index))) {
                 latteView.toggleAppletExpanded(applet.id);
             }
@@ -385,7 +385,7 @@ Item {
 
         onSignalNewInstanceForEntryAtIndex: {
             if (parabolicManager.pseudoIndexBelongsToLatteApplet(entryIndex) && appletItem.isLattePlasmoid) {
-                latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksNumbersBase);
+                latteApplet.newInstanceForTaskAtIndex(entryIndex - latteApplet.tasksBaseIndex);
             } else if (root.unifiedGlobalShortcuts && (entryIndex === parabolicManager.pseudoAppletIndex(appletItem.index))) {
                 latteView.toggleAppletExpanded(applet.id);
             }

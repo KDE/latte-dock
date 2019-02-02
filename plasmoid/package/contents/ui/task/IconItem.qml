@@ -571,19 +571,19 @@ Item{
 
         /// START Task Number
         Loader{
-            id: taskNumberLoader
+            id: taskShorcutBadge
             anchors.fill: iconImageBuffer
-            active: root.showTasksNumbers && !taskItem.isSeparator && fixedIndex>=0 && fixedIndex<20
+            active: root.showTaskShortcutBadges && !taskItem.isSeparator && fixedIndex>=0 && fixedIndex<20
             asynchronous: true
             visible: badgeString !== ""
 
             property int fixedIndex:-1
-            property string badgeString: (taskNumberLoader.fixedIndex>=1 && taskNumberLoader.fixedIndex<20 && root.badgesForActivate.length===19) ?
-                                             root.badgesForActivate[taskNumberLoader.fixedIndex-1] : ""
+            property string badgeString: (taskShorcutBadge.fixedIndex>=1 && taskShorcutBadge.fixedIndex<20 && root.badgesForActivate.length===19) ?
+                                             root.badgesForActivate[taskShorcutBadge.fixedIndex-1] : ""
 
             Connections {
                 target: root
-                onShowTasksNumbersChanged: taskNumberLoader.fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
+                onShowTaskShortcutBadgesChanged: taskShorcutBadge.fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
             }
 
             Component.onCompleted: fixedIndex = parabolicManager.pseudoTaskIndex(index+1);
@@ -610,7 +610,7 @@ Item{
                     height: Math.max(24, 0.4 * (wrapper.mScale * root.iconSize))
 
                     border.color: root.minimizedDotColor
-                    textValue: taskNumberLoader.badgeString
+                    textValue: taskShorcutBadge.badgeString
 
                     showNumber: false
                     showText: true
@@ -620,7 +620,7 @@ Item{
                 }
             }
         }
-        //END of task number (showTasksNumbers)
+        //END of TaskShortcutBadge
     }
 
     VisualAddItem{

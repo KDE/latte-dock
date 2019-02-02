@@ -26,7 +26,7 @@ Loader{
     id: appletNumberLoader
 
     active: appletItem.canShowAppletNumberBadge &&
-            (root.showAppletsNumbers || (root.showMetaBadge && applet.id===applicationLauncherId))
+            (root.showAppletShortcutBadges || (root.showMetaBadge && applet.id===applicationLauncherId))
 
     asynchronous: true
     visible: badgeString!==""
@@ -47,11 +47,11 @@ Loader{
         property:"badgeString"
         value: {
             //! don't change value on hiding/releasing
-            if (!root.showMetaBadge && !root.showAppletsNumbers) {
+            if (!root.showMetaBadge && !root.showAppletShortcutBadges) {
                 return;
             }
 
-            if (root.showAppletsNumbers) {
+            if (root.showAppletShortcutBadges) {
                 var plasmaShortcut = universalSettings.appletShortcutBadge(applet.id);
 
                 if (plasmaShortcut !== "") {

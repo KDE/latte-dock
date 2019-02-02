@@ -258,7 +258,7 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
                                           metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
                                           metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
 
-                        int methodIndex2 = metaObject->indexOfMethod("setShowTasksNumbers(QVariant)");
+                        int methodIndex2 = metaObject->indexOfMethod("setShowTaskShortcutBadges(QVariant)");
 
                         if (methodIndex == -1 || (methodIndex2 == -1 && meta.pluginId() == "org.kde.latte.plasmoid")) {
                             continue;
@@ -311,7 +311,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
                                   metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
                                   metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
 
-                int methodIndex2 = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
+                int methodIndex2 = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
 
                 if (methodIndex == -1 || (methodIndex2 == -1)) {
                     continue;
@@ -449,7 +449,7 @@ bool GlobalShortcuts::isCapableToShowAppletsNumbers(Latte::View *view)
                 // is pretty much trial and error.
 
                 // Also, "var" arguments are treated as QVariant in QMetaObject
-                int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
+                int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
 
                 if (methodIndex == -1) {
                     continue;
@@ -497,7 +497,7 @@ void GlobalShortcuts::showViews()
                     // is pretty much trial and error.
 
                     // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
+                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
 
                     if (methodIndex == -1) {
                         continue;
@@ -538,7 +538,7 @@ void GlobalShortcuts::showViews()
                     // is pretty much trial and error.
 
                     // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletsNumbers(QVariant,QVariant,QVariant)");
+                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
 
                     if (methodIndex == -1) {
                         continue;

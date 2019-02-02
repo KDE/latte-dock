@@ -397,8 +397,8 @@ Item {
 
     function pseudoIndexBelongsToLatteApplet(index) {
         if (root.latteApplet) {
-            var lastTaskIndex = root.latteApplet.tasksNumbersBase + root.latteApplet.parabolicManager.countRealTasks;
-            return (index>root.latteApplet.tasksNumbersBase && index<=lastTaskIndex);
+            var lastTaskIndex = root.latteApplet.tasksBaseIndex + root.latteApplet.parabolicManager.countRealTasks;
+            return (index>root.latteApplet.tasksBaseIndex && index<=lastTaskIndex);
         }
 
         return false;
