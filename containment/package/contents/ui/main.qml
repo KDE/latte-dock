@@ -1207,9 +1207,9 @@ DragDrop.DropArea {
         if (latteApplet) {
             var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksBaseIndex(base - 1);
+            latteApplet.parabolicManager.updateTasksEdgesIndexes();
         }
 
-        root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
         signalActivateEntryAtIndex(index);
     }
 
@@ -1222,9 +1222,9 @@ DragDrop.DropArea {
         if (latteApplet) {
             var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksBaseIndex(base - 1);
+            latteApplet.parabolicManager.updateTasksEdgesIndexes();
         }
 
-        root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
         signalNewInstanceForEntryAtIndex(index);
     }
 

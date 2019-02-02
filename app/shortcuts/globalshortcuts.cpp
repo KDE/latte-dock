@@ -375,7 +375,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     foreach (auto view, sortedViews) {
         if ((!view->latteTasksPresent() && view->tasksPresent() &&
              activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
-                || (activateLatteEntryAtContainment(view, index, modifier))) {
+                || (view->isPreferredForShortcuts() && activateLatteEntryAtContainment(view, index, modifier))) {
 
             if (!m_hideViews.contains(view)) {
                 m_hideViews.append(view);
@@ -592,7 +592,7 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithMeta{nullptr};
 
     foreach (auto view, sortedViews) {
-        if (!viewWithTasks && isCapableToShowShortcutBadges(view)) {
+        if (!viewWithTasks && view->isPreferredForShortcuts() && isCapableToShowShortcutBadges(view)) {
             viewWithTasks = view;
         }
     }
