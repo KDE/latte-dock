@@ -143,7 +143,7 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Add launchers only in the corresponding area")
+                text: i18n("Add launchers only in the Tasks Area")
                 checked: plasmoid.configuration.addLaunchersInTaskManager
                 tooltip: i18n("Launchers are added only in the taskmanager and not as plasma applets")
 
@@ -168,13 +168,14 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: unifyGlobalShortcutsChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Unify global shortcuts with applets")
-                checked: plasmoid.configuration.unifiedGlobalShortcuts
-                tooltip: i18n("Global shortcuts are used both from applets and tasks")
+                text: i18n("Activate based on position shortcuts only for tasks")
+                checked: !plasmoid.configuration.unifiedGlobalShortcuts
+                tooltip: i18n("Based on position global shortcuts are enabled for tasks but are disabled for applets")
                 visible: dialog.highLevel
+                enabled: latteView.isPreferredForShortcuts
 
                 onClicked: {
-                    plasmoid.configuration.unifiedGlobalShortcuts = checked
+                    plasmoid.configuration.unifiedGlobalShortcuts = !checked
                 }
             }
         }

@@ -578,7 +578,7 @@ Item {
             width: parent.width
             height: parent.height
 
-            text: i18n("Launchers Area")
+            text: i18n("Tasks Area")
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             wrapMode: Text.WordWrap
