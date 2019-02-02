@@ -431,7 +431,7 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
     }
 }
 
-bool GlobalShortcuts::isCapableToShowAppletsNumbers(Latte::View *view)
+bool GlobalShortcuts::isCapableToShowShortcutBadges(Latte::View *view)
 {
     if (!view->latteTasksPresent() && view->tasksPresent()) {
         return false;
@@ -486,7 +486,7 @@ void GlobalShortcuts::showViews()
         m_lastInvokedAction = m_singleMetaAction;
     }
 
-    auto invokeShowNumbers = [this](const Plasma::Containment * c) {
+    auto invokeShowShortcuts = [this](const Plasma::Containment * c) {
         if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = containmentInterface->childItems();
 
@@ -573,7 +573,7 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithMeta{nullptr};
 
     foreach (auto view, sortedViews) {
-        if (!viewWithTasks && isCapableToShowAppletsNumbers(view)) {
+        if (!viewWithTasks && isCapableToShowShortcutBadges(view)) {
             viewWithTasks = view;
         }
 
@@ -593,7 +593,7 @@ void GlobalShortcuts::showViews()
         m_showShortcutBadgesMethods.clear();
     }
 
-    if (viewWithTasks && invokeShowNumbers(viewWithTasks->containment())) {
+    if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment())) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {

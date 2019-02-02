@@ -76,7 +76,7 @@ private:
     bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
     bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     bool viewsToHideAreValid();
-    bool isCapableToShowAppletsNumbers(Latte::View *view);
+    bool isCapableToShowShortcutBadges(Latte::View *view);
 
     int applicationLauncherId(const Plasma::Containment *c);
 
