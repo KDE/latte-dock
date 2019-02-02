@@ -22,7 +22,6 @@
 #define PRIMARYCONFIGVIEW_H
 
 // local
-#include "secondaryconfigview.h"
 #include "../../plasmaquick/configview.h"
 #include "../../../liblatte2/types.h"
 

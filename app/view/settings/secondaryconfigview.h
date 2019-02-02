@@ -21,7 +21,6 @@
 #define SECONDARYCONFIGVIEW_H
 
 // local
-#include "primaryconfigview.h"
 #include "../../../liblatte2/types.h"
 
 //Qt

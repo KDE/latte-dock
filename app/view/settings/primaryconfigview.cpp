@@ -21,6 +21,7 @@
 #include "primaryconfigview.h"
 
 // local
+#include "secondaryconfigview.h"
 #include "../panelshadows_p.h"
 #include "../view.h"
 #include "../../lattecorona.h"

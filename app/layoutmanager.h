@@ -22,7 +22,6 @@
 #define LAYOUTMANAGER_H
 
 // local
-#include "launcherssignals.h"
 #include "settings/settingsdialog.h"
 
 // Qt
