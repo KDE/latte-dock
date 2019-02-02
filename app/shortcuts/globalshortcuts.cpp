@@ -255,8 +255,8 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
 
                         // Also, "var" arguments are treated as QVariant in QMetaObject
                         int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
-                                          metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
-                                          metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
+                                    metaObject->indexOfMethod("activateTaskAtIndex(QVariant)") :
+                                    metaObject->indexOfMethod("newInstanceForTaskAtIndex(QVariant)");
 
                         int methodIndex2 = metaObject->indexOfMethod("setShowTaskShortcutBadges(QVariant)");
 
@@ -308,8 +308,8 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
 
                 // Also, "var" arguments are treated as QVariant in QMetaObject
                 int methodIndex = modifier == static_cast<Qt::Key>(Qt::META) ?
-                                  metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
-                                  metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
+                            metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
+                            metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
 
                 int methodIndex2 = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
 
@@ -318,7 +318,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
                 }
 
                 int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
-                                  applicationLauncherId(view->containment()) : -1;
+                            applicationLauncherId(view->containment()) : -1;
 
                 int showMethodIndex = -1;
 
@@ -364,7 +364,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     foreach (auto view, sortedViews) {
         if ((!view->latteTasksPresent() && view->tasksPresent() &&
              activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
-            || (activateLatteEntryAtContainment(view, index, modifier))) {
+                || (activateLatteEntryAtContainment(view, index, modifier))) {
 
             if (!m_hideViews.contains(view)) {
                 m_hideViews.append(view);
@@ -486,7 +486,7 @@ void GlobalShortcuts::showViews()
         m_lastInvokedAction = m_singleMetaAction;
     }
 
-    auto invokeShowShortcuts = [this](const Plasma::Containment * c, const bool showLatteShortcuts) {
+    auto invokeShowShortcuts = [this](const Plasma::Containment * c, const bool showLatteShortcuts, const bool showMeta) {
         if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = containmentInterface->childItems();
 
@@ -503,8 +503,8 @@ void GlobalShortcuts::showViews()
                         continue;
                     }
 
-                    int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
-                                      applicationLauncherId(c) : -1;
+                    int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() && showMeta ?
+                                applicationLauncherId(c) : -1;
 
                     int showMethodIndex = -1;
 
@@ -519,7 +519,7 @@ void GlobalShortcuts::showViews()
                     if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item,
                                                                             Q_ARG(QVariant, showLatteShortcuts),
                                                                             Q_ARG(QVariant, true),
-                                                                            Q_ARG(QVariant, true),
+                                                                            Q_ARG(QVariant, showMeta),
                                                                             Q_ARG(QVariant, appLauncher))) {
                         return true;
                     }
@@ -549,7 +549,7 @@ void GlobalShortcuts::showViews()
                     }
 
                     int appLauncher = m_corona->universalSettings()->metaForwardedToLatte() ?
-                                      applicationLauncherId(c) : -1;
+                                applicationLauncherId(c) : -1;
 
                     int showMethodIndex = -1;
 
@@ -584,9 +584,14 @@ void GlobalShortcuts::showViews()
         if (!viewWithTasks && isCapableToShowShortcutBadges(view)) {
             viewWithTasks = view;
         }
+    }
 
-        if (!viewWithMeta && m_corona->universalSettings()->metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
-            viewWithMeta = view;
+    //! show Meta if it is not already shown for Tasks Latte View
+    if (!viewWithTasks || applicationLauncherId(viewWithTasks->containment()) == -1) {
+        foreach (auto view, sortedViews) {
+            if (!viewWithMeta && m_corona->universalSettings()->metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
+                viewWithMeta = view;
+            }
         }
     }
 
@@ -602,7 +607,7 @@ void GlobalShortcuts::showViews()
     }
 
     //! show view that contains tasks plasmoid
-    if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment(), true)) {
+    if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment(), true, true)) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
@@ -630,7 +635,7 @@ void GlobalShortcuts::showViews()
         if (!m_hideViewsTimer.isActive()) {
             foreach (auto view, viewsWithShortcuts) {
                 if (view != viewWithTasks && view != viewWithMeta) {
-                    if (invokeShowShortcuts(view->containment(), false)) {
+                    if (invokeShowShortcuts(view->containment(), false, false)) {
                         m_hideViews.append(view);
                         view->visibility()->setBlockHiding(true);
                     }
@@ -706,7 +711,7 @@ bool GlobalShortcuts::viewAtLowerEdgePriority(Latte::View *test, Latte::View *ba
     }
 
     QList<Plasma::Types::Location> edges{Plasma::Types::RightEdge, Plasma::Types::TopEdge,
-                                         Plasma::Types::LeftEdge, Plasma::Types::BottomEdge};
+                Plasma::Types::LeftEdge, Plasma::Types::BottomEdge};
 
     int testPriority = -1;
     int basePriority = -1;
@@ -750,8 +755,8 @@ QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Contai
     for (int i = 0; i < sortedViews.size(); ++i) {
         for (int j = 0; j < sortedViews.size() - i - 1; ++j) {
             if (viewAtLowerScreenPriority(sortedViews[j], sortedViews[j + 1])
-                || (sortedViews[j]->screen() == sortedViews[j + 1]->screen()
-                    && viewAtLowerEdgePriority(sortedViews[j], sortedViews[j + 1]))) {
+                    || (sortedViews[j]->screen() == sortedViews[j + 1]->screen()
+                        && viewAtLowerEdgePriority(sortedViews[j], sortedViews[j + 1]))) {
                 Latte::View *temp = sortedViews[j + 1];
                 sortedViews[j + 1] = sortedViews[j];
                 sortedViews[j] = temp;

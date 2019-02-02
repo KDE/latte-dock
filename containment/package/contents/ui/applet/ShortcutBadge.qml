@@ -39,12 +39,16 @@ Loader{
     onActiveChanged: {
         if (active && root.showLatteShortcutBadges && root.unifiedGlobalShortcuts) {
             fixedIndex = parabolicManager.pseudoAppletIndex(index);
+        } else {
+            fixedIndex = -1;
         }
     }
 
     Component.onCompleted: {
         if (active && root.showLatteShortcutBadges && root.unifiedGlobalShortcuts) {
             fixedIndex = parabolicManager.pseudoAppletIndex(index);
+        } else {
+            fixedIndex = -1;
         }
     }
 
