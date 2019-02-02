@@ -26,7 +26,9 @@ Loader{
     id: appletNumberLoader
 
     active: appletItem.canShowAppletNumberBadge &&
-            (root.showAppletShortcutBadges || (root.showMetaBadge && applet.id===applicationLauncherId))
+            (root.showLatteShortcutBadges
+             || root.showAppletShortcutBadges
+             || root.showMetaBadge && applet.id===applicationLauncherId)
 
     asynchronous: true
     visible: badgeString!==""
@@ -35,12 +37,16 @@ Loader{
     property string badgeString: ""
 
     onActiveChanged: {
-        if (active && root.unifiedGlobalShortcuts) {
+        if (active && root.showLatteShortcutBadges && root.unifiedGlobalShortcuts) {
             fixedIndex = parabolicManager.pseudoAppletIndex(index);
         }
     }
 
-    Component.onCompleted: fixedIndex = parabolicManager.pseudoAppletIndex(index);
+    Component.onCompleted: {
+        if (active && root.showLatteShortcutBadges && root.unifiedGlobalShortcuts) {
+            fixedIndex = parabolicManager.pseudoAppletIndex(index);
+        }
+    }
 
     Binding{
         target: appletNumberLoader

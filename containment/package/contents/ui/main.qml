@@ -149,6 +149,7 @@ DragDrop.DropArea {
     property bool normalState : false
     property bool onlyAddingStarup: true //is used for the initialization phase in startup where there aren't removals, this variable provides a way to grow icon size
     property bool shrinkThickMargins: plasmoid.configuration.shrinkThickMargins
+    property bool showLatteShortcutBadges: false
     property bool showAppletShortcutBadges: false
     property bool showMetaBadge: false
     property int applicationLauncherId: -1
@@ -1179,16 +1180,18 @@ DragDrop.DropArea {
     }
 
     //! this is called from globalshortcuts c++ side
-    function setShowAppletShortcutBadges(showBadges, showMeta, applicationLauncher){
+    function setShowAppletShortcutBadges(showLatteShortcuts, showShortcuts, showMeta, applicationLauncher){
         if (latteApplet) {
             var base = unifiedGlobalShortcuts ? parabolicManager.pseudoAppletIndex(latteAppletPos) : 1;
             latteApplet.setTasksBaseIndex(base - 1);
-            latteApplet.setShowTaskShortcutBadges(showBadges);
+            latteApplet.setShowTaskShortcutBadges(showLatteShortcuts);
         }
 
-        showAppletShortcutBadges = showBadges;
+        showLatteShortcutBadges = showLatteShortcuts;
+        showAppletShortcutBadges = showShortcuts;
         showMetaBadge = showMeta;
         applicationLauncherId = applicationLauncher;
+
         root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
     }
 

@@ -311,7 +311,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
                                   metaObject->indexOfMethod("activateEntryAtIndex(QVariant)") :
                                   metaObject->indexOfMethod("newInstanceForEntryAtIndex(QVariant)");
 
-                int methodIndex2 = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
+                int methodIndex2 = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
 
                 if (methodIndex == -1 || (methodIndex2 == -1)) {
                     continue;
@@ -449,7 +449,7 @@ bool GlobalShortcuts::isCapableToShowShortcutBadges(Latte::View *view)
                 // is pretty much trial and error.
 
                 // Also, "var" arguments are treated as QVariant in QMetaObject
-                int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
+                int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
 
                 if (methodIndex == -1) {
                     continue;
@@ -486,7 +486,7 @@ void GlobalShortcuts::showViews()
         m_lastInvokedAction = m_singleMetaAction;
     }
 
-    auto invokeShowShortcuts = [this](const Plasma::Containment * c) {
+    auto invokeShowShortcuts = [this](const Plasma::Containment * c, const bool showLatteShortcuts) {
         if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = containmentInterface->childItems();
 
@@ -497,7 +497,7 @@ void GlobalShortcuts::showViews()
                     // is pretty much trial and error.
 
                     // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
+                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
 
                     if (methodIndex == -1) {
                         continue;
@@ -516,7 +516,11 @@ void GlobalShortcuts::showViews()
                         showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
                     }
 
-                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item,
+                                                                            Q_ARG(QVariant, showLatteShortcuts),
+                                                                            Q_ARG(QVariant, true),
+                                                                            Q_ARG(QVariant, true),
+                                                                            Q_ARG(QVariant, appLauncher))) {
                         return true;
                     }
 
@@ -527,7 +531,7 @@ void GlobalShortcuts::showViews()
         return false;
     };
 
-    auto invokeShowOnlyMeta = [this](const Plasma::Containment * c) {
+    auto invokeShowOnlyMeta = [this](const Plasma::Containment * c, const bool showLatteShortcuts) {
         if (QQuickItem *containmentInterface = c->property("_plasma_graphicObject").value<QQuickItem *>()) {
             const auto &childItems = containmentInterface->childItems();
 
@@ -538,7 +542,7 @@ void GlobalShortcuts::showViews()
                     // is pretty much trial and error.
 
                     // Also, "var" arguments are treated as QVariant in QMetaObject
-                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant)");
+                    int methodIndex = metaObject->indexOfMethod("setShowAppletShortcutBadges(QVariant,QVariant,QVariant,QVariant)");
 
                     if (methodIndex == -1) {
                         continue;
@@ -557,7 +561,11 @@ void GlobalShortcuts::showViews()
                         showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
                     }
 
-                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item, Q_ARG(QVariant, false), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item,
+                                                                            Q_ARG(QVariant, showLatteShortcuts),
+                                                                            Q_ARG(QVariant, true),
+                                                                            Q_ARG(QVariant, true),
+                                                                            Q_ARG(QVariant, appLauncher))) {
                         return true;
                     }
                 }
@@ -586,15 +594,15 @@ void GlobalShortcuts::showViews()
 
     if (!m_hideViewsTimer.isActive()) {
         m_hideViews.clear();
-    }
 
-    if (viewWithTasks || viewWithMeta) {
-        m_viewItemsCalled.clear();
-        m_showShortcutBadgesMethods.clear();
+        if (viewWithTasks || viewWithMeta) {
+            m_viewItemsCalled.clear();
+            m_showShortcutBadgesMethods.clear();
+        }
     }
 
     //! show view that contains tasks plasmoid
-    if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment())) {
+    if (viewWithTasks && invokeShowShortcuts(viewWithTasks->containment(), true)) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
@@ -604,7 +612,7 @@ void GlobalShortcuts::showViews()
     }
 
     //! show view that contains only meta
-    if (viewWithMeta && viewWithMeta != viewWithTasks && invokeShowOnlyMeta(viewWithMeta->containment())) {
+    if (viewWithMeta && viewWithMeta != viewWithTasks && invokeShowOnlyMeta(viewWithMeta->containment(), false)) {
         viewFound = true;
 
         if (!m_hideViewsTimer.isActive()) {
@@ -622,7 +630,7 @@ void GlobalShortcuts::showViews()
         if (!m_hideViewsTimer.isActive()) {
             foreach (auto view, viewsWithShortcuts) {
                 if (view != viewWithTasks && view != viewWithMeta) {
-                    if (invokeShowShortcuts(view->containment())) {
+                    if (invokeShowShortcuts(view->containment(), false)) {
                         m_hideViews.append(view);
                         view->visibility()->setBlockHiding(true);
                     }
@@ -820,7 +828,11 @@ void GlobalShortcuts::hideViewsTimerSlot()
 
             if (m_viewItemsCalled.count() > 0) {
                 for (int i = 0; i < m_viewItemsCalled.count(); ++i) {
-                    m_showShortcutBadgesMethods[i].invoke(m_viewItemsCalled[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
+                    m_showShortcutBadgesMethods[i].invoke(m_viewItemsCalled[i],
+                                                          Q_ARG(QVariant, false),
+                                                          Q_ARG(QVariant, false),
+                                                          Q_ARG(QVariant, false),
+                                                          Q_ARG(QVariant, -1));
                 }
             }
         }

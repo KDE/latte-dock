@@ -19,6 +19,7 @@
 
 #include "modifiertracker.h"
 
+#include <QDebug>
 #include <QKeySequence>
 
 namespace Latte {
@@ -36,6 +37,7 @@ ModifierTracker::~ModifierTracker()
 
 void ModifierTracker::init()
 {
+    m_metaPressedTimer.setSingleShot(true);
     m_metaPressedTimer.setInterval(700);
 
     m_pressed[Qt::Key_Super_L] = false;
