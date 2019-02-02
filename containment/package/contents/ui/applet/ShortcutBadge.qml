@@ -62,7 +62,7 @@ Loader{
             }
 
             if (root.showAppletShortcutBadges) {
-                var plasmaShortcut = universalSettings.appletShortcutBadge(applet.id);
+                var plasmaShortcut = applet ? universalSettings.appletShortcutBadge(applet.id) : "";
 
                 if (plasmaShortcut !== "") {
                     return plasmaShortcut;

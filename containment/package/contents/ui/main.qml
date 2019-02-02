@@ -1192,7 +1192,9 @@ DragDrop.DropArea {
         showMetaBadge = showMeta;
         applicationLauncherId = applicationLauncher;
 
-        root.latteApplet.parabolicManager.updateTasksEdgesIndexes();
+        if (latteApplet) {
+            latteApplet.parabolicManager.updateTasksEdgesIndexes();
+        }
     }
 
     // This is called by dockcorona in response to a Meta+number shortcut.
