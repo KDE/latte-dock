@@ -273,9 +273,11 @@ void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                        || focusWindow->flags().testFlag(Qt::ToolTip)))
+    if ((focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                         || focusWindow->flags().testFlag(Qt::ToolTip)))
+            || m_latteView->alternativesIsShown()) {
         return;
+    }
 
     const auto parent = qobject_cast<PrimaryConfigView *>(m_parent);
 

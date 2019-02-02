@@ -336,9 +336,11 @@ void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
 
     const auto *focusWindow = qGuiApp->focusWindow();
 
-    if (focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
-                        || focusWindow->flags().testFlag(Qt::ToolTip)))
+    if ((focusWindow && (focusWindow->flags().testFlag(Qt::Popup)
+                         || focusWindow->flags().testFlag(Qt::ToolTip)))
+            || m_latteView->alternativesIsShown()) {
         return;
+    }
 
     if (!m_blockFocusLost && (!m_secConfigView || (m_secConfigView && !m_secConfigView->isActive()))) {
         hideConfigWindow();
