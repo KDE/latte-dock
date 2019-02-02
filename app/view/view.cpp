@@ -32,6 +32,8 @@
 #include "../plasma/extended/theme.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
+#include "../shortcuts/globalshortcuts.h"
+#include "../shortcuts/shortcutstracker.h"
 #include "../../liblatte2/extras.h"
 
 // Qt
@@ -136,9 +138,10 @@ View::~View()
 
     qDebug() << "dock view deleting...";
     rootContext()->setContextProperty(QStringLiteral("dock"), nullptr);
+    rootContext()->setContextProperty(QStringLiteral("layoutManager"), nullptr);
+    rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), nullptr);
     rootContext()->setContextProperty(QStringLiteral("themeExtended"), nullptr);
     rootContext()->setContextProperty(QStringLiteral("universalSettings"), nullptr);
-    rootContext()->setContextProperty(QStringLiteral("layoutManager"), nullptr);
 
     //! this disconnect does not free up connections correctly when
     //! latteView is deleted. A crash for this example is the following:
@@ -197,9 +200,10 @@ void View::init()
     auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (latteCorona) {
-        rootContext()->setContextProperty(QStringLiteral("universalSettings"), latteCorona->universalSettings());
         rootContext()->setContextProperty(QStringLiteral("layoutManager"), latteCorona->layoutManager());
+        rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), latteCorona->globalShortcuts()->shortcutsTracker());
         rootContext()->setContextProperty(QStringLiteral("themeExtended"), latteCorona->themeExtended());
+        rootContext()->setContextProperty(QStringLiteral("universalSettings"), latteCorona->universalSettings());
     }
 
     setSource(corona()->kPackage().filePath("lattedockui"));

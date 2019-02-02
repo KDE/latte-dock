@@ -21,8 +21,9 @@ set(lattedock-app_SRCS
     settings/delegates/colorcmbboxdelegate.cpp
     settings/delegates/colorcmbboxitemdelegate.cpp
     settings/delegates/layoutnamedelegate.cpp
-    shortcuts/modifiertracker.cpp
     shortcuts/globalshortcuts.cpp
+    shortcuts/modifiertracker.cpp
+    shortcuts/shortcutstracker.cpp
     view/contextmenu.cpp
     view/effects.cpp
     view/panelshadows.cpp

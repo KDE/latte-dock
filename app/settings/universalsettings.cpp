@@ -30,14 +30,10 @@
 #include <QtDBus>
 
 // KDE
-#include <KDirWatch>
-#include <KGlobalAccel>
 #include <KActivities/Consumer>
 
-#define GLOBALSHORTCUTSCONFIG "kglobalshortcutsrc"
 #define KWINMETAFORWARDTOLATTESTRING "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu"
 #define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
-#define APPLETSHORTCUTKEY "activate widget "
 
 namespace Latte {
 
@@ -68,130 +64,6 @@ UniversalSettings::~UniversalSettings()
     cleanupSettings();
 }
 
-void UniversalSettings::initGlobalShortcutsWatcher()
-{
-    const QString globalShortcutsFilePath = QDir::homePath() + "/.config/" + GLOBALSHORTCUTSCONFIG;
-    m_shortcutsConfigPtr = KSharedConfig::openConfig(globalShortcutsFilePath);
-
-    KDirWatch::self()->addFile(globalShortcutsFilePath);
-
-    connect(KDirWatch::self(), &KDirWatch::dirty, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
-    connect(KDirWatch::self(), &KDirWatch::created, this, &UniversalSettings::shortcutsFileChanged, Qt::QueuedConnection);
-}
-
-void UniversalSettings::shortcutsFileChanged(const QString &file)
-{
-    if (!file.endsWith(GLOBALSHORTCUTSCONFIG)) {
-        return;
-    }
-
-    m_shortcutsConfigPtr->reparseConfiguration();
-    parseGlobalShortcuts();
-}
-
-QList<int> UniversalSettings::appletsWithPlasmaShortcuts()
-{
-    return m_appletShortcuts.keys();
-}
-
-QString UniversalSettings::appletShortcutBadge(int appletId)
-{
-    if (m_appletShortcuts.contains(appletId)) {
-        return m_appletShortcuts[appletId];
-    }
-
-    return QString();
-}
-
-QString UniversalSettings::shortcutToBadge(QStringList shortcutRecords)
-{
-    QString badge;
-
-    if (shortcutRecords.count()>0 && shortcutRecords[0] != "none") {
-        QStringList modifiers = shortcutRecords[0].split("+");
-
-        if (modifiers.count() >= 1) {
-            badge = modifiers[modifiers.count() - 1];
-
-            //! when shortcut follows Meta+"Character" scheme
-            if (modifiers.count() == 2 && modifiers[0] == "Meta") {
-                badge = badge.toLower();
-            } else {
-                badge = badge.toUpper();
-            }
-        }
-    }
-
-    return badge;
-}
-
-void UniversalSettings::parseGlobalShortcuts()
-{
-    KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
-
-    //! make sure that latte dock records in global shortcuts where found correctly
-    bool recordExists{true};
-
-    if (!latteGroup.exists()) {
-        recordExists = false;
-    }
-
-    if (recordExists) {
-        for (int i = 1; i <= 19; ++i) {
-            QString entry = "activate entry " + QString::number(i);
-
-            if (!latteGroup.hasKey(entry)) {
-                recordExists = false;
-                break;
-            }
-        }
-    }
-
-    if (recordExists) {
-        m_badgesForActivate.clear();
-        m_appletShortcuts.clear();
-
-        for (int i = 1; i <= 19; ++i) {
-            QString entry = "activate entry " + QString::number(i);
-            QStringList records = latteGroup.readEntry(entry, QStringList());
-
-            m_badgesForActivate << shortcutToBadge(records);
-        }
-
-        foreach(auto key, latteGroup.keyList()) {
-            if (key.startsWith(APPLETSHORTCUTKEY)) {
-                QStringList records = latteGroup.readEntry(key, QStringList());
-                int appletId = key.remove(APPLETSHORTCUTKEY).toInt();
-
-                m_appletShortcuts[appletId] = shortcutToBadge(records);
-            }
-        }
-
-        emit badgesForActivateChanged();
-        qDebug() << "badges updated to :: " << m_badgesForActivate;
-        qDebug() << "applet shortcuts updated to :: " << m_appletShortcuts;
-    }
-}
-
-void UniversalSettings::clearAllAppletShortcuts()
-{
-    KConfigGroup latteGroup = KConfigGroup(m_shortcutsConfigPtr, "lattedock");
-
-    foreach(auto key, latteGroup.keyList()) {
-        if (key.startsWith(APPLETSHORTCUTKEY)) {
-            QAction *appletAction = new QAction(this);
-
-            appletAction->setText(QString("Activate ") + key);
-            appletAction->setObjectName(key);
-            appletAction->setShortcut(QKeySequence());
-            KGlobalAccel::setGlobalShortcut(appletAction, QKeySequence());
-            KGlobalAccel::self()->removeAllShortcuts(appletAction);
-
-            appletAction->deleteLater();
-        }
-    }
-}
-
 void UniversalSettings::load()
 {
     //! check if user has set the autostart option
@@ -203,11 +75,6 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
-
-    //! load global shortcuts badges at startup
-    initGlobalShortcutsWatcher();
-    parseGlobalShortcuts();
-    clearAllAppletShortcuts();
 }
 
 bool UniversalSettings::showInfoWindow() const
@@ -315,11 +182,6 @@ void UniversalSettings::setLayoutsWindowSize(QSize size)
 
     m_layoutsWindowSize = size;
     emit layoutsWindowSizeChanged();
-}
-
-QStringList UniversalSettings::badgesForActivate() const
-{
-    return m_badgesForActivate;
 }
 
 QStringList UniversalSettings::layoutsColumnWidths() const

@@ -42,6 +42,7 @@ class Corona;
 class View;
 namespace ShortcutsPart{
 class ModifierTracker;
+class ShortcutsTracker;
 }
 }
 
@@ -57,6 +58,8 @@ public:
 
     void activateLauncherMenu();
     void updateViewItemBadge(QString identifier, QString value);
+
+    ShortcutsPart::ShortcutsTracker *shortcutsTracker() const;
 
 signals:
     void modifiersChanged();
@@ -98,6 +101,7 @@ private:
     QList<QMetaMethod> m_showShortcutBadgesMethods;
 
     QPointer<ShortcutsPart::ModifierTracker> m_modifierTracker;
+    QPointer<ShortcutsPart::ShortcutsTracker> m_shortcutsTracker;
     QPointer<Latte::Corona> m_corona;
 };
 

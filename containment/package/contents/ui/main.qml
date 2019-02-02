@@ -361,11 +361,11 @@ DragDrop.DropArea {
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
     property var badgesForActivate: {
-        if (!universalSettings) {
+        if (!shortcutsEngine) {
             return ['1','2','3','4','5','6','7','8','9','0', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'];
         }
 
-        return universalSettings.badgesForActivate;
+        return shortcutsEngine.badgesForActivate;
     }
 
     property var iconsArray: [16, 22, 32, 48, 64, 96, 128, 256]
@@ -377,6 +377,7 @@ DragDrop.DropArea {
     property Item parabolicManager: _parabolicManager
 
     property QtObject latteView: null
+    property QtObject shortcutsEngine: null
     property QtObject themeExtended: null
     property QtObject universalSettings: null
     property QtObject universalLayoutManager: null

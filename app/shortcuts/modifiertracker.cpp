@@ -17,8 +17,10 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// local
 #include "modifiertracker.h"
 
+// Qt
 #include <QDebug>
 #include <QKeySequence>
 

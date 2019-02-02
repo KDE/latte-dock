@@ -22,6 +22,7 @@
 
 // local
 #include "modifiertracker.h"
+#include "shortcutstracker.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../settings/universalsettings.h"
@@ -56,6 +57,7 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
     m_modifierTracker = new ShortcutsPart::ModifierTracker(this);
+    m_shortcutsTracker = new ShortcutsPart::ShortcutsTracker(this);
 
     if (m_corona) {
         init();
@@ -79,6 +81,10 @@ GlobalShortcuts::~GlobalShortcuts()
 {
     if (m_modifierTracker) {
         m_modifierTracker->deleteLater();
+    }
+
+    if (m_shortcutsTracker) {
+        m_shortcutsTracker->deleteLater();
     }
 }
 
@@ -187,6 +193,11 @@ void GlobalShortcuts::init()
         m_metaShowedViews = true;
         showViews();
     });
+}
+
+ShortcutsPart::ShortcutsTracker *GlobalShortcuts::shortcutsTracker() const
+{
+    return m_shortcutsTracker;
 }
 
 //! Activate launcher menu through dbus interface

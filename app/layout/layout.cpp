@@ -26,9 +26,11 @@
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
 #include "../screenpool.h"
+#include "../settings/universalsettings.h"
+#include "../shortcuts/globalshortcuts.h"
+#include "../shortcuts/shortcutstracker.h"
 #include "../view/positioner.h"
 #include "../view/view.h"
-#include "../settings/universalsettings.h"
 
 // Qt
 #include <QDir>
@@ -809,7 +811,7 @@ QList<Latte::View *> Layout::viewsWithPlasmaShortcuts()
         return views;
     }
 
-    QList<int> appletsWithShortcuts = m_corona->universalSettings()->appletsWithPlasmaShortcuts();
+    QList<int> appletsWithShortcuts = m_corona->globalShortcuts()->shortcutsTracker()->appletsWithPlasmaShortcuts();
 
     foreach(auto appletId, appletsWithShortcuts) {
         foreach(auto view, m_latteViews) {

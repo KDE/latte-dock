@@ -106,6 +106,7 @@ public:
 
     AbstractWindowInterface *wm() const;
     KActivities::Consumer *activitiesConsumer() const;
+    GlobalShortcuts *globalShortcuts() const;
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
     LayoutManager *layoutManager() const;

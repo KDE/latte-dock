@@ -360,6 +360,11 @@ KActivities::Consumer *Corona::activitiesConsumer() const
     return m_activityConsumer;
 }
 
+GlobalShortcuts *Corona::globalShortcuts() const
+{
+    return m_globalShortcuts;
+}
+
 ScreenPool *Corona::screenPool() const
 {
     return m_screenPool;
