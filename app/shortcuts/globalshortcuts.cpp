@@ -266,19 +266,19 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
 
                         int showMethodIndex = -1;
 
-                        if (!m_calledItems.contains(item)) {
-                            m_calledItems.append(item);
-                            m_methodsShowNumbers.append(metaObject->method(methodIndex));
-                            showMethodIndex = m_methodsShowNumbers.count() - 1;
+                        if (!m_viewItemsCalled.contains(item)) {
+                            m_viewItemsCalled.append(item);
+                            m_showShortcutBadgesMethods.append(metaObject->method(methodIndex));
+                            showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
                         } else {
-                            showMethodIndex = m_methodsShowNumbers.indexOf(metaObject->method(methodIndex));
+                            showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
                         }
 
                         QMetaMethod method = metaObject->method(methodIndex);
 
                         if (method.invoke(item, Q_ARG(QVariant, index - 1))) {
                             if (methodIndex2 != -1) {
-                                m_methodsShowNumbers[showMethodIndex].invoke(item, Q_ARG(QVariant, true));
+                                m_showShortcutBadgesMethods[showMethodIndex].invoke(item, Q_ARG(QVariant, true));
                             }
 
                             return true;
@@ -322,12 +322,12 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
 
                 int showMethodIndex = -1;
 
-                if (!m_calledItems.contains(item)) {
-                    m_calledItems.append(item);
-                    m_methodsShowNumbers.append(metaObject->method(methodIndex2));
-                    showMethodIndex = m_methodsShowNumbers.count() - 1;
+                if (!m_viewItemsCalled.contains(item)) {
+                    m_viewItemsCalled.append(item);
+                    m_showShortcutBadgesMethods.append(metaObject->method(methodIndex2));
+                    showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
                 } else {
-                    showMethodIndex = m_methodsShowNumbers.indexOf(metaObject->method(methodIndex2));
+                    showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex2));
                 }
 
                 QMetaMethod method = metaObject->method(methodIndex);
@@ -508,15 +508,15 @@ void GlobalShortcuts::showViews()
 
                     int showMethodIndex = -1;
 
-                    if (!m_calledItems.contains(item)) {
-                        m_calledItems.append(item);
-                        m_methodsShowNumbers.append(metaObject->method(methodIndex));
-                        showMethodIndex = m_methodsShowNumbers.count() - 1;
+                    if (!m_viewItemsCalled.contains(item)) {
+                        m_viewItemsCalled.append(item);
+                        m_showShortcutBadgesMethods.append(metaObject->method(methodIndex));
+                        showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
                     } else {
-                        showMethodIndex = m_methodsShowNumbers.indexOf(metaObject->method(methodIndex));
+                        showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
                     }
 
-                    if (m_methodsShowNumbers[showMethodIndex].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item, Q_ARG(QVariant, true), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
                         return true;
                     }
 
@@ -549,15 +549,15 @@ void GlobalShortcuts::showViews()
 
                     int showMethodIndex = -1;
 
-                    if (!m_calledItems.contains(item)) {
-                        m_calledItems.append(item);
-                        m_methodsShowNumbers.append(metaObject->method(methodIndex));
-                        showMethodIndex = m_methodsShowNumbers.count() - 1;
+                    if (!m_viewItemsCalled.contains(item)) {
+                        m_viewItemsCalled.append(item);
+                        m_showShortcutBadgesMethods.append(metaObject->method(methodIndex));
+                        showMethodIndex = m_showShortcutBadgesMethods.count() - 1;
                     } else {
-                        showMethodIndex = m_methodsShowNumbers.indexOf(metaObject->method(methodIndex));
+                        showMethodIndex = m_showShortcutBadgesMethods.indexOf(metaObject->method(methodIndex));
                     }
 
-                    if (m_methodsShowNumbers[showMethodIndex].invoke(item, Q_ARG(QVariant, false), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
+                    if (m_showShortcutBadgesMethods[showMethodIndex].invoke(item, Q_ARG(QVariant, false), Q_ARG(QVariant, true), Q_ARG(QVariant, appLauncher))) {
                         return true;
                     }
                 }
@@ -589,8 +589,8 @@ void GlobalShortcuts::showViews()
     }
 
     if (viewWithTasks || viewWithMeta) {
-        m_calledItems.clear();
-        m_methodsShowNumbers.clear();
+        m_viewItemsCalled.clear();
+        m_showShortcutBadgesMethods.clear();
     }
 
     if (viewWithTasks && invokeShowNumbers(viewWithTasks->containment())) {
@@ -798,20 +798,20 @@ void GlobalShortcuts::hideViewsTimerSlot()
                 latteView->visibility()->setBlockHiding(false);
             }
 
-            if (m_calledItems.count() > 0) {
-                for (int i = 0; i < m_calledItems.count(); ++i) {
-                    m_methodsShowNumbers[i].invoke(m_calledItems[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
+            if (m_viewItemsCalled.count() > 0) {
+                for (int i = 0; i < m_viewItemsCalled.count(); ++i) {
+                    m_showShortcutBadgesMethods[i].invoke(m_viewItemsCalled[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
                 }
             }
         }
 
         m_hideViews.clear();
-        m_calledItems.clear();
-        m_methodsShowNumbers.clear();
+        m_viewItemsCalled.clear();
+        m_showShortcutBadgesMethods.clear();
         m_metaShowedViews = false;
     };
 
-    // qDebug() << "MEMORY ::: " << m_hideViews.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
+    // qDebug() << "MEMORY ::: " << m_hideViews.count() << " _ " << m_viewItemsCalled.count() << " _ " << m_showShortcutBadgesMethods.count();
 
     if (QX11Info::isPlatformX11()) {
         if (!m_modifierTracker->sequenceModifierPressed(m_lastInvokedAction->shortcut())) {

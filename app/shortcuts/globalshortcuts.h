@@ -85,15 +85,17 @@ private:
 private:
     bool m_metaShowedViews{false};
 
+    //! last action that was trigerred from the user
     QAction *m_lastInvokedAction;
-    //!it is used when the view is hidden in order to delay the app launcher showing
+    //! it is used for code compatibility reasons in order to replicate a single Meta action
     QAction *m_singleMetaAction;
 
+    //! delayer for hiding the shown latte views
     QTimer m_hideViewsTimer;
     QList<Latte::View *> m_hideViews;
 
-    QList<QQuickItem *> m_calledItems;
-    QList<QMetaMethod> m_methodsShowNumbers;
+    QList<QQuickItem *> m_viewItemsCalled;
+    QList<QMetaMethod> m_showShortcutBadgesMethods;
 
     QPointer<ShortcutsPart::ModifierTracker> m_modifierTracker;
     QPointer<Latte::Corona> m_corona;
