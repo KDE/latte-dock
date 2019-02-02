@@ -790,35 +790,7 @@ void GlobalShortcuts::hideViewsTimerSlot()
         return;
     }
 
-    // qDebug() << "MEMORY ::: " << m_hideViews.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
-
-    if (QX11Info::isPlatformX11()) {
-        if (!m_modifierTracker->sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
-            m_lastInvokedAction = Q_NULLPTR;
-
-            if (viewsToHideAreValid()) {
-                foreach (auto latteView, m_hideViews) {
-                    latteView->visibility()->setBlockHiding(false);
-                }
-
-                if (m_calledItems.count() > 0) {
-                    for (int i = 0; i < m_calledItems.count(); ++i) {
-                        m_methodsShowNumbers[i].invoke(m_calledItems[i], Q_ARG(QVariant, false), Q_ARG(QVariant, false), Q_ARG(QVariant, -1));
-                    }
-                }
-            }
-
-            m_hideViews.clear();
-            m_calledItems.clear();
-            m_methodsShowNumbers.clear();
-            m_metaShowedViews = false;
-
-            return;
-        } else {
-            m_hideViewsTimer.start();
-        }
-    } else {
-        // TODO: This is needs to be fixed in wayland
+    auto initParameters = [this]() {
         m_lastInvokedAction = Q_NULLPTR;
 
         if (viewsToHideAreValid()) {
@@ -837,6 +809,21 @@ void GlobalShortcuts::hideViewsTimerSlot()
         m_calledItems.clear();
         m_methodsShowNumbers.clear();
         m_metaShowedViews = false;
+    };
+
+    // qDebug() << "MEMORY ::: " << m_hideViews.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
+
+    if (QX11Info::isPlatformX11()) {
+        if (!m_modifierTracker->sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
+            initParameters();
+
+            return;
+        } else {
+            m_hideViewsTimer.start();
+        }
+    } else {
+        // TODO: This is needs to be fixed in wayland
+        initParameters();
     }
 }
 
