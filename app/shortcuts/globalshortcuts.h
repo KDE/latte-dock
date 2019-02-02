@@ -56,26 +56,26 @@ public:
     ~GlobalShortcuts() override;
 
     void activateLauncherMenu();
-    void updateDockItemBadge(QString identifier, QString value);
+    void updateViewItemBadge(QString identifier, QString value);
 
 signals:
     void modifiersChanged();
 
 private slots:
-    void hideDocksTimerSlot();
+    void hideViewsTimerSlot();
 
 private:
     void init();
     void initModifiers();
     void activateEntry(int index, Qt::Key modifier);
-    void showDocks();
+    void showViews();
     void showSettings();
 
     bool activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier);
     bool activatePlasmaTaskManagerEntryAtContainment(const Plasma::Containment *c, int index, Qt::Key modifier);
-    bool dockAtLowerEdgePriority(Latte::View *test, Latte::View *base);
-    bool dockAtLowerScreenPriority(Latte::View *test, Latte::View *base);
-    bool docksToHideAreValid();
+    bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
+    bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
+    bool viewsToHideAreValid();
     bool isCapableToShowAppletsNumbers(Latte::View *view);
 
     int applicationLauncherId(const Plasma::Containment *c);
@@ -86,11 +86,11 @@ private:
     bool m_metaShowedViews{false};
 
     QAction *m_lastInvokedAction;
-    //!it is used when the dock is hidden in order to delay the app launcher showing
+    //!it is used when the view is hidden in order to delay the app launcher showing
     QAction *m_singleMetaAction;
 
-    QTimer m_hideDocksTimer;
-    QList<Latte::View *> m_hideDocks;
+    QTimer m_hideViewsTimer;
+    QList<Latte::View *> m_hideViews;
 
     QList<QQuickItem *> m_calledItems;
     QList<QMetaMethod> m_methodsShowNumbers;

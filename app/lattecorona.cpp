@@ -917,7 +917,7 @@ void Corona::windowColorScheme(QString windowIdAndScheme)
 //! update badge for specific view item
 void Corona::updateDockItemBadge(QString identifier, QString value)
 {
-    m_globalShortcuts->updateDockItemBadge(identifier, value);
+    m_globalShortcuts->updateViewItemBadge(identifier, value);
 }
 
 

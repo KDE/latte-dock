@@ -61,18 +61,18 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
         init();
     }
 
-    m_hideDocksTimer.setSingleShot(true);
+    m_hideViewsTimer.setSingleShot(true);
 
     if (QX11Info::isPlatformX11()) {
         //in X11 the timer is a poller that checks to see if the modifier keys
         //from user global shortcut have been released
-        m_hideDocksTimer.setInterval(300);
+        m_hideViewsTimer.setInterval(300);
     } else {
-        //on wayland in acting just as simple timer that hides the dock afterwards
-        m_hideDocksTimer.setInterval(2500);
+        //on wayland in acting just as simple timer that hides the view afterwards
+        m_hideViewsTimer.setInterval(2500);
     }
 
-    connect(&m_hideDocksTimer, &QTimer::timeout, this, &GlobalShortcuts::hideDocksTimerSlot);
+    connect(&m_hideViewsTimer, &QTimer::timeout, this, &GlobalShortcuts::hideViewsTimerSlot);
 }
 
 GlobalShortcuts::~GlobalShortcuts()
@@ -86,18 +86,18 @@ void GlobalShortcuts::init()
 {
     KActionCollection *generalActions = new KActionCollection(m_corona);
 
-    //show-hide the main dock in the primary screen
-    QAction *showAction = generalActions->addAction(QStringLiteral("show latte dock"));
-    showAction->setText(i18n("Show Dock"));
+    //show-hide the main view in the primary screen
+    QAction *showAction = generalActions->addAction(QStringLiteral("show latte view"));
+    showAction->setText(i18n("Show Latte View"));
     showAction->setShortcut(QKeySequence(Qt::META + '`'));
     KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
     connect(showAction, &QAction::triggered, this, [this]() {
-        showDocks();
+        showViews();
     });
 
     //show-cycle between Latte settings windows
-    QAction *settingsAction = generalActions->addAction(QStringLiteral("show dock settings"));
-    settingsAction->setText(i18n("Show Dock Settings"));
+    QAction *settingsAction = generalActions->addAction(QStringLiteral("show view settings"));
+    settingsAction->setText(i18n("Show Latte View Settings"));
     KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
         m_modifierTracker->cancelMetaPressed();
@@ -185,7 +185,7 @@ void GlobalShortcuts::init()
     //display shortcut badges while holding Meta
     connect(m_modifierTracker, &ShortcutsPart::ModifierTracker::metaModifierPressed, this, [&]() {
         m_metaShowedViews = true;
-        showDocks();
+        showViews();
     });
 }
 
@@ -206,20 +206,20 @@ void GlobalShortcuts::activateLauncherMenu()
 
             if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
                 if (view->visibility()->isHidden()) {
-                    if (!m_hideDocks.contains(view)) {
-                        m_hideDocks.append(view);
+                    if (!m_hideViews.contains(view)) {
+                        m_hideViews.append(view);
                     }
 
                     m_lastInvokedAction = m_singleMetaAction;
 
                     view->visibility()->setBlockHiding(true);
 
-                    //! delay the execution in order to show first the dock
+                    //! delay the execution in order to show first the view
                     QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, applet]() {
                         view->toggleAppletExpanded(applet->id());
                     });
 
-                    m_hideDocksTimer.start();
+                    m_hideViewsTimer.start();
                 } else {
                     view->toggleAppletExpanded(applet->id());
                 }
@@ -333,7 +333,7 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
                 QMetaMethod method = metaObject->method(methodIndex);
 
                 if (view->visibility()->isHidden()) {
-                    //! delay the execution in order to show first the dock
+                    //! delay the execution in order to show first the view
                     QTimer::singleShot(APPLETEXECUTIONDELAY, [this, item, method, index]() {
                         method.invoke(item, Q_ARG(QVariant, index));
                     });
@@ -366,19 +366,19 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
              activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
             || (activateLatteEntryAtContainment(view, index, modifier))) {
 
-            if (!m_hideDocks.contains(view)) {
-                m_hideDocks.append(view);
+            if (!m_hideViews.contains(view)) {
+                m_hideViews.append(view);
             }
 
             view->visibility()->setBlockHiding(true);
-            m_hideDocksTimer.start();
+            m_hideViewsTimer.start();
             return;
         }
     }
 }
 
-//! update badge for specific dock item
-void GlobalShortcuts::updateDockItemBadge(QString identifier, QString value)
+//! update badge for specific view item
+void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
 {
     //qDebug() << "DBUS CALL ::: " << identifier << " - " << value;
     auto updateBadgeForTaskInContainment = [this](const Plasma::Containment * c, QString identifier, QString value) {
@@ -478,7 +478,7 @@ int GlobalShortcuts::applicationLauncherId(const Plasma::Containment *c)
     return -1;
 }
 
-void GlobalShortcuts::showDocks()
+void GlobalShortcuts::showViews()
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
     if (!m_lastInvokedAction) {
@@ -582,10 +582,10 @@ void GlobalShortcuts::showDocks()
         }
     }
 
-    bool dockFound{false};
+    bool viewFound{false};
 
-    if (!m_hideDocksTimer.isActive()) {
-        m_hideDocks.clear();
+    if (!m_hideViewsTimer.isActive()) {
+        m_hideViews.clear();
     }
 
     if (viewWithTasks || viewWithMeta) {
@@ -594,36 +594,36 @@ void GlobalShortcuts::showDocks()
     }
 
     if (viewWithTasks && invokeShowNumbers(viewWithTasks->containment())) {
-        dockFound = true;
+        viewFound = true;
 
-        if (!m_hideDocksTimer.isActive()) {
-            m_hideDocks.append(viewWithTasks);
+        if (!m_hideViewsTimer.isActive()) {
+            m_hideViews.append(viewWithTasks);
             viewWithTasks->visibility()->setBlockHiding(true);
         }
     }
 
     if (viewWithMeta && viewWithMeta != viewWithTasks && invokeShowOnlyMeta(viewWithMeta->containment())) {
-        dockFound = true;
+        viewFound = true;
 
-        if (!m_hideDocksTimer.isActive()) {
-            m_hideDocks.append(viewWithMeta);
+        if (!m_hideViewsTimer.isActive()) {
+            m_hideViews.append(viewWithMeta);
             viewWithMeta->visibility()->setBlockHiding(true);
         }
     }
 
-    if (dockFound) {
-        if (!m_hideDocksTimer.isActive()) {
-            m_hideDocksTimer.start();
+    if (viewFound) {
+        if (!m_hideViewsTimer.isActive()) {
+            m_hideViewsTimer.start();
         } else {
-            m_hideDocksTimer.stop();
-            hideDocksTimerSlot();
+            m_hideViewsTimer.stop();
+            hideViewsTimerSlot();
         }
     }
 }
 
-bool GlobalShortcuts::docksToHideAreValid()
+bool GlobalShortcuts::viewsToHideAreValid()
 {
-    foreach (auto view, m_hideDocks) {
+    foreach (auto view, m_hideViews) {
         if (!m_corona->layoutManager()->latteViewExists(view)) {
             return false;
         }
@@ -633,7 +633,7 @@ bool GlobalShortcuts::docksToHideAreValid()
     return true;
 }
 
-bool GlobalShortcuts::dockAtLowerScreenPriority(Latte::View *test, Latte::View *base)
+bool GlobalShortcuts::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
 {
     if (!base || ! test) {
         return true;
@@ -667,11 +667,11 @@ bool GlobalShortcuts::dockAtLowerScreenPriority(Latte::View *test, Latte::View *
 
     }
 
-    qDebug() << "dockAtLowerScreenPriority : shouldn't had reached here...";
+    qDebug() << "viewAtLowerScreenPriority : shouldn't had reached here...";
     return false;
 }
 
-bool GlobalShortcuts::dockAtLowerEdgePriority(Latte::View *test, Latte::View *base)
+bool GlobalShortcuts::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base)
 {
     if (!base || ! test) {
         return true;
@@ -702,102 +702,102 @@ bool GlobalShortcuts::dockAtLowerEdgePriority(Latte::View *test, Latte::View *ba
 
 QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views)
 {
-    QList<Latte::View *> docks;
+    QList<Latte::View *> sortedViews;
 
-    //! create a docks list to sorted out
+    //! create views list to be sorted out
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        docks.append(it.value());
+        sortedViews.append(it.value());
     }
 
     qDebug() << " -------- ";
 
-    for (int i = 0; i < docks.count(); ++i) {
-        qDebug() << i << ". " << docks[i]->screen()->name() << " - " << docks[i]->location();
+    for (int i = 0; i < sortedViews.count(); ++i) {
+        qDebug() << i << ". " << sortedViews[i]->screen()->name() << " - " << sortedViews[i]->location();
     }
 
-    //! sort the docks based on screens and edges priorities
-    //! docks on primary screen have higher priority and
-    //! for docks in the same screen the priority goes to
+    //! sort the views based on screens and edges priorities
+    //! views on primary screen have higher priority and
+    //! for views in the same screen the priority goes to
     //! Bottom,Left,Top,Right
-    for (int i = 0; i < docks.size(); ++i) {
-        for (int j = 0; j < docks.size() - i - 1; ++j) {
-            if (dockAtLowerScreenPriority(docks[j], docks[j + 1])
-                || (docks[j]->screen() == docks[j + 1]->screen()
-                    && dockAtLowerEdgePriority(docks[j], docks[j + 1]))) {
-                Latte::View *temp = docks[j + 1];
-                docks[j + 1] = docks[j];
-                docks[j] = temp;
+    for (int i = 0; i < sortedViews.size(); ++i) {
+        for (int j = 0; j < sortedViews.size() - i - 1; ++j) {
+            if (viewAtLowerScreenPriority(sortedViews[j], sortedViews[j + 1])
+                || (sortedViews[j]->screen() == sortedViews[j + 1]->screen()
+                    && viewAtLowerEdgePriority(sortedViews[j], sortedViews[j + 1]))) {
+                Latte::View *temp = sortedViews[j + 1];
+                sortedViews[j + 1] = sortedViews[j];
+                sortedViews[j] = temp;
             }
         }
     }
 
     Latte::View *highestPriorityView{nullptr};
 
-    for (int i = 0; i < docks.size(); ++i) {
-        if (docks[i]->isPreferredForShortcuts()) {
-            highestPriorityView = docks[i];
-            docks.removeAt(i);
+    for (int i = 0; i < sortedViews.size(); ++i) {
+        if (sortedViews[i]->isPreferredForShortcuts()) {
+            highestPriorityView = sortedViews[i];
+            sortedViews.removeAt(i);
             break;
         }
     }
 
     if (highestPriorityView) {
-        docks.prepend(highestPriorityView);
+        sortedViews.prepend(highestPriorityView);
     }
 
     qDebug() << " -------- sorted -----";
 
-    for (int i = 0; i < docks.count(); ++i) {
-        qDebug() << i << ". " << docks[i]->isPreferredForShortcuts() << " - " << docks[i]->screen()->name() << " - " << docks[i]->location();
+    for (int i = 0; i < sortedViews.count(); ++i) {
+        qDebug() << i << ". " << sortedViews[i]->isPreferredForShortcuts() << " - " << sortedViews[i]->screen()->name() << " - " << sortedViews[i]->location();
     }
 
-    return docks;
+    return sortedViews;
 }
 
 void GlobalShortcuts::showSettings()
 {
-    QList<Latte::View *> docks = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
+    QList<Latte::View *> views = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
-    //! find which is the next dock to show its settings
-    if (docks.count() > 0) {
+    //! find which is the next view to show its settings
+    if (views.count() > 0) {
         int openSettings = -1;
 
-        //! check if there is a dock with opened settings window
-        for (int i = 0; i < docks.size(); ++i) {
-            if (docks[i]->settingsWindowIsShown()) {
+        //! check if there is a view with opened settings window
+        for (int i = 0; i < views.size(); ++i) {
+            if (views[i]->settingsWindowIsShown()) {
                 openSettings = i;
                 break;
             }
         }
 
-        if (openSettings >= 0 && docks.count() > 1) {
+        if (openSettings >= 0 && views.count() > 1) {
             openSettings = openSettings + 1;
 
-            if (openSettings >= docks.size()) {
+            if (openSettings >= views.size()) {
                 openSettings = 0;
             }
 
-            docks[openSettings]->showSettingsWindow();
+            views[openSettings]->showSettingsWindow();
         } else {
-            docks[0]->showSettingsWindow();
+            views[0]->showSettingsWindow();
         }
     }
 }
 
-void GlobalShortcuts::hideDocksTimerSlot()
+void GlobalShortcuts::hideViewsTimerSlot()
 {
-    if (!m_lastInvokedAction || m_hideDocks.count() == 0) {
+    if (!m_lastInvokedAction || m_hideViews.count() == 0) {
         return;
     }
 
-    // qDebug() << "MEMORY ::: " << m_hideDocks.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
+    // qDebug() << "MEMORY ::: " << m_hideViews.count() << " _ " << m_calledItems.count() << " _ " << m_methodsShowNumbers.count();
 
     if (QX11Info::isPlatformX11()) {
         if (!m_modifierTracker->sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
             m_lastInvokedAction = Q_NULLPTR;
 
-            if (docksToHideAreValid()) {
-                foreach (auto latteView, m_hideDocks) {
+            if (viewsToHideAreValid()) {
+                foreach (auto latteView, m_hideViews) {
                     latteView->visibility()->setBlockHiding(false);
                 }
 
@@ -808,21 +808,21 @@ void GlobalShortcuts::hideDocksTimerSlot()
                 }
             }
 
-            m_hideDocks.clear();
+            m_hideViews.clear();
             m_calledItems.clear();
             m_methodsShowNumbers.clear();
             m_metaShowedViews = false;
 
             return;
         } else {
-            m_hideDocksTimer.start();
+            m_hideViewsTimer.start();
         }
     } else {
         // TODO: This is needs to be fixed in wayland
         m_lastInvokedAction = Q_NULLPTR;
 
-        if (docksToHideAreValid()) {
-            foreach (auto latteView, m_hideDocks) {
+        if (viewsToHideAreValid()) {
+            foreach (auto latteView, m_hideViews) {
                 latteView->visibility()->setBlockHiding(false);
             }
 
@@ -833,7 +833,7 @@ void GlobalShortcuts::hideDocksTimerSlot()
             }
         }
 
-        m_hideDocks.clear();
+        m_hideViews.clear();
         m_calledItems.clear();
         m_methodsShowNumbers.clear();
         m_metaShowedViews = false;
