@@ -143,6 +143,7 @@ void GlobalShortcuts::init()
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + key));
         connect(action, &QAction::triggered, this, [this, i] {
             // qDebug() << "meta action...";
+            m_modifierTracker->cancelMetaPressed();
             activateEntry(i, static_cast<Qt::Key>(Qt::META));
         });
     }
@@ -157,6 +158,7 @@ void GlobalShortcuts::init()
         action->setShortcut(QKeySequence(Qt::META + keysAboveTen[i - 10]));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + keysAboveTen[i - 10]));
         connect(action, &QAction::triggered, this, [this, i] {
+            m_modifierTracker->cancelMetaPressed();
             activateEntry(i, static_cast<Qt::Key>(Qt::META));
         });
     }
@@ -171,6 +173,7 @@ void GlobalShortcuts::init()
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + key));
         connect(action, &QAction::triggered, this, [this, i] {
             // qDebug() << "meta + ctrl + action...";
+            m_modifierTracker->cancelMetaPressed();
             activateEntry(i, static_cast<Qt::Key>(Qt::CTRL));
         });
     }
@@ -181,6 +184,7 @@ void GlobalShortcuts::init()
         action->setText(i18n("New Instance for Entry %1", i));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + keysAboveTen[i - 10]));
         connect(action, &QAction::triggered, this, [this, i] {
+            m_modifierTracker->cancelMetaPressed();
             activateEntry(i, static_cast<Qt::Key>(Qt::CTRL));
         });
     }
@@ -306,8 +310,6 @@ bool GlobalShortcuts::activatePlasmaTaskManagerEntryAtContainment(const Plasma::
 
 bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, int index, Qt::Key modifier)
 {
-    m_modifierTracker->cancelMetaPressed();
-
     if (QQuickItem *containmentInterface = view->containment()->property("_plasma_graphicObject").value<QQuickItem *>()) {
         const auto &childItems = containmentInterface->childItems();
 
@@ -366,24 +368,24 @@ bool GlobalShortcuts::activateLatteEntryAtContainment(const Latte::View *view, i
 //! Activate task manager entry
 void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
-    m_modifierTracker->cancelMetaPressed();
-
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
     QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
-    foreach (auto view, sortedViews) {
-        if ((!view->latteTasksPresent() && view->tasksPresent() &&
-             activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
-                || (view->isPreferredForShortcuts() && activateLatteEntryAtContainment(view, index, modifier))) {
+    if (m_shortcutsTracker->basedOnPositionEnabled()){
+        foreach (auto view, sortedViews) {
+            if ((!view->latteTasksPresent() && view->tasksPresent() &&
+                 activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
+                    || activateLatteEntryAtContainment(view, index, modifier)) {
 
-            if (!m_hideViews.contains(view)) {
-                m_hideViews.append(view);
+                if (!m_hideViews.contains(view)) {
+                    m_hideViews.append(view);
+                }
+
+                view->visibility()->setBlockHiding(true);
+                m_hideViewsTimer.start();
+                return;
             }
-
-            view->visibility()->setBlockHiding(true);
-            m_hideViewsTimer.start();
-            return;
         }
     }
 }
@@ -591,9 +593,12 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
 
-    foreach (auto view, sortedViews) {
-        if (!viewWithTasks && view->isPreferredForShortcuts() && isCapableToShowShortcutBadges(view)) {
-            viewWithTasks = view;
+    if (m_shortcutsTracker->basedOnPositionEnabled()) {
+        foreach (auto view, sortedViews) {
+            if (!viewWithTasks && isCapableToShowShortcutBadges(view)) {
+                viewWithTasks = view;
+                break;
+            }
         }
     }
 
@@ -602,6 +607,7 @@ void GlobalShortcuts::showViews()
         foreach (auto view, sortedViews) {
             if (!viewWithMeta && m_corona->universalSettings()->metaForwardedToLatte() && applicationLauncherId(view->containment()) > -1) {
                 viewWithMeta = view;
+                break;
             }
         }
     }

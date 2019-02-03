@@ -52,6 +52,10 @@ ShortcutsTracker::~ShortcutsTracker()
 
 void ShortcutsTracker::initGlobalShortcutsWatcher()
 {
+    for (int i=1; i<=19; ++i) {
+        m_badgesForActivate << QString();
+    }
+
     const QString globalShortcutsFilePath = QDir::homePath() + "/.config/" + GLOBALSHORTCUTSCONFIG;
     m_shortcutsConfigPtr = KSharedConfig::openConfig(globalShortcutsFilePath);
 
@@ -59,6 +63,11 @@ void ShortcutsTracker::initGlobalShortcutsWatcher()
 
     connect(KDirWatch::self(), &KDirWatch::dirty, this, &ShortcutsTracker::shortcutsFileChanged, Qt::QueuedConnection);
     connect(KDirWatch::self(), &KDirWatch::created, this, &ShortcutsTracker::shortcutsFileChanged, Qt::QueuedConnection);
+}
+
+bool ShortcutsTracker::basedOnPositionEnabled() const
+{
+    return m_basedOnPositionEnabled;
 }
 
 QStringList ShortcutsTracker::badgesForActivate() const
@@ -145,6 +154,8 @@ void ShortcutsTracker::parseGlobalShortcuts()
             m_badgesForActivate << shortcutToBadge(records);
         }
 
+        m_basedOnPositionEnabled = (!m_badgesForActivate[0].isEmpty() && !m_badgesForActivate[1].isEmpty());
+
         foreach(auto key, latteGroup.keyList()) {
             if (key.startsWith(APPLETSHORTCUTKEY)) {
                 QStringList records = latteGroup.readEntry(key, QStringList());
@@ -154,9 +165,10 @@ void ShortcutsTracker::parseGlobalShortcuts()
             }
         }
 
-        emit badgesForActivateChanged();
         qDebug() << "badges updated to :: " << m_badgesForActivate;
         qDebug() << "applet shortcuts updated to :: " << m_appletShortcuts;
+
+        emit badgesForActivateChanged();
     }
 }
 

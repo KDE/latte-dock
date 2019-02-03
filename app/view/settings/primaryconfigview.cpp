@@ -27,6 +27,8 @@
 #include "../../lattecorona.h"
 #include "../../layoutmanager.h"
 #include "../../settings/universalsettings.h"
+#include "../../shortcuts/globalshortcuts.h"
+#include "../../shortcuts/shortcutstracker.h"
 #include "../../wm/abstractwindowinterface.h"
 
 // Qt
@@ -123,6 +125,7 @@ void PrimaryConfigView::init()
     setColor(Qt::transparent);
     PanelShadows::self()->addWindow(this);
     rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
+    rootContext()->setContextProperty(QStringLiteral("shortcutsEngine"), m_corona->globalShortcuts()->shortcutsTracker());
     rootContext()->setContextProperty(QStringLiteral("viewConfig"), this);
 
     if (m_corona) {

@@ -31,6 +31,7 @@ namespace ShortcutsPart {
 
 class ShortcutsTracker: public QObject {
     Q_OBJECT
+    Q_PROPERTY(bool basedOnPositionEnabled READ basedOnPositionEnabled NOTIFY badgesForActivateChanged)
     Q_PROPERTY(QStringList badgesForActivate READ badgesForActivate NOTIFY badgesForActivateChanged)
 
 public:
@@ -38,6 +39,8 @@ public:
     ~ShortcutsTracker() override;
 
     void clearAllAppletShortcuts();
+
+    bool basedOnPositionEnabled() const;
 
     QStringList badgesForActivate() const;
 
@@ -60,7 +63,9 @@ private:
     QString shortcutToBadge(QStringList shortcutRecords);
 
 private:
-    QStringList m_badgesForActivate{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "z", "x", "c", "v", "b", "n", "m", ",", "."};
+    bool m_basedOnPositionEnabled{false};
+
+    QStringList m_badgesForActivate;
 
     //! shortcuts assigned to applets through plasma infrastructure
     //! <applet id, shortcut>

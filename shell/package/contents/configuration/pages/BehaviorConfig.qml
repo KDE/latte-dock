@@ -543,18 +543,6 @@ PlasmaComponents.Page {
 
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Activate based on position through global shortcuts")
-                checked: latteView.isPreferredForShortcuts
-
-                tooltip: i18n("This view activates its items based on their position through global shortcuts. Take note that only one view can have that option enabled for each layout")
-
-                onClicked: {
-                    latteView.isPreferredForShortcuts = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Decrease size automatically when needed")
                 checked: plasmoid.configuration.autoDecreaseIconSize
                 tooltip: i18n("Items size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
@@ -585,6 +573,19 @@ PlasmaComponents.Page {
 
                 onClicked: {
                     latteView.visibility.enableKWinEdges = checked;
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Prefer for based on position global shortcuts")
+                checked: latteView.isPreferredForShortcuts
+                enabled: shortcutsEngine.basedOnPositionEnabled
+
+                tooltip: i18n("This view is preferred to use the based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
+
+                onClicked: {
+                    latteView.isPreferredForShortcuts = checked
                 }
             }
 
