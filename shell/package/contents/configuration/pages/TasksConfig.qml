@@ -172,7 +172,7 @@ PlasmaComponents.Page {
                 checked: !plasmoid.configuration.unifiedGlobalShortcuts
                 tooltip: i18n("Based on position global shortcuts are enabled only for tasks and not for applets")
                 visible: dialog.highLevel
-                enabled: shortcutsEngine.basedOnPositionEnabled
+                enabled: latteView.isPreferredForShortcuts
 
                 onClicked: {
                     plasmoid.configuration.unifiedGlobalShortcuts = !checked

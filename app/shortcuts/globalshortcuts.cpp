@@ -372,22 +372,25 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 
     QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
-    if (m_shortcutsTracker->basedOnPositionEnabled()){
-        foreach (auto view, sortedViews) {
-            if ((!view->latteTasksPresent() && view->tasksPresent() &&
-                 activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
-                    || activateLatteEntryAtContainment(view, index, modifier)) {
+    foreach (auto view, sortedViews) {
+        if (!view->isPreferredForShortcuts()) {
+            continue;
+        }
 
-                if (!m_hideViews.contains(view)) {
-                    m_hideViews.append(view);
-                }
+        if ((!view->latteTasksPresent() && view->tasksPresent() &&
+             activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
+                || activateLatteEntryAtContainment(view, index, modifier)) {
 
-                view->visibility()->setBlockHiding(true);
-                m_hideViewsTimer.start();
-                return;
+            if (!m_hideViews.contains(view)) {
+                m_hideViews.append(view);
             }
+
+            view->visibility()->setBlockHiding(true);
+            m_hideViewsTimer.start();
+            return;
         }
     }
+
 }
 
 //! update badge for specific view item
@@ -593,12 +596,10 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
 
-    if (m_shortcutsTracker->basedOnPositionEnabled()) {
-        foreach (auto view, sortedViews) {
-            if (!viewWithTasks && isCapableToShowShortcutBadges(view)) {
-                viewWithTasks = view;
-                break;
-            }
+    foreach (auto view, sortedViews) {
+        if (!viewWithTasks && view->isPreferredForShortcuts() && isCapableToShowShortcutBadges(view)) {
+            viewWithTasks = view;
+            break;
         }
     }
 
