@@ -127,6 +127,8 @@ DragDrop.DropArea {
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.status !== PlasmaCore.Types.HiddenStatus
                 && item.pluginName !== root.plasmoidName
+                && item.pluginName !== "org.kde.plasma.appmenu"
+                && item.pluginName !== "org.kde.windowappmenu"
                 && item.pluginName !== "org.kde.activeWindowControl");
     })
 
