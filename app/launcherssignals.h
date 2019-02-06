@@ -22,7 +22,6 @@
 #define LAUNCHERSSIGNALS_H
 
 // local
-#include "layoutmanager.h"
 #include "../liblatte2/types.h"
 
 // Qt

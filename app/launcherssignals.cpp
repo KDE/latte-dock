@@ -22,6 +22,7 @@
 
 // local
 #include "lattecorona.h"
+#include "layoutmanager.h"
 #include "layout/layout.h"
 
 // Qt
