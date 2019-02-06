@@ -809,10 +809,7 @@ Latte::View *GlobalShortcuts::highestPriorityView()
 {
     QList<Latte::View *> views = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
-    if (views.count() > 0) {
-        return views[0];
-    }
-    return nullptr;
+    return views.count() > 0 ? views[0] : nullptr;
 }
 
 void GlobalShortcuts::showSettings()
