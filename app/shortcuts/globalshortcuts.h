@@ -61,6 +61,8 @@ public:
 
     ShortcutsPart::ShortcutsTracker *shortcutsTracker() const;
 
+    Latte::View *highestPriorityView();
+
 signals:
     void modifiersChanged();
 
@@ -82,7 +84,6 @@ private:
     bool isCapableToShowShortcutBadges(Latte::View *view);
 
     int applicationLauncherId(const Plasma::Containment *c);
-
     QList<Latte::View *> sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views);
 
 private:

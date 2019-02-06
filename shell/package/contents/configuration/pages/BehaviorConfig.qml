@@ -544,13 +544,16 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Activate based on position through global shortcuts")
-                checked: latteView.isPreferredForShortcuts
+                checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
                 //enabled: shortcutsEngine.basedOnPositionEnabled
 
                 tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
 
                 onClicked: {
                     latteView.isPreferredForShortcuts = checked
+                    if (!latteView.managedLayout.preferredForShortcutsTouched) {
+                        latteView.managedLayout.preferredForShortcutsTouched = true
+                    }
                 }
             }
 

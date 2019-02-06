@@ -184,6 +184,7 @@ void Layout::init()
     connect(this, &Layout::textColorChanged, this, &Layout::saveConfig);
     connect(this, &Layout::launchersChanged, this, &Layout::saveConfig);
     connect(this, &Layout::lastUsedActivityChanged, this, &Layout::saveConfig);
+    connect(this, &Layout::preferredForShortcutsTouchedChanged, this, &Layout::saveConfig);
 }
 
 void Layout::initToCorona(Latte::Corona *corona)
@@ -550,6 +551,21 @@ void Layout::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
+bool Layout::preferredForShortcutsTouched() const
+{
+    return m_preferredForShortcutsTouched;
+}
+
+void Layout::setPreferredForShortcutsTouched(bool touched)
+{
+    if (m_preferredForShortcutsTouched == touched) {
+        return;
+    }
+
+    m_preferredForShortcutsTouched = touched;
+    emit preferredForShortcutsTouchedChanged();
+}
+
 QStringList Layout::unloadedContainmentsIds()
 {
     return m_unloadedContainmentsIds;
@@ -730,6 +746,7 @@ void Layout::loadConfig()
     m_activities = m_layoutGroup.readEntry("activities", QStringList());
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
     m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
+    m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
 
     QString back = m_layoutGroup.readEntry("background", "");
 
@@ -756,6 +773,7 @@ void Layout::saveConfig()
     m_layoutGroup.writeEntry("activities", m_activities);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
     m_layoutGroup.writeEntry("textColor", m_textColor);
+    m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
 
     m_layoutGroup.sync();
 }

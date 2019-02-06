@@ -67,6 +67,8 @@ class Layout : public QObject
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
     Q_PROPERTY(QStringList activities READ activities WRITE setActivities NOTIFY activitiesChanged)
 
+    Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
+
 public:
     Layout(QObject *parent, QString layoutFile, QString layoutName = QString());
     ~Layout() override;
@@ -164,6 +166,9 @@ public:
     int viewsCount(QScreen *screen) const;
     int viewsCount() const;
 
+    bool preferredForShortcutsTouched() const;
+    void setPreferredForShortcutsTouched(bool touched);
+
 public slots:
     Q_INVOKABLE int viewsWithTasks() const;
 
@@ -189,6 +194,7 @@ signals:
     //! used from LatteView(s) in order to exist only one each time that has the highest priority
     //! to use the global shortcuts activations
     void preferredViewForShortcutsChanged(Latte::View *view);
+    void preferredForShortcutsTouchedChanged();
 
 private slots:
     void loadConfig();
@@ -245,6 +251,7 @@ private:
     QString m_textColor;
     QStringList m_activities;
     QStringList m_launchers;
+    bool m_preferredForShortcutsTouched{false};
 
     QStringList m_unloadedContainmentsIds;
 

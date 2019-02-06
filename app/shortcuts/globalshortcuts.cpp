@@ -373,7 +373,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
     QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
 
     foreach (auto view, sortedViews) {
-        if (!view->isPreferredForShortcuts()) {
+        if (view->managedLayout()->preferredForShortcutsTouched() && !view->isPreferredForShortcuts()) {
             continue;
         }
 
@@ -597,7 +597,7 @@ void GlobalShortcuts::showViews()
     Latte::View *viewWithMeta{nullptr};
 
     foreach (auto view, sortedViews) {
-        if (!viewWithTasks && view->isPreferredForShortcuts() && isCapableToShowShortcutBadges(view)) {
+        if (!viewWithTasks && (!view->managedLayout()->preferredForShortcutsTouched() || view->isPreferredForShortcuts()) && isCapableToShowShortcutBadges(view)) {
             viewWithTasks = view;
             break;
         }
@@ -803,6 +803,16 @@ QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Contai
     }
 
     return sortedViews;
+}
+
+Latte::View *GlobalShortcuts::highestPriorityView()
+{
+    QList<Latte::View *> views = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
+
+    if (views.count() > 0) {
+        return views[0];
+    }
+    return nullptr;
 }
 
 void GlobalShortcuts::showSettings()

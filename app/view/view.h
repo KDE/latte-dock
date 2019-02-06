@@ -26,6 +26,7 @@
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "settings/primaryconfigview.h"
+#include "../shortcuts/globalshortcuts.h"
 #include "../layout/layout.h"
 #include "../plasma/quick/containmentview.h"
 #include "../plasma/quick/configview.h"
@@ -190,6 +191,8 @@ public slots:
 
     Q_INVOKABLE void disableGrabItemBehavior();
     Q_INVOKABLE void restoreGrabItemBehavior();
+
+    Q_INVOKABLE bool isHighestPriorityView();
 
 protected slots:
     void showConfigurationInterface(Plasma::Applet *applet) override;

@@ -1030,6 +1030,15 @@ void View::restoreGrabItemBehavior()
     }
 }
 
+bool View::isHighestPriorityView() {
+    auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
+
+    if (latteCorona) {
+        return this == latteCorona->globalShortcuts()->highestPriorityView(); 
+    }
+    return false;
+}
+
 //!BEGIN overriding context menus behavior
 void View::mousePressEvent(QMouseEvent *event)
 {
