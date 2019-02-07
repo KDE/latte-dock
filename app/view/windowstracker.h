@@ -43,6 +43,7 @@ class WindowsTracker : public QObject {
     Q_PROPERTY(bool activeWindowTouching READ activeWindowTouching NOTIFY activeWindowTouchingChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
+    Q_PROPERTY(SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
     Q_PROPERTY(SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
 
 public:
@@ -56,6 +57,7 @@ public:
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
 
+    SchemeColors *activeWindowScheme() const;
     SchemeColors *touchingWindowScheme() const;
 
     void setWindowOnActivities(QWindow &window, const QStringList &activities);
@@ -65,6 +67,7 @@ signals:
     void activeWindowTouchingChanged();
     void existsWindowMaximizedChanged();
     void existsWindowTouchingChanged();
+    void activeWindowSchemeChanged();
     void touchingWindowSchemeChanged();
 
 public slots:
@@ -76,6 +79,7 @@ private:
     void setActiveWindowTouching(bool activeTouching);
     void setExistsWindowMaximized(bool windowMaximized);
     void setExistsWindowTouching(bool windowTouching);
+    void setActiveWindowScheme(SchemeColors *scheme);
     void setTouchingWindowScheme(SchemeColors *scheme);
     void updateAvailableScreenGeometry();
     void updateFlags();
@@ -84,6 +88,7 @@ private:
     //! this is a garbage collector to collect such windows in order to not break the windows array validity.
     void cleanupFaultyWindows();
 
+    bool isActiveInCurrentScreen(const WindowInfoWrap &winfo);
     bool isMaximizedInCurrentScreen(const WindowInfoWrap &winfo);
     bool isTouchingPanelEdge(const WindowInfoWrap &winfo);
 
@@ -100,6 +105,7 @@ private:
     std::array<QMetaObject::Connection, 7> m_connections;
     QMap<WindowId, WindowInfoWrap> m_windows;
 
+    SchemeColors *m_activeScheme{nullptr};
     SchemeColors *m_touchingScheme{nullptr};
 
     Latte::AbstractWindowInterface *m_wm;

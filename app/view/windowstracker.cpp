@@ -88,6 +88,22 @@ void WindowsTracker::setExistsWindowTouching(bool windowTouching)
     emit existsWindowTouchingChanged();
 }
 
+SchemeColors *WindowsTracker::activeWindowScheme() const
+{
+    return m_activeScheme;
+}
+
+void WindowsTracker::setActiveWindowScheme(SchemeColors *scheme)
+{
+    if (m_activeScheme == scheme) {
+        return;
+    }
+
+    m_activeScheme = scheme;
+
+    emit activeWindowSchemeChanged();
+}
+
 SchemeColors *WindowsTracker::touchingWindowScheme() const
 {
     return m_touchingScheme;
@@ -196,6 +212,7 @@ void WindowsTracker::updateAvailableScreenGeometry()
 
 void WindowsTracker::updateFlags()
 {
+    bool foundActive{false};
     bool foundActiveTouch{false};
     bool foundTouch{false};
     bool foundMaximized{false};
@@ -203,11 +220,18 @@ void WindowsTracker::updateFlags()
     //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
     //! maybe a garbage collector here is a good idea!!!
     bool existsFaultyWindow{false};
+
     WindowId maxWinId;
-    WindowId activeTouchWinId;
+    WindowId activeWinId;
     WindowId touchWinId;
+    WindowId activeTouchWinId;
 
     for (const auto &winfo : m_windows) {
+        if (isActiveInCurrentScreen(winfo)) {
+            foundActive = true;
+            activeWinId = winfo.wid();
+        }
+
         if (isMaximizedInCurrentScreen(winfo)) {
             foundMaximized = true;
             maxWinId = winfo.wid();
@@ -238,7 +262,9 @@ void WindowsTracker::updateFlags()
     setExistsWindowMaximized(foundMaximized);
     setExistsWindowTouching(foundTouch || foundActiveTouch);
 
-    //! update color scheme for touching window
+    //! update color schemes for active and touching windows
+
+    setActiveWindowScheme(foundActive ? m_wm->schemeForWindow(activeWinId) : nullptr);
 
     if (foundActiveTouch) {
         setTouchingWindowScheme(m_wm->schemeForWindow(activeTouchWinId));
@@ -247,6 +273,17 @@ void WindowsTracker::updateFlags()
     } else {
         setTouchingWindowScheme(nullptr);
     }
+}
+
+bool WindowsTracker::isActiveInCurrentScreen(const WindowInfoWrap &winfo)
+{
+    if (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
+            && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())
+            && m_availableScreenGeometry.contains(winfo.geometry().center())) {
+        return true;
+    }
+
+    return false;
 }
 
 bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
