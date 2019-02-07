@@ -116,7 +116,6 @@ signals:
     void containsMouseChanged();
     void timerShowChanged();
     void timerHideChanged();
-    void touchingWindowSchemeChanged();
 
     //! KWin Edges Support signals
     void enableKWinEdgesChanged();
@@ -133,9 +132,6 @@ private:
     void raiseViewTemporarily();
     void updateHiddenState();
 
-    //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
-    //! this is a garbage collector to collect such windows in order to not break the windows array validity.
-    void cleanupFaultyWindows();
 
     //! KWin Edges Support functions
     void createEdgeGhostWindow();
@@ -147,21 +143,20 @@ private:
     void windowAdded(WindowId id);
     void dodgeActive(WindowId id);
     void dodgeMaximized(WindowId id);
-    void dodgeWindows(WindowId id);
-    void checkAllWindows();
 
     void updateStrutsBasedOnLayoutsAndActivities();
     void viewEventManager(QEvent *ev);
+
+private slots:
+    void dodgeAllWindows();
 
 private:
     AbstractWindowInterface *wm;
     Types::Visibility m_mode{Types::None};
     std::array<QMetaObject::Connection, 5> connections;
-    QMap<WindowId, WindowInfoWrap> windows;
 
     QTimer m_timerShow;
     QTimer m_timerHide;
-    QTimer m_timerCheckWindows;
     QTimer m_timerStartUp;
     QRect m_viewGeometry;
     bool m_isHidden{false};

@@ -62,11 +62,9 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     m_timerStartUp.setInterval(5000);
     m_timerStartUp.setSingleShot(true);
-    m_timerCheckWindows.setInterval(350);
-    m_timerCheckWindows.setSingleShot(true);
     m_timerShow.setSingleShot(true);
     m_timerHide.setSingleShot(true);
-    connect(&m_timerCheckWindows, &QTimer::timeout, this, &VisibilityManager::checkAllWindows);
+
     connect(&m_timerShow, &QTimer::timeout, this, [&]() {
         if (m_isHidden) {
             //   qDebug() << "must be shown";
@@ -113,10 +111,6 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
         disconnect(c);
     }
 
-    if (m_mode != Types::DodgeAllWindows) {
-        windows.clear();
-    }
-
     if (m_mode == Types::AlwaysVisible) {
         wm->removeViewStruts(*m_latteView);
     } else {
@@ -136,7 +130,6 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     m_timerShow.stop();
     m_timerHide.stop();
-    m_timerCheckWindows.stop();
     m_mode = mode;
 
     switch (m_mode) {
@@ -219,24 +212,14 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
                 m_latteView->surface()->setPanelBehavior(KWayland::Client::PlasmaShellSurface::PanelBehavior::AutoHide);
             }
 
-            for (const auto &wid : wm->windows()) {
-                windows.insert(wid, wm->requestInfo(wid));
-            }
+            connections[0] = connect(this, &VisibilityManager::containsMouseChanged
+                                     , this, &VisibilityManager::dodgeAllWindows);
 
-            connections[0] = connect(wm, &WindowSystem::windowChanged
-                                     , this, &VisibilityManager::dodgeWindows);
-            connections[1] = connect(wm, &WindowSystem::windowRemoved
-            , this, [&](WindowId wid) {
-                windows.remove(wid);
-                m_timerCheckWindows.start();
-            });
-            connections[2] = connect(wm, &WindowSystem::windowAdded
-            , this, [&](WindowId wid) {
-                windows.insert(wid, wm->requestInfo(wid));
-                m_timerCheckWindows.start();
-            });
+            connections[1] = connect(m_latteView->windowsTracker(), &WindowsTracker::existsWindowTouchingChanged
+                                     , this, &VisibilityManager::dodgeAllWindows);
 
-            m_timerCheckWindows.start();
+            connections[2] = connect(m_latteView->windowsTracker(), &WindowsTracker::activeWindowTouchingChanged
+                                     , this, &VisibilityManager::dodgeAllWindows);
         }
         break;
 
@@ -449,7 +432,7 @@ void VisibilityManager::updateHiddenState()
             break;
 
         case Types::DodgeAllWindows:
-            dodgeWindows(wm->activeWindow());
+            dodgeAllWindows();
             break;
 
         default:
@@ -556,60 +539,18 @@ void VisibilityManager::dodgeMaximized(WindowId wid)
     }
 }
 
-void VisibilityManager::dodgeWindows(WindowId wid)
+void VisibilityManager::dodgeAllWindows()
 {
     if (raiseTemporarily)
         return;
 
-    if (windows.find(wid) == std::end(windows))
-        return;
-
-    //!don't send false raiseView signal when containing mouse
     if (m_containsMouse) {
         raiseView(true);
-        return;
     }
 
-    windows[wid] = wm->requestInfo(wid);
-    auto &winfo = windows[wid];
+    bool windowIntersects{m_latteView->windowsTracker()->activeWindowTouching() || m_latteView->windowsTracker()->existsWindowTouching()};
 
-    if (!winfo.isValid() || !wm->isOnCurrentDesktop(wid) || !wm->isOnCurrentActivity(wid))
-        return;
-
-    if (intersects(winfo))
-        raiseView(false);
-    else
-        m_timerCheckWindows.start();
-}
-
-void VisibilityManager::checkAllWindows()
-{
-    if (raiseTemporarily)
-        return;
-
-    bool raise{true};
-    bool existsFaultyWindow{false};
-
-    for (const auto &winfo : windows) {
-        // <WindowId, WindowInfoWrap>
-        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
-            existsFaultyWindow = true;
-        }
-
-        if (!winfo.isValid() || !wm->isOnCurrentDesktop(winfo.wid()) || !wm->isOnCurrentActivity(winfo.wid()))
-            continue;
-
-        if (winfo.isFullscreen()) {
-            raise = false;
-            break;
-        } else if (intersects(winfo)) {
-            raise = false;
-            break;
-        }
-    }
-
-    cleanupFaultyWindows();
-    raiseView(raise);
+    raiseView(!windowIntersects);
 }
 
 bool VisibilityManager::intersects(const WindowInfoWrap &winfo)
@@ -735,19 +676,6 @@ void VisibilityManager::viewEventManager(QEvent *ev)
 
         default:
             break;
-    }
-}
-
-void VisibilityManager::cleanupFaultyWindows()
-{
-    foreach (auto key, windows.keys()) {
-        auto winfo = windows[key];
-
-        //! garbage windows removing
-        if (winfo.geometry() == QRect(0, 0, 0, 0)) {
-            //qDebug() << "Faulty Geometry ::: " << winfo.wid();
-            windows.remove(key);
-        }
     }
 }
 

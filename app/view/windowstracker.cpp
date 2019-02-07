@@ -43,6 +43,21 @@ WindowsTracker::~WindowsTracker()
     qDebug() << "WindowsTracker removing...";
 }
 
+bool WindowsTracker::activeWindowTouching() const
+{
+    return m_activeWindowIsTouchingFlag;
+}
+
+void WindowsTracker::setActiveWindowTouching(bool activeTouching)
+{
+    if (m_activeWindowIsTouchingFlag == activeTouching) {
+        return;
+    }
+
+    m_activeWindowIsTouchingFlag = activeTouching;
+    emit activeWindowTouchingChanged();
+}
+
 bool WindowsTracker::existsWindowMaximized() const
 {
     return m_windowIsMaximizedFlag;
@@ -55,7 +70,6 @@ void WindowsTracker::setExistsWindowMaximized(bool windowMaximized)
     }
 
     m_windowIsMaximizedFlag = windowMaximized;
-
     emit existsWindowMaximizedChanged();
 }
 
@@ -71,7 +85,6 @@ void WindowsTracker::setExistsWindowTouching(bool windowTouching)
     }
 
     m_windowIsTouchingFlag = windowTouching;
-
     emit existsWindowTouchingChanged();
 }
 
@@ -156,6 +169,10 @@ void WindowsTracker::setEnabled(bool active)
         }
 
         m_windows.clear();
+
+        setActiveWindowTouching(false);
+        setExistsWindowMaximized(false);
+        setExistsWindowTouching(false);
     }
 
     emit enabledChanged();
@@ -179,6 +196,7 @@ void WindowsTracker::updateAvailableScreenGeometry()
 
 void WindowsTracker::updateFlags()
 {
+    bool foundActiveTouch{false};
     bool foundTouch{false};
     bool foundMaximized{false};
 
@@ -186,6 +204,7 @@ void WindowsTracker::updateFlags()
     //! maybe a garbage collector here is a good idea!!!
     bool existsFaultyWindow{false};
     WindowId maxWinId;
+    WindowId activeTouchWinId;
     WindowId touchWinId;
 
     for (const auto &winfo : m_windows) {
@@ -194,9 +213,14 @@ void WindowsTracker::updateFlags()
             maxWinId = winfo.wid();
         }
 
-        if (winfo.isActive() && (isTouchingPanelEdge(winfo) || (m_latteView->visibility()->intersects(winfo)))) {
-            foundTouch = true;
-            touchWinId = winfo.wid();
+        if ((isTouchingPanelEdge(winfo) || (m_latteView->visibility()->intersects(winfo)))) {
+            if (winfo.isActive()) {
+                foundActiveTouch = true;
+                activeTouchWinId = winfo.wid();
+            } else {
+                foundTouch = true;
+                touchWinId = winfo.wid();
+            }
         }
 
         if (!existsFaultyWindow && winfo.geometry() == QRect(0, 0, 0, 0)) {
@@ -210,14 +234,14 @@ void WindowsTracker::updateFlags()
         cleanupFaultyWindows();
     }
 
+    setActiveWindowTouching(foundActiveTouch);
     setExistsWindowMaximized(foundMaximized);
     setExistsWindowTouching(foundTouch);
 
     //! update color scheme for touching window
 
-    if (foundTouch) {
-        //! first the touching one because that would mean it is active
-        setTouchingWindowScheme(m_wm->schemeForWindow(touchWinId));
+    if (foundActiveTouch) {
+        setTouchingWindowScheme(m_wm->schemeForWindow(activeTouchWinId));
     } else if (foundMaximized) {
         setTouchingWindowScheme(m_wm->schemeForWindow(maxWinId));
     } else {

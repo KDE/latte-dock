@@ -40,6 +40,7 @@ namespace ViewPart {
 class WindowsTracker : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool activeWindowTouching READ activeWindowTouching NOTIFY activeWindowTouchingChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
     Q_PROPERTY(SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
@@ -51,6 +52,7 @@ public:
     bool enabled() const;
     void setEnabled(bool active);
 
+    bool activeWindowTouching() const;
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
 
@@ -60,6 +62,7 @@ public:
 
 signals:
     void enabledChanged();
+    void activeWindowTouchingChanged();
     void existsWindowMaximizedChanged();
     void existsWindowTouchingChanged();
     void touchingWindowSchemeChanged();
@@ -70,6 +73,7 @@ public slots:
     Q_INVOKABLE bool activeWindowCanBeDragged();
 
 private:
+    void setActiveWindowTouching(bool activeTouching);
     void setExistsWindowMaximized(bool windowMaximized);
     void setExistsWindowTouching(bool windowTouching);
     void setTouchingWindowScheme(SchemeColors *scheme);
@@ -85,6 +89,7 @@ private:
 
 private:
     bool m_enabled{false};
+    bool m_activeWindowIsTouchingFlag{false};
     bool m_windowIsTouchingFlag{false};
     bool m_windowIsMaximizedFlag{false};
 

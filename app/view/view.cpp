@@ -109,6 +109,11 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         //! Check the screen assigned to this dock
         reconsiderScreen();
 
+        //! needs to be created before visibility creation because visibility uses it
+        if (!m_windowsTracker) {
+            m_windowsTracker = new ViewPart::WindowsTracker(this);
+        }
+
         if (!m_visibility) {
             m_visibility = new ViewPart::VisibilityManager(this);
 
@@ -117,10 +122,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
                     deactivateApplets();
                 }
             });
-        }
-
-        if (!m_windowsTracker) {
-            m_windowsTracker = new ViewPart::WindowsTracker(this);
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
@@ -171,12 +172,12 @@ View::~View()
         delete m_effects;
     }
 
-    if (m_windowsTracker) {
-        delete m_windowsTracker;
-    }
-
     if (m_visibility) {
         delete m_visibility;
+    }
+
+    if (m_windowsTracker) {
+        delete m_windowsTracker;
     }
 }
 

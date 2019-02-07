@@ -172,10 +172,11 @@ Item{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
         property: "enabled"
         when: latteView && latteView.windowsTracker
-        value: (root.backgroundOnlyOnMaximized
-                || plasmoid.configuration.solidBackgroundForMaximized
-                || root.disablePanelShadowMaximized)
-               && Latte.WindowSystem.compositingActive
+        value: (latteView.visibility && latteView.visibility.mode === Latte.Types.DodgeAllWindows)
+               || ((root.backgroundOnlyOnMaximized
+                    || plasmoid.configuration.solidBackgroundForMaximized
+                    || root.disablePanelShadowMaximized)
+                   && Latte.WindowSystem.compositingActive)
     }
 
     Connections{
