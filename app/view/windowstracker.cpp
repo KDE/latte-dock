@@ -310,8 +310,7 @@ void WindowsTracker::requestMoveActiveWindow(int localX, int localY)
             m_wm->releaseMouseEventFor(m_latteView->winId());
         });
 
-      //  setContainsMouse(false);
-      //  updateHiddenState();
+        m_latteView->visibility()->activeWindowDraggingStarted();
     }
 }
 

@@ -535,7 +535,7 @@ Item{
                 }
 
                 if (root.forceColorizeFromActiveWindowScheme) {
-                    return latteView.visibility.touchingWindowScheme.backgroundColor
+                    return latteView.windowsTracker.touchingWindowScheme.backgroundColor
                 }
 
                 return "transparent";

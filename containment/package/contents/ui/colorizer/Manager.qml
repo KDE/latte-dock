@@ -54,8 +54,8 @@ Loader{
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
     property QtObject applyTheme: {
-        if (forceSolidnessAndColorize && latteView.visibility.touchingWindowScheme) {
-            return latteView.visibility.touchingWindowScheme;
+        if (forceSolidnessAndColorize && latteView.windowsTracker.touchingWindowScheme) {
+            return latteView.windowsTracker.touchingWindowScheme;
         }
 
         if (themeExtended) {

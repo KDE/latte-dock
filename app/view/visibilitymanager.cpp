@@ -476,6 +476,12 @@ void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activi
     }
 }
 
+void VisibilityManager::activeWindowDraggingStarted()
+{
+    setContainsMouse(false);
+    updateHiddenState();
+}
+
 void VisibilityManager::dodgeActive(WindowId wid)
 {
     if (raiseTemporarily)

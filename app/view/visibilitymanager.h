@@ -101,6 +101,9 @@ public:
 
     bool supportsKWinEdges() const;
 
+    //! called for windowTracker to reset values
+    void activeWindowDraggingStarted();
+
 signals:
     void mustBeShown();
     void mustBeHide();

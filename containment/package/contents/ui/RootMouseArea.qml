@@ -41,7 +41,7 @@ MouseArea{
     }
 
     onPressed: {
-        if (latteView.visibility.activeWindowCanBeDragged()) {
+        if (latteView.windowsTracker.activeWindowCanBeDragged()) {
             lastPressX = mouse.x;
             lastPressY = mouse.y;
             dragWindowTimer.start();
@@ -60,7 +60,7 @@ MouseArea{
 
         var tryDrag = mainArea.pressed && (stepX>threshold || stepY>threshold);
 
-        if ( tryDrag && latteView.visibility.activeWindowCanBeDragged()) {
+        if ( tryDrag && latteView.windowsTracker.activeWindowCanBeDragged()) {
             dragWindowTimer.stop();
             activateDragging();
         }
@@ -69,13 +69,13 @@ MouseArea{
     onDoubleClicked: {
         dragWindowTimer.stop();
         restoreGrabberTimer.stop();
-        latteView.visibility.requestToggleMaximizeForActiveWindow();
+        latteView.windowsTracker.requestToggleMaximizeForActiveWindow();
         //tasksModel.requestToggleMaximized(tasksModel.activeTask);
     }
 
     function activateDragging(){
         latteView.disableGrabItemBehavior();
-        latteView.visibility.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
+        latteView.windowsTracker.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
         restoreGrabberTimer.start();
     }
 
@@ -83,7 +83,7 @@ MouseArea{
         id: dragWindowTimer
         interval: 500
         onTriggered: {
-            if (mainArea.pressed && latteView.visibility.activeWindowCanBeDragged()) {
+            if (mainArea.pressed && latteView.windowsTracker.activeWindowCanBeDragged()) {
                 mainArea.activateDragging();
             }
         }

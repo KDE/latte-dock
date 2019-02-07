@@ -143,7 +143,7 @@ Item{
         when: latteView && latteView.effects
         value: Latte.WindowSystem.compositingActive && !editModeVisual.inEditMode &&
                (((root.blurEnabled && root.useThemePanel)
-                 || (root.blurEnabled && root.forceSolidPanel && latteView.visibility.existsWindowMaximized && Latte.WindowSystem.compositingActive)
+                 || (root.blurEnabled && root.forceSolidPanel && latteView.windowsTracker.existsWindowMaximized && Latte.WindowSystem.compositingActive)
                  || (root.blurEnabled && root.forcePanelForDistortedBackground && Latte.WindowSystem.compositingActive))
                 && (!root.inStartup || inForceHiding || inTempHiding))
     }
@@ -169,9 +169,9 @@ Item{
     }
 
     Binding{
-        target: latteView && latteView.visibility ? latteView.visibility : null
-        property: "enabledDynamicBackground"
-        when: latteView && latteView.visibility
+        target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
+        property: "enabled"
+        when: latteView && latteView.windowsTracker
         value: (root.backgroundOnlyOnMaximized
                 || plasmoid.configuration.solidBackgroundForMaximized
                 || root.disablePanelShadowMaximized)

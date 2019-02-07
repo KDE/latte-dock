@@ -87,7 +87,8 @@ DragDrop.DropArea {
     property bool disablePanelShadowMaximized: plasmoid.configuration.disablePanelShadowForMaximized && Latte.WindowSystem.compositingActive
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
-    property bool windowIsTouching: latteView && latteView.visibility && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowTouching || hasExpandedApplet)
+    property bool windowIsTouching: latteView && latteView.windowsTracker
+                                    && (latteView.windowsTracker.existsWindowMaximized|| latteView.windowsTracker.existsWindowTouching || hasExpandedApplet)
 
     property bool forceSemiTransparentPanel: Latte.WindowSystem.compositingActive && !root.editMode
                                              && ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
@@ -97,7 +98,7 @@ DragDrop.DropArea {
                                     && latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
                                     && !root.editMode
-                                    && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowTouching || hasExpandedApplet
+                                    && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.existsWindowTouching || hasExpandedApplet
                                        || showAppletShortcutBadges || showMetaBadge))
                                     || !Latte.WindowSystem.compositingActive
 
@@ -105,7 +106,7 @@ DragDrop.DropArea {
                                          && latteView && latteView.visibility
                                          && Latte.WindowSystem.compositingActive
                                          && !root.editMode
-                                         && !(latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowTouching)
+                                         && !(latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.existsWindowTouching)
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
     property bool forcePanelForBusyBackground: root.forceTransparentPanel && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy
@@ -113,8 +114,8 @@ DragDrop.DropArea {
 
     property bool forceColorizer: Latte.WindowSystem.compositingActive && plasmoid.configuration.colorizeTransparentPanels
     property bool forceColorizeFromActiveWindowScheme: plasmoid.configuration.colorizeFromActiveWindowScheme && !editMode
-                                                       && (latteView && latteView.visibility && latteView.visibility.touchingWindowScheme
-                                                           && (latteView.visibility.existsWindowMaximized || latteView.visibility.existsWindowTouching)
+                                                       && (latteView && latteView.windowsTracker && latteView.windowsTracker.touchingWindowScheme
+                                                           && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.existsWindowTouching)
                                                            && !hasExpandedApplet)
 
     property bool maximizedWindowTitleBarBehavesAsPanelBackground: latteView && latteView.visibility
@@ -122,7 +123,7 @@ DragDrop.DropArea {
                                                                    && (latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                                                                    && (plasmoid.location === PlasmaCore.Types.TopEdge)
                                                                    && (!useThemePanel || panelTransparency<40)
-                                                                   && latteView.visibility.existsWindowMaximized
+                                                                   && latteView.windowsTracker.existsWindowMaximized
 
     readonly property bool hasExpandedApplet: plasmoid.applets.some(function (item) {
         return (item.status >= PlasmaCore.Types.NeedsAttentionStatus && item.status !== PlasmaCore.Types.HiddenStatus
@@ -230,7 +231,7 @@ DragDrop.DropArea {
 
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
              || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                && !(disablePanelShadowMaximized && latteView.visibility.existsWindowMaximized)) {
+                && !(disablePanelShadowMaximized && latteView.windowsTracker.existsWindowMaximized)) {
             return true;
         }
 
