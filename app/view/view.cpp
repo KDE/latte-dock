@@ -119,6 +119,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             });
         }
 
+        if (!m_windowsTracker) {
+            m_windowsTracker = new ViewPart::WindowsTracker(this);
+        }
+
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
     }, Qt::DirectConnection);
 
@@ -167,8 +171,13 @@ View::~View()
         delete m_effects;
     }
 
-    if (m_visibility)
+    if (m_windowsTracker) {
+        delete m_windowsTracker;
+    }
+
+    if (m_visibility) {
         delete m_visibility;
+    }
 }
 
 void View::init()
@@ -227,8 +236,8 @@ void View::disconnectSensitiveSignals()
     disconnect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
     setManagedLayout(nullptr);
 
-    if (visibility()) {
-        visibility()->setEnabledDynamicBackground(false);
+    if (m_windowsTracker) {
+        m_windowsTracker->setEnabled(false);
     }
 }
 
@@ -658,15 +667,15 @@ void View::applyActivitiesToWindows()
 {
     if (m_visibility) {
         QStringList activities = m_managedLayout->appliedActivities();
-        m_visibility->setWindowOnActivities(*this, activities);
+        m_windowsTracker->setWindowOnActivities(*this, activities);
 
         if (m_configView) {
-            m_visibility->setWindowOnActivities(*m_configView, activities);
+            m_windowsTracker->setWindowOnActivities(*m_configView, activities);
 
             auto configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
             if (configView && configView->secondaryWindow()) {
-                m_visibility->setWindowOnActivities(*configView->secondaryWindow(), activities);
+                m_windowsTracker->setWindowOnActivities(*configView->secondaryWindow(), activities);
             }
         }
 
@@ -904,6 +913,11 @@ ViewPart::Positioner *View::positioner() const
 ViewPart::VisibilityManager *View::visibility() const
 {
     return m_visibility;
+}
+
+ViewPart::WindowsTracker *View::windowsTracker() const
+{
+    return m_windowsTracker;
 }
 
 bool View::event(QEvent *e)

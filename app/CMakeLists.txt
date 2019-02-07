@@ -31,6 +31,7 @@ set(lattedock-app_SRCS
     view/screenedgeghostwindow.cpp
     view/view.cpp
     view/visibilitymanager.cpp
+    view/windowstracker.cpp
     view/settings/primaryconfigview.cpp
     view/settings/secondaryconfigview.cpp
     wm/abstractwindowinterface.cpp

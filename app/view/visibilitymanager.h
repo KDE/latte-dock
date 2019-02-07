@@ -57,12 +57,6 @@ class VisibilityManager : public QObject
     Q_PROPERTY(bool blockHiding READ blockHiding WRITE setBlockHiding NOTIFY blockHidingChanged)
     Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
-    //! Dynamic Background Feature (needed options)
-    Q_PROPERTY(bool enabledDynamicBackground READ enabledDynamicBackground WRITE setEnabledDynamicBackground NOTIFY enabledDynamicBackgroundChanged)
-    Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
-    Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
-    Q_PROPERTY(SchemeColors *touchingWindowScheme READ touchingWindowScheme NOTIFY touchingWindowSchemeChanged)
-
     //! KWin Edges Support Options
     Q_PROPERTY(bool enableKWinEdges READ enableKWinEdges WRITE setEnableKWinEdges NOTIFY enableKWinEdgesChanged)
     Q_PROPERTY(bool supportsKWinEdges READ supportsKWinEdges NOTIFY supportsKWinEdgesChanged)
@@ -77,7 +71,6 @@ public:
     Latte::Types::Visibility mode() const;
     void setMode(Latte::Types::Visibility mode);
 
-    void setWindowOnActivities(QWindow &window, const QStringList &activities);
     void applyActivitiesToHiddenWindows(const QStringList &activities);
 
     bool raiseOnDesktop() const;
@@ -100,25 +93,13 @@ public:
     int timerHide() const;
     void setTimerHide(int msec);
 
-    //! Dynamic Background functions
-    bool enabledDynamicBackground() const;
-    void setEnabledDynamicBackground(bool active);
-
-    bool existsWindowMaximized() const;
-    bool existsWindowTouching() const;
-
-    SchemeColors *touchingWindowScheme() const;
+    bool intersects(const WindowInfoWrap &winfo);
 
     //! KWin Edges Support functions
     bool enableKWinEdges() const;
     void setEnableKWinEdges(bool enable);
 
     bool supportsKWinEdges() const;
-
-public slots:
-    Q_INVOKABLE void requestToggleMaximizeForActiveWindow();
-    Q_INVOKABLE void requestMoveActiveWindow(int localX, int localY);
-    Q_INVOKABLE bool activeWindowCanBeDragged();
 
 signals:
     void mustBeShown();
@@ -133,11 +114,6 @@ signals:
     void timerShowChanged();
     void timerHideChanged();
     void touchingWindowSchemeChanged();
-
-    //! Dynamic Background signals (from options)
-    void enabledDynamicBackgroundChanged();
-    void existsWindowMaximizedChanged();
-    void existsWindowTouchingChanged();
 
     //! KWin Edges Support signals
     void enableKWinEdgesChanged();
@@ -158,13 +134,6 @@ private:
     //! this is a garbage collector to collect such windows in order to not break the windows array validity.
     void cleanupFaultyWindows();
 
-    //! Dynamic Background Feature
-    void setExistsWindowMaximized(bool windowMaximized);
-    void setExistsWindowTouching(bool windowTouching);
-    void setTouchingWindowScheme(SchemeColors *scheme);
-    void updateAvailableScreenGeometry();
-    void updateDynamicBackgroundWindowFlags();
-
     //! KWin Edges Support functions
     void createEdgeGhostWindow();
     void deleteEdgeGhostWindow();
@@ -177,10 +146,6 @@ private:
     void dodgeMaximized(WindowId id);
     void dodgeWindows(WindowId id);
     void checkAllWindows();
-
-    bool intersects(const WindowInfoWrap &winfo);
-    bool isMaximizedInCurrentScreen(const WindowInfoWrap &winfo);
-    bool isTouchingPanelEdge(const WindowInfoWrap &winfo);
 
     void updateStrutsBasedOnLayoutsAndActivities();
     void viewEventManager(QEvent *ev);
@@ -204,16 +169,6 @@ private:
     bool raiseOnDesktopChange{false};
     bool raiseOnActivityChange{false};
     bool hideNow{false};
-
-    //! Dynamic Background flags and needed information
-    bool enabledDynamicBackgroundFlag{false};
-    bool windowIsTouchingFlag{false};
-    bool windowIsMaximizedFlag{false};
-    QRect availableScreenGeometry;
-    std::array<QMetaObject::Connection, 7> connectionsDynBackground;
-    WindowId lastActiveWindowWid;
-    SchemeColors *touchingScheme{nullptr};
-
 
     //! KWin Edges
     bool enableKWinEdgesFromUser{true};

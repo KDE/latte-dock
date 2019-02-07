@@ -25,6 +25,7 @@
 #include "effects.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
+#include "windowstracker.h"
 #include "settings/primaryconfigview.h"
 #include "../shortcuts/globalshortcuts.h"
 #include "../layout/layout.h"
@@ -94,6 +95,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
+    Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
 
     Q_PROPERTY(QRect absoluteGeometry READ absGeometry NOTIFY absGeometryChanged)
     Q_PROPERTY(QRect localGeometry READ localGeometry WRITE setLocalGeometry NOTIFY localGeometryChanged)
@@ -159,6 +161,7 @@ public:
     ViewPart::Effects *effects() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
+    ViewPart::WindowsTracker *windowsTracker() const;
 
     Layout *managedLayout() const;
     void setManagedLayout(Layout *layout);
@@ -226,9 +229,10 @@ signals:
     void normalThicknessChanged();
     void offsetChanged();
     void onPrimaryChanged();
-    void visibilityChanged();
     void positionerChanged();
     void screenGeometryChanged();
+    void visibilityChanged();
+    void windowsTrackerChanged();
     void xChanged();
     void yChanged();
 
@@ -277,6 +281,7 @@ private:
     QPointer<ViewPart::Effects> m_effects;
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::VisibilityManager> m_visibility;
+    QPointer<ViewPart::WindowsTracker> m_windowsTracker;
 
     //! Connections to release and bound for the managed layout
     std::array<QMetaObject::Connection, 5> connectionsManagedLayout;
