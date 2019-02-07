@@ -1031,11 +1031,10 @@ void View::restoreGrabItemBehavior()
 }
 
 bool View::isHighestPriorityView() {
-    auto *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
-
-    if (latteCorona) {
-        return this == latteCorona->globalShortcuts()->highestPriorityView(); 
+    if (m_managedLayout) {
+        return this == m_managedLayout->highestPriorityView();
     }
+
     return false;
 }
 

@@ -25,6 +25,7 @@
 #include "shortcutstracker.h"
 #include "../lattecorona.h"
 #include "../layoutmanager.h"
+#include "../layout/layout.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
 
@@ -211,7 +212,12 @@ void GlobalShortcuts::activateLauncherMenu()
         return;
     }
 
-    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
+    QList<Latte::View *> sortedViews;
+    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+
+    if (currentLayout) {
+        sortedViews = currentLayout->sortedLatteViews();
+    }
 
     foreach (auto view, sortedViews) {
         const auto applets = view->containment()->applets();
@@ -370,7 +376,12 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
 {
     m_lastInvokedAction = dynamic_cast<QAction *>(sender());
 
-    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
+    QList<Latte::View *> sortedViews;
+    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+
+    if (currentLayout) {
+        sortedViews = currentLayout->sortedLatteViews();
+    }
 
     foreach (auto view, sortedViews) {
         if (view->managedLayout()->preferredForShortcutsTouched() && !view->isPreferredForShortcuts()) {
@@ -439,7 +450,12 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
         return false;
     };
 
-    QHash<const Plasma::Containment *, Latte::View *> *views =  m_corona->layoutManager()->currentLatteViews();
+    QHash<const Plasma::Containment *, Latte::View *> *views;
+    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+
+    if (currentLayout) {
+        views = currentLayout->latteViews();
+    }
 
     // update badges in all Latte Tasks plasmoids
     for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
@@ -591,7 +607,12 @@ void GlobalShortcuts::showViews()
         return false;
     };
 
-    QList<Latte::View *> sortedViews = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
+    QList<Latte::View *> sortedViews;
+    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+
+    if (currentLayout) {
+        sortedViews = currentLayout->sortedLatteViews();
+    }
 
     Latte::View *viewWithTasks{nullptr};
     Latte::View *viewWithMeta{nullptr};
@@ -645,7 +666,11 @@ void GlobalShortcuts::showViews()
     }
 
     //! show all the rest views that contain plasma shortcuts
-    QList<Latte::View *> viewsWithShortcuts = m_corona->layoutManager()->currentViewsWithPlasmaShortcuts();
+    QList<Latte::View *> viewsWithShortcuts;
+
+    if (currentLayout) {
+        viewsWithShortcuts = currentLayout->viewsWithPlasmaShortcuts();
+    }
 
     if (viewsWithShortcuts.count() > 0) {
         viewFound = true;
@@ -684,160 +709,37 @@ bool GlobalShortcuts::viewsToHideAreValid()
     return true;
 }
 
-bool GlobalShortcuts::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
-{
-    if (!base || ! test) {
-        return true;
-    }
-
-    if (base->screen() == test->screen()) {
-        return false;
-    } else if (base->screen() != qGuiApp->primaryScreen() && test->screen() == qGuiApp->primaryScreen()) {
-        return false;
-    } else if (base->screen() == qGuiApp->primaryScreen() && test->screen() != qGuiApp->primaryScreen()) {
-        return true;
-    } else {
-        int basePriority = -1;
-        int testPriority = -1;
-
-        for (int i = 0; i < qGuiApp->screens().count(); ++i) {
-            if (base->screen() == qGuiApp->screens()[i]) {
-                basePriority = i;
-            }
-
-            if (test->screen() == qGuiApp->screens()[i]) {
-                testPriority = i;
-            }
-        }
-
-        if (testPriority <= basePriority) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    qDebug() << "viewAtLowerScreenPriority : shouldn't had reached here...";
-    return false;
-}
-
-bool GlobalShortcuts::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base)
-{
-    if (!base || ! test) {
-        return true;
-    }
-
-    QList<Plasma::Types::Location> edges{Plasma::Types::RightEdge, Plasma::Types::TopEdge,
-                Plasma::Types::LeftEdge, Plasma::Types::BottomEdge};
-
-    int testPriority = -1;
-    int basePriority = -1;
-
-    for (int i = 0; i < edges.count(); ++i) {
-        if (edges[i] == base->location()) {
-            basePriority = i;
-        }
-
-        if (edges[i] == test->location()) {
-            testPriority = i;
-        }
-    }
-
-    if (testPriority < basePriority)
-        return true;
-    else
-        return false;
-}
-
-
-QList<Latte::View *> GlobalShortcuts::sortedViewsList(QHash<const Plasma::Containment *, Latte::View *> *views)
-{
-    QList<Latte::View *> sortedViews;
-
-    //! create views list to be sorted out
-    for (auto it = views->constBegin(), end = views->constEnd(); it != end; ++it) {
-        sortedViews.append(it.value());
-    }
-
-    qDebug() << " -------- ";
-
-    for (int i = 0; i < sortedViews.count(); ++i) {
-        qDebug() << i << ". " << sortedViews[i]->screen()->name() << " - " << sortedViews[i]->location();
-    }
-
-    //! sort the views based on screens and edges priorities
-    //! views on primary screen have higher priority and
-    //! for views in the same screen the priority goes to
-    //! Bottom,Left,Top,Right
-    for (int i = 0; i < sortedViews.size(); ++i) {
-        for (int j = 0; j < sortedViews.size() - i - 1; ++j) {
-            if (viewAtLowerScreenPriority(sortedViews[j], sortedViews[j + 1])
-                    || (sortedViews[j]->screen() == sortedViews[j + 1]->screen()
-                        && viewAtLowerEdgePriority(sortedViews[j], sortedViews[j + 1]))) {
-                Latte::View *temp = sortedViews[j + 1];
-                sortedViews[j + 1] = sortedViews[j];
-                sortedViews[j] = temp;
-            }
-        }
-    }
-
-    Latte::View *highestPriorityView{nullptr};
-
-    for (int i = 0; i < sortedViews.size(); ++i) {
-        if (sortedViews[i]->isPreferredForShortcuts()) {
-            highestPriorityView = sortedViews[i];
-            sortedViews.removeAt(i);
-            break;
-        }
-    }
-
-    if (highestPriorityView) {
-        sortedViews.prepend(highestPriorityView);
-    }
-
-    qDebug() << " -------- sorted -----";
-
-    for (int i = 0; i < sortedViews.count(); ++i) {
-        qDebug() << i << ". " << sortedViews[i]->isPreferredForShortcuts() << " - " << sortedViews[i]->screen()->name() << " - " << sortedViews[i]->location();
-    }
-
-    return sortedViews;
-}
-
-Latte::View *GlobalShortcuts::highestPriorityView()
-{
-    QList<Latte::View *> views = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
-
-    return views.count() > 0 ? views[0] : nullptr;
-}
-
 void GlobalShortcuts::showSettings()
 {
-    QList<Latte::View *> views = sortedViewsList(m_corona->layoutManager()->currentLatteViews());
+    QList<Latte::View *> sortedViews;
+    Layout *currentLayout = m_corona->layoutManager()->currentLayout();
+
+    if (currentLayout) {
+        sortedViews = currentLayout->sortedLatteViews();
+    }
 
     //! find which is the next view to show its settings
-    if (views.count() > 0) {
+    if (sortedViews.count() > 0) {
         int openSettings = -1;
 
         //! check if there is a view with opened settings window
-        for (int i = 0; i < views.size(); ++i) {
-            if (views[i]->settingsWindowIsShown()) {
+        for (int i = 0; i < sortedViews.size(); ++i) {
+            if (sortedViews[i]->settingsWindowIsShown()) {
                 openSettings = i;
                 break;
             }
         }
 
-        if (openSettings >= 0 && views.count() > 1) {
+        if (openSettings >= 0 && sortedViews.count() > 1) {
             openSettings = openSettings + 1;
 
-            if (openSettings >= views.size()) {
+            if (openSettings >= sortedViews.size()) {
                 openSettings = 0;
             }
 
-            views[openSettings]->showSettingsWindow();
+            sortedViews[openSettings]->showSettingsWindow();
         } else {
-            views[0]->showSettingsWindow();
+            sortedViews[0]->showSettingsWindow();
         }
     }
 }

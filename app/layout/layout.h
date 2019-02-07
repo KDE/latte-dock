@@ -138,8 +138,12 @@ public:
     const QStringList appliedActivities();
 
     QList<Plasma::Containment *> *containments();
-    QList<Latte::View *> viewsWithPlasmaShortcuts();
+
     QHash<const Plasma::Containment *, Latte::View *> *latteViews();
+    QList<Latte::View *> sortedLatteViews();
+    QList<Latte::View *> viewsWithPlasmaShortcuts();
+
+    Latte::View *highestPriorityView();
 
     //! Bind this latteView and its relevant containments(including systrays)
     //! to this layout. It is used for moving a Latte::View from layout to layout)
@@ -211,6 +215,9 @@ private:
     void init();
     void setName(QString name);
     void setFile(QString file);
+
+    bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
+    bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
 
     //! It can be used in order for LatteViews to not be created automatically when
     //! their corresponding containments are created e.g. copyView functionality

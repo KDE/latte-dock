@@ -324,62 +324,6 @@ bool LayoutManager::latteViewExists(Latte::View *view) const
     return false;
 }
 
-QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::currentLatteViews() const
-{
-    if (memoryUsage() == Types::SingleLayout) {
-        return m_activeLayouts.at(0)->latteViews();
-    } else {
-        foreach (auto layout, m_activeLayouts) {
-            if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
-                return layout->latteViews();
-            }
-        }
-
-        foreach (auto layout, m_activeLayouts) {
-            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
-                return layout->latteViews();
-            }
-        }
-    }
-
-    return nullptr;
-}
-
-QList<Latte::View *> LayoutManager::currentViewsWithPlasmaShortcuts()
-{
-    QList<Latte::View *> views;
-
-    if (memoryUsage() == Types::SingleLayout) {
-        return m_activeLayouts.at(0)->viewsWithPlasmaShortcuts();
-    } else {
-        foreach (auto layout, m_activeLayouts) {
-            if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
-                return layout->viewsWithPlasmaShortcuts();
-            }
-        }
-
-        foreach (auto layout, m_activeLayouts) {
-            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
-                return layout->viewsWithPlasmaShortcuts();
-            }
-        }
-    }
-
-    return views;
-}
-
-
-QHash<const Plasma::Containment *, Latte::View *> *LayoutManager::layoutLatteViews(const QString &layoutName) const
-{
-    Layout *layout = activeLayout(layoutName);
-
-    if (layout) {
-        return layout->latteViews();
-    }
-
-    return nullptr;
-}
-
 QStringList LayoutManager::activeLayoutsNames()
 {
     QStringList names;
@@ -427,6 +371,27 @@ int LayoutManager::activeLayoutPos(QString id) const
     }
 
     return -1;
+}
+
+Layout *LayoutManager::currentLayout() const
+{
+    if (memoryUsage() == Types::SingleLayout) {
+        return m_activeLayouts.at(0);
+    } else {
+        foreach (auto layout, m_activeLayouts) {
+            if (layout->activities().contains(m_corona->m_activityConsumer->currentActivity())) {
+                return layout;
+            }
+        }
+
+        foreach (auto layout, m_activeLayouts) {
+            if ((layout->name() != Layout::MultipleLayoutsName) && (layout->activities().isEmpty())) {
+                return layout;
+            }
+        }
+    }
+
+    return nullptr;
 }
 
 void LayoutManager::updateCurrentLayoutNameInMultiEnvironment()

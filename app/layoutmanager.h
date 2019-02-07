@@ -96,13 +96,13 @@ public:
     Types::LayoutsMemoryUsage memoryUsage() const;
     void setMemoryUsage(Types::LayoutsMemoryUsage memoryUsage);
 
-    QHash<const Plasma::Containment *, Latte::View *> *currentLatteViews() const;
-    QHash<const Plasma::Containment *, Latte::View *> *layoutLatteViews(const QString &layoutName) const;
-    QList<Latte::View *> currentViewsWithPlasmaShortcuts();
     //! returns an active layout with that #id (name), it returns null if such
     //! layout cant be found
     Layout *activeLayout(QString id) const;
     int activeLayoutPos(QString id) const;
+
+    //! returns the current and active layout based on activities and user preferences
+    Layout *currentLayout() const;
 
     LaunchersSignals *launchersSignals();
 

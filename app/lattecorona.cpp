@@ -448,9 +448,11 @@ QRegion Corona::availableScreenRegionWithCriteria(int id, QString forLayout) con
     QHash<const Plasma::Containment *, Latte::View *> *views;
 
     if (forLayout.isEmpty()) {
-        views = m_layoutManager->currentLatteViews();
+        Layout *currentLayout = m_layoutManager->currentLayout();
+        views = currentLayout ? currentLayout->latteViews() : nullptr;
     } else {
-        views = m_layoutManager->layoutLatteViews(forLayout);
+        Layout *activeLayout = m_layoutManager->activeLayout(forLayout);
+        views = activeLayout ? activeLayout->latteViews() : nullptr;
     }
 
     QRegion available(screen->geometry());
@@ -576,7 +578,12 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
 
     auto available = screen->geometry();
 
-    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentLatteViews();
+    Layout *currentLayout = m_layoutManager->currentLayout();
+    QHash<const Plasma::Containment *, Latte::View *> *views;
+
+    if (currentLayout) {
+        views = currentLayout->latteViews();
+    }
 
     if (views) {
         for (const auto *view : *views) {
@@ -725,7 +732,12 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
         }
     }
 
-    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentLatteViews();
+    Layout *currentLayout = m_layoutManager->currentLayout();
+    QHash<const Plasma::Containment *, Latte::View *> *views;
+
+    if (currentLayout) {
+        views = currentLayout->latteViews();
+    }
 
     //if the panel views already exist, base upon them
 
@@ -762,7 +774,12 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
         return;
     }
 
-    QHash<const Plasma::Containment *, Latte::View *> *views = m_layoutManager->currentLatteViews();
+    Layout *currentLayout = m_layoutManager->currentLayout();
+    QHash<const Plasma::Containment *, Latte::View *> *views;
+
+    if (currentLayout) {
+        views = currentLayout->latteViews();
+    }
 
     Latte::View *latteView = (*views)[applet->containment()];
 

@@ -61,8 +61,6 @@ public:
 
     ShortcutsPart::ShortcutsTracker *shortcutsTracker() const;
 
-    Latte::View *highestPriorityView();
-
 signals:
     void modifiersChanged();
 

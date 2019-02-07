@@ -816,6 +816,133 @@ QHash<const Plasma::Containment *, Latte::View *> *Layout::latteViews()
     return &m_latteViews;
 }
 
+Latte::View *Layout::highestPriorityView()
+{
+    QList<Latte::View *> views = sortedLatteViews();
+
+    return views.count() > 0 ? views[0] : nullptr;
+}
+
+QList<Latte::View *> Layout::sortedLatteViews()
+{
+    QList<Latte::View *> sortedViews;
+
+    //! create views list to be sorted out
+    foreach (auto view, m_latteViews) {
+        sortedViews.append(view);
+    }
+
+    qDebug() << " -------- ";
+
+    for (int i = 0; i < sortedViews.count(); ++i) {
+        qDebug() << i << ". " << sortedViews[i]->screen()->name() << " - " << sortedViews[i]->location();
+    }
+
+    //! sort the views based on screens and edges priorities
+    //! views on primary screen have higher priority and
+    //! for views in the same screen the priority goes to
+    //! Bottom,Left,Top,Right
+    for (int i = 0; i < sortedViews.size(); ++i) {
+        for (int j = 0; j < sortedViews.size() - i - 1; ++j) {
+            if (viewAtLowerScreenPriority(sortedViews[j], sortedViews[j + 1])
+                    || (sortedViews[j]->screen() == sortedViews[j + 1]->screen()
+                        && viewAtLowerEdgePriority(sortedViews[j], sortedViews[j + 1]))) {
+                Latte::View *temp = sortedViews[j + 1];
+                sortedViews[j + 1] = sortedViews[j];
+                sortedViews[j] = temp;
+            }
+        }
+    }
+
+    Latte::View *highestPriorityView{nullptr};
+
+    for (int i = 0; i < sortedViews.size(); ++i) {
+        if (sortedViews[i]->isPreferredForShortcuts()) {
+            highestPriorityView = sortedViews[i];
+            sortedViews.removeAt(i);
+            break;
+        }
+    }
+
+    if (highestPriorityView) {
+        sortedViews.prepend(highestPriorityView);
+    }
+
+    qDebug() << " -------- sorted -----";
+
+    for (int i = 0; i < sortedViews.count(); ++i) {
+        qDebug() << i << ". " << sortedViews[i]->isPreferredForShortcuts() << " - " << sortedViews[i]->screen()->name() << " - " << sortedViews[i]->location();
+    }
+
+    return sortedViews;
+}
+
+bool Layout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
+{
+    if (!base || ! test) {
+        return true;
+    }
+
+    if (base->screen() == test->screen()) {
+        return false;
+    } else if (base->screen() != qGuiApp->primaryScreen() && test->screen() == qGuiApp->primaryScreen()) {
+        return false;
+    } else if (base->screen() == qGuiApp->primaryScreen() && test->screen() != qGuiApp->primaryScreen()) {
+        return true;
+    } else {
+        int basePriority = -1;
+        int testPriority = -1;
+
+        for (int i = 0; i < qGuiApp->screens().count(); ++i) {
+            if (base->screen() == qGuiApp->screens()[i]) {
+                basePriority = i;
+            }
+
+            if (test->screen() == qGuiApp->screens()[i]) {
+                testPriority = i;
+            }
+        }
+
+        if (testPriority <= basePriority) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    qDebug() << "viewAtLowerScreenPriority : shouldn't had reached here...";
+    return false;
+}
+
+bool Layout::viewAtLowerEdgePriority(Latte::View *test, Latte::View *base)
+{
+    if (!base || ! test) {
+        return true;
+    }
+
+    QList<Plasma::Types::Location> edges{Plasma::Types::RightEdge, Plasma::Types::TopEdge,
+                Plasma::Types::LeftEdge, Plasma::Types::BottomEdge};
+
+    int testPriority = -1;
+    int basePriority = -1;
+
+    for (int i = 0; i < edges.count(); ++i) {
+        if (edges[i] == base->location()) {
+            basePriority = i;
+        }
+
+        if (edges[i] == test->location()) {
+            testPriority = i;
+        }
+    }
+
+    if (testPriority < basePriority)
+        return true;
+    else
+        return false;
+}
+
 QList<Plasma::Containment *> *Layout::containments()
 {
     return &m_containments;
