@@ -730,6 +730,31 @@ PlasmaComponents.Page {
             }
 
             PlasmaComponents.CheckBox {
+                id: hideShadowsOnMaximizedChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Hide background shadow for maximized windows")
+                checked: plasmoid.configuration.disablePanelShadowForMaximized
+                tooltip: i18n("Background shadows become hidden when a maximized window is touching the view")
+
+                onClicked: {
+                    plasmoid.configuration.disablePanelShadowForMaximized = checked;
+                }
+            }
+        }
+        //! END: Dynamic Background
+
+        //! BEGIN: Contents
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            enabled: Latte.WindowSystem.compositingActive && (solidForMaximizedChk.checked || onlyOnMaximizedChk.checked)
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Contents")
+            }
+
+            PlasmaComponents.CheckBox {
                 id: colorizeTransparentPanelsChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
@@ -737,8 +762,6 @@ PlasmaComponents.Page {
                 checked: plasmoid.configuration.colorizeTransparentPanels
                 tooltip: i18n("Contents are colorized in order to improve contrast with the underlying desktop background")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
-
-                enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
 
                 onClicked: {
                     plasmoid.configuration.colorizeTransparentPanels = checked;
@@ -754,26 +777,12 @@ PlasmaComponents.Page {
                 tooltip: i18n("Contents are colorized from active window scheme when that window is touching the view")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
 
-                enabled: solidForMaximizedChk.checked || onlyOnMaximizedChk.checked
-
                 onClicked: {
                     plasmoid.configuration.colorizeFromActiveWindowScheme = checked;
                 }
             }
-
-            PlasmaComponents.CheckBox {
-                id: hideShadowsOnMaximizedChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide background shadow for maximized windows")
-                checked: plasmoid.configuration.disablePanelShadowForMaximized
-                tooltip: i18n("Background shadows become hidden when a maximized window is touching the view")
-
-                onClicked: {
-                    plasmoid.configuration.disablePanelShadowForMaximized = checked;
-                }
-            }
         }
-        //! END: Dynamic Background
+        //! END: Contents
 
         //! Bottom spacer
         PlasmaComponents.Label{
