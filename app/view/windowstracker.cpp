@@ -236,7 +236,7 @@ void WindowsTracker::updateFlags()
 
     setActiveWindowTouching(foundActiveTouch);
     setExistsWindowMaximized(foundMaximized);
-    setExistsWindowTouching(foundTouch);
+    setExistsWindowTouching(foundTouch || foundActiveTouch);
 
     //! update color scheme for touching window
 
