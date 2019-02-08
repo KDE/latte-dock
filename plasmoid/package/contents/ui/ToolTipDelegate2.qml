@@ -163,7 +163,7 @@ PlasmaExtras.ScrollArea {
 
     //! Central Functionality
     function mouseIsInside(){
-        var isInside = contentItemMouseArea.containsMouse || instancesContainMouse() || (parentTask && parentTask.containsMouse);
+        var isInside = contentItemMouseArea.containsMouse || instancesContainMouse();
 
         if (isInside){
             mainToolTip.containsMouse = true;

@@ -586,6 +586,21 @@ MouseArea{
             showTitleTooltip();
         }
 
+        //! show previews if enabled
+        if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== taskItem){
+            if (hoveredTimerObj) {
+                //! don't delay showing preview in normal states,
+                //! that is when the dock wasn't hidden
+                if (!hoveredTimerObj.running) {
+                    hoveredTimerObj.start();
+                }
+            } else {
+                if (!root.disableAllWindowsFunctionality) {
+                    hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
+                }
+            }
+        }
+
         if (root.latteView && root.latteView.isHalfShown) {
             return;
         }
@@ -646,21 +661,6 @@ MouseArea{
 
         if (root.latteView && root.latteView.isHalfShown) {
             return;
-        }
-
-        //! show previews
-        if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== taskItem){
-            if (hoveredTimerObj) {
-                //! don't delay showing preview in normal states,
-                //! that is when the dock wasn't hidden
-                if (!hoveredTimerObj.running) {
-                    hoveredTimerObj.start();
-                }
-            } else {
-                if (!root.disableAllWindowsFunctionality) {
-                    hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
-                }
-            }
         }
 
         if((inAnimation == false)&&(!root.taskInAnimation)&&(!root.disableRestoreZoom) && hoverEnabled){
@@ -906,6 +906,8 @@ MouseArea{
 
                 tasksModel.requestActivate(taskIndex);
             }
+
+            hidePreviewWindow();
             //negative direction
         } else if (angle < -12) {
             if (isLauncher || root.disableAllWindowsFunctionality) {
@@ -923,6 +925,8 @@ MouseArea{
 
                 tasksModel.requestActivate(taskIndex);
             }
+
+            hidePreviewWindow();
         }
     }
 

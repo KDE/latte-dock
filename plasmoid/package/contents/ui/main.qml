@@ -539,7 +539,7 @@ Item {
         }
 
         function hide(debug){
-            //  console.log("on hide previews event called: "+debug);
+            // console.log("on hide previews event called: "+debug);
 
             if (latteView && signalSent) {
                 //it is used to unblock dock hiding
@@ -561,7 +561,7 @@ Item {
                 return;
             }
 
-            //  console.log("preview show called...");
+            // console.log("preview show called...");
             if ((!activeItem || (activeItem !== taskItem)) && !root.contextMenu) {
                 //console.log("preview show called: accepted...");
 
@@ -1811,10 +1811,11 @@ Item {
     }
 
     function previewContainsMouse() {
-        if(toolTipDelegate && toolTipDelegate.containsMouse && toolTipDelegate.parentTask)
+        if(toolTipDelegate && toolTipDelegate.containsMouse && toolTipDelegate.parentTask) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     function containsMouse(){
