@@ -347,182 +347,6 @@ PlasmaComponents.Page {
         }
         //! END: Items
 
-        //! BEGIN: Background
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            enabled: Latte.WindowSystem.compositingActive
-
-            LatteExtraControls.HeaderSwitch {
-                id: showBackground
-                Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
-                Layout.rightMargin: units.smallSpacing * 2
-
-                checked: plasmoid.configuration.useThemePanel
-                text: i18n("Background")
-                tooltip: i18n("Enable/disable background")
-
-                onPressed: {
-                    plasmoid.configuration.useThemePanel = !plasmoid.configuration.useThemePanel;
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-
-                PlasmaComponents.Label {
-                    enabled: showBackground.checked
-                    text: i18n("Size")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteExtraControls.Slider {
-                    id: panelSizeSlider
-                    Layout.fillWidth: true
-                    enabled: showBackground.checked
-
-                    value: plasmoid.configuration.panelSize
-                    from: 0
-                    to: 100
-                    stepSize: 5
-                    wheelEnabled: false
-
-                    function updatePanelSize() {
-                        if (!pressed)
-                            plasmoid.configuration.panelSize = value
-                    }
-
-                    onPressedChanged: {
-                        updatePanelSize();
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updatePanelSize)
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updatePanelSize)
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    enabled: showBackground.checked
-                    text: panelSizeSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-
-                PlasmaComponents.Label {
-                    text: i18n("Opacity")
-                    horizontalAlignment: Text.AlignLeft
-                    enabled: transparencySlider.enabled
-                }
-
-                LatteExtraControls.Slider {
-                    id: transparencySlider
-                    Layout.fillWidth: true
-                    enabled: showBackground.checked //&& !blockOpacityAdjustment
-
-                    value: plasmoid.configuration.panelTransparency
-                    from: 0
-                    to: 100
-                    stepSize: 5
-                    wheelEnabled: false
-
-                    /*property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
-                                                          || (solidBackground.checked
-                                                              && !plasmoid.configuration.solidBackgroundForMaximized
-                                                              && !plasmoid.configuration.backgroundOnlyOnMaximized)*/
-
-                    function updatePanelTransparency() {
-                        if (!pressed)
-                            plasmoid.configuration.panelTransparency = value
-                    }
-
-                    onPressedChanged: {
-                        updatePanelTransparency();
-                    }
-
-                    Component.onCompleted: {
-                        valueChanged.connect(updatePanelTransparency);
-                    }
-
-                    Component.onDestruction: {
-                        valueChanged.disconnect(updatePanelTransparency);
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    enabled: transparencySlider.enabled
-                    text: transparencySlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: 2
-                visible: dialog.expertLevel
-
-                PlasmaComponents.Button {
-                    id: panelBlur
-                    Layout.fillWidth: true
-                    text: i18n("Blur")
-                    checked: plasmoid.configuration.blurEnabled
-                    checkable: true
-                    enabled: showBackground.checked
-                    tooltip: i18n("Background is blurred underneath")
-
-                    onClicked: {
-                        plasmoid.configuration.blurEnabled  = checked
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    id: panelShadows
-                    Layout.fillWidth: true
-                    text: i18n("Shadows")
-                    checked: plasmoid.configuration.panelShadows
-                    checkable: true
-                    enabled: showBackground.checked
-                    tooltip: i18n("Background shows its shadows")
-
-                    onClicked: {
-                        plasmoid.configuration.panelShadows  = checked
-                    }
-                }
-
-                PlasmaComponents.Button {
-                    id: solidBackground
-                    Layout.fillWidth: true
-                    text: i18n("Solid Style")
-                    checked: plasmoid.configuration.solidPanel
-                    checkable: true
-                    enabled: showBackground.checked
-                    tooltip: i18n("Background uses solid style image provided from plasma theme")
-
-                    onClicked: {
-                        plasmoid.configuration.solidPanel = checked
-                    }
-                }
-            }
-        }
-        //! END: Background
-
         //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true
@@ -674,23 +498,251 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             spacing: units.smallSpacing
-            visible: dialog.expertLevel
+            enabled: Latte.WindowSystem.compositingActive
 
-            LatteExtraControls.Header {
-                text: i18n("Margins")
+            LatteExtraControls.HeaderSwitch {
+                id: showBackground
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+                Layout.rightMargin: units.smallSpacing * 2
+
+                checked: plasmoid.configuration.useThemePanel
+                text: i18n("Background")
+                tooltip: i18n("Enable/disable background")
+
+                onPressed: {
+                    plasmoid.configuration.useThemePanel = !plasmoid.configuration.useThemePanel;
+                }
             }
 
-            PlasmaComponents.CheckBox {
-                id: shrinkThickness
+            RowLayout {
+                Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Shrink thickness margins to minimum")
-                checked: plasmoid.configuration.shrinkThickMargins
+                Layout.rightMargin: units.smallSpacing * 2
 
-                onClicked: {
-                    plasmoid.configuration.shrinkThickMargins = checked
+                PlasmaComponents.Label {
+                    enabled: showBackground.checked
+                    text: i18n("Size")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                LatteExtraControls.Slider {
+                    id: panelSizeSlider
+                    Layout.fillWidth: true
+                    enabled: showBackground.checked
+
+                    value: plasmoid.configuration.panelSize
+                    from: 0
+                    to: 100
+                    stepSize: 5
+                    wheelEnabled: false
+
+                    function updatePanelSize() {
+                        if (!pressed)
+                            plasmoid.configuration.panelSize = value
+                    }
+
+                    onPressedChanged: {
+                        updatePanelSize();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updatePanelSize)
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updatePanelSize)
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    enabled: showBackground.checked
+                    text: panelSizeSlider.value + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+
+                PlasmaComponents.Label {
+                    text: i18n("Opacity")
+                    horizontalAlignment: Text.AlignLeft
+                    enabled: transparencySlider.enabled
+                }
+
+                LatteExtraControls.Slider {
+                    id: transparencySlider
+                    Layout.fillWidth: true
+                    enabled: showBackground.checked //&& !blockOpacityAdjustment
+
+                    value: plasmoid.configuration.panelTransparency
+                    from: 0
+                    to: 100
+                    stepSize: 5
+                    wheelEnabled: false
+
+                    /*property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
+                                                          || (solidBackground.checked
+                                                              && !plasmoid.configuration.solidBackgroundForMaximized
+                                                              && !plasmoid.configuration.backgroundOnlyOnMaximized)*/
+
+                    function updatePanelTransparency() {
+                        if (!pressed)
+                            plasmoid.configuration.panelTransparency = value
+                    }
+
+                    onPressedChanged: {
+                        updatePanelTransparency();
+                    }
+
+                    Component.onCompleted: {
+                        valueChanged.connect(updatePanelTransparency);
+                    }
+
+                    Component.onDestruction: {
+                        valueChanged.disconnect(updatePanelTransparency);
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    enabled: transparencySlider.enabled
+                    text: transparencySlider.value + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            LatteExtraControls.SubHeader {
+                visible: dialog.expertLevel
+                isFirstSubCategory: true
+                text: i18n("Options")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                Layout.rightMargin: units.smallSpacing * 2
+                spacing: 2
+                visible: dialog.expertLevel
+
+                PlasmaComponents.Button {
+                    id: panelBlur
+                    Layout.fillWidth: true
+                    text: i18n("Blur")
+                    checked: plasmoid.configuration.blurEnabled
+                    checkable: true
+                    enabled: showBackground.checked
+                    tooltip: i18n("Background is blurred underneath")
+
+                    onClicked: {
+                        plasmoid.configuration.blurEnabled  = checked
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    id: panelShadows
+                    Layout.fillWidth: true
+                    text: i18n("Shadows")
+                    checked: plasmoid.configuration.panelShadows
+                    checkable: true
+                    enabled: showBackground.checked
+                    tooltip: i18n("Background shows its shadows")
+
+                    onClicked: {
+                        plasmoid.configuration.panelShadows  = checked
+                    }
+                }
+
+                PlasmaComponents.Button {
+                    id: solidBackground
+                    Layout.fillWidth: true
+                    text: i18n("Solid Style")
+                    checked: plasmoid.configuration.solidPanel
+                    checkable: true
+                    enabled: showBackground.checked
+                    tooltip: i18n("Background uses solid style image provided from plasma theme")
+
+                    onClicked: {
+                        plasmoid.configuration.solidPanel = checked
+                    }
                 }
             }
         }
+        //! END: Background
+
+        //! BEGIN: Colors
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                Layout.columnSpan: 4
+                text: i18n("Colors")
+            }
+
+            GridLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                columnSpacing: 2
+                rowSpacing: units.smallSpacing
+                columns: 3
+
+                LatteExtraControls.SubHeader {
+                    Layout.columnSpan: 3
+                    isFirstSubCategory: true
+                    text: i18n("Theme")
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Plasma")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Reverse")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Smart")
+                    checkable: true
+                }
+
+                LatteExtraControls.SubHeader {
+                    Layout.columnSpan: 3
+                    text: i18n("From Window")
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("None")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Active")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Touching")
+                    checkable: true
+                }
+            }
+        }
+        //! END: Colors
 
         //! BEGIN: Dynamic Background
         ColumnLayout {
@@ -744,7 +796,7 @@ PlasmaComponents.Page {
         //! END: Dynamic Background
 
         //! BEGIN: Contents
-        ColumnLayout {
+        /* ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             enabled: Latte.WindowSystem.compositingActive && (solidForMaximizedChk.checked || onlyOnMaximizedChk.checked)
@@ -781,8 +833,31 @@ PlasmaComponents.Page {
                     plasmoid.configuration.colorizeFromActiveWindowScheme = checked;
                 }
             }
-        }
+        }*/
         //! END: Contents
+
+        //! BEGIN: Margins
+        ColumnLayout {
+            Layout.fillWidth: true
+            spacing: units.smallSpacing
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                text: i18n("Margins")
+            }
+
+            PlasmaComponents.CheckBox {
+                id: shrinkThickness
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Shrink thickness margins to minimum")
+                checked: plasmoid.configuration.shrinkThickMargins
+
+                onClicked: {
+                    plasmoid.configuration.shrinkThickMargins = checked
+                }
+            }
+        }
+        //! END: Margins
 
         //! Bottom spacer
         PlasmaComponents.Label{
