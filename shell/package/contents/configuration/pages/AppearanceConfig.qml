@@ -151,7 +151,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
-                enabled: plasmoid.configuration.proportionIconSize === -1
+                enabled: proportionSizeSlider.value === 1
 
                 PlasmaComponents.Label {
                     text: i18n("Size")
@@ -211,7 +211,7 @@ PlasmaComponents.Page {
                 visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
-                    text: i18n("Screen Height Proportion")
+                    text: i18n("From Screen Height")
                     horizontalAlignment: Text.AlignLeft
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
