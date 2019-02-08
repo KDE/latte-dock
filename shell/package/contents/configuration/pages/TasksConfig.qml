@@ -259,6 +259,11 @@ PlasmaComponents.Page {
                 text: i18n("Launchers")
             }
 
+            LatteExtraControls.SubHeader {
+                isFirstSubCategory: true
+                text: i18nc("launchers group", "Group");
+            }
+
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
