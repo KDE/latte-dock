@@ -75,7 +75,7 @@ void Menu::makeActions()
         }
     });
 
-    m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("dock/panel settings window", "Dock/Panel Settings"), this);
+    m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("view settings window", "View Settings..."), this);
     m_configureAction->setShortcut(QKeySequence());
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
 
