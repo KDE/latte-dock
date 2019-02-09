@@ -145,6 +145,22 @@ public:
     };
     Q_ENUM(ShadowColorGroup);
 
+    enum ThemeColorsGroup
+    {
+        PlasmaThemeColors = 0,
+        ReverseThemeColors,
+        SmartThemeColors
+    };
+    Q_ENUM(ThemeColorsGroup);
+
+    enum WindowColorsGroup
+    {
+        NoneWindowColors = 0,
+        ActiveWindowColors,
+        TouchingWindowColors
+    };
+    Q_ENUM(WindowColorsGroup);
+
     enum LayoutsMemoryUsage
     {
         SingleLayout = 0,  /* a single Layout is loaded in each time */

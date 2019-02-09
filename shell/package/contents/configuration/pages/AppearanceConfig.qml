@@ -512,6 +512,27 @@ PlasmaComponents.Page {
                 rowSpacing: units.smallSpacing
                 columns: 3
 
+                property int themeColors: plasmoid.configuration.themeColors
+                property int windowColors: plasmoid.configuration.windowColors
+
+                ExclusiveGroup {
+                    id: themeColorsGroup
+                    onCurrentChanged: {
+                        if (current.checked) {
+                            plasmoid.configuration.themeColors = current.colors;
+                        }
+                    }
+                }
+
+                ExclusiveGroup {
+                    id: windowColorsGroup
+                    onCurrentChanged: {
+                        if (current.checked) {
+                            plasmoid.configuration.windowColors = current.colors;
+                        }
+                    }
+                }
+
                 LatteExtraControls.SubHeader {
                     Layout.columnSpan: 3
                     isFirstSubCategory: true
@@ -521,19 +542,34 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Plasma")
+                    checked: parent.themeColors === colors
                     checkable: true
+                    exclusiveGroup: themeColorsGroup
+                    tooltip: i18n("Plasma theme color palette is going to be used")
+
+                    readonly property int colors: Latte.Types.PlasmaThemeColors
                 }
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Reverse")
+                    checked: parent.themeColors === colors
                     checkable: true
+                    exclusiveGroup: themeColorsGroup
+                    tooltip: i18n("Reverse color palette from plasma theme is going to be used")
+
+                    readonly property int colors: Latte.Types.ReverseThemeColors
                 }
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Smart")
+                    checked: parent.themeColors === colors
                     checkable: true
+                    exclusiveGroup: themeColorsGroup
+                    tooltip: i18n("Colors palette is going to provide best contrast after taking into account the environment such as the underlying background")
+
+                    readonly property int colors: Latte.Types.SmartThemeColors
                 }
 
                 LatteExtraControls.SubHeader {
@@ -544,19 +580,34 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("None")
+                    checked: parent.windowColors === colors
                     checkable: true
+                    exclusiveGroup: windowColorsGroup
+                    tooltip: i18n("Colors are not going to be based on any window")
+
+                    readonly property int colors: Latte.Types.NoneWindowColors
                 }
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Active")
+                    checked: parent.windowColors === colors
                     checkable: true
+                    exclusiveGroup: windowColorsGroup
+                    tooltip: i18n("Colors are going to be based on the active window")
+
+                    readonly property int colors: Latte.Types.ActiveWindowColors
                 }
 
                 PlasmaComponents.Button {
                     Layout.fillWidth: true
                     text: i18n("Touching")
+                    checked: parent.windowColors === colors
                     checkable: true
+                    exclusiveGroup: windowColorsGroup
+                    tooltip: i18n("Colors are going to be based on windows that are touching the view")
+
+                    readonly property int colors: Latte.Types.TouchingWindowColors
                 }
             }
         }
