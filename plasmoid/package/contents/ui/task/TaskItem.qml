@@ -108,6 +108,7 @@ MouseArea{
     property bool inRemoveStage: false
     property bool inWheelAction: false
 
+    property bool isAbleToShowPreview: true
     property bool isActive: (IsActive === true) ? true : false
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false
     property bool isDragged: false
@@ -587,7 +588,7 @@ MouseArea{
         }
 
         //! show previews if enabled
-        if(root.showPreviews && !windowsPreviewDlg.visible && windowsPreviewDlg.activeItem !== taskItem){
+        if(isAbleToShowPreview && ((root.showPreviews && windowsPreviewDlg.activeItem !== taskItem) || root.highlightWindows)){
             if (hoveredTimerObj) {
                 //! don't delay showing preview in normal states,
                 //! that is when the dock wasn't hidden
@@ -604,30 +605,12 @@ MouseArea{
         if (root.latteView && root.latteView.isHalfShown) {
             return;
         }
-
-        /*  if((!inAnimation)&&(root.dragSource == null)&&(!root.taskInAnimation) && hoverEnabled){
-            if (inAttentionAnimation) {
-                var subSpacerScale = (root.zoomFactor-1)/2;
-                hiddenSpacerLeft.nScale = subSpacerScale;
-                hiddenSpacerRight.nScale = subSpacerScale;
-            }
-
-            if (!inBlockingAnimation || inAttentionAnimation) {
-                if (icList.orientation == Qt.Horizontal){
-                    icList.currentSpot = mouseX;
-                    wrapper.calculateScales(mouseX);
-                }
-                else{
-                    icList.currentSpot = mouseY;
-                    wrapper.calculateScales(mouseY);
-                }
-            }
-        }*/
     }
 
     // IMPORTANT: This must be improved ! even for small milliseconds  it reduces performance
     onExited: {
-        taskItem.scalesUpdatedOnce = false;
+        scalesUpdatedOnce = false;
+        isAbleToShowPreview = true;
 
         if (root.latteView && (!root.showPreviews || (root.showPreviews && isLauncher))){
             root.latteView.hideTooltipLabel();
@@ -728,31 +711,8 @@ MouseArea{
     }
 
     onContainsMouseChanged:{
-        if(!containsMouse){
-            //  hiddenSpacerLeft.nScale = 0;
-            //  hiddenSpacerRight.nScale = 0;
-
-            if(!inAnimation)
+        if(!containsMouse && !inAnimation) {
                 pressed=false;
-        }
-
-        ////window previews/////////
-        if (isWindow) {
-            if(containsMouse && (root.showPreviews || (!root.showPreviews && root.highlightWindows)) && Latte.WindowSystem.compositingActive){
-                if (hoveredTimerObj) {
-                    hoveredTimerObj.restart();
-                } else {
-                    if (!root.disableAllWindowsFunctionality) {
-                        hoveredTimerObj = hoveredTimerComponent.createObject(taskItem);
-                    }
-                }
-            }
-            else{
-                if (hoveredTimerObj){
-                    hoveredTimerObj.stop();
-                    hoveredTimerObj.destroy();
-                }
-            }
         }
 
         ////disable hover effect///
@@ -765,6 +725,7 @@ MouseArea{
         //console.log("Pressed Task Delegate..");
         if (Latte.WindowSystem.compositingActive && !Latte.WindowSystem.isPlatformWayland) {
             if(root.leftClickAction !== Latte.Types.PreviewWindows) {
+                isAbleToShowPreview = false;
                 windowsPreviewDlg.hide(2);
             }
         }
@@ -788,14 +749,6 @@ MouseArea{
             } else {
                 showContextMenu();
             }
-
-            //root.createContextMenu(taskItem).show();
-        }
-
-        if (hoveredTimerObj){
-            hoveredTimerObj.restart();
-            /*hoveredTimerObj.stop();
-            hoveredTimerObj.destroy();*/
         }
     }
 
@@ -988,13 +941,6 @@ MouseArea{
             if (model.IsGroupParent) {
                 if (Latte.WindowSystem.compositingActive && backend.canPresentWindows()) {
                     root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
-                } else {
-                    if ((windowsPreviewDlg.visualParent === previewsVisualParent)&&(windowsPreviewDlg.visible)) {
-                        windowsPreviewDlg.hide(3);
-                    } else {
-                        preparePreviewWindow(false);
-                        windowsPreviewDlg.show(taskItem);
-                    }
                 }
             } else {
                 if (IsMinimized === true) {
@@ -1022,7 +968,7 @@ MouseArea{
     }
 
     function showPreviewWindow() {
-        if (root.disableAllWindowsFunctionality) {
+        if (root.disableAllWindowsFunctionality || !isAbleToShowPreview) {
             return;
         }
 
@@ -1472,7 +1418,7 @@ MouseArea{
             repeat: false
 
             onTriggered: {
-                if (root.disableAllWindowsFunctionality) {
+                if (root.disableAllWindowsFunctionality || !isAbleToShowPreview) {
                     return;
                 }
 

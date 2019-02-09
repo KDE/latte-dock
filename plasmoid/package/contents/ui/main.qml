@@ -540,6 +540,7 @@ Item {
 
         function hide(debug){
             // console.log("on hide previews event called: "+debug);
+            showPreviewWinTimer.stop();
 
             if (latteView && signalSent) {
                 //it is used to unblock dock hiding
