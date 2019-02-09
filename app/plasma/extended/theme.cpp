@@ -85,27 +85,27 @@ bool Theme::isDarkTheme() const
 
 int Theme::bottomEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_bottomEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_bottomEdgeRoundness : qMax(0, m_userRoundness));
 }
 
 int Theme::leftEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_leftEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_leftEdgeRoundness : qMax(0, m_userRoundness));
 }
 
 int Theme::topEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_topEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_topEdgeRoundness : qMax(0, m_userRoundness));
 }
 
 int Theme::rightEdgeRoundness() const
 {
-    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_rightEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_rightEdgeRoundness : qMax(0, m_userRoundness));
 }
 
 int Theme::userThemeRoundness() const
 {
-    return qMax(0, m_userRoundness);
+    return m_userRoundness;
 }
 
 void Theme::setUserThemeRoundness(int roundness)
