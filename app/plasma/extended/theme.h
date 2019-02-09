@@ -113,7 +113,7 @@ private:
     int m_leftEdgeRoundness{0};
     int m_topEdgeRoundness{0};
     int m_rightEdgeRoundness{0};
-    int m_userRoundness{0};
+    int m_userRoundness{-1};
 
     QString m_themePath;
     QString m_defaultSchemePath;

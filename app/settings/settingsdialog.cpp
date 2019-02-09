@@ -136,6 +136,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     m_mouseSensitivityButtons->setExclusive(true);
 
     ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
+    ui->themeRoundnessSpinBox->setSpecialValueText(i18nc("automatic background roundness","Automatic"));
     ui->themeRoundnessSpinBox->setValue(m_corona->themeExtended()->userThemeRoundness());
 
     //! About Menu

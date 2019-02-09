@@ -85,27 +85,27 @@ bool Theme::isDarkTheme() const
 
 int Theme::bottomEdgeRoundness() const
 {
-    return (themeHasExtendedInfo() ? m_bottomEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_bottomEdgeRoundness : userThemeRoundness());
 }
 
 int Theme::leftEdgeRoundness() const
 {
-    return (themeHasExtendedInfo() ? m_leftEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_leftEdgeRoundness : userThemeRoundness());
 }
 
 int Theme::topEdgeRoundness() const
 {
-    return (themeHasExtendedInfo() ? m_topEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_topEdgeRoundness : userThemeRoundness());
 }
 
 int Theme::rightEdgeRoundness() const
 {
-    return (themeHasExtendedInfo() ? m_rightEdgeRoundness : userThemeRoundness());
+    return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_rightEdgeRoundness : userThemeRoundness());
 }
 
 int Theme::userThemeRoundness() const
 {
-    return m_userRoundness;
+    return qMax(0, m_userRoundness);
 }
 
 void Theme::setUserThemeRoundness(int roundness)
@@ -116,9 +116,7 @@ void Theme::setUserThemeRoundness(int roundness)
 
     m_userRoundness = roundness;
 
-    if (!themeHasExtendedInfo()) {
-        emit roundnessChanged();
-    }
+    emit roundnessChanged();
 
     saveConfig();
 }
@@ -397,7 +395,7 @@ void Theme::loadThemeLightness()
 
 void Theme::loadConfig()
 {
-    m_userRoundness = m_themeGroup.readEntry("userSetPlasmaThemeRoundness", 0);
+    setUserThemeRoundness(m_themeGroup.readEntry("userSetPlasmaThemeRoundness", -1));
 }
 
 void Theme::saveConfig()
