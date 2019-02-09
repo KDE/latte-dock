@@ -29,7 +29,7 @@ import "../../code/ColorizerTools.js" as ColorizerTools
 Loader{
     id: manager
 
-    active: forceColorizer || forceSolidnessAndColorize
+    active: root.colorizerEnabled || forceSolidnessAndColorize
 
     readonly property bool forceSolidness: (root.solidStylePanel && !plasmoid.configuration.solidBackgroundForMaximized)
                                            || root.forceSolidPanel

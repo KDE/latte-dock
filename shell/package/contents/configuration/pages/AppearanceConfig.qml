@@ -854,47 +854,6 @@ PlasmaComponents.Page {
         }
         //! END: Background
 
-        //! BEGIN: Contents
-         ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            enabled: Latte.WindowSystem.compositingActive && (solidForMaximizedChk.checked || onlyOnMaximizedChk.checked)
-            visible: dialog.expertLevel
-
-            LatteExtraControls.Header {
-                text: i18n("Contents")
-            }
-
-            PlasmaComponents.CheckBox {
-                id: colorizeTransparentPanelsChk
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
-                text: i18n("Monochrome contents when not touching any window")
-                checked: plasmoid.configuration.colorizeTransparentPanels
-                tooltip: i18n("Contents are colorized in order to improve contrast with the underlying desktop background")
-                style: LatteExtraControls.LatteCheckBoxStyle{}
-
-                onClicked: {
-                    plasmoid.configuration.colorizeTransparentPanels = checked;
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: colorizeFromActiveWindowSchemeChk
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - units.smallSpacing * 3
-                text: i18n("Paint contents based on active window scheme")
-                checked: plasmoid.configuration.colorizeFromActiveWindowScheme
-                tooltip: i18n("Contents are colorized from active window scheme when that window is touching the view")
-                style: LatteExtraControls.LatteCheckBoxStyle{}
-
-                onClicked: {
-                    plasmoid.configuration.colorizeFromActiveWindowScheme = checked;
-                }
-            }
-        }
-        //! END: Contents
-
         //! BEGIN: Margins
         ColumnLayout {
             Layout.fillWidth: true

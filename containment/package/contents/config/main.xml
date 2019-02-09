@@ -81,12 +81,6 @@
     <entry name="plasmaBackgroundForPopups" type="Bool">
       <default>false</default>
     </entry>
-    <entry name="colorizeTransparentPanels" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="colorizeFromActiveWindowScheme" type="Bool">
-      <default>false</default>
-    </entry>
     <entry name="themeColors" type="Enum">
       <choices>
             <choice name="PlasmaThemeColors"/>
