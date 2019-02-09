@@ -88,7 +88,6 @@ MouseArea{
     // hoverEnabled: false
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
-    property bool blockWheel: false
     property bool buffersAreReady: false
     property bool delayingRemove: ListView.delayRemove
     property bool scalesUpdatedOnce: false
@@ -106,7 +105,6 @@ MouseArea{
     property real mimicParabolicScale: -1
     property bool inPopup: false
     property bool inRemoveStage: false
-    property bool inWheelAction: false
 
     property bool isAbleToShowPreview: true
     property bool isActive: (IsActive === true) ? true : false
@@ -127,6 +125,7 @@ MouseArea{
                                         && (wrapper.mScale===1 || wrapper.mScale===root.zoomFactor) //don't publish during zoomFactor
 
     property bool pressed: false
+    property bool wheelIsBlocked: false
     readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
                                               true : false
 
@@ -831,20 +830,20 @@ MouseArea{
     }
 
     onWheel: {
-        if (isSeparator || !root.mouseWheelActions || blockWheel || inWheelAction || inBouncingAnimation
+        if (isSeparator || !root.mouseWheelActions || wheelIsBlocked || inBouncingAnimation
                 || (latteView && (latteView.dockIsHidden || latteView.inSlidingIn || latteView.inSlidingOut))){
+
             return;
         }
 
         var angle = wheel.angleDelta.y / 8;
 
-        blockWheel = true;
+        wheelIsBlocked = true;
         scrollDelayer.start();
 
         //positive direction
         if (angle > 12) {
             if (isLauncher || root.disableAllWindowsFunctionality) {
-                inWheelAction = true;
                 wrapper.runLauncherAnimation();
             } else if (isGroupParent) {
                 subWindows.activateNextTask();
@@ -852,9 +851,7 @@ MouseArea{
                 var taskIndex = modelIndex();
 
                 if (isMinimized) {
-                    inWheelAction = true;
                     tasksModel.requestToggleMinimized(taskIndex);
-                    wheelActionDelayer.start();
                 }
 
                 tasksModel.requestActivate(taskIndex);
@@ -871,9 +868,7 @@ MouseArea{
                 var taskIndex = modelIndex();
 
                 if (isMinimized) {
-                    inWheelAction = true;
                     tasksModel.requestToggleMinimized(taskIndex);
-                    wheelActionDelayer.start();
                 }
 
                 tasksModel.requestActivate(taskIndex);
@@ -892,7 +887,7 @@ MouseArea{
 
         interval: 400
 
-        onTriggered: taskItem.blockWheel = false;
+        onTriggered: taskItem.wheelIsBlocked = false;
     }
 
     ///////////////// End Of Mouse Area Events ///////////////////
@@ -1531,21 +1526,6 @@ MouseArea{
 
             if (latteView && latteView.debugModeTimers) {
                 console.log("plasmoid timer: lastValidTimer called...");
-            }
-        }
-    }
-
-    // The best solution in order to catch when the wheel action ended is to
-    // track the isMinimized state, but when the user has enabled window previews
-    // at all times that flag doesn't work
-    Timer {
-        id: wheelActionDelayer
-        interval: 200
-        onTriggered: {
-            taskItem.inWheelAction = false;
-
-            if (latteView && latteView.debugModeTimers) {
-                console.log("plasmoid timer: wheelActionDelayer called...");
             }
         }
     }

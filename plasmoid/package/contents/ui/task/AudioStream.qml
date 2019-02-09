@@ -94,12 +94,15 @@ Item {
                     anchors.fill: parent
 
                     onClicked: taskItem.toggleMuted();
-                    property bool blockWheel: false;
+                    property bool wheelIsBlocked: false;
 
                     onWheel: {
-                        if (blockWheel) {
+                        if (wheelIsBlocked) {
                             return;
                         }
+
+                        wheelIsBlocked = true;
+                        scrollDelayer.start();
 
                         var angle = wheel.angleDelta.y / 8;
 
@@ -107,9 +110,6 @@ Item {
                             taskItem.increaseVolume();
                         else if (angle < -2)
                             taskItem.decreaseVolume();
-
-                        blockWheel = true;
-                        scrollDelayer.start();
                     }
 
                     //! A timer is needed in order to handle also touchpads that probably
@@ -121,7 +121,7 @@ Item {
 
                         interval: 80
 
-                        onTriggered: audioBadgeMouseArea.blockWheel = false;
+                        onTriggered: audioBadgeMouseArea.wheelIsBlocked = false;
                     }
                 }
             }
