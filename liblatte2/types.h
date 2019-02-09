@@ -46,7 +46,7 @@ public:
         DodgeAllWindows,
         WindowsGoBelow
     };
-    Q_ENUM(Visibility)
+    Q_ENUM(Visibility);
 
     enum Alignment
     {
@@ -57,7 +57,7 @@ public:
         Bottom,
         Justify = 10
     };
-    Q_ENUM(Alignment)
+    Q_ENUM(Alignment);
 
     enum SessionType
     {
@@ -73,7 +73,7 @@ public:
         Alt,
         Meta
     };
-    Q_ENUM(Modifier)
+    Q_ENUM(Modifier);
 
     enum ClickAction
     {
@@ -81,7 +81,7 @@ public:
         MiddleClick,
         RightClick
     };
-    Q_ENUM(ClickAction)
+    Q_ENUM(ClickAction);
 
     enum TaskAction
     {
@@ -96,7 +96,7 @@ public:
         HighlightWindows,
         PreviewAndHighlightWindows
     };
-    Q_ENUM(TaskAction)
+    Q_ENUM(TaskAction);
 
     enum ActiveAppletIndicator
     {
@@ -111,7 +111,7 @@ public:
         LineIndicator = 0,
         DotIndicator = 1
     };
-    Q_ENUM(ActiveIndicatorType)
+    Q_ENUM(ActiveIndicatorType);
 
     enum LaunchersGroup
     {
@@ -119,7 +119,7 @@ public:
         LayoutLaunchers = 1,
         GlobalLaunchers = 2
     };
-    Q_ENUM(LaunchersGroup)
+    Q_ENUM(LaunchersGroup);
 
     enum GlowGroup
     {
@@ -127,7 +127,7 @@ public:
         GlowOnlyOnActive = 0,
         GlowAll = 1
     };
-    Q_ENUM(GlowGroup)
+    Q_ENUM(GlowGroup);
 
     enum ShadowGroup
     {
@@ -135,7 +135,7 @@ public:
         LockedAppletsShadow, /* DEPRECATED, apply shadow only to locked applets */
         AllAppletsShadow
     };
-    Q_ENUM(ShadowGroup)
+    Q_ENUM(ShadowGroup);
 
     enum ShadowColorGroup
     {
@@ -143,14 +143,14 @@ public:
         ThemeColorShadow,
         UserColorShadow
     };
-    Q_ENUM(ShadowColorGroup)
+    Q_ENUM(ShadowColorGroup);
 
     enum LayoutsMemoryUsage
     {
         SingleLayout = 0,  /* a single Layout is loaded in each time */
         MultipleLayouts  /* multiple layouts are loaded on runtime,based on Activities and one central layout for the rest unassigned Activities */
     };
-    Q_ENUM(LayoutsMemoryUsage)
+    Q_ENUM(LayoutsMemoryUsage);
 
     enum MouseSensitivity
     {
@@ -158,14 +158,14 @@ public:
         MediumSensitivity,
         HighSensitivity
     };
-    Q_ENUM(MouseSensitivity)
+    Q_ENUM(MouseSensitivity);
 
     enum LatteConfigPage
     {
         LayoutPage = 0,
         PreferencesPage
     };
-    Q_ENUM(LatteConfigPage)
+    Q_ENUM(LatteConfigPage);
 
     enum SettingsComplexity
     {
@@ -173,7 +173,7 @@ public:
         AdvancedSettings = 2,
         ExpertSettings = 4
     };
-    Q_ENUM(SettingsComplexity)
+    Q_ENUM(SettingsComplexity);
 };
 
 }//end of namespace
