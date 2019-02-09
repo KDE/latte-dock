@@ -27,4 +27,5 @@ PlasmaExtras.Heading {
     Layout.alignment: Qt.AlignLeft
     Layout.topMargin: units.smallSpacing
     level: 3
+    font.capitalization: Font.SmallCaps
 }
