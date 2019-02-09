@@ -386,6 +386,7 @@ DragDrop.DropArea {
     property bool showInfoBadge: plasmoid.configuration.showInfoBadge
     property bool showProgressBadge: plasmoid.configuration.showProgressBadge
     property bool showAudioBadge: plasmoid.configuration.showAudioBadge
+    property bool audioBadgeActionsEnabled: plasmoid.configuration.audioBadgeActionsEnabled
 
     property bool showWindowActions: plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: plasmoid.configuration.showWindowsOnlyFromLaunchers

@@ -323,6 +323,9 @@
     <entry name="showAudioBadge" type="Bool">
       <default>true</default>
     </entry>
+    <entry name="audioBadgeActionsEnabled" type="Bool">
+      <default>true</default>
+    </entry>
     <entry name="mouseWheelActions" type="Bool">
       <default>true</default>
     </entry>

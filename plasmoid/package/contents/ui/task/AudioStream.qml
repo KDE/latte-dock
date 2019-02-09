@@ -92,9 +92,13 @@ Item {
                 MouseArea{
                     id: audioBadgeMouseArea
                     anchors.fill: parent
+                    enabled: root.audioBadgeActionsEnabled
 
-                    onClicked: taskItem.toggleMuted();
                     property bool wheelIsBlocked: false;
+
+                    onClicked: {
+                        taskItem.toggleMuted();
+                    }
 
                     onWheel: {
                         if (wheelIsBlocked) {
@@ -106,10 +110,11 @@ Item {
 
                         var angle = wheel.angleDelta.y / 8;
 
-                        if (angle > 2)
+                        if (angle > 2) {
                             taskItem.increaseVolume();
-                        else if (angle < -2)
+                        } else if (angle < -2) {
                             taskItem.decreaseVolume();
+                        }
                     }
 
                     //! A timer is needed in order to handle also touchpads that probably

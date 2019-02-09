@@ -123,10 +123,22 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Audio playing from tasks")
                 checked: plasmoid.configuration.showAudioBadge
-                tooltip: i18n("Show audio playing from tasks, the user is able to mute/unmute or change the volume")
+                tooltip: i18n("Show audio playing from tasks")
 
                 onClicked: {
                     plasmoid.configuration.showAudioBadge = checked
+                }
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Change volume when scrolling audio badge")
+                checked: plasmoid.configuration.audioBadgeActionsEnabled
+                enabled: plasmoid.configuration.showAudioBadge
+                tooltip: i18n("The user is able to mute/unmute with click or change the volume with mouse wheel")
+
+                onClicked: {
+                    plasmoid.configuration.audioBadgeActionsEnabled = checked
                 }
             }
         }
