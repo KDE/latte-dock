@@ -152,6 +152,7 @@ Item{
                     || (((root.position === PlasmaCore.Types.BottomPositioned) || (root.position === PlasmaCore.Types.RightPositioned))
                         && root.reverseLinesPosition) )
                    && !root.disableAllWindowsFunctionality
+                   && root.activeIndicator !== Latte.Types.NoneIndicator
             visible: active
 
             sourceComponent: Component{
@@ -219,6 +220,7 @@ Item{
             id: secondIndicator
             active: !firstIndicator.active
                     && !root.disableAllWindowsFunctionality
+                    && root.activeIndicator !== Latte.Types.NoneIndicator
             visible: active
 
             sourceComponent: Component{

@@ -333,9 +333,7 @@ DragDrop.DropArea {
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
     //! equal to the iconSize
     property int iconMargin: Math.ceil( ((0.5 * (plasmoid.configuration.iconMargin))/100) * iconSize)
-    property int statesLineSize: (latteApplet && !(root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator))
-                                 || (activeIndicator !== Latte.Types.NoneIndicator) ?  Math.ceil( root.iconSize/13 ) : 0
-
+    property int statesLineSize: activeIndicator === Latte.Types.NoneIndicator ? 0 : Math.ceil( root.iconSize/13 )
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
