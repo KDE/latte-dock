@@ -47,12 +47,14 @@ Loader{
                                                  || (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme)
 
     property QtObject applyTheme: {
-        if (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme) {
-            return latteView.windowsTracker.activeWindowScheme;
-        }
+        if (!root.hasExpandedApplet) {
+            if (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme) {
+                return latteView.windowsTracker.activeWindowScheme;
+            }
 
-        if (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme) {
-            return latteView.windowsTracker.touchingWindowScheme;
+            if (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme) {
+                return latteView.windowsTracker.touchingWindowScheme;
+            }
         }
 
         if (themeExtended) {
