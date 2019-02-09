@@ -516,6 +516,7 @@ Item {
                 readonly property bool mustBeShown: colorizerManager.mustBeShown
                                                     && !appletItem.userBlocksColorizing
                                                     && !appletItem.appletBlocksColorizing
+                                                    && !appletItem.isInternalViewSplitter
 
                 Behavior on opacity {
                     NumberAnimation {

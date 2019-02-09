@@ -522,7 +522,7 @@ Item{
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
-                if (root.forceColorizeFromActiveWindowScheme) {
+                if (colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme) {
                     return solidBackground.opacity;
                 }
 
@@ -530,12 +530,8 @@ Item{
             }
 
             backgroundColor: {
-                if (root.forcePanelForBusyBackground) {
+                if (colorizerManager.mustBeShown && colorizerManager.applyTheme !== theme) {
                     return colorizerManager.backgroundColor;
-                }
-
-                if (root.forceColorizeFromActiveWindowScheme) {
-                    return latteView.windowsTracker.touchingWindowScheme.backgroundColor
                 }
 
                 return "transparent";

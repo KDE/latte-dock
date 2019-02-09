@@ -29,40 +29,43 @@ import "../../code/ColorizerTools.js" as ColorizerTools
 Loader{
     id: manager
 
-    active: root.colorizerEnabled || forceSolidnessAndColorize
-
-    readonly property bool forceSolidness: (root.solidStylePanel && !plasmoid.configuration.solidBackgroundForMaximized)
-                                           || root.forceSolidPanel
-                                           || !Latte.WindowSystem.compositingActive
-    readonly property bool forceSolidnessAndColorize: forceSolidness && forceColorizeFromActiveWindowScheme
+    //! the loader loads the backgroundTracker component
+    active: root.themeColors === Latte.Types.SmartThemeColors
 
     readonly property bool backgroundIsBusy: item ? item.isBusy : false
 
-    readonly property real themeBackgroundColorBrightness: ColorizerTools.colorBrightness(theme.backgroundColor)
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
-
     readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7)
 
-    property bool mustBeShown: active && (!root.forceSolidPanel || forceSolidnessAndColorize)
-    //! when forceSemiTransparentPanel is enabled because of touching or maximized etc. windows
-    //! then the colorizer could be enabled for low panel transparency levels (<40%)
-                               && (!userShowPanelBackground || !forceSemiTransparentPanel || (forceSemiTransparentPanel && root.panelTransparency<40))
-                               && !maximizedWindowTitleBarBehavesAsPanelBackground
-                               && (plasmoid.configuration.solidBackgroundForMaximized || plasmoid.configuration.backgroundOnlyOnMaximized)
-                               && !root.editMode && Latte.WindowSystem.compositingActive
+    readonly property bool mustBeShown: (applyTheme && applyTheme !== theme)
+
+    onMustBeShownChanged: console.log(mustBeShown);
 
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
+    readonly property bool applyingWindowColors: (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme)
+                                                 || (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme)
+
     property QtObject applyTheme: {
-        if (forceSolidnessAndColorize && latteView.windowsTracker.touchingWindowScheme) {
+        if (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme) {
+            return latteView.windowsTracker.activeWindowScheme;
+        }
+
+        if (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme) {
             return latteView.windowsTracker.touchingWindowScheme;
         }
 
         if (themeExtended) {
-            if (currentBackgroundBrightness > 127.5) {
-                return themeExtended.lightTheme;
-            } else {
-                return themeExtended.darkTheme;
+            if (root.themeColors === Latte.Types.ReverseThemeColors) {
+                return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
+            }
+
+            if (root.themeColors === Latte.Types.SmartThemeColors && !root.editMode) {
+                if (currentBackgroundBrightness > 127.5) {
+                    return themeExtended.lightTheme;
+                } else {
+                    return themeExtended.darkTheme;
+                }
             }
         }
 
