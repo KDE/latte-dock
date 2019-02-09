@@ -494,6 +494,74 @@ PlasmaComponents.Page {
         }
         //! END: Length
 
+        //! BEGIN: Colors
+        ColumnLayout {
+            spacing: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            visible: dialog.expertLevel
+
+            LatteExtraControls.Header {
+                Layout.columnSpan: 4
+                text: i18n("Colors")
+            }
+
+            GridLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                columnSpacing: 2
+                rowSpacing: units.smallSpacing
+                columns: 3
+
+                LatteExtraControls.SubHeader {
+                    Layout.columnSpan: 3
+                    isFirstSubCategory: true
+                    text: i18n("Theme")
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Plasma")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Reverse")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Smart")
+                    checkable: true
+                }
+
+                LatteExtraControls.SubHeader {
+                    Layout.columnSpan: 3
+                    text: i18n("From Window")
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("None")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Active")
+                    checkable: true
+                }
+
+                PlasmaComponents.Button {
+                    Layout.fillWidth: true
+                    text: i18n("Touching")
+                    checkable: true
+                }
+            }
+        }
+        //! END: Colors
+
         //! BEGIN: Background
         ColumnLayout {
             Layout.fillWidth: true
@@ -673,86 +741,10 @@ PlasmaComponents.Page {
                     }
                 }
             }
-        }
-        //! END: Background
 
-        //! BEGIN: Colors
-        ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            visible: dialog.expertLevel
-
-            LatteExtraControls.Header {
-                Layout.columnSpan: 4
-                text: i18n("Colors")
-            }
-
-            GridLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                columnSpacing: 2
-                rowSpacing: units.smallSpacing
-                columns: 3
-
-                LatteExtraControls.SubHeader {
-                    Layout.columnSpan: 3
-                    isFirstSubCategory: true
-                    text: i18n("Theme")
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Plasma")
-                    checkable: true
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Reverse")
-                    checkable: true
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Smart")
-                    checkable: true
-                }
-
-                LatteExtraControls.SubHeader {
-                    Layout.columnSpan: 3
-                    text: i18n("From Window")
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("None")
-                    checkable: true
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Active")
-                    checkable: true
-                }
-
-                PlasmaComponents.Button {
-                    Layout.fillWidth: true
-                    text: i18n("Touching")
-                    checkable: true
-                }
-            }
-        }
-        //! END: Colors
-
-        //! BEGIN: Dynamic Background
-        ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            enabled: Latte.WindowSystem.compositingActive
-            visible: dialog.expertLevel
-
-            LatteExtraControls.Header {
-                text: i18n("Dynamic Background")
+            LatteExtraControls.SubHeader {
+                visible: dialog.expertLevel
+                text: i18nc("dynamic background", "Dynamic")
             }
 
             PlasmaComponents.CheckBox {
@@ -763,6 +755,7 @@ PlasmaComponents.Page {
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("Background removes its transparency setting when a window is touching")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
+                visible: dialog.expertLevel
 
                 onClicked: {
                     plasmoid.configuration.solidBackgroundForMaximized = checked;
@@ -775,6 +768,7 @@ PlasmaComponents.Page {
                 text: i18n("Hide background when not touching any window")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
                 tooltip: i18n("Background becomes transparent except when a window is touching")
+                visible: dialog.expertLevel
 
                 onClicked: {
                     plasmoid.configuration.backgroundOnlyOnMaximized = checked;
@@ -787,13 +781,14 @@ PlasmaComponents.Page {
                 text: i18n("Hide background shadow for maximized windows")
                 checked: plasmoid.configuration.disablePanelShadowForMaximized
                 tooltip: i18n("Background shadows become hidden when a maximized window is touching the view")
+                visible: dialog.expertLevel
 
                 onClicked: {
                     plasmoid.configuration.disablePanelShadowForMaximized = checked;
                 }
             }
         }
-        //! END: Dynamic Background
+        //! END: Background
 
         //! BEGIN: Contents
         /* ColumnLayout {

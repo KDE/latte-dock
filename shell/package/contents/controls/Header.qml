@@ -25,5 +25,6 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 PlasmaExtras.Heading {
     Layout.alignment: Qt.AlignLeft
+    Layout.topMargin: units.smallSpacing
     level: 3
 }
