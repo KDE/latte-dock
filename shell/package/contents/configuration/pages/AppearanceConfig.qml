@@ -734,7 +734,7 @@ PlasmaComponents.Page {
                     checked: plasmoid.configuration.solidPanel
                     checkable: true
                     enabled: showBackground.checked
-                    tooltip: i18n("Background uses solid style image provided from plasma theme")
+                    tooltip: i18n("Background uses a solid style image provided from plasma theme")
 
                     onClicked: {
                         plasmoid.configuration.solidPanel = checked
@@ -751,7 +751,7 @@ PlasmaComponents.Page {
                 id: solidForMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
-                text: i18n("Force solid background when touching any window")
+                text: i18n("Fully opaque background when touching any window")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("Background removes its transparency setting when a window is touching")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
@@ -787,11 +787,24 @@ PlasmaComponents.Page {
                     plasmoid.configuration.disablePanelShadowForMaximized = checked;
                 }
             }
+
+            PlasmaComponents.CheckBox {
+                id: solidForPopupsChk
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Prefer opaque plasma background for popups")
+                checked: plasmoid.configuration.plasmaBackgroundForPopups
+                tooltip: i18n("Background becomes opaque in plasma style")
+                visible: dialog.expertLevel
+
+                onClicked: {
+                    plasmoid.configuration.plasmaBackgroundForPopups = checked;
+                }
+            }
         }
         //! END: Background
 
         //! BEGIN: Contents
-        /* ColumnLayout {
+         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             enabled: Latte.WindowSystem.compositingActive && (solidForMaximizedChk.checked || onlyOnMaximizedChk.checked)
@@ -828,7 +841,7 @@ PlasmaComponents.Page {
                     plasmoid.configuration.colorizeFromActiveWindowScheme = checked;
                 }
             }
-        }*/
+        }
         //! END: Contents
 
         //! BEGIN: Margins

@@ -94,12 +94,12 @@ DragDrop.DropArea {
                                              && ((!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized && windowIsTouching)
                                                  || (plasmoid.configuration.solidBackgroundForMaximized && !plasmoid.configuration.backgroundOnlyOnMaximized && !windowIsTouching))
 
-    property bool forceSolidPanel: (plasmoid.configuration.solidBackgroundForMaximized
-                                    && latteView && latteView.visibility
+    property bool forceSolidPanel: (latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
                                     && !root.editMode
-                                    && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching || hasExpandedApplet
-                                       || showAppletShortcutBadges || showMetaBadge))
+                                    && ( (plasmoid.configuration.solidBackgroundForMaximized && !hasExpandedApplet
+                                          && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching))
+                                        || (hasExpandedApplet && plasmaBackgroundForPopups) ))
                                     || !Latte.WindowSystem.compositingActive
 
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
@@ -117,6 +117,8 @@ DragDrop.DropArea {
                                                        && (latteView && latteView.windowsTracker && latteView.windowsTracker.touchingWindowScheme
                                                            && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching)
                                                            && !hasExpandedApplet)
+
+    property bool plasmaBackgroundForPopups: plasmoid.configuration.plasmaBackgroundForPopups
 
     property bool maximizedWindowTitleBarBehavesAsPanelBackground: latteView && latteView.visibility
                                                                    && (!plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
@@ -235,10 +237,7 @@ DragDrop.DropArea {
             return true;
         }
 
-        if (hasExpandedApplet
-                && zoomFactor===1
-                && plasmoid.configuration.panelSize===100
-                && !(root.solidStylePanel && !plasmoid.configuration.panelShadows) ) {
+        if (hasExpandedApplet && plasmaBackgroundForPopups) {
             return true;
         }
 
