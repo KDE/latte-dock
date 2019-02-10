@@ -194,8 +194,10 @@ Item {
     }
 
     function checkCanBeHovered(){
-        if ( (((applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal) ||
-               (applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical))
+        var maxSize = root.iconSize + root.thickMarginBase + root.thickMarginHigh;
+
+        if ( (((applet && (applet.Layout.minimumWidth > maxSize) && root.isHorizontal) ||
+               (applet && (applet.Layout.minimumHeight > maxSize) && root.isVertical))
               && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
               && !communicator.canShowOverlaiedLatteIcon)
                 || (isSystray)

@@ -387,10 +387,15 @@ Item{
                 return wrapper.width;
             }
 
-            if (appletItem.isInternalViewSplitter)
+            if (appletItem.isInternalViewSplitter) {
                 return wrapper.layoutWidth;
-            else
-                return parent.zoomScaleWidth * wrapper.layoutWidth;
+            } else {
+                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    return parent.zoomScaleWidth * (root.iconSize + root.thickMarginBase + root.thickMarginHigh);
+                } else {
+                    return parent.zoomScaleWidth * wrapper.layoutWidth;
+                }
+            }
         }
 
         height:{
@@ -398,10 +403,16 @@ Item{
                 return wrapper.height;
             }
 
-            if (appletItem.isInternalViewSplitter)
+            if (appletItem.isInternalViewSplitter) {
                 return wrapper.layoutHeight;
-            else
-                return parent.zoomScaleHeight * wrapper.layoutHeight;
+            } else {
+                if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
+                    return parent.zoomScaleHeight * (root.iconSize + root.thickMarginBase + root.thickMarginHigh);
+                } else {
+                    return parent.zoomScaleHeight * wrapper.layoutHeight;
+                }
+            }
+
         }
 
         //width: Math.round( appletItem.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
@@ -414,7 +425,7 @@ Item{
 
         opacity: appletShadow.active ? 0 : 1
 
-        property int lowThickUsed: root.thickMarginBase
+        property int lowThickUsed: 0 //root.thickMarginBase
 
         //BEGIN states
         states: [
@@ -472,23 +483,7 @@ Item{
 
         Item{
             id: _containerForOverlayIcon
-            anchors.centerIn: parent
-
-            //we setup as maximum for hidden container of some applets that break
-            //the Latte experience the size:96 or units.iconSizeHints.panel.
-            //This is why after that size the folder widget changes
-            //to fullRepresentation instead of compact one
-            width: Math.min(maxSize, parent.width)
-            height: width
-
-            property int maxSize:{
-                if (Latte.WindowSystem.plasmaDesktopVersion === 0 ||
-                        (Latte.WindowSystem.plasmaDesktopVersion < Latte.WindowSystem.makeVersion(5,12,80)) ) {
-                    return 96;
-                } else {
-                    return units.iconSizeHints.panel;
-                }
-            }
+            anchors.fill: parent
         }
 
         Loader{
