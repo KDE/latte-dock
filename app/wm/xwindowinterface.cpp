@@ -399,6 +399,12 @@ bool XWindowInterface::isValidWindow(const KWindowInfo &winfo) const
 {
     constexpr auto types = NET::DockMask | NET::MenuMask | NET::SplashMask | NET::NormalMask;
     auto winType = winfo.windowType(types);
+    const auto winClass = KWindowInfo(winfo.win(), 0, NET::WM2WindowClass).windowClassName();
+
+    //! ignore latte related windows from tracking
+    if (winClass == "latte-dock") {
+        return false;
+    }
 
     if (winType == -1) {
         // Trying to get more types for verify if the window have any other type
@@ -421,6 +427,12 @@ void XWindowInterface::windowChangedProxy(WId wid, NET::Properties prop1, NET::P
         return;
 
     const auto winType = KWindowInfo(wid, NET::WMWindowType).windowType(NET::DesktopMask);
+    const auto winClass = KWindowInfo(wid, 0, NET::WM2WindowClass).windowClassName();
+
+    //! ignore latte related windows from tracking
+    if (winClass == "latte-dock") {
+        return;
+    }
 
     //! update desktop id
     if (winType != -1 && (winType & NET::Desktop)) {
