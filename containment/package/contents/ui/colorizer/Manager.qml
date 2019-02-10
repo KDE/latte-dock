@@ -39,8 +39,6 @@ Loader{
 
     readonly property bool mustBeShown: (applyTheme && applyTheme !== theme)
 
-    onMustBeShownChanged: console.log(mustBeShown);
-
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
     readonly property bool applyingWindowColors: (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme)
@@ -59,7 +57,11 @@ Loader{
 
         if (themeExtended) {
             if (root.themeColors === Latte.Types.ReverseThemeColors) {
-                return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
+                if (root.userShowPanelBackground & root.plasmaBackgroundForPopups && root.hasExpandedApplet) {
+                    return theme;
+                } else {
+                    return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
+                }
             }
 
             if (root.themeColors === Latte.Types.SmartThemeColors && !root.editMode) {
