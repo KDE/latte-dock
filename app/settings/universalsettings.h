@@ -72,6 +72,9 @@ public:
     bool metaForwardedToLatte() const;
     void forwardMetaToLatte(bool forward);
 
+    bool metaPressAndHoldEnabled() const;
+    void setMetaPressAndHoldEnabled(bool enabled);
+
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
 
@@ -120,6 +123,7 @@ signals:
     void layoutsWindowSizeChanged();
     void launchersChanged();
     void layoutsMemoryUsageChanged();
+    void metaPressAndHoldEnabledChanged();
     void mouseSensitivityChanged();
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
@@ -140,6 +144,7 @@ private:
 
 private:
     bool m_canDisableBorders{false};
+    bool m_metaPressAndHoldEnabled{true};
     bool m_showInfoWindow{true};
 
     //when there isnt a version it is an old universal file

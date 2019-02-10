@@ -193,6 +193,16 @@ void GlobalShortcuts::init()
     m_singleMetaAction = new QAction(this);
     m_singleMetaAction->setShortcut(QKeySequence(Qt::META));
 
+    connect(m_corona->universalSettings(), &UniversalSettings::metaPressAndHoldEnabledChanged , this, [&]() {
+        if (!m_corona->universalSettings()->metaPressAndHoldEnabled()) {
+            m_modifierTracker->blockModifierTracking(Qt::Key_Super_L);
+            m_modifierTracker->blockModifierTracking(Qt::Key_Super_R);
+        } else {
+            m_modifierTracker->unblockModifierTracking(Qt::Key_Super_L);
+            m_modifierTracker->unblockModifierTracking(Qt::Key_Super_R);
+        }
+    });
+
     //display shortcut badges while holding Meta
     connect(m_modifierTracker, &ShortcutsPart::ModifierTracker::metaModifierPressed, this, [&]() {
         m_metaShowedViews = true;

@@ -52,6 +52,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::layoutsColumnWidthsChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsWindowSizeChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::metaPressAndHoldEnabledChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::mouseSensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
@@ -75,6 +76,9 @@ void UniversalSettings::load()
 
     //! load configuration
     loadConfig();
+
+    //! this is needed to inform globalshortcuts to update its modifiers tracking
+    emit metaPressAndHoldEnabledChanged();
 }
 
 bool UniversalSettings::showInfoWindow() const
@@ -323,6 +327,22 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
     }
 }
 
+bool UniversalSettings::metaPressAndHoldEnabled() const
+{
+    return m_metaPressAndHoldEnabled;
+}
+
+void UniversalSettings::setMetaPressAndHoldEnabled(bool enabled)
+{
+    if (m_metaPressAndHoldEnabled == enabled) {
+        return;
+    }
+
+    m_metaPressAndHoldEnabled = enabled;
+
+    emit metaPressAndHoldEnabledChanged();
+}
+
 Types::LayoutsMemoryUsage UniversalSettings::layoutsMemoryUsage() const
 {
     return m_memoryUsage;
@@ -363,6 +383,7 @@ void UniversalSettings::loadConfig()
     m_layoutsWindowSize = m_universalGroup.readEntry("layoutsWindowSize", QSize(700, 450));
     m_layoutsColumnWidths = m_universalGroup.readEntry("layoutsColumnWidths", QStringList());
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
+    m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_memoryUsage = static_cast<Types::LayoutsMemoryUsage>(m_universalGroup.readEntry("memoryUsage", (int)Types::SingleLayout));
@@ -379,6 +400,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("layoutsWindowSize", m_layoutsWindowSize);
     m_universalGroup.writeEntry("layoutsColumnWidths", m_layoutsColumnWidths);
     m_universalGroup.writeEntry("launchers", m_launchers);
+    m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);

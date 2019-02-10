@@ -50,6 +50,9 @@ public:
     //! only <key> is pressed and no other modifier
     bool singleModifierPressed(Qt::Key key);
 
+    void blockModifierTracking(Qt::Key key);
+    void unblockModifierTracking(Qt::Key key);
+
 signals:
     void metaModifierPressed();
     void modifiersChanged();
@@ -66,6 +69,9 @@ private:
 private:
     KModifierKeyInfo m_modifierKeyInfo;
     QTimer m_metaPressedTimer;
+
+    //! modifiers that the user does not want to track anymore
+    QList<Qt::Key> m_blockedModifiers;
 
     //! keep a record for modifiers
     QHash<Qt::Key, bool> m_pressed;

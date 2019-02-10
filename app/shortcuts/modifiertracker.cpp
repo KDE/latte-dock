@@ -76,7 +76,25 @@ void ModifierTracker::init()
 
 bool ModifierTracker::modifierIsTracked(Qt::Key key)
 {
-    return(key == Qt::Key_Super_L || key == Qt::Key_Super_R || key == Qt::Key_Control || key == Qt::Key_Alt || key == Qt::Key_Shift);
+    if (m_blockedModifiers.contains(key)) {
+        return false;
+    }
+
+    return (key == Qt::Key_Super_L || key == Qt::Key_Super_R || key == Qt::Key_Control || key == Qt::Key_Alt || key == Qt::Key_Shift);
+}
+
+void ModifierTracker::blockModifierTracking(Qt::Key key)
+{
+    if (!m_blockedModifiers.contains(key)) {
+        m_blockedModifiers.append(key);
+    }
+}
+
+void ModifierTracker::unblockModifierTracking(Qt::Key key)
+{
+    if (m_blockedModifiers.contains(key)) {
+        m_blockedModifiers.removeAll(key);
+    }
 }
 
 bool ModifierTracker::noModifierPressed()

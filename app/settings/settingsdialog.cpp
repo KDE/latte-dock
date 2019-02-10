@@ -197,6 +197,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
 
     connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->metaPressChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->metaPressHoldChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
 
@@ -754,6 +755,7 @@ void SettingsDialog::restoreDefaults()
         ui->autostartChkBox->setChecked(true);
         ui->infoWindowChkBox->setChecked(true);
         ui->metaPressChkBox->setChecked(false);
+        ui->metaPressHoldChkBox->setChecked(true);
         ui->noBordersForMaximizedChkBox->setChecked(false);
         ui->highSensitivityBtn->setChecked(true);
         ui->screenTrackerSpinBox->setValue(SCREENTRACKERDEFAULTVALUE);
@@ -921,6 +923,7 @@ void SettingsDialog::loadSettings()
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
     ui->metaPressChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
+    ui->metaPressHoldChkBox->setChecked(m_corona->universalSettings()->metaPressAndHoldEnabled());
     ui->noBordersForMaximizedChkBox->setChecked(m_corona->universalSettings()->canDisableBorders());
 
     if (m_corona->universalSettings()->mouseSensitivity() == Types::LowSensitivity) {
@@ -954,6 +957,7 @@ QList<int> SettingsDialog::currentSettings()
     settings << (int)ui->autostartChkBox->isChecked();
     settings << (int)ui->infoWindowChkBox->isChecked();
     settings << (int)ui->metaPressChkBox->isChecked();
+    settings << (int)ui->metaPressHoldChkBox->isChecked();
     settings << (int)ui->noBordersForMaximizedChkBox->isChecked();
     settings << m_mouseSensitivityButtons->checkedId();
     settings << ui->screenTrackerSpinBox->value();
@@ -1209,6 +1213,7 @@ void SettingsDialog::updateApplyButtonsState()
 
         if (!ui->autostartChkBox->isChecked()
             || ui->metaPressChkBox->isChecked()
+            || !ui->metaPressHoldChkBox->isChecked()
             || !ui->infoWindowChkBox->isChecked()
             || ui->noBordersForMaximizedChkBox->isChecked()
             || !ui->highSensitivityBtn->isChecked()
@@ -1333,13 +1338,15 @@ bool SettingsDialog::saveAllChanges()
     //! Update universal settings
     Latte::Types::MouseSensitivity sensitivity = static_cast<Latte::Types::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
     bool autostart = ui->autostartChkBox->isChecked();
-    bool forwardMeta = ui->metaPressChkBox->isChecked();
+    bool forwardMetaPress = ui->metaPressChkBox->isChecked();
+    bool metaPressAndHold = ui->metaPressHoldChkBox->isChecked();
     bool showInfoWindow = ui->infoWindowChkBox->isChecked();
     bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
 
     m_corona->universalSettings()->setMouseSensitivity(sensitivity);
     m_corona->universalSettings()->setAutostart(autostart);
-    m_corona->universalSettings()->forwardMetaToLatte(forwardMeta);
+    m_corona->universalSettings()->forwardMetaToLatte(forwardMetaPress);
+    m_corona->universalSettings()->setMetaPressAndHoldEnabled(metaPressAndHold);
     m_corona->universalSettings()->setShowInfoWindow(showInfoWindow);
     m_corona->universalSettings()->setCanDisableBorders(noBordersForMaximized);
     m_corona->universalSettings()->setScreenTrackerInterval(ui->screenTrackerSpinBox->value());

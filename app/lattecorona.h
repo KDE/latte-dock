@@ -177,8 +177,8 @@ private:
 
     AbstractWindowInterface *m_wm{nullptr};
     ScreenPool *m_screenPool{nullptr};
-    GlobalShortcuts *m_globalShortcuts{nullptr};
     UniversalSettings *m_universalSettings{nullptr};
+    GlobalShortcuts *m_globalShortcuts{nullptr};
     LayoutManager *m_layoutManager{nullptr};
 
     PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
