@@ -93,6 +93,7 @@ DragDrop.DropArea {
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
                                     && !root.editMode
+                                    && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized && !hasExpandedApplet
                                           && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching))
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
@@ -105,7 +106,8 @@ DragDrop.DropArea {
                                          && !(latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching)
                                          && !(hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 
-    property bool forcePanelForBusyBackground: root.forceTransparentPanel && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy
+    property bool forcePanelForBusyBackground: userShowPanelBackground && root.forceTransparentPanel
+                                               && colorizerManager.mustBeShown && colorizerManager.backgroundIsBusy
 
     property int themeColors: plasmoid.configuration.themeColors
     property int windowColors: plasmoid.configuration.windowColors

@@ -334,7 +334,7 @@ Item{
             opacity: {
                 if (forceSolidness) {
                     return 1;
-                } else if (root.forcePanelForBusyBackground || root.forceTransparentPanel) {
+                } else if (!root.userShowPanelBackground || root.forcePanelForBusyBackground || root.forceTransparentPanel) {
                     return 0;
                 } else {
                     return plasmoid.configuration.panelTransparency / 100;

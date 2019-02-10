@@ -806,6 +806,7 @@ PlasmaComponents.Page {
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("Background removes its transparency setting when a window is touching")
                 style: LatteExtraControls.LatteCheckBoxStyle{}
+                enabled: showBackground.checked
                 visible: dialog.expertLevel
 
                 onClicked: {
@@ -819,6 +820,7 @@ PlasmaComponents.Page {
                 text: i18n("Hide background when not touching any window")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
                 tooltip: i18n("Background becomes transparent except when a window is touching")
+                enabled: showBackground.checked
                 visible: dialog.expertLevel
 
                 onClicked: {
@@ -832,6 +834,7 @@ PlasmaComponents.Page {
                 text: i18n("Hide background shadow for maximized windows")
                 checked: plasmoid.configuration.disablePanelShadowForMaximized
                 tooltip: i18n("Background shadows become hidden when a maximized window is touching the view")
+                enabled: showBackground.checked
                 visible: dialog.expertLevel
 
                 onClicked: {
@@ -845,6 +848,7 @@ PlasmaComponents.Page {
                 text: i18n("Prefer opaque plasma background for popups")
                 checked: plasmoid.configuration.plasmaBackgroundForPopups
                 tooltip: i18n("Background becomes opaque in plasma style")
+                enabled: showBackground.checked
                 visible: dialog.expertLevel
 
                 onClicked: {
