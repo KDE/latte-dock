@@ -161,8 +161,6 @@ DragDrop.DropArea {
     property alias hoveredIndex: layoutsContainer.hoveredIndex
     property alias directRenderDelayerIsRunning: directRenderDelayerForEnteringTimer.running
 
-    property int activeIndicator: plasmoid.configuration.activeIndicator
-
     property int actionsBlockHiding: 0 //actions that block hiding
 
     property int animationsNeedBothAxis:0 //animations need space in both axes, e.g zooming a task
@@ -335,7 +333,8 @@ DragDrop.DropArea {
     //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
     //! equal to the iconSize
     property int iconMargin: Math.ceil( ((0.5 * (plasmoid.configuration.iconMargin))/100) * iconSize)
-    property int statesLineSize: activeIndicator === Latte.Types.NoneIndicator ? 0 : Math.ceil( root.iconSize/13 )
+    property int statesLineSize: activeIndicator === Latte.Types.NoneIndicator || indicatorStyle !== Latte.Types.LatteIndicator ?
+                                     0 : Math.ceil( root.iconSize/13 )
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
@@ -402,7 +401,10 @@ DragDrop.DropArea {
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
+    property int activeIndicator: plasmoid.configuration.activeIndicator
+    property int indicatorStyle: plasmoid.configuration.indicatorStyle
     property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
+
     property int animationStep: {
         if (!universalSettings || universalSettings.mouseSensitivity === Latte.Types.HighSensitivity) {
             return 1;

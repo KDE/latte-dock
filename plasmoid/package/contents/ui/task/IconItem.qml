@@ -31,7 +31,7 @@ import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 import org.kde.latte 0.2 as Latte
 
 import "animations" as TaskAnimations
-
+import "indicators" as Indicators
 
 //I am using  KQuickControlAddons.QIconItem even though onExit it triggers the following error
 //QObject::~QObject: Timers cannot be stopped from another thread
@@ -106,6 +106,12 @@ Item{
         border.color: theme.highlightColor
 
         onTempColorChanged: tempColor.a = 0.35;
+    }
+
+    Loader {
+        anchors.fill: parent
+        active: root.activeIndicator !== Latte.Types.NoneIndicator && root.indicatorStyle === Latte.Types.PlasmaIndicator
+        sourceComponent: Indicators.PlasmaIndicator{}
     }
 
     TitleTooltipParent{

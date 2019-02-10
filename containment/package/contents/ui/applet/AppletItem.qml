@@ -32,6 +32,7 @@ import org.kde.latte 0.2 as Latte
 
 import "colorizer" as Colorizer
 import "communicator" as Communicator
+import "indicators" as Indicators
 
 Item {
     id: appletItem
@@ -82,9 +83,9 @@ Item {
     property bool startEdge: (index === layoutsContainer.startLayout.beginIndex) || (index === layoutsContainer.mainLayout.beginIndex) || (index === layoutsContainer.endLayout.beginIndex)
     //applet is in ending edge
     property bool endEdge: plasmoid.configuration.panelPosition !== Latte.Types.Justify ? (index === layoutsContainer.mainLayout.beginIndex + layoutsContainer.mainLayout.count - 1)&&(layoutsContainer.mainLayout.count>1) :
-                                                                                         (((index === layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-2)&&(layoutsContainer.startLayout.count>2))
-                                                                                          ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
-                                                                                          ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
+                                                                                          (((index === layoutsContainer.startLayout.beginIndex+layoutsContainer.startLayout.count-2)&&(layoutsContainer.startLayout.count>2))
+                                                                                           ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
+                                                                                           ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
     property int hoveredIndex: layoutsContainer.hoveredIndex
@@ -530,12 +531,25 @@ Item {
             Loader{
                 anchors.fill: parent
                 active: (root.activeIndicator === Latte.Types.AllIndicator
-                        || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
+                         || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
                         && communicator.activeIndicatorEnabled
 
-                sourceComponent: Item{
-                    anchors.fill: parent
-                    ActiveIndicator{}
+                sourceComponent: root.indicatorStyle===Latte.Types.PlasmaIndicator ? plasmaStyleIndicator : latteStyleIndicator
+
+                Component {
+                    id: latteStyleIndicator
+                    Item{
+                        anchors.fill: parent
+                        Indicators.LatteIndicator{}
+                    }
+                }
+
+                Component {
+                    id: plasmaStyleIndicator
+                    Item{
+                        anchors.fill: parent
+                        Indicators.PlasmaIndicator {}
+                    }
                 }
             }
 

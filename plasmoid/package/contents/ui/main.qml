@@ -176,6 +176,7 @@ Item {
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
     property int activeIndicator: latteView ? latteView.activeIndicator : Latte.Types.AllIndicator
+    property int indicatorStyle: latteView ? latteView.indicatorStyle : Latte.Types.LatteIndicator
     property int activeIndicatorType: latteView ? latteView.activeIndicatorType : Latte.Types.LineIndicator
     property int animationStep: latteView ? latteView.animationStep : 1
     property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
