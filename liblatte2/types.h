@@ -98,6 +98,14 @@ public:
     };
     Q_ENUM(TaskAction);
 
+    enum IndicatorStyle
+    {
+        LatteIndicator = 0,
+        PlasmaIndicator,
+        UnityIndicator
+    };
+    Q_ENUM(IndicatorStyle);
+
     enum ActiveAppletIndicator
     {
         NoneIndicator = 0,

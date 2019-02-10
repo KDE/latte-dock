@@ -161,6 +161,15 @@
       <default>2</default>
       <label>Internal will become deprecated, Latte applets active indicator will be just active or not </label>
     </entry>
+    <entry name="indicatorStyle" type="Enum">
+      <label>Indicator style</label>
+        <choices>
+          <choice name="LatteIndicator"/>
+          <choice name="PlasmaIndicator"/>
+          <choice name="UnityIndicator"/>
+        </choices>
+      <default>0</default>
+    </entry>
     <entry name="activeIndicatorType" type="Enum">
       <label>Active indicator style</label>
         <choices>
