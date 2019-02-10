@@ -158,7 +158,7 @@
           <choice name="Internal"/>
           <choice name="All"/>
         </choices>
-      <default>0</default>
+      <default>2</default>
       <label>Internal will become deprecated, Latte applets active indicator will be just active or not </label>
     </entry>
     <entry name="activeIndicatorType" type="Enum">
