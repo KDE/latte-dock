@@ -24,10 +24,32 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 PlasmaCore.FrameSvgItem {
-    id: frame
+    id: expandedItem
     anchors.fill: parent
+    imagePath: "widgets/tabbar"
+    visible: opacity > 0
+    prefix: {
+        var prefix;
+        switch (plasmoid.location) {
+        case PlasmaCore.Types.LeftEdge:
+            prefix = "west-active-tab";
+            break;
+        case PlasmaCore.Types.TopEdge:
+            prefix = "north-active-tab";
+            break;
+        case PlasmaCore.Types.RightEdge:
+            prefix = "east-active-tab";
+            break;
+        default:
+            prefix = "south-active-tab";
+        }
+        if (!hasElementPrefix(prefix)) {
+            prefix = "active-tab";
+        }
+        return prefix;
+    }
 
-    imagePath: "widgets/tasks"
+    opacity: isActive ? 1 : 0
 
     property bool isActive: (appletItem.isExpanded
                              && communicator.overlayLatteIconIsActive
@@ -36,39 +58,10 @@ PlasmaCore.FrameSvgItem {
                              && applet.pluginName !== "org.kde.activeWindowControl"
                              && applet.pluginName !== "org.kde.plasma.appmenu")
 
-
-    property string basePrefix: ""
-
-    prefix: taskPrefix(basePrefix)
-
-    function taskPrefix(prefix) {
-        var effectivePrefix;
-
-        switch (plasmoid.location) {
-        case PlasmaCore.Types.LeftEdge:
-            effectivePrefix = "west-" + prefix;
-            break;
-        case PlasmaCore.Types.TopEdge:
-            effectivePrefix = "north-" + prefix;
-            break;
-        case PlasmaCore.Types.RightEdge:
-            effectivePrefix = "east-" + prefix;
-            break;
-        default:
-            effectivePrefix = "south-" + prefix;
+    Behavior on opacity {
+        NumberAnimation {
+            duration: units.shortDuration
+            easing.type: Easing.InOutQuad
         }
-        return [effectivePrefix, prefix];
     }
-
-    states: [
-        State {
-            name: "active"
-            when: frame.isActive
-
-            PropertyChanges {
-                target: frame
-                basePrefix: "focus"
-            }
-        }
-    ]
 }
