@@ -845,9 +845,9 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: solidForPopupsChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Prefer opaque plasma background for popups")
+                text: i18n("Prefer Plasma background and colors when expanding applets")
                 checked: plasmoid.configuration.plasmaBackgroundForPopups
-                tooltip: i18n("Background becomes opaque in plasma style")
+                tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
                 enabled: showBackground.checked
                 visible: dialog.expertLevel
 
