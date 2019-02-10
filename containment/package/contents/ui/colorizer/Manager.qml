@@ -56,12 +56,12 @@ Loader{
         }
 
         if (themeExtended) {
+            if (root.userShowPanelBackground && root.plasmaBackgroundForPopups && root.hasExpandedApplet) {
+                return theme;
+            }
+
             if (root.themeColors === Latte.Types.ReverseThemeColors) {
-                if (root.userShowPanelBackground & root.plasmaBackgroundForPopups && root.hasExpandedApplet) {
-                    return theme;
-                } else {
-                    return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
-                }
+                return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
             }
 
             if (root.themeColors === Latte.Types.SmartThemeColors && !root.editMode) {
