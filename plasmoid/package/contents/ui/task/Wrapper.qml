@@ -24,6 +24,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
+import "indicators" as Indicators
+
 Item{
     id: wrapper
 
@@ -157,7 +159,7 @@ Item{
             visible: active
 
             sourceComponent: Component{
-                GroupItem{}
+                Indicators.LatteIndicator{}
             }
         }
 
@@ -227,7 +229,7 @@ Item{
             visible: active
 
             sourceComponent: Component{
-                GroupItem{}
+                Indicators.LatteIndicator{}
             }
         }
 
