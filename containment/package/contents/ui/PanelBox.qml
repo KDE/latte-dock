@@ -551,7 +551,15 @@ Item{
                 return 0;
             }
 
+            Behavior on opacity{
+                enabled: Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: barLine.animationTime }
+            }
 
+            Behavior on opacity{
+                enabled: !Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: 0 }
+            }
         }
 
         PlasmaCore.FrameSvgItem{
