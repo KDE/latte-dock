@@ -817,9 +817,9 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: onlyOnMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Hide background when not touching any window")
+                text: i18n("Hide background when not needed")
                 checked: plasmoid.configuration.backgroundOnlyOnMaximized
-                tooltip: i18n("Background becomes transparent except when a window is touching")
+                tooltip: i18n("Background becomes hidden except when a window is touching or the desktop background is busy")
                 enabled: showBackground.checked
                 visible: dialog.expertLevel
 
