@@ -196,7 +196,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     });
 
     connect(ui->autostartChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
-    connect(ui->metaChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
+    connect(ui->metaPressChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->infoWindowChkBox, &QCheckBox::stateChanged, this, &SettingsDialog::updateApplyButtonsState);
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::updateApplyButtonsState);
 
@@ -753,7 +753,7 @@ void SettingsDialog::restoreDefaults()
         //! Defaults for general Latte settings
         ui->autostartChkBox->setChecked(true);
         ui->infoWindowChkBox->setChecked(true);
-        ui->metaChkBox->setChecked(false);
+        ui->metaPressChkBox->setChecked(false);
         ui->noBordersForMaximizedChkBox->setChecked(false);
         ui->highSensitivityBtn->setChecked(true);
         ui->screenTrackerSpinBox->setValue(SCREENTRACKERDEFAULTVALUE);
@@ -920,7 +920,7 @@ void SettingsDialog::loadSettings()
 
     ui->autostartChkBox->setChecked(m_corona->universalSettings()->autostart());
     ui->infoWindowChkBox->setChecked(m_corona->universalSettings()->showInfoWindow());
-    ui->metaChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
+    ui->metaPressChkBox->setChecked(m_corona->universalSettings()->metaForwardedToLatte());
     ui->noBordersForMaximizedChkBox->setChecked(m_corona->universalSettings()->canDisableBorders());
 
     if (m_corona->universalSettings()->mouseSensitivity() == Types::LowSensitivity) {
@@ -953,7 +953,7 @@ QList<int> SettingsDialog::currentSettings()
     settings << m_inMemoryButtons->checkedId();
     settings << (int)ui->autostartChkBox->isChecked();
     settings << (int)ui->infoWindowChkBox->isChecked();
-    settings << (int)ui->metaChkBox->isChecked();
+    settings << (int)ui->metaPressChkBox->isChecked();
     settings << (int)ui->noBordersForMaximizedChkBox->isChecked();
     settings << m_mouseSensitivityButtons->checkedId();
     settings << ui->screenTrackerSpinBox->value();
@@ -1208,7 +1208,7 @@ void SettingsDialog::updateApplyButtonsState()
         //! Defaults for general Latte settings
 
         if (!ui->autostartChkBox->isChecked()
-            || ui->metaChkBox->isChecked()
+            || ui->metaPressChkBox->isChecked()
             || !ui->infoWindowChkBox->isChecked()
             || ui->noBordersForMaximizedChkBox->isChecked()
             || !ui->highSensitivityBtn->isChecked()
@@ -1333,7 +1333,7 @@ bool SettingsDialog::saveAllChanges()
     //! Update universal settings
     Latte::Types::MouseSensitivity sensitivity = static_cast<Latte::Types::MouseSensitivity>(m_mouseSensitivityButtons->checkedId());
     bool autostart = ui->autostartChkBox->isChecked();
-    bool forwardMeta = ui->metaChkBox->isChecked();
+    bool forwardMeta = ui->metaPressChkBox->isChecked();
     bool showInfoWindow = ui->infoWindowChkBox->isChecked();
     bool noBordersForMaximized = ui->noBordersForMaximizedChkBox->isChecked();
 

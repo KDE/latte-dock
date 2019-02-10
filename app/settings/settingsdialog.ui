@@ -140,7 +140,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="user-identity">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -154,7 +155,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="media-playback-pause">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -213,7 +215,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="add">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -227,7 +230,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="edit-copy">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
@@ -244,7 +248,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="list-remove">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -274,7 +279,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="object-locked">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -351,7 +357,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="document-import">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                 <property name="default">
                  <bool>false</bool>
@@ -368,7 +375,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="document-export">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -382,7 +390,8 @@
                 </property>
                 <property name="icon">
                  <iconset theme="favorites">
-                  <normaloff>.</normaloff>.</iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -445,23 +454,14 @@
             <x>0</x>
             <y>0</y>
             <width>805</width>
-            <height>518</height>
+            <height>523</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <property name="spacing">
             <number>0</number>
            </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>0</number>
            </property>
            <item>
@@ -642,12 +642,42 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QCheckBox" name="metaChkBox">
+                <widget class="QCheckBox" name="metaPressChkBox">
                  <property name="toolTip">
-                  <string>Forward Meta key from KWin to Latte in order to activate Application Launcher. It is suggested to disable that option if you remove Latte.</string>
+                  <string>Forward ⌘ press from KWin to Latte in order to activate Application Launcher. It is suggested to disable that option if you remove Latte.</string>
                  </property>
                  <property name="text">
-                  <string>Meta key activates Application Launcher</string>
+                  <string>Press ⌘ to activate Application Launcher</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_13">
+               <item>
+                <spacer name="horizontalSpacer_14">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="metaPressHoldChkBox">
+                 <property name="toolTip">
+                  <string>Press and hold ⌘ to show shortcuts badges for applets and tasks</string>
+                 </property>
+                 <property name="text">
+                  <string>Press and Hold ⌘ to show shortcuts badges</string>
                  </property>
                 </widget>
                </item>
