@@ -845,9 +845,11 @@ PlasmaComponents.Page {
             PlasmaComponents.CheckBox {
                 id: solidForPopupsChk
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Prefer Plasma background and colors when expanding applets")
+                Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
+                text: i18n("Prefer Plasma background and colors for expanded applets")
                 checked: plasmoid.configuration.plasmaBackgroundForPopups
                 tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
+                style: LatteExtraControls.LatteCheckBoxStyle{}
                 enabled: showBackground.checked
                 visible: dialog.expertLevel
 
