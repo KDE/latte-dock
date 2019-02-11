@@ -123,7 +123,7 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
     connect(m_windowManagement, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_windowManagement, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
         auto w = m_windowManagement->activeWindow();
-        if (!w || (w && w->appId() != QLatin1String("latte-dock"))) {
+        if (!w || (w && (!isPlasmaDesktop(w) && w->appId() != QLatin1String("latte-dock")))) {
             emit activeWindowChanged(w ? w->internalId() : 0);
         }
 
@@ -331,7 +331,11 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
     auto w = windowFor(wid);
 
     if (w) {
-        if (isValidWindow(w)) {
+        if (isPlasmaDesktop(w)) {
+            winfoWrap.setIsValid(true);
+            winfoWrap.setIsPlasmaDesktop(true);
+            winfoWrap.setWid(wid);
+        } else if (isValidWindow(w)) {
             winfoWrap.setIsValid(true);
             winfoWrap.setWid(wid);
             winfoWrap.setIsActive(w->isActive());
@@ -342,10 +346,6 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid) const
             winfoWrap.setIsShaded(w->isShaded());
             winfoWrap.setGeometry(w->geometry());
             winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
-        } else if (w->appId() == QLatin1String("org.kde.plasmashell")) {
-            winfoWrap.setIsValid(true);
-            winfoWrap.setIsPlasmaDesktop(true);
-            winfoWrap.setWid(wid);
         }
     } else {
         return {};
@@ -398,14 +398,34 @@ void WaylandInterface::requestToggleMaximized(WindowId wid) const
     }
 }
 
-inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
+bool WaylandInterface::isPlasmaDesktop(const KWayland::Client::PlasmaWindow *w) const
 {
+    if (!w || (w->appId() != QLatin1String("org.kde.plasmashell"))) {
+        return false;
+    }
+
+    bool hasScreenGeometry{false};
+
+    foreach(auto scr, qGuiApp->screens()) {
+        if (!w->geometry().isEmpty() && w->geometry() == scr->geometry()) {
+            hasScreenGeometry = true;
+            break;
+        }
+    }
+
+    return hasScreenGeometry;
+}
+
+bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) const
+{
+    //! DEPRECATED comment is case we must reenable this
     //! because wayland does not have any way yet to identify the window type
     //! a trick is to just consider windows as valid when they can be shown in the
     //! taskbar. Of course that creates issues with plasma native dialogs
     //! e.g. widgets explorer, Activities etc. that are not used to hide
     //! the dodge views appropriately
-    return w->isValid() && w->appId()!=QLatin1String("latte-dock") && !w->skipTaskbar();
+
+    return w->isValid() && !isPlasmaDesktop(w) && w->appId()!=QLatin1String("latte-dock");// && !w->skipTaskbar();
 }
 
 void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
@@ -437,7 +457,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
         //qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
         PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
 
-        if (pW && pW->appId() != QLatin1String("latte-dock")) {
+        if (pW && !isPlasmaDesktop(pW) && pW->appId() != QLatin1String("latte-dock")) {
             emit windowChanged(pW->internalId());
         }
     });
