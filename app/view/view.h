@@ -69,6 +69,9 @@ namespace Latte {
 class View : public PlasmaQuick::ContainmentView
 {
     Q_OBJECT
+
+    Q_PROPERTY(Latte::Types::ViewType type READ type WRITE setType NOTIFY typeChanged)
+
     Q_PROPERTY(bool alternativesIsShown READ alternativesIsShown NOTIFY alternativesIsShownChanged)
     Q_PROPERTY(bool behaveAsPlasmaPanel READ behaveAsPlasmaPanel WRITE setBehaveAsPlasmaPanel NOTIFY behaveAsPlasmaPanelChanged)
     Q_PROPERTY(bool byPassWM READ byPassWM WRITE setByPassWM NOTIFY byPassWMChanged)
@@ -106,6 +109,9 @@ public:
     virtual ~View();
 
     void init();
+
+    Types::ViewType type() const;
+    void setType(Types::ViewType type);
 
     bool alternativesIsShown() const;
     void setAlternativesIsShown(bool show);
@@ -231,6 +237,7 @@ signals:
     void onPrimaryChanged();
     void positionerChanged();
     void screenGeometryChanged();
+    void typeChanged();
     void visibilityChanged();
     void windowsTrackerChanged();
     void xChanged();
@@ -270,6 +277,7 @@ private:
     float m_maxLength{1};
 
     Types::Alignment m_alignment{Types::Center};
+    Types::ViewType m_type{Types::DockView};
 
     QRect m_localGeometry;
     QRect m_absGeometry;

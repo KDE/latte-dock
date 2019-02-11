@@ -90,6 +90,13 @@ Item{
 
     Binding{
         target: latteView
+        property: "type"
+        when: latteView
+        value: root.viewType
+    }
+
+    Binding{
+        target: latteView
         property: "behaveAsPlasmaPanel"
         when: latteView
         value: root.editMode ? false : root.behaveAsPlasmaPanel

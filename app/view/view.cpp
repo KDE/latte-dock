@@ -195,8 +195,9 @@ void View::init()
     connect(corona(), &Plasma::Corona::availableScreenRectChanged, this, &View::availableScreenRectChanged);
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
-    connect(this, &View::onPrimaryChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
+    connect(this, &View::onPrimaryChanged, this, &View::saveConfig);
+    connect(this, &View::typeChanged, this, &View::saveConfig);
 
     connect(this, SIGNAL(normalThicknessChanged()), corona(), SIGNAL(availableScreenRectChanged()));
 
@@ -431,6 +432,21 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
             setBlockHiding(false);
         }
     }
+}
+
+Types::ViewType View::type() const
+{
+    return m_type;
+}
+
+void View::setType(Types::ViewType type)
+{
+    if (m_type == type) {
+        return;
+    }
+
+    m_type = type;
+    emit typeChanged();
 }
 
 bool View::alternativesIsShown() const
@@ -1075,6 +1091,7 @@ void View::saveConfig()
     config.writeEntry("onPrimary", onPrimary());
     config.writeEntry("byPassWM", byPassWM());
     config.writeEntry("isPreferredForShortcuts", isPreferredForShortcuts());
+    config.writeEntry("viewType", (int)m_type);
     config.sync();
 }
 

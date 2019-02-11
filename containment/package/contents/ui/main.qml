@@ -77,6 +77,17 @@ DragDrop.DropArea {
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidStylePanel && panelShadowsActive));
     }
 
+    property int viewType: {
+        if ((plasmoid.configuration.panelPosition === Latte.Types.Justify)
+                && (plasmoid.configuration.useThemePanel)
+                && (plasmoid.configuration.panelSize === 100)
+                && (plasmoid.configuration.zoomLevel === 0)) {
+            return Latte.Types.PanelView;
+        }
+
+        return Latte.Types.DockView;
+    }
+
     property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForBusyBackground)
                                //|| (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
 

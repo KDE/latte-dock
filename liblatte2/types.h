@@ -36,6 +36,13 @@ public:
     Types() = delete;
     ~Types() {}
 
+    enum ViewType
+    {
+        DockView = 0,
+        PanelView
+    };
+    Q_ENUM(ViewType);
+    
     enum Visibility
     {
         None = -1,
@@ -168,7 +175,7 @@ public:
         TouchingWindowColors
     };
     Q_ENUM(WindowColorsGroup);
-
+    
     enum LayoutsMemoryUsage
     {
         SingleLayout = 0,  /* a single Layout is loaded in each time */

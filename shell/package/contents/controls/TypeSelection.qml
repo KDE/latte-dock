@@ -54,12 +54,8 @@ Grid {
 
     property bool horizontal: false
 
-    readonly property bool isPanel: (plasmoid.configuration.panelPosition === Latte.Types.Justify)
-                                    && (plasmoid.configuration.useThemePanel) && (plasmoid.configuration.panelSize===100)
-                                    && (plasmoid.configuration.zoomLevel === 0)
-
     ExclusiveGroup {
-        id: dockTypeGroup
+        id: viewTypeGroup
     }
 
     PlasmaComponents.Button {
@@ -67,9 +63,9 @@ Grid {
         width: horizontal ? (parent.width - parent.spacing)/ 2 : parent.width
 
         checkable: true
-        checked: !typeRow.isPanel
+        checked: latteView.type === Latte.Types.DockView
         text: i18nc("dock type","Dock")
-        exclusiveGroup: dockTypeGroup
+        exclusiveGroup: viewTypeGroup
         tooltip: i18n("Change the behavior and appearance to Dock type")
 
         onPressedChanged: {
@@ -99,9 +95,9 @@ Grid {
         width: dockTypeButton.width
 
         checkable: true
-        checked: typeRow.isPanel
+        checked: latteView.type === Latte.Types.PanelView
         text: i18nc("panel type","Panel")
-        exclusiveGroup: dockTypeGroup
+        exclusiveGroup: viewTypeGroup
         tooltip: i18n("Change the behavior and appearance to Panel type")
 
         onPressedChanged: {

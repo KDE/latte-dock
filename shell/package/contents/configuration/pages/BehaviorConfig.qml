@@ -36,8 +36,6 @@ PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
     Layout.maximumHeight: content.height + units.smallSpacing * 2
 
-    property alias dockTypeSelection: _dockTypeSelection
-
     ColumnLayout {
         id: content
 
@@ -61,7 +59,7 @@ PlasmaComponents.Page {
 
 
             LatteExtraControls.TypeSelection{
-                id: _dockTypeSelection
+                id: viewTypeSelection
                 horizontal: true
             }
         }
