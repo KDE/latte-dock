@@ -123,7 +123,10 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
     connect(m_windowManagement, &PlasmaWindowManagement::windowCreated, this, &WaylandInterface::windowCreatedProxy);
     connect(m_windowManagement, &PlasmaWindowManagement::activeWindowChanged, this, [&]() noexcept {
         auto w = m_windowManagement->activeWindow();
-        emit activeWindowChanged(w ? w->internalId() : 0);
+        if (!w || (w && w->appId() != QLatin1String("latte-dock"))) {
+            emit activeWindowChanged(w ? w->internalId() : 0);
+        }
+
     }, Qt::QueuedConnection);
 }
 
@@ -402,7 +405,7 @@ inline bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow
     //! taskbar. Of course that creates issues with plasma native dialogs
     //! e.g. widgets explorer, Activities etc. that are not used to hide
     //! the dodge views appropriately
-    return w->isValid() && !w->skipTaskbar();
+    return w->isValid() && w->appId()!=QLatin1String("latte-dock") && !w->skipTaskbar();
 }
 
 void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
@@ -432,7 +435,11 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     connect(mapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped)
     , this, [&](QObject * w) noexcept {
         //qDebug() << "window changed:" << qobject_cast<PlasmaWindow *>(w)->appId();
-        emit windowChanged(qobject_cast<PlasmaWindow *>(w)->internalId());
+        PlasmaWindow *pW = qobject_cast<PlasmaWindow*>(w);
+
+        if (pW && pW->appId() != QLatin1String("latte-dock")) {
+            emit windowChanged(pW->internalId());
+        }
     });
 
     m_windows.push_back(w->internalId());
