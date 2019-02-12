@@ -959,10 +959,22 @@ void Corona::showSettingsWindow(int page)
     m_layoutManager->showLatteSettingsDialog(p);
 }
 
+void Corona::setContextMenuView(int id)
+{
+    //! set context menu view id
+    m_contextMenuViewId = id;
+}
+
 QStringList Corona::contextMenuData()
 {
     QStringList data;
     Types::ViewType viewType{Types::DockView};
+
+    Layout *currentLayout = m_layoutManager->currentLayout();
+
+    if (currentLayout) {
+        viewType = currentLayout->latteViewType(m_contextMenuViewId);
+    }
 
     data << QString::number((int)m_layoutManager->memoryUsage());
     data << m_layoutManager->currentLayoutName();
@@ -976,6 +988,8 @@ QStringList Corona::contextMenuData()
         }
     }
 
+    //! reset context menu view id
+    m_contextMenuViewId = -1;
     return data;
 }
 

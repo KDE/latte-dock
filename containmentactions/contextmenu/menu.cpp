@@ -113,8 +113,7 @@ QList<QAction *> Menu::contextualActions()
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
     if (iface.isValid()) {
-        iface.call("contextMenuData", containment()->id());
-
+        iface.call("setContextMenuView", (int)containment()->id());
         QDBusReply<QStringList> replyData = iface.call("contextMenuData");
 
         m_data = replyData.value();
