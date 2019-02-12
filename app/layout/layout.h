@@ -21,6 +21,9 @@
 #ifndef LAYOUT_H
 #define LAYOUT_H
 
+// local
+#include "../../liblatte2/types.h"
+
 // Qt
 #include <QObject>
 #include <QPointer>
@@ -142,6 +145,8 @@ public:
     QHash<const Plasma::Containment *, Latte::View *> *latteViews();
     QList<Latte::View *> sortedLatteViews();
     QList<Latte::View *> viewsWithPlasmaShortcuts();
+
+    Types::ViewType latteViewType(int containmentId) const;
 
     Latte::View *highestPriorityView();
 

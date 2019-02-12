@@ -39,6 +39,8 @@
 #include <Plasma/Corona>
 #include <Plasma/ServiceJob>
 
+const int LAYOUTSPOS = 3;
+
 Menu::Menu(QObject *parent, const QVariantList &args)
     : Plasma::ContainmentActions(parent, args)
 {
@@ -107,20 +109,28 @@ QList<QAction *> Menu::contextualActions()
     actions << m_addWidgetsAction;
     actions << m_configureAction;
 
-    m_layoutsData.clear();
+    m_data.clear();
     QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
     if (iface.isValid()) {
+        iface.call("contextMenuData", containment()->id());
+
         QDBusReply<QStringList> replyData = iface.call("contextMenuData");
 
-        m_layoutsData = replyData.value();
+        m_data = replyData.value();
     }
 
-    if (m_layoutsData.size() > 3) {
+    if (m_data.size() > LAYOUTSPOS + 1) {
         m_layoutsAction->setEnabled(true);
         m_layoutsAction->setVisible(true);
     } else {
         m_layoutsAction->setVisible(false);
+    }
+
+    Latte::Types::ViewType viewType{Latte::Types::DockView};
+
+    if (m_data.size() >= LAYOUTSPOS + 1) {
+        viewType = static_cast<Latte::Types::ViewType>((m_data[2]).toInt());
     }
 
     return actions;
@@ -143,15 +153,15 @@ void Menu::populateLayouts()
 {
     m_switchLayoutsMenu->clear();
 
-    if (m_layoutsData.size() > 3) {
+    if (m_data.size() > LAYOUTSPOS + 1) {
         //when there are more than 1 layouts present
-        Latte::Types::LayoutsMemoryUsage memoryUsage = static_cast<Latte::Types::LayoutsMemoryUsage>((m_layoutsData[0]).toInt());
-        QString currentName = m_layoutsData[1];
+        Latte::Types::LayoutsMemoryUsage memoryUsage = static_cast<Latte::Types::LayoutsMemoryUsage>((m_data[0]).toInt());
+        QString currentName = m_data[1];
 
-        for (int i = 2; i < m_layoutsData.size(); ++i) {
-            bool isActive = m_layoutsData[i].startsWith("0") ? false : true;
+        for (int i = LAYOUTSPOS; i < m_data.size(); ++i) {
+            bool isActive = m_data[i].startsWith("0") ? false : true;
 
-            QString layout = m_layoutsData[i].right(m_layoutsData[i].length() - 2);
+            QString layout = m_data[i].right(m_data[i].length() - 2);
 
             QString currentText = (memoryUsage == Latte::Types::MultipleLayouts && layout == currentName) ?
                                   (" " + i18nc("current layout", "(Current)")) : "";

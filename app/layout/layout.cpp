@@ -816,6 +816,17 @@ QHash<const Plasma::Containment *, Latte::View *> *Layout::latteViews()
     return &m_latteViews;
 }
 
+Types::ViewType Layout::latteViewType(int containmentId) const
+{
+    foreach (auto view, m_latteViews) {
+        if (view->containment() && view->containment()->id() == containmentId) {
+            return view->type();
+        }
+    }
+
+    return Types::DockView;
+}
+
 Latte::View *Layout::highestPriorityView()
 {
     QList<Latte::View *> views = sortedLatteViews();

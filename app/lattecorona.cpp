@@ -962,9 +962,11 @@ void Corona::showSettingsWindow(int page)
 QStringList Corona::contextMenuData()
 {
     QStringList data;
+    Types::ViewType viewType{Types::DockView};
 
     data << QString::number((int)m_layoutManager->memoryUsage());
     data << m_layoutManager->currentLayoutName();
+    data << QString::number((int)viewType);
 
     foreach (auto layoutName, m_layoutManager->menuLayouts()) {
         if (m_layoutManager->activeLayout(layoutName)) {

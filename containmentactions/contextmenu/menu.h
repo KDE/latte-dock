@@ -48,7 +48,7 @@ private Q_SLOTS:
 
 
 private:
-    QStringList m_layoutsData;
+    QStringList m_data;
 
     QList<QAction *>m_actions;
 
