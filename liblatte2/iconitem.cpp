@@ -61,6 +61,9 @@ IconItem::IconItem(QQuickItem *parent)
             this, &IconItem::schedulePixmapUpdate);
     connect(this, SIGNAL(overlaysChanged()),
             this, SLOT(schedulePixmapUpdate()));
+    connect(this, SIGNAL(providesColorsChanged()),
+            this, SLOT(schedulePixmapUpdate()));
+
     //initialize implicit size to the Dialog size
     setImplicitWidth(KIconLoader::global()->currentSize(KIconLoader::Dialog));
     setImplicitHeight(KIconLoader::global()->currentSize(KIconLoader::Dialog));
@@ -238,6 +241,21 @@ void IconItem::setActive(bool active)
     emit activeChanged();
 }
 
+bool IconItem::providesColors() const
+{
+    return m_providesColors;
+}
+
+void IconItem::setProvidesColors(const bool provides)
+{
+    if (m_providesColors == provides) {
+        return;
+    }
+
+    m_providesColors = provides;
+    emit providesColorsChanged();
+}
+
 void IconItem::setSmooth(const bool smooth)
 {
     if (smooth == m_smooth) {
@@ -337,6 +355,86 @@ void IconItem::enabledChanged()
     schedulePixmapUpdate();
 }
 
+QColor IconItem::backgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+void IconItem::setBackgroundColor(QColor background)
+{
+    if (m_backgroundColor == background) {
+        return;
+    }
+
+    m_backgroundColor = background;
+    emit backgroundColorChanged();
+}
+
+QColor IconItem::glowColor() const
+{
+    return m_glowColor;
+}
+
+void IconItem::setGlowColor(QColor glow)
+{
+    if (m_glowColor == glow) {
+        return;
+    }
+
+    m_glowColor = glow;
+    emit glowColorChanged();
+}
+
+void IconItem::updateColors()
+{
+    QImage icon = m_iconPixmap.toImage();
+
+    if (icon.format() != QImage::Format_Invalid) {
+        float rtotal = 0, gtotal = 0, btotal = 0;
+        float total = 0.0f;
+
+        for(int row=0; row<icon.height(); ++row) {
+            QRgb *line = (QRgb *)icon.scanLine(row);
+
+            for(int col=0; col<icon.width(); ++col) {
+                QRgb pix = line[col];
+
+                int r = qRed(pix);
+                int g = qGreen(pix);
+                int b = qBlue(pix);
+                int a = qAlpha(pix);
+
+                float saturation = (qMax(r, qMax(g, b)) - qMin(r, qMin(g, b))) / 255.0f;
+                float relevance = .1 + .9 * (a / 255.0f) * saturation;
+
+                rtotal += (float)(r * relevance);
+                gtotal += (float)(g * relevance);
+                btotal += (float)(b * relevance);
+
+                total += relevance * 255;
+            }
+        }
+
+        int nr = (rtotal / total) * 255;
+        int ng = (gtotal / total) * 255;
+        int nb = (btotal / total) * 255;
+
+        QColor tempColor(nr, ng, nb);
+
+        if (tempColor.hsvSaturationF() > 0.15f) {
+            tempColor.setHsvF(tempColor.hueF(), 0.65f, tempColor.valueF());
+        }
+
+        tempColor.setHsvF(tempColor.hueF(), tempColor.saturationF(), 0.55f); //original 0.90f ???
+
+        setBackgroundColor(tempColor);
+
+        tempColor.setHsvF(tempColor.hueF(), tempColor.saturationF(), 1.0f);
+
+        setGlowColor(tempColor);
+    }
+}
+
 void IconItem::loadPixmap()
 {
     if (!isComponentComplete()) {
@@ -412,6 +510,12 @@ void IconItem::loadPixmap()
     }
 
     m_iconPixmap = result;
+
+    if (m_providesColors && m_lastValidSourceName != m_lastColorsSourceName) {
+        m_lastColorsSourceName = m_lastValidSourceName;
+        updateColors();
+    }
+
     m_textureChanged = true;
     //don't animate initial setting
     update();

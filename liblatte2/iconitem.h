@@ -93,10 +93,17 @@ class IconItem : public QQuickItem
     Q_PROPERTY(bool usesPlasmaTheme READ usesPlasmaTheme WRITE setUsesPlasmaTheme NOTIFY usesPlasmaThemeChanged)
 
     /**
+     * If set, icon will provide a background and glow color
+     */
+    Q_PROPERTY(bool providesColors READ providesColors WRITE setProvidesColors NOTIFY providesColorsChanged)
+
+    /**
      * Contains the last valid icon name
      */
     Q_PROPERTY(QString lastValidSourceName READ lastValidSourceName NOTIFY lastValidSourceNameChanged)
 
+    Q_PROPERTY(QColor backgroundColor READ backgroundColor NOTIFY backgroundColorChanged)
+    Q_PROPERTY(QColor glowColor READ glowColor NOTIFY glowColorChanged)
 public:
     IconItem(QQuickItem *parent = nullptr);
     virtual ~IconItem();
@@ -115,13 +122,20 @@ public:
 
     bool isValid() const;
 
-    int paintedWidth() const;
-    int paintedHeight() const;
+    bool providesColors() const;
+    void setProvidesColors(const bool provides);
 
     bool usesPlasmaTheme() const;
     void setUsesPlasmaTheme(bool usesPlasmaTheme);
 
+    int paintedWidth() const;
+    int paintedHeight() const;
+
     QString lastValidSourceName();
+
+    QColor backgroundColor() const;
+
+    QColor glowColor() const;
 
     void updatePolish() Q_DECL_OVERRIDE;
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData) override;
@@ -132,14 +146,17 @@ public:
     void componentComplete() Q_DECL_OVERRIDE;
 
 signals:
-    void overlaysChanged();
     void activeChanged();
+    void backgroundColorChanged();
+    void glowColorChanged();
     void lastValidSourceNameChanged();
-    void sourceChanged();
-    void smoothChanged();
-    void validChanged();
+    void overlaysChanged();
     void paintedSizeChanged();
+    void providesColorsChanged();
+    void smoothChanged();
+    void sourceChanged();
     void usesPlasmaThemeChanged();
+    void validChanged();
 
 private slots:
     void schedulePixmapUpdate();
@@ -147,27 +164,38 @@ private slots:
 
 private:
     void loadPixmap();
+    void updateColors();
     void setLastValidSourceName(QString name);
+    void setBackgroundColor(QColor background);
+    void setGlowColor(QColor glow);
 
-    QIcon m_icon;
-    QPixmap m_iconPixmap;
-    QImage m_imageIcon;
-    std::unique_ptr<Plasma::Svg> m_svgIcon;
-    QString m_lastValidSourceName;
-    QString m_svgIconName;
-    QStringList m_overlays;
-    //this contains the raw variant it was passed
-    QVariant m_source;
-
-    QSizeF m_implicitSize;
-
-    bool m_smooth;
+private:
     bool m_active;
+    bool m_providesColors{false};
+    bool m_smooth;
+
 
     bool m_textureChanged;
     bool m_sizeChanged;
     bool m_usesPlasmaTheme;
 
+    QColor m_backgroundColor;
+    QColor m_glowColor;
+
+    QIcon m_icon;
+    QPixmap m_iconPixmap;
+    QImage m_imageIcon;
+    std::unique_ptr<Plasma::Svg> m_svgIcon;
+    QString m_svgIconName;
+
+    QString m_lastValidSourceName;
+    QString m_lastColorsSourceName;
+
+    QStringList m_overlays;
+    //this contains the raw variant it was passed
+    QVariant m_source;
+
+    QSizeF m_implicitSize;
 };
 
 }
