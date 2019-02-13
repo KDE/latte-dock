@@ -67,7 +67,7 @@ void Menu::makeActions()
         qDebug() << "Action Trigerred !!!";
     });
 
-    m_addWidgetsAction = new QAction(QIcon::fromTheme("add"), i18n("Add Widgets..."), this);
+    m_addWidgetsAction = new QAction(QIcon::fromTheme("add"), i18n("&Add Widgets..."), this);
     m_addWidgetsAction->setStatusTip(i18n("Show Plasma Widget Explorer"));
     connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
         QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
@@ -77,13 +77,19 @@ void Menu::makeActions()
         }
     });
 
-    m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("view settings window", "View Settings..."), this);
-    m_configureAction->setShortcut(QKeySequence());
+    m_configureAction = new QAction(QIcon::fromTheme("configure"), i18nc("view settings window", "View &Settings..."), this);
     connect(m_configureAction, &QAction::triggered, this, &Menu::requestConfiguration);
+
+    connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, [&](bool configuring){
+        m_configureAction->setVisible(!configuring);
+        // because sometimes it's disabled unexpectedly
+        // we should enable it
+        m_configureAction->setEnabled(true);
+    });
 
     m_switchLayoutsMenu = new QMenu;
     m_layoutsAction = m_switchLayoutsMenu->menuAction();
-    m_layoutsAction->setText(i18n("Layouts"));
+    m_layoutsAction->setText(i18n("&Layouts"));
     m_layoutsAction->setIcon(QIcon::fromTheme("user-identity"));
     m_layoutsAction->setStatusTip(i18n("Switch to another layout"));
 
@@ -131,6 +137,9 @@ QList<QAction *> Menu::contextualActions()
     if (m_data.size() >= LAYOUTSPOS + 1) {
         viewType = static_cast<Latte::Types::ViewType>((m_data[2]).toInt());
     }
+
+    const QString configureActionText = (viewType == Latte::Types::DockView) ? i18nc("dock settings window", "Dock &Settings...") : i18nc("panel settings window", "Panel &Settings...");
+    m_configureAction->setText(configureActionText);
 
     return actions;
 }
