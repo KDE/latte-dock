@@ -110,8 +110,22 @@ Item{
 
     Loader {
         anchors.fill: parent
-        active: root.activeIndicator !== Latte.Types.NoneIndicator && root.indicatorStyle === Latte.Types.PlasmaIndicator
-        sourceComponent: Indicators.PlasmaIndicator{}
+        active: root.activeIndicator !== Latte.Types.NoneIndicator
+                && (root.indicatorStyle === Latte.Types.PlasmaIndicator || root.indicatorStyle === Latte.Types.UnityIndicator)
+
+        sourceComponent: root.indicatorStyle === Latte.Types.PlasmaIndicator ? plasmaIndicatorComponent : unityIndicatorComponent
+
+        Component{
+            id: plasmaIndicatorComponent
+            Indicators.PlasmaIndicator{}
+        }
+        Component{
+            id:unityIndicatorComponent
+            Indicators.UnityIndicator{
+                backgroundColor: iconImageBuffer.backgroundColor
+                glowColor: iconImageBuffer.glowColor
+            }
+        }
     }
 
     TitleTooltipParent{
@@ -187,6 +201,7 @@ Item{
             width: Math.round(newTempSize) //+ 2*taskIcon.shadowSize
             height: Math.round(width)
             source: decoration
+            providesColors: root.indicatorStyle === Latte.Types.UnityIndicator
 
             opacity: root.enableShadows ? 0 : 1
             visible: !taskItem.isSeparator && !badgesLoader.active

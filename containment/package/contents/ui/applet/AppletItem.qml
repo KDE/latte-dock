@@ -64,6 +64,11 @@ Item {
     property bool appletBlocksParabolicEffect: !communicator.parabolicEffectEnabled
     property bool showZoomed: false
     property bool lockZoom: false
+    property bool isActive: (isExpanded && !isSystray
+                             && applet.pluginName !== root.plasmoidName
+                             && applet.pluginName !== "org.kde.activeWindowControl"
+                             && applet.pluginName !== "org.kde.plasma.appmenu")
+
     property bool isExpanded: applet && applet.status >= PlasmaCore.Types.NeedsAttentionStatus
                               && applet.status !== PlasmaCore.Types.HiddenStatus
 
@@ -502,6 +507,45 @@ Item {
             width: wrapper.width
             height: wrapper.height
 
+            //! Active Indicator loader
+            Loader{
+                anchors.fill: parent
+                active: (root.activeIndicator === Latte.Types.AllIndicator
+                         || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
+                        && communicator.activeIndicatorEnabled
+                        && !(root.indicatorStyle === Latte.Types.UnityIndicator && !communicator.overlayLatteIconIsActive)
+
+
+                sourceComponent: root.indicatorStyle===Latte.Types.LatteIndicator ?
+                                     latteStyleIndicator : (root.indicatorStyle===Latte.Types.PlasmaIndicator ? plasmaStyleIndicator : unityStyleIndicator)
+
+                Component {
+                    id: latteStyleIndicator
+
+                    Item{
+                        anchors.fill: parent
+                        Indicators.LatteIndicator{}
+                    }
+                }
+
+                Component {
+                    id: plasmaStyleIndicator
+
+                    Indicators.PlasmaIndicator {
+                        anchors.fill: parent
+                    }
+                }
+
+                Component{
+                    id:unityStyleIndicator
+                    Indicators.UnityIndicator{
+                        anchors.fill: parent
+                        backgroundColor: wrapper.overlayIconLoader.backgroundColor
+                        glowColor: wrapper.overlayIconLoader.glowColor
+                    }
+                }
+            }
+
             ItemWrapper{
                 id: wrapper
 
@@ -525,32 +569,6 @@ Item {
                     NumberAnimation {
                         duration: 1.2 * root.animationTime
                         easing.type: Easing.OutCubic
-                    }
-                }
-            }
-
-            //! Active Indicator loader
-            Loader{
-                anchors.fill: parent
-                active: (root.activeIndicator === Latte.Types.AllIndicator
-                         || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
-                        && communicator.activeIndicatorEnabled
-
-                sourceComponent: root.indicatorStyle===Latte.Types.PlasmaIndicator ? plasmaStyleIndicator : latteStyleIndicator
-
-                Component {
-                    id: latteStyleIndicator
-                    Item{
-                        anchors.fill: parent
-                        Indicators.LatteIndicator{}
-                    }
-                }
-
-                Component {
-                    id: plasmaStyleIndicator
-                    Item{
-                        anchors.fill: parent
-                        Indicators.PlasmaIndicator {}
                     }
                 }
             }

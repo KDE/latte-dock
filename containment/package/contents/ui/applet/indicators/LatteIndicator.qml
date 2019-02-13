@@ -59,17 +59,12 @@ Item{
         contrastColor: root.appShadowColorSolid
 
         opacity:{
-            if ( (!vertical && width <= glowFrame.size && !isActive)
-                    || (vertical && height <= glowFrame.size && !isActive))
+            if ( (!vertical && width <= glowFrame.size && !appletItem.isActive)
+                    || (vertical && height <= glowFrame.size && !appletItem.isActive))
                 return 0;
 
             return 1;
         }
-
-        property bool isActive: (appletItem.isExpanded && !appletItem.isSystray
-                                 && applet.pluginName !== root.plasmoidName
-                                 && applet.pluginName !== "org.kde.activeWindowControl"
-                                 && applet.pluginName !== "org.kde.plasma.appmenu")
 
         property bool vertical: root.isVertical
 
@@ -86,42 +81,41 @@ Item{
                 else
                     height = glowFrame.size;
 
-                if(vertical && isActive)
+                if(vertical && appletItem.isActive)
                     height = stateHeight;
                 else
                     height = glowFrame.size;
 
-                if(!vertical && isActive)
+                if(!vertical && appletItem.isActive)
                     width = stateWidth;
                 else
                     width = glowFrame.size;
             }
         }
 
-
-        onIsActiveChanged: {
-            // if(mainItemContainer.hasActive || windowsPreviewDlg.visible)
-            activeAndReverseAnimation.start();
+        Connections{
+            target: appletItem
+            onIsActiveChanged: activeAndReverseAnimation.start();
         }
 
         onScaleFactorChanged: {
             if ( root.activeIndicatorType === Latte.Types.LineIndicator ) {
-                if(!activeAndReverseAnimation.running && !root.vertical && isActive){
+                if(!activeAndReverseAnimation.running && !root.vertical && appletItem.isActive){
                     width = stateWidth;
                 }
-                else if (!activeAndReverseAnimation.running && root.vertical && isActive){
+                else if (!activeAndReverseAnimation.running && root.vertical && appletItem.isActive){
                     height = stateHeight;
                 }
             }
         }
 
         onStateWidthChanged:{
-            if(!activeAndReverseAnimation.running && !vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
+            if(!activeAndReverseAnimation.running && !vertical && appletItem.isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                 width = stateWidth;
         }
 
         onStateHeightChanged:{
-            if(!activeAndReverseAnimation.running && vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
+            if(!activeAndReverseAnimation.running && vertical && appletItem.isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                 height = stateHeight;
         }
 
@@ -141,7 +135,7 @@ Item{
             id: activeAndReverseAnimation
             target: activePoint
             property: root.isVertical ? "height" : "width"
-            to: !activePoint.isActive ? (root.isVertical ? activePoint.stateHeight : activePoint.stateWidth) : glowFrame.size
+            to: !appletItem.isActive ? (root.isVertical ? activePoint.stateHeight : activePoint.stateWidth) : glowFrame.size
             duration: activePoint.animationTime
             easing.type: Easing.InQuad
 

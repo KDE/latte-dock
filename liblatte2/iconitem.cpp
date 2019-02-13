@@ -86,10 +86,11 @@ void IconItem::setSource(const QVariant &source)
     // If the QIcon was created with QIcon::fromTheme(), try to load it as svg
     if (source.canConvert<QIcon>() && !source.value<QIcon>().name().isEmpty()) {
         sourceString = source.value<QIcon>().name();
-        setLastValidSourceName(sourceString);
     }
 
     if (!sourceString.isEmpty()) {
+        setLastValidSourceName(sourceString);
+
         //If a url in the form file:// is passed, take the image pointed by that from disk
         QUrl url(sourceString);
 

@@ -168,6 +168,7 @@ Item{
     property Item wrapperContainer: _wrapperContainer
     property Item clickedEffect: _clickedEffect
     property Item containerForOverlayIcon: _containerForOverlayIcon
+    property Item overlayIconLoader: _overlayIconLoader
 
     Behavior on opacity {
         NumberAnimation {
@@ -487,8 +488,13 @@ Item{
         }
 
         Loader{
+            id: _overlayIconLoader
             anchors.fill: parent
             active: communicator.overlayLatteIconIsActive
+
+            property color backgroundColor: "black"
+            property color glowColor: "white"
+
             sourceComponent: Latte.IconItem{
                 id: overlayIconItem
                 anchors.fill: parent
@@ -497,9 +503,26 @@ Item{
                         return communicator.appletIconItem.source;
                     else if (communicator.appletImageItemIsShown())
                         return communicator.appletImageItem.source;
+
+                    return "";
                 }
 
+                providesColors: root.indicatorStyle === Latte.Types.UnityIndicator && source != ""
                 usesPlasmaTheme: communicator.appletIconItemIsShown() ? communicator.appletIconItem.usesPlasmaTheme : false
+
+                Binding{
+                    target: _overlayIconLoader
+                    property: "backgroundColor"
+                    when: overlayIconItem.providesColors
+                    value: overlayIconItem.backgroundColor
+                }
+
+                Binding{
+                    target: _overlayIconLoader
+                    property: "glowColor"
+                    when: overlayIconItem.providesColors
+                    value: overlayIconItem.glowColor
+                }
 
                 Loader{
                     anchors.centerIn: parent
@@ -511,8 +534,6 @@ Item{
                         opacity: 0.65
                     }
                 }
-
-                //ActiveIndicator{}
             }
         }
     }
