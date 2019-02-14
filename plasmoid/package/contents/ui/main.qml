@@ -538,6 +538,8 @@ Item {
             if (visible) {
                 windowsPreviewCheckerToNotShowTimer.start();
             }
+
+            mainItem.visible = visible;
         }
 
         function hide(debug){
