@@ -165,6 +165,7 @@ private slots:
 private:
     void loadPixmap();
     void updateColors();
+    void setLastLoadedSourceId(QString id);
     void setLastValidSourceName(QString name);
     void setBackgroundColor(QColor background);
     void setGlowColor(QColor glow);
@@ -188,8 +189,20 @@ private:
     std::unique_ptr<Plasma::Svg> m_svgIcon;
     QString m_svgIconName;
 
+    //! can be used to track changes during source "changes" independent
+    //! of the source type
+    int m_iconCounter{0};
+
+    //! last source name that was valid
     QString m_lastValidSourceName;
-    QString m_lastColorsSourceName;
+
+    //! the last icon that was loaded independent of its type svg/pixmap/image
+    //! this is set and used only internally. One of its uses is to check
+    //! when the colors must be updated
+    QString m_lastLoadedSourceId;
+
+    //! last source name that was used in order to produce colors
+    QString m_lastColorsSourceId;
 
     QStringList m_overlays;
     //this contains the raw variant it was passed

@@ -90,6 +90,7 @@ void IconItem::setSource(const QVariant &source)
 
     if (!sourceString.isEmpty()) {
         setLastValidSourceName(sourceString);
+        setLastLoadedSourceId(sourceString);
 
         //If a url in the form file:// is passed, take the image pointed by that from disk
         QUrl url(sourceString);
@@ -162,12 +163,18 @@ void IconItem::setSource(const QVariant &source)
         }
     } else if (source.canConvert<QIcon>()) {
         m_icon = source.value<QIcon>();
+        m_iconCounter++;
+        setLastLoadedSourceId("_icon_"+QString::number(m_iconCounter));
+
         m_imageIcon = QImage();
         m_svgIconName.clear();
         m_svgIcon.reset();
     } else if (source.canConvert<QImage>()) {
-        m_icon = QIcon();
         m_imageIcon = source.value<QImage>();
+        m_iconCounter++;
+        setLastLoadedSourceId("_image_"+QString::number(m_iconCounter));
+
+        m_icon = QIcon();
         m_svgIconName.clear();
         m_svgIcon.reset();
     } else {
@@ -188,6 +195,15 @@ void IconItem::setSource(const QVariant &source)
 QVariant IconItem::source() const
 {
     return m_source;
+}
+
+void IconItem::setLastLoadedSourceId(QString id)
+{
+    if (m_lastLoadedSourceId == id) {
+        return;
+    }
+
+    m_lastLoadedSourceId = id;
 }
 
 QString IconItem::lastValidSourceName()
@@ -512,8 +528,8 @@ void IconItem::loadPixmap()
 
     m_iconPixmap = result;
 
-    if (m_providesColors && m_lastValidSourceName != m_lastColorsSourceName) {
-        m_lastColorsSourceName = m_lastValidSourceName;
+    if (m_providesColors && m_lastLoadedSourceId != m_lastColorsSourceId) {
+        m_lastColorsSourceId = m_lastLoadedSourceId;
         updateColors();
     }
 
