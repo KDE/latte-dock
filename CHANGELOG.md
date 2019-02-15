@@ -1,5 +1,10 @@
 #**CHANGELOG**#
 
+#### Version 0.8.6
+
+* fix: previews that broke after kf5>=5.55 upgrade
+* fix: plasma shortcuts behavior for applets when "Multiple" layouts are used
+
 #### Version 0.8.5
 
 * FIX: important improvements for fillWidth(s)/Height(s) applets. Latte now
