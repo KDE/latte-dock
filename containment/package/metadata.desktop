@@ -55,7 +55,7 @@ NoDisplay=true
 X-KDE-PluginInfo-Author=Michail Vourlakos, Smith Ar
 X-KDE-PluginInfo-Email=mvourlakos@gmail.com, audoban@openmailbox.org
 X-KDE-PluginInfo-Name=org.kde.latte.containment
-X-KDE-PluginInfo-Version=0.8.5
+X-KDE-PluginInfo-Version=0.8.6
 X-KDE-PluginInfo-Website=https://github.com/psifidotos/Latte-Dock
 X-KDE-PluginInfo-Category=X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
