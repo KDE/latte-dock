@@ -335,7 +335,8 @@ PlasmaComponents.ContextMenu {
                 menuItem.text = i18n("Move To Current Desktop");
                 menuItem.enabled = Qt.binding(function() {
                     if (root.plasma515) {
-                        return menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.currentDesktop) == -1;
+                        var vds = menu.get(atm.VirtualDesktops);
+                        return menu.visualParent && (vds !== undefined) && vds.indexOf(virtualDesktopInfo.currentDesktop) == -1;
                     } else {
                         return menu.visualParent && menu.get(atm.VirtualDesktop) !== virtualDesktopInfo.currentDesktop;
                     }
@@ -373,7 +374,8 @@ PlasmaComponents.ContextMenu {
                     menuItem.checked = Qt.binding((function(i) {
                         return function() {
                             if (root.plasma515) {
-                                return (menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
+                                var vds = menu.get(atm.VirtualDesktops);
+                                return (menu.visualParent && (vds !== undefined) && vds.indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
                             } else {
                                 return (menu.visualParent && menu.get(atm.VirtualDesktop) === (i + 1));
                             }
