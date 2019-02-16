@@ -933,7 +933,17 @@ void Corona::windowColorScheme(QString windowIdAndScheme)
     QString windowIdStr = windowIdAndScheme.mid(0, firstSlash);
     QString schemeStr = windowIdAndScheme.mid(firstSlash + 1);
 
-    m_wm->setColorSchemeForWindow(windowIdStr, schemeStr);
+    if (KWindowSystem::isPlatformWayland()) {
+        QTimer::singleShot(200, [this, schemeStr]() {
+            //! [Wayland Case] - give the time to be informed correctly for the active window id
+            //! otherwise the active window id may not be the same with the one trigerred
+            //! the color scheme dbus signal
+            QString windowIdStr = m_wm->activeWindow().toString();
+            m_wm->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);
+        });
+    } else {
+        m_wm->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);
+    }
 }
 
 //! update badge for specific view item
