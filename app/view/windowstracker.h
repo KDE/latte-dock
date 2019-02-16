@@ -41,6 +41,7 @@ class WindowsTracker : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool activeWindowTouching READ activeWindowTouching NOTIFY activeWindowTouchingChanged)
+    Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
     Q_PROPERTY(bool existsWindowTouching READ existsWindowTouching NOTIFY existsWindowTouchingChanged)
     Q_PROPERTY(SchemeColors *activeWindowScheme READ activeWindowScheme NOTIFY activeWindowSchemeChanged)
@@ -53,6 +54,7 @@ public:
     bool enabled() const;
     void setEnabled(bool active);
 
+    bool existsWindowActive() const;
     bool activeWindowTouching() const;
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
@@ -65,6 +67,7 @@ public:
 signals:
     void enabledChanged();
     void activeWindowTouchingChanged();
+    void existsWindowActiveChanged();
     void existsWindowMaximizedChanged();
     void existsWindowTouchingChanged();
     void activeWindowSchemeChanged();
@@ -77,6 +80,7 @@ public slots:
 
 private:
     void setActiveWindowTouching(bool activeTouching);
+    void setExistsWindowActive(bool windowActive);
     void setExistsWindowMaximized(bool windowMaximized);
     void setExistsWindowTouching(bool windowTouching);
     void setActiveWindowScheme(SchemeColors *scheme);
@@ -95,6 +99,7 @@ private:
 private:
     bool m_enabled{false};
     bool m_activeWindowIsTouchingFlag{false};
+    bool m_windowIsActiveFlag{false};
     bool m_windowIsTouchingFlag{false};
     bool m_windowIsMaximizedFlag{false};
 

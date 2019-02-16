@@ -182,7 +182,8 @@ Item{
         value: (latteView.visibility && latteView.visibility.mode === Latte.Types.DodgeAllWindows)
                || ((root.backgroundOnlyOnMaximized
                     || plasmoid.configuration.solidBackgroundForMaximized
-                    || root.disablePanelShadowMaximized)
+                    || root.disablePanelShadowMaximized
+                    || root.windowColors !== Latte.Types.NoneWindowColors)
                    && Latte.WindowSystem.compositingActive)
     }
 

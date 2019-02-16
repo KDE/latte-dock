@@ -58,6 +58,21 @@ void WindowsTracker::setActiveWindowTouching(bool activeTouching)
     emit activeWindowTouchingChanged();
 }
 
+bool WindowsTracker::existsWindowActive() const
+{
+    return m_windowIsActiveFlag;
+}
+
+void WindowsTracker::setExistsWindowActive(bool windowActive)
+{
+    if (m_windowIsActiveFlag == windowActive) {
+        return;
+    }
+
+    m_windowIsActiveFlag = windowActive;
+    emit existsWindowActiveChanged();
+}
+
 bool WindowsTracker::existsWindowMaximized() const
 {
     return m_windowIsMaximizedFlag;
@@ -258,6 +273,7 @@ void WindowsTracker::updateFlags()
         cleanupFaultyWindows();
     }
 
+    setExistsWindowActive(foundActive);
     setActiveWindowTouching(foundActiveTouch);
     setExistsWindowMaximized(foundMaximized);
     setExistsWindowTouching(foundTouch || foundActiveTouch);
