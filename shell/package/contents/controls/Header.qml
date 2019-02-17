@@ -27,8 +27,9 @@ import org.kde.plasma.plasmoid 2.0
 Label {
     Layout.alignment: Qt.AlignLeft
     Layout.topMargin: units.smallSpacing
+    Layout.bottomMargin: units.smallSpacing
     color: theme.textColor
     font.weight: Font.DemiBold
     font.letterSpacing: 1.05
-    font.pixelSize: 1.1 * theme.mSize(theme.defaultFont).height
+    font.pixelSize: 1.15 * theme.mSize(theme.defaultFont).height
 }

@@ -308,8 +308,8 @@ DragDrop.DropArea {
 
     property int lengthIntMargin: lengthIntMarginFactor * root.iconSize
     property int lengthExtMargin: lengthExtMarginFactor * root.iconSize
-    property real lengthIntMarginFactor: 0.04
-    property real lengthExtMarginFactor: 0.04
+    property real lengthIntMarginFactor: plasmoid.configuration.lengthIntMargin / 100
+    property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
     property real thickMarginFactor: {
         if (shrinkThickMargins) {
@@ -317,7 +317,7 @@ DragDrop.DropArea {
         }
 
         //0.075 old statesLineSize and 0.06 old default thickMargin
-        return 0.075 + 0.06;
+        return  plasmoid.configuration.thickMargin / 100;
     }
     property int thickMargin: thickMarginFactor * root.iconSize
 

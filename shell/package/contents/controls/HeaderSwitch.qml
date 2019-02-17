@@ -36,12 +36,20 @@ import "private" as Private
 Item {
     id: item
 
-    property bool isHeader: true
+    property int level:1
     property bool checked: false
 
-    readonly property int implicitWidth: isHeader ? headerText.width + itemSwitch.width : labelText.width + itemSwitch.width
-    readonly property int implicitHeight: isHeader ? Math.max(headerText.implicitHeight, itemSwitch.implicitHeight) :
-                                                     Math.max(labelText.implicitHeight, itemSwitch.implicitHeight)
+    readonly property int implicitWidth: row.width
+
+    readonly property int implicitHeight: {
+        if (level === 1) {
+            return Math.max(headerText.implicitHeight, itemSwitch.implicitHeight);
+        } else if (level === 2) {
+            return Math.max(subHeaderText.implicitHeight, itemSwitch.implicitHeight)
+        }
+
+        return Math.max(labelText.implicitHeight, itemSwitch.implicitHeight);
+    }
 
     property string text:""
     property string tooltip:""
@@ -59,7 +67,15 @@ Item {
             Layout.fillWidth: true
             text: item.text
             enabled: item.checked
-            visible: item.isHeader
+            visible: level === 1
+        }
+
+        LatteExtraControls.SubHeader {
+            id: subHeaderText
+            Layout.fillWidth: true
+            text: item.text
+            enabled: item.checked
+            visible: level === 2
         }
 
         PlasmaComponents.Label {
@@ -67,15 +83,17 @@ Item {
             Layout.fillWidth: true
             text: item.text
             enabled: item.checked
-            visible: !item.isHeader
+            visible: level > 2
         }
+    }
 
-        Switch {
-            id: itemSwitch
-            checked: item.checked
+    Switch {
+        id: itemSwitch
+        anchors.verticalCenter: row.verticalCenter
+        anchors.right: row.right
+        checked: item.checked
 
-            style: Private.SwitchStyle {}
-        }
+        style: Private.SwitchStyle {}
     }
 
     MouseArea {

@@ -50,13 +50,13 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
             LatteExtraControls.HeaderSwitch {
                 id: showAppletShadow
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
-                Layout.rightMargin: units.smallSpacing * 2
 
                 checked: plasmoid.configuration.shadows !== Latte.Types.NoneShadow
                 text: i18n("Shadows")
@@ -73,7 +73,6 @@ PlasmaComponents.Page {
 
             ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
 
                 RowLayout{
                     enabled: showAppletShadow.checked
@@ -179,7 +178,6 @@ PlasmaComponents.Page {
                 id: shadowColorRow
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
                 enabled: showAppletShadow.checked
 
@@ -402,7 +400,6 @@ PlasmaComponents.Page {
             }
 
             ColumnLayout {
-                Layout.rightMargin: units.smallSpacing
                 Layout.leftMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 enabled: indicatorsSwitch.checked
@@ -461,8 +458,28 @@ PlasmaComponents.Page {
                 }
 
                 LatteExtraControls.SubHeader {
+                    Layout.topMargin: units.smallSpacing * 4
                     isFirstSubCategory: true
-                    text: i18nc("active indicator style","For Active")
+                    text: i18n("Placement")
+                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
+                }
+
+                LatteExtraControls.HeaderSwitch {
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+                    text: i18n("Reverse position")
+                    tooltip: i18n("Reverse indicators position e.g. from bottom to top")
+                    checked: plasmoid.configuration.reverseLinesPosition
+                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
+                    level: 3
+
+                    onPressed: {
+                        plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
+                    }
+                }
+
+                LatteExtraControls.SubHeader {
+                    text: i18nc("active indicator style","Style For Active")
 
                     visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
                 }
@@ -611,23 +628,6 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                    }
-                }
-
-                LatteExtraControls.SubHeader {
-                    text: i18n("Placement")
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
-                }
-
-                PlasmaComponents.CheckBox {
-                    Layout.fillWidth: true
-                    text: i18n("Reverse position for all indicators")
-                    tooltip: i18n("Reverse indicators position e.g. from bottom to top")
-                    checked: plasmoid.configuration.reverseLinesPosition
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
-
-                    onClicked: {
-                        plasmoid.configuration.reverseLinesPosition = checked;
                     }
                 }
             }

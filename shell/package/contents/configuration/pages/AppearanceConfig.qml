@@ -57,8 +57,9 @@ PlasmaComponents.Page {
         //! BEGIN: Layout
         ColumnLayout {
             Layout.fillWidth: true
-            spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            spacing: units.smallSpacing
             visible: dialog.highLevel
 
             LatteExtraControls.Header {
@@ -68,7 +69,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
                 PlasmaComponents3.ComboBox {
@@ -140,6 +140,7 @@ PlasmaComponents.Page {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: dialog.highLevel ? 0 : units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
             LatteExtraControls.Header {
@@ -149,7 +150,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 enabled: proportionSizeSlider.value === 1
 
@@ -206,7 +206,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
 
@@ -261,7 +260,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 enabled: plasmoid.configuration.durationTime > 0
 
@@ -307,49 +305,13 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                 }
             }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-
-                PlasmaComponents.Label {
-                    text: i18n("Distance")
-                    horizontalAlignment: Text.AlignLeft
-                    enabled: iconMarginSlider.value > 0
-                }
-
-                LatteExtraControls.Slider {
-                    id: iconMarginSlider
-                    Layout.fillWidth: true
-                    value: plasmoid.configuration.iconMargin
-                    from: 0
-                    to: 100
-                    stepSize: 5
-                    wheelEnabled: false
-
-                    onPressedChanged: {
-                        if (!pressed) {
-                            plasmoid.configuration.iconMargin = value;
-                        }
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: iconMarginSlider.value.toFixed(1) + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                    enabled: iconMarginSlider.value > 0
-                }
-            }
         }
         //! END: Items
 
         //! BEGIN: Length
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
             LatteExtraControls.Header {
@@ -359,7 +321,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Label {
@@ -433,7 +394,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
                 visible: dialog.expertLevel
 
@@ -493,6 +453,149 @@ PlasmaComponents.Page {
             }
         }
         //! END: Length
+
+        //! BEGIN: Margins
+        ColumnLayout {
+            id: marginsColumn
+            Layout.fillWidth: true
+            Layout.rightMargin: units.smallSpacing * 2
+            spacing: units.smallSpacing
+            visible: dialog.expertLevel
+
+            readonly property int maxMargin: 40
+
+            LatteExtraControls.Header {
+                text: i18n("Margins")
+            }
+
+            LatteExtraControls.SubHeader {
+                Layout.columnSpan: 3
+                isFirstSubCategory: true
+                text: i18n("Length")
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Label {
+                    text: i18n("Internal")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                LatteExtraControls.Slider {
+                    id: lengthIntMarginSlider
+                    Layout.fillWidth: true
+
+                    value: plasmoid.configuration.lengthIntMargin
+                    from: 0
+                    to: marginsColumn.maxMargin
+                    stepSize: 2
+                    wheelEnabled: false
+
+                    onPressedChanged: {
+                        if (!pressed) {
+                            plasmoid.configuration.lengthIntMargin = value;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: lengthIntMarginSlider.value + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+
+                PlasmaComponents.Label {
+                    text: i18n("External")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                LatteExtraControls.Slider {
+                    id: lengthExtMarginSlider
+                    Layout.fillWidth: true
+
+                    value: plasmoid.configuration.lengthExtMargin
+                    from: 0
+                    to: marginsColumn.maxMargin
+                    stepSize: 2
+                    wheelEnabled: false
+
+                    onPressedChanged: {
+                        if (!pressed) {
+                            plasmoid.configuration.lengthExtMargin = value;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: lengthExtMarginSlider.value + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            LatteExtraControls.HeaderSwitch {
+                id: shrinkThickMargins
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+
+                checked: !plasmoid.configuration.shrinkThickMargins
+                level: 2
+                text: i18n("Thickness")
+                tooltip: i18n("Enable/disable thickness margins")
+
+                onPressed: {
+                    plasmoid.configuration.shrinkThickMargins = !plasmoid.configuration.shrinkThickMargins;
+                }
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+                spacing: units.smallSpacing
+                enabled: !plasmoid.configuration.shrinkThickMargins
+
+                PlasmaComponents.Label {
+                    text: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? i18n("Height") : i18n("Width")
+                    horizontalAlignment: Text.AlignLeft
+                }
+
+                LatteExtraControls.Slider {
+                    id: thickMarginSlider
+                    Layout.fillWidth: true
+
+                    value: plasmoid.configuration.thickMargin
+                    from: 0
+                    to: marginsColumn.maxMargin
+                    stepSize: 2
+                    wheelEnabled: false
+
+                    onPressedChanged: {
+                        if (!pressed) {
+                            plasmoid.configuration.thickMargin = value;
+                        }
+                    }
+                }
+
+                PlasmaComponents.Label {
+                    text: thickMarginSlider.value + " %"
+                    horizontalAlignment: Text.AlignRight
+                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+        }
+        //! END: Margins
 
         //! BEGIN: Colors
         ColumnLayout {
@@ -616,6 +719,7 @@ PlasmaComponents.Page {
         //! BEGIN: Background
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
             enabled: Latte.WindowSystem.compositingActive
 
@@ -623,7 +727,7 @@ PlasmaComponents.Page {
                 id: showBackground
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
-                Layout.rightMargin: units.smallSpacing * 2
+                Layout.bottomMargin: units.smallSpacing
 
                 checked: plasmoid.configuration.useThemePanel
                 text: i18n("Background")
@@ -637,7 +741,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
 
                 PlasmaComponents.Label {
                     enabled: showBackground.checked
@@ -686,7 +789,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
 
                 PlasmaComponents.Label {
                     text: i18n("Opacity")
@@ -746,7 +848,6 @@ PlasmaComponents.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                Layout.rightMargin: units.smallSpacing * 2
                 spacing: 2
                 visible: dialog.expertLevel
 
@@ -864,29 +965,6 @@ PlasmaComponents.Page {
             }
         }
         //! END: Background
-
-        //! BEGIN: Margins
-        ColumnLayout {
-            Layout.fillWidth: true
-            spacing: units.smallSpacing
-            visible: dialog.expertLevel
-
-            LatteExtraControls.Header {
-                text: i18n("Margins")
-            }
-
-            PlasmaComponents.CheckBox {
-                id: shrinkThickness
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Shrink thickness margins to minimum")
-                checked: plasmoid.configuration.shrinkThickMargins
-
-                onClicked: {
-                    plasmoid.configuration.shrinkThickMargins = checked
-                }
-            }
-        }
-        //! END: Margins
 
         //! Bottom spacer
         PlasmaComponents.Label{
