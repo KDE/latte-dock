@@ -82,7 +82,7 @@ Item{
             return root.panelEdgeSpacing/4;
         }
     }
-    property int smallSize: Math.max(3.7*root.statesLineSize, 16)
+    property int smallSize: 16 //Math.max(3.7*root.statesLineSize, 16)
 
     Behavior on opacity{
         enabled: Latte.WindowSystem.compositingActive
@@ -203,9 +203,9 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.behaveAsPlasmaPanel) {
-                return root.statesLineSize + root.iconSize + root.thickMargin;
+                return root.iconSize + root.thickMargins;
             } else {
-                var icons = root.statesLineSize + root.iconSize + root.thickMargin + 1;
+                var icons = root.iconSize + root.thickMargins + 1;
                 var panelt = root.themePanelThickness + root.panelThickMarginHigh;
 
                 root.realPanelThickness = icons;

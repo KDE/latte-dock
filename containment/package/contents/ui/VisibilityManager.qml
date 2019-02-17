@@ -39,7 +39,7 @@ Item{
     property bool inForceHiding: false //is used when the docks are forced in hiding e.g. when changing layouts
     property bool normalState : false  // this is being set from updateMaskArea
     property bool previousNormalState : false // this is only for debugging purposes
-    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= root.iconSize)
+    property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (root.iconSize + root.thickMargin))
 
     property int animationSpeed: Latte.WindowSystem.compositingActive ? root.durationTime * 1.2 * units.longDuration : 0
     property bool inSlidingIn: false //necessary because of its init structure
@@ -50,26 +50,20 @@ Item{
     property int slidingOutToPos: ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge)) ?
                                       -thicknessNormal : thicknessNormal;
 
-    property int statesLineSizeOriginal: root.latteApplet ? Math.ceil( root.maxIconSize/13 ) : 0
-    property int thickReverseAndGlowExtraSize: (root.reverseLinesPosition && root.showGlow && !behaveAsPlasmaPanel) ? 2*statesLineSize : 0;
-    property int thickReverseAndGlowExtraSizeOriginal: Math.ceil(2*root.maxIconSize/13 )
-
     property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid: root.statesLineSize + (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargin + thickReverseAndGlowExtraSize) //needed in some animations
-    property int thicknessNormal: Math.max(root.statesLineSize + root.iconSize + root.thickMargin + thickReverseAndGlowExtraSize +1,
+    property int thicknessMid:  (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargins) //needed in some animations
+    property int thicknessNormal: Math.max(root.iconSize + root.thickMargins +1,
                                            root.realPanelSize + root.panelShadow)
-    property int thicknessZoom: root.statesLineSize + ((root.iconSize+root.thickMargin + thickReverseAndGlowExtraSize) * root.zoomFactor) + 2
+    property int thicknessZoom: ((root.iconSize+root.thickMargins) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.thickMarginOriginal)) //needed in some animations
+    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
     property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                               thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow
 
-    property int thicknessNormalOriginalValue: statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal +
-                                               root.maxIconSize + root.thickMarginOriginal + 1
-    property int thicknessZoomOriginal: Math.max(statesLineSizeOriginal + thickReverseAndGlowExtraSizeOriginal
-                                                 + ((root.maxIconSize+root.thickMarginOriginal) * root.zoomFactor) + 2,
-                                                 root.realPanelSize + root.panelShadow,
-                                                 thicknessEditMode)
+    property int thicknessNormalOriginalValue: root.maxIconSize + (root.maxThickMargin * 2) + 1
+    property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.zoomFactor) + 2,
+                                                    root.realPanelSize + root.panelShadow,
+                                                    thicknessEditMode)
 
     property int thicknessEditMode: thicknessNormalOriginalValue + theme.defaultFont.pixelSize + root.editShadow
 

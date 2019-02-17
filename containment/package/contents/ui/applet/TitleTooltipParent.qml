@@ -28,7 +28,7 @@ Item{
     height: root.isVertical ? size : thickness
 
     property int size: 1// root.iconSize
-    property int thickness: (root.zoomFactor * root.realSize) + root.statesLineSize
+    property int thickness: (root.zoomFactor * (root.iconSize + root.thickMargins))
     //border.width: 1
     //border.color: "green"
     //color: "transparent"

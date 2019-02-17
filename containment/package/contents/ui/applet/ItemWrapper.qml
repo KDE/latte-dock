@@ -61,12 +61,6 @@ Item{
         }
 
         if (appletItem.latteApplet) {
-            //! commented because it was breaking the context menu available area, I don't remember where
-            //! we needed this...
-
-            // if (appletItem.showZoomed && root.isVertical)
-            //   return root.statesLineSize + root.thickMargin + root.iconSize + 1;
-            //else
             return latteApplet.tasksWidth;
         } else {
             return scaledWidth;
@@ -101,12 +95,6 @@ Item{
         }
 
         if (appletItem.latteApplet) {
-            //! commented because it was breaking the context menu available area, I don't remember where
-            //! we needed this...
-
-            //if (appletItem.showZoomed && root.isHorizontal)
-            // return root.statesLineSize + root.thickMargin + root.iconSize + 1;
-            //  else
             return latteApplet.tasksHeight;
         } else {
             return scaledHeight;
@@ -136,11 +124,11 @@ Item{
     property int iconSize: root.iconSize
 
     property int marginWidth: root.isVertical ?
-                                  (appletItem.isSystray ? root.thickMarginBase : root.thickMargin ) :
-                                  (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
+                                  root.thickMargins :
+                                  (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : root.lengthMargins)  //Fitt's Law
     property int marginHeight: root.isHorizontal ?
-                                   (appletItem.isSystray ? root.thickMarginBase : root.thickMargin ) :
-                                   (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : root.iconMargin)  //Fitt's Law
+                                   root.thickMargins :
+                                   (root.inFullJustify && (appletItem.firstChildOfStartLayout || appletItem.lastChildOfEndLayout ) ? 0 : root.lengthMargins)  //Fitt's Law
 
     property real scaledWidth: zoomScaleWidth * (layoutWidth + marginWidth)
     property real scaledHeight: zoomScaleHeight * (layoutHeight + marginHeight)
@@ -151,14 +139,6 @@ Item{
 
     property int layoutWidth
     property int layoutHeight
-
-    // property int localMoreSpace: root.reverseLinesPosition ? root.statesLineSize + 2 : appletMargin
-    property int localMoreSpace: appletMargin
-
-    property int moreHeight: (appletItem.isSystray || root.reverseLinesPosition)
-                             && root.isHorizontal ? localMoreSpace : 0
-    property int moreWidth: (appletItem.isSystray || root.reverseLinesPosition)
-                            && root.isVertical ? localMoreSpace : 0
 
     property real center:(width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real zoomScale: 1
@@ -287,13 +267,13 @@ Item{
             if(!root.editMode)
                 layoutHeight = 0;
             else
-                layoutHeight = root.iconSize + moreHeight + root.statesLineSize;
+                layoutHeight = root.iconSize;
         }
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
-            layoutHeight = root.iconSize + moreHeight;
+            layoutHeight = root.iconSize;
         }
         else if(appletItem.isSystray && root.isHorizontal){
-            layoutHeight = root.statesLineSize + root.iconSize;
+            layoutHeight = root.iconSize;
         }
         else{
             if(applet && (applet.Layout.minimumHeight > root.iconSize) && root.isVertical && !canBeHovered && !communicator.overlayLatteIconIsActive){
@@ -319,10 +299,10 @@ Item{
                            || (appletItem.lockZoom && applet.Layout.preferredHeight > 0 )){
                     layoutHeight = applet.Layout.preferredHeight;
                 } else{
-                    layoutHeight = root.iconSize + moreHeight;
+                    layoutHeight = root.iconSize;
                 }
             } else {
-                layoutHeight = root.iconSize + moreHeight;
+                layoutHeight = root.iconSize;
             }
         }
     }
@@ -339,13 +319,13 @@ Item{
             if(!root.editMode)
                 layoutWidth = 0;
             else
-                layoutWidth = root.iconSize + moreWidth + root.statesLineSize;
+                layoutWidth = root.iconSize;
         }
         else if(applet && applet.pluginName === "org.kde.plasma.panelspacer"){
-            layoutWidth = root.iconSize + moreWidth;
+            layoutWidth = root.iconSize;
         }
         else if(appletItem.isSystray && root.isVertical){
-            layoutWidth = root.statesLineSize + root.iconSize;
+            layoutWidth = root.iconSize;
         }
         else{
             if(applet && (applet.Layout.minimumWidth > root.iconSize) && root.isHorizontal && !canBeHovered && !communicator.overlayLatteIconIsActive){
@@ -372,10 +352,10 @@ Item{
                            || (appletItem.lockZoom && applet.Layout.preferredWidth > 0 )){
                     layoutWidth = applet.Layout.preferredWidth;
                 } else{
-                    layoutWidth = root.iconSize + moreWidth;
+                    layoutWidth = root.iconSize;
                 }
             } else{
-                layoutWidth = root.iconSize + moreWidth;
+                layoutWidth = root.iconSize;
             }
         }
     }
@@ -392,7 +372,7 @@ Item{
                 return wrapper.layoutWidth;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    return parent.zoomScaleWidth * (root.iconSize + root.thickMarginBase + root.thickMarginHigh);
+                    return parent.zoomScaleWidth * (root.iconSize + root.thickMargins);
                 } else {
                     return parent.zoomScaleWidth * wrapper.layoutWidth;
                 }
@@ -408,7 +388,7 @@ Item{
                 return wrapper.layoutHeight;
             } else {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                    return parent.zoomScaleHeight * (root.iconSize + root.thickMarginBase + root.thickMarginHigh);
+                    return parent.zoomScaleHeight * (root.iconSize + root.thickMargins);
                 } else {
                     return parent.zoomScaleHeight * wrapper.layoutHeight;
                 }
@@ -416,20 +396,12 @@ Item{
 
         }
 
-        //width: Math.round( appletItem.isInternalViewSplitter ? wrapper.layoutWidth : parent.zoomScaleWidth * wrapper.layoutWidth )
-        //height: Math.round( appletItem.isInternalViewSplitter ? wrapper.layoutHeight : parent.zoomScaleHeight * wrapper.layoutHeight )
-
-        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? lowThickUsed : 0
-        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? lowThickUsed : 0
-        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? lowThickUsed : 0
-        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? lowThickUsed : 0
-
         opacity: appletShadow.active ? 0 : 1
 
-        property int lowThickUsed: 0 //root.thickMarginBase
+        anchors.centerIn: parent
 
         //BEGIN states
-        states: [
+        /*states: [
             State {
                 name: "left"
                 when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
@@ -470,7 +442,7 @@ Item{
                         top:parent.top; bottom:undefined; left:undefined; right:undefined;}
                 }
             }
-        ]
+        ]*/
         //END states
 
         ///Secret MouseArea to be used by the folder widget
@@ -534,31 +506,6 @@ Item{
                         opacity: 0.65
                     }
                 }
-            }
-        }
-    }
-
-    //spacer background
-    Loader{
-        anchors.fill: _wrapperContainer
-        active: applet && (applet.pluginName === "org.kde.plasma.panelspacer") && root.editMode
-
-        sourceComponent: Rectangle{
-            anchors.fill: parent
-            border.width: 1
-            border.color: theme.textColor
-            color: "transparent"
-            opacity: 0.7
-
-            radius: root.iconMargin
-            Rectangle{
-                anchors.centerIn: parent
-                color: parent.border.color
-
-                width: parent.width - 1
-                height: parent.height - 1
-
-                opacity: 0.2
             }
         }
     }

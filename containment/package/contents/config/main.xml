@@ -32,15 +32,25 @@
       <default>64</default>
     </entry>
     <!-- this is percentage -->
-    <entry name="iconMargin" type="Int">
+    <entry name="thickMargin" type="Int">
       <default>15</default>
+      <label>this is a percentage value</label>
+    </entry>
+    <entry name="lengthIntMargin" type="Int">
+      <default>15</default>
+      <label>this is a percentage value</label>
+    </entry>
+    <entry name="lengthExtMargin" type="Int">
+      <default>15</default>
+      <label>this is a percentage value</label>
     </entry>
     <entry name="shrinkThickMargins" type="Bool">
       <default>true</default>
+      <label>this is a percentage value</label>
     </entry>
-    <!-- this is percentage -->
     <entry name="proportionIconSize" type="Double">
       <default>-1</default>
+      <label>this is a percentage value, -1 means disabled</label>
     </entry>
     <entry name="useThemePanel" type="Bool">
       <default>true</default>

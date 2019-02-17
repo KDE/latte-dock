@@ -28,7 +28,7 @@ import org.kde.latte 0.2 as Latte
 
 Window{
     width: mainGrid.width + 10
-    height: Math.min(mainGrid.height+10, Screen.height-root.realSize)
+    height: Math.min(mainGrid.height+10, Screen.height - visibilityManager.thicknessNormalOriginal)
     visible: true
 
     property string space:" :   "
@@ -422,35 +422,27 @@ Window{
             }
 
             Text{
-                text: "Icon Margin (pixels)"+space
+                text: "Length Internal Margin (pixels)"+space
             }
 
             Text{
-                text: root.iconMargin
+                text: root.lengthIntMargin
             }
 
             Text{
-                text: "Icon Margin (user set)"+space
+                text: "Length External Margin (pixels)"+space
             }
 
             Text{
-                text: plasmoid.configuration.iconMargin+"%"
+                text: root.lengthExtMargin
             }
 
             Text{
-                text: "Thick Margin Base"+space
+                text: "Thickness Margin"+space
             }
 
             Text{
-                text: root.thickMarginBase
-            }
-
-            Text{
-                text: "Thick Margin High"+space
-            }
-
-            Text{
-                text: root.thickMarginHigh
+                text: root.thickMargin
             }
 
             Text{

@@ -38,8 +38,8 @@ Item {
     id: appletItem
 
     visible: false
-    width: isInternalViewSplitter && !root.editMode ? 0 : (root.isHorizontal ? computeWidth : computeWidth + shownAppletMargin)
-    height: isInternalViewSplitter && !root.editMode ? 0 : (root.isVertical ?  computeHeight : computeHeight + shownAppletMargin)
+    width: isInternalViewSplitter && !root.editMode ? 0 : computeWidth
+    height: isInternalViewSplitter && !root.editMode ? 0 : computeHeight
 
     property bool animationsEnabled: true
     property bool animationWasSent: false  //protection flag for animation broadcasting
@@ -64,7 +64,7 @@ Item {
     property bool appletBlocksParabolicEffect: !communicator.parabolicEffectEnabled
     property bool showZoomed: false
     property bool lockZoom: false
-    property bool isActive: (isExpanded && !isSystray
+    property bool isActive: (isExpanded
                              && applet.pluginName !== root.plasmoidName
                              && applet.pluginName !== "org.kde.activeWindowControl"
                              && applet.pluginName !== "org.kde.plasma.appmenu")
@@ -95,17 +95,13 @@ Item {
     property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
-    property int appletMargin: (applet && (applet.pluginName === root.plasmoidName))
-                               || isInternalViewSplitter
-                               || root.reverseLinesPosition ? 0 : root.statesLineSize
     property int maxWidth: root.isHorizontal ? root.height : root.width
     property int maxHeight: root.isHorizontal ? root.height : root.width
-    property int shownAppletMargin: isSystray ? 0 : appletMargin
     property int internalSplitterId: 0
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.5*root.iconSize) - root.iconMargin)
+    property int spacersMaxSize: Math.max(0,Math.ceil(root.iconSize / 2) - root.lengthMargin)
     property int status: applet ? applet.status : -1
 
     property real computeWidth: root.isVertical ? wrapper.width :
@@ -199,7 +195,7 @@ Item {
     }
 
     function checkCanBeHovered(){
-        var maxSize = root.iconSize + root.thickMarginBase + root.thickMarginHigh;
+        var maxSize = root.iconSize + root.thickMargins;
 
         if ( (((applet && (applet.Layout.minimumWidth > maxSize) && root.isHorizontal) ||
                (applet && (applet.Layout.minimumHeight > maxSize) && root.isVertical))
@@ -489,15 +485,6 @@ Item {
         id: appletFlow
         width: appletItem.computeWidth
         height: appletItem.computeHeight
-
-        anchors.rightMargin: (latteApplet || (showZoomed && root.editMode)) ||
-                             (plasmoid.location !== PlasmaCore.Types.RightEdge) ? 0 : shownAppletMargin
-        anchors.leftMargin: (latteApplet || (showZoomed && root.editMode)) ||
-                            (plasmoid.location !== PlasmaCore.Types.LeftEdge) ? 0 : shownAppletMargin
-        anchors.topMargin: (latteApplet || (showZoomed && root.editMode)) ||
-                           (plasmoid.location !== PlasmaCore.Types.TopEdge)? 0 : shownAppletMargin
-        anchors.bottomMargin: (latteApplet || (showZoomed && root.editMode)) ||
-                              (plasmoid.location !== PlasmaCore.Types.BottomEdge) ? 0 : shownAppletMargin
 
         // a hidden spacer for the first element to add stability
         // IMPORTANT: hidden spacers must be tested on vertical !!!

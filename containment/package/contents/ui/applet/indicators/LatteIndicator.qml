@@ -31,7 +31,7 @@ Item{
     width: !root.isVertical ? parent.width : size
     height: root.isVertical ? parent.height : size
 
-    property int size: mimicPlasmaPanel ? 4 : root.statesLineSize
+    property int size: mimicPlasmaPanel ? 4 : 0.075*root.iconSize
 
     property bool mimicPlasmaPanel: !root.latteApplet && plasmoid.configuration.panelSize===100 ?
                                         !plasmoid.configuration.reverseLinesPosition : false
@@ -145,52 +145,20 @@ Item{
 
     states: [
         State {
-            name: "leftLatte"
+            name: "left"
             when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !root.reverseLinesPosition) ||
-                   (plasmoid.location === PlasmaCore.Types.RightEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
+                   (plasmoid.location === PlasmaCore.Types.RightEdge && root.reverseLinesPosition))
 
             AnchorChanges {
                 target: glowFrame
-                anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
-                    top:undefined; bottom:undefined; left:undefined; right:parent.left;}
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:undefined; bottom:undefined; left:parent.left; right:undefined;}
             }
         },
         State {
-            name: "bottomLatte"
+            name: "bottom"
             when: ((plasmoid.location === PlasmaCore.Types.BottomEdge && !root.reverseLinesPosition) ||
-                   (plasmoid.location === PlasmaCore.Types.TopEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
-
-            AnchorChanges {
-                target: glowFrame
-                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
-                    top:parent.bottom; bottom:undefined; left:undefined; right:undefined;}
-            }
-        },
-        State {
-            name: "topLatte"
-            when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !root.reverseLinesPosition) ||
-                   (plasmoid.location === PlasmaCore.Types.BottomEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
-
-            AnchorChanges {
-                target: glowFrame
-                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
-                    top:undefined; bottom:parent.top; left:undefined; right:undefined;}
-            }
-        },
-        State {
-            name: "rightLatte"
-            when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !root.reverseLinesPosition) ||
-                   (plasmoid.location === PlasmaCore.Types.LeftEdge && root.reverseLinesPosition)) && !mimicPlasmaPanel
-
-            AnchorChanges {
-                target: glowFrame
-                anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
-                    top:undefined; bottom:undefined; left:parent.right; right:undefined;}
-            }
-        },
-        State {
-            name: "topPlasma"
-            when: plasmoid.location === PlasmaCore.Types.TopEdge && mimicPlasmaPanel
+                   (plasmoid.location === PlasmaCore.Types.TopEdge && root.reverseLinesPosition))
 
             AnchorChanges {
                 target: glowFrame
@@ -199,8 +167,9 @@ Item{
             }
         },
         State {
-            name: "bottomPlasma"
-            when: plasmoid.location === PlasmaCore.Types.BottomEdge && mimicPlasmaPanel
+            name: "top"
+            when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !root.reverseLinesPosition) ||
+                   (plasmoid.location === PlasmaCore.Types.BottomEdge && root.reverseLinesPosition))
 
             AnchorChanges {
                 target: glowFrame
@@ -209,23 +178,14 @@ Item{
             }
         },
         State {
-            name: "leftPlasma"
-            when: plasmoid.location === PlasmaCore.Types.LeftEdge && mimicPlasmaPanel
+            name: "right"
+            when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !root.reverseLinesPosition) ||
+                   (plasmoid.location === PlasmaCore.Types.LeftEdge && root.reverseLinesPosition))
 
             AnchorChanges {
                 target: glowFrame
                 anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                     top:undefined; bottom:undefined; left:undefined; right:parent.right;}
-            }
-        },
-        State {
-            name: "rightPlasma"
-            when: plasmoid.location === PlasmaCore.Types.LeftEdge && mimicPlasmaPanel
-
-            AnchorChanges {
-                target: glowFrame
-                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
-                    top:undefined; bottom:undefined; left:parent.left; right:undefined;}
             }
         }
     ]

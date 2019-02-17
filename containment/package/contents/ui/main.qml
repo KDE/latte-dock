@@ -280,7 +280,6 @@ DragDrop.DropArea {
     property int offsetFixed: (offset===0 || panelAlignment === Latte.Types.Center || plasmoid.configuration.panelPosition === Latte.Types.Justify)?
                                   offset : offset+panelMarginLength/2+totalPanelEdgeSpacing/2
 
-    property int realSize: iconSize + iconMargin
     property int realPanelSize: 0
     property int realPanelLength: 0
     property int realPanelThickness: 0
@@ -300,53 +299,39 @@ DragDrop.DropArea {
     }
 
     property int themePanelThickness: {
-        //root.statesLineSize + root.iconSize + root.iconMargin + 1
-        var panelBase = root.statesLineSize + root.panelThickMarginHigh;
-        var margin = latteApplet ? thickMargin : 0;
-        var maxPanelSize = (root.statesLineSize + iconSize + margin + 1) - panelBase;
+        var panelBase = root.panelThickMarginHigh;
+        var margin = latteApplet ? thickMargins : 0;
+        var maxPanelSize = (iconSize + margin + 1) - panelBase;
         var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
 
-    //decouple iconMargin which now is used only for length calculations with thickMargins
-    //which are used for thickness calculations
-    property int thickMarginBase: {
+    property int lengthIntMargin: lengthIntMarginFactor * root.iconSize
+    property int lengthExtMargin: lengthExtMarginFactor * root.iconSize
+    property real lengthIntMarginFactor: 0.04
+    property real lengthExtMarginFactor: 0.04
+
+    property real thickMarginFactor: {
         if (shrinkThickMargins) {
             return 0;
-        } else {
-            return Math.ceil(0.06 * iconSize);
         }
-    }
 
-    property int thickMarginHigh: {
-        var minimum = 2;
-
-        if (shrinkThickMargins) {
-            if (behaveAsPlasmaPanel){
-                return (reverseLinesPosition ? Math.max(root.statesLineSize/2, 1) : minimum);
-            } else {
-                return Math.max(minimum, 0.5 * appShadowSize);
-            }
-        } else {
-            if (behaveAsPlasmaPanel) {
-                return (reverseLinesPosition ? Math.max(root.statesLineSize, 4) : 4);
-            } else {
-                return Math.max( Math.ceil(0.06 * iconSize), 0.5 * appShadowSize);
-            }
-        }
+        //0.075 old statesLineSize and 0.06 old default thickMargin
+        return 0.075 + 0.06;
     }
-    property int thickMargin: thickMarginBase + thickMarginHigh
+    property int thickMargin: thickMarginFactor * root.iconSize
+
+    //! thickness margins are always two and equal in order for items
+    //! to be always correctly centered
+    property int thickMargins: 2 * thickMargin
+
 
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
-    property int thickMarginOriginal: Math.ceil(0.06 * maxIconSize + Math.max( Math.ceil(0.06 * maxIconSize), 0.5 * appShadowSizeOriginal))
+    property int maxThickMargin: thickMarginFactor * maxIconSize
 
-    //! iconMargin from configuration is a percentage. The calculation provides a length
-    //! for that value between 0.04 - 0.5 of iconSize, this way 100% iconMargin means
-    //! equal to the iconSize
-    property int iconMargin: Math.ceil( ((0.5 * (plasmoid.configuration.iconMargin))/100) * iconSize)
-    property int statesLineSize: activeIndicator === Latte.Types.NoneIndicator || indicatorStyle !== Latte.Types.LatteIndicator ?
-                                     0 : Math.ceil( root.iconSize/13 )
+    property int lengthMargin: lengthIntMargin + lengthExtMargin
+    property int lengthMargins: 2 * lengthMargin
 
     ///FIXME: <delete both> I can't remember why this is needed, maybe for the anchorings!!! In order for the Double Layout to not mess the anchorings...
     //property int layoutsContainer.mainLayoutPosition: !plasmoid.immutable ? Latte.Types.Center : (root.isVertical ? Latte.Types.Top : Latte.Types.Left)
@@ -454,15 +439,6 @@ DragDrop.DropArea {
     readonly property color minimizedDotColor: colorizerManager.minimizedDotColor
     ///END properties from latteApplet
 
-    /* Layout.preferredWidth: plasmoid.immutable ?
-                               (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
-                                    layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin) :
-                               Screen.width //on unlocked state use the maximum
-
-    Layout.preferredHeight: plasmoid.immutable ?
-                               (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
-                                    layoutsContainer.height + 0.5*iconMargin : layoutsContainer.mainLayout.height + iconMargin) :
-                               Screen.height //on unlocked state use the maximum*/
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
@@ -507,7 +483,21 @@ DragDrop.DropArea {
     ////////////////END properties
 
     //// BEGIN OF Behaviors
-    Behavior on iconMargin {
+    Behavior on thickMargin {
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on lengthIntMargin {
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Behavior on lengthExtMargin {
         NumberAnimation {
             duration: 0.8 * root.animationTime
             easing.type: Easing.OutCubic
@@ -870,7 +860,7 @@ DragDrop.DropArea {
         ///Notice: they are set here because if they are set with a binding
         ///they break the !immutable experience, the latteView becomes too small
         ///to add applets
-        if (plasmoid.immutable) {
+     /*   if (plasmoid.immutable) {
             if(root.isHorizontal) {
                 root.Layout.preferredWidth = (plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                                   layoutsContainer.width + 0.5*iconMargin : layoutsContainer.mainLayout.width + iconMargin);
@@ -884,7 +874,7 @@ DragDrop.DropArea {
             } else {
                 root.Layout.preferredHeight = Screen.height;
             }
-        }
+        }*/
 
         visibilityManager.updateMaskArea();
     }
@@ -1359,8 +1349,8 @@ DragDrop.DropArea {
                             layoutsContainer.startLayout.width+layoutsContainer.mainLayout.width+layoutsContainer.endLayout.width : layoutsContainer.mainLayout.width
             }
 
-            var toShrinkLimit = maxLength-((root.zoomFactor-1)*(iconSize+2*iconMargin));
-            var toGrowLimit = maxLength-1.5*((root.zoomFactor-1)*(iconSize+2*iconMargin));
+            var toShrinkLimit = maxLength-((root.zoomFactor-1)*(iconSize + thickMargins));
+            var toGrowLimit = maxLength-1.5*((root.zoomFactor-1)*(iconSize + thickMargins));
 
             var newIconSizeFound = false;
             if (layoutLength > toShrinkLimit) { //must shrink
@@ -1752,8 +1742,7 @@ DragDrop.DropArea {
     Item {
         id: dndSpacer
 
-        property int normalSize: root.statesLineSize + root.iconSize + root.thickMargin - 1
-        //visibilityManager.statesLineSizeOriginal + root.maxIconSize + visibilityManager.iconMarginOriginal - 1
+        property int normalSize: root.iconSize + root.thickMargins - 1
 
         width: normalSize
         height: normalSize

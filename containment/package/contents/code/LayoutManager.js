@@ -449,7 +449,7 @@ function insertAtLayoutCoordinates(tLayout, item, x, y) {
 
     if (!child) {
         // check if dragging takes place after the end of the layout
-        var neededSpace = 1.5 * root.realSize;
+        var neededSpace = 1.5 * (root.iconSize + root.lengthMargin);
         if ( (((root.isVertical && (y - neededSpace) <= tLayout.height) && y>=0)
               ||(root.isHorizontal && (x - neededSpace) <= tLayout.width) && x>=0)
               && tLayout.children.length>0  ){

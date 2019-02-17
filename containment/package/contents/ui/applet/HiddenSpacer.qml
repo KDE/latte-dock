@@ -34,7 +34,7 @@ Item{
 
     property bool neighbourSeparator: false;
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet ? (2+root.iconMargin/2) : 0
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet ? (2+root.lengthMargins) : 0
 
     property real nHiddenSize: (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 
@@ -70,8 +70,8 @@ Item{
         sourceComponent: Rectangle{
             width: !root.isVertical ? hiddenSpacer.width : 1
             height: !root.isVertical ? 1 : hiddenSpacer.height
-            x: root.isVertical ? (hiddenSpacer.width + root.statesLineSize)/2 : 0
-            y: !root.isVertical ? (hiddenSpacer.height + root.statesLineSize)/2 : 0
+            x: root.isVertical ? hiddenSpacer.width/2 : 0
+            y: !root.isVertical ? hiddenSpacer.height/2 : 0
 
             border.width: 1
             border.color: "red"
