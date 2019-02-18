@@ -24,7 +24,9 @@
 
 // Qt
 #include <QDebug>
+#include <QFileInfo>
 #include <QImage>
+#include <QList>
 #include <QRgb>
 #include <QtMath>
 
@@ -144,9 +146,15 @@ void BackgroundCache::reload()
             background = returnedBackground.mid(7);
         }
 
-        if (background.isEmpty()) continue;
+        if (background.isEmpty()) {
+            continue;
+        }
 
         QString screenName = m_pool->connector(lastScreen);
+
+        if (backgroundIsBroadcasted(activity, screenName)) {
+            continue;
+        }
 
         if(!m_backgrounds.contains(activity)
                 || !m_backgrounds[activity].contains(screenName)
@@ -385,6 +393,39 @@ bool BackgroundCache::busyForFile(QString imageFile, Plasma::Types::Location loc
     }
 
     return false;
+}
+
+void BackgroundCache::setBackgroundFromBroadcast(QString activity, QString screen, QString filename)
+{
+    if (QFileInfo(filename).exists()) {
+        setBroadcastedBackgroundsEnabled(activity, screen, true);
+        m_backgrounds[activity][screen] = filename;
+        emit backgroundChanged(activity, screen);
+    }
+}
+
+void BackgroundCache::setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled)
+{
+    if (enabled && !backgroundIsBroadcasted(activity, screen)) {
+        if (!m_broadcasted.contains(activity)) {
+            m_broadcasted[activity] = QList<QString>();
+        }
+
+        m_broadcasted[activity].append(screen);
+    } else if (!enabled && backgroundIsBroadcasted(activity, screen)) {
+        m_broadcasted[activity].removeAll(screen);
+
+        if (m_broadcasted[activity].isEmpty()) {
+            m_broadcasted.remove(activity);
+        }
+
+        reload();
+    }
+}
+
+bool BackgroundCache::backgroundIsBroadcasted(QString activity, QString screenName)
+{
+    return m_broadcasted.contains(activity) && m_broadcasted[activity].contains(screenName);
 }
 
 }

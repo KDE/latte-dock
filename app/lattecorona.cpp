@@ -63,7 +63,7 @@
 #include <KPackage/PackageLoader>
 #include <KAboutData>
 #include <KActivities/Consumer>
-#include <KDeclarative/QmlObject>
+#include <KDeclarative/QmlObjectSharedEngine>
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/registry.h>
@@ -128,6 +128,12 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
         m_viewsScreenSyncTimer.setInterval(m_universalSettings->screenTrackerInterval());
     });
 
+    //! initialize the background tracer for broadcasted backgrounds
+    m_backgroundTracer = new KDeclarative::QmlObjectSharedEngine(this);
+    m_backgroundTracer->setInitializationDelayed(true);
+    m_backgroundTracer->setSource(kPackage().filePath("backgroundTracer"));
+    m_backgroundTracer->completeInitialization();
+
     //! Dbus adaptor initialization
     new LatteDockAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
@@ -170,6 +176,7 @@ Corona::~Corona()
     m_screenPool->deleteLater();
     m_universalSettings->deleteLater();
     m_plasmaScreenPool->deleteLater();
+    m_backgroundTracer->deleteLater();
     m_themeExtended->deleteLater();
 
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
@@ -783,13 +790,13 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
 
     Latte::View *latteView = (*views)[applet->containment()];
 
-    KDeclarative::QmlObject *qmlObj{nullptr};
+    KDeclarative::QmlObjectSharedEngine *qmlObj{nullptr};
 
     if (latteView) {
         latteView->setAlternativesIsShown(true);
-        qmlObj = new KDeclarative::QmlObject(latteView);
+        qmlObj = new KDeclarative::QmlObjectSharedEngine(latteView);
     } else {
-        qmlObj = new KDeclarative::QmlObject(this);
+        qmlObj = new KDeclarative::QmlObjectSharedEngine(this);
     }
 
     qmlObj->setInitializationDelayed(true);
@@ -814,10 +821,10 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
             return;
         }
 
-        QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+        QMutableListIterator<KDeclarative::QmlObjectSharedEngine *> it(m_alternativesObjects);
 
         while (it.hasNext()) {
-            KDeclarative::QmlObject *obj = it.next();
+            KDeclarative::QmlObjectSharedEngine *obj = it.next();
 
             if (obj == qmlObj) {
                 it.remove();
@@ -835,10 +842,10 @@ void Corona::alternativesVisibilityChanged(bool visible)
 
     QObject *root = sender();
 
-    QMutableListIterator<KDeclarative::QmlObject *> it(m_alternativesObjects);
+    QMutableListIterator<KDeclarative::QmlObjectSharedEngine *> it(m_alternativesObjects);
 
     while (it.hasNext()) {
-        KDeclarative::QmlObject *obj = it.next();
+        KDeclarative::QmlObjectSharedEngine *obj = it.next();
 
         if (obj->rootObject() == root) {
             it.remove();
@@ -1001,6 +1008,28 @@ QStringList Corona::contextMenuData()
     //! reset context menu view id
     m_contextMenuViewId = -1;
     return data;
+}
+
+void Corona::setBackgroundFromBroadcast(QString activity, QString screenName, QString filename)
+{
+    if (filename.startsWith("file://")) {
+        filename = filename.remove(0,7);
+    }
+
+    QMetaObject::invokeMethod(m_backgroundTracer->rootObject(),
+                              "setBackgroundFromBroadcast",
+                              Q_ARG(QVariant, activity),
+                              Q_ARG(QVariant, screenName),
+                              Q_ARG(QVariant, filename));
+}
+
+void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled)
+{
+    QMetaObject::invokeMethod(m_backgroundTracer->rootObject(),
+                              "setBroadcastedBackgroundsEnabled",
+                              Q_ARG(QVariant, activity),
+                              Q_ARG(QVariant, screenName),
+                              Q_ARG(QVariant, enabled));
 }
 
 inline void Corona::qmlRegisterTypes() const

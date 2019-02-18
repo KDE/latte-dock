@@ -59,6 +59,10 @@ public:
     QString screenName() const;
     void setScreenName(QString name);
 
+public slots:
+    Q_INVOKABLE void setBackgroundFromBroadcast(QString activity, QString screen, QString filename);
+    Q_INVOKABLE void setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled);
+
 signals:
     void activityChanged();
     void currentBrightnessChanged();

@@ -57,6 +57,9 @@ public:
 
     QString background(QString activity, QString screen);
 
+    void setBackgroundFromBroadcast(QString activity, QString screen, QString filename);
+    void setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled);
+
 signals:
     void backgroundChanged(const QString &activity, const QString &screenName);
 
@@ -67,6 +70,7 @@ private slots:
 private:
     BackgroundCache(QObject *parent = nullptr);
 
+    bool backgroundIsBroadcasted(QString activity, QString screenName);
     bool areaIsBusy(float bright1, float bright2);
     bool busyForFile(QString imageFile, Plasma::Types::Location location);
     bool isDesktopContainment(const KConfigGroup &containment) const;
@@ -84,6 +88,9 @@ private:
 
     //! screen aware backgrounds: activity id, screen name, backgroundfile
     QHash<QString, QHash<QString, QString>> m_backgrounds;
+    //! backgrounds that are broadcasted (not found through plasma files)
+    //! for specific: activity id, screen names tracked
+    QHash<QString, QList<QString>> m_broadcasted;
     //! image file and brightness per edge
     QHash<QString, EdgesHash> m_hintsCache;
 

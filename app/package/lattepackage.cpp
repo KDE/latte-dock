@@ -66,6 +66,8 @@ void Package::initPackage(KPackage::Package *package)
 
     package->addFileDefinition("themesExtendedInfo", QStringLiteral("themes/themesExtendedInforc"), i18n("a file that contains extended information for plasma themes"));
 
+    package->addFileDefinition("backgroundTracer", QStringLiteral("scripting/BackgroundTracer.qml"), i18n("a qml file that is used to publish broadcasted backgrounds"));
+
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();
 }

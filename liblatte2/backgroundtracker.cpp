@@ -120,4 +120,14 @@ void BackgroundTracker::update()
     emit isBusyChanged();
 }
 
+void BackgroundTracker::setBackgroundFromBroadcast(QString activity, QString screen, QString filename)
+{
+    m_cache->setBackgroundFromBroadcast(activity, screen, filename);
+}
+
+void BackgroundTracker::setBroadcastedBackgroundsEnabled(QString activity, QString screen, bool enabled)
+{
+    m_cache->setBroadcastedBackgroundsEnabled(activity, screen, enabled);
+}
+
 }

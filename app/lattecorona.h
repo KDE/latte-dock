@@ -36,7 +36,7 @@
 #include <KAboutApplicationDialog>
 
 namespace KDeclarative {
-class QmlObject;
+class QmlObjectSharedEngine;
 }
 
 namespace Plasma {
@@ -125,10 +125,13 @@ public:
 public slots:
     void aboutApplication();
     void activateLauncherMenu();
-    //! they are separated with a "-" character
-    void windowColorScheme(QString windowIdAndScheme);
     void loadDefaultLayout() override;
+    void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);
+    void setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled);
+    //! values are separated with a "-" character
+    void windowColorScheme(QString windowIdAndScheme);
     void updateDockItemBadge(QString identifier, QString value);
+
     void unload();
 
 signals:
@@ -171,7 +174,9 @@ private:
 
     QString m_layoutNameOnStartUp;
 
-    QList<KDeclarative::QmlObject *> m_alternativesObjects;
+    QList<KDeclarative::QmlObjectSharedEngine *> m_alternativesObjects;
+
+    KDeclarative::QmlObjectSharedEngine *m_backgroundTracer;
 
     QTimer m_viewsScreenSyncTimer;
 
