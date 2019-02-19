@@ -88,8 +88,7 @@ void BackgroundCache::settingsFileChanged(const QString &file) {
     }
 }
 
-QString BackgroundCache::backgroundFromConfig(const KConfigGroup &config) const {
-    auto wallpaperPlugin = config.readEntry("wallpaperplugin");
+QString BackgroundCache::backgroundFromConfig(const KConfigGroup &config, QString wallpaperPlugin) const {
     auto wallpaperConfig = config.group("Wallpaper").group(wallpaperPlugin).group("General");
 
     if (wallpaperConfig.hasKey("Image")) {
@@ -131,6 +130,7 @@ void BackgroundCache::reload()
 
     for (const auto &containmentId : plasmaConfigContainments.groupList()) {
         const auto containment = plasmaConfigContainments.group(containmentId);
+        const auto wallpaperPlugin = containment.readEntry("wallpaperplugin", QString());
         const auto lastScreen  = containment.readEntry("lastScreen", 0);
         const auto activity    = containment.readEntry("activityId", QString());
 
@@ -138,7 +138,7 @@ void BackgroundCache::reload()
         //! the containment is not a plasma desktop
         if (activity.isEmpty() || !isDesktopContainment(containment)) continue;
 
-        const auto returnedBackground = backgroundFromConfig(containment);
+        const auto returnedBackground = backgroundFromConfig(containment, wallpaperPlugin);
 
         QString background = returnedBackground;
 
@@ -151,6 +151,16 @@ void BackgroundCache::reload()
         }
 
         QString screenName = m_pool->connector(lastScreen);
+
+        //! Take case of broadcasted backgrounds, when their plugin is changed they should be disabled
+        if (pluginExistsFor(activity,screenName)
+                && m_plugins[activity][screenName] != wallpaperPlugin
+                && backgroundIsBroadcasted(activity, screenName)){
+            //! in such case the Desktop changed wallpaper plugin and the broadcasted wallpapers should be removed
+            setBroadcastedBackgroundsEnabled(activity, screenName, false);
+        }
+
+        m_plugins[activity][screenName] = wallpaperPlugin;
 
         if (backgroundIsBroadcasted(activity, screenName)) {
             continue;
@@ -426,6 +436,11 @@ void BackgroundCache::setBroadcastedBackgroundsEnabled(QString activity, QString
 bool BackgroundCache::backgroundIsBroadcasted(QString activity, QString screenName)
 {
     return m_broadcasted.contains(activity) && m_broadcasted[activity].contains(screenName);
+}
+
+bool BackgroundCache::pluginExistsFor(QString activity, QString screenName)
+{
+    return m_plugins.contains(activity) && m_plugins[activity].contains(screenName);
 }
 
 }

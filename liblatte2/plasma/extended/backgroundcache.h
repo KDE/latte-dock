@@ -71,13 +71,14 @@ private:
     BackgroundCache(QObject *parent = nullptr);
 
     bool backgroundIsBroadcasted(QString activity, QString screenName);
+    bool pluginExistsFor(QString activity, QString screenName);
     bool areaIsBusy(float bright1, float bright2);
     bool busyForFile(QString imageFile, Plasma::Types::Location location);
     bool isDesktopContainment(const KConfigGroup &containment) const;
 
     float brightnessForFile(QString imageFile, Plasma::Types::Location location);
     float brightnessFromArea(QImage &image, int firstRow, int firstColumn, int endRow, int endColumn);
-    QString backgroundFromConfig(const KConfigGroup &config) const;
+    QString backgroundFromConfig(const KConfigGroup &config, QString wallpaperPlugin) const;
 
     void updateImageCalculations(QString imageFile, Plasma::Types::Location location);
 
@@ -88,9 +89,14 @@ private:
 
     //! screen aware backgrounds: activity id, screen name, backgroundfile
     QHash<QString, QHash<QString, QString>> m_backgrounds;
-    //! backgrounds that are broadcasted (not found through plasma files)
-    //! for specific: activity id, screen names tracked
+
+    //! plugin names tracked: activity id, screen name, pluginName
+    QHash<QString, QHash<QString, QString>> m_plugins;
+
+    //! backgrounds that are broadcasted (not found through plasma files):
+    //! and have higher priority: activity id, screen names
     QHash<QString, QList<QString>> m_broadcasted;
+
     //! image file and brightness per edge
     QHash<QString, EdgesHash> m_hintsCache;
 
