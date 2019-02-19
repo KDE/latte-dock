@@ -56,7 +56,11 @@ Loader{
         }
 
         if (themeExtended) {
-            if (root.userShowPanelBackground && root.plasmaBackgroundForPopups && root.hasExpandedApplet) {
+            if (root.userShowPanelBackground && root.plasmaBackgroundForPopups && root.hasExpandedApplet /*for expanded popups when it is enabled*/
+                    || (root.themeColors === Latte.Types.SmartThemeColors /*for Smart theming that Windows colors are not used and the user wants solidness at some cases*/
+                        && root.windowColors === Latte.Types.NoneWindowColors
+                        && root.forceSolidPanel) ) {
+                /* plasma style*/
                 return theme;
             }
 
