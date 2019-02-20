@@ -146,10 +146,6 @@ void BackgroundCache::reload()
             background = returnedBackground.mid(7);
         }
 
-        if (background.isEmpty()) {
-            continue;
-        }
-
         QString screenName = m_pool->connector(lastScreen);
 
         //! Take case of broadcasted backgrounds, when their plugin is changed they should be disabled
@@ -162,7 +158,7 @@ void BackgroundCache::reload()
 
         m_plugins[activity][screenName] = wallpaperPlugin;
 
-        if (backgroundIsBroadcasted(activity, screenName)) {
+        if (background.isEmpty() || backgroundIsBroadcasted(activity, screenName)) {
             continue;
         }
 
