@@ -842,6 +842,11 @@ PlasmaComponents.Page {
                 }
             }
 
+            LatteExtraControls.SubHeader {
+                visible: dialog.expertLevel
+                text: i18n("Exceptions")
+            }
+
             PlasmaComponents.CheckBox {
                 id: solidForPopupsChk
                 Layout.leftMargin: units.smallSpacing * 2
