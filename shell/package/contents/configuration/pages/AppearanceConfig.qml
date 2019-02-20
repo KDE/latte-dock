@@ -567,7 +567,7 @@ PlasmaComponents.Page {
                     checked: parent.themeColors === colors
                     checkable: true
                     exclusiveGroup: themeColorsGroup
-                    tooltip: i18n("Colors palette is going to provide best contrast after taking into account the environment such as the underlying background")
+                    tooltip: i18n("Smart color palette is going to provide best contrast after taking into account the environment such as the underlying background")
 
                     readonly property int colors: Latte.Types.SmartThemeColors
                 }
@@ -795,7 +795,7 @@ PlasmaComponents.Page {
 
             LatteExtraControls.SubHeader {
                 visible: dialog.expertLevel
-                text: i18nc("dynamic background", "Dynamic")
+                text: i18nc("dynamic visibility for background", "Dynamic Visibility")
             }
 
             PlasmaComponents.CheckBox {
