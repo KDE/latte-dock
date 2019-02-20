@@ -88,8 +88,7 @@ DragDrop.DropArea {
         return Latte.Types.DockView;
     }
 
-    property bool blurEnabled: plasmoid.configuration.blurEnabled && (!root.forceTransparentPanel || root.forcePanelForBusyBackground)
-                               //|| (hasExpandedApplet && zoomFactor===1 && plasmoid.configuration.panelSize===100)
+    property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel && !root.forcePanelForBusyBackground
 
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
@@ -99,7 +98,7 @@ DragDrop.DropArea {
     property bool drawShadowsExternal: panelShadowsActive && behaveAsPlasmaPanel && !visibilityManager.inTempHiding
     property bool editMode: editModeVisual.inEditMode
     property bool windowIsTouching: latteView && latteView.windowsTracker
-                                    && (latteView.windowsTracker.existsWindowMaximized|| latteView.windowsTracker.activeWindowTouching || hasExpandedApplet)
+                                    && (latteView.windowsTracker.activeWindowTouching || hasExpandedApplet)
 
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
@@ -107,7 +106,7 @@ DragDrop.DropArea {
                                     && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized
                                           && !(hasExpandedApplet && !plasmaBackgroundForPopups)
-                                          && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching))
+                                          && latteView.windowsTracker.activeWindowTouching)
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
                                     || !Latte.WindowSystem.compositingActive
 
@@ -116,7 +115,7 @@ DragDrop.DropArea {
                                          && Latte.WindowSystem.compositingActive
                                          && !root.editMode
                                          && !forceSolidPanel
-                                         && !(windowColors === Latte.Types.TouchingWindowColors && (latteView.windowsTracker.existsWindowMaximized || latteView.windowsTracker.activeWindowTouching))
+                                         && !(windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.activeWindowTouching)
                                          && !(windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.existsWindowActive)
 
     property bool forcePanelForBusyBackground: userShowPanelBackground && root.forceTransparentPanel
