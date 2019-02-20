@@ -37,6 +37,8 @@
 #include <KConfigGroup>
 #include <KDirWatch>
 
+#define MAXHASHSIZE 300
+
 #define PLASMACONFIG "plasma-org.kde.plasma.desktop-appletsrc"
 #define DEFAULTWALLPAPER "/usr/share/wallpapers/Next/contents/images/1920x1080.png"
 
@@ -256,6 +258,10 @@ bool BackgroundCache::areaIsBusy(float bright1, float bright2)
 //! subareas. If the difference it too big then the area is busy
 void BackgroundCache::updateImageCalculations(QString imageFile, Plasma::Types::Location location)
 {
+    if (m_hintsCache.size() > MAXHASHSIZE) {
+        cleanupHashes();
+    }
+
     //! if it is a local image
     QImage image(imageFile);
 
@@ -399,6 +405,15 @@ bool BackgroundCache::busyForFile(QString imageFile, Plasma::Types::Location loc
     }
 
     return false;
+}
+
+void BackgroundCache::cleanupHashes()
+{
+    if (m_hintsCache.count() <= MAXHASHSIZE) {
+        return;
+    }
+
+    m_hintsCache.clear();
 }
 
 void BackgroundCache::setBackgroundFromBroadcast(QString activity, QString screen, QString filename)
