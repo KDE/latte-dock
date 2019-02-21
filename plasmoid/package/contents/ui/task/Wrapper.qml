@@ -36,15 +36,13 @@ Item{
 
         if (taskItem.isSeparator){
             if (!root.vertical)
-                return 0; //5 + root.widthMargins;
+                return 0;
             else
-                return (root.iconSize + root.widthMargins) + root.statesLineSize;
+                return (root.iconSize + root.widthMargins);
         }
 
         if (taskItem.isStartup && root.durationTime !==0 ) {
-            var moreThickness = root.vertical ? addedSpace : 0;
-
-            return cleanScalingWidth + moreThickness;
+            return cleanScalingWidth;
         } else {
             return showDelegateWidth;
         }
@@ -56,30 +54,24 @@ Item{
 
         if (taskItem.isSeparator){
             if (root.vertical)
-                return 0; //5 + root.heightMargins;
+                return 0;
             else
-                return (root.iconSize + root.heightMargins) + root.statesLineSize;
+                return (root.iconSize + root.heightMargins);
         }
 
         if (taskItem.isStartup && root.durationTime !==0){
-            var moreThickness = !root.vertical ? addedSpace : 0;
-
-            return cleanScalingHeight + moreThickness;
+            return cleanScalingHeight;
         } else {
             return showDelegateheight;
         }
     }
 
-    //size needed fom the states below icons
-    //property int statesLineSize: root.statesLineSize
-    property int addedSpace: root.statesLineSize //7
-    property int maxThickness: !root.vertical ? addedSpace + root.zoomFactor*(root.iconSize+root.heightMargins)
-                                              : addedSpace + root.zoomFactor*(root.iconSize+root.widthMargins)
 
-    property real showDelegateWidth: root.vertical ? basicScalingWidth+addedSpace :
-                                                     basicScalingWidth
-    property real showDelegateheight: root.vertical ? basicScalingHeight :
-                                                      basicScalingHeight + addedSpace
+    property int maxThickness: !root.vertical ? root.zoomFactor*(root.iconSize+root.heightMargins)
+                                              : root.zoomFactor*(root.iconSize+root.widthMargins)
+
+    property real showDelegateWidth: basicScalingWidth
+    property real showDelegateheight: basicScalingHeight
 
     //scales which are used mainly for activating InLauncher
     ////Scalers///////
@@ -132,6 +124,53 @@ Item{
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
+    Loader {
+        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+
+        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+
+        width: !root.vertical ? wrapper.width - 2*root.lengthExtMargin : wrapper.width
+        height: root.vertical ? wrapper.height - 2*root.lengthExtMargin : wrapper.height
+
+        active: root.activeIndicator !== Latte.Types.NoneIndicator
+
+        sourceComponent: {
+            switch (root.indicatorStyle) {
+            case Latte.Types.LatteIndicator:
+                return latteIndicatorComponent;
+            case Latte.Types.PlasmaIndicator:
+                return plasmaIndicatorComponent;
+            case Latte.Types.UnityIndicator:
+                return unityIndicatorComponent;
+            default:
+                return latteIndicatorComponent;
+            };
+        }
+
+        Component{
+            id:latteIndicatorComponent
+            Indicators.LatteIndicator{}
+        }
+
+        Component{
+            id: plasmaIndicatorComponent
+            Indicators.PlasmaIndicator{}
+        }
+
+        Component{
+            id:unityIndicatorComponent
+            Indicators.UnityIndicator{
+                backgroundColor: taskIconItem.backgroundColor
+                glowColor: taskIconItem.glowColor
+            }
+        }
+    }
+
+
     Flow{
         anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
         anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
@@ -146,28 +185,13 @@ Item{
 
         flow: root.vertical ? Flow.TopToBottom : Flow.LeftToRight
 
-        Loader{
-            id: firstIndicator
-
-            active:( (((root.position === PlasmaCore.Types.TopPositioned) || (root.position === PlasmaCore.Types.LeftPositioned))
-                      && !root.reverseLinesPosition)
-                    || (((root.position === PlasmaCore.Types.BottomPositioned) || (root.position === PlasmaCore.Types.RightPositioned))
-                        && root.reverseLinesPosition) )
-                   && !root.disableAllWindowsFunctionality
-                   && root.indicatorStyle === Latte.Types.LatteIndicator
-                   && root.activeIndicator !== Latte.Types.NoneIndicator
-            visible: active
-
-            sourceComponent: Component{
-                Indicators.LatteIndicator{}
-            }
-        }
 
         //! This is used from bouncing attention animation in order to played correctly
         Loader{
             id: firstPadding
 
-            active: secondIndicator.active && !root.reverseLinesPosition
+            active: (plasmoid.location === PlasmaCore.Types.BottomEdge || plasmoid.location === PlasmaCore.Types.RightEdge)
+                    && !root.reverseLinesPosition
                     && (taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation)
                     && !root.disableAllWindowsFunctionality
             visible: active
@@ -196,7 +220,8 @@ Item{
         Loader{
             id: secondPadding
 
-            active: firstIndicator.active && !root.reverseLinesPosition
+            active: (plasmoid.location === PlasmaCore.Types.LeftEdge || plasmoid.location === PlasmaCore.Types.TopEdge)
+                    && !root.reverseLinesPosition
                     && (taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation)
                     && !root.disableAllWindowsFunctionality
             visible: active
@@ -218,21 +243,6 @@ Item{
                 }
             }
         }
-
-        Loader{
-            id: secondIndicator
-            active: !firstIndicator.active
-                    && !root.disableAllWindowsFunctionality
-                    && root.indicatorStyle === Latte.Types.LatteIndicator
-                    && root.activeIndicator !== Latte.Types.NoneIndicator
-
-            visible: active
-
-            sourceComponent: Component{
-                Indicators.LatteIndicator{}
-            }
-        }
-
     }//Flow
 
 

@@ -29,11 +29,11 @@ import org.kde.latte 0.2 as Latte
 
 Item{
     id:glowFrame
-    width: ( icList.orientation === Qt.Horizontal ) ? wrapper.regulatorWidth : size
-    height: ( icList.orientation === Qt.Vertical ) ? wrapper.regulatorHeight : size
+  //  width: ( icList.orientation === Qt.Horizontal ) ? wrapper.regulatorWidth : size
+  //  height: ( icList.orientation === Qt.Vertical ) ? wrapper.regulatorHeight : size
 
     //property int size: Math.ceil( root.iconSize/13 ) //5
-    property int size: root.statesLineSize
+    property int size: 0.075*root.iconSize
 
     //SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
     property color isActiveColor: theme.buttonFocusColor
@@ -50,7 +50,7 @@ Item{
         opacity:0.6
     }*/
     Item{
-        anchors.centerIn: parent
+        id: mainIndicatorElement
 
         width: flowItem.width
         height: flowItem.height
@@ -202,6 +202,53 @@ Item{
                 property color state2Color: taskItem.hasMinimized ? glowFrame.minimizedColor : glowFrame.isActiveColor
             }
         }
+
+        states: [
+            State {
+                name: "left"
+                when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !root.reverseLinesPosition) ||
+                       (plasmoid.location === PlasmaCore.Types.RightEdge && root.reverseLinesPosition))
+
+                AnchorChanges {
+                    target: mainIndicatorElement
+                    anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
+                        top:undefined; bottom:undefined; left:parent.left; right:undefined;}
+                }
+            },
+            State {
+                name: "bottom"
+                when: ((plasmoid.location === PlasmaCore.Types.BottomEdge && !root.reverseLinesPosition) ||
+                       (plasmoid.location === PlasmaCore.Types.TopEdge && root.reverseLinesPosition))
+
+                AnchorChanges {
+                    target: mainIndicatorElement
+                    anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                        top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
+                }
+            },
+            State {
+                name: "top"
+                when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !root.reverseLinesPosition) ||
+                       (plasmoid.location === PlasmaCore.Types.BottomEdge && root.reverseLinesPosition))
+
+                AnchorChanges {
+                    target: mainIndicatorElement
+                    anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                        top:parent.top; bottom:undefined; left:undefined; right:undefined;}
+                }
+            },
+            State {
+                name: "right"
+                when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !root.reverseLinesPosition) ||
+                       (plasmoid.location === PlasmaCore.Types.LeftEdge && root.reverseLinesPosition))
+
+                AnchorChanges {
+                    target: mainIndicatorElement
+                    anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
+                        top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+                }
+            }
+        ]
     }
 }// number of windows indicator
 

@@ -90,11 +90,10 @@ Item {
 
     property int position : PlasmaCore.Types.BottomPositioned
     property int tasksStarting: 0
-    property int realSize: iconSize + iconMargin
 
     ///Don't use Math.floor it adds one pixel in animations and creates glitches
-    property int widthMargins: root.vertical ? thickMargin : iconMargin
-    property int heightMargins: !root.vertical ? thickMargin : iconMargin
+    property int widthMargins: root.vertical ? thickMargins : lengthMargins
+    property int heightMargins: !root.vertical ? thickMargins : lengthMargins
 
     property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
     property color minimizedDotColor: {
@@ -181,11 +180,10 @@ Item {
     property int animationStep: latteView ? latteView.animationStep : 1
     property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
-    property int iconMargin: latteView ? latteView.iconMargin : 0.12*iconSize
+
     property int iconSize: latteView ? latteView.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int glowOption: latteView ? latteView.glowOption : Latte.Types.GlowAll
     property real glowOpacity: latteView ? latteView.glowOpacity : 0.35
-
 
     property int leftClickAction: latteView ? latteView.leftClickAction : Latte.Types.PresentWindows
     property int middleClickAction: latteView ? latteView.middleClickAction : plasmoid.configuration.middleClickAction
@@ -205,13 +203,13 @@ Item {
         else return -1;
     }
 
-    //decouple iconMargin which now is used only for length calculations with thickMargins
-    //which are used for thickness calculations
-    property int thickMarginBase: latteView ? latteView.thickMarginBase : Math.ceil(iconMargin/2)
-    property int thickMarginHigh: latteView ? latteView.thickMarginHigh : Math.ceil(iconMargin/2)
-    property int thickMargin: thickMarginBase + thickMarginHigh
+    property int thickMargin: latteView ? latteView.thickMargin : 0.16*iconSize
+    property int thickMargins: 2 * thickMargin
+    property int lengthIntMargin: latteView ? latteView.lengthIntMargin : 0.04*iconSize
+    property int lengthExtMargin: latteView ? latteView.lengthExtMargin : 0.1 * iconSize
+    property int lengthMargin: lengthIntMargin + lengthExtMargin
+    property int lengthMargins: 2 * lengthMargin
 
-    property int statesLineSize: latteView ? latteView.statesLineSize : Math.ceil( root.iconSize/13 )
     property int tasksHeight: mouseHandler.height
     property int tasksWidth: mouseHandler.width
     property int userPanelPosition: latteView ? latteView.panelAlignment : plasmoid.configuration.plasmoidPosition
@@ -1033,7 +1031,7 @@ Item {
 
         visible: plasmoid.configuration.zoomHelper
 
-        property int neededSpace: zoomFactor*(iconSize+iconMargin) + statesLineSize
+        property int neededSpace: zoomFactor*(iconSize+lengthMargins)
     }
 
     Item{
@@ -1051,7 +1049,7 @@ Item {
         height: ( icList.orientation === Qt.Vertical ) ? icList.height + spacing : smallSize
 
         property int spacing: root.iconSize / 2
-        property int smallSize: Math.max(3.7*root.statesLineSize, 16)
+        property int smallSize: Math.max(0.10 * root.iconSize, 16)
 
         Behavior on opacity{
             NumberAnimation { duration: root.durationTime*units.longDuration }
@@ -1146,8 +1144,8 @@ Item {
             target: icList
 
             property int maxSize: (((root.hoveredIndex>=0 || dockHoveredIndex>=0 ) || windowPreviewIsShown) && !root.dragSource) ?
-                                      root.statesLineSize + root.zoomFactor * (root.iconSize + root.thickMargin) :
-                                      root.statesLineSize + root.iconSize + root.thickMargin
+                                      root.zoomFactor * (root.iconSize + root.thickMargins) :
+                                      root.iconSize + root.thickMargins
 
             function onlyLaunchersInList(list){
                 return list.every(function (item) {
@@ -1509,12 +1507,12 @@ Item {
         if(icList.previousCount !== icList.count){
             icList.previousCount = icList.count;
 
-            var zoomedLength = Math.floor( 1.2 * (iconSize+thickMargin) * (root.zoomFactor));
-            var bigAxis = (tasksModel.count-1) * (iconSize+thickMargin) + zoomedLength;
-            var smallAxis = zoomedLength + statesLineSize;
+            var zoomedLength = Math.floor( 1.2 * (iconSize+thickMargins) * (root.zoomFactor));
+            var bigAxis = (tasksModel.count-1) * (iconSize+thickMargins) + zoomedLength;
+            var smallAxis = zoomedLength;
 
-            var clearBigAxis = tasksModel.count * (iconSize+thickMargin) + (barLine.spacing/2);
-            var clearSmallAxis = (iconSize+thickMargin)+statesLineSize;
+            var clearBigAxis = tasksModel.count * (iconSize+thickMargins) + (barLine.spacing/2);
+            var clearSmallAxis = iconSize+thickMargins;
 
             //  debugging code
             //     ncounter++;

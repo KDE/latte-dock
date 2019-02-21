@@ -67,10 +67,10 @@ Item{
 
             Latte.IconItem{
                 id: tempRemoveIcon
-                anchors.rightMargin: root.position === PlasmaCore.Types.LeftPositioned ? root.thickMarginBase : 0
-                anchors.leftMargin: root.position === PlasmaCore.Types.RightPositioned ? root.thickMarginBase : 0
-                anchors.topMargin: root.position === PlasmaCore.Types.BottomPositioned ? root.thickMarginBase : 0
-                anchors.bottomMargin: root.position === PlasmaCore.Types.TopPositioned ? root.thickMarginBase : 0
+                anchors.rightMargin: root.position === PlasmaCore.Types.LeftPositioned ? root.thickMargin : 0
+                anchors.leftMargin: root.position === PlasmaCore.Types.RightPositioned ? root.thickMargin : 0
+                anchors.topMargin: root.position === PlasmaCore.Types.BottomPositioned ? root.thickMargin : 0
+                anchors.bottomMargin: root.position === PlasmaCore.Types.TopPositioned ? root.thickMargin : 0
 
                 anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined;
                 anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined;

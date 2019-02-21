@@ -31,7 +31,6 @@ import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 import org.kde.latte 0.2 as Latte
 
 import "animations" as TaskAnimations
-import "indicators" as Indicators
 
 //I am using  KQuickControlAddons.QIconItem even though onExit it triggers the following error
 //QObject::~QObject: Timers cannot be stopped from another thread
@@ -63,6 +62,10 @@ Item{
 
     readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.showInfoBadge || root.showProgressBadge))
     readonly property variant iconDecoration: decoration
+
+    readonly property color backgroundColor: iconImageBuffer.backgroundColor
+    readonly property color glowColor: iconImageBuffer.glowColor
+
     property QtObject buffers: null
     property QtObject smartLauncherItem: null
 
@@ -108,34 +111,14 @@ Item{
         onTempColorChanged: tempColor.a = 0.35;
     }
 
-    Loader {
-        anchors.fill: parent
-        active: root.activeIndicator !== Latte.Types.NoneIndicator
-                && (root.indicatorStyle === Latte.Types.PlasmaIndicator || root.indicatorStyle === Latte.Types.UnityIndicator)
-
-        sourceComponent: root.indicatorStyle === Latte.Types.PlasmaIndicator ? plasmaIndicatorComponent : unityIndicatorComponent
-
-        Component{
-            id: plasmaIndicatorComponent
-            Indicators.PlasmaIndicator{}
-        }
-        Component{
-            id:unityIndicatorComponent
-            Indicators.UnityIndicator{
-                backgroundColor: iconImageBuffer.backgroundColor
-                glowColor: iconImageBuffer.glowColor
-            }
-        }
-    }
-
     TitleTooltipParent{
         id: titleTooltipParent
-        thickness: (root.zoomFactor * root.realSize) + root.statesLineSize
+        thickness: root.zoomFactor * (root.iconSize + root.thickMargins)
     }
 
     TitleTooltipParent{
         id: previewsTooltipParent
-        thickness: (root.zoomFactor * (root.thickMarginBase + root.iconSize)) + root.statesLineSize + 1
+        thickness: root.zoomFactor * (root.iconSize + root.thickMargins) + 1
     }
 
     // KQuickControlAddons.QIconItem{
@@ -167,33 +150,33 @@ Item{
 
             anchors.rightMargin:{
                 if (root.position === PlasmaCore.Types.RightPositioned)
-                    return root.thickMarginBase;
+                    return root.thickMargin;
                 else if (root.position === PlasmaCore.Types.LeftPositioned)
-                    return wrapper.mScale * root.thickMarginHigh;
+                    return wrapper.mScale * root.thickMargin;
                 else
                     return 0;
             }
             anchors.leftMargin: {
                 if (root.position === PlasmaCore.Types.LeftPositioned)
-                    return root.thickMarginBase;
+                    return root.thickMargin;
                 else if (root.position === PlasmaCore.Types.RightPositioned)
-                    return wrapper.mScale * root.thickMarginHigh;
+                    return wrapper.mScale * root.thickMargin;
                 else
                     return 0;
             }
             anchors.topMargin: {
                 if (root.position === PlasmaCore.Types.TopPositioned)
-                    return root.thickMarginBase;
+                    return root.thickMargin;
                 else if (root.position === PlasmaCore.Types.BottomPositioned)
-                    return wrapper.mScale * root.thickMarginHigh;
+                    return wrapper.mScale * root.thickMargin;
                 else
                     return 0;
             }
             anchors.bottomMargin:{
                 if (root.position === PlasmaCore.Types.BottomPositioned)
-                    return root.thickMarginBase;
+                    return root.thickMargin;
                 else if (root.position === PlasmaCore.Types.TopPositioned)
-                    return wrapper.mScale * root.thickMarginHigh;
+                    return wrapper.mScale * root.thickMargin;
                 else
                     return 0;
             }
@@ -777,7 +760,7 @@ Item{
                 if(!running){
                     var halfZoom = 1 + ((root.zoomFactor - 1) / 2);
 
-                    wrapper.calculateScales((root.iconSize+root.iconMargin)/2);
+                    wrapper.calculateScales((root.iconSize+root.thickMargins)/2);
 
                     taskItem.animationEnded();
                     //   root.animations--;

@@ -71,7 +71,7 @@ SequentialAnimation {
                         ((taskItem.hasNeighbourSeparator(lastValidIndex-1,false) && !taskItem.isSeparator && lastValidIndex>parabolicManager.firstRealTaskIndex)
                          || (latteView && latteView.parabolicManager.isSeparator(latteView.latteAppletPos-1) && lastValidIndex<=parabolicManager.firstRealTaskIndex));
 
-                var spacer = nextTaskIsSeparator ? -(2+root.iconMargin/2) : ( previousTaskIsSeparator ? (2+root.iconMargin/2)/2 : 0);
+                var spacer = nextTaskIsSeparator ? -(2+root.lengthMargin) : ( previousTaskIsSeparator ? (2+root.lengthMargin)/2 : 0);
 
                 //console.log("EDGES ::: " + parabolicManager.firstRealTaskIndex + " _ " + parabolicManager.lastRealTaskIndex);
                 //console.log("Removing ::: " + lastValidIndex + " _ " + launcherUrl + " _ " + previousTaskIsSeparator + " _ " + nextTaskIsSeparator);

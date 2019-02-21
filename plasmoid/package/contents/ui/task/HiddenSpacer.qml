@@ -47,7 +47,7 @@ Item{
     //! && !root.inActivityChange (deprecated) in order to check if it is fixed
     property int separatorSpace: neighbourSeparator && !isSeparator
                                  && !(parabolicManager.hasInternalSeparator && root.dragSource) ?
-                                     (2+root.iconMargin/2) : 0
+                                     (2+root.lengthMargin) : 0
 
     property bool rightSpacer: false
 

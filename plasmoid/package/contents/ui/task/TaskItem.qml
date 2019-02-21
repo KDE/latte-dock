@@ -49,7 +49,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return root.vertical ? separatorItem.width : (root.dragSource || root.editMode ? 5+root.iconMargin : 0);
+            return root.vertical ? separatorItem.width : (root.dragSource || root.editMode ? 5+root.lengthMargins : 0);
 
         if (root.vertical) {
             if (!inAttentionAnimation)
@@ -70,7 +70,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return !root.vertical ? separatorItem.height : (root.dragSource || root.editMode ? 5+root.iconMargin: 0);
+            return !root.vertical ? separatorItem.height : (root.dragSource || root.editMode ? 5+root.lengthMargins: 0);
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
@@ -138,7 +138,7 @@ MouseArea{
     property int pressX: -1
     property int pressY: -1
     property int resistanceDelay: 450
-    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.iconMargin)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.lengthMargins)
 
     property string activity: tasksModel.activity
 
@@ -286,10 +286,10 @@ MouseArea{
 
     Item{
         id:separatorItem
-        anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? localThickMargin : 0
-        anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? localThickMargin : 0
-        anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? localThickMargin : 0
-        anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? localThickMargin : 0
+        anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? root.thickMargin : 0
+        anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? root.thickMargin : 0
+        anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? root.thickMargin : 0
+        anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? root.thickMargin : 0
 
         anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
@@ -303,10 +303,8 @@ MouseArea{
 
         visible: taskItem.isSeparator
 
-        width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
-        height: !root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.iconMargin: 1
-
-        property int localThickMargin: !root.reverseLinesPosition ? root.statesLineSize + root.thickMarginBase + 4 : root.thickMarginBase + 4
+        width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1
+        height: !root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1
 
         property bool forceHiddenState: false
 
