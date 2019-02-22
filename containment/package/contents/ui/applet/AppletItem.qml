@@ -496,6 +496,7 @@ Item {
 
             //! Active Indicator loader
             Loader{
+                id: indicatorLoader
                 anchors.fill: parent
 
                 active: (root.activeIndicator === Latte.Types.AllIndicator
@@ -504,8 +505,18 @@ Item {
                         && !(root.indicatorStyle === Latte.Types.UnityIndicator && !communicator.overlayLatteIconIsActive)
 
 
-                sourceComponent: root.indicatorStyle===Latte.Types.LatteIndicator ?
-                                     latteStyleIndicator : (root.indicatorStyle===Latte.Types.PlasmaIndicator ? plasmaStyleIndicator : unityStyleIndicator)
+                sourceComponent: {
+                    switch (root.indicatorStyle) {
+                    case Latte.Types.LatteIndicator:
+                        return latteStyleIndicator;
+                    case Latte.Types.PlasmaIndicator:
+                        return plasmaStyleIndicator;
+                    case Latte.Types.UnityIndicator:
+                        return unityStyleIndicator;
+                    default:
+                        return latteStyleIndicator;
+                    };
+                }
 
                 /* Indicators Properties in order use them*/
                 readonly property bool isTask: false
@@ -540,6 +551,10 @@ Item {
                 readonly property real glowOpacity: root.glowOpacity
                 readonly property bool glow3D: root.glow3D
 
+                //!icon colors
+                property color backgroundColor: wrapper.overlayIconLoader.backgroundColor
+                property color glowColor: wrapper.overlayIconLoader.glowColor
+
                 Component {
                     id: latteStyleIndicator
                     Latte.LatteIndicator{}
@@ -547,19 +562,12 @@ Item {
 
                 Component {
                     id: plasmaStyleIndicator
-
-                    Indicators.PlasmaIndicator {
-                        anchors.fill: parent
-                    }
+                    Latte.PlasmaIndicator{}
                 }
 
                 Component{
                     id:unityStyleIndicator
-                    Indicators.UnityIndicator{
-                        anchors.fill: parent
-                        backgroundColor: wrapper.overlayIconLoader.backgroundColor
-                        glowColor: wrapper.overlayIconLoader.glowColor
-                    }
+                    Latte.UnityIndicator{}
                 }
             }
 

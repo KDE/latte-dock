@@ -1,5 +1,3 @@
-
-
 /*
 *  Copyright 2016  Smith AR <audoban@openmailbox.org>
 *                  Michail Vourlakos <mvourlakos@gmail.com>

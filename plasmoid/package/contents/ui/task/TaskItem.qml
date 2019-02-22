@@ -471,6 +471,10 @@ MouseArea{
         readonly property real glowOpacity: root.glowOpacity
         readonly property bool glow3D: root.glow3D
 
+        //!icon colors
+        property color backgroundColor: wrapper.backgroundColor
+        property color glowColor: wrapper.glowColor
+
         sourceComponent: {
             switch (root.indicatorStyle) {
             case Latte.Types.LatteIndicator:
@@ -491,15 +495,12 @@ MouseArea{
 
         Component{
             id: plasmaIndicatorComponent
-            Indicators.PlasmaIndicator{}
+            Latte.PlasmaIndicator{}
         }
 
         Component{
             id:unityIndicatorComponent
-            Indicators.UnityIndicator{
-       //         backgroundColor: taskIconItem.backgroundColor
-       //         glowColor: taskIconItem.glowColor
-            }
+            Latte.UnityIndicator{}
         }
     }
 

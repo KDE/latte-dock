@@ -25,13 +25,13 @@ import org.kde.latte 0.2 as Latte
 
 PlasmaCore.FrameSvgItem {
     id: frame
-    anchors.fill: parent
 
     imagePath: "widgets/tasks"
-
     property string basePrefix: "normal"
 
     prefix: taskPrefix(basePrefix)
+
+    property Item rootItem: parent
 
     function taskPrefix(prefix) {
         var effectivePrefix;
@@ -55,7 +55,7 @@ PlasmaCore.FrameSvgItem {
     states: [
         State {
             name: "launcher"
-            when: taskItem.isLauncher
+            when: rootItem.isLauncher || (rootItem.isApplet && !rootItem.isActive)
 
             PropertyChanges {
                 target: frame
@@ -64,7 +64,7 @@ PlasmaCore.FrameSvgItem {
         },
         State {
             name: "attention"
-            when: taskItem.isDemandingAttention
+            when: rootItem.inAttention
 
             PropertyChanges {
                 target: frame
@@ -73,7 +73,7 @@ PlasmaCore.FrameSvgItem {
         },
         State {
             name: "minimized"
-            when: taskItem.isMinimized
+            when: rootItem.isMinimized
 
             PropertyChanges {
                 target: frame
@@ -82,7 +82,7 @@ PlasmaCore.FrameSvgItem {
         },
         State {
             name: "active"
-            when: taskItem.isActive
+            when: rootItem.isActive
 
             PropertyChanges {
                 target: frame

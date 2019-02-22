@@ -34,11 +34,10 @@ Rectangle {
     radius: 4
     //height: (root.iconSize + root.thickMargin)/6 - 4
     //radius: height/2
-    color: backgroundColor
+    color: rootItem.backgroundColor
     clip: true
 
-    property color backgroundColor
-    property color glowColor
+   property Item rootItem: parent
 
     RadialGradient{
         anchors.verticalCenter: parent.top
@@ -47,10 +46,10 @@ Rectangle {
         height: width
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: glowColor }
+            GradientStop { position: 0.0; color: rootItem.glowColor }
             GradientStop { position: 0.6; color: "transparent" }
         }
     }
 
-    visible: isActive
+    visible: rootItem.isActive || rootItem.hasShown
 }

@@ -100,6 +100,9 @@ Item{
     //property real center: (width + hiddenSpacerLeft.separatorSpace + hiddenSpacerRight.separatorSpace) / 2
     property real center: (width + hiddenSpacerLeft.nHiddenSize + hiddenSpacerRight.nHiddenSize) / 2
 
+    property color backgroundColor: taskIconItem.backgroundColor
+    property color glowColor: taskIconItem.glowColor
+
     property Item titleTooltipVisualParent: taskIconItem.titleTooltipVisualParent
     property Item previewsTooltipVisualParent: taskIconItem.previewsTootipVisualParent
 
