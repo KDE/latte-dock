@@ -95,7 +95,7 @@ MouseArea{
     //states that exist in windows in a Group of windows
     property bool hasActive: isActive
     property bool hasMinimized: (IsGroupParent === true) ? subWindows.hasMinimized : isMinimized
-    property bool hasShown: (IsGroupParent === true) ? subWindows.hasShown : !isMinimized
+    property bool hasShown: (IsGroupParent === true) ? subWindows.hasShown : !isMinimized && isWindow
     property bool inAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ? true : false
     /*animations flags*/
     property bool inAnimation: true

@@ -120,7 +120,7 @@ Item{
 
             if(taskItem.isMinimized){
                 hasMinimized = true;
-            } else {
+            } else if (taskItem.isWindow) {
                 hasShown = true;
             }
         }
@@ -135,10 +135,11 @@ Item{
             if (kid.model.IsActive)
                 hasActive = true;
 
-            if(kid.model.IsMinimized)
+            if(kid.model.IsMinimized) {
                 hasMinimized = true;
-            else
+            } else if (kid.model.IsWindow) {
                 hasShown = true;
+            }
         }
     }
 

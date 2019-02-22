@@ -51,5 +51,5 @@ Rectangle {
         }
     }
 
-    visible: rootItem.isActive || rootItem.hasShown
+    visible: rootItem.isWindow && (rootItem.isActive || rootItem.hasShown)
 }
