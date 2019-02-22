@@ -50,7 +50,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return root.vertical ? separatorItem.width : (root.dragSource || root.editMode ? 5+root.lengthMargins : 0);
+            return root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || root.editMode ? 5+root.lengthMargins : 0);
 
         if (root.vertical) {
             return wrapper.width;
@@ -68,7 +68,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return !root.vertical ? separatorItem.height : (root.dragSource || root.editMode ? 5+root.lengthMargins: 0);
+            return !root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || root.editMode ? 5+root.lengthMargins: 0);
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
@@ -282,21 +282,9 @@ MouseArea{
 
     Item{
         id:separatorItem
-        anchors.rightMargin: root.position === PlasmaCore.Types.RightPositioned ? root.thickMargin : 0
-        anchors.leftMargin: root.position === PlasmaCore.Types.LeftPositioned ? root.thickMargin : 0
-        anchors.bottomMargin: root.position === PlasmaCore.Types.BottomPositioned ? root.thickMargin : 0
-        anchors.topMargin: root.position === PlasmaCore.Types.TopPositioned ? root.thickMargin : 0
 
-        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-        anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
-        anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
-        anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
-        anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
-
-        //opacity: separatorShadow.active || root.internalSeparatorHidden ? 0 : 0.4
+        anchors.centerIn: parent
         opacity: separatorShadow.active || forceHiddenState ? 0 : 0.4
-
         visible: taskItem.isSeparator
 
         width: root.vertical ? root.iconSize : (root.dragSource || root.editMode) ? 5+root.lengthMargins: 1

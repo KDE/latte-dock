@@ -37,11 +37,8 @@ Item{
         if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
 
-        if (appletItem.isSeparator && !root.editMode) {
-            if (!root.isVertical)
-                return -1;
-            else
-                return root.iconSize;
+        if (appletItem.isSeparator && !root.isVertical) {
+            return -1;
         }
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
@@ -71,11 +68,8 @@ Item{
         if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
 
-        if (appletItem.isSeparator && !root.editMode) {
-            if (root.isVertical)
-                return -1;
-            else
-                return root.iconSize;
+        if (appletItem.isSeparator && root.isVertical) {
+            return -1;
         }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
@@ -368,6 +362,10 @@ Item{
                 return wrapper.width;
             }
 
+            if (appletItem.isSeparator && root.vertical) {
+                return root.iconSize;
+            }
+
             if (appletItem.isInternalViewSplitter) {
                 return wrapper.layoutWidth;
             } else {
@@ -382,6 +380,10 @@ Item{
         height:{
             if (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isVertical){
                 return wrapper.height;
+            }
+
+            if (appletItem.isSeparator && !root.vertical) {
+                return root.iconSize;
             }
 
             if (appletItem.isInternalViewSplitter) {
@@ -399,51 +401,6 @@ Item{
         opacity: appletShadow.active ? 0 : 1
 
         anchors.centerIn: parent
-
-        //BEGIN states
-        /*states: [
-            State {
-                name: "left"
-                when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
-
-                AnchorChanges {
-                    target: _wrapperContainer
-                    anchors{ verticalCenter:wrapper.verticalCenter; horizontalCenter:undefined;
-                        top:undefined; bottom:undefined; left:parent.left; right:undefined;}
-                }
-            },
-            State {
-                name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)
-
-                AnchorChanges {
-                    target: _wrapperContainer
-                    anchors{ verticalCenter:wrapper.verticalCenter; horizontalCenter:undefined;
-                        top:undefined; bottom:undefined; left:undefined; right:parent.right;}
-                }
-            },
-            State {
-                name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
-
-                AnchorChanges {
-                    target: _wrapperContainer
-                    anchors{ verticalCenter:undefined; horizontalCenter:wrapper.horizontalCenter;
-                        top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
-                }
-            },
-            State {
-                name: "top"
-                when: (plasmoid.location === PlasmaCore.Types.TopEdge)
-
-                AnchorChanges {
-                    target: _wrapperContainer
-                    anchors{  verticalCenter:undefined; horizontalCenter:wrapper.horizontalCenter;
-                        top:parent.top; bottom:undefined; left:undefined; right:undefined;}
-                }
-            }
-        ]*/
-        //END states
 
         ///Secret MouseArea to be used by the folder widget
         Loader{
