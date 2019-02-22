@@ -462,7 +462,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             visible: dialog.expertLevel
 
-            readonly property int maxMargin: 40
+            readonly property int maxMargin: 25
 
             LatteExtraControls.Header {
                 text: i18n("Margins")
@@ -491,7 +491,7 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.lengthIntMargin
                     from: 0
                     to: marginsColumn.maxMargin
-                    stepSize: 2
+                    stepSize: 1
                     wheelEnabled: false
 
                     onPressedChanged: {
@@ -526,7 +526,7 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.lengthExtMargin
                     from: 0
                     to: marginsColumn.maxMargin
-                    stepSize: 2
+                    stepSize: 1
                     wheelEnabled: false
 
                     onPressedChanged: {
@@ -576,8 +576,8 @@ PlasmaComponents.Page {
 
                     value: plasmoid.configuration.thickMargin
                     from: 0
-                    to: marginsColumn.maxMargin
-                    stepSize: 2
+                    to: 40
+                    stepSize: 1
                     wheelEnabled: false
 
                     onPressedChanged: {
