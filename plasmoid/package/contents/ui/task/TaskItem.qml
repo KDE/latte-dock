@@ -423,87 +423,6 @@ MouseArea{
             border.color: "blue"
         } */
 
-    Loader {
-        id: indicatorLoader
-        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
-
-        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-        width: !root.vertical ? wrapper.width - 2*wrapper.mScale*root.lengthExtMargin : wrapper.width
-        height: root.vertical ? wrapper.height - 2*wrapper.mScale*root.lengthExtMargin : wrapper.height
-
-        active: root.activeIndicator !== Latte.Types.NoneIndicator
-
-        /* Indicators Properties in order use them*/
-        readonly property bool isTask: true
-        readonly property bool isApplet: false
-
-        readonly property alias isLauncher: taskItem.isLauncher
-        readonly property alias isStartup: taskItem.isStartup
-        readonly property alias isWindow: taskItem.isWindow
-
-        readonly property bool isActive: taskItem.hasActive || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
-        readonly property alias isGroup: taskItem.isGroupParent
-        readonly property alias isMinimized: taskItem.isMinimized
-        readonly property alias inAttention: taskItem.inAttention
-
-        readonly property alias hasActive: taskItem.hasActive
-        readonly property alias hasMinimized: taskItem.hasMinimized
-        readonly property alias hasShown: taskItem.hasShown
-
-        readonly property int iconSize: root.iconSize
-        readonly property int durationTime: root.durationTime
-        readonly property real scaleFactor: wrapper.mScale
-        readonly property color shadowColor: root.appShadowColorSolid
-
-        readonly property bool dotsOnActive: root.dotsOnActive
-        readonly property bool multiColorEnabled: root.threeColorsWindows
-        readonly property bool reversedEnabled: root.reverseLinesPosition
-        readonly property int activeIndicatorType: root.activeIndicatorType
-
-        //!glow options
-        readonly property bool glowEnabled: root.showGlow
-        readonly property int glowOption: root.glowOption
-        readonly property real glowOpacity: root.glowOpacity
-        readonly property bool glow3D: root.glow3D
-
-        //!icon colors
-        property color backgroundColor: wrapper.backgroundColor
-        property color glowColor: wrapper.glowColor
-
-        sourceComponent: {
-            switch (root.indicatorStyle) {
-            case Latte.Types.LatteIndicator:
-                return latteIndicatorComponent;
-            case Latte.Types.PlasmaIndicator:
-                return plasmaIndicatorComponent;
-            case Latte.Types.UnityIndicator:
-                return unityIndicatorComponent;
-            default:
-                return latteIndicatorComponent;
-            };
-        }
-
-        Component{
-            id:latteIndicatorComponent
-            Latte.LatteIndicator{}
-        }
-
-        Component{
-            id: plasmaIndicatorComponent
-            Latte.PlasmaIndicator{}
-        }
-
-        Component{
-            id:unityIndicatorComponent
-            Latte.UnityIndicator{}
-        }
-    }
-
     Flow{
         id: taskFlow
         width: parent.width
@@ -513,7 +432,93 @@ MouseArea{
         // IMPORTANT: hidden spacers must be tested on vertical !!!
         HiddenSpacer{ id:hiddenSpacerLeft;}
 
-        Wrapper{ id: wrapper }
+        Item{
+            width: wrapper.width
+            height: wrapper.height
+
+            Loader {
+                id: indicatorLoader
+                anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+                anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+                anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+                anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+
+                anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+                anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+
+                width: !root.vertical ? wrapper.width - 2*wrapper.mScale*root.lengthExtMargin : wrapper.width
+                height: root.vertical ? wrapper.height - 2*wrapper.mScale*root.lengthExtMargin : wrapper.height
+
+                active: root.activeIndicator !== Latte.Types.NoneIndicator
+
+                /* Indicators Properties in order use them*/
+                readonly property bool isTask: true
+                readonly property bool isApplet: false
+
+                readonly property alias isLauncher: taskItem.isLauncher
+                readonly property alias isStartup: taskItem.isStartup
+                readonly property alias isWindow: taskItem.isWindow
+
+                readonly property bool isActive: taskItem.hasActive || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
+                readonly property alias isGroup: taskItem.isGroupParent
+                readonly property alias isMinimized: taskItem.isMinimized
+                readonly property alias inAttention: taskItem.inAttention
+
+                readonly property alias hasActive: taskItem.hasActive
+                readonly property alias hasMinimized: taskItem.hasMinimized
+                readonly property alias hasShown: taskItem.hasShown
+
+                readonly property int iconSize: root.iconSize
+                readonly property int durationTime: root.durationTime
+                readonly property real scaleFactor: wrapper.mScale
+                readonly property color shadowColor: root.appShadowColorSolid
+
+                readonly property bool dotsOnActive: root.dotsOnActive
+                readonly property bool multiColorEnabled: root.threeColorsWindows
+                readonly property bool reversedEnabled: root.reverseLinesPosition
+                readonly property int activeIndicatorType: root.activeIndicatorType
+
+                //!glow options
+                readonly property bool glowEnabled: root.showGlow
+                readonly property int glowOption: root.glowOption
+                readonly property real glowOpacity: root.glowOpacity
+                readonly property bool glow3D: root.glow3D
+
+                //!icon colors
+                property color backgroundColor: wrapper.backgroundColor
+                property color glowColor: wrapper.glowColor
+
+                sourceComponent: {
+                    switch (root.indicatorStyle) {
+                    case Latte.Types.LatteIndicator:
+                        return latteIndicatorComponent;
+                    case Latte.Types.PlasmaIndicator:
+                        return plasmaIndicatorComponent;
+                    case Latte.Types.UnityIndicator:
+                        return unityIndicatorComponent;
+                    default:
+                        return latteIndicatorComponent;
+                    };
+                }
+
+                Component{
+                    id:latteIndicatorComponent
+                    Latte.LatteIndicator{}
+                }
+
+                Component{
+                    id: plasmaIndicatorComponent
+                    Latte.PlasmaIndicator{}
+                }
+
+                Component{
+                    id:unityIndicatorComponent
+                    Latte.UnityIndicator{}
+                }
+            }
+
+            Wrapper{id: wrapper}
+        }
 
         // a hidden spacer on the right for the last item to add stability
         HiddenSpacer{ id:hiddenSpacerRight; rightSpacer: true }

@@ -148,7 +148,7 @@ Item{
         Latte.IconItem{
             id: iconImageBuffer
 
-            anchors.rightMargin:{
+           /* anchors.rightMargin:{
                 if (root.position === PlasmaCore.Types.RightPositioned)
                     return root.thickMargin;
                 else if (root.position === PlasmaCore.Types.LeftPositioned)
@@ -179,7 +179,8 @@ Item{
                     return wrapper.mScale * root.thickMargin;
                 else
                     return 0;
-            }
+            }*/
+            anchors.centerIn: parent
 
             width: Math.round(newTempSize) //+ 2*taskIcon.shadowSize
             height: Math.round(width)
