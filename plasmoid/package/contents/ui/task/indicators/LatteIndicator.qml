@@ -22,23 +22,18 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
 
 Item{
-    id:glowFrame
-  //  width: ( icList.orientation === Qt.Horizontal ) ? wrapper.regulatorWidth : size
-  //  height: ( icList.orientation === Qt.Vertical ) ? wrapper.regulatorHeight : size
+    id: indicatorRoot
 
-    //property int size: Math.ceil( root.iconSize/13 ) //5
     property int size: 0.075*root.iconSize
 
-    //SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
     property color isActiveColor: theme.buttonFocusColor
-    //property color isShownColor: plasmoid.configuration.threeColorsWindows ? root.shownDotColor : isActiveColor
-    //property color isShownColor: isActiveColor
     property color minimizedColor: root.threeColorsWindows ? root.minimizedDotColor : isActiveColor
     property color notActiveColor: taskItem.hasMinimized ? minimizedColor : isActiveColor
 
@@ -49,6 +44,7 @@ Item{
         color: "transparent"
         opacity:0.6
     }*/
+
     Item{
         id: mainIndicatorElement
 
@@ -57,14 +53,13 @@ Item{
 
         Flow{
             id: flowItem
-            flow: ( icList.orientation === Qt.Vertical ) ? Flow.TopToBottom : Flow.LeftToRight
+            flow: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Flow.TopToBottom : Flow.LeftToRight
 
             Latte.GlowPoint{
                 id:firstPoint
                 visible: ( !IsLauncher ) ? true: false
 
-                basicColor: IsActive===true || (taskItem.isGroupParent && taskItem.hasShown)?
-                                glowFrame.isActiveColor : glowFrame.notActiveColor
+                basicColor: IsActive===true || (taskItem.isGroupParent && taskItem.hasShown) ? indicatorRoot.isActiveColor : indicatorRoot.notActiveColor
 
                 glow3D: root.glow3D
                 animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
@@ -88,8 +83,8 @@ Item{
                // opacity: (!taskItem.hasActive && root.showPreviews
                //           && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem)) ? 0.4 : 1
 
-                property int stateWidth: taskItem.isGroupParent ? (wrapper.regulatorWidth - secondPoint.width) : wrapper.regulatorWidth - spacer.width
-                property int stateHeight: taskItem.isGroupParent ? wrapper.regulatorHeight - secondPoint.height : wrapper.regulatorHeight - spacer.height
+                property int stateWidth: taskItem.isGroupParent ? indicatorRoot.width - secondPoint.width : indicatorRoot.width - spacer.width
+                property int stateHeight: taskItem.isGroupParent ? indicatorRoot.height - secondPoint.height : indicatorRoot.width - spacer.height
 
                 property int animationTime: root.durationTime* (0.7*units.longDuration)
 
@@ -101,21 +96,21 @@ Item{
                 property real scaleFactor: wrapper.mScale
 
                 function updateInitialSizes(){
-                    if(glowFrame){
+                    if(indicatorRoot){
                         if(vertical)
-                            width = glowFrame.size;
+                            width = indicatorRoot.size;
                         else
-                            height = glowFrame.size;
+                            height = indicatorRoot.size;
 
                         if(vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                             height = stateHeight;
                         else
-                            height = glowFrame.size;
+                            height = indicatorRoot.size;
 
                         if(!vertical && isActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                             width = stateWidth;
                         else
-                            width = glowFrame.size;
+                            width = indicatorRoot.size;
                     }
                 }
 
@@ -163,7 +158,7 @@ Item{
                     property: root.vertical ? "height" : "width"
                     to: (taskItem.hasActive && root.activeIndicatorType === Latte.Types.LineIndicator)
                         || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
-                        ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : glowFrame.size
+                        ? (root.vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : indicatorRoot.size
                     duration: firstPoint.animationTime
                     easing.type: Easing.InQuad
 
@@ -173,13 +168,13 @@ Item{
 
             Item{
                 id:spacer
-                width: secondPoint.visible ? 0.5*glowFrame.size : 0
-                height: secondPoint.visible ? 0.5*glowFrame.size : 0
+                width: secondPoint.visible ? 0.5*indicatorRoot.size : 0
+                height: secondPoint.visible ? 0.5*indicatorRoot.size : 0
             }
 
             Latte.GlowPoint{
                 id:secondPoint
-                width: visible ? glowFrame.size : 0
+                width: visible ? indicatorRoot.size : 0
                 height: width
 
                 glow3D: root.glow3D
@@ -197,9 +192,9 @@ Item{
                                                                 || !taskItem.hasActive) )? true: false
 
                 //when there is no active window
-                property color state1Color: taskItem.hasShown ? glowFrame.isActiveColor : glowFrame.minimizedColor
+                property color state1Color: taskItem.hasShown ? indicatorRoot.isActiveColor : indicatorRoot.minimizedColor
                 //when there is active window
-                property color state2Color: taskItem.hasMinimized ? glowFrame.minimizedColor : glowFrame.isActiveColor
+                property color state2Color: taskItem.hasMinimized ? indicatorRoot.minimizedColor : indicatorRoot.isActiveColor
             }
         }
 

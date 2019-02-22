@@ -30,6 +30,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.latte 0.2 as Latte
 
+import "indicators" as Indicators
 import "animations" as TaskAnimations
 
 MouseArea{
@@ -421,6 +422,57 @@ MouseArea{
             border.width: 1
             border.color: "blue"
         } */
+
+    Loader {
+        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
+        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
+        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
+        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
+
+        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
+        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
+
+        width: !root.vertical ? wrapper.width - 2*wrapper.mScale*root.lengthExtMargin : wrapper.width
+        height: root.vertical ? wrapper.height - 2*wrapper.mScale*root.lengthExtMargin : wrapper.height
+
+        active: root.activeIndicator !== Latte.Types.NoneIndicator
+
+        /* Indicators Properties in order use them*/
+
+        readonly property alias isActive: taskItem.isActive
+        readonly property alias hasActive: taskItem.hasActive
+
+        sourceComponent: {
+            switch (root.indicatorStyle) {
+            case Latte.Types.LatteIndicator:
+                return latteIndicatorComponent;
+            case Latte.Types.PlasmaIndicator:
+                return plasmaIndicatorComponent;
+            case Latte.Types.UnityIndicator:
+                return unityIndicatorComponent;
+            default:
+                return latteIndicatorComponent;
+            };
+        }
+
+        Component{
+            id:latteIndicatorComponent
+            Indicators.LatteIndicator{}
+        }
+
+        Component{
+            id: plasmaIndicatorComponent
+            Indicators.PlasmaIndicator{}
+        }
+
+        Component{
+            id:unityIndicatorComponent
+            Indicators.UnityIndicator{
+       //         backgroundColor: taskIconItem.backgroundColor
+       //         glowColor: taskIconItem.glowColor
+            }
+        }
+    }
 
     Flow{
         id: taskFlow

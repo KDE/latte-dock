@@ -24,8 +24,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
-import "indicators" as Indicators
-
 Item{
     id: wrapper
 
@@ -92,6 +90,9 @@ Item{
 
     property real regulatorWidth: taskItem.isSeparator ? width : basicScalingWidth;
     property real regulatorHeight: taskItem.isSeparator ? height : basicScalingHeight;
+
+    property real visualScaledWidth: (root.iconSize + root.internalWidthMargins) * mScale
+    property real visualScaledHeight: (root.iconSize + root.internalHeightMargins) * mScale
     /// end of Scalers///////
 
     //property int curIndex: icList.hoveredIndex
@@ -104,12 +105,12 @@ Item{
 
     signal runLauncherAnimation();
 
-    /*  Rectangle{
+      Rectangle{
             anchors.fill: parent
             border.width: 1
             border.color: "green"
             color: "transparent"
-        }*/
+        }
 
     Behavior on mScale {
         enabled: !root.globalDirectRender || inMimicParabolicAnimation
@@ -123,53 +124,6 @@ Item{
         enabled: root.globalDirectRender && !inMimicParabolicAnimation && !restoreAnimation.running
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
-
-    Loader {
-        anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-        anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-        anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-        anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
-
-        anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-        anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-        width: !root.vertical ? wrapper.width - 2*root.lengthExtMargin : wrapper.width
-        height: root.vertical ? wrapper.height - 2*root.lengthExtMargin : wrapper.height
-
-        active: root.activeIndicator !== Latte.Types.NoneIndicator
-
-        sourceComponent: {
-            switch (root.indicatorStyle) {
-            case Latte.Types.LatteIndicator:
-                return latteIndicatorComponent;
-            case Latte.Types.PlasmaIndicator:
-                return plasmaIndicatorComponent;
-            case Latte.Types.UnityIndicator:
-                return unityIndicatorComponent;
-            default:
-                return latteIndicatorComponent;
-            };
-        }
-
-        Component{
-            id:latteIndicatorComponent
-            Indicators.LatteIndicator{}
-        }
-
-        Component{
-            id: plasmaIndicatorComponent
-            Indicators.PlasmaIndicator{}
-        }
-
-        Component{
-            id:unityIndicatorComponent
-            Indicators.UnityIndicator{
-                backgroundColor: taskIconItem.backgroundColor
-                glowColor: taskIconItem.glowColor
-            }
-        }
-    }
-
 
     Flow{
         anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined

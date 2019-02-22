@@ -95,6 +95,9 @@ Item {
     property int widthMargins: root.vertical ? thickMargins : lengthMargins
     property int heightMargins: !root.vertical ? thickMargins : lengthMargins
 
+    property int internalWidthMargins: root.vertical ? thickMargins : 2 * lengthIntMargin
+    property int internalHeightMargins: !root.vertical ? thickMargins : 2 * lengthIntMargin
+
     property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
     property color minimizedDotColor: {
         if (latteView) {
