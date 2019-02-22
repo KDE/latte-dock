@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
 
-import "../../../code/ColorizerTools.js" as ColorizerTools
+import "../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: indicatorRoot

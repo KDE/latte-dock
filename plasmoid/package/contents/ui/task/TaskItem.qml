@@ -486,7 +486,7 @@ MouseArea{
 
         Component{
             id:latteIndicatorComponent
-            Indicators.LatteIndicator{}
+            Latte.LatteIndicator{}
         }
 
         Component{
