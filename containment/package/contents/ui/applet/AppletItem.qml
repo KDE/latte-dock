@@ -497,6 +497,7 @@ Item {
             //! Active Indicator loader
             Loader{
                 anchors.fill: parent
+
                 active: (root.activeIndicator === Latte.Types.AllIndicator
                          || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
                         && communicator.activeIndicatorEnabled
@@ -506,13 +507,42 @@ Item {
                 sourceComponent: root.indicatorStyle===Latte.Types.LatteIndicator ?
                                      latteStyleIndicator : (root.indicatorStyle===Latte.Types.PlasmaIndicator ? plasmaStyleIndicator : unityStyleIndicator)
 
+                /* Indicators Properties in order use them*/
+                readonly property bool isTask: false
+                readonly property bool isApplet: true
+
+                readonly property bool isLauncher: false
+                readonly property bool isStartup: false
+                readonly property bool isWindow: false
+
+                readonly property alias isActive: appletItem.isActive
+                readonly property bool isGroup: false
+                readonly property bool isMinimized: false
+                readonly property bool inAttention: false
+
+                readonly property bool hasActive: false
+                readonly property bool hasMinimized: false
+                readonly property bool hasShown: false
+
+                readonly property int iconSize: root.iconSize
+                readonly property int durationTime: root.durationTime
+                readonly property real scaleFactor: wrapper.zoomScale
+                readonly property color shadowColor: root.appShadowColorSolid
+
+                readonly property bool dotsOnActive: root.dotsOnActive
+                readonly property bool multiColorEnabled: root.threeColorsWindows
+                readonly property bool reversedEnabled: root.reverseLinesPosition
+                readonly property int activeIndicatorType: root.activeIndicatorType
+
+                //!glow options
+                readonly property bool glowEnabled: root.showGlow
+                readonly property int glowOption: root.glowOption
+                readonly property real glowOpacity: root.glowOpacity
+                readonly property bool glow3D: root.glow3D
+
                 Component {
                     id: latteStyleIndicator
-
-                    Item{
-                        anchors.fill: parent
-                        Indicators.LatteIndicator{}
-                    }
+                    Latte.LatteIndicator{}
                 }
 
                 Component {

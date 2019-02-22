@@ -69,7 +69,15 @@ Item{
 
             Latte.GlowPoint{
                 id:firstPoint
-                visible: ( !IsLauncher ) ? true: false
+                opacity: {
+                    if (rootItem.isTask) {
+                        return rootItem.isLauncher ? 0 : 1
+                    }
+
+                    if (rootItem.isApplet) {
+                        return (rootItem.isActive || activeAndReverseAnimation.running) ? 1 : 0
+                    }
+                }
 
                 basicColor: rootItem.isActive || (rootItem.isGroup && rootItem.hasShown) ? indicatorRoot.isActiveColor : indicatorRoot.notActiveColor
 
