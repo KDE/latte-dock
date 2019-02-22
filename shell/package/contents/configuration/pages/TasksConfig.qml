@@ -47,45 +47,6 @@ PlasmaComponents.Page {
         Layout.leftMargin: units.smallSpacing * 2
         Layout.rightMargin: units.smallSpacing * 2
 
-        //! BEGIN: Tasks Appearance
-        ColumnLayout {
-            spacing: units.smallSpacing
-            Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            enabled: !disableAllWindowsFunctionality
-
-            LatteExtraControls.Header {
-                text: i18n("Appearance")
-            }
-
-            PlasmaComponents.CheckBox {
-                id: threeColorsWindows
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Different color for minimized windows")
-                checked: plasmoid.configuration.threeColorsWindows
-
-                onClicked: {
-                    plasmoid.configuration.threeColorsWindows = checked
-                }
-            }
-
-            PlasmaComponents.CheckBox {
-                id: dotsOnActive
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show an extra dot for grouped windows when active")
-                checked: plasmoid.configuration.dotsOnActive
-                tooltip: i18n("Grouped windows show both a line and a dot when \none of them is active and the Line Active Indicator \nis enabled")
-                visible: dialog.highLevel
-                enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
-
-                onClicked: {
-                    plasmoid.configuration.dotsOnActive = checked
-                }
-            }
-
-        }
-        //! END: Tasks Appearance
-
         //! BEGIN: Badges
         ColumnLayout {
             spacing: units.smallSpacing

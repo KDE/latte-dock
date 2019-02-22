@@ -630,6 +630,36 @@ PlasmaComponents.Page {
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     }
                 }
+
+                LatteExtraControls.SubHeader {
+                    enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
+                    text: i18n("Improvements")
+                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
+                }
+
+                PlasmaComponents.CheckBox {
+                    id: threeColorsWindows
+                    text: i18n("Different color for minimized windows")
+                    checked: plasmoid.configuration.threeColorsWindows
+                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
+
+                    onClicked: {
+                        plasmoid.configuration.threeColorsWindows = checked
+                    }
+                }
+
+                PlasmaComponents.CheckBox {
+                    id: dotsOnActive
+                    text: i18n("Show an extra dot for grouped windows when active")
+                    checked: plasmoid.configuration.dotsOnActive
+                    tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
+                    enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
+                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
+
+                    onClicked: {
+                        plasmoid.configuration.dotsOnActive = checked
+                    }
+                }
             }
         }
         //! END: Active Indicator
