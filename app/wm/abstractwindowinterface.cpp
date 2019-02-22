@@ -94,11 +94,12 @@ void AbstractWindowInterface::updateDefaultScheme()
 
     if (!m_schemes.contains(defaultSchemePath)) {
         dScheme = new SchemeColors(this, defaultSchemePath);
+        m_schemes[defaultSchemePath] = dScheme;
     } else {
         dScheme = m_schemes[defaultSchemePath];
     }
 
-    if (!m_schemes.contains("kdeglobal") || m_schemes["kdeglobals"]->schemeFile() != defaultSchemePath) {
+    if (!m_schemes.contains("kdeglobals") || m_schemes["kdeglobals"]->schemeFile() != defaultSchemePath) {
         m_schemes["kdeglobals"] = dScheme;
     }
 }

@@ -57,7 +57,7 @@ SchemeColors::SchemeColors(QObject *parent, QString scheme, bool plasmaTheme) :
 
 SchemeColors::~SchemeColors()
 {
-///
+    ///
 }
 
 QColor SchemeColors::backgroundColor() const
@@ -163,11 +163,16 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
         }
     }
 
-    //! remove all whitespaces and "-" from scheme in order to access correctly its file
-    QString schemeNameSimplified = tempScheme.simplified().remove(" ").remove("-");
+    QString localSchemePath = QDir::homePath() + "/.local/share/color-schemes/" + tempScheme + ".colors";
+    QString globalSchemePath = "/usr/share/color-schemes/" + tempScheme + ".colors";
 
-    QString localSchemePath = QDir::homePath() + "/.local/share/color-schemes/" + schemeNameSimplified + ".colors";
-    QString globalSchemePath = "/usr/share/color-schemes/" + schemeNameSimplified + ".colors";
+    if (!QFileInfo(localSchemePath).exists() && !QFileInfo(globalSchemePath).exists()) {
+        //! remove all whitespaces and "-" from scheme in order to access correctly its file
+        QString schemeNameSimplified = tempScheme.simplified().remove(" ").remove("-");
+
+        localSchemePath = QDir::homePath() + "/.local/share/color-schemes/" + schemeNameSimplified + ".colors";
+        globalSchemePath = "/usr/share/color-schemes/" + schemeNameSimplified + ".colors";
+    }
 
     if (QFileInfo(localSchemePath).exists()) {
         return localSchemePath;
