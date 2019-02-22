@@ -27,7 +27,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.latte 0.2 as Latte
 
 Item{
-    id:glowFrame
+    id:indicatorRoot
     width: !root.isVertical ? parent.width : size
     height: root.isVertical ? parent.height : size
 
@@ -48,10 +48,10 @@ Item{
         id:activePoint
         anchors.centerIn: parent
 
+        size: indicatorRoot.size
         basicColor: theme.buttonFocusColor
         roundCorners: true
         showGlow: root.showGlow
-
         glow3D: root.glow3D
         animation: Math.max(1.65*3*units.longDuration,root.durationTime*3*units.longDuration)
         location: plasmoid.location
@@ -59,8 +59,8 @@ Item{
         contrastColor: root.appShadowColorSolid
 
         opacity:{
-            if ( (!vertical && width <= glowFrame.size && !appletItem.isActive)
-                    || (vertical && height <= glowFrame.size && !appletItem.isActive))
+            if ( (!vertical && width <= indicatorRoot.size && !appletItem.isActive)
+                    || (vertical && height <= indicatorRoot.size && !appletItem.isActive))
                 return 0;
 
             return 1;
@@ -69,27 +69,27 @@ Item{
         property bool vertical: root.isVertical
 
         property int animationTime: root.durationTime * (1.2*units.longDuration)
-        property int stateWidth: root.activeIndicatorType === Latte.Types.DotIndicator ? glowFrame.size : glowFrame.width
-        property int stateHeight: root.activeIndicatorType === Latte.Types.DotIndicator ? glowFrame.size : glowFrame.height
+        property int stateWidth: root.activeIndicatorType === Latte.Types.DotIndicator ? indicatorRoot.size : indicatorRoot.width
+        property int stateHeight: root.activeIndicatorType === Latte.Types.DotIndicator ? indicatorRoot.size : indicatorRoot.height
 
         property real scaleFactor: wrapper.zoomScale
 
         function updateInitialSizes(){
-            if(glowFrame){
+            if(indicatorRoot){
                 if(vertical)
-                    width = glowFrame.size;
+                    width = indicatorRoot.size;
                 else
-                    height = glowFrame.size;
+                    height = indicatorRoot.size;
 
                 if(vertical && appletItem.isActive)
                     height = stateHeight;
                 else
-                    height = glowFrame.size;
+                    height = indicatorRoot.size;
 
                 if(!vertical && appletItem.isActive)
                     width = stateWidth;
                 else
-                    width = glowFrame.size;
+                    width = indicatorRoot.size;
             }
         }
 
@@ -135,7 +135,7 @@ Item{
             id: activeAndReverseAnimation
             target: activePoint
             property: root.isVertical ? "height" : "width"
-            to: !appletItem.isActive ? (root.isVertical ? activePoint.stateHeight : activePoint.stateWidth) : glowFrame.size
+            to: !appletItem.isActive ? (root.isVertical ? activePoint.stateHeight : activePoint.stateWidth) : indicatorRoot.size
             duration: activePoint.animationTime
             easing.type: Easing.InQuad
 
@@ -150,7 +150,7 @@ Item{
                    (plasmoid.location === PlasmaCore.Types.RightEdge && root.reverseLinesPosition))
 
             AnchorChanges {
-                target: glowFrame
+                target: indicatorRoot
                 anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                     top:undefined; bottom:undefined; left:parent.left; right:undefined;}
             }
@@ -161,7 +161,7 @@ Item{
                    (plasmoid.location === PlasmaCore.Types.TopEdge && root.reverseLinesPosition))
 
             AnchorChanges {
-                target: glowFrame
+                target: indicatorRoot
                 anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                     top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
             }
@@ -172,7 +172,7 @@ Item{
                    (plasmoid.location === PlasmaCore.Types.BottomEdge && root.reverseLinesPosition))
 
             AnchorChanges {
-                target: glowFrame
+                target: indicatorRoot
                 anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                     top:parent.top; bottom:undefined; left:undefined; right:undefined;}
             }
@@ -183,7 +183,7 @@ Item{
                    (plasmoid.location === PlasmaCore.Types.LeftEdge && root.reverseLinesPosition))
 
             AnchorChanges {
-                target: glowFrame
+                target: indicatorRoot
                 anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
                     top:undefined; bottom:undefined; left:undefined; right:parent.right;}
             }

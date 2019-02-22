@@ -96,8 +96,10 @@ MouseArea{
     property bool hasActive: isActive
     property bool hasMinimized: (IsGroupParent === true) ? subWindows.hasMinimized : isMinimized
     property bool hasShown: (IsGroupParent === true) ? subWindows.hasShown : !isMinimized
-    property bool inAddRemoveAnimation: true
+    property bool inAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ? true : false
+    /*animations flags*/
     property bool inAnimation: true
+    property bool inAddRemoveAnimation: true
     property bool inAttentionAnimation: false
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
@@ -127,8 +129,6 @@ MouseArea{
 
     property bool pressed: false
     property bool wheelIsBlocked: false
-    readonly property bool showAttention: isDemandingAttention && plasmoid.status === PlasmaCore.Types.RequiresAttentionStatus ?
-                                              true : false
 
     property int animationTime: root.durationTime * 1.2 * units.shortDuration
     property int badgeIndicator: 0 //it is used from external apps
@@ -424,6 +424,7 @@ MouseArea{
         } */
 
     Loader {
+        id: indicatorLoader
         anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
         anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
         anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
@@ -438,9 +439,37 @@ MouseArea{
         active: root.activeIndicator !== Latte.Types.NoneIndicator
 
         /* Indicators Properties in order use them*/
+        readonly property bool isTask: true
+        readonly property bool isApplet: false
 
-        readonly property alias isActive: taskItem.isActive
+        readonly property alias isLauncher: taskItem.isLauncher
+        readonly property alias isStartup: taskItem.isStartup
+        readonly property alias isWindow: taskItem.isWindow
+
+        readonly property bool isActive: taskItem.hasActive || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
+        readonly property alias isGroup: taskItem.isGroupParent
+        readonly property alias isMinimized: taskItem.isMinimized
+        readonly property alias inAttention: taskItem.inAttention
+
         readonly property alias hasActive: taskItem.hasActive
+        readonly property alias hasMinimized: taskItem.hasMinimized
+        readonly property alias hasShown: taskItem.hasShown
+
+        readonly property int iconSize: root.iconSize
+        readonly property int durationTime: root.durationTime
+        readonly property real scaleFactor: wrapper.mScale
+        readonly property color shadowColor: root.appShadowColorSolid
+
+        readonly property bool dotsOnActive: root.dotsOnActive
+        readonly property bool multiColorEnabled: root.threeColorsWindows
+        readonly property bool reversedEnabled: root.reverseLinesPosition
+        readonly property int activeIndicatorType: root.activeIndicatorType
+
+        //!glow options
+        readonly property bool glowEnabled: root.showGlow
+        readonly property int glowOption: root.glowOption
+        readonly property real glowOpacity: root.glowOpacity
+        readonly property bool glow3D: root.glow3D
 
         sourceComponent: {
             switch (root.indicatorStyle) {

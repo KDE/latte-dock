@@ -105,12 +105,12 @@ Item{
 
     signal runLauncherAnimation();
 
-      Rectangle{
+    /*  Rectangle{
             anchors.fill: parent
             border.width: 1
             border.color: "green"
             color: "transparent"
-        }
+        }*/
 
     Behavior on mScale {
         enabled: !root.globalDirectRender || inMimicParabolicAnimation

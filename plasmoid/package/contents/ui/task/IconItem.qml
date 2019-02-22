@@ -595,8 +595,8 @@ Item{
     Connections{
         target: taskItem
 
-        onShowAttentionChanged:{
-            if (!taskItem.showAttention && newWindowAnimation.running && taskItem.inAttentionAnimation) {
+        onInAttentionChanged:{
+            if (!taskItem.inAttention && newWindowAnimation.running && taskItem.inAttentionAnimation) {
                 newWindowAnimation.pause();
                 fastRestoreAnimation.start();
             }

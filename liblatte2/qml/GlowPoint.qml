@@ -37,6 +37,8 @@ Item{
 
     property int animation: 250
     property int location: PlasmaCore.Types.BottomEdge
+    property int size: 10
+
     property real glowOpacity: 0.75
 
     property color attentionColor: "red"
@@ -62,8 +64,8 @@ Item{
         rows: isHorizontal ? 1 : 0
         columns: isVertical ? 1 : 0
 
-        property int halfCorner: 3*glowFrame.size
-        property int fullCorner: 6*glowFrame.size
+        property int halfCorner: 3*glowItem.size
+        property int fullCorner: 6*glowItem.size
 
         Item {
             id: firstGlowCorner
@@ -112,8 +114,8 @@ Item{
 
         Item {
             id:mainGlowPart
-            width: isHorizontal ? glowItem.width - glowFrame.size : mainGlow.fullCorner
-            height: isHorizontal ? mainGlow.fullCorner : glowItem.height - glowFrame.size
+            width: isHorizontal ? glowItem.width - glowItem.size : mainGlow.fullCorner
+            height: isHorizontal ? mainGlow.fullCorner : glowItem.height - glowItem.size
 
             LinearGradient {
                 anchors.fill: parent
@@ -299,7 +301,7 @@ Item{
             height: isHorizontal ? shadow : Math.max(mainGlowPart.height, shadow)
             radius: isHorizontal ? height/2 : width/2
 
-            property int shadow: glowFrame.size / 3
+            property int shadow: glowItem.size / 3
 
             color: glowItem.contrastColorAlpha
             opacity: 0.2
