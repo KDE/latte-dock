@@ -29,7 +29,7 @@ SequentialAnimation{
     id:newWindowAnimation
 
     property int speed: root.durationTime*units.longDuration
-    property bool isDemandingAttention: (IsDemandingAttention === true)
+    property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
 
@@ -40,7 +40,7 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: 1 + (thickPercentage * (root.zoomFactor-1))
+                to: 1 + (thickPercentage * 2 * (root.zoomFactor-1))
                 duration: newWindowAnimation.speed
                 easing.type: Easing.OutQuad
 
@@ -75,6 +75,7 @@ SequentialAnimation{
 
         taskItem.setBlockingAnimation(false);
         taskItem.inAttentionAnimation = false;
+        taskItem.inNewWindowAnimation = false;
     }
 
     onStopped: {
@@ -97,6 +98,7 @@ SequentialAnimation{
 
     function init(){
         taskItem.setBlockingAnimation(true);
+        taskItem.inNewWindowAnimation = true;
 
         wrapper.tempScaleWidth = wrapper.mScale;
         wrapper.tempScaleHeight = wrapper.mScale;

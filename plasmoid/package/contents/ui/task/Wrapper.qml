@@ -64,7 +64,6 @@ Item{
         }
     }
 
-
     property int maxThickness: !root.vertical ? root.zoomFactor*(root.iconSize+root.heightMargins)
                                               : root.zoomFactor*(root.iconSize+root.widthMargins)
 
@@ -128,7 +127,8 @@ Item{
         NumberAnimation { duration: root.directRenderAnimationTime }
     }
 
-    Flow{
+    IconItem{
+        id: taskIconItem
         anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
         anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
         anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
@@ -138,70 +138,8 @@ Item{
         anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
         width: wrapper.width
-        height: wrapper.height
-
-        flow: root.vertical ? Flow.TopToBottom : Flow.LeftToRight
-
-
-        //! This is used from bouncing attention animation in order to played correctly
-        Loader{
-            id: firstPadding
-
-            active: (plasmoid.location === PlasmaCore.Types.BottomEdge || plasmoid.location === PlasmaCore.Types.RightEdge)
-                    && !root.reverseLinesPosition
-                    && (taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation)
-                    && !root.disableAllWindowsFunctionality
-            visible: active
-
-            sourceComponent: Component{
-                Item{
-                    width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
-                    height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
-
-                    /* Rectangle{
-                        width: !root.vertical ? 1 : parent.width
-                        height: !root.vertical ? parent.height : 1
-                        x: !root.vertical ? wrapper.width /2 : 0
-                        y: root.vertical ? wrapper.height /2 : 0
-                        border.width: 1
-                        border.color: "blue"
-                        color: "transparent"
-                    } */
-                }
-            }
-        }
-
-        IconItem{ id: taskIconItem}
-
-        //! This is used from bouncing attention animation in order to played correctly
-        Loader{
-            id: secondPadding
-
-            active: (plasmoid.location === PlasmaCore.Types.LeftEdge || plasmoid.location === PlasmaCore.Types.TopEdge)
-                    && !root.reverseLinesPosition
-                    && (taskItem.inAttentionAnimation || taskItem.inFastRestoreAnimation)
-                    && !root.disableAllWindowsFunctionality
-            visible: active
-
-            sourceComponent: Component{
-                Item{
-                    width: root.vertical ? wrapper.maxThickness-wrapper.width : 1
-                    height: !root.vertical ? wrapper.maxThickness-wrapper.height : 1
-
-                    /*Rectangle{
-                        width: !root.vertical ? 1 : parent.width
-                        height: !root.vertical ? parent.height : 1
-                        x: !root.vertical ? wrapper.width/2 : 0
-                        y: root.vertical ? wrapper.height/2 : 0
-                        border.width: 1
-                        border.color: "blue"
-                        color: "transparent"
-                    }*/
-                }
-            }
-        }
-    }//Flow
-
+        height:wrapper.height
+    }
 
     function calculateScales( currentMousePosition ){
         if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {

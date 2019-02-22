@@ -53,10 +53,7 @@ MouseArea{
             return root.vertical ? separatorItem.width : (root.dragSource || root.editMode ? 5+root.lengthMargins : 0);
 
         if (root.vertical) {
-            if (!inAttentionAnimation)
-                return wrapper.width;
-            else
-                return wrapper.maxThickness;
+            return wrapper.width;
         } else {
             return hiddenSpacerLeft.width+wrapper.width+hiddenSpacerRight.width;
         }
@@ -76,10 +73,7 @@ MouseArea{
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;
         } else {
-            if (!inAttentionAnimation)
-                return wrapper.height;
-            else
-                return wrapper.maxThickness;
+            return wrapper.height;
         }
     }
 
@@ -105,6 +99,7 @@ MouseArea{
     property bool inBouncingAnimation: false
     property bool inFastRestoreAnimation: false
     property bool inMimicParabolicAnimation: false
+    property bool inNewWindowAnimation: false
     property real mimicParabolicScale: -1
     property bool inPopup: false
     property bool inRemoveStage: false
@@ -446,10 +441,28 @@ MouseArea{
                 anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
                 anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
 
-                width: !root.vertical ? wrapper.width - 2*wrapper.mScale*root.lengthExtMargin : wrapper.width
-                height: root.vertical ? wrapper.height - 2*wrapper.mScale*root.lengthExtMargin : wrapper.height
+                width: {
+                    if (locked) {
+                        return visualLockedWidth;
+                    }
+
+                    return !root.vertical ? wrapper.width - 2*wrapper.mScale*root.lengthExtMargin : wrapper.width;
+                }
+
+                height: {
+                    if (locked) {
+                        return visualLockedHeight;
+                    }
+
+                    return root.vertical ? wrapper.height - 2*wrapper.mScale*root.lengthExtMargin : wrapper.height;
+                }
 
                 active: root.activeIndicator !== Latte.Types.NoneIndicator
+
+                readonly property bool locked: inAttentionAnimation || inNewWindowAnimation
+
+                property real visualLockedWidth: root.iconSize + root.internalWidthMargins
+                property real visualLockedHeight: root.iconSize + root.internalHeightMargins
 
                 /* Indicators Properties in order use them*/
                 readonly property bool isTask: true
@@ -796,7 +809,7 @@ MouseArea{
 
     onContainsMouseChanged:{
         if(!containsMouse && !inAnimation) {
-                pressed=false;
+            pressed=false;
         }
 
         ////disable hover effect///
