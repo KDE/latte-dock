@@ -362,17 +362,10 @@ MouseArea{
         }
 
         Rectangle {
-            anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-            anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-            anchors.right: root.position === PlasmaCore.Types.RightPositioned ? parent.right : undefined;
-            anchors.left: root.position === PlasmaCore.Types.LeftPositioned ? parent.left : undefined;
-            anchors.top: root.position === PlasmaCore.Types.TopPositioned ? parent.top : undefined;
-            anchors.bottom: root.position === PlasmaCore.Types.BottomPositioned ? parent.bottom : undefined;
+            anchors.centerIn: parent
 
-            radius: 2
-
-            width: root.vertical ? root.iconSize - 8  : 1
-            height: !root.vertical ? root.iconSize - 8 : 1
+            width: root.vertical ? root.iconSize - 4  : 1
+            height: !root.vertical ? root.iconSize - 4 : 1
             color: theme.textColor
         }
     }

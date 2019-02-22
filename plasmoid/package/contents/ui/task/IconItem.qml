@@ -148,38 +148,6 @@ Item{
         Latte.IconItem{
             id: iconImageBuffer
 
-           /* anchors.rightMargin:{
-                if (root.position === PlasmaCore.Types.RightPositioned)
-                    return root.thickMargin;
-                else if (root.position === PlasmaCore.Types.LeftPositioned)
-                    return wrapper.mScale * root.thickMargin;
-                else
-                    return 0;
-            }
-            anchors.leftMargin: {
-                if (root.position === PlasmaCore.Types.LeftPositioned)
-                    return root.thickMargin;
-                else if (root.position === PlasmaCore.Types.RightPositioned)
-                    return wrapper.mScale * root.thickMargin;
-                else
-                    return 0;
-            }
-            anchors.topMargin: {
-                if (root.position === PlasmaCore.Types.TopPositioned)
-                    return root.thickMargin;
-                else if (root.position === PlasmaCore.Types.BottomPositioned)
-                    return wrapper.mScale * root.thickMargin;
-                else
-                    return 0;
-            }
-            anchors.bottomMargin:{
-                if (root.position === PlasmaCore.Types.BottomPositioned)
-                    return root.thickMargin;
-                else if (root.position === PlasmaCore.Types.TopPositioned)
-                    return wrapper.mScale * root.thickMargin;
-                else
-                    return 0;
-            }*/
             anchors.centerIn: parent
 
             width: Math.round(newTempSize) //+ 2*taskIcon.shadowSize
@@ -543,6 +511,7 @@ Item{
             id: stateColorizer
             anchors.fill: iconImageBuffer
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
+            visible: !isSeparator
 
             opacity:0
 
@@ -555,6 +524,7 @@ Item{
             id:hoveredImage
             anchors.fill: iconImageBuffer
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
+            visible: !isSeparator
 
             opacity: taskItem.containsMouse && !clickedAnimation.running ? 1 : 0
             brightness: 0.30
@@ -570,7 +540,7 @@ Item{
             anchors.fill: iconImageBuffer
             source: badgesLoader.active ? badgesLoader : iconImageBuffer
 
-            visible: clickedAnimation.running
+            visible: clickedAnimation.running && !isSeparator
         }
         //! Effects
 

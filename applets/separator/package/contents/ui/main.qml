@@ -23,7 +23,6 @@ Item {
 
     Component.onCompleted: {
         Plasmoid.removeAction( 'configure' )
-
     }
 
     PlasmaExtras.Heading {
@@ -41,16 +40,11 @@ Item {
 
     Rectangle {
         id: sep
+        width: horizontal ? 1 : parent.width - 4
+        height: !horizontal ? 1 : parent.height - 4
+
         color: theme.textColor
-        radius: 2
         opacity: 0.5
         visible: !planar
-        anchors {
-            leftMargin:    horizontal ? 2 : 4
-            rightMargin:   horizontal ? 2 : 4
-            topMargin:    !horizontal ? 2 : 4
-            bottomMargin: !horizontal ? 2 : 4
-            fill: root
-        }
     }
 }
