@@ -32,7 +32,7 @@ Item{
 
     property bool neighbourSeparator: false;
 
-    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet ? (2+root.lengthMargins) : 0
+    property int separatorSpace: neighbourSeparator && !appletItem.isSeparator && !appletItem.latteApplet ? (2+root.lengthMargin) : 0
 
     property real nHiddenSize: (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
 

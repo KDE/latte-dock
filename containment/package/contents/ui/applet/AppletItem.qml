@@ -101,7 +101,7 @@ Item {
 
     property int previousIndex: -1
     property int sizeForFill: -1 //it is used in calculations for fillWidth,fillHeight applets
-    property int spacersMaxSize: Math.max(0,Math.ceil(root.iconSize / 2) - root.lengthMargin)
+    property int spacersMaxSize: Math.max(0,Math.ceil(0.55 * root.iconSize) - root.lengthMargins)
     property int status: applet ? applet.status : -1
 
     property real computeWidth: root.isVertical ? wrapper.width :
@@ -531,7 +531,7 @@ Item {
                 readonly property bool isMinimized: false
                 readonly property bool inAttention: false
 
-                readonly property bool hasActive: false
+                readonly property bool hasActive: isActive
                 readonly property bool hasMinimized: false
                 readonly property bool hasShown: false
 
