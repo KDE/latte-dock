@@ -45,7 +45,7 @@
       <label>this is a percentage value</label>
     </entry>
     <entry name="shrinkThickMargins" type="Bool">
-      <default>true</default>
+      <default>false</default>
       <label>this is a percentage value</label>
     </entry>
     <entry name="proportionIconSize" type="Double">
@@ -56,7 +56,7 @@
       <default>true</default>
     </entry>
     <entry name="panelSize" type="Int">
-      <default>0</default>
+      <default>6</default>
     </entry>
     <entry name="panelShadows" type="Bool">
       <default>true</default>
