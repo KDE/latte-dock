@@ -32,7 +32,6 @@ import org.kde.latte 0.2 as Latte
 
 import "colorizer" as Colorizer
 import "communicator" as Communicator
-import "indicators" as Indicators
 
 Item {
     id: appletItem

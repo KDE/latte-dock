@@ -30,7 +30,6 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
 import org.kde.latte 0.2 as Latte
 
-import "indicators" as Indicators
 import "animations" as TaskAnimations
 
 MouseArea{
