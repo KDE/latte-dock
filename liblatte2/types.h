@@ -42,7 +42,7 @@ public:
         PanelView
     };
     Q_ENUM(ViewType);
-    
+
     enum Visibility
     {
         None = -1,
@@ -113,14 +113,6 @@ public:
     };
     Q_ENUM(IndicatorStyle);
 
-    enum ActiveAppletIndicator
-    {
-        NoneIndicator = 0,
-        InternalsIndicator = 1,
-        AllIndicator = 2
-    };
-    Q_ENUM(ActiveAppletIndicator)
-
     enum ActiveIndicatorType
     {
         LineIndicator = 0,
@@ -175,7 +167,7 @@ public:
         TouchingWindowColors
     };
     Q_ENUM(WindowColorsGroup);
-    
+
     enum LayoutsMemoryUsage
     {
         SingleLayout = 0,  /* a single Layout is loaded in each time */

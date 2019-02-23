@@ -161,16 +161,12 @@
     <entry name="glowOpacity" type="Int">
        <default>30</default>
     </entry>
-    <entry name="activeIndicator" type="Enum">
-      <label>Show active indicator</label>
-        <choices>
-          <choice name="None"/>
-          <choice name="Internal"/>
-          <choice name="All"/>
-        </choices>
-      <default>2</default>
-      <label>Internal will become deprecated, Latte applets active indicator will be just active or not </label>
-    </entry>
+    <entry name="indicatorsEnabled" type="Bool">
+        <default>true</default>
+    </entry>    
+    <entry name="indicatorsForApplets" type="Bool">
+        <default>false</default>
+    </entry>    
     <entry name="indicatorStyle" type="Enum">
       <label>Indicator style</label>
         <choices>

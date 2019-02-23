@@ -26,29 +26,66 @@ import org.kde.latte 0.2 as Latte
 PlasmaCore.FrameSvgItem {
     id: frame
 
-    imagePath: "widgets/tasks"
+    readonly property Item rootItem: parent
     property string basePrefix: "normal"
 
-    prefix: taskPrefix(basePrefix)
+    imagePath: rootItem.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
 
-    property Item rootItem: parent
+    prefix: {
+        if (rootItem.usePlasmaTabsStyle) {
+            if (!rootItem.isActive) {
+                return "";
+            }
+
+            if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !rootItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.RightEdge && rootItem.reversedEnabled)) {
+                return "west-active-tab";
+            }
+
+            if ((plasmoid.location === PlasmaCore.Types.TopEdge && !rootItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.BottomEdge && rootItem.reversedEnabled)) {
+                return "north-active-tab";
+            }
+
+            if ((plasmoid.location === PlasmaCore.Types.RightEdge && !rootItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.LeftEdge && rootItem.reversedEnabled)) {
+                return "east-active-tab";
+            }
+
+            if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !rootItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.TopEdge && rootItem.reversedEnabled)) {
+                return "south-active-tab";
+            }
+
+            return  "south-active-tab";
+        } else {
+            return taskPrefix(basePrefix);
+        }
+    }
 
     function taskPrefix(prefix) {
         var effectivePrefix;
 
-        switch (plasmoid.location) {
-        case PlasmaCore.Types.LeftEdge:
+        if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !rootItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.RightEdge && rootItem.reversedEnabled)) {
             effectivePrefix = "west-" + prefix;
-            break;
-        case PlasmaCore.Types.TopEdge:
+        }
+
+        if ((plasmoid.location === PlasmaCore.Types.TopEdge && !rootItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.BottomEdge && rootItem.reversedEnabled)) {
             effectivePrefix = "north-" + prefix;
-            break;
-        case PlasmaCore.Types.RightEdge:
+        }
+
+        if ((plasmoid.location === PlasmaCore.Types.RightEdge && !rootItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.LeftEdge && rootItem.reversedEnabled)) {
             effectivePrefix = "east-" + prefix;
-            break;
-        default:
+        }
+
+        if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !rootItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.TopEdge && rootItem.reversedEnabled)) {
             effectivePrefix = "south-" + prefix;
         }
+
         return [effectivePrefix, prefix];
     }
 

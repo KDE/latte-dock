@@ -386,16 +386,12 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
 
-                checked: plasmoid.configuration.activeIndicator !== Latte.Types.NoneIndicator
+                checked: plasmoid.configuration.indicatorsEnabled
                 text: i18n("Indicators")
-                tooltip: i18n("Enable/disable applet indicators")
+                tooltip: i18n("Enable/disable indicators")
 
                 onPressed: {
-                    if(plasmoid.configuration.activeIndicator !== Latte.Types.AllIndicator){
-                        plasmoid.configuration.activeIndicator = Latte.Types.AllIndicator;
-                    } else {
-                        plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
-                    }
+                    plasmoid.configuration.indicatorsEnabled = !plasmoid.configuration.indicatorsEnabled;
                 }
             }
 
@@ -461,7 +457,6 @@ PlasmaComponents.Page {
                     Layout.topMargin: units.smallSpacing * 4
                     isFirstSubCategory: true
                     text: i18n("Placement")
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
                 }
 
                 LatteExtraControls.HeaderSwitch {
@@ -470,11 +465,23 @@ PlasmaComponents.Page {
                     text: i18n("Reverse position")
                     tooltip: i18n("Reverse indicators position e.g. from bottom to top")
                     checked: plasmoid.configuration.reverseLinesPosition
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
                     level: 3
 
                     onPressed: {
                         plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
+                    }
+                }
+
+                LatteExtraControls.HeaderSwitch {
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: implicitHeight
+                    text: i18n("Show indicators for applets")
+                    tooltip: i18n("Show or hide indicators for applets")
+                    checked: plasmoid.configuration.indicatorsForApplets
+                    level: 3
+
+                    onPressed: {
+                        plasmoid.configuration.indicatorsForApplets = !plasmoid.configuration.indicatorsForApplets;
                     }
                 }
 

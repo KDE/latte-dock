@@ -376,8 +376,7 @@ DragDrop.DropArea {
     property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
-    property bool reverseLinesPosition: !latteApplet && plasmoid.configuration.panelSize===100 ?
-                                            !plasmoid.configuration.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
+    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition
     property bool showGlow: plasmoid.configuration.showGlow || plasmoid.configuration.glowOption!==Latte.Types.GlowNone
     property bool glow3D: plasmoid.configuration.glow3D
 
@@ -398,7 +397,8 @@ DragDrop.DropArea {
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
 
-    property int activeIndicator: plasmoid.configuration.activeIndicator
+    property bool indicatorsEnabled: plasmoid.configuration.indicatorsEnabled
+    property bool indicatorsForApplets: plasmoid.configuration.indicatorsForApplets
     property int indicatorStyle: plasmoid.configuration.indicatorStyle
     property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
 

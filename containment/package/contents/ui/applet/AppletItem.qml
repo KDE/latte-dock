@@ -498,13 +498,14 @@ Item {
                 id: indicatorLoader
                 anchors.fill: parent
 
-                active: (root.activeIndicator === Latte.Types.AllIndicator
-                         || (root.activeIndicator === Latte.Types.InternalsIndicator && communicator.overlayLatteIconIsActive))
-                        && communicator.activeIndicatorEnabled
-                        && !(root.indicatorStyle === Latte.Types.UnityIndicator && !communicator.overlayLatteIconIsActive)
-
+                active: (root.indicatorsEnabled && communicator.activeIndicatorEnabled && root.indicatorsForApplets)
+                        || (!root.indicatorsForApplets && communicator.overlayLatteIconIsActive)
 
                 sourceComponent: {
+                    if (!root.indicatorsForApplets && communicator.overlayLatteIconIsActive) {
+                        return plasmaStyleIndicator;
+                    }
+
                     switch (root.indicatorStyle) {
                     case Latte.Types.LatteIndicator:
                         return latteStyleIndicator;
@@ -543,6 +544,7 @@ Item {
                 readonly property bool multiColorEnabled: root.threeColorsWindows
                 readonly property bool reversedEnabled: root.reverseLinesPosition
                 readonly property int activeIndicatorType: root.activeIndicatorType
+                readonly property bool usePlasmaTabsStyle: !root.indicatorsForApplets
 
                 //!glow options
                 readonly property bool glowEnabled: root.showGlow

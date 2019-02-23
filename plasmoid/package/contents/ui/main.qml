@@ -63,7 +63,7 @@ Item {
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
-    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator
+    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && !indicatorsEnabled
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool inActivityChange: false
@@ -177,7 +177,7 @@ Item {
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
-    property int activeIndicator: latteView ? latteView.activeIndicator : Latte.Types.AllIndicator
+    property bool indicatorsEnabled: latteView ? latteView.indicatorsEnabled : true
     property int indicatorStyle: latteView ? latteView.indicatorStyle : Latte.Types.LatteIndicator
     property int activeIndicatorType: latteView ? latteView.activeIndicatorType : Latte.Types.LineIndicator
     property int animationStep: latteView ? latteView.animationStep : 1

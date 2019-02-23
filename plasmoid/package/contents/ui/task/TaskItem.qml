@@ -227,7 +227,7 @@ MouseArea{
         property int previousCount: 0
 
         onWindowsCountChanged: {
-            if (root.showWindowsOnlyFromLaunchers && root.activeIndicator === Latte.Types.NoneIndicator) {
+            if (root.showWindowsOnlyFromLaunchers && !root.indicatorsEnabled) {
                 return;
             }
 
@@ -437,7 +437,7 @@ MouseArea{
                     return root.vertical ? wrapper.height - 2*wrapper.mScale*root.lengthExtMargin : wrapper.height;
                 }
 
-                active: root.activeIndicator !== Latte.Types.NoneIndicator
+                active: root.indicatorsEnabled
 
                 readonly property bool locked: inAttentionAnimation || inNewWindowAnimation
 
@@ -470,6 +470,7 @@ MouseArea{
                 readonly property bool multiColorEnabled: root.threeColorsWindows
                 readonly property bool reversedEnabled: root.reverseLinesPosition
                 readonly property int activeIndicatorType: root.activeIndicatorType
+                readonly property bool usePlasmaTabsStyle: false
 
                 //!glow options
                 readonly property bool glowEnabled: root.showGlow
