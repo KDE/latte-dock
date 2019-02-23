@@ -29,8 +29,8 @@ Item{
     property Item rootItem: parent
 
     Item{
-        width: Math.min(parent.width, parent.height)
-        height: width
+        width: rootItem.isTask ? Math.min(parent.width, parent.height) : parent.width
+        height: rootItem.isTask ? width : parent.height
         anchors.centerIn: parent
 
         Rectangle {
@@ -39,9 +39,7 @@ Item{
             anchors.margins: 4
             visible: rootItem.isActive || (rootItem.isWindow && rootItem.hasShown)
 
-            radius: 8
-            //height: (root.iconSize + root.thickMargin)/6 - 4
-            //radius: height/2
+            radius: rootItem.iconSize / 12
             color: {
                 if (rootItem.inAttention) {
                     return theme.negativeTextColor;
@@ -89,7 +87,7 @@ Item{
             color: "transparent"
             border.width: Math.max(1, rootItem.iconSize / 64)
             border.color: "#606060"
-            radius: 8
+            radius: unityRect.radius
             clip: true
 
             RadialGradient{
@@ -108,7 +106,7 @@ Item{
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: parent.border.width
-                radius: 8
+                radius: unityRect.radius
                 color: "transparent"
                 border.width: parent.border.width
                 border.color: "#25dedede"
