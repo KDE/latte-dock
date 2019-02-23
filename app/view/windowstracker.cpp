@@ -228,9 +228,10 @@ void WindowsTracker::updateAvailableScreenGeometry()
 void WindowsTracker::updateFlags()
 {
     bool foundActive{false};
-    bool foundActiveTouch{false};
-    bool foundTouch{false};
-    bool foundMaximized{false};
+    bool foundActiveInCurScreen{false};
+    bool foundActiveTouchInCurScreen{false};
+    bool foundTouchInCurScreen{false};
+    bool foundMaximizedInCurScreen{false};
 
     //! the notification window is not sending a remove signal and creates windows of geometry (0x0 0,0),
     //! maybe a garbage collector here is a good idea!!!
@@ -242,22 +243,26 @@ void WindowsTracker::updateFlags()
     WindowId activeTouchWinId;
 
     for (const auto &winfo : m_windows) {
-        if (isActiveInCurrentScreen(winfo)) {
+        if (isActive(winfo)) {
             foundActive = true;
+        }
+
+        if (isActiveInCurrentScreen(winfo)) {
+            foundActiveInCurScreen = true;
             activeWinId = winfo.wid();
         }
 
         if (isMaximizedInCurrentScreen(winfo)) {
-            foundMaximized = true;
+            foundMaximizedInCurScreen = true;
             maxWinId = winfo.wid();
         }
 
         if (isTouchingViewEdge(winfo) || isTouchingView(winfo)) {
             if (winfo.isActive()) {
-                foundActiveTouch = true;
+                foundActiveTouchInCurScreen = true;
                 activeTouchWinId = winfo.wid();
             } else {
-                foundTouch = true;
+                foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
             }
         }
@@ -273,24 +278,42 @@ void WindowsTracker::updateFlags()
         cleanupFaultyWindows();
     }
 
-    setExistsWindowActive(foundActive);
-    setActiveWindowTouching(foundActiveTouch);
-    setExistsWindowMaximized(foundMaximized);
-    setExistsWindowTouching(foundTouch || foundActiveTouch);
+    //! HACK: KWin Effects such as ShowDesktop have no way to be identified and as such
+    //! create issues with identifying properly touching and maximized windows. BUT when
+    //! they are enabled then NO ACTIVE window is found. This is a way to identify these
+    //! effects trigerring and disable the touch flags.
+    //! BUG: 404483
+    foundMaximizedInCurScreen = foundMaximizedInCurScreen && foundActive;
+    foundTouchInCurScreen = foundTouchInCurScreen && foundActive;
+
+    //! assign flags
+    setExistsWindowActive(foundActiveInCurScreen);
+    setActiveWindowTouching(foundActiveTouchInCurScreen);
+    setExistsWindowMaximized(foundMaximizedInCurScreen);
+    setExistsWindowTouching(foundTouchInCurScreen || foundActiveTouchInCurScreen);
 
     //! update color schemes for active and touching windows
+    setActiveWindowScheme(foundActiveInCurScreen ? m_wm->schemeForWindow(activeWinId) : nullptr);
 
-    setActiveWindowScheme(foundActive ? m_wm->schemeForWindow(activeWinId) : nullptr);
-
-    if (foundActiveTouch) {
+    if (foundActiveTouchInCurScreen) {
         setTouchingWindowScheme(m_wm->schemeForWindow(activeTouchWinId));
-    } else if (foundMaximized) {
+    } else if (foundMaximizedInCurScreen) {
         setTouchingWindowScheme(m_wm->schemeForWindow(maxWinId));
-    } else if (foundTouch) {
+    } else if (foundTouchInCurScreen) {
         setTouchingWindowScheme(m_wm->schemeForWindow(touchWinId));
     } else {
         setTouchingWindowScheme(nullptr);
     }
+}
+
+bool WindowsTracker::isActive(const WindowInfoWrap &winfo)
+{
+    if (winfo.isValid() && winfo.isActive() && !winfo.isMinimized()
+            && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
+        return true;
+    }
+
+    return false;
 }
 
 bool WindowsTracker::isActiveInCurrentScreen(const WindowInfoWrap &winfo)

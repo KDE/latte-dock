@@ -92,6 +92,7 @@ private:
     //! this is a garbage collector to collect such windows in order to not break the windows array validity.
     void cleanupFaultyWindows();
 
+    bool isActive(const WindowInfoWrap &winfo);
     bool isActiveInCurrentScreen(const WindowInfoWrap &winfo);
     bool isMaximizedInCurrentScreen(const WindowInfoWrap &winfo);
     bool isTouchingViewEdge(const WindowInfoWrap &winfo);
