@@ -300,8 +300,8 @@ DragDrop.DropArea {
 
     property int themePanelThickness: {
         var panelBase = root.panelThickMarginHigh;
-        var margin = latteApplet ? thickMargins : 0;
-        var maxPanelSize = (iconSize + margin + 1) - panelBase;
+        var margin = shrinkThickMargins ? 0 : thickMargins;
+        var maxPanelSize = (iconSize + margin) - panelBase;
         var percentage = Latte.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
         return Math.max(panelBase, panelBase + percentage*maxPanelSize);
     }
