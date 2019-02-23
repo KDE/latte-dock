@@ -33,15 +33,15 @@
     </entry>
     <!-- this is percentage -->
     <entry name="thickMargin" type="Int">
-      <default>16</default>
+      <default>20</default>
       <label>this is a percentage value</label>
     </entry>
     <entry name="lengthIntMargin" type="Int">
-      <default>4</default>
+      <default>10</default>
       <label>this is a percentage value</label>
     </entry>
     <entry name="lengthExtMargin" type="Int">
-      <default>10</default>
+      <default>0</default>
       <label>this is a percentage value</label>
     </entry>
     <entry name="shrinkThickMargins" type="Bool">
