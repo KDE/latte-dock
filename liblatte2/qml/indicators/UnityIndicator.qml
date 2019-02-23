@@ -33,6 +33,8 @@ Item{
         height: rootItem.isTask ? width : parent.height
         anchors.centerIn: parent
 
+        property bool isActive: rootItem.isActive || (rootItem.isWindow && rootItem.hasActive)
+
         Rectangle {
             id: unityRect
             anchors.fill: parent
@@ -52,35 +54,62 @@ Item{
                 return rootItem.backgroundColor;
             }
             clip: true
+        }
 
-            property bool isActive: rootItem.isActive || (rootItem.isWindow && rootItem.hasActive)
+        RadialGradient{
+            id: glowGradient
+            anchors.verticalCenter: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - unityRect.anchors.margins * 2 - 1
+            height: (width * 0.85) - unityRect.anchors.margins * 2 - 1
+            visible: false
 
-            RadialGradient{
-                anchors.verticalCenter: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
-                height: width * 0.85
-
-                gradient: Gradient {
-                    GradientStop { position: 0.0;
-                        color: {
-                            if (rootItem.inAttention) {
-                                return Qt.lighter(theme.negativeTextColor, 1.5)
-                            }
-
-                            if (isActive) {
-                                return Qt.lighter(theme.buttonFocusColor, 1.5)
-                            }
-
-                            return rootItem.glowColor;
+            gradient: Gradient {
+                GradientStop { position: 0.0;
+                    color: {
+                        if (rootItem.inAttention) {
+                            return Qt.lighter(theme.negativeTextColor, 1.5)
                         }
+
+                        if (isActive) {
+                            return Qt.lighter(theme.buttonFocusColor, 1.5)
+                        }
+
+                        if (rootItem.isMinimized) {
+                            return "#aafcfcfc";
+                        }
+
+                        return rootItem.glowColor;
                     }
-                    GradientStop { position: 0.6; color: "transparent" }
                 }
+                GradientStop { position: 0.6; color: "transparent" }
             }
         }
 
+        Item {
+            id: gradientMask
+            anchors.fill: glowGradient
+
+            Rectangle {
+                anchors.top: gradientMask.verticalCenter
+                anchors.topMargin: unityRect.anchors.margins
+                width: glowGradient.width
+                height: glowGradient.height / 2
+                radius: unityRect.radius
+            }
+
+            visible: false
+        }
+
+        OpacityMask {
+            anchors.fill: glowGradient
+            source: glowGradient
+            maskSource: gradientMask
+            visible: unityRect.visible || borderRectangle.visible
+        }
+
         Rectangle {
+            id: borderRectangle
             anchors.fill: parent
             anchors.margins: 4
             visible: (rootItem.isTask && rootItem.isWindow) || (rootItem.isApplet && rootItem.isActive)
@@ -89,19 +118,6 @@ Item{
             border.color: "#606060"
             radius: unityRect.radius
             clip: true
-
-            RadialGradient{
-                anchors.verticalCenter: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
-                height: width * 0.85
-                visible: !unityRect.visible
-
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#aafcfcfc" }
-                    GradientStop { position: 0.6; color: "transparent" }
-                }
-            }
 
             Rectangle {
                 anchors.fill: parent
