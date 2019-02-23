@@ -286,6 +286,8 @@ void WindowsTracker::updateFlags()
         setTouchingWindowScheme(m_wm->schemeForWindow(activeTouchWinId));
     } else if (foundMaximized) {
         setTouchingWindowScheme(m_wm->schemeForWindow(maxWinId));
+    } else if (foundTouch) {
+        setTouchingWindowScheme(m_wm->schemeForWindow(touchWinId));
     } else {
         setTouchingWindowScheme(nullptr);
     }

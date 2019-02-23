@@ -106,7 +106,7 @@ DragDrop.DropArea {
                                     && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized
                                           && !(hasExpandedApplet && !plasmaBackgroundForPopups)
-                                          && latteView.windowsTracker.activeWindowTouching)
+                                          && latteView.windowsTracker.existsWindowTouching)
                                         || (hasExpandedApplet && plasmaBackgroundForPopups) ))
                                     || !Latte.WindowSystem.compositingActive
 

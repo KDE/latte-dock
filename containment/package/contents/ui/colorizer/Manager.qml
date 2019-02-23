@@ -80,13 +80,37 @@ Loader{
         return theme;
     }
 
-    property color applyColor: applyTheme.textColor
+    property color applyColor: textColor
 
-    //! new TEMPORARY options to pass palette to applets
-    //! UNTIL Latte produces two different color schemes files (LIGHT / DARK)
-    //! to be passed to applets etc...
-    readonly property color backgroundColor: applyTheme.backgroundColor
-    readonly property color textColor: applyTheme.textColor
+    readonly property color backgroundColor: {
+        if (!root.hasExpandedApplet) {
+            //! we must track touching windows that are not active in order to paint our
+            //! contents with the disabled windows palette WHEN the active window is not touching our view
+            if (root.windowColors === Latte.Types.TouchingWindowColors
+                    && latteView.windowsTracker.existsWindowTouching
+                    && latteView.windowsTracker.touchingWindowScheme
+                    && latteView.windowsTracker.touchingWindowScheme !== latteView.windowsTracker.activeWindowScheme) {
+                return applyTheme.inactiveBackgroundColor;
+            }
+        }
+
+        return applyTheme.backgroundColor;
+    }
+
+    readonly property color textColor: {
+        if (!root.hasExpandedApplet) {
+            //! we must track touching windows that are not active in order to paint our
+            //! contents with the disabled windows palette WHEN the active window is not touching our view
+            if (root.windowColors === Latte.Types.TouchingWindowColors
+                    && latteView.windowsTracker.existsWindowTouching
+                    && latteView.windowsTracker.touchingWindowScheme
+                    && latteView.windowsTracker.touchingWindowScheme !== latteView.windowsTracker.activeWindowScheme) {
+                return applyTheme.inactiveTextColor;
+            }
+        }
+
+        return applyTheme.textColor;
+    }
     readonly property color inactiveBackgroundColor: applyTheme === theme ? theme.backgroundColor : applyTheme.inactiveBackgroundColor
     readonly property color inactiveTextColor: applyTheme === theme ? theme.textColor : applyTheme.inactiveTextColor
 
