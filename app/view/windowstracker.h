@@ -94,7 +94,8 @@ private:
 
     bool isActiveInCurrentScreen(const WindowInfoWrap &winfo);
     bool isMaximizedInCurrentScreen(const WindowInfoWrap &winfo);
-    bool isTouchingPanelEdge(const WindowInfoWrap &winfo);
+    bool isTouchingViewEdge(const WindowInfoWrap &winfo);
+    bool isTouchingView(const WindowInfoWrap &winfo);
 
 private:
     bool m_enabled{false};

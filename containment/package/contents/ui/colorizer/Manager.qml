@@ -88,8 +88,8 @@ Loader{
             //! contents with the disabled windows palette WHEN the active window is not touching our view
             if (root.windowColors === Latte.Types.TouchingWindowColors
                     && latteView.windowsTracker.existsWindowTouching
-                    && latteView.windowsTracker.touchingWindowScheme
-                    && latteView.windowsTracker.touchingWindowScheme !== latteView.windowsTracker.activeWindowScheme) {
+                    && !latteView.windowsTracker.activeWindowTouching
+                    && latteView.windowsTracker.touchingWindowScheme) {
                 return applyTheme.inactiveBackgroundColor;
             }
         }
@@ -103,8 +103,8 @@ Loader{
             //! contents with the disabled windows palette WHEN the active window is not touching our view
             if (root.windowColors === Latte.Types.TouchingWindowColors
                     && latteView.windowsTracker.existsWindowTouching
-                    && latteView.windowsTracker.touchingWindowScheme
-                    && latteView.windowsTracker.touchingWindowScheme !== latteView.windowsTracker.activeWindowScheme) {
+                    && !latteView.windowsTracker.activeWindowTouching
+                    && latteView.windowsTracker.touchingWindowScheme) {
                 return applyTheme.inactiveTextColor;
             }
         }

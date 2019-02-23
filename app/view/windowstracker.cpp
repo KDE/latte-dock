@@ -252,7 +252,7 @@ void WindowsTracker::updateFlags()
             maxWinId = winfo.wid();
         }
 
-        if ((isTouchingPanelEdge(winfo) || (m_latteView->visibility()->intersects(winfo)))) {
+        if (isTouchingViewEdge(winfo) || isTouchingView(winfo)) {
             if (winfo.isActive()) {
                 foundActiveTouch = true;
                 activeTouchWinId = winfo.wid();
@@ -318,27 +318,36 @@ bool WindowsTracker::isMaximizedInCurrentScreen(const WindowInfoWrap &winfo)
     return false;
 }
 
-bool WindowsTracker::isTouchingPanelEdge(const WindowInfoWrap &winfo)
+bool WindowsTracker::isTouchingView(const WindowInfoWrap &winfo)
 {
     if (winfo.isValid() && !winfo.isMinimized() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
-        bool touchingPanelEdge{false};
+        return m_latteView->visibility()->intersects(winfo);
+    }
+
+    return false;
+}
+
+bool WindowsTracker::isTouchingViewEdge(const WindowInfoWrap &winfo)
+{
+    if (winfo.isValid() && !winfo.isMinimized() && m_wm->isOnCurrentDesktop(winfo.wid()) && m_wm->isOnCurrentActivity(winfo.wid())) {
+        bool touchingViewEdge{false};
 
         QRect screenGeometry = m_latteView->screenGeometry();
         bool inCurrentScreen{screenGeometry.contains(winfo.geometry().topLeft()) || screenGeometry.contains(winfo.geometry().bottomRight())};
 
         if (inCurrentScreen) {
             if (m_latteView->location() == Plasma::Types::TopEdge) {
-                touchingPanelEdge = (winfo.geometry().y() == m_availableScreenGeometry.y());
+                touchingViewEdge = (winfo.geometry().y() == m_availableScreenGeometry.y());
             } else if (m_latteView->location() == Plasma::Types::BottomEdge) {
-                touchingPanelEdge = (winfo.geometry().bottom() == m_availableScreenGeometry.bottom());
+                touchingViewEdge = (winfo.geometry().bottom() == m_availableScreenGeometry.bottom());
             } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-                touchingPanelEdge = (winfo.geometry().x() == m_availableScreenGeometry.x());
+                touchingViewEdge = (winfo.geometry().x() == m_availableScreenGeometry.x());
             } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-                touchingPanelEdge = (winfo.geometry().right() == m_availableScreenGeometry.right());
+                touchingViewEdge = (winfo.geometry().right() == m_availableScreenGeometry.right());
             }
         }
 
-        return touchingPanelEdge;
+        return touchingViewEdge;
     }
 
     return false;
