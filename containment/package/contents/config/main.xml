@@ -37,7 +37,7 @@
       <label>this is a percentage value</label>
     </entry>
     <entry name="lengthIntMargin" type="Int">
-      <default>10</default>
+      <default>8</default>
       <label>this is a percentage value</label>
     </entry>
     <entry name="lengthExtMargin" type="Int">
