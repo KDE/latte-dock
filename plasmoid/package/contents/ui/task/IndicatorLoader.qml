@@ -122,4 +122,20 @@ Loader {
         id:unityIndicatorComponent
         Latte.UnityIndicator{}
     }
+
+    //! Used when the indicators need icon colors in orde to be painted
+    //! properly, for example the Unity indicator
+    Binding {
+        target: taskItem
+        property: "indicatorNeedsIconColors"
+        value: {
+            if (indicatorLoader.active
+                    && indicatorLoader.item
+                    && indicatorLoader.item.hasOwnProperty("needsIconColors")) {
+                return indicatorLoader.item.needsIconColors;
+            }
+
+            return false;
+        }
+    }
 }

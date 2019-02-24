@@ -420,7 +420,7 @@ Item{
                     return "";
                 }
 
-                providesColors: root.indicatorStyle === Latte.Types.UnityIndicator && source != ""
+                providesColors: appletItem.indicatorNeedsIconColors && source != ""
                 usesPlasmaTheme: communicator.appletIconItemIsShown() ? communicator.appletIconItem.usesPlasmaTheme : false
 
                 Binding{

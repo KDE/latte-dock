@@ -114,4 +114,20 @@ Loader{
             return 0;
         }
     }
+
+    //! Used when the indicators need icon colors in orde to be painted
+    //! properly, for example the Unity indicator
+    Binding {
+        target: appletItem
+        property: "indicatorNeedsIconColors"
+        value: {
+            if (indicatorLoader.active
+                    && indicatorLoader.item
+                    && indicatorLoader.item.hasOwnProperty("needsIconColors")) {
+                return indicatorLoader.item.needsIconColors;
+            }
+
+            return false;
+        }
+    }
 }

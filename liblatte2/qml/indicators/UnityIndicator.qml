@@ -28,6 +28,8 @@ import org.kde.latte 0.2 as Latte
 Item{
     property Item rootItem: parent
 
+    readonly property bool needsIconColors: true
+
     Item{
         width: rootItem.isTask ? Math.min(parent.width, parent.height) : parent.width
         height: rootItem.isTask ? width : parent.height
