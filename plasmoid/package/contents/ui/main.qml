@@ -243,8 +243,10 @@ Item {
         }
     }
     //END  Latte Dock Communicator
-
-
+    //BEGIN Latte based properties
+    readonly property bool enforceLattePalette: latteBridge && latteBridge.applyPalette && latteBridge.palette
+    readonly property bool latteInEditMode: latteBridge && latteBridge.inEditMode
+    //END Latte based properties
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground

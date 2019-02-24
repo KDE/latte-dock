@@ -366,7 +366,7 @@ MouseArea{
 
             width: root.vertical ? root.iconSize - 4  : 1
             height: !root.vertical ? root.iconSize - 4 : 1
-            color: theme.textColor
+            color: enforceLattePalette ? latteBridge.palette.textColor : theme.textColor
         }
     }
 

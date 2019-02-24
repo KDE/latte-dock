@@ -38,7 +38,7 @@ Item{
             return 0;
 
         if (appletItem.isSeparator && !root.isVertical) {
-            return -1;
+            return root.editMode ? 7 + root.lengthMargins : -1;
         }
 
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
@@ -69,7 +69,7 @@ Item{
             return 0;
 
         if (appletItem.isSeparator && root.isVertical) {
-            return -1;
+            return root.editMode ? 7 + root.lengthMargins : -1;
         }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
