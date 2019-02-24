@@ -570,6 +570,22 @@ Item {
                     id:unityStyleIndicator
                     Latte.UnityIndicator{}
                 }
+
+                //! Used when the indicators require more thickness in the view mask
+                //! e.g. when the Latte indicators are glowing in reverse order
+                Binding {
+                    target: visibilityManager
+                    property: "indicatorsExtraThickMask"
+                    value: {
+                        if (indicatorLoader.active
+                                && indicatorLoader.item
+                                && indicatorLoader.item.hasOwnProperty("extraMaskThickness")) {
+                            return indicatorLoader.item.extraMaskThickness;
+                        }
+
+                        return 0;
+                    }
+                }
             }
 
             ItemWrapper{

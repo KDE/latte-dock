@@ -51,21 +51,24 @@ Item{
                                       -thicknessNormal : thicknessNormal;
 
     property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid:  (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargins) //needed in some animations
-    property int thicknessNormal: Math.max(root.iconSize + root.thickMargins +1,
+    property int thicknessMid:  (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargins+indicatorsExtraThickMask) //needed in some animations
+    property int thicknessNormal: Math.max(root.iconSize + root.thickMargins + indicatorsExtraThickMask + 1,
                                            root.realPanelSize + root.panelShadow)
-    property int thicknessZoom: ((root.iconSize+root.thickMargins) * root.zoomFactor) + 2
+    property int thicknessZoom: ((root.iconSize+root.thickMargins+indicatorsExtraThickMask) * root.zoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal, (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
+    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal,indicatorsExtraThickMask + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
     property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                               thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow
 
-    property int thicknessNormalOriginalValue: root.maxIconSize + (root.maxThickMargin * 2) + 1
-    property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.zoomFactor) + 2,
+    property int thicknessNormalOriginalValue: root.maxIconSize + (root.maxThickMargin * 2) + indicatorsExtraThickMask + 1
+    property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.zoomFactor) + indicatorsExtraThickMask + 2,
                                                     root.realPanelSize + root.panelShadow,
                                                     thicknessEditMode)
 
     property int thicknessEditMode: thicknessNormalOriginalValue + theme.defaultFont.pixelSize + root.editShadow
+
+    //! this is set from indicators when they need extra thickness mask size
+    property int indicatorsExtraThickMask: 0
 
     Binding{
         target: latteView

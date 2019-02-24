@@ -33,7 +33,9 @@ import "../code/ColorizerTools.js" as ColorizerTools
 Item{
     id: indicatorRoot
 
-    property int size: 0.08 * rootItem.iconSize
+    readonly property int size: 0.08 * rootItem.iconSize
+    readonly property int extraMaskThickness: rootItem.reversedEnabled && rootItem.glowEnabled ? 1.7 * size : 0
+    readonly property Item rootItem: parent
 
     property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
 
@@ -46,8 +48,6 @@ Item{
         return isActiveColor;
     }
     property color notActiveColor: rootItem.isMinimized ? minimizedColor : isActiveColor
-
-    property Item rootItem: parent
 
     /*Rectangle{
         anchors.fill: parent
