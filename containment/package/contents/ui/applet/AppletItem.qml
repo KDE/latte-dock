@@ -123,6 +123,9 @@ Item {
 
     property Item tooltipVisualParent: titleTooltipParent
 
+    property Item communicatorAlias: communicator
+    property Item wrapperAlias: wrapper
+
     property alias containsMouse: appletMouseArea.containsMouse
     property alias pressed: appletMouseArea.pressed
 
@@ -493,99 +496,9 @@ Item {
             width: wrapper.width
             height: wrapper.height
 
-            //! Active Indicator loader
-            Loader{
-                id: indicatorLoader
-                anchors.fill: parent
-
-                active: (root.indicatorsEnabled && communicator.activeIndicatorEnabled && root.indicatorsForApplets)
-                        || (!root.indicatorsForApplets && communicator.overlayLatteIconIsActive)
-
-                sourceComponent: {
-                    if (!root.indicatorsForApplets && communicator.overlayLatteIconIsActive) {
-                        return plasmaStyleIndicator;
-                    }
-
-                    switch (root.indicatorStyle) {
-                    case Latte.Types.LatteIndicator:
-                        return latteStyleIndicator;
-                    case Latte.Types.PlasmaIndicator:
-                        return plasmaStyleIndicator;
-                    case Latte.Types.UnityIndicator:
-                        return unityStyleIndicator;
-                    default:
-                        return latteStyleIndicator;
-                    };
-                }
-
-                /* Indicators Properties in order use them*/
-                readonly property bool isTask: false
-                readonly property bool isApplet: true
-
-                readonly property bool isLauncher: false
-                readonly property bool isStartup: false
-                readonly property bool isWindow: false
-
-                readonly property alias isActive: appletItem.isActive
-                readonly property bool isGroup: false
-                readonly property bool isMinimized: false
-                readonly property bool inAttention: false
-
-                readonly property bool hasActive: isActive
-                readonly property bool hasMinimized: false
-                readonly property bool hasShown: false
-
-                readonly property int iconSize: root.iconSize
-                readonly property int durationTime: root.durationTime
-                readonly property real scaleFactor: wrapper.zoomScale
-                readonly property color shadowColor: root.appShadowColorSolid
-
-                readonly property bool dotsOnActive: root.dotsOnActive
-                readonly property bool multiColorEnabled: root.threeColorsWindows
-                readonly property bool reversedEnabled: root.reverseLinesPosition
-                readonly property int activeIndicatorType: root.activeIndicatorType
-                readonly property bool usePlasmaTabsStyle: !root.indicatorsForApplets
-
-                //!glow options
-                readonly property bool glowEnabled: root.showGlow
-                readonly property int glowOption: root.glowOption
-                readonly property real glowOpacity: root.glowOpacity
-                readonly property bool glow3D: root.glow3D
-
-                //!icon colors
-                property color backgroundColor: wrapper.overlayIconLoader.backgroundColor
-                property color glowColor: wrapper.overlayIconLoader.glowColor
-
-                Component {
-                    id: latteStyleIndicator
-                    Latte.LatteIndicator{}
-                }
-
-                Component {
-                    id: plasmaStyleIndicator
-                    Latte.PlasmaIndicator{}
-                }
-
-                Component{
-                    id:unityStyleIndicator
-                    Latte.UnityIndicator{}
-                }
-
-                //! Used when the indicators require more thickness in the view mask
-                //! e.g. when the Latte indicators are glowing in reverse order
-                Binding {
-                    target: visibilityManager
-                    property: "indicatorsExtraThickMask"
-                    value: {
-                        if (indicatorLoader.active
-                                && indicatorLoader.item
-                                && indicatorLoader.item.hasOwnProperty("extraMaskThickness")) {
-                            return indicatorLoader.item.extraMaskThickness;
-                        }
-
-                        return 0;
-                    }
-                }
+            //! Indicator Back Layer
+            IndicatorLoader{
+                id: indicatorBackLayer
             }
 
             ItemWrapper{
