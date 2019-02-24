@@ -599,12 +599,16 @@ DragDrop.DropArea {
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
-            } else if (latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                       && root.latteAppletContainer.containsPos(event)) {
-                confirmedDragEntered = true
-                dndSpacer.opacity = 0;
-                dndSpacer.parent = root;
-                return;
+            } else {
+                var isSeparator = ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+                                    || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
+
+                if (isSeparator && root.latteAppletContainer.containsPos(event)) {
+                    confirmedDragEntered = true
+                    dndSpacer.opacity = 0;
+                    dndSpacer.parent = root;
+                    return;
+                }
             }
         }
 
@@ -631,12 +635,16 @@ DragDrop.DropArea {
                 if (root.addLaunchersInTaskManager) {
                     return;
                 }
-            } else if (latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
-                       && root.latteAppletContainer.containsPos(event)) {
-                confirmedDragEntered = true
-                dndSpacer.opacity = 0;
-                dndSpacer.parent = root;
-                return;
+            } else {
+                var isSeparator = ( latteView.mimeContainsPlasmoid(event.mimeData, "audoban.applet.separator")
+                                    || latteView.mimeContainsPlasmoid(event.mimeData, "org.kde.latte.separator") );
+
+                if (isSeparator && root.latteAppletContainer.containsPos(event)) {
+                    confirmedDragEntered = true
+                    dndSpacer.opacity = 0;
+                    dndSpacer.parent = root;
+                    return;
+                }
             }
         }
 

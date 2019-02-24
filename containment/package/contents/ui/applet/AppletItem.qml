@@ -75,7 +75,8 @@ Item {
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isLattePlasmoid: latteApplet !== null
     property bool isZoomed: false
-    property bool isSeparator: applet && applet.pluginName === "audoban.applet.separator"
+    property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
+                                          || applet.pluginName === "org.kde.latte.separator")
     property bool isSpacer: latteSpacer !== null
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 

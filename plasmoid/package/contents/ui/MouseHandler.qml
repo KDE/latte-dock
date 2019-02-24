@@ -77,8 +77,10 @@ Item {
         property Item hoveredItem
 
         function isDroppingSeparator(event) {
-            return ((event.mimeData.formats.indexOf("text/x-plasmoidservicename") === 0)
-                    && (String(event.mimeData.getDataAsByteArray("text/x-plasmoidservicename")) === "audoban.applet.separator"));
+            var appletName = String(event.mimeData.getDataAsByteArray("text/x-plasmoidservicename"));
+            var isSeparator = (appletName === "audoban.applet.separator" || appletName === "org.kde.latte.separator");
+
+            return ((event.mimeData.formats.indexOf("text/x-plasmoidservicename") === 0) && isSeparator);
         }
 
         onDragEnter:{
