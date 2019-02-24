@@ -1075,6 +1075,12 @@ void LayoutManager::importPresets(bool includeDefault)
 
 void LayoutManager::importPreset(int presetNo, bool newInstanceIfPresent)
 {
+    QDir configDir(QDir::homePath() + "/.config");
+
+    if (!QDir(configDir.absolutePath() + "/latte").exists()) {
+        configDir.mkdir("latte");
+    }
+
     QByteArray presetNameOrig = QString("preset" + QString::number(presetNo)).toUtf8();
     QString presetPath = m_corona->kPackage().filePath(presetNameOrig);
     QString presetName = Layout::layoutName(presetPath);
