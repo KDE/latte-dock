@@ -62,7 +62,11 @@ Item{
 
     property int thicknessNormalOriginalValue: root.maxIconSize + (root.maxThickMargin * 2) + extraThickMask + 1
     property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.zoomFactor) + extraThickMask + 2,
-                                                    root.realPanelSize + root.panelShadow)
+                                                 root.realPanelSize + root.panelShadow,
+                                                 thicknessEditMode )
+
+    //! is used from Panel in edit mode in order to provide correct masking
+    property int thicknessEditMode: thicknessNormalOriginalValue + theme.defaultFont.pixelSize + root.editShadow
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: 10
