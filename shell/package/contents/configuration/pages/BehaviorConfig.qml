@@ -554,18 +554,6 @@ PlasmaComponents.Page {
                     }
                 }
             }
-
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Decrease size automatically when needed")
-                checked: plasmoid.configuration.autoDecreaseIconSize
-                tooltip: i18n("Items size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
-                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
-
-                onClicked: {
-                    plasmoid.configuration.autoDecreaseIconSize = checked
-                }
-            }
         }
         //! END: Items
 

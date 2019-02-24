@@ -57,6 +57,7 @@ PlasmaComponents.Page {
                 id: showAppletShadow
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
+                Layout.topMargin: units.smallSpacing
 
                 checked: plasmoid.configuration.shadows !== Latte.Types.NoneShadow
                 text: i18n("Shadows")

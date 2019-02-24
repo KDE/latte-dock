@@ -31,5 +31,5 @@ Label {
     color: theme.textColor
     font.weight: Font.DemiBold
     font.letterSpacing: 1.05
-    font.pixelSize: 1.15 * theme.mSize(theme.defaultFont).height
+    font.pixelSize: 1.2 * theme.mSize(theme.defaultFont).height
 }

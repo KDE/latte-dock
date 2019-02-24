@@ -60,7 +60,7 @@ PlasmaComponents.Page {
             Layout.topMargin: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
-            visible: dialog.highLevel
+            visible: false //dialog.highLevel
 
             LatteExtraControls.Header {
                 text: i18n("Layout")
@@ -139,7 +139,8 @@ PlasmaComponents.Page {
         //! BEGIN: Items
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.topMargin: dialog.highLevel ? 0 : units.smallSpacing
+            //Layout.topMargin: dialog.highLevel ? 0 : units.smallSpacing
+            Layout.topMargin: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
@@ -303,6 +304,25 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                }
+            }
+
+            LatteExtraControls.SubHeader {
+                visible: dialog.expertLevel
+                text: i18nc("automatic options", "Automatic")
+                isFirstSubCategory: true
+            }
+
+            PlasmaComponents.CheckBox {
+                Layout.leftMargin: units.smallSpacing * 2
+                text: i18n("Decrease size automatically when needed")
+                checked: plasmoid.configuration.autoDecreaseIconSize
+                tooltip: i18n("Items size is decreased automatically when the contents exceed the maximum length \n\nHint: this option is disabled when plasma taskmanagers are present")
+                enabled: !(latteView.tasksPresent() && !latteView.latteTasksPresent());
+                visible: dialog.expertLevel
+
+                onClicked: {
+                    plasmoid.configuration.autoDecreaseIconSize = checked
                 }
             }
         }
