@@ -377,7 +377,7 @@ DragDrop.DropArea {
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
     property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition
-    property bool showGlow: plasmoid.configuration.showGlow || plasmoid.configuration.glowOption!==Latte.Types.GlowNone
+    property bool showGlow: plasmoid.configuration.showGlow
     property bool glow3D: plasmoid.configuration.glow3D
 
     property bool showInfoBadge: plasmoid.configuration.showInfoBadge

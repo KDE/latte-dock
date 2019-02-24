@@ -144,7 +144,6 @@
     </entry>
     <entry name="showGlow" type="Bool">
        <default>false</default>
-       <label>deprecated, glowOption:None is used from v0.9 </label>
     </entry>
     <entry name="glowOption" type="Enum">
       <label>Glow for active indicators</label>
@@ -163,10 +162,10 @@
     </entry>
     <entry name="indicatorsEnabled" type="Bool">
         <default>true</default>
-    </entry>    
+    </entry>
     <entry name="indicatorsForApplets" type="Bool">
         <default>false</default>
-    </entry>    
+    </entry>
     <entry name="indicatorStyle" type="Enum">
       <label>Indicator style</label>
         <choices>
