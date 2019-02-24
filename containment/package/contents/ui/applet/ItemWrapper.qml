@@ -516,12 +516,14 @@ Item{
                     || (root.forceTransparentPanel && plasmoid.configuration.shadows>0 && applet.pluginName !== root.plasmoidName)) /*on forced transparent state*/
 
         onActiveChanged: {
-            if (active) {
+            if (active && !isSeparator) {
                 wrapperContainer.opacity = 0;
             } else {
                 wrapperContainer.opacity = 1;
             }
         }
+
+        opacity: isSeparator ? 0.4 : 1
 
         sourceComponent: DropShadow{
             anchors.fill: parent
