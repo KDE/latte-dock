@@ -252,11 +252,6 @@ void WindowsTracker::updateFlags()
             activeWinId = winfo.wid();
         }
 
-        if (isMaximizedInCurrentScreen(winfo)) {
-            foundMaximizedInCurScreen = true;
-            maxWinId = winfo.wid();
-        }
-
         if (isTouchingViewEdge(winfo) || isTouchingView(winfo)) {
             if (winfo.isActive()) {
                 foundActiveTouchInCurScreen = true;
@@ -264,6 +259,11 @@ void WindowsTracker::updateFlags()
             } else {
                 foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
+            }
+
+            if (isMaximizedInCurrentScreen(winfo)) {
+                foundMaximizedInCurScreen = true;
+                maxWinId = winfo.wid();
             }
         }
 
@@ -283,8 +283,10 @@ void WindowsTracker::updateFlags()
     //! they are enabled then NO ACTIVE window is found. This is a way to identify these
     //! effects trigerring and disable the touch flags.
     //! BUG: 404483
-    foundMaximizedInCurScreen = foundMaximizedInCurScreen && foundActive;
-    foundTouchInCurScreen = foundTouchInCurScreen && foundActive;
+    //! Disabled because it has fault identifications, e.g. when a window is maximized and
+    //! Latte or Plasma are showing their View settings
+    //foundMaximizedInCurScreen = foundMaximizedInCurScreen && foundActive;
+    //foundTouchInCurScreen = foundTouchInCurScreen && foundActive;
 
     //! assign flags
     setExistsWindowActive(foundActiveInCurScreen);
