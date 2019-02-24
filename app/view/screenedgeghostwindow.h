@@ -63,6 +63,8 @@ public:
     ScreenEdgeGhostWindow(Latte::View *view);
     ~ScreenEdgeGhostWindow() override;
 
+    bool containsMouse() const;
+
     int location();
 
     void hideWithMask();
@@ -84,9 +86,11 @@ private slots:
     void fixGeometry();
 
 private:
+    void setContainsMouse(bool contains);
     void setupWaylandIntegration();
 
 private:
+    bool m_containsMouse{false};
     bool m_inDelete{false};
     QRect m_calculatedGeometry;
 

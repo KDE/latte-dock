@@ -137,6 +137,7 @@ private:
     void createEdgeGhostWindow();
     void deleteEdgeGhostWindow();
     void updateKWinEdgesSupport();
+    void updateGhostWindowState();
 
     void setViewGeometry(const QRect &rect);
 

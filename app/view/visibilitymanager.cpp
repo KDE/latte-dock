@@ -298,18 +298,7 @@ void VisibilityManager::setIsHidden(bool isHidden)
 
     m_isHidden = isHidden;
 
-    if (supportsKWinEdges()) {
-        bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
-                                (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
-                                 && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
-                                 && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
-
-        if (inCurrentLayout) {
-            wm->setEdgeStateFor(edgeGhostWindow, m_isHidden);
-        } else {
-            wm->setEdgeStateFor(edgeGhostWindow, false);
-        }
-    }
+    updateGhostWindowState();
 
     emit isHiddenChanged();
 }
@@ -366,6 +355,22 @@ void VisibilityManager::setTimerHide(int msec)
 bool VisibilityManager::supportsKWinEdges() const
 {
     return (edgeGhostWindow != nullptr);
+}
+
+void VisibilityManager::updateGhostWindowState()
+{
+    if (supportsKWinEdges()) {
+        bool inCurrentLayout = (m_corona->layoutManager()->memoryUsage() == Types::SingleLayout ||
+                                (m_corona->layoutManager()->memoryUsage() == Types::MultipleLayouts
+                                 && m_latteView->managedLayout() && !m_latteView->positioner()->inLocationChangeAnimation()
+                                 && m_latteView->managedLayout()->name() == m_corona->layoutManager()->currentLayoutName()));
+
+        if (inCurrentLayout) {
+            wm->setEdgeStateFor(edgeGhostWindow, m_isHidden);
+        } else {
+            wm->setEdgeStateFor(edgeGhostWindow, false);
+        }
+    }
 }
 
 void VisibilityManager::raiseView(bool raise)
@@ -721,7 +726,10 @@ void VisibilityManager::createEdgeGhostWindow()
 
         connect(edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
-                emit mustBeShown();
+                raiseView(true);
+            } else {
+                m_timerShow.stop();
+                updateGhostWindowState();
             }
         });
 

@@ -135,7 +135,7 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 void ScreenEdgeGhostWindow::updateGeometry()
 {
     QRect newGeometry;
-    int thickness{1};
+    int thickness{2};
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
         newGeometry.setX(m_latteView->absGeometry().left());
@@ -216,12 +216,27 @@ void ScreenEdgeGhostWindow::setupWaylandIntegration()
     }
 }
 
+bool ScreenEdgeGhostWindow::containsMouse() const
+{
+    return m_containsMouse;
+}
+
+void ScreenEdgeGhostWindow::setContainsMouse(bool contains)
+{
+    if (m_containsMouse == contains) {
+        return;
+    }
+
+    m_containsMouse = contains;
+    emit containsMouseChanged(contains);
+}
+
 bool ScreenEdgeGhostWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::Enter || e->type() == QEvent::DragEnter) {
-        emit containsMouseChanged(true);
+        setContainsMouse(true);
     } else if (e->type() == QEvent::Leave || e->type() == QEvent::DragLeave) {
-        emit containsMouseChanged(false);
+        setContainsMouse(false);
     }
 
     return QQuickView::event(e);
