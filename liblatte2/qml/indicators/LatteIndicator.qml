@@ -71,7 +71,7 @@ Item{
                 id:firstPoint
                 opacity: {
                     if (rootItem.isTask) {
-                        return rootItem.isLauncher ? 0 : 1
+                        return rootItem.isLauncher || (rootItem.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
                     }
 
                     if (rootItem.isApplet) {

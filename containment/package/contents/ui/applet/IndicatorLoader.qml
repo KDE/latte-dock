@@ -57,6 +57,7 @@ Loader{
     readonly property bool isGroup: false
     readonly property bool isMinimized: false
     readonly property bool inAttention: false
+    readonly property bool inRemoving: false
 
     readonly property bool hasActive: isActive
     readonly property bool hasMinimized: false

@@ -68,6 +68,7 @@ Loader {
     readonly property bool isGroup: taskItem.isGroupParent
     readonly property bool isMinimized: taskItem.isMinimized
     readonly property bool inAttention: taskItem.inAttention
+    readonly property bool inRemoving: taskItem.inRemoveStage
 
     readonly property bool hasActive: taskItem.hasActive
     readonly property bool hasMinimized: taskItem.hasMinimized
