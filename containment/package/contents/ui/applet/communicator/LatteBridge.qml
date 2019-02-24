@@ -54,6 +54,13 @@ Item{
     // @since: 0.9
     readonly property bool applyPalette: !latteSideColoringEnabled ? colorizerManager.mustBeShown : false
 
+    // NAME: applyPalette
+    //   USAGE: read-only
+    //   EXPLANATION: The current icon size used in the Latte View
+    //   USE CASE: it can be used from applets that want their size to be always
+    //       relevant to the view icon size
+    // @since: 0.9
+    readonly property int iconSize: root.iconSize
 
     property Item actions: Actions{}
 

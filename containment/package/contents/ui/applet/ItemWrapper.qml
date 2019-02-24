@@ -37,10 +37,6 @@ Item{
         if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
 
-        if (appletItem.isSeparator && !root.isVertical) {
-            return root.editMode ? 7 + root.lengthMargins : -1;
-        }
-
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (appletItem.needsFillSpace && root.isHorizontal) {
             if (root.panelAlignment !== Latte.Types.Justify) {
@@ -67,10 +63,6 @@ Item{
     height: {
         if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
-
-        if (appletItem.isSeparator && root.isVertical) {
-            return root.editMode ? 7 + root.lengthMargins : -1;
-        }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (appletItem.needsFillSpace && root.isVertical) {
@@ -362,10 +354,6 @@ Item{
                 return wrapper.width;
             }
 
-            if (appletItem.isSeparator && root.vertical) {
-                return root.iconSize;
-            }
-
             if (appletItem.isInternalViewSplitter) {
                 return wrapper.layoutWidth;
             } else {
@@ -380,10 +368,6 @@ Item{
         height:{
             if (appletItem.needsFillSpace && (appletItem.sizeForFill>-1) && root.isVertical){
                 return wrapper.height;
-            }
-
-            if (appletItem.isSeparator && !root.vertical) {
-                return root.iconSize;
             }
 
             if (appletItem.isInternalViewSplitter) {
