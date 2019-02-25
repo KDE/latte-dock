@@ -51,6 +51,14 @@ Loader{
             }
 
             if (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme) {
+                //! we must track touching windows and when they are not ative
+                //! the active window scheme is used for convenience
+                if (latteView.windowsTracker.existsWindowTouching
+                        && !latteView.windowsTracker.activeWindowTouching
+                        && latteView.windowsTracker.activeWindowScheme) {
+                    return latteView.windowsTracker.activeWindowScheme;
+                }
+
                 return latteView.windowsTracker.touchingWindowScheme;
             }
         }
@@ -82,35 +90,9 @@ Loader{
 
     property color applyColor: textColor
 
-    readonly property color backgroundColor: {
-        if (!root.hasExpandedApplet) {
-            //! we must track touching windows that are not active in order to paint our
-            //! contents with the disabled windows palette WHEN the active window is not touching our view
-            if (root.windowColors === Latte.Types.TouchingWindowColors
-                    && latteView.windowsTracker.existsWindowTouching
-                    && !latteView.windowsTracker.activeWindowTouching
-                    && latteView.windowsTracker.touchingWindowScheme) {
-                return applyTheme.inactiveBackgroundColor;
-            }
-        }
+    readonly property color backgroundColor:applyTheme.backgroundColor
+    readonly property color textColor: applyTheme.textColor
 
-        return applyTheme.backgroundColor;
-    }
-
-    readonly property color textColor: {
-        if (!root.hasExpandedApplet) {
-            //! we must track touching windows that are not active in order to paint our
-            //! contents with the disabled windows palette WHEN the active window is not touching our view
-            if (root.windowColors === Latte.Types.TouchingWindowColors
-                    && latteView.windowsTracker.existsWindowTouching
-                    && !latteView.windowsTracker.activeWindowTouching
-                    && latteView.windowsTracker.touchingWindowScheme) {
-                return applyTheme.inactiveTextColor;
-            }
-        }
-
-        return applyTheme.textColor;
-    }
     readonly property color inactiveBackgroundColor: applyTheme === theme ? theme.backgroundColor : applyTheme.inactiveBackgroundColor
     readonly property color inactiveTextColor: applyTheme === theme ? theme.textColor : applyTheme.inactiveTextColor
 
