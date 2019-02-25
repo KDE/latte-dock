@@ -148,6 +148,11 @@ PlasmaComponents.Page {
                 text: i18n("Items")
             }
 
+            LatteExtraControls.SubHeader {
+                text: i18nc("items effects", "Size")
+                isFirstSubCategory: true
+            }
+
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
@@ -155,7 +160,7 @@ PlasmaComponents.Page {
                 enabled: proportionSizeSlider.value === 1
 
                 PlasmaComponents.Label {
-                    text: i18n("Size")
+                    text: i18nc("absolute size","Absolute")
                     horizontalAlignment: Text.AlignLeft
                 }
 
@@ -211,7 +216,7 @@ PlasmaComponents.Page {
                 visible: dialog.expertLevel || plasmoid.configuration.proportionIconSize>0
 
                 PlasmaComponents.Label {
-                    text: i18n("From Screen Height")
+                    text: i18nc("relative size", "Relative")
                     horizontalAlignment: Text.AlignLeft
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
@@ -256,6 +261,11 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
+            }
+
+            LatteExtraControls.SubHeader {
+                text: i18nc("items effects", "Effects")
+                //isFirstSubCategory: true
             }
 
             RowLayout {
@@ -307,6 +317,7 @@ PlasmaComponents.Page {
                 }
             }
 
+            /*
             LatteExtraControls.SubHeader {
                 visible: dialog.expertLevel
                 text: i18nc("automatic options", "Automatic")
@@ -324,7 +335,7 @@ PlasmaComponents.Page {
                 onClicked: {
                     plasmoid.configuration.autoDecreaseIconSize = checked
                 }
-            }
+            }*/
         }
         //! END: Items
 
