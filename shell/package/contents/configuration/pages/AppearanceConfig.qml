@@ -170,9 +170,7 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.iconSize
                     from: 16
                     to: 128
-                    stepSize: (!plasmoid.configuration.autoDecreaseIconSize
-                               && (dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0)))
-                              || dialog.viewIsPanel ? 1 : 8
+                    stepSize: dialog.highLevel || (plasmoid.configuration.iconSize % 8 !== 0) || dialog.viewIsPanel ? 1 : 8
                     wheelEnabled: false
 
                     function updateIconSize() {
