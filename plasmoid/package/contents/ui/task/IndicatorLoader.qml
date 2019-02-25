@@ -73,6 +73,7 @@ Loader {
     readonly property bool hasActive: taskItem.hasActive
     readonly property bool hasMinimized: taskItem.hasMinimized
     readonly property bool hasShown: taskItem.hasShown
+    readonly property int windowsCount: taskItem.windowsCount
 
     readonly property int iconSize: root.iconSize
     readonly property int durationTime: root.durationTime

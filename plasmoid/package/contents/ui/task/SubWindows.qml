@@ -28,7 +28,7 @@ import QtQml.Models 2.2
 Item{
     id: windowsContainer
     property int windowsCount: {
-        if (isLauncher) {
+        if (isLauncher || isStartup) {
             return 0;
         }
 

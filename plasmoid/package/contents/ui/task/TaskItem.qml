@@ -136,6 +136,7 @@ MouseArea{
     property int pressY: -1
     property int resistanceDelay: 450
     property int spacersMaxSize: Math.max(0,Math.ceil(0.55*root.iconSize) - root.lengthMargins)
+    property int windowsCount: subWindows.windowsCount
 
     property string activity: tasksModel.activity
 
