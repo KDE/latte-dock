@@ -65,8 +65,9 @@ DragDrop.DropArea {
 
     property bool addLaunchersMessage: false
     property bool addLaunchersInTaskManager: plasmoid.configuration.addLaunchersInTaskManager
-    // when there are only plasma style task managers the automatic icon size algorithm should better be disabled
-    property bool autoDecreaseIconSize: plasmoid.configuration.autoDecreaseIconSize && !containsOnlyPlasmaTasks && layoutsContainer.fillApplets<=0
+    // when there are only plasma style task managers OR any applets that fill width or height
+    // the automatic icon size algorithm should better be disabled
+    property bool autoDecreaseIconSize: !containsOnlyPlasmaTasks && layoutsContainer.fillApplets<=0
     property bool backgroundOnlyOnMaximized: plasmoid.configuration.backgroundOnlyOnMaximized
     property bool behaveAsPlasmaPanel: {
         if (!latteView || !latteView.visibility)
