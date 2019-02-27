@@ -51,6 +51,8 @@ DragDrop.DropArea {
     signal updateEffectsArea();
     signal updateIndexes();
     signal updateScale(int delegateIndex, real newScale, real step);
+
+    signal broadcastedToApplet(string pluginName, string action, variant value);
     //// END SIGNALS
 
     ////BEGIN properties
