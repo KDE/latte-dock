@@ -1,5 +1,12 @@
 #**CHANGELOG**#
 
+#### Version 0.8.7
+
+* fix: Show dock properly on first startup. New users where trying Latte but
+it was reported that something broke during updates and on first startup
+Latte was not appearing at all. Problem was tracked down and identified
+when ~/.config/latte directory was not created properly. This is fixed now.
+
 #### Version 0.8.6
 
 * fix: previews that broke after kf5>=5.55 upgrade
