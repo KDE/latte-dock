@@ -201,10 +201,10 @@ Item {
     }
 
     function checkCanBeHovered(){
-        var maxSize = root.iconSize + root.thickMargins;
+        var maxSize = root.iconSize;// + root.thickMargins;
 
-        if ( (((applet && (applet.Layout.minimumWidth > maxSize) && root.isHorizontal) ||
-               (applet && (applet.Layout.minimumHeight > maxSize) && root.isVertical))
+        if ( (((applet && (applet.width > maxSize) && root.isHorizontal) ||
+               (applet && (applet.height > maxSize) && root.isVertical))
               && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
               && !communicator.canShowOverlaiedLatteIcon)
                 || (isSystray)

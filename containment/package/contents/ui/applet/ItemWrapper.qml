@@ -98,6 +98,9 @@ Item{
     property bool disableScaleHeight: false
     property bool editMode: root.editMode
 
+    property int appletWidth: applet ?  applet.width : -1
+    property int appletHeight: applet ?  applet.height : -1
+
     property int appletMinimumWidth: applet && applet.Layout ?  applet.Layout.minimumWidth : -1
     property int appletMinimumHeight: applet && applet.Layout ? applet.Layout.minimumHeight : -1
 
@@ -181,25 +184,34 @@ Item{
         debugLayouts();
     }*/
 
-    onAppletMinimumWidthChanged: {
-        if(zoomScale == 1)
+    onAppletWidthChanged: {
+        if(zoomScale === 1) {
             checkCanBeHovered();
-
-        updateLayoutWidth();
+        }
     }
 
-    onAppletMinimumHeightChanged: {
-        if(zoomScale == 1)
+    onAppletHeightChanged: {
+        if(zoomScale === 1) {
             checkCanBeHovered();
-
-        updateLayoutHeight();
+        }
     }
+
+    onAppletMinimumWidthChanged: updateLayoutWidth();
+    onAppletMinimumHeightChanged: updateLayoutHeight();
 
     onAppletPreferredWidthChanged: updateLayoutWidth();
     onAppletPreferredHeightChanged: updateLayoutHeight();
 
     onAppletMaximumWidthChanged: updateLayoutWidth();
     onAppletMaximumHeightChanged: updateLayoutHeight();
+
+    Connections {
+        target: appletItem
+        onCanBeHoveredChanged: {
+            updateLayoutWidth();
+            updateLayoutHeight();
+        }
+    }
 
     onIconSizeChanged: {
         updateLayoutWidth();
