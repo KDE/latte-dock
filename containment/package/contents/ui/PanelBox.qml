@@ -203,17 +203,14 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.behaveAsPlasmaPanel) {
-                return root.iconSize + root.thickMargins;
+                return root.iconSize + root.thickMargins + root.panelThickMarginHigh;
             } else {
-                var icons = root.iconSize + root.thickMargins + 1;
+                var icons = root.iconSize + root.thickMargins + root.panelThickMarginHigh;
                 var panelt = root.themePanelThickness + root.panelThickMarginHigh;
 
                 root.realPanelThickness = icons;
-                if (icons > panelt) {
-                    return panelt;
-                } else {
-                    return icons;
-                }
+
+                return Math.min(icons, panelt);
             }
         }
 
