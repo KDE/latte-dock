@@ -76,7 +76,7 @@ Loader{
                 return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
             }
 
-            if (root.themeColors === Latte.Types.SmartThemeColors && !root.editMode) {
+            if (root.themeColors === Latte.Types.SmartThemeColors) {
                 if (currentBackgroundBrightness > 127.5) {
                     return themeExtended.lightTheme;
                 } else {

@@ -53,6 +53,8 @@ Item{
 
     property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
 
+    readonly property real maxOpacity: root.themeColors === Latte.Types.SmartThemeColors ? 0.2 : 1
+
 
     Item{
         id: shadow
@@ -165,6 +167,11 @@ Item{
     }
 
     Connections{
+        target: root
+        onThemeColorsChanged: editVisual.opacity = editVisual.maxOpacity
+    }
+
+    Connections{
         target: plasmoid
         onLocationChanged: initializeEditPosition();
     }
@@ -245,6 +252,13 @@ Item{
         }
     }
 
+    Behavior on opacity {
+        enabled: editVisual.editAnimationEnded
+        NumberAnimation {
+            duration: 0.8 * root.animationTime
+            easing.type: Easing.OutCubic
+        }
+    }
     //////////// States ////////////////////
 
     states: [
@@ -286,7 +300,7 @@ Item{
                     PropertyAnimation {
                         target: editVisual
                         property: "opacity"
-                        to: 1
+                        to: editVisual.maxOpacity
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }

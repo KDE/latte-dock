@@ -135,7 +135,13 @@ Item{
 
     readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property bool textColorIsDark: textColorBrightness < 127.5
-    readonly property color textColor: latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF"
+    readonly property color textColor: {
+        if (root.themeColors === Latte.Types.SmartThemeColors) {
+            return colorizerManager.applyColor;
+        } else {
+            return latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF";
+        }
+    }
 
     Behavior on width {
         NumberAnimation {
