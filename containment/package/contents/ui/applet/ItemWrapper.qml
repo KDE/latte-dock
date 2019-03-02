@@ -158,6 +158,16 @@ Item{
             console.log("MaxH "+applet.Layout.maximumHeight);
             console.log("FillH "+applet.Layout.fillHeight);
             console.log("-----");
+            console.log("Real Width: "+applet.width);
+            console.log("Real Height: "+applet.height);
+            console.log("-----");
+            console.log("Can be hovered: " + canBeHovered);
+            console.log("Icon size: " + root.iconSize);
+            console.log("Thick Margins: " + root.thickMargins);
+            console.log("Intern. Margins: " + (root.lengthIntMargin * 2));
+            console.log("Intern. Margins: " + (root.lengthExtMargin * 2));
+            console.log("Max hovered criteria: " + (root.iconSize + thickMargins));
+            console.log("-----");
             console.log("LayoutW: " + layoutWidth);
             console.log("LayoutH: " + layoutHeight);
         }
