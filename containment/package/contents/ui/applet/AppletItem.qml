@@ -201,7 +201,7 @@ Item {
     }
 
     function checkCanBeHovered(){
-        var maxSize = root.iconSize + root.thickMargins;
+        var maxSize = root.iconSize + (root.lengthIntMargin * 2);
 
         if ( (((applet && (applet.Layout.minimumWidth > maxSize) && root.isHorizontal) ||
                (applet && (applet.Layout.minimumHeight > maxSize) && root.isVertical))
