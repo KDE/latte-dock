@@ -168,13 +168,22 @@ QRect Effects::rect() const
 
 void Effects::setRect(QRect area)
 {
-    QRect inWindowRect = area.intersected(QRect(0, 0, m_view->width(), m_view->height()));
+    if (KWindowSystem::compositingActive()) {
+        QRect inWindowRect = area.intersected(QRect(0, 0, m_view->width(), m_view->height()));
 
-    if (m_rect == inWindowRect) {
-        return;
+        if (m_rect == inWindowRect) {
+            return;
+        }
+
+        m_rect = inWindowRect;
+    } else {
+        if (m_rect == area) {
+            return;
+        }
+
+        m_rect = area;
     }
 
-    m_rect = inWindowRect;
     emit rectChanged();
 }
 
