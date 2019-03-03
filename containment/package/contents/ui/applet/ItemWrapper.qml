@@ -196,8 +196,20 @@ Item{
         }
     }
 
-    onAppletMinimumWidthChanged: updateLayoutWidth();
-    onAppletMinimumHeightChanged: updateLayoutHeight();
+    onAppletMinimumWidthChanged: {
+        if(zoomScale === 1) {
+            checkCanBeHovered();
+        }
+
+        updateLayoutWidth();
+    }
+    onAppletMinimumHeightChanged: {
+        if(zoomScale === 1) {
+            checkCanBeHovered();
+        }
+
+        updateLayoutHeight();
+    }
 
     onAppletPreferredWidthChanged: updateLayoutWidth();
     onAppletPreferredHeightChanged: updateLayoutHeight();

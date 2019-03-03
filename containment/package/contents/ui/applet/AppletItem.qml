@@ -201,18 +201,32 @@ Item {
     }
 
     function checkCanBeHovered(){
-        var maxSize = root.iconSize;// + root.thickMargins;
+        canBeHoveredTimer.start();
+    }
 
-        if ( (((applet && (applet.width > maxSize) && root.isHorizontal) ||
-               (applet && (applet.height > maxSize) && root.isVertical))
-              && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
-              && !communicator.canShowOverlaiedLatteIcon)
-                || (isSystray)
-                || (appletItem.needsFillSpace) ) {
-            canBeHovered = false;
-        }
-        else{
-            canBeHovered = true;
+    //! Reduce calculations and give the time to applet to adjust to prevent binding loops
+    Timer{
+        id: canBeHoveredTimer
+        interval: 100
+        onTriggered: {
+            if (wrapper.zoomScale !== 1) {
+                return;
+            }
+
+            var maxSize = root.iconSize;
+            var maxOfMinSize = root.iconSize + root.thickMargins;
+
+            if ( (((applet && root.isHorizontal && (applet.width > maxSize || applet.Layout.minimumWidth > maxOfMinSize))
+                   || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxOfMinSize)))
+                  && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
+                  && !communicator.canShowOverlaiedLatteIcon)
+                    || (isSystray)
+                    || (appletItem.needsFillSpace) ) {
+                appletItem.canBeHovered = false;
+            }
+            else{
+                appletItem.canBeHovered = true;
+            }
         }
     }
 
