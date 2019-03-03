@@ -203,10 +203,10 @@ Item{
         property int panelSize: automaticPanelSize
         property int automaticPanelSize: {
             if (root.behaveAsPlasmaPanel) {
-                return root.iconSize + root.thickMargins + root.panelThickMarginHigh;
+                return root.iconSize + root.thickMargins + 2;//root.panelThickMarginHigh;
             } else {
-                var icons = root.iconSize + root.thickMargins + root.panelThickMarginHigh;
-                var panelt = root.themePanelThickness + root.panelThickMarginHigh;
+                var icons = root.iconSize + root.thickMargins + 2; //root.panelThickMarginHigh;
+                var panelt = root.themePanelThickness + 2; //root.panelThickMarginHigh;
 
                 root.realPanelThickness = icons;
 
