@@ -424,7 +424,7 @@ Item{
             } else {
                 if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                     localX = latteView.effects.rect.x;
-                    localY = latteView.effects.rect.y+dock.effects.rect.height+thicknessAutoHidden;
+                    localY = latteView.effects.rect.y+latteView.effects.rect.height+thicknessAutoHidden;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     localX = latteView.effects.rect.x;
                     localY = latteView.effects.rect.y - thicknessAutoHidden;
