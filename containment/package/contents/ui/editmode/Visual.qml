@@ -166,8 +166,9 @@ Item{
 
         MouseArea {
             id: editBackMouseArea
-
             anchors.fill: parent
+            visible: editModeVisual.editAnimationEnded
+
             property bool wheelIsBlocked: false;
             readonly property double opacityStep: 0.1
 
@@ -245,8 +246,10 @@ Item{
     }
 
     function updateEffectsArea(){
-        if (!latteView || state !== "edit" || !editAnimationEnded)
+       if (Latte.WindowSystem.compositingActive ||
+               !latteView || state !== "edit" || !editAnimationEnded) {
             return;
+       }
 
         var rootGeometry = mapToItem(root, 0, 0);
 

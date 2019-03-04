@@ -295,6 +295,7 @@ Item{
                 Image{
                     id: backTiler
                     anchors.fill: parent
+                    visible: false
 
                     fillMode: Image.Tile
                     source: hasBackground ? latteView.managedLayout.background : "../icons/"+editModeVisual.layoutColor+"print.jpg"
@@ -305,17 +306,20 @@ Item{
 
                 ShaderEffectSource {
                     id: effectSource
+                    anchors.fill: backTiler
+                    visible: false
 
                     sourceItem: backTiler
-                    anchors.fill: backTiler
                     sourceRect: Qt.rect(0,0, width, height)
                 }
 
                 FastBlur{
                     id: blur
                     anchors.fill: effectSource
+                    opacity: editModeVisual.opacity * 1.5
+
                     source: effectSource
-                    radius: 35
+                    radius: 50
                 }
             }
         }
@@ -395,7 +399,7 @@ Item{
             }
 
             function updateEffectsArea(){
-                if (!latteView || root.editMode)
+                if (!latteView)
                     return;
 
                 var rootGeometry = mapToItem(root, 0, 0);
