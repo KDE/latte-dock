@@ -40,21 +40,10 @@ Item{
         Rectangle {
             id: unityRect
             anchors.fill: parent
-            anchors.margins: 4
             visible: rootItem.isActive || (rootItem.isWindow && rootItem.hasShown)
 
             radius: rootItem.iconSize / 12
-            color: {
-                if (rootItem.inAttention) {
-                    return theme.negativeTextColor;
-                }
-
-                if (isActive) {
-                    return theme.buttonFocusColor;
-                }
-
-                return rootItem.backgroundColor;
-            }
+            color: rootItem.backgroundColor
             clip: true
         }
 
@@ -69,14 +58,6 @@ Item{
             gradient: Gradient {
                 GradientStop { position: 0.0;
                     color: {
-                        if (rootItem.inAttention) {
-                            return Qt.lighter(theme.negativeTextColor, 1.5)
-                        }
-
-                        if (isActive) {
-                            return Qt.lighter(theme.buttonFocusColor, 1.5)
-                        }
-
                         if (rootItem.isMinimized) {
                             return "#aafcfcfc";
                         }
@@ -113,7 +94,6 @@ Item{
         Rectangle {
             id: borderRectangle
             anchors.fill: parent
-            anchors.margins: 4
             visible: (rootItem.isTask && rootItem.isWindow) || (rootItem.isApplet && rootItem.isActive)
             color: "transparent"
             border.width: Math.max(1, rootItem.iconSize / 64)
