@@ -61,7 +61,6 @@ Item {
     property bool userBlocksColorizing: false
     property bool appletBlocksColorizing: !communicator.latteSideColoringEnabled
     property bool appletBlocksParabolicEffect: !communicator.parabolicEffectEnabled
-    property bool showZoomed: false
     property bool lockZoom: false
 
     property bool indicatorNeedsIconColors: false
@@ -325,17 +324,6 @@ Item {
     }
 
     onNeedsFillSpaceChanged: checkCanBeHovered();
-
-    onShowZoomedChanged: {
-        if(showZoomed){
-            //var newZ = appletItem.maxHeight / root.iconSize;
-            //wrapper.zoomScale = newZ;
-            wrapper.zoomScale = 1;
-        }
-        else{
-            wrapper.zoomScale = 1;
-        }
-    }
 
     Component.onCompleted: {
         checkIndex();

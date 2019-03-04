@@ -31,8 +31,8 @@ MouseArea {
     z: 1000
 
     anchors.fill: parent
-    enabled: false
-    visible: false
+    //enabled: false
+    visible: true//false
   //  hoverEnabled: true
 
     cursorShape: {
@@ -127,9 +127,6 @@ MouseArea {
     onExited: hideTimer.restart();
 
     onCurrentAppletChanged: {
-        if(previousCurrentApplet && previousCurrentApplet.showZoomed)
-            previousCurrentApplet.showZoomed = false;
-
         previousCurrentApplet = currentApplet;
 
 
@@ -141,9 +138,6 @@ MouseArea {
         } else if (currentApplet === ruler) {
             return;
         }
-
-        if(currentApplet.showZoomed !== undefined)
-            currentApplet.showZoomed = true;
 
         var relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
 

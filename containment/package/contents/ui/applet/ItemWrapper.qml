@@ -89,11 +89,6 @@ Item{
 
     opacity: appletColorizer.mustBeShown ? 0 : 1
 
-    //width: appletItem.isInternalViewSplitter && !root.editMode ? 0 : Math.round( latteApplet ? ((appletItem.showZoomed && root.isVertical) ?
-    //                                                                        scaledWidth : latteApplet.tasksWidth) : scaledWidth )
-    //height: appletItem.isInternalViewSplitter&& !root.editMode ? 0 : Math.round( latteApplet ? ((appletItem.showZoomed && root.isHorizontal) ?
-    //                                                                          scaledHeight : latteApplet.tasksHeight ): scaledHeight )
-
     property bool disableScaleWidth: false
     property bool disableScaleHeight: false
     property bool editMode: root.editMode
