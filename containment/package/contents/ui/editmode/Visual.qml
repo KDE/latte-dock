@@ -53,8 +53,7 @@ Item{
 
     property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
 
-    readonly property real maxOpacity: root.themeColors === Latte.Types.SmartThemeColors ? 0.2 : 1
-
+    readonly property real maxOpacity: Latte.WindowSystem.compositingActive ? plasmoid.configuration.editBackgroundOpacity : 1
 
     Item{
         id: shadow
@@ -164,6 +163,42 @@ Item{
 
         readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                   true : false
+
+        MouseArea {
+            id: editBackMouseArea
+
+            anchors.fill: parent
+            property bool wheelIsBlocked: false;
+            readonly property double opacityStep: 0.1
+
+            onWheel: {
+                if (wheelIsBlocked) {
+                    return;
+                }
+
+                wheelIsBlocked = true;
+                scrollDelayer.start();
+
+                var angle = wheel.angleDelta.y / 8;
+
+                if (angle > 2) {
+                    plasmoid.configuration.editBackgroundOpacity = Math.min(100, plasmoid.configuration.editBackgroundOpacity + opacityStep)
+                } else if (angle < -2) {
+                    plasmoid.configuration.editBackgroundOpacity = Math.max(0, plasmoid.configuration.editBackgroundOpacity - opacityStep)
+                }
+            }
+
+            //! A timer is needed in order to handle also touchpads that probably
+            //! send too many signals very fast. This way the signals per sec are limited.
+            //! The user needs to have a steady normal scroll in order to not
+            //! notice a annoying delay
+            Timer{
+                id: scrollDelayer
+
+                interval: 80
+                onTriggered: editBackMouseArea.wheelIsBlocked = false;
+            }
+        }
     }
 
     Connections{
@@ -174,6 +209,12 @@ Item{
     Connections{
         target: plasmoid
         onLocationChanged: initializeEditPosition();
+    }
+
+    onMaxOpacityChanged: {
+        if (editAnimationEnded) {
+            opacity = maxOpacity;
+        }
     }
 
     onRootThicknessChanged: {

@@ -32,6 +32,7 @@ MouseArea {
 
     anchors.fill: parent
     enabled: false
+    visible: false
   //  hoverEnabled: true
 
     cursorShape: {
