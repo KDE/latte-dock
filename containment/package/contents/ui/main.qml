@@ -33,6 +33,7 @@ import org.kde.latte 0.2 as Latte
 
 import "applet" as Applet
 import "colorizer" as Colorizer
+import "editmode" as EditMode
 
 import "../code/LayoutManager.js" as LayoutManager
 
@@ -838,7 +839,7 @@ DragDrop.DropArea {
                 plasmoid.applets[i].expanded = false;
             }
             if (!dragOverlay) {
-                var component = Qt.createComponent("ConfigOverlay.qml");
+                var component = Qt.createComponent("editmode/ConfigOverlay.qml");
                 if (component.status == Component.Ready) {
                     dragOverlay = component.createObject(root);
                 } else {
@@ -1710,7 +1711,7 @@ DragDrop.DropArea {
         }
     }
 
-    EditModeVisual{
+    EditMode.Visual{
         id:editModeVisual
         //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }

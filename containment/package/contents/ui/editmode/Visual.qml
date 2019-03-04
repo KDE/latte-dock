@@ -64,7 +64,7 @@ Item{
         clip: true
         visible: !editTransition.running
 
-        EditShadow{
+        ExternalShadow{
             id: editShadow
         }
 

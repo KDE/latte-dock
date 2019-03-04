@@ -424,8 +424,8 @@ MouseArea {
                     colorizingButton.visible = false;
                     label.text = ruler.tooltip;
 
-                    tooltip.visible = true; */
-                }
+                    tooltip.visible = true;
+                } */
             }
         }
 
