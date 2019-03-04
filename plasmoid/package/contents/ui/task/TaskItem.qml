@@ -78,7 +78,7 @@ MouseArea{
 
     acceptedButtons: Qt.LeftButton | Qt.MidButton | Qt.RightButton
     hoverEnabled: visible && (!inAnimation) && (!IsStartup) && (!root.taskInAnimation)
-                  && (!root.editMode || root.debugLocation)&&(!inBouncingAnimation) && !isSeparator
+                  &&(!inBouncingAnimation) && !isSeparator
     // hoverEnabled: false
     //opacity : isSeparator && (hiddenSpacerLeft.neighbourSeparator || hiddenSpacerRight.neighbourSeparator) ? 0 : 1
 
@@ -545,9 +545,6 @@ MouseArea{
 
     ///////////////// Mouse Area Events ///////////////////
     onEntered: {
-        if (root.editMode)
-            return;
-
         root.stopCheckRestoreZoomTimer();
 
         if (restoreAnimation.running) {
@@ -620,7 +617,7 @@ MouseArea{
     //! onPositionChanged signal may be delayed. we can fix this by don't delay at all
     //! when mouseX-Y is updated based on the plasmoid formFactor
     function mousePosChanged(mousePos) {
-        if (root.editMode || mousePos<0 ||
+        if (mousePos<0 ||
                 (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
@@ -672,7 +669,7 @@ MouseArea{
 
 
     onPositionChanged: {
-        if (root.editMode || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
+        if ((inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation||inMimicParabolicAnimation)))
             return;
 
         if (root.latteView && root.latteView.isHalfShown) {
@@ -683,7 +680,6 @@ MouseArea{
             // mouse.button is always 0 here, hence checking with mouse.buttons
             if (pressX != -1 && mouse.buttons == Qt.LeftButton
                     && isDragged
-                    && !root.editMode
                     && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y) ) {
                 root.dragSource = taskItem;
                 dragHelper.startDrag(taskItem, model.MimeType, model.MimeData,

@@ -31,7 +31,8 @@ MouseArea {
     z: 1000
 
     anchors.fill: parent
-    hoverEnabled: true
+    enabled: false
+  //  hoverEnabled: true
 
     cursorShape: {
         if (currentApplet && tooltip.visible && currentApplet.applet
@@ -146,9 +147,9 @@ MouseArea {
         var relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
 
         handle.x = relevantLayout.x + currentApplet.x;
-        handle.y = relevantLayout.y + currentApplet.y;
+        handle.y = relevantLayout.y + currentApplet.y + currentApplet.height / 2;
         handle.width = currentApplet.width;
-        handle.height = currentApplet.height;
+        handle.height = currentApplet.height / 2;
 
         lockButton.checked = currentApplet.lockZoom;
         colorizingButton.checked = !currentApplet.userBlocksColorizing;
@@ -294,9 +295,9 @@ MouseArea {
                 var transformChoords = root.mapFromItem(currentApplet, 0, 0)
 
                 handle.x = transformChoords.x;
-                handle.y = transformChoords.y;
+                handle.y = transformChoords.y + currentApplet.height / 2;
                 handle.width = currentApplet.width;
-                handle.height = currentApplet.height;
+                handle.height = currentApplet.height / 2;
 
                 repositionHandler.restart();
             }
@@ -416,14 +417,14 @@ MouseArea {
 
                 label.text = currentApplet.isInternalViewSplitter ? i18n("Justify Splitter") : currentApplet.applet.title;
             } else {
-                if (currentApplet === ruler) {
+              /*  if (currentApplet === ruler) {
                     configureButton.visible = false;
                     closeButton.visible = false;
                     lockButton.visible = false;
                     colorizingButton.visible = false;
                     label.text = ruler.tooltip;
 
-                    tooltip.visible = true;
+                    tooltip.visible = true; */
                 }
             }
         }

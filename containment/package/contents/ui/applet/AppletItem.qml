@@ -609,8 +609,8 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: applet && !latteApplet && canBeHovered && !root.editMode && !lockZoom && communicator.parabolicEffectEnabled
-        hoverEnabled: !root.editMode && (!latteApplet) ? true : false
+        enabled: applet && !latteApplet && canBeHovered && !lockZoom && communicator.parabolicEffectEnabled
+        hoverEnabled: latteApplet ? false : true
         propagateComposedEvents: true
 
         //! a way must be found in order for this be enabled
@@ -618,7 +618,7 @@ Item {
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
         visible: applet && !appletItem.latteApplet && !lockZoom && communicator.parabolicEffectEnabled
-                 && canBeHovered && !(appletItem.isSeparator && !root.editMode)
+                 && canBeHovered && !appletItem.isSeparator
 
         property bool blockWheel: false
         property bool pressed: false

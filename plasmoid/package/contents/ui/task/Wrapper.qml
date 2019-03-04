@@ -142,7 +142,7 @@ Item{
     }
 
     function calculateScales( currentMousePosition ){
-        if (root.editMode || root.zoomFactor===1 || root.durationTime===0) {
+        if (root.zoomFactor===1 || root.durationTime===0) {
             return;
         }
 
