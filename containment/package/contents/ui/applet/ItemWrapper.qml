@@ -237,11 +237,11 @@ Item{
 
         if ((zoomScale > 1) && !appletItem.isZoomed) {
             appletItem.isZoomed = true;
-            if (!root.editMode && !animationWasSent) {
+            if (!animationWasSent) {
                 root.slotAnimationsNeedBothAxis(1);
                 animationWasSent = true;
             }
-        } else if ((zoomScale == 1) && appletItem.isZoomed) {
+        } else if (zoomScale == 1) {
             appletItem.isZoomed = false;
             if (animationWasSent) {
                 root.slotAnimationsNeedBothAxis(-1);
