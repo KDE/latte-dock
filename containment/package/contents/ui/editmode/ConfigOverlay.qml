@@ -21,6 +21,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
@@ -32,8 +33,10 @@ MouseArea {
 
     anchors.fill: parent
     //enabled: false
-    visible: true//false
-  //  hoverEnabled: true
+    visible: plasmoid.configuration.inConfigureAppletsMode
+    hoverEnabled: plasmoid.configuration.inConfigureAppletsMode
+
+    focus: true
 
     cursorShape: {
         if (currentApplet && tooltip.visible && currentApplet.applet
@@ -58,6 +61,7 @@ MouseArea {
 
     onHeightChanged: tooltip.visible = false;
     onWidthChanged: tooltip.visible = false;
+
 
     onPositionChanged: {
         if (pressed) {
@@ -142,9 +146,9 @@ MouseArea {
         var relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
 
         handle.x = relevantLayout.x + currentApplet.x;
-        handle.y = relevantLayout.y + currentApplet.y + currentApplet.height / 2;
+        handle.y = relevantLayout.y + currentApplet.y;
         handle.width = currentApplet.width;
-        handle.height = currentApplet.height / 2;
+        handle.height = currentApplet.height;
 
         lockButton.checked = currentApplet.lockZoom;
         colorizingButton.checked = !currentApplet.userBlocksColorizing;
@@ -290,9 +294,9 @@ MouseArea {
                 var transformChoords = root.mapFromItem(currentApplet, 0, 0)
 
                 handle.x = transformChoords.x;
-                handle.y = transformChoords.y + currentApplet.height / 2;
+                handle.y = transformChoords.y;
                 handle.width = currentApplet.width;
-                handle.height = currentApplet.height / 2;
+                handle.height = currentApplet.height;
 
                 repositionHandler.restart();
             }

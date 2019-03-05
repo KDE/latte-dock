@@ -178,6 +178,10 @@ FocusScope {
             if (event.key === Qt.Key_Escape) {
                 viewConfig.hideConfigWindow();
             }
+
+            if (event.key === Qt.Key_Control) {
+                plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
+            }
         }
 
         Component.onCompleted: forceActiveFocus();

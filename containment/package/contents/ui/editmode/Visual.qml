@@ -53,7 +53,8 @@ Item{
 
     property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
 
-    readonly property real maxOpacity: Latte.WindowSystem.compositingActive ? plasmoid.configuration.editBackgroundOpacity : 1
+    readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
+                                           plasmoid.configuration.editBackgroundOpacity : 1
 
     Item{
         id: shadow

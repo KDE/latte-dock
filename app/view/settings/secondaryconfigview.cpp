@@ -133,7 +133,7 @@ void SecondaryConfigView::init()
 
 inline Qt::WindowFlags SecondaryConfigView::wFlags() const
 {
-    return (flags() | Qt::FramelessWindowHint) & ~Qt::WindowDoesNotAcceptFocus;
+    return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
 QRect SecondaryConfigView::geometryWhenVisible() const
@@ -210,6 +210,8 @@ void SecondaryConfigView::syncGeometry()
     if (m_parent) {
         m_parent->requestActivate();
     }
+
+    m_latteView->raise();
 }
 
 void SecondaryConfigView::syncSlideEffect()
