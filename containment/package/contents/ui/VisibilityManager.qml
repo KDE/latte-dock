@@ -66,7 +66,7 @@ Item{
                                                  thicknessEditMode )
 
     //! is used from Panel in edit mode in order to provide correct masking
-    property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness + root.editShadow
+    property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: 10
@@ -88,6 +88,13 @@ Item{
         property:"normalThickness"
         when: latteView
         value: thicknessNormalOriginal
+    }
+
+    Binding{
+        target: latteView
+        property:"editThickness"
+        when: latteView
+        value: thicknessEditMode
     }
 
     Binding{
@@ -379,8 +386,7 @@ Item{
 
                     //this is used to fix a bug with shadow showing when the animation of edit mode
                     //is triggered
-                    tempThickness = editModeVisual.editAnimationEnded ? thicknessNormalOriginal + theme.defaultFont.pixelSize + root.editShadow :
-                                                                        thicknessNormalOriginal + theme.defaultFont.pixelSize
+                    tempThickness = editModeVisual.editAnimationEnded ? thicknessEditMode + root.editShadow : thicknessEditMode
 
                     if (latteView.visibility.isHidden && !slidingAnimationAutoHiddenOut.running ) {
                         tempThickness = thicknessAutoHidden;

@@ -54,7 +54,7 @@ FocusScope {
     //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
     //!    some space around the settings window
     property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                                latteView.screenGeometry.height - latteView.normalThickness - 64 :
+                                latteView.screenGeometry.height - latteView.editThickness - 64 :
                                 latteView.height - 50
     property int maxWidth: 0.6 * latteView.screenGeometry.width
 
@@ -177,10 +177,6 @@ FocusScope {
         Keys.onPressed: {
             if (event.key === Qt.Key_Escape) {
                 viewConfig.hideConfigWindow();
-            }
-
-            if (event.key === Qt.Key_Control) {
-                plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
             }
         }
 

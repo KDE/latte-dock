@@ -155,7 +155,7 @@ void SecondaryConfigView::syncGeometry()
     const auto location = m_latteView->containment()->location();
     const auto sGeometry = m_latteView->screenGeometry();
 
-    int clearThickness = m_latteView->normalThickness() + m_latteView->fontPixelSize();
+    int clearThickness = m_latteView->editThickness();
 
     int secondaryConfigSpacing = 2 * m_latteView->fontPixelSize();
 

@@ -30,15 +30,15 @@ import org.kde.latte 0.2 as Latte
 Item{
     id: editVisual
     width: root.isHorizontal ? (latteView ? latteView.width : root.width) :
-                               visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+                               visibilityManager.thicknessEditMode
     height: root.isVertical ? (latteView ? latteView.height : root.height) :
-                              visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
+                              visibilityManager.thicknessEditMode
 
     readonly property int settingsThickness: settingsOverlay.thickness
 
     property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*2.8*units.longDuration : 10
-    property int thickness: visibilityManager.thicknessNormalOriginalValue + root.editShadow
-    property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow - theme.defaultFont.pixelSize
+    property int thickness: visibilityManager.thicknessEditMode + root.editShadow
+    property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow //- visibilityManager.thicknessEditMode
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.height)
 
@@ -61,7 +61,7 @@ Item{
         height: root.isHorizontal ? root.editShadow : imageTiler.height + 2*root.editShadow
 
         clip: true
-        visible: !editTransition.running && Latte.WindowSystem.compositingActive
+        visible: !editTransition.running && root.editMode && Latte.WindowSystem.compositingActive
 
         opacity: Math.max(0.35, imageTiler.opacity)
 
@@ -161,7 +161,7 @@ Item{
         opacity: 0
 
         fillMode: Image.Tile
-        source: hasBackground ? latteView.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
+        source: hasBackground ? latteView.managedLayout.background : "../../icons/"+editVisual.layoutColor+"print.jpg"
 
         readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                   true : false
@@ -227,6 +227,7 @@ Item{
     SettingsOverlay {
         id: settingsOverlay
         anchors.fill: parent
+        visible: root.editMode
     }
 
     Connections{

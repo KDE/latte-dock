@@ -603,6 +603,22 @@ void View::setMaxLength(float length)
     emit maxLengthChanged();
 }
 
+int View::editThickness() const
+{
+    return m_editThickness;
+}
+
+void View::setEditThickness(int thickness)
+{
+    if (m_editThickness == thickness) {
+        return;
+    }
+
+    m_editThickness = thickness;
+
+    emit editThicknessChanged();
+}
+
 int View::maxThickness() const
 {
     return m_maxThickness;

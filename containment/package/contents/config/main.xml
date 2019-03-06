@@ -32,7 +32,7 @@
       <default>64</default>
     </entry>
     <entry name="editBackgroundOpacity" type="Double">
-      <default>0.3</default>
+      <default>0.2</default>
       <label>opacity value for edit mode background</label>
     </entry>
 

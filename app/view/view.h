@@ -88,6 +88,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(int y READ y NOTIFY yChanged)
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
+    Q_PROPERTY(int editThickness READ editThickness WRITE setEditThickness NOTIFY editThicknessChanged)
     Q_PROPERTY(int maxThickness READ maxThickness WRITE setMaxThickness NOTIFY maxThicknessChanged)
     Q_PROPERTY(int normalThickness READ normalThickness WRITE setNormalThickness NOTIFY normalThicknessChanged)
     Q_PROPERTY(int offset READ offset WRITE setOffset NOTIFY offsetChanged)
@@ -142,6 +143,9 @@ public:
 
     int fontPixelSize() const;
     void setFontPixelSize(int size);
+
+    int editThickness() const;
+    void setEditThickness(int thickness);
 
     int maxThickness() const;
     void setMaxThickness(int thickness);
@@ -222,6 +226,7 @@ signals:
     void byPassWMChanged();
     void contextMenuIsShownChanged();
     void dockLocationChanged();
+    void editThicknessChanged();
     void effectsChanged();
     void fontPixelSizeChanged();
     void widthChanged();
@@ -271,6 +276,7 @@ private:
     bool m_isPreferredForShortcuts{false};
     bool m_onPrimary{true};
     int m_fontPixelSize{ -1};
+    int m_editThickness{24};
     int m_maxThickness{24};
     int m_normalThickness{24};
     int m_offset{0};

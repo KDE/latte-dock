@@ -196,7 +196,7 @@ void PrimaryConfigView::syncGeometry()
     const auto location = m_latteView->containment()->location();
     const auto sGeometry = m_latteView->screenGeometry();
 
-    int clearThickness = m_latteView->normalThickness() + m_latteView->fontPixelSize();
+    int clearThickness = m_latteView->editThickness();
 
     QPoint position{0, 0};
 
