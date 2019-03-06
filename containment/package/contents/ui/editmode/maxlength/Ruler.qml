@@ -28,7 +28,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
 
-import "../code/ColorizerTools.js" as ColorizerTools
+import "../../../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: rulerItem
@@ -58,9 +58,9 @@ Item{
             return xL;
         } else {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge){
-                return editModeVisual.x + editModeVisual.width - theme.defaultFont.pixelSize;
+                return editModeVisual.width - theme.defaultFont.pixelSize;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge){
-                return editModeVisual.x;
+                return 0;
             }
         }
     }
@@ -70,9 +70,9 @@ Item{
             return yL;
         } else {
             if (plasmoid.location === PlasmaCore.Types.BottomEdge){
-                return editModeVisual.y;
+                return 0;
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge){
-                return editModeVisual.y + editModeVisual.height - theme.defaultFont.pixelSize;
+                return editModeVisual.height - theme.defaultFont.pixelSize;
             }
         }
 
@@ -352,4 +352,9 @@ Item{
             color: textColor
         }
     } // end of grid
+
+    RulerMouseArea {
+        id: rulerMouseArea
+        anchors.fill: parent
+    }
 }

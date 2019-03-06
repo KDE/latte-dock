@@ -20,22 +20,30 @@
 import QtQuick 2.7
 
 import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
 MouseArea{
-    enabled: root.editMode && !latteView.visibility.isHidden
+    id: rulerMouseArea
+    visible: root.editMode
+    hoverEnabled: root.editMode
+    cursorShape: root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
 
-    cursorShape: {
-        if (enabled) {
-            return root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor
-        } else {
-            return Qt.ArrowCursor;
-        }
+    onEntered: {
+        tooltip.visible = true;
     }
 
-    hoverEnabled: enabled
+    onExited: {
+        hideTooltipTimer.restart();
+    }
+
+    onVisibleChanged: {
+        if (!visible) {
+            tooltip.visible = false;
+        }
+    }
 
     onWheel: {
         var angle = wheel.angleDelta.y / 8;
@@ -79,6 +87,42 @@ MouseArea{
                 plasmoid.configuration.offset = suggestedValue;
             } else {
                 plasmoid.configuration.offset = Math.max(0, 100-value);
+            }
+        }
+    }
+
+    Timer {
+        id: hideTooltipTimer
+        interval: units.longDuration * 2
+        onTriggered: {
+            if (!tooltipMouseArea.containsMouse && !rulerMouseArea.containsMouse) {
+                tooltip.visible = false;
+            }
+        }
+    }
+
+    PlasmaCore.Dialog {
+        id: tooltip
+        visualParent: settingsOverlay
+
+        type: PlasmaCore.Dialog.Dock
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.ToolTip
+        location: plasmoid.location
+
+        mainItem: MouseArea {
+            id: tooltipMouseArea
+            width: label.width + (2 * units.smallSpacing)
+            height: label.height + (2 * units.smallSpacing)
+            hoverEnabled: true
+            onEntered: hideTooltipTimer.stop();
+            onExited: hideTooltipTimer.restart();
+
+            PlasmaComponents.Label {
+                id: label
+                anchors.centerIn: parent
+                textFormat: Text.PlainText
+                maximumLineCount: 1
+                text: ruler.tooltip
             }
         }
     }

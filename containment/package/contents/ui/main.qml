@@ -1716,14 +1716,6 @@ DragDrop.DropArea {
         //   z: root.behaveAsPlasmaPanel ? 1 : 0
     }
 
-    Ruler{id: ruler}
-
-    RulerMouseArea{
-        id: rulerMouseArea
-        anchors.fill: ruler
-        z:1100
-    }
-
     Item{
         id: panelBox
 

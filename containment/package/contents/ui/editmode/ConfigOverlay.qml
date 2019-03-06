@@ -31,7 +31,9 @@ MouseArea {
 
     z: 1000
 
-    anchors.fill: parent
+    width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? root.width : thickness
+    height: plasmoid.formFactor === PlasmaCore.Types.Vertical ? root.height : thickness
+
     //enabled: false
     visible: plasmoid.configuration.inConfigureAppletsMode
     hoverEnabled: plasmoid.configuration.inConfigureAppletsMode
@@ -57,6 +59,7 @@ MouseArea {
     property int appletX
     property int appletY
 
+    readonly property int thickness: visibilityManager.thicknessNormalOriginalValue - visibilityManager.extraThickMask - 1
     readonly property int spacerHandleSize: units.smallSpacing
 
     onHeightChanged: tooltip.visible = false;
@@ -133,13 +136,10 @@ MouseArea {
     onCurrentAppletChanged: {
         previousCurrentApplet = currentApplet;
 
-
         if (!currentApplet
                 || !root.dragOverlay.currentApplet
                 || (currentApplet && currentApplet.isInternalViewSplitter)) {
             hideTimer.restart();
-            return;
-        } else if (currentApplet === ruler) {
             return;
         }
 
@@ -268,7 +268,7 @@ MouseArea {
         id: hideTimer
         interval: units.longDuration * 2
         onTriggered: {
-            if (!ruler.containsMouse && !tooltipMouseArea.containsMouse) {
+            if (!tooltipMouseArea.containsMouse) {
                 tooltip.visible = false;
                 currentApplet = null;
             }
@@ -285,13 +285,12 @@ MouseArea {
 
     Item {
         id: handle
-        visible: currentApplet && currentApplet !== ruler
-                 && (configurationArea.containsMouse || tooltipMouseArea.containsMouse)
+        visible: currentApplet && (configurationArea.containsMouse || tooltipMouseArea.containsMouse)
 
         //BEGIN functions
         function updatePlacement(){
-            if(currentApplet && currentApplet !== ruler){
-                var transformChoords = root.mapFromItem(currentApplet, 0, 0)
+            if(currentApplet){
+                var transformChoords = configurationArea.mapFromItem(currentApplet, 0, 0)
 
                 handle.x = transformChoords.x;
                 handle.y = transformChoords.y;
@@ -402,7 +401,7 @@ MouseArea {
         location: plasmoid.location
 
         onVisualParentChanged: {
-            if (visualParent && currentApplet && currentApplet !== ruler
+            if (visualParent && currentApplet
                     && (currentApplet.applet || currentApplet.isSeparator || currentApplet.isInternalViewSplitter)) {
 
                 configureButton.visible = !currentApplet.isInternalViewSplitter && (currentApplet.applet.pluginName !== root.plasmoidName)
@@ -415,16 +414,6 @@ MouseArea {
                 colorizingButton.visible = root.colorizerEnabled && !currentApplet.appletBlocksColorizing;
 
                 label.text = currentApplet.isInternalViewSplitter ? i18n("Justify Splitter") : currentApplet.applet.title;
-            } else {
-              /*  if (currentApplet === ruler) {
-                    configureButton.visible = false;
-                    closeButton.visible = false;
-                    lockButton.visible = false;
-                    colorizingButton.visible = false;
-                    label.text = ruler.tooltip;
-
-                    tooltip.visible = true;
-                } */
             }
         }
 
@@ -439,15 +428,6 @@ MouseArea {
 
             onEntered: hideTimer.stop();
             onExited: hideTimer.restart();
-
-            Connections {
-                target: ruler
-                onContainsMouseChanged: {
-                    if (ruler.containsMouse) {
-                        configurationArea.currentApplet = ruler;
-                    }
-                }
-            }
 
             Row {
                 id: handleRow
@@ -473,14 +453,6 @@ MouseArea {
                         anchors.rightMargin: units.smallSpacing
                         textFormat: Text.PlainText
                         maximumLineCount: 1
-
-                        //! update value of maxLength in tooltip
-                        Binding{
-                            target: label
-                            property: "text"
-                            when: currentApplet === ruler
-                            value: ruler.tooltip
-                        }
                     }
 
                     PlasmaComponents.ToolButton{
@@ -522,4 +494,47 @@ MouseArea {
             }
         }
     }
+
+    states: [
+        State {
+            name: "bottom"
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
+
+            AnchorChanges {
+                target: configurationArea
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "top"
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+
+            AnchorChanges {
+                target: configurationArea
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "left"
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
+
+            AnchorChanges {
+                target: configurationArea
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+        },
+        State {
+            name: "right"
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+            AnchorChanges {
+                target: configurationArea
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+        }
+    ]
 }

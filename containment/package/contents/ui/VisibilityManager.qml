@@ -66,7 +66,7 @@ Item{
                                                  thicknessEditMode )
 
     //! is used from Panel in edit mode in order to provide correct masking
-    property int thicknessEditMode: thicknessNormalOriginalValue + theme.defaultFont.pixelSize + root.editShadow
+    property int thicknessEditMode: thicknessNormalOriginalValue + editModeVisual.settingsThickness + root.editShadow
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: 10

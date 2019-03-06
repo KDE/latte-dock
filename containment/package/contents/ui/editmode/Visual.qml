@@ -26,6 +26,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
+
 Item{
     id: editVisual
     width: root.isHorizontal ? (latteView ? latteView.width : root.width) :
@@ -33,15 +34,13 @@ Item{
     height: root.isVertical ? (latteView ? latteView.height : root.height) :
                               visibilityManager.thicknessNormalOriginal + theme.defaultFont.pixelSize
 
-    opacity: 0
+    readonly property int settingsThickness: settingsOverlay.thickness
 
     property int speed: Latte.WindowSystem.compositingActive ? root.durationTime*2.8*units.longDuration : 10
     property int thickness: visibilityManager.thicknessNormalOriginalValue + root.editShadow
     property int rootThickness: visibilityManager.thicknessZoomOriginal + root.editShadow - theme.defaultFont.pixelSize
     property int editLength: root.isHorizontal ? (root.behaveAsPlasmaPanel ? root.width - root.maxIconSize/4 : root.width)://root.maxLength) :
                                                  (root.behaveAsPlasmaPanel ? root.height - root.maxIconSize/4 : root.height)
-
-    property real editStateOpacity: 0.95 //root.behaveAsPlasmaPanel  ? 0.5 : 0.95// root.blurEnabled ? 0.8 : 0.9
 
     property bool animationSent: false
     property bool farEdge: (plasmoid.location===PlasmaCore.Types.BottomEdge) || (plasmoid.location===PlasmaCore.Types.RightEdge)
@@ -62,7 +61,9 @@ Item{
         height: root.isHorizontal ? root.editShadow : imageTiler.height + 2*root.editShadow
 
         clip: true
-        visible: !editTransition.running
+        visible: !editTransition.running && Latte.WindowSystem.compositingActive
+
+        opacity: Math.max(0.35, imageTiler.opacity)
 
         ExternalShadow{
             id: editShadow
@@ -157,13 +158,31 @@ Item{
         anchors.centerIn: parent
         width: parent.width
         height: parent.height
-        opacity: editVisual.editStateOpacity
+        opacity: 0
 
         fillMode: Image.Tile
         source: hasBackground ? latteView.managedLayout.background : "../icons/"+editVisual.layoutColor+"print.jpg"
 
         readonly property bool hasBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                   true : false
+
+        Connections {
+            target: editVisual
+
+            onMaxOpacityChanged: {
+                if (editVisual.editAnimationEnded) {
+                    imageTiler.opacity = editVisual.maxOpacity;
+                }
+            }
+        }
+
+        Behavior on opacity {
+            enabled: editVisual.editAnimationEnded
+            NumberAnimation {
+                duration: 0.8 * root.animationTime
+                easing.type: Easing.OutCubic
+            }
+        }
 
         MouseArea {
             id: editBackMouseArea
@@ -203,20 +222,21 @@ Item{
         }
     }
 
+
+    //! Settings Overlay
+    SettingsOverlay {
+        id: settingsOverlay
+        anchors.fill: parent
+    }
+
     Connections{
         target: root
-        onThemeColorsChanged: editVisual.opacity = editVisual.maxOpacity
+        onThemeColorsChanged: imagaTiler.opacity = editVisual.maxOpacity
     }
 
     Connections{
         target: plasmoid
         onLocationChanged: initializeEditPosition();
-    }
-
-    onMaxOpacityChanged: {
-        if (editAnimationEnded) {
-            opacity = maxOpacity;
-        }
     }
 
     onRootThicknessChanged: {
@@ -297,13 +317,6 @@ Item{
         }
     }
 
-    Behavior on opacity {
-        enabled: editVisual.editAnimationEnded
-        NumberAnimation {
-            duration: 0.8 * root.animationTime
-            easing.type: Easing.OutCubic
-        }
-    }
     //////////// States ////////////////////
 
     states: [
@@ -329,7 +342,7 @@ Item{
                 ScriptAction{
                     script:{
                         editVisual.inEditMode = true;
-                        editVisual.opacity = 0
+                        imageTiler.opacity = 0
                         editVisual.editAnimationEnded = false;
 
                         initializeNormalPosition();
@@ -343,7 +356,7 @@ Item{
 
                 ParallelAnimation{
                     PropertyAnimation {
-                        target: editVisual
+                        target: imageTiler
                         property: "opacity"
                         to: editVisual.maxOpacity
                         duration: editVisual.speed / 2
@@ -389,7 +402,7 @@ Item{
                         easing.type: Easing.InQuad
                     }
                     PropertyAnimation {
-                        target: editVisual
+                        target: imageTiler
                         property: "opacity"
                         to: 0
                         duration: editVisual.speed
