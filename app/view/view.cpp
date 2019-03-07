@@ -959,6 +959,20 @@ bool View::event(QEvent *e)
         emit eventTriggered(e);
 
         switch (e->type()) {
+            case QEvent::Enter:
+                if (m_configView && containment()->isUserConfiguring() ) {
+                    ViewPart::PrimaryConfigView *configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+
+                    if (configView) {
+                        if (configView->secondaryWindow()) {
+                            configView->secondaryWindow()->requestActivate();
+                        }
+
+                        configView->requestActivate();
+                    }
+                }
+                break;
+
             case QEvent::Leave:
                 engine()->trimComponentCache();
                 break;
