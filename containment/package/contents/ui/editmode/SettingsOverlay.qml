@@ -34,7 +34,7 @@ import "../../code/ColorizerTools.js" as ColorizerTools
 Item{
     id: settingsRoot
     readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 3
-    readonly property int spacing: 3
+    readonly property int spacing: 5
 
     property int textShadow: {
         if (textColorIsDark)  {
@@ -43,10 +43,6 @@ Item{
             return 6;
         }
     }
-
-    readonly property real consideredBackColorBrightness: ColorizerTools.colorBrightness(consideredBackColor)
-    readonly property bool consideredBackColorIsDark: textColorBrightness < 127.5
-    readonly property color consideredBackColor: colorizerManager.backgroundColor
 
     readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property bool textColorIsDark: textColorBrightness < 127.5
@@ -58,14 +54,6 @@ Item{
         }
     }
 
-    readonly property color backgroundColor: colorizerManager.highlightColor /*{
-        if ((consideredBackColorIsDark && textColorIsDark)
-                || (!consideredBackColorIsDark && !textColorIsDark)) {
-            return colorizerManager.textColor;
-        }
-
-        return consideredBackColor;
-    }*/
 
     layer.enabled: true
     layer.effect: DropShadow{

@@ -435,7 +435,7 @@ MouseArea {
                 spacing: 2*units.smallSpacing
 
                 Row{
-                    spacing: units.smallSpacing/2
+                    spacing: units.smallSpacing
                     PlasmaComponents.ToolButton {
                         id: configureButton
                         anchors.verticalCenter: parent.verticalCenter
@@ -455,39 +455,43 @@ MouseArea {
                         maximumLineCount: 1
                     }
 
-                    PlasmaComponents.ToolButton{
-                        id: colorizingButton
-                        checkable: true
-                        iconSource: "color-picker"
-                        tooltip: i18n("Enable/Disable painting  for this applet")
+                    Row{
+                        spacing: units.smallSpacing/2
 
-                        onCheckedChanged: {
-                            currentApplet.userBlocksColorizing = !checked;
-                            root.layoutManagerSaveOptions();
+                        PlasmaComponents.ToolButton{
+                            id: colorizingButton
+                            checkable: true
+                            iconSource: "color-picker"
+                            tooltip: i18n("Enable/Disable painting  for this applet")
+
+                            onCheckedChanged: {
+                                currentApplet.userBlocksColorizing = !checked;
+                                root.layoutManagerSaveOptions();
+                            }
                         }
-                    }
 
-                    PlasmaComponents.ToolButton{
-                        id: lockButton
-                        checkable: true
-                        iconSource: checked ? "lock" : "unlock"
-                        tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
+                        PlasmaComponents.ToolButton{
+                            id: lockButton
+                            checkable: true
+                            iconSource: checked ? "lock" : "unlock"
+                            tooltip: i18n("Lock/Unlock the parabolic effect for this applet")
 
-                        onCheckedChanged: {
-                            currentApplet.lockZoom = checked;
-                            root.layoutManagerSaveOptions();
+                            onCheckedChanged: {
+                                currentApplet.lockZoom = checked;
+                                root.layoutManagerSaveOptions();
+                            }
                         }
-                    }
 
-                    PlasmaComponents.ToolButton {
-                        id: closeButton
-                        anchors.verticalCenter: parent.verticalCenter
-                        iconSource: "delete"
-                        tooltip: i18n("Remove applet")
-                        onClicked: {
-                            tooltip.visible = false;
-                            if(currentApplet && currentApplet.applet)
-                                currentApplet.applet.action("remove").trigger();
+                        PlasmaComponents.ToolButton {
+                            id: closeButton
+                            anchors.verticalCenter: parent.verticalCenter
+                            iconSource: "delete"
+                            tooltip: i18n("Remove applet")
+                            onClicked: {
+                                tooltip.visible = false;
+                                if(currentApplet && currentApplet.applet)
+                                    currentApplet.applet.action("remove").trigger();
+                            }
                         }
                     }
                 }

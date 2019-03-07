@@ -73,8 +73,11 @@ Item {
 
     SettingsControls.Button{
         id: rearrangeBtn
-        text: "Rearrange widgets"
-        tooltip: i18n("Rearrange and configure your widgets")
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+
+        text: "Rearrange and configure your widgets"
+        tooltip: i18n("Feel free to move around your widgets and configure them from their tooltips")
         reverseIcon: plasmoid.location === PlasmaCore.Types.RightEdge
 
         textColor: settingsRoot.textColor
@@ -87,35 +90,5 @@ Item {
         onPressed: {
             plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
         }
-
-        states: [
-            ///Left Edge
-            State {
-                name: "normal"
-                when: (plasmoid.location !== PlasmaCore.Types.RightEdge)
-
-                AnchorChanges {
-                    target: rearrangeBtn
-                    anchors{ top:parent.top; left:parent.left; right:undefined}
-                }
-                PropertyChanges{
-                    target: rearrangeBtn;
-                    anchors.leftMargin: units.largeSpacing; anchors.rightMargin:0
-                }
-            },
-            State {
-                name: "right"
-                when: (plasmoid.location === PlasmaCore.Types.RightEdge)
-
-                AnchorChanges {
-                    target: rearrangeBtn
-                    anchors{ top:parent.top; left:undefined; right:parent.right}
-                }
-                PropertyChanges{
-                    target: rearrangeBtn;
-                    anchors.leftMargin:0;    anchors.rightMargin:units.largeSpacing
-                }
-            }
-        ]
     }
 }

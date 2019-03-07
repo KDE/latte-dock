@@ -55,8 +55,8 @@ Item{
         height: buttonRow.height + 2*margin
         radius: 2
         color: appliedBackgroundColor
-        border.width: 1
-        border.color: checked ? appliedBackgroundColor : appliedTextColor
+     //   border.width: 1
+     //   border.color: checked ? appliedBackgroundColor : appliedTextColor
 
         readonly property int margin: 3
 
