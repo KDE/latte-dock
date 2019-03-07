@@ -296,7 +296,7 @@ DragDrop.DropArea {
         if (!Latte.WindowSystem.compositingActive) {
             return 0;
         } else if (latteView && latteView.screenGeometry) {
-            return (latteView.screenGeometry.height/90);
+            return Math.min(10, latteView.screenGeometry.height/90);
         } else {
             return 7;
         }
