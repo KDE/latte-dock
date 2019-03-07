@@ -133,7 +133,7 @@ void SecondaryConfigView::init()
 
 inline Qt::WindowFlags SecondaryConfigView::wFlags() const
 {
-    return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
+    return (flags() | Qt::FramelessWindowHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
 QRect SecondaryConfigView::geometryWhenVisible() const

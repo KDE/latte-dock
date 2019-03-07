@@ -152,7 +152,7 @@ void PrimaryConfigView::init()
 
 inline Qt::WindowFlags PrimaryConfigView::wFlags() const
 {
-    return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
+    return (flags() | Qt::FramelessWindowHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
 QWindow *PrimaryConfigView::secondaryWindow()
