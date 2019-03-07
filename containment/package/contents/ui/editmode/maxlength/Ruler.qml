@@ -20,15 +20,12 @@
 import QtQuick 2.7
 
 import QtQuick.Layouts 1.0
-import QtGraphicalEffects 1.0
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
-
-import "../../../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: rulerItem
@@ -39,9 +36,10 @@ Item{
     opacity: root.editMode ? 1 : 0
 
     property int rulerAnimationTime: 0.8 * root.animationTime
+    property int thicknessMargin: 0
 
     readonly property bool containsMouse: rulerMouseArea.containsMouse
-    readonly property int thickness: theme.defaultFont.pixelSize + rMargin
+    readonly property int thickness: theme.defaultFont.pixelSize
 
     readonly property string tooltip: i18nc("maximum length tooltip, %0% is maximum length percentage","You can use mouse wheel to change maximum length of %0%").arg(plasmoid.configuration.maxLength)
 
@@ -58,9 +56,9 @@ Item{
             return xL;
         } else {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge){
-                return editModeVisual.width - theme.defaultFont.pixelSize;
+                return settingsRoot.width - thickness - thicknessMargin;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge){
-                return 0;
+                return thicknessMargin;
             }
         }
     }
@@ -70,9 +68,9 @@ Item{
             return yL;
         } else {
             if (plasmoid.location === PlasmaCore.Types.BottomEdge){
-                return 0;
+                return thicknessMargin;
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge){
-                return editModeVisual.height - theme.defaultFont.pixelSize;
+                return settingsRoot.height - thickness - thicknessMargin;
             }
         }
 
@@ -80,7 +78,7 @@ Item{
 
     property int length: userMaxLength
 
-    property int rMargin: 3
+    property int thickMargin: 3
     property int xL: 0
     property int yL: 0
 
@@ -121,25 +119,6 @@ Item{
             } else {
                 return;
             }
-        }
-    }
-
-
-    property int textShadow: {
-        if (textColorIsDark)  {
-            return 1;
-        } else {
-            return 6;
-        }
-    }
-
-    readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
-    readonly property bool textColorIsDark: textColorBrightness < 127.5
-    readonly property color textColor: {
-        if (editModeVisual.opacity <= 0.4) {
-            return colorizerManager.applyColor;
-        } else {
-            return latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF";
         }
     }
 
@@ -188,9 +167,9 @@ Item{
 
         x: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                return -rMargin;
+                return -thickMargin;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                return rMargin;
+                return thickMargin;
             } else {
                 return 0;
             }
@@ -198,9 +177,9 @@ Item{
 
         y: {
             if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                return rMargin;
+                return thickMargin;
             } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                return -rMargin;
+                return -thickMargin;
             } else {
                 return 0;
             }
@@ -230,20 +209,12 @@ Item{
             }
         }
 
-        layer.enabled: true
-        layer.effect: DropShadow{
-            radius: textShadow
-            fast: true
-            samples: 2 * radius
-            color: root.appShadowColorSolid
-        }
-
         Rectangle{
             id: startLine
             width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
 
-            color: textColor
+            color: settingsRoot.textColor
         }
 
         Item{
@@ -260,7 +231,7 @@ Item{
                 height: width
                 rotation: 45
 
-                color: textColor
+                color: settingsRoot.textColor
             }
         }
 
@@ -275,7 +246,7 @@ Item{
 
                 anchors.centerIn: parent
 
-                color: textColor
+                color: settingsRoot.textColor
             }
         }
 
@@ -290,7 +261,7 @@ Item{
                 anchors.centerIn: parent
 
                 text: i18n("Maximum Length")
-                color: textColor
+                color: settingsRoot.textColor
 
                 transformOrigin: Item.Center
 
@@ -323,7 +294,7 @@ Item{
 
                 anchors.centerIn: parent
 
-                color: textColor
+                color: settingsRoot.textColor
             }
         }
 
@@ -340,7 +311,7 @@ Item{
                 height: width
                 rotation: 45
 
-                color: textColor
+                color: settingsRoot.textColor
             }
         }
 
@@ -349,7 +320,7 @@ Item{
             width: root.isHorizontal ? 2 : theme.defaultFont.pixelSize
             height: root.isVertical ? 2 : theme.defaultFont.pixelSize
 
-            color: textColor
+            color: settingsRoot.textColor
         }
     } // end of grid
 

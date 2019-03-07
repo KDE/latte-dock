@@ -112,7 +112,7 @@ MouseArea{
         mainItem: MouseArea {
             id: tooltipMouseArea
             width: label.width + (2 * units.smallSpacing)
-            height: label.height + (2 * units.smallSpacing)
+            height: label.height
             hoverEnabled: true
             onEntered: hideTooltipTimer.stop();
             onExited: hideTooltipTimer.restart();
