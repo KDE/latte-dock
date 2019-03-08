@@ -33,7 +33,10 @@ Item {
     width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parent.width : parent.height
     height: thickness
 
+    readonly property bool containsMouse: rearrangeBtn.containsMouse
     readonly property int thickness: rearrangeBtn.implicitHeight
+
+    readonly property string tooltip: rearrangeBtn.tooltip
 
     rotation: {
         if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {

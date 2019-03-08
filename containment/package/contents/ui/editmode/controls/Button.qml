@@ -39,6 +39,7 @@ Item{
     property string text: "Default Text"
     property string tooltip: ""
 
+    readonly property bool containsMouse: buttonMouseArea.containsMouse
     readonly property int implicitHeight: visibleButton.height
 
     readonly property color appliedTextColor: checked ? checkedTextColor : textColor
@@ -95,50 +96,6 @@ Item{
         anchors.fill: visibleButton
         hoverEnabled: true
 
-        onEntered: {
-            tooltip.visible = true;
-        }
-
-        onExited: {
-            hideTooltipTimer.restart();
-        }
-
         onClicked: button.pressed();
-    }
-
-    Timer {
-        id: hideTooltipTimer
-        interval: units.longDuration * 2
-        onTriggered: {
-            if (!tooltipMouseArea.containsMouse && !buttonMouseArea.containsMouse) {
-                tooltip.visible = false;
-            }
-        }
-    }
-
-    PlasmaCore.Dialog {
-        id: tooltip
-        visualParent: button
-
-        type: PlasmaCore.Dialog.Dock
-        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.ToolTip
-        location: plasmoid.location
-
-        mainItem: MouseArea {
-            id: tooltipMouseArea
-            width: label.width + (2 * units.smallSpacing)
-            height: label.height
-            hoverEnabled: true
-            onEntered: hideTooltipTimer.stop();
-            onExited: hideTooltipTimer.restart();
-
-            PlasmaComponents.Label {
-                id: label
-                anchors.centerIn: parent
-                textFormat: Text.PlainText
-                maximumLineCount: 1
-                text: button.tooltip
-            }
-        }
     }
 }

@@ -33,6 +33,7 @@ import "../../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: settingsRoot
+    readonly property bool containsMouse: headerSettings.containsMouse || ruler.containsMouse || tooltipMouseArea.containsMouse
     readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 3
     readonly property int spacing: 5
 
@@ -44,6 +45,8 @@ Item{
         }
     }
 
+    property string tooltip: ""
+
     readonly property real textColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property bool textColorIsDark: textColorBrightness < 127.5
     readonly property color textColor: {
@@ -53,7 +56,6 @@ Item{
             return latteView && latteView.managedLayout ? latteView.managedLayout.textColor : "#D7E3FF";
         }
     }
-
 
     layer.enabled: true
     layer.effect: DropShadow{
@@ -72,4 +74,61 @@ Item{
         thicknessMargin: headerSettings.thickness + spacing
         thickMargin: spacing
     }
+
+    //! Tooltip
+    onContainsMouseChanged: {
+        if (containsMouse) {
+            hideTooltipTimer.stop();
+            tooltip.visible = true;
+        } else {
+            hideTooltipTimer.restart();
+        }
+    }
+
+    Binding{
+        target: settingsRoot
+        property: "tooltip"
+        value: {
+            if (ruler.containsMouse) {
+                return ruler.tooltip;
+            } else if (headerSettings.containsMouse) {
+                return headerSettings.tooltip;
+            }
+        }
+    }
+
+    Timer {
+        id: hideTooltipTimer
+        interval: units.longDuration * 2
+        onTriggered: {
+            if (!settingsRoot.containsMouse) {
+                tooltip.visible = false;
+            }
+        }
+    }
+
+    PlasmaCore.Dialog {
+        id: tooltip
+        visualParent: settingsOverlay
+
+        type: PlasmaCore.Dialog.Dock
+        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.ToolTip
+        location: plasmoid.location
+
+        mainItem: MouseArea {
+            id: tooltipMouseArea
+            width: label.width + (2 * units.smallSpacing)
+            height: label.height
+            hoverEnabled: true
+
+            PlasmaComponents.Label {
+                id: label
+                anchors.centerIn: parent
+                textFormat: Text.PlainText
+                maximumLineCount: 1
+                text: settingsRoot.tooltip
+            }
+        }
+    }
+
 }
