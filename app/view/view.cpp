@@ -966,17 +966,7 @@ bool View::event(QEvent *e)
         switch (e->type()) {
             case QEvent::Enter:
                 m_containsMouse = true;
-                if (m_configView && containment()->isUserConfiguring() ) {
-                    ViewPart::PrimaryConfigView *configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
-
-                    if (configView) {
-                        configView->requestActivate();
-
-                        if (configView->secondaryWindow()) {
-                            configView->secondaryWindow()->requestActivate();
-                        }
-                    }
-                }
+                raise();
                 break;
 
             case QEvent::Leave:
