@@ -23,6 +23,7 @@
 // Qt
 #include <QObject>
 #include <QPointer>
+#include <QQuickView>
 #include <QRect>
 
 // Plasma
@@ -42,6 +43,7 @@ class Effects: public QObject
     Q_PROPERTY(bool animationsBlocked READ animationsBlocked NOTIFY animationsBlockedChanged)
     Q_PROPERTY(bool drawShadows READ drawShadows WRITE setDrawShadows NOTIFY drawShadowsChanged)
     Q_PROPERTY(bool drawEffects READ drawEffects WRITE setDrawEffects NOTIFY drawEffectsChanged)
+    Q_PROPERTY(bool settingsMaskSubtracted READ settingsMaskSubtracted WRITE setSettingsMaskSubtracted NOTIFY settingsMaskSubtractedChanged)
 
     //! thickness shadow size when is drawn inside the window from qml
     Q_PROPERTY(int backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
@@ -67,6 +69,9 @@ public:
 
     bool forceDrawCenteredBorders() const;
     void setForceDrawCenteredBorders(bool draw);
+
+    bool settingsMaskSubtracted() const;
+    void setSettingsMaskSubtracted(bool enabled);
 
     int backgroundOpacity() const;
     void setBackgroundOpacity(int opacity);
@@ -97,15 +102,22 @@ signals:
     void maskChanged();
     void innerShadowChanged();
     void rectChanged();
+    void settingsMaskSubtractedChanged();
 
 private slots:
     void init();
+    void updateMask();
+
+private:
+    QRegion subtractedMask();
+    QRegion subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *window);
 
 private:
     bool m_animationsBlocked{false};
     bool m_drawShadows{true};
     bool m_drawEffects{false};
     bool m_forceDrawCenteredBorders{false};
+    bool m_settingsMaskSubtracted{false};
 
     int m_backgroundOpacity{100};
     int m_innerShadow{0};

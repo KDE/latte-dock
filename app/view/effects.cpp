@@ -22,6 +22,7 @@
 // local
 #include "panelshadows_p.h"
 #include "view.h"
+#include "settings/primaryconfigview.h"
 #include "../../liblatte2/types.h"
 
 // Qt
@@ -50,6 +51,7 @@ void Effects::init()
     connect(this, &Effects::backgroundOpacityChanged, this, &Effects::updateEffects);
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
     connect(this, &Effects::rectChanged, this, &Effects::updateEffects);
+    connect(this, &Effects::settingsMaskSubtractedChanged, this, &Effects::updateMask);
 
     connect(this, &Effects::drawShadowsChanged, this, [&]() {
         if (m_view->behaveAsPlasmaPanel()) {
@@ -60,6 +62,7 @@ void Effects::init()
     connect(m_view, &Latte::View::alignmentChanged, this, &Effects::updateEnabledBorders);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateEffects);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateShadows);
+    connect(m_view, &Latte::View::configWindowGeometryChanged, this, &Effects::updateMask);
 
     connect(this, SIGNAL(innerShadowChanged()), m_view->corona(), SIGNAL(availableScreenRectChanged()));
 }
@@ -161,6 +164,76 @@ void Effects::setInnerShadow(int shadow)
     emit innerShadowChanged();
 }
 
+bool Effects::settingsMaskSubtracted() const
+{
+    return m_settingsMaskSubtracted;
+}
+
+void Effects::setSettingsMaskSubtracted(bool enabled)
+{
+    if (m_settingsMaskSubtracted == enabled) {
+        return;
+    }
+
+    m_settingsMaskSubtracted = enabled;
+    emit settingsMaskSubtractedChanged();
+}
+
+QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *window)
+{
+    QRegion subtractedMask = initialRegion;
+
+    if (m_settingsMaskSubtracted && window) {
+        QRect windowMask;
+        //! we need to subtrack the mask areas that overlap with underlying window
+        switch (m_view->location()) {
+            case Plasma::Types::TopEdge:
+                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y() - m_innerShadow));
+                windowMask.setSize(QSize(window->width(), m_innerShadow));
+                break;
+
+            case Plasma::Types::LeftEdge:
+                windowMask.setTopLeft(QPoint(m_mask.right() - m_innerShadow, window->y() - m_view->y()));
+                windowMask.setSize(QSize(m_innerShadow, window->height()));
+                break;
+
+            case Plasma::Types::RightEdge:
+                windowMask.setTopLeft(QPoint(m_mask.x(), window->y() - m_view->y()));
+                windowMask.setSize(QSize(m_innerShadow, window->height()));
+                break;
+
+            case Plasma::Types::BottomEdge:
+                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y()));
+                windowMask.setSize(QSize(window->width(), m_innerShadow));
+                break;
+
+            default:
+                break;
+        }
+
+        subtractedMask = subtractedMask.subtracted(windowMask);
+    }
+
+    return subtractedMask;
+}
+
+QRegion Effects::subtractedMask()
+{
+    QRegion subMask = m_mask;
+
+    if (m_settingsMaskSubtracted && m_view->configView()) {
+        subMask = subtrackedMaskFromWindow(subMask, m_view->configView());
+
+        ViewPart::PrimaryConfigView *primaryConfig = qobject_cast<ViewPart::PrimaryConfigView *>(m_view->configView());
+
+        if (primaryConfig && primaryConfig->secondaryWindow()) {
+            subMask = subtrackedMaskFromWindow(subMask, primaryConfig->secondaryWindow());
+        }
+    }
+
+    return subMask;
+}
+
 QRect Effects::rect() const
 {
     return m_rect;
@@ -198,12 +271,19 @@ void Effects::setMask(QRect area)
         return;
 
     m_mask = area;
+    updateMask();
 
+    // qDebug() << "dock mask set:" << m_mask;
+    emit maskChanged();
+}
+
+void Effects::updateMask()
+{
     if (KWindowSystem::compositingActive()) {
         if (m_view->behaveAsPlasmaPanel()) {
             m_view->setMask(QRect());
         } else {
-            m_view->setMask(m_mask);
+            m_view->setMask(subtractedMask());
         }
     } else {
         //! this is used when compositing is disabled and provides
@@ -220,7 +300,7 @@ void Effects::setMask(QRect area)
         }
 
         m_background->setEnabledBorders(m_enabledBorders);
-        m_background->resizeFrame(area.size());
+        m_background->resizeFrame(m_mask.size());
         QRegion fixedMask = m_background->mask();
         fixedMask.translate(m_mask.x(), m_mask.y());
 
@@ -231,9 +311,6 @@ void Effects::setMask(QRect area)
 
         m_view->setMask(fixedMask);
     }
-
-    // qDebug() << "dock mask set:" << m_mask;
-    emit maskChanged();
 }
 
 void Effects::clearShadows()

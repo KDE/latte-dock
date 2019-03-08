@@ -170,6 +170,8 @@ public:
     bool settingsWindowIsShown();
     void showSettingsWindow();
 
+    PlasmaQuick::ConfigView *configView();
+
     ViewPart::Effects *effects() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
@@ -226,6 +228,7 @@ signals:
     void alignmentChanged();
     void behaveAsPlasmaPanelChanged();
     void byPassWMChanged();
+    void configWindowGeometryChanged(); // is called from config windows
     void contextMenuIsShownChanged();
     void dockLocationChanged();
     void editThicknessChanged();

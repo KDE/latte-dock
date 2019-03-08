@@ -153,7 +153,7 @@ DragDrop.DropArea {
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isReady: !(dockIsHidden || inSlidingIn || inSlidingOut)
     property bool isVertical: !isHorizontal
-    property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) && (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
+    property bool isHovered: latteApplet ? ((latteAppletHoveredIndex !== -1) || (layoutsContainer.hoveredIndex !== -1)) //|| wholeArea.containsMouse
                                          : (layoutsContainer.hoveredIndex !== -1) //|| wholeArea.containsMouse
     property bool mouseWheelActions: plasmoid.configuration.mouseWheelActions
     property bool normalState : false

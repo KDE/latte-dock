@@ -96,7 +96,7 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
-    QWindow *secondaryWindow();
+    QQuickView *secondaryWindow();
 
 public slots:
     Q_INVOKABLE void hideConfigWindow();

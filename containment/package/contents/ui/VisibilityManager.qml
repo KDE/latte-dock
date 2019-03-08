@@ -184,6 +184,21 @@ Item{
     }
 
     Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
+        property: "settingsMaskSubtracted"
+        when: latteView && latteView.effects
+        value: {
+            if (Latte.WindowSystem.compositingActive
+                    && editModeVisual.editAnimationEnded
+                    && !root.isHovered) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
         property: "enabled"
         when: latteView && latteView.windowsTracker

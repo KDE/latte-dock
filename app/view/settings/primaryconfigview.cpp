@@ -155,7 +155,7 @@ inline Qt::WindowFlags PrimaryConfigView::wFlags() const
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
-QWindow *PrimaryConfigView::secondaryWindow()
+QQuickView *PrimaryConfigView::secondaryWindow()
 {
     return m_secConfigView;
 }
@@ -246,7 +246,9 @@ void PrimaryConfigView::syncGeometry()
     }
 
     updateShowInlineProperties();
+
     m_latteView->raise();
+    emit m_latteView->configWindowGeometryChanged();
 }
 
 void PrimaryConfigView::syncSlideEffect()

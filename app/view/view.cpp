@@ -323,6 +323,11 @@ void View::showSettingsWindow()
     }
 }
 
+PlasmaQuick::ConfigView *View::configView()
+{
+    return m_configView;
+}
+
 void View::showConfigurationInterface(Plasma::Applet *applet)
 {
     if (!applet || !applet->containment())
