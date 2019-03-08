@@ -430,6 +430,11 @@ bool WaylandInterface::isValidWindow(const KWayland::Client::PlasmaWindow *w) co
 
 void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
 {
+    //! all Latte related windows must be on KeepAbove state
+    if (w->appId()==QLatin1String("latte-dock") && !w->isKeepAbove()) {
+        w->requestToggleKeepAbove ();
+    }
+
     if (!isValidWindow(w)) return;
 
     if (!mapper) mapper = new QSignalMapper(this);
