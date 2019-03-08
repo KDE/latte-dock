@@ -625,7 +625,7 @@ Item {
                 restoreAnimation.stop();
             }
 
-            if (!root.editMode && !(isSeparator || isSpacer)) {
+            if (!(isSeparator || isSpacer)) {
                 root.showTooltipLabel(appletItem, applet.title);
             }
 
