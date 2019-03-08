@@ -193,7 +193,7 @@ QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *win
                 break;
 
             case Plasma::Types::LeftEdge:
-                windowMask.setTopLeft(QPoint(m_mask.right() - m_innerShadow, window->y() - m_view->y()));
+                windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_innerShadow, window->y() - m_view->y()));
                 windowMask.setSize(QSize(m_innerShadow, window->height()));
                 break;
 
