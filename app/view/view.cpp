@@ -971,7 +971,10 @@ bool View::event(QEvent *e)
         switch (e->type()) {
             case QEvent::Enter:
                 m_containsMouse = true;
-                raise();
+
+                if (m_configView) {
+                    m_configView->requestActivate();
+                }
                 break;
 
             case QEvent::Leave:

@@ -210,8 +210,6 @@ void SecondaryConfigView::syncGeometry()
     if (m_parent) {
         m_parent->requestActivate();
     }
-
-    m_latteView->raise();
 }
 
 void SecondaryConfigView::syncSlideEffect()

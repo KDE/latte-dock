@@ -152,7 +152,7 @@ void PrimaryConfigView::init()
 
 inline Qt::WindowFlags PrimaryConfigView::wFlags() const
 {
-    return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
+    return (flags() | Qt::FramelessWindowHint /*| Qt::WindowStaysOnTopHint*/) & ~Qt::WindowDoesNotAcceptFocus;
 }
 
 QQuickView *PrimaryConfigView::secondaryWindow()
@@ -247,7 +247,6 @@ void PrimaryConfigView::syncGeometry()
 
     updateShowInlineProperties();
 
-    m_latteView->raise();
     emit m_latteView->configWindowGeometryChanged();
 }
 
