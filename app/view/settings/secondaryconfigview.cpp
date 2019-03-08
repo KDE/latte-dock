@@ -65,6 +65,16 @@ SecondaryConfigView::SecondaryConfigView(Latte::View *view, QWindow *parent)
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
+    connect(this, &QQuickView::activeChanged, this, [this]() {
+        if (isActive() && m_parent) {
+            //! forward activation to primary config window
+            //! look at view::cpp -> QEvent::Enter event
+            //! in order for config windows to become on top
+            //! properly when the mouse enters the parent view
+            m_parent->requestActivate();
+        }
+    });
+
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
         setFlags(wFlags());

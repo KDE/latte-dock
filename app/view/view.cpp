@@ -965,10 +965,13 @@ bool View::event(QEvent *e)
 
                     if (configView) {
                         if (configView->secondaryWindow()) {
+                            //! avoid focus-out race between secondary and primary config windows
+                            //! when the secondary window becomes active it will activate
+                            //! the primary config window
                             configView->secondaryWindow()->requestActivate();
+                        } else {
+                            configView->requestActivate();
                         }
-
-                        configView->requestActivate();
                     }
                 }
                 break;
