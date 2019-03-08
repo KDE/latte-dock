@@ -347,7 +347,8 @@ void PrimaryConfigView::focusOutEvent(QFocusEvent *ev)
         return;
     }
 
-    if (!m_blockFocusLost && (!m_secConfigView || (m_secConfigView && !m_secConfigView->isActive()))) {
+    if (!m_blockFocusLost && !m_latteView->containsMouse()
+            && (!m_secConfigView || (m_secConfigView && !m_secConfigView->isActive()))) {
         hideConfigWindow();
     }
 }

@@ -466,6 +466,11 @@ void View::setAlternativesIsShown(bool show)
     emit alternativesIsShownChanged();
 }
 
+bool View::containsMouse() const
+{
+    return m_containsMouse;
+}
+
 bool View::contextMenuIsShown() const
 {
     if (!m_contextMenu) {
@@ -960,23 +965,22 @@ bool View::event(QEvent *e)
 
         switch (e->type()) {
             case QEvent::Enter:
+                m_containsMouse = true;
                 if (m_configView && containment()->isUserConfiguring() ) {
                     ViewPart::PrimaryConfigView *configView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
                     if (configView) {
+                        configView->requestActivate();
+
                         if (configView->secondaryWindow()) {
-                            //! avoid focus-out race between secondary and primary config windows
-                            //! when the secondary window becomes active it will activate
-                            //! the primary config window
                             configView->secondaryWindow()->requestActivate();
-                        } else {
-                            configView->requestActivate();
                         }
                     }
                 }
                 break;
 
             case QEvent::Leave:
+                m_containsMouse = false;
                 engine()->trimComponentCache();
                 break;
 

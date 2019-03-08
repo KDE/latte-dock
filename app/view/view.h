@@ -127,6 +127,8 @@ public:
     bool behaveAsPlasmaPanel() const;
     void setBehaveAsPlasmaPanel(bool behavior);
 
+    bool containsMouse() const;
+
     bool contextMenuIsShown() const;
 
     bool byPassWM() const;
@@ -271,6 +273,7 @@ private:
     bool m_alternativesIsShown{false};
     bool m_behaveAsPlasmaPanel{false};
     bool m_byPassWM{true};
+    bool m_containsMouse{false};
     bool m_inDelete{false};
     bool m_inEditMode{false};
     bool m_isPreferredForShortcuts{false};
