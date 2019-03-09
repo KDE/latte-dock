@@ -316,7 +316,7 @@ Item{
                 FastBlur{
                     id: blur
                     anchors.fill: effectSource
-                    opacity: editModeVisual.opacity * 1.5
+                    opacity: editModeVisual.appliedOpacity * 1.4
 
                     source: effectSource
                     radius: 50

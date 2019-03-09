@@ -51,6 +51,7 @@ Item{
 
     property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
 
+    readonly property real appliedOpacity: imageTiler.opacity
     readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
                                            plasmoid.configuration.editBackgroundOpacity : 1
 
