@@ -149,6 +149,21 @@ void Effects::setBackgroundOpacity(int opacity)
     emit backgroundOpacityChanged();
 }
 
+int Effects::editShadow() const
+{
+    return m_editShadow;
+}
+
+void Effects::setEditShadow(int shadow)
+{
+    if (m_editShadow == shadow) {
+        return;
+    }
+
+    m_editShadow = shadow;
+    emit editShadowChanged();
+}
+
 int Effects::innerShadow() const
 {
     return m_innerShadow;
@@ -188,23 +203,23 @@ QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *win
         //! we need to subtrack the mask areas that overlap with underlying window
         switch (m_view->location()) {
             case Plasma::Types::TopEdge:
-                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y() - m_innerShadow));
-                windowMask.setSize(QSize(window->width(), m_innerShadow));
+                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y() - m_editShadow));
+                windowMask.setSize(QSize(window->width(), m_editShadow));
                 break;
 
             case Plasma::Types::LeftEdge:
-                windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_innerShadow, window->y() - m_view->y()));
-                windowMask.setSize(QSize(m_innerShadow, window->height()));
+                windowMask.setTopLeft(QPoint(m_mask.right() + 1 - m_editShadow, window->y() - m_view->y()));
+                windowMask.setSize(QSize(m_editShadow, window->height()));
                 break;
 
             case Plasma::Types::RightEdge:
                 windowMask.setTopLeft(QPoint(m_mask.x(), window->y() - m_view->y()));
-                windowMask.setSize(QSize(m_innerShadow, window->height()));
+                windowMask.setSize(QSize(m_editShadow, window->height()));
                 break;
 
             case Plasma::Types::BottomEdge:
                 windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y()));
-                windowMask.setSize(QSize(window->width(), m_innerShadow));
+                windowMask.setSize(QSize(window->width(), m_editShadow));
                 break;
 
             default:

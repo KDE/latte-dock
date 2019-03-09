@@ -202,7 +202,8 @@ void PrimaryConfigView::syncGeometry()
     resize(size);
 
     const auto location = m_latteView->containment()->location();
-    const auto sGeometry = m_latteView->screenGeometry();
+    const auto scrGeometry = m_latteView->screenGeometry();
+    const auto availGeometry = m_availableScreenGeometry;
 
     int clearThickness = m_latteView->editThickness();
 
@@ -215,22 +216,22 @@ void PrimaryConfigView::syncGeometry()
     case Plasma::Types::Horizontal: {
         xPos = (m_complexity == Latte::Types::ExpertSettings) ?
                     m_latteView->x() + m_latteView->width() - size.width() :
-                    sGeometry.center().x() - size.width() / 2;
+                    scrGeometry.center().x() - size.width() / 2;
 
         if (location == Plasma::Types::TopEdge) {
-            yPos = sGeometry.y() + clearThickness;
+            yPos = scrGeometry.y() + clearThickness;
         } else if (location == Plasma::Types::BottomEdge) {
-            yPos = sGeometry.y() + sGeometry.height() - clearThickness - size.height();
+            yPos = scrGeometry.y() + scrGeometry.height() - clearThickness - size.height();
         }
     }
         break;
 
     case Plasma::Types::Vertical: {
         if (location == Plasma::Types::LeftEdge) {
-            xPos = sGeometry.x() + clearThickness;
+            xPos = scrGeometry.x() + clearThickness;
             yPos = m_latteView->geometry().center().y() - size.height() / 2;
         } else if (location == Plasma::Types::RightEdge) {
-            xPos = sGeometry.x() + sGeometry.width() - clearThickness - size.width();
+            xPos = scrGeometry.x() + scrGeometry.width() - clearThickness - size.width();
             yPos = m_latteView->geometry().center().y() - size.height() / 2;
         }
     }

@@ -172,6 +172,13 @@ Item{
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
+        property:"editShadow"
+        when: latteView && latteView.effects
+        value: root.editShadow
+    }
+
+    Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
         property:"innerShadow"
         when: latteView && latteView.effects
         value: {

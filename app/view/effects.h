@@ -47,6 +47,7 @@ class Effects: public QObject
 
     //! thickness shadow size when is drawn inside the window from qml
     Q_PROPERTY(int backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
+    Q_PROPERTY(int editShadow READ editShadow WRITE setEditShadow NOTIFY editShadowChanged)
     Q_PROPERTY(int innerShadow READ innerShadow WRITE setInnerShadow NOTIFY innerShadowChanged)
 
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
@@ -76,6 +77,9 @@ public:
     int backgroundOpacity() const;
     void setBackgroundOpacity(int opacity);
 
+    int editShadow() const;
+    void setEditShadow(int shadow);
+
     int innerShadow() const;
     void setInnerShadow(int shadow);
 
@@ -98,6 +102,7 @@ signals:
     void backgroundOpacityChanged();
     void drawShadowsChanged();
     void drawEffectsChanged();
+    void editShadowChanged();
     void enabledBordersChanged();
     void maskChanged();
     void innerShadowChanged();
@@ -120,6 +125,7 @@ private:
     bool m_settingsMaskSubtracted{false};
 
     int m_backgroundOpacity{100};
+    int m_editShadow{0};
     int m_innerShadow{0};
 
     QRect m_rect;
