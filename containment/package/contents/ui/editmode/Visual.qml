@@ -232,7 +232,7 @@ Item{
 
     Connections{
         target: root
-        onThemeColorsChanged: imagaTiler.opacity = editVisual.maxOpacity
+        onThemeColorsChanged: imageTiler.opacity = editVisual.maxOpacity
     }
 
     Connections{
