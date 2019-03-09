@@ -70,6 +70,8 @@ class PrimaryConfigView : public PlasmaQuick::ConfigView
 
     Q_PROPERTY(int complexity READ complexity WRITE setComplexity NOTIFY complexityChanged)
 
+    Q_PROPERTY(QRect availableScreenGeometry READ availableScreenGeometry NOTIFY availableScreenGeometryChanged)
+
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
@@ -92,6 +94,7 @@ public:
     int complexity() const;
     void setComplexity(int complexity);
 
+    QRect availableScreenGeometry() const;
     QRect geometryWhenVisible() const;
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
@@ -105,6 +108,7 @@ public slots:
     Q_INVOKABLE void updateLaunchersForGroup(int groupInt);
 
 signals:
+    void availableScreenGeometryChanged();
     void complexityChanged();
     void enabledBordersChanged();
     void raiseDocksTemporaryChanged();
@@ -144,6 +148,7 @@ private:
     Latte::Types::Visibility m_originalMode{Latte::Types::DodgeActive};
     Latte::Types::SettingsComplexity m_complexity{Latte::Types::BasicSettings};
 
+    QRect m_availableScreenGeometry;
     QRect m_geometryWhenVisible;
 
     QPointer<Latte::View> m_latteView;

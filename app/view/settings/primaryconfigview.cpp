@@ -142,6 +142,9 @@ void PrimaryConfigView::init()
 
     updateEnabledBorders();
 
+    int currentScrId = m_latteView->positioner()->currentScreenId();
+    m_availableScreenGeometry = m_corona->availableScreenRect(currentScrId);
+
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
     syncGeometry();
@@ -175,6 +178,11 @@ void PrimaryConfigView::deleteSecondaryWindow()
     if (m_secConfigView) {
         m_secConfigView->deleteLater();
     }
+}
+
+QRect PrimaryConfigView::availableScreenGeometry() const
+{
+    return m_availableScreenGeometry;
 }
 
 QRect PrimaryConfigView::geometryWhenVisible() const
