@@ -19,6 +19,7 @@
 
 import QtQuick 2.7
 import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.1
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -111,14 +112,18 @@ Item{
         id: tooltip
         visualParent: settingsOverlay
 
-        type: PlasmaCore.Dialog.Dock
-        flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.BypassWindowManagerHint | Qt.ToolTip
+        flags: Qt.WindowStaysOnTopHint | Qt.ToolTip
         location: plasmoid.location
 
         mainItem: MouseArea {
             id: tooltipMouseArea
-            width: label.width + (2 * units.smallSpacing)
-            height: label.height
+            Layout.minimumWidth: label.width + (2 * units.smallSpacing)
+            Layout.preferredWidth: Layout.minimumWidth
+            Layout.maximumWidth: Layout.minimumWidth
+
+            Layout.minimumHeight: label.height
+            Layout.preferredHeight: Layout.minimumHeight
+            Layout.maximumHeight: Layout.minimumHeight
             hoverEnabled: true
 
             PlasmaComponents.Label {
