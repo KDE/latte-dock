@@ -990,7 +990,15 @@ bool View::event(QEvent *e)
                 m_containsMouse = true;
 
                 if (m_configView && KWindowSystem::isPlatformX11()) {
-                    m_configView->requestActivate();
+                    ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+
+                    if (primaryConfigView) {
+                        if (primaryConfigView->secondaryWindow()) {
+                            primaryConfigView->secondaryWindow()->requestActivate();
+                        }
+
+                        primaryConfigView->requestActivate();
+                    }
                 }
                 break;
 

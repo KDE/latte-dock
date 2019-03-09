@@ -82,7 +82,7 @@ FocusScope {
         shadowOpacity: Math.max(0.35, maxOpacity)
         shadowDirection: plasmoid.location
 
-        visible: !Latte.WindowSystem.isPlatformWayland && Latte.WindowSystem.compositingActive //&& latteView.effects.settingsMaskSubtracted
+        visible: !Latte.WindowSystem.isPlatformWayland && Latte.WindowSystem.compositingActive && latteView.effects.settingsMaskSubtracted
 
         readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
                                                plasmoid.configuration.editBackgroundOpacity : 1
