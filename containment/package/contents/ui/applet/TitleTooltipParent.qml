@@ -20,6 +20,7 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item{
@@ -27,8 +28,11 @@ Item{
     width: root.isVertical ?  thickness : size
     height: root.isVertical ? size : thickness
 
-    property int size: 1// root.iconSize
-    property int thickness: (root.zoomFactor * (root.iconSize + root.thickMargins))
+    property int size: 1
+    property int thickness: Math.min(Math.max(minimumThickness, preferredThickness), maximumThickness)
+    property int minimumThickness: 0
+    readonly property int preferredThickness: root.zoomFactor * (root.iconSize + root.thickMargins)
+    property int maximumThickness: 9999
     //border.width: 1
     //border.color: "green"
     //color: "transparent"

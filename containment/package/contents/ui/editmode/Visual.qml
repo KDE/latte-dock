@@ -26,6 +26,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
+import "../applet" as Applet
+
 Item{
     id: editVisual
     width: root.isHorizontal ? (latteView ? latteView.width : root.width) :
@@ -188,6 +190,13 @@ Item{
         id: settingsOverlay
         anchors.fill: parent
         visible: root.editMode
+    }
+
+    Applet.TitleTooltipParent {
+        id: titleTooltipParent
+
+        minimumThickness: visibilityManager.thicknessEditMode
+        maximumThickness: plasmoid.configuration.inConfigureAppletsMode ? visibilityManager.thicknessEditMode : 9999
     }
 
     Connections{

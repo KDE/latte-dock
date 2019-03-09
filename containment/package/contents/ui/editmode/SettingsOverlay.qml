@@ -110,7 +110,7 @@ Item{
 
     PlasmaCore.Dialog {
         id: tooltip
-        visualParent: settingsOverlay
+        visualParent: titleTooltipParent
 
         flags: Qt.WindowStaysOnTopHint | Qt.ToolTip
         location: plasmoid.location
