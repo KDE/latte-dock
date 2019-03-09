@@ -606,21 +606,19 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
                 // because the left and right are those who dodge others docks
                 switch (view->location()) {
                     case Plasma::Types::TopEdge:
-                        available.setTop(dockRect.bottom() + 1);
+                        available.setTop(view->y() + view->normalThickness());
                         break;
 
                     case Plasma::Types::BottomEdge:
-                        available.setBottom(dockRect.top() - 1);
+                        available.setBottom(view->y() + view->height() - view->normalThickness());
                         break;
 
                     case Plasma::Types::LeftEdge:
-                        available.setLeft(dockRect.right() + 1);
-
+                        available.setLeft(view->x() + view->normalThickness());
                         break;
 
                     case Plasma::Types::RightEdge:
-                        available.setRight(dockRect.left() - 1);
-
+                        available.setRight(view->x() + view->width() - view->normalThickness());
                         break;
 
                     default:
