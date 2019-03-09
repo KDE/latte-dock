@@ -26,6 +26,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../layoutmanager.h"
+#include "../../layout/layout.h"
 #include "../../settings/universalsettings.h"
 #include "../../shortcuts/globalshortcuts.h"
 #include "../../shortcuts/shortcutstracker.h"
@@ -93,6 +94,10 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     if (m_corona) {
         connections << connect(m_corona, &Latte::Corona::raiseViewsTemporaryChanged, this, &PrimaryConfigView::raiseDocksTemporaryChanged);
+    }
+
+    if (m_latteView->managedLayout()) {
+        emit m_latteView->managedLayout()->configViewCreated(this);
     }
 }
 

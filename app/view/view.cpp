@@ -758,12 +758,13 @@ void View::setManagedLayout(Layout *layout)
         });
 
         connectionsManagedLayout[0] = connect(m_managedLayout, &Layout::preferredViewForShortcutsChanged, this, &View::preferredViewForShortcutsChangedSlot);
+        connectionsManagedLayout[1] = connect(m_managedLayout, &Latte::Layout::configViewCreated, this, &View::configViewCreated);
     }
 
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (latteCorona->layoutManager()->memoryUsage() == Types::MultipleLayouts) {
-        connectionsManagedLayout[1] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
+        connectionsManagedLayout[2] = connect(latteCorona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, [&]() {
             if (m_managedLayout && m_visibility) {
                 qDebug() << "DOCK VIEW FROM LAYOUT (runningActivitiesChanged) ::: " << m_managedLayout->name()
                          << " - activities: " << m_managedLayout->appliedActivities();
@@ -772,14 +773,14 @@ void View::setManagedLayout(Layout *layout)
             }
         });
 
-        connectionsManagedLayout[2] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
+        connectionsManagedLayout[3] = connect(m_managedLayout, &Layout::activitiesChanged, this, [&]() {
             if (m_managedLayout) {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
             }
         });
 
-        connectionsManagedLayout[3] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
+        connectionsManagedLayout[4] = connect(latteCorona->layoutManager(), &LayoutManager::layoutsChanged, this, [&]() {
             if (m_managedLayout) {
                 applyActivitiesToWindows();
                 emit activitiesChanged();
@@ -788,7 +789,7 @@ void View::setManagedLayout(Layout *layout)
 
         //!IMPORTANT!!! ::: This fixes a bug when closing an Activity all docks from all Activities are
         //! disappearing! With this they reappear!!!
-        connectionsManagedLayout[4] = connect(this, &QWindow::visibleChanged, this, [&]() {
+        connectionsManagedLayout[5] = connect(this, &QWindow::visibleChanged, this, [&]() {
             if (!isVisible() && m_managedLayout) {
                 QTimer::singleShot(100, [this]() {
                     if (m_managedLayout && containment() && !containment()->destroyed()) {
@@ -847,6 +848,16 @@ void View::setBlockHiding(bool block)
         if (m_visibility) {
             m_visibility->setBlockHiding(true);
         }
+    }
+}
+
+void View::configViewCreated(QQuickView *configView)
+{
+    if (m_configView && m_configView!=configView) {
+        //! for each layout only one dock should show its configuration windows
+        //! otherwise we could reach a point that because a settings window
+        //! is below another Latte View its options are not reachable
+        m_configView->deleteLater();
     }
 }
 

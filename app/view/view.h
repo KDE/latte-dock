@@ -257,6 +257,7 @@ signals:
 
 private slots:
     void availableScreenRectChanged();
+    void configViewCreated(QQuickView *configView);
     void hideWindowsForSlidingOut();
     void preferredViewForShortcutsChangedSlot(Latte::View *view);
     void statusChanged(Plasma::Types::ItemStatus);
@@ -304,7 +305,7 @@ private:
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;
 
     //! Connections to release and bound for the managed layout
-    std::array<QMetaObject::Connection, 5> connectionsManagedLayout;
+    std::array<QMetaObject::Connection, 6> connectionsManagedLayout;
 
     KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };

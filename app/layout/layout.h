@@ -27,6 +27,7 @@
 // Qt
 #include <QObject>
 #include <QPointer>
+#include <QQuickView>
 #include <QScreen>
 
 // KDE
@@ -204,6 +205,9 @@ signals:
     //! to use the global shortcuts activations
     void preferredViewForShortcutsChanged(Latte::View *view);
     void preferredForShortcutsTouchedChanged();
+
+    //! used from ConfigView(s) in order to be informed which is one should be shown
+    void configViewCreated(QQuickView *configView);
 
 private slots:
     void loadConfig();
