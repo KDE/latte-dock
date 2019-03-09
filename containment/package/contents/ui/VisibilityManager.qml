@@ -74,7 +74,6 @@ Item{
     //! this is set from indicators when they need extra thickness mask size
     property int indicatorsExtraThickMask: 0
 
-
     Binding{
         target: latteView
         property:"maxThickness"
@@ -198,7 +197,7 @@ Item{
             if (Latte.WindowSystem.compositingActive
                     && root.editMode
                     && editModeVisual.editAnimationEnded
-                    && (!root.isHovered || root.zoomFactor===1) ) {
+                    && (root.animationsNeedBothAxis === 0 || root.zoomFactor===1) ) {
                 return true;
             } else {
                 return false;

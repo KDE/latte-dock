@@ -34,8 +34,8 @@ Item{
 
     Item{
         id: shadow
-        width: root.isHorizontal ? shadowRoot.width + 2*shadowSize : shadowSize
-        height: root.isHorizontal ? shadowSize: shadowRoot.height + 2*shadowSize
+        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowRoot.width + 2*shadowSize : shadowSize
+        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowSize: shadowRoot.height + 2*shadowSize
         opacity: shadowOpacity
 
         clip: true
