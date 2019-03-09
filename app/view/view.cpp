@@ -349,7 +349,9 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
         if (m_configView->applet() == applet) {
             m_configView->setVisible(true);
             //m_configView->show();
-            m_configView->requestActivate();
+            if (KWindowSystem::isPlatformX11()) {
+                m_configView->requestActivate();
+            }
             return;
         } else {
             m_configView->setVisible(false);
@@ -987,7 +989,7 @@ bool View::event(QEvent *e)
             case QEvent::Enter:
                 m_containsMouse = true;
 
-                if (m_configView) {
+                if (m_configView && KWindowSystem::isPlatformX11()) {
                     m_configView->requestActivate();
                 }
                 break;

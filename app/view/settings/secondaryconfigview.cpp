@@ -130,7 +130,7 @@ void SecondaryConfigView::init()
     syncGeometry();
     syncSlideEffect();
 
-    if (m_parent) {
+    if (m_parent && KWindowSystem::isPlatformX11()) {
         m_parent->requestActivate();
     }
 
@@ -213,7 +213,7 @@ void SecondaryConfigView::syncGeometry()
 
     //! after placement request to activate the main config window in order to avoid
     //! rare cases of closing settings window from secondaryConfigView->focusOutEvent
-    if (m_parent) {
+    if (m_parent && KWindowSystem::isPlatformX11()) {
         m_parent->requestActivate();
     }
 }
