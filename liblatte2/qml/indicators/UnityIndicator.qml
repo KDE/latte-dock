@@ -96,7 +96,7 @@ Item{
             anchors.fill: parent
             visible: (rootItem.isTask && rootItem.isWindow) || (rootItem.isApplet && rootItem.isActive)
             color: "transparent"
-            border.width: Math.max(1, rootItem.iconSize / 64)
+            border.width: 1
             border.color: "#606060"
             radius: unityRect.radius
             clip: true
@@ -106,7 +106,7 @@ Item{
                 anchors.margins: parent.border.width
                 radius: unityRect.radius
                 color: "transparent"
-                border.width: parent.border.width
+                border.width: 1
                 border.color: "#25dedede"
             }
         }
