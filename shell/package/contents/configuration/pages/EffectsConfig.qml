@@ -490,6 +490,49 @@ PlasmaComponents.Page {
                     }
                 }
 
+                LatteExtraControls.SubHeader {
+                    Layout.topMargin: units.smallSpacing * 3
+                    isFirstSubCategory: true
+                    text: i18n("Margins")
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: units.smallSpacing * 2
+                    spacing: units.smallSpacing
+
+                    PlasmaComponents.Label {
+                        text: i18n("Distance")
+                        horizontalAlignment: Text.AlignLeft
+                    }
+
+                    LatteExtraControls.Slider {
+                        id: lengthIntMarginSlider
+                        Layout.fillWidth: true
+
+                        value: plasmoid.configuration.lengthIntMargin
+                        from: 0
+                        to: maxMargin
+                        stepSize: 1
+                        wheelEnabled: false
+
+                        readonly property int maxMargin: 25
+
+                        onPressedChanged: {
+                            if (!pressed) {
+                                plasmoid.configuration.lengthIntMargin = value;
+                            }
+                        }
+                    }
+
+                    PlasmaComponents.Label {
+                        text: lengthIntMarginSlider.value + " %"
+                        horizontalAlignment: Text.AlignRight
+                        Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+                        Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+                    }
+                }
+
                 Item {
                     Layout.fillWidth: true
                     Layout.topMargin: units.smallSpacing * 4

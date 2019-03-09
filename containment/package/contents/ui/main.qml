@@ -312,7 +312,7 @@ DragDrop.DropArea {
 
     property int lengthIntMargin: lengthIntMarginFactor * root.iconSize
     property int lengthExtMargin: lengthExtMarginFactor * root.iconSize
-    property real lengthIntMarginFactor: plasmoid.configuration.lengthIntMargin / 100
+    property real lengthIntMarginFactor: plasmoid.configuration.indicatorsEnabled ? plasmoid.configuration.lengthIntMargin / 100 : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
     property real thickMarginFactor: {

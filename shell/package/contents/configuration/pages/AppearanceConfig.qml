@@ -497,54 +497,13 @@ PlasmaComponents.Page {
                 text: i18n("Margins")
             }
 
-            LatteExtraControls.SubHeader {
-                Layout.columnSpan: 3
-                isFirstSubCategory: true
-                text: i18n("Length")
-            }
-
             RowLayout {
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
                 PlasmaComponents.Label {
-                    text: i18n("Internal")
-                    horizontalAlignment: Text.AlignLeft
-                }
-
-                LatteExtraControls.Slider {
-                    id: lengthIntMarginSlider
-                    Layout.fillWidth: true
-
-                    value: plasmoid.configuration.lengthIntMargin
-                    from: 0
-                    to: marginsColumn.maxMargin
-                    stepSize: 1
-                    wheelEnabled: false
-
-                    onPressedChanged: {
-                        if (!pressed) {
-                            plasmoid.configuration.lengthIntMargin = value;
-                        }
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    text: lengthIntMarginSlider.value + " %"
-                    horizontalAlignment: Text.AlignRight
-                    Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
-                    Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
-                }
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.leftMargin: units.smallSpacing * 2
-                spacing: units.smallSpacing
-
-                PlasmaComponents.Label {
-                    text: i18n("External")
+                    text: i18n("Length")
                     horizontalAlignment: Text.AlignLeft
                 }
 
