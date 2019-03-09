@@ -26,7 +26,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
-
 Item{
     id: editVisual
     width: root.isHorizontal ? (latteView ? latteView.width : root.width) :
@@ -55,19 +54,15 @@ Item{
     readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
                                            plasmoid.configuration.editBackgroundOpacity : 1
 
-    Item{
-        id: shadow
-        width: root.isHorizontal ? imageTiler.width + 2*root.editShadow : root.editShadow
-        height: root.isHorizontal ? root.editShadow : imageTiler.height + 2*root.editShadow
-
-        clip: true
+    Latte.ExternalShadow{
+        id: editExternalShadow
+        width: root.isHorizontal ? imageTiler.width : root.editShadow
+        height: root.isHorizontal ? root.editShadow : imageTiler.height
         visible: !editTransition.running && root.editMode && Latte.WindowSystem.compositingActive
 
-        opacity: Math.max(0.35, imageTiler.opacity)
-
-        ExternalShadow{
-            id: editShadow
-        }
+        shadowSize: root.editShadow
+        shadowOpacity: Math.max(0.35, imageTiler.opacity)
+        shadowDirection: plasmoid.location
 
         states: [
             ///topShadow
@@ -76,18 +71,9 @@ Item{
                 when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
 
                 AnchorChanges {
-                    target: shadow
+                    target: editExternalShadow
                     anchors{ top:undefined; bottom:imageTiler.top; left:undefined; right:undefined;
                         horizontalCenter:imageTiler.horizontalCenter; verticalCenter:undefined}
-                }
-                AnchorChanges {
-                    target: editShadow
-                    anchors{ top:parent.top; bottom:undefined; left:parent.left; right:undefined;
-                        horizontalCenter:parent.horizontalCenter; verticalCenter:parent.undefined}
-                }
-                PropertyChanges{
-                    target: editShadow
-                    anchors{ leftMargin: 0; rightMargin:0; topMargin:root.editShadow; bottomMargin:0}
                 }
             },
             ///bottomShadow
@@ -96,18 +82,9 @@ Item{
                 when: (plasmoid.location === PlasmaCore.Types.TopEdge)
 
                 AnchorChanges {
-                    target: shadow
+                    target: editExternalShadow
                     anchors{ top:imageTiler.bottom; bottom:undefined; left:undefined; right:undefined;
                         horizontalCenter:imageTiler.horizontalCenter; verticalCenter:undefined}
-                }
-                AnchorChanges {
-                    target: editShadow
-                    anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
-                        horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: editShadow
-                    anchors{ leftMargin: 0; rightMargin:0; topMargin:0; bottomMargin:root.editShadow}
                 }
             },
             ///leftShadow
@@ -116,18 +93,9 @@ Item{
                 when: (plasmoid.location === PlasmaCore.Types.RightEdge)
 
                 AnchorChanges {
-                    target: shadow
+                    target: editExternalShadow
                     anchors{ top:undefined; bottom:undefined; left:undefined; right:imageTiler.left;
                         horizontalCenter:undefined; verticalCenter:imageTiler.verticalCenter}
-                }
-                AnchorChanges {
-                    target: editShadow
-                    anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
-                        horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: editShadow
-                    anchors{ leftMargin: root.editShadow; rightMargin:0; topMargin:0; bottomMargin:0}
                 }
             },
             ///rightShadow
@@ -136,18 +104,9 @@ Item{
                 when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
 
                 AnchorChanges {
-                    target: shadow
+                    target: editExternalShadow
                     anchors{ top:undefined; bottom:undefined; left:imageTiler.right; right:undefined;
                         horizontalCenter:undefined; verticalCenter:imageTiler.verticalCenter}
-                }
-                AnchorChanges {
-                    target: editShadow
-                    anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
-                        horizontalCenter:undefined; verticalCenter:undefined}
-                }
-                PropertyChanges{
-                    target: editShadow
-                    anchors{ leftMargin: 0; rightMargin:root.editShadow; topMargin:0; bottomMargin:0}
                 }
             }
         ]

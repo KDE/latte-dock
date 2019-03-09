@@ -3,6 +3,7 @@ plugin latte2plugin
 
 GlowPoint 0.2 GlowPoint.qml
 BadgeText 0.2 BadgeText.qml
+ExternalShadow 0.2 ExternalShadow.qml
 LatteIndicator 0.2 indicators/LatteIndicator.qml
 PlasmaIndicator 0.2 indicators/PlasmaIndicator.qml
 UnityIndicator 0.2 indicators/UnityIndicator.qml

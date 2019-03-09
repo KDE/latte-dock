@@ -196,6 +196,7 @@ Item{
         when: latteView && latteView.effects
         value: {
             if (Latte.WindowSystem.compositingActive
+                    && root.editMode
                     && editModeVisual.editAnimationEnded
                     && (!root.isHovered || root.zoomFactor===1) ) {
                 return true;
