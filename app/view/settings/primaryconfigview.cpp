@@ -69,6 +69,7 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     m_screenSyncTimer.setSingleShot(true);
     m_screenSyncTimer.setInterval(100);
 
+    connect(this, &PrimaryConfigView::availableScreenGeometryChanged, this, &PrimaryConfigView::syncGeometry);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::saveConfig);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::updateShowInlineProperties);
     connect(this, &PrimaryConfigView::complexityChanged, this, &PrimaryConfigView::syncGeometry);
@@ -90,6 +91,10 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
 
     connections << connect(m_latteView, &Latte::View::normalThicknessChanged, [&]() {
         m_thicknessSyncTimer.start();
+    });
+
+    connections << connect(m_corona, &Latte::Corona::availableScreenRectChanged, this, [this]() {
+        updateAvailableScreenGeometry();
     });
 
     if (m_corona) {
@@ -146,9 +151,7 @@ void PrimaryConfigView::init()
     QByteArray tempFilePath = "lattedockconfigurationui";
 
     updateEnabledBorders();
-
-    int currentScrId = m_latteView->positioner()->currentScreenId();
-    m_availableScreenGeometry = m_corona->availableScreenRect(currentScrId);
+    updateAvailableScreenGeometry();
 
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
@@ -183,6 +186,14 @@ void PrimaryConfigView::deleteSecondaryWindow()
     if (m_secConfigView) {
         m_secConfigView->deleteLater();
     }
+}
+
+void PrimaryConfigView::updateAvailableScreenGeometry()
+{
+    int currentScrId = m_latteView->positioner()->currentScreenId();
+    m_availableScreenGeometry = m_corona->availableScreenRect(currentScrId);
+
+    emit availableScreenGeometryChanged();
 }
 
 QRect PrimaryConfigView::availableScreenGeometry() const

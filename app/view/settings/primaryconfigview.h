@@ -125,6 +125,7 @@ protected:
 
 private slots:
     void immutabilityChanged(Plasma::Types::ImmutabilityType type);
+    void updateAvailableScreenGeometry();
     void updateEnabledBorders();
     void updateShowInlineProperties();
 
