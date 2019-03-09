@@ -77,6 +77,12 @@ PrimaryConfigView::PrimaryConfigView(Plasma::Containment *containment, Latte::Vi
     connections << connect(&m_screenSyncTimer, &QTimer::timeout, this, [this]() {
         setScreen(m_latteView->screen());
         setFlags(wFlags());
+
+        if (KWindowSystem::isPlatformX11()) {
+            KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
+            KWindowSystem::setOnAllDesktops(winId(), true);
+        }
+
         syncGeometry();
         syncSlideEffect();
     });
@@ -404,6 +410,7 @@ void PrimaryConfigView::setupWaylandIntegration()
 
         m_shellSurface = interface->createSurface(s, this);
         m_shellSurface->setSkipTaskbar(true);
+        m_shellSurface->setSkipSwitcher(true);
 
         syncGeometry();
     }
