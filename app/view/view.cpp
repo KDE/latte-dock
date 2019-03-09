@@ -857,7 +857,11 @@ void View::configViewCreated(QQuickView *configView)
         //! for each layout only one dock should show its configuration windows
         //! otherwise we could reach a point that because a settings window
         //! is below another Latte View its options are not reachable
-        m_configView->deleteLater();
+        auto configDialog = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+
+        if (configDialog) {
+            configDialog->hideConfigWindow();
+        }
     }
 }
 
