@@ -197,7 +197,7 @@ Item{
         value: {
             if (Latte.WindowSystem.compositingActive
                     && editModeVisual.editAnimationEnded
-                    && !root.isHovered) {
+                    && (!root.isHovered || root.zoomFactor===1) ) {
                 return true;
             } else {
                 return false;

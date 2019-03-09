@@ -203,7 +203,7 @@ QRegion Effects::subtrackedMaskFromWindow(QRegion initialRegion, QQuickView *win
         //! we need to subtrack the mask areas that overlap with underlying window
         switch (m_view->location()) {
             case Plasma::Types::TopEdge:
-                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y() - m_editShadow));
+                windowMask.setTopLeft(QPoint(window->x() - m_view->x(), m_mask.y() + m_mask.height() - m_editShadow));
                 windowMask.setSize(QSize(window->width(), m_editShadow));
                 break;
 
