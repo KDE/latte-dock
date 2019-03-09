@@ -75,8 +75,8 @@ FocusScope {
     //! show an inner shadow similar to Latte::View editShadow in order to
     //! not break the visual user experience
     LatteExtraControls.InnerShadow{
-        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? dialog.width : shadowSize
-        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowSize : dialog.height
+        width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? dialog.width + 2*shadowSize : shadowSize
+        height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? shadowSize : dialog.height + 2*shadowSize
 
         shadowSize: latteView.effects.editShadow
         shadowOpacity: Math.max(0.35, maxOpacity)
