@@ -781,14 +781,14 @@ MouseArea{
                 }
             } else if (mouse.button == Qt.LeftButton){
                 if( !taskItem.isLauncher){
-                    if (root.leftClickAction === Latte.Types.PresentWindows) {
+                    if (root.leftClickAction === Latte.Types.PresentWindows && !(isGroupParent && !Latte.WindowSystem.compositingActive)) {
                         activateTask();
                     } else if (root.leftClickAction === Latte.Types.CycleThroughTasks) {
                         if (isGroupParent)
                             subWindows.activateNextTask();
                         else
                             activateTask();
-                    } else if (root.leftClickAction === Latte.Types.PreviewWindows) {
+                    } else if (root.leftClickAction === Latte.Types.PreviewWindows || !Latte.WindowSystem.compositingActive) {
                         if(windowsPreviewDlg.activeItem !== taskItem){
                             showPreviewWindow();
                         } else {
