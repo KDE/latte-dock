@@ -41,7 +41,7 @@ Item{
     property bool previousNormalState : false // this is only for debugging purposes
     property bool panelIsBiggerFromIconSize: root.useThemePanel && (root.themePanelThickness >= (root.iconSize + root.thickMargin))
 
-    property int animationSpeed: Latte.WindowSystem.compositingActive ? root.durationTime * 1.2 * units.longDuration : 0
+    property int animationSpeed: Latte.WindowSystem.compositingActive ? root.appliedDurationTime * 1.2 * units.longDuration : 0
     property bool inSlidingIn: false //necessary because of its init structure
     property alias inSlidingOut: slidingAnimationAutoHiddenOut.running
     property bool inTempHiding: false
@@ -51,17 +51,17 @@ Item{
                                       -thicknessNormal : thicknessNormal;
 
     property int thicknessAutoHidden: Latte.WindowSystem.compositingActive ?  2 : 1
-    property int thicknessMid:  (1 + (0.65 * (root.zoomFactor-1)))*(root.iconSize+root.thickMargins+extraThickMask) //needed in some animations
+    property int thicknessMid:  (1 + (0.65 * (root.maxZoomFactor-1)))*(root.iconSize+root.thickMargins+extraThickMask) //needed in some animations
     property int thicknessNormal: Math.max(root.iconSize + root.thickMargins + extraThickMask + 1,
                                            root.realPanelSize + root.panelShadow)
-    property int thicknessZoom: ((root.iconSize+root.thickMargins+extraThickMask) * root.zoomFactor) + 2
+    property int thicknessZoom: ((root.iconSize+root.thickMargins+extraThickMask) * root.maxZoomFactor) + 2
     //it is used to keep thickness solid e.g. when iconSize changes from auto functions
-    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.zoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
+    property int thicknessMidOriginal: Math.max(thicknessNormalOriginal,extraThickMask + (1 + (0.65 * (root.maxZoomFactor-1)))*(root.maxIconSize+root.maxThickMargin)) //needed in some animations
     property int thicknessNormalOriginal: !root.behaveAsPlasmaPanel || root.editMode ?
                                               thicknessNormalOriginalValue : root.realPanelSize + root.panelShadow
 
     property int thicknessNormalOriginalValue: root.maxIconSize + (root.maxThickMargin * 2) + extraThickMask + 1
-    property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.zoomFactor) + extraThickMask + 2,
+    property int thicknessZoomOriginal: Math.max( ((root.maxIconSize+(root.maxThickMargin * 2)) * root.maxZoomFactor) + extraThickMask + 2,
                                                  root.realPanelSize + root.panelShadow,
                                                  (Latte.WindowSystem.compositingActive ? thicknessEditMode + root.editShadow : thicknessEditMode))
 
@@ -634,7 +634,7 @@ Item{
 
             if (!manager.inTempHiding) {
                 updateMaskArea();
-            } else if (plasmoid.configuration.durationTime === 0) {
+            } else {
                 sendHideDockDuringLocationChangeFinished();
             }
         }
@@ -649,7 +649,7 @@ Item{
         id: slidingAnimationAutoHiddenIn
 
         PauseAnimation{
-            duration: manager.inTempHiding && root.durationTime>0 ? 500 : 0
+            duration: manager.inTempHiding && animationsEnabled ? 500 : 0
         }
 
         PropertyAnimation {

@@ -286,15 +286,9 @@
       <default>100</default>
       <label>user set dock settings window height scale</label>
     </entry>
-<!-- Tasks properties  -->
-    <entry name="threeColorsWindows" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="dotsOnActive" type="Bool">
-      <default>false</default>
-    </entry>
-    <entry name="reverseLinesPosition" type="Bool">
-      <default>false</default>
+<!-- Animations -->
+    <entry name="animationsEnabled" type="Bool">
+        <default>true</default>
     </entry>
     <entry name="durationTime" type="Enum">
       <choices>
@@ -304,6 +298,31 @@
             <choice name="x3"/>
       </choices>
       <default>2</default>
+    </entry>
+    <entry name="animationLauncherBouncing" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowInAttention" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationNewWindowSliding" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowAddedInGroup" type="Bool">
+        <default>true</default>
+    </entry>
+    <entry name="animationWindowRemovedFromGroup" type="Bool">
+        <default>true</default>
+    </entry>
+<!-- Tasks properties  -->
+    <entry name="threeColorsWindows" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="dotsOnActive" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="reverseLinesPosition" type="Bool">
+      <default>false</default>
     </entry>
     <entry name="launchersGroup" type="Enum">
       <choices>

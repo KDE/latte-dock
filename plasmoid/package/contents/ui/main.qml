@@ -217,6 +217,18 @@ Item {
     property int tasksWidth: mouseHandler.width
     property int userPanelPosition: latteView ? latteView.panelAlignment : plasmoid.configuration.plasmoidPosition
 
+    //! Animations
+    property bool animationsEnabled: latteView ? latteView.animationsEnabled : durationTime !== 0
+    property bool animationLauncherBouncing: latteView ? latteView.animationLauncherBouncing : durationTime !== 0
+    property bool animationWindowInAttention: latteView ? latteView.animationWindowInAttention : durationTime !== 0
+    property bool animationNewWindowSliding: latteView ? latteView.animationNewWindowSliding : durationTime !== 0
+    property bool animationWindowAddedInGroup: latteView ? latteView.animationWindowAddedInGrou : durationTime !== 0
+    property bool animationWindowRemovedFromGroup: latteView ? latteView.animationWindowRemovedFromGroup : durationTime !== 0
+
+    property real animationsZoomFactor: latteView ? latteView.animationsZoomFactor : durationTime === 0 ? 1 : 1.65
+    property real maxZoomFactor: latteView ? latteView.maxZoomFactor : Math.max(zoomFactor, animationsZoomFactor)
+
+    property real appliedDurationTime: animationsEnabled ? durationTime : 2
     property real durationTime: latteView ? latteView.durationTime : plasmoid.configuration.durationTime
     property real zoomFactor: latteView ? latteView.zoomFactor : ( 1 + (plasmoid.configuration.zoomLevel / 20) )
 

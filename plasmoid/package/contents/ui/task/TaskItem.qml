@@ -126,7 +126,7 @@ MouseArea{
     property bool pressed: false
     property bool wheelIsBlocked: false
 
-    property int animationTime: root.durationTime * 1.2 * units.shortDuration
+    property int animationTime: (animationsEnabled ? root.durationTime : 2) * (1.2 *units.shortDuration)
     property int badgeIndicator: 0 //it is used from external apps
     property int hoveredIndex: icList.hoveredIndex
     property int itemIndex: index

@@ -76,7 +76,7 @@ DragDrop.DropArea {
         if (!latteView || !latteView.visibility)
             return false;
 
-        return (visibilityManager.panelIsBiggerFromIconSize && (zoomFactor === 1.0)
+        return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
                 && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
                 && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidStylePanel && panelShadowsActive));
     }
@@ -331,7 +331,6 @@ DragDrop.DropArea {
     //! to be always correctly centered
     property int thickMargins: 2 * thickMargin
 
-
     //it is used in order to not break the calculations for the thickness placement
     //especially in automatic icon sizes calculations
     property int maxThickMargin: thickMarginFactor * maxIconSize
@@ -347,7 +346,7 @@ DragDrop.DropArea {
                                                   ( plasmoid.configuration.panelPosition === Latte.Types.Justify ?
                                                        Latte.Types.Center : plasmoid.configuration.panelPosition )
 
-    property real zoomFactor: (Latte.WindowSystem.compositingActive && durationTime>0) ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
+    property real zoomFactor: Latte.WindowSystem.compositingActive ? ( 1 + (plasmoid.configuration.zoomLevel / 20) ) : 1
 
     readonly property string plasmoidName: "org.kde.latte.plasmoid"
 
@@ -424,10 +423,24 @@ DragDrop.DropArea {
     property int launchersGroup: plasmoid.configuration.launchersGroup
     property int tasksCount: latteApplet ? latteApplet.tasksCount : 0
 
+    //! Animations
+    property bool animationsEnabled: plasmoid.configuration.animationsEnabled && Latte.WindowSystem.compositingActive
+    property bool animationLauncherBouncing: animationsEnabled && latteApplet && plasmoid.configuration.animationLauncherBouncing
+    property bool animationWindowInAttention: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowInAttention
+    property bool animationNewWindowSliding: animationsEnabled && latteApplet && plasmoid.configuration.animationNewWindowSliding
+    property bool animationWindowAddedInGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowAddedInGrou
+    property bool animationWindowRemovedFromGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowRemovedFromGroup
+
+    property real appliedDurationTime: animationsEnabled ? durationTime : 2
     property real durationTime: {
-        if ((latteView && latteView.effects && latteView.effects.animationsBlocked) || !Latte.WindowSystem.compositingActive) {
+        if (!animationsEnabled) {
             return 0;
         }
+
+        /*if ((latteView && latteView.effects && latteView.effects.animationsBlocked)
+                || !animationsEnabled) {
+            return 0;
+        }*/
 
         if (plasmoid.configuration.durationTime === 0 || plasmoid.configuration.durationTime === 2 )
             return plasmoid.configuration.durationTime;
@@ -439,6 +452,20 @@ DragDrop.DropArea {
 
         return 2;
     }
+
+    property real animationsZoomFactor : {
+        if (!animationsEnabled) {
+            return 1;
+        }
+
+        if (latteApplet && (animationLauncherBouncing || animationWindowInAttention || animationWindowAddedInGroup)) {
+            return 1.65;
+        }
+
+        return 1;
+    }
+
+    property real maxZoomFactor: Math.max(zoomFactor, animationsZoomFactor)
 
     property rect screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
 

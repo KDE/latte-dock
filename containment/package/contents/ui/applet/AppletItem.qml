@@ -94,7 +94,7 @@ Item {
                                                                                            ||((index === layoutsContainer.mainLayout.beginIndex+layoutsContainer.mainLayout.count-2)&&(layoutsContainer.mainLayout.count>2))
                                                                                            ||((index === layoutsContainer.endLayout.beginIndex+layoutsContainer.endLayout.count-1)&&(layoutsContainer.endLayout.count>1)))
 
-    property int animationTime: root.durationTime* (1.2 *units.shortDuration) // 70
+    property int animationTime: appliedDurationTime * (1.2 *units.shortDuration)
     property int hoveredIndex: layoutsContainer.hoveredIndex
     property int index: -1
     property int maxWidth: root.isHorizontal ? root.height : root.width
