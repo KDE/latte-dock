@@ -64,7 +64,15 @@ Item{
     // @since: 0.9
     readonly property bool applyPalette: !latteSideColoringEnabled ? colorizerManager.mustBeShown : false
 
-    // NAME: applyPalette
+    // NAME: parabolicEffectEnabled
+    //   USAGE: read-only
+    //   EXPLANATION: Parabolic Effect is enabled or not for this Latte View
+    //   USE CASE: it can be used from applets that want to be adjusted based
+    //       on the parabolic Effect or not
+    // @since: 0.9
+    readonly property bool parabolicEffectEnabled: root.parabolicEffectEnabled && !appletItem.lockZoom
+
+    // NAME: iconSize
     //   USAGE: read-only
     //   EXPLANATION: The current icon size used in the Latte View
     //   USE CASE: it can be used from applets that want their size to be always

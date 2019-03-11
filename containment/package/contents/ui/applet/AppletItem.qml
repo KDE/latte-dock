@@ -60,7 +60,7 @@ Item {
 
     property bool userBlocksColorizing: false
     property bool appletBlocksColorizing: !communicator.latteSideColoringEnabled
-    property bool appletBlocksParabolicEffect: !communicator.parabolicEffectEnabled
+    property bool appletBlocksParabolicEffect: communicator.parabolicEffectLocked
     property bool lockZoom: false
 
     property bool indicatorNeedsIconColors: false
@@ -219,8 +219,8 @@ Item {
                    || (applet && root.isVertical && (applet.height > maxSize || applet.Layout.minimumHeight > maxOfMinSize)))
                   && (applet && applet.pluginName !== "org.kde.plasma.panelspacer" && (applet.pluginName !== "org.kde.latte.spacer"))
                   && !communicator.canShowOverlaiedLatteIcon)
-                    || (isSystray)
-                    || (appletItem.needsFillSpace) ) {
+                    || isSystray
+                    || appletItem.needsFillSpace) {
                 appletItem.canBeHovered = false;
             }
             else{
@@ -313,13 +313,6 @@ Item {
             appletItem.latteApplet.signalActionsBlockHiding.connect(slotActionsBlockHiding);
             appletItem.latteApplet.signalPreviewsShown.connect(slotPreviewsShown);
             appletItem.latteApplet.clearZoomSignal.connect(titleTooltipDialog.hide);
-        }
-    }
-
-    onLatteSpacerChanged: {
-        if(appletItem.latteSpacer){
-            latteSpacer.latteDock = root;
-            //appletItem.lockZoom = true;
         }
     }
 
@@ -597,7 +590,7 @@ Item {
         id: appletMouseArea
 
         anchors.fill: parent
-        enabled: applet && !latteApplet && canBeHovered && !lockZoom && communicator.parabolicEffectEnabled
+        enabled: applet && !latteApplet && canBeHovered && !lockZoom && !communicator.parabolicEffectLocked
         hoverEnabled: latteApplet ? false : true
         propagateComposedEvents: true
 
@@ -605,7 +598,7 @@ Item {
         //! only to support springloading for plasma 5.10
         //! also on this is based the tooltips behavior by enabling it
         //! plasma tooltips are disabled
-        visible: applet && !appletItem.latteApplet && !lockZoom && communicator.parabolicEffectEnabled
+        visible: applet && !appletItem.latteApplet && !lockZoom && !communicator.parabolicEffectLocked
                  && canBeHovered && !appletItem.isSeparator
 
         property bool blockWheel: false
@@ -617,7 +610,7 @@ Item {
         }
 
         onEntered: {
-            if (containsMouse && !appletItem.lockZoom && communicator.parabolicEffectEnabled && appletItem.canBeHovered){
+            if (containsMouse && !appletItem.lockZoom && !communicator.parabolicEffectLocked && appletItem.canBeHovered){
                 root.stopCheckRestoreZoomTimer();
             }
 
@@ -640,7 +633,7 @@ Item {
                 layoutsContainer.hoveredIndex = index;
             }
 
-            if (lockZoom || !communicator.parabolicEffectEnabled || !canBeHovered) {
+            if (lockZoom || communicator.parabolicEffectLocked || !canBeHovered) {
                 return;
             }
 

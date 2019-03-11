@@ -37,6 +37,10 @@ Item{
         if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
 
+        if (isSeparator && root.parabolicEffectEnabled && root.isHorizontal) {
+            return -1;
+        }
+
         //! width for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (appletItem.needsFillSpace && root.isHorizontal) {
             if (root.panelAlignment !== Latte.Types.Justify) {
@@ -63,6 +67,10 @@ Item{
     height: {
         if (appletItem.isInternalViewSplitter && !root.editMode)
             return 0;
+
+        if (isSeparator && root.parabolicEffectEnabled && root.isVertical) {
+            return -1;
+        }
 
         //! height for applets that use fillWidth/fillHeight such plasma taskmanagers and AWC
         if (appletItem.needsFillSpace && root.isVertical) {
@@ -156,8 +164,11 @@ Item{
             console.log("MaxH "+applet.Layout.maximumHeight);
             console.log("FillH "+applet.Layout.fillHeight);
             console.log("-----");
-            console.log("Real Width: "+applet.width);
-            console.log("Real Height: "+applet.height);
+            console.log("Real Applet Width: "+applet.width);
+            console.log("Real Applet Height: "+applet.height);
+            console.log("-----");
+            console.log("Real Wrapper Width: "+wrapper.width);
+            console.log("Real Wrapper Height: "+wrapper.height);
             console.log("-----");
             console.log("Can be hovered: " + canBeHovered);
             console.log("Icon size: " + root.iconSize);

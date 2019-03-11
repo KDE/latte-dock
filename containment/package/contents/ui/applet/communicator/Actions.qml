@@ -64,8 +64,8 @@ Item{
             mainCommunicator.latteIconOverlayEnabled = value;
         } else if (parameter === "activeIndicatorEnabled") {
             mainCommunicator.activeIndicatorEnabled = value;
-        } else if (parameter === "parabolicEffectEnabled") {
-            mainCommunicator.parabolicEffectEnabled = value;
+        } else if (parameter === "parabolicEffectLocked") {
+            mainCommunicator.parabolicEffectLocked = value;
         }
     }
 
@@ -76,8 +76,8 @@ Item{
             return mainCommunicator.latteIconOverlayEnabled;
         } else if (parameter === "activeIndicatorEnabled") {
             return mainCommunicator.activeIndicatorEnabled;
-        } else if (parameter === "parabolicEffectEnabled") {
-            return mainCommunicator.parabolicEffectEnabled;
+        } else if (parameter === "parabolicEffectLocked") {
+            return mainCommunicator.parabolicEffectLocked;
         }
 
         return null;

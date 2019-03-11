@@ -143,6 +143,8 @@ DragDrop.DropArea {
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.managedLayout && latteView.managedLayout.background.startsWith("/")) ?
                                                            true : false
 
+    readonly property bool parabolicEffectEnabled: zoomFactor>1 && !(root.editMode && plasmoid.configuration.inConfigureAppletsMode)
+
     property bool dockIsShownCompletely: !(dockIsHidden || inSlidingIn || inSlidingOut) && !root.editMode
     property bool immutable: plasmoid.immutable
     property bool inFullJustify: (plasmoid.configuration.panelPosition === Latte.Types.Justify) && (plasmoid.configuration.maxLength===100)
