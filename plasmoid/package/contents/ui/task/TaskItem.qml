@@ -250,7 +250,13 @@ MouseArea{
                 taskItem.slotPublishGeometries();
             }
 
-            previousCount = windowsCount;
+            //! workaround in order to update correctly the previousCount
+            //! windowsCount can not return to zero because is such case
+            //! the window task is removed and the launcher is added from
+            //! libtaskmanager
+            if (windowsCount>=1) {
+                previousCount = windowsCount;
+            }
         }
     }
 
