@@ -79,7 +79,7 @@ Item {
     property bool isZoomed: false
     property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
                                           || applet.pluginName === "org.kde.latte.separator")
-    property bool isSpacer: latteSpacer !== null
+    property bool isSpacer: applet && (applet.pluginName === "org.kde.latte.spacer")
     property bool isSystray: applet && (applet.pluginName === "org.kde.plasma.systemtray" || applet.pluginName === "org.nomad.systemtray" )
 
     property bool firstChildOfStartLayout: (index === layoutsContainer.startLayout.beginIndex)
@@ -117,8 +117,8 @@ Item {
     property Item applet: null
     property Item latteApplet: applet && (applet.pluginName === root.plasmoidName) ?
                                    (applet.children[0] ? applet.children[0] : null) : null
-    property Item latteSpacer: applet && (applet.pluginName === "org.kde.latte.spacer") ?
-                                   (applet.children[0] ? applet.children[0] : null) : null
+    property Item latteStyleApplet: applet && ((applet.pluginName === "org.kde.latte.spacer") || (applet.pluginName === "org.kde.latte.separator")) ?
+                                        (applet.children[0] ? applet.children[0] : null) : null
 
     property Item appletWrapper: applet &&
                                  ((applet.pluginName === root.plasmoidName) ||

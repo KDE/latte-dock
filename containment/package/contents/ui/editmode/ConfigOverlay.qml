@@ -41,8 +41,7 @@ MouseArea {
     focus: true
 
     cursorShape: {
-        if (currentApplet && tooltip.visible && currentApplet.applet
-                && (currentApplet.applet.pluginName === "org.kde.latte.spacer")) {
+        if (currentApplet && tooltip.visible && currentApplet.latteStyleApplet) {
             return root.isHorizontal ? Qt.SizeHorCursor : Qt.SizeVerCursor;
         }
 
@@ -208,16 +207,16 @@ MouseArea {
     }
 
     onWheel: {
-        if (currentApplet && (currentApplet.applet.pluginName !== "org.kde.latte.spacer")) {
+        if (currentApplet && !currentApplet.latteStyleApplet) {
             return;
         }
 
         var angle = wheel.angleDelta.y / 8;
 
         if (angle > 12)
-            currentApplet.latteSpacer.increaseLength();
+            currentApplet.latteStyleApplet.increaseLength();
         else if (angle < 12)
-            currentApplet.latteSpacer.decreaseLength();
+            currentApplet.latteStyleApplet.decreaseLength();
     }
 
     Item {
