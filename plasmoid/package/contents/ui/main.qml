@@ -222,7 +222,7 @@ Item {
     property bool animationLauncherBouncing: latteView ? latteView.animationLauncherBouncing : durationTime !== 0
     property bool animationWindowInAttention: latteView ? latteView.animationWindowInAttention : durationTime !== 0
     property bool animationNewWindowSliding: latteView ? latteView.animationNewWindowSliding : durationTime !== 0
-    property bool animationWindowAddedInGroup: latteView ? latteView.animationWindowAddedInGrou : durationTime !== 0
+    property bool animationWindowAddedInGroup: latteView ? latteView.animationWindowAddedInGroup : durationTime !== 0
     property bool animationWindowRemovedFromGroup: latteView ? latteView.animationWindowRemovedFromGroup : durationTime !== 0
 
     property real animationsZoomFactor: latteView ? latteView.animationsZoomFactor : durationTime === 0 ? 1 : 1.65

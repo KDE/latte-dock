@@ -28,7 +28,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 SequentialAnimation{
     id:newWindowAnimation
 
-    property int speed: root.durationTime*units.longDuration
+    property int speed: root.appliedDurationTime*units.longDuration
     property bool isDemandingAttention: taskItem.inAttention
     property bool containsMouse: taskItem.containsMouse
     property bool needsThicknessSent: false //flag to check if the signal for thickness was sent
@@ -40,7 +40,7 @@ SequentialAnimation{
             PropertyAnimation {
                 target: wrapper
                 property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
-                to: 1 + (thickPercentage * 2 * (root.zoomFactor-1))
+                to: 1 + (thickPercentage * 2 * (root.animationsZoomFactor-1))
                 duration: newWindowAnimation.speed
                 easing.type: Easing.OutQuad
 
@@ -60,7 +60,7 @@ SequentialAnimation{
             target: wrapper
             property: (icList.orientation == Qt.Vertical) ? "tempScaleWidth" : "tempScaleHeight"
             to: 1
-            duration: 3*root.durationTime*newWindowAnimation.speed
+            duration: 3*root.appliedDurationTime*newWindowAnimation.speed
             easing.type: Easing.OutBounce
         }
     }
@@ -120,7 +120,9 @@ SequentialAnimation{
 
     function bounceNewWindow(){
         //if (isDemandingAttention && !root.dockIsHidden && (root.zoomFactor > 1)){
-        if (!root.dockIsHidden && (root.zoomFactor > 1) && (root.durationTime>0)){
+
+        if (!root.dockIsHidden && ((root.animationWindowInAttention && isDemandingAttention)
+                                   || root.animationWindowAddedInGroup)){
             newWindowAnimation.init();
             start();
         }

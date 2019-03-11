@@ -305,94 +305,6 @@ PlasmaComponents.Page {
         }
         //! END: Shadows
 
-        //! BEGIN: Animations
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            spacing: units.smallSpacing
-
-            LatteExtraControls.HeaderSwitch {
-                id: animationsHeader
-                Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
-                Layout.topMargin: units.smallSpacing
-
-                checked: plasmoid.configuration.animationsEnabled
-                text: i18n("Animations")
-                tooltip: i18n("Enable/disable all animations")
-
-                onPressed: {
-                    plasmoid.configuration.animationsEnabled = !plasmoid.configuration.animationsEnabled;
-                }
-            }
-
-            ColumnLayout {
-                spacing: 0
-                enabled: plasmoid.configuration.animationsEnabled
-
-                LatteExtraControls.SubHeader {
-                    Layout.leftMargin: units.smallSpacing * 2
-                    isFirstSubCategory: true
-                    text: i18n("Speed")
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: units.smallSpacing * 2
-                    spacing: 2
-
-                    property int duration: plasmoid.configuration.durationTime
-
-                    ExclusiveGroup {
-                        id: animationsGroup
-                        onCurrentChanged: {
-                            if (current.checked)
-                                plasmoid.configuration.durationTime = current.duration
-                        }
-                    }
-
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("x1")
-                        checked: parent.duration === duration
-                        checkable: true
-                        exclusiveGroup: animationsGroup
-
-                        readonly property int duration: 3
-                    }
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("x2")
-                        checked: parent.duration === duration
-                        checkable: true
-                        exclusiveGroup: animationsGroup
-
-                        readonly property int duration: 2
-                    }
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("x3")
-                        checked: parent.duration === duration
-                        checkable: true
-                        exclusiveGroup: animationsGroup
-
-                        readonly property int duration: 1
-                    }
-                }
-
-                ColumnLayout {
-                    spacing: 0
-                    LatteExtraControls.SubHeader {
-                        Layout.leftMargin: units.smallSpacing * 2
-                        isFirstSubCategory: true
-                        text: i18n("Tasks")
-                    }
-                }
-            }
-        }
-        //! END: Animations
-
         //! BEGIN: Active Indicator
         ColumnLayout{
             spacing: units.smallSpacing
@@ -719,7 +631,7 @@ PlasmaComponents.Page {
 
                 LatteExtraControls.SubHeader {
                     enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
-                    text: i18n("Improvements")
+                    text: i18n("Tasks")
                     visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
                 }
 
@@ -749,5 +661,139 @@ PlasmaComponents.Page {
             }
         }
         //! END: Active Indicator
+
+        //! BEGIN: Animations
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            spacing: units.smallSpacing
+
+            LatteExtraControls.HeaderSwitch {
+                id: animationsHeader
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+                Layout.topMargin: units.smallSpacing
+
+                checked: plasmoid.configuration.animationsEnabled
+                text: i18n("Animations")
+                tooltip: i18n("Enable/disable all animations")
+
+                onPressed: {
+                    plasmoid.configuration.animationsEnabled = !plasmoid.configuration.animationsEnabled;
+                }
+            }
+
+            ColumnLayout {
+                spacing: 0
+                enabled: plasmoid.configuration.animationsEnabled
+
+                LatteExtraControls.SubHeader {
+                    Layout.leftMargin: units.smallSpacing * 2
+                    isFirstSubCategory: true
+                    text: i18n("Speed")
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: units.smallSpacing * 2
+                    spacing: 2
+
+                    property int duration: plasmoid.configuration.durationTime
+
+                    ExclusiveGroup {
+                        id: animationsGroup
+                        onCurrentChanged: {
+                            if (current.checked)
+                                plasmoid.configuration.durationTime = current.duration
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+                        text: i18n("x1")
+                        checked: parent.duration === duration
+                        checkable: true
+                        exclusiveGroup: animationsGroup
+
+                        readonly property int duration: 3
+                    }
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+                        text: i18n("x2")
+                        checked: parent.duration === duration
+                        checkable: true
+                        exclusiveGroup: animationsGroup
+
+                        readonly property int duration: 2
+                    }
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+                        text: i18n("x3")
+                        checked: parent.duration === duration
+                        checkable: true
+                        exclusiveGroup: animationsGroup
+
+                        readonly property int duration: 1
+                    }
+                }
+
+                ColumnLayout {
+                    spacing: units.smallSpacing
+                    visible: latteView.latteTasksPresent()
+
+                    LatteExtraControls.SubHeader {
+                        Layout.leftMargin: units.smallSpacing * 2
+                        text: i18n("Tasks")
+                    }
+
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Bounce launcher when activating")
+                        checked: plasmoid.configuration.animationLauncherBouncing
+
+                        onClicked: {
+                            plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
+                        }
+                    }
+
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Bounce task when it needs attention")
+                        checked: plasmoid.configuration.animationWindowInAttention
+
+                        onClicked: {
+                            plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
+                        }
+                    }
+
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Slide in/out single windows")
+                        checked: plasmoid.configuration.animationNewWindowSliding
+
+                        onClicked: {
+                            plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
+                        }
+                    }
+
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Bounce new windows in grouped tasks")
+                        checked: plasmoid.configuration.animationWindowAddedInGroup
+
+                        onClicked: {
+                            plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
+                        }
+                    }
+
+                    PlasmaComponents.CheckBox {
+                        text: i18n("Slide out closed windows from grouped tasks")
+                        checked: plasmoid.configuration.animationWindowRemovedFromGroup
+
+                        onClicked: {
+                            plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
+                        }
+                    }
+                }
+            }
+        }
+        //! END: Animations
     }
 }

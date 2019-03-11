@@ -41,7 +41,7 @@ Item{
     }
 
     function removeTask(){
-        if(!taskIcon.toBeDestroyed && plasmoid.configuration.showShadows && Latte.WindowSystem.compositingActive){
+        if(!taskIcon.toBeDestroyed && root.animationWindowRemovedFromGroup){
             removingAnimation.init();
         }
     }
@@ -114,7 +114,7 @@ Item{
             ParallelAnimation{
                 id: componentRemoveAnimation
 
-                property int speed: 2*root.durationTime*units.longDuration
+                property int speed: 2*root.appliedDurationTime*units.longDuration
                 property Item removingItem: parent
                 property int toPoint: 0
 

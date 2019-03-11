@@ -428,7 +428,7 @@ DragDrop.DropArea {
     property bool animationLauncherBouncing: animationsEnabled && latteApplet && plasmoid.configuration.animationLauncherBouncing
     property bool animationWindowInAttention: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowInAttention
     property bool animationNewWindowSliding: animationsEnabled && latteApplet && plasmoid.configuration.animationNewWindowSliding
-    property bool animationWindowAddedInGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowAddedInGrou
+    property bool animationWindowAddedInGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowAddedInGroup
     property bool animationWindowRemovedFromGroup: animationsEnabled && latteApplet && plasmoid.configuration.animationWindowRemovedFromGroup
 
     property real appliedDurationTime: animationsEnabled ? durationTime : 2
