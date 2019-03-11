@@ -70,9 +70,21 @@ Item{
 
     //! is used to increase the mask thickness
     readonly property int marginBetweenContentsAndRuler: 10
-    property int extraThickMask: marginBetweenContentsAndRuler + indicatorsExtraThickMask
+    property int extraThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
     //! this is set from indicators when they need extra thickness mask size
     property int indicatorsExtraThickMask: 0
+    property int shadowsExtraThickMask: {
+        var shadowMaxNeededMargin = 0.15 * root.maxIconSize;
+
+        //! give some more space when items shadows are enabled and extremely big
+        if (root.enableShadows && (plasmoid.configuration.shadowSize > 60 && plasmoid.configuration.shadowOpacity > 40)) {
+            if (root.maxThickMargin < shadowMaxNeededMargin) {
+                return shadowMaxNeededMargin - root.maxThickMargin;
+            }
+        }
+
+        return 0;
+    }
 
     Binding{
         target: latteView
