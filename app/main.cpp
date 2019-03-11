@@ -100,6 +100,7 @@ int main(int argc, char **argv)
     parser.addOptions({
         {{"r", "replace"}, i18nc("command line", "Replace the current Latte instance.")}
         , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
+        , {{"cc", "clear-cache"}, i18nc("command line", "Clear qml cache. It can be useful after system upgrades.")}
         , {"default-layout", i18nc("command line", "Import and load default layout on startup.")}
         , {"available-layouts", i18nc("command line", "Print available layouts")}
         , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
@@ -143,6 +144,7 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
+    //! print available-layouts
     if (parser.isSet(QStringLiteral("available-layouts"))) {
         QStringList layouts = Latte::Importer::availableLayouts();
 
@@ -164,6 +166,7 @@ int main(int argc, char **argv)
     int memoryUsage = -1;
     QString layoutNameOnStartup = "";
 
+    //! --default-layout option
     if (parser.isSet(QStringLiteral("default-layout"))) {
         defaultLayoutOnStartup = true;
     } else if (parser.isSet(QStringLiteral("layout"))) {
@@ -176,6 +179,7 @@ int main(int argc, char **argv)
         }
     }
 
+    //! --replace option
     QString username = qgetenv("USER");
 
     if (username.isEmpty())
@@ -200,6 +204,17 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    //! clear-cache option
+    if (parser.isSet(QStringLiteral("clear-cache"))) {
+        QDir cacheDir(QDir::homePath() + "/.cache/lattedock/qmlcache");
+
+        if (cacheDir.exists()) {
+            cacheDir.removeRecursively();
+            qDebug() << "Cache directory found and cleared...";
+        }
+    }
+
+    //! import-full option
     if (parser.isSet(QStringLiteral("import-full"))) {
         bool imported = Latte::Importer::importHelper(parser.value(QStringLiteral("import-full")));
 
@@ -210,6 +225,7 @@ int main(int argc, char **argv)
         }
     }
 
+    //! import-layout option
     if (parser.isSet(QStringLiteral("import-layout"))) {
         QString importedLayout = Latte::Importer::importLayoutHelper(parser.value(QStringLiteral("import-layout")));
 
@@ -222,12 +238,14 @@ int main(int argc, char **argv)
         }
     }
 
+    //! memory usage option
     if (parser.isSet(QStringLiteral("multiple"))) {
         memoryUsage = (int)(Latte::Types::MultipleLayouts);
     } else if (parser.isSet(QStringLiteral("single"))) {
         memoryUsage = (int)(Latte::Types::SingleLayout);
     }
 
+    //! debug/mask options
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask"))) {
         //! set pattern for debug messages
         //! [%{type}] [%{function}:%{line}] - %{message} [%{backtrace}]
