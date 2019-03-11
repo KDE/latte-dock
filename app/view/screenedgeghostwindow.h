@@ -90,10 +90,12 @@ private:
     void setupWaylandIntegration();
 
 private:
+    bool m_delayedContainsMouse{false};
     bool m_containsMouse{false};
     bool m_inDelete{false};
     QRect m_calculatedGeometry;
 
+    QTimer m_delayedMouseTimer;
     QTimer m_fixGeometryTimer;
 
     Latte::View *m_latteView{nullptr};

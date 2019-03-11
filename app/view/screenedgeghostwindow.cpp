@@ -55,6 +55,18 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     m_fixGeometryTimer.setInterval(500);
     connect(&m_fixGeometryTimer, &QTimer::timeout, this, &ScreenEdgeGhostWindow::fixGeometry);
 
+    //! this timer is used in order to avoid fast enter/exit signals during first
+    //! appearing after edge activation
+    m_delayedMouseTimer.setSingleShot(true);
+    m_delayedMouseTimer.setInterval(50);
+    connect(&m_delayedMouseTimer, &QTimer::timeout, this, [this]() {
+        if (m_delayedContainsMouse) {
+            setContainsMouse(true);
+        } else {
+            setContainsMouse(false);
+        }
+    });
+
     connect(this, &QQuickView::xChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
     connect(this, &QQuickView::yChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
     connect(this, &QQuickView::widthChanged, this, &ScreenEdgeGhostWindow::startGeometryTimer);
@@ -135,7 +147,7 @@ KWayland::Client::PlasmaShellSurface *ScreenEdgeGhostWindow::surface()
 void ScreenEdgeGhostWindow::updateGeometry()
 {
     QRect newGeometry;
-    int thickness{2};
+    int thickness{KWindowSystem::compositingActive() ? 4 : 2};
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
         newGeometry.setX(m_latteView->absGeometry().left());
@@ -234,9 +246,15 @@ void ScreenEdgeGhostWindow::setContainsMouse(bool contains)
 bool ScreenEdgeGhostWindow::event(QEvent *e)
 {
     if (e->type() == QEvent::Enter || e->type() == QEvent::DragEnter) {
-        setContainsMouse(true);
+        m_delayedContainsMouse = true;
+        if (!m_delayedMouseTimer.isActive()) {
+            m_delayedMouseTimer.start();
+        }
     } else if (e->type() == QEvent::Leave || e->type() == QEvent::DragLeave) {
-        setContainsMouse(false);
+        m_delayedContainsMouse = false;
+        if (!m_delayedMouseTimer.isActive()) {
+            m_delayedMouseTimer.start();
+        }
     }
 
     return QQuickView::event(e);
