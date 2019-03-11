@@ -98,8 +98,6 @@ MouseArea {
             var item = layoutsContainer.mainLayout.childAt(mouse.x-relevantLayout.x, mouse.y-relevantLayout.y);
 
             if (item && item !== placeHolder) {
-                //      placeHolder.width = item.width;
-                //     placeHolder.height = item.height;
                 placeHolder.parent = configurationArea;
                 var posInItem = mapToItem(item, mouse.x, mouse.y);
 
@@ -161,37 +159,11 @@ MouseArea {
             return;
         }
 
-        /*
-        if (currentApplet.applet.pluginName == "org.kde.plasma.panelspacer") {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                if ((mouse.y - handle.y) < spacerHandleSize) {
-                    configurationArea.isResizingLeft = true;
-                    configurationArea.isResizingRight = false;
-                } else if ((mouse.y - handle.y) > (handle.height - spacerHandleSize)) {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = true;
-                } else {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = false;
-                }
-
-            } else {
-                if ((mouse.x - handle.x) < spacerHandleSize) {
-                    configurationArea.isResizingLeft = true;
-                    configurationArea.isResizingRight = false;
-                } else if ((mouse.x - handle.x) > (handle.width - spacerHandleSize)) {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = true;
-                } else {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = false;
-                }
-            }
-        }*/
-
         var relevantApplet = mapFromItem(currentApplet, 0, 0);
-        appletX = mouse.x - relevantApplet.x;
-        appletY = mouse.y - relevantApplet.y;
+        var rootArea = mapFromItem(root, 0, 0);
+
+        appletX = mouse.x - relevantApplet.x + rootArea.x;
+        appletY = mouse.y - relevantApplet.y + rootArea.y;
 
         lastX = mouse.x;
         lastY = mouse.y;
@@ -316,44 +288,6 @@ MouseArea {
             anchors.centerIn: parent
             opacity: 0.5
         }
-        /*  Rectangle {
-            anchors {
-                left: parent.left
-                top: parent.top
-                bottom: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? parent.bottom : undefined
-                right: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? undefined : parent.right
-            }
-            visible: currentApplet && currentApplet.applet.pluginName == "org.kde.plasma.panelspacer"
-            opacity: visible && !xAnim.running && !yAnim.running ? 1.0 : 0
-            width: configurationArea.spacerHandleSize
-            height: configurationArea.spacerHandleSize
-            color: theme.textColor
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-        Rectangle {
-            anchors {
-                right: parent.right
-                top: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? parent.top : undefined
-                bottom: parent.bottom
-                left: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? undefined : parent.left
-            }
-            visible: currentApplet && currentApplet.applet.pluginName == "org.kde.plasma.panelspacer"
-            opacity: visible && !xAnim.running && !yAnim.running ? 1.0 : 0
-            width: configurationArea.spacerHandleSize
-            height: configurationArea.spacerHandleSize
-            color: theme.textColor
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }*/
 
         Behavior on x {
             enabled: !configurationArea.pressed
