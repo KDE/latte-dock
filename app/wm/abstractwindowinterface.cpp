@@ -90,6 +90,8 @@ void AbstractWindowInterface::updateDefaultScheme()
 {
     QString defaultSchemePath = SchemeColors::possibleSchemeFile("kdeglobals");
 
+    qDebug() << " Windows default color scheme :: " << defaultSchemePath;
+
     SchemeColors *dScheme;
 
     if (!m_schemes.contains(defaultSchemePath)) {
