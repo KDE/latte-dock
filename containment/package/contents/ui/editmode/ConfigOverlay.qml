@@ -34,9 +34,8 @@ MouseArea {
     width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? root.width : thickness
     height: plasmoid.formFactor === PlasmaCore.Types.Vertical ? root.height : thickness
 
-    //enabled: false
-    visible: plasmoid.configuration.inConfigureAppletsMode
-    hoverEnabled: plasmoid.configuration.inConfigureAppletsMode
+    visible: root.inConfigureAppletsMode
+    hoverEnabled: root.inConfigureAppletsMode
 
     focus: true
 

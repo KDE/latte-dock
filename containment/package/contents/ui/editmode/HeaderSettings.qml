@@ -88,10 +88,12 @@ Item {
         checkedTextColor: colorizerManager.highlightedTextColor
         checkedBackgroundColor: colorizerManager.highlightColor
 
-        checked: plasmoid.configuration.inConfigureAppletsMode
+        checked: root.inConfigureAppletsMode
 
         onPressed: {
-            plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
+            if (Latte.WindowSystem.compositingActive) {
+                plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
+            }
         }
     }
 }

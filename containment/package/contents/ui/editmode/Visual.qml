@@ -54,8 +54,7 @@ Item{
     property string layoutColor: latteView && latteView.managedLayout ? latteView.managedLayout.color : "blue"
 
     readonly property real appliedOpacity: imageTiler.opacity
-    readonly property real maxOpacity: Latte.WindowSystem.compositingActive && !plasmoid.configuration.inConfigureAppletsMode ?
-                                           plasmoid.configuration.editBackgroundOpacity : 1
+    readonly property real maxOpacity: root.inConfigureAppletsMode ? 1 : plasmoid.configuration.editBackgroundOpacity
 
     Latte.ExternalShadow{
         id: editExternalShadow
@@ -196,7 +195,7 @@ Item{
         id: titleTooltipParent
 
         minimumThickness: visibilityManager.thicknessEditMode
-        maximumThickness: plasmoid.configuration.inConfigureAppletsMode ? visibilityManager.thicknessEditMode : 9999
+        maximumThickness: root.inConfigureAppletsMode ? visibilityManager.thicknessEditMode : 9999
     }
 
     Connections{
