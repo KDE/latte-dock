@@ -49,7 +49,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || root.editMode ? 5+root.lengthMargins : 0);
+            return root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+root.lengthMargins : 0);
 
         if (root.vertical) {
             return wrapper.width;
@@ -67,7 +67,7 @@ MouseArea{
             return 0;
 
         if (isSeparator)
-            return !root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || root.editMode ? 5+root.lengthMargins: 0);
+            return !root.vertical ? root.iconSize + root.thickMargins : (root.dragSource || !root.parabolicEffectEnabled ? 5+root.lengthMargins: 0);
 
         if (root.vertical) {
             return hiddenSpacerLeft.height + wrapper.height + hiddenSpacerRight.height;

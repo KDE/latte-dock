@@ -156,6 +156,7 @@ Item {
     property bool highlightWindows: latteView ? latteView.hoverAction === Latte.Types.HighlightWindows || latteView.hoverAction === Latte.Types.PreviewAndHighlightWindows :
                                                 plasmoid.configuration.highlightWindows
     property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
+    property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
     property bool reverseLinesPosition: latteView ? latteView.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
     property bool dotsOnActive: latteView ? latteView.dotsOnActive : plasmoid.configuration.dotsOnActive
     property bool showGlow: latteView ? latteView.showGlow : plasmoid.configuration.showGlow
