@@ -206,7 +206,7 @@ MouseArea {
     }
 
     onWheel: {
-        if (currentApplet && !currentApplet.latteStyleApplet) {
+        if (!currentApplet || !currentApplet.latteStyleApplet) {
             return;
         }
 
