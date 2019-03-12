@@ -748,7 +748,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Bounce launcher when activating")
+                        text: i18n("Bounce launchers when trigerred")
                         checked: plasmoid.configuration.animationLauncherBouncing
 
                         onClicked: {
@@ -757,7 +757,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Bounce task when it needs attention")
+                        text: i18n("Bounce tasks that need attention")
                         checked: plasmoid.configuration.animationWindowInAttention
 
                         onClicked: {
@@ -766,7 +766,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Slide in/out single windows")
+                        text: i18n("Single windows slide in and out")
                         checked: plasmoid.configuration.animationNewWindowSliding
 
                         onClicked: {
@@ -775,7 +775,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Bounce new windows in grouped tasks")
+                        text: i18n("Grouped tasks bounce their new windows")
                         checked: plasmoid.configuration.animationWindowAddedInGroup
 
                         onClicked: {
@@ -784,7 +784,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Slide out closed windows from grouped tasks")
+                        text: i18n("Grouped tasks slide out theis closed windows")
                         checked: plasmoid.configuration.animationWindowRemovedFromGroup
 
                         onClicked: {
