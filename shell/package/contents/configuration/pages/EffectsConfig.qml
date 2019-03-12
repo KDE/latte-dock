@@ -305,7 +305,146 @@ PlasmaComponents.Page {
         }
         //! END: Shadows
 
-        //! BEGIN: Active Indicator
+        //! BEGIN: Animations
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing * 2
+            spacing: units.smallSpacing
+
+            LatteExtraControls.HeaderSwitch {
+                id: animationsHeader
+                Layout.fillWidth: true
+                Layout.minimumHeight: implicitHeight
+                Layout.topMargin: units.smallSpacing
+
+                checked: plasmoid.configuration.animationsEnabled
+                text: i18n("Animations")
+                tooltip: i18n("Enable/disable all animations")
+
+                onPressed: {
+                    plasmoid.configuration.animationsEnabled = !plasmoid.configuration.animationsEnabled;
+                }
+            }
+
+            ColumnLayout {
+                spacing: 0
+                enabled: plasmoid.configuration.animationsEnabled
+
+                LatteExtraControls.SubHeader {
+                    Layout.leftMargin: units.smallSpacing * 2
+                    isFirstSubCategory: true
+                    text: i18n("Speed")
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: units.smallSpacing * 2
+                    spacing: 0
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
+
+                        property int duration: plasmoid.configuration.durationTime
+
+                        ExclusiveGroup {
+                            id: animationsGroup
+                            onCurrentChanged: {
+                                if (current.checked)
+                                    plasmoid.configuration.durationTime = current.duration
+                            }
+                        }
+
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18n("x1")
+                            checked: parent.duration === duration
+                            checkable: true
+                            exclusiveGroup: animationsGroup
+
+                            readonly property int duration: 3
+                        }
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18n("x2")
+                            checked: parent.duration === duration
+                            checkable: true
+                            exclusiveGroup: animationsGroup
+
+                            readonly property int duration: 2
+                        }
+                        PlasmaComponents.Button {
+                            Layout.fillWidth: true
+                            text: i18n("x3")
+                            checked: parent.duration === duration
+                            checkable: true
+                            exclusiveGroup: animationsGroup
+
+                            readonly property int duration: 1
+                        }
+                    }
+
+                    ColumnLayout {
+                        spacing: units.smallSpacing
+                        visible: latteView.latteTasksPresent()
+
+                        LatteExtraControls.SubHeader {
+                            Layout.leftMargin: units.smallSpacing * 2
+                            text: i18n("Tasks")
+                        }
+
+                        PlasmaComponents.CheckBox {
+                            text: i18n("Bounce launchers when trigerred")
+                            checked: plasmoid.configuration.animationLauncherBouncing
+
+                            onClicked: {
+                                plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
+                            }
+                        }
+
+                        PlasmaComponents.CheckBox {
+                            text: i18n("Bounce tasks that need attention")
+                            checked: plasmoid.configuration.animationWindowInAttention
+
+                            onClicked: {
+                                plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
+                            }
+                        }
+
+                        PlasmaComponents.CheckBox {
+                            text: i18n("Slide in and out single windows")
+                            checked: plasmoid.configuration.animationNewWindowSliding
+
+                            onClicked: {
+                                plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
+                            }
+                        }
+
+                        PlasmaComponents.CheckBox {
+                            text: i18n("Grouped tasks bounce their new windows")
+                            checked: plasmoid.configuration.animationWindowAddedInGroup
+
+                            onClicked: {
+                                plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
+                            }
+                        }
+
+                        PlasmaComponents.CheckBox {
+                            text: i18n("Grouped tasks slide out theis closed windows")
+                            checked: plasmoid.configuration.animationWindowRemovedFromGroup
+
+                            onClicked: {
+                                plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //! END: Animations
+
+        //! BEGIN: Active Indicator General Settings
         ColumnLayout{
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
@@ -383,54 +522,17 @@ PlasmaComponents.Page {
                 }
 
                 LatteExtraControls.SubHeader {
-                    Layout.topMargin: units.smallSpacing * 3
+                    Layout.topMargin: units.smallSpacing
                     isFirstSubCategory: true
-                    text: i18n("Placement")
+                    text: i18n("Paddings")
                 }
 
                 RowLayout {
                     Layout.fillWidth: true
-                    spacing: 2
-                    visible: dialog.expertLevel
-
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18nc("reversed indicators", "Reverse")
-                        checked: plasmoid.configuration.reverseLinesPosition
-                        checkable: true
-                        tooltip: i18n("Reverse indicators position e.g. from bottom to top")
-
-                        onClicked: {
-                            plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
-                        }
-                    }
-
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("Applets")
-                        checked: plasmoid.configuration.indicatorsForApplets
-                        checkable: true
-                        tooltip: i18n("Show or hide indicators for applets")
-
-                        onClicked: {
-                            plasmoid.configuration.indicatorsForApplets = !plasmoid.configuration.indicatorsForApplets;
-                        }
-                    }
-                }
-
-                LatteExtraControls.SubHeader {
-                    Layout.topMargin: units.smallSpacing * 3
-                    isFirstSubCategory: true
-                    text: i18n("Margins")
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: units.smallSpacing * 2
                     spacing: units.smallSpacing
 
                     PlasmaComponents.Label {
-                        text: i18n("Distance")
+                        text: i18n("Internal")
                         horizontalAlignment: Text.AlignLeft
                     }
 
@@ -461,17 +563,93 @@ PlasmaComponents.Page {
                     }
                 }
 
-                Item {
-                    Layout.fillWidth: true
-                    Layout.topMargin: units.smallSpacing * 4
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
+                LatteExtraControls.SubHeader {
+                    Layout.topMargin: units.smallSpacing
+                    isFirstSubCategory: true
+                    text: i18n("Options")
+                }
 
-                    Rectangle{
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: parent.width * 0.35
-                        height: 1
-                        color: theme.textColor
-                        opacity: 0.3
+                PlasmaComponents.CheckBox {
+                    text: i18n("Show indicators for applets")
+                    checked: plasmoid.configuration.indicatorsForApplets
+                    tooltip: i18n("Indicators are shown for applets")
+
+                    onClicked: {
+                        plasmoid.configuration.indicatorsForApplets = !plasmoid.configuration.indicatorsForApplets;
+                    }
+                }
+
+                PlasmaComponents.CheckBox {
+                    text: i18n("Reverse indicators position")
+                    checked: plasmoid.configuration.reverseLinesPosition
+                    tooltip: i18n("Reverse indicators position e.g. from bottom to top")
+
+                    onClicked: {
+                        plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
+                    }
+                }
+            }
+        }
+        //! END: Active Indicator General Settings
+
+        //! BEGIN: Indicator specific sub-options
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: units.smallSpacing
+            Layout.rightMargin: units.smallSpacing
+            spacing: units.smallSpacing
+            visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
+            enabled: indicatorsSwitch.checked
+
+            LatteExtraControls.Header {
+                text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current.text)
+            }
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.leftMargin: units.smallSpacing * 2
+
+                LatteExtraControls.SubHeader {
+                    text: i18nc("active indicator style","Style For Active")
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 2
+
+                    property int indicatorType: plasmoid.configuration.activeIndicatorType
+
+                    ExclusiveGroup {
+                        id: activeIndicatorTypeGroup
+                        onCurrentChanged: {
+                            if (current.checked) {
+                                plasmoid.configuration.activeIndicatorType = current.indicatorType;
+                            }
+                        }
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("line indicator","Line")
+                        checked: parent.indicatorType === indicatorType
+                        checkable: true
+                        exclusiveGroup: activeIndicatorTypeGroup
+                        tooltip: i18n("Show a line indicator for active items")
+
+                        readonly property int indicatorType: Latte.Types.LineIndicator
+                    }
+
+                    PlasmaComponents.Button {
+                        Layout.fillWidth: true
+
+                        text: i18nc("dot indicator", "Dot")
+                        checked: parent.indicatorType === indicatorType
+                        checkable: true
+                        exclusiveGroup: activeIndicatorTypeGroup
+                        tooltip: i18n("Show a dot indicator for active items")
+
+                        readonly property int indicatorType: Latte.Types.DotIndicator
                     }
                 }
 
@@ -479,14 +657,12 @@ PlasmaComponents.Page {
                     id: showGlow
                     Layout.fillWidth: true
                     Layout.minimumHeight: implicitHeight
-                    Layout.topMargin: units.smallSpacing * 3
                     Layout.bottomMargin: units.smallSpacing
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
 
                     checked: plasmoid.configuration.showGlow
                     level: 2
                     text: i18n("Glow")
-                    tooltip: i18n("Enable/disable thickness margins")
+                    tooltip: i18n("Enable/disable indicator glow")
 
                     onPressed: {
                         plasmoid.configuration.showGlow = !plasmoid.configuration.showGlow;
@@ -496,7 +672,6 @@ PlasmaComponents.Page {
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 2
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
                     enabled: plasmoid.configuration.showGlow
 
                     property int option: plasmoid.configuration.glowOption
@@ -534,9 +709,8 @@ PlasmaComponents.Page {
 
                 RowLayout {
                     Layout.fillWidth: true
-                    Layout.topMargin: units.smallSpacing
                     spacing: 2
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
+
                     enabled: plasmoid.configuration.showGlow
 
                     PlasmaComponents.Label {
@@ -583,217 +757,39 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteExtraControls.SubHeader {
-                    text: i18nc("active indicator style","Style For Active")
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 2
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
-
-                    property int indicatorType: plasmoid.configuration.activeIndicatorType
-
-                    ExclusiveGroup {
-                        id: activeIndicatorTypeGroup
-                        onCurrentChanged: {
-                            if (current.checked) {
-                                plasmoid.configuration.activeIndicatorType = current.indicatorType;
-                            }
-                        }
-                    }
-
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-
-                        text: i18nc("line indicator","Line")
-                        checked: parent.indicatorType === indicatorType
-                        checkable: true
-                        exclusiveGroup: activeIndicatorTypeGroup
-                        tooltip: i18n("Show a line indicator for active items")
-
-                        readonly property int indicatorType: Latte.Types.LineIndicator
-                    }
-
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-
-                        text: i18nc("dot indicator", "Dot")
-                        checked: parent.indicatorType === indicatorType
-                        checkable: true
-                        exclusiveGroup: activeIndicatorTypeGroup
-                        tooltip: i18n("Show a dot indicator for active items")
-
-                        readonly property int indicatorType: Latte.Types.DotIndicator
-                    }
-                }
-
-                LatteExtraControls.SubHeader {
-                    enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
-                    text: i18n("Tasks")
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
-                }
-
-                PlasmaComponents.CheckBox {
-                    id: threeColorsWindows
-                    text: i18n("Different color for minimized windows")
-                    checked: plasmoid.configuration.threeColorsWindows
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
-
-                    onClicked: {
-                        plasmoid.configuration.threeColorsWindows = checked
-                    }
-                }
-
-                PlasmaComponents.CheckBox {
-                    id: dotsOnActive
-                    text: i18n("Show an extra dot for grouped windows when active")
-                    checked: plasmoid.configuration.dotsOnActive
-                    tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
-                    enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
-                    visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator && latteView.latteTasksPresent()
-
-                    onClicked: {
-                        plasmoid.configuration.dotsOnActive = checked
-                    }
-                }
-            }
-        }
-        //! END: Active Indicator
-
-        //! BEGIN: Animations
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: units.smallSpacing
-            Layout.rightMargin: units.smallSpacing * 2
-            spacing: units.smallSpacing
-
-            LatteExtraControls.HeaderSwitch {
-                id: animationsHeader
-                Layout.fillWidth: true
-                Layout.minimumHeight: implicitHeight
-                Layout.topMargin: units.smallSpacing
-
-                checked: plasmoid.configuration.animationsEnabled
-                text: i18n("Animations")
-                tooltip: i18n("Enable/disable all animations")
-
-                onPressed: {
-                    plasmoid.configuration.animationsEnabled = !plasmoid.configuration.animationsEnabled;
-                }
-            }
-
-            ColumnLayout {
-                spacing: 0
-                enabled: plasmoid.configuration.animationsEnabled
-
-                LatteExtraControls.SubHeader {
-                    Layout.leftMargin: units.smallSpacing * 2
-                    isFirstSubCategory: true
-                    text: i18n("Speed")
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: units.smallSpacing * 2
-                    spacing: 2
-
-                    property int duration: plasmoid.configuration.durationTime
-
-                    ExclusiveGroup {
-                        id: animationsGroup
-                        onCurrentChanged: {
-                            if (current.checked)
-                                plasmoid.configuration.durationTime = current.duration
-                        }
-                    }
-
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("x1")
-                        checked: parent.duration === duration
-                        checkable: true
-                        exclusiveGroup: animationsGroup
-
-                        readonly property int duration: 3
-                    }
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("x2")
-                        checked: parent.duration === duration
-                        checkable: true
-                        exclusiveGroup: animationsGroup
-
-                        readonly property int duration: 2
-                    }
-                    PlasmaComponents.Button {
-                        Layout.fillWidth: true
-                        text: i18n("x3")
-                        checked: parent.duration === duration
-                        checkable: true
-                        exclusiveGroup: animationsGroup
-
-                        readonly property int duration: 1
-                    }
-                }
-
                 ColumnLayout {
-                    spacing: units.smallSpacing
+                    spacing: 0
                     visible: latteView.latteTasksPresent()
 
                     LatteExtraControls.SubHeader {
-                        Layout.leftMargin: units.smallSpacing * 2
+                        enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
                         text: i18n("Tasks")
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Bounce launchers when trigerred")
-                        checked: plasmoid.configuration.animationLauncherBouncing
+                        id: threeColorsWindows
+                        text: i18n("Different color for minimized windows")
+                        checked: plasmoid.configuration.threeColorsWindows
 
                         onClicked: {
-                            plasmoid.configuration.animationLauncherBouncing = !plasmoid.configuration.animationLauncherBouncing;
+                            plasmoid.configuration.threeColorsWindows = checked
                         }
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Bounce tasks that need attention")
-                        checked: plasmoid.configuration.animationWindowInAttention
+                        id: dotsOnActive
+                        text: i18n("Show an extra dot for grouped windows when active")
+                        checked: plasmoid.configuration.dotsOnActive
+                        tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
+                        enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
 
                         onClicked: {
-                            plasmoid.configuration.animationWindowInAttention = !plasmoid.configuration.animationWindowInAttention;
-                        }
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        text: i18n("Slide in and out single windows")
-                        checked: plasmoid.configuration.animationNewWindowSliding
-
-                        onClicked: {
-                            plasmoid.configuration.animationNewWindowSliding = !plasmoid.configuration.animationNewWindowSliding;
-                        }
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        text: i18n("Grouped tasks bounce their new windows")
-                        checked: plasmoid.configuration.animationWindowAddedInGroup
-
-                        onClicked: {
-                            plasmoid.configuration.animationWindowAddedInGroup = !plasmoid.configuration.animationWindowAddedInGroup;
-                        }
-                    }
-
-                    PlasmaComponents.CheckBox {
-                        text: i18n("Grouped tasks slide out theis closed windows")
-                        checked: plasmoid.configuration.animationWindowRemovedFromGroup
-
-                        onClicked: {
-                            plasmoid.configuration.animationWindowRemovedFromGroup = !plasmoid.configuration.animationWindowRemovedFromGroup;
+                            plasmoid.configuration.dotsOnActive = checked
                         }
                     }
                 }
             }
         }
-        //! END: Animations
+        //! END: Indicator specific sub-options
     }
 }
