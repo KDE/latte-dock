@@ -472,36 +472,22 @@ Item{
                     property: "publishedInfoBadgeWidth"
                     value: infoBadge.contentWidth
                 }
+            }
+        }
 
-                //! grey-ing the badges when the task is dragged
-                Colorize{
-                    anchors.centerIn: parent
-                    width: source.width
-                    height: source.height
-                    source: parent
+        //! GREY-ing the information badges when the task is dragged
+        //! moved out of badgeVisualsLoader in order to avoid crashes
+        //! when the latte view is removed
+        Loader {
+            anchors.fill: iconImageBuffer
+            active: badgeVisualsLoader.active
+            sourceComponent: Colorize{
+                source: badgeVisualsLoader.item
 
-                    opacity: stateColorizer.opacity
-
-                    hue: stateColorizer.hue
-                    saturation: stateColorizer.saturation
-                    lightness: stateColorizer.lightness
-                }
-
-                /*BrightnessContrast{
-                    anchors.fill: parent
-                    source: parent
-
-                    opacity: hoveredImage.opacity
-                    brightness: hoveredImage.brightness
-                    contrast: hoveredImage.contrast
-                }
-
-                BrightnessContrast {
-                    anchors.fill: parent
-                    source: parent
-
-                    visible: brightnessTaskEffect.visible
-                }*/
+                opacity: stateColorizer.opacity
+                hue: stateColorizer.hue
+                saturation: stateColorizer.saturation
+                lightness: stateColorizer.lightness
             }
         }
         //! END: Badges Visuals
