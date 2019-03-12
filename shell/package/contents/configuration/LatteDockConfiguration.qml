@@ -96,6 +96,15 @@ FocusScope {
     property color bC: theme.backgroundColor
     property color transparentBackgroundColor: Qt.rgba(bC.r, bC.g, bC.b, 0.7)
 
+    onHighLevelChanged: {
+        //! switch to appearancePage when effectsPage becomes hidden because
+        //! advancedLevel was disabled by the user
+        if (!highLevel && tabGroup.currentTab === effectsPage) {
+            tabGroup.currentTab = appearancePage;
+            tabBar.currentTab = appearanceTabBtn;
+        }
+    }
+
     PlasmaCore.FrameSvgItem{
         anchors.fill: parent
         imagePath: "dialogs/background"
