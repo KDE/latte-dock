@@ -330,7 +330,7 @@ Item{
                     PropertyAnimation {
                         target: imageTiler
                         property: "opacity"
-                        to: editVisual.maxOpacity
+                        to: plasmoid.configuration.inConfigureAppletsMode ? 1 : editVisual.maxOpacity
                         duration: editVisual.speed / 2
                         easing.type: Easing.OutQuad
                     }
