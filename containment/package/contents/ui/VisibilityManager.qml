@@ -338,12 +338,14 @@ Item{
             space = root.totalPanelEdgeSpacing + root.panelMarginLength;
         }
 
-        if (Latte.WindowSystem.compositingActive) {
+        var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
+
+        if (Latte.WindowSystem.compositingActive || noCompositingEdit) {
             if (normalState) {
                 //console.log("entered normal state...");
                 //count panel length
 
-                var noCompositingEdit = !Latte.WindowSystem.compositingActive && root.editMode;
+
                 //used when !compositing and in editMode
                 if (noCompositingEdit) {
                     tempLength = root.isHorizontal ? root.width : root.height;
@@ -456,7 +458,7 @@ Item{
             if (root.isVertical) {
                 maskThickness = maskArea.width;
             }
-        } else {
+        } else if (!noCompositingEdit){
             //! no compositing case
             if (!latteView.visibility.isHidden || !latteView.visibility.supportsKWinEdges) {
                 localX = latteView.effects.rect.x;
