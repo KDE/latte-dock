@@ -144,42 +144,45 @@ Item{
                 easing.type: Easing.OutCubic
             }
         }
+    }
 
-        MouseArea {
-            id: editBackMouseArea
-            anchors.fill: parent
-            visible: editModeVisual.editAnimationEnded
+    MouseArea {
+        id: editBackMouseArea
+        anchors.fill: imageTiler
+        visible: editModeVisual.editAnimationEnded && !root.inConfigureAppletsMode
+        hoverEnabled: true
 
-            property bool wheelIsBlocked: false;
-            readonly property double opacityStep: 0.1
+        property bool wheelIsBlocked: false;
+        readonly property double opacityStep: 0.1
+        readonly property string tooltip: i18nc("opacity for background under edit mode, %0% is opacity percentage",
+                                                "You can use mouse wheel to change background opacity of %0%").arg(Math.round(plasmoid.configuration.editBackgroundOpacity * 100))
 
-            onWheel: {
-                if (wheelIsBlocked) {
-                    return;
-                }
-
-                wheelIsBlocked = true;
-                scrollDelayer.start();
-
-                var angle = wheel.angleDelta.y / 8;
-
-                if (angle > 2) {
-                    plasmoid.configuration.editBackgroundOpacity = Math.min(100, plasmoid.configuration.editBackgroundOpacity + opacityStep)
-                } else if (angle < -2) {
-                    plasmoid.configuration.editBackgroundOpacity = Math.max(0, plasmoid.configuration.editBackgroundOpacity - opacityStep)
-                }
+        onWheel: {
+            if (wheelIsBlocked) {
+                return;
             }
 
-            //! A timer is needed in order to handle also touchpads that probably
-            //! send too many signals very fast. This way the signals per sec are limited.
-            //! The user needs to have a steady normal scroll in order to not
-            //! notice a annoying delay
-            Timer{
-                id: scrollDelayer
+            wheelIsBlocked = true;
+            scrollDelayer.start();
 
-                interval: 80
-                onTriggered: editBackMouseArea.wheelIsBlocked = false;
+            var angle = wheel.angleDelta.y / 8;
+
+            if (angle > 10) {
+                plasmoid.configuration.editBackgroundOpacity = Math.min(100, plasmoid.configuration.editBackgroundOpacity + opacityStep)
+            } else if (angle < -10) {
+                plasmoid.configuration.editBackgroundOpacity = Math.max(0, plasmoid.configuration.editBackgroundOpacity - opacityStep)
             }
+        }
+
+        //! A timer is needed in order to handle also touchpads that probably
+        //! send too many signals very fast. This way the signals per sec are limited.
+        //! The user needs to have a steady normal scroll in order to not
+        //! notice a annoying delay
+        Timer{
+            id: scrollDelayer
+
+            interval: 80
+            onTriggered: editBackMouseArea.wheelIsBlocked = false;
         }
     }
 

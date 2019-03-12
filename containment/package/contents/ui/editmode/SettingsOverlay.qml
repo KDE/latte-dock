@@ -34,7 +34,8 @@ import "../../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: settingsRoot
-    readonly property bool containsMouse: headerSettings.containsMouse || ruler.containsMouse || tooltipMouseArea.containsMouse
+    readonly property bool containsMouse: headerSettings.containsMouse || ruler.containsMouse
+                                          || tooltipMouseArea.containsMouse || editBackMouseArea.containsMouse
     readonly property int thickness: ruler.thickness + headerSettings.thickness + spacing * 3
     readonly property int spacing: 5
 
@@ -94,6 +95,8 @@ Item{
                 return ruler.tooltip;
             } else if (headerSettings.containsMouse) {
                 return headerSettings.tooltip;
+            } else if (editBackMouseArea.containsMouse) {
+                return editBackMouseArea.tooltip;
             }
         }
     }
