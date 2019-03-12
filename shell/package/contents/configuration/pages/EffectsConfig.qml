@@ -766,7 +766,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.CheckBox {
-                        text: i18n("Single windows slide in and out")
+                        text: i18n("Slide in and out single windows")
                         checked: plasmoid.configuration.animationNewWindowSliding
 
                         onClicked: {
