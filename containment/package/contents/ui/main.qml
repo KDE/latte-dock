@@ -85,7 +85,7 @@ DragDrop.DropArea {
         if ((plasmoid.configuration.panelPosition === Latte.Types.Justify)
                 && (plasmoid.configuration.useThemePanel)
                 && (plasmoid.configuration.panelSize === 100)
-                && (plasmoid.configuration.zoomLevel === 0)) {
+                && (maxZoomFactor === 1.0)) {
             return Latte.Types.PanelView;
         }
 

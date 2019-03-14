@@ -74,18 +74,23 @@ Grid {
                 plasmoid.configuration.panelPosition = Latte.Types.Center;
                 plasmoid.configuration.useThemePanel = true;
                 plasmoid.configuration.solidPanel = false;
-                plasmoid.configuration.panelSize = 0;
+                plasmoid.configuration.panelSize = 5;
                 plasmoid.configuration.shadows = 2;
                 plasmoid.configuration.zoomLevel = 16;
-                plasmoid.configuration.shrinkThickMargins = false;
                 plasmoid.configuration.activeIndicator = Latte.Types.InternalsIndicator;
-                plasmoid.configuration.autoDecreaseIconSize = true;
+                //plasmoid.configuration.autoDecreaseIconSize = true;
+
+                //! Animations
+                plasmoid.configuration.animationLauncherBouncing = true;
+                plasmoid.configuration.animationWindowInAttention = true;
+                plasmoid.configuration.animationWindowAddedInGroup = true;
 
                 //! Dynamic Background
                 plasmoid.configuration.solidBackgroundForMaximized = false;
                 plasmoid.configuration.colorizeTransparentPanels = false;
                 plasmoid.configuration.backgroundOnlyOnMaximized = false;
                 plasmoid.configuration.disablePanelShadowForMaximized = false;
+                plasmoid.configuration.plasmaBackgroundForPopups = false;
             }
         }
     }
@@ -110,15 +115,20 @@ Grid {
                 plasmoid.configuration.panelShadows = true;
                 plasmoid.configuration.shadows = 0;
                 plasmoid.configuration.zoomLevel = 0;
-                plasmoid.configuration.shrinkThickMargins = true;
                 plasmoid.configuration.activeIndicator = Latte.Types.NoneIndicator;
-                plasmoid.configuration.autoDecreaseIconSize = false;
+                //plasmoid.configuration.autoDecreaseIconSize = false;
+
+                //! Animations
+                plasmoid.configuration.animationLauncherBouncing = false;
+                plasmoid.configuration.animationWindowInAttention = false;
+                plasmoid.configuration.animationWindowAddedInGroup = false;
 
                 //! Dynamic Background
                 plasmoid.configuration.solidBackgroundForMaximized = (plasmoid.configuration.panelTransparency !== 100 ? true : false);
                 plasmoid.configuration.colorizeTransparentPanels = false;
                 plasmoid.configuration.backgroundOnlyOnMaximized = false;
                 plasmoid.configuration.disablePanelShadowForMaximized = false;
+                plasmoid.configuration.plasmaBackgroundForPopups = true;
             }
         }
     }
