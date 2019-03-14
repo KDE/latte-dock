@@ -186,6 +186,7 @@ Item {
     property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
 
     property int iconSize: latteView ? latteView.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
+    property int maxIconSize: latteView ? latteView.maxIconSize : iconSize
     property int glowOption: latteView ? latteView.glowOption : Latte.Types.GlowAll
     property real glowOpacity: latteView ? latteView.glowOpacity : 0.35
 

@@ -62,8 +62,11 @@ Loader{
     readonly property bool hasActive: isActive
     readonly property bool hasMinimized: false
     readonly property bool hasShown: false
+    readonly property int windowsCount: 0
+    readonly property int windowsMinimizedCount: 0
 
-    readonly property int iconSize: root.iconSize
+    readonly property int currentIconSize: root.iconSize
+    readonly property int maxIconSize: root.maxIconSize
     readonly property int durationTime: root.durationTime
     readonly property real scaleFactor: appletItem.wrapperAlias.zoomScale
     readonly property color shadowColor: root.appShadowColorSolid

@@ -33,8 +33,9 @@ import "../code/ColorizerTools.js" as ColorizerTools
 Item{
     id: indicatorRoot
 
-    readonly property int size: 0.08 * rootItem.iconSize
-    readonly property int extraMaskThickness: rootItem.reversedEnabled && rootItem.glowEnabled ? 1.7 * size : 0
+    readonly property real factor: 0.08
+    readonly property int size: factor * rootItem.currentIconSize
+    readonly property int extraMaskThickness: rootItem.reversedEnabled && rootItem.glowEnabled ? 1.7 * (factor * rootItem.maxIconSize) : 0
     readonly property Item rootItem: parent
 
     property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
@@ -161,11 +162,11 @@ Item{
                 Component.onCompleted: {
                     updateInitialSizes();
 
-                    rootItem.onIconSizeChanged.connect(updateInitialSizes);
+                    rootItem.onCurrentIconSizeChanged.connect(updateInitialSizes);
                 }
 
                 Component.onDestruction: {
-                    rootItem.onIconSizeChanged.disconnect(updateInitialSizes);
+                    rootItem.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
                 }
 
                 NumberAnimation{

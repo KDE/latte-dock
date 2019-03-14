@@ -39,6 +39,8 @@ Item{
         return 1;
     }
 
+    property int windowsMinimized: 0
+
     property bool isLauncher: IsLauncher ? true : false
     property bool isStartup: IsStartup ? true : false
     property bool isWindow: IsWindow ? true : false
@@ -111,23 +113,29 @@ Item{
         hasShown = false;
         hasActive = false;
 
+        var minimized = 0;
+
         if(IsGroupParent){
             checkInternalStates();
-        }
-        else{
+        } else {
             if(taskItem.isActive)
                 hasActive = true;
 
             if(taskItem.isMinimized){
                 hasMinimized = true;
+                minimized = minimized + 1;
             } else if (taskItem.isWindow) {
                 hasShown = true;
             }
         }
+
+        windowsMinimized = minimized;
     }
 
     function checkInternalStates(){
         var childs = windowsLocalModel.items;
+
+        var minimized = 0;
 
         for(var i=0; i<childs.count; ++i){
             var kid = childs.get(i);
@@ -137,10 +145,13 @@ Item{
 
             if(kid.model.IsMinimized) {
                 hasMinimized = true;
+                minimized = minimized + 1;
             } else if (kid.model.IsWindow) {
                 hasShown = true;
             }
         }
+
+        windowsMinimized = minimized;
     }
 
     function windowsTitles() {

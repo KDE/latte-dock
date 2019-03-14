@@ -74,8 +74,10 @@ Loader {
     readonly property bool hasMinimized: taskItem.hasMinimized
     readonly property bool hasShown: taskItem.hasShown
     readonly property int windowsCount: taskItem.windowsCount
+    readonly property int windowsMinimizedCount: taskItem.windowsMinimizedCount
 
-    readonly property int iconSize: root.iconSize
+    readonly property int currentIconSize: root.iconSize
+    readonly property int maxIconSize: root.maxIconSize
     readonly property int durationTime: root.durationTime
     readonly property real scaleFactor: taskItem.wrapperAlias.mScale
     readonly property color shadowColor: root.appShadowColorSolid

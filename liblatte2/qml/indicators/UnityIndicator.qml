@@ -28,7 +28,7 @@ import org.kde.latte 0.2 as Latte
 Item{
     property Item rootItem: parent
 
-    readonly property bool needsIconColors: true
+    readonly property bool needsColors: true
 
     Item{
         width: rootItem.isTask ? Math.min(parent.width, parent.height) : parent.width
@@ -42,7 +42,7 @@ Item{
             anchors.fill: parent
             visible: rootItem.isActive || (rootItem.isWindow && rootItem.hasShown)
 
-            radius: rootItem.iconSize / 12
+            radius: rootItem.currentIconSize / 12
             color: rootItem.backgroundColor
             clip: true
         }
