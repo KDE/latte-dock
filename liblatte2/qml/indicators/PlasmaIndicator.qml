@@ -26,34 +26,34 @@ import org.kde.latte 0.2 as Latte
 PlasmaCore.FrameSvgItem {
     id: frame
 
-    readonly property Item rootItem: parent
+    readonly property Item parentItem: parent.manager
     property string basePrefix: "normal"
 
-    imagePath: rootItem.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
+    imagePath: parentItem.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
 
     prefix: {
-        if (rootItem.usePlasmaTabsStyle) {
-            if (!rootItem.isActive) {
+        if (parentItem.usePlasmaTabsStyle) {
+            if (!parentItem.isActive) {
                 return "";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !rootItem.reversedEnabled)
-                    || (plasmoid.location === PlasmaCore.Types.RightEdge && rootItem.reversedEnabled)) {
+            if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !parentItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.RightEdge && parentItem.reversedEnabled)) {
                 return "west-active-tab";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.TopEdge && !rootItem.reversedEnabled)
-                    || (plasmoid.location === PlasmaCore.Types.BottomEdge && rootItem.reversedEnabled)) {
+            if ((plasmoid.location === PlasmaCore.Types.TopEdge && !parentItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.BottomEdge && parentItem.reversedEnabled)) {
                 return "north-active-tab";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.RightEdge && !rootItem.reversedEnabled)
-                    || (plasmoid.location === PlasmaCore.Types.LeftEdge && rootItem.reversedEnabled)) {
+            if ((plasmoid.location === PlasmaCore.Types.RightEdge && !parentItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.LeftEdge && parentItem.reversedEnabled)) {
                 return "east-active-tab";
             }
 
-            if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !rootItem.reversedEnabled)
-                    || (plasmoid.location === PlasmaCore.Types.TopEdge && rootItem.reversedEnabled)) {
+            if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !parentItem.reversedEnabled)
+                    || (plasmoid.location === PlasmaCore.Types.TopEdge && parentItem.reversedEnabled)) {
                 return "south-active-tab";
             }
 
@@ -66,23 +66,23 @@ PlasmaCore.FrameSvgItem {
     function taskPrefix(prefix) {
         var effectivePrefix;
 
-        if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !rootItem.reversedEnabled)
-                || (plasmoid.location === PlasmaCore.Types.RightEdge && rootItem.reversedEnabled)) {
+        if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !parentItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.RightEdge && parentItem.reversedEnabled)) {
             effectivePrefix = "west-" + prefix;
         }
 
-        if ((plasmoid.location === PlasmaCore.Types.TopEdge && !rootItem.reversedEnabled)
-                || (plasmoid.location === PlasmaCore.Types.BottomEdge && rootItem.reversedEnabled)) {
+        if ((plasmoid.location === PlasmaCore.Types.TopEdge && !parentItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.BottomEdge && parentItem.reversedEnabled)) {
             effectivePrefix = "north-" + prefix;
         }
 
-        if ((plasmoid.location === PlasmaCore.Types.RightEdge && !rootItem.reversedEnabled)
-                || (plasmoid.location === PlasmaCore.Types.LeftEdge && rootItem.reversedEnabled)) {
+        if ((plasmoid.location === PlasmaCore.Types.RightEdge && !parentItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.LeftEdge && parentItem.reversedEnabled)) {
             effectivePrefix = "east-" + prefix;
         }
 
-        if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !rootItem.reversedEnabled)
-                || (plasmoid.location === PlasmaCore.Types.TopEdge && rootItem.reversedEnabled)) {
+        if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !parentItem.reversedEnabled)
+                || (plasmoid.location === PlasmaCore.Types.TopEdge && parentItem.reversedEnabled)) {
             effectivePrefix = "south-" + prefix;
         }
 
@@ -92,7 +92,7 @@ PlasmaCore.FrameSvgItem {
     states: [
         State {
             name: "launcher"
-            when: rootItem.isLauncher || (rootItem.isApplet && !rootItem.isActive)
+            when: parentItem.isLauncher || (parentItem.isApplet && !parentItem.isActive)
 
             PropertyChanges {
                 target: frame
@@ -101,7 +101,7 @@ PlasmaCore.FrameSvgItem {
         },
         State {
             name: "attention"
-            when: rootItem.inAttention
+            when: parentItem.inAttention
 
             PropertyChanges {
                 target: frame
@@ -110,7 +110,7 @@ PlasmaCore.FrameSvgItem {
         },
         State {
             name: "minimized"
-            when: rootItem.isMinimized
+            when: parentItem.isMinimized
 
             PropertyChanges {
                 target: frame
@@ -119,7 +119,7 @@ PlasmaCore.FrameSvgItem {
         },
         State {
             name: "active"
-            when: rootItem.isActive
+            when: parentItem.isActive
 
             PropertyChanges {
                 target: frame
