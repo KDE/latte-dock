@@ -124,18 +124,7 @@ Item{
         id: upperIndicators
         spacing: 2
         readonly property bool alwaysActive: true
-
-        rotation: {
-           if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-               return 90;
-           } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-               return 180;
-           } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-               return 270;
-           }
-
-           return 0;
-        }
+        readonly property bool reversed: true
 
         Repeater {
             model: rootItem.isActive || rootItem.hasActive ? 1 : 0
@@ -143,23 +132,15 @@ Item{
         }
     }
 
-    Row {
+    Grid {
         id: lowerIndicators
-        spacing: 2
+        rows: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : Math.min(3, rootItem.windowsCount)
+        columns: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Math.min(3, rootItem.windowsCount) : 1
+        rowSpacing: 2
+        columnSpacing: 2
 
         readonly property bool alwaysActive: false
-
-        rotation: {
-           if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-               return 90;
-           } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-               return 180;
-           } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-               return 270;
-           }
-
-           return 0;
-        }
+        readonly property bool reversed: false
 
         Repeater {
             model: Math.min(3, rootItem.windowsCount)
@@ -175,6 +156,32 @@ Item{
             id: canvas
             width: rootItem.currentIconSize / 7
             height: width
+
+            rotation: {
+                if (!parent.reversed) {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                        return 0;
+                    } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                        return 90;
+                    } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                        return 180;
+                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                        return 270;
+                    }
+                } else {
+                    if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+                        return 180;
+                    } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                        return 270;
+                    } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+                        return 0;
+                    } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+                        return 90;
+                    }
+                }
+
+                return 0;
+            }
 
             property color drawColor:  theme.buttonFocusColor;
             property bool fillTriangle: {
@@ -193,7 +200,7 @@ Item{
             onPaint: {
                 var ctx = getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = drawColor;
+                ctx.fillStyle = fillTriangle ? drawColor : theme.backgroundColor;
                 ctx.strokeStyle = drawColor;
                 ctx.lineWidth = 2;
 
@@ -204,11 +211,8 @@ Item{
                 ctx.lineTo(0, canvas.height);
                 ctx.closePath();
 
-                if (fillTriangle) {
-                    ctx.fill();
-                } else {
-                    ctx.stroke();
-                }
+                ctx.fill();
+                ctx.stroke();
             }
         }
     }
