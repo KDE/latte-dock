@@ -251,10 +251,10 @@ void PrimaryConfigView::syncGeometry()
     case Plasma::Types::Vertical: {
         if (location == Plasma::Types::LeftEdge) {
             xPos = scrGeometry.x() + clearThickness;
-            yPos = m_latteView->geometry().center().y() - size.height() / 2;
+            yPos =  availGeometry.y() + (availGeometry.height() - size.height())/2;
         } else if (location == Plasma::Types::RightEdge) {
             xPos = scrGeometry.x() + scrGeometry.width() - clearThickness - size.width();
-            yPos = m_latteView->geometry().center().y() - size.height() / 2;
+            yPos =  availGeometry.y() + (availGeometry.height() - size.height())/2;
         }
     }
         break;

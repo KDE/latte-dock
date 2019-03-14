@@ -598,8 +598,6 @@ QRect Corona::availableScreenRectWithCriteria(int id, QList<Types::Visibility> m
                 && ((allEdges || edges.contains(view->location()))
                     && (allModes || (view->visibility() && modes.contains(view->visibility()->mode()))))) {
 
-                auto dockRect = view->absGeometry();
-
                 // Usually availableScreenRect is used by the desktop,
                 // but Latte don't have desktop, then here just
                 // need calculate available space for top and bottom location,

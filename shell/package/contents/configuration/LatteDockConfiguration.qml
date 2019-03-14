@@ -55,7 +55,7 @@ FocusScope {
     //!    some space around the settings window
     property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
                                 viewConfig.availableScreenGeometry.height - (latteView.editThickness - latteView.normalThickness) - 16 :
-                                viewConfig.availableScreenGeometry.height - 16
+                                viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing
     property int maxWidth: 0.6 * latteView.screenGeometry.width
 
     //! propose size based on font size
