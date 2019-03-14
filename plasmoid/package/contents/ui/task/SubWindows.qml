@@ -113,11 +113,11 @@ Item{
         hasShown = false;
         hasActive = false;
 
-        var minimized = 0;
-
         if(IsGroupParent){
             checkInternalStates();
         } else {
+            var minimized = 0;
+
             if(taskItem.isActive)
                 hasActive = true;
 
@@ -127,9 +127,9 @@ Item{
             } else if (taskItem.isWindow) {
                 hasShown = true;
             }
-        }
 
-        windowsMinimized = minimized;
+            windowsMinimized = minimized;
+        }
     }
 
     function checkInternalStates(){

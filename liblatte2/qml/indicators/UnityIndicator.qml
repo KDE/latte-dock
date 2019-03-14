@@ -28,14 +28,22 @@ import org.kde.latte 0.2 as Latte
 Item{
     property Item rootItem: parent
 
-    readonly property bool needsColors: true
+    readonly property bool needsIconColors: true
+
+    readonly property int thickness: plasmoid.formFactor === PlasmaCore.Types.Vertical ? width : height
+    readonly property int freedThickness: (thickness - rectangleItem.size) / 2
+
+    readonly property int shownWindows: rootItem.windowsCount - rootItem.windowsMinimizedCount
+    readonly property int maxDrawnMinimizedWindows: shownWindows > 0 ? Math.min(rootItem.windowsMinimizedCount,2) : 3
 
     Item{
+        id: rectangleItem
         width: rootItem.isTask ? Math.min(parent.width, parent.height) : parent.width
         height: rootItem.isTask ? width : parent.height
         anchors.centerIn: parent
 
         property bool isActive: rootItem.isActive || (rootItem.isWindow && rootItem.hasActive)
+        readonly property int size: Math.min(parent.width, parent.height)
 
         Rectangle {
             id: unityRect
@@ -97,7 +105,7 @@ Item{
             visible: (rootItem.isTask && rootItem.isWindow) || (rootItem.isApplet && rootItem.isActive)
             color: "transparent"
             border.width: 1
-            border.color: "#606060"
+            border.color: "#303030"
             radius: unityRect.radius
             clip: true
 
@@ -111,4 +119,161 @@ Item{
             }
         }
     }
+
+    Row {
+        id: upperIndicators
+        spacing: 2
+        readonly property bool alwaysActive: true
+
+        rotation: {
+           if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+               return 90;
+           } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
+               return 180;
+           } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+               return 270;
+           }
+
+           return 0;
+        }
+
+        Repeater {
+            model: rootItem.isActive || rootItem.hasActive ? 1 : 0
+            delegate: triangleComponent
+        }
+    }
+
+    Row {
+        id: lowerIndicators
+        spacing: 2
+
+        readonly property bool alwaysActive: false
+
+        rotation: {
+           if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+               return 90;
+           } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+               return 180;
+           } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+               return 270;
+           }
+
+           return 0;
+        }
+
+        Repeater {
+            model: Math.min(3, rootItem.windowsCount)
+            delegate: triangleComponent
+        }
+    }
+
+
+    //! Triangle Indicator Component
+    Component {
+        id: triangleComponent
+        Canvas {
+            id: canvas
+            width: rootItem.currentIconSize / 7
+            height: width
+
+            property color drawColor:  theme.buttonFocusColor;
+            property bool fillTriangle: {
+                if (!parent.alwaysActive && rootItem.windowsMinimizedCount!==0
+                        && ((index < maxDrawnMinimizedWindows)
+                            || (rootItem.windowsCount === rootItem.windowsMinimizedCount))) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            onFillTriangleChanged: requestPaint();
+            onDrawColorChanged: requestPaint();
+
+            onPaint: {
+                var ctx = getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = drawColor;
+                ctx.strokeStyle = drawColor;
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height);
+                ctx.lineTo(canvas.width/2, 0);
+                ctx.lineTo(canvas.width, canvas.height);
+                ctx.lineTo(0, canvas.height);
+                ctx.closePath();
+
+                if (fillTriangle) {
+                    ctx.fill();
+                } else {
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    //! States
+    states: [
+        State {
+            name: "bottom"
+            when: (plasmoid.location === PlasmaCore.Types.BottomEdge)
+
+            AnchorChanges {
+                target: lowerIndicators
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: upperIndicators
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "top"
+            when: (plasmoid.location === PlasmaCore.Types.TopEdge)
+
+            AnchorChanges {
+                target: lowerIndicators
+                anchors{ top:parent.top; bottom:undefined; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+            AnchorChanges {
+                target: upperIndicators
+                anchors{ top:undefined; bottom:parent.bottom; left:undefined; right:undefined;
+                    horizontalCenter:parent.horizontalCenter; verticalCenter:undefined}
+            }
+        },
+        State {
+            name: "left"
+            when: (plasmoid.location === PlasmaCore.Types.LeftEdge)
+
+            AnchorChanges {
+                target: lowerIndicators
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            AnchorChanges {
+                target: upperIndicators
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+        },
+        State {
+            name: "right"
+            when: (plasmoid.location === PlasmaCore.Types.RightEdge)
+
+            AnchorChanges {
+                target: lowerIndicators
+                anchors{ top:undefined; bottom:undefined; left:undefined; right:parent.right;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+            AnchorChanges {
+                target: upperIndicators
+                anchors{ top:undefined; bottom:undefined; left:parent.left; right:undefined;
+                    horizontalCenter:undefined; verticalCenter:parent.verticalCenter}
+            }
+        }
+    ]
 }
