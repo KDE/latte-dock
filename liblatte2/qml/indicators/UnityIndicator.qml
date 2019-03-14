@@ -25,7 +25,10 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
+import "../code/ColorizerTools.js" as ColorizerTools
+
 Item{
+    id: indicatorItem
     property Item rootItem: parent
 
     readonly property bool needsIconColors: true
@@ -35,6 +38,9 @@ Item{
 
     readonly property int shownWindows: rootItem.windowsCount - rootItem.windowsMinimizedCount
     readonly property int maxDrawnMinimizedWindows: shownWindows > 0 ? Math.min(rootItem.windowsMinimizedCount,2) : 3
+
+    readonly property real backColorBrightness: ColorizerTools.colorBrightness(theme.backgroundColor)
+    readonly property color backgroundColor: backColorBrightness < 127 ? theme.backgroundColor : theme.textColor
 
     Item{
         id: rectangleItem
@@ -154,7 +160,7 @@ Item{
         id: triangleComponent
         Canvas {
             id: canvas
-            width: rootItem.currentIconSize / 7
+            width: rootItem.currentIconSize / 6
             height: width
 
             rotation: {
@@ -194,15 +200,16 @@ Item{
                 return true;
             }
 
+            readonly property int lineWidth: 2
+
             onFillTriangleChanged: requestPaint();
             onDrawColorChanged: requestPaint();
 
             onPaint: {
                 var ctx = getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = fillTriangle ? drawColor : theme.backgroundColor;
-                ctx.strokeStyle = drawColor;
-                ctx.lineWidth = 2;
+                ctx.strokeStyle = indicatorItem.backgroundColor;
+                ctx.lineWidth = lineWidth;
 
                 ctx.beginPath();
                 ctx.moveTo(0, canvas.height);
@@ -210,9 +217,19 @@ Item{
                 ctx.lineTo(canvas.width, canvas.height);
                 ctx.lineTo(0, canvas.height);
                 ctx.closePath();
-
-                ctx.fill();
                 ctx.stroke();
+
+                ctx.strokeStyle = drawColor;
+                ctx.fillStyle = fillTriangle ? drawColor : indicatorItem.backgroundColor;
+
+                ctx.beginPath();
+                ctx.moveTo(lineWidth, canvas.height - lineWidth);
+                ctx.lineTo(canvas.width/2, lineWidth);
+                ctx.lineTo(canvas.width - lineWidth, canvas.height - lineWidth);
+                ctx.lineTo(lineWidth, canvas.height - lineWidth);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.fill();
             }
         }
     }
