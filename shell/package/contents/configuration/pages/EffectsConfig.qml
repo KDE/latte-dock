@@ -395,7 +395,7 @@ PlasmaComponents.Page {
                         }
 
                         PlasmaComponents.CheckBox {
-                            text: i18n("Bounce launchers when trigerred")
+                            text: i18n("Bounce launchers when triggered")
                             checked: plasmoid.configuration.animationLauncherBouncing
 
                             onClicked: {
@@ -431,7 +431,7 @@ PlasmaComponents.Page {
                         }
 
                         PlasmaComponents.CheckBox {
-                            text: i18n("Grouped tasks slide out theis closed windows")
+                            text: i18n("Grouped tasks slide out their closed windows")
                             checked: plasmoid.configuration.animationWindowRemovedFromGroup
 
                             onClicked: {
