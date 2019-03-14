@@ -21,14 +21,14 @@ import QtQuick 2.7
 
 import org.kde.latte 0.2 as Latte
 
-Loader{
-    id: indicatorLoader
+Item{
+    id: indicatorManager
     anchors.fill: parent
 
-    active: (root.indicatorsEnabled && appletItem.communicatorAlias.activeIndicatorEnabled && root.indicatorsForApplets)
-            || (!root.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive)
+    readonly property bool active: (root.indicatorsEnabled && appletItem.communicatorAlias.activeIndicatorEnabled && root.indicatorsForApplets)
+                                   || (!root.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive)
 
-    sourceComponent: {
+    readonly property Component sourceComponent: {
         if (!root.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
             return plasmaStyleIndicator;
         }
@@ -100,37 +100,5 @@ Loader{
     Component{
         id:unityStyleIndicator
         Latte.UnityIndicator{}
-    }
-
-    //! Used when the indicators require more thickness in the view mask
-    //! e.g. when the Latte indicators are glowing in reverse order
-    Binding {
-        target: visibilityManager
-        property: "indicatorsExtraThickMask"
-        value: {
-            if (indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("extraMaskThickness")) {
-                return indicatorLoader.item.extraMaskThickness;
-            }
-
-            return 0;
-        }
-    }
-
-    //! Used when the indicators need icon colors in orde to be painted
-    //! properly, for example the Unity indicator
-    Binding {
-        target: appletItem
-        property: "indicatorNeedsIconColors"
-        value: {
-            if (indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("needsIconColors")) {
-                return indicatorLoader.item.needsIconColors;
-            }
-
-            return false;
-        }
     }
 }

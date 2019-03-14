@@ -23,40 +23,12 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
-Loader {
-    id: indicatorLoader
-    anchors.bottom: (root.position === PlasmaCore.Types.BottomPositioned) ? parent.bottom : undefined
-    anchors.top: (root.position === PlasmaCore.Types.TopPositioned) ? parent.top : undefined
-    anchors.left: (root.position === PlasmaCore.Types.LeftPositioned) ? parent.left : undefined
-    anchors.right: (root.position === PlasmaCore.Types.RightPositioned) ? parent.right : undefined
-
-    anchors.horizontalCenter: !root.vertical ? parent.horizontalCenter : undefined
-    anchors.verticalCenter: root.vertical ? parent.verticalCenter : undefined
-
-    width: {
-        if (locked) {
-            return visualLockedWidth;
-        }
-
-        return !root.vertical ? taskItem.wrapperAlias.width - 2*taskItem.wrapperAlias.mScale*root.lengthExtMargin : taskItem.wrapperAlias.width;
-    }
-
-    height: {
-        if (locked) {
-            return visualLockedHeight;
-        }
-
-        return root.vertical ? taskItem.wrapperAlias.height - 2*taskItem.wrapperAlias.mScale*root.lengthExtMargin : taskItem.wrapperAlias.height;
-    }
-
-    active: root.indicatorsEnabled
-
+Item {
+    id: indicatorManager
+    readonly property bool active: root.indicatorsEnabled
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation
 
-    property real visualLockedWidth: root.iconSize + root.internalWidthMargins
-    property real visualLockedHeight: root.iconSize + root.internalHeightMargins
-
-    /* Indicators Properties in order use them*/
+    /* Indicators Properties in order for indicators to use them*/
     readonly property bool isTask: true
     readonly property bool isApplet: false
 
@@ -98,7 +70,7 @@ Loader {
     property color backgroundColor: taskItem.wrapperAlias.backgroundColor
     property color glowColor: taskItem.wrapperAlias.glowColor
 
-    sourceComponent: {
+    readonly property Component sourceComponent: {
         switch (root.indicatorStyle) {
         case Latte.Types.LatteIndicator:
             return latteIndicatorComponent;
@@ -124,21 +96,5 @@ Loader {
     Component{
         id:unityIndicatorComponent
         Latte.UnityIndicator{}
-    }
-
-    //! Used when the indicators need icon colors in orde to be painted
-    //! properly, for example the Unity indicator
-    Binding {
-        target: taskItem
-        property: "indicatorNeedsIconColors"
-        value: {
-            if (indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("needsIconColors")) {
-                return indicatorLoader.item.needsIconColors;
-            }
-
-            return false;
-        }
     }
 }

@@ -32,6 +32,7 @@ import org.kde.latte 0.2 as Latte
 
 import "colorizer" as Colorizer
 import "communicator" as Communicator
+import "indicator" as Indicator
 
 Item {
     id: appletItem
@@ -64,6 +65,7 @@ Item {
     property bool lockZoom: false
 
     property bool indicatorNeedsIconColors: false
+    property bool indicatorProvidesFrontLayer: false
 
     property bool isActive: (isExpanded
                              && applet.pluginName !== root.plasmoidName
@@ -495,9 +497,14 @@ Item {
             width: wrapper.width
             height: wrapper.height
 
+            Indicator.Manager{
+                id: indicatorManager
+            }
+
             //! Indicator Back Layer
-            IndicatorLoader{
+            Indicator.Loader{
                 id: indicatorBackLayer
+                manager: indicatorManager
             }
 
             ItemWrapper{
@@ -525,6 +532,13 @@ Item {
                         easing.type: Easing.OutCubic
                     }
                 }
+            }
+
+            //! Indicator Front Layer
+            Indicator.Loader{
+                id: indicatorFrontLayer
+                manager: indicatorManager
+                isBackLayer: false
             }
 
             //! Applet Shortcut Visual Badge

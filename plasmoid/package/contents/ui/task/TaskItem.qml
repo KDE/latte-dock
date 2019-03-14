@@ -31,6 +31,7 @@ import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 import org.kde.latte 0.2 as Latte
 
 import "animations" as TaskAnimations
+import "indicator" as Indicator
 
 MouseArea{
     id: taskItem
@@ -104,6 +105,7 @@ MouseArea{
     property bool inRemoveStage: false
 
     property bool indicatorNeedsIconColors: false
+    property bool indicatorProvidesFrontLayer: false
 
     property bool isAbleToShowPreview: true
     property bool isActive: (IsActive === true) ? true : false
@@ -422,9 +424,22 @@ MouseArea{
             width: wrapper.width
             height: wrapper.height
 
-            IndicatorLoader{id: indicatorBackLayer}
+            Indicator.Manager{
+                id: indicatorManager
+            }
+
+            Indicator.Loader{
+                id: indicatorBackLayer
+                manager: indicatorManager
+            }
 
             Wrapper{id: wrapper}
+
+            Indicator.Loader{
+                id: indicatorFrontLayer
+                manager: indicatorManager
+                isBackLayer: false
+            }
         }
 
         // a hidden spacer on the right for the last item to add stability
