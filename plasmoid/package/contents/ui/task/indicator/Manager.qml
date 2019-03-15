@@ -36,7 +36,8 @@ Item {
     readonly property bool isStartup: taskItem.isStartup
     readonly property bool isWindow: taskItem.isWindow
 
-    readonly property bool isActive: taskItem.hasActive || (root.showPreviews && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
+    readonly property bool isActive: taskItem.hasActive || (root.showPreviews && (taskItem.isWindow || taskItem.isGroupParent)
+                                                            && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
     readonly property bool isGroup: taskItem.isGroupParent
     readonly property bool isMinimized: taskItem.isMinimized
     readonly property bool inAttention: taskItem.inAttention
