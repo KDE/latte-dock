@@ -83,7 +83,7 @@ Column {
 
     //
     function containsMouse() {
-        return area1.containsMouse || area2.containsMouse || area3.containsMouse || area4.containsMouse
+        return area1.containsMouse || area2.containsMouse
                || (playbackLoader.active && playbackLoader.item.containsMouse());
     }
 
@@ -109,42 +109,39 @@ Column {
         }
         // all textlabels
         Column {
-            spacing: 0.75 * units.smallSpacing
-            Layout.margins: units.smallSpacing * 0.4
-
-            PlasmaComponents.Label {
+            PlasmaExtras.Heading {
+                level: 3
                 width: isWin ? textWidth : undefined
-                height: 1.25 * theme.mSize(theme.defaultFont).height
-                font.pointSize: -1
-                font.pixelSize: height
+                height: undefined
+                maximumLineCount: 1
                 elide: Text.ElideRight
                 text: appName
                 opacity: flatIndex == 0
                 textFormat: Text.PlainText
-                horizontalAlignment: Text.AlignLeft
+                visible: text !== ""
             }
             // window title
-            PlasmaComponents.Label {
+            PlasmaExtras.Heading {
+                id: winTitle
+                level: 5
                 width: isWin ? textWidth : undefined
-                height: theme.mSize(theme.defaultFont).height
-                font.pointSize: -1
-                font.pixelSize: height
+                height: undefined
+                maximumLineCount: 1
                 elide: Text.ElideRight
                 text: generateTitle()
                 textFormat: Text.PlainText
-                horizontalAlignment: Text.AlignLeft
                 opacity: 0.75
+                visible: !hasPlayer
             }
             // subtext
-            PlasmaComponents.Label {
+            PlasmaExtras.Heading {
+                level: 6
                 width: isWin ? textWidth : undefined
-                height: 0.75 * theme.mSize(theme.defaultFont).height
-                font.pointSize: -1
-                font.pixelSize: height
+                height: undefined
+                maximumLineCount: 1
                 elide: Text.ElideRight
                 text: isWin ? generateSubText() : ""
                 textFormat: Text.PlainText
-                horizontalAlignment: Text.AlignLeft
                 opacity: 0.6
                 visible: text !== ""
             }
@@ -186,7 +183,7 @@ Column {
         width: header.width
         // similar to 0.5625 = 1 / (16:9) as most screens are
         // round necessary, otherwise shadow mask for players has gap!
-        height: Math.round(0.5 * width)
+        height: Math.round(0.5 * width) + (!winTitle.visible? winTitle.height : 0)
         anchors.horizontalCenter: parent.horizontalCenter
 
         visible: isWin
@@ -222,50 +219,53 @@ Column {
             }
 
             Image {
+                id: albumArtBackground
+                source: albumArt
+                anchors.fill: parent
+                fillMode: Image.PreserveAspectCrop
+                visible: albumArtImage.available
+                layer.enabled: true
+                opacity: 0.25
+                layer.effect: FastBlur {
+                    source: albumArtBackground
+                    anchors.fill: parent
+                    radius: 30
+                }
+            }
+
+            Image {
                 id: albumArtImage
                 // also Image.Loading to prevent loading thumbnails just because the album art takes a split second to load
                 readonly property bool available: status === Image.Ready || status === Image.Loading
 
-                anchors.fill: parent
+                height: thumbnail.height - playbackLoader.realHeight
+                anchors.horizontalCenter: parent.horizontalCenter
                 sourceSize: Qt.size(parent.width, parent.height)
                 asynchronous: true
                 source: albumArt
-                fillMode: Image.PreserveAspectCrop
+                fillMode: Image.PreserveAspectFit
                 visible: available
-
-                ToolTipWindowMouseArea {
-                    id: area3
-
-                    anchors.fill: parent
-                    rootTask: parentTask
-                    modelIndex: instance.submodelIndex
-                    winId: thumbnailSourceItem.winId
-                }
             }
 
             // when minimized, we don't have a preview, so show the icon
             PlasmaCore.IconItem {
-                anchors.fill: parent
+                width: parent.width
+                height: thumbnail.height - playbackLoader.realHeight
+                anchors.horizontalCenter: parent.horizontalCenter
                 source: icon
                 animated: false
                 usesPlasmaTheme: false
                 visible: (thumbnailSourceItem.isMinimized && !albumArtImage.visible) //X11 case
                          || (!previewThumbX11Loader.active && !albumArtImage.visible) //Wayland case
-
-                ToolTipWindowMouseArea {
-                    id: area4
-
-                    anchors.fill: parent
-                    rootTask: parentTask
-                    modelIndex: submodelIndex
-                    winId: thumbnailSourceItem.winId
-                }
             }
         }
 
 
         Loader {
             id: playbackLoader
+
+            property real realHeight: item? item.realHeight : 0
+
             anchors.fill: thumbnail
             active: hasPlayer
             sourceComponent: playerControlsComp
@@ -275,6 +275,8 @@ Column {
             id: playerControlsComp
 
             Item {
+                property real realHeight: playerControlsRow.height
+
                 anchors.fill: parent
 
                 // TODO: When could this really be the case? A not-launcher-task always has a window!?
@@ -288,7 +290,7 @@ Column {
                 //                }
 
                 function containsMouse() {
-                    return area5.containsMouse || area6.containsMouse || area7.containsMouse || area8.containsMouse;
+                    return area3.containsMouse || area4.containsMouse || area5.containsMouse || area6.containsMouse;
                 }
 
                 Item {
@@ -320,7 +322,7 @@ Column {
 
                 // prevent accidental click-through when a control is disabled
                 MouseArea {
-                    id: area5
+                    id: area3
                     anchors.fill: playerControlsRow
 
                     hoverEnabled: true
@@ -338,28 +340,36 @@ Column {
                     enabled: canControl
 
                     ColumnLayout {
+                        Layout.margins: 2
                         Layout.fillWidth: true
                         spacing: 0
 
                         PlasmaExtras.Heading {
                             Layout.fillWidth: true
-                            level: 4
-                            wrapMode: Text.NoWrap
+                            level: 5
+                            lineHeight: 1
+                            maximumLineCount: artistText.visible? 1 : 2
+                            wrapMode: artistText.visible? Text.NoWrap : Text.Wrap
                             elide: Text.ElideRight
                             text: track || ""
+                            font.weight: Font.Bold
                         }
 
                         PlasmaExtras.Heading {
+                            id: artistText
                             Layout.fillWidth: true
                             level: 5
                             wrapMode: Text.NoWrap
+                            lineHeight: 1
                             elide: Text.ElideRight
                             text: artist || ""
+                            visible: text != ""
+                            opacity: 0.75
                         }
                     }
 
                     MouseArea {
-                        id: area6
+                        id: area4
 
                         height: units.iconSizes.smallMedium
                         width: height
@@ -380,7 +390,7 @@ Column {
                     }
 
                     MouseArea {
-                        id: area7
+                        id: area5
 
                         height: units.iconSizes.medium
                         width: height
@@ -400,7 +410,7 @@ Column {
                     }
 
                     MouseArea {
-                        id: area8
+                        id: area6
 
                         height: units.iconSizes.smallMedium
                         width: height
