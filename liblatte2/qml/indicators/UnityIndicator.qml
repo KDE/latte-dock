@@ -29,8 +29,8 @@ import "../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: indicatorItem
-    property Item parentItem: parent.manager
-    property Item rootItem: parent
+    readonly property Item parentItem: parent.manager
+    readonly property Item rootItem: parent
 
     readonly property bool needsIconColors: true
     readonly property bool providesFrontLayer: true
