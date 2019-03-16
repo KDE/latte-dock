@@ -269,24 +269,6 @@ Item{
             value: root.isVertical ? shadowsSvgItem.marginsHeight : shadowsSvgItem.marginsWidth
         }
 
-        //! This is used to provide real solidness without any transparency from the plasma theme
-        Rectangle{
-            id: solidBackgroundRectangle
-            anchors.fill: solidBackground
-            color: theme.backgroundColor
-            opacity: behaveAsPlasmaPanel && solidBackground.forceSolidness && plasmoid.configuration.maxLength === 100 ? 1 : 0
-
-            Behavior on opacity{
-                enabled: Latte.WindowSystem.compositingActive
-                NumberAnimation { duration: 2 * barLine.animationTime }
-            }
-
-            Behavior on opacity{
-                enabled: !Latte.WindowSystem.compositingActive
-                NumberAnimation { duration: 0 }
-            }
-        }
-
         //! Show a fake blurness under panel background for editMode visual feedback
         Loader {
             anchors.fill: solidBackground
@@ -321,6 +303,25 @@ Item{
                     source: effectSource
                     radius: 50
                 }
+            }
+        }
+
+        //! This is used to provide real solidness
+        Colorizer.CustomBackground {
+            id: backgroundLowestRectangle
+            anchors.fill: solidBackground
+            opacity: solidBackground.opacity
+            backgroundColor: colorizerManager.backgroundColor
+            roundness: overlayedBackground.roundness
+
+            Behavior on opacity{
+                enabled: Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: barLine.animationTime }
+            }
+
+            Behavior on opacity{
+                enabled: !Latte.WindowSystem.compositingActive
+                NumberAnimation { duration: 0 }
             }
         }
 
@@ -515,11 +516,11 @@ Item{
         }
 
         Colorizer.CustomBackground {
+            id: overlayedBackground
             anchors.fill: solidBackground
             opacity: {
                 if (root.forcePanelForBusyBackground
-                        && solidBackground.opacity === 0
-                        && solidBackgroundRectangle.opacity === 0) {
+                        && solidBackground.opacity === 0) {
                     return plasmoid.configuration.panelTransparency / 100;
                 }
 
@@ -562,6 +563,15 @@ Item{
                 NumberAnimation { duration: 0 }
             }
         }
+
+        //! CustomBackground debugger
+        /*Colorizer.CustomBackground {
+            anchors.fill: solidBackground
+            backgroundColor: "transparent"
+            borderWidth: 1
+            borderColor: "red"
+            roundness: overlayedBackground.roundness
+        }*/
 
         PlasmaCore.FrameSvgItem{
             id: hiddenPanelBackground

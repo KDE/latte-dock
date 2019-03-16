@@ -379,7 +379,10 @@ void Theme::loadThemePaths()
         setOriginalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
     }
 
-    parseThemeSvgFiles();
+    //! this is probably not needed at all in order to provide full transparency for all
+    //! plasma themes, so we disable it in order to confirm from user testing
+    //! that it is not needed at all
+    //parseThemeSvgFiles();
 }
 
 void Theme::parseThemeSvgFiles()

@@ -31,6 +31,8 @@ Item{
 
     property int roundness: 0
     property color backgroundColor
+    property color borderColor: "transparent"
+    property int borderWidth: 0
 
     property bool topBorder: false
     property bool leftBorder: false
@@ -108,7 +110,7 @@ Item{
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
-                    return parent.width;
+                    return parent.width + borderWidth;
                 } else if (noOfBorders === 2 || noOfBorders === 3) {
                     return parent.width + roundness;
                 }
@@ -119,7 +121,7 @@ Item{
         height: {
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 if (drawWithoutRoundness) {
-                    return parent.height;
+                    return parent.height + borderWidth;
                 } else if (noOfBorders === 2 || noOfBorders === 3) {
                     return parent.height + roundness;
                 }
@@ -134,9 +136,10 @@ Item{
 
         radius: drawWithoutRoundness ? 0 : roundness
         color: parent.backgroundColor
-        border.width: 0; border.color: "transparent"
+        border.width: main.borderWidth
+        border.color: main.borderColor
 
-        readonly property int centerStep: roundness / 2
+        readonly property int centerStep: Math.max(roundness, 2*borderWidth) / 2
 
         states: [
             State {
@@ -159,12 +162,8 @@ Item{
                         return 0;
                     }
                     anchors.verticalCenterOffset: {
-                        if (drawWithoutRoundness) {
-                            return 0;
-                        } else {
-                            //top edge and bottom edge
-                            return plasmoid.location === PlasmaCore.Types.TopEdge ? -centerStep : centerStep;
-                        }
+                        //bottom edge and top edge
+                        return plasmoid.location === PlasmaCore.Types.TopEdge ? -centerStep : centerStep;
                     }
                 }
             },
@@ -186,12 +185,8 @@ Item{
                         }
                     }
                     anchors.horizontalCenterOffset: {
-                        if (drawWithoutRoundness) {
-                            return 0;
-                        } else {
-                            //left edge and right edge
-                            return plasmoid.location === PlasmaCore.Types.LeftEdge ? -centerStep : centerStep;
-                        }
+                        //left edge and right edge
+                        return plasmoid.location === PlasmaCore.Types.LeftEdge ? -centerStep : centerStep;
                     }
                 }
             }
