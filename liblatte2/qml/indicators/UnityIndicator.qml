@@ -153,7 +153,7 @@ Item{
                 readonly property bool reversed: true
 
                 Repeater {
-                    model: parentItem.isActive || parentItem.hasActive ? 1 : 0
+                    model: parentItem.isTask && (parentItem.isActive || parentItem.hasActive) ? 1 : 0
                     delegate: triangleComponent
                 }
             }
