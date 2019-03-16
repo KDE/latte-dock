@@ -23,6 +23,7 @@
 // local
 #include "lattecorona.h"
 #include "schemecolors.h"
+#include "../../importer.h"
 #include "../../view/panelshadows_p.h"
 #include "../../../liblatte2/commontools.h"
 
@@ -334,21 +335,12 @@ void Theme::loadRoundness()
 
 void Theme::loadThemePaths()
 {
-    m_themePath = "";
-
-    QString localD = QDir::homePath() + "/.local/share/plasma/desktoptheme/" + m_theme.themeName();
-    QString globalD = "/usr/share/plasma/desktoptheme/" + m_theme.themeName();
-
-    if (QDir(localD).exists()) {
-        m_themePath = localD;
-    } else if (QDir(globalD).exists()) {
-        m_themePath = globalD;
-    }
+    m_themePath = Importer::standardPath("plasma/desktoptheme/" + m_theme.themeName());
 
     if (QDir(m_themePath+"/widgets").exists()) {
         m_themeWidgetsPath = m_themePath + "/widgets";
     } else {
-        m_themeWidgetsPath = "/usr/share/plasma/desktoptheme/default/widgets";
+        m_themeWidgetsPath = Importer::standardPath("plasma/desktoptheme/default/widgets");
     }
 
     qDebug() << "current plasma theme ::: " << m_theme.themeName();

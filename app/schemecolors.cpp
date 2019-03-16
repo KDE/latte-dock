@@ -20,6 +20,9 @@
 
 #include "schemecolors.h"
 
+// local
+#include "importer.h"
+
 // Qt
 #include <QDebug>
 #include <QDir>
@@ -163,21 +166,17 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
         }
     }
 
-    QString localSchemePath = QDir::homePath() + "/.local/share/color-schemes/" + tempScheme + ".colors";
-    QString globalSchemePath = "/usr/share/color-schemes/" + tempScheme + ".colors";
+    QString schemePath = Importer::standardPath("color-schemes/" + tempScheme + ".colors");
 
-    if (!QFileInfo(localSchemePath).exists() && !QFileInfo(globalSchemePath).exists()) {
+    if (schemePath.isEmpty() || !QFileInfo(schemePath).exists()) {
         //! remove all whitespaces and "-" from scheme in order to access correctly its file
         QString schemeNameSimplified = tempScheme.simplified().remove(" ").remove("-");
 
-        localSchemePath = QDir::homePath() + "/.local/share/color-schemes/" + schemeNameSimplified + ".colors";
-        globalSchemePath = "/usr/share/color-schemes/" + schemeNameSimplified + ".colors";
+        schemePath = Importer::standardPath("color-schemes/" + schemeNameSimplified + ".colors");
     }
 
-    if (QFileInfo(localSchemePath).exists()) {
-        return localSchemePath;
-    } else if (QFileInfo(globalSchemePath).exists()) {
-        return globalSchemePath;
+    if (QFileInfo(schemePath).exists()) {
+        return schemePath;
     }
 
     return "";

@@ -70,6 +70,11 @@ public:
     static Importer::LatteFileVersion fileVersion(QString file);
 
     static bool importHelper(QString fileName);
+
+    //! returns the standard path found that contains the subPath
+    //! local paths have higher priority by default
+    static QString standardPath(QString subPath, bool localFirst = true);
+
     //! check if this layout exists already in the latte directory
     static bool layoutExists(QString layoutName);
     //! imports the specific layout and return the new layout name.

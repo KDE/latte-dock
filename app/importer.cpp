@@ -184,6 +184,34 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     return true;
 }
 
+QString Importer::standardPath(QString subPath, bool localfirst)
+{
+    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+
+    if (localfirst) {
+        foreach (auto pt, paths) {
+            QString ptF = pt + "/" +subPath;
+            if (QFileInfo(ptF).exists()) {
+                return ptF;
+            }
+        }
+    } else {
+        for (int i=paths.count()-1; i>=0; i--) {
+            QString ptF = paths[i] + "/" +subPath;
+            if (QFileInfo(ptF).exists()) {
+                return ptF;
+            }
+        }
+    }
+
+    //! in any case that above fails
+    if (QFileInfo("/usr/share/"+subPath).exists()) {
+        return "/usr/share/"+subPath;
+    }
+
+    return "";
+}
+
 QString Importer::layoutCanBeImported(QString oldAppletsPath, QString newName, QString exportDirectory)
 {
     QFile oldAppletsrc(oldAppletsPath);

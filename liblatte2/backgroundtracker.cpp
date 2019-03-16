@@ -20,6 +20,7 @@
 
 #include "backgroundtracker.h"
 
+// local
 #include "plasma/extended/backgroundcache.h"
 
 namespace Latte {

@@ -21,7 +21,8 @@
 #include "universalsettings.h"
 
 // local
-#include "layoutmanager.h"
+#include "../importer.h"
+#include "../layoutmanager.h"
 
 // Qt
 #include <QDebug>
@@ -237,7 +238,7 @@ void UniversalSettings::setAutostart(bool state)
     //! end of removal of old autostart file
 
     QFile autostartFile(QDir::homePath() + "/.config/autostart/org.kde.latte-dock.desktop");
-    QFile metaFile("/usr/share/applications/org.kde.latte-dock.desktop");
+    QFile metaFile(Importer::standardPath("applications", false)+"/org.kde.latte-dock.desktop");
 
     if (!state && autostartFile.exists()) {
         //! the first time that the user disables the autostart, this is recorded

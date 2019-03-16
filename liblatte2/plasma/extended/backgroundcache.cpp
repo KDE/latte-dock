@@ -20,7 +20,8 @@
 #include "backgroundcache.h"
 
 // local
-#include "commontools.h"
+#include "../../commontools.h"
+#include "../../../app/importer.h"
 
 // Qt
 #include <QDebug>
@@ -40,7 +41,7 @@
 #define MAXHASHSIZE 300
 
 #define PLASMACONFIG "plasma-org.kde.plasma.desktop-appletsrc"
-#define DEFAULTWALLPAPER "/usr/share/wallpapers/Next/contents/images/1920x1080.png"
+#define DEFAULTWALLPAPER "wallpapers/Next/contents/images/1920x1080.png"
 
 namespace Latte{
 namespace PlasmaExtended {
@@ -53,6 +54,10 @@ BackgroundCache::BackgroundCache(QObject *parent)
     const auto configFile = QStandardPaths::writableLocation(
                 QStandardPaths::GenericConfigLocation) +
             QLatin1Char('/') + PLASMACONFIG;
+
+    m_defaultWallpaperPath = Importer::standardPath(DEFAULTWALLPAPER);
+
+    qDebug() << "Default Wallpaper path ::: " << m_defaultWallpaperPath;
 
     KDirWatch::self()->addFile(configFile);
 
@@ -188,7 +193,7 @@ QString BackgroundCache::background(QString activity, QString screen)
     if (m_backgrounds.contains(activity) && m_backgrounds[activity].contains(screen)) {
         return m_backgrounds[activity][screen];
     } else {
-        return DEFAULTWALLPAPER;
+        return m_defaultWallpaperPath;
     }
 }
 

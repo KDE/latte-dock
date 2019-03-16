@@ -86,6 +86,8 @@ private:
 private:
     bool m_initialized{false};
 
+    QString m_defaultWallpaperPath;
+
     ScreenPool *m_pool{nullptr};
 
     //! screen aware backgrounds: activity id, screen name, backgroundfile
