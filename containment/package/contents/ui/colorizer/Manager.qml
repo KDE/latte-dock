@@ -36,8 +36,8 @@ Loader{
 
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property real backgroundColorBrightness: ColorizerTools.colorBrightness(backgroundColor)
-    readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(textColor, 1.7) : Qt.lighter(textColor, 7)
-    readonly property color outlineColor: backgroundColorBrightness > 127.5 ? Qt.darker(backgroundColor, 1.3) : Qt.lighter(backgroundColor, 2)
+    readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(textColor, 1.7) : Qt.lighter(textColor, 8)
+    readonly property color outlineColor: backgroundColorBrightness > 127.5 ? Qt.darker(backgroundColor, 1.5) : Qt.lighter(backgroundColor, 2)
 
     readonly property bool mustBeShown: (applyTheme && applyTheme !== theme)
 

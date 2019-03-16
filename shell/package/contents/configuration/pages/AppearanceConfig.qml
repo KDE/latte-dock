@@ -744,7 +744,7 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.panelSize
                     from: 0
                     to: 100
-                    stepSize: 2
+                    stepSize: 1
                     wheelEnabled: false
 
                     function updatePanelSize() {
