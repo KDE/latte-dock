@@ -51,6 +51,11 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
 
     loadConfig();
 
+    connect(this, &Theme::outlineWidthChanged, this, &Theme::saveConfig);
+    connect(this, &Theme::userSetRoundnessChanged, this, &Theme::saveConfig);
+
+    connect(this, &Theme::userSetRoundnessChanged, this, &Theme::roundnessChanged);
+
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::hasShadowChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::load);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &Theme::themeChanged);
@@ -110,6 +115,21 @@ int Theme::rightEdgeRoundness() const
     return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_rightEdgeRoundness : qMax(0, m_userRoundness));
 }
 
+int Theme::outlineWidth() const
+{
+    return m_outlineWidth;
+}
+
+void Theme::setOutlineWidth(int width)
+{
+    if (m_outlineWidth == width) {
+        return;
+    }
+
+    m_outlineWidth = width;
+    emit outlineWidthChanged();
+}
+
 int Theme::userThemeRoundness() const
 {
     return m_userRoundness;
@@ -123,9 +143,7 @@ void Theme::setUserThemeRoundness(int roundness)
 
     m_userRoundness = roundness;
 
-    emit roundnessChanged();
-
-    saveConfig();
+    emit userSetRoundnessChanged();
 }
 
 float Theme::backgroundMaxOpacity() const
@@ -511,11 +529,13 @@ void Theme::loadThemeLightness()
 void Theme::loadConfig()
 {
     setUserThemeRoundness(m_themeGroup.readEntry("userSetPlasmaThemeRoundness", -1));
+    setOutlineWidth(m_themeGroup.readEntry("outlineWidth", 1));
 }
 
 void Theme::saveConfig()
 {
     m_themeGroup.writeEntry("userSetPlasmaThemeRoundness", m_userRoundness);
+    m_themeGroup.writeEntry("outlineWidth", m_outlineWidth);
 
     m_themeGroup.sync();
 }

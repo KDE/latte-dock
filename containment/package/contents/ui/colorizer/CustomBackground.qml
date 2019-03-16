@@ -106,15 +106,15 @@ Item{
                 if (drawWithoutRoundness) {
                     return parent.width + 2*borderWidth;
                 } else if (noOfBorders === 2) {
-                    return parent.width + Math.max(roundness,borderWidth);
+                    return parent.width + Math.max(roundness, 2*borderWidth);
                 } else if (noOfBorders === 3) {
                     return parent.width;
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
-                    return parent.width + borderWidth;
+                    return parent.width + 2 * borderWidth;
                 } else if (noOfBorders === 2 || noOfBorders === 3) {
-                    return parent.width + Math.max(roundness,borderWidth);
+                    return parent.width + Math.max(roundness, 2 * borderWidth);
                 }
             }
         }
@@ -123,15 +123,15 @@ Item{
         height: {
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 if (drawWithoutRoundness) {
-                    return parent.height + borderWidth;
+                    return parent.height + 2 * borderWidth;
                 } else if (noOfBorders === 2 || noOfBorders === 3) {
-                    return parent.height + Math.max(roundness,borderWidth);
+                    return parent.height + Math.max(roundness,2 * borderWidth);
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
                     return parent.height + 2*borderWidth;
                 } else if (noOfBorders === 2) {
-                    return parent.height + Math.max(roundness,borderWidth);
+                    return parent.height + Math.max(roundness, 2*borderWidth);
                 } else if (noOfBorders === 3) {
                     return parent.height;
                 }

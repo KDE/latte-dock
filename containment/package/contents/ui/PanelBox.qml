@@ -533,7 +533,7 @@ Item{
             sourceComponent: Colorizer.CustomBackground{
                 backgroundColor: "transparent"
                 borderColor: colorizerManager.outlineColor
-                borderWidth: 1
+                borderWidth: themeExtended ? themeExtended.outlineWidth : 1
                 roundness: overlayedBackground.roundness
             }
         }

@@ -57,6 +57,8 @@ class Theme: public QObject
     Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
 
+    Q_PROPERTY(int outlineWidth READ outlineWidth NOTIFY outlineWidthChanged)
+
     Q_PROPERTY(float backgroundMaxOpacity READ backgroundMaxOpacity NOTIFY backgroundMaxOpacityChanged)
 
     Q_PROPERTY(SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
@@ -76,6 +78,9 @@ public:
     int topEdgeRoundness() const;
     int rightEdgeRoundness() const;
 
+    int outlineWidth() const;
+    void setOutlineWidth(int width);
+
     int userThemeRoundness() const;
     void setUserThemeRoundness(int roundness);
 
@@ -90,8 +95,10 @@ public:
 signals:
     void backgroundMaxOpacityChanged();
     void hasShadowChanged();
+    void outlineWidthChanged();
     void roundnessChanged();
     void themeChanged();
+    void userSetRoundnessChanged();
 
 private slots:
     void loadConfig();
@@ -119,6 +126,7 @@ private:
     int m_leftEdgeRoundness{0};
     int m_topEdgeRoundness{0};
     int m_rightEdgeRoundness{0};
+    int m_outlineWidth{1};
     int m_userRoundness{-1};
 
     float m_backgroundMaxOpacity{1};

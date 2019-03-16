@@ -71,6 +71,7 @@ const int ACTIVITYCOLUMN = 6;
 
 const int SCREENTRACKERDEFAULTVALUE = 2500;
 const int THEMEDEFAULTROUNDNESS = 0; //Breeze default value is used 0px.
+const int OUTLINEDEFAULTWIDTH = 1;
 
 const QChar CheckMark{0x2714};
 
@@ -138,6 +139,7 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     ui->screenTrackerSpinBox->setValue(m_corona->universalSettings()->screenTrackerInterval());
     ui->themeRoundnessSpinBox->setSpecialValueText(i18nc("automatic background roundness","Automatic"));
     ui->themeRoundnessSpinBox->setValue(m_corona->themeExtended()->userThemeRoundness());
+    ui->outlineSpinBox->setValue(m_corona->themeExtended()->outlineWidth());
 
     //! About Menu
     QMenuBar *menuBar = new QMenuBar(this);
@@ -192,6 +194,10 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     });
 
     connect(ui->themeRoundnessSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [ = ](int i) {
+        updateApplyButtonsState();
+    });
+
+    connect(ui->outlineSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [ = ](int i) {
         updateApplyButtonsState();
     });
 
@@ -760,6 +766,7 @@ void SettingsDialog::restoreDefaults()
         ui->highSensitivityBtn->setChecked(true);
         ui->screenTrackerSpinBox->setValue(SCREENTRACKERDEFAULTVALUE);
         ui->themeRoundnessSpinBox->setValue(THEMEDEFAULTROUNDNESS);
+        ui->outlineSpinBox->setValue(OUTLINEDEFAULTWIDTH);
     }
 }
 
@@ -962,6 +969,7 @@ QList<int> SettingsDialog::currentSettings()
     settings << m_mouseSensitivityButtons->checkedId();
     settings << ui->screenTrackerSpinBox->value();
     settings << ui->themeRoundnessSpinBox->value();
+    settings << ui->outlineSpinBox->value();
     settings << m_model->rowCount();
 
     return settings;
@@ -1218,7 +1226,8 @@ void SettingsDialog::updateApplyButtonsState()
             || ui->noBordersForMaximizedChkBox->isChecked()
             || !ui->highSensitivityBtn->isChecked()
             || ui->screenTrackerSpinBox->value() != SCREENTRACKERDEFAULTVALUE
-            || ui->themeRoundnessSpinBox->value() != THEMEDEFAULTROUNDNESS) {
+            || ui->themeRoundnessSpinBox->value() != THEMEDEFAULTROUNDNESS
+            || ui->outlineSpinBox->value() != OUTLINEDEFAULTWIDTH ) {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
         } else {
             ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
@@ -1352,6 +1361,7 @@ bool SettingsDialog::saveAllChanges()
     m_corona->universalSettings()->setScreenTrackerInterval(ui->screenTrackerSpinBox->value());
 
     m_corona->themeExtended()->setUserThemeRoundness(ui->themeRoundnessSpinBox->value());
+    m_corona->themeExtended()->setOutlineWidth(ui->outlineSpinBox->value());
 
     //! Update Layouts
     QStringList knownActivities = activities();

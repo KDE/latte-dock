@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>840</width>
-    <height>621</height>
+    <width>936</width>
+    <height>710</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -140,8 +140,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="user-identity">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -155,8 +154,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="media-playback-pause">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -215,8 +213,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="add">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -230,8 +227,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="edit-copy">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                 <property name="flat">
                  <bool>false</bool>
@@ -248,8 +244,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="list-remove">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -279,8 +274,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="object-locked">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                 <property name="checkable">
                  <bool>true</bool>
@@ -357,8 +351,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="document-import">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                 <property name="default">
                  <bool>false</bool>
@@ -375,8 +368,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="document-export">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -390,8 +382,7 @@
                 </property>
                 <property name="icon">
                  <iconset theme="favorites">
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>.</normaloff>.</iconset>
                 </property>
                </widget>
               </item>
@@ -453,15 +444,24 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>805</width>
-            <height>523</height>
+            <width>885</width>
+            <height>613</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <property name="spacing">
             <number>0</number>
            </property>
-           <property name="margin">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
@@ -1061,6 +1061,105 @@ when there are no other roundness information.</string>
                 </spacer>
                </item>
               </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <item>
+                <spacer name="horizontalSpacer_16">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="outlineLbl">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="toolTip">
+                  <string>Outline width used from background to draw its borders</string>
+                 </property>
+                 <property name="text">
+                  <string>Outline width</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="outlineSpinBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>111</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Outline width used from background to draw its borders</string>
+                 </property>
+                 <property name="suffix">
+                  <string> px.</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_15">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_13">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
              <item>
               <spacer name="verticalSpacer_6">
