@@ -139,7 +139,7 @@ Item{
         border.width: main.borderWidth
         border.color: main.borderColor
 
-        readonly property int centerStep: Math.max(roundness, 2*borderWidth) / 2
+        readonly property int centerStep: Math.max( (drawWithoutRoundness ? 0 : roundness), 2*borderWidth) / 2
 
         states: [
             State {
