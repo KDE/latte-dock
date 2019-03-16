@@ -18,10 +18,9 @@ Installation
 
 We recommend that you use at least **Plasma 5.12.0**
 
-**tools**
+**tools:**
 ```
  bash
- gzip
 ```
 
 **development packages for:**
