@@ -135,10 +135,8 @@ Item{
     PlasmaCore.FrameSvgItem{
         id: shadowsSvgItem
 
-        width: root.isVertical ? panelSize + marginsWidth - (solidBackground.leftIncreaser + solidBackground.rightIncreaser) :
-                                 Math.min(parent.width + marginsWidth, root.width - marginsWidth)
-        height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) :
-                                  panelSize + marginsHeight - (solidBackground.topIncreaser + solidBackground.bottomIncreaser)
+        width: root.isVertical ? panelSize + marginsWidth : Math.min(parent.width + marginsWidth, root.width - marginsWidth)
+        height: root.isVertical ? Math.min(parent.height + marginsHeight, root.height - marginsHeight) : panelSize + marginsHeight
 
         imagePath: hideShadow ? "" : "widgets/panel-background"
         prefix: hideShadow ? "" : "shadow"
@@ -313,6 +311,7 @@ Item{
             opacity: solidBackground.opacity
             backgroundColor: colorizerManager.backgroundColor
             roundness: overlayedBackground.roundness
+            visible: Latte.WindowSystem.compositingActive
 
             Behavior on opacity{
                 enabled: Latte.WindowSystem.compositingActive
@@ -327,10 +326,10 @@ Item{
 
         PlasmaCore.FrameSvgItem{
             id: solidBackground
-            anchors.leftMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.left - leftIncreaser : 0
-            anchors.rightMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.right - rightIncreaser : 0
-            anchors.topMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.top - topIncreaser : 0
-            anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom - bottomIncreaser : 0
+            anchors.leftMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.left : 0
+            anchors.rightMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.right : 0
+            anchors.topMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.top : 0
+            anchors.bottomMargin: Latte.WindowSystem.compositingActive ? shadowsSvgItem.margins.bottom : 0
             anchors.fill:parent
 
             opacity: {
@@ -347,7 +346,7 @@ Item{
 
             property rect efGeometry: Qt.rect(-1,-1,0,0)
 
-            imagePath: root.solidStylePanel ? "opaque/dialogs/background" : "widgets/panel-background"
+            imagePath: Latte.WindowSystem.compositingActive ? "widgets/panel-background" : "opaque/dialogs/background"
 
             onWidthChanged: updateEffectsArea();
             onHeightChanged: updateEffectsArea();
@@ -360,6 +359,8 @@ Item{
             Component.onDestruction: {
                 root.updateEffectsArea.disconnect(updateEffectsArea);
             }
+
+            onImagePathChanged: solidBackground.adjustPrefix();
 
             Binding{
                 target: root
@@ -374,10 +375,6 @@ Item{
                     if (!root.editMode){
                         solidBackground.updateEffectsArea();
                     }
-                }
-
-                onSolidStylePanelChanged: {
-                    solidBackground.adjustPrefix();
                 }
             }
 
@@ -416,41 +413,6 @@ Item{
                     visibilityManager.updateMaskArea();
                 }
             }
-
-            //! the increases used when the user forces a solid background and the background
-            //! must be increased in order to look ok in the corners
-            property int rightIncreaser: {
-                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.LeftEdge)
-                        || !Latte.WindowSystem.compositingActive)
-                    return 0;
-                else
-                    return hiddenPanelBackground.margins.right;
-            }
-
-            property int leftIncreaser: {
-                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.RightEdge)
-                        || !Latte.WindowSystem.compositingActive)
-                    return 0;
-                else
-                    return hiddenPanelBackground.margins.left;
-            }
-
-            property int topIncreaser: {
-                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.BottomEdge)
-                        || !Latte.WindowSystem.compositingActive)
-                    return 0;
-                else
-                    return hiddenPanelBackground.margins.top;
-            }
-
-            property int bottomIncreaser: {
-                if (!(root.solidStylePanel && root.isVertical && plasmoid.location === PlasmaCore.Types.TopEdge)
-                        || !Latte.WindowSystem.compositingActive)
-                    return 0;
-                else
-                    return hiddenPanelBackground.margins.bottom;
-            }
-
 
             Binding {
                 target: root
@@ -564,6 +526,18 @@ Item{
             }
         }
 
+        //! Outline drawing
+        Loader{
+            anchors.fill: solidBackground
+            active: root.panelOutline && Latte.WindowSystem.compositingActive
+            sourceComponent: Colorizer.CustomBackground{
+                backgroundColor: "transparent"
+                borderColor: colorizerManager.outlineColor
+                borderWidth: 1
+                roundness: overlayedBackground.roundness
+            }
+        }
+
         //! CustomBackground debugger
         /*Colorizer.CustomBackground {
             anchors.fill: solidBackground
@@ -572,12 +546,6 @@ Item{
             borderColor: "red"
             roundness: overlayedBackground.roundness
         }*/
-
-        PlasmaCore.FrameSvgItem{
-            id: hiddenPanelBackground
-            imagePath: "widgets/panel-background"
-            visible: false
-        }
     }
 
     transitions: Transition {

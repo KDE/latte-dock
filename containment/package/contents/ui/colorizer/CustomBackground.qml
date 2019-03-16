@@ -103,16 +103,18 @@ Item{
 
         width: {
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                if (drawWithoutRoundness || noOfBorders === 3) {
-                    return parent.width;
+                if (drawWithoutRoundness) {
+                    return parent.width + 2*borderWidth;
                 } else if (noOfBorders === 2) {
-                    return parent.width + roundness;
+                    return parent.width + Math.max(roundness,borderWidth);
+                } else if (noOfBorders === 3) {
+                    return parent.width;
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
                 if (drawWithoutRoundness) {
                     return parent.width + borderWidth;
                 } else if (noOfBorders === 2 || noOfBorders === 3) {
-                    return parent.width + roundness;
+                    return parent.width + Math.max(roundness,borderWidth);
                 }
             }
         }
@@ -123,13 +125,15 @@ Item{
                 if (drawWithoutRoundness) {
                     return parent.height + borderWidth;
                 } else if (noOfBorders === 2 || noOfBorders === 3) {
-                    return parent.height + roundness;
+                    return parent.height + Math.max(roundness,borderWidth);
                 }
             } else if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                if (drawWithoutRoundness || noOfBorders === 3) {
-                    return parent.height;
+                if (drawWithoutRoundness) {
+                    return parent.height + 2*borderWidth;
                 } else if (noOfBorders === 2) {
-                    return parent.height + roundness;
+                    return parent.height + Math.max(roundness,borderWidth);
+                } else if (noOfBorders === 3) {
+                    return parent.height;
                 }
             }
         }
@@ -139,7 +143,7 @@ Item{
         border.width: main.borderWidth
         border.color: main.borderColor
 
-        readonly property int centerStep: Math.max( (drawWithoutRoundness ? 0 : roundness), 2*borderWidth) / 2
+        readonly property int centerStep: Math.max(Math.ceil((drawWithoutRoundness ? 0 : roundness) / 2) , borderWidth)
 
         states: [
             State {

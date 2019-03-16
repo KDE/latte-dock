@@ -78,7 +78,7 @@ DragDrop.DropArea {
 
         return (visibilityManager.panelIsBiggerFromIconSize && (maxZoomFactor === 1.0)
                 && (latteView.visibility.mode === Latte.Types.AlwaysVisible || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
-                && (plasmoid.configuration.panelPosition === Latte.Types.Justify) && !(root.solidStylePanel && panelShadowsActive));
+                && (plasmoid.configuration.panelPosition === Latte.Types.Justify));
     }
 
     property int viewType: {
@@ -166,7 +166,6 @@ DragDrop.DropArea {
     property bool showAppletShortcutBadges: false
     property bool showMetaBadge: false
     property int applicationLauncherId: -1
-    property bool solidStylePanel: Latte.WindowSystem.compositingActive ? plasmoid.configuration.solidPanel : true
 
     //FIXME: possibly this is going to be the default behavior, this user choice
     //has been dropped from the Dock Configuration Window
@@ -220,6 +219,7 @@ DragDrop.DropArea {
     property int modifierClickAction: plasmoid.configuration.modifierClickAction
     property int modifierClick: plasmoid.configuration.modifierClick
 
+    property bool panelOutline: plasmoid.configuration.panelOutline
     property int panelEdgeSpacing: Math.max(panelBoxBackground.lengthMargins, 1.5*appShadowSize)
     property int panelTransparency: plasmoid.configuration.panelTransparency //user set
     property int currentPanelTransparency: 0 //application override

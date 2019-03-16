@@ -870,14 +870,14 @@ PlasmaComponents.Page {
                 PlasmaComponents.Button {
                     id: solidBackground
                     Layout.fillWidth: true
-                    text: i18n("Solid Style")
-                    checked: plasmoid.configuration.solidPanel
+                    text: i18n("Outline")
+                    checked: plasmoid.configuration.panelOutline
                     checkable: true
-                    enabled: showBackground.checked
-                    tooltip: i18n("Background uses a solid style image provided from plasma theme")
+                    enabled: showBackground.checked && Latte.WindowSystem.compositingActive
+                    tooltip: i18n("Background draws a line for its borders. You can set the line size from Latte Preferences")
 
                     onClicked: {
-                        plasmoid.configuration.solidPanel = checked
+                        plasmoid.configuration.panelOutline = !plasmoid.configuration.panelOutline;
                     }
                 }
             }
