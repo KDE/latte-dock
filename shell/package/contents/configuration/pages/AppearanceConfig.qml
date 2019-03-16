@@ -792,7 +792,7 @@ PlasmaComponents.Page {
                     value: plasmoid.configuration.panelTransparency
                     from: 0
                     to: 100
-                    stepSize: 5
+                    stepSize: 1
                     wheelEnabled: false
 
                     /*property bool blockOpacityAdjustment: (plasmoid.configuration.solidBackgroundForMaximized && plasmoid.configuration.backgroundOnlyOnMaximized)
