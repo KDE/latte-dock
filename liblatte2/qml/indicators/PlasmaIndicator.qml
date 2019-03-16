@@ -100,6 +100,15 @@ PlasmaCore.FrameSvgItem {
             }
         },
         State {
+            name: "hovered"
+            when: parentItem.isHovered && frame.hasElementPrefix("hover")
+
+            PropertyChanges {
+                target: frame
+                basePrefix: "hover"
+            }
+        },
+        State {
             name: "attention"
             when: parentItem.inAttention
 

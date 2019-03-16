@@ -55,6 +55,7 @@ Item{
 
     readonly property bool isActive: appletItem.isActive
     readonly property bool isGroup: false
+    readonly property bool isHovered: appletMouseArea.containsMouse
     readonly property bool isMinimized: false
     readonly property bool inAttention: false
     readonly property bool inRemoving: false
