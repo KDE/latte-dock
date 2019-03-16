@@ -57,6 +57,8 @@ class Theme: public QObject
     Q_PROPERTY(int topEdgeRoundness READ topEdgeRoundness NOTIFY roundnessChanged)
     Q_PROPERTY(int rightEdgeRoundness READ rightEdgeRoundness NOTIFY roundnessChanged)
 
+    Q_PROPERTY(float backgroundMaxOpacity READ backgroundMaxOpacity NOTIFY backgroundMaxOpacityChanged)
+
     Q_PROPERTY(SchemeColors *defaultTheme READ defaultTheme NOTIFY themeChanged)
     Q_PROPERTY(SchemeColors *lightTheme READ lightTheme NOTIFY themeChanged)
     Q_PROPERTY(SchemeColors *darkTheme READ darkTheme NOTIFY themeChanged)
@@ -77,6 +79,8 @@ public:
     int userThemeRoundness() const;
     void setUserThemeRoundness(int roundness);
 
+    float backgroundMaxOpacity() const;
+
     SchemeColors *defaultTheme() const;
     SchemeColors *lightTheme() const;
     SchemeColors *darkTheme() const;
@@ -84,6 +88,7 @@ public:
     void load();
 
 signals:
+    void backgroundMaxOpacityChanged();
     void hasShadowChanged();
     void roundnessChanged();
     void themeChanged();
@@ -98,6 +103,7 @@ private:
     void loadRoundness();
 
     void setOriginalSchemeFile(const QString &file);
+    void parseThemeSvgFiles();
     void updateDefaultScheme();
     void updateDefaultSchemeValues();
     void updateReversedScheme();
@@ -115,7 +121,10 @@ private:
     int m_rightEdgeRoundness{0};
     int m_userRoundness{-1};
 
+    float m_backgroundMaxOpacity{1};
+
     QString m_themePath;
+    QString m_themeWidgetsPath;
     QString m_defaultSchemePath;
     QString m_originalSchemePath;
     QString m_reversedSchemePath;

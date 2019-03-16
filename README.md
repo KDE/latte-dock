@@ -18,8 +18,14 @@ Installation
 
 We recommend that you use at least **Plasma 5.12.0**
 
+**tools**
+```
+ bash
+ gzip
+```
+
 **development packages for:**
-```bash
+```
  Qt5Core >= 5.9.0
  Qt5Gui >= 5.9.0
  Qt5Dbus >= 5.9.0

@@ -29,6 +29,7 @@
 // Qt
 #include <QDebug>
 #include <QDir>
+#include <QProcess>
 
 // KDE
 #include <KDirWatch>
@@ -83,6 +84,11 @@ bool Theme::isDarkTheme() const
     return !m_isLightTheme;
 }
 
+bool Theme::themeHasExtendedInfo() const
+{
+    return m_themeHasExtendedInfo;
+}
+
 int Theme::bottomEdgeRoundness() const
 {
     return ((themeHasExtendedInfo() && m_userRoundness == -1) ? m_bottomEdgeRoundness : qMax(0, m_userRoundness));
@@ -121,9 +127,9 @@ void Theme::setUserThemeRoundness(int roundness)
     saveConfig();
 }
 
-bool Theme::themeHasExtendedInfo() const
+float Theme::backgroundMaxOpacity() const
 {
-    return m_themeHasExtendedInfo;
+    return m_backgroundMaxOpacity;
 }
 
 SchemeColors *Theme::defaultTheme() const
@@ -339,8 +345,15 @@ void Theme::loadThemePaths()
         m_themePath = globalD;
     }
 
+    if (QDir(m_themePath+"/widgets").exists()) {
+        m_themeWidgetsPath = m_themePath + "/widgets";
+    } else {
+        m_themeWidgetsPath = "/usr/share/plasma/desktoptheme/default/widgets";
+    }
+
     qDebug() << "current plasma theme ::: " << m_theme.themeName();
     qDebug() << "theme path ::: " << m_themePath;
+    qDebug() << "theme widgets path ::: " << m_themeWidgetsPath;
 
     //! clear kde connections
     for (auto &c : m_kdeConnections) {
@@ -373,6 +386,113 @@ void Theme::loadThemePaths()
 
         setOriginalSchemeFile(SchemeColors::possibleSchemeFile("kdeglobals"));
     }
+
+    parseThemeSvgFiles();
+}
+
+void Theme::parseThemeSvgFiles()
+{
+    QString origBackgroundSvgFile;
+    QString curBackgroundSvgFile = m_extendedThemeDir.path()+"/widgets/panel-background.svg";
+
+    if (QFileInfo(curBackgroundSvgFile).exists()) {
+        QDir(m_extendedThemeDir.path()+"/widgets").remove("panel-background.svg");
+    }
+
+    if (!QDir(m_extendedThemeDir.path()+"/widgets").exists()) {
+        QDir(m_extendedThemeDir.path()).mkdir("widgets");
+    }
+
+    if (QFileInfo(m_themeWidgetsPath+"/panel-background.svg").exists()) {
+        origBackgroundSvgFile = m_themeWidgetsPath+"/panel-background.svg";
+        QFile(origBackgroundSvgFile).copy(curBackgroundSvgFile);
+    } else if (QFileInfo(m_themeWidgetsPath+"/panel-background.svgz").exists()) {
+        origBackgroundSvgFile = m_themeWidgetsPath+"/panel-background.svgz";
+        QString tempBackFile = m_extendedThemeDir.path()+"/widgets/panel-background.svg.gz";
+        QFile(origBackgroundSvgFile).copy(tempBackFile);
+
+        //! Identify Plasma Desktop version
+        QProcess process;
+        process.start("gzip -d " + tempBackFile);
+        process.waitForFinished();
+        QString output(process.readAllStandardOutput());
+
+        qDebug() << "plasma theme, background extraction output ::: " << output;
+        qDebug() << "plasma theme, original background svg file was decompressed...";
+    }
+
+    if (QFileInfo(curBackgroundSvgFile).exists()) {
+        qDebug() << "plasma theme, panel background ::: " << curBackgroundSvgFile;
+    } else {
+        qDebug() << "plasma theme, panel background ::: was not found...";
+    }
+
+    //! Find panel-background transparency
+    QFile svgFile(curBackgroundSvgFile);
+    QString styleSvgStr;
+
+    if (svgFile.open(QIODevice::ReadOnly)) {
+       QTextStream in(&svgFile);
+       bool centerIdFound{false};
+       bool styleFound{false};
+
+       while (!in.atEnd() && !styleFound) {
+          QString line = in.readLine();
+
+          //! each time a rect starts then style can be reset
+          if (line.contains("<rect")) {
+              styleSvgStr = "";
+          }
+
+          //! identify the id "center
+          if (line.contains("id=\"center\"")) {
+              centerIdFound = true;
+          }
+
+          //! if valid style for center exists we can break
+          if (centerIdFound && !styleSvgStr.isEmpty()) {
+              break;
+          }
+
+          if (centerIdFound && line.contains("style=\"") ) {
+              styleSvgStr = line;
+          }
+
+          //! when end of "center" you can break
+          if (centerIdFound && line.contains("/rect>")) {
+              break;
+          }
+       }
+       svgFile.close();
+    }
+
+    if (!styleSvgStr.isEmpty()) {
+        int styleInd = styleSvgStr.indexOf("style=");
+        QString cleanedStr = styleSvgStr.remove(0, styleInd+7);
+        int endInd = cleanedStr.indexOf("\"");
+        styleSvgStr = cleanedStr.mid(0,endInd);
+
+        QStringList styleValues = styleSvgStr.split(";");
+        // qDebug() << "plasma theme, discovered svg style ::: " << styleValues;
+
+        float opacity{1};
+        float fillOpacity{1};
+
+        foreach (QString value, styleValues) {
+            if (value.startsWith("opacity:")) {
+                opacity = value.remove(0,8).toFloat();
+            }
+            if (value.startsWith("fill-opacity:")) {
+                fillOpacity = value.remove(0,13).toFloat();
+            }
+        }
+
+        m_backgroundMaxOpacity = opacity * fillOpacity;
+
+        qDebug() << "plasma theme opacity :: " << m_backgroundMaxOpacity << " from : " << opacity << " * " << fillOpacity;
+    }
+
+    emit backgroundMaxOpacityChanged();
 }
 
 void Theme::loadThemeLightness()
