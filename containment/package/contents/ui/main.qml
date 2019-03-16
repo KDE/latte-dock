@@ -218,6 +218,7 @@ DragDrop.DropArea {
     property int modifier: plasmoid.configuration.modifier
     property int modifierClickAction: plasmoid.configuration.modifierClickAction
     property int modifierClick: plasmoid.configuration.modifierClick
+    property int scrollAction: plasmoid.configuration.scrollAction
 
     property bool panelOutline: plasmoid.configuration.panelOutline
     property int panelEdgeSpacing: Math.max(panelBoxBackground.lengthMargins, 1.5*appShadowSize)

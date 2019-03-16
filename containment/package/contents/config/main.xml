@@ -242,6 +242,15 @@
       </choices>
       <default>0</default>
     </entry>
+    <entry name="scrollAction" type="Enum">
+      <choices>
+            <choice name="ScrollNone"/>
+            <choice name="ScrollDesktops"/>
+            <choice name="ScrollActivities"/>
+            <choice name="ScrollTasks"/>
+      </choices>
+      <default>0</default>
+    </entry>
     <entry name="modifierClickAction" type="Enum">
       <choices>
             <choice name="None"/>

@@ -22,6 +22,10 @@ import QtQuick 2.7
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.latte 0.2 as Latte
+
+import "loaders" as Loaders
+
 MouseArea{
     id: mainArea
 
@@ -73,12 +77,67 @@ MouseArea{
         //tasksModel.requestToggleMaximized(tasksModel.activeTask);
     }
 
+    onWheel: {
+        var delta = 0;
+
+        if (wheel.angleDelta.y>=0 && wheel.angleDelta.x>=0) {
+            delta = Math.max(wheel.angleDelta.y, wheel.angleDelta.x);
+        } else {
+            delta = Math.min(wheel.angleDelta.y, wheel.angleDelta.x);
+        }
+
+        var angle = delta / 8;
+
+        if (angle>10) {
+            if (pagerLoader.active) {
+                var next;
+                if (pagerLoader.item.model.currentPage === pagerLoader.item.count - 1){
+                    next = 0;
+                } else {
+                    next = Math.min(pagerLoader.item.model.currentPage + 1, pagerLoader.item.count - 1);
+                }
+
+                if (pagerLoader.item.count > 1){
+                    //console.log("+++ changing from: " + pagerLoader.item.model.currentPage + " to ::: " + next);
+                    pagerLoader.item.model.changePage(next);
+                }
+            } else if (tasksLoader.active) {
+                tasksLoader.item.activateNextPrevTask(true);
+            }
+        } else if (angle<-10) {
+            if (pagerLoader.active) {
+                var prev;
+                if (pagerLoader.item.model.currentPage === 0){
+                    prev = pagerLoader.item.count - 1;
+                } else {
+                    prev = Math.max(pagerLoader.item.model.currentPage - 1, 0);
+                }
+
+                if (pagerLoader.item.count > 1){
+                    //console.log("--- changing from: " + pagerLoader.item.model.currentPage + " to ::: " + prev);
+                    pagerLoader.item.model.changePage(prev);
+                }
+            } else if (tasksLoader.active) {
+                tasksLoader.item.activateNextPrevTask(false);
+            }
+        }
+    }
+
+    Loaders.Pager{
+        id: pagerLoader
+    }
+
+    Loaders.Tasks{
+        id: tasksLoader
+    }
+
     function activateDragging(){
         latteView.disableGrabItemBehavior();
         latteView.windowsTracker.requestMoveActiveWindow(mainArea.mouseX, mainArea.mouseY);
         restoreGrabberTimer.start();
     }
 
+    //! Timers
     Timer {
         id: dragWindowTimer
         interval: 500

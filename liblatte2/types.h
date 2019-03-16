@@ -90,6 +90,15 @@ public:
     };
     Q_ENUM(ClickAction);
 
+    enum ScrollAction
+    {
+        ScrollNone = 0,
+        ScrollDesktops,
+        ScrollActivities,
+        ScrollTasks
+    };
+    Q_ENUM(ScrollAction);
+
     enum TaskAction
     {
         NoneAction = 0,

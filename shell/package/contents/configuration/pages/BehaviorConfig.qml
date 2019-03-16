@@ -505,57 +505,103 @@ PlasmaComponents.Page {
         }
         //! END: Delay
 
-        //! BEGIN: Items
+        //! BEGIN: Actions
         ColumnLayout {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
             LatteExtraControls.Header {
-                text: i18n("Items")
+                text: i18n("Actions")
             }
 
-            PlasmaComponents.CheckBox {
-                id: titleTooltipsChk
+            ColumnLayout {
                 Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Show title tooltips on hovering")
-                checked: plasmoid.configuration.titleTooltips
+                spacing: 0
 
-                onClicked: {
-                    plasmoid.configuration.titleTooltips = checked;
+                LatteExtraControls.SubHeader {
+                    text: i18n("Empty Area")
                 }
-            }
 
-            PlasmaComponents.CheckBox {
-                id: mouseWheelChk
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Activate through mouse wheel")
-                checked: plasmoid.configuration.mouseWheelActions
-                tooltip: i18n("Enable/Disable the mouse wheel action")
-                visible: dialog.highLevel
+                RowLayout {
+                    Layout.topMargin: units.smallSpacing
 
-                onClicked: {
-                    plasmoid.configuration.mouseWheelActions = checked
+                    PlasmaComponents.Label {
+                        text: i18n("Mouse wheel")
+                    }
+
+                    PlasmaComponents3.ComboBox {
+                        id: scrollAction
+                        Layout.fillWidth: true
+                        model: [i18nc("none scroll actions", "None Action"),
+                            i18n("Cycle Through Desktops"),
+                            i18n("Cycle Through Activities"),
+                            i18n("Cycle Through Tasks")]
+
+                        currentIndex: plasmoid.configuration.scrollAction
+
+                        onCurrentIndexChanged: {
+                            switch(currentIndex) {
+                            case Latte.Types.ScrollNone:
+                                plasmoid.configuration.scrollAction = Latte.Types.ScrollNone;
+                                break;
+                            case Latte.Types.ScrollDesktops:
+                                plasmoid.configuration.scrollAction = Latte.Types.ScrollDesktops;
+                                break;
+                            case Latte.Types.ScrollActivities:
+                                plasmoid.configuration.scrollAction = Latte.Types.ScrollActivities;
+                                break;
+                            case Latte.Types.ScrollTasks:
+                                plasmoid.configuration.scrollAction = Latte.Types.ScrollTasks;
+                                break;
+                            }
+                        }
+                    }
                 }
-            }
 
-            PlasmaComponents.CheckBox {
-                Layout.leftMargin: units.smallSpacing * 2
-                text: i18n("Activate based on position through global shortcuts")
-                checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
-                //enabled: shortcutsEngine.basedOnPositionEnabled
+                LatteExtraControls.SubHeader {
+                    text: i18n("Items")
+                }
 
-                tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
+                PlasmaComponents.CheckBox {
+                    id: titleTooltipsChk
+                    text: i18n("Show title tooltips on hovering")
+                    checked: plasmoid.configuration.titleTooltips
 
-                onClicked: {
-                    latteView.isPreferredForShortcuts = checked
-                    if (!latteView.managedLayout.preferredForShortcutsTouched) {
-                        latteView.managedLayout.preferredForShortcutsTouched = true
+                    onClicked: {
+                        plasmoid.configuration.titleTooltips = checked;
+                    }
+                }
+
+                PlasmaComponents.CheckBox {
+                    id: mouseWheelChk
+                    text: i18n("Activate through mouse wheel")
+                    checked: plasmoid.configuration.mouseWheelActions
+                    tooltip: i18n("Enable/Disable the mouse wheel action")
+                    visible: dialog.highLevel
+
+                    onClicked: {
+                        plasmoid.configuration.mouseWheelActions = checked
+                    }
+                }
+
+                PlasmaComponents.CheckBox {
+                    text: i18n("Activate based on position through global shortcuts")
+                    checked: latteView.isPreferredForShortcuts || (!latteView.managedLayout.preferredForShortcutsTouched && latteView.isHighestPriorityView())
+                    //enabled: shortcutsEngine.basedOnPositionEnabled
+
+                    tooltip: i18n("This view is used for based on position global shortcuts. Take note that only one view can have that option enabled for each layout")
+
+                    onClicked: {
+                        latteView.isPreferredForShortcuts = checked
+                        if (!latteView.managedLayout.preferredForShortcutsTouched) {
+                            latteView.managedLayout.preferredForShortcutsTouched = true
+                        }
                     }
                 }
             }
         }
-        //! END: Items
+        //! END: Actions
 
         //! BEGIN: Adjust
         ColumnLayout {
