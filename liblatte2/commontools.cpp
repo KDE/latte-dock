@@ -21,6 +21,8 @@
 #include "commontools.h"
 
 // Qt
+#include <QFileInfo>
+#include <QStandardPaths>
 #include <QtMath>
 
 namespace Latte {
@@ -69,6 +71,34 @@ float colorLumina(float r, float g, float b)
     float luminosity = 0.2126 * rS + 0.7152 * gS + 0.0722 * bS;
 
     return luminosity;
+}
+
+QString standardPath(QString subPath, bool localfirst)
+{
+    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+
+    if (localfirst) {
+        foreach (auto pt, paths) {
+            QString ptF = pt + "/" +subPath;
+            if (QFileInfo(ptF).exists()) {
+                return ptF;
+            }
+        }
+    } else {
+        for (int i=paths.count()-1; i>=0; i--) {
+            QString ptF = paths[i] + "/" +subPath;
+            if (QFileInfo(ptF).exists()) {
+                return ptF;
+            }
+        }
+    }
+
+    //! in any case that above fails
+    if (QFileInfo("/usr/share/"+subPath).exists()) {
+        return "/usr/share/"+subPath;
+    }
+
+    return "";
 }
 
 }

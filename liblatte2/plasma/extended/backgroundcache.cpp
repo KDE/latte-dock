@@ -21,7 +21,6 @@
 
 // local
 #include "../../commontools.h"
-#include "../../../app/importer.h"
 
 // Qt
 #include <QDebug>
@@ -55,7 +54,7 @@ BackgroundCache::BackgroundCache(QObject *parent)
                 QStandardPaths::GenericConfigLocation) +
             QLatin1Char('/') + PLASMACONFIG;
 
-    m_defaultWallpaperPath = Importer::standardPath(DEFAULTWALLPAPER);
+    m_defaultWallpaperPath = Latte::standardPath(DEFAULTWALLPAPER);
 
     qDebug() << "Default Wallpaper path ::: " << m_defaultWallpaperPath;
 
