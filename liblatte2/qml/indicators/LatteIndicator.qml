@@ -223,8 +223,8 @@ Item{
                 roundCorners: true
                 showGlow: glowEnabled  && glowOption === Latte.Types.GlowAll
                 visible:  ( options.isGroup && ((dotsOnActive && activeIndicatorType === Latte.Types.LineIndicator)
-                                                                || activeIndicatorType === Latte.Types.DotIndicator
-                                                                || !options.hasActive) )? true: false
+                                                || activeIndicatorType === Latte.Types.DotIndicator
+                                                || !options.hasActive) )? true: false
 
                 //when there is no active window
                 property color state1Color: options.hasShown ? indicatorRoot.isActiveColor : indicatorRoot.minimizedColor
@@ -247,7 +247,8 @@ Item{
             },
             State {
                 name: "bottom"
-                when: ((plasmoid.location === PlasmaCore.Types.BottomEdge && !reversedEnabled) ||
+                when: (plasmoid.location === PlasmaCore.Types.Floating ||
+                       (plasmoid.location === PlasmaCore.Types.BottomEdge && !reversedEnabled) ||
                        (plasmoid.location === PlasmaCore.Types.TopEdge && reversedEnabled))
 
                 AnchorChanges {
