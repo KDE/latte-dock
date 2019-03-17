@@ -23,44 +23,53 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
+import "../../indicators/options" as TaskIndicator
+
 Item {
     id: indicatorManager
-    readonly property bool active: indicators.common.indicatorsEnabled
-    readonly property bool locked: inAttentionAnimation || inNewWindowAnimation
+    property bool taskIsValid: true
+
+    readonly property bool active: indicators && indicators.common ? indicators.common.indicatorsEnabled : true
+    readonly property bool locked: taskIsValid ? (inAttentionAnimation || inNewWindowAnimation) : false
 
     /* Indicators Properties in order for indicators to use them*/
     readonly property bool isTask: true
     readonly property bool isApplet: false
 
-    readonly property bool isLauncher: taskItem.isLauncher
-    readonly property bool isStartup: taskItem.isStartup
-    readonly property bool isWindow: taskItem.isWindow
+    readonly property bool isLauncher: taskIsValid ? taskItem.isLauncher : true
+    readonly property bool isStartup: taskIsValid ? taskItem.isStartup : false
+    readonly property bool isWindow: taskIsValid ? taskItem.isWindow : false
 
-    readonly property bool isActive: taskItem.hasActive || (root.showPreviews && (taskItem.isWindow || taskItem.isGroupParent)
-                                                            && windowsPreviewDlg.activeItem && (windowsPreviewDlg.activeItem === taskItem))
-    readonly property bool isGroup: taskItem.isGroupParent
-    readonly property bool isHovered: taskItem.containsMouse
-    readonly property bool isMinimized: taskItem.isMinimized
-    readonly property bool inAttention: taskItem.inAttention
-    readonly property bool inRemoving: taskItem.inRemoveStage
+    readonly property bool isActive: taskIsValid ? (taskItem.hasActive || (root.showPreviews
+                                                                           && (taskItem.isWindow || taskItem.isGroupParent)
+                                                                           && windowsPreviewDlg.activeItem
+                                                                           && (windowsPreviewDlg.activeItem === taskItem)) ) : false
 
-    readonly property bool hasActive: taskItem.hasActive
-    readonly property bool hasMinimized: taskItem.hasMinimized
-    readonly property bool hasShown: taskItem.hasShown
-    readonly property int windowsCount: taskItem.windowsCount
-    readonly property int windowsMinimizedCount: taskItem.windowsMinimizedCount
+    readonly property bool isGroup: taskIsValid ? taskItem.isGroupParent : false
+    readonly property bool isHovered: taskIsValid ? taskItem.containsMouse : false
+    readonly property bool isMinimized: taskIsValid ? taskItem.isMinimized : false
+    readonly property bool inAttention: taskIsValid ? taskItem.inAttention : false
+    readonly property bool inRemoving: taskIsValid ? taskItem.inRemoveStage : false
+
+    readonly property bool hasActive: taskIsValid ? taskItem.hasActive : false
+    readonly property bool hasMinimized: taskIsValid? taskItem.hasMinimized : false
+    readonly property bool hasShown: taskIsValid ? taskItem.hasShown : false
+    readonly property int windowsCount: taskIsValid ? taskItem.windowsCount : 0
+    readonly property int windowsMinimizedCount: taskIsValid ? taskItem.windowsMinimizedCount : 0
 
     readonly property int currentIconSize: root.iconSize
     readonly property int maxIconSize: root.maxIconSize
     readonly property int durationTime: root.durationTime
-    readonly property real scaleFactor: taskItem.wrapperAlias.mScale
+    readonly property real scaleFactor: taskIsValid ? taskItem.wrapperAlias.mScale : 1
     readonly property color shadowColor: root.appShadowColorSolid
 
     //!icon colors
-    property color backgroundColor: taskItem.wrapperAlias.backgroundColor
-    property color glowColor: taskItem.wrapperAlias.glowColor
+    property color backgroundColor: taskIsValid ? taskItem.wrapperAlias.backgroundColor : "black"
+    property color glowColor: taskIsValid ? taskItem.wrapperAlias.glowColor : "white"
 
     //! grouped options
-    readonly property Item common: indicators.common
-    readonly property Item explicit: indicators.explicit
+    readonly property Item common: indicators ? indicators.common : emptyOptions
+    readonly property Item explicit: indicators ? indicators.explicit : emptyOptions
+
+    Item{id: emptyOptions}
 }

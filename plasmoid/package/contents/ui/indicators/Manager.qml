@@ -25,6 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 import "options" as Options
+import "../task/indicator" as TaskIndicator
 
 Item{
     id: managerIndicator
@@ -69,7 +70,9 @@ Item{
         opacity: 0
 
         readonly property bool isBackLayer: true
-        readonly property Item manager: managerIndicator
+        readonly property Item manager: TaskIndicator.Manager{
+            taskIsValid: false
+        }
 
         sourceComponent: managerIndicator.indicatorComponent
     }

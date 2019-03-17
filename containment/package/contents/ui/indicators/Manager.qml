@@ -25,6 +25,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 import "options" as Options
+import "../applet/indicator" as AppletIndicator
 
 Item{
     id: managerIndicator
@@ -103,7 +104,7 @@ Item{
         opacity: 0
 
         readonly property bool isBackLayer: true
-        readonly property Item manager: managerIndicator
+        readonly property Item manager: AppletIndicator.Manager{}
 
         sourceComponent: managerIndicator.indicatorComponent
     }

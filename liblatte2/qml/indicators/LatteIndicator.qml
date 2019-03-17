@@ -51,7 +51,8 @@ Item{
     property color notActiveColor: options.isMinimized ? minimizedColor : isActiveColor
 
     //! Common Options
-    readonly property bool reversedEnabled: options.common ? options.common.reversedEnabled : false
+    readonly property bool reversedEnabled: options && options.common && options.common.hasOwnProperty("reversedEnabled") ?
+                                                options.common.reversedEnabled : false
 
     //! Explicit Options
     readonly property bool explicitOptionsEnabled: options.explicit
