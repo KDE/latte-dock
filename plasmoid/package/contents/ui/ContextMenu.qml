@@ -348,7 +348,7 @@ PlasmaComponents.ContextMenu {
         enabled: visualParent && visualParent.m.LauncherUrlWithoutIcon != null
 
         text: i18n("Start New Instance")
-        icon: "system-run"
+        icon: "list-add-symbolic"
 
         onClicked: tasksModel.requestNewInstance(menu.modelIndex)
     }
@@ -364,7 +364,7 @@ PlasmaComponents.ContextMenu {
 
         enabled: visible
 
-        text: i18n("Move To Desktop")
+        text: i18n("Move To &Desktop")
 
         Connections {
             target: virtualDesktopInfo
@@ -392,7 +392,7 @@ PlasmaComponents.ContextMenu {
                 }
 
                 var menuItem = menu.newMenuItem(virtualDesktopsMenu);
-                menuItem.text = i18n("Move To Current Desktop");
+                menuItem.text = i18n("Move &To Current Desktop");
                 menuItem.enabled = Qt.binding(function() {
                     if (root.plasma515) {
                         var vds = menu.get(atm.VirtualDesktops);
@@ -410,7 +410,7 @@ PlasmaComponents.ContextMenu {
                 });
 
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
-                menuItem.text = i18n("All Desktops");
+                menuItem.text = i18n("&All Desktops");
                 menuItem.checkable = true;
                 menuItem.checked = Qt.binding(function() {
                     return menu.visualParent && menu.visualParent.m.IsOnAllVirtualDesktops === true;
@@ -456,7 +456,7 @@ PlasmaComponents.ContextMenu {
                 menu.newSeparator(virtualDesktopsMenu);
 
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
-                menuItem.text = i18n("New Desktop");
+                menuItem.text = i18n("&New Desktop");
                 menuItem.clicked.connect(function() {
                     if (root.plasma515) {
                         tasksModel.requestNewVirtualDesktop(menu.modelIndex);
@@ -588,7 +588,7 @@ PlasmaComponents.ContextMenu {
             PlasmaComponents.MenuItem {
                 enabled: menu.visualParent && menu.visualParent.m.IsMovable === true
 
-                text: i18n("Move")
+                text: i18n("&Move")
                 icon: "transform-move"
 
                 onClicked: tasksModel.requestMove(menu.modelIndex)
@@ -597,7 +597,7 @@ PlasmaComponents.ContextMenu {
             PlasmaComponents.MenuItem {
                 enabled: menu.visualParent && menu.visualParent.m.IsResizable === true
 
-                text: i18n("Resize")
+                text: i18n("Re&size")
                 icon: "transform-scale"
 
                 onClicked: tasksModel.requestResize(menu.modelIndex)
@@ -615,7 +615,7 @@ PlasmaComponents.ContextMenu {
                 checkable: true
                 checked: visualParent && visualParent.m.IsMaximized === true
 
-                text: i18n("Maximize")
+                text: i18n("Ma&ximize")
                 icon: "window-maximize"
 
                 onClicked: tasksModel.requestToggleMaximized(menu.modelIndex)
@@ -633,7 +633,7 @@ PlasmaComponents.ContextMenu {
                 checkable: true
                 checked: visualParent && visualParent.m.IsMinimized === true
 
-                text: i18n("Minimize")
+                text: i18n("Mi&nimize")
                 icon: "window-minimize"
 
                 onClicked: tasksModel.requestToggleMinimized(menu.modelIndex)
@@ -643,7 +643,7 @@ PlasmaComponents.ContextMenu {
                 checkable: true
                 checked: menu.visualParent && menu.visualParent.m.IsKeepAbove === true
 
-                text: i18n("Keep Above Others")
+                text: i18n("Keep &Above Others")
                 icon: "window-keep-above"
 
                 onClicked: tasksModel.requestToggleKeepAbove(menu.modelIndex)
@@ -653,7 +653,7 @@ PlasmaComponents.ContextMenu {
                 checkable: true
                 checked: menu.visualParent && menu.visualParent.m.IsKeepBelow === true
 
-                text: i18n("Keep Below Others")
+                text: i18n("Keep &Below Others")
                 icon: "window-keep-below"
 
                 onClicked: tasksModel.requestToggleKeepBelow(menu.modelIndex)
@@ -665,7 +665,7 @@ PlasmaComponents.ContextMenu {
                 checkable: true
                 checked: menu.visualParent && menu.visualParent.m.IsFullScreen === true
 
-                text: i18n("Fullscreen")
+                text: i18n("&Fullscreen")
                 icon: "view-fullscreen"
 
                 onClicked: tasksModel.requestToggleFullScreen(menu.modelIndex)
@@ -677,7 +677,7 @@ PlasmaComponents.ContextMenu {
                 checkable: true
                 checked: menu.visualParent && menu.visualParent.m.IsShaded === true
 
-                text: i18n("Shade")
+                text: i18n("&Shade")
                 icon: "window-shade"
 
                 onClicked: tasksModel.requestToggleShaded(menu.modelIndex)
@@ -723,7 +723,7 @@ PlasmaComponents.ContextMenu {
 
         checkable: true
 
-        text: i18n("Pin to Task Manager")
+        text: i18n("&Pin Launcher")
         icon: "window-pin"
 
         onClicked: {
@@ -755,7 +755,8 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: showLauncherInActivitiesItem
 
-        text: i18n("Pin to Task Manager")
+        text: i18n("&Pin Launcher")
+        icon: "window-pin"
 
         visible: visualParent && (!visualParent.isSeparator || (visualParent.isSeparator && root.editMode))
         // && get(atm.IsLauncher) !== true
@@ -854,7 +855,7 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent && !visualParent.isSeparator && get(atm.IsLauncher) === true)
                  && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
 
-        text: i18n("Unpin from Task Manager")
+        text: i18n("Unpin Launcher")
         icon: "window-unpin"
 
         onClicked: {
@@ -991,7 +992,7 @@ PlasmaComponents.ContextMenu {
 
         enabled: visualParent && visualParent.m.IsClosable === true
 
-        text: i18n("Close")
+        text: i18n("&Close")
         icon: "window-close"
 
         onClicked: {
