@@ -40,6 +40,7 @@ namespace ViewPart {
 class WindowsTracker : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool activeWindowMaximized READ activeWindowMaximized NOTIFY activeWindowMaximizedChanged)
     Q_PROPERTY(bool activeWindowTouching READ activeWindowTouching NOTIFY activeWindowTouchingChanged)
     Q_PROPERTY(bool existsWindowActive READ existsWindowActive NOTIFY existsWindowActiveChanged)
     Q_PROPERTY(bool existsWindowMaximized READ existsWindowMaximized NOTIFY existsWindowMaximizedChanged)
@@ -54,8 +55,9 @@ public:
     bool enabled() const;
     void setEnabled(bool active);
 
-    bool existsWindowActive() const;
+    bool activeWindowMaximized() const;
     bool activeWindowTouching() const;
+    bool existsWindowActive() const;
     bool existsWindowMaximized() const;
     bool existsWindowTouching() const;
 
@@ -66,6 +68,7 @@ public:
 
 signals:
     void enabledChanged();
+    void activeWindowMaximizedChanged();
     void activeWindowTouchingChanged();
     void existsWindowActiveChanged();
     void existsWindowMaximizedChanged();
@@ -79,6 +82,7 @@ public slots:
     Q_INVOKABLE bool activeWindowCanBeDragged();
 
 private:
+    void setActiveWindowMaximized(bool activeMaximized);
     void setActiveWindowTouching(bool activeTouching);
     void setExistsWindowActive(bool windowActive);
     void setExistsWindowMaximized(bool windowMaximized);
@@ -100,6 +104,7 @@ private:
 
 private:
     bool m_enabled{false};
+    bool m_activeWindowIsMaximizedFlag{false};
     bool m_activeWindowIsTouchingFlag{false};
     bool m_windowIsActiveFlag{false};
     bool m_windowIsTouchingFlag{false};

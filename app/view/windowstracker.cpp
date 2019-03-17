@@ -43,6 +43,21 @@ WindowsTracker::~WindowsTracker()
     qDebug() << "WindowsTracker removing...";
 }
 
+bool WindowsTracker::activeWindowMaximized() const
+{
+    return m_activeWindowIsMaximizedFlag;
+}
+
+void WindowsTracker::setActiveWindowMaximized(bool activeMaximized)
+{
+    if (m_activeWindowIsMaximizedFlag == activeMaximized) {
+        return;
+    }
+
+    m_activeWindowIsMaximizedFlag = activeMaximized;
+    emit activeWindowMaximizedChanged();
+}
+
 bool WindowsTracker::activeWindowTouching() const
 {
     return m_activeWindowIsTouchingFlag;
@@ -291,6 +306,7 @@ void WindowsTracker::updateFlags()
     //! assign flags
     setExistsWindowActive(foundActiveInCurScreen);
     setActiveWindowTouching(foundActiveTouchInCurScreen);
+    setActiveWindowMaximized(maxWinId.toInt()>0 && (maxWinId == activeTouchWinId));
     setExistsWindowMaximized(foundMaximizedInCurScreen);
     setExistsWindowTouching(foundTouchInCurScreen || foundActiveTouchInCurScreen);
 

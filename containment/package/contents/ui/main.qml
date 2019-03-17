@@ -240,8 +240,8 @@ DragDrop.DropArea {
         }
 
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
-             || (plasmoid.configuration.panelShadows &&  root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                && !(disablePanelShadowMaximized && latteView.windowsTracker.existsWindowMaximized)) {
+             || (plasmoid.configuration.panelShadows && root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
+                && !(disablePanelShadowMaximized && latteView.windowsTracker.activeWindowMaximized)) {
             return true;
         }
 
