@@ -153,7 +153,7 @@ Item{
             width: Math.round(newTempSize) //+ 2*taskIcon.shadowSize
             height: Math.round(width)
             source: decoration
-            providesColors: taskItem.indicatorNeedsIconColors
+            providesColors: indicators.info.needsIconColors
 
             opacity: root.enableShadows ? 0 : 1
             visible: !taskItem.isSeparator && !badgesLoader.active

@@ -25,60 +25,15 @@ Loader{
     id: indicatorLoader
     anchors.fill: parent
 
-    active: manager && manager.active && (isBackLayer || (!isBackLayer && indicatorProvidesFrontLayer))
-    sourceComponent: manager.sourceComponent
+    active: manager && manager.active && (isBackLayer || (!isBackLayer && indicators.info.providesFrontLayer))
+    sourceComponent: {
+        if (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
+            return indicators.plasmaStyleComponent;
+        }
+
+        return indicators.indicatorComponent;
+    }
 
     property bool isBackLayer: true
     property Item manager
-
-    //! Used when the indicators require more thickness in the view mask
-    //! e.g. when the Latte indicators are glowing in reverse order
-    Binding {
-        target: visibilityManager
-        property: "indicatorsExtraThickMask"
-        value: {
-            if (indicatorLoader.isBackLayer
-                    && indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("extraMaskThickness")) {
-                return indicatorLoader.item.extraMaskThickness;
-            }
-
-            return 0;
-        }
-    }
-
-    //! Used when the indicators need icon colors in orde to be painted
-    //! properly, for example the Unity indicator
-    Binding {
-        target: appletItem
-        property: "indicatorNeedsIconColors"
-        value: {
-            if (indicatorLoader.isBackLayer
-                    && indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("needsIconColors")) {
-                return indicatorLoader.item.needsIconColors;
-            }
-
-            return false;
-        }
-    }
-
-    //! Used when the indicators property also a front layer
-    //! to be drawn above the icon
-    Binding {
-        target: appletItem
-        property: "indicatorProvidesFrontLayer"
-        value: {
-            if (indicatorLoader.isBackLayer
-                    && indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("providesFrontLayer")) {
-                return indicatorLoader.item.providesFrontLayer;
-            }
-
-            return false;
-        }
-    }
 }

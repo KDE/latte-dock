@@ -36,8 +36,8 @@ Loader {
     property bool isBackLayer: true
     property Item manager
 
-    active: manager && manager.active && (isBackLayer || (!isBackLayer && taskItem.indicatorProvidesFrontLayer))
-    sourceComponent: manager.sourceComponent
+    active: manager && manager.active && (isBackLayer || (!isBackLayer && indicators.info.providesFrontLayer))
+    sourceComponent: indicators.indicatorComponent
 
     width: {
         if (locked) {
@@ -59,38 +59,4 @@ Loader {
 
     property real visualLockedWidth: root.iconSize + root.internalWidthMargins
     property real visualLockedHeight: root.iconSize + root.internalHeightMargins
-
-    //! Used when the indicators need icon colors in orde to be painted
-    //! properly, for example the Unity indicator
-    Binding {
-        target: taskItem
-        property: "indicatorNeedsIconColors"
-        value: {
-            if (indicatorLoader.isBackLayer
-                    && indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("needsIconColors")) {
-                return indicatorLoader.item.needsIconColors;
-            }
-
-            return false;
-        }
-    }
-
-    //! Used when the indicators property also a front layer
-    //! to be drawn above the icon
-    Binding {
-        target: taskItem
-        property: "indicatorProvidesFrontLayer"
-        value: {
-            if (indicatorLoader.isBackLayer
-                    && indicatorLoader.active
-                    && indicatorLoader.item
-                    && indicatorLoader.item.hasOwnProperty("providesFrontLayer")) {
-                return indicatorLoader.item.providesFrontLayer;
-            }
-
-            return false;
-        }
-    }
 }

@@ -72,7 +72,7 @@ Item{
     readonly property int marginBetweenContentsAndRuler: 10
     property int extraThickMask: marginBetweenContentsAndRuler + Math.max(indicatorsExtraThickMask, shadowsExtraThickMask)
     //! this is set from indicators when they need extra thickness mask size
-    property int indicatorsExtraThickMask: 0
+    readonly property int indicatorsExtraThickMask: indicators.info.extraMaskThickness
     property int shadowsExtraThickMask: {
         var shadowMaxNeededMargin = 0.15 * root.maxIconSize;
 

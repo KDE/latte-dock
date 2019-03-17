@@ -28,23 +28,6 @@ Item{
     readonly property bool active: (indicators.common.indicatorsEnabled && appletItem.communicatorAlias.activeIndicatorEnabled && indicators.common.indicatorsForApplets)
                                    || (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive)
 
-    readonly property Component sourceComponent: {
-        if (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
-            return plasmaStyleIndicator;
-        }
-
-        switch (indicators.common.indicatorStyle) {
-        case Latte.Types.LatteIndicator:
-            return latteStyleIndicator;
-        case Latte.Types.PlasmaIndicator:
-            return plasmaStyleIndicator;
-        case Latte.Types.UnityIndicator:
-            return unityStyleIndicator;
-        default:
-            return latteStyleIndicator;
-        };
-    }
-
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false
     readonly property bool isApplet: true
@@ -79,19 +62,4 @@ Item{
     //! grouped options
     readonly property Item common: indicators.common
     readonly property Item explicit: indicators.explicit
-
-    Component {
-        id: latteStyleIndicator
-        Latte.LatteIndicator{}
-    }
-
-    Component {
-        id: plasmaStyleIndicator
-        Latte.PlasmaIndicator{}
-    }
-
-    Component{
-        id:unityStyleIndicator
-        Latte.UnityIndicator{}
-    }
 }

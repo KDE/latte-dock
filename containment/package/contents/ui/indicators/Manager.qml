@@ -27,10 +27,41 @@ import org.kde.latte 0.2 as Latte
 import "options" as Options
 
 Item{
-    id: manager
+    id: managerIndicator
 
     readonly property Item common: commonOptions
     readonly property Item explicit: explicitOptions.item
+
+    readonly property Component plasmaStyleComponent: plasmaStyleIndicator
+
+    readonly property Component indicatorComponent: {
+        switch (indicators.common.indicatorStyle) {
+        case Latte.Types.LatteIndicator:
+            return latteStyleIndicator;
+        case Latte.Types.PlasmaIndicator:
+            return plasmaStyleIndicator;
+        case Latte.Types.UnityIndicator:
+            return unityStyleIndicator;
+        default:
+            return latteStyleIndicator;
+        };
+    }
+
+    readonly property Item info: Item{
+        readonly property bool needsIconColors: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsIconColors")
+                                                && metricsLoader.item.needsIconColors
+        readonly property bool providesFrontLayer: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesFrontLayer")
+                                                   && metricsLoader.item.providesFrontLayer
+
+        readonly property int extraMaskThickness: {
+            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("extraMaskThickness")) {
+                return metricsLoader.item.extraMaskThickness;
+            }
+
+            return 0;
+        }
+    }
+
 
     Options.Common {
         id: commonOptions
@@ -50,5 +81,31 @@ Item{
         }
     }
 
+    //! Indicators Components
+    Component {
+        id: latteStyleIndicator
+        Latte.LatteIndicator{}
+    }
+
+    Component {
+        id: plasmaStyleIndicator
+        Latte.PlasmaIndicator{}
+    }
+
+    Component{
+        id:unityStyleIndicator
+        Latte.UnityIndicator{}
+    }
+
+    //! Metrics and values provided from an invisible indicator
+    Loader{
+        id: metricsLoader
+        opacity: 0
+
+        readonly property bool isBackLayer: true
+        readonly property Item manager: managerIndicator
+
+        sourceComponent: managerIndicator.indicatorComponent
+    }
 }
 

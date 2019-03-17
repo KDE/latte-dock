@@ -64,9 +64,6 @@ Item {
     property bool appletBlocksParabolicEffect: communicator.parabolicEffectLocked
     property bool lockZoom: false
 
-    property bool indicatorNeedsIconColors: false
-    property bool indicatorProvidesFrontLayer: false
-
     property bool isActive: (isExpanded
                              && applet.pluginName !== root.plasmoidName
                              && applet.pluginName !== "org.kde.activeWindowControl"

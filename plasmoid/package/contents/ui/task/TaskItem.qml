@@ -104,9 +104,6 @@ MouseArea{
     property bool inPopup: false
     property bool inRemoveStage: false
 
-    property bool indicatorNeedsIconColors: false
-    property bool indicatorProvidesFrontLayer: false
-
     property bool isAbleToShowPreview: true
     property bool isActive: (IsActive === true) ? true : false
     property bool isDemandingAttention: (IsDemandingAttention === true) ? true : false

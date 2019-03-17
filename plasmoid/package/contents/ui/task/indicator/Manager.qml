@@ -63,32 +63,4 @@ Item {
     //! grouped options
     readonly property Item common: indicators.common
     readonly property Item explicit: indicators.explicit
-
-    readonly property Component sourceComponent: {
-        switch (indicators.common.indicatorStyle) {
-        case Latte.Types.LatteIndicator:
-            return latteIndicatorComponent;
-        case Latte.Types.PlasmaIndicator:
-            return plasmaIndicatorComponent;
-        case Latte.Types.UnityIndicator:
-            return unityIndicatorComponent;
-        default:
-            return latteIndicatorComponent;
-        };
-    }
-
-    Component{
-        id:latteIndicatorComponent
-        Latte.LatteIndicator{}
-    }
-
-    Component{
-        id: plasmaIndicatorComponent
-        Latte.PlasmaIndicator{}
-    }
-
-    Component{
-        id:unityIndicatorComponent
-        Latte.UnityIndicator{}
-    }
 }

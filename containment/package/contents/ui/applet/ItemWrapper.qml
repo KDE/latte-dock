@@ -460,7 +460,7 @@ Item{
                     return "";
                 }
 
-                providesColors: appletItem.indicatorNeedsIconColors && source != ""
+                providesColors: indicators.info.needsIconColors && source != ""
                 usesPlasmaTheme: communicator.appletIconItemIsShown() ? communicator.appletIconItem.usesPlasmaTheme : false
 
                 Binding{
