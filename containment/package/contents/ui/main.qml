@@ -234,7 +234,8 @@ DragDrop.DropArea {
             return plasmoid.configuration.panelShadows;
         }
 
-        if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground) {
+        //! Draw shadows for isBusy state only when current panelTransparency is greater than 40%
+        if (plasmoid.configuration.panelShadows && root.forcePanelForBusyBackground && currentPanelTransparency>40) {
             return true;
         }
 
