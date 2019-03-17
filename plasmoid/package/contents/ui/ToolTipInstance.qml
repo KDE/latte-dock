@@ -494,15 +494,18 @@ Column {
 
         var subTextEntries = [];
 
-        var vd = isGroup ? virtualDesktop : virtualDesktopParent;
+        var virtualDesktops = isGroup ? VirtualDesktops : virtualDesktopParent;
+        var virtualDesktopNameList = [];
 
-        if (!plasmoid.configuration.showOnlyCurrentDesktop
-                && virtualDesktopInfo.numberOfDesktops > 1
-                && (isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent) !== true
-                && vd !== -1
-                && vd !== undefined
-                && virtualDesktopInfo.desktopNames[vd - 1] !== undefined) {
-            subTextEntries.push(i18n("On %1", virtualDesktopInfo.desktopNames[vd - 1]));
+        for (var i = 0; i < virtualDesktops.length; ++i) {
+            virtualDesktopNameList.push(virtualDesktopInfo.desktopNames[virtualDesktops[i] - 1]);
+        }
+
+        if (!root.showOnlyCurrentDesktop
+            && virtualDesktopInfo.numberOfDesktops > 1
+            && (isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent) !== true
+            && virtualDesktops.length > 0) {
+            subTextEntries.push(i18nc("Comma-separated list of desktops", "On %1", virtualDesktopNameList.join()));
         }
 
         var act = isGroup ? activities : activitiesParent;
@@ -523,7 +526,7 @@ Column {
                 if (activityName === "") {
                     continue;
                 }
-                if (plasmoid.configuration.showOnlyCurrentActivity) {
+                if (root.showOnlyCurrentActivity) {
                     if (activity !== activityInfo.currentActivity) {
                         activityNames.push(activityName);
                     }
@@ -532,7 +535,7 @@ Column {
                 }
             }
 
-            if (plasmoid.configuration.showOnlyCurrentActivity) {
+            if (root.showOnlyCurrentActivity) {
                 if (activityNames.length > 0) {
                     subTextEntries.push(i18nc("Activities a window is currently on (apart from the current one)",
                                               "Also available on %1", activityNames.join(", ")));
