@@ -92,7 +92,7 @@ DragDrop.DropArea {
         return Latte.Types.DockView;
     }
 
-    property bool blurEnabled: plasmoid.configuration.blurEnabled && !root.forceTransparentPanel && !root.forcePanelForBusyBackground
+    property bool blurEnabled: plasmoid.configuration.blurEnabled && (!forceTransparentPanel || forcePanelForBusyBackground)
 
     property bool confirmedDragEntered: false
     property bool containsOnlyPlasmaTasks: false //this is flag to indicate when from tasks only a plasma based one is found
