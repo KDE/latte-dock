@@ -25,7 +25,7 @@ import org.kde.latte 0.2 as Latte
 
 Item {
     id: indicatorManager
-    readonly property bool active: root.indicatorsEnabled
+    readonly property bool active: indicators.common.indicatorsEnabled
     readonly property bool locked: inAttentionAnimation || inNewWindowAnimation
 
     /* Indicators Properties in order for indicators to use them*/
@@ -56,24 +56,16 @@ Item {
     readonly property real scaleFactor: taskItem.wrapperAlias.mScale
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool dotsOnActive: root.dotsOnActive
-    readonly property bool multiColorEnabled: root.threeColorsWindows
-    readonly property bool reversedEnabled: root.reverseLinesPosition
-    readonly property int activeIndicatorType: root.activeIndicatorType
-    readonly property bool usePlasmaTabsStyle: false
-
-    //!glow options
-    readonly property bool glowEnabled: root.showGlow
-    readonly property int glowOption: root.glowOption
-    readonly property real glowOpacity: root.glowOpacity
-    readonly property bool glow3D: root.glow3D
-
     //!icon colors
     property color backgroundColor: taskItem.wrapperAlias.backgroundColor
     property color glowColor: taskItem.wrapperAlias.glowColor
 
+    //! grouped options
+    readonly property Item common: indicators.common
+    readonly property Item explicit: indicators.explicit
+
     readonly property Component sourceComponent: {
-        switch (root.indicatorStyle) {
+        switch (indicators.common.indicatorStyle) {
         case Latte.Types.LatteIndicator:
             return latteIndicatorComponent;
         case Latte.Types.PlasmaIndicator:

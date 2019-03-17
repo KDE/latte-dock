@@ -34,7 +34,7 @@ import org.kde.latte 0.2 as Latte
 import "applet" as Applet
 import "colorizer" as Colorizer
 import "editmode" as EditMode
-
+import "indicators" as Indicators
 import "../code/LayoutManager.js" as LayoutManager
 
 DragDrop.DropArea {
@@ -317,7 +317,7 @@ DragDrop.DropArea {
 
     property int lengthIntMargin: lengthIntMarginFactor * root.iconSize
     property int lengthExtMargin: lengthExtMarginFactor * root.iconSize
-    property real lengthIntMarginFactor: plasmoid.configuration.indicatorsEnabled ? plasmoid.configuration.lengthIntMargin / 100 : 0
+    property real lengthIntMarginFactor: indicators.common.indicatorsEnabled ? plasmoid.configuration.lengthIntMargin / 100 : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
     property real thickMarginFactor: {
@@ -367,7 +367,9 @@ DragDrop.DropArea {
     property Item toolBox
     property Item latteAppletContainer
     property Item latteApplet
-    property Item parabolicManager: _parabolicManager
+    readonly property Item indicatorsManager: indicators
+    readonly property Item parabolicManager: _parabolicManager
+
 
     property QtObject latteView: null
     property QtObject shortcutsEngine: null
@@ -383,10 +385,6 @@ DragDrop.DropArea {
     property bool enableShadows: plasmoid.configuration.shadows || (root.forceTransparentPanel && plasmoid.configuration.shadows>0)
     property bool dockIsHidden: latteView ? latteView.visibility.isHidden : true
     property bool groupTasksByDefault: plasmoid.configuration.groupTasksByDefault
-    property bool dotsOnActive: plasmoid.configuration.dotsOnActive
-    property bool reverseLinesPosition: plasmoid.configuration.reverseLinesPosition
-    property bool showGlow: plasmoid.configuration.showGlow
-    property bool glow3D: plasmoid.configuration.glow3D
 
     property bool showInfoBadge: plasmoid.configuration.showInfoBadge
     property bool showProgressBadge: plasmoid.configuration.showProgressBadge
@@ -399,16 +397,10 @@ DragDrop.DropArea {
     property bool showOnlyCurrentDesktop: plasmoid.configuration.showOnlyCurrentDesktop
     property bool showOnlyCurrentActivity: plasmoid.configuration.showOnlyCurrentActivity
 
-    property bool threeColorsWindows: plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: plasmoid.configuration.titleTooltips
     property bool unifiedGlobalShortcuts: plasmoid.configuration.unifiedGlobalShortcuts
 
     readonly property bool hasInternalSeparator: latteApplet ? latteApplet.hasInternalSeparator : false
-
-    property bool indicatorsEnabled: plasmoid.configuration.indicatorsEnabled
-    property bool indicatorsForApplets: plasmoid.configuration.indicatorsForApplets
-    property int indicatorStyle: plasmoid.configuration.indicatorStyle
-    property int activeIndicatorType: plasmoid.configuration.activeIndicatorType
 
     property int animationStep: {
         if (!universalSettings || universalSettings.mouseSensitivity === Latte.Types.HighSensitivity) {
@@ -419,8 +411,6 @@ DragDrop.DropArea {
             return Math.max(5, root.iconSize / 10);
         }
     }
-    property int glowOption: plasmoid.configuration.glowOption
-    property real glowOpacity: plasmoid.configuration.glowOpacity/100
 
     property int latteAppletHoveredIndex: latteApplet ? latteApplet.hoveredIndex : -1
     property int launchersGroup: plasmoid.configuration.launchersGroup
@@ -1710,6 +1700,10 @@ DragDrop.DropArea {
 
     ParabolicManager{
         id: _parabolicManager
+    }
+
+    Indicators.Manager{
+        id: indicators
     }
 
     ///////////////END components

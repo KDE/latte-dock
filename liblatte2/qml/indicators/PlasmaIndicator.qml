@@ -24,7 +24,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 Item {
-    readonly property Item parentItem: parent.manager
+    readonly property Item options: parent.manager
     readonly property Item rootItem: parent
 
     readonly property bool providesFrontLayer: true
@@ -39,31 +39,31 @@ Item {
             id: frame
             property string basePrefix: "normal"
 
-            imagePath: parentItem.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
+            imagePath: options.explicit.usePlasmaTabsStyle ? "widgets/tabbar" : "widgets/tasks"
 
             prefix: {
-                if (parentItem.usePlasmaTabsStyle) {
-                    if (!parentItem.isActive) {
+                if (options.explicit.usePlasmaTabsStyle) {
+                    if (!options.isActive) {
                         return "";
                     }
 
-                    if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !parentItem.reversedEnabled)
-                            || (plasmoid.location === PlasmaCore.Types.RightEdge && parentItem.reversedEnabled)) {
+                    if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !options.common.reversedEnabled)
+                            || (plasmoid.location === PlasmaCore.Types.RightEdge && options.common.reversedEnabled)) {
                         return "west-active-tab";
                     }
 
-                    if ((plasmoid.location === PlasmaCore.Types.TopEdge && !parentItem.reversedEnabled)
-                            || (plasmoid.location === PlasmaCore.Types.BottomEdge && parentItem.reversedEnabled)) {
+                    if ((plasmoid.location === PlasmaCore.Types.TopEdge && !options.common.reversedEnabled)
+                            || (plasmoid.location === PlasmaCore.Types.BottomEdge && options.common.reversedEnabled)) {
                         return "north-active-tab";
                     }
 
-                    if ((plasmoid.location === PlasmaCore.Types.RightEdge && !parentItem.reversedEnabled)
-                            || (plasmoid.location === PlasmaCore.Types.LeftEdge && parentItem.reversedEnabled)) {
+                    if ((plasmoid.location === PlasmaCore.Types.RightEdge && !options.common.reversedEnabled)
+                            || (plasmoid.location === PlasmaCore.Types.LeftEdge && options.common.reversedEnabled)) {
                         return "east-active-tab";
                     }
 
-                    if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !parentItem.reversedEnabled)
-                            || (plasmoid.location === PlasmaCore.Types.TopEdge && parentItem.reversedEnabled)) {
+                    if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !options.common.reversedEnabled)
+                            || (plasmoid.location === PlasmaCore.Types.TopEdge && options.common.reversedEnabled)) {
                         return "south-active-tab";
                     }
 
@@ -76,23 +76,23 @@ Item {
             function taskPrefix(prefix) {
                 var effectivePrefix;
 
-                if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !parentItem.reversedEnabled)
-                        || (plasmoid.location === PlasmaCore.Types.RightEdge && parentItem.reversedEnabled)) {
+                if ((plasmoid.location === PlasmaCore.Types.LeftEdge && !options.common.reversedEnabled)
+                        || (plasmoid.location === PlasmaCore.Types.RightEdge && options.common.reversedEnabled)) {
                     effectivePrefix = "west-" + prefix;
                 }
 
-                if ((plasmoid.location === PlasmaCore.Types.TopEdge && !parentItem.reversedEnabled)
-                        || (plasmoid.location === PlasmaCore.Types.BottomEdge && parentItem.reversedEnabled)) {
+                if ((plasmoid.location === PlasmaCore.Types.TopEdge && !options.common.reversedEnabled)
+                        || (plasmoid.location === PlasmaCore.Types.BottomEdge && options.common.reversedEnabled)) {
                     effectivePrefix = "north-" + prefix;
                 }
 
-                if ((plasmoid.location === PlasmaCore.Types.RightEdge && !parentItem.reversedEnabled)
-                        || (plasmoid.location === PlasmaCore.Types.LeftEdge && parentItem.reversedEnabled)) {
+                if ((plasmoid.location === PlasmaCore.Types.RightEdge && !options.common.reversedEnabled)
+                        || (plasmoid.location === PlasmaCore.Types.LeftEdge && options.common.reversedEnabled)) {
                     effectivePrefix = "east-" + prefix;
                 }
 
-                if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !parentItem.reversedEnabled)
-                        || (plasmoid.location === PlasmaCore.Types.TopEdge && parentItem.reversedEnabled)) {
+                if ((plasmoid.location === PlasmaCore.Types.BottomEdge && !options.common.reversedEnabled)
+                        || (plasmoid.location === PlasmaCore.Types.TopEdge && options.common.reversedEnabled)) {
                     effectivePrefix = "south-" + prefix;
                 }
 
@@ -102,7 +102,7 @@ Item {
             states: [
                 State {
                     name: "launcher"
-                    when: parentItem.isLauncher || (parentItem.isApplet && !parentItem.isActive)
+                    when: options.isLauncher || (options.isApplet && !options.isActive)
 
                     PropertyChanges {
                         target: frame
@@ -111,7 +111,7 @@ Item {
                 },
                 State {
                     name: "hovered"
-                    when: parentItem.isHovered && frame.hasElementPrefix("hover")
+                    when: options.isHovered && frame.hasElementPrefix("hover")
 
                     PropertyChanges {
                         target: frame
@@ -120,7 +120,7 @@ Item {
                 },
                 State {
                     name: "attention"
-                    when: parentItem.inAttention
+                    when: options.inAttention
 
                     PropertyChanges {
                         target: frame
@@ -129,7 +129,7 @@ Item {
                 },
                 State {
                     name: "minimized"
-                    when: parentItem.isMinimized
+                    when: options.isMinimized
 
                     PropertyChanges {
                         target: frame
@@ -138,7 +138,7 @@ Item {
                 },
                 State {
                     name: "active"
-                    when: parentItem.isActive
+                    when: options.isActive
 
                     PropertyChanges {
                         target: frame
@@ -153,7 +153,7 @@ Item {
     Loader{
         id: frontLayer
         anchors.fill: parent
-        active: !rootItem.isBackLayer && !parentItem.isApplet && parentItem.isGroup
+        active: !rootItem.isBackLayer && !options.isApplet && options.isGroup
 
         sourceComponent: Item {
             anchors.fill: parent
@@ -166,7 +166,7 @@ Item {
             Item {
                 id: iconBox
                 anchors.centerIn: parent
-                width: parentItem.currentIconSize
+                width: options.currentIconSize
                 height: width
             }
 

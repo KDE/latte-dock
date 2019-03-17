@@ -32,23 +32,23 @@ import "../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: indicatorRoot
+    readonly property Item options: parent.manager
 
     readonly property real factor: 0.08
-    readonly property int size: factor * parentItem.currentIconSize
-    readonly property int extraMaskThickness: parentItem.reversedEnabled && parentItem.glowEnabled ? 1.7 * (factor * parentItem.maxIconSize) : 0
-    readonly property Item parentItem: parent.manager
+    readonly property int size: factor * options.currentIconSize
+    readonly property int extraMaskThickness: options.common.reversedEnabled && options.explicit.glowEnabled ? 1.7 * (factor * options.maxIconSize) : 0
 
     property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
 
     property color isActiveColor: theme.buttonFocusColor
     property color minimizedColor: {
-        if (parentItem.multiColorEnabled) {
+        if (options.explicit.multiColorEnabled) {
             return (textColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7));
         }
 
         return isActiveColor;
     }
-    property color notActiveColor: parentItem.isMinimized ? minimizedColor : isActiveColor
+    property color notActiveColor: options.isMinimized ? minimizedColor : isActiveColor
 
     /*Rectangle{
         anchors.fill: parent
@@ -71,47 +71,47 @@ Item{
             Latte.GlowPoint{
                 id:firstPoint
                 opacity: {
-                    if (parentItem.isTask) {
-                        return parentItem.isLauncher || (parentItem.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
+                    if (options.isTask) {
+                        return options.isLauncher || (options.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
                     }
 
-                    if (parentItem.isApplet) {
-                        return (parentItem.isActive || activeAndReverseAnimation.running) ? 1 : 0
+                    if (options.isApplet) {
+                        return (options.isActive || activeAndReverseAnimation.running) ? 1 : 0
                     }
                 }
 
-                basicColor: parentItem.isActive || (parentItem.isGroup && parentItem.hasShown) ? indicatorRoot.isActiveColor : indicatorRoot.notActiveColor
+                basicColor: options.isActive || (options.isGroup && options.hasShown) ? indicatorRoot.isActiveColor : indicatorRoot.notActiveColor
 
                 size: indicatorRoot.size
-                glow3D: parentItem.glow3D
-                animation: Math.max(1.65*3*units.longDuration,parentItem.durationTime*3*units.longDuration)
+                glow3D: options.explicit.glow3D
+                animation: Math.max(1.65*3*units.longDuration,options.durationTime*3*units.longDuration)
                 location: plasmoid.location
-                glowOpacity: parentItem.glowOpacity
-                contrastColor: parentItem.shadowColor
+                glowOpacity: options.explicit.glowOpacity
+                contrastColor: options.shadowColor
                 attentionColor: theme.negativeTextColor
 
                 roundCorners: true
-                showAttention: parentItem.inAttention
+                showAttention: options.inAttention
                 showGlow: {
-                    if (parentItem.glowEnabled && (parentItem.glowOption === Latte.Types.GlowAll || showAttention ))
+                    if (options.explicit.glowEnabled && (options.explicit.glowOption === Latte.Types.GlowAll || showAttention ))
                         return true;
-                    else if (parentItem.glowEnabled && parentItem.glowOption === Latte.Types.GlowOnlyOnActive && parentItem.hasActive)
+                    else if (options.explicit.glowEnabled && options.explicit.glowOption === Latte.Types.GlowOnlyOnActive && options.hasActive)
                         return true;
                     else
                         return false;
                 }
-                showBorder: parentItem.glowEnabled && parentItem.glow3D
+                showBorder: options.explicit.glowEnabled && options.explicit.glow3D
 
-                property int stateWidth: parentItem.isGroup ? indicatorRoot.width - secondPoint.width : indicatorRoot.width - spacer.width
-                property int stateHeight: parentItem.isGroup ? indicatorRoot.height - secondPoint.height : indicatorRoot.width - spacer.height
+                property int stateWidth: options.isGroup ? indicatorRoot.width - secondPoint.width : indicatorRoot.width - spacer.width
+                property int stateHeight: options.isGroup ? indicatorRoot.height - secondPoint.height : indicatorRoot.width - spacer.height
 
-                property int animationTime: parentItem.durationTime* (0.7*units.longDuration)
+                property int animationTime: options.durationTime* (0.7*units.longDuration)
 
-                property bool isActive: parentItem.hasActive || parentItem.isActive
+                property bool isActive: options.hasActive || options.isActive
 
                 property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-                property real scaleFactor: parentItem.scaleFactor
+                property real scaleFactor: options.scaleFactor
 
                 function updateInitialSizes(){
                     if(indicatorRoot){
@@ -120,12 +120,12 @@ Item{
                         else
                             height = indicatorRoot.size;
 
-                        if(vertical && isActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator)
+                        if(vertical && isActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator)
                             height = stateHeight;
                         else
                             height = indicatorRoot.size;
 
-                        if(!vertical && isActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator)
+                        if(!vertical && isActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator)
                             width = stateWidth;
                         else
                             width = indicatorRoot.size;
@@ -134,26 +134,26 @@ Item{
 
 
                 onIsActiveChanged: {
-                    if (parentItem.activeIndicatorType === Latte.Types.LineIndicator)
+                    if (options.explicit.activeIndicatorType === Latte.Types.LineIndicator)
                         activeAndReverseAnimation.start();
                 }
 
                 onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator){
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator){
                         width = stateWidth;
                     }
-                    else if (!activeAndReverseAnimation.running && vertical && isActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator){
+                    else if (!activeAndReverseAnimation.running && vertical && isActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator){
                         height = stateHeight;
                     }
                 }
 
                 onStateWidthChanged:{
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator)
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator)
                         width = stateWidth;
                 }
 
                 onStateHeightChanged:{
-                    if(!activeAndReverseAnimation.running && vertical && isActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator)
+                    if(!activeAndReverseAnimation.running && vertical && isActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator)
                         height = stateHeight;
                 }
 
@@ -162,18 +162,18 @@ Item{
                 Component.onCompleted: {
                     updateInitialSizes();
 
-                    parentItem.onCurrentIconSizeChanged.connect(updateInitialSizes);
+                    options.onCurrentIconSizeChanged.connect(updateInitialSizes);
                 }
 
                 Component.onDestruction: {
-                    parentItem.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
+                    options.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
                 }
 
                 NumberAnimation{
                     id: activeAndReverseAnimation
                     target: firstPoint
                     property: plasmoid.formFactor === PlasmaCore.Types.Vertical ? "height" : "width"
-                    to: parentItem.hasActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator
+                    to: options.hasActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator
                         ? (plasmoid.formFactor === PlasmaCore.Types.Vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : indicatorRoot.size
                     duration: firstPoint.animationTime
                     easing.type: Easing.InQuad
@@ -194,32 +194,32 @@ Item{
                 height: width
 
                 size: indicatorRoot.size
-                glow3D: parentItem.glow3D
-                animation: Math.max(1.65*3*units.longDuration,parentItem.durationTime*3*units.longDuration)
+                glow3D: options.explicit.glow3D
+                animation: Math.max(1.65*3*units.longDuration,options.durationTime*3*units.longDuration)
                 location: plasmoid.location
-                glowOpacity: parentItem.glowOpacity
-                contrastColor: parentItem.shadowColor
-                showBorder: parentItem.glowEnabled && parentItem.glow3D
+                glowOpacity: options.explicit.glowOpacity
+                contrastColor: options.shadowColor
+                showBorder: options.explicit.glowEnabled && options.explicit.glow3D
 
                 basicColor: state2Color
                 roundCorners: true
-                showGlow: parentItem.glowEnabled  && parentItem.glowOption === Latte.Types.GlowAll
-                visible:  ( parentItem.isGroup && ((parentItem.dotsOnActive && parentItem.activeIndicatorType === Latte.Types.LineIndicator)
-                                                                || parentItem.activeIndicatorType === Latte.Types.DotIndicator
-                                                                || !parentItem.hasActive) )? true: false
+                showGlow: options.explicit.glowEnabled  && options.explicit.glowOption === Latte.Types.GlowAll
+                visible:  ( options.isGroup && ((options.explicit.dotsOnActive && options.explicit.activeIndicatorType === Latte.Types.LineIndicator)
+                                                                || options.explicit.activeIndicatorType === Latte.Types.DotIndicator
+                                                                || !options.hasActive) )? true: false
 
                 //when there is no active window
-                property color state1Color: parentItem.hasShown ? indicatorRoot.isActiveColor : indicatorRoot.minimizedColor
+                property color state1Color: options.hasShown ? indicatorRoot.isActiveColor : indicatorRoot.minimizedColor
                 //when there is active window
-                property color state2Color: parentItem.hasMinimized ? indicatorRoot.minimizedColor : indicatorRoot.isActiveColor
+                property color state2Color: options.hasMinimized ? indicatorRoot.minimizedColor : indicatorRoot.isActiveColor
             }
         }
 
         states: [
             State {
                 name: "left"
-                when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !parentItem.reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.RightEdge && parentItem.reversedEnabled))
+                when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !options.common.reversedEnabled) ||
+                       (plasmoid.location === PlasmaCore.Types.RightEdge && options.common.reversedEnabled))
 
                 AnchorChanges {
                     target: mainIndicatorElement
@@ -229,8 +229,8 @@ Item{
             },
             State {
                 name: "bottom"
-                when: ((plasmoid.location === PlasmaCore.Types.BottomEdge && !parentItem.reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.TopEdge && parentItem.reversedEnabled))
+                when: ((plasmoid.location === PlasmaCore.Types.BottomEdge && !options.common.reversedEnabled) ||
+                       (plasmoid.location === PlasmaCore.Types.TopEdge && options.common.reversedEnabled))
 
                 AnchorChanges {
                     target: mainIndicatorElement
@@ -240,8 +240,8 @@ Item{
             },
             State {
                 name: "top"
-                when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !parentItem.reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.BottomEdge && parentItem.reversedEnabled))
+                when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !options.common.reversedEnabled) ||
+                       (plasmoid.location === PlasmaCore.Types.BottomEdge && options.common.reversedEnabled))
 
                 AnchorChanges {
                     target: mainIndicatorElement
@@ -251,8 +251,8 @@ Item{
             },
             State {
                 name: "right"
-                when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !parentItem.reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.LeftEdge && parentItem.reversedEnabled))
+                when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !options.common.reversedEnabled) ||
+                       (plasmoid.location === PlasmaCore.Types.LeftEdge && options.common.reversedEnabled))
 
                 AnchorChanges {
                     target: mainIndicatorElement

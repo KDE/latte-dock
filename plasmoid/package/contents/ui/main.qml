@@ -157,10 +157,6 @@ Item {
                                                 plasmoid.configuration.highlightWindows
     property bool mouseWheelActions: latteView ? latteView.mouseWheelActions : true
     property bool parabolicEffectEnabled: latteView ? latteView.parabolicEffectEnabled : zoomFactor>1 && !root.editMode
-    property bool reverseLinesPosition: latteView ? latteView.reverseLinesPosition : plasmoid.configuration.reverseLinesPosition
-    property bool dotsOnActive: latteView ? latteView.dotsOnActive : plasmoid.configuration.dotsOnActive
-    property bool showGlow: latteView ? latteView.showGlow : plasmoid.configuration.showGlow
-    property bool glow3D: latteView ? latteView.glow3D : false
 
     property bool showInfoBadge: latteView ? latteView.showInfoBadge : plasmoid.configuration.showInfoBadge
     property bool showProgressBadge: latteView ? latteView.showProgressBadge : plasmoid.configuration.showInfoBadge
@@ -174,21 +170,15 @@ Item {
     property bool showWindowActions: latteView ? latteView.showWindowActions : plasmoid.configuration.showWindowActions
     property bool showWindowsOnlyFromLaunchers: latteView ? latteView.showWindowsOnlyFromLaunchers : false
 
-    property bool threeColorsWindows: latteView ? latteView.threeColorsWindows : plasmoid.configuration.threeColorsWindows
     property bool titleTooltips: latteView ? latteView.titleTooltips : false
     property alias windowPreviewIsShown: windowsPreviewDlg.visible
 
-    property bool indicatorsEnabled: latteView ? latteView.indicatorsEnabled : true
-    property int indicatorStyle: latteView ? latteView.indicatorStyle : Latte.Types.LatteIndicator
-    property int activeIndicatorType: latteView ? latteView.activeIndicatorType : Latte.Types.LineIndicator
     property int animationStep: latteView ? latteView.animationStep : 1
     property int directRenderAnimationTime: latteView ? latteView.directRenderAnimationTime : 0
     property int dockHoveredIndex : latteView ? latteView.hoveredIndex : -1
 
     property int iconSize: latteView ? latteView.iconSize : Math.max(plasmoid.configuration.iconSize, 16)
     property int maxIconSize: latteView ? latteView.maxIconSize : iconSize
-    property int glowOption: latteView ? latteView.glowOption : Latte.Types.GlowAll
-    property real glowOpacity: latteView ? latteView.glowOpacity : 0.35
 
     property int leftClickAction: latteView ? latteView.leftClickAction : Latte.Types.PresentWindows
     property int middleClickAction: latteView ? latteView.middleClickAction : plasmoid.configuration.middleClickAction
@@ -247,6 +237,7 @@ Item {
     property var managedLayoutName: currentLayout ? currentLayout.name : ""
 
     property Item latteView: null
+    readonly property Item indicators: latteView ? latteView.indicatorsManager : indicatorsStandaloneLoader.item
     //END Latte Dock Panel properties
 
     //BEGIN Latte Dock Communicator
@@ -355,6 +346,13 @@ Item {
     PlasmaCore.ColorScope{
         id: colorScopePalette
     }
+
+    Loader {
+        id: indicatorsStandaloneLoader
+        active: !latteView
+        source: "indicators/Manager.qml"
+    }
+
     /////
 
     function initializeHoveredIndex() {

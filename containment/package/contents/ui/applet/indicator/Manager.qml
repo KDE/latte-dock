@@ -25,15 +25,15 @@ Item{
     id: indicatorManager
     anchors.fill: parent
 
-    readonly property bool active: (root.indicatorsEnabled && appletItem.communicatorAlias.activeIndicatorEnabled && root.indicatorsForApplets)
-                                   || (!root.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive)
+    readonly property bool active: (indicators.common.indicatorsEnabled && appletItem.communicatorAlias.activeIndicatorEnabled && indicators.common.indicatorsForApplets)
+                                   || (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive)
 
     readonly property Component sourceComponent: {
-        if (!root.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
+        if (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
             return plasmaStyleIndicator;
         }
 
-        switch (root.indicatorStyle) {
+        switch (indicators.common.indicatorStyle) {
         case Latte.Types.LatteIndicator:
             return latteStyleIndicator;
         case Latte.Types.PlasmaIndicator:
@@ -72,21 +72,13 @@ Item{
     readonly property real scaleFactor: appletItem.wrapperAlias.zoomScale
     readonly property color shadowColor: root.appShadowColorSolid
 
-    readonly property bool dotsOnActive: root.dotsOnActive
-    readonly property bool multiColorEnabled: root.threeColorsWindows
-    readonly property bool reversedEnabled: root.reverseLinesPosition
-    readonly property int activeIndicatorType: root.activeIndicatorType
-    readonly property bool usePlasmaTabsStyle: !root.indicatorsForApplets
-
-    //!glow options
-    readonly property bool glowEnabled: root.showGlow
-    readonly property int glowOption: root.glowOption
-    readonly property real glowOpacity: root.glowOpacity
-    readonly property bool glow3D: root.glow3D
-
     //!icon colors
     property color backgroundColor: appletItem.wrapperAlias.overlayIconLoader.backgroundColor
     property color glowColor: appletItem.wrapperAlias.overlayIconLoader.glowColor
+
+    //! grouped options
+    readonly property Item common: indicators.common
+    readonly property Item explicit: indicators.explicit
 
     Component {
         id: latteStyleIndicator

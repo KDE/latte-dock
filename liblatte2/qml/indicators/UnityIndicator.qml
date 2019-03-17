@@ -29,7 +29,7 @@ import "../code/ColorizerTools.js" as ColorizerTools
 
 Item{
     id: indicatorItem
-    readonly property Item parentItem: parent.manager
+    readonly property Item options: parent.manager
     readonly property Item rootItem: parent
 
     readonly property bool needsIconColors: true
@@ -37,8 +37,8 @@ Item{
 
     readonly property int thickness: plasmoid.formFactor === PlasmaCore.Types.Vertical ? width : height
 
-    readonly property int shownWindows: parentItem.windowsCount - parentItem.windowsMinimizedCount
-    readonly property int maxDrawnMinimizedWindows: shownWindows > 0 ? Math.min(parentItem.windowsMinimizedCount,2) : 3
+    readonly property int shownWindows: options.windowsCount - options.windowsMinimizedCount
+    readonly property int maxDrawnMinimizedWindows: shownWindows > 0 ? Math.min(options.windowsMinimizedCount,2) : 3
 
     readonly property real backColorBrightness: ColorizerTools.colorBrightness(theme.backgroundColor)
     readonly property color backgroundColor: backColorBrightness < 127 ? theme.backgroundColor : theme.textColor
@@ -52,20 +52,20 @@ Item{
         sourceComponent: Item{
             Item{
                 id: rectangleItem
-                width: parentItem.isTask ? Math.min(parent.width, parent.height) : parent.width
-                height: parentItem.isTask ? width : parent.height
+                width: options.isTask ? Math.min(parent.width, parent.height) : parent.width
+                height: options.isTask ? width : parent.height
                 anchors.centerIn: parent
 
-                property bool isActive: parentItem.isActive || (parentItem.isWindow && parentItem.hasActive)
+                property bool isActive: options.isActive || (options.isWindow && options.hasActive)
                 readonly property int size: Math.min(parent.width, parent.height)
 
                 Rectangle {
                     id: unityRect
                     anchors.fill: parent
-                    visible: parentItem.isActive || (parentItem.isWindow && parentItem.hasShown)
+                    visible: options.isActive || (options.isWindow && options.hasShown)
 
-                    radius: parentItem.currentIconSize / 12
-                    color: parentItem.backgroundColor
+                    radius: options.currentIconSize / 12
+                    color: options.backgroundColor
                     clip: true
                 }
 
@@ -80,11 +80,11 @@ Item{
                     gradient: Gradient {
                         GradientStop { position: 0.0;
                             color: {
-                                if (parentItem.isMinimized) {
+                                if (options.isMinimized) {
                                     return "#aafcfcfc";
                                 }
 
-                                return parentItem.glowColor;
+                                return options.glowColor;
                             }
                         }
                         GradientStop { position: 0.6; color: "transparent" }
@@ -93,7 +93,7 @@ Item{
                     states: [
                         State {
                             name: "top"
-                            when: !parentItem.reversedEnabled
+                            when: !options.common.reversedEnabled
 
                             AnchorChanges {
                                 target: glowGradient
@@ -102,7 +102,7 @@ Item{
                         },
                         State {
                             name: "bottom"
-                            when: parentItem.reversedEnabled
+                            when: options.common.reversedEnabled
 
                             AnchorChanges {
                                 target: glowGradient
@@ -126,7 +126,7 @@ Item{
                         states: [
                             State {
                                 name: "top"
-                                when: !parentItem.reversedEnabled
+                                when: !options.common.reversedEnabled
 
                                 AnchorChanges {
                                     target: glowMaskRect
@@ -139,7 +139,7 @@ Item{
                             },
                             State {
                                 name: "bottom"
-                                when: parentItem.reversedEnabled
+                                when: options.common.reversedEnabled
 
                                 AnchorChanges {
                                     target: glowMaskRect
@@ -166,7 +166,7 @@ Item{
                 Rectangle {
                     id: borderRectangle
                     anchors.fill: parent
-                    visible: (parentItem.isTask && parentItem.isWindow) || (parentItem.isApplet && parentItem.isActive)
+                    visible: (options.isTask && options.isWindow) || (options.isApplet && options.isActive)
                     color: "transparent"
                     border.width: 1
                     border.color: "#303030"
@@ -203,15 +203,15 @@ Item{
                 readonly property bool reversed: true
 
                 Repeater {
-                    model: parentItem.isTask && (parentItem.isActive || parentItem.hasActive) ? 1 : 0
+                    model: options.isTask && (options.isActive || options.hasActive) ? 1 : 0
                     delegate: triangleComponent
                 }
             }
 
             Grid {
                 id: lowerIndicators
-                rows: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : Math.min(3, parentItem.windowsCount)
-                columns: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Math.min(3, parentItem.windowsCount) : 1
+                rows: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? 1 : Math.min(3, options.windowsCount)
+                columns: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? Math.min(3, options.windowsCount) : 1
                 rowSpacing: 2
                 columnSpacing: 2
 
@@ -219,7 +219,7 @@ Item{
                 readonly property bool reversed: false
 
                 Repeater {
-                    model: Math.min(3, parentItem.windowsCount)
+                    model: Math.min(3, options.windowsCount)
                     delegate: triangleComponent
                 }
             }
@@ -230,7 +230,7 @@ Item{
                 id: triangleComponent
                 Canvas {
                     id: canvas
-                    width: parentItem.currentIconSize / 6
+                    width: options.currentIconSize / 6
                     height: width
 
                     rotation: {
@@ -261,9 +261,9 @@ Item{
 
                     property color drawColor:  theme.buttonFocusColor;
                     property bool fillTriangle: {
-                        if (!parent.alwaysActive && parentItem.windowsMinimizedCount!==0
+                        if (!parent.alwaysActive && options.windowsMinimizedCount!==0
                                 && ((index < maxDrawnMinimizedWindows)
-                                    || (parentItem.windowsCount === parentItem.windowsMinimizedCount))) {
+                                    || (options.windowsCount === options.windowsMinimizedCount))) {
                             return false;
                         }
 
