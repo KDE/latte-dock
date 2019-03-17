@@ -89,6 +89,27 @@ Item{
                         }
                         GradientStop { position: 0.6; color: "transparent" }
                     }
+                    //! States
+                    states: [
+                        State {
+                            name: "top"
+                            when: !parentItem.reversedEnabled
+
+                            AnchorChanges {
+                                target: glowGradient
+                                anchors{horizontalCenter:parent.horizontalCenter; verticalCenter:parent.top}
+                            }
+                        },
+                        State {
+                            name: "bottom"
+                            when: parentItem.reversedEnabled
+
+                            AnchorChanges {
+                                target: glowGradient
+                                anchors{horizontalCenter:parent.horizontalCenter; verticalCenter:parent.bottom}
+                            }
+                        }
+                    ]
                 }
 
                 Item {
@@ -96,11 +117,40 @@ Item{
                     anchors.fill: glowGradient
 
                     Rectangle {
-                        anchors.top: gradientMask.verticalCenter
-                        anchors.topMargin: unityRect.anchors.margins
+                        id: glowMaskRect
                         width: glowGradient.width
                         height: glowGradient.height / 2
                         radius: unityRect.radius
+
+                        //! States
+                        states: [
+                            State {
+                                name: "top"
+                                when: !parentItem.reversedEnabled
+
+                                AnchorChanges {
+                                    target: glowMaskRect
+                                    anchors{bottom: undefined; top: parent.verticalCenter;}
+                                }
+                                PropertyChanges{
+                                    target: gradientMask
+                                    anchors{bottomMargin: undefined; topMargin: unityRect.anchors.margins}
+                                }
+                            },
+                            State {
+                                name: "bottom"
+                                when: parentItem.reversedEnabled
+
+                                AnchorChanges {
+                                    target: glowMaskRect
+                                    anchors{bottom: parent.verticalCenter; top: undefined;}
+                                }
+                                PropertyChanges{
+                                    target: gradientMask
+                                    anchors{bottomMargin: unityRect.anchors.margins; topMargin: undefined}
+                                }
+                            }
+                        ]
                     }
 
                     visible: false

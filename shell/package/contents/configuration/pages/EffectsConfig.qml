@@ -580,9 +580,9 @@ PlasmaComponents.Page {
                 }
 
                 PlasmaComponents.CheckBox {
-                    text: i18n("Reverse indicators position")
+                    text: i18n("Reverse indicator style")
                     checked: plasmoid.configuration.reverseLinesPosition
-                    tooltip: i18n("Reverse indicators position e.g. from bottom to top")
+                    tooltip: i18n("Reverse indicator style e.g. from bottom to top")
 
                     onClicked: {
                         plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
