@@ -43,10 +43,12 @@ PlasmaComponents.ContextMenu {
     readonly property var atm: TaskManager.AbstractTasksModel
 
     placement: {
-        if (plasmoid.location == PlasmaCore.Types.LeftEdge) {
+        if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
             return PlasmaCore.Types.RightPosedTopAlignedPopup;
-        } else if (plasmoid.location == PlasmaCore.Types.TopEdge) {
+        } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
             return PlasmaCore.Types.BottomPosedLeftAlignedPopup;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            return PlasmaCore.Types.LeftPosedTopAlignedPopup;
         } else {
             return PlasmaCore.Types.TopPosedLeftAlignedPopup;
         }
@@ -115,32 +117,78 @@ PlasmaComponents.ContextMenu {
     }
 
     function loadDynamicLaunchActions(launcherUrl) {
-        var lists = [];
+        var sections = [];
 
         //From Plasma 5.10 and frameworks 5.34, places are also supported
         if (Latte.WindowSystem.frameworksVersion >= 336384
                 && (typeof backend.placesActions === "function")) {
-            lists = [
-                        backend.jumpListActions(launcherUrl, menu),
-                        backend.placesActions(launcherUrl, showAllPlaces, menu),
-                        backend.recentDocumentActions(launcherUrl, menu)
-                    ]
+            sections = [
+                        {
+                            title:   i18n("Places"),
+                            group:   "places",
+                            actions: backend.placesActions(launcherUrl, showAllPlaces, menu)
+                        },
+                        {
+                            title:   i18n("Recent Documents"),
+                            group:   "recents",
+                            actions: backend.recentDocumentActions(launcherUrl, menu)
+                        },
+                        {
+                            title:   i18n("Actions"),
+                            group:   "actions",
+                            actions: backend.jumpListActions(launcherUrl, menu)
+                        }
+                    ];
         } else {
-            lists = [
-                        backend.jumpListActions(launcherUrl, menu),
-                        backend.recentDocumentActions(launcherUrl, menu)
+            sections = [
+                        {
+                            title:   i18n("Recent Documents"),
+                            group:   "recents",
+                            actions: backend.recentDocumentActions(launcherUrl, menu)
+                        },
+                        {
+                            title:   i18n("Actions"),
+                            group:   "actions",
+                            actions: backend.jumpListActions(launcherUrl, menu)
+                        }
                     ];
         }
 
-        lists.forEach(function (list) {
-            for (var i = 0; i < list.length; ++i) {
-                var item = newMenuItem(menu);
-                item.action = list[i];
-                menu.addMenuItem(item, virtualDesktopsMenuItem);
+        // QMenu does not limit its width automatically. Even if we set a maximumWidth
+        // it would just cut off text rather than eliding. So we do this manually.
+        var textMetrics = Qt.createQmlObject("import QtQuick 2.4; TextMetrics {}", menu);
+        var maximumWidth = theme.mSize(theme.defaultFont).width * 22;
+
+        sections.forEach(function (section) {
+            // Always show the "Actions:" header, since we visually merge
+            // This section with the one beneath it that shows universal actions
+            if (section["actions"].length > 0 || section["group"] == "actions") {
+                var sectionHeader = newMenuItem(menu);
+                sectionHeader.text = section["title"];
+                sectionHeader.section = true;
+                menu.addMenuItem(sectionHeader, startNewInstanceItem);
             }
 
-            if (list.length > 0) {
-                menu.addMenuItem(newSeparator(menu), virtualDesktopsMenuItem);
+            for (var i = 0; i < section["actions"].length; ++i) {
+                var item = newMenuItem(menu);
+                item.action = section["actions"][i];
+
+                // Crude way of manually eliding...
+                var elided = false;
+                textMetrics.text = Qt.binding(function() {
+                    return item.action.text;
+                });
+
+                while (textMetrics.width > maximumWidth) {
+                    item.action.text = item.action.text.slice(0, -1);
+                    elided = true;
+                }
+
+                if (elided) {
+                    item.action.text += "...";
+                }
+
+                menu.addMenuItem(item, startNewInstanceItem);
             }
         });
 
@@ -294,13 +342,25 @@ PlasmaComponents.ContextMenu {
     /// Sub Items
 
     PlasmaComponents.MenuItem {
+        id: startNewInstanceItem
+        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
+
+        enabled: visualParent && visualParent.m.LauncherUrlWithoutIcon != null
+
+        text: i18n("Start New Instance")
+        icon: "system-run"
+
+        onClicked: tasksModel.requestNewInstance(menu.modelIndex)
+    }
+
+    PlasmaComponents.MenuItem {
         id: virtualDesktopsMenuItem
 
         visible: virtualDesktopInfo.numberOfDesktops > 1
                  && (visualParent && get(atm.IsLauncher) !== true
-                 && get(atm.IsStartup) !== true
-                 && (root.plasma515 ? get(atm.IsVirtualDesktopsChangeable) === true :
-                                     get(atm.IsVirtualDesktopChangeable) === true ) )
+                     && get(atm.IsStartup) !== true
+                     && (root.plasma515 ? get(atm.IsVirtualDesktopsChangeable) === true :
+                                          get(atm.IsVirtualDesktopChangeable) === true ) )
 
         enabled: visible
 
@@ -508,41 +568,6 @@ PlasmaComponents.ContextMenu {
         }
     }
 
-
-    PlasmaComponents.MenuItem {
-        visible: (visualParent
-                  && visualParent.m.IsLauncher !== true
-                  && visualParent.m.IsStartup !== true
-                  && root.showWindowActions
-                  && !root.disableAllWindowsFunctionality)
-
-        enabled: visualParent && visualParent.m.IsMinimizable === true
-
-        checkable: true
-        checked: visualParent && visualParent.m.IsMinimized === true
-
-        text: i18n("Minimize")
-
-        onClicked: tasksModel.requestToggleMinimized(menu.modelIndex)
-    }
-
-    PlasmaComponents.MenuItem {
-        visible: (visualParent
-                  && visualParent.m.IsLauncher !== true
-                  && visualParent.m.IsStartup !== true
-                  && root.showWindowActions
-                  && !root.disableAllWindowsFunctionality)
-
-        enabled: visualParent && visualParent.m.IsMaximizable === true
-
-        checkable: true
-        checked: visualParent && visualParent.m.IsMaximized === true
-
-        text: i18n("Maximize")
-
-        onClicked: tasksModel.requestToggleMaximized(menu.modelIndex)
-    }
-
     PlasmaComponents.MenuItem {
         id: moreActionsMenuItem
 
@@ -555,6 +580,7 @@ PlasmaComponents.ContextMenu {
         enabled: visible
 
         text: i18n("More Actions")
+        icon: "view-more-symbolic"
 
         PlasmaComponents.ContextMenu {
             visualParent: moreActionsMenuItem.action
@@ -572,8 +598,45 @@ PlasmaComponents.ContextMenu {
                 enabled: menu.visualParent && menu.visualParent.m.IsResizable === true
 
                 text: i18n("Resize")
+                icon: "transform-scale"
 
                 onClicked: tasksModel.requestResize(menu.modelIndex)
+            }
+
+            PlasmaComponents.MenuItem {
+                visible: (visualParent
+                          && visualParent.m.IsLauncher !== true
+                          && visualParent.m.IsStartup !== true
+                          && root.showWindowActions
+                          && !root.disableAllWindowsFunctionality)
+
+                enabled: visualParent && visualParent.m.IsMaximizable === true
+
+                checkable: true
+                checked: visualParent && visualParent.m.IsMaximized === true
+
+                text: i18n("Maximize")
+                icon: "window-maximize"
+
+                onClicked: tasksModel.requestToggleMaximized(menu.modelIndex)
+            }
+
+            PlasmaComponents.MenuItem {
+                visible: (visualParent
+                          && visualParent.m.IsLauncher !== true
+                          && visualParent.m.IsStartup !== true
+                          && root.showWindowActions
+                          && !root.disableAllWindowsFunctionality)
+
+                enabled: visualParent && visualParent.m.IsMinimizable === true
+
+                checkable: true
+                checked: visualParent && visualParent.m.IsMinimized === true
+
+                text: i18n("Minimize")
+                icon: "window-minimize"
+
+                onClicked: tasksModel.requestToggleMinimized(menu.modelIndex)
             }
 
             PlasmaComponents.MenuItem {
@@ -581,7 +644,7 @@ PlasmaComponents.ContextMenu {
                 checked: menu.visualParent && menu.visualParent.m.IsKeepAbove === true
 
                 text: i18n("Keep Above Others")
-                icon: "go-up"
+                icon: "window-keep-above"
 
                 onClicked: tasksModel.requestToggleKeepAbove(menu.modelIndex)
             }
@@ -591,7 +654,7 @@ PlasmaComponents.ContextMenu {
                 checked: menu.visualParent && menu.visualParent.m.IsKeepBelow === true
 
                 text: i18n("Keep Below Others")
-                icon: "go-down"
+                icon: "window-keep-below"
 
                 onClicked: tasksModel.requestToggleKeepBelow(menu.modelIndex)
             }
@@ -615,6 +678,7 @@ PlasmaComponents.ContextMenu {
                 checked: menu.visualParent && menu.visualParent.m.IsShaded === true
 
                 text: i18n("Shade")
+                icon: "window-shade"
 
                 onClicked: tasksModel.requestToggleShaded(menu.modelIndex)
             }
@@ -636,26 +700,14 @@ PlasmaComponents.ContextMenu {
         }
     }
 
-    PlasmaComponents.MenuItem {
-        id: startNewInstanceItem
-        visible: (visualParent && visualParent.m.IsLauncher !== true && visualParent.m.IsStartup !== true)
-
-        enabled: visualParent && visualParent.m.LauncherUrlWithoutIcon != null
-
-        text: i18n("Start New Instance")
-        icon: "system-run"
-
-        onClicked: tasksModel.requestNewInstance(menu.modelIndex)
-    }
-
-    PlasmaComponents.MenuItem {
+/*    PlasmaComponents.MenuItem {
         separator: true
 
         visible: (visualParent
                   && visualParent.m.IsLauncher !== true
                   && visualParent.m.IsStartup !== true
                   && root.showWindowActions)
-    }
+    }*/
 
     //// NEW Launchers Mechanism
     PlasmaComponents.MenuItem {
@@ -667,12 +719,12 @@ PlasmaComponents.ContextMenu {
                  && (activityInfo.numberOfRunningActivities < 2)
         //&& plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
 
-
         enabled: visualParent && get(atm.LauncherUrlWithoutIcon) !== ""
 
         checkable: true
 
-        text: i18nc("Toggle action for showing a launcher button while the application is not running", "&Pin")
+        text: i18n("Pin to Task Manager")
+        icon: "window-pin"
 
         onClicked: {
             if (tasksModel.launcherPosition(get(atm.LauncherUrlWithoutIcon)) != -1) {
@@ -703,7 +755,7 @@ PlasmaComponents.ContextMenu {
     PlasmaComponents.MenuItem {
         id: showLauncherInActivitiesItem
 
-        text: i18n("&Pin")
+        text: i18n("Pin to Task Manager")
 
         visible: visualParent && (!visualParent.isSeparator || (visualParent.isSeparator && root.editMode))
         // && get(atm.IsLauncher) !== true
@@ -802,7 +854,8 @@ PlasmaComponents.ContextMenu {
         visible: (visualParent && !visualParent.isSeparator && get(atm.IsLauncher) === true)
                  && plasmoid.immutability !== PlasmaCore.Types.SystemImmutable
 
-        text: i18nc("Remove launcher button for application shown while it is not running", "Unpin")
+        text: i18n("Unpin from Task Manager")
+        icon: "window-unpin"
 
         onClicked: {
             var launcher = get(atm.LauncherUrlWithoutIcon);
@@ -820,9 +873,10 @@ PlasmaComponents.ContextMenu {
 
     //////END OF NEW ARCHITECTURE
 
-    PlasmaComponents.MenuItem {
+    /*PlasmaComponents.MenuItem {
         separator: true
-    }
+        visible: root.editMode
+    }*/
 
     PlasmaComponents.MenuItem {
         id: addInternalSeparatorItem
@@ -862,9 +916,14 @@ PlasmaComponents.ContextMenu {
     }
 
     PlasmaComponents.MenuItem {
+        text: i18n("Configure")
+        section: true
+    }
+
+   /* PlasmaComponents.MenuItem {
         separator: true
         visible: root.editMode
-    }
+    }*/
 
     PlasmaComponents.MenuItem {
         id: layoutsMenuItem
