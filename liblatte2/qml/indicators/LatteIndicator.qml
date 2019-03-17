@@ -180,11 +180,15 @@ Item{
                 Component.onCompleted: {
                     updateInitialSizes();
 
-                    options.onCurrentIconSizeChanged.connect(updateInitialSizes);
+                    if (options) {
+                        options.onCurrentIconSizeChanged.connect(updateInitialSizes);
+                    }
                 }
 
                 Component.onDestruction: {
-                    options.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
+                    if (options) {
+                        options.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
+                    }
                 }
 
                 NumberAnimation{

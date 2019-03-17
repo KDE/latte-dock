@@ -25,7 +25,9 @@ Item{
     id: indicatorManager
     anchors.fill: parent
 
-    readonly property bool active: appletItem &&
+   property bool appletIsValid: true
+
+    readonly property bool active: appletIsValid &&
                                    ((indicators.common.indicatorsEnabled
                                      && appletItem.communicatorAlias.activeIndicatorEnabled
                                      && indicators.common.indicatorsForApplets)
@@ -39,9 +41,9 @@ Item{
     readonly property bool isStartup: false
     readonly property bool isWindow: false
 
-    readonly property bool isActive: appletItem ? appletItem.isActive : false
+    readonly property bool isActive: appletIsValid ? appletItem.isActive : false
     readonly property bool isGroup: false
-    readonly property bool isHovered: appletItem ? appletMouseArea.containsMouse : false
+    readonly property bool isHovered: appletIsValid ? appletMouseArea.containsMouse : false
     readonly property bool isMinimized: false
     readonly property bool inAttention: false
     readonly property bool inRemoving: false
@@ -55,12 +57,12 @@ Item{
     readonly property int currentIconSize: root.iconSize
     readonly property int maxIconSize: root.maxIconSize
     readonly property int durationTime: root.durationTime
-    readonly property real scaleFactor: appletItem ? appletItem.wrapperAlias.zoomScale : 1
+    readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
     readonly property color shadowColor: root.appShadowColorSolid
 
     //!icon colors
-    property color backgroundColor: appletItem ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : "black"
-    property color glowColor: appletItem ? appletItem.wrapperAlias.overlayIconLoader.glowColor : "white"
+    property color backgroundColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : "black"
+    property color glowColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.glowColor : "white"
 
     //! grouped options
     readonly property Item common: indicators.common

@@ -104,7 +104,9 @@ Item{
         opacity: 0
 
         readonly property bool isBackLayer: true
-        readonly property Item manager: AppletIndicator.Manager{}
+        readonly property Item manager: AppletIndicator.Manager{
+            appletIsValid: false
+        }
 
         sourceComponent: managerIndicator.indicatorComponent
     }
