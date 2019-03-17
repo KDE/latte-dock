@@ -30,16 +30,14 @@ Item{
     id: manager
 
     readonly property Item common: commonOptions
-    readonly property Item explicit: explicitOptions.active ? explicitOptions.item : emptyExplicitOptions
+    readonly property Item explicit: explicitOptions
 
     Options.Common {
         id: commonOptions
     }
 
-    Loader{
-        id: explicitOptions
-        active: commonOptions.indicatorStyle === Latte.Types.LatteIndicator
-        source: "options/Latte.qml"
+    Options.Latte {
+        id : explicitOptions
     }
 
     Item {

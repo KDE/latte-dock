@@ -25,6 +25,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 Item{
+    readonly property string styleName: "Latte"
+
     readonly property bool dotsOnActive: plasmoid.configuration.dotsOnActive
     readonly property bool multiColorEnabled: plasmoid.configuration.threeColorsWindows
     readonly property int activeIndicatorType: Latte.Types.LineIndicator

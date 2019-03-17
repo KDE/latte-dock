@@ -28,7 +28,6 @@ Item{
     id: common
 
     readonly property bool indicatorsEnabled: true
-    readonly property bool indicatorsForApplets: plasmoid.configuration.indicatorsForApplets
     readonly property bool reversedEnabled: plasmoid.configuration.reverseLinesPosition
 
     readonly property int indicatorStyle: Latte.Types.LatteIndicator

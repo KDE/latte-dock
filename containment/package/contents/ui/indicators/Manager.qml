@@ -30,7 +30,7 @@ Item{
     id: manager
 
     readonly property Item common: commonOptions
-    readonly property Item explicit: explicitOptions.active ? explicitOptions.item : emptyExplicitOptions
+    readonly property Item explicit: explicitOptions.item
 
     Options.Common {
         id: commonOptions
@@ -38,12 +38,17 @@ Item{
 
     Loader{
         id: explicitOptions
-        active: commonOptions.indicatorStyle === Latte.Types.LatteIndicator
-        source: "options/Latte.qml"
+        active: true
+        source: {
+            if (commonOptions.indicatorStyle === Latte.Types.LatteIndicator) {
+                return "options/Latte.qml";
+            } else if (commonOptions.indicatorStyle === Latte.Types.PlasmaIndicator) {
+                return "options/Plasma.qml";
+            }
+
+            return "options/Latte.qml";
+        }
     }
 
-    Item {
-        id: emptyExplicitOptions
-    }
 }
 

@@ -25,6 +25,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte 0.2 as Latte
 
 Item{
+    readonly property string styleName: "Plasma"
+
     readonly property bool usePlasmaTabsStyle: !commonOptions.indicatorsForApplets
 }
 
