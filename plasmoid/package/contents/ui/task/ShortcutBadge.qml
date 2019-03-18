@@ -21,6 +21,7 @@ import QtQuick 2.7
 import QtGraphicalEffects 1.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 Loader{
     id: shorcutBadge
@@ -55,7 +56,7 @@ Loader{
             }
         }
 
-        Latte.BadgeText {
+        LatteComponents.BadgeText {
             id: taskNumber
             anchors.centerIn: parent
             minimumWidth: 0.4 * (wrapper.mScale * root.iconSize)

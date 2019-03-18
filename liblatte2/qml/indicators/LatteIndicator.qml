@@ -27,6 +27,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "../code/ColorizerTools.js" as ColorizerTools
 
@@ -86,7 +87,7 @@ Item{
             id: flowItem
             flow: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Flow.TopToBottom : Flow.LeftToRight
 
-            Latte.GlowPoint{
+            LatteComponents.GlowPoint{
                 id:firstPoint
                 opacity: {
                     if (options.isTask) {
@@ -210,7 +211,7 @@ Item{
                 height: secondPoint.visible ? 0.5*indicatorRoot.size : 0
             }
 
-            Latte.GlowPoint{
+            LatteComponents.GlowPoint{
                 id:secondPoint
                 width: visible ? indicatorRoot.size : 0
                 height: width

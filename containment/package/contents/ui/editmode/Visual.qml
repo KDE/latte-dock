@@ -25,6 +25,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "../applet" as Applet
 
@@ -56,7 +57,7 @@ Item{
     readonly property real appliedOpacity: imageTiler.opacity
     readonly property real maxOpacity: root.inConfigureAppletsMode ? 1 : plasmoid.configuration.editBackgroundOpacity
 
-    Latte.ExternalShadow{
+    LatteComponents.ExternalShadow{
         id: editExternalShadow
         width: root.isHorizontal ? imageTiler.width : root.editShadow
         height: root.isHorizontal ? root.editShadow : imageTiler.height

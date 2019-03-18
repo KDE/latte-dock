@@ -1,0 +1,5 @@
+module org.kde.latte.components
+
+BadgeText 1.0 BadgeText.qml
+ExternalShadow 1.0 ExternalShadow.qml
+GlowPoint 1.0 GlowPoint.qml 

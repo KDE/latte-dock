@@ -66,6 +66,7 @@ include(WriteBasicConfigVersionFile)
 
 include(Definitions.cmake)
 
+add_subdirectory(declarativeimports)
 add_subdirectory(liblatte2)
 add_subdirectory(kwin_scripts)
 add_subdirectory(app)

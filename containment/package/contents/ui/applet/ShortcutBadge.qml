@@ -21,6 +21,7 @@ import QtQuick 2.1
 import QtGraphicalEffects 1.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 Loader{
     id: appletNumberLoader
@@ -94,7 +95,7 @@ Loader{
             }
         }
 
-        Latte.BadgeText {
+        LatteComponents.BadgeText {
             id: appletNumber
             anchors.centerIn: parent
 
