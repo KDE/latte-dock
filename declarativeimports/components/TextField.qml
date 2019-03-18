@@ -1,6 +1,5 @@
 /*
-*  Copyright 2016  Smith AR <audoban@openmailbox.org>
-*                  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,7 +16,6 @@
 *  You should have received a copy of the GNU General Public License
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4

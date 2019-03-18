@@ -27,15 +27,11 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import QtQuick.Controls.Styles.Plasma 2.0 as Styles
-
 import org.kde.latte 0.2 as Latte
-
-import "../../../controls" as LatteExtraControls
-
+import org.kde.latte.components 1.0 as LatteComponents
 
 ColumnLayout {
-    LatteExtraControls.SubHeader {
+    LatteComponents.SubHeader {
         text: i18nc("active indicator style","Style For Active")
     }
 
@@ -79,7 +75,7 @@ ColumnLayout {
         }
     }
 
-    LatteExtraControls.HeaderSwitch {
+    LatteComponents.HeaderSwitch {
         id: showGlow
         Layout.fillWidth: true
         Layout.minimumHeight: implicitHeight
@@ -146,7 +142,7 @@ ColumnLayout {
             text: i18n("Opacity")
         }
 
-        LatteExtraControls.Slider {
+        LatteComponents.Slider {
             id: glowOpacitySlider
             Layout.fillWidth: true
 
@@ -187,7 +183,7 @@ ColumnLayout {
         spacing: 0
         visible: latteView.latteTasksPresent()
 
-        LatteExtraControls.SubHeader {
+        LatteComponents.SubHeader {
             enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
             text: i18n("Tasks")
         }

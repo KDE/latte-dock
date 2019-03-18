@@ -35,10 +35,10 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlAddons
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "pages" as Pages
 import "../controls" as LatteExtraControls
-import "../controls/private" as LatteExtraControlsPrivate
 
 FocusScope {
     id: dialog
@@ -207,7 +207,7 @@ FocusScope {
                 width: Qt.application.layoutDirection !== Qt.RightToLeft ? logo.width + latteTxt.width + units.smallSpacing : logo.width + units.smallSpacing
                 height: logo.height
 
-                LatteExtraControls.ToolTip{
+                LatteComponents.ToolTip{
                     parent: logo
                     text: i18n("Open Latte settings window")
                     visible: aboutMouseArea.containsMouse
@@ -344,7 +344,7 @@ FocusScope {
                         }
                     }
 
-                    Switch {
+                    LatteComponents.Switch {
                         id: complexitySwitch
                         checked: dialog.expertLevel
 
@@ -357,8 +357,6 @@ FocusScope {
                                 }
                             }
                         }
-
-                        style: LatteExtraControlsPrivate.SwitchStyle {}
                     }
                 }
             }

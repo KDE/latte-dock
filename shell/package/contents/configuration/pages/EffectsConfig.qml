@@ -28,11 +28,8 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
-import QtQuick.Controls.Styles.Plasma 2.0 as Styles
-
 import org.kde.latte 0.2 as Latte
-
-import "../../controls" as LatteExtraControls
+import org.kde.latte.components 1.0 as LatteComponents
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -53,7 +50,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
-            LatteExtraControls.HeaderSwitch {
+            LatteComponents.HeaderSwitch {
                 id: showAppletShadow
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
@@ -84,7 +81,7 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignLeft
                     }
 
-                    LatteExtraControls.Slider {
+                    LatteComponents.Slider {
                         id: shadowSizeSlider
                         Layout.fillWidth: true
                         enabled: showAppletShadow.checked
@@ -132,7 +129,7 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignLeft
                     }
 
-                    LatteExtraControls.Slider {
+                    LatteComponents.Slider {
                         id: shadowOpacitySlider
                         Layout.fillWidth: true
 
@@ -170,7 +167,7 @@ PlasmaComponents.Page {
                 }
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 isFirstSubCategory: true
                 text: i18n("Color")
             }
@@ -312,7 +309,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
-            LatteExtraControls.HeaderSwitch {
+            LatteComponents.HeaderSwitch {
                 id: animationsHeader
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
@@ -331,7 +328,7 @@ PlasmaComponents.Page {
                 spacing: 0
                 enabled: plasmoid.configuration.animationsEnabled
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     Layout.leftMargin: units.smallSpacing * 2
                     isFirstSubCategory: true
                     text: i18n("Speed")
@@ -389,7 +386,7 @@ PlasmaComponents.Page {
                         spacing: units.smallSpacing
                         visible: latteView.latteTasksPresent()
 
-                        LatteExtraControls.SubHeader {
+                        LatteComponents.SubHeader {
                             Layout.leftMargin: units.smallSpacing * 2
                             text: i18n("Tasks")
                         }
@@ -449,7 +446,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            LatteExtraControls.HeaderSwitch {
+            LatteComponents.HeaderSwitch {
                 id: indicatorsSwitch
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
@@ -468,7 +465,7 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
                 enabled: indicatorsSwitch.checked
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     text: i18n("Style")
                 }
 
@@ -521,7 +518,7 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     Layout.topMargin: units.smallSpacing
                     isFirstSubCategory: true
                     text: i18n("Paddings")
@@ -536,7 +533,7 @@ PlasmaComponents.Page {
                         horizontalAlignment: Text.AlignLeft
                     }
 
-                    LatteExtraControls.Slider {
+                    LatteComponents.Slider {
                         id: lengthIntMarginSlider
                         Layout.fillWidth: true
 
@@ -563,7 +560,7 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     Layout.topMargin: units.smallSpacing
                     isFirstSubCategory: true
                     text: i18n("Options")
@@ -601,7 +598,7 @@ PlasmaComponents.Page {
             visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
             enabled: indicatorsSwitch.checked
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current.text)
             }
 

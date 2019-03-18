@@ -29,6 +29,7 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
 import "../../controls" as LatteExtraControls
 
@@ -53,7 +54,7 @@ PlasmaComponents.Page {
 
             visible: dialog.highLevel && viewConfig.showInlineProperties
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Type")
             }
 
@@ -71,7 +72,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.topMargin: units.smallSpacing
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Location")
             }
 
@@ -281,7 +282,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Alignment")
             }
 
@@ -366,7 +367,7 @@ PlasmaComponents.Page {
             Layout.fillWidth: true
             spacing: units.smallSpacing
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Visibility")
             }
 
@@ -455,7 +456,7 @@ PlasmaComponents.Page {
             enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
                        || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 Layout.fillWidth: true
                 text: i18n("Delay")
             }
@@ -475,7 +476,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Show")
                 }
-                LatteExtraControls.TextField {
+                LatteComponents.TextField {
                     Layout.preferredWidth: width
                     text: latteView.visibility.timerShow
 
@@ -493,7 +494,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignRight
                     text: i18n("Hide")
                 }
-                LatteExtraControls.TextField{
+                LatteComponents.TextField{
                     Layout.preferredWidth: width
                     text: latteView.visibility.timerHide
 
@@ -511,7 +512,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Actions")
             }
 
@@ -519,7 +520,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 spacing: 0
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     text: i18n("Empty Area")
                 }
 
@@ -559,7 +560,7 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     text: i18n("Items")
                 }
 
@@ -609,7 +610,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Environment")
             }
 

@@ -28,8 +28,7 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
-
-import "../../controls" as LatteExtraControls
+import org.kde.latte.components 1.0 as LatteComponents
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -54,7 +53,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.highLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Badges")
             }
 
@@ -110,7 +109,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Interaction")
             }
 
@@ -159,7 +158,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Filters")
             }
 
@@ -228,11 +227,11 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Launchers")
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 isFirstSubCategory: true
                 text: i18nc("launchers group", "Group");
             }
@@ -298,7 +297,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Actions")
             }
 
@@ -466,7 +465,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Recycling")
             }
 

@@ -30,8 +30,7 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte 0.2 as Latte
-
-import "../../controls" as LatteExtraControls
+import org.kde.latte.components 1.0 as LatteComponents
 
 PlasmaComponents.Page {
     Layout.maximumWidth: content.width + content.Layout.leftMargin * 2
@@ -62,7 +61,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             visible: false //dialog.highLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Layout")
             }
 
@@ -144,11 +143,11 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Items")
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 text: i18nc("items effects", "Size")
                 isFirstSubCategory: true
             }
@@ -164,7 +163,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     id: appletsSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.iconSize
@@ -219,7 +218,7 @@ PlasmaComponents.Page {
                     enabled: proportionSizeSlider.value !== proportionSizeSlider.from
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     id: proportionSizeSlider
                     Layout.fillWidth: true
                     value: plasmoid.configuration.proportionIconSize
@@ -261,7 +260,7 @@ PlasmaComponents.Page {
                 }
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 text: i18nc("items effects", "Effects")
                 //isFirstSubCategory: true
             }
@@ -277,7 +276,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     Layout.fillWidth: true
                     id: zoomSlider
 
@@ -343,7 +342,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             spacing: units.smallSpacing
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Length")
             }
 
@@ -357,7 +356,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     Layout.fillWidth: true
                     id: maxLengthSlider
 
@@ -431,7 +430,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     Layout.fillWidth: true
                     id: offsetSlider
 
@@ -493,7 +492,7 @@ PlasmaComponents.Page {
 
             readonly property int maxMargin: 25
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 text: i18n("Margins")
             }
 
@@ -507,7 +506,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     id: lengthExtMarginSlider
                     Layout.fillWidth: true
 
@@ -532,7 +531,7 @@ PlasmaComponents.Page {
                 }
             }
 
-            LatteExtraControls.HeaderSwitch {
+            LatteComponents.HeaderSwitch {
                 id: shrinkThickMargins
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
@@ -558,7 +557,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     id: thickMarginSlider
                     Layout.fillWidth: true
 
@@ -591,7 +590,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
 
-            LatteExtraControls.Header {
+            LatteComponents.Header {
                 Layout.columnSpan: 4
                 text: i18n("Colors")
             }
@@ -624,7 +623,7 @@ PlasmaComponents.Page {
                     }
                 }
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     Layout.columnSpan: 3
                     isFirstSubCategory: true
                     text: i18n("Theme")
@@ -663,7 +662,7 @@ PlasmaComponents.Page {
                     readonly property int colors: Latte.Types.SmartThemeColors
                 }
 
-                LatteExtraControls.SubHeader {
+                LatteComponents.SubHeader {
                     Layout.columnSpan: 3
                     text: i18n("From Window")
                 }
@@ -711,7 +710,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             enabled: Latte.WindowSystem.compositingActive
 
-            LatteExtraControls.HeaderSwitch {
+            LatteComponents.HeaderSwitch {
                 id: showBackground
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
@@ -736,7 +735,7 @@ PlasmaComponents.Page {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     id: panelSizeSlider
                     Layout.fillWidth: true
                     enabled: showBackground.checked
@@ -784,7 +783,7 @@ PlasmaComponents.Page {
                     enabled: transparencySlider.enabled
                 }
 
-                LatteExtraControls.Slider {
+                LatteComponents.Slider {
                     id: transparencySlider
                     Layout.fillWidth: true
                     enabled: showBackground.checked //&& !blockOpacityAdjustment
@@ -827,7 +826,7 @@ PlasmaComponents.Page {
                 }
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 visible: dialog.expertLevel
                 isFirstSubCategory: true
                 text: i18n("Options")
@@ -882,19 +881,18 @@ PlasmaComponents.Page {
                 }
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 visible: dialog.expertLevel
                 text: i18nc("dynamic visibility for background", "Dynamic Visibility")
             }
 
-            PlasmaComponents.CheckBox {
+            LatteComponents.CheckBox {
                 id: solidForMaximizedChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
                 text: i18n("Prefer opaque background when touching any window")
                 checked: plasmoid.configuration.solidBackgroundForMaximized
                 tooltip: i18n("Background removes its transparency setting when a window is touching")
-                style: LatteExtraControls.LatteCheckBoxStyle{}
                 enabled: showBackground.checked
                 visible: dialog.expertLevel
 
@@ -931,19 +929,18 @@ PlasmaComponents.Page {
                 }
             }
 
-            LatteExtraControls.SubHeader {
+            LatteComponents.SubHeader {
                 visible: dialog.expertLevel
                 text: i18n("Exceptions")
             }
 
-            PlasmaComponents.CheckBox {
+            LatteComponents.CheckBox {
                 id: solidForPopupsChk
                 Layout.leftMargin: units.smallSpacing * 2
                 Layout.maximumWidth: (dialog.appliedWidth - units.smallSpacing * 2) - 3*units.smallSpacing
                 text: i18n("Prefer Plasma background and colors for expanded applets")
                 checked: plasmoid.configuration.plasmaBackgroundForPopups
                 tooltip: i18n("Background becomes opaque in plasma style when applets are expanded")
-                style: LatteExtraControls.LatteCheckBoxStyle{}
                 enabled: showBackground.checked
                 visible: dialog.expertLevel
 
