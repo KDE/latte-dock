@@ -37,7 +37,20 @@ Loader{
     readonly property real themeTextColorBrightness: ColorizerTools.colorBrightness(textColor)
     readonly property real backgroundColorBrightness: ColorizerTools.colorBrightness(backgroundColor)
     readonly property color minimizedDotColor: themeTextColorBrightness > 127.5 ? Qt.darker(textColor, 1.7) : Qt.lighter(textColor, 8)
-    readonly property color outlineColor: backgroundColorBrightness > 127.5 ? Qt.darker(backgroundColor, 1.5) : Qt.lighter(backgroundColor, 3.3)
+
+    readonly property color outlineColorBase: backgroundColor
+    readonly property real outlineColorBaseBrightness: ColorizerTools.colorBrightness(outlineColorBase)
+    readonly property color outlineColor: {
+        if (!root.panelOutline) {
+            return backgroundColor;
+        }
+
+        if (outlineColorBaseBrightness > 127.5) {
+            return Qt.darker(outlineColorBase, 1.5);
+        } else {
+            return Qt.lighter(outlineColorBase, 2.2);
+        }
+    }
 
     readonly property bool mustBeShown: (applyTheme && applyTheme !== theme)
 

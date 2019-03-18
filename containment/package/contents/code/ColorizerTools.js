@@ -41,3 +41,8 @@ function colorLuminasFromRGB(r, g, b) {
 
     return 0.2126*rS + 0.7152*gS + 0.0722*bS;
 }
+
+
+function normalize(min, max, per) {
+    return min + ((max-min) * per);
+}
