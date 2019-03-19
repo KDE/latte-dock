@@ -920,7 +920,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Hide background shadow for maximized windows")
                 checked: plasmoid.configuration.disablePanelShadowForMaximized
-                tooltip: i18n("Background shadows become hidden when a maximized window is touching the view")
+                tooltip: i18n("Background shadows become hidden when an active maximized window is touching the view")
                 enabled: showBackground.checked
                 visible: dialog.expertLevel
 

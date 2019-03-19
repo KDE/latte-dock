@@ -271,12 +271,18 @@ void WindowsTracker::updateFlags()
             if (winfo.isActive()) {
                 foundActiveTouchInCurScreen = true;
                 activeTouchWinId = winfo.wid();
+
+                if (isMaximizedInCurrentScreen(winfo)) {
+                    //! active maximized windows have higher priority than the rest maximized windows
+                    foundMaximizedInCurScreen = true;
+                    maxWinId = winfo.wid();
+                }
             } else {
                 foundTouchInCurScreen = true;
                 touchWinId = winfo.wid();
             }
 
-            if (isMaximizedInCurrentScreen(winfo)) {
+            if (!foundMaximizedInCurScreen && isMaximizedInCurrentScreen(winfo)) {
                 foundMaximizedInCurScreen = true;
                 maxWinId = winfo.wid();
             }
