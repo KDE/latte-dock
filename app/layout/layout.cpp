@@ -1760,8 +1760,15 @@ void Layout::syncLatteViewsToScreens()
                 screenId = containment->lastScreen();
             }
 
-            bool onPrimary = containment->config().readEntry("onPrimary", true);
-            Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+            bool onPrimary{true};
+
+            if (latteViewExists(containment)) {
+                onPrimary = m_latteViews[containment]->onPrimary();
+            } else {
+                onPrimary = containment->config().readEntry("onPrimary", true);
+            }
+
+            Plasma::Types::Location location = containment->location();
 
             if (onPrimary && !futureDocksLocations[prmScreenName].contains(location)) {
                 futureDocksLocations[prmScreenName].append(location);
@@ -1779,8 +1786,15 @@ void Layout::syncLatteViewsToScreens()
                 screenId = containment->lastScreen();
             }
 
-            bool onPrimary = containment->config().readEntry("onPrimary", true);
-            Plasma::Types::Location location = static_cast<Plasma::Types::Location>((int)containment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
+            bool onPrimary{true};
+
+            if (latteViewExists(containment)) {
+                onPrimary = m_latteViews[containment]->onPrimary();
+            } else {
+                onPrimary = containment->config().readEntry("onPrimary", true);
+            }
+
+            Plasma::Types::Location location = containment->location();
 
             if (!onPrimary) {
                 QString expScreenName = m_corona->screenPool()->connector(screenId);
