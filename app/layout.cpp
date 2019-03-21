@@ -1505,20 +1505,29 @@ void Layout::syncDockViewsToScreens()
     //! first step: primary docks must be placed in primary screen free edges
     foreach (auto containment, m_containments) {
         if (isLatteContainment(containment)) {
-            int screenId = containment->screen();
+            int screenId = 0;
 
-            if (screenId == -1) {
-                screenId = containment->lastScreen();
+            //! valid screen id
+            if (latteViewExists(containment)) {
+                screenId = m_latteViews[containment]->positioner()->currentScreenId();
+            } else {
+                screenId = containment->screen();
+
+                if (screenId == -1) {
+                    screenId = containment->lastScreen();
+                }
             }
 
             bool onPrimary{true};
 
+            //! valid onPrimary flag
             if (latteViewExists(containment)) {
                 onPrimary = m_latteViews[containment]->onPrimary();
             } else {
                 onPrimary = containment->config().readEntry("onPrimary", true);
             }
 
+            //! valid location
             Plasma::Types::Location location = containment->location();
 
             if (onPrimary && !futureDocksLocations[prmScreenName].contains(location)) {
@@ -1531,20 +1540,29 @@ void Layout::syncDockViewsToScreens()
     //! second step: explicit docks must be placed in their screens if the screen edge is free
     foreach (auto containment, m_containments) {
         if (isLatteContainment(containment)) {
-            int screenId = containment->screen();
+            int screenId = 0;
 
-            if (screenId == -1) {
-                screenId = containment->lastScreen();
+            //! valid screen id
+            if (latteViewExists(containment)) {
+                screenId = m_latteViews[containment]->positioner()->currentScreenId();
+            } else {
+                screenId = containment->screen();
+
+                if (screenId == -1) {
+                    screenId = containment->lastScreen();
+                }
             }
 
             bool onPrimary{true};
 
+            //! valid onPrimary flag
             if (latteViewExists(containment)) {
                 onPrimary = m_latteViews[containment]->onPrimary();
             } else {
                 onPrimary = containment->config().readEntry("onPrimary", true);
             }
 
+            //! valid location
             Plasma::Types::Location location = containment->location();
 
             if (!onPrimary) {
