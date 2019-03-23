@@ -293,7 +293,6 @@ inline void configureAboutData()
                      , QStringLiteral("\251 2016-2017 Michail Vourlakos, Smith AR"));
 
     about.setHomepage(WEBSITE);
-    about.setBugAddress(BUG_ADDRESS);
     about.setProgramLogo(QIcon::fromTheme(QStringLiteral("latte-dock")));
     about.setDesktopFileName(QStringLiteral("latte-dock"));
 
