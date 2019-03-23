@@ -22,16 +22,16 @@ import QtQuick 2.7
 import org.kde.latte 0.2 as Latte
 
 Item{
-    id: indicatorManager
+    id: indicatorBridge
     anchors.fill: parent
 
    property bool appletIsValid: true
 
     readonly property bool active: appletIsValid &&
-                                   ((indicators.common.indicatorsEnabled
+                                   ((indicators.isEnabled
                                      && appletItem.communicatorAlias.activeIndicatorEnabled
-                                     && indicators.common.indicatorsForApplets)
-                                    || (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
+                                     && indicators.enabledForApplets)
+                                    || (!indicators.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive))
 
     /* Indicators Properties in order use them*/
     readonly property bool isTask: false
@@ -60,11 +60,15 @@ Item{
     readonly property real scaleFactor: appletIsValid ? appletItem.wrapperAlias.zoomScale : 1
     readonly property color shadowColor: root.appShadowColorSolid
 
+    readonly property bool usePlasmaTabsStyle: !indicators.enabledForApplets
+
+    readonly property QtObject palette: colorizerManager.applyTheme
+
     //!icon colors
     property color backgroundColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.backgroundColor : "black"
     property color glowColor: appletIsValid ? appletItem.wrapperAlias.overlayIconLoader.glowColor : "white"
 
     //! grouped options
-    readonly property Item common: indicators.common
-    readonly property Item explicit: indicators.explicit
+    readonly property Item shared: indicators
+    readonly property QtObject configuration: indicators.configuration
 }

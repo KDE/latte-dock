@@ -23,6 +23,7 @@
 
 // local
 #include "effects.h"
+#include "indicator.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
 #include "windowstracker.h"
@@ -80,6 +81,7 @@ class View : public PlasmaQuick::ContainmentView
     //! when the isUserConfiguring changes value
     Q_PROPERTY(bool inEditMode READ inEditMode WRITE setInEditMode NOTIFY inEditModeChanged)
     Q_PROPERTY(bool isPreferredForShortcuts READ isPreferredForShortcuts WRITE setIsPreferredForShortcuts NOTIFY isPreferredForShortcutsChanged)
+    Q_PROPERTY(bool latteTasksArePresent READ latteTasksArePresent WRITE setLatteTasksArePresent NOTIFY latteTasksArePresentChanged)
     Q_PROPERTY(bool onPrimary READ onPrimary WRITE setOnPrimary NOTIFY onPrimaryChanged)
 
     Q_PROPERTY(int alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
@@ -95,8 +97,9 @@ class View : public PlasmaQuick::ContainmentView
 
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
 
-    Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
     Q_PROPERTY(Layout *managedLayout READ managedLayout WRITE setManagedLayout NOTIFY managedLayoutChanged)
+    Q_PROPERTY(Latte::ViewPart::Effects *effects READ effects NOTIFY effectsChanged)
+    Q_PROPERTY(Latte::ViewPart::Indicator *indicator READ indicator NOTIFY indicatorChanged)
     Q_PROPERTY(Latte::ViewPart::Positioner *positioner READ positioner NOTIFY positionerChanged)
     Q_PROPERTY(Latte::ViewPart::VisibilityManager *visibility READ visibility NOTIFY visibilityChanged)
     Q_PROPERTY(Latte::ViewPart::WindowsTracker *windowsTracker READ windowsTracker NOTIFY windowsTrackerChanged)
@@ -140,6 +143,9 @@ public:
     bool isPreferredForShortcuts() const;
     void setIsPreferredForShortcuts(bool preferred);
 
+    bool latteTasksArePresent() const;
+    void setLatteTasksArePresent(bool present);
+
     float maxLength() const;
     void setMaxLength(float length);
 
@@ -173,6 +179,7 @@ public:
     PlasmaQuick::ConfigView *configView();
 
     ViewPart::Effects *effects() const;
+    ViewPart::Indicator *indicator() const;
     ViewPart::Positioner *positioner() const;
     ViewPart::VisibilityManager *visibility() const;
     ViewPart::WindowsTracker *windowsTracker() const;
@@ -202,7 +209,6 @@ public slots:
 
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
     Q_INVOKABLE bool tasksPresent();
-    Q_INVOKABLE bool latteTasksPresent();
 
     void updateAbsDockGeometry(bool bypassChecks = false);
 
@@ -237,7 +243,9 @@ signals:
     void widthChanged();
     void heightChanged();
     void inEditModeChanged();
+    void indicatorChanged();
     void isPreferredForShortcutsChanged();
+    void latteTasksArePresentChanged();
     void localGeometryChanged();
     void managedLayoutChanged();
     void maxLengthChanged();
@@ -281,6 +289,7 @@ private:
     bool m_inDelete{false};
     bool m_inEditMode{false};
     bool m_isPreferredForShortcuts{false};
+    bool m_latteTasksArePresent{false};
     bool m_onPrimary{true};
     int m_fontPixelSize{ -1};
     int m_editThickness{24};
@@ -300,6 +309,7 @@ private:
 
     QPointer<ViewPart::ContextMenu> m_contextMenu;
     QPointer<ViewPart::Effects> m_effects;
+    QPointer<ViewPart::Indicator> m_indicator;
     QPointer<ViewPart::Positioner> m_positioner;
     QPointer<ViewPart::VisibilityManager> m_visibility;
     QPointer<ViewPart::WindowsTracker> m_windowsTracker;

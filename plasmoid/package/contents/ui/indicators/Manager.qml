@@ -24,57 +24,35 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
-import "options" as Options
+import "options" as IndicatorOptions
+import "styles" as IndicatorStyles
 import "../task/indicator" as TaskIndicator
 
 Item{
     id: managerIndicator
 
-    readonly property Item common: commonOptions
-    readonly property Item explicit: explicitOptions
+    readonly property Item configuration: explicitOptions
+
+    readonly property bool isEnabled: true
+    readonly property bool reversed: plasmoid.configuration.reverseLinesPosition
+    readonly property string type: "org.kde.latte.indicator.default"
 
     readonly property Component indicatorComponent: latteStyleIndicator
 
     readonly property Item info: Item{
-        readonly property bool needsIconColors: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsIconColors")
-                                                && metricsLoader.item.needsIconColors
-        readonly property bool providesFrontLayer: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("providesFrontLayer")
-                                                   && metricsLoader.item.providesFrontLayer
-
-        readonly property int extraMaskThickness: {
-            if (metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("extraMaskThickness")) {
-                return metricsLoader.item.extraMaskThickness;
-            }
-
-            return 0;
-        }
+        readonly property bool needsIconColors: false
+        readonly property bool providesFrontLayer: false
+        readonly property int extraMaskThickness: 0
     }
 
-    Options.Common {
-        id: commonOptions
-    }
-
-    Options.Latte {
+    IndicatorOptions.Latte {
         id : explicitOptions
     }
 
     //! Indicators Components
     Component {
         id: latteStyleIndicator
-        Latte.LatteIndicator{}
-    }
-
-    //! Metrics and values provided from an invisible indicator
-    Loader{
-        id: metricsLoader
-        opacity: 0
-
-        readonly property bool isBackLayer: true
-        readonly property Item manager: TaskIndicator.Manager{
-            taskIsValid: false
-        }
-
-        sourceComponent: managerIndicator.indicatorComponent
+        IndicatorStyles.LatteIndicator{}
     }
 }
 

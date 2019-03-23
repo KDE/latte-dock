@@ -1,0 +1,19 @@
+[Desktop Entry]
+Name=Latte
+Comment=Latte default indicator
+
+Type=Service
+Icon=latte-dock
+X-Plasma-API=declarativeappletscript
+X-Latte-MainScript=ui/main.qml
+X-Latte-ConfigUi=config/config.qml
+X-Latte-ConfigXml=config/main.xml
+
+X-KDE-PluginInfo-Author=Michail Vourlakos
+X-KDE-PluginInfo-Email=mvourlakos@gmail.com
+X-KDE-PluginInfo-Name=org.kde.latte.indicator.default
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Category=Windows and Tasks
+X-KDE-PluginInfo-License=GPL v2+
+X-KDE-PluginInfo-EnabledByDefault=true
+ 

@@ -138,6 +138,13 @@ Item{
 
     Binding{
         target: latteView
+        property:"latteTasksArePresent"
+        when: latteView
+        value: latteApplet !== null
+    }
+
+    Binding{
+        target: latteView
         property: "maxLength"
         when: latteView
         value: root.editMode ? 1 : plasmoid.configuration.maxLength/100
@@ -221,7 +228,7 @@ Item{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
         property: "enabled"
         when: latteView && latteView.windowsTracker
-        value: (latteView.visibility && latteView.visibility.mode === Latte.Types.DodgeAllWindows)
+        value: (latteView && latteView.visibility && latteView.visibility.mode === Latte.Types.DodgeAllWindows)
                || ((root.backgroundOnlyOnMaximized
                     || plasmoid.configuration.solidBackgroundForMaximized
                     || root.disablePanelShadowMaximized

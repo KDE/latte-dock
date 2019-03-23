@@ -421,21 +421,22 @@ MouseArea{
             width: wrapper.width
             height: wrapper.height
 
-            Indicator.Manager{
-                id: indicatorManager
+            Indicator.Bridge{
+                id: indicatorBridge
             }
 
             Indicator.Loader{
                 id: indicatorBackLayer
-                manager: indicatorManager
+                bridge: indicatorBridge
+                isBackground: true
             }
 
             Wrapper{id: wrapper}
 
             Indicator.Loader{
                 id: indicatorFrontLayer
-                manager: indicatorManager
-                isBackLayer: false
+                bridge: indicatorBridge
+                isBackground: false
             }
         }
 

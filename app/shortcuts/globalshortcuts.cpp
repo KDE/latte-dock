@@ -398,7 +398,7 @@ void GlobalShortcuts::activateEntry(int index, Qt::Key modifier)
             continue;
         }
 
-        if ((!view->latteTasksPresent() && view->tasksPresent() &&
+        if ((!view->latteTasksArePresent() && view->tasksPresent() &&
              activatePlasmaTaskManagerEntryAtContainment(view->containment(), index, modifier))
                 || activateLatteEntryAtContainment(view, index, modifier)) {
 
@@ -475,7 +475,7 @@ void GlobalShortcuts::updateViewItemBadge(QString identifier, QString value)
 
 bool GlobalShortcuts::isCapableToShowShortcutBadges(Latte::View *view)
 {
-    if (!view->latteTasksPresent() && view->tasksPresent()) {
+    if (!view->latteTasksArePresent() && view->tasksPresent()) {
         return false;
     }
 

@@ -74,6 +74,9 @@ public:
     //! returns the standard path found that contains the subPath
     //! local paths have higher priority by default
     static QString standardPath(QString subPath, bool localFirst = true);
+    //! returns all application data standard paths
+    //! local paths have higher priority by default
+    static QStringList standardPaths(bool localfirst = true);
 
     //! check if this layout exists already in the latte directory
     static bool layoutExists(QString layoutName);

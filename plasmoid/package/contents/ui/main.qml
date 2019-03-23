@@ -63,7 +63,7 @@ Item {
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
-    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && !indicatorsEnabled
+    property bool disableAllWindowsFunctionality: root.showWindowsOnlyFromLaunchers && !indicators.isEnabled
     property bool dropNewLauncher: false
     readonly property bool hasInternalSeparator: parabolicManager.hasInternalSeparator
     property bool inActivityChange: false
@@ -349,7 +349,7 @@ Item {
 
     Loader {
         id: indicatorsStandaloneLoader
-        active: !latteView
+        active: !latteView && !plasmoid.configuration.isInLatteDock
         source: "indicators/Manager.qml"
     }
 

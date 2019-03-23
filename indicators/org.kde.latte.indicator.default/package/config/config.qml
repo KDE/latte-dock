@@ -31,6 +31,8 @@ import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
 
 ColumnLayout {
+    Layout.fillWidth: true
+
     LatteComponents.SubHeader {
         text: i18nc("active indicator style","Style For Active")
     }
@@ -39,13 +41,13 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: 2
 
-        property int indicatorType: plasmoid.configuration.activeIndicatorType
+        property int indicatorType: indicator.configuration.activeStyle
 
         ExclusiveGroup {
             id: activeIndicatorTypeGroup
             onCurrentChanged: {
                 if (current.checked) {
-                    plasmoid.configuration.activeIndicatorType = current.indicatorType;
+                    indicator.configuration.activeStyle = current.indicatorType;
                 }
             }
         }
@@ -59,7 +61,7 @@ ColumnLayout {
             exclusiveGroup: activeIndicatorTypeGroup
             tooltip: i18n("Show a line indicator for active items")
 
-            readonly property int indicatorType: Latte.Types.LineIndicator
+            readonly property int indicatorType: 0 /*Line*/
         }
 
         PlasmaComponents.Button {
@@ -71,38 +73,38 @@ ColumnLayout {
             exclusiveGroup: activeIndicatorTypeGroup
             tooltip: i18n("Show a dot indicator for active items")
 
-            readonly property int indicatorType: Latte.Types.DotIndicator
+            readonly property int indicatorType: 1 /*Dot*/
         }
     }
 
     LatteComponents.HeaderSwitch {
-        id: showGlow
+        id: glowEnabled
         Layout.fillWidth: true
         Layout.minimumHeight: implicitHeight
         Layout.bottomMargin: units.smallSpacing
 
-        checked: plasmoid.configuration.showGlow
+        checked: indicator.configuration.glowEnabled
         level: 2
         text: i18n("Glow")
         tooltip: i18n("Enable/disable indicator glow")
 
         onPressed: {
-            plasmoid.configuration.showGlow = !plasmoid.configuration.showGlow;
+            indicator.configuration.glowEnabled = !indicator.configuration.glowEnabled;
         }
     }
 
     RowLayout {
         Layout.fillWidth: true
         spacing: 2
-        enabled: plasmoid.configuration.showGlow
+        enabled: indicator.configuration.glowEnabled
 
-        property int option: plasmoid.configuration.glowOption
+        property int option: indicator.configuration.glowApplyTo
 
         ExclusiveGroup {
             id: glowGroup
             onCurrentChanged: {
                 if (current.checked)
-                    plasmoid.configuration.glowOption = current.option
+                    indicator.configuration.glowApplyTo = current.option
             }
         }
 
@@ -114,7 +116,7 @@ ColumnLayout {
             exclusiveGroup:  glowGroup
             tooltip: i18n("Add glow only to active task/applet indicator")
 
-            readonly property int option: Latte.Types.GlowOnlyOnActive
+            readonly property int option: 1 /*OnActive*/
         }
 
         PlasmaComponents.Button {
@@ -125,7 +127,7 @@ ColumnLayout {
             exclusiveGroup: glowGroup
             tooltip: i18n("Add glow to all task/applet indicators")
 
-            readonly property int option: Latte.Types.GlowAll
+            readonly property int option: 2 /*All*/
         }
     }
 
@@ -133,7 +135,7 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: 2
 
-        enabled: plasmoid.configuration.showGlow
+        enabled: indicator.configuration.glowEnabled
 
         PlasmaComponents.Label {
             Layout.minimumWidth: implicitWidth
@@ -147,7 +149,7 @@ ColumnLayout {
             Layout.fillWidth: true
 
             leftPadding: 0
-            value: plasmoid.configuration.glowOpacity
+            value: indicator.configuration.glowOpacity * 100
             from: 0
             to: 100
             stepSize: 5
@@ -155,7 +157,7 @@ ColumnLayout {
 
             function updateGlowOpacity() {
                 if (!pressed)
-                    plasmoid.configuration.glowOpacity = value;
+                    indicator.configuration.glowOpacity = value/100;
             }
 
             onPressedChanged: {
@@ -181,32 +183,32 @@ ColumnLayout {
 
     ColumnLayout {
         spacing: 0
-        visible: latteView.latteTasksPresent()
+        visible: indicator.latteTasksArePresent
 
         LatteComponents.SubHeader {
-            enabled: plasmoid.configuration.glowOption!==Latte.Types.GlowNone
+            enabled: indicator.configuration.glowApplyTo!==0/*None*/
             text: i18n("Tasks")
         }
 
         PlasmaComponents.CheckBox {
             id: threeColorsWindows
             text: i18n("Different color for minimized windows")
-            checked: plasmoid.configuration.threeColorsWindows
+            checked: indicator.configuration.minimizedTaskColoredDifferently
 
             onClicked: {
-                plasmoid.configuration.threeColorsWindows = checked
+                indicator.configuration.minimizedTaskColoredDifferently = checked;
             }
         }
 
         PlasmaComponents.CheckBox {
             id: dotsOnActive
             text: i18n("Show an extra dot for grouped windows when active")
-            checked: plasmoid.configuration.dotsOnActive
+            checked: indicator.configuration.extraDotOnActive
             tooltip: i18n("Grouped windows show both a line and a dot when one of them is active and the Line Active Indicator is enabled")
-            enabled: plasmoid.configuration.activeIndicatorType === Latte.Types.LineIndicator
+            enabled: indicator.configuration.activeStyle === 0 /*Line*/
 
             onClicked: {
-                plasmoid.configuration.dotsOnActive = checked
+                indicator.configuration.extraDotOnActive = checked;
             }
         }
     }

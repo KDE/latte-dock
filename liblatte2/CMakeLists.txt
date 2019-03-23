@@ -29,6 +29,4 @@ endif()
 
 install(TARGETS latte2plugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
 
-install(DIRECTORY qml/ DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)
-
 install(FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte)

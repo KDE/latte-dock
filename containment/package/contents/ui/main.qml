@@ -241,7 +241,8 @@ DragDrop.DropArea {
 
         if (( (plasmoid.configuration.panelShadows && !root.backgroundOnlyOnMaximized)
              || (plasmoid.configuration.panelShadows && root.backgroundOnlyOnMaximized && !root.forceTransparentPanel))
-                && !(disablePanelShadowMaximized && latteView.windowsTracker.activeWindowMaximized)) {
+                && !(disablePanelShadowMaximized && latteView && latteView.windowsTracker
+                     && latteView.windowsTracker.activeWindowMaximized)) {
             return true;
         }
 
@@ -317,7 +318,7 @@ DragDrop.DropArea {
 
     property int lengthIntMargin: lengthIntMarginFactor * root.iconSize
     property int lengthExtMargin: lengthExtMarginFactor * root.iconSize
-    property real lengthIntMarginFactor: indicators.common.indicatorsEnabled ? plasmoid.configuration.lengthIntMargin / 100 : 0
+    property real lengthIntMarginFactor: indicators.isEnabled ? indicators.padding : 0
     property real lengthExtMarginFactor: plasmoid.configuration.lengthExtMargin / 100
 
     property real thickMarginFactor: {
@@ -1434,7 +1435,7 @@ DragDrop.DropArea {
 
     function updateContainsOnlyPlasmaTasks() {
         if (latteView) {
-            root.containsOnlyPlasmaTasks = (latteView.tasksPresent() && !latteView.latteTasksPresent());
+            root.containsOnlyPlasmaTasks = (latteView.tasksPresent() && !latteApplet);
         } else {
             root.containsOnlyPlasmaTasks = false;
         }

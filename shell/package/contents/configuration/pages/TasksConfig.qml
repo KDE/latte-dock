@@ -475,7 +475,7 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
 
                 text: i18n("Remove Latte Tasks Applet")
-                enabled: latteView.latteTasksPresent()
+                enabled: latteView.latteTasksArePresent
                 tooltip: i18n("Remove Latte Tasks plasmoid")
 
                 onClicked: {

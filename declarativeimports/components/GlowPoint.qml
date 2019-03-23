@@ -205,24 +205,27 @@ Item{
     //! add border around indicator without reducing its size
     Loader{
         anchors.centerIn: mainElement
-        active: glowItem.showBorder && !glowItem.showGlow
+        active: glowItem.showBorder
 
         sourceComponent:Rectangle {
-            width: size
-            height: size
+            width: mainElement.width + size
+            height: mainElement.height + size
             anchors.centerIn: parent
 
             color: contrastColorAlpha2
             radius: glowItem.roundCorners ? Math.min(width,height) / 2 : 0
 
-            property int size: Math.min(mainElement.width + 2*Math.max(1,mainElement.width/5 ),
-                                        mainElement.height + 2*Math.max(1,mainElement.height/5 ))
+            property int size: Math.min(2*Math.max(1,mainElement.width/5 ),
+                                        2*Math.max(1,mainElement.height/5 ))
         }
     }
 
     Item{
         id:mainElement
-        anchors.fill: parent
+
+        width: Math.max(glowItem.size, parent.width)
+        height: Math.max(glowItem.size, parent.height)
+        anchors.centerIn: parent
 
         Rectangle {
             id: smallCircle

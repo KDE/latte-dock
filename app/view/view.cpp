@@ -74,9 +74,9 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     setClearBeforeRendering(true);
 
     const auto flags = Qt::FramelessWindowHint
-                       | Qt::WindowStaysOnTopHint
-                       | Qt::NoDropShadowWindowHint
-                       | Qt::WindowDoesNotAcceptFocus;
+            | Qt::WindowStaysOnTopHint
+            | Qt::NoDropShadowWindowHint
+            | Qt::WindowDoesNotAcceptFocus;
 
     if (byPassWM) {
         setFlags(flags | Qt::BypassWindowManagerHint);
@@ -92,7 +92,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         m_positioner->setScreenToFollow(qGuiApp->primaryScreen());
 
     connect(this, &View::containmentChanged
-    , this, [ &, byPassWM]() {
+            , this, [ &, byPassWM]() {
         qDebug() << "dock view c++ containment changed 1...";
 
         if (!this->containment())
@@ -112,6 +112,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         //! needs to be created before visibility creation because visibility uses it
         if (!m_windowsTracker) {
             m_windowsTracker = new ViewPart::WindowsTracker(this);
+            emit windowsTrackerChanged();
         }
 
         if (!m_visibility) {
@@ -122,6 +123,13 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
                     deactivateApplets();
                 }
             });
+
+            emit visibilityChanged();
+        }
+
+        if (!m_indicator) {
+            m_indicator = new ViewPart::Indicator(this);
+            emit indicatorChanged();
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
@@ -166,6 +174,10 @@ View::~View()
     //needs to be deleted before Effects because it catches some of its signals
     if (m_positioner) {
         delete m_positioner;
+    }
+
+    if (m_indicator) {
+        delete m_indicator;
     }
 
     if (m_effects) {
@@ -414,7 +426,7 @@ void View::updateAbsDockGeometry(bool bypassChecks)
     //! behavior and keeping this comment in order to check for
     //! multi-screen breakage
     QRect absGeometry {x() + m_localGeometry.x(), y() + m_localGeometry.y()
-                       , m_localGeometry.width(), m_localGeometry.height()};
+                , m_localGeometry.width(), m_localGeometry.height()};
 
     if (m_absGeometry == absGeometry && !bypassChecks)
         return;
@@ -433,7 +445,7 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
 {
     if (containment()) {
         if (containment()->status() >= Plasma::Types::NeedsAttentionStatus &&
-            containment()->status() != Plasma::Types::HiddenStatus) {
+                containment()->status() != Plasma::Types::HiddenStatus) {
             setBlockHiding(true);
         } else if (!containment()->isUserConfiguring()){
             setBlockHiding(false);
@@ -576,6 +588,21 @@ void View::setIsPreferredForShortcuts(bool preferred)
     if (m_isPreferredForShortcuts && m_managedLayout) {
         emit m_managedLayout->preferredViewForShortcutsChanged(this);
     }
+}
+
+bool View::latteTasksArePresent() const
+{
+    return m_latteTasksArePresent;
+}
+
+void View::setLatteTasksArePresent(bool present)
+{
+    if (m_latteTasksArePresent == present) {
+        return;
+    }
+
+    m_latteTasksArePresent = present;
+    emit latteTasksArePresentChanged();
 }
 
 void View::preferredViewForShortcutsChangedSlot(Latte::View *view)
@@ -920,26 +947,6 @@ bool View::tasksPresent()
     return false;
 }
 
-
-//! check if the tasks plasmoid exist in the dock
-bool View::latteTasksPresent()
-{
-    if (!this->containment()) {
-        return false;
-    }
-
-    foreach (Plasma::Applet *applet, this->containment()->applets()) {
-        KPluginMetaData metadata = applet->pluginMetaData();
-
-        if (metadata.pluginId() == "org.kde.latte.plasmoid") {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-
 //!check if the plasmoid with _name_ exists in the midedata
 bool View::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
 {
@@ -965,6 +972,11 @@ ViewPart::Effects *View::effects() const
     return m_effects;
 }
 
+ViewPart::Indicator *View::indicator() const
+{
+    return m_indicator;
+}
+
 ViewPart::Positioner *View::positioner() const
 {
     return m_positioner;
@@ -986,56 +998,56 @@ bool View::event(QEvent *e)
         emit eventTriggered(e);
 
         switch (e->type()) {
-            case QEvent::Enter:
-                m_containsMouse = true;
+        case QEvent::Enter:
+            m_containsMouse = true;
 
-                if (m_configView && KWindowSystem::isPlatformX11()) {
-                    ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
+            if (m_configView && KWindowSystem::isPlatformX11()) {
+                ViewPart::PrimaryConfigView *primaryConfigView = qobject_cast<ViewPart::PrimaryConfigView *>(m_configView);
 
-                    if (primaryConfigView) {
-                        if (primaryConfigView->secondaryWindow()) {
-                            primaryConfigView->secondaryWindow()->requestActivate();
-                        }
-
-                        primaryConfigView->requestActivate();
+                if (primaryConfigView) {
+                    if (primaryConfigView->secondaryWindow()) {
+                        primaryConfigView->secondaryWindow()->requestActivate();
                     }
+
+                    primaryConfigView->requestActivate();
                 }
-                break;
+            }
+            break;
 
-            case QEvent::Leave:
-                m_containsMouse = false;
-                engine()->trimComponentCache();
-                break;
+        case QEvent::Leave:
+            m_containsMouse = false;
+            engine()->trimComponentCache();
+            break;
 
-            case QEvent::PlatformSurface:
-                if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
-                    switch (pe->surfaceEventType()) {
-                        case QPlatformSurfaceEvent::SurfaceCreated:
-                            setupWaylandIntegration();
+        case QEvent::PlatformSurface:
+            if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
+                switch (pe->surfaceEventType()) {
+                case QPlatformSurfaceEvent::SurfaceCreated:
+                    setupWaylandIntegration();
 
-                            if (m_shellSurface) {
-                                m_positioner->syncGeometry();
-                                m_effects->updateShadows();
-                            }
-
-                            break;
-
-                        case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                            if (m_shellSurface) {
-                                delete m_shellSurface;
-                                m_shellSurface = nullptr;
-                                qDebug() << "WAYLAND dock window surface was deleted...";
-                                m_effects->clearShadows();
-                            }
-
-                            break;
+                    if (m_shellSurface) {
+                        m_positioner->syncGeometry();
+                        m_effects->updateShadows();
                     }
+
+                    break;
+
+                case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                    if (m_shellSurface) {
+                        delete m_shellSurface;
+                        m_shellSurface = nullptr;
+                        qDebug() << "WAYLAND dock window surface was deleted...";
+                        m_effects->clearShadows();
+                    }
+
+                    break;
                 }
+            }
 
-                break;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

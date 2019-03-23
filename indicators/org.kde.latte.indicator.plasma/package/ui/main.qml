@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,16 +17,32 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+import QtQuick 2.0
 
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
+import org.kde.latte.components 1.0 as LatteComponents
 
-Item{
-    readonly property string styleName: "Plasma"
+LatteComponents.IndicatorItem {
+    readonly property bool providesFrontLayer: true
 
-    readonly property bool usePlasmaTabsStyle: !commonOptions.indicatorsForApplets
+    //! Background Layer
+    Loader{
+        id: backLayer
+        anchors.fill: parent
+        active: attributes.isBackground
+
+        sourceComponent: BackLayer{}
+    }
+
+    //! Foreground Layer to draw arrows
+    Loader{
+        id: frontLayer
+        anchors.fill: parent
+        active: attributes.isForeground && !indicator.isApplet && indicator.isGroup
+
+        sourceComponent: FrontLayer{}
+    }
+
 }
-

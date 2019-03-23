@@ -26,10 +26,10 @@ import org.kde.latte 0.2 as Latte
 import "../../indicators/options" as TaskIndicator
 
 Item {
-    id: indicatorManager
+    id: indicatorBridge
     property bool taskIsValid: true
 
-    readonly property bool active: indicators && indicators.common ? indicators.common.indicatorsEnabled : true
+    readonly property bool active: indicators ? indicators.isEnabled : false
     readonly property bool locked: taskIsValid ? (inAttentionAnimation || inNewWindowAnimation) : false
 
     /* Indicators Properties in order for indicators to use them*/
@@ -63,13 +63,17 @@ Item {
     readonly property real scaleFactor: taskIsValid ? taskItem.wrapperAlias.mScale : 1
     readonly property color shadowColor: root.appShadowColorSolid
 
+    readonly property bool usePlasmaTabsStyle: false
+
+    readonly property QtObject palette: enforceLattePalette ? latteBridge.palette.applyTheme : theme
+
     //!icon colors
     property color backgroundColor: taskIsValid ? taskItem.wrapperAlias.backgroundColor : "black"
     property color glowColor: taskIsValid ? taskItem.wrapperAlias.glowColor : "white"
 
     //! grouped options
-    readonly property Item common: indicators ? indicators.common : emptyOptions
-    readonly property Item explicit: indicators ? indicators.explicit : emptyOptions
+    readonly property Item shared: indicators ? indicators : emptyOptions
+    readonly property QtObject configuration: indicators ? indicators.configuration : null
 
     Item{id: emptyOptions}
 }

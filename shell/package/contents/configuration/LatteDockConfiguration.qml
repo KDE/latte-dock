@@ -388,7 +388,7 @@ FocusScope {
                 text: i18n("Tasks")
                 tab: tasksPage
 
-                visible: latteView.latteTasksPresent()
+                visible: latteView.latteTasksArePresent
             }
         }
 

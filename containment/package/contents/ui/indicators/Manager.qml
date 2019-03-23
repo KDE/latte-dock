@@ -24,29 +24,21 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte 0.2 as Latte
 
-import "options" as Options
 import "../applet/indicator" as AppletIndicator
 
 Item{
     id: managerIndicator
 
-    readonly property Item common: commonOptions
-    readonly property Item explicit: explicitOptions.item
+    readonly property QtObject configuration: latteView && latteView.indicator ? latteView.indicator.configuration : null
 
-    readonly property Component plasmaStyleComponent: plasmaStyleIndicator
+    readonly property bool isEnabled: latteView && latteView.indicator ? latteView.indicator.enabled : false
+    readonly property bool enabledForApplets: latteView && latteView.indicator ? latteView.indicator.enabledForApplets : true
+    readonly property bool reversed: latteView && latteView.indicator ? latteView.indicator.reversed : false
+    readonly property real padding: latteView && latteView.indicator ? latteView.indicator.padding: 0.08
+    readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.indicator.default"
 
-    readonly property Component indicatorComponent: {
-        switch (indicators.common.indicatorStyle) {
-        case Latte.Types.LatteIndicator:
-            return latteStyleIndicator;
-        case Latte.Types.PlasmaIndicator:
-            return plasmaStyleIndicator;
-        case Latte.Types.UnityIndicator:
-            return unityStyleIndicator;
-        default:
-            return latteStyleIndicator;
-        };
-    }
+    readonly property Component plasmaStyleComponent: latteView && latteView.indicator ? latteView.indicator.plasmaComponent : null
+    readonly property Component indicatorComponent: latteView && latteView.indicator ? latteView.indicator.component : null
 
     readonly property Item info: Item{
         readonly property bool needsIconColors: metricsLoader.active && metricsLoader.item && metricsLoader.item.hasOwnProperty("needsIconColors")
@@ -63,48 +55,14 @@ Item{
         }
     }
 
-
-    Options.Common {
-        id: commonOptions
-    }
-
-    Loader{
-        id: explicitOptions
-        active: true
-        source: {
-            if (commonOptions.indicatorStyle === Latte.Types.LatteIndicator) {
-                return "options/Latte.qml";
-            } else if (commonOptions.indicatorStyle === Latte.Types.PlasmaIndicator) {
-                return "options/Plasma.qml";
-            }
-
-            return "options/Latte.qml";
-        }
-    }
-
-    //! Indicators Components
-    Component {
-        id: latteStyleIndicator
-        Latte.LatteIndicator{}
-    }
-
-    Component {
-        id: plasmaStyleIndicator
-        Latte.PlasmaIndicator{}
-    }
-
-    Component{
-        id:unityStyleIndicator
-        Latte.UnityIndicator{}
-    }
-
     //! Metrics and values provided from an invisible indicator
     Loader{
         id: metricsLoader
         opacity: 0
+        active: managerIndicator.isEnabled
 
-        readonly property bool isBackLayer: true
-        readonly property Item manager: AppletIndicator.Manager{
+        readonly property bool isBackground: true
+        readonly property Item bridge: AppletIndicator.Bridge{
             appletIsValid: false
         }
 

@@ -9,6 +9,7 @@ set(lattedock-app_SRCS
     layoutmanager.cpp
     schemecolors.cpp
     screenpool.cpp
+    indicator/factory.cpp
     layout/layout.cpp
     layout/shortcuts.cpp
     package/lattepackage.cpp
@@ -26,6 +27,7 @@ set(lattedock-app_SRCS
     shortcuts/shortcutstracker.cpp
     view/contextmenu.cpp
     view/effects.cpp
+    view/indicator.cpp
     view/panelshadows.cpp
     view/positioner.cpp
     view/screenedgeghostwindow.cpp

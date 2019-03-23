@@ -331,6 +331,12 @@ Item {
         if (isHidden)
             parabolicManager.setHidden(previousIndex, -1);
 
+        if(root.latteAppletPos>=0 && root.latteAppletPos === index){
+            root.latteApplet = null;
+            root.latteAppletContainer = null;
+            root.latteAppletPos = -1;
+        }
+
         root.updateIndexes.disconnect(checkIndex);
         root.clearZoomSignal.disconnect(clearZoom);
 
@@ -494,14 +500,15 @@ Item {
             width: wrapper.width
             height: wrapper.height
 
-            Indicator.Manager{
-                id: indicatorManager
+            Indicator.Bridge{
+                id: indicatorBridge
             }
 
             //! Indicator Back Layer
             Indicator.Loader{
                 id: indicatorBackLayer
-                manager: indicatorManager
+                bridge: indicatorBridge
+                isBackground: true
             }
 
             ItemWrapper{
@@ -534,8 +541,8 @@ Item {
             //! Indicator Front Layer
             Indicator.Loader{
                 id: indicatorFrontLayer
-                manager: indicatorManager
-                isBackLayer: false
+                bridge: indicatorBridge
+                isBackground: false
             }
 
             //! Applet Shortcut Visual Badge
@@ -584,7 +591,7 @@ Item {
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
             fontSizeMode: Text.Fit
-            color: colorizerManager.applyTheme.textColor
+            color: colorizerManager.textColor
 
             rotation: {
                 if (root.isHorizontal)

@@ -6,6 +6,7 @@ ExternalShadow 1.0 ExternalShadow.qml
 GlowPoint 1.0 GlowPoint.qml
 Header 1.0 Header.qml
 HeaderSwitch 1.0 HeaderSwitch.qml
+IndicatorItem 1.0 IndicatorItem.qml
 Slider 1.0 Slider.qml
 SpinBox 1.0 SpinBox.qml
 SubHeader 1.0 SubHeader.qml

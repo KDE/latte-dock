@@ -19,6 +19,7 @@
 
 import QtQuick 2.7
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.pager 2.0
 
 import org.kde.latte 0.2 as Latte
@@ -35,7 +36,7 @@ Loader {
             enabled: true
             showDesktop: true
             showOnlyCurrentScreen: true
-            screenGeometry: latteView.screenGeometry
+            screenGeometry: latteView ? latteView.screenGeometry : plasmoid.screenGeometry
             pagerType: root.scrollAction === Latte.Types.ScrollDesktops ? PagerModel.VirtualDesktops : PagerModel.Activities
         }
 

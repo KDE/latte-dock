@@ -184,9 +184,26 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
     return true;
 }
 
-QString Importer::standardPath(QString subPath, bool localfirst)
+QStringList Importer::standardPaths(bool localfirst)
 {
     QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+
+    if (localfirst) {
+        return paths;
+    } else {
+        QStringList reversed;
+
+        for (int i=paths.count()-1; i>=0; i--) {
+            reversed << paths[i];
+        }
+
+        return reversed;
+    }
+}
+
+QString Importer::standardPath(QString subPath, bool localfirst)
+{
+    QStringList paths = standardPaths(localfirst);
 
     if (localfirst) {
         foreach (auto pt, paths) {

@@ -25,15 +25,16 @@ Loader{
     id: indicatorLoader
     anchors.fill: parent
 
-    active: manager && manager.active && (isBackLayer || (!isBackLayer && indicators.info.providesFrontLayer))
+    active: bridge && bridge.active && (isBackground || (isForeground && indicators.info.providesFrontLayer))
     sourceComponent: {
-        if (!indicators.common.indicatorsForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
+        if (!indicators.enabledForApplets && appletItem.communicatorAlias.overlayLatteIconIsActive) {
             return indicators.plasmaStyleComponent;
         }
 
         return indicators.indicatorComponent;
     }
 
-    property bool isBackLayer: true
-    property Item manager
+    property bool isBackground: true
+    readonly property bool isForeground: !isBackground
+    property Item bridge
 }

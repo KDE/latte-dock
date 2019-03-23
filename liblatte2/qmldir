@@ -1,6 +1,2 @@
 module org.kde.latte
 plugin latte2plugin
-
-LatteIndicator 0.2 indicators/LatteIndicator.qml
-PlasmaIndicator 0.2 indicators/PlasmaIndicator.qml
-UnityIndicator 0.2 indicators/UnityIndicator.qml

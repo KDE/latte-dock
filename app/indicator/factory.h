@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -17,18 +17,36 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.7
+#ifndef INDICATORFACTORY_H
+#define INDICATORFACTORY_H
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+// Qt
+#include <QHash>
+#include <QObject>
 
-import org.kde.latte 0.2 as Latte
+class KPluginMetaData;
 
-Item{
-    id: common
+namespace Latte {
+namespace Indicator {
 
-    readonly property bool indicatorsEnabled: true
-    readonly property bool reversedEnabled: plasmoid.configuration.reverseLinesPosition
+class Factory : public QObject
+{
+    Q_OBJECT
 
-    readonly property int indicatorStyle: Latte.Types.LatteIndicator
+public:
+    Factory(QObject *parent);
+    ~Factory() override;
+
+    void reload();
+
+    KPluginMetaData metadata(QString pluginId);
+
+private:
+    QHash<QString, KPluginMetaData> m_plugins;
+
+};
+
 }
+}
+
+#endif

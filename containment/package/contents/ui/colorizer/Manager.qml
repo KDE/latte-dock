@@ -59,11 +59,13 @@ Loader{
 
     readonly property real currentBackgroundBrightness: item ? item.currentBrightness : -1000
 
-    readonly property bool applyingWindowColors: (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme)
-                                                 || (root.windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.touchingWindowScheme)
+    readonly property bool applyingWindowColors: (root.windowColors === Latte.Types.ActiveWindowColors && latteView && latteView.windowsTracker
+                                                  && latteView.windowsTracker.activeWindowScheme)
+                                                 || (root.windowColors === Latte.Types.TouchingWindowColors && latteView && latteView.windowsTracker
+                                                     && latteView.windowsTracker.touchingWindowScheme)
 
     property QtObject applyTheme: {
-        if (!root.hasExpandedApplet) {
+        if (latteView && latteView.windowsTracker && !root.hasExpandedApplet) {
             if (root.windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.activeWindowScheme) {
                 return latteView.windowsTracker.activeWindowScheme;
             }
@@ -110,7 +112,7 @@ Loader{
 
     readonly property color backgroundColor:applyTheme.backgroundColor
     readonly property color textColor: {
-        if (root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors)) {
+        if (latteView && latteView.managedLayout && root.inConfigureAppletsMode && (root.themeColors === Latte.Types.SmartThemeColors)) {
             return latteView.managedLayout.textColor;
         }
 

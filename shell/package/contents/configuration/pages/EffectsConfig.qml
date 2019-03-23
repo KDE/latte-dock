@@ -384,7 +384,7 @@ PlasmaComponents.Page {
 
                     ColumnLayout {
                         spacing: units.smallSpacing
-                        visible: latteView.latteTasksPresent()
+                        visible: latteView.latteTasksArePresent
 
                         LatteComponents.SubHeader {
                             Layout.leftMargin: units.smallSpacing * 2
@@ -451,12 +451,12 @@ PlasmaComponents.Page {
                 Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
 
-                checked: plasmoid.configuration.indicatorsEnabled
+                checked: latteView.indicator.enabled
                 text: i18n("Indicators")
                 tooltip: i18n("Enable/disable indicators")
 
                 onPressed: {
-                    plasmoid.configuration.indicatorsEnabled = !plasmoid.configuration.indicatorsEnabled;
+                    latteView.indicator.enabled = !latteView.indicator.enabled;
                 }
             }
 
@@ -473,13 +473,13 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     spacing: 2
 
-                    property int style: plasmoid.configuration.indicatorStyle
+                    property string type: latteView.indicator.type
 
                     ExclusiveGroup {
                         id: indicatorStyleGroup
                         onCurrentChanged: {
                             if (current.checked) {
-                                plasmoid.configuration.indicatorStyle = current.style
+                                latteView.indicator.type = current.type
                             }
                         }
                     }
@@ -487,34 +487,34 @@ PlasmaComponents.Page {
                     PlasmaComponents.Button {
                         Layout.fillWidth: true
                         text: i18nc("latte indicator style", "Latte")
-                        checked: parent.style === style
+                        checked: parent.type === type
                         checkable: true
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Latte style for your indicators")
 
-                        readonly property int style: Latte.Types.LatteIndicator
+                        readonly property string type: "org.kde.latte.indicator.default"
                     }
 
                     PlasmaComponents.Button {
                         Layout.fillWidth: true
                         text: i18nc("plasma indicator style", "Plasma")
-                        checked: parent.style === style
+                        checked: parent.type === type
                         checkable: true
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Plasma style for your indicators")
 
-                        readonly property int style: Latte.Types.PlasmaIndicator
+                        readonly property string type: "org.kde.latte.indicator.plasma"
                     }
 
                     PlasmaComponents.Button {
                         Layout.fillWidth: true
                         text: i18nc("unity indicator style", "Unity")
-                        checked: parent.style === style
+                        checked: parent.type === type
                         checkable: true
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Unity style for your indicators")
 
-                        readonly property int style: Latte.Types.UnityIndicator
+                        readonly property string type: "org.kde.latte.indicator.unity"
                     }
                 }
 
@@ -537,7 +537,7 @@ PlasmaComponents.Page {
                         id: lengthIntMarginSlider
                         Layout.fillWidth: true
 
-                        value: plasmoid.configuration.lengthIntMargin
+                        value: Math.round(latteView.indicator.padding * 100)
                         from: 0
                         to: maxMargin
                         stepSize: 1
@@ -547,7 +547,7 @@ PlasmaComponents.Page {
 
                         onPressedChanged: {
                             if (!pressed) {
-                                plasmoid.configuration.lengthIntMargin = value;
+                                latteView.indicator.padding = value / 100;
                             }
                         }
                     }
@@ -568,21 +568,21 @@ PlasmaComponents.Page {
 
                 PlasmaComponents.CheckBox {
                     text: i18n("Show indicators for applets")
-                    checked: plasmoid.configuration.indicatorsForApplets
+                    checked: latteView.indicator.enabledForApplets
                     tooltip: i18n("Indicators are shown for applets")
 
                     onClicked: {
-                        plasmoid.configuration.indicatorsForApplets = !plasmoid.configuration.indicatorsForApplets;
+                        latteView.indicator.enabledForApplets = !latteView.indicator.enabledForApplets;
                     }
                 }
 
                 PlasmaComponents.CheckBox {
                     text: i18n("Reverse indicator style")
-                    checked: plasmoid.configuration.reverseLinesPosition
+                    checked: latteView.indicator.reversed
                     tooltip: i18n("Reverse indicator style e.g. from bottom to top")
 
                     onClicked: {
-                        plasmoid.configuration.reverseLinesPosition = !plasmoid.configuration.reverseLinesPosition;
+                        latteView.indicator.reversed = !latteView.indicator.reversed;
                     }
                 }
             }
@@ -595,18 +595,26 @@ PlasmaComponents.Page {
             Layout.topMargin: units.smallSpacing
             Layout.rightMargin: units.smallSpacing
             spacing: units.smallSpacing
-            visible: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
-            enabled: indicatorsSwitch.checked
+            visible: latteView.indicator.providesConfigUi
 
             LatteComponents.Header {
                 text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current.text)
             }
 
-            Loader{
+            ColumnLayout {
+                id: indicatorSpecificOptions
                 Layout.fillWidth: true
                 Layout.leftMargin: units.smallSpacing * 2
-                active: plasmoid.configuration.indicatorStyle === Latte.Types.LatteIndicator
-                source: "indicator/LatteOptions.qml"
+                spacing: 0
+
+                Component.onCompleted: {
+                    latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                }
+
+                Connections {
+                    target: latteView.indicator
+                    onTypeChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                }
             }
         }
         //! END: Indicator specific sub-options

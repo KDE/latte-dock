@@ -27,13 +27,13 @@ import org.kde.latte 0.2 as Latte
 Item{
     readonly property string styleName: "Latte"
 
-    readonly property bool dotsOnActive: plasmoid.configuration.dotsOnActive
-    readonly property bool multiColorEnabled: plasmoid.configuration.threeColorsWindows
-    readonly property int activeIndicatorType: Latte.Types.LineIndicator
+    readonly property bool extraDotOnActive: plasmoid.configuration.dotsOnActive
+    readonly property bool minimizedTaskColoredDifferently: plasmoid.configuration.threeColorsWindows
+    readonly property int activeStyle: Latte.Types.LineIndicator
 
     //!glow options
     readonly property bool glowEnabled: plasmoid.configuration.showGlow
     readonly property bool glow3D: false
-    readonly property int glowOption: Latte.Types.GlowAll
+    readonly property int glowApplyTo: 2 /*All*/
     readonly property real glowOpacity: 0.35
 }

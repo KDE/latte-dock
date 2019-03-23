@@ -27,6 +27,7 @@
 #include "launcherssignals.h"
 #include "layoutmanager.h"
 #include "screenpool.h"
+#include "indicator/factory.h"
 #include "shortcuts/globalshortcuts.h"
 #include "package/lattepackage.h"
 #include "plasma/extended/screenpool.h"
@@ -79,6 +80,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_layoutNameOnStartUp(layoutNameOnStartUp),
       m_activityConsumer(new KActivities::Consumer(this)),
       m_screenPool(new ScreenPool(KSharedConfig::openConfig(), this)),
+      m_indicatorFactory(new Indicator::Factory(this)),
       m_universalSettings(new UniversalSettings(KSharedConfig::openConfig(), this)),
       m_globalShortcuts(new GlobalShortcuts(this)),
       m_plasmaScreenPool(new PlasmaExtended::ScreenPool(this)),
@@ -178,6 +180,7 @@ Corona::~Corona()
     m_plasmaScreenPool->deleteLater();
     m_backgroundTracer->deleteLater();
     m_themeExtended->deleteLater();
+    m_indicatorFactory->deleteLater();
 
     disconnect(m_activityConsumer, &KActivities::Consumer::serviceStatusChanged, this, &Corona::load);
     delete m_activityConsumer;
@@ -390,6 +393,11 @@ LayoutManager *Corona::layoutManager() const
 AbstractWindowInterface *Corona::wm() const
 {
     return m_wm;
+}
+
+Indicator::Factory *Corona::indicatorFactory() const
+{
+    return m_indicatorFactory;
 }
 
 PlasmaExtended::ScreenPool *Corona::plasmaScreenPool() const

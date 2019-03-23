@@ -66,6 +66,9 @@ class GlobalShortcuts;
 class UniversalSettings;
 class LayoutManager;
 class LaunchersSignals;
+namespace Indicator{
+class Factory;
+}
 namespace PlasmaExtended{
 class ScreenPool;
 class Theme;
@@ -110,6 +113,8 @@ public:
     ScreenPool *screenPool() const;
     UniversalSettings *universalSettings() const;
     LayoutManager *layoutManager() const;
+
+    Indicator::Factory *indicatorFactory() const;
 
     PlasmaExtended::ScreenPool *plasmaScreenPool() const;
     PlasmaExtended::Theme *themeExtended() const;
@@ -188,6 +193,8 @@ private:
     UniversalSettings *m_universalSettings{nullptr};
     GlobalShortcuts *m_globalShortcuts{nullptr};
     LayoutManager *m_layoutManager{nullptr};
+
+    Indicator::Factory *m_indicatorFactory{nullptr};
 
     PlasmaExtended::ScreenPool *m_plasmaScreenPool{nullptr};
     PlasmaExtended::Theme *m_themeExtended{nullptr};

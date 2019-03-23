@@ -1,5 +1,5 @@
 /*
-*  Copyright 2019 Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -19,17 +19,7 @@
 
 import QtQuick 2.7
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-
-import org.kde.latte 0.2 as Latte
-
-Item{
-    id: common
-
-    readonly property bool indicatorsEnabled: plasmoid.configuration.indicatorsEnabled
-    readonly property bool indicatorsForApplets: plasmoid.configuration.indicatorsForApplets
-    readonly property bool reversedEnabled: plasmoid.configuration.reverseLinesPosition
-
-    readonly property int indicatorStyle: plasmoid.configuration.indicatorStyle
+Item {
+    readonly property Item indicator: parent && parent.hasOwnProperty("bridge") ? parent.bridge : null
+    readonly property Item attributes: parent
 }

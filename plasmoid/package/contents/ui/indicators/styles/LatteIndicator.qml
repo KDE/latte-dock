@@ -1,6 +1,5 @@
 /*
-*  Copyright 2016  Smith AR <audoban@openmailbox.org>
-*                  Michail Vourlakos <mvourlakos@gmail.com>
+*  Copyright 2019  Michail Vourlakos <mvourlakos@gmail.com>
 *
 *  This file is part of Latte-Dock
 *
@@ -29,45 +28,39 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
 
-import "../code/ColorizerTools.js" as ColorizerTools
-
-Item{
-    id: indicatorRoot
-    readonly property Item options: parent.manager
+LatteComponents.IndicatorItem{
+    id: root
 
     readonly property real factor: 0.08
-    readonly property int size: factor * options.currentIconSize
-    readonly property int extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * options.maxIconSize) : 0
+    readonly property int size: indicator ? factor * indicator.currentIconSize : factor * 64
+    readonly property int extraMaskThickness: reversedEnabled && glowEnabled ? 1.7 * (factor * indicator.maxIconSize) : 0
 
-    property real textColorBrightness: ColorizerTools.colorBrightness(theme.textColor)
+    property real textColorBrightness: colorBrightness(theme.textColor)
 
     property color isActiveColor: theme.buttonFocusColor
     property color minimizedColor: {
-        if (multiColorEnabled) {
+        if (minimizedTaskColoredDifferently) {
             return (textColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7));
         }
 
         return isActiveColor;
     }
-    property color notActiveColor: options.isMinimized ? minimizedColor : isActiveColor
+    property color notActiveColor: indicator && indicator.isMinimized ? minimizedColor : isActiveColor
 
     //! Common Options
-    readonly property bool reversedEnabled: options && options.common && options.common.hasOwnProperty("reversedEnabled") ?
-                                                options.common.reversedEnabled : false
+    readonly property bool reversedEnabled: indicator && indicator.general ? indicator.general.reversed : false
 
-    //! Explicit Options
-    readonly property bool explicitOptionsEnabled: options.explicit
-                                                   && options.explicit.hasOwnProperty("styleName")
-                                                   && options.explicit.styleName === "Latte"
+    //! Configuration Options
+    readonly property bool configurationEnabled: (indicator!==null) && (indicator.configuration !== null)
 
-    readonly property bool dotsOnActive: explicitOptionsEnabled ? options.explicit.dotsOnActive : true
-    readonly property bool multiColorEnabled: explicitOptionsEnabled ? options.explicit.multiColorEnabled : false
-    readonly property int activeIndicatorType: explicitOptionsEnabled ? options.explicit.activeIndicatorType : Latte.Types.LineIndicator
+    readonly property bool extraDotOnActive: configurationEnabled ? indicator.configuration.extraDotOnActive : true
+    readonly property bool minimizedTaskColoredDifferently: configurationEnabled ? indicator.configuration.minimizedTaskColoredDifferently : false
+    readonly property int activeStyle: configurationEnabled ? indicator.configuration.activeStyle : 0 /*Line*/
     //!glow options
-    readonly property bool glowEnabled: explicitOptionsEnabled ? options.explicit.glowEnabled : true
-    readonly property bool glow3D: explicitOptionsEnabled ? options.explicit.glow3D : false
-    readonly property int glowOption: explicitOptionsEnabled ? options.explicit.glowOption : Latte.Types.GlowAll
-    readonly property real glowOpacity: explicitOptionsEnabled ? options.explicit.glowOpacity : 0.35
+    readonly property bool glowEnabled: configurationEnabled ? indicator.configuration.glowEnabled : true
+    readonly property bool glow3D: configurationEnabled ? indicator.configuration.glow3D : false
+    readonly property int glowApplyTo: configurationEnabled ? indicator.configuration.glowApplyTo : 2 /*All*/
+    readonly property real glowOpacity: configurationEnabled ? indicator.configuration.glowOpacity : 0.35
 
     /*Rectangle{
         anchors.fill: parent
@@ -76,6 +69,16 @@ Item{
         color: "transparent"
         opacity:0.6
     }*/
+
+    function colorBrightness(color) {
+        return colorBrightnessFromRGB(color.r * 255, color.g * 255, color.b * 255);
+    }
+
+    // formula for brightness according to:
+    // https://www.w3.org/TR/AERT/#color-contrast
+    function colorBrightnessFromRGB(r, g, b) {
+        return (r * 299 + g * 587 + b * 114) / 1000
+    }
 
     Item{
         id: mainIndicatorElement
@@ -90,89 +93,89 @@ Item{
             LatteComponents.GlowPoint{
                 id:firstPoint
                 opacity: {
-                    if (options.isTask) {
-                        return options.isLauncher || (options.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
+                    if (indicator.isTask) {
+                        return indicator.isLauncher || (indicator.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
                     }
 
-                    if (options.isApplet) {
-                        return (options.isActive || activeAndReverseAnimation.running) ? 1 : 0
+                    if (indicator.isApplet) {
+                        return (indicator.isActive || activeAndReverseAnimation.running) ? 1 : 0
                     }
                 }
 
-                basicColor: options.isActive || (options.isGroup && options.hasShown) ? indicatorRoot.isActiveColor : indicatorRoot.notActiveColor
+                basicColor: indicator.isActive || (indicator.isGroup && indicator.hasShown) ? root.isActiveColor : root.notActiveColor
 
-                size: indicatorRoot.size
+                size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65*3*units.longDuration,options.durationTime*3*units.longDuration)
+                animation: Math.max(1.65*3*units.longDuration,indicator.durationTime*3*units.longDuration)
                 location: plasmoid.location
-                glowOpacity: indicatorRoot.glowOpacity
-                contrastColor: options.shadowColor
+                glowOpacity: root.glowOpacity
+                contrastColor: indicator.shadowColor
                 attentionColor: theme.negativeTextColor
 
                 roundCorners: true
-                showAttention: options.inAttention
+                showAttention: indicator.inAttention
                 showGlow: {
-                    if (glowEnabled && (glowOption === Latte.Types.GlowAll || showAttention ))
+                    if (glowEnabled && (glowApplyTo === 2 /*All*/ || showAttention ))
                         return true;
-                    else if (glowEnabled && glowOption === Latte.Types.GlowOnlyOnActive && options.hasActive)
+                    else if (glowEnabled && glowApplyTo === 1 /*OnActive*/ && indicator.hasActive)
                         return true;
                     else
                         return false;
                 }
                 showBorder: glowEnabled && glow3D
 
-                property int stateWidth: options.isGroup ? indicatorRoot.width - secondPoint.width : indicatorRoot.width - spacer.width
-                property int stateHeight: options.isGroup ? indicatorRoot.height - secondPoint.height : indicatorRoot.width - spacer.height
+                property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
+                property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.width - spacer.height
 
-                property int animationTime: options.durationTime* (0.7*units.longDuration)
+                property int animationTime: indicator.durationTime* (0.7*units.longDuration)
 
-                property bool isActive: options.hasActive || options.isActive
+                property bool isActive: indicator.hasActive || indicator.isActive
 
                 property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
 
-                property real scaleFactor: options.scaleFactor
+                property real scaleFactor: indicator.scaleFactor
 
                 function updateInitialSizes(){
-                    if(indicatorRoot){
+                    if(root){
                         if(vertical)
-                            width = indicatorRoot.size;
+                            width = root.size;
                         else
-                            height = indicatorRoot.size;
+                            height = root.size;
 
-                        if(vertical && isActive && activeIndicatorType === Latte.Types.LineIndicator)
+                        if(vertical && isActive && activeStyle === 0 /*Line*/)
                             height = stateHeight;
                         else
-                            height = indicatorRoot.size;
+                            height = root.size;
 
-                        if(!vertical && isActive && activeIndicatorType === Latte.Types.LineIndicator)
+                        if(!vertical && isActive && activeStyle === 0 /*Line*/)
                             width = stateWidth;
                         else
-                            width = indicatorRoot.size;
+                            width = root.size;
                     }
                 }
 
 
                 onIsActiveChanged: {
-                    if (activeIndicatorType === Latte.Types.LineIndicator)
+                    if (activeStyle === 0 /*Line*/)
                         activeAndReverseAnimation.start();
                 }
 
                 onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && activeIndicatorType === Latte.Types.LineIndicator){
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/){
                         width = stateWidth;
                     }
-                    else if (!activeAndReverseAnimation.running && vertical && isActive && activeIndicatorType === Latte.Types.LineIndicator){
+                    else if (!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/){
                         height = stateHeight;
                     }
                 }
 
                 onStateWidthChanged:{
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && activeIndicatorType === Latte.Types.LineIndicator)
+                    if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/)
                         width = stateWidth;
                 }
 
                 onStateHeightChanged:{
-                    if(!activeAndReverseAnimation.running && vertical && isActive && activeIndicatorType === Latte.Types.LineIndicator)
+                    if(!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/)
                         height = stateHeight;
                 }
 
@@ -181,14 +184,14 @@ Item{
                 Component.onCompleted: {
                     updateInitialSizes();
 
-                    if (options) {
-                        options.onCurrentIconSizeChanged.connect(updateInitialSizes);
+                    if (indicator) {
+                        indicator.onCurrentIconSizeChanged.connect(updateInitialSizes);
                     }
                 }
 
                 Component.onDestruction: {
-                    if (options) {
-                        options.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
+                    if (indicator) {
+                        indicator.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
                     }
                 }
 
@@ -196,8 +199,8 @@ Item{
                     id: activeAndReverseAnimation
                     target: firstPoint
                     property: plasmoid.formFactor === PlasmaCore.Types.Vertical ? "height" : "width"
-                    to: options.hasActive && activeIndicatorType === Latte.Types.LineIndicator
-                        ? (plasmoid.formFactor === PlasmaCore.Types.Vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : indicatorRoot.size
+                    to: indicator.hasActive && activeStyle === 0 /*Line*/
+                        ? (plasmoid.formFactor === PlasmaCore.Types.Vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : root.size
                     duration: firstPoint.animationTime
                     easing.type: Easing.InQuad
 
@@ -207,34 +210,34 @@ Item{
 
             Item{
                 id:spacer
-                width: secondPoint.visible ? 0.5*indicatorRoot.size : 0
-                height: secondPoint.visible ? 0.5*indicatorRoot.size : 0
+                width: secondPoint.visible ? 0.5*root.size : 0
+                height: secondPoint.visible ? 0.5*root.size : 0
             }
 
             LatteComponents.GlowPoint{
                 id:secondPoint
-                width: visible ? indicatorRoot.size : 0
+                width: visible ? root.size : 0
                 height: width
 
-                size: indicatorRoot.size
+                size: root.size
                 glow3D: glow3D
-                animation: Math.max(1.65*3*units.longDuration,options.durationTime*3*units.longDuration)
+                animation: Math.max(1.65*3*units.longDuration,indicator.durationTime*3*units.longDuration)
                 location: plasmoid.location
-                glowOpacity: indicatorRoot.glowOpacity
-                contrastColor: options.shadowColor
+                glowOpacity: root.glowOpacity
+                contrastColor: indicator.shadowColor
                 showBorder: glowEnabled && glow3D
 
                 basicColor: state2Color
                 roundCorners: true
-                showGlow: glowEnabled  && glowOption === Latte.Types.GlowAll
-                visible:  ( options.isGroup && ((dotsOnActive && activeIndicatorType === Latte.Types.LineIndicator)
-                                                || activeIndicatorType === Latte.Types.DotIndicator
-                                                || !options.hasActive) )? true: false
+                showGlow: glowEnabled  && glowApplyTo === 2 /*All*/
+                visible:  ( indicator.isGroup && ((extraDotOnActive && activeStyle === 0) /*Line*/
+                                                  || activeStyle === 1 /*Dot*/
+                                                  || !indicator.hasActive) ) ? true: false
 
                 //when there is no active window
-                property color state1Color: options.hasShown ? indicatorRoot.isActiveColor : indicatorRoot.minimizedColor
+                property color state1Color: indicator.hasShown ? root.isActiveColor : root.minimizedColor
                 //when there is active window
-                property color state2Color: options.hasMinimized ? indicatorRoot.minimizedColor : indicatorRoot.isActiveColor
+                property color state2Color: indicator.hasMinimized ? root.minimizedColor : root.isActiveColor
             }
         }
 

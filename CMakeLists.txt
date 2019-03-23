@@ -68,6 +68,7 @@ include(Definitions.cmake)
 
 add_subdirectory(declarativeimports)
 add_subdirectory(liblatte2)
+add_subdirectory(indicators)
 add_subdirectory(app)
 add_subdirectory(containmentactions)
 add_subdirectory(containment)
