@@ -149,7 +149,7 @@ QRect SecondaryConfigView::geometryWhenVisible() const
 
 void SecondaryConfigView::syncGeometry()
 {
-    if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !rootObject()) {
+    if (!m_latteView || !m_latteView->managedLayout() || !m_latteView->containment() || !m_parent || !rootObject()) {
         return;
     }
 
