@@ -609,6 +609,7 @@ PlasmaComponents.Page {
             spacing: units.smallSpacing
             Layout.rightMargin: units.smallSpacing * 2
             visible: dialog.expertLevel
+            enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible && latteView.visibility.mode !== Latte.Types.WindowsGoBelow
 
             LatteComponents.Header {
                 text: i18n("Environment")
@@ -629,8 +630,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Can be above fullscreen windows")
                 checked: latteView.byPassWM
-                enabled: !(latteView.visibility.mode === Latte.Types.AlwaysVisible
-                           || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
                 tooltip: i18n("BypassWindowManagerHint flag for the window. The view will be above all windows even those set as 'Always On Top'")
 
@@ -643,7 +642,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise on desktop change")
                 checked: latteView.visibility.raiseOnDesktop
-                enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible
 
                 onClicked: {
                     latteView.visibility.raiseOnDesktop = checked
@@ -654,7 +652,6 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 text: i18n("Raise on activity change")
                 checked: latteView.visibility.raiseOnActivity
-                enabled: latteView.visibility.mode !== Latte.Types.AlwaysVisible
 
                 onClicked: {
                     latteView.visibility.raiseOnActivity = checked

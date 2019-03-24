@@ -596,6 +596,7 @@ PlasmaComponents.Page {
             Layout.rightMargin: units.smallSpacing
             spacing: units.smallSpacing
             visible: latteView.indicator.providesConfigUi
+            enabled: latteView.indicator.enabled
 
             LatteComponents.Header {
                 text: i18n("%0 Indicator Options").arg(indicatorStyleGroup.current.text)
