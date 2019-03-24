@@ -613,7 +613,7 @@ PlasmaComponents.Page {
 
                 Connections {
                     target: latteView.indicator
-                    onTypeChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
+                    onPluginChanged: latteView.indicator.configUiFor(latteView.indicator.type, indicatorSpecificOptions);
                 }
             }
         }

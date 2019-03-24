@@ -25,7 +25,7 @@ Item{
     id: indicatorBridge
     anchors.fill: parent
 
-   property bool appletIsValid: true
+    property bool appletIsValid: true
 
     readonly property bool active: appletIsValid &&
                                    ((indicators.isEnabled

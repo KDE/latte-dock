@@ -51,19 +51,20 @@ class Indicator: public QObject
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool enabledForApplets READ enabledForApplets WRITE setEnabledForApplets NOTIFY enabledForAppletsChanged)
     Q_PROPERTY(bool latteTasksArePresent READ latteTasksArePresent NOTIFY latteTasksArePresentChanged)
+    Q_PROPERTY(bool pluginIsReady READ pluginIsReady NOTIFY pluginIsReadyChanged)
     Q_PROPERTY(bool providesConfigUi READ providesConfigUi NOTIFY providesConfigUiChanged)
     Q_PROPERTY(bool reversed READ reversed WRITE setReversed NOTIFY reversedChanged)
 
     Q_PROPERTY(float padding READ padding WRITE setPadding NOTIFY paddingChanged)
 
-    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
+    Q_PROPERTY(QString type READ type WRITE setType NOTIFY pluginChanged)
 
     /**
      * Configuration object: each config key will be a writable property of this object. property bindings work.
      */
-    Q_PROPERTY(QObject *configuration READ configuration NOTIFY configurationChanged)
+    Q_PROPERTY(QObject *configuration READ configuration NOTIFY pluginChanged)
 
-    Q_PROPERTY(QQmlComponent *component READ component NOTIFY componentChanged)
+    Q_PROPERTY(QQmlComponent *component READ component NOTIFY pluginChanged)
     Q_PROPERTY(QQmlComponent *plasmaComponent READ plasmaComponent NOTIFY plasmaComponentChanged)
 
 public:
@@ -78,6 +79,8 @@ public:
 
     bool latteTasksArePresent();
     bool providesConfigUi() const;
+
+    bool pluginIsReady();
 
     bool reversed() const;
     void setReversed(bool reversed);
@@ -98,21 +101,21 @@ public slots:
     Q_INVOKABLE void configUiFor(QString type, QQuickItem *parent);
 
 signals:
-    void componentChanged();
-    void configurationChanged();
     void enabledChanged();
     void enabledForAppletsChanged();
     void latteTasksArePresentChanged();
     void paddingChanged();
     void plasmaComponentChanged();
+    void pluginChanged();
+    void pluginIsReadyChanged();
     void providesConfigUiChanged();
     void reversedChanged();
-    void typeChanged();
 
 private:
     void loadConfig();
     void saveConfig();
 
+    void setPluginIsReady(bool ready);
     void setProvidesConfigUi(bool provides);
 
     void loadPlasmaComponent();
@@ -122,6 +125,7 @@ private:
 private:
     bool m_enabled{true};
     bool m_enabledForApplets{true};
+    bool m_pluginIsReady{false};
     bool m_providesConfigUi{true};
     bool m_reversed{false};
 

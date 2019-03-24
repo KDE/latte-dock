@@ -31,7 +31,7 @@ Item{
 
     readonly property QtObject configuration: latteView && latteView.indicator ? latteView.indicator.configuration : null
 
-    readonly property bool isEnabled: latteView && latteView.indicator ? latteView.indicator.enabled : false
+    readonly property bool isEnabled: latteView && latteView.indicator ? (latteView.indicator.enabled && latteView.indicator.pluginIsReady) : false
     readonly property bool enabledForApplets: latteView && latteView.indicator ? latteView.indicator.enabledForApplets : true
     readonly property bool reversed: latteView && latteView.indicator ? latteView.indicator.reversed : false
     readonly property real padding: latteView && latteView.indicator ? latteView.indicator.padding: 0.08
@@ -62,6 +62,7 @@ Item{
         active: managerIndicator.isEnabled
 
         readonly property bool isBackground: true
+        readonly property bool isForeground: false
         readonly property Item bridge: AppletIndicator.Bridge{
             appletIsValid: false
         }

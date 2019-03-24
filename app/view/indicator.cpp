@@ -44,7 +44,7 @@ Indicator::Indicator(Latte::View *parent)
     connect(this, &Indicator::enabledForAppletsChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::paddingChanged, this, &Indicator::saveConfig);
     connect(this, &Indicator::reversedChanged, this, &Indicator::saveConfig);
-    connect(this, &Indicator::typeChanged, this, &Indicator::saveConfig);
+    connect(this, &Indicator::pluginChanged, this, &Indicator::saveConfig);
 
     connect(m_view, &Latte::View::latteTasksArePresentChanged, this, &Indicator::latteTasksArePresentChanged);
 
@@ -148,6 +148,21 @@ void Indicator::setPadding(float padding)
     emit paddingChanged();
 }
 
+bool Indicator::pluginIsReady()
+{
+    return m_pluginIsReady;
+}
+
+void Indicator::setPluginIsReady(bool ready)
+{
+    if (m_pluginIsReady == ready) {
+        return;
+    }
+
+    m_pluginIsReady = ready;
+    emit pluginIsReadyChanged();
+}
+
 QString Indicator::type() const
 {
     return m_type;
@@ -182,6 +197,10 @@ void Indicator::load(QString type)
     KPluginMetaData metadata = m_corona->indicatorFactory()->metadata(type);
 
     if (metadata.isValid()) {
+        bool state{m_enabled};
+        //! remove all previous indicators
+        setPluginIsReady(false);
+
         m_metadata = metadata;
         m_type = type;
 
@@ -191,7 +210,10 @@ void Indicator::load(QString type)
         updateScheme();
         updateComponent();
 
-        emit typeChanged();
+        emit pluginChanged();
+
+        //! create all indicators with the new type
+        setPluginIsReady(true);
     } else if (type!="org.kde.latte.indicator.default") {
         setType("org.kde.latte.indicator.default");
     }
@@ -211,8 +233,6 @@ void Indicator::updateComponent()
     if (prevComponent) {
         prevComponent->deleteLater();
     }
-
-    emit componentChanged();
 }
 
 void Indicator::loadPlasmaComponent()
@@ -299,8 +319,6 @@ void Indicator::updateScheme()
     if (prevConfiguration) {
         prevConfiguration->deleteLater();
     }
-
-    emit configurationChanged();
 }
 
 void Indicator::loadConfig()
