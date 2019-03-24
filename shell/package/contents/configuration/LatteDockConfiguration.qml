@@ -524,7 +524,6 @@ FocusScope {
                     }
                 }
 
-
                 //overlayed button
                 PlasmaComponents.Button {
                     id: addView

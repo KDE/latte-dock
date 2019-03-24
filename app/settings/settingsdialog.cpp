@@ -1189,7 +1189,7 @@ void SettingsDialog::updateApplyButtonsState()
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
     } else {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        //ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
     }
 
