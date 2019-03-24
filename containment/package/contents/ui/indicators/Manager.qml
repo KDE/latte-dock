@@ -35,7 +35,7 @@ Item{
     readonly property bool enabledForApplets: latteView && latteView.indicator ? latteView.indicator.enabledForApplets : true
     readonly property bool reversed: latteView && latteView.indicator ? latteView.indicator.reversed : false
     readonly property real padding: latteView && latteView.indicator ? latteView.indicator.padding: 0.08
-    readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.indicator.default"
+    readonly property string type: latteView && latteView.indicator ? latteView.indicator.type : "org.kde.latte.default"
 
     readonly property Component plasmaStyleComponent: latteView && latteView.indicator ? latteView.indicator.plasmaComponent : null
     readonly property Component indicatorComponent: latteView && latteView.indicator ? latteView.indicator.component : null

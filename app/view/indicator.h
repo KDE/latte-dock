@@ -132,7 +132,7 @@ private:
     float m_padding{0.08};
 
     QString m_pluginPath;
-    QString m_type{"org.kde.latte.indicator.default"};
+    QString m_type{"org.kde.latte.default"};
 
     QPointer<QQmlComponent> m_component;
     QPointer<QQmlComponent> m_plasmaComponent;

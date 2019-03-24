@@ -492,7 +492,7 @@ PlasmaComponents.Page {
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Latte style for your indicators")
 
-                        readonly property string type: "org.kde.latte.indicator.default"
+                        readonly property string type: "org.kde.latte.default"
                     }
 
                     PlasmaComponents.Button {
@@ -503,7 +503,7 @@ PlasmaComponents.Page {
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Plasma style for your indicators")
 
-                        readonly property string type: "org.kde.latte.indicator.plasma"
+                        readonly property string type: "org.kde.latte.plasma"
                     }
 
                     PlasmaComponents.Button {
@@ -514,7 +514,7 @@ PlasmaComponents.Page {
                         exclusiveGroup:  indicatorStyleGroup
                         tooltip: i18n("Use Unity style for your indicators")
 
-                        readonly property string type: "org.kde.latte.indicator.unity"
+                        readonly property string type: "org.kde.latte.unity"
                     }
                 }
 

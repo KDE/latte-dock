@@ -214,8 +214,8 @@ void Indicator::load(QString type)
 
         //! create all indicators with the new type
         setPluginIsReady(true);
-    } else if (type!="org.kde.latte.indicator.default") {
-        setType("org.kde.latte.indicator.default");
+    } else if (type!="org.kde.latte.default") {
+        setType("org.kde.latte.default");
     }
 }
 
@@ -239,7 +239,7 @@ void Indicator::loadPlasmaComponent()
 {
     auto prevComponent = m_plasmaComponent;
 
-    KPluginMetaData metadata = m_corona->indicatorFactory()->metadata("org.kde.latte.indicator.plasma");
+    KPluginMetaData metadata = m_corona->indicatorFactory()->metadata("org.kde.latte.plasma");
     QString uiPath = metadata.value("X-Latte-MainScript");
 
     if (!uiPath.isEmpty()) {
@@ -328,7 +328,7 @@ void Indicator::loadConfig()
     m_enabledForApplets = config.readEntry("enabledForApplets", true);
     m_padding = config.readEntry("padding", (float)0.08);
     m_reversed = config.readEntry("reversed", false);
-    m_type = config.readEntry("type", "org.kde.latte.indicator.default");
+    m_type = config.readEntry("type", "org.kde.latte.default");
 }
 
 void Indicator::saveConfig()

@@ -11,7 +11,7 @@ X-Latte-ConfigXml=config/main.xml
 
 X-KDE-PluginInfo-Author=Michail Vourlakos
 X-KDE-PluginInfo-Email=mvourlakos@gmail.com
-X-KDE-PluginInfo-Name=org.kde.latte.indicator.default
+X-KDE-PluginInfo-Name=org.kde.latte.default
 X-KDE-PluginInfo-Version=0.1
 X-KDE-PluginInfo-Category=Latte Indicator
 X-KDE-PluginInfo-License=GPL v2+

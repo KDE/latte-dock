@@ -37,7 +37,7 @@ Factory::Factory(QObject *parent)
 {
     reload();
 
-    qDebug() << m_plugins["org.kde.latte.indicator.default"].name();
+    qDebug() << m_plugins["org.kde.latte.default"].name();
 }
 
 Factory::~Factory()
