@@ -254,8 +254,8 @@ DragDrop.DropArea {
     }
 
     property int appShadowOpacity: (plasmoid.configuration.shadowOpacity/100) * 255
-    property int appShadowSize: enableShadows ? (0.4*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
-    property int appShadowSizeOriginal: enableShadows ? (0.4*maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSize: enableShadows ? (0.5*root.iconSize) * (plasmoid.configuration.shadowSize/100) : 0
+    property int appShadowSizeOriginal: enableShadows ? (0.5*maxIconSize) * (plasmoid.configuration.shadowSize/100) : 0
 
     property string appChosenShadowColor: {
         if (plasmoid.configuration.shadowColorType === Latte.Types.ThemeColorShadow) {
