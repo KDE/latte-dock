@@ -106,7 +106,7 @@ DragDrop.DropArea {
 
     property bool forceSolidPanel: (latteView && latteView.visibility
                                     && Latte.WindowSystem.compositingActive
-                                    && !root.editMode
+                                    && !inConfigureAppletsMode
                                     && userShowPanelBackground
                                     && ( (plasmoid.configuration.solidBackgroundForMaximized
                                           && !(hasExpandedApplet && !plasmaBackgroundForPopups)
@@ -117,7 +117,7 @@ DragDrop.DropArea {
     property bool forceTransparentPanel: root.backgroundOnlyOnMaximized
                                          && latteView && latteView.visibility
                                          && Latte.WindowSystem.compositingActive
-                                         && !root.editMode
+                                         && !inConfigureAppletsMode
                                          && !forceSolidPanel
                                          && !(windowColors === Latte.Types.TouchingWindowColors && latteView.windowsTracker.activeWindowTouching)
                                          && !(windowColors === Latte.Types.ActiveWindowColors && latteView.windowsTracker.existsWindowActive)
@@ -230,7 +230,7 @@ DragDrop.DropArea {
             return false;
         }
 
-        if (root.editMode) {
+        if (inConfigureAppletsMode) {
             return plasmoid.configuration.panelShadows;
         }
 
