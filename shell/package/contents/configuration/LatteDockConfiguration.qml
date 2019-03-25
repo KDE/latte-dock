@@ -458,52 +458,30 @@ FocusScope {
 
             function updateEnabled() {
                 var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
-                addView.enabled = latteView.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
-                removeView.enabled = latteView.managedLayout.viewsCount>1 && !(latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent())
+                actionsComboBtn.buttonEnabled = latteView.managedLayout.viewsCount<4 && screenFreeEdges.length > 0
+                removeView.enabled = latteView.managedLayout.viewsCount>1 /*&& !(latteView.managedLayout.viewsWithTasks()===1 && latteView.tasksPresent())*/
             }
 
-            PlasmaComponents.Button {
+            LatteComponents.ComboBoxButton {
+                id: actionsComboBtn
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
-                text:" "
 
-                PlasmaComponents3.ComboBox {
-                    id: actionsCmb
-                    anchors.fill: parent
-                    enabled: addView.enabled
+                comboBoxEnabled: buttonEnabled
+                buttonEnabled: true
+                buttonText: i18n("New Dock")
+                buttonIconSource: "list-add"
+                buttonToolTip: i18n("Add a new dock")
 
-                    property var activeLayoutsNames;
+                property var activeLayoutsNames;
 
-                    function addModel() {
-                        var actions = []
-                        actions.push("    " + i18n("Copy Dock"));
+                Component.onCompleted: actionButtons.updateEnabled();
 
-                        var tempActiveLayouts = layoutManager.activeLayoutsNames();
-                        var currentLayoutIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
-
-                        tempActiveLayouts.splice(currentLayoutIndex,1);
-
-                        if (tempActiveLayouts.length > 0) {
-                            activeLayoutsNames = tempActiveLayouts;
-                            actions.push("  ------  ");
-                            for(var i=0; i<activeLayoutsNames.length; ++i) {
-                                actions.push("    " + i18n("Move to:") + " " + activeLayoutsNames[i]);
-                            }
-                        }
-
-                        actionsCmb.model = actions;
-                        actionsCmb.currentIndex = -1;
-                    }
-
-                    function emptyModel() {
-                        var actions = []
-                        actions.push("  ");
-                        actionsCmb.model = actions;
-                        actionsCmb.currentIndex = -1;
-                    }
+                Connections{
+                    target: actionsComboBtn.comboBox
 
                     Component.onCompleted:{
-                        addModel();
+                        actionsComboBtn.addModel();
                     }
 
                     onActivated: {
@@ -513,37 +491,50 @@ FocusScope {
                             latteView.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
                         }
 
-                        actionsCmb.currentIndex = -1;
+                        actionsComboBtn.comboBox.currentIndex = -1;
                     }
 
                     onEnabledChanged: {
-                        if (enabled)
-                            addModel();
-                        else
-                            emptyModel();
+                        if (enabled) {
+                            actionsComboBtn.addModel();
+                        } else {
+                            actionsComboBtn.emptyModel();
+                        }
                     }
                 }
 
-                //overlayed button
-                PlasmaComponents.Button {
-                    id: addView
-                    anchors.left: Qt.application.layoutDirection === Qt.RightToLeft ? undefined : parent.left
-                    anchors.right: Qt.application.layoutDirection === Qt.RightToLeft ? parent.right : undefined
-                    LayoutMirroring.enabled: false
+                Connections{
+                    target: actionsComboBtn.button
 
-                    width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
-                    height: parent.height
+                    onClicked: latteView.managedLayout.addNewView();
+                }
 
-                    text: i18n("New Dock")
-                    iconSource: "list-add"
-                    tooltip: i18n("Add a new dock")
+                function addModel() {
+                    var actions = []
+                    actions.push("    " + i18n("Copy Dock"));
 
-                    onClicked: latteView.managedLayout.addNewView()
+                    var tempActiveLayouts = layoutManager.activeLayoutsNames();
+                    var currentLayoutIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
 
-                    Component.onCompleted: {
-                        var screenFreeEdges = latteView.managedLayout.qmlFreeEdges(latteView.positioner.currentScreenId);
-                        enabled = screenFreeEdges.length > 0
+                    tempActiveLayouts.splice(currentLayoutIndex,1);
+
+                    if (tempActiveLayouts.length > 0) {
+                        activeLayoutsNames = tempActiveLayouts;
+                        actions.push("  ------  ");
+                        for(var i=0; i<activeLayoutsNames.length; ++i) {
+                            actions.push("    " + i18n("Move to:") + " " + activeLayoutsNames[i]);
+                        }
                     }
+
+                    actionsComboBtn.comboBox.model = actions;
+                    actionsComboBtn.comboBox.currentIndex = -1;
+                }
+
+                function emptyModel() {
+                    var actions = []
+                    actions.push("  ");
+                    actionsComboBtn.model = actions;
+                    actionsComboBtn.currentIndex = -1;
                 }
             }
 

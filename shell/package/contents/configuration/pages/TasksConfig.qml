@@ -311,7 +311,7 @@ PlasmaComponents.Page {
                     text: i18n("Left Click")
                 }
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: leftClickAction
                     Layout.fillWidth: true
                     model: [i18nc("present windows action", "Present Windows"),
@@ -350,7 +350,7 @@ PlasmaComponents.Page {
                     text: i18n("Middle Click")
                 }
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: middleClickAction
                     Layout.fillWidth: true
                     model: [
@@ -370,7 +370,7 @@ PlasmaComponents.Page {
                     text: i18n("Hover")
                 }
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: hoverAction
                     Layout.fillWidth: true
                     model: [
@@ -420,7 +420,7 @@ PlasmaComponents.Page {
                 spacing: units.smallSpacing
                 enabled: !disableAllWindowsFunctionality
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: modifier
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 5
                     model: ["Shift", "Ctrl", "Alt", "Meta"]
@@ -433,7 +433,7 @@ PlasmaComponents.Page {
                     text: "+"
                 }
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: modifierClick
                     Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 10
                     model: [i18n("Left Click"), i18n("Middle Click"), i18n("Right Click")]
@@ -446,7 +446,7 @@ PlasmaComponents.Page {
                     text: "="
                 }
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: modifierClickAction
                     Layout.fillWidth: true
                     model: [i18nc("The click action", "None"), i18n("Close Window or Group"),

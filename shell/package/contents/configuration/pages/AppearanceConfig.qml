@@ -70,7 +70,7 @@ PlasmaComponents.Page {
                 Layout.leftMargin: units.smallSpacing * 2
                 spacing: units.smallSpacing
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: layoutCmb
                     Layout.fillWidth: true
 

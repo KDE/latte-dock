@@ -132,7 +132,7 @@ PlasmaComponents.Page {
                     Layout.alignment: Qt.AlignRight
                 }
 
-                PlasmaComponents3.ComboBox {
+                LatteComponents.ComboBox {
                     id: screenCmb
                     Layout.fillWidth: true
                     Component.onCompleted: screenRow.updateScreens();
@@ -531,7 +531,7 @@ PlasmaComponents.Page {
                         text: i18n("Mouse wheel")
                     }
 
-                    PlasmaComponents3.ComboBox {
+                    LatteComponents.ComboBox {
                         id: scrollAction
                         Layout.fillWidth: true
                         model: [i18nc("none scroll actions", "None Action"),
