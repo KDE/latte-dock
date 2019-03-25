@@ -147,7 +147,7 @@ T.ComboBox {
             // Work around Qt bug where NativeRendering breaks for non-integer scale factors
             // https://bugreports.qt.io/browse/QTBUG-67007
             renderType: Screen.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
-            color: theme.textColor// control.enabled ? Kirigami.Theme.textColor : Kirigami.Theme.disabledTextColor
+            color: theme.textColor //control.enabled ? theme.textColor : theme.disabledTextColor
             selectionColor: Kirigami.Theme.highlightColor
             selectedTextColor: Kirigami.Theme.highlightedTextColor
 
@@ -157,7 +157,7 @@ T.ComboBox {
             font: control.font
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
-            opacity: 1//control.enabled ? 1 : 0.3
+            opacity: control.enabled ? 1 : 0.6
             onFocusChanged: {
                 if (focus) {
                     Private.MobileTextActionsToolBar.controlRoot = textField;
