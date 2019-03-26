@@ -58,13 +58,11 @@ Item {
 
     RowLayout {
         id: row
-
         width: parent.width
         anchors.verticalCenter: parent.verticalCenter
 
         LatteExtraControls.Header {
             id: headerText
-            Layout.fillWidth: true
             text: item.text
             enabled: item.checked
             visible: level === 1
@@ -72,7 +70,6 @@ Item {
 
         LatteExtraControls.SubHeader {
             id: subHeaderText
-            Layout.fillWidth: true
             text: item.text
             enabled: item.checked
             visible: level === 2
@@ -80,7 +77,6 @@ Item {
 
         PlasmaComponents.Label {
             id: labelText
-            Layout.fillWidth: true
             text: item.text
             enabled: item.checked
             visible: level > 2

@@ -255,7 +255,13 @@ T.ComboBox {
     }
 
     popup: T.Popup {
-        x: control.mirrored ? control.width - width : popUpRelativeX
+        x: {
+            if (popUpRelativeX !== 0) {
+                return control.mirrored ? -(width - popUpRelativeX) : popUpRelativeX
+            }
+
+            return control.mirrored ? control.width - width : 0
+        }
         y: control.height
         width: Math.max(control.width, control.minimumPopUpWidth)
         implicitHeight: contentItem.implicitHeight

@@ -86,7 +86,7 @@ Rectangle {
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
         forcePressed: comboBoxForcePressed
-        popUpRelativeX: -(parent.width - width)
+        popUpRelativeX: Qt.application.layoutDirection === Qt.RightToLeft ? root.width : -(parent.width - width)
 
         minimumPopUpWidth: Math.max(comboBoxMinimumPopUpWidth, root.width)
     }

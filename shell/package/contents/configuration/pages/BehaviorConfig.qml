@@ -457,8 +457,14 @@ PlasmaComponents.Page {
                        || latteView.visibility.mode === Latte.Types.WindowsGoBelow)
 
             LatteComponents.Header {
-                Layout.fillWidth: true
                 text: i18n("Delay")
+            }
+
+            //! ghost object to provide full space to Delay ColumnLayout
+            Label {
+                Layout.fillWidth: true
+                text: " "
+                height: 0
             }
 
             RowLayout {
