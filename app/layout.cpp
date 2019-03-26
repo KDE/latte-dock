@@ -1508,8 +1508,8 @@ void Layout::syncDockViewsToScreens()
             int screenId = 0;
 
             //! valid screen id
-            if (latteViewExists(containment)) {
-                screenId = m_latteViews[containment]->positioner()->currentScreenId();
+            if (dockViewExists(containment)) {
+                screenId = m_corona->screenPool()->id(m_dockViews[containment]->currentScreen());
             } else {
                 screenId = containment->screen();
 
@@ -1521,8 +1521,8 @@ void Layout::syncDockViewsToScreens()
             bool onPrimary{true};
 
             //! valid onPrimary flag
-            if (latteViewExists(containment)) {
-                onPrimary = m_latteViews[containment]->onPrimary();
+            if (dockViewExists(containment)) {
+                onPrimary = m_dockViews[containment]->onPrimary();
             } else {
                 onPrimary = containment->config().readEntry("onPrimary", true);
             }
@@ -1543,8 +1543,8 @@ void Layout::syncDockViewsToScreens()
             int screenId = 0;
 
             //! valid screen id
-            if (latteViewExists(containment)) {
-                screenId = m_latteViews[containment]->positioner()->currentScreenId();
+            if (dockViewExists(containment)) {
+                screenId = m_corona->screenPool()->id(m_dockViews[containment]->currentScreen());
             } else {
                 screenId = containment->screen();
 
@@ -1556,8 +1556,8 @@ void Layout::syncDockViewsToScreens()
             bool onPrimary{true};
 
             //! valid onPrimary flag
-            if (latteViewExists(containment)) {
-                onPrimary = m_latteViews[containment]->onPrimary();
+            if (dockViewExists(containment)) {
+                onPrimary = m_dockViews[containment]->onPrimary();
             } else {
                 onPrimary = containment->config().readEntry("onPrimary", true);
             }
