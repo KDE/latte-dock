@@ -43,6 +43,7 @@ PlasmaComponents.Button {
 
     property bool comboBoxEnabled: true
     property bool comboBoxBlankSpaceForEmptyIcons: false
+    property int comboBoxMinimumPopUpWidth: 150
     property string comboBoxTextRole: ""
     property string comboBoxIconRole: ""
 
@@ -55,6 +56,8 @@ PlasmaComponents.Button {
         textRole: comboBoxTextRole
 
         blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
+
+        minimumPopUpWidth: comboBoxMinimumPopUpWidth
     }
 
     //overlayed button

@@ -467,15 +467,27 @@ FocusScope {
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
 
-                comboBoxEnabled: buttonEnabled
                 buttonEnabled: true
                 buttonText: i18n("New Dock")
                 buttonIconSource: "list-add"
                 buttonToolTip: i18n("Add a new dock")
 
+                comboBoxEnabled: buttonEnabled
+                comboBoxBlankSpaceForEmptyIcons: true
+                comboBoxTextRole: "name"
+                comboBoxIconRole: "icon"
+                comboBoxMinimumPopUpWidth: actionsModel.count > 1 ? dialog.width / 2 : 150
+
                 property var activeLayoutsNames;
 
-                Component.onCompleted: actionButtons.updateEnabled();
+                Component.onCompleted: {
+                    comboBox.model = actionsModel;
+                    actionButtons.updateEnabled();
+                }
+
+                ListModel {
+                    id: actionsModel
+                }
 
                 Connections{
                     target: actionsComboBtn.comboBox
@@ -487,8 +499,8 @@ FocusScope {
                     onActivated: {
                         if (index==0) {
                             latteView.copyView();
-                        } else if (index>=2) {
-                            latteView.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-2]);
+                        } else if (index>=1) {
+                            latteView.positioner.hideDockDuringMovingToLayout(activeLayoutsNames[index-1]);
                         }
 
                         actionsComboBtn.comboBox.currentIndex = -1;
@@ -510,8 +522,10 @@ FocusScope {
                 }
 
                 function addModel() {
-                    var actions = []
-                    actions.push("    " + i18n("Copy Dock"));
+                    actionsModel.clear();
+
+                    var copy = {actionId: 'copy:', name: i18n("Copy Dock"), icon: 'edit-copy'};
+                    actionsModel.append(copy);
 
                     var tempActiveLayouts = layoutManager.activeLayoutsNames();
                     var currentLayoutIndex = tempActiveLayouts.indexOf(latteView.managedLayout.name);
@@ -520,21 +534,21 @@ FocusScope {
 
                     if (tempActiveLayouts.length > 0) {
                         activeLayoutsNames = tempActiveLayouts;
-                        actions.push("  ------  ");
+
                         for(var i=0; i<activeLayoutsNames.length; ++i) {
-                            actions.push("    " + i18n("Move to:") + " " + activeLayoutsNames[i]);
+                            var layout = {actionId: 'move:', name: i18n("Move to: %0").arg(activeLayoutsNames[i]), icon: 'arrow-right'};
+                            actionsModel.append(layout);
                         }
                     }
 
-                    actionsComboBtn.comboBox.model = actions;
                     actionsComboBtn.comboBox.currentIndex = -1;
                 }
 
                 function emptyModel() {
-                    var actions = []
-                    actions.push("  ");
-                    actionsComboBtn.model = actions;
-                    actionsComboBtn.currentIndex = -1;
+                    actionsModel.clear();
+                    var copy = {actionId: 'copy:', name: i18n("Copy Dock"), icon: 'edit-copy'};
+                    actionsModel.append(copy);
+                    actionsComboBtn.comboBox.currentIndex = -1;
                 }
             }
 
