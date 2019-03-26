@@ -1,6 +1,17 @@
 [Desktop Entry]
 Name=Plasma
+Name[ca]=Plasma
+Name[gl]=Plasma
+Name[nl]=Plasma
+Name[pt]=Plasma
+Name[uk]=Плазма
+Name[x-test]=xxPlasmaxx
 Comment=Latte Plasma style indicator
+Comment[ca]=Indicador a l'estil Plasma del Latte
+Comment[gl]=Indicador de estilo Plasma de Latte
+Comment[nl]=Plasma stijlindicator van Latte
+Comment[uk]=Індикатор стилю Плазми Латте
+Comment[x-test]=xxLatte Plasma style indicatorxx
 
 Type=Service
 Icon=latte-dock
