@@ -491,6 +491,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Button {
+                        id: latteBtn
                         Layout.fillWidth: true
                         text: i18nc("latte indicator style", "Latte")
                         checked: parent.type === type
@@ -515,6 +516,9 @@ PlasmaComponents.Page {
                     LatteExtraControls.CustomIndicatorButton {
                         id: customIndicator
                         Layout.fillWidth: true
+                        implicitWidth: latteBtn.implicitWidth
+                        implicitHeight: latteBtn.implicitHeight
+
                         checked: parent.type === type
                         checkable: true
                         buttonExclusiveGroup:  indicatorStyleGroup

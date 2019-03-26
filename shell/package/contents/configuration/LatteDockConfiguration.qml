@@ -464,8 +464,9 @@ FocusScope {
 
             LatteComponents.ComboBoxButton {
                 id: actionsComboBtn
-                Layout.alignment: Qt.AlignLeft
                 Layout.fillWidth: true
+                implicitWidth: removeView.implicitWidth
+                implicitHeight: removeView.implicitHeight
 
                 buttonEnabled: true
                 buttonText: i18n("New Dock")
@@ -554,9 +555,7 @@ FocusScope {
 
             PlasmaComponents.Button {
                 id: removeView
-
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter
 
                 text: i18n("Remove")
                 iconSource: "delete"
@@ -568,9 +567,7 @@ FocusScope {
 
             PlasmaComponents.Button {
                 id: closeButton
-
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignRight
 
                 text: i18n("Close")
                 iconSource: "dialog-close"

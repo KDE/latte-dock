@@ -18,6 +18,7 @@
 */
 
 import QtQuick 2.1
+import QtQuick.Layouts 1.3
 
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
@@ -25,9 +26,12 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.latte 0.2 as Latte
 import org.kde.latte.components 1.0 as LatteComponents
 
-PlasmaComponents.Button {
+Rectangle {
     id: root
-    text: " "
+    color: "transparent"
+
+    implicitWidth: buttonMetrics.implicitWidth
+    implicitHeight: buttonMetrics.implicitHeight
 
     readonly property Item comboBox: mainComboBox
     readonly property Item button: mainButton
@@ -48,21 +52,6 @@ PlasmaComponents.Button {
     property string comboBoxTextRole: ""
     property string comboBoxIconRole: ""
 
-    LatteComponents.ComboBox {
-        id: mainComboBox
-        anchors.fill: parent
-        enabled: comboBoxEnabled
-
-        iconRole: comboBoxIconRole
-        textRole: comboBoxTextRole
-
-        blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
-        forcePressed: comboBoxForcePressed
-
-        minimumPopUpWidth: comboBoxMinimumPopUpWidth
-    }
-
-    //overlayed button
     PlasmaComponents.Button {
         id: mainButton
         anchors.left: Qt.application.layoutDirection === Qt.RightToLeft ? undefined : parent.left
@@ -73,20 +62,42 @@ PlasmaComponents.Button {
         checkable: root.checkable
         exclusiveGroup: buttonExclusiveGroup
 
-        width: parent.width - units.iconSizes.medium + 2*units.smallSpacing
+        width: parent.width
         height: mainComboBox.height
 
-        text: checkable && !labelMetrics.exceeds? "" : buttonText
+        text: checkable ?  " " : buttonText
         iconSource: buttonIconSource
         tooltip: buttonToolTip
     }
 
+    //overlayed combobox
+    LatteComponents.ComboBox {
+        id: mainComboBox
+        anchors.right: mainButton.right
+        anchors.top: parent.top
+
+        width:  units.iconSizes.medium - units.smallSpacing
+        height: parent.height
+
+        enabled: comboBoxEnabled
+
+        iconRole: comboBoxIconRole
+        textRole: comboBoxTextRole
+
+        blankSpaceForEmptyIcons: comboBoxBlankSpaceForEmptyIcons
+        forcePressed: comboBoxForcePressed
+        popUpRelativeX: -(parent.width - width)
+
+        minimumPopUpWidth: Math.max(comboBoxMinimumPopUpWidth, root.width)
+    }
+
     Label{
-        anchors.fill: parent
-        visible: mainButton.checkable && !labelMetrics.exceeds
+        width: labelMetrics.exceeds ? parent.width-mainComboBox.width :  parent.width
+        height: parent.height
         text: buttonText
         font: mainButton.font
         color: theme.buttonTextColor
+        visible: root.checkable
 
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
@@ -101,6 +112,6 @@ PlasmaComponents.Button {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
-        readonly property bool exceeds: width>mainButton.width
+        readonly property bool exceeds: width>(mainButton.width-mainComboBox.width)
     }
 }

@@ -45,6 +45,7 @@ T.ComboBox {
     property bool blankSpaceForEmptyIcons: false
     property bool forcePressed: false
     property int minimumPopUpWidth: 150
+    property int popUpRelativeX: 0
     property string iconRole
 
     delegate: ItemDelegate {
@@ -254,7 +255,7 @@ T.ComboBox {
     }
 
     popup: T.Popup {
-        x: control.mirrored ? control.width - width : 0
+        x: control.mirrored ? control.width - width : popUpRelativeX
         y: control.height
         width: Math.max(control.width, control.minimumPopUpWidth)
         implicitHeight: contentItem.implicitHeight
